@@ -29,13 +29,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /brokers/degiro/create - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/degiro/create /brokers - Reference | OpenBB Terminal Docs" />
 
 
 
 ### Usage
 
-```python wordwrap
+```python
 create [-a {buy,sell}] (-prod PRODUCT | -sym SYMBOL) -p PRICE (-s SIZE | -up UP_TO) [-d {gtd,gtc}] [-t {limit,market,stop-limit,stop-loss}]
 ```
 
@@ -43,15 +43,15 @@ create [-a {buy,sell}] (-prod PRODUCT | -sym SYMBOL) -p PRICE (-s SIZE | -up UP_
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| action | -a  --action | Action wanted. | buy | True | buy, sell |
-| product | -prod  --product | Id of the product wanted. | None | True | None |
-| symbol | -sym  --symbol | Symbol wanted. | None | True | None |
-| price | -p  --price | Price wanted. | None | False | None |
-| size | -s  --size | Price wanted. | None | True | None |
-| up_to | -up  --up-to | Up to price. | None | True | None |
-| duration | -d  --duration | Duration of the Order. | gtd | True | gtd, gtc |
-| type | -t  --type | Type of the Order. | limit | True | limit, market, stop-limit, stop-loss |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| action | Action wanted. | buy | True | buy, sell |
+| product | Id of the product wanted. | None | True | None |
+| symbol | Symbol wanted. | None | True | None |
+| price | Price wanted. | None | False | None |
+| size | Price wanted. | None | True | None |
+| up_to | Up to price. | None | True | None |
+| duration | Duration of the Order. | gtd | True | gtd, gtc |
+| type | Type of the Order. | limit | True | limit, market, stop-limit, stop-loss |
 
 ---

@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /disc/hotpenny - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/disc/hotpenny - Reference | OpenBB Terminal Docs" />
 
 Provides top penny stocks from various websites. [Source: Yfinance]
 
 ### Usage
 
-```python wordwrap
+```python
 hotpenny [-l LIMIT]
 ```
 
@@ -28,9 +28,9 @@ hotpenny [-l LIMIT]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| limit | -l  --limit | limit of stocks to display | 5 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| limit | limit of stocks to display | 5 | True | None |
 
 
 ---

@@ -26,10 +26,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Load crypto currency to get data for
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/cryptocurrency_helpers.py#L502)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/cryptocurrency_helpers.py#L488)]
 
-```python wordwrap
-openbb.crypto.load(symbol: str, start_date: Union[datetime.datetime, str, NoneType] = None, interval: Union[str, int] = "1440", exchange: str = "binance", to_symbol: str = "usd", end_date: Union[datetime.datetime, str, NoneType] = None, source: str = "YahooFinance")
+```python
+openbb.crypto.load(symbol: str, start_date: Union[datetime.datetime, str, NoneType] = None, interval: Union[str, int] = "1440", exchange: str = "binance", vs_currency: str = "usdt", end_date: Union[datetime.datetime, str, NoneType] = None, source: str = "CCXT")
 ```
 
 ---
@@ -42,9 +42,9 @@ openbb.crypto.load(symbol: str, start_date: Union[datetime.datetime, str, NoneTy
 | start_date | Union[datetime, Union[str, None]] | Start date to get data from with. - datetime or string format (YYYY-MM-DD) | None | True |
 | interval | Union[str, int] | The interval between data points in minutes.<br/>Choose from: 1, 15, 30, 60, 240, 1440, 10080, 43200 | 1440 | True |
 | exchange | str: | The exchange to get data from. | binance | True |
-| to_symbol | str | Quote Currency (Defaults to usdt) | usd | True |
+| vs_currency | str | Quote Currency (Defaults to usdt) | usdt | True |
 | end_date | Union[datetime, Union[str, None]] | End date to get data from with. - datetime or string format (YYYY-MM-DD) | None | True |
-| source | str | The source of the data<br/>Choose from: CCXT, CoinGecko, YahooFinance | YahooFinance | True |
+| source | str | The source of the data<br/>Choose from: CCXT, CoinGecko, YahooFinance | CCXT | True |
 
 
 ---
@@ -55,13 +55,3 @@ openbb.crypto.load(symbol: str, start_date: Union[datetime.datetime, str, NoneTy
 | ---- | ----------- |
 | pd.DataFrame | Dataframe consisting of price and volume data |
 ---
-
-## Examples
-
-```python
-from openbb_terminal.sdk import openbb
-openbb.crypto.load(symbol="btc",to_symbol="usd",start_date="2019-01-01",source="YahooFinance")
-```
-
----
-

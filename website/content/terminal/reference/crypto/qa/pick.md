@@ -27,23 +27,23 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /qa/pick - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/qa/pick - Reference | OpenBB Terminal Docs" />
 
 Change target variable
 
 ### Usage
 
-```python wordwrap
-pick [-t {Open,High,Low,Close,Adj Close,Volume,Returns,LogRet}]
+```python
+pick [-t {Open,High,Low,Close,Adj Close,Volume,date_id,OC_High,OC_Low,Returns,LogRet}]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| target | -t  --target | Select variable to analyze | None | True | Open, High, Low, Close, Adj Close, Volume, Returns, LogRet |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| target | Select variable to analyze | None | True | Open, High, Low, Close, Adj Close, Volume, date_id, OC_High, OC_Low, Returns, LogRet |
 
 
 ---

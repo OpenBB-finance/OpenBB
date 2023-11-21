@@ -29,7 +29,7 @@ Search CoinPaprika. [Source: CoinPaprika]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/coinpaprika_model.py#L27)]
 
-```python wordwrap
+```python
 openbb.crypto.disc.cpsearch(query: str, category: Optional[Any] = None, modifier: Optional[Any] = None, sortby: str = "id", ascend: bool = True)
 ```
 
@@ -55,17 +55,15 @@ openbb.crypto.disc.cpsearch(query: str, category: Optional[Any] = None, modifier
 | pd.DataFrame | Search Results<br/>Columns: Metric, Value |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing Search over CoinPaprika. [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/coinpaprika_view.py#L17)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/coinpaprika_view.py#L16)]
 
-```python wordwrap
-openbb.crypto.disc.cpsearch_chart(query: str, category: str = "all", limit: int = 10, sortby: str = "id", ascend: bool = True, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.disc.cpsearch_chart(query: str, category: str = "all", limit: int = 10, sortby: str = "id", ascend: bool = True, export: str = "")
 ```
 
 ---
@@ -89,8 +87,6 @@ openbb.crypto.disc.cpsearch_chart(query: str, category: str = "all", limit: int 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /defi/gdapps - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/defi/gdapps - Reference | OpenBB Terminal Docs" />
 
 Display top dApps (in terms of TVL) grouped by chain. [Source: https://docs.llama.fi/api]
 
 ### Usage
 
-```python wordwrap
+```python
 gdapps [-l LIMIT]
 ```
 
@@ -29,9 +29,9 @@ gdapps [-l LIMIT]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| limit | -l  --limit | Number of top dApps to display | 40 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| limit | Number of top dApps to display | 40 | True | None |
 
 ![gdapps](https://user-images.githubusercontent.com/46355364/154051959-ca11b04f-8f53-4299-8c20-13ea75869082.png)
 

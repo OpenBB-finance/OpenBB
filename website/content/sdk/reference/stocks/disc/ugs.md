@@ -21,7 +21,7 @@ Get stocks with earnings growth rates better than 25% and relatively low PE and 
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/yahoofinance_model.py#L54)]
 
-```python wordwrap
+```python
 openbb.stocks.disc.ugs()
 ```
 
@@ -39,4 +39,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Undervalued stocks |
 ---
-

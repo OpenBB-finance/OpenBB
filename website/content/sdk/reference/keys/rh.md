@@ -20,9 +20,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Set Robinhood key
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L1164)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L1227)]
 
-```python wordwrap
+```python
 openbb.keys.rh(username: str, password: str, persist: bool = False, show_output: bool = False)
 ```
 
@@ -60,4 +60,3 @@ username="example_username",
     )
 ```
 ---
-

@@ -30,9 +30,9 @@ import TabItem from '@theme/TabItem';
 
 Returns BTC circulating supply [Source: https://api.blockchain.info/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/blockchain_model.py#L80)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/blockchain_model.py#L43)]
 
-```python wordwrap
+```python
 openbb.crypto.onchain.btc_supply()
 ```
 
@@ -51,17 +51,15 @@ This function does not take any parameters.
 | pd.DataFrame | BTC circulating supply |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Returns BTC circulating supply [Source: https://api.blockchain.info/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/blockchain_view.py#L22)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/blockchain_view.py#L28)]
 
-```python wordwrap
-openbb.crypto.onchain.btc_supply_chart(start_date: str = "2010-01-01", end_date: Optional[str] = None, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.crypto.onchain.btc_supply_chart(start_date: str = "2010-01-01", end_date: Optional[str] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -73,7 +71,7 @@ openbb.crypto.onchain.btc_supply_chart(start_date: str = "2010-01-01", end_date:
 | start_date | str | Initial date, format YYYY-MM-DD | 2010-01-01 | True |
 | end_date | Optional[str] | Final date, format YYYY-MM-DD | None | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -83,8 +81,6 @@ openbb.crypto.onchain.btc_supply_chart(start_date: str = "2010-01-01", end_date:
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

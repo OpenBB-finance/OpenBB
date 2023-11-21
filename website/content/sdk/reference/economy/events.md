@@ -23,9 +23,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get economic calendar for countries between specified dates
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/nasdaq_model.py#L25)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/nasdaq_model.py#L21)]
 
-```python wordwrap
+```python
 openbb.economy.events(countries: Union[List[str], str] = "", start_date: Optional[str] = None, end_date: Optional[str] = None)
 ```
 
@@ -56,7 +56,7 @@ Get todays economic calendar for the United States
 
 ```python
 from openbb_terminal.sdk import openbb
-calendar = openbb.economy.events("united_states")
+calendar = openbb.economy.events("United States")
 ```
 
 
@@ -64,8 +64,7 @@ To get multiple countries for a given date, pass the same start and end date as 
 a list of countries
 
 ```python
-calendars = openbb.economy.events(["united_states", "canada"], start_date="2022-11-18", end_date="2022-11-18")
+calendars = openbb.economy.events(["United States","Canada"], start_date="2022-11-18", end_date="2022-11-18")
 ```
 
 ---
-

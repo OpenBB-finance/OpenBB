@@ -21,13 +21,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="economy /qa/unitroot - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="economy/qa/unitroot - Reference | OpenBB Terminal Docs" />
 
 Unit root test / stationarity (ADF, KPSS)
 
 ### Usage
 
-```python wordwrap
+```python
 unitroot [-r {c,ct,ctt,nc}] [-k {c,ct}]
 ```
 
@@ -35,10 +35,10 @@ unitroot [-r {c,ct,ctt,nc}] [-k {c,ct}]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| fuller_reg | -r  --fuller_reg | Type of regression. Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order | c | True | c, ct, ctt, nc |
-| kpss_reg | -k  --kps_reg | Type of regression. Can be ‘c’,’ct' | c | True | c, ct |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| fuller_reg | Type of regression. Can be ‘c’,’ct’,’ctt’,’nc’ 'c' - Constant and t - trend order | c | True | c, ct, ctt, nc |
+| kpss_reg | Type of regression. Can be ‘c’,’ct' | c | True | c, ct |
 
 
 ---

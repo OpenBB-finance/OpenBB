@@ -23,7 +23,7 @@ Gets zero-lagged exponential moving average (ZLEMA) for stock
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/overlap_model.py#L115)]
 
-```python wordwrap
+```python
 openbb.ta.zlma(data: pd.Series, length: int = 50, offset: int = 0)
 ```
 
@@ -46,4 +46,3 @@ openbb.ta.zlma(data: pd.Series, length: int = 50, offset: int = 0)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing prices and EMA |
 ---
-

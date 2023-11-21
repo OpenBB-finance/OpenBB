@@ -22,9 +22,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get shareholders from yahoo
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L70)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L75)]
 
-```python wordwrap
+```python
 openbb.stocks.fa.shrs(symbol: str, holder: str = "institutional")
 ```
 
@@ -46,4 +46,3 @@ openbb.stocks.fa.shrs(symbol: str, holder: str = "institutional")
 | ---- | ----------- |
 | pd.DataFrame | Major holders |
 ---
-

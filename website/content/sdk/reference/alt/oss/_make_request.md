@@ -20,7 +20,7 @@ Helper method to scrap.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/runa_model.py#L67)]
 
-```python wordwrap
+```python
 openbb.alt.oss._make_request(url: str)
 ```
 
@@ -41,4 +41,3 @@ openbb.alt.oss._make_request(url: str)
 | ---- | ----------- |
 | Union[BeautifulSoup, None] | BeautifulSoup object or None |
 ---
-

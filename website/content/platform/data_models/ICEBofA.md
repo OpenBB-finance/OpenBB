@@ -1,6 +1,6 @@
 ---
-title: ICEBofA
-description: ICE BofA US Corporate Bond Indices
+title: ICE BofA US Corporate Bond Indices
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

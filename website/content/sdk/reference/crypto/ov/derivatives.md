@@ -24,9 +24,9 @@ import TabItem from '@theme/TabItem';
 
 Get list of crypto derivatives from CoinGecko API [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L369)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L375)]
 
-```python wordwrap
+```python
 openbb.crypto.ov.derivatives(sortby: str = "Rank", ascend: bool = False)
 ```
 
@@ -49,17 +49,15 @@ openbb.crypto.ov.derivatives(sortby: str = "Rank", ascend: bool = False)
 | pd.DataFrame | Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread,<br/>Funding_Rate, Volume_24h, |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Shows  list of crypto derivatives. [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L757)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L645)]
 
-```python wordwrap
-openbb.crypto.ov.derivatives_chart(sortby: str = "Rank", ascend: bool = False, limit: int = 15, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.ov.derivatives_chart(sortby: str = "Rank", ascend: bool = False, limit: int = 15, export: str = "")
 ```
 
 ---
@@ -81,8 +79,6 @@ openbb.crypto.ov.derivatives_chart(sortby: str = "Rank", ascend: bool = False, l
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

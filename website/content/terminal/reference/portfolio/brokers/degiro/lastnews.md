@@ -10,13 +10,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /brokers/degiro/lastnews - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/degiro/lastnews /brokers - Reference | OpenBB Terminal Docs" />
 
 
 
 ### Usage
 
-```python wordwrap
+```python
 lastnews [-l LIMIT]
 ```
 
@@ -24,8 +24,8 @@ lastnews [-l LIMIT]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| limit | -l  --limit | Number of news to display. | 10 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| limit | Number of news to display. | 10 | True | None |
 
 ---

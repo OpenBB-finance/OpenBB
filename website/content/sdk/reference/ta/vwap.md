@@ -30,7 +30,7 @@ Gets volume weighted average price (VWAP)
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/overlap_model.py#L139)]
 
-```python wordwrap
+```python
 openbb.ta.vwap(data: pd.DataFrame, offset: int = 0)
 ```
 
@@ -53,17 +53,15 @@ openbb.ta.vwap(data: pd.DataFrame, offset: int = 0)
 | pd.DataFrame | Dataframe with VWAP data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots VWMA technical indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/overlap_view.py#L94)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/overlap_view.py#L133)]
 
-```python wordwrap
-openbb.ta.vwap_chart(data: pd.DataFrame, symbol: str = "", start_date: Optional[datetime.datetime] = None, end_date: Optional[datetime.datetime] = None, offset: int = 0, interval: str = "", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.ta.vwap_chart(data: pd.DataFrame, symbol: str = "", start_date: Optional[str] = None, end_date: Optional[str] = None, offset: int = 0, interval: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -79,7 +77,7 @@ openbb.ta.vwap_chart(data: pd.DataFrame, symbol: str = "", start_date: Optional[
 | end_date | Optional[str] | Final date, format YYYY-MM-DD | None | True |
 | interval | str | Interval of data |  | True |
 | export | str | Format to export data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (3 axes are expected in the list), by default None | None | True |
 
 
 ---
@@ -89,8 +87,6 @@ openbb.ta.vwap_chart(data: pd.DataFrame, symbol: str = "", start_date: Optional[
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,6 +1,6 @@
 ---
-title: EquityAggressiveSmallCaps
-description: Get aggressive small cap Equities
+title: Get aggressive small cap Equities
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

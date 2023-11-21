@@ -18,13 +18,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /gov/qtrcontracts - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/gov/qtrcontracts - Reference | OpenBB Terminal Docs" />
 
 Look at government contracts [Source: www.quiverquant.com]
 
 ### Usage
 
-```python wordwrap
+```python
 qtrcontracts [-l LIMIT] [-a {total,upmom,downmom}] [--raw]
 ```
 
@@ -32,11 +32,11 @@ qtrcontracts [-l LIMIT] [-a {total,upmom,downmom}] [--raw]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| limit | -l  --limit | Limit of tickers to get | 5 | True | None |
-| analysis | -a  --analysis | Analysis to look at contracts. 'Total' shows summed contracts. 'Upmom' shows highest sloped contacts while 'downmom' shows highest decreasing slopes. | total | True | total, upmom, downmom |
-| raw | --raw | Print raw data. | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| limit | Limit of tickers to get | 5 | True | None |
+| analysis | Analysis to look at contracts. 'Total' shows summed contracts. 'Upmom' shows highest sloped contacts while 'downmom' shows highest decreasing slopes. | total | True | total, upmom, downmom |
+| raw | Print raw data. | False | True | None |
 
 
 ---

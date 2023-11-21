@@ -1,6 +1,6 @@
 ---
-title: DiscountWindowPrimaryCreditRate
-description: Discount Window Primary Credit Rate
+title: Discount Window Primary Credit Rate
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

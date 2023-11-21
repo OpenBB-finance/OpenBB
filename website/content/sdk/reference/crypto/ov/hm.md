@@ -25,9 +25,9 @@ import TabItem from '@theme/TabItem';
 
 Get N coins from CoinGecko [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L130)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L128)]
 
-```python wordwrap
+```python
 openbb.crypto.ov.hm(limit: int = 250, category: str = "", sortby: str = "Symbol", ascend: bool = False)
 ```
 
@@ -52,17 +52,15 @@ openbb.crypto.ov.hm(limit: int = 250, category: str = "", sortby: str = "Symbol"
 | pd.DataFrame | N coins |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Shows cryptocurrencies heatmap [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L78)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L36)]
 
-```python wordwrap
-openbb.crypto.ov.hm_chart(category: str = "", limit: int = 15, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.crypto.ov.hm_chart(category: str = "", limit: int = 15, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -73,9 +71,8 @@ openbb.crypto.ov.hm_chart(category: str = "", limit: int = 15, export: str = "",
 | ---- | ---- | ----------- | ------- | -------- |
 | caterogy | str | Category (e.g., stablecoins). Empty for no category (default: ) | None | True |
 | limit | int | Number of top cryptocurrencies to display | 15 | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Export dataframe data to csv,json,xlsx |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -85,8 +82,6 @@ openbb.crypto.ov.hm_chart(category: str = "", limit: int = 15, export: str = "",
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

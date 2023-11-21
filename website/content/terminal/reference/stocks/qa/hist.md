@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /qa/hist - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/qa/hist - Reference | OpenBB Terminal Docs" />
 
 Histogram with density and rug
 
 ### Usage
 
-```python wordwrap
+```python
 hist [-b N_BINS]
 ```
 
@@ -28,9 +28,9 @@ hist [-b N_BINS]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| n_bins | -b  --bins |  | 15 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| n_bins |  | 15 | True | None |
 
 ![hist](https://user-images.githubusercontent.com/46355364/154306947-aaba936a-ac07-40e2-a5a6-bf1fab460cd0.png)
 

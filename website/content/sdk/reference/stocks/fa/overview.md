@@ -18,12 +18,12 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="stocks.fa.overview - Reference | OpenBB SDK Docs" />
 
-Get overview.
+Get alpha vantage company overview
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/sdk_helpers.py#L17)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/av_model.py#L36)]
 
-```python wordwrap
-openbb.stocks.fa.overview(symbol: str, source: str = "YahooFinance")
+```python
+openbb.stocks.fa.overview(symbol: str)
 ```
 
 ---
@@ -32,8 +32,7 @@ openbb.stocks.fa.overview(symbol: str, source: str = "YahooFinance")
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | str | Symbol to get overview for | None | False |
-| source | str | Data source for overview, by default "YahooFinance"<br/>Sources: YahooFinance, AlphaVantage, FinancialModelingPrep, Finviz | YahooFinance | True |
+| symbol | str | Stock ticker symbol | None | False |
 
 
 ---
@@ -42,15 +41,5 @@ openbb.stocks.fa.overview(symbol: str, source: str = "YahooFinance")
 
 | Type | Description |
 | ---- | ----------- |
-| pd.DataFrame | Dataframe of overview |
+| pd.DataFrame | Dataframe of fundamentals |
 ---
-
-## Examples
-
-```python
-from openbb_terminal.sdk import openbb
-overview = openbb.stocks.fa.overview("AAPL", source="AlphaVantage")
-```
-
----
-

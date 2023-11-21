@@ -27,9 +27,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Set Reddit key
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L965)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L942)]
 
-```python wordwrap
+```python
 openbb.keys.reddit(client_id: str, client_secret: str, password: str, username: str, useragent: str, persist: bool = False, show_output: bool = False)
 ```
 
@@ -73,4 +73,3 @@ client_id="example_id",
     )
 ```
 ---
-

@@ -32,9 +32,9 @@ import TabItem from '@theme/TabItem';
 
 Returns basic coin information for all coins from CoinPaprika API [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_model.py#L180)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_model.py#L183)]
 
-```python wordwrap
+```python
 openbb.crypto.ov.info(symbols: str = "USD", sortby: str = "rank", ascend: bool = True)
 ```
 
@@ -58,17 +58,15 @@ openbb.crypto.ov.info(symbols: str = "USD", sortby: str = "rank", ascend: bool =
 | pd.DataFrame | rank, name, symbol, price, volume_24h, circulating_supply, total_supply,<br/>max_supply, market_cap, beta_value, ath_price, |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Displays basic coin information for all coins from CoinPaprika API. [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_view.py#L166)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_view.py#L159)]
 
-```python wordwrap
-openbb.crypto.ov.info_chart(symbol: str, sortby: str = "rank", ascend: bool = True, limit: int = 15, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.ov.info_chart(symbol: str, sortby: str = "rank", ascend: bool = True, limit: int = 15, export: str = "")
 ```
 
 ---
@@ -92,8 +90,6 @@ openbb.crypto.ov.info_chart(symbol: str, sortby: str = "rank", ascend: bool = Tr
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

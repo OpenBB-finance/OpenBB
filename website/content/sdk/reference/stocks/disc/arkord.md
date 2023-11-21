@@ -23,9 +23,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Returns ARK orders in a Dataframe
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/ark_model.py#L22)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/ark_model.py#L23)]
 
-```python wordwrap
+```python
 openbb.stocks.disc.arkord(buys_only: bool = False, sells_only: bool = False, fund: str = "")
 ```
 
@@ -48,4 +48,3 @@ openbb.stocks.disc.arkord(buys_only: bool = False, sells_only: bool = False, fun
 | ---- | ----------- |
 | DataFrame | ARK orders data frame with the following columns -<br/>(ticker, date, shares, weight, fund, direction) |
 ---
-

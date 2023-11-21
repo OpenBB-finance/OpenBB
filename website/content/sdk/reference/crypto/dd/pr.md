@@ -31,7 +31,7 @@ Fetch data to calculate potential returns of a certain coin. [Source: CoinGecko]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/pycoingecko_model.py#L63)]
 
-```python wordwrap
+```python
 openbb.crypto.dd.pr(main_coin: str, to_symbol: Optional[str] = None, limit: Optional[int] = None, price: Optional[int] = None)
 ```
 
@@ -56,17 +56,15 @@ openbb.crypto.dd.pr(main_coin: str, to_symbol: Optional[str] = None, limit: Opti
 | pd.DataFrame | Potential returns data<br/>Columns: Coin, Current Price, Target Coin, Potential Price, Potential Market Cap ($), Change (%) |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing potential returns of a certain coin. [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/pycoingecko_view.py#L18)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/pycoingecko_view.py#L20)]
 
-```python wordwrap
-openbb.crypto.dd.pr_chart(to_symbol: str, from_symbol: Optional[str] = None, limit: Optional[int] = None, price: Optional[int] = None, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.dd.pr_chart(to_symbol: str, from_symbol: Optional[str] = None, limit: Optional[int] = None, price: Optional[int] = None, export: str = "")
 ```
 
 ---
@@ -89,8 +87,6 @@ openbb.crypto.dd.pr_chart(to_symbol: str, from_symbol: Optional[str] = None, lim
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

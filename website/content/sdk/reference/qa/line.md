@@ -19,10 +19,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Display line plot of data
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L885)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L938)]
 
-```python wordwrap
-openbb.qa.line(data: pd.Series, title: str = "", log_y: bool = True, markers_lines: Optional[List[datetime.datetime]] = None, markers_scatter: Optional[List[datetime.datetime]] = None, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.qa.line(data: pd.Series, title: str = "", log_y: bool = True, markers_lines: Optional[List[datetime.datetime]] = None, markers_scatter: Optional[List[datetime.datetime]] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -36,9 +36,8 @@ openbb.qa.line(data: pd.Series, title: str = "", log_y: bool = True, markers_lin
 | log_y | bool | Flag for showing y on log scale | True | True |
 | markers_lines | Optional[List[datetime]] | List of dates to highlight using vertical lines | None | True |
 | markers_scatter | Optional[List[datetime]] | List of dates to highlight using scatter | None | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -58,4 +57,3 @@ openbb.qa.line(data=df["Adj Close"])
 ```
 
 ---
-

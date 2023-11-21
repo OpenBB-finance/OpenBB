@@ -1,6 +1,6 @@
 ---
-title: TreasuryRates
-description: Government Treasury Rates
+title: Treasury Rates
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

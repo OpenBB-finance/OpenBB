@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /dd/social - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/social - Reference | OpenBB Terminal Docs" />
 
 Shows social media corresponding to loaded coin. You can find there name of telegram channel, urls to twitter, reddit, bitcointalk, facebook and discord.
 
 ### Usage
 
-```python wordwrap
+```python
 social
 ```
 

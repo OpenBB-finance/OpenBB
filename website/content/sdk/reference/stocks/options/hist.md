@@ -16,9 +16,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get historical option pricing.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/options_sdk_helper.py#L168)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/options_sdk_helper.py#L101)]
 
-```python wordwrap
+```python
 openbb.stocks.options.hist(symbol: str, exp: str, strike: Union[int, float, str], call: bool = True, source: Any = "ChartExchange")
 ```
 
@@ -32,7 +32,7 @@ openbb.stocks.options.hist(symbol: str, exp: str, strike: Union[int, float, str]
 | exp | str | Expiration date | None | False |
 | strike | Union[int ,Union[float,str]] | Strike price | None | False |
 | call | bool | Flag to indicate a call, by default True | True | True |
-| source | str | Source to get data from, by default "ChartExchange". Can be ChartExchange, Intrinio, or Tradier | ChartExchange | True |
+| source | str | Source to get data from.  Can be ChartExchange or Tradier, by default "ChartExchange" | ChartExchange | True |
 
 
 ---
@@ -56,8 +56,7 @@ Because this generates a dataframe, we can easily plot the close price for a SPY
 (Note that Tradier requires an API key)
 ```
 ```python
-openbb.stocks.options.hist("SPY", "2022-11-18", 400, call=False, source="Tradier").plot(y="close")
+openbb.stocks.options.hist("SPY", "2022-11-18", 400, call=False, source="Tradier").plot(y="close)
 ```
 
 ---
-

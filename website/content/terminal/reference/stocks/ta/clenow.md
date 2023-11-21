@@ -12,13 +12,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /ta/clenow - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ta/clenow - Reference | OpenBB Terminal Docs" />
 
 Calculates the Clenow Volatility Adjusted Momentum.
 
 ### Usage
 
-```python wordwrap
+```python
 clenow [-p PERIOD]
 ```
 
@@ -26,8 +26,8 @@ clenow [-p PERIOD]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| period | -p  --period | Lookback period for regression | 90 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| period | Lookback period for regression | 90 | True | None |
 
 ---

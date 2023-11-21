@@ -16,13 +16,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /options/hedge/rmv - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/hedge/rmv /options - Reference | OpenBB Terminal Docs" />
 
 Remove one of the options to be shown in the hedge.
 
 ### Usage
 
-```python wordwrap
+```python
 rmv [-o OPTION [OPTION ...]] [-a]
 ```
 
@@ -30,10 +30,10 @@ rmv [-o OPTION [OPTION ...]] [-a]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| option | -o  --option | index of the option to remove | None | True | None |
-| all | -a  --all | remove all of the options | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| option | index of the option to remove | None | True | None |
+| all | remove all of the options | False | True | None |
 
 
 ---
@@ -42,7 +42,7 @@ rmv [-o OPTION [OPTION ...]] [-a]
 
 ```python
 2022 May 10, 09:32 (🦋) /stocks/options/hedge/ $ rmv Option A
-          Current Option Positions           
+          Current Option Positions
 ┏━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 ┃ Type ┃ Hold ┃ Strike ┃ Implied Volatility ┃
 ┡━━━━━━╇━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩

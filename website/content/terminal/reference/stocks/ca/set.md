@@ -13,13 +13,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /ca/set - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ca/set - Reference | OpenBB Terminal Docs" />
 
 Select similar companies to compare with.
 
 ### Usage
 
-```python wordwrap
+```python
 set [-s L_SIMILAR]
 ```
 
@@ -27,8 +27,8 @@ set [-s L_SIMILAR]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| l_similar | -s  --similar | similar companies to compare with. |  | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| l_similar | similar companies to compare with. |  | True | None |
 
 ---

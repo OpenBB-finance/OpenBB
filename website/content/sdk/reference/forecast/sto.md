@@ -20,7 +20,7 @@ Stochastic Oscillator %K and %D : A stochastic oscillator is a momentum indicato
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L187)]
 
-```python wordwrap
+```python
 openbb.forecast.sto(dataset: pd.DataFrame, close_column: str = "close", high_column: str = "high", low_column: str = "low", period: int = 10)
 ```
 
@@ -31,10 +31,7 @@ openbb.forecast.sto(dataset: pd.DataFrame, close_column: str = "close", high_col
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | dataset | pd.DataFrame | The dataset you wish to calculate for | None | False |
-| period | int | Span of time to calculate over | 10 | True |
-| close_column | str | The column name for the close price | close | True |
-| high_column | str | The column name for the high price | high | True |
-| low_column | str | The column name for the low price | low | True |
+| period | int | Span | 10 | True |
 
 
 ---
@@ -45,4 +42,3 @@ openbb.forecast.sto(dataset: pd.DataFrame, close_column: str = "close", high_col
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with added STO K & D columns |
 ---
-

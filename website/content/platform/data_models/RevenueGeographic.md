@@ -1,6 +1,6 @@
 ---
-title: RevenueGeographic
-description: Revenue Geographic
+title: Revenue Geographic
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

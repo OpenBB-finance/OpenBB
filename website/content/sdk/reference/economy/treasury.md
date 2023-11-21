@@ -26,12 +26,12 @@ import TabItem from '@theme/TabItem';
 <Tabs>
 <TabItem value="model" label="Model" default>
 
-Get treasury rates from Federal Reserve
+Get U.S. Treasury rates [Source: EconDB]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/fedreserve_model.py#L39)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_model.py#L736)]
 
-```python wordwrap
-openbb.economy.treasury(maturity: Union[Literal['1m', '3m', '6m', '1y', '2y', '3y', '5y', '7y', '10y', '20y', '30y'], List[Literal['1m', '3m', '6m', '1y', '2y', '3y', '5y', '7y', '10y', '20y', '30y']], NoneType] = None, start_date: str = "2005-01-01", end_date: Optional[str] = "2023-11-21")
+```python
+openbb.economy.treasury(instruments: list = None, maturities: list = None, frequency: str = "monthly", start_date: str = "1900-01-01", end_date: Optional[str] = None)
 ```
 
 ---
@@ -40,9 +40,11 @@ openbb.economy.treasury(maturity: Union[Literal['1m', '3m', '6m', '1y', '2y', '3
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| maturity | maturityType | Maturity to get, by default all | None | True |
-| start_date | str | Start date of data, by default "2005-01-01" | 2005-01-01 | True |
-| end_date | str | End date , by default today | 2023-11-21 | True |
+| instruments | list | Type(s) of treasuries, nominal, inflation-adjusted (long term average) or secondary market.<br/>Available options can be accessed through economy.treasury_maturities(). | None | True |
+| maturities | list | Treasury maturities to get. Available options can be accessed through economy.treasury_maturities(). | None | True |
+| frequency | str | Frequency of the data, this can be annually, monthly, weekly or daily. | monthly | True |
+| start_date | str | Starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31. | 1900-01-01 | True |
+| end_date | Optional[str] | End date, format "YEAR-MONTH-DAY", i.e. 2020-06-05. | None | True |
 
 
 ---
@@ -51,29 +53,27 @@ openbb.economy.treasury(maturity: Union[Literal['1m', '3m', '6m', '1y', '2y', '3
 
 | Type | Description |
 | ---- | ----------- |
-| pd.DataFrame | Dataframe with date as index and maturity as columns |
+| pd.Dataframe | Holds data of the selected types and maturities |
 ---
 
 ## Examples
 
 ```python
 from openbb_terminal.sdk import openbb
-treasury_rates = openbb.economy.treasury()
+openbb.economy.treasury()
 ```
 
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display U.S. Treasury rates [Source: EconDB]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/fedreserve_view.py#L34)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_view.py#L145)]
 
-```python wordwrap
-openbb.economy.treasury_chart(maturities: Union[Literal['1m', '3m', '6m', '1y', '2y', '3y', '5y', '7y', '10y', '20y', '30y'], List[Literal['1m', '3m', '6m', '1y', '2y', '3y', '5y', '7y', '10y', '20y', '30y']]] = "1y", start_date: str = "1900-01-01", end_date: Optional[str] = "2023-11-21", raw: bool = False, external_axes: bool = False, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.economy.treasury_chart(instruments: list = None, maturities: list = None, frequency: str = "monthly", start_date: str = "1900-01-01", end_date: Optional[str] = None, raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = "")
 ```
 
 ---
@@ -82,11 +82,13 @@ openbb.economy.treasury_chart(maturities: Union[Literal['1m', '3m', '6m', '1y', 
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| maturities | list | Treasury maturities to display. | 1y | True |
+| instruments | list | Type(s) of treasuries, nominal, inflation-adjusted or secondary market.<br/>Available options can be accessed through economy.treasury_maturities(). | None | True |
+| maturities | list | Treasury maturities to display. Available options can be accessed through economy.treasury_maturities(). | None | True |
+| frequency | str | Frequency of the data, this can be daily, weekly, monthly or annually | monthly | True |
 | start_date | str | Starting date, format "YEAR-MONTH-DAY", i.e. 2010-12-31. | 1900-01-01 | True |
-| end_date | Optional[str] | End date, format "YEAR-MONTH-DAY", i.e. 2020-06-05. | 2023-11-21 | True |
+| end_date | Optional[str] | End date, format "YEAR-MONTH-DAY", i.e. 2020-06-05. | None | True |
 | raw | bool | Whether to display the raw output. | False | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.axes]] | External axes to plot on | None | True |
 | export | str | Export data to csv,json,xlsx or png,jpg,pdf,svg file |  | True |
 
 
@@ -98,8 +100,6 @@ openbb.economy.treasury_chart(maturities: Union[Literal['1m', '3m', '6m', '1y', 
 | ---- | ----------- |
 | Plots the Treasury Series. |  |
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -17,9 +17,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Process DataFrame into candle style plot.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/stocks_helper.py#L679)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/stocks_helper.py#L825)]
 
-```python wordwrap
+```python
 openbb.stocks.process_candle(data: pd.DataFrame)
 ```
 
@@ -40,4 +40,3 @@ openbb.stocks.process_candle(data: pd.DataFrame)
 | ---- | ----------- |
 | DataFrame | A Panda's data frame with columns Open, High, Low, Close, Adj Close, Volume,<br/>date_id, OC-High, OC-Low. |
 ---
-

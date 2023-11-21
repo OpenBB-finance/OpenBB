@@ -23,13 +23,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /ov/wf - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/ov/wf - Reference | OpenBB Terminal Docs" />
 
 Display top coins withdrawal fees [Source: https://withdrawalfees.com/]
 
 ### Usage
 
-```python wordwrap
+```python
 wf [-l LIMIT]
 ```
 
@@ -37,9 +37,9 @@ wf [-l LIMIT]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| limit | -l  --limit | Limit number of coins to display withdrawal fees. Default 10 | 10 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| limit | Limit number of coins to display withdrawal fees. Default 10 | 10 | True | None |
 
 
 ---

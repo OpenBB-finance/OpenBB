@@ -12,13 +12,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /ba/snews - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ba/snews - Reference | OpenBB Terminal Docs" />
 
 Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]
 
 ### Usage
 
-```python wordwrap
+```python
 snews
 ```
 

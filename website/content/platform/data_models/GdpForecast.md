@@ -1,6 +1,6 @@
 ---
-title: GdpForecast
-description: Forecasted GDP Data
+title: Forecasted GDP Data
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -16,27 +16,25 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="forecast.show - Reference | OpenBB SDK Docs" />
 
-Show a dataframe in a table
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_view.py#L226)]
+<Tabs>
+<TabItem value="model" label="Model" default>
 
-```python wordwrap
-openbb.forecast.show(data: pd.DataFrame, limit: int = 15, limit_col: int = 10, name: str = "", export: str = "", sheet_name: Optional[str] = None)
+None
+
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_view.py#L227)]
+
+```python
+openbb.forecast.show(data: pd.DataFrame, limit: int = 15, limit_col: int = 10, name: str = "", export: str = "")
 ```
 
 ---
 
 ## Parameters
 
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| data | pd.DataFrame | The dataframe to show | None | False |
-| limit | int | The number of rows to show | 15 | True |
-| limit_col | int | The number of columns to show | 10 | True |
-| name | str | The name of the dataframe |  | True |
-| export | str | Format to export data |  | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
-
+This function does not take any parameters.
 
 ---
 
@@ -46,3 +44,30 @@ This function does not return anything
 
 ---
 
+</TabItem>
+<TabItem value="view" label="Chart">
+
+None
+
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_view.py#L227)]
+
+```python
+openbb.forecast.show_chart(data: pd.DataFrame, limit: int = 15, limit_col: int = 10, name: str = "", export: str = "")
+```
+
+---
+
+## Parameters
+
+This function does not take any parameters.
+
+---
+
+## Returns
+
+This function does not return anything
+
+---
+
+</TabItem>
+</Tabs>

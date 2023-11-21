@@ -28,9 +28,9 @@ import TabItem from '@theme/TabItem';
 
 Calculate cointegration tests between variable number of input series
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_model.py#L264)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_model.py#L249)]
 
-```python wordwrap
+```python
 openbb.econometrics.coint(datasets: pd.Series, return_z: bool = False)
 ```
 
@@ -53,17 +53,15 @@ openbb.econometrics.coint(datasets: pd.Series, return_z: bool = False)
 | Union[pd.DataFrame,Dict] | Dataframe with results of cointegration tests or a Dict of the z results |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Estimates long-run and short-run cointegration relationship for series y and x and apply
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_view.py#L478)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_view.py#L314)]
 
-```python wordwrap
-openbb.econometrics.coint_chart(datasets: pd.Series, significant: bool = False, plot: bool = True, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.econometrics.coint_chart(datasets: pd.Series, significant: bool = False, plot: bool = True, export: str = "", external_axes: Optional[List[axes]] = None)
 ```
 
 ---
@@ -76,7 +74,7 @@ openbb.econometrics.coint_chart(datasets: pd.Series, significant: bool = False, 
 | significant | float | Show only companies that have p-values lower than this percentage | False | True |
 | plot | bool | Whether you wish to plot the z-values of all pairs. | True | True |
 | export | str | Format to export data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.axes]] | External axes to plot on | None | True |
 
 
 ---
@@ -86,8 +84,6 @@ openbb.econometrics.coint_chart(datasets: pd.Series, significant: bool = False, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

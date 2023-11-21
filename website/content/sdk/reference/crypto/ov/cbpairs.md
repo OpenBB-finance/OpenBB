@@ -27,9 +27,9 @@ import TabItem from '@theme/TabItem';
 
 Get a list of available currency pairs for trading. [Source: Coinbase]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinbase_model.py#L26)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinbase_model.py#L24)]
 
-```python wordwrap
+```python
 openbb.crypto.ov.cbpairs(limit: int = 50, sortby: str = "quote_increment", ascend: bool = True)
 ```
 
@@ -53,17 +53,15 @@ openbb.crypto.ov.cbpairs(limit: int = 50, sortby: str = "quote_increment", ascen
 | pd.DataFrame | Available trading pairs on Coinbase |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Displays a list of available currency pairs for trading. [Source: Coinbase]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinbase_view.py#L17)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinbase_view.py#L19)]
 
-```python wordwrap
-openbb.crypto.ov.cbpairs_chart(limit: int = 20, sortby: str = "quote_increment", ascend: bool = True, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.ov.cbpairs_chart(limit: int = 20, sortby: str = "quote_increment", ascend: bool = True, export: str = "")
 ```
 
 ---
@@ -85,8 +83,6 @@ openbb.crypto.ov.cbpairs_chart(limit: int = 20, sortby: str = "quote_increment",
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

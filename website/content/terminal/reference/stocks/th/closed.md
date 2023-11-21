@@ -11,13 +11,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /th/closed - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/th/closed - Reference | OpenBB Terminal Docs" />
 
 Show currently closed exchanges
 
 ### Usage
 
-```python wordwrap
+```python
 exchange
 ```
 

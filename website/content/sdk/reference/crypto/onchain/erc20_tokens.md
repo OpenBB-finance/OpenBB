@@ -20,9 +20,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Helper method that loads ~1500 most traded erc20 token.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L208)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L210)]
 
-```python wordwrap
+```python
 openbb.crypto.onchain.erc20_tokens()
 ```
 
@@ -40,4 +40,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | ERC20 tokens with address, symbol and name |
 ---
-

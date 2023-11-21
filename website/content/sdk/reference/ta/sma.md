@@ -22,7 +22,7 @@ Gets simple moving average (SMA) for stock
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/overlap_model.py#L43)]
 
-```python wordwrap
+```python
 openbb.ta.sma(data: pd.Series, length: int = 50, offset: int = 0)
 ```
 
@@ -45,4 +45,3 @@ openbb.ta.sma(data: pd.Series, length: int = 50, offset: int = 0)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing prices and SMA |
 ---
-

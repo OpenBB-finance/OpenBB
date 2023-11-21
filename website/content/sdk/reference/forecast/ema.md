@@ -20,7 +20,7 @@ A moving average provides an indication of the trend of the price movement
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L159)]
 
-```python wordwrap
+```python
 openbb.forecast.ema(dataset: pd.DataFrame, target_column: str = "close", period: int = 10)
 ```
 
@@ -43,4 +43,3 @@ openbb.forecast.ema(dataset: pd.DataFrame, target_column: str = "close", period:
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with added EMA column |
 ---
-

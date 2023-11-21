@@ -27,7 +27,7 @@ All markets for given coin and currency [Source: CoinPaprika]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_model.py#L176)]
 
-```python wordwrap
+```python
 openbb.crypto.dd.mkt(symbol: str = "BTC", quotes: str = "USD", sortby: str = "pct_volume_share", ascend: bool = True)
 ```
 
@@ -52,17 +52,15 @@ openbb.crypto.dd.mkt(symbol: str = "BTC", quotes: str = "USD", sortby: str = "pc
 | pd.DataFrame | All markets for given coin and currency |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing all markets for given coin id. [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L243)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L230)]
 
-```python wordwrap
-openbb.crypto.dd.mkt_chart(from_symbol: str = "BTC", to_symbol: str = "USD", limit: int = 20, sortby: str = "pct_volume_share", ascend: bool = True, links: bool = False, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.dd.mkt_chart(from_symbol: str = "BTC", to_symbol: str = "USD", limit: int = 20, sortby: str = "pct_volume_share", ascend: bool = True, links: bool = False, export: str = "")
 ```
 
 ---
@@ -87,8 +85,6 @@ openbb.crypto.dd.mkt_chart(from_symbol: str = "BTC", to_symbol: str = "USD", lim
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

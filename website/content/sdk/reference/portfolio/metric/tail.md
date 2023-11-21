@@ -19,9 +19,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get tail ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1453)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1411)]
 
-```python wordwrap
+```python
 openbb.portfolio.metric.tail(portfolio_engine: portfolio_engine.PortfolioEngine, window: int = 252)
 ```
 
@@ -48,9 +48,8 @@ openbb.portfolio.metric.tail(portfolio_engine: portfolio_engine.PortfolioEngine,
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
 output = openbb.portfolio.metric.tail(p)
 ```
 
 ---
-

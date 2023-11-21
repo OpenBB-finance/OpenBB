@@ -22,13 +22,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /po/parameters/set - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/parameters/set /po - Reference | OpenBB Terminal Docs" />
 
 Select one of the portfolio optimization models
 
 ### Usage
 
-```python wordwrap
+```python
 set -m {maxsharpe,minrisk,maxutil,maxret,maxdiv,maxdecorr,ef,riskparity,relriskparity,hrp,herc,nco}
 ```
 
@@ -36,8 +36,8 @@ set -m {maxsharpe,minrisk,maxutil,maxret,maxdiv,maxdecorr,ef,riskparity,relriskp
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| model | -m  --model | Frequency used to calculate returns | None | False | maxsharpe, minrisk, maxutil, maxret, maxdiv, maxdecorr, ef, riskparity, relriskparity, hrp, herc, nco |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| model | Frequency used to calculate returns | None | False | maxsharpe, minrisk, maxutil, maxret, maxdiv, maxdecorr, ef, riskparity, relriskparity, hrp, herc, nco |
 
 ---

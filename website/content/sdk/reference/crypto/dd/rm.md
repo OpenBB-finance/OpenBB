@@ -32,9 +32,9 @@ import TabItem from '@theme/TabItem';
 
 Returns coin roadmap
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L243)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L236)]
 
-```python wordwrap
+```python
 openbb.crypto.dd.rm(symbol: str, ascend: bool = True)
 ```
 
@@ -57,17 +57,15 @@ openbb.crypto.dd.rm(symbol: str, ascend: bool = True)
 | pd.DataFrame | roadmap |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots coin roadmap
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L277)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L284)]
 
-```python wordwrap
-openbb.crypto.dd.rm_chart(symbol: str, ascend: bool = True, limit: int = 5, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.crypto.dd.rm_chart(symbol: str, ascend: bool = True, limit: int = 5, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -80,7 +78,7 @@ openbb.crypto.dd.rm_chart(symbol: str, ascend: bool = True, limit: int = 5, expo
 | ascend | bool | reverse order | True | True |
 | limit | int | number to show | 5 | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -90,8 +88,6 @@ openbb.crypto.dd.rm_chart(symbol: str, ascend: bool = True, limit: int = 5, expo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

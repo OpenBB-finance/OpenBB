@@ -19,7 +19,7 @@ Compare results between all activated Panel regression models
 
 ### Usage
 
-```python wordwrap
+```python
 compare
 ```
 

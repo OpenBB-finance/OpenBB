@@ -22,7 +22,7 @@ Potential Returns ToolTool to check returns if loaded coin reaches provided pric
 
 ### Usage
 
-```python wordwrap
+```python
 prt [--vs VS] [-p PRICE] [-t TOP]
 ```
 
@@ -30,10 +30,10 @@ prt [--vs VS] [-p PRICE] [-t TOP]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| vs | --vs | Coin to compare with | None | True | None |
-| price | -p  --price | Desired price | None | True | None |
-| top | -t  --top | Compare with top N coins | None | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| vs | Coin to compare with | None | True | None |
+| price | Desired price | None | True | None |
+| top | Compare with top N coins | None | True | None |
 
 ---

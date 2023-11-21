@@ -16,10 +16,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Gets dividend calendar for given date.  Date represents Ex-Dividend Date
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/nasdaq_model.py#L45)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/nasdaq_model.py#L52)]
 
-```python wordwrap
-openbb.stocks.disc.dividends(date: Optional[str] = None)
+```python
+openbb.stocks.disc.dividends(date: str = None)
 ```
 
 ---
@@ -39,4 +39,3 @@ openbb.stocks.disc.dividends(date: Optional[str] = None)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of dividend calendar |
 ---
-

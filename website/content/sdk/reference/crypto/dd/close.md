@@ -20,7 +20,7 @@ Returns the price of a cryptocurrency
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L181)]
 
-```python wordwrap
+```python
 openbb.crypto.dd.close(symbol: str, start_date: str = "2010-01-01", end_date: Optional[str] = None, print_errors: bool = True)
 ```
 
@@ -44,4 +44,3 @@ openbb.crypto.dd.close(symbol: str, start_date: str = "2010-01-01", end_date: Op
 | ---- | ----------- |
 | pd.DataFrame | price over time |
 ---
-

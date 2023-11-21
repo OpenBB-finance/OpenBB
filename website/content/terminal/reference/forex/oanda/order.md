@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="forex /oanda/order - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex/oanda/order - Reference | OpenBB Terminal Docs" />
 
 Create order
 
 ### Usage
 
-```python wordwrap
+```python
 order -u UNITS -p PRICE
 ```
 
@@ -29,9 +29,9 @@ order -u UNITS -p PRICE
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| units | -u  --unit | The number of units to place in the order request. Positive for a long position and negative for a short position. | None | False | None |
-| price | -p  --price | The price to set for the limit order. | None | False | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| units | The number of units to place in the order request. Positive for a long position and negative for a short position. | None | False | None |
+| price | The price to set for the limit order. | None | False | None |
 
 ---

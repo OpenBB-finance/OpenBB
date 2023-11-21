@@ -31,7 +31,7 @@ Get overview data for selected etf
 
 ### Usage
 
-```python wordwrap
+```python
 overview
 ```
 

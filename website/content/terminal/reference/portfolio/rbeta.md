@@ -13,13 +13,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /rbeta - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/rbeta - Reference | OpenBB Terminal Docs" />
 
 Show rolling beta portfolio vs benchmark
 
 ### Usage
 
-```python wordwrap
+```python
 rbeta [-p PERIOD]
 ```
 
@@ -27,8 +27,8 @@ rbeta [-p PERIOD]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| period | -p  --period | Period to apply rolling window | 1y | True | mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| period | Period to apply rolling window | 1y | True | mtd, qtd, ytd, 3m, 6m, 1y, 3y, 5y, 10y, all |
 
 ---

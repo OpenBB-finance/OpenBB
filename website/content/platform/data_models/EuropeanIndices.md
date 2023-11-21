@@ -1,6 +1,6 @@
 ---
-title: EuropeanIndices
-description: Historical European Indices
+title: Historical European Indices
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -20,8 +20,8 @@ Load custom file into dataframe.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/common_model.py#L53)]
 
-```python wordwrap
-openbb.econometrics.load(file: str, sheet_name: Optional[str] = None, data_files: Optional[Dict[Any, Any]] = None, data_examples: Optional[Dict[Any, Any]] = None)
+```python
+openbb.econometrics.load(file: str, data_files: Optional[Dict[Any, Any]] = None, data_examples: Optional[Dict[Any, Any]] = None)
 ```
 
 ---
@@ -43,4 +43,3 @@ openbb.econometrics.load(file: str, sheet_name: Optional[str] = None, data_files
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with custom data |
 ---
-

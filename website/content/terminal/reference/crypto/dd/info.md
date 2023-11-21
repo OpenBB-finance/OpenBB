@@ -20,13 +20,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /dd/info - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/info - Reference | OpenBB Terminal Docs" />
 
 Shows basic information about loaded coin like: Name, Symbol, Description, Market Cap, Public Interest, Supply, and Price related metrics
 
 ### Usage
 
-```python wordwrap
+```python
 info
 ```
 

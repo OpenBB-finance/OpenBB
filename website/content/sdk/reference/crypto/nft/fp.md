@@ -24,9 +24,9 @@ import TabItem from '@theme/TabItem';
 
 Get nft collections [Source: https://nftpricefloor.com/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/nft/nftpricefloor_model.py#L47)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/nft/nftpricefloor_model.py#L46)]
 
-```python wordwrap
+```python
 openbb.crypto.nft.fp(slug: str)
 ```
 
@@ -48,17 +48,15 @@ openbb.crypto.nft.fp(slug: str)
 | pd.DataFrame | nft collections |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display NFT collection floor price over time. [Source: https://nftpricefloor.com/]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/nft/nftpricefloor_view.py#L96)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/nft/nftpricefloor_view.py#L88)]
 
-```python wordwrap
-openbb.crypto.nft.fp_chart(slug: str, limit: int = 10, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False, raw: bool = False)
+```python
+openbb.crypto.nft.fp_chart(slug: str, limit: int = 10, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, raw: bool = False)
 ```
 
 ---
@@ -70,9 +68,8 @@ openbb.crypto.nft.fp_chart(slug: str, limit: int = 10, export: str = "", sheet_n
 | slug | str | NFT collection slug | None | False |
 | raw | bool | Flag to display raw data | False | True |
 | limit | int | Number of raw data to show | 10 | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (2 axes are expected in the list), by default None | None | True |
 
 
 ---
@@ -82,8 +79,6 @@ openbb.crypto.nft.fp_chart(slug: str, limit: int = 10, export: str = "", sheet_n
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

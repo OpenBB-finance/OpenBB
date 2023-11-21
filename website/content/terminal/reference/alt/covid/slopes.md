@@ -17,13 +17,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="alt /covid/slopes - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="alt/covid/slopes - Reference | OpenBB Terminal Docs" />
 
 Show countries with highest slopes.
 
 ### Usage
 
-```python wordwrap
+```python
 slopes [-d DAYS] [-r] [-t THRESHOLD]
 ```
 
@@ -31,10 +31,10 @@ slopes [-d DAYS] [-r] [-t THRESHOLD]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| days | -d  --days | Number of days back to look | 30 | True | None |
-| reverse | -r  --reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
-| threshold | -t  --threshold | Threshold for total cases over period | 10000 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| days | Number of days back to look | 30 | True | None |
+| reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
+| threshold | Threshold for total cases over period | 10000 | True | None |
 
 ---

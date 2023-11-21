@@ -26,9 +26,9 @@ import TabItem from '@theme/TabItem';
 
 Request information on pending orders.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L430)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L421)]
 
-```python wordwrap
+```python
 openbb.forex.oanda.pending(accountID: str = "REPLACE_ME")
 ```
 
@@ -50,16 +50,14 @@ openbb.forex.oanda.pending(accountID: str = "REPLACE_ME")
 | Union[pd.DataFrame, bool] | Pending orders data or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Get information about pending orders.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L227)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L233)]
 
-```python wordwrap
+```python
 openbb.forex.oanda.pending_chart(accountID: str)
 ```
 
@@ -79,8 +77,6 @@ openbb.forex.oanda.pending_chart(accountID: str)
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

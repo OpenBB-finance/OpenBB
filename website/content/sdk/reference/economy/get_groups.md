@@ -19,7 +19,7 @@ Get group available
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/finviz_model.py#L60)]
 
-```python wordwrap
+```python
 openbb.economy.get_groups()
 ```
 
@@ -36,4 +36,3 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
-

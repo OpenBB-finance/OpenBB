@@ -21,13 +21,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /disc/rtat - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/disc/rtat - Reference | OpenBB Terminal Docs" />
 
 Tracking over $30B USD/day of individual investors trades, RTAT gives a daily view into retail activity and sentiment for over 9,500 US traded stocks, ADRs, and ETPs
 
 ### Usage
 
-```python wordwrap
+```python
 rtat [-l LIMIT]
 ```
 
@@ -35,9 +35,9 @@ rtat [-l LIMIT]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| limit | -l  --limit | limit of days to display | 3 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| limit | limit of days to display | 3 | True | None |
 
 
 ---

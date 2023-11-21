@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /brokers/robinhood/history - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/robinhood/history /brokers - Reference | OpenBB Terminal Docs" />
 
 Historical Portfolio Info
 
 ### Usage
 
-```python wordwrap
+```python
 history [-s {day,week,month,3month,year,5year,all}] [-i {5minute,10minute,hour,day,week}]
 ```
 
@@ -28,9 +28,9 @@ history [-s {day,week,month,3month,year,5year,all}] [-i {5minute,10minute,hour,d
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| span | -s  --span | Span of historical data | 3month | True | day, week, month, 3month, year, 5year, all |
-| interval | -i  --interval | Interval to look at portfolio | day | True | 5minute, 10minute, hour, day, week |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| span | Span of historical data | 3month | True | day, week, month, 3month, year, 5year, all |
+| interval | Interval to look at portfolio | day | True | 5minute, 10minute, hour, day, week |
 
 ---

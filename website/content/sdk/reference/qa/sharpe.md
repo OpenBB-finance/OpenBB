@@ -26,9 +26,9 @@ import TabItem from '@theme/TabItem';
 
 Calculates the sharpe ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L532)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L537)]
 
-```python wordwrap
+```python
 openbb.qa.sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252)
 ```
 
@@ -52,17 +52,15 @@ openbb.qa.sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252)
 | pd.DataFrame | sharpe ratio |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots Calculated the sharpe ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L1108)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L1156)]
 
-```python wordwrap
-openbb.qa.sharpe_chart(data: pd.DataFrame, rfr: float = 0, window: float = 252, external_axes: bool = False)
+```python
+openbb.qa.sharpe_chart(data: pd.DataFrame, rfr: float = 0, window: float = 252)
 ```
 
 ---
@@ -74,7 +72,6 @@ openbb.qa.sharpe_chart(data: pd.DataFrame, rfr: float = 0, window: float = 252, 
 | data | pd.DataFrame | selected dataframe column | None | False |
 | rfr | float | risk free rate | 0 | True |
 | window | float | length of the rolling window | 252 | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -84,8 +81,6 @@ openbb.qa.sharpe_chart(data: pd.DataFrame, rfr: float = 0, window: float = 252, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

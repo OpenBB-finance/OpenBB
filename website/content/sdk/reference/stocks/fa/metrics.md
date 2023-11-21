@@ -22,9 +22,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get key metrics
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/fmp_model.py#L482)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/fmp_model.py#L421)]
 
-```python wordwrap
+```python
 openbb.stocks.fa.metrics(symbol: str, limit: int = 5, quarterly: bool = False)
 ```
 
@@ -47,4 +47,3 @@ openbb.stocks.fa.metrics(symbol: str, limit: int = 5, quarterly: bool = False)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of key metrics |
 ---
-

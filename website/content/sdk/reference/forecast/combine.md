@@ -21,9 +21,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Adds the given column of df2 to df1
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L413)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L409)]
 
-```python wordwrap
+```python
 openbb.forecast.combine(df1: pd.DataFrame, df2: pd.DataFrame, column: str, dataset: str = "")
 ```
 
@@ -47,4 +47,3 @@ openbb.forecast.combine(df1: pd.DataFrame, df2: pd.DataFrame, column: str, datas
 | ---- | ----------- |
 | pd.DataFrame | The new dataframe |
 ---
-

@@ -16,9 +16,6 @@ keywords:
 - normality tests
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="quantitative /normality - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -33,32 +30,33 @@ Get Normality Statistics.
 - **Shapiro-Wilk**: whether a random sample comes from a normal distribution.
 - **Kolmogorov-Smirnov**: whether two underlying one-dimensional probability distributions differ.
 
+Parameters
+----------
+data : List[Data]
+Time series data.
+target : str
+Target column name.
+
+Returns
+-------
+OBBject[NormalityModel]
+Normality tests summary. See qa_models.NormalityModel for details.
+
 ```python wordwrap
-obb.quantitative.normality(data: Union[list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], numpy.ndarray, Data, List[Data]], target: str)
+
 ```
 
 ---
 
 ## Parameters
 
-<Tabs>
-<TabItem value="standard" label="Standard">
-
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| data | List[Data] | Time series data. | None | False |
-| target | str | Target column name. | None | False |
-</TabItem>
-
-</Tabs>
+This function does not take standardized parameters.
 
 ---
 
 ## Returns
 
-```python wordwrap
-Normality tests summary. See qa_models.NormalityModel for details.
-```
+This function does not return a standardized model
 
 ---
 

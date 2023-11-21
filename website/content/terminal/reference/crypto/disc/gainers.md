@@ -16,26 +16,25 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /disc/gainers - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/disc/gainers - Reference | OpenBB Terminal Docs" />
 
 Shows Largest Gainers - coins which gain the most in given period. You can use parameter --interval to set which timeframe are you interested in: {14d,1h,1y,200d,24h,30d,7d} You can look on only N number of records with --limit, You can sort by {Symbol,Name,Price [$],Market Cap,Market Cap Rank,Volume [$]} with --sort.
 
 ### Usage
 
-```python wordwrap
-gainers [-i {14d,1h,1y,200d,24h,30d,7d}] [-l LIMIT] [-s SORTBY [SORTBY ...]] [-r]
+```python
+gainers [-i {14d,1h,1y,200d,24h,30d,7d}] [-l LIMIT] [-s SORTBY [SORTBY ...]]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| interval | -i  --interval | time period, one from {14d,1h,1y,200d,24h,30d,7d} | 1h | True | 14d, 1h, 1y, 200d, 24h, 30d, 7d |
-| limit | -l  --limit | Number of records to display | 15 | True | None |
-| sortby | -s  --sort | Sort by given column. Default: Market Cap Rank | market_cap | True | symbol, name, price_[$], market_cap, market_cap_rank, volume_[$] |
-| reverse | -r  --reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| interval | time period, one from {14d,1h,1y,200d,24h,30d,7d} | 1h | True | 14d, 1h, 1y, 200d, 24h, 30d, 7d |
+| limit | Number of records to display | 15 | True | None |
+| sortby | Sort by given column. Default: Market Cap Rank | market_cap | True | Symbol, Name, Price [$], Market Cap, Market Cap Rank, Volume [$] |
 
 
 ---

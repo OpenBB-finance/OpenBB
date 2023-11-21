@@ -1,18 +1,18 @@
 # news
 
-import ReferenceCard from "@site/src/components/General/NewReferenceCard";
+import ReferenceCard from "@site/src/components/General/ReferenceCard";
 
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
 <ReferenceCard
-    title="Company"
-    description="Company News"
+    title="company"
+    description="Company News. Get news for one or more companies."
     url="/platform/reference/news/company"
-    chevron={false}
+    command="true"
 />
 <ReferenceCard
-    title="World"
-    description="World News"
+    title="world"
+    description="Global News. Global news data."
     url="/platform/reference/news/world"
-    chevron={false}
+    command="true"
 />
 </ul>

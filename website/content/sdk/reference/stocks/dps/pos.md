@@ -22,7 +22,7 @@ Get dark pool short positions. [Source: Stockgrid]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/stockgrid_model.py#L18)]
 
-```python wordwrap
+```python
 openbb.stocks.dps.pos(sortby: str = "dpp_dollar", ascend: bool = False)
 ```
 
@@ -44,4 +44,3 @@ openbb.stocks.dps.pos(sortby: str = "dpp_dollar", ascend: bool = False)
 | ---- | ----------- |
 | pd.DataFrame | Dark pool short position data |
 ---
-

@@ -16,9 +16,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Return a selection of ETFs based on name filtered by total assets. [Source: Finance Database]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/etf/financedatabase_model.py#L17)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/etf/financedatabase_model.py#L15)]
 
-```python wordwrap
+```python
 openbb.etf.ln(name: str)
 ```
 
@@ -39,4 +39,3 @@ openbb.etf.ln(name: str)
 | ---- | ----------- |
 | Dict[str, Any] | Dictionary with ETFs that match a certain name |
 ---
-

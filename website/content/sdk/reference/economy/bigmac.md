@@ -29,10 +29,10 @@ import TabItem from '@theme/TabItem';
 
 Display Big Mac Index for given countries
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/nasdaq_model.py#L203)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/nasdaq_model.py#L183)]
 
-```python wordwrap
-openbb.economy.bigmac(country_codes: Optional[List[str]] = None)
+```python
+openbb.economy.bigmac(country_codes: List[str] = None)
 ```
 
 ---
@@ -53,17 +53,15 @@ openbb.economy.bigmac(country_codes: Optional[List[str]] = None)
 | pd.DataFrame | Dataframe with Big Mac indices converted to USD equivalent. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display Big Mac Index for given countries
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/nasdaq_view.py#L64)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/nasdaq_view.py#L59)]
 
-```python wordwrap
-openbb.economy.bigmac_chart(country_codes: Optional[List[str]] = None, raw: bool = False, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.economy.bigmac_chart(country_codes: List[str] = None, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -75,7 +73,7 @@ openbb.economy.bigmac_chart(country_codes: Optional[List[str]] = None, raw: bool
 | country_codes | List[str] | List of country codes (ISO-3 letter country code). Codes available through economy.country_codes(). | None | True |
 | raw | bool | Flag to display raw data, by default False | False | True |
 | export | str | Format data, by default "" |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -85,8 +83,6 @@ openbb.economy.bigmac_chart(country_codes: Optional[List[str]] = None, raw: bool
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

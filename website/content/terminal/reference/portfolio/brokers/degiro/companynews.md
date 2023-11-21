@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /brokers/degiro/companynews - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/degiro/companynews /brokers - Reference | OpenBB Terminal Docs" />
 
 
 
 ### Usage
 
-```python wordwrap
+```python
 companynews -s SYMBOL [-l LIMIT] [-o OFFSET] [-lang LANGUAGES]
 ```
 
@@ -29,11 +29,11 @@ companynews -s SYMBOL [-l LIMIT] [-o OFFSET] [-lang LANGUAGES]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| symbol | -s  --symbol | ISIN code of the company. | None | False | None |
-| limit | -l  --limit | Number of news to display. | 10 | True | None |
-| offset | -o  --offset | Offset of news to display. | 0 | True | None |
-| languages | -lang  --languages | Languages of news to display. | en,fr | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| symbol | ISIN code of the company. | None | False | None |
+| limit | Number of news to display. | 10 | True | None |
+| offset | Offset of news to display. | 0 | True | None |
+| languages | Languages of news to display. | en,fr | True | None |
 
 ---

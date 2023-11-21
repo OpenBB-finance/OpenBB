@@ -21,9 +21,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Scrape data for top etf movers.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/etf/discovery/wsj_model.py#L14)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/etf/discovery/wsj_model.py#L15)]
 
-```python wordwrap
+```python
 openbb.etf.disc.mover(sort_type: str = "gainers", export: bool = False)
 ```
 
@@ -44,4 +44,3 @@ openbb.etf.disc.mover(sort_type: str = "gainers", export: bool = False)
 | ---- | ----------- |
 | pd.DataFrame | Datafame containing the name, price, change and the volume of the etf |
 ---
-

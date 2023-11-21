@@ -23,7 +23,7 @@ Show library versions of required packages.
 
 ### Usage
 
-```python wordwrap
+```python
 which
 ```
 

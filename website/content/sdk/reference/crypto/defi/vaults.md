@@ -66,9 +66,9 @@ import TabItem from '@theme/TabItem';
 
 Get DeFi Vaults Information. DeFi Vaults are pools of funds with an assigned strategy which main goal is to
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/coindix_model.py#L111)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/coindix_model.py#L107)]
 
-```python wordwrap
+```python
 openbb.crypto.defi.vaults(chain: Optional[str] = None, protocol: Optional[str] = None, kind: Optional[str] = None, ascend: bool = True, sortby: str = "apy")
 ```
 
@@ -92,8 +92,6 @@ openbb.crypto.defi.vaults(chain: Optional[str] = None, protocol: Optional[str] =
 | pd.DataFrame | Top 100 DeFi Vaults for given chain/protocol sorted by APY. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -101,8 +99,8 @@ Prints table showing Top DeFi Vaults - pools of funds with an assigned strategy 
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/coindix_view.py#L19)]
 
-```python wordwrap
-openbb.crypto.defi.vaults_chart(chain: Optional[str] = None, protocol: Optional[str] = None, kind: Optional[str] = None, limit: int = 10, sortby: str = "apy", ascend: bool = True, link: bool = False, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.defi.vaults_chart(chain: Optional[str] = None, protocol: Optional[str] = None, kind: Optional[str] = None, limit: int = 10, sortby: str = "apy", ascend: bool = True, link: bool = False, export: str = "")
 ```
 
 ---
@@ -128,8 +126,6 @@ openbb.crypto.defi.vaults_chart(chain: Optional[str] = None, protocol: Optional[
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

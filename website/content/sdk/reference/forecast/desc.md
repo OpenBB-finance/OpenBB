@@ -24,9 +24,9 @@ import TabItem from '@theme/TabItem';
 
 Returns statistics for a given df
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L521)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L504)]
 
-```python wordwrap
+```python
 openbb.forecast.desc(data: pd.DataFrame)
 ```
 
@@ -48,30 +48,22 @@ openbb.forecast.desc(data: pd.DataFrame)
 | pd.DataFrame | The df with the new data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
-Show descriptive statistics for a dataframe
+None
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_view.py#L280)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_view.py#L257)]
 
-```python wordwrap
-openbb.forecast.desc_chart(data: pd.DataFrame, name: str = "", export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.forecast.desc_chart(data: pd.DataFrame, name: str = "", export: str = "")
 ```
 
 ---
 
 ## Parameters
 
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| data | pd.DataFrame | The dataframe to show | None | False |
-| name | str | The name of the dataframe |  | True |
-| export | str | Format to export data |  | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
-
+This function does not take any parameters.
 
 ---
 
@@ -80,8 +72,6 @@ openbb.forecast.desc_chart(data: pd.DataFrame, name: str = "", export: str = "",
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

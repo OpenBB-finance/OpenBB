@@ -13,22 +13,22 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /po/file - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/po/file - Reference | OpenBB Terminal Docs" />
 
-Select parameter file to use. The OpenBB Parameters Template can be found inside the Portfolio Optimization documentation. Please type `about` to access the documentation.
+Select parameter file to use
 
 ### Usage
 
-```python wordwrap
-file [-f FILE [FILE ...]]
+```python
+file -f FILE [FILE ...]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| file | -f  --file | Parameter file to be used | None | True | File in `EXPORTS` or `CUSTOM_IMPORTS` directories |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| file | Parameter file to be used | None | False | OpenBB_Parameters_Template_v1.0.0.xlsx, defaults.ini, dany.ini, james.ini, example.ini, dd.ini |
 
 ---

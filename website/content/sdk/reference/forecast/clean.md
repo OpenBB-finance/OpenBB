@@ -20,7 +20,7 @@ Clean up NaNs from the dataset
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L100)]
 
-```python wordwrap
+```python
 openbb.forecast.clean(dataset: pd.DataFrame, fill: Optional[str] = None, drop: Optional[str] = None, limit: Optional[int] = None)
 ```
 
@@ -42,6 +42,5 @@ openbb.forecast.clean(dataset: pd.DataFrame, fill: Optional[str] = None, drop: O
 
 | Type | Description |
 | ---- | ----------- |
-| Tuple[pd.DataFrame, np.bool_] | The cleaned dataset and a boolean indicating if there are any NaNs left |
+| pd.DataFrame | Dataframe with cleaned up data |
 ---
-

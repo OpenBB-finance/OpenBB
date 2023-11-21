@@ -27,7 +27,7 @@ Overlay Median & Quantile
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/rolling_model.py#L72)]
 
-```python wordwrap
+```python
 openbb.qa.quantile(data: pd.DataFrame, window: int = 14, quantile_pct: float = 0.5)
 ```
 
@@ -51,17 +51,15 @@ openbb.qa.quantile(data: pd.DataFrame, window: int = 14, quantile_pct: float = 0
 | Tuple[pd.DataFrame, pd.DataFrame] | Dataframe of rolling median prices over window,<br/>Dataframe of rolling quantile prices over window |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots rolling quantile
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/rolling_view.py#L229)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/rolling_view.py#L245)]
 
-```python wordwrap
-openbb.qa.quantile_chart(data: pd.DataFrame, target: str, symbol: str = "", window: int = 14, quantile: float = 0.5, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.qa.quantile_chart(data: pd.DataFrame, target: str, symbol: str = "", window: int = 14, quantile: float = 0.5, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -75,9 +73,8 @@ openbb.qa.quantile_chart(data: pd.DataFrame, target: str, symbol: str = "", wind
 | symbol | str | Stock ticker |  | True |
 | window | int | Length of window | 14 | True |
 | quantile | float | Quantile to get | 0.5 | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -87,8 +84,6 @@ openbb.qa.quantile_chart(data: pd.DataFrame, target: str, symbol: str = "", wind
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

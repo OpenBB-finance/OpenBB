@@ -25,9 +25,9 @@ import TabItem from '@theme/TabItem';
 
 Returns the most recent Ethereum gas fees in gwei
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethgasstation_model.py#L14)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethgasstation_model.py#L13)]
 
-```python wordwrap
+```python
 openbb.crypto.onchain.gwei()
 ```
 
@@ -46,17 +46,15 @@ This function does not take any parameters.
 | pd.DataFrame | four gas fees and durations<br/>    (fees for slow, average, fast and<br/>    fastest transactions in gwei and<br/>    its average durations in seconds) |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Current gwei fees
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethgasstation_view.py#L15)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethgasstation_view.py#L14)]
 
-```python wordwrap
-openbb.crypto.onchain.gwei_chart(export: str = "", sheet_name: Optional[str] = None, limit: int = 10)
+```python
+openbb.crypto.onchain.gwei_chart(export: str = "")
 ```
 
 ---
@@ -75,8 +73,6 @@ openbb.crypto.onchain.gwei_chart(export: str = "", sheet_name: Optional[str] = N
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

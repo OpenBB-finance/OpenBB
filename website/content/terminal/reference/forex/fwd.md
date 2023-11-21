@@ -18,7 +18,7 @@ Get forward rates for loaded pair.
 
 ### Usage
 
-```python wordwrap
+```python
 fwd
 ```
 

@@ -1,6 +1,6 @@
 ---
-title: TopRetail
-description: Tracks over $30B USD/day of individual investors trades
+title: Tracks over $30B USD/day of individual investors trades
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

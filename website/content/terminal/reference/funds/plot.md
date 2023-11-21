@@ -21,16 +21,15 @@ Plot historical data.
 
 ### Usage
 
-```python wordwrap
-plot [-c {category,index,both}]
+```python
+plot
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| compare | -c | Compare funds performance with its category or index |  | True | category, index, both |
+This command has no parameters
+
 
 ---

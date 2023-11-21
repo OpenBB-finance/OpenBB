@@ -19,9 +19,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Set Quandl key
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L409)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L419)]
 
-```python wordwrap
+```python
 openbb.keys.quandl(key: str, persist: bool = False, show_output: bool = False)
 ```
 
@@ -53,4 +53,3 @@ openbb.keys.quandl(key="example_key")
 ```
 
 ---
-

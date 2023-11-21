@@ -9,13 +9,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="forex /oanda/pending - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex/oanda/pending - Reference | OpenBB Terminal Docs" />
 
 Get information about pending orders.
 
 ### Usage
 
-```python wordwrap
+```python
 pending
 ```
 

@@ -27,9 +27,9 @@ import TabItem from '@theme/TabItem';
 
 Request order book data for plotting.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L145)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L137)]
 
-```python wordwrap
+```python
 openbb.forex.oanda.orderbook(instrument: Optional[str] = None, accountID: str = "REPLACE_ME")
 ```
 
@@ -52,17 +52,15 @@ openbb.forex.oanda.orderbook(instrument: Optional[str] = None, accountID: str = 
 | Union[pd.DataFrame, bool] | Order book data or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plot the orderbook for the instrument if Oanda provides one.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L73)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L79)]
 
-```python wordwrap
-openbb.forex.oanda.orderbook_chart(accountID: str, instrument: str = "", external_axes: bool = False)
+```python
+openbb.forex.oanda.orderbook_chart(accountID: str, instrument: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -73,7 +71,7 @@ openbb.forex.oanda.orderbook_chart(accountID: str, instrument: str = "", externa
 | ---- | ---- | ----------- | ------- | -------- |
 | accountID | str | Oanda user account ID | None | False |
 | instrument | str | The loaded currency pair |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -83,8 +81,6 @@ openbb.forex.oanda.orderbook_chart(accountID: str, instrument: str = "", externa
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

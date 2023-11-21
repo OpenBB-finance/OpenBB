@@ -21,7 +21,7 @@ Get technology stocks with revenue and earnings growth in excess of 25%. [Source
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/yahoofinance_model.py#L76)]
 
-```python wordwrap
+```python
 openbb.stocks.disc.gtech()
 ```
 
@@ -39,4 +39,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Growth technology stocks |
 ---
-

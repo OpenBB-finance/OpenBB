@@ -27,9 +27,9 @@ import TabItem from '@theme/TabItem';
 
 Returns coin fundraising
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L644)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L637)]
 
-```python wordwrap
+```python
 openbb.crypto.dd.fr(symbol: str)
 ```
 
@@ -51,26 +51,15 @@ openbb.crypto.dd.fr(symbol: str)
 | Tuple[str, pd.DataFrame, pd.DataFrame, pd.DataFrame] | Launch summary,<br/>Sales rounds,<br/>Treasury Accounts,<br/>Metric Value launch details |
 ---
 
-## Examples
-
-```python
-from openbb_terminal.sdk import openbb
-fundraise = openbb.crypto.dd.fr(symbol="BTC")
-```
-
----
-
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display coin fundraising
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L651)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L639)]
 
-```python wordwrap
-openbb.crypto.dd.fr_chart(symbol: str, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.crypto.dd.fr_chart(symbol: str, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -81,7 +70,7 @@ openbb.crypto.dd.fr_chart(symbol: str, export: str = "", sheet_name: Optional[st
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Crypto symbol to check coin fundraising | None | False |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -91,8 +80,6 @@ openbb.crypto.dd.fr_chart(symbol: str, export: str = "", sheet_name: Optional[st
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

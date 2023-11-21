@@ -1,6 +1,6 @@
 ---
-title: CalendarSplits
-description: Calendar Splits
+title: Calendar Splits
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

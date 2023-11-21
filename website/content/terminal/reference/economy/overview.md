@@ -32,7 +32,7 @@ Provide a market overview of a variety of options. This can be a general overvie
 
 ### Usage
 
-```python wordwrap
+```python
 overview [-t {indices,usbonds,glbonds,currencies}]
 ```
 
@@ -40,9 +40,9 @@ overview [-t {indices,usbonds,glbonds,currencies}]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| type | -t  --type | Obtain either US indices, US Bonds, Global Bonds or Currencies |  | True | indices, usbonds, glbonds, currencies |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| type | Obtain either US indices, US Bonds, Global Bonds or Currencies |  | True | indices, usbonds, glbonds, currencies |
 
 
 ---

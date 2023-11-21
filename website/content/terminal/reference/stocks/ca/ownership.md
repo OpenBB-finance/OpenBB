@@ -20,13 +20,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /ca/ownership - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ca/ownership - Reference | OpenBB Terminal Docs" />
 
 Prints screener data of similar companies. [Source: Finviz]
 
 ### Usage
 
-```python wordwrap
+```python
 ownership
 ```
 

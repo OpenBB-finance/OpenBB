@@ -11,13 +11,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="etf /ta/demark - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="etf/ta/demark - Reference | OpenBB Terminal Docs" />
 
 Calculates the Demark sequential indicator.
 
 ### Usage
 
-```python wordwrap
+```python
 demark [-m MIN_TO_SHOW]
 ```
 
@@ -25,8 +25,8 @@ demark [-m MIN_TO_SHOW]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| min_to_show | -m  --min | Minimum value of indicator to show (declutters plot). | 5 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| min_to_show | Minimum value of indicator to show (declutters plot). | 5 | True | None |
 
 ---

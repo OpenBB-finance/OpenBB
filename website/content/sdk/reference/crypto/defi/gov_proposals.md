@@ -26,9 +26,9 @@ import TabItem from '@theme/TabItem';
 
 Get terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_model.py#L195)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_model.py#L197)]
 
-```python wordwrap
+```python
 openbb.crypto.defi.gov_proposals(status: str = "", sortby: str = "id", ascend: bool = True, limit: int = 10)
 ```
 
@@ -53,17 +53,15 @@ openbb.crypto.defi.gov_proposals(status: str = "", sortby: str = "id", ascend: b
 | pd.DataFrame | Terra blockchain governance proposals list |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_view.py#L119)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_view.py#L108)]
 
-```python wordwrap
-openbb.crypto.defi.gov_proposals_chart(limit: int = 10, status: str = "all", sortby: str = "id", ascend: bool = True, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.defi.gov_proposals_chart(limit: int = 10, status: str = "all", sortby: str = "id", ascend: bool = True, export: str = "")
 ```
 
 ---
@@ -86,8 +84,6 @@ openbb.crypto.defi.gov_proposals_chart(limit: int = 10, status: str = "all", sor
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

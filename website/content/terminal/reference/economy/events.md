@@ -22,25 +22,26 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="economy /events - Reference | OpenBB Terminal Docs" />
 
-Economic calendar. If no start or end dates,default is the current day high importance events.
+Economic calendar. If no start or end dates, default is the current day high importance events.
 
 ### Usage
 
-```python wordwrap
-events [-c COUNTRIES] [-n] [-s START_DATE] [-e END_DATE] [-d SPEC_DATE]
+```python
+events [-c {argentina,australia,austria,bahrain,bangladesh,belgium,bosnia,botswana,brazil,bulgaria,canada,cayman_islands,chile,china,colombia,costa_rica,croatia,cyprus,czech_republic,denmark,dubai,ecuador,egypt,estonia,euro_zone,finland,france,germany,greece,hong_kong,hungary,iceland,india,indonesia,iraq,ireland,israel,italy,ivory_coast,jamaica,japan,jordan,kazakhstan,kenya,kuwait,latvia,lebanon,lithuania,luxembourg,malawi,malaysia,malta,mauritius,mexico,mongolia,montenegro,morocco,namibia,netherlands,new_zealand,nigeria,norway,oman,pakistan,palestine,peru,philippines,poland,portugal,qatar,romania,russia,rwanda,saudi_arabia,serbia,singapore,slovakia,slovenia,south_africa,south_korea,spain,sri_lanka,sweden,switzerland,taiwan,tanzania,thailand,tunisia,turkey,uganda,ukraine,united_kingdom,united_states,venezuela,vietnam,zambia,zimbabwe,all}] [-s START_DATE] [-e END_DATE] [-d SPEC_DATE] [-i {high,medium,low,all}] [--categories {employment,credit,balance,economic_activity,central_banks,bonds,inflation,confidence_index}]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| countries | -c  --countries | Display calendar for specific country. |  | True | None |
-| names | -n  --names | Flag to show all available country names | False | True | None |
-| start_date | -s  --start | The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31) | 2023-11-21 | True | None |
-| end_date | -e  --end | The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31) | 2023-11-21 | True | None |
-| spec_date | -d  --date | Get a specific date for events. Overrides start and end dates. | None | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| country | Display calendar for specific country. |  | True | argentina, australia, austria, bahrain, bangladesh, belgium, bosnia, botswana, brazil, bulgaria, canada, cayman_islands, chile, china, colombia, costa_rica, croatia, cyprus, czech_republic, denmark, dubai, ecuador, egypt, estonia, euro_zone, finland, france, germany, greece, hong_kong, hungary, iceland, india, indonesia, iraq, ireland, israel, italy, ivory_coast, jamaica, japan, jordan, kazakhstan, kenya, kuwait, latvia, lebanon, lithuania, luxembourg, malawi, malaysia, malta, mauritius, mexico, mongolia, montenegro, morocco, namibia, netherlands, new_zealand, nigeria, norway, oman, pakistan, palestine, peru, philippines, poland, portugal, qatar, romania, russia, rwanda, saudi_arabia, serbia, singapore, slovakia, slovenia, south_africa, south_korea, spain, sri_lanka, sweden, switzerland, taiwan, tanzania, thailand, tunisia, turkey, uganda, ukraine, united_kingdom, united_states, venezuela, vietnam, zambia, zimbabwe, all |
+| start_date | The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31) | 2022-11-25 | True | None |
+| end_date | The start date of the data (format: YEAR-MONTH-DAY, i.e. 2010-12-31) | 2022-11-25 | True | None |
+| spec_date | Get a specific date for events. Overrides start and end dates. | None | True | None |
+| importance | Event importance classified as high, medium, low or all. | None | True | high, medium, low, all |
+| category | [INVESTING source only] Event category. | None | True | employment, credit, balance, economic_activity, central_banks, bonds, inflation, confidence_index |
 
 
 ---

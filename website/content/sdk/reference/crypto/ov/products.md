@@ -27,9 +27,9 @@ import TabItem from '@theme/TabItem';
 
 Get list of financial products from CoinGecko API
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L311)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L317)]
 
-```python wordwrap
+```python
 openbb.crypto.ov.products(sortby: str = "Name", ascend: bool = True)
 ```
 
@@ -52,17 +52,15 @@ openbb.crypto.ov.products(sortby: str = "Name", ascend: bool = True)
 | pd.DataFrame | Rank,  Platform, Identifier, Supply_Rate, Borrow_Rate |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Shows list of financial products. [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L668)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L570)]
 
-```python wordwrap
-openbb.crypto.ov.products_chart(sortby: str = "Platform", ascend: bool = False, limit: int = 15, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.ov.products_chart(sortby: str = "Platform", ascend: bool = False, limit: int = 15, export: str = "")
 ```
 
 ---
@@ -84,8 +82,6 @@ openbb.crypto.ov.products_chart(sortby: str = "Platform", ascend: bool = False, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

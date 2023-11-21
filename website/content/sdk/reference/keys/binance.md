@@ -18,9 +18,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Set Binance key
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L1426)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L1473)]
 
-```python wordwrap
+```python
 openbb.keys.binance(key: str, secret: str, persist: bool = False, show_output: bool = False)
 ```
 
@@ -58,4 +58,3 @@ key="example_key",
     )
 ```
 ---
-

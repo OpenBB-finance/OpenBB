@@ -1,6 +1,6 @@
 ---
-title: SymbolMap
-description: Get the ticker symbol corresponding to a company's CIK
+title: Get the ticker symbol corresponding to a company's CIK
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

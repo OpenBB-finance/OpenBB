@@ -15,26 +15,25 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /fa/balance - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/fa/balance - Reference | OpenBB Terminal Docs" />
 
 Prints a complete balance sheet statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Account payables, Accumulated other comprehensive income loss, Cash and cash equivalents, Cash and short term investments, Common stock, Deferred revenue, Deferred revenue non current, Deferred tax liabilities non current, Filling date, Final link, Goodwill, Goodwill and intangible assets, Intangible assets, Inventory, Link, Long term debt, Long term investments, Net debt, Net receivables, Other assets, Other current assets, Other current liabilities, Other liabilities, Other non current assets, Other non current liabilities, Othertotal stockholders equity, Period, Property plant equipment net, Retained earnings, Short term debt, Short term investments, Tax assets, Tax payables, Total assets, Total current assets, Total current liabilities, Total debt, Total investments, Total liabilities, Total liabilities and stockholders equity, Total non current assets, Total non current liabilities, and Total stockholders equity. [Source: Alpha Vantage]
 
 ### Usage
 
-```python wordwrap
-balance [-t TICKER] [-q] [-r] [-p column]
+```python
+balance [-q] [-r] [-p column]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| ticker | -t  --ticker | Ticker to analyze | None | True | None |
-| b_quarter | -q  --quarter | Quarter fundamental data flag. | False | True | None |
-| ratios | -r  --ratios | Shows percentage change of values. | False | True | None |
-| plot | -p  --plot | Rows to plot, comma separated. (-1 represents invalid data) | None | True | total_assets, total_current_assets, cash_and_cash_equivalents, cash_and_short_term_investments, inventory, net_receivables, total_non_current_assets, property_plant_equipment, accumulated_depreciation_amortization_ppe, intangible_assets, intangible_assets_excluding_goodwill, goodwill, investments, long_term_investments, short_term_investments, other_current_assets, other_non_currrent_assets, total_liabilities, total_current_liabilities, current_accounts_payable, deferred_revenue, current_debt, short_term_debt, total_non_current_liabilities, capital_lease_obligations, long_term_debt, current_long_term_debt, long_term_debt_non_current, short_long_term_debt_total, other_current_liabilities, other_non_current_liabilities, total_shareholder_equity, treasury_stock, retained_earnings, common_stock, common_stock_shares_outstanding, equity_attributable_to_non_controlling_interest, equity_attributable_to_parent, fixed_assets, other_than_fixed_non_current_assets, liabilities_and_equity, equity, gross_property_plant_and_equipment, plant_and_equipment, tax_payables, other_assets, tax_assets, deferred_revenue_non_current, deferred_tax_liabilities, other_liabilities, preferred_stock, accumulated_other_comprehensive_income, other_total_stockholders_equity, total_liabilities_and_stockholders_equity, total_investments, total_debt, net_debt |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| b_quarter | Quarter fundamental data flag. | False | True | None |
+| ratios | Shows percentage change of values. | False | True | None |
+| plot | Rows to plot, comma separated. (-1 represents invalid data) | None | True | cash_and_cash_equivalents, short_term_investments, total_cash, net_receivables, inventory, other_current_assets, total_current_assets, gross_property_plant_and_equipment, accumulated_depreciation, net_property_plant_and_equipment, equity_and_other_investments, other_long-term_assets, total_non-current_assets, total_assets, current_debt, accounts_payable, deferred_revenues, other_current_liabilities, total_current_liabilities, long-term_debt, deferred_tax_liabilities, deferred_revenues, other_long-term_liabilities, total_non-current_liabilities, total_liabilities, common_stock, retained_earnings, accumulated_other_comprehensive_income, total_stockholders'_equity, total_liabilities_and_stockholders'_equity |
 
 
 ---

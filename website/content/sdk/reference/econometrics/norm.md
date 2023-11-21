@@ -28,9 +28,9 @@ import TabItem from '@theme/TabItem';
 
 The distribution of returns and generate statistics on the relation to the normal curve.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_model.py#L130)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_model.py#L113)]
 
-```python wordwrap
+```python
 openbb.econometrics.norm(data: pd.Series)
 ```
 
@@ -52,17 +52,15 @@ openbb.econometrics.norm(data: pd.Series)
 | pd.DataFrame | Dataframe containing statistics of normality |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Determine the normality of a timeseries.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_view.py#L204)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/econometrics_view.py#L129)]
 
-```python wordwrap
-openbb.econometrics.norm_chart(data: pd.Series, dataset: str = "", column: str = "", plot: bool = True, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.econometrics.norm_chart(data: pd.Series, dataset: str = "", column: str = "", plot: bool = True, export: str = "", external_axes: Optional[List[axes]] = None)
 ```
 
 ---
@@ -75,9 +73,8 @@ openbb.econometrics.norm_chart(data: pd.Series, dataset: str = "", column: str =
 | dataset | str | Dataset name |  | True |
 | column | str | Column for y data |  | True |
 | plot | bool | Whether you wish to plot a histogram | True | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data. |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.axes]] | External axes to plot on | None | True |
 
 
 ---
@@ -87,8 +84,6 @@ openbb.econometrics.norm_chart(data: pd.Series, dataset: str = "", column: str =
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

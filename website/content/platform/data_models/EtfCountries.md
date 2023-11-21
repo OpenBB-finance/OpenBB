@@ -1,6 +1,6 @@
 ---
-title: EtfCountries
-description: ETF Country weighting
+title: ETF Country weighting
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

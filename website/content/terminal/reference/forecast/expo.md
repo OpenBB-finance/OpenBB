@@ -31,31 +31,30 @@ Perform Probabilistic Exponential Smoothing forecast: https://unit8co.github.io/
 
 ### Usage
 
-```python wordwrap
-expo [--trend {N,A,M}] [--dampen DAMPEN] [--naive] [-d {AAPL}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw] [--metric {rmse,mse,mape,smape}]
+```python
+expo [--trend {N,A,M}] [--dampen DAMPEN] [--naive] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_PERIODS] [-w START_WINDOW] [--end S_END_DATE] [--start S_START_DATE] [--residuals] [--forecast-only] [--export-pred-raw]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| trend | --trend | Trend: N: None, A: Additive, M: Multiplicative. | A | True | N, A, M |
-| dampen | --dampen | Dampening | F | True | None |
-| naive | --naive | Show the naive baseline for a model. | False | True | None |
-| target_dataset | -d  --dataset | The name of the dataset you want to select | None | True | AAPL |
-| target_column | -c  --target-column | The name of the specific column you want to use | close | True | None |
-| n_days | -n  --n-days | prediction days. | 5 | True | None |
-| seasonal | -s  --seasonal | Seasonality: N: None, A: Additive, M: Multiplicative. | A | True | N, A, M |
-| seasonal_periods | -p  --periods | Seasonal periods: 4: Quarterly, 7: Daily | 7 | True | None |
-| start_window | -w  --window | Start point for rolling training and forecast window. 0.0-1.0 | 0.85 | True | None |
-| s_end_date | --end | The end date (format YYYY-MM-DD) to select for testing | None | True | None |
-| s_start_date | --start | The start date (format YYYY-MM-DD) to select for testing | None | True | None |
-| residuals | --residuals | Show the residuals for the model. | False | True | None |
-| forecast_only | --forecast-only | Do not plot the historical data without forecasts. | False | True | None |
-| export_pred_raw | --export-pred-raw | Export predictions to a csv file. | False | True | None |
-| metric | --metric | Calculate precision based on a specific metric (rmse, mse, mape) | mape | True | rmse, mse, mape, smape |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| trend | Trend: N: None, A: Additive, M: Multiplicative. | A | True | N, A, M |
+| dampen | Dampening | F | True | None |
+| naive | Show the naive baseline for a model. | False | True | None |
+| target_dataset | The name of the dataset you want to select | None | True | None |
+| target_column | The name of the specific column you want to use | close | True | None |
+| n_days | prediction days. | 5 | True | None |
+| seasonal | Seasonality: N: None, A: Additive, M: Multiplicative. | A | True | N, A, M |
+| seasonal_periods | Seasonal periods: 4: Quarterly, 7: Daily | 7 | True | None |
+| start_window | Start point for rolling training and forecast window. 0.0-1.0 | 0.85 | True | None |
+| s_end_date | The end date (format YYYY-MM-DD) to select for testing | None | True | None |
+| s_start_date | The start date (format YYYY-MM-DD) to select for testing | None | True | None |
+| residuals | Show the residuals for the model. | False | True | None |
+| forecast_only | Do not plot the historical data without forecasts. | False | True | None |
+| export_pred_raw | Export predictions to a csv file. | False | True | None |
 
 
 ---

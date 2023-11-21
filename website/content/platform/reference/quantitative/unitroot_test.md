@@ -17,9 +17,6 @@ keywords:
 - unit root tests summary
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="quantitative /unitroot_test - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -31,34 +28,37 @@ Get Unit Root Test.
 Augmented Dickey-Fuller test for unit root.
 Kwiatkowski-Phillips-Schmidt-Shin test for unit root.
 
+Parameters
+----------
+data : List[Data]
+Time series data.
+target : str
+Target column name.
+fuller_reg : Literal["c", "ct", "ctt", "nc", "c"]
+Regression type for ADF test.
+kpss_reg : Literal["c", "ct"]
+Regression type for KPSS test.
+
+Returns
+-------
+OBBject[UnitRootModel]
+Unit root tests summary.
+
 ```python wordwrap
-obb.quantitative.unitroot_test(data: Union[list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], numpy.ndarray, Data, List[Data]], target: str, fuller_reg: Literal[str] = c, kpss_reg: Literal[str] = c)
+
 ```
 
 ---
 
 ## Parameters
 
-<Tabs>
-<TabItem value="standard" label="Standard">
-
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| data | List[Data] | Time series data. | None | False |
-| target | str | Target column name. | None | False |
-| fuller_reg | Literal["c", "ct", "ctt", "nc", "c"] | Regression type for ADF test. | c | True |
-| kpss_reg | Literal["c", "ct"] | Regression type for KPSS test. | c | True |
-</TabItem>
-
-</Tabs>
+This function does not take standardized parameters.
 
 ---
 
 ## Returns
 
-```python wordwrap
-Unit root tests summary.
-```
+This function does not return a standardized model
 
 ---
 

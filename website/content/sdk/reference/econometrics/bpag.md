@@ -27,9 +27,9 @@ import TabItem from '@theme/TabItem';
 
 Calculate test statistics for heteroscedasticity
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L553)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L550)]
 
-```python wordwrap
+```python
 openbb.econometrics.bpag(model: statsmodels.regression.linear_model.RegressionResultsWrapper)
 ```
 
@@ -51,17 +51,15 @@ openbb.econometrics.bpag(model: statsmodels.regression.linear_model.RegressionRe
 | pd.DataFrame | Test results from the Breusch-Pagan Test |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Show Breusch-Pagan heteroscedasticity test
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_view.py#L204)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_view.py#L182)]
 
-```python wordwrap
-openbb.econometrics.bpag_chart(model: statsmodels.regression.linear_model.RegressionResultsWrapper, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.econometrics.bpag_chart(model: statsmodels.regression.linear_model.RegressionResultsWrapper, export: str = "")
 ```
 
 ---
@@ -81,8 +79,6 @@ openbb.econometrics.bpag_chart(model: statsmodels.regression.linear_model.Regres
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

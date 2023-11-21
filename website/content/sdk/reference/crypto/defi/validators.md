@@ -31,9 +31,9 @@ import TabItem from '@theme/TabItem';
 
 Get information about terra validators [Source: https://fcd.terra.dev/swagger]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_model.py#L153)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_model.py#L155)]
 
-```python wordwrap
+```python
 openbb.crypto.defi.validators(sortby: str = "votingPower", ascend: bool = True)
 ```
 
@@ -52,8 +52,6 @@ This function does not take any parameters.
 | pd.DataFrame | terra validators details |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -61,8 +59,8 @@ Prints table showing information about terra validators [Source: https://fcd.ter
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terramoney_fcd_view.py#L64)]
 
-```python wordwrap
-openbb.crypto.defi.validators_chart(limit: int = 10, sortby: str = "votingPower", ascend: bool = True, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.defi.validators_chart(limit: int = 10, sortby: str = "votingPower", ascend: bool = True, export: str = "")
 ```
 
 ---
@@ -84,8 +82,6 @@ openbb.crypto.defi.validators_chart(limit: int = 10, sortby: str = "votingPower"
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

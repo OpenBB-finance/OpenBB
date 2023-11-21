@@ -1,6 +1,6 @@
 ---
-title: ExecutiveCompensation
-description: Get Executive Compensation
+title: Get Executive Compensation
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

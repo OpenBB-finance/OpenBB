@@ -29,7 +29,7 @@ Get info about transaction. [Source: Ethplorer]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L444)]
 
-```python wordwrap
+```python
 openbb.crypto.onchain.tx(tx_hash: str)
 ```
 
@@ -51,17 +51,15 @@ openbb.crypto.onchain.tx(tx_hash: str)
 | pd.DataFrame | DataFrame with information about ERC20 token transaction. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display info about transaction. [Source: Ethplorer]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L273)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L249)]
 
-```python wordwrap
-openbb.crypto.onchain.tx_chart(tx_hash: str, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.onchain.tx_chart(tx_hash: str, export: str = "")
 ```
 
 ---
@@ -81,8 +79,6 @@ openbb.crypto.onchain.tx_chart(tx_hash: str, export: str = "", sheet_name: Optio
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

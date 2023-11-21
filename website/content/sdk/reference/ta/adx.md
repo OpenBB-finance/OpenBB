@@ -25,7 +25,7 @@ ADX technical indicator
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/trend_indicators_model.py#L16)]
 
-```python wordwrap
+```python
 openbb.ta.adx(data: pd.DataFrame, window: int = 14, scalar: int = 100, drift: int = 1)
 ```
 
@@ -50,17 +50,15 @@ openbb.ta.adx(data: pd.DataFrame, window: int = 14, scalar: int = 100, drift: in
 | pd.DataFrame | DataFrame with adx indicator |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots ADX indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/trend_indicators_view.py#L18)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/trend_indicators_view.py#L30)]
 
-```python wordwrap
-openbb.ta.adx_chart(data: pd.DataFrame, window: int = 14, scalar: int = 100, drift: int = 1, symbol: str = "", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.ta.adx_chart(data: pd.DataFrame, window: int = 14, scalar: int = 100, drift: int = 1, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -75,7 +73,7 @@ openbb.ta.adx_chart(data: pd.DataFrame, window: int = 14, scalar: int = 100, dri
 | drift | int | Drift variable | 1 | True |
 | symbol | str | Ticker |  | True |
 | export | str | Format to export data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (2 axes are expected in the list), by default None | None | True |
 
 
 ---
@@ -85,8 +83,6 @@ openbb.ta.adx_chart(data: pd.DataFrame, window: int = 14, scalar: int = 100, dri
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

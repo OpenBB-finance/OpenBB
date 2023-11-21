@@ -19,9 +19,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get balance sheet.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/sdk_helpers.py#L113)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/sdk_helpers.py#L77)]
 
-```python wordwrap
+```python
 openbb.stocks.fa.balance(symbol: str, quarterly: bool = False, ratios: bool = False, source: str = "YahooFinance", limit: int = 10)
 ```
 
@@ -32,7 +32,7 @@ openbb.stocks.fa.balance(symbol: str, quarterly: bool = False, ratios: bool = Fa
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Symbol to get balance sheet for | None | False |
-| source | str | Data source for balance sheet, by default "YahooFinance"<br/>Sources: YahooFinance, AlphaVantage, FinancialModelingPrep, Polygon, EODHD | YahooFinance | True |
+| source | str | Data source for balance sheet, by default "YahooFinance" | YahooFinance | True |
 | quarterly | bool | Flag to get quarterly data | False | True |
 | ratios | bool | Flag to return data as a percent change. | False | True |
 | limit | int | Number of statements to return (free tiers may be limited to 5 years) | 10 | True |
@@ -51,7 +51,7 @@ openbb.stocks.fa.balance(symbol: str, quarterly: bool = False, ratios: bool = Fa
 
 ```python
 from openbb_terminal.sdk import openbb
-balance_sheet = openbb.stocks.fa.balance("AAPL", source="YahooFinance")
+balance_sheet = openbb.stocks.fa.balance("AAPL", source="YahooFinance)
 ```
 
 ```
@@ -62,4 +62,3 @@ quarterly_income_statement = openbb.stocks.fa.balance("AAPL", source="AlphaVanta
 ```
 
 ---
-

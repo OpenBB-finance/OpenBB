@@ -16,9 +16,6 @@ keywords:
 - data analysis
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="quantitative /skewness - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -27,33 +24,34 @@ import TabItem from '@theme/TabItem';
 
 Get Skewness.
 
+Parameters
+----------
+data : List[Data]
+Time series data.
+target : str
+Target column name.
+window : PositiveInt
+Window size.
+
+Returns
+-------
+OBBject[List[Data]]
+Skewness.
+
 ```python wordwrap
-obb.quantitative.skewness(data: Union[list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], numpy.ndarray, Data, List[Data]], target: str, window: int)
+
 ```
 
 ---
 
 ## Parameters
 
-<Tabs>
-<TabItem value="standard" label="Standard">
-
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| data | List[Data] | Time series data. | None | False |
-| target | str | Target column name. | None | False |
-| window | PositiveInt | Window size. | None | False |
-</TabItem>
-
-</Tabs>
+This function does not take standardized parameters.
 
 ---
 
 ## Returns
 
-```python wordwrap
-Skewness.
-```
+This function does not return a standardized model
 
 ---
-

@@ -31,9 +31,9 @@ import TabItem from '@theme/TabItem';
 
 Get Series data. [Source: FRED]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/fred_model.py#L258)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/fred_model.py#L208)]
 
-```python wordwrap
+```python
 openbb.economy.fred(series_ids: List[str], start_date: Optional[str] = None, end_date: Optional[str] = None)
 ```
 
@@ -57,17 +57,15 @@ openbb.economy.fred(series_ids: List[str], start_date: Optional[str] = None, end
 | pd.DataFrame | Series data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display (multiple) series from https://fred.stlouisfed.org. [Source: FRED]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/fred_view.py#L87)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/fred_view.py#L76)]
 
-```python wordwrap
-openbb.economy.fred_chart(series_ids: List[str], start_date: Optional[str] = None, end_date: Optional[str] = None, limit: int = 10, get_data: bool = False, raw: bool = False, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.economy.fred_chart(series_ids: List[str], start_date: Optional[str] = None, end_date: Optional[str] = None, limit: int = 10, get_data: bool = False, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -82,8 +80,7 @@ openbb.economy.fred_chart(series_ids: List[str], start_date: Optional[str] = Non
 | limit | int | Number of data points to display. | 10 | True |
 | raw | bool | Output only raw data | False | True |
 | export | str | Export data to csv,json,xlsx or png,jpg,pdf,svg file |  | True |
-| sheet_name | Optional[str] | The name of the sheet | None | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -93,8 +90,6 @@ openbb.economy.fred_chart(series_ids: List[str], start_date: Optional[str] = Non
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

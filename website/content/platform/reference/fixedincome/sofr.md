@@ -25,9 +25,6 @@ keywords:
 - rate
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="fixedincome /sofr - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 

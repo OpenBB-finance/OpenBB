@@ -1,6 +1,6 @@
 ---
-title: EquityQuote
-description: Equity Quote
+title: Equity Quote
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -70,23 +70,23 @@ EquityQuoteQueryParams,
 | date | datetime | The date of the data. |
 | symbol | str | Symbol of the company. |
 | name | str | Name of the company. |
-| price | float | Current trading price of the equity. |
-| changes_percentage | float | Change percentage of the equity price. |
-| change | float | Change in the equity price. |
-| year_high | float | Highest price of the equity in the last 52 weeks. |
-| year_low | float | Lowest price of the equity in the last 52 weeks. |
+| price | float | Current trading price of the stock. |
+| changes_percentage | float | Change percentage of the stock price. |
+| change | float | Change in the stock price. |
+| year_high | float | Highest price of the stock in the last 52 weeks. |
+| year_low | float | Lowest price of the stock in the last 52 weeks. |
 | market_cap | float | Market cap of the company. |
-| price_avg50 | float | 50 days average price of the equity. |
-| price_avg200 | int | 200 days average price of the equity. |
-| volume | int | Volume of the equity in the current trading day. |
-| avg_volume | int | Average volume of the equity in the last 10 trading days. |
-| exchange | str | Exchange the equity is traded on. |
-| open | float | Opening price of the equity in the current trading day. |
-| previous_close | float | Previous closing price of the equity. |
-| eps | float | Earnings per share of the equity. |
-| pe | float | Price earnings ratio of the equity. |
-| earnings_announcement | str | Earnings announcement date of the equity. |
-| shares_outstanding | int | Number of shares outstanding of the equity. |
+| price_avg50 | float | 50 days average price of the stock. |
+| price_avg200 | int | 200 days average price of the stock. |
+| volume | int | Volume of the stock in the current trading day. |
+| avg_volume | int | Average volume of the stock in the last 10 trading days. |
+| exchange | str | Exchange the stock is traded on. |
+| open | float | Opening price of the stock in the current trading day. |
+| previous_close | float | Previous closing price of the stock. |
+| eps | float | Earnings per share of the stock. |
+| pe | float | Price earnings ratio of the stock. |
+| earnings_announcement | str | Earnings announcement date of the stock. |
+| shares_outstanding | int | Number of shares outstanding of the stock. |
 </TabItem>
 
 <TabItem value='intrinio' label='intrinio'>

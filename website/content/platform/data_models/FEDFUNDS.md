@@ -1,6 +1,6 @@
 ---
-title: FEDFUNDS
-description: Fed Funds Rate
+title: Fed Funds Rate
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

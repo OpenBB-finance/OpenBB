@@ -25,9 +25,9 @@ import TabItem from '@theme/TabItem';
 
 Gets IV surface for calls and puts for ticker
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/yfinance_model.py#L263)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/yfinance_model.py#L371)]
 
-```python wordwrap
+```python
 openbb.stocks.options.vsurf(symbol: str)
 ```
 
@@ -49,17 +49,15 @@ openbb.stocks.options.vsurf(symbol: str)
 | pd.DataFrame | Dataframe of DTE, Strike and IV |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display vol surface
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/yfinance_view.py#L256)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/yfinance_view.py#L1128)]
 
-```python wordwrap
-openbb.stocks.options.vsurf_chart(symbol: str, export: str = "", sheet_name: Optional[str] = None, z: str = "IV", external_axes: bool = False)
+```python
+openbb.stocks.options.vsurf_chart(symbol: str, export: str = "", z: str = "IV", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -71,7 +69,7 @@ openbb.stocks.options.vsurf_chart(symbol: str, export: str = "", sheet_name: Opt
 | symbol | str | Ticker symbol to get surface for | None | False |
 | export | str | Format to export data |  | True |
 | z | str | The variable for the Z axis | IV | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -81,8 +79,6 @@ openbb.stocks.options.vsurf_chart(symbol: str, export: str = "", sheet_name: Opt
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -31,9 +31,9 @@ import TabItem from '@theme/TabItem';
 
 Get top sell government trading [Source: quiverquant.com]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L285)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L287)]
 
-```python wordwrap
+```python
 openbb.stocks.gov.topsells(gov_type: str = "congress", past_transactions_months: int = 6)
 ```
 
@@ -56,17 +56,15 @@ openbb.stocks.gov.topsells(gov_type: str = "congress", past_transactions_months:
 | pd.DataFrame | DataFrame of top government sell trading |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Top sell government trading [Source: quiverquant.com]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L160)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L151)]
 
-```python wordwrap
-openbb.stocks.gov.topsells_chart(gov_type: str = "congress", past_transactions_months: int = 6, limit: int = 10, raw: bool = False, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.stocks.gov.topsells_chart(gov_type: str = "congress", past_transactions_months: int = 6, limit: int = 10, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -79,9 +77,8 @@ openbb.stocks.gov.topsells_chart(gov_type: str = "congress", past_transactions_m
 | past_transactions_months | int | Number of months to get trading for | 6 | True |
 | limit | int | Number of tickers to show | 10 | True |
 | raw | bool | Display raw data | False | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -91,8 +88,6 @@ openbb.stocks.gov.topsells_chart(gov_type: str = "congress", past_transactions_m
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

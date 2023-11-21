@@ -16,9 +16,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Returns a list of trending articles
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/seeking_alpha_model.py#L121)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/seeking_alpha_model.py#L100)]
 
-```python wordwrap
+```python
 openbb.stocks.disc.trending(limit: int = 5)
 ```
 
@@ -39,4 +39,3 @@ openbb.stocks.disc.trending(limit: int = 5)
 | ---- | ----------- |
 | list | Trending articles list |
 ---
-

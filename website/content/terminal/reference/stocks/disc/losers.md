@@ -13,13 +13,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /disc/losers - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/disc/losers - Reference | OpenBB Terminal Docs" />
 
 Print up to 25 top losers. [Source: Yahoo Finance]
 
 ### Usage
 
-```python wordwrap
+```python
 losers [-l LIMIT]
 ```
 
@@ -27,9 +27,9 @@ losers [-l LIMIT]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| limit | -l  --limit | Limit of stocks to display. | 5 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| limit | Limit of stocks to display. | 5 | True | None |
 
 
 ---

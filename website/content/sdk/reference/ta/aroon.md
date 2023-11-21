@@ -35,7 +35,7 @@ Aroon technical indicator
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/trend_indicators_model.py#L56)]
 
-```python wordwrap
+```python
 openbb.ta.aroon(data: pd.DataFrame, window: int = 25, scalar: int = 100)
 ```
 
@@ -59,17 +59,15 @@ openbb.ta.aroon(data: pd.DataFrame, window: int = 25, scalar: int = 100)
 | pd.DataFrame | DataFrame with aroon indicator |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots Aroon indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/trend_indicators_view.py#L69)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/trend_indicators_view.py#L121)]
 
-```python wordwrap
-openbb.ta.aroon_chart(data: pd.DataFrame, window: int = 25, scalar: int = 100, symbol: str = "", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.ta.aroon_chart(data: pd.DataFrame, window: int = 25, scalar: int = 100, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -82,9 +80,8 @@ openbb.ta.aroon_chart(data: pd.DataFrame, window: int = 25, scalar: int = 100, s
 | window | int | Length of window | 25 | True |
 | symbol | str | Ticker |  | True |
 | scalar | int | Scalar variable | 100 | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (3 axes are expected in the list), by default None | None | True |
 
 
 ---
@@ -94,8 +91,6 @@ openbb.ta.aroon_chart(data: pd.DataFrame, window: int = 25, scalar: int = 100, s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

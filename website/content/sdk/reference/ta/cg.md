@@ -28,7 +28,7 @@ Center of gravity
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L189)]
 
-```python wordwrap
+```python
 openbb.ta.cg(values: pd.Series, window: int)
 ```
 
@@ -51,17 +51,15 @@ openbb.ta.cg(values: pd.Series, window: int)
 | pd.DataFrame | Dataframe of technical indicator |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots center of gravity Indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L275)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L499)]
 
-```python wordwrap
-openbb.ta.cg_chart(data: pd.Series, window: int = 14, symbol: str = "", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.ta.cg_chart(data: pd.Series, window: int = 14, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -74,7 +72,7 @@ openbb.ta.cg_chart(data: pd.Series, window: int = 14, symbol: str = "", export: 
 | window | int | Length of window | 14 | True |
 | symbol | str | Stock ticker |  | True |
 | export | str | Format to export data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (2 axes are expected in the list), by default None | None | True |
 
 
 ---
@@ -84,8 +82,6 @@ openbb.ta.cg_chart(data: pd.Series, window: int = 14, symbol: str = "", export: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

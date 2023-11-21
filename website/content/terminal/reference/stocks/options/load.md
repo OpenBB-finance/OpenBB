@@ -17,23 +17,23 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /options/load - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/options/load - Reference | OpenBB Terminal Docs" />
 
 Load a ticker into option menu
 
 ### Usage
 
-```python wordwrap
-load [-t TICKER]
+```python
+load -t TICKER
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| ticker | -t  --ticker | Stock ticker | None | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| ticker | Stock ticker | None | False | None |
 
 
 ---

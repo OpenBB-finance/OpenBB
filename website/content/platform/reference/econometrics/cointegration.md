@@ -14,9 +14,7 @@ keywords:
 - Python
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="econometrics /cointegration - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -25,33 +23,35 @@ import TabItem from '@theme/TabItem';
 
 Show co-integration between two timeseries using the two step Engle-Granger test.
 
+Parameters
+----------
+data: List[Data]
+Input dataset.
+columns: List[str]
+Data columns to check cointegration
+maxlag: PositiveInt
+Number of lags to use in the test.
+
+Returns
+-------
+OBBject[Data]
+OBBject with the results being the score from the test.
+
 ```python wordwrap
-obb.econometrics.cointegration(data: Union[list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], numpy.ndarray, Data, List[Data]], columns: List[str], maxlag: PositiveInt = None)
+
 ```
 
 ---
 
 ## Parameters
 
-<Tabs>
-<TabItem value="standard" label="Standard">
-
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| data | List[Data] | Input dataset. | None | False |
-| columns | List[str] | Data columns to check cointegration | None | False |
-| maxlag | PositiveInt | Number of lags to use in the test. | None | True |
-</TabItem>
-
-</Tabs>
+This function does not take standardized parameters.
 
 ---
 
 ## Returns
 
-```python wordwrap
-OBBject with the results being the score from the test.
-```
+This function does not return a standardized model
 
 ---
 

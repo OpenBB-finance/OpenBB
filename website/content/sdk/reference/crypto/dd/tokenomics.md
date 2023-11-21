@@ -25,7 +25,7 @@ Get tokenomics for given coin. [Source: CoinGecko]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/pycoingecko_model.py#L253)]
 
-```python wordwrap
+```python
 openbb.crypto.dd.tokenomics(symbol: str = "")
 ```
 
@@ -46,4 +46,3 @@ openbb.crypto.dd.tokenomics(symbol: str = "")
 | ---- | ----------- |
 | pd.DataFrame | Metric, Value with tokenomics |
 ---
-

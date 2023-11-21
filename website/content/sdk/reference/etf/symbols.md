@@ -16,9 +16,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Gets all etf names and symbols
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/etf/stockanalysis_model.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/etf/stockanalysis_model.py#L19)]
 
-```python wordwrap
+```python
 openbb.etf.symbols()
 ```
 
@@ -36,4 +36,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | Tuple[List[str], List[str]] | List of all available etf symbols, List of all available etf names |
 ---
-

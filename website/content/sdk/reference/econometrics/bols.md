@@ -19,7 +19,7 @@ The between estimator is an alternative, usually less efficient estimator, can c
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L314)]
 
-```python wordwrap
+```python
 openbb.econometrics.bols(Y: pd.DataFrame, X: pd.DataFrame)
 ```
 
@@ -41,4 +41,3 @@ openbb.econometrics.bols(Y: pd.DataFrame, X: pd.DataFrame)
 | ---- | ----------- |
 | Tuple[DataFrame, Any, List[Any], Any] | The dataset used,<br/>Dependent variable,<br/>Independent variable,<br/>Between OLS model. |
 ---
-

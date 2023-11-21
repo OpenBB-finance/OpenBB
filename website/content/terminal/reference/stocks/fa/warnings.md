@@ -18,24 +18,23 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /fa/warnings - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/fa/warnings - Reference | OpenBB Terminal Docs" />
 
 Sean Seah warnings. Check: Consistent historical earnings per share; Consistently high return on equity; Consistently high return on assets; 5x Net Income  Long-Term Debt; and Interest coverage ratio more than 3. See https://www.drwealth.com/gone-fishing-with-buffett-by-sean-seah/comment-page-1/ [Source: Market Watch]
 
 ### Usage
 
-```python wordwrap
-warnings [-t TICKER] [-d]
+```python
+warnings [-d]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| ticker | -t  --ticker | Ticker to analyze | None | True | None |
-| b_debug | -d  --debug | print insights into warnings calculation. | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| b_debug | print insights into warnings calculation. | False | True | None |
 
 
 ---

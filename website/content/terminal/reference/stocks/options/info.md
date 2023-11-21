@@ -21,13 +21,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /options/info - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/options/info - Reference | OpenBB Terminal Docs" />
 
 Display option data [Source: Barchart.com]
 
 ### Usage
 
-```python wordwrap
+```python
 info
 ```
 

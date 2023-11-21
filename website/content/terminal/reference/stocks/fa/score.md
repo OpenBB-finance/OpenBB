@@ -16,23 +16,21 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /fa/score - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/fa/score - Reference | OpenBB Terminal Docs" />
 
-Value investing based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]. Data is gathered from fmp and the scores are calculated using the valinvest library. The repository For this library can be found here: https://github.com/astro30/valinvest
+Value investing tool based on Warren Buffett, Joseph Piotroski and Benjamin Graham thoughts [Source: FMP]
 
 ### Usage
 
-```python wordwrap
-score [-y YEARS] [-t TICKER]
+```python
+score
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| years | -y  --years | Define the amount of years required to calculate the score. | 10 | True | None |
-| ticker | -t  --ticker | Ticker to analyze | None | True | None |
+This command has no parameters
+
 
 ---

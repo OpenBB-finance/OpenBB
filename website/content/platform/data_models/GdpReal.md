@@ -1,6 +1,6 @@
 ---
-title: GdpReal
-description: Real GDP Data
+title: Real GDP Data
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

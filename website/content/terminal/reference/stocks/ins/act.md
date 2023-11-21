@@ -12,13 +12,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /ins/act - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ins/act - Reference | OpenBB Terminal Docs" />
 
 Prints insider activity over time [Source: Business Insider]
 
 ### Usage
 
-```python wordwrap
+```python
 act [--raw]
 ```
 
@@ -26,9 +26,9 @@ act [--raw]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| raw | --raw | Print raw data. | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| raw | Print raw data. | False | True | None |
 
 ![act](https://user-images.githubusercontent.com/46355364/154267227-6116e314-9186-4566-a977-01f85a99646f.png)
 

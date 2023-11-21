@@ -13,20 +13,20 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="funds /sector - Reference | OpenBB Terminal Docs" />
 
-Show funds, index, category sector breakdown.
+Show fund sector weighting.
 
 ### Usage
 
-```python wordwrap
-sector [-t {equity,fixed_income}]
+```python
+sector [-m MIN]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| type | -t  --type | asset type to select | equity | True | equity, fixed_income |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| min | Minimum positive float to display sector | 5 | True | None |
 
 ---

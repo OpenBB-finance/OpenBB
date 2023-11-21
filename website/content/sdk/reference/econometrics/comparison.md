@@ -20,8 +20,8 @@ Compare regression results between Panel Data regressions.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L437)]
 
-```python wordwrap
-openbb.econometrics.comparison(regressions: Dict, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.econometrics.comparison(regressions: Dict, export: str = "")
 ```
 
 ---
@@ -42,4 +42,3 @@ openbb.econometrics.comparison(regressions: Dict, export: str = "", sheet_name: 
 | ---- | ----------- |
 | dict | Returns a PanelModelComparison which shows an overview of the different regression results. |
 ---
-

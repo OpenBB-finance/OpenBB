@@ -28,12 +28,12 @@ import TabItem from '@theme/TabItem';
 <Tabs>
 <TabItem value="model" label="Model" default>
 
-Get historical EOD option prices, with Greeks, for a given OCC chain label.
+Get histoical option greeks
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/intrinio_model.py#L345)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/screen/syncretism_model.py#L37)]
 
-```python wordwrap
-openbb.stocks.options.grhist(symbol: str)
+```python
+openbb.stocks.options.grhist(symbol: str, expiry: str, strike: Union[str, float], chain_id: str = "", put: bool = False)
 ```
 
 ---
@@ -42,7 +42,11 @@ openbb.stocks.options.grhist(symbol: str)
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | str | Symbol to get historical option chain for.  Should be an OCC chain label. | None | False |
+| symbol | str | Stock ticker symbol | None | False |
+| expiry | str | Option expiration date | None | False |
+| strike | Union[str, float] | Strike price to look for | None | False |
+| chain_id | str | OCC option symbol.  Overwrites other inputs |  | True |
+| put | bool | Is this a put option? | False | True |
 
 
 ---
@@ -51,20 +55,18 @@ openbb.stocks.options.grhist(symbol: str)
 
 | Type | Description |
 | ---- | ----------- |
-| pd.DataFrame | Dataframe of historical option chain. |
+| pd.DataFrame | Dataframe containing historical greeks |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
 
-Plots historical greeks for a given option.
+Plots historical greeks for a given option. [Source: Syncretism]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/intrinio_view.py#L115)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/screen/syncretism_view.py#L107)]
 
-```python wordwrap
-openbb.stocks.options.grhist_chart(symbol: str = "", expiry: str = "", strike: Union[float, str] = 0, greek: str = "Delta", chain_id: str = "", put: bool = False, raw: bool = False, limit: Union[int, str] = 20, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.stocks.options.grhist_chart(symbol: str, expiry: str, strike: Union[float, str], greek: str = "Delta", chain_id: str = "", put: bool = False, raw: bool = False, limit: Union[int, str] = 20, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -73,17 +75,16 @@ openbb.stocks.options.grhist_chart(symbol: str = "", expiry: str = "", strike: U
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | str | Stock ticker |  | True |
-| expiry | str | Expiration date |  | True |
-| strike | Union[str, float] | Strike price to consider | 0 | True |
+| symbol | str | Stock ticker | None | False |
+| expiry | str | Expiration date | None | False |
+| strike | Union[str, float] | Strike price to consider | None | False |
 | greek | str | Greek variable to plot | Delta | True |
 | chain_id | str | OCC option chain.  Overwrites other variables |  | True |
 | put | bool | Is this a put option? | False | True |
 | raw | bool | Print to console | False | True |
 | limit | int | Number of rows to show in raw | 20 | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -93,8 +94,6 @@ openbb.stocks.options.grhist_chart(symbol: str = "", expiry: str = "", strike: U
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -29,7 +29,7 @@ Get twitter timeline for given coin id. Not more than last 50 tweets [Source: Co
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_model.py#L23)]
 
-```python wordwrap
+```python
 openbb.crypto.dd.twitter(symbol: str = "BTC", sortby: str = "date", ascend: bool = True)
 ```
 
@@ -53,17 +53,15 @@ openbb.crypto.dd.twitter(symbol: str = "BTC", sortby: str = "date", ascend: bool
 | pd.DataFrame | Twitter timeline for given coin.<br/>Columns: date, user_name, status, retweet_count, like_count |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing twitter timeline for given coin id. Not more than last 50 tweets [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L84)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L86)]
 
-```python wordwrap
-openbb.crypto.dd.twitter_chart(symbol: str = "BTC", limit: int = 10, sortby: str = "date", ascend: bool = True, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.dd.twitter_chart(symbol: str = "BTC", limit: int = 10, sortby: str = "date", ascend: bool = True, export: str = "")
 ```
 
 ---
@@ -86,8 +84,6 @@ openbb.crypto.dd.twitter_chart(symbol: str = "BTC", limit: int = 10, sortby: str
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

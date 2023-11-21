@@ -28,9 +28,9 @@ import TabItem from '@theme/TabItem';
 
 Get headlines sentiment using VADER model over time. [Source: Finnhub]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/behavioural_analysis/finnhub_model.py#L100)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/behavioural_analysis/finnhub_model.py#L97)]
 
-```python wordwrap
+```python
 openbb.stocks.ba.snews(symbol: str)
 ```
 
@@ -54,17 +54,15 @@ This function does not return anything
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display stock price and headlines sentiment using VADER model over time. [Source: Finnhub]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/behavioural_analysis/finnhub_view.py#L21)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/behavioural_analysis/finnhub_view.py#L27)]
 
-```python wordwrap
-openbb.stocks.ba.snews_chart(symbol: str, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.stocks.ba.snews_chart(symbol: str, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -74,9 +72,8 @@ openbb.stocks.ba.snews_chart(symbol: str, export: str = "", sheet_name: Optional
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Ticker of company | None | False |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (2 axes are expected in the list), by default None | None | True |
 
 
 ---
@@ -86,8 +83,6 @@ openbb.stocks.ba.snews_chart(symbol: str, export: str = "", sheet_name: Optional
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

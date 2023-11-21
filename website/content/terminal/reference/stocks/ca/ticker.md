@@ -17,13 +17,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /ca/ticker - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ca/ticker - Reference | OpenBB Terminal Docs" />
 
 Set ticker to extract similar from
 
 ### Usage
 
-```python wordwrap
+```python
 ticker -t TICKER
 ```
 
@@ -31,9 +31,9 @@ ticker -t TICKER
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| ticker | -t  --ticker | Ticker get similar tickers from | None | False | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| ticker | Ticker get similar tickers from | None | False | None |
 
 
 ---

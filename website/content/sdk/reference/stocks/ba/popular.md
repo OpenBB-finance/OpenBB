@@ -20,9 +20,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get popular tickers from list of subreddits [Source: reddit].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/reddit_model.py#L44)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/reddit_model.py#L145)]
 
-```python wordwrap
+```python
 openbb.stocks.ba.popular(limit: int = 10, post_limit: int = 50, subreddits: str = "")
 ```
 
@@ -45,4 +45,3 @@ openbb.stocks.ba.popular(limit: int = 10, post_limit: int = 50, subreddits: str 
 | ---- | ----------- |
 | pd.DataFrame | DataFrame of top tickers from supplied subreddits |
 ---
-

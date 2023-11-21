@@ -19,13 +19,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /nft/collections - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/nft/collections - Reference | OpenBB Terminal Docs" />
 
 NFT Collections [Source: https://nftpricefloor.com/]
 
 ### Usage
 
-```python wordwrap
+```python
 collections [--fp] [--sales]
 ```
 
@@ -33,10 +33,10 @@ collections [--fp] [--sales]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| fp | --fp | Flag to display floor price over time for top collections | False | True | None |
-| sales | --sales | Flag to display sales over time for top collections | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| fp | Flag to display floor price over time for top collections | False | True | None |
+| sales | Flag to display sales over time for top collections | False | True | None |
 
 
 ---

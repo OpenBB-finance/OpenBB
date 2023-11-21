@@ -1,6 +1,6 @@
 ---
-title: CalendarIpo
-description: Upcoming and Historical IPO Calendar
+title: Upcoming and Historical IPO Calendar
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

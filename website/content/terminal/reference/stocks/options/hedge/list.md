@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /options/hedge/list - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/hedge/list /options - Reference | OpenBB Terminal Docs" />
 
 Lists available calls and puts.
 
 ### Usage
 
-```python wordwrap
+```python
 list
 ```
 
@@ -38,7 +38,7 @@ This command has no parameters
 
 ```python
 2022 May 10, 09:21 (🦋) /stocks/options/hedge/ $ list
-    Available Calls and Puts    
+    Available Calls and Puts
 ┏━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━┓
 ┃ Identifier ┃ Calls  ┃ Puts   ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━┩

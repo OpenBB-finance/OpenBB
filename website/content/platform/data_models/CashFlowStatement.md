@@ -1,6 +1,6 @@
 ---
-title: CashFlowStatement
-description: Cash Flow Statement
+title: Cash Flow Statement
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

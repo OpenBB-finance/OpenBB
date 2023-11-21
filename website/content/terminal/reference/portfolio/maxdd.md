@@ -13,13 +13,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /maxdd - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/maxdd - Reference | OpenBB Terminal Docs" />
 
 Show portfolio maximum drawdown
 
 ### Usage
 
-```python wordwrap
+```python
 maxdd
 ```
 

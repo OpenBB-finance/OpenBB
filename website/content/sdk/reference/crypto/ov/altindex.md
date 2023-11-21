@@ -26,9 +26,9 @@ import TabItem from '@theme/TabItem';
 
 Get altcoin index overtime
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/blockchaincenter_model.py#L19)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/blockchaincenter_model.py#L20)]
 
-```python wordwrap
+```python
 openbb.crypto.ov.altindex(period: int = 30, start_date: str = "2010-01-01", end_date: Optional[str] = None)
 ```
 
@@ -52,17 +52,15 @@ openbb.crypto.ov.altindex(period: int = 30, start_date: str = "2010-01-01", end_
 | pd.DataFrame | Date, Value (Altcoin Index) |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Displays altcoin index overtime
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/blockchaincenter_view.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/blockchaincenter_view.py#L27)]
 
-```python wordwrap
-openbb.crypto.ov.altindex_chart(period: int = 365, start_date: str = "2010-01-01", end_date: Optional[str] = None, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.crypto.ov.altindex_chart(period: int = 365, start_date: str = "2010-01-01", end_date: Optional[str] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -75,7 +73,7 @@ openbb.crypto.ov.altindex_chart(period: int = 365, start_date: str = "2010-01-01
 | end_date | Optional[str] | Final date, format YYYY-MM-DD | None | True |
 | period | int | Number of days to check the performance of coins and calculate the altcoin index.<br/>E.g., 365 will check yearly performance , 90 will check seasonal performance (90 days),<br/>30 will check monthly performance (30 days). | 365 | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -85,8 +83,6 @@ openbb.crypto.ov.altindex_chart(period: int = 365, start_date: str = "2010-01-01
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

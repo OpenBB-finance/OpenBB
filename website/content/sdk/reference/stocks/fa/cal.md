@@ -17,9 +17,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get calendar earnings for ticker symbol
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L133)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L179)]
 
-```python wordwrap
+```python
 openbb.stocks.fa.cal(symbol: str)
 ```
 
@@ -40,4 +40,3 @@ openbb.stocks.fa.cal(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of calendar earnings |
 ---
-

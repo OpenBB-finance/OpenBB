@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /brokers/coinbase/account - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/coinbase/account /brokers - Reference | OpenBB Terminal Docs" />
 
 Display info about your trading accounts on Coinbase
 
 ### Usage
 
-```python wordwrap
+```python
 account [--all] [-c CURRENCY]
 ```
 
@@ -28,9 +28,9 @@ account [--all] [-c CURRENCY]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| all | --all | Flag to display all your account | False | True | None |
-| currency | -c  --currency | Currency to display value in. | USD | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| all | Flag to display all your account | False | True | None |
+| currency | Currency to display value in. | USD | True | None |
 
 ---

@@ -23,19 +23,18 @@ Load custom dataset (from previous export, custom imports).
 
 ### Usage
 
-```python wordwrap
-load [-f {`file_name.xlsx, file_name.csv`}] [-a ALIAS] [--sheet-name SHEET_NAME [SHEET_NAME ...]]
+```python
+load [-f {}] [-a ALIAS]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| file | -f  --file | File to load data in (can be custom import, may have been exported before.) | None | True | File in `EXPORTS` or `CUSTOM_IMPORTS` directories (e.g: `file_name.xlsx, file_name.csv`) |
-| alias | -a  --alias | Alias name to give to the dataset | None | True | None |
-| sheet_name | --sheet-name | Name of excel sheet to save data to. Only valid for .xlsx files. | None | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| file | File to load data in (can be custom import, may have been exported before.) | None | True | None |
+| alias | Alias name to give to the dataset | None | True | None |
 
 
 ---

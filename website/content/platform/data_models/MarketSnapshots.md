@@ -1,6 +1,6 @@
 ---
-title: MarketSnapshots
-description: Get a current, complete, market snapshot
+title: Get a current, complete, market snapshot
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

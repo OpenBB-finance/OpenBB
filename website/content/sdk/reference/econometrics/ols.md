@@ -33,7 +33,7 @@ Performs an OLS regression on timeseries data. [Source: Statsmodels]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L176)]
 
-```python wordwrap
+```python
 openbb.econometrics.ols(Y: pd.DataFrame, X: pd.DataFrame)
 ```
 
@@ -59,9 +59,9 @@ openbb.econometrics.ols(Y: pd.DataFrame, X: pd.DataFrame)
 ## Examples
 
 ```python
-from openbb_terminal.sdk import openbb
+import openbb_terminal.sdk as openbb
 df = openbb.econometrics.load("wage_panel")
-OLS_model = openbb.econometrics.ols(df["lwage"], df[["educ", "exper", "expersq"]])
+OLS_model = openbb.econometrics.OLS(df["lwage"], df[["educ", "exper", "expersq"]])
 print(OLS_model.summary())`
 ```
 
@@ -94,4 +94,3 @@ Notes:
 [2] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 ```
 ---
-

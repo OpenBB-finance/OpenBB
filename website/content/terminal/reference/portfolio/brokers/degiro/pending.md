@@ -11,13 +11,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /brokers/degiro/pending - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/degiro/pending /brokers - Reference | OpenBB Terminal Docs" />
 
 
 
 ### Usage
 
-```python wordwrap
+```python
 pending
 ```
 

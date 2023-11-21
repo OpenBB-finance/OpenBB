@@ -21,7 +21,7 @@ Search ETF by name [Source: FinanceDatabase/StockAnalysis.com]
 
 ### Usage
 
-```python wordwrap
+```python
 search -n NAME [NAME ...] [-d DESCRIPTION [DESCRIPTION ...]]
 ```
 
@@ -29,9 +29,9 @@ search -n NAME [NAME ...] [-d DESCRIPTION [DESCRIPTION ...]]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| name | -n  --name | Name to look for ETFs |  | False | None |
-| description | -d  --description | Name to look for ETFs |  | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| name | Name to look for ETFs |  | False | None |
+| description | Name to look for ETFs |  | True | None |
 
 ---

@@ -1,6 +1,6 @@
 ---
-title: UpcomingReleaseDays
-description: Get upcoming release days
+title: Get upcoming release days
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

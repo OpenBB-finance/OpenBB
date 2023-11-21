@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /onchain/btcct - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/onchain/btcct - Reference | OpenBB Terminal Docs" />
 
 Display BTC confirmed transactions [Source: https://api.blockchain.info/]
 
 ### Usage
 
-```python wordwrap
+```python
 btcct [-s SINCE] [-u UNTIL]
 ```
 
@@ -28,10 +28,10 @@ btcct [-s SINCE] [-u UNTIL]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| since | -s  --since | Initial date. Default: 2010-01-01 | 2010-01-01 | True | None |
-| until | -u  --until | Final date. Default: 2023-11-21 | 2023-11-21 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| since | Initial date. Default: 2010-01-01 | 2010-01-01 | True | None |
+| until | Final date. Default: 2022-11-25 | 2022-11-25 | True | None |
 
 ![btcct](https://user-images.githubusercontent.com/46355364/154067586-d80059e8-cf7b-475a-990b-cf2aec7bc646.png)
 

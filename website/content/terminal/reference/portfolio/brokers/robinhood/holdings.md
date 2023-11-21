@@ -13,13 +13,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /brokers/robinhood/holdings - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/robinhood/holdings /brokers - Reference | OpenBB Terminal Docs" />
 
 Display info about your trading accounts on Robinhood
 
 ### Usage
 
-```python wordwrap
+```python
 holdings
 ```
 

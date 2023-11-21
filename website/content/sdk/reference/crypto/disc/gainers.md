@@ -28,10 +28,10 @@ import TabItem from '@theme/TabItem';
 
 Shows Largest Gainers - coins which gain the most in given period. [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L268)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L260)]
 
-```python wordwrap
-openbb.crypto.disc.gainers(interval: str = "1h", limit: int = 50, sortby: str = "market_cap_rank", ascend: bool = True)
+```python
+openbb.crypto.disc.gainers(interval: str = "1h", limit: int = 50, sortby: str = "market_cap_rank")
 ```
 
 ---
@@ -43,7 +43,6 @@ openbb.crypto.disc.gainers(interval: str = "1h", limit: int = 50, sortby: str = 
 | interval | str | Time interval by which data is displayed. One from [1h, 24h, 7d, 14d, 30d, 60d, 1y] | 1h | True |
 | limit | int | Number of records to display | 50 | True |
 | sortby | str | Key to sort data. The table can be sorted by every of its columns. Refer to<br/>API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation) | market_cap_rank | True |
-| ascend | bool | Sort data in ascending order | True | True |
 
 
 ---
@@ -55,8 +54,6 @@ openbb.crypto.disc.gainers(interval: str = "1h", limit: int = 50, sortby: str = 
 | pd.DataFrame | Top Gainers  - coins which gain most in price in given period of time.<br/>Columns: Symbol, Name, Volume, Price, %Change_{interval}, Url |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -64,8 +61,8 @@ Prints table showing Largest Gainers - coins which gain the most in given period
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_view.py#L100)]
 
-```python wordwrap
-openbb.crypto.disc.gainers_chart(interval: str = "1h", limit: int = 20, sortby: str = "market_cap_rank", ascend: bool = True, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.disc.gainers_chart(interval: str = "1h", limit: int = 20, sortby: str = "market_cap_rank", export: str = "")
 ```
 
 ---
@@ -77,7 +74,6 @@ openbb.crypto.disc.gainers_chart(interval: str = "1h", limit: int = 20, sortby: 
 | interval | str | Time period by which data is displayed. One from [1h, 24h, 7d, 14d, 30d, 60d, 1y] | 1h | True |
 | limit | int | Number of records to display | 20 | True |
 | sortby | str | Key to sort data. The table can be sorted by every of its columns. Refer to<br/>API documentation (see /coins/markets in https://www.coingecko.com/en/api/documentation) | market_cap_rank | True |
-| ascend | bool | Sort data in ascending order | True | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
 
 
@@ -88,8 +84,6 @@ openbb.crypto.disc.gainers_chart(interval: str = "1h", limit: int = 20, sortby: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

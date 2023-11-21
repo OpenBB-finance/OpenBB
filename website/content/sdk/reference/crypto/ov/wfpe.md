@@ -28,9 +28,9 @@ import TabItem from '@theme/TabItem';
 
 Scrapes coin withdrawal fees per exchange
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_model.py#L206)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_model.py#L207)]
 
-```python wordwrap
+```python
 openbb.crypto.ov.wfpe(symbol: str)
 ```
 
@@ -52,17 +52,15 @@ openbb.crypto.ov.wfpe(symbol: str)
 | List | - str: Overall statistics (exchanges, lowest, average and median)<br/>- pd.DataFrame: Exchange, Withdrawal Fee, Minimum Withdrawal Amount |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Coin withdrawal fees per exchange
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_view.py#L96)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/withdrawalfees_view.py#L86)]
 
-```python wordwrap
-openbb.crypto.ov.wfpe_chart(symbol: str, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.ov.wfpe_chart(symbol: str, export: str = "")
 ```
 
 ---
@@ -82,8 +80,6 @@ openbb.crypto.ov.wfpe_chart(symbol: str, export: str = "", sheet_name: Optional[
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

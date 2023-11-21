@@ -14,22 +14,21 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /fa/mgmt - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/fa/mgmt - Reference | OpenBB Terminal Docs" />
 
-Print management team. Namely: Name, Title, and Information from google [Source: Business Insider]
+Print management team. Namely: Name, Title, Information from google and (potentially) Insider Activity page. [Source: Business Insider]
 
 ### Usage
 
-```python wordwrap
-mgmt [-t TICKER]
+```python
+mgmt
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| ticker | -t  --ticker | Ticker to analyze | None | True | None |
+This command has no parameters
+
 
 ---

@@ -21,17 +21,17 @@ Plot data based on the index
 
 ### Usage
 
-```python wordwrap
-plot [-v {AAPL.date,AAPL.open,AAPL.high,AAPL.low,AAPL.close,AAPL.adj_close,AAPL.volume,AAPL.dividends,AAPL.stock_splits}]
+```python
+plot [-v {}]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| values | -v  --values | Dataset.column values to be displayed in a plot. Use comma to separate multiple | None | True | AAPL.date, AAPL.open, AAPL.high, AAPL.low, AAPL.close, AAPL.adj_close, AAPL.volume, AAPL.dividends, AAPL.stock_splits |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| values | Dataset.column values to be displayed in a plot. Use comma to separate multiple | None | True | None |
 
 
 ---

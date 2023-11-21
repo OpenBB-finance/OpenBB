@@ -19,9 +19,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get historical deaths for given country.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/covid/covid_model.py#L58)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/covid/covid_model.py#L73)]
 
-```python wordwrap
+```python
 openbb.alt.covid.global_deaths(country: str)
 ```
 
@@ -42,4 +42,3 @@ openbb.alt.covid.global_deaths(country: str)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of historical deaths |
 ---
-

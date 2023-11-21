@@ -1,6 +1,6 @@
 ---
-title: IncomeStatement
-description: Income Statement
+title: Income Statement
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -99,7 +99,6 @@ IncomeStatementQueryParams,
 | other_expenses | float | Other expenses. |
 | operating_expenses | float | Operating expenses. |
 | depreciation_and_amortization | float | Depreciation and amortization. |
-| ebit | float | Earnings before interest, and taxes. |
 | ebitda | float | Earnings before interest, taxes, depreciation and amortization. |
 | ebitda_ratio | float | Earnings before interest, taxes, depreciation and amortization ratio. |
 | operating_income | float | Operating income. |
@@ -140,7 +139,6 @@ IncomeStatementQueryParams,
 | other_expenses | float | Other expenses. |
 | operating_expenses | float | Operating expenses. |
 | depreciation_and_amortization | float | Depreciation and amortization. |
-| ebit | float | Earnings before interest, and taxes. |
 | ebitda | float | Earnings before interest, taxes, depreciation and amortization. |
 | ebitda_ratio | float | Earnings before interest, taxes, depreciation and amortization ratio. |
 | operating_income | float | Operating income. |
@@ -185,7 +183,6 @@ IncomeStatementQueryParams,
 | other_expenses | float | Other expenses. |
 | operating_expenses | float | Operating expenses. |
 | depreciation_and_amortization | float | Depreciation and amortization. |
-| ebit | float | Earnings before interest, and taxes. |
 | ebitda | float | Earnings before interest, taxes, depreciation and amortization. |
 | ebitda_ratio | float | Earnings before interest, taxes, depreciation and amortization ratio. |
 | operating_income | float | Operating income. |

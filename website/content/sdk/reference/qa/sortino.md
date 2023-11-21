@@ -25,9 +25,9 @@ import TabItem from '@theme/TabItem';
 
 Calculates the sortino ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L557)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L562)]
 
-```python wordwrap
+```python
 openbb.qa.sortino(data: pd.DataFrame, target_return: float = 0, window: float = 252, adjusted: bool = False)
 ```
 
@@ -52,17 +52,15 @@ openbb.qa.sortino(data: pd.DataFrame, target_return: float = 0, window: float = 
 | pd.DataFrame | sortino ratio |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots the sortino ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L1136)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L1181)]
 
-```python wordwrap
-openbb.qa.sortino_chart(data: pd.DataFrame, target_return: float, window: float, adjusted: bool, external_axes: bool = False)
+```python
+openbb.qa.sortino_chart(data: pd.DataFrame, target_return: float, window: float, adjusted: bool)
 ```
 
 ---
@@ -75,7 +73,6 @@ openbb.qa.sortino_chart(data: pd.DataFrame, target_return: float, window: float,
 | target_return | float | target return of the asset | None | False |
 | window | float | length of the rolling window | None | False |
 | adjusted | bool | adjust the sortino ratio | None | False |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -85,8 +82,6 @@ openbb.qa.sortino_chart(data: pd.DataFrame, target_return: float, window: float,
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

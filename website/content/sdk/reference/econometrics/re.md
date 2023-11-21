@@ -25,7 +25,7 @@ The random effects model is virtually identical to the pooled OLS model except t
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L276)]
 
-```python wordwrap
+```python
 openbb.econometrics.re(Y: pd.DataFrame, X: pd.DataFrame)
 ```
 
@@ -47,4 +47,3 @@ openbb.econometrics.re(Y: pd.DataFrame, X: pd.DataFrame)
 | ---- | ----------- |
 | Tuple[DataFrame, Any, List[Any], Any] | The dataset used,<br/>Dependent variable,<br/>Independent variable,<br/>RandomEffects model |
 ---
-

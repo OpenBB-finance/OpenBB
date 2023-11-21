@@ -53,13 +53,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /ov/ewf - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/ov/ewf - Reference | OpenBB Terminal Docs" />
 
 Display exchange withdrawal fees [Source: https://withdrawalfees.com/]
 
 ### Usage
 
-```python wordwrap
+```python
 ewf
 ```
 

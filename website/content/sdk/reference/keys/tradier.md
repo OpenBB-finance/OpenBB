@@ -20,9 +20,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Set Tradier key
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L758)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L680)]
 
-```python wordwrap
+```python
 openbb.keys.tradier(key: str, persist: bool = False, show_output: bool = False)
 ```
 
@@ -54,4 +54,3 @@ openbb.keys.tradier(key="example_key")
 ```
 
 ---
-

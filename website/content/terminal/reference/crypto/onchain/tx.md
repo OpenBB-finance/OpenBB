@@ -16,13 +16,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /onchain/tx - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/onchain/tx - Reference | OpenBB Terminal Docs" />
 
 Display info ERC20 token transaction on ethereum blockchain. e.g. 0x9dc7b43ad4288c624fdd236b2ecb9f2b81c93e706b2ffd1d19b112c1df7849e6 [Source: Ethplorer]
 
 ### Usage
 
-```python wordwrap
+```python
 tx
 ```
 

@@ -29,9 +29,9 @@ import TabItem from '@theme/TabItem';
 
 Get unusual option activity from fdscanner.com
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/fdscanner_model.py#L18)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/fdscanner_model.py#L19)]
 
-```python wordwrap
+```python
 openbb.stocks.options.unu(limit: int = 100)
 ```
 
@@ -62,17 +62,15 @@ unu_df = openbb.stocks.options.unu()
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Displays the unusual options table
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/fdscanner_view.py#L16)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/options/fdscanner_view.py#L15)]
 
-```python wordwrap
-openbb.stocks.options.unu_chart(limit: int = 20, sortby: str = "Vol/OI", ascend: bool = False, calls_only: bool = False, puts_only: bool = False, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.stocks.options.unu_chart(limit: int = 20, sortby: str = "Vol/OI", ascend: bool = False, calls_only: bool = False, puts_only: bool = False, export: str = "")
 ```
 
 ---
@@ -86,7 +84,6 @@ openbb.stocks.options.unu_chart(limit: int = 20, sortby: str = "Vol/OI", ascend:
 | ascend | bool | Whether to sort in ascend order | False | True |
 | calls_only | bool | Flag to only show calls | False | True |
 | puts_only | bool | Flag to show puts only | False | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | File type to export |  | True |
 
 
@@ -97,8 +94,6 @@ openbb.stocks.options.unu_chart(limit: int = 20, sortby: str = "Vol/OI", ascend:
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

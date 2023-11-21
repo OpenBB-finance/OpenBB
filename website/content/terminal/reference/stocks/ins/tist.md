@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /ins/tist - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ins/tist - Reference | OpenBB Terminal Docs" />
 
 Print top insider sales of the day. [Source: OpenInsider]
 
 ### Usage
 
-```python wordwrap
+```python
 tist [-l LIMIT]
 ```
 
@@ -28,8 +28,8 @@ tist [-l LIMIT]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| limit | -l  --limit | Limit of datarows to display | 10 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| limit | Limit of datarows to display | 10 | True | None |
 
 ---

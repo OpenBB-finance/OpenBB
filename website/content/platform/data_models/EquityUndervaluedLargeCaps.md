@@ -1,6 +1,6 @@
 ---
-title: EquityUndervaluedLargeCaps
-description: Get undervalued large cap Equities
+title: Get undervalued large cap Equities
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -20,23 +20,23 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /qa/pick - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/qa/pick - Reference | OpenBB Terminal Docs" />
 
 Change target variable
 
 ### Usage
 
-```python wordwrap
-pick [-t {open,high,low,close,adjclose,volume,dividends,stock splits,returns,logret,logprice}]
+```python
+pick [-t {open,high,low,close,adjclose,volume,date_id,oc_high,oc_low,returns,logret,logprice}]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| target | -t  --target | Select variable to analyze | None | True | open, high, low, close, adjclose, volume, dividends, stock splits, returns, logret, logprice |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| target | Select variable to analyze | None | True | open, high, low, close, adjclose, volume, date_id, oc_high, oc_low, returns, logret, logprice |
 
 
 ---

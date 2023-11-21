@@ -1,6 +1,6 @@
 ---
-title: ShareStatistics
-description: Share Statistics
+title: Share Statistics
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

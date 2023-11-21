@@ -39,9 +39,9 @@ import TabItem from '@theme/TabItem';
 
 Returns open interest by exchange for a certain symbol
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinglass_model.py#L147)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinglass_model.py#L148)]
 
-```python wordwrap
+```python
 openbb.crypto.dd.oi(symbol: str, interval: int = 0)
 ```
 
@@ -64,17 +64,15 @@ openbb.crypto.dd.oi(symbol: str, interval: int = 0)
 | pd.DataFrame | open interest by exchange and price |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots open interest by exchange for a certain cryptocurrency
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinglass_view.py#L64)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinglass_view.py#L55)]
 
-```python wordwrap
-openbb.crypto.dd.oi_chart(symbol: str, interval: int = 0, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.crypto.dd.oi_chart(symbol: str, interval: int = 0, export: str = "")
 ```
 
 ---
@@ -86,8 +84,6 @@ openbb.crypto.dd.oi_chart(symbol: str, interval: int = 0, export: str = "", shee
 | symbol | str | Crypto symbol to search open interest (e.g., BTC) | None | False |
 | interval | int | Frequency (possible values are: 0 for ALL, 2 for 1H, 1 for 4H, 4 for 12H), by default 0 | 0 | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -97,8 +93,6 @@ openbb.crypto.dd.oi_chart(symbol: str, interval: int = 0, export: str = "", shee
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

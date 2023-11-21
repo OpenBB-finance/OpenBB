@@ -15,11 +15,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="funds /infoswe - Reference | OpenBB Terminal Docs" />
 
-Show fund info of a swedish fund. To get a list of available funds, check the file `avanza_fund_ID.csv`.
+Show fund info of a swedish fund.
 
 ### Usage
 
-```python wordwrap
+```python
 infoswe
 ```
 

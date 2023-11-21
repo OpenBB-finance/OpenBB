@@ -25,9 +25,9 @@ import TabItem from '@theme/TabItem';
 
 Print summary statistics
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L26)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L25)]
 
-```python wordwrap
+```python
 openbb.qa.summary(data: pd.DataFrame)
 ```
 
@@ -49,17 +49,15 @@ openbb.qa.summary(data: pd.DataFrame)
 | pd.DataFrame | Summary statistics |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing summary statistics
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L40)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L53)]
 
-```python wordwrap
-openbb.qa.summary_chart(data: pd.DataFrame, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.qa.summary_chart(data: pd.DataFrame, export: str = "")
 ```
 
 ---
@@ -79,8 +77,6 @@ openbb.qa.summary_chart(data: pd.DataFrame, export: str = "", sheet_name: Option
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

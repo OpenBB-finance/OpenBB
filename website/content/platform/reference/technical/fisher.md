@@ -29,9 +29,6 @@ keywords:
 - data provider
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="technical /fisher - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -45,6 +42,25 @@ normal distribution. The indicator highlights when prices have moved to an extre
 based on recent prices.
 This may help in spotting turning points in the price of an asset. It also helps
 show the trend and isolate the price waves within a trend.
+
+Parameters
+----------
+data : List[Data]
+List of data to apply the indicator to.
+index : str, optional
+Index column name, by default "date"
+length : PositiveInt, optional
+Fisher period, by default 14
+signal : PositiveInt, optional
+Fisher Signal period, by default 1
+
+Returns
+-------
+OBBject[List[Data]]
+List of data with the indicator applied.
+
+Examples
+--------
 ```python
 from openbb import obb
 stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
@@ -56,26 +72,13 @@ fisher_data = obb.technical.fisher(data=stock_data.results, length=14, signal=1)
 
 ## Parameters
 
-<Tabs>
-<TabItem value="standard" label="Standard">
-
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| data | List[Data] | List of data to apply the indicator to. | None | False |
-| index | str | Index column name, by default "date" | date | True |
-| length | PositiveInt | Fisher period, by default 14 | 14 | True |
-| signal | PositiveInt | Fisher Signal period, by default 1 | 1 | True |
-</TabItem>
-
-</Tabs>
+This function does not take standardized parameters.
 
 ---
 
 ## Returns
 
-```python wordwrap
-List of data with the indicator applied.
-```
+This function does not return a standardized model
 
 ---
 

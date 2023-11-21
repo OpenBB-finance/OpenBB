@@ -13,13 +13,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /ca/scorr - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ca/scorr - Reference | OpenBB Terminal Docs" />
 
 FinBrain's sentiment correlation across similar tickers.
 
 ### Usage
 
-```python wordwrap
+```python
 sentiment_compare [-r]
 ```
 
@@ -27,9 +27,9 @@ sentiment_compare [-r]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| raw | -r  --raw | Display raw sentiment data | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| raw | Display raw sentiment data | False | True | None |
 
 ![scorr](https://user-images.githubusercontent.com/46355364/154073958-a2d7afd1-2406-46a6-8dc2-fdfd8b8605a4.png)
 

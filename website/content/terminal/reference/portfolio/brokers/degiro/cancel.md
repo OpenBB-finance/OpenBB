@@ -12,13 +12,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /brokers/degiro/cancel - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/degiro/cancel /brokers - Reference | OpenBB Terminal Docs" />
 
 
 
 ### Usage
 
-```python wordwrap
+```python
 cancel id
 ```
 
@@ -26,8 +26,8 @@ cancel id
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| id |  | Order's id. | None | False | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| id | Order's id. | None | False | None |
 
 ---

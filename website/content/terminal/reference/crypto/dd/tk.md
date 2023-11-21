@@ -11,13 +11,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /dd/tk - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/tk - Reference | OpenBB Terminal Docs" />
 
 Display asset's tokenomics [Source: https://messari.io]
 
 ### Usage
 
-```python wordwrap
+```python
 tk
 ```
 

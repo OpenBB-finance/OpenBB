@@ -26,7 +26,7 @@ Calculate AD technical indicator
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volume_model.py#L17)]
 
-```python wordwrap
+```python
 openbb.ta.ad(data: pd.DataFrame, use_open: bool = False)
 ```
 
@@ -49,17 +49,15 @@ openbb.ta.ad(data: pd.DataFrame, use_open: bool = False)
 | pd.DataFrame | Dataframe with technical indicator |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots AD technical indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volume_view.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volume_view.py#L28)]
 
-```python wordwrap
-openbb.ta.ad_chart(data: pd.DataFrame, use_open: bool = False, symbol: str = "", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.ta.ad_chart(data: pd.DataFrame, use_open: bool = False, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -71,9 +69,8 @@ openbb.ta.ad_chart(data: pd.DataFrame, use_open: bool = False, symbol: str = "",
 | data | pd.DataFrame | Dataframe of ohlc prices | None | False |
 | use_open | bool | Whether to use open prices in calculation | False | True |
 | symbol | str | Ticker symbol |  | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data as |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (3 axes are expected in the list), by default None | None | True |
 
 
 ---
@@ -83,8 +80,6 @@ openbb.ta.ad_chart(data: pd.DataFrame, use_open: bool = False, symbol: str = "",
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

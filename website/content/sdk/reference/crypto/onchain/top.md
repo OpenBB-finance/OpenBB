@@ -28,7 +28,7 @@ Get top 50 tokens. [Source: Ethplorer]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L268)]
 
-```python wordwrap
+```python
 openbb.crypto.onchain.top(sortby: str = "rank", ascend: bool = False)
 ```
 
@@ -51,17 +51,15 @@ openbb.crypto.onchain.top(sortby: str = "rank", ascend: bool = False)
 | pd.DataFrame | DataFrame with list of top 50 tokens. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display top ERC20 tokens [Source: Ethplorer]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L75)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L70)]
 
-```python wordwrap
-openbb.crypto.onchain.top_chart(limit: int = 15, sortby: str = "rank", ascend: bool = True, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.onchain.top_chart(limit: int = 15, sortby: str = "rank", ascend: bool = True, export: str = "")
 ```
 
 ---
@@ -83,8 +81,6 @@ openbb.crypto.onchain.top_chart(limit: int = 15, sortby: str = "rank", ascend: b
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

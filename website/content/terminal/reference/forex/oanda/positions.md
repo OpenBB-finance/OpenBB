@@ -11,13 +11,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="forex /oanda/positions - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex/oanda/positions - Reference | OpenBB Terminal Docs" />
 
 Get information about open positions.
 
 ### Usage
 
-```python wordwrap
+```python
 positions
 ```
 

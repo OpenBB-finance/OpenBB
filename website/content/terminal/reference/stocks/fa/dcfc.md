@@ -16,24 +16,23 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /fa/dcfc - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/fa/dcfc - Reference | OpenBB Terminal Docs" />
 
 Prints the discounted cash flow of a company over time including the DCF of today. The following fields are expected: DCF, Stock price, and Date. [Source: Financial Modeling Prep]
 
 ### Usage
 
-```python wordwrap
-dcfc [-t TICKER] [-l LIMIT] [-q]
+```python
+dcfc [-l LIMIT] [-q]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| ticker | -t  --ticker | Ticker to analyze | None | True | None |
-| limit | -l  --limit | Limit of latest years/quarters. | 5 | True | None |
-| b_quarter | -q  --quarter | Quarter fundamental data flag. | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| limit | Limit of latest years/quarters. | 5 | True | None |
+| b_quarter | Quarter fundamental data flag. | False | True | None |
 
 ---

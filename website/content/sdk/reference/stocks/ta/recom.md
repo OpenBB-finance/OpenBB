@@ -29,7 +29,7 @@ Get tradingview recommendation based on technical indicators
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/technical_analysis/tradingview_model.py#L56)]
 
-```python wordwrap
+```python
 openbb.stocks.ta.recom(symbol: str, screener: str = "america", exchange: str = "", interval: str = "")
 ```
 
@@ -54,17 +54,15 @@ openbb.stocks.ta.recom(symbol: str, screener: str = "america", exchange: str = "
 | pd.DataFrame | Dataframe of tradingview recommendations based on technical indicators |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Print tradingview recommendation based on technical indicators
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/technical_analysis/tradingview_view.py#L19)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/technical_analysis/tradingview_view.py#L17)]
 
-```python wordwrap
-openbb.stocks.ta.recom_chart(symbol: str, screener: str = "america", exchange: str = "", interval: str = "", export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.stocks.ta.recom_chart(symbol: str, screener: str = "america", exchange: str = "", interval: str = "", export: str = "")
 ```
 
 ---
@@ -77,7 +75,6 @@ openbb.stocks.ta.recom_chart(symbol: str, screener: str = "america", exchange: s
 | screener | str | Screener based on tradingview docs https://python-tradingview-ta.readthedocs.io/en/latest/usage.html | america | True |
 | exchange | str | Exchange based on tradingview docs https://python-tradingview-ta.readthedocs.io/en/latest/usage.html |  | True |
 | interval | str | Interval time to check technical indicators and correspondent recommendation |  | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format of export file |  | True |
 
 
@@ -88,8 +85,6 @@ openbb.stocks.ta.recom_chart(symbol: str, screener: str = "america", exchange: s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

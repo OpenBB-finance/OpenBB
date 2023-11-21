@@ -21,7 +21,7 @@ The column you want to delete from a dataset.
 
 ### Usage
 
-```python wordwrap
+```python
 delete [-d DELETE]
 ```
 
@@ -29,9 +29,9 @@ delete [-d DELETE]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| delete | -d  --delete | The columns you want to delete from a dataset. Use format: dataset.column or multiple with dataset.column,dataset.column2 | None | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| delete | The columns you want to delete from a dataset. Use format: dataset.column or multiple with dataset.column,dataset.column2 | None | True | None |
 
 
 ---
@@ -43,7 +43,7 @@ delete [-d DELETE]
 
 2022 May 31, 04:53 (🦋) /econometrics/ $ show wp
 
-                                      Dataset wp | Showing 10 of 4360 rows                                       
+                                      Dataset wp | Showing 10 of 4360 rows
 ┏━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃   ┃ nr    ┃ year    ┃ black ┃ exper ┃ hisp ┃ hours   ┃ married ┃ educ  ┃ union ┃ lwage ┃ expersq ┃ occupation ┃
 ┡━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩
@@ -72,7 +72,7 @@ delete [-d DELETE]
 
 2022 May 31, 04:53 (🦋) /econometrics/ $ show wp
 
-                         Dataset wp | Showing 10 of 4360 rows                          
+                         Dataset wp | Showing 10 of 4360 rows
 ┏━━━┳━━━━━━━┳━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃   ┃ nr    ┃ hisp ┃ hours   ┃ married ┃ educ  ┃ union ┃ lwage ┃ expersq ┃ occupation ┃
 ┡━━━╇━━━━━━━╇━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩

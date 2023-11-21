@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /onchain/gwei - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/onchain/gwei - Reference | OpenBB Terminal Docs" />
 
 Display ETH gas fees [Source: https://ethgasstation.info]
 
 ### Usage
 
-```python wordwrap
+```python
 onchain
 ```
 

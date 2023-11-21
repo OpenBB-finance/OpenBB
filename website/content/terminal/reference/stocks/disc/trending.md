@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /disc/trending - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/disc/trending - Reference | OpenBB Terminal Docs" />
 
 Trending news articles. [Source: Seeking Alpha]
 
 ### Usage
 
-```python wordwrap
+```python
 trending [-i N_ID] [-l LIMIT] [-d S_DATE]
 ```
 
@@ -28,11 +28,11 @@ trending [-i N_ID] [-l LIMIT] [-d S_DATE]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| n_id | -i  --id | article ID | -1 | True | None |
-| limit | -l  --limit | limit of articles being printed | 5 | True | None |
-| s_date | -d  --date | starting date of articles | 2023-11-21 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| n_id | article ID | -1 | True | None |
+| limit | limit of articles being printed | 5 | True | None |
+| s_date | starting date of articles | 2022-11-25 | True | None |
 
 
 ---

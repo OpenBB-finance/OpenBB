@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /backtesting/ema - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/backtesting/ema - Reference | OpenBB Terminal Docs" />
 
 Strategy where stock is bought when Price  EMA(l)
 
 ### Usage
 
-```python wordwrap
+```python
 ema [-l LENGTH] [--spy] [--no_bench]
 ```
 
@@ -28,10 +28,10 @@ ema [-l LENGTH] [--spy] [--no_bench]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| length | -l | EMA period to consider | 20 | True | None |
-| spy | --spy | Flag to add spy hold comparison | False | True | None |
-| no_bench | --no_bench | Flag to not show buy and hold comparison | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| length | EMA period to consider | 20 | True | None |
+| spy | Flag to add spy hold comparison | False | True | None |
+| no_bench | Flag to not show buy and hold comparison | False | True | None |
 
 ---

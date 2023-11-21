@@ -22,10 +22,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Load forex for two given symbols.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/forex_helper.py#L83)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/forex_helper.py#L95)]
 
-```python wordwrap
-openbb.forex.load(to_symbol: str, from_symbol: str, resolution: str = "d", interval: str = "1day", start_date: Optional[str] = None, end_date: Optional[str] = None, source: str = "YahooFinance", verbose: bool = False)
+```python
+openbb.forex.load(to_symbol: str, from_symbol: str, resolution: str = "d", interval: str = "1day", start_date: Optional[str] = None, source: str = "YahooFinance", verbose: bool = False)
 ```
 
 ---
@@ -39,7 +39,6 @@ openbb.forex.load(to_symbol: str, from_symbol: str, resolution: str = "d", inter
 | resolution | str | The resolution for the data, by default "d" | d | True |
 | interval | str | What interval to get data for, by default "1day" | 1day | True |
 | start_date | Optional[str] | When to begin loading in data, by default last_year.strftime("%Y-%m-%d") | None | True |
-| end_date | Optional[str] | When to end loading in data, by default None | None | True |
 | source | str | Where to get data from, by default "YahooFinance" | YahooFinance | True |
 | verbose | bool | Display verbose information on what was the pair that was loaded, by default True | False | True |
 
@@ -52,13 +51,3 @@ openbb.forex.load(to_symbol: str, from_symbol: str, resolution: str = "d", inter
 | ---- | ----------- |
 | pd.DataFrame | The loaded data |
 ---
-
-## Examples
-
-```python
-from openbb_terminal.sdk import openbb
-openbb.forex.load(from_symbol="EUR", to_symbol="USD", start_date="2020-11-30", end_date="2022-12-01")
-```
-
----
-

@@ -17,9 +17,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get search futures [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/futures/yfinance_model.py#L51)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/futures/yfinance_model.py#L50)]
 
-```python wordwrap
+```python
 openbb.futures.search(category: str = "", exchange: str = "", description: str = "")
 ```
 
@@ -41,4 +41,3 @@ openbb.futures.search(category: str = "", exchange: str = "", description: str =
 This function does not return anything
 
 ---
-

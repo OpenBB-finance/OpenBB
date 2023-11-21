@@ -17,13 +17,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /ov/wfpe - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/ov/wfpe - Reference | OpenBB Terminal Docs" />
 
 Coin withdrawal fees per exchange [Source: https://withdrawalfees.com/]
 
 ### Usage
 
-```python wordwrap
+```python
 wfpe [-c COIN]
 ```
 
@@ -31,9 +31,9 @@ wfpe [-c COIN]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| coin | -c  --coin | Coin to check withdrawal fees in long format (e.g., bitcoin, ethereum) | bitcoin | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| coin | Coin to check withdrawal fees in long format (e.g., bitcoin, ethereum) | bitcoin | True | None |
 
 
 ---

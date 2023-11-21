@@ -22,7 +22,7 @@ Get repos sorted by stars or forks. Can be filtered by categories.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/github_model.py#L56)]
 
-```python wordwrap
+```python
 openbb.alt.oss.search(sortby: str = "stars", page: int = 1, categories: str = "")
 ```
 
@@ -45,4 +45,3 @@ openbb.alt.oss.search(sortby: str = "stars", page: int = 1, categories: str = ""
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with repos |
 ---
-

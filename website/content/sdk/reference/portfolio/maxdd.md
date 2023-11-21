@@ -24,9 +24,9 @@ import TabItem from '@theme/TabItem';
 
 Calculate the drawdown (MDD) of historical series.  Note that the calculation is done
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L511)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L482)]
 
-```python wordwrap
+```python
 openbb.portfolio.maxdd(portfolio_engine: portfolio_engine.PortfolioEngine, is_returns: bool = False)
 ```
 
@@ -53,23 +53,21 @@ openbb.portfolio.maxdd(portfolio_engine: portfolio_engine.PortfolioEngine, is_re
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
 output = openbb.portfolio.maxdd(p)
 ```
 
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display maximum drawdown curve
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L1182)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L1111)]
 
-```python wordwrap
-openbb.portfolio.maxdd_chart(portfolio_engine: portfolio_engine.PortfolioEngine, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.portfolio.maxdd_chart(portfolio_engine: portfolio_engine.PortfolioEngine, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -79,9 +77,8 @@ openbb.portfolio.maxdd_chart(portfolio_engine: portfolio_engine.PortfolioEngine,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | portfolio | PortfolioEngine | PortfolioEngine object | None | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | plt.Axes | Optional axes to display plot on | None | True |
 
 
 ---
@@ -91,8 +88,6 @@ openbb.portfolio.maxdd_chart(portfolio_engine: portfolio_engine.PortfolioEngine,
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

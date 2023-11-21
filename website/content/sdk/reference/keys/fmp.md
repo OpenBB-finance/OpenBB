@@ -18,9 +18,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Set Financial Modeling Prep key
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L337)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L352)]
 
-```python wordwrap
+```python
 openbb.keys.fmp(key: str, persist: bool = False, show_output: bool = False)
 ```
 
@@ -52,4 +52,3 @@ openbb.keys.fmp(key="example_key")
 ```
 
 ---
-

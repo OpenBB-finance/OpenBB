@@ -21,9 +21,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get jensen's alpha
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1522)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1480)]
 
-```python wordwrap
+```python
 openbb.portfolio.metric.jensens(portfolio_engine: portfolio_engine.PortfolioEngine, risk_free_rate: float = 0, window: str = "1y")
 ```
 
@@ -51,9 +51,8 @@ openbb.portfolio.metric.jensens(portfolio_engine: portfolio_engine.PortfolioEngi
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
 output = openbb.portfolio.metric.jensens(p)
 ```
 
 ---
-

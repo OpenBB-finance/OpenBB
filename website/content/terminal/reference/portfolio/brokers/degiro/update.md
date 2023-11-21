@@ -12,13 +12,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /brokers/degiro/update - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/degiro/update /brokers - Reference | OpenBB Terminal Docs" />
 
 
 
 ### Usage
 
-```python wordwrap
+```python
 update -p PRICE id
 ```
 
@@ -26,9 +26,9 @@ update -p PRICE id
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| id |  | Order's id. | None | False | None |
-| price | -p  --price | Price wanted. | None | False | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| id | Order's id. | None | False | None |
+| price | Price wanted. | None | False | None |
 
 ---

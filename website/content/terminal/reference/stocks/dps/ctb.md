@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /dps/ctb - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/dps/ctb - Reference | OpenBB Terminal Docs" />
 
 Show cost to borrow of stocks. [Source: Stocksera/Interactive Broker]
 
 ### Usage
 
-```python wordwrap
+```python
 ctb [-n NUMBER] [--raw]
 ```
 
@@ -29,10 +29,10 @@ ctb [-n NUMBER] [--raw]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| number | -n  --number | Number of records to retrieve. | 20 | True | None |
-| raw | --raw | Print raw data. | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| number | Number of records to retrieve. | 20 | True | None |
+| raw | Print raw data. | False | True | None |
 
 
 ---

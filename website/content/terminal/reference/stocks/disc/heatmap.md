@@ -16,13 +16,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /disc/heatmap - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/disc/heatmap - Reference | OpenBB Terminal Docs" />
 
 Get the SP 500 heatmap from finviz and display in interactive treemap
 
 ### Usage
 
-```python wordwrap
+```python
 heatmap [-t {day,week,month,3month,6month,year,ytd}]
 ```
 
@@ -30,8 +30,8 @@ heatmap [-t {day,week,month,3month,6month,year,ytd}]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| timeframe | -t  --timeframe | Timeframe to get heatmap data for | day | True | day, week, month, 3month, 6month, year, ytd |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| timeframe | Timeframe to get heatmap data for | day | True | day, week, month, 3month, 6month, year, ytd |
 
 ---

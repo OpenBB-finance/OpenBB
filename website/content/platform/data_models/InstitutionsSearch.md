@@ -1,6 +1,6 @@
 ---
-title: InstitutionsSearch
-description: Look up institutions regulated by the SEC
+title: Look up institutions regulated by the SEC
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

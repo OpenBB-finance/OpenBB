@@ -13,13 +13,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /onchain/info - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/onchain/info - Reference | OpenBB Terminal Docs" />
 
 Display info about ERC20 token. e.g. 0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984 [Source: Ethplorer]
 
 ### Usage
 
-```python wordwrap
+```python
 info [--social]
 ```
 
@@ -27,8 +27,8 @@ info [--social]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| social | --social | Flag to show social media links | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| social | Flag to show social media links | False | True | None |
 
 ---

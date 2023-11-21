@@ -8,9 +8,6 @@ keywords:
 - Python
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="econometrics /correlation_matrix - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -19,31 +16,31 @@ import TabItem from '@theme/TabItem';
 
 Get the correlation matrix of an input dataset.
 
+Parameters
+----------
+data : List[Data]
+Input dataset.
+
+Returns
+-------
+OBBject[List[Data]]
+Correlation matrix.
+
 ```python wordwrap
-obb.econometrics.correlation_matrix(data: Union[list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], numpy.ndarray, Data, List[Data]])
+
 ```
 
 ---
 
 ## Parameters
 
-<Tabs>
-<TabItem value="standard" label="Standard">
-
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| data | List[Data] | Input dataset. | None | False |
-</TabItem>
-
-</Tabs>
+This function does not take standardized parameters.
 
 ---
 
 ## Returns
 
-```python wordwrap
-Correlation matrix.
-```
+This function does not return a standardized model
 
 ---
 

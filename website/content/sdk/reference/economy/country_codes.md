@@ -21,9 +21,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get available country codes for Bigmac index
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/nasdaq_model.py#L135)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/nasdaq_model.py#L125)]
 
-```python wordwrap
+```python
 openbb.economy.country_codes()
 ```
 
@@ -41,4 +41,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | List[str] | List of ISO-3 letter country codes. |
 ---
-

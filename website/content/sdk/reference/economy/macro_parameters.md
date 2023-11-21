@@ -15,9 +15,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 This function returns the available macro parameters with detail.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_model.py#L646)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_model.py#L631)]
 
-```python wordwrap
+```python
 openbb.economy.macro_parameters()
 ```
 
@@ -35,4 +35,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | Dict[str, Dict[str, str]] | A dictionary with the available macro parameters. |
 ---
-

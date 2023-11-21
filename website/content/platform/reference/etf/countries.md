@@ -15,9 +15,7 @@ keywords:
 - country exposure
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="etf /countries - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 

@@ -24,9 +24,9 @@ import TabItem from '@theme/TabItem';
 
 Close a trade.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L535)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L526)]
 
-```python wordwrap
+```python
 openbb.forex.oanda.close(orderID: str, units: Optional[int] = 0, accountID: str = "REPLACE_ME")
 ```
 
@@ -50,16 +50,14 @@ openbb.forex.oanda.close(orderID: str, units: Optional[int] = 0, accountID: str 
 | Union[pd.DataFrame, bool] | Close trades data or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Close a trade.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L265)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L271)]
 
-```python wordwrap
+```python
 openbb.forex.oanda.close_chart(accountID: str, orderID: str = "", units: Optional[int] = None)
 ```
 
@@ -81,8 +79,6 @@ openbb.forex.oanda.close_chart(accountID: str, orderID: str = "", units: Optiona
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

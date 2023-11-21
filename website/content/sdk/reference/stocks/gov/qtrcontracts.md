@@ -28,9 +28,9 @@ import TabItem from '@theme/TabItem';
 
 Analyzes quarterly contracts by ticker
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L484)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_model.py#L482)]
 
-```python wordwrap
+```python
 openbb.stocks.gov.qtrcontracts(analysis: str = "total", limit: int = 5)
 ```
 
@@ -53,17 +53,15 @@ openbb.stocks.gov.qtrcontracts(analysis: str = "total", limit: int = 5)
 | pd.DataFrame | Dataframe with tickers and total amount if total selected. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Quarterly contracts [Source: quiverquant.com]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L477)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/government/quiverquant_view.py#L446)]
 
-```python wordwrap
-openbb.stocks.gov.qtrcontracts_chart(analysis: str = "total", limit: int = 5, raw: bool = False, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.stocks.gov.qtrcontracts_chart(analysis: str = "total", limit: int = 5, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -75,9 +73,8 @@ openbb.stocks.gov.qtrcontracts_chart(analysis: str = "total", limit: int = 5, ra
 | analysis | str | Analysis to perform.  Either 'total', 'upmom' 'downmom' | total | True |
 | limit | int | Number to show | 5 | True |
 | raw | bool | Flag to display raw data | False | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -87,8 +84,6 @@ openbb.stocks.gov.qtrcontracts_chart(analysis: str = "total", limit: int = 5, ra
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

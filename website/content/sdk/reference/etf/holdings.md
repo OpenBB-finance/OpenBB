@@ -18,9 +18,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get ETF holdings
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/etf/stockanalysis_model.py#L79)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/etf/stockanalysis_model.py#L82)]
 
-```python wordwrap
+```python
 openbb.etf.holdings(symbol: str)
 ```
 
@@ -41,13 +41,3 @@ openbb.etf.holdings(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of holdings |
 ---
-
-## Examples
-
-```python
-from openbb_terminal.sdk import openbb
-openbb.etf.holdings("SPY")
-```
-
----
-

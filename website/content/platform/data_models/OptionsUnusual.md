@@ -1,6 +1,6 @@
 ---
-title: OptionsUnusual
-description: Get the complete options chain for a ticker
+title: Get the complete options chain for a ticker
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -24,9 +24,9 @@ import TabItem from '@theme/TabItem';
 
 Get insider activity. [Source: Business Insider]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/insider/businessinsider_model.py#L16)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/insider/businessinsider_model.py#L17)]
 
-```python wordwrap
+```python
 openbb.stocks.ins.act(symbol: str)
 ```
 
@@ -48,17 +48,15 @@ openbb.stocks.ins.act(symbol: str)
 | pd.DataFrame | Insider activity data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display insider activity. [Source: Business Insider]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/insider/businessinsider_view.py#L29)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/insider/businessinsider_view.py#L32)]
 
-```python wordwrap
-openbb.stocks.ins.act_chart(data: pd.DataFrame, symbol: str, start_date: Optional[str] = None, interval: str = "1440min", limit: int = 10, raw: bool = False, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.stocks.ins.act_chart(data: pd.DataFrame, symbol: str, start_date: Optional[str] = None, interval: str = "1440min", limit: int = 10, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -73,9 +71,8 @@ openbb.stocks.ins.act_chart(data: pd.DataFrame, symbol: str, start_date: Optiona
 | interval | str | Stock data interval | 1440min | True |
 | limit | int | Number of latest days of inside activity | 10 | True |
 | raw | bool | Print to console | False | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -85,8 +82,6 @@ openbb.stocks.ins.act_chart(data: pd.DataFrame, symbol: str, start_date: Optiona
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

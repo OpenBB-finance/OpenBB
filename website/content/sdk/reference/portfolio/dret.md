@@ -26,9 +26,9 @@ import TabItem from '@theme/TabItem';
 
 Get daily returns
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L395)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L373)]
 
-```python wordwrap
+```python
 openbb.portfolio.dret(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all")
 ```
 
@@ -55,23 +55,21 @@ openbb.portfolio.dret(portfolio_engine: portfolio_engine.PortfolioEngine, window
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
 output = openbb.portfolio.dret(p)
 ```
 
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display daily returns
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L671)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L557)]
 
-```python wordwrap
-openbb.portfolio.dret_chart(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all", raw: bool = False, limit: int = 10, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.portfolio.dret_chart(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all", raw: bool = False, limit: int = 10, export: str = "", external_axes: Optional[matplotlib.axes._axes.Axes] = None)
 ```
 
 ---
@@ -85,7 +83,7 @@ openbb.portfolio.dret_chart(portfolio_engine: portfolio_engine.PortfolioEngine, 
 | raw | False | Display raw data from cumulative return | False | True |
 | limit | int | Last daily returns to display | 10 | True |
 | export | str | Export certain type of data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | plt.Axes | Optional axes to display plot on | None | True |
 
 
 ---
@@ -95,8 +93,6 @@ openbb.portfolio.dret_chart(portfolio_engine: portfolio_engine.PortfolioEngine, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

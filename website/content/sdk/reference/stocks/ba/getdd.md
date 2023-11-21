@@ -18,12 +18,12 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="stocks.ba.getdd - Reference | OpenBB SDK Docs" />
 
-Get due diligence posts from list of subreddits [Source: reddit].
+Gets due diligence posts from list of subreddits [Source: reddit].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/reddit_model.py#L301)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/reddit_model.py#L711)]
 
-```python wordwrap
-openbb.stocks.ba.getdd(limit: int = 5, n_days: int = 3, show_all_flairs: bool = False)
+```python
+openbb.stocks.ba.getdd(symbol: str, limit: int = 5, n_days: int = 3, show_all_flairs: bool = False)
 ```
 
 ---
@@ -32,6 +32,7 @@ openbb.stocks.ba.getdd(limit: int = 5, n_days: int = 3, show_all_flairs: bool = 
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
+| symbol | str | Stock ticker | None | False |
 | limit | int | Number of posts to get | 5 | True |
 | n_days | int | Number of days back to get posts | 3 | True |
 | show_all_flairs | bool | Search through all flairs (apart from Yolo and Meme) | False | True |
@@ -45,4 +46,3 @@ openbb.stocks.ba.getdd(limit: int = 5, n_days: int = 3, show_all_flairs: bool = 
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of submissions |
 ---
-

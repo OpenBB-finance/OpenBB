@@ -20,7 +20,7 @@ Show unit root tests of a column of a dataset
 
 ### Usage
 
-```python wordwrap
+```python
 root -v {} [-r {c,ct,ctt,n}] [-k {c,ct}]
 ```
 
@@ -28,11 +28,11 @@ root -v {} [-r {c,ct,ctt,n}] [-k {c,ct}]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| column | -v  --value | The column and name of the database you want test unit root for | None | False | None |
-| fuller_reg | -r  --fuller_reg | Type of regression. Can be 'c','ct','ctt','nc'. c - Constant and t - trend order | c | True | c, ct, ctt, n |
-| kpss_reg | -k  --kps_reg | Type of regression. Can be 'c', 'ct'. c - Constant and t - trend order | c | True | c, ct |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| column | The column and name of the database you want test unit root for | None | False | None |
+| fuller_reg | Type of regression. Can be 'c','ct','ctt','nc'. c - Constant and t - trend order | c | True | c, ct, ctt, n |
+| kpss_reg | Type of regression. Can be 'c', 'ct'. c - Constant and t - trend order | c | True | c, ct |
 
 
 ---

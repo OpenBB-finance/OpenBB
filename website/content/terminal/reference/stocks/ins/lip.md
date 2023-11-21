@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /ins/lip - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ins/lip - Reference | OpenBB Terminal Docs" />
 
 Print latest insider purchases. [Source: OpenInsider]
 
 ### Usage
 
-```python wordwrap
+```python
 lip [-l LIMIT]
 ```
 
@@ -29,9 +29,9 @@ lip [-l LIMIT]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| limit | -l  --limit | Limit of datarows to display | 10 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| limit | Limit of datarows to display | 10 | True | None |
 
 
 ---

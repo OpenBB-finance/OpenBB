@@ -27,9 +27,9 @@ import TabItem from '@theme/TabItem';
 
 Returns addresses with non-zero balance of a certain symbol
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L248)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L249)]
 
-```python wordwrap
+```python
 openbb.crypto.dd.nonzero(symbol: str, start_date: str = "2010-01-01", end_date: Optional[str] = None)
 ```
 
@@ -53,17 +53,15 @@ openbb.crypto.dd.nonzero(symbol: str, start_date: str = "2010-01-01", end_date: 
 | pd.DataFrame | addresses with non-zero balances |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots addresses with non-zero balance of a certain symbol
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_view.py#L83)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_view.py#L96)]
 
-```python wordwrap
-openbb.crypto.dd.nonzero_chart(symbol: str, start_date: str = "2010-01-01", end_date: Optional[str] = None, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.crypto.dd.nonzero_chart(symbol: str, start_date: str = "2010-01-01", end_date: Optional[str] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -76,7 +74,7 @@ openbb.crypto.dd.nonzero_chart(symbol: str, start_date: str = "2010-01-01", end_
 | start_date | str | Initial date, format YYYY-MM-DD | 2010-01-01 | True |
 | end_date | Optional[str] | Final date, format YYYY-MM-DD | None | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -86,8 +84,6 @@ openbb.crypto.dd.nonzero_chart(symbol: str, start_date: str = "2010-01-01", end_
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

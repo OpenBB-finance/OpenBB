@@ -13,13 +13,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /gov/histcont - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/gov/histcont - Reference | OpenBB Terminal Docs" />
 
 Quarterly-contracts historical [Source: www.quiverquant.com]
 
 ### Usage
 
-```python wordwrap
+```python
 histcont [--raw]
 ```
 
@@ -27,9 +27,9 @@ histcont [--raw]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| raw | --raw | Print raw data. | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| raw | Print raw data. | False | True | None |
 
 ![histcont](https://user-images.githubusercontent.com/46355364/154263545-a210b65d-5dac-45df-b378-692563a5c950.png)
 

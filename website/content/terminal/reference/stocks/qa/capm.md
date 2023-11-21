@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /qa/capm - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/qa/capm - Reference | OpenBB Terminal Docs" />
 
 Provides detailed information about a stock's risk compared to the market risk.
 
 ### Usage
 
-```python wordwrap
+```python
 capm
 ```
 

@@ -19,23 +19,23 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="economy /qa/pick - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="economy/qa/pick - Reference | OpenBB Terminal Docs" />
 
 Load a FRED series to current selection
 
 ### Usage
 
-```python wordwrap
-load [-c {Open,High,Low,Close,Adj Close,Volume,Dividends,Stock Splits}]
+```python
+load [-c {Open,High,Low,Close,Adj Close,Volume,date_id,OC_High,OC_Low,Returns,LogRet}]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| column | -c  --column | Which loaded source to get data from | None | True | Open, High, Low, Close, Adj Close, Volume, Dividends, Stock Splits |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| column | Which loaded source to get data from | None | True | Open, High, Low, Close, Adj Close, Volume, date_id, OC_High, OC_Low, Returns, LogRet |
 
 
 ---

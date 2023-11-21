@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /ba/stalker - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ba/stalker - Reference | OpenBB Terminal Docs" />
 
 Print up to the last 30 messages of a user. [Source: Stocktwits]
 
 ### Usage
 
-```python wordwrap
+```python
 stalker [-u S_USER] [-l LIMIT]
 ```
 
@@ -29,10 +29,10 @@ stalker [-u S_USER] [-l LIMIT]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| s_user | -u  --user | username. | Newsfilter | True | None |
-| limit | -l  --limit | limit messages shown. | 30 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| s_user | username. | Newsfilter | True | None |
+| limit | limit messages shown. | 30 | True | None |
 
 
 ---

@@ -19,7 +19,7 @@ Get current exchange rate quote
 
 ### Usage
 
-```python wordwrap
+```python
 quote
 ```
 

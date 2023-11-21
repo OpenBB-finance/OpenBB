@@ -16,9 +16,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Check if symbol is in defined binance. [Source: Binance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/binance_model.py#L101)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/binance_model.py#L96)]
 
-```python wordwrap
+```python
 openbb.crypto.dd.check_valid_binance_str(symbol: str)
 ```
 
@@ -36,4 +36,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | str | Symbol |
 ---
-

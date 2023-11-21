@@ -1,6 +1,6 @@
 ---
-title: SchemaFiles
-description: Get lists of SEC XML schema files by year
+title: Get lists of SEC XML schema files by year
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

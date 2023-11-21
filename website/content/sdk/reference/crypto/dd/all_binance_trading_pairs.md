@@ -17,9 +17,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Returns all available pairs on Binance in DataFrame format. DataFrame has 3 columns symbol, baseAsset, quoteAsset
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/binance_model.py#L63)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/binance_model.py#L58)]
 
-```python wordwrap
+```python
 openbb.crypto.dd.all_binance_trading_pairs()
 ```
 
@@ -37,4 +37,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | All available pairs on Binance<br/>Columns: symbol, baseAsset, quoteAsset |
 ---
-

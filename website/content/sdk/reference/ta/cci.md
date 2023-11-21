@@ -28,7 +28,7 @@ Commodity channel index
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_model.py#L20)]
 
-```python wordwrap
+```python
 openbb.ta.cci(data: pd.DataFrame, window: int = 14, scalar: float = 0.0015)
 ```
 
@@ -54,17 +54,15 @@ openbb.ta.cci(data: pd.DataFrame, window: int = 14, scalar: float = 0.0015)
 | pd.DataFrame | Dataframe of technical indicator |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots CCI Indicator
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L21)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/momentum_view.py#L34)]
 
-```python wordwrap
-openbb.ta.cci_chart(data: pd.DataFrame, window: int = 14, scalar: float = 0.0015, symbol: str = "", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.ta.cci_chart(data: pd.DataFrame, window: int = 14, scalar: float = 0.0015, symbol: str = "", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -78,7 +76,7 @@ openbb.ta.cci_chart(data: pd.DataFrame, window: int = 14, scalar: float = 0.0015
 | scalar | float | Scalar variable | 0.0015 | True |
 | symbol | str | Stock ticker |  | True |
 | export | str | Format to export data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (2 axes are expected in the list), by default None | None | True |
 
 
 ---
@@ -88,8 +86,6 @@ openbb.ta.cci_chart(data: pd.DataFrame, window: int = 14, scalar: float = 0.0015
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

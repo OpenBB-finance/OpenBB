@@ -13,13 +13,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /ba/messages - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ba/messages - Reference | OpenBB Terminal Docs" />
 
 Print up to 30 of the last messages on the board. [Source: Stocktwits]
 
 ### Usage
 
-```python wordwrap
+```python
 messages [-l LIMIT]
 ```
 
@@ -27,8 +27,8 @@ messages [-l LIMIT]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| limit | -l  --limit | limit messages shown. | 30 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| limit | limit messages shown. | 30 | True | None |
 
 ---

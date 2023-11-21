@@ -38,10 +38,10 @@ import TabItem from '@theme/TabItem';
 
 This functions groups the data queried from the EconDB database [Source: EconDB]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_model.py#L670)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_model.py#L655)]
 
-```python wordwrap
-openbb.economy.macro(parameters: Optional[list] = None, countries: Optional[list] = None, transform: str = "", start_date: str = "1900-01-01", end_date: Optional[str] = None, symbol: str = "")
+```python
+openbb.economy.macro(parameters: list = None, countries: list = None, transform: str = "", start_date: str = "1900-01-01", end_date: Optional[str] = None, symbol: str = "")
 ```
 
 ---
@@ -76,17 +76,15 @@ macro_df = openbb.economy.macro()
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Show the received macro data about a company [Source: EconDB]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_view.py#L17)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/econdb_view.py#L25)]
 
-```python wordwrap
-openbb.economy.macro_chart(parameters: Optional[list] = None, countries: Optional[list] = None, transform: str = "", start_date: str = "1900-01-01", end_date: Optional[str] = None, symbol: str = "", raw: bool = False, external_axes: bool = False, export: str = "", sheet_name: Optional[str] = None, limit: int = 10)
+```python
+openbb.economy.macro_chart(parameters: list = None, countries: list = None, transform: str = "", start_date: str = "1900-01-01", end_date: Optional[str] = None, symbol: str = "", raw: bool = False, external_axes: Optional[List[axes]] = None, export: str = "")
 ```
 
 ---
@@ -102,7 +100,7 @@ openbb.economy.macro_chart(parameters: Optional[list] = None, countries: Optiona
 | end_date | Optional[str] | The end date, format "YEAR-MONTH-DAY", i.e. 2020-06-05. | None | True |
 | symbol | str | In what currency you wish to convert all values. |  | True |
 | raw | bool | Whether to display the raw output. | False | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.axes]] | External axes to plot on | None | True |
 | export | str | Export data to csv,json,xlsx or png,jpg,pdf,svg file |  | True |
 
 
@@ -114,8 +112,6 @@ openbb.economy.macro_chart(parameters: Optional[list] = None, countries: Optiona
 | ---- | ----------- |
 | Plots the Series. |  |
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -17,13 +17,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /backtesting/rsi - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/backtesting/rsi - Reference | OpenBB Terminal Docs" />
 
 Strategy that buys when the stock is less than a threshold and shorts when it exceeds a threshold.
 
 ### Usage
 
-```python wordwrap
+```python
 rsi [-p PERIODS] [-u HIGH] [-l LOW] [--spy] [--no_bench] [--no_short]
 ```
 
@@ -31,13 +31,13 @@ rsi [-p PERIODS] [-u HIGH] [-l LOW] [--spy] [--no_bench] [--no_short]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| periods | -p  --periods | Number of periods for RSI calculation | 14 | True | None |
-| high | -u  --high | High (upper) RSI Level | 70 | True | None |
-| low | -l  --low | Low RSI Level | 30 | True | None |
-| spy | --spy | Flag to add spy hold comparison | False | True | None |
-| no_bench | --no_bench | Flag to not show buy and hold comparison | False | True | None |
-| shortable | --no_short | Flag that disables the short sell | True | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| periods | Number of periods for RSI calculation | 14 | True | None |
+| high | High (upper) RSI Level | 70 | True | None |
+| low | Low RSI Level | 30 | True | None |
+| spy | Flag to add spy hold comparison | False | True | None |
+| no_bench | Flag to not show buy and hold comparison | False | True | None |
+| shortable | Flag that disables the short sell | True | True | None |
 
 ---

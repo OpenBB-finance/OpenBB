@@ -1,6 +1,6 @@
 ---
-title: EtfSearch
-description: Search for ETFs
+title: Search for ETFs
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

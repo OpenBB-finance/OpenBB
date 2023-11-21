@@ -1,6 +1,6 @@
 ---
-title: KeyExecutives
-description: Key Executives
+title: Key Executives
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

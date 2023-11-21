@@ -15,25 +15,24 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /fa/earnings - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/fa/earnings - Reference | OpenBB Terminal Docs" />
 
 Print earnings dates and reported EPS of the company. The following fields are expected: Fiscal Date Ending and Reported EPS. [Source: Alpha Vantage]
 
 ### Usage
 
-```python wordwrap
-earnings [-t TICKER] [-q] [-l LIMIT]
+```python
+earnings [-q] [-l LIMIT]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| ticker | -t  --ticker | Ticker to analyze | None | True | None |
-| b_quarter | -q  --quarter | Quarter fundamental data flag. | False | True | None |
-| limit | -l  --limit | Number of latest info | 5 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| b_quarter | Quarter fundamental data flag. | False | True | None |
+| limit | Number of latest info | 5 | True | None |
 
 
 ---

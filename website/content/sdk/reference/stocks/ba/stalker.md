@@ -19,9 +19,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Gets messages from given user [Source: stocktwits].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/stocktwits_model.py#L99)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/stocktwits_model.py#L103)]
 
-```python wordwrap
+```python
 openbb.stocks.ba.stalker(user: str, limit: int = 30)
 ```
 
@@ -43,4 +43,3 @@ openbb.stocks.ba.stalker(user: str, limit: int = 30)
 | ---- | ----------- |
 | List[Dict[str, Any]] | List of posts |
 ---
-

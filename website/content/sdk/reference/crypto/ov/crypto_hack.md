@@ -19,7 +19,7 @@ Get crypto hack
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/rekt_model.py#L139)]
 
-```python wordwrap
+```python
 openbb.crypto.ov.crypto_hack(slug: str)
 ```
 
@@ -40,4 +40,3 @@ openbb.crypto.ov.crypto_hack(slug: str)
 | ---- | ----------- |
 | Union[str, None] | Crypto hack |
 ---
-

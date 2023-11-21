@@ -1,6 +1,6 @@
 ---
-title: EquityGainers
-description: Get the top Equity gainers
+title: Get the top Equity gainers
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

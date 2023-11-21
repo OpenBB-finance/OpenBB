@@ -1,6 +1,6 @@
 ---
-title: GdpNominal
-description: Nominal GDP Data
+title: Nominal GDP Data
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

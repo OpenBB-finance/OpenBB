@@ -12,13 +12,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="alt /covid/ov - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="alt/covid/ov - Reference | OpenBB Terminal Docs" />
 
 Show historical cases and deaths by country.
 
 ### Usage
 
-```python wordwrap
+```python
 ov
 ```
 

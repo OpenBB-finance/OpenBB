@@ -22,13 +22,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /ov/fun - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/ov/fun - Reference | OpenBB Terminal Docs" />
 
 Display fundamental metrics overview [Source: Token Terminal]
 
 ### Usage
 
-```python wordwrap
+```python
 fun -m {twitter_followers,gmv_annualized,market_cap,take_rate,revenue,revenue_protocol,tvl,pe,pe_circulating,ps,ps_circulating} [-c {Asset Management,Blockchain,DeFi,Exchange,Gaming,Insurance,Interoperability,Lending,NFT,Other,Prediction Market,Stablecoin}] [-t {24h,7d,30d,90d,180d,365d}] [-r] [-l LIMIT]
 ```
 
@@ -36,13 +36,13 @@ fun -m {twitter_followers,gmv_annualized,market_cap,take_rate,revenue,revenue_pr
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| metric | -m  --metric | Choose metric of interest | None | False | twitter_followers, gmv_annualized, market_cap, take_rate, revenue, revenue_protocol, tvl, pe, pe_circulating, ps, ps_circulating |
-| category | -c  --category | Choose category of interest |  | True | Asset Management, Blockchain, DeFi, Exchange, Gaming, Insurance, Interoperability, Lending, NFT, Other, Prediction Market, Stablecoin |
-| timeline | -t  --timeline | Choose timeline of interest | 24h | True | 24h, 7d, 30d, 90d, 180d, 365d |
-| reverse | -r  --reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
-| limit | -l  --limit | Display N items | 10 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| metric | Choose metric of interest | None | False | twitter_followers, gmv_annualized, market_cap, take_rate, revenue, revenue_protocol, tvl, pe, pe_circulating, ps, ps_circulating |
+| category | Choose category of interest |  | True | Asset Management, Blockchain, DeFi, Exchange, Gaming, Insurance, Interoperability, Lending, NFT, Other, Prediction Market, Stablecoin |
+| timeline | Choose timeline of interest | 24h | True | 24h, 7d, 30d, 90d, 180d, 365d |
+| reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
+| limit | Display N items | 10 | True | None |
 
 
 ---

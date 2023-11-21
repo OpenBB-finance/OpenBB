@@ -24,17 +24,17 @@ Get top of book for loaded ticker from selected exchange
 
 ### Usage
 
-```python wordwrap
-tob [-t S_TICKER] [-e {BZX,EDGX,BYX,EDGA}]
+```python
+quote -t S_TICKER [-e {BZX,EDGX,BYX,EDGA}]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| s_ticker | -t  --ticker | Ticker to get data for | None | True | None |
-| exchange | -e  --exchange |  | BZX | True | BZX, EDGX, BYX, EDGA |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| s_ticker | Ticker to get data for | None | False | None |
+| exchange |  | BZX | True | BZX, EDGX, BYX, EDGA |
 
 ---

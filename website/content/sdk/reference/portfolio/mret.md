@@ -25,9 +25,9 @@ import TabItem from '@theme/TabItem';
 
 Get monthly returns
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L272)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L267)]
 
-```python wordwrap
+```python
 openbb.portfolio.mret(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all")
 ```
 
@@ -54,23 +54,21 @@ openbb.portfolio.mret(portfolio_engine: portfolio_engine.PortfolioEngine, window
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
 output = openbb.portfolio.mret(p)
 ```
 
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display monthly returns
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L462)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L457)]
 
-```python wordwrap
-openbb.portfolio.mret_chart(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all", instrument: str = "both", graph: bool = False, show_vals: bool = False, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.portfolio.mret_chart(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all", raw: bool = False, show_vals: bool = False, export: str = "", external_axes: Optional[matplotlib.axes._axes.Axes] = None)
 ```
 
 ---
@@ -81,11 +79,10 @@ openbb.portfolio.mret_chart(portfolio_engine: portfolio_engine.PortfolioEngine, 
 | ---- | ---- | ----------- | ------- | -------- |
 | portfolio_engine | PortfolioEngine | PortfolioEngine class instance, this will hold transactions and perform calculations.<br/>Use `portfolio.load` to create a PortfolioEngine. | None | False |
 | window | str | interval to compare cumulative returns and benchmark | all | True |
-| instrument | str | Display raw data from cumulative return, default is showing both the portfolio and benchmark in one table | both | True |
+| raw | False | Display raw data from cumulative return | False | True |
 | show_vals | False | Show values on heatmap | False | True |
 | export | str | Export certain type of data |  | True |
-| sheet_name | str | Whether to export to a specific sheet name in an Excel file | None | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | plt.Axes | Optional axes to display plot on | None | True |
 
 
 ---
@@ -95,8 +92,6 @@ openbb.portfolio.mret_chart(portfolio_engine: portfolio_engine.PortfolioEngine, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

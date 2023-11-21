@@ -12,13 +12,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /holdp - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/holdp - Reference | OpenBB Terminal Docs" />
 
 Display holdings of assets (in percentage)
 
 ### Usage
 
-```python wordwrap
+```python
 holdp [-u]
 ```
 
@@ -26,8 +26,8 @@ holdp [-u]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| unstack | -u  --unstack | Sum all assets percentage over time | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| unstack | Sum all assets percentage over time | False | True | None |
 
 ---

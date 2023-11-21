@@ -22,7 +22,7 @@ Returns low float DataFrame
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/discovery/shortinterest_model.py#L15)]
 
-```python wordwrap
+```python
 openbb.stocks.disc.lowfloat()
 ```
 
@@ -40,4 +40,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | DataFrame | Low float DataFrame with the following columns:<br/>Ticker, Company, Exchange, ShortInt, Float, Outstd, Industry |
 ---
-

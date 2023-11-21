@@ -1,6 +1,6 @@
 ---
-title: EuropeanIndexConstituents
-description: European Index Constituents
+title: European Index Constituents
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

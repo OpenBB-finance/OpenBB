@@ -1,6 +1,6 @@
 ---
-title: EquityHistorical
-description: Equity Historical price
+title: Equity Historical price
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
@@ -39,7 +39,7 @@ EquityHistoricalQueryParams,
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
 | chart | bool | Whether to create a chart or not, by default False. | False | True |
-| provider | Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'alpha_vantage' if there is no default. | alpha_vantage | True |
+| provider | Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'alpha_vantage' if there is no default. | alpha_vantage | True |
 </TabItem>
 
 <TabItem value='alpha_vantage' label='alpha_vantage'>
@@ -51,7 +51,7 @@ EquityHistoricalQueryParams,
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
 | chart | bool | Whether to create a chart or not, by default False. | False | True |
-| provider | Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'alpha_vantage' if there is no default. | alpha_vantage | True |
+| provider | Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'alpha_vantage' if there is no default. | alpha_vantage | True |
 | adjusted | bool | Output time series is adjusted by historical split and dividend events. | False | True |
 | extended_hours | bool | Extended trading hours during pre-market and after-hours.Only available for intraday data. | False | True |
 | month | str | Query a specific month in history (in YYYY-MM format). | None | True |
@@ -67,7 +67,7 @@ EquityHistoricalQueryParams,
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
 | chart | bool | Whether to create a chart or not, by default False. | False | True |
-| provider | Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'alpha_vantage' if there is no default. | alpha_vantage | True |
+| provider | Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'alpha_vantage' if there is no default. | alpha_vantage | True |
 | limit | int | Number of days to look back (Only for interval 1d). | None | True |
 </TabItem>
 
@@ -80,7 +80,7 @@ EquityHistoricalQueryParams,
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
 | chart | bool | Whether to create a chart or not, by default False. | False | True |
-| provider | Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'alpha_vantage' if there is no default. | alpha_vantage | True |
+| provider | Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'alpha_vantage' if there is no default. | alpha_vantage | True |
 | start_time | datetime.time | Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. | None | True |
 | end_time | datetime.time | Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'. | None | True |
 | timezone | str | Timezone of the data, in the IANA format (Continent/City). | UTC | True |
@@ -96,7 +96,7 @@ EquityHistoricalQueryParams,
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
 | chart | bool | Whether to create a chart or not, by default False. | False | True |
-| provider | Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'alpha_vantage' if there is no default. | alpha_vantage | True |
+| provider | Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'alpha_vantage' if there is no default. | alpha_vantage | True |
 | sort | Literal['asc', 'desc'] | Sort order of the data. | desc | True |
 | limit | int | The number of data entries to return. | 49999 | True |
 | adjusted | bool | Output time series is adjusted by historical split and dividend events. | True | True |
@@ -111,7 +111,7 @@ EquityHistoricalQueryParams,
 | start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |
 | end_date | Union[date, str] | End date of the data, in YYYY-MM-DD format. | None | True |
 | chart | bool | Whether to create a chart or not, by default False. | False | True |
-| provider | Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'alpha_vantage' if there is no default. | alpha_vantage | True |
+| provider | Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'yfinance'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'alpha_vantage' if there is no default. | alpha_vantage | True |
 | prepost | bool | Include Pre and Post market data. | False | True |
 | include | bool | Include Dividends and Stock Splits in results. | True | True |
 | adjusted | bool | Adjust all OHLC data automatically. | False | True |
@@ -229,26 +229,6 @@ EquityHistoricalQueryParams,
 | volume | Union[float, int] | The trading volume. |
 | vwap | float | Volume Weighted Average Price over the period. |
 | transactions | int | Number of transactions for the symbol in the time period. |
-</TabItem>
-
-<TabItem value='tiingo' label='tiingo'>
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| date | datetime | The date of the data. |
-| open | float | The open price. |
-| high | float | The high price. |
-| low | float | The low price. |
-| close | float | The close price. |
-| volume | Union[float, int] | The trading volume. |
-| vwap | float | Volume Weighted Average Price over the period. |
-| adj_open | float | Adjusted open price during the period. |
-| adj_high | float | Adjusted high price during the period. |
-| adj_low | float | Adjusted low price during the period. |
-| adj_close | float | Adjusted closing price during the period. |
-| adj_volume | float | Adjusted volume during the period. |
-| split_ratio | float | Ratio of the equity split, if a equity split occurred. |
-| dividend | float | Dividend amount, if a dividend was paid. |
 </TabItem>
 
 </Tabs>

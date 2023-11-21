@@ -1,6 +1,6 @@
 ---
-title: SONIA
-description: Sterling Overnight Index Average
+title: Sterling Overnight Index Average
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -26,12 +26,12 @@ import TabItem from '@theme/TabItem';
 <Tabs>
 <TabItem value="model" label="Model" default>
 
-Obtain CPI data from FRED. [Source: FRED]
+Get Consumer Price Index from Alpha Vantage
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/fred_model.py#L306)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/alphavantage_model.py#L182)]
 
-```python wordwrap
-openbb.economy.cpi(countries: list, units: str = "growth_same", frequency: str = "monthly", harmonized: bool = False, smart_select: bool = True, options: bool = False, start_date: Optional[str] = None, end_date: Optional[str] = None)
+```python
+openbb.economy.cpi(interval: str = "m", start_year: int = 2010)
 ```
 
 ---
@@ -40,35 +40,28 @@ openbb.economy.cpi(countries: list, units: str = "growth_same", frequency: str =
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| countries | list | The country or countries you want to see. | None | False |
-| units | str | The units you want to see, can be "growth_previous", "growth_same" or "index_2015". | growth_same | True |
-| frequency | str | The frequency you want to see, either "annual", monthly" or "quarterly". | monthly | True |
-| harmonized | bool | Whether you wish to obtain harmonized data. | False | True |
-| smart_select | bool | Whether to assist with the selection. | True | True |
-| options | bool | Whether to return the options. | False | True |
-| start_date | Optional[str] | Start date, formatted YYYY-MM-DD | None | True |
-| end_date | Optional[str] | End date, formatted YYYY-MM-DD | None | True |
+| interval | str | Interval for data.  Either "m" or "s" for monthly or semiannual | m | True |
+| start_year | int | Start year for plot, by default 2010 | 2010 | True |
 
 
 ---
 
 ## Returns
 
-This function does not return anything
-
+| Type | Description |
+| ---- | ----------- |
+| pd.DataFrame | Dataframe of CPI |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
 
-Inflation measured by consumer price index (CPI) is defined as the change in
+Display US consumer price index (CPI) from AlphaVantage
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/fred_view.py#L187)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/alphavantage_view.py#L257)]
 
-```python wordwrap
-openbb.economy.cpi_chart(countries: list, units: str = "growth_same", frequency: str = "monthly", harmonized: bool = False, smart_select: bool = True, options: bool = False, start_date: Optional[str] = None, end_date: Optional[str] = None, raw: bool = False, export: str = "", sheet_name: str = "", external_axes: bool = False, limit: int = 10)
+```python
+openbb.economy.cpi_chart(interval: str = "m", start_year: int = 2010, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -77,18 +70,11 @@ openbb.economy.cpi_chart(countries: list, units: str = "growth_same", frequency:
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| countries | list | List of countries to plot | None | False |
-| units | str | Units of the data, either "growth_same", "growth_previous", "index_2015" | growth_same | True |
-| frequency | str | Frequency of the data, either "monthly", "quarterly" or "annual" | monthly | True |
-| harmonized | bool | Whether to use harmonized data | False | True |
-| smart_select | bool | Whether to automatically select the best series | True | True |
-| options | bool | Whether to show options | False | True |
-| start_date | Optional[str] | Start date, formatted YYYY-MM-DD | None | True |
-| end_date | Optional[str] | End date, formatted YYYY-MM-DD | None | True |
-| raw | bool | Show raw data | False | True |
-| export | str | Export data to csv or excel file |  | True |
-| sheet_name | str | Name of the sheet to export to |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| interval | str | Interval for GDP.  Either "m" or "s" | m | True |
+| start_year | int | Start year for plot, by default 2010 | 2010 | True |
+| raw | bool | Flag to show raw data, by default False | False | True |
+| export | str | Format to export data, by default "" |  | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -98,8 +84,6 @@ openbb.economy.cpi_chart(countries: list, units: str = "growth_same", frequency:
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

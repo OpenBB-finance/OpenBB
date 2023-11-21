@@ -11,13 +11,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /qa/bw - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/qa/bw - Reference | OpenBB Terminal Docs" />
 
 Box and Whisker plot
 
 ### Usage
 
-```python wordwrap
+```python
 bw [-y]
 ```
 
@@ -25,9 +25,9 @@ bw [-y]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| year | -y  --yearly | Flag to show yearly bw plot | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| year | Flag to show yearly bw plot | False | True | None |
 
 ![bw](https://user-images.githubusercontent.com/46355364/154305545-0f99fe4b-07e1-4714-8762-da3569023578.png)
 

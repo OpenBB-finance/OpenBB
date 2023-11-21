@@ -19,9 +19,6 @@ keywords:
 - Keltner Channels data
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="technical /kc - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -35,6 +32,29 @@ on either side of an asset's price and can aid in determining
 the direction of a trend.The Keltner channel uses the average
 true range (ATR) or volatility, with breaks above or below the top
 and bottom barriers signaling a continuation.
+
+Parameters
+----------
+data : List[Data]
+The data to use for the Keltner Channels calculation.
+index : str, optional
+Index column name to use with `data`, by default "date"
+length : PositiveInt, optional
+The length of the Keltner Channels, by default 20
+scalar : PositiveFloat, optional
+The scalar to use for the Keltner Channels, by default 20
+mamode : Literal["ema", "sma", "wma", "hma", "zlma"], optional
+The moving average mode to use for the Keltner Channels, by default "ema"
+offset : NonNegativeInt, optional
+The offset to use for the Keltner Channels, by default 0
+
+Returns
+-------
+OBBject[List[Data]]
+The Keltner Channels data.
+
+Examples
+--------
 ```python
 from openbb import obb
 stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
@@ -46,28 +66,13 @@ kc_data = obb.technical.kc(data=stock_data.results, length=20, scalar=20, mamode
 
 ## Parameters
 
-<Tabs>
-<TabItem value="standard" label="Standard">
-
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| data | List[Data] | The data to use for the Keltner Channels calculation. | None | False |
-| index | str | Index column name to use with `data`, by default "date" | date | True |
-| length | PositiveInt | The length of the Keltner Channels, by default 20 | 20 | True |
-| scalar | PositiveFloat | The scalar to use for the Keltner Channels, by default 20 | 20 | True |
-| mamode | Literal["ema", "sma", "wma", "hma", "zlma"] | The moving average mode to use for the Keltner Channels, by default "ema" | ema | True |
-| offset | NonNegativeInt | The offset to use for the Keltner Channels, by default 0 | 0 | True |
-</TabItem>
-
-</Tabs>
+This function does not take standardized parameters.
 
 ---
 
 ## Returns
 
-```python wordwrap
-The Keltner Channels data.
-```
+This function does not return a standardized model
 
 ---
 

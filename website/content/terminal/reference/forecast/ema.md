@@ -23,19 +23,19 @@ Add exponential moving average to dataset based on specific column.
 
 ### Usage
 
-```python wordwrap
-ema [-d {AAPL}] [-c TARGET_COLUMN] [--period PERIOD]
+```python
+ema [-d {}] [-c TARGET_COLUMN] [--period PERIOD]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| target_dataset | -d  --dataset | The name of the dataset you want to select | None | True | AAPL |
-| target_column | -c  --target-column | The name of the specific column you want to use | close | True | None |
-| period | --period | The period to use | 10 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| target_dataset | The name of the dataset you want to select | None | True | None |
+| target_column | The name of the specific column you want to use | close | True | None |
+| period | The period to use | 10 | True | None |
 
 
 ---

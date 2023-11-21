@@ -24,26 +24,25 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /fa/income - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/fa/income - Reference | OpenBB Terminal Docs" />
 
 Prints a complete income statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Cost and expenses, Cost of revenue, Depreciation and amortization, Ebitda, Ebitda Ratio, Eps, EPS Diluted, Filling date, Final link, General and administrative expenses, Gross profit, Gross profit ratio, Income before tax, Income before tax ratio, Income tax expense, Interest expense, Link, Net income, Net income ratio, Operating expenses, Operating income, Operating income ratio, Other expenses, Period, Research and development expenses, Revenue, Selling and marketing expenses, Total other income expenses net, Weighted average shs out, Weighted average shs out dil [Source: Alpha Vantage]
 
 ### Usage
 
-```python wordwrap
-income [-t TICKER] [-q] [-r] [-p column]
+```python
+income [-q] [-r] [-p column]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| ticker | -t  --ticker | Ticker to analyze | None | True | None |
-| b_quarter | -q  --quarter | Quarter fundamental data flag. | False | True | None |
-| ratios | -r  --ratios | Shows percentage change of values. | False | True | None |
-| plot | -p  --plot | Rows to plot, comma separated. (-1 represents invalid data) | None | True | gross_profit, total_revenue, cost_of_revenue, cost_of_goods_and_services_sold, operating_income, selling_general_and_administrative, research_and_development_expenses, operating_expenses, investment_income_net, net_interest_income, interest_income, interest_expense, revenue, other_non_operating_income, depreciation, depreciation_and_amortization, income_before_tax, income_tax_expense, interest_and_debt_expense, net_income_from_continuing_operations, comprehensive_income_net_of_tax, ebit, ebitda, net_income, diluted_earnings_per_share, costs_and_expenses, non_operating_income_loss, participating_securities_distributed_and_undistributed_earnings_loss_basic, net_income_loss_attributable_to_parent, income_tax_expense_benefit_deferred, preferred_stock_dividends_and_other_adjustments, net_income_loss_attributable_to_non_controlling_interest, continuing_operations_net_income, income_before_tax, net_income_available_to_common_shareholders, benefits_costs_expenses, basic_earnings_per_share, income_loss_before_equity_method_investments, basic_average_shares, diluted_average_shares, gross_profit_ratio, general_and_administrative_expenses, selling_and_marketing_expenses, other_expenses, ebitda_ratio, operating_income_ratio, income_before_tax_ratio, net_income_ratio, current_income_tax_expense |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| b_quarter | Quarter fundamental data flag. | False | True | None |
+| ratios | Shows percentage change of values. | False | True | None |
+| plot | Rows to plot, comma separated. (-1 represents invalid data) | None | True | total_revenue, cost_of_revenue, gross_profit, research_development, selling_general_and_administrative, total_operating_expenses, operating_income_or_loss, interest_expense, total_other_income/expenses_net, income_before_tax, income_tax_expense, income_from_continuing_operations, net_income, net_income_available_to_common_shareholders, basic_eps, diluted_eps, basic_average_shares, diluted_average_shares, ebitda |
 
 
 ---

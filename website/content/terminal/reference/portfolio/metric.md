@@ -27,13 +27,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /metric - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/metric - Reference | OpenBB Terminal Docs" />
 
 Display metric of choice for different periods
 
 ### Usage
 
-```python wordwrap
+```python
 metric [-m METRIC] [-r RISK_FREE_RATE]
 ```
 
@@ -41,9 +41,9 @@ metric [-m METRIC] [-r RISK_FREE_RATE]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| metric | -m  --metric | Set metric of choice | True | True | volatility, sharpe, sortino, maxdrawdown, rsquare, skew, kurtosis, gaintopain, trackerr, information, tail, commonsense, jensens, calmar, kelly, payoff, profitfactor |
-| risk_free_rate | -r  --rfr | Set risk free rate for calculations. | 0 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| metric | Set metric of choice | True | True | volatility, sharpe, sortino, maxdrawdown, rsquare, skew, kurtosis, gaintopain, trackerr, information, tail, commonsense, jensens, calmar, kelly, payoff, profitfactor |
+| risk_free_rate | Set risk free rate for calculations. | 0 | True | None |
 
 ---

@@ -28,10 +28,10 @@ import TabItem from '@theme/TabItem';
 
 Get market cap over time for ticker. [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L195)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L287)]
 
-```python wordwrap
-openbb.stocks.fa.mktcap(symbol: str, start_date: Optional[str] = None, end_date: Optional[str] = None)
+```python
+openbb.stocks.fa.mktcap(symbol: str, start_date: Optional[str] = None)
 ```
 
 ---
@@ -53,17 +53,15 @@ openbb.stocks.fa.mktcap(symbol: str, start_date: Optional[str] = None, end_date:
 | pd.DataFrame | Dataframe of estimated market cap over time |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display market cap over time. [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_view.py#L270)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_view.py#L338)]
 
-```python wordwrap
-openbb.stocks.fa.mktcap_chart(symbol: str, start_date: Optional[str] = None, end_date: Optional[str] = None, raw: bool = False, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.stocks.fa.mktcap_chart(symbol: str, start_date: Optional[str] = None, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -73,12 +71,9 @@ openbb.stocks.fa.mktcap_chart(symbol: str, start_date: Optional[str] = None, end
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Stock ticker symbol | None | False |
-| start_date | Optional[str] | Initial date (e.g., 2021-10-01). If not provided, the earliest date available is used. | None | True |
-| end_date | Optional[str] | End date (e.g., 2021-10-01). If not provided, the latest date available is used. | None | True |
-| raw | bool | Whether to return the raw data or not | False | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
+| start_date | Optional[str] | Initial date (e.g., 2021-10-01). Defaults to 3 years back | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -88,8 +83,6 @@ openbb.stocks.fa.mktcap_chart(symbol: str, start_date: Optional[str] = None, end
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

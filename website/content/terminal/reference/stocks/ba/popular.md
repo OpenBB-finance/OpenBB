@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /ba/popular - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ba/popular - Reference | OpenBB Terminal Docs" />
 
 Print latest popular tickers. [Source: Reddit]
 
 ### Usage
 
-```python wordwrap
+```python
 popular [-l LIMIT] [-n NUM] [-s S_SUBREDDIT]
 ```
 
@@ -28,11 +28,11 @@ popular [-l LIMIT] [-n NUM] [-s S_SUBREDDIT]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| limit | -l  --limit | limit of top tickers to retrieve | 10 | True | None |
-| num | -n  --num | number of posts retrieved per sub reddit. | 10 | True | None |
-| s_subreddit | -s  --sub | Subreddits to look for tickers, e.g. pennystocks,stocks. Default: pennystocks, RobinHoodPennyStocks, Daytrading, StockMarket, stocks, investing, wallstreetbets | None | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| limit | limit of top tickers to retrieve | 10 | True | None |
+| num | number of posts retrieved per sub reddit. | 50 | True | None |
+| s_subreddit | Subreddits to look for tickers, e.g. pennystocks,stocks. Default: pennystocks, RobinHoodPennyStocks, Daytrading, StockMarket, stocks, investing, wallstreetbets | None | True | None |
 
 
 ---

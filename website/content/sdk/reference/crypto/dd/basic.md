@@ -31,7 +31,7 @@ Basic coin information [Source: CoinPaprika]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_model.py#L379)]
 
-```python wordwrap
+```python
 openbb.crypto.dd.basic(symbol: str = "BTC")
 ```
 
@@ -53,17 +53,15 @@ openbb.crypto.dd.basic(symbol: str = "BTC")
 | pd.DataFrame | Metric, Value |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing basic information for coin. Like:
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L353)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L325)]
 
-```python wordwrap
-openbb.crypto.dd.basic_chart(symbol: str = "BTC", export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.dd.basic_chart(symbol: str = "BTC", export: str = "")
 ```
 
 ---
@@ -73,7 +71,6 @@ openbb.crypto.dd.basic_chart(symbol: str = "BTC", export: str = "", sheet_name: 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Cryptocurrency symbol (e.g. BTC) | BTC | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Export dataframe data to csv,json,xlsx |  | True |
 
 
@@ -84,8 +81,6 @@ openbb.crypto.dd.basic_chart(symbol: str = "BTC", export: str = "", sheet_name: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

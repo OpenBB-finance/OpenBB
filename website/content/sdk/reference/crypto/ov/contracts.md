@@ -29,9 +29,9 @@ import TabItem from '@theme/TabItem';
 
 Gets all contract addresses for given platform [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_model.py#L397)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_model.py#L400)]
 
-```python wordwrap
+```python
 openbb.crypto.ov.contracts(platform_id: str = "eth-ethereum", sortby: str = "active", ascend: bool = True)
 ```
 
@@ -55,17 +55,15 @@ openbb.crypto.ov.contracts(platform_id: str = "eth-ethereum", sortby: str = "act
 | pd.DataFrame | id, type, active |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Gets all contract addresses for given platform. [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_view.py#L373)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/coinpaprika_view.py#L349)]
 
-```python wordwrap
-openbb.crypto.ov.contracts_chart(symbol: str, sortby: str = "active", ascend: bool = True, limit: int = 15, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.ov.contracts_chart(symbol: str, sortby: str = "active", ascend: bool = True, limit: int = 15, export: str = "")
 ```
 
 ---
@@ -88,8 +86,6 @@ openbb.crypto.ov.contracts_chart(symbol: str, sortby: str = "active", ascend: bo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

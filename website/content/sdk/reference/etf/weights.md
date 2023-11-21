@@ -13,11 +13,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="etf.weights - Reference | OpenBB SDK Docs" />
 
-Return sector weightings allocation of ETF. [Source: FinancialModelingPrep]
+Return sector weightings allocation of ETF. [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/etf/fmp_model.py#L23)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/etf/yfinance_model.py#L15)]
 
-```python wordwrap
+```python
 openbb.etf.weights(name: str)
 ```
 
@@ -38,4 +38,3 @@ openbb.etf.weights(name: str)
 | ---- | ----------- |
 | Dict[str, Any] | Dictionary with sector weightings allocation |
 ---
-

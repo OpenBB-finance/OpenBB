@@ -1,6 +1,6 @@
 ---
-title: EUYieldCurve
-description: Euro Area Yield Curve
+title: Euro Area Yield Curve
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

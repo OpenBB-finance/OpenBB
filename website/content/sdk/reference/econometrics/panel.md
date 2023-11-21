@@ -33,7 +33,7 @@ Based on the regression type, this function decides what regression to run.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_model.py#L34)]
 
-```python wordwrap
+```python
 openbb.econometrics.panel(Y: pd.DataFrame, X: pd.DataFrame, regression_type: str = "OLS", entity_effects: bool = False, time_effects: bool = False)
 ```
 
@@ -102,17 +102,15 @@ union          0.1777     0.0172     10.344     0.0000      0.1441      0.2114
 ```
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Based on the regression type, this function decides what regression to run.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_view.py#L21)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/econometrics/regression_view.py#L23)]
 
-```python wordwrap
-openbb.econometrics.panel_chart(Y: pd.DataFrame, X: pd.DataFrame, regression_type: str = "OLS", entity_effects: bool = False, time_effects: bool = False, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.econometrics.panel_chart(Y: pd.DataFrame, X: pd.DataFrame, regression_type: str = "OLS", entity_effects: bool = False, time_effects: bool = False, export: str = "")
 ```
 
 ---
@@ -137,8 +135,6 @@ openbb.econometrics.panel_chart(Y: pd.DataFrame, X: pd.DataFrame, regression_typ
 | ---- | ----------- |
 | The dataset used, the dependent variable, the independent variable and |  |
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -10,9 +10,6 @@ keywords:
 - exogenous variables
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="econometrics /panel_pooled - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -21,33 +18,35 @@ import TabItem from '@theme/TabItem';
 
 Perform a Pooled coefficient estimator regression on panel data.
 
+Parameters
+----------
+data: List[Data]
+Input dataset.
+y_column: str
+Target column.
+x_columns: str
+List of columns to use as exogenous variables.
+
+Returns
+-------
+OBBject[Dict]
+OBBject with the fit model returned
+
 ```python wordwrap
-obb.econometrics.panel_pooled(data: Union[list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], numpy.ndarray, Data, List[Data]], y_column: str, x_columns: List[str])
+
 ```
 
 ---
 
 ## Parameters
 
-<Tabs>
-<TabItem value="standard" label="Standard">
-
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| data | List[Data] | Input dataset. | None | False |
-| y_column | str | Target column. | None | False |
-| x_columns | List[str] | List of columns to use as exogenous variables. | None | False |
-</TabItem>
-
-</Tabs>
+This function does not take standardized parameters.
 
 ---
 
 ## Returns
 
-```python wordwrap
-OBBject with the fit model returned
-```
+This function does not return a standardized model
 
 ---
 

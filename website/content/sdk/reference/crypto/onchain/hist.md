@@ -32,7 +32,7 @@ Get information about balance historical transactions. [Source: Ethplorer]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_model.py#L336)]
 
-```python wordwrap
+```python
 openbb.crypto.onchain.hist(address: str, sortby: str = "timestamp", ascend: bool = True)
 ```
 
@@ -56,17 +56,15 @@ openbb.crypto.onchain.hist(address: str, sortby: str = "timestamp", ascend: bool
 | pd.DataFrame | DataFrame with balance historical transactions (last 100) |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display information about balance historical transactions. [Source: Ethplorer]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L171)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/ethplorer_view.py#L158)]
 
-```python wordwrap
-openbb.crypto.onchain.hist_chart(address: str, limit: int = 10, sortby: str = "timestamp", ascend: bool = True, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.onchain.hist_chart(address: str, limit: int = 10, sortby: str = "timestamp", ascend: bool = True, export: str = "")
 ```
 
 ---
@@ -89,8 +87,6 @@ openbb.crypto.onchain.hist_chart(address: str, limit: int = 10, sortby: str = "t
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

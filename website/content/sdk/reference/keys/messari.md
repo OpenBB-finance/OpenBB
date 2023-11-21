@@ -20,9 +20,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Set Messari key.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L2122)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L2205)]
 
-```python wordwrap
+```python
 openbb.keys.messari(key: str, persist: bool = False, show_output: bool = False)
 ```
 
@@ -54,4 +54,3 @@ openbb.keys.messari(key="example_key")
 ```
 
 ---
-

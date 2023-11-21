@@ -1,6 +1,6 @@
 ---
-title: PricePerformance
-description: Price performance as a return, over different periods
+title: Price performance as a return, over different periods
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

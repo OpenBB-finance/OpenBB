@@ -16,11 +16,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="crypto.price - Reference | OpenBB SDK Docs" />
 
-Displays live price from pyth live feed [Source: https://pyth.network/]
+Returns price and confidence interval from pyth live feed. [Source: Pyth]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/pyth_view.py#L14)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/pyth_model.py#L76)]
 
-```python wordwrap
+```python
 openbb.crypto.price(symbol: str)
 ```
 
@@ -30,14 +30,14 @@ openbb.crypto.price(symbol: str)
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| symbol | str | Symbol of the asset to get price for | None | False |
+| symbol | str | Symbol of the asset to get price and confidence interval from | None | False |
 
 
 ---
 
 ## Returns
 
-This function does not return anything
-
+| Type | Description |
+| ---- | ----------- |
+| Tuple[float, float, float] | Price of the asset,<br/>Confidence level,<br/>Previous price of the asset |
 ---
-

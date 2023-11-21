@@ -20,10 +20,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Optimize with Relaxed Risk Parity using the least squares approach
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L1450)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_optimization/po_model.py#L1352)]
 
-```python wordwrap
-openbb.portfolio.po.relriskparity(portfolio_engine: Optional[portfolio_optimization.po_engine.PoEngine] = None, kwargs: Any)
+```python
+openbb.portfolio.po.relriskparity(portfolio_engine: portfolio_optimization.po_engine.PoEngine = None, symbols: List[str] = None, kwargs: Any)
 ```
 
 ---
@@ -33,6 +33,7 @@ openbb.portfolio.po.relriskparity(portfolio_engine: Optional[portfolio_optimizat
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | portfolio_engine | PoEngine | Portfolio optimization engine, by default None<br/>Use `portfolio.po.load` to load a portfolio engine | None | True |
+| symbols | List[str] | List of symbols, by default None | None | True |
 | interval | str | Interval to get data, by default '3y' | None | True |
 | start_date | str | If not using interval, start date string (YYYY-MM-DD), by default "" | None | True |
 | end_date | str | If not using interval, end date string (YYYY-MM-DD). If empty use last weekday, by default "" | None | True |
@@ -67,32 +68,18 @@ openbb.portfolio.po.relriskparity(portfolio_engine: Optional[portfolio_optimizat
 
 ```python
 from openbb_terminal.sdk import openbb
-d = {
+openbb.portfolio.po.relriskparity(symbols=["AAPL", "MSFT", "AMZN"])
 ```
 
 ```
-"SECTOR": {
-                "AAPL": "INFORMATION TECHNOLOGY",
-                "MSFT": "INFORMATION TECHNOLOGY",
-                "AMZN": "CONSUMER DISCRETIONARY",
-            },
-            "CURRENCY": {
-                "AAPL": "USD",
-                "MSFT": "USD",
-                "AMZN": "USD",
-            },
-            "CURRENT_INVESTED_AMOUNT": {
-                "AAPL": "100000.0",
-                "MSFT": "200000.0",
-                "AMZN": "300000.0",
-            },
-        }
+(        value
+ AAPL  0.33204
+ MSFT  0.34949
+ AMZN  0.31847,
+ {'Return': 0.19946844097475216,
+  'Volatility': 0.290746544981364,
+  'Sharpe ratio': 0.6860561008129521})
 ```
-```python
-p = openbb.portfolio.po.load(symbols_categories=d)
-weights, performance = openbb.portfolio.po.relriskparity(portfolio_engine=p)
-```
-
 ```python
 from openbb_terminal.sdk import openbb
 p = openbb.portfolio.po.load(symbols_file_path="~/openbb_terminal/miscellaneous/portfolio_examples/allocation/60_40_Portfolio.xlsx")
@@ -100,4 +87,3 @@ weights, performance = openbb.portfolio.po.relriskparity(portfolio_engine=p)
 ```
 
 ---
-

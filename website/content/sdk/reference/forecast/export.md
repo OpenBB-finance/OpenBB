@@ -13,25 +13,19 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="forecast.export - Reference | OpenBB SDK Docs" />
 
-Export a dataframe to a file
+None
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_view.py#L317)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_view.py#L270)]
 
-```python wordwrap
-openbb.forecast.export(data: pd.DataFrame, export: str, name: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.forecast.export(data: pd.DataFrame, export: str, name: str = "")
 ```
 
 ---
 
 ## Parameters
 
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| data | pd.DataFrame | The dataframe to export | None | False |
-| export | str | The format to export the dataframe to | None | False |
-| name | str | The name of the dataframe |  | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
-
+This function does not take any parameters.
 
 ---
 
@@ -40,4 +34,3 @@ openbb.forecast.export(data: pd.DataFrame, export: str, name: str = "", sheet_na
 This function does not return anything
 
 ---
-

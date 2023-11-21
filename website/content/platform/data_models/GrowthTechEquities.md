@@ -1,6 +1,6 @@
 ---
-title: GrowthTechEquities
-description: Get growth tech Equities
+title: Get growth tech Equities
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

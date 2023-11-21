@@ -34,7 +34,7 @@ Displays the 30-day history of the Anchor Yield Reserve.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terraengineer_model.py#L63)]
 
-```python wordwrap
+```python
 openbb.crypto.defi.ayr()
 ```
 
@@ -53,17 +53,15 @@ This function does not take any parameters.
 | pd.DataFrame | Dataframe containing historical data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots the 30-day history of the Anchor Yield Reserve.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terraengineer_view.py#L63)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/terraengineer_view.py#L85)]
 
-```python wordwrap
-openbb.crypto.defi.ayr_chart(export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.crypto.defi.ayr_chart(export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -73,7 +71,7 @@ openbb.crypto.defi.ayr_chart(export: str = "", sheet_name: Optional[str] = None,
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | export | str | Export dataframe data to csv,json,xlsx file, by default False |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -83,8 +81,6 @@ openbb.crypto.defi.ayr_chart(export: str = "", sheet_name: Optional[str] = None,
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

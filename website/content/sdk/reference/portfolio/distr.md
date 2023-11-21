@@ -26,9 +26,9 @@ import TabItem from '@theme/TabItem';
 
 Display daily returns
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L470)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L441)]
 
-```python wordwrap
+```python
 openbb.portfolio.distr(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all")
 ```
 
@@ -55,23 +55,21 @@ openbb.portfolio.distr(portfolio_engine: portfolio_engine.PortfolioEngine, windo
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
 output = openbb.portfolio.distr(p)
 ```
 
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display daily returns
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L749)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_view.py#L626)]
 
-```python wordwrap
-openbb.portfolio.distr_chart(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all", raw: bool = False, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.portfolio.distr_chart(portfolio_engine: portfolio_engine.PortfolioEngine, window: str = "all", raw: bool = False, export: str = "", external_axes: Optional[matplotlib.axes._axes.Axes] = None)
 ```
 
 ---
@@ -80,12 +78,12 @@ openbb.portfolio.distr_chart(portfolio_engine: portfolio_engine.PortfolioEngine,
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| portfolio_engine | PortfolioEngine | The engine for the portfolio | None | False |
-| window | str | The window | all | True |
-| raw | bool | Display raw data from cumulative return | False | True |
+| portfolio_returns | pd.Series | Returns of the portfolio | None | True |
+| benchmark_returns | pd.Series | Returns of the benchmark | None | True |
+| interval | str | interval to compare cumulative returns and benchmark | None | True |
+| raw | False | Display raw data from cumulative return | False | True |
 | export | str | Export certain type of data |  | True |
-| sheet_name | Optional[str] | The name for the sheet | None | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | plt.Axes | Optional axes to display plot on | None | True |
 
 
 ---
@@ -95,8 +93,6 @@ openbb.portfolio.distr_chart(portfolio_engine: portfolio_engine.PortfolioEngine,
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

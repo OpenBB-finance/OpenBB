@@ -26,7 +26,7 @@ Get recent posts from CryptoPanic news aggregator platform. [Source: https://cry
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/cryptopanic_model.py#L158)]
 
-```python wordwrap
+```python
 openbb.crypto.dd.news(limit: int = 60, post_kind: str = "news", filter_: Optional[str] = None, region: str = "en", source: Optional[str] = None, symbol: Optional[str] = None, sortby: str = "published_at", ascend: bool = True)
 ```
 
@@ -53,17 +53,15 @@ openbb.crypto.dd.news(limit: int = 60, post_kind: str = "news", filter_: Optiona
 | pd.DataFrame | DataFrame with recent news from different sources filtered by provided parameters. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing recent posts from CryptoPanic news aggregator platform.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/cryptopanic_view.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/cryptopanic_view.py#L18)]
 
-```python wordwrap
-openbb.crypto.dd.news_chart(post_kind: str = "news", region: str = "en", filter_: Optional[str] = None, source: Optional[str] = None, symbol: Optional[str] = None, limit: int = 25, ascend: bool = True, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.dd.news_chart(post_kind: str = "news", region: str = "en", filter_: Optional[str] = None, source: Optional[str] = None, symbol: Optional[str] = None, limit: int = 25, ascend: bool = True, export: str = "")
 ```
 
 ---
@@ -87,8 +85,6 @@ openbb.crypto.dd.news_chart(post_kind: str = "news", region: str = "en", filter_
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

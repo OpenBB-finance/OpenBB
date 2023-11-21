@@ -12,13 +12,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="forex /oanda/cancel - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="forex/oanda/cancel - Reference | OpenBB Terminal Docs" />
 
 Cancel a Pending Order.
 
 ### Usage
 
-```python wordwrap
+```python
 cancel -i ORDERID
 ```
 
@@ -26,8 +26,8 @@ cancel -i ORDERID
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| orderID | -i  --id | The pending order ID to cancel. | None | False | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| orderID | The pending order ID to cancel. | None | False | None |
 
 ---

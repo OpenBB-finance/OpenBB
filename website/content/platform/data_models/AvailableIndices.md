@@ -1,6 +1,6 @@
 ---
-title: AvailableIndices
-description: Available Indices
+title: Available Indices
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /dd/inv - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/inv - Reference | OpenBB Terminal Docs" />
 
 Display asset's investors [Source: https://messari.io]
 
 ### Usage
 
-```python wordwrap
+```python
 inv
 ```
 

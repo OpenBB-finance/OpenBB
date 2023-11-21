@@ -1,6 +1,6 @@
 ---
-title: EtfHistorical
-description: ETF Historical Market Price
+title: ETF Historical Market Price
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

@@ -16,9 +16,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get list of categories keys
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L117)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/discovery/pycoingecko_model.py#L115)]
 
-```python wordwrap
+```python
 openbb.crypto.disc.categories_keys()
 ```
 
@@ -36,4 +36,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | List[str] | List of categories keys |
 ---
-

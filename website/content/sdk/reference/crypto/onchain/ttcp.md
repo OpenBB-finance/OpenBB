@@ -30,9 +30,9 @@ import TabItem from '@theme/TabItem';
 
 Get most traded crypto pairs on given decentralized exchange in chosen time period.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L660)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_model.py#L658)]
 
-```python wordwrap
+```python
 openbb.crypto.onchain.ttcp(network: str = "ethereum", exchange: str = "Uniswap", limit: int = 90, sortby: str = "tradeAmount", ascend: bool = True)
 ```
 
@@ -58,17 +58,15 @@ openbb.crypto.onchain.ttcp(network: str = "ethereum", exchange: str = "Uniswap",
 | pd.DataFrame | Most traded crypto pairs on given decentralized exchange in chosen time period. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing most traded crypto pairs on given decentralized exchange in chosen time period.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_view.py#L299)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/onchain/bitquery_view.py#L286)]
 
-```python wordwrap
-openbb.crypto.onchain.ttcp_chart(exchange: str = "Uniswap", days: int = 10, limit: int = 10, sortby: str = "tradeAmount", ascend: bool = True, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.onchain.ttcp_chart(exchange: str = "Uniswap", days: int = 10, limit: int = 10, sortby: str = "tradeAmount", ascend: bool = True, export: str = "")
 ```
 
 ---
@@ -92,8 +90,6 @@ openbb.crypto.onchain.ttcp_chart(exchange: str = "Uniswap", days: int = 10, limi
 | ---- | ----------- |
 | pd.DataFrame | Most traded crypto pairs on given decentralized exchange in chosen time period. |
 ---
-
-
 
 </TabItem>
 </Tabs>

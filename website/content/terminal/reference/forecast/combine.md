@@ -20,22 +20,22 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="forecast /combine - Reference | OpenBB Terminal Docs" />
 
-Combine two entire datasets, or add specific columns. Add specificcolumns with the syntax: datasetX.column2
+Combine two entire datasets, or add specific columns. Add specificcolumns with the syntax: datasetX.column2,datasetY.column3
 
 ### Usage
 
-```python wordwrap
-combine [--dataset {AAPL}] [-c {AAPL.date,AAPL.open,AAPL.high,AAPL.low,AAPL.close,AAPL.adj_close,AAPL.volume,AAPL.dividends,AAPL.stock_splits,AAPL}]
+```python
+combine [--dataset {--dataset,--columns,-c,--help,-h}] [-c COLUMNS]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| dataset | --dataset | Dataset to add columns to | None | True | AAPL |
-| columns | -c  --columns | The columns we want to add dataset.column | None | True | AAPL.date, AAPL.open, AAPL.high, AAPL.low, AAPL.close, AAPL.adj_close, AAPL.volume, AAPL.dividends, AAPL.stock_splits, AAPL |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| dataset | Dataset to add columns to | None | True | --dataset, --columns, -c, --help, -h |
+| columns | The columns we want to add dataset.column,datasetb.column2 | None | True | None |
 
 
 ---

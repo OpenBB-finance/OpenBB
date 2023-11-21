@@ -22,7 +22,7 @@ Helper methods that retries to make request.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/alternative/oss/runa_model.py#L32)]
 
-```python wordwrap
+```python
 openbb.alt.oss._retry_session(url: str, retries: int = 3, backoff_factor: float = 1.0)
 ```
 
@@ -45,4 +45,3 @@ openbb.alt.oss._retry_session(url: str, retries: int = 3, backoff_factor: float 
 | ---- | ----------- |
 | requests.Session | Mounted session |
 ---
-

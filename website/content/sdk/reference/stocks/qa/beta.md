@@ -29,10 +29,10 @@ import TabItem from '@theme/TabItem';
 
 Calculate beta for a ticker and a reference ticker.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/quantitative_analysis/beta_model.py#L12)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/quantitative_analysis/beta_model.py#L11)]
 
-```python wordwrap
-openbb.stocks.qa.beta(symbol: str, ref_symbol: str, data: Optional[pd.DataFrame] = None, ref_data: Optional[pd.DataFrame] = None, interval: int = 1440)
+```python
+openbb.stocks.qa.beta(symbol: str, ref_symbol: str, data: pd.DataFrame = None, ref_data: pd.DataFrame = None, interval: int = 1440)
 ```
 
 ---
@@ -57,17 +57,15 @@ openbb.stocks.qa.beta(symbol: str, ref_symbol: str, data: Optional[pd.DataFrame]
 | Tuple[pd.Series, pd.Series, float, float] | Stock ticker symbols close-to-close returns, Reference ticker symbols close-to-close returns, beta, alpha |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display the beta scatterplot + linear regression.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/quantitative_analysis/beta_view.py#L20)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/quantitative_analysis/beta_view.py#L18)]
 
-```python wordwrap
-openbb.stocks.qa.beta_chart(symbol: str, ref_symbol: str, data: Optional[pd.DataFrame] = None, ref_data: Optional[pd.DataFrame] = None, interval: int = 1440, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.stocks.qa.beta_chart(symbol: str, ref_symbol: str, data: pd.DataFrame = None, ref_data: pd.DataFrame = None, interval: int = 1440, export: str = "")
 ```
 
 ---
@@ -81,9 +79,6 @@ openbb.stocks.qa.beta_chart(symbol: str, ref_symbol: str, data: Optional[pd.Data
 | data | pd.DataFrame | The selected ticker symbols price data | None | True |
 | ref_data | pd.DataFrame | The reference ticker symbols price data | None | True |
 | interval | int | The interval of the ref_data. This will ONLY be used if ref_data is None | 1440 | True |
-| export | str | Export dataframe data or plot to csv,json,xlsx,jpeg,pdf,png,svg file |  | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
 
 
 ---
@@ -93,8 +88,6 @@ openbb.stocks.qa.beta_chart(symbol: str, ref_symbol: str, data: Optional[pd.Data
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

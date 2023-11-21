@@ -23,9 +23,9 @@ import TabItem from '@theme/TabItem';
 
 Request open trades data.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L479)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_model.py#L470)]
 
-```python wordwrap
+```python
 openbb.forex.oanda.opentrades(accountID: str = "REPLACE_ME")
 ```
 
@@ -47,16 +47,14 @@ openbb.forex.oanda.opentrades(accountID: str = "REPLACE_ME")
 | Union[pd.DataFrame, bool] | Open trades data or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 View open trades.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L246)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/oanda/oanda_view.py#L252)]
 
-```python wordwrap
+```python
 openbb.forex.oanda.opentrades_chart(accountID: str)
 ```
 
@@ -76,8 +74,6 @@ openbb.forex.oanda.opentrades_chart(accountID: str)
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,6 +1,6 @@
 ---
-title: SOFR
-description: Secured Overnight Financing Rate
+title: Secured Overnight Financing Rate
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

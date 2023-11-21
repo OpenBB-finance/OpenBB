@@ -29,7 +29,7 @@ Get all exchanges for given coin id. [Source: CoinPaprika]
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_model.py#L137)]
 
-```python wordwrap
+```python
 openbb.crypto.dd.ex(symbol: str = "BTC", sortby: str = "adjusted_volume_24h_share", ascend: bool = True)
 ```
 
@@ -53,17 +53,15 @@ openbb.crypto.dd.ex(symbol: str = "BTC", sortby: str = "adjusted_volume_24h_shar
 | pd.DataFrame | All exchanges for given coin<br/>Columns: id, name, adjusted_volume_24h_share, fiats |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing all exchanges for given coin id. [Source: CoinPaprika]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L194)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/coinpaprika_view.py#L185)]
 
-```python wordwrap
-openbb.crypto.dd.ex_chart(symbol: str = "btc", limit: int = 10, sortby: str = "adjusted_volume_24h_share", ascend: bool = True, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.dd.ex_chart(symbol: str = "btc", limit: int = 10, sortby: str = "adjusted_volume_24h_share", ascend: bool = True, export: str = "")
 ```
 
 ---
@@ -86,8 +84,6 @@ openbb.crypto.dd.ex_chart(symbol: str = "btc", limit: int = 10, sortby: str = "a
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

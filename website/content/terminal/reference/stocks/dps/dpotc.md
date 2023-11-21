@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /dps/dpotc - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/dps/dpotc - Reference | OpenBB Terminal Docs" />
 
 Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]
 
 ### Usage
 
-```python wordwrap
+```python
 dpotc
 ```
 

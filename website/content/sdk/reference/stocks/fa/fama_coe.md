@@ -20,9 +20,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Use Fama and French to get the cost of equity for a company
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/dcf_model.py#L299)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/dcf_model.py#L300)]
 
-```python wordwrap
+```python
 openbb.stocks.fa.fama_coe(symbol: str)
 ```
 
@@ -43,4 +43,3 @@ openbb.stocks.fa.fama_coe(symbol: str)
 | ---- | ----------- |
 | float | The stock's Fama French coefficient |
 ---
-

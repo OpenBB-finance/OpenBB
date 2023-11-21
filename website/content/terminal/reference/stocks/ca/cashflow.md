@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /ca/cashflow - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ca/cashflow - Reference | OpenBB Terminal Docs" />
 
 Prints either yearly or quarterly cashflow statement the company, and compares it against similar companies.
 
 ### Usage
 
-```python wordwrap
+```python
 cashflow [-q] [-t S_TIMEFRAME]
 ```
 
@@ -28,10 +28,10 @@ cashflow [-q] [-t S_TIMEFRAME]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| b_quarter | -q  --quarter | Quarter financial data flag. | False | True | None |
-| s_timeframe | -t  --timeframe | Specify year/quarter of the cashflow statement to be retrieved. The format for year is YYYY and for quarter is DD-MMM-YYY (for example, 30-Sep-2021). Default is last year/quarter. | None | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| b_quarter | Quarter financial data flag. | False | True | None |
+| s_timeframe | Specify year/quarter of the cashflow statement to be retrieved. The format for year is YYYY and for quarter is DD-MMM-YYY (for example, 30-Sep-2021). Default is last year/quarter. | None | True | None |
 
 
 ---

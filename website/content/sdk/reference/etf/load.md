@@ -18,9 +18,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Load a symbol to perform analysis using the string above as a template.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/stocks_helper.py#L293)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/stocks_helper.py#L223)]
 
-```python wordwrap
+```python
 openbb.etf.load(symbol: str, start_date: Union[datetime.datetime, str, NoneType] = None, interval: int = 1440, end_date: Union[datetime.datetime, str, NoneType] = None, prepost: bool = False, source: str = "YahooFinance", weekly: bool = False, monthly: bool = False, verbose: bool = True)
 ```
 
@@ -49,4 +49,3 @@ openbb.etf.load(symbol: str, start_date: Union[datetime.datetime, str, NoneType]
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of data |
 ---
-

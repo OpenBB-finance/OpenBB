@@ -25,9 +25,9 @@ import TabItem from '@theme/TabItem';
 
 Calculate Bollinger Bands
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_model.py#L31)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_model.py#L18)]
 
-```python wordwrap
+```python
 openbb.ta.bbands(data: pd.DataFrame, window: int = 15, n_std: float = 2, mamode: str = "ema")
 ```
 
@@ -52,17 +52,15 @@ openbb.ta.bbands(data: pd.DataFrame, window: int = 15, n_std: float = 2, mamode:
 | pd.DataFrame | Dataframe of bollinger band data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots bollinger bands
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_view.py#L24)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/technical_analysis/volatility_view.py#L27)]
 
-```python wordwrap
-openbb.ta.bbands_chart(data: pd.DataFrame, symbol: str = "", window: int = 15, n_std: float = 2, mamode: str = "sma", export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.ta.bbands_chart(data: pd.DataFrame, symbol: str = "", window: int = 15, n_std: float = 2, mamode: str = "sma", export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -77,7 +75,7 @@ openbb.ta.bbands_chart(data: pd.DataFrame, symbol: str = "", window: int = 15, n
 | n_std | float | Number of standard deviations to show | 2 | True |
 | mamode | str | Method of calculating average | sma | True |
 | export | str | Format of export file |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -87,8 +85,6 @@ openbb.ta.bbands_chart(data: pd.DataFrame, symbol: str = "", window: int = 15, n
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

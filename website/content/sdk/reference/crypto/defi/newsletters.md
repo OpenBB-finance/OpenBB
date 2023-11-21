@@ -26,9 +26,9 @@ import TabItem from '@theme/TabItem';
 
 Scrape all substack newsletters from url list.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/substack_model.py#L55)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/substack_model.py#L54)]
 
-```python wordwrap
+```python
 openbb.crypto.defi.newsletters()
 ```
 
@@ -47,17 +47,15 @@ This function does not take any parameters.
 | pd.DataFrame | DataFrame with recent news from most popular DeFi related newsletters. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing DeFi related substack newsletters.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/substack_view.py#L17)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/defi/substack_view.py#L16)]
 
-```python wordwrap
-openbb.crypto.defi.newsletters_chart(limit: int = 10, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.defi.newsletters_chart(limit: int = 10, export: str = "")
 ```
 
 ---
@@ -77,8 +75,6 @@ openbb.crypto.defi.newsletters_chart(limit: int = 10, export: str = "", sheet_na
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

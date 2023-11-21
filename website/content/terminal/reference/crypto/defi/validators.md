@@ -19,13 +19,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /defi/validators - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/defi/validators - Reference | OpenBB Terminal Docs" />
 
 Displays information about terra validators. [Source: https://fcd.terra.dev/swagger]
 
 ### Usage
 
-```python wordwrap
+```python
 validators [-l LIMIT] [-s {validatorName,tokensAmount,votingPower,commissionRate,status,uptime}] [-r]
 ```
 
@@ -33,11 +33,11 @@ validators [-l LIMIT] [-s {validatorName,tokensAmount,votingPower,commissionRate
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| limit | -l  --limit | Number of validators to show | 10 | True | None |
-| sortby | -s  --sort | Sort by given column. Default: votingPower | votingPower | True | validatorName, tokensAmount, votingPower, commissionRate, status, uptime |
-| reverse | -r  --reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| limit | Number of validators to show | 10 | True | None |
+| sortby | Sort by given column. Default: votingPower | votingPower | True | validatorName, tokensAmount, votingPower, commissionRate, status, uptime |
+| reverse | Data is sorted in descending order by default. Reverse flag will sort it in an ascending way. Only works when raw data is displayed. | False | True | None |
 
 
 ---

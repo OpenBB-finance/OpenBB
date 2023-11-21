@@ -1,6 +1,6 @@
 ---
-title: KeyMetrics
-description: Key Metrics
+title: Key Metrics
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

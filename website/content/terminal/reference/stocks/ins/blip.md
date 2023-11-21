@@ -26,13 +26,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /ins/blip - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ins/blip - Reference | OpenBB Terminal Docs" />
 
 Print latest insider purchases 25k. [Source: OpenInsider]
 
 ### Usage
 
-```python wordwrap
+```python
 blip [-l LIMIT]
 ```
 
@@ -40,9 +40,9 @@ blip [-l LIMIT]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| limit | -l  --limit | Limit of datarows to display | 10 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| limit | Limit of datarows to display | 10 | True | None |
 
 
 ---

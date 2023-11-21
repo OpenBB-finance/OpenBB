@@ -29,9 +29,9 @@ import TabItem from '@theme/TabItem';
 
 Get list of crypto, fiats, commodity exchange rates from CoinGecko API [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L417)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L423)]
 
-```python wordwrap
+```python
 openbb.crypto.ov.exrates(sortby: str = "Name", ascend: bool = False)
 ```
 
@@ -54,17 +54,15 @@ openbb.crypto.ov.exrates(sortby: str = "Name", ascend: bool = False)
 | pd.DataFrame | Index, Name, Unit, Value, Type |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Shows  list of crypto, fiats, commodity exchange rates. [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L275)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L200)]
 
-```python wordwrap
-openbb.crypto.ov.exrates_chart(sortby: str = "Name", ascend: bool = False, limit: int = 15, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.ov.exrates_chart(sortby: str = "Name", ascend: bool = False, limit: int = 15, export: str = "")
 ```
 
 ---
@@ -86,8 +84,6 @@ openbb.crypto.ov.exrates_chart(sortby: str = "Name", ascend: bool = False, limit
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

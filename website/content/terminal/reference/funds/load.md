@@ -14,22 +14,23 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="funds /load - Reference | OpenBB Terminal Docs" />
 
-Load the fund to perform analysis on.
+Get historical data.
 
 ### Usage
 
-```python wordwrap
-load --fund FUND [-s START] [-e END]
+```python
+load --fund FUND [FUND ...] [-n] [-s START] [-e END]
 ```
 
 ---
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| fund | --fund | Fund string to search for | None | False | None |
-| start | -s  --start | The starting date (format YYYY-MM-DD) of the stock | 2022-11-21 | True | None |
-| end | -e  --end | The ending date (format YYYY-MM-DD) of the stock | 2023-11-21 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| fund | Fund string to search for | None | False | None |
+| name | Flag to indicate name provided instead of symbol. | False | True | None |
+| start | The starting date (format YYYY-MM-DD) of the fund | 2021-11-24 | True | None |
+| end | The ending date (format YYYY-MM-DD) of the fund | 2022-11-25 | True | None |
 
 ---

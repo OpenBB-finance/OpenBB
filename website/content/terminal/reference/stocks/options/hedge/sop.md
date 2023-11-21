@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /options/hedge/sop - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/hedge/sop /options - Reference | OpenBB Terminal Docs" />
 
 Displays selected option
 
 ### Usage
 
-```python wordwrap
+```python
 sop
 ```
 
@@ -38,7 +38,7 @@ This command has no parameters
 
 ```python
 2022 May 10, 09:34 (🦋) /stocks/options/hedge/ $ add 20
-          Current Option Positions           
+          Current Option Positions
 ┏━━━━━━┳━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━┓
 ┃ Type ┃ Hold ┃ Strike ┃ Implied Volatility ┃
 ┡━━━━━━╇━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━┩

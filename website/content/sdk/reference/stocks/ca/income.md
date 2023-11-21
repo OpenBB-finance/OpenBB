@@ -30,10 +30,10 @@ import TabItem from '@theme/TabItem';
 
 Get income data. [Source: Marketwatch].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/marketwatch_model.py#L73)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/marketwatch_model.py#L74)]
 
-```python wordwrap
-openbb.stocks.ca.income(similar: List[str], timeframe: str = "2022", quarter: bool = False)
+```python
+openbb.stocks.ca.income(similar: List[str], timeframe: str = "2021", quarter: bool = False)
 ```
 
 ---
@@ -43,7 +43,7 @@ openbb.stocks.ca.income(similar: List[str], timeframe: str = "2022", quarter: bo
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | similar | List[str] | List of tickers to compare.<br/>Comparable companies can be accessed through<br/>finnhub_peers(), finviz_peers(), polygon_peers(). | None | False |
-| timeframe | str | Column header to compare | 2022 | True |
+| timeframe | str | Column header to compare | 2021 | True |
 | quarter | bool | Whether to use quarterly statements, by default False | False | True |
 | export | str | Format to export data | None | True |
 
@@ -57,17 +57,15 @@ openbb.stocks.ca.income(similar: List[str], timeframe: str = "2022", quarter: bo
 | pd.DataFrame | Dataframe of income statements |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display income data. [Source: Marketwatch].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/marketwatch_view.py#L24)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/comparison_analysis/marketwatch_view.py#L23)]
 
-```python wordwrap
-openbb.stocks.ca.income_chart(symbols: List[str], timeframe: str = "2022", quarter: bool = False, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.stocks.ca.income_chart(symbols: List[str], timeframe: str = "2021", quarter: bool = False, export: str = "")
 ```
 
 ---
@@ -77,7 +75,7 @@ openbb.stocks.ca.income_chart(symbols: List[str], timeframe: str = "2022", quart
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
 | symbols | List[str] | List of tickers to compare. Enter tickers you want to see as shown below:<br/>["TSLA", "AAPL", "NFLX", "BBY"]<br/>You can also get a list of comparable peers with<br/>finnhub_peers(), finviz_peers(), polygon_peers(). | None | False |
-| timeframe | str | What year to look at | 2022 | True |
+| timeframe | str | What year to look at | 2021 | True |
 | quarter | bool | Whether to use quarterly statements, by default False | False | True |
 | export | str | Format to export data |  | True |
 
@@ -89,8 +87,6 @@ openbb.stocks.ca.income_chart(symbols: List[str], timeframe: str = "2022", quart
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

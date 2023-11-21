@@ -18,10 +18,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Show candle plot for fx data.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/forex_helper.py#L244)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forex/forex_helper.py#L235)]
 
-```python wordwrap
-openbb.forex.candle(data: pd.DataFrame, to_symbol: str = "", from_symbol: str = "", ma: Optional[Iterable[int]] = None, external_axes: bool = False, add_trend: bool = False, yscale: str = "linear")
+```python
+openbb.forex.candle(data: pd.DataFrame, to_symbol: str = "", from_symbol: str = "", ma: Optional[Iterable[int]] = None, external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None, use_matplotlib: bool = True, add_trend: bool = False, yscale: str = "linear")
 ```
 
 ---
@@ -34,7 +34,7 @@ openbb.forex.candle(data: pd.DataFrame, to_symbol: str = "", from_symbol: str = 
 | to_symbol | str | To forex symbol |  | True |
 | from_symbol | str | From forex symbol |  | True |
 | ma | Optional[Iterable[int]] | Moving averages | None | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -44,4 +44,3 @@ openbb.forex.candle(data: pd.DataFrame, to_symbol: str = "", from_symbol: str = 
 This function does not return anything
 
 ---
-

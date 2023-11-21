@@ -27,9 +27,9 @@ import TabItem from '@theme/TabItem';
 
 Gets Expected Shortfall for specified stock dataframe.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L352)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_model.py#L355)]
 
-```python wordwrap
+```python
 openbb.qa.es(data: pd.DataFrame, use_mean: bool = False, distribution: str = "normal", percentile: Union[float, int] = 99.9, portfolio: bool = False)
 ```
 
@@ -55,16 +55,14 @@ openbb.qa.es(data: pd.DataFrame, use_mean: bool = False, distribution: str = "no
 | pd.DataFrame | DataFrame with Expected Shortfall per percentile |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing expected shortfall.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L1060)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/quantitative_analysis/qa_view.py#L1108)]
 
-```python wordwrap
+```python
 openbb.qa.es_chart(data: pd.DataFrame, symbol: str = "", use_mean: bool = False, distribution: str = "normal", percentile: float = 99.9, portfolio: bool = False)
 ```
 
@@ -89,8 +87,6 @@ openbb.qa.es_chart(data: pd.DataFrame, symbol: str = "", use_mean: bool = False,
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

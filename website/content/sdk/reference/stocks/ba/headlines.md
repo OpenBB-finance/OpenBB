@@ -29,7 +29,7 @@ Gets Sentiment analysis provided by FinBrain's API [Source: finbrain].
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/finbrain_model.py#L15)]
 
-```python wordwrap
+```python
 openbb.stocks.ba.headlines(symbol: str)
 ```
 
@@ -51,17 +51,15 @@ openbb.stocks.ba.headlines(symbol: str)
 | pd.DataFrame | Empty if there was an issue with data retrieval |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots Sentiment analysis from FinBrain. Prints table if raw is True. [Source: FinBrain]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/finbrain_view.py#L28)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/finbrain_view.py#L36)]
 
-```python wordwrap
-openbb.stocks.ba.headlines_chart(symbol: str, raw: bool = False, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.stocks.ba.headlines_chart(symbol: str, raw: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -72,9 +70,8 @@ openbb.stocks.ba.headlines_chart(symbol: str, raw: bool = False, export: str = "
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Ticker symbol to get the sentiment analysis from | None | False |
 | raw | False | Display raw table data | False | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -84,8 +81,6 @@ openbb.stocks.ba.headlines_chart(symbol: str, raw: bool = False, export: str = "
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

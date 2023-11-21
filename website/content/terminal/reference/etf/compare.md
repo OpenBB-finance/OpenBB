@@ -19,7 +19,7 @@ Compare selected ETFs [Source: StockAnalysis]
 
 ### Usage
 
-```python wordwrap
+```python
 compare -e NAMES
 ```
 
@@ -27,9 +27,9 @@ compare -e NAMES
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| names | -e  --etfs | Symbols to compare | None | False | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| names | Symbols to compare | None | False | None |
 
 
 ---

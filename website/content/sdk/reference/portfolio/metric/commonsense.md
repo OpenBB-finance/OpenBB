@@ -17,9 +17,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get common sense ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1490)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1448)]
 
-```python wordwrap
+```python
 openbb.portfolio.metric.commonsense(portfolio_engine: portfolio_engine.PortfolioEngine)
 ```
 
@@ -45,9 +45,8 @@ openbb.portfolio.metric.commonsense(portfolio_engine: portfolio_engine.Portfolio
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
 output = openbb.portfolio.metric.commonsense(p)
 ```
 
 ---
-

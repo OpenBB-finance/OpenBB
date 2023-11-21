@@ -1,6 +1,6 @@
 ---
-title: EtfSectors
-description: ETF Sector weighting
+title: ETF Sector weighting
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

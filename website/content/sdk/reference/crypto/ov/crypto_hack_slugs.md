@@ -16,7 +16,7 @@ Get all crypto hack slugs
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/rekt_model.py#L182)]
 
-```python wordwrap
+```python
 openbb.crypto.ov.crypto_hack_slugs()
 ```
 
@@ -34,4 +34,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | List[str] | List with slugs |
 ---
-

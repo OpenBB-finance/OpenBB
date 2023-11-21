@@ -19,9 +19,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get most shorted stock screener [Source: Yahoo Finance]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/yahoofinance_model.py#L15)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/dark_pool_shorts/yahoofinance_model.py#L16)]
 
-```python wordwrap
+```python
 openbb.stocks.dps.shorted()
 ```
 
@@ -39,4 +39,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Most Shorted Stocks |
 ---
-

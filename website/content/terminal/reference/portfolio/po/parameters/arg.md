@@ -13,13 +13,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /po/parameters/arg - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/parameters/arg /po - Reference | OpenBB Terminal Docs" />
 
 Set a different value for one of the available arguments.
 
 ### Usage
 
-```python wordwrap
+```python
 arg [-a ARGUMENT ARGUMENT] [-s]
 ```
 
@@ -27,9 +27,9 @@ arg [-a ARGUMENT ARGUMENT] [-s]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| argument | -a  --argument | Set a value for an argument | None | True | None |
-| show | -s  --show_arguments | Show the available arguments, the options and a description. | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| argument | Set a value for an argument | None | True | None |
+| show | Show the available arguments, the options and a description. | False | True | None |
 
 ---

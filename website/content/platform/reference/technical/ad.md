@@ -20,9 +20,6 @@ keywords:
 - Examples
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="technical /ad - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -43,6 +40,22 @@ the direction of the indicator relative to price. If the Accumulation/Distributi
 Line is trending upward it indicates that the price may follow. Also, if the
 Accumulation/Distribution Line becomes flat while the price is still rising (or falling)
 then it signals an impending flattening of the price.
+
+Parameters
+----------
+data : List[Data]
+List of data to be used for the calculation.
+index : str, optional
+Index column name to use with `data`, by default "date".
+offset : int, optional
+Offset of the AD, by default 0.
+
+Returns
+-------
+OBBject[List[Data]]
+
+Examples
+--------
 ```python
 from openbb import obb
 stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
@@ -54,25 +67,13 @@ ad_data = obb.technical.ad(data=stock_data.results,offset=0)
 
 ## Parameters
 
-<Tabs>
-<TabItem value="standard" label="Standard">
-
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| data | List[Data] | List of data to be used for the calculation. | None | False |
-| index | str | Index column name to use with `data`, by default "date". | date | True |
-| offset | int | Offset of the AD, by default 0. | 0 | True |
-</TabItem>
-
-</Tabs>
+This function does not take standardized parameters.
 
 ---
 
 ## Returns
 
-```python wordwrap
-
-```
+This function does not return a standardized model
 
 ---
 

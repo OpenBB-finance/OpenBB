@@ -21,7 +21,7 @@ Performs an OLS regression on timeseries data.
 
 ### Usage
 
-```python wordwrap
+```python
 ols -d DEPENDENT -i INDEPENDENT [--no-output]
 ```
 
@@ -29,10 +29,10 @@ ols -d DEPENDENT -i INDEPENDENT [--no-output]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| dependent | -d  --dependent | The dependent variable on the regression you would like to perform | None | False | None |
-| independent | -i  --independent | The independent variables on the regression you would like to perform. E.g. historical.high,historical.low | None | False | None |
-| no_output | --no-output | Hide the output of the regression | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| dependent | The dependent variable on the regression you would like to perform | None | False | None |
+| independent | The independent variables on the regression you would like to perform. E.g. historical.high,historical.low | None | False | None |
+| no_output | Hide the output of the regression | False | True | None |
 
 ---

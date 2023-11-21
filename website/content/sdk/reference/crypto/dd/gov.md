@@ -26,9 +26,9 @@ import TabItem from '@theme/TabItem';
 
 Returns coin governance
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L574)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L567)]
 
-```python wordwrap
+```python
 openbb.crypto.dd.gov(symbol: str)
 ```
 
@@ -50,17 +50,15 @@ openbb.crypto.dd.gov(symbol: str)
 | Tuple[str, pd.DataFrame] | Governance summary,<br/>Metric Value with governance details |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing coin governance
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L611)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L602)]
 
-```python wordwrap
-openbb.crypto.dd.gov_chart(symbol: str, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.dd.gov_chart(symbol: str, export: str = "")
 ```
 
 ---
@@ -80,8 +78,6 @@ openbb.crypto.dd.gov_chart(symbol: str, export: str = "", sheet_name: Optional[s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

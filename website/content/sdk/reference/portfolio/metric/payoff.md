@@ -17,9 +17,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get payoff ratio
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1632)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1590)]
 
-```python wordwrap
+```python
 openbb.portfolio.metric.payoff(portfolio_engine: portfolio_engine.PortfolioEngine)
 ```
 
@@ -42,7 +42,7 @@ This function does not take any parameters.
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
 output = openbb.portfolio.metric.payoff(p)
 ```
 
@@ -50,4 +50,3 @@ output = openbb.portfolio.metric.payoff(p)
 During some time periods there were no losing trades. Thus some values could not be calculated.
 ```
 ---
-

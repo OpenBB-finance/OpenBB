@@ -16,13 +16,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /options/calc - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/options/calc - Reference | OpenBB Terminal Docs" />
 
 Calculate profit or loss for given option settings.
 
 ### Usage
 
-```python wordwrap
+```python
 calc [--put] [--sell] [-s STRIKE] [-p PREMIUM] [-m MIN] [-M MAX]
 ```
 
@@ -30,14 +30,14 @@ calc [--put] [--sell] [-s STRIKE] [-p PREMIUM] [-m MIN] [-M MAX]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| put | --put | Flag to calculate put option | False | True | None |
-| sell | --sell | Flag to get profit chart of selling contract | False | True | None |
-| strike | -s  --strike | Option strike price | 10 | True | None |
-| premium | -p  --premium | Premium price | 1 | True | None |
-| min | -m  --min | Min price to look at | -1 | True | None |
-| max | -M  --max | Max price to look at | -1 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| put | Flag to calculate put option | False | True | None |
+| sell | Flag to get profit chart of selling contract | False | True | None |
+| strike | Option strike price | 10 | True | None |
+| premium | Premium price | 1 | True | None |
+| min | Min price to look at | -1 | True | None |
+| max | Max price to look at | -1 | True | None |
 
 
 ---

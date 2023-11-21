@@ -1,6 +1,6 @@
 ---
-title: OTCAggregate
-description: Weekly aggregate trade data for Over The Counter deals
+title: Weekly aggregate trade data for Over The Counter deals
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

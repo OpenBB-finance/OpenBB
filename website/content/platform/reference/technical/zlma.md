@@ -21,9 +21,6 @@ keywords:
 - example
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="technical /zlma - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -38,6 +35,27 @@ on a de-lagged data instead of doing it on the regular data.
 Data is de-lagged by removing the data from "lag" days ago
 thus removing (or attempting to) the cumulative effect of
 the moving average.
+
+Parameters
+----------
+data : List[Data]
+List of data to be used for the calculation.
+target : str
+Target column name.
+index : str, optional
+Index column name to use with `data`, by default "date".
+length : int, optional
+Number of periods to be used for the calculation, by default 50.
+offset : int, optional
+Offset to be used for the calculation, by default 0.
+
+Returns
+-------
+OBBject[List[Data]]
+The calculated data.
+
+Examples
+--------
 ```python
 from openbb import obb
 stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
@@ -49,27 +67,13 @@ zlma_data = obb.technical.zlma(data=stock_data.results, target="close", length=5
 
 ## Parameters
 
-<Tabs>
-<TabItem value="standard" label="Standard">
-
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| data | List[Data] | List of data to be used for the calculation. | None | False |
-| target | str | Target column name. | close | True |
-| index | str | Index column name to use with `data`, by default "date". | date | True |
-| length | int | Number of periods to be used for the calculation, by default 50. | 50 | True |
-| offset | int | Offset to be used for the calculation, by default 0. | 0 | True |
-</TabItem>
-
-</Tabs>
+This function does not take standardized parameters.
 
 ---
 
 ## Returns
 
-```python wordwrap
-The calculated data.
-```
+This function does not return a standardized model
 
 ---
 

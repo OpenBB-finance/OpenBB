@@ -1,6 +1,6 @@
 ---
-title: HistoricalEmployees
-description: Historical Employees
+title: Historical Employees
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

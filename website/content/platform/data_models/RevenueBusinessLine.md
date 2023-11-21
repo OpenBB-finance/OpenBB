@@ -1,6 +1,6 @@
 ---
-title: RevenueBusinessLine
-description: Revenue Business Line
+title: Revenue Business Line
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

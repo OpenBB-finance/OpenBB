@@ -16,13 +16,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /onchain/address - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/onchain/address - Reference | OpenBB Terminal Docs" />
 
 Load address for further analysis. You can analyze account address, token address or transaction hash. [Source: Ethplorer]
 
 ### Usage
 
-```python wordwrap
+```python
 address [-a] [-t] [-tx] --address ADDRESS
 ```
 
@@ -30,11 +30,11 @@ address [-a] [-t] [-tx] --address ADDRESS
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| account | -a | Account address | False | True | None |
-| token | -t | ERC20 token address | False | True | None |
-| transaction | -tx | Transaction hash | False | True | None |
-| address | --address | Ethereum address | False | False | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| account | Account address | False | True | None |
+| token | ERC20 token address | False | True | None |
+| transaction | Transaction hash | False | True | None |
+| address | Ethereum address | False | False | None |
 
 ---

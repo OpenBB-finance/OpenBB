@@ -20,9 +20,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get 5 year monthly historical performance for a ticker with dividends filtered
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/dcf_model.py#L275)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/dcf_model.py#L278)]
 
-```python wordwrap
+```python
 openbb.stocks.fa.historical_5(symbol: str)
 ```
 
@@ -43,4 +43,3 @@ openbb.stocks.fa.historical_5(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Historical data |
 ---
-

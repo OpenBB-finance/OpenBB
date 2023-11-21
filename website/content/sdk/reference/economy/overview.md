@@ -20,7 +20,7 @@ Scrape data for market overview
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/wsj_model.py#L62)]
 
-```python wordwrap
+```python
 openbb.economy.overview()
 ```
 
@@ -47,4 +47,3 @@ ov_df = openbb.economy.overview()
 ```
 
 ---
-

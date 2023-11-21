@@ -1,6 +1,6 @@
 ---
-title: EquityActive
-description: Get the most active Equities
+title: Get the most active Equities
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

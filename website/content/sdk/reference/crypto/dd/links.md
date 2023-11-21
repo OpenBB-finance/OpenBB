@@ -25,9 +25,9 @@ import TabItem from '@theme/TabItem';
 
 Returns asset's links
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L204)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_model.py#L197)]
 
-```python wordwrap
+```python
 openbb.crypto.dd.links(symbol: str)
 ```
 
@@ -49,17 +49,15 @@ openbb.crypto.dd.links(symbol: str)
 | pd.DataFrame | asset links |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Prints table showing coin links
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L238)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/messari_view.py#L249)]
 
-```python wordwrap
-openbb.crypto.dd.links_chart(symbol: str, export: str = "", sheet_name: Optional[str] = None)
+```python
+openbb.crypto.dd.links_chart(symbol: str, export: str = "")
 ```
 
 ---
@@ -70,7 +68,7 @@ openbb.crypto.dd.links_chart(symbol: str, export: str = "", sheet_name: Optional
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | str | Crypto symbol to check links | None | False |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | None | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -80,8 +78,6 @@ openbb.crypto.dd.links_chart(symbol: str, export: str = "", sheet_name: Optional
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

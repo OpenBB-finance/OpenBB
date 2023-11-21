@@ -1,6 +1,6 @@
 ---
-title: EquityFTD
-description: Get reported Fail-to-deliver (FTD) data
+title: Get reported Fail-to-deliver (FTD) data
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

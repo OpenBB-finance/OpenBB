@@ -19,13 +19,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /gov/lobbying - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/gov/lobbying - Reference | OpenBB Terminal Docs" />
 
 Lobbying details [Source: www.quiverquant.com]
 
 ### Usage
 
-```python wordwrap
+```python
 lobbying [-l LIMIT]
 ```
 
@@ -33,9 +33,9 @@ lobbying [-l LIMIT]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| limit | -l  --limit | Limit of events to show | 10 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| limit | Limit of events to show | 10 | True | None |
 
 
 ---

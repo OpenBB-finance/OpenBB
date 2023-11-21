@@ -20,7 +20,7 @@ The columns you want to add to a dataset. The first argument is the dataset to a
 
 ### Usage
 
-```python wordwrap
+```python
 combine [-d {}] [-c COLUMNS]
 ```
 
@@ -28,10 +28,10 @@ combine [-d {}] [-c COLUMNS]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| dataset | -d  --dataset | Dataset to add columns to | None | True | None |
-| columns | -c  --columns | The columns we want to add dataset.column,dataset.column2 | None | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| dataset | Dataset to add columns to | None | True | None |
+| columns | The columns we want to add dataset.column,dataset.column2 | None | True | None |
 
 
 ---
@@ -47,7 +47,7 @@ combine [-d {}] [-c COLUMNS]
 
 2022 May 31, 04:55 (🦋) /econometrics/ $ show nile
 
-  Dataset nile | Showing 10 of 100 rows  
+  Dataset nile | Showing 10 of 100 rows
 ┏━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━┓
 ┃   ┃ year    ┃ volume  ┃ nile_2_volume ┃
 ┡━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━┩

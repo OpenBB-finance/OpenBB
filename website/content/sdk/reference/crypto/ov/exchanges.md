@@ -15,9 +15,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Show top crypto exchanges.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/sdk_helpers.py#L43)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/sdk_helpers.py#L42)]
 
-```python wordwrap
+```python
 openbb.crypto.ov.exchanges(source: str = "CoinGecko")
 ```
 
@@ -47,4 +47,3 @@ exchanges = openbb.crypto.ov.exchanges()
 ```
 
 ---
-

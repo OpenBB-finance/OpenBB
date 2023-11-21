@@ -28,9 +28,9 @@ import TabItem from '@theme/TabItem';
 
 Returns the total amount of coins held on exchange addresses in units and percentage.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L452)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_model.py#L453)]
 
-```python wordwrap
+```python
 openbb.crypto.dd.eb(symbol: str, exchange: str = "aggregated", start_date: Optional[str] = None, end_date: Optional[str] = None)
 ```
 
@@ -64,17 +64,15 @@ df = openbb.crypto.dd.eb(symbol="BTC")
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Plots total amount of coins held on exchange addresses in units and percentage.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_view.py#L230)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/due_diligence/glassnode_view.py#L238)]
 
-```python wordwrap
-openbb.crypto.dd.eb_chart(symbol: str, exchange: str = "aggregated", start_date: Optional[str] = None, end_date: Optional[str] = None, percentage: bool = False, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.crypto.dd.eb_chart(symbol: str, exchange: str = "aggregated", start_date: Optional[str] = None, end_date: Optional[str] = None, percentage: bool = False, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -89,7 +87,7 @@ openbb.crypto.dd.eb_chart(symbol: str, exchange: str = "aggregated", start_date:
 | end_date | Optional[str] | Final date (format YYYY-MM-DD) by default 1 year ago | None | True |
 | percentage | bool | Show percentage instead of stacked value. | False | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (2 axes are expected in the list), by default None | None | True |
 
 
 ---
@@ -108,8 +106,6 @@ openbb.crypto.dd.eb_chart(symbol="BTC")
 ```
 
 ---
-
-
 
 </TabItem>
 </Tabs>

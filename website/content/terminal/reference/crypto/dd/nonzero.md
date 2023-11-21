@@ -16,13 +16,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /dd/nonzero - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/nonzero - Reference | OpenBB Terminal Docs" />
 
 Display addresses with nonzero assets in a certain blockchain [Source: https://glassnode.org] Note that free api keys only allow fetching data with a 1y lag
 
 ### Usage
 
-```python wordwrap
+```python
 nonzero [-s SINCE] [-u UNTIL]
 ```
 
@@ -30,10 +30,10 @@ nonzero [-s SINCE] [-u UNTIL]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| since | -s  --since | Initial date. Default: 2 years ago | 2021-11-21 | True | None |
-| until | -u  --until | Final date. Default: 1 year ago | 2022-11-19 | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| since | Initial date. Default: 2 years ago | 2020-11-25 | True | None |
+| until | Final date. Default: 1 year ago | 2021-11-23 | True | None |
 
 ![nonzero](https://user-images.githubusercontent.com/46355364/154064344-5b7825c8-9243-47ba-9930-0f5f7e3282a4.png)
 

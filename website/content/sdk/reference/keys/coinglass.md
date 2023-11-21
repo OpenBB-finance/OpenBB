@@ -17,9 +17,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Set Coinglass key.
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L1749)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/keys_model.py#L1853)]
 
-```python wordwrap
+```python
 openbb.keys.coinglass(key: str, persist: bool = False, show_output: bool = False)
 ```
 
@@ -51,4 +51,3 @@ openbb.keys.coinglass(key="example_key")
 ```
 
 ---
-

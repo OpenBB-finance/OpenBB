@@ -27,10 +27,10 @@ import TabItem from '@theme/TabItem';
 
 Returns top crypto categories [Source: CoinGecko]
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L151)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_model.py#L157)]
 
-```python wordwrap
-openbb.crypto.ov.categories(sort_filter: str = "market_cap")
+```python
+openbb.crypto.ov.categories(sort_filter: str = "market_cap_desc")
 ```
 
 ---
@@ -39,7 +39,7 @@ openbb.crypto.ov.categories(sort_filter: str = "market_cap")
 
 | Name | Type | Description | Default | Optional |
 | ---- | ---- | ----------- | ------- | -------- |
-| sort_filter | str | Can be one of - "market_cap_desc", "market_cap_asc", "name_desc", "name_asc",<br/>"market_cap_change_24h_desc", "market_cap_change_24h_asc" | market_cap | True |
+| sort_filter | str | Can be one of - "market_cap_desc", "market_cap_asc", "name_desc", "name_asc",<br/>"market_cap_change_24h_desc", "market_cap_change_24h_asc" | market_cap_desc | True |
 
 
 ---
@@ -51,17 +51,15 @@ openbb.crypto.ov.categories(sort_filter: str = "market_cap")
 | pd.DataFrame | Rank, Name, Change_1h, Change_7d, Market_Cap, Volume_24h,Coins, Url |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Shows top cryptocurrency categories by market capitalization
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L499)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/cryptocurrency/overview/pycoingecko_view.py#L416)]
 
-```python wordwrap
-openbb.crypto.ov.categories_chart(sortby: str = "market_cap_desc", limit: int = 15, export: str = "", sheet_name: Optional[str] = None, pie: bool = False)
+```python
+openbb.crypto.ov.categories_chart(sortby: str = "market_cap_desc", limit: int = 15, export: str = "", pie: bool = False)
 ```
 
 ---
@@ -72,7 +70,6 @@ openbb.crypto.ov.categories_chart(sortby: str = "market_cap_desc", limit: int = 
 | ---- | ---- | ----------- | ------- | -------- |
 | sortby | str | Key by which to sort data | market_cap_desc | True |
 | limit | int | Number of records to display | 15 | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Export dataframe data to csv,json,xlsx file |  | True |
 | pie | bool | Whether to show the pie chart | False | True |
 
@@ -84,8 +81,6 @@ openbb.crypto.ov.categories_chart(sortby: str = "market_cap_desc", limit: int = 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,6 +1,6 @@
 ---
-title: EquityLosers
-description: Get the top Equity losers
+title: Get the top Equity losers
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

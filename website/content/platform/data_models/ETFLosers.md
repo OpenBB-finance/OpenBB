@@ -1,6 +1,6 @@
 ---
-title: ETFLosers
-description: Get the top ETF losers
+title: Get the top ETF losers
+description: OpenBB Platform Data Model
 ---
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->

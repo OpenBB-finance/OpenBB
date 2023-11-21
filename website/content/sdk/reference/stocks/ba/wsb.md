@@ -21,9 +21,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get wsb posts [Source: reddit].
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/reddit_model.py#L217)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/common/behavioural_analysis/reddit_model.py#L602)]
 
-```python wordwrap
+```python
 openbb.stocks.ba.wsb(limit: int = 10, new: bool = False)
 ```
 
@@ -45,4 +45,3 @@ openbb.stocks.ba.wsb(limit: int = 10, new: bool = False)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of reddit submissions |
 ---
-

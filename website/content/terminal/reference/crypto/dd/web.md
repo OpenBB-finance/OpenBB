@@ -15,13 +15,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="crypto /dd/web - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="crypto/dd/web - Reference | OpenBB Terminal Docs" />
 
 Websites found for given Coin. You can find there urls to homepage, forum, announcement site and others.
 
 ### Usage
 
-```python wordwrap
+```python
 web
 ```
 

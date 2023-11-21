@@ -26,7 +26,7 @@ Scrape data for us bonds
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/economy/wsj_model.py#L161)]
 
-```python wordwrap
+```python
 openbb.economy.usbonds()
 ```
 
@@ -44,4 +44,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing name, coupon rate, yield and change in yield |
 ---
-

@@ -14,13 +14,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="portfolio /alloc - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="portfolio/alloc - Reference | OpenBB Terminal Docs" />
 
 Show your allocation to each asset or sector compared to the benchmark.
 
 ### Usage
 
-```python wordwrap
+```python
 alloc [-a AGG] [-t]
 ```
 
@@ -28,10 +28,10 @@ alloc [-a AGG] [-t]
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| agg | -a  --agg | The type of allocation aggregation you wish to do | assets | True | assets, sectors, countries, regions |
-| tables | -t  --tables | Whether to also include the assets/sectors tables of both the benchmark and the portfolio. | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| agg | The type of allocation aggregation you wish to do | assets | True | assets, sectors, countries, regions |
+| tables | Whether to also include the assets/sectors tables of both the benchmark and the portfolio. | False | True | None |
 
 
 ---
@@ -67,7 +67,7 @@ Portfolio vs. Benchmark - Top 10 Assets Allocation
 
 2022 May 12, 06:23 (🦋) /portfolio/ $ alloc sectors
 
-      Portfolio vs. Benchmark - Top 4 Sectors Allocation       
+      Portfolio vs. Benchmark - Top 4 Sectors Allocation
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Sectors                ┃ Portfolio ┃ Benchmark ┃ Difference ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━┩
@@ -82,7 +82,7 @@ Portfolio vs. Benchmark - Top 10 Assets Allocation
 
 2022 May 12, 06:23 (🦋) /portfolio/ $ alloc countries
 
- Portfolio vs. Benchmark - Top 5 Countries Allocation 
+ Portfolio vs. Benchmark - Top 5 Countries Allocation
 ┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Countries     ┃ Portfolio ┃ Benchmark ┃ Difference ┃
 ┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━┩
@@ -99,7 +99,7 @@ Portfolio vs. Benchmark - Top 10 Assets Allocation
 
 2022 May 12, 06:23 (🦋) /portfolio/ $ alloc regions
 
-  Portfolio vs. Benchmark - Top 3 Regions Allocation  
+  Portfolio vs. Benchmark - Top 3 Regions Allocation
 ┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Regions       ┃ Portfolio ┃ Benchmark ┃ Difference ┃
 ┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━┩

@@ -20,13 +20,13 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="stocks /ba/redditsent - Reference | OpenBB Terminal Docs" />
+<HeadTitle title="stocks/ba/redditsent - Reference | OpenBB Terminal Docs" />
 
 Determine general Reddit sentiment about a ticker. [Source: Reddit]
 
 ### Usage
 
-```python wordwrap
+```python
 redditsent [-s {relevance,hot,top,new,comments}] [-c COMPANY] [--subreddits SUBREDDITS] [-l LIMIT] [-t {hour,day,week,month,year,all}] [--full] [-g] [-d]
 ```
 
@@ -34,16 +34,16 @@ redditsent [-s {relevance,hot,top,new,comments}] [-c COMPANY] [--subreddits SUBR
 
 ## Parameters
 
-| Name | Parameter | Description | Default | Optional | Choices |
-| ---- | --------- | ----------- | ------- | -------- | ------- |
-| sort | -s  --sort | search sorting type | relevance | True | relevance, hot, top, new, comments |
-| company | -c  --company | explicit name of company to search for, will override ticker symbol | None | True | None |
-| subreddits | --subreddits | comma-separated list of subreddits to search | all | True | None |
-| limit | -l  --limit | how many posts to gather from each subreddit | 10 | True | None |
-| time | -t  --time | time period to get posts from -- all, year, month, week, or day; defaults to week | week | True | hour, day, week, month, year, all |
-| full_search | --full | enable comprehensive search | False | True | None |
-| graphic | -g  --graphic | display graphic | True | True | None |
-| display | -d  --display | Print table of sentiment values | False | True | None |
+| Name | Description | Default | Optional | Choices |
+| ---- | ----------- | ------- | -------- | ------- |
+| sort | search sorting type | relevance | True | relevance, hot, top, new, comments |
+| company | explicit name of company to search for, will override ticker symbol | None | True | None |
+| subreddits | comma-separated list of subreddits to search | all | True | None |
+| limit | how many posts to gather from each subreddit | 10 | True | None |
+| time | time period to get posts from -- all, year, month, week, or day; defaults to week | week | True | hour, day, week, month, year, all |
+| full_search | enable comprehensive search | False | True | None |
+| graphic | display graphic | True | True | None |
+| display | Print table of sentiment values | False | True | None |
 
 
 ---

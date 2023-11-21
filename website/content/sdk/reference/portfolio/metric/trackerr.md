@@ -24,9 +24,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Get tracking error
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1386)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/portfolio/portfolio_model.py#L1344)]
 
-```python wordwrap
+```python
 openbb.portfolio.metric.trackerr(portfolio_engine: portfolio_engine.PortfolioEngine, window: int = 252)
 ```
 
@@ -53,9 +53,8 @@ openbb.portfolio.metric.trackerr(portfolio_engine: portfolio_engine.PortfolioEng
 
 ```python
 from openbb_terminal.sdk import openbb
-p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio/holdings_example.xlsx")
+p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/holdings/example.csv")
 output = openbb.portfolio.metric.trackerr(p)
 ```
 
 ---
-

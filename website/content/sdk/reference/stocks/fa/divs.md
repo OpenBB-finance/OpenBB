@@ -31,9 +31,9 @@ import TabItem from '@theme/TabItem';
 
 Get historical dividend for ticker
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L164)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_model.py#L256)]
 
-```python wordwrap
+```python
 openbb.stocks.fa.divs(symbol: str)
 ```
 
@@ -64,17 +64,15 @@ openbb.fa.divs("AAPL")
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
 Display historical dividends
 
-Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_view.py#L115)]
+Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/stocks/fundamental_analysis/yahoo_finance_view.py#L185)]
 
-```python wordwrap
-openbb.stocks.fa.divs_chart(symbol: str, limit: int = 12, plot: bool = True, export: str = "", sheet_name: Optional[str] = None, external_axes: bool = False)
+```python
+openbb.stocks.fa.divs_chart(symbol: str, limit: int = 12, plot: bool = True, export: str = "", external_axes: Optional[List[matplotlib.axes._axes.Axes]] = None)
 ```
 
 ---
@@ -86,9 +84,8 @@ openbb.stocks.fa.divs_chart(symbol: str, limit: int = 12, plot: bool = True, exp
 | symbol | str | Stock ticker symbol | None | False |
 | limit | int | Number to show | 12 | True |
 | plot | bool | Plots historical data | True | True |
-| sheet_name | str | Optionally specify the name of the sheet the data is exported to. | None | True |
 | export | str | Format to export data |  | True |
-| external_axes | bool | Whether to return the figure object or not, by default False | False | True |
+| external_axes | Optional[List[plt.Axes]] | External axes (1 axis is expected in the list), by default None | None | True |
 
 
 ---
@@ -107,8 +104,6 @@ openbb.fa.divs_chart("AAPL")
 ```
 
 ---
-
-
 
 </TabItem>
 </Tabs>

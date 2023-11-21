@@ -17,9 +17,7 @@ keywords:
 - results
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="econometrics /unit_root - Reference | OpenBB Platform Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
@@ -28,34 +26,36 @@ import TabItem from '@theme/TabItem';
 
 Perform Augmented Dickey-Fuller unit root test.
 
+Parameters
+----------
+data: List[Data]
+Input dataset.
+column: str
+Data columns to check unit root
+regression: str
+Regression type to use in the test.  Either "c" for constant only, "ct" for constant and trend, or "ctt" for
+constant, trend, and trend-squared.
+
+Returns
+-------
+OBBject[Data]
+OBBject with the results being the score from the test.
+
 ```python wordwrap
-obb.econometrics.unit_root(data: Union[list, dict, pd.DataFrame, List[pd.DataFrame], pd.Series, List[pd.Series], numpy.ndarray, Data, List[Data]], column: str, regression: Literal[str] = c)
+
 ```
 
 ---
 
 ## Parameters
 
-<Tabs>
-<TabItem value="standard" label="Standard">
-
-| Name | Type | Description | Default | Optional |
-| ---- | ---- | ----------- | ------- | -------- |
-| data | List[Data] | Input dataset. | None | False |
-| column | str | Data columns to check unit root | None | False |
-| regression | Literal["c", "ct", "ctt"] | Regression type to use in the test.  Either "c" for constant only, "ct" for constant and trend, or "ctt" for
-constant, trend, and trend-squared. | c | True |
-</TabItem>
-
-</Tabs>
+This function does not take standardized parameters.
 
 ---
 
 ## Returns
 
-```python wordwrap
-OBBject with the results being the score from the test.
-```
+This function does not return a standardized model
 
 ---
 
