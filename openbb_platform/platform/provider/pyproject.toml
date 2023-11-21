@@ -13,7 +13,6 @@ pydantic = "^2.5.1"
 requests = "^2.31.0"
 importlib-metadata = "^6.8.0"
 python-dotenv = "^1.0.0"
-pytest-recorder = "^0.2.4"
 
 [tool.poetry.group.dev.dependencies]
 pytest-recorder = "^0.2.3"
