@@ -14,7 +14,13 @@ class FinancialAttributesQueryParams(QueryParams):
     """Financial Attributes Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol"))
-    tag: str = Field(description=QUERY_DESCRIPTIONS.get("tag"))
+    tag: str = Field(description="Intrinio data tag ID or code.")
+    start_date: Optional[dateType] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("start_date")
+    )
+    end_date: Optional[dateType] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("end_date")
+    )
     period: Optional[Literal["annual", "quarter"]] = Field(
         default="annual", description=QUERY_DESCRIPTIONS.get("period")
     )
@@ -23,12 +29,6 @@ class FinancialAttributesQueryParams(QueryParams):
     )
     type: Optional[str] = Field(
         default=None, description="Filter by type, when applicable."
-    )
-    start_date: Optional[dateType] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("start_date")
-    )
-    end_date: Optional[dateType] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("end_date")
     )
     sort: Optional[Literal["asc", "desc"]] = Field(
         default="desc", description="Sort order."

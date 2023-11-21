@@ -49,30 +49,28 @@ class IntrinioFinancialAttributesFetcher(
 
     @staticmethod
     def extract_data(
-        query: IntrinioFinancialAttributesQueryParams,
+        query: IntrinioFinancialAttributesQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         frequency = "yearly" if query.period == "annual" else "quarterly"
-        data: List[Dict] = []
 
         base_url = "https://api-v2.intrinio.com"
-        query_str = get_querystring(query.model_dump(by_alias=True), ["frequency"])
+        query_str = get_querystring(
+            query.model_dump(by_alias=True), ["symbol", "tag", "period"]
+        )
         query_str = f"{query_str}&frequency={frequency}"
 
         url = f"{base_url}/historical_data/{query.symbol}/{query.tag}?{query_str}&api_key={api_key}"
-        # data = get_data_one(url).get("historical_data", [])
-        data = get_data_many(url, "historical_data")
-
-        return data
+        return get_data_many(url, "historical_data")
 
     @staticmethod
     def transform_data(
-        query: IntrinioFinancialAttributesQueryParams,
+        query: IntrinioFinancialAttributesQueryParams,  # pylint: disable=unused-argument
         data: List[Dict],
         **kwargs: Any,
     ) -> List[IntrinioFinancialAttributesData]:
         """Return the transformed data."""
-        return [IntrinioFinancialAttributesData.model_validate(item) for item in data]
+        return [IntrinioFinancialAttributesData.model_validate(d) for d in data]
