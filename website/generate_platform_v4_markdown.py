@@ -489,7 +489,6 @@ def generate_platform_markdown() -> None:
 
         filepath = content_path / folder / f"{func_name}.md"
 
-
         markdown = generate_markdown(meta_command=meta_command)
 
         if data_model := meta_command.get("model", None):
