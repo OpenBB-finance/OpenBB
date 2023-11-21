@@ -8,6 +8,7 @@ keywords:
 - Import Statements
 - TET Pattern
 - Fetcher Classes
+- Core Dependencies
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
@@ -277,3 +278,24 @@ When using the OpenBB Platform on a API Interface, the types are a bit more limi
 ]
 
 ```
+
+## Core Dependencies
+
+The OpenBB Platform core relies on a set of carefully selected Python libraries to provide its functionality. These dependencies include:
+
+> Note that, in this context by core we mean the `openbb-core` package and the `openbb-provider` package.
+
+- FastAPI for building the API.
+- Uvicorn as the ASGI server.
+- Pandas for data manipulation and analysis.
+- Pydantic for data validation and serialization using Python type annotations.
+- Requests for making HTTP requests.
+- Websockets for handling WebSocket connections.
+
+These dependencies are specified in the `pyproject.toml` files.
+
+### Importance of a Lean Core
+
+Keeping the OpenBB Platform core as lean as possible is crucial for maintaining the platform's performance, ease of use, and flexibility. A lean core means faster installation times, less memory usage, and overall better performance. It also reduces the risk of conflicts between dependencies and makes the platform easier to maintain and update.
+
+Moreover, a lean core allows for greater flexibility. Users of the platform can add additional functionality through extensions without being burdened by unnecessary core dependencies. This makes the OpenBB Platform adaptable to a wide range of use cases and requirements.
