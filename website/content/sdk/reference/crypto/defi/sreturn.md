@@ -1,6 +1,6 @@
 ---
 title: sreturn
-description: "Get terra blockchain staking returns history"
+description: Get terra blockchain staking returns history
 keywords:
 - blockchain
 - terra

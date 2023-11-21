@@ -1,11 +1,11 @@
 ---
 title: lowfloat
-description: "The LowFloat webpage provides sophisticated tools for retrieving information\
-  \ about top stocks with the lowest float. It offers a comprehensive database that\
-  \ includes stocks from Nasdaq, the New York Stock Exchange, the American Stock Exchange,\
-  \ and the Over the Counter Bulletin Board. The service not only provides a stock\u2019\
-  s float, but also provides additional key data such as the number of outstanding\
-  \ shares, short interest, and company industry."
+description: The LowFloat webpage provides sophisticated tools for retrieving information
+  about top stocks with the lowest float. It offers a comprehensive database that
+  includes stocks from Nasdaq, the New York Stock Exchange, the American Stock Exchange,
+  and the Over the Counter Bulletin Board. The service not only provides a stock's
+  float, but also provides additional key data such as the number of outstanding
+  shares, short interest, and company industry.
 keywords:
 - lowfloat
 - stocks
