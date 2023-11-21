@@ -14,7 +14,7 @@ This notebook provides an introduction to discovering, finding, and searching ti
 
 ### loadHistoricalPriceData
 
-This notebook walks through collecting historical price data using a variety of methods and sources.
+This notebook walks through collecting historical price data, at different intervals, using a variety of sources.
 
 - Loading data with different intervals, and changing sources.
 - A brief explanation of ticker symbology.
