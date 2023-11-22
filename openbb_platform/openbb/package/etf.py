@@ -276,7 +276,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.holdings(symbol="SPY")
+        >>> obb.etf.holdings(symbol="SPY", date="2021-03-31")
         """  # noqa: E501
 
         inputs = filter_inputs(
