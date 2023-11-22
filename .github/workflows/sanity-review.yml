@@ -101,6 +101,12 @@ jobs:
           # Flag to track line ending issues
           line_ending_issue_found=0
 
+          # Check that MERGE_BASE_SHA is not empty
+          if [ -z "$MERGE_BASE_SHA" ]; then
+            echo "MERGE_BASE_SHA is not set. Exiting."
+            exit 1
+          fi
+
           # Get the SHA for the merge base from the environment variable
           merge_base_sha=$MERGE_BASE_SHA
 
@@ -124,3 +130,5 @@ jobs:
           else
             echo "All checked files have LF line endings."
           fi
+        env:
+          MERGE_BASE_SHA: ${{ env.MERGE_BASE_SHA }}
