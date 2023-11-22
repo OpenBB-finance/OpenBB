@@ -198,7 +198,7 @@ dividends["div_per_share"].tail(4)
 | 2023-07-29  |        -1.08102 |
 | 2023-10-31  |        -1.09835 |
 
-This can be compared against the real amounts paid to common share holders with the historical dividend payments announced.
+This can be compared against the real amounts paid to common share holders, as announced.
 
 :::note
 The dates immediately above represent the report date, dividends paid are attributed to the quarter they were paid in.  The value from "2023-01-28" equates to the fourth quarter of 2022.
@@ -230,7 +230,7 @@ The `openbb-intrinio` data extension has an endpoint for extracting a single fac
 Search attributes by keyword.
 
 ```python
-obb.equity.fundamental.search_financial_attributes("marketcap")
+obb.equity.fundamental.search_financial_attributes("marketcap").head(1)
 ```
 
 |    | id         | name                  | tag       | statement_code   | statement_type   | parent_name   |   sequence | factor   | transaction   | type      | unit   |
