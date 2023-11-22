@@ -150,13 +150,13 @@ dtype: float64
 With an average closing price of $146.45, that represents approximately $190M in buy backs.
 
 ```python
-price = obb.equity.price.historical("TGT", start_date="2022-10-29", provider="fmp")
+price = obb.equity.price.historical("TGT", start_date="2022-10-29", provider="fmp").to_df()
 
-(price["close"].median()*1300000)/1000000
+round((price["close"].mean()*1300000)/1000000, 2)
 ```
 
 ```console
-190.385
+186.38
 ```
 
 ### Dividends Paid
@@ -242,7 +242,7 @@ Other valuation functions are derivatives of the financial statements, but the d
 
 This data set is where you can find EPS, FCF, P/B, EBIT, quick ratio, etc.
 
-Target's quick ratio could be one reason why its share price is losing traction against the market.  Its ability to pay current obligations is not optimistically reflected in a 0.27 score, approximately 50% below the historical median.
+Target's quick ratio could be one reason why its share price is losing traction against the market.  Its ability to pay current obligations is not optimistically reflected in a 0.27 score.
 
 ```python
 ratios = obb.equity.fundamental.ratios("TGT", limit=50, provider="fmp").to_df()
@@ -253,6 +253,8 @@ ratios["quick_ratio"].iloc[-1]
 ```console
 0.2701025641025641
 ```
+
+This number falls about 50% below the historical median.
 
 ```python
 ratios["quick_ratio"].median()
