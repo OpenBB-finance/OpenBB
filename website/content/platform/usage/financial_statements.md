@@ -193,7 +193,7 @@ obb.equity.fundamental.dividends("TGT", provider="fmp").to_df()["dividend"].tail
 | 2023-08-15  |       1.1  |
 | 2023-11-14  |       1.1  |
 
-The numbers check out, and the $2B paid to investors over four quarters is nearly ten times the $190M returned through share buy backs.
+The numbers check out, and the $2B paid to investors over four quarters is more than ten times the $190M returned through share buy backs.
 
 ### Financial Attributes
 
