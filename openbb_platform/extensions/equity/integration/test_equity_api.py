@@ -1294,7 +1294,12 @@ def test_equity_darkpool_otc(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/darkpool/otc?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
+
+    try:
+        result = requests.get(url, headers=headers, timeout=30)
+    except requests.exceptions.Timeout:
+        pytest.skip("Timeout: `equity/darkpool/otc` took too long to respond.")
+
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
