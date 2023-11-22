@@ -76,3 +76,24 @@ EXCHANGES = Literal[
     "wse",
     "xetra",
 ]
+
+TRANSACTION_TYPES = Literal[
+    "A-Award",
+    "C-Conversion",
+    "D-Return",
+    "E-ExpireShort",
+    "F-InKind",
+    "G-Gift",
+    "H-ExpireLong",
+    "I-Discretionary",
+    "J-Other",
+    "L-Small",
+    "M-Exempt",
+    "O-OutOfTheMoney",
+    "P-Purchase",
+    "S-Sale",
+    "U-Tender",
+    "W-Will",
+    "X-InTheMoney",
+    "Z-Trust",
+]
