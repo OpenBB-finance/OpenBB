@@ -309,6 +309,12 @@ if response.status_code == 200:
 data.to_df()
 ```
 
+:::info
+The preferred output type can be set with a user preference.
+
+obb.user.preferences.output_type="dataframe"
+:::
+
 ## Dynamic Command Execution
 
 Dynamic execution provides an alternate entry point to functions.  This method requires formatting the query as demonstrated below.
