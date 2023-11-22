@@ -68,14 +68,17 @@ df["yfinance"] = (
   obb.equity.fundamental.balance("TGT", provider="yfinance", limit=4)
   .to_df()["TotalAssets"].reset_index(drop=True)
 )
+
 df["fmp"] = (
   obb.equity.fundamental.balance("TGT", provider="fmp", limit=4)
   .to_df()["assets"].convert_dtypes().reset_index(drop=True)
 )
+
 df["intrinio"] = (
   obb.equity.fundamental.balance("TGT", provider="intrinio", limit=4)
   .to_df()["total assets"].convert_dtypes().reset_index(drop=True)
 )
+
 df["polygon"] = (
   obb.equity.fundamental.balance("TGT", provider="polygon", limit=4)
   .to_df()["total_assets"].convert_dtypes().reset_index(drop=True)
@@ -102,7 +105,9 @@ Let's take a look at Target.  To make the numbers easier to read, we'll divide t
 ```python
 data = (
   obb.equity.fundamental.income("TGT", provider='fmp', limit=150, period="quarter")
-).to_df()
+  .to_df()
+)
+
 shares = data[["weighted_average_shares_outstanding"]]/1000000
 ```
 
@@ -150,7 +155,10 @@ dtype: float64
 With an average closing price of $143.37, that represents approximately $190M in buy backs.
 
 ```python
-price = obb.equity.price.historical("TGT", start_date="2022-10-29", provider="fmp").to_df()
+price = (
+  obb.equity.price.historical("TGT", start_date="2022-10-29", provider="fmp")
+  .to_df()
+)
 
 round((price["close"].mean()*1300000)/1000000, 2)
 ```
@@ -165,8 +173,10 @@ Dividends paid is in the cash flow statement.  We can calculate the amount-per-s
 
 ```python
 dividends = (
-  obb.equity.fundamental.cash("TGT", provider='fmp', limit=150, period="quarter").to_df()[["dividends_paid"]]
+  obb.equity.fundamental.cash("TGT", provider='fmp', limit=150, period="quarter")
+  .to_df()[["dividends_paid"]]
 )
+
 dividends["shares"] = data.to_df()[["weighted_average_shares_outstanding"]]
 dividends["div_per_share"] = dividends["dividends_paid"]/dividends["shares"]
 
@@ -183,7 +193,11 @@ dividends["div_per_share"].tail(4)
 This can be compared against the real amounts paid to common share holders with the historical dividend payments announced.
 
 ```python
-obb.equity.fundamental.dividends("TGT", provider="fmp").to_df()["dividend"].tail(4)
+(
+  obb.equity.fundamental.dividends("TGT", provider="fmp")
+  .to_df()["dividend"]
+  .tail(4)
+)
 ```
 
 | date          |   dividend |
@@ -214,7 +228,10 @@ obb.equity.fundamental.search_financial_attributes("marketcap")
 The `tag` is what we need, in this case it is what we searched for.
 
 ```python
-marketcap = obb.equity.fundamental.financial_attributes(symbol="TGT", tag = "marketcap", period="quarter").to_df()
+marketcap = (
+  obb.equity.fundamental.financial_attributes(symbol="TGT", tag = "marketcap", period="quarter")
+  .to_df()
+)
 
 marketcap.tail(4)
 ```
@@ -245,7 +262,10 @@ This data set is where you can find EPS, FCF, P/B, EBIT, quick ratio, etc.
 Target's quick ratio could be one reason why its share price is losing traction against the market.  Its ability to pay current obligations is not optimistically reflected in a 0.27 score.
 
 ```python
-ratios = obb.equity.fundamental.ratios("TGT", limit=50, provider="fmp").to_df()
+ratios = (
+  obb.equity.fundamental.ratios("TGT", limit=50, provider="fmp")
+  .to_df()
+)
 
 ratios["quick_ratio"].iloc[-1]
 ```
