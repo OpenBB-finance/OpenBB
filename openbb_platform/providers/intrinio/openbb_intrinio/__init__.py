@@ -17,6 +17,7 @@ from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetch
 from openbb_intrinio.models.institutional_ownership import (
     IntrinioInstitutionalOwnershipFetcher,
 )
+from openbb_intrinio.models.key_metrics import IntrinioKeyMetricsFetcher
 from openbb_intrinio.models.latest_attributes import IntrinioLatestAttributesFetcher
 from openbb_intrinio.models.market_indices import IntrinioMarketIndicesFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
@@ -47,6 +48,7 @@ intrinio_provider = Provider(
         "HistoricalAttributes": IntrinioHistoricalAttributesFetcher,
         "IncomeStatement": IntrinioIncomeStatementFetcher,
         "InstitutionalOwnership": IntrinioInstitutionalOwnershipFetcher,
+        "KeyMetrics": IntrinioKeyMetricsFetcher,
         "LatestAttributes": IntrinioLatestAttributesFetcher,
         "MarketIndices": IntrinioMarketIndicesFetcher,
         "OptionsChains": IntrinioOptionsChainsFetcher,
