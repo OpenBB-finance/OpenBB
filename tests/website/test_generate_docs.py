@@ -67,6 +67,7 @@ class MockTrailMap:
         self.func_attrs["model"] = MockFuncAttrs()
         self.model = mock_func
         self.class_attr = "mock"
+        self.location_path = []
 
 
 EXPECTED_OUTPUT = """Stuff here or stuff there, it doesn't matter, it's everywhere.
