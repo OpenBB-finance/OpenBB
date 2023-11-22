@@ -10,11 +10,10 @@ Publishing checklist:
 
     Consider using the `--dry-run` flag to check if everything is correct before publishing.
     Also, it might be a good idea to run the script in batches to ensure that the packages are published correctly and the dependencies pick the correct versions.
-    Example, the `openbb-core` needs to pick the latest `openbb-provider` version and extension packages need to pick the latest `openbb-core` version.
+    Example, the extension packages need to pick the latest `openbb-core` version.
     Suggested batch order:
     1. Batch 1. Core
-       1. `openbb-provider`
-       2. `openbb-core`
+       1. `openbb-core`
     2. Batch 2. Extensions
        1. `openbb-charting`
        2. `openbb-crypto`

@@ -2,9 +2,9 @@
 
 from typing import Any, Dict, List, Literal, Optional
 
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.sonia_rates import SONIAData, SONIAQueryParams
 from openbb_fred.utils.fred_base import Fred
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.sonia_rates import SONIAData, SONIAQueryParams
 from pydantic import Field, field_validator
 
 SONIA_PARAMETER_TO_FRED_ID = {

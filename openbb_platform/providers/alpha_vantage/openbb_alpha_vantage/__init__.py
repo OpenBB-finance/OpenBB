@@ -1,6 +1,6 @@
 """Alpha Vantage Provider module."""
 from openbb_alpha_vantage.models.equity_historical import AVEquityHistoricalFetcher
-from openbb_provider.abstract.provider import Provider
+from openbb_core.provider.abstract.provider import Provider
 
 alpha_vantage_provider = Provider(
     name="alpha_vantage",

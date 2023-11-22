@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.equity_valuation_multiples import (
+from openbb_core.provider.standard_models.equity_valuation_multiples import (
 EquityValuationMultiplesData,
 EquityValuationMultiplesQueryParams,
 )
@@ -112,4 +112,3 @@ EquityValuationMultiplesQueryParams,
 </TabItem>
 
 </Tabs>
-
