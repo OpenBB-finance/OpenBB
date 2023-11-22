@@ -133,12 +133,6 @@ def test_news_world(params, headers):
         ),
         (
             {
-                "provider": "ultima",
-                "symbols": "AAPL,MSFT",
-            }
-        ),
-        (
-            {
                 "provider": "tiingo",
                 "symbols": "AAPL,MSFT",
                 "limit": 20,
