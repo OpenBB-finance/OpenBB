@@ -75,3 +75,31 @@ jobs:
         env:
           SIZE_LABEL: ${{ env.SIZE_LABEL }}
 
+
+
+  sanity-checks:
+    runs-on: ubuntu-latest
+    needs: label-pull-request-with-size
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Check for large python file changes
+        run: |
+          #!/bin/bash
+          # Set the maximum number of allowed lines changed for a .py file
+          MAX_DIFF_SIZE=1000
+
+          # Check each .py file in the commit range for the number of lines changed
+          git diff --numstat ${{ github.event.before }} ${{ github.event.after }} -- '*.py' | while read adds deletes file; do
+            # Sum adds and deletes to get the total number of lines changed
+            total_changes=$((adds + deletes))
+            echo "$file has $total_changes lines changed."
+
+            # If the total changes exceed the maximum allowed, fail the check
+            if [ "$total_changes" -gt "$MAX_DIFF_SIZE" ]; then
+              echo "::error file=$file::File $file has too many lines changed ($total_changes lines)."
+              exit 1
+            fi
+          done
+          echo "All modified .py files have an acceptable number of line changes."
