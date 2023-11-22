@@ -890,11 +890,11 @@ def test_equity_fundamental_multiples(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_equity_fundamental_search_financial_attributes(params, obb):
+def test_equity_fundamental_search_attributes(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/search_financial_attributes?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/search_attributes?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -908,7 +908,7 @@ def test_equity_fundamental_search_financial_attributes(params, obb):
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "tag": "ebit",
-                "period": "annual",
+                "frequency": "yearly",
                 "limit": 1000,
                 "type": None,
                 "start_date": "2013-01-01",
@@ -919,11 +919,34 @@ def test_equity_fundamental_search_financial_attributes(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_equity_fundamental_financial_attributes(params, obb):
+def test_equity_fundamental_historical_attributes(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/financial_attributes?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/historical_attributes?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "tag": "ceo",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_fundamental_latest_attributes(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/latest_attributes?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

@@ -60,7 +60,7 @@ def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     except SSLError:
         r = request(url)
     if r.status_code == 404:
-        raise RuntimeError("Intrinio endpoint doesn't exist")
+        raise RuntimeError("Intrinio endpoint doesn't exist.")
 
     data = r.json()
     if r.status_code != 200:
@@ -69,8 +69,8 @@ def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
         value = error or message
         raise RuntimeError(f"Error in Intrinio request -> {value}")
 
-    if "Error Message" in data:
-        raise RuntimeError("Intrinio Error Message -> " + data["Error Message"])
+    if isinstance(data, (str, float)):
+        data = {"value": data}
 
     if len(data) == 0:
         raise EmptyDataError()

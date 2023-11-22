@@ -103,25 +103,36 @@ def employee_count(
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="SearchFinancialAttributes")
-def search_financial_attributes(
+@router.command(model="SearchAttributes")
+def search_attributes(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Search financial attributes for financial statements."""
+    """Search Intrinio data tags."""
     return OBBject(results=Query(**locals()).execute())
 
 
-@router.command(model="FinancialAttributes")
-def financial_attributes(
+@router.command(model="LatestAttributes")
+def latest_attributes(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Fetch the value of financial attributes for a selected company and fiscal period."""
+    """Fetch the latest value of a data tag from Intrinio."""
+    return OBBject(results=Query(**locals()).execute())
+
+
+@router.command(model="HistoricalAttributes")
+def historical_attributes(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Fetch the historical values of a data tag from Intrinio."""
     return OBBject(results=Query(**locals()).execute())
 
 

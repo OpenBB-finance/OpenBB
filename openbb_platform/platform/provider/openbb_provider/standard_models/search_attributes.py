@@ -1,4 +1,4 @@
-"""Search Financial Attributes Standard Model."""
+"""Search Attributes Standard Model."""
 
 from typing import Optional
 
@@ -9,8 +9,8 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
 
 
-class SearchFinancialAttributesQueryParams(QueryParams):
-    """Search Financial Attributes Query."""
+class SearchAttributesQueryParams(QueryParams):
+    """Search Attributes Query."""
 
     query: str = Field(description="Query to search for.")
     limit: Optional[int] = Field(
@@ -18,8 +18,8 @@ class SearchFinancialAttributesQueryParams(QueryParams):
     )
 
 
-class SearchFinancialAttributesData(Data):
-    """Search Financial Attributes Data."""
+class SearchAttributesData(Data):
+    """Search Attributes Data."""
 
     id: str = Field(description="ID of the financial attribute.")
     name: str = Field(description="Name of the financial attribute.")

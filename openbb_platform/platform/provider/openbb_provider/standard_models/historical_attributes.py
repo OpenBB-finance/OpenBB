@@ -1,4 +1,4 @@
-"""Financial Attributes Standard Model."""
+"""Historical Attributes Standard Model."""
 
 from datetime import date as dateType
 from typing import Literal, Optional
@@ -10,8 +10,8 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class FinancialAttributesQueryParams(QueryParams):
-    """Financial Attributes Query."""
+class HistoricalAttributesQueryParams(QueryParams):
+    """Historical Attributes Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol"))
     tag: str = Field(description="Intrinio data tag ID or code.")
@@ -21,8 +21,10 @@ class FinancialAttributesQueryParams(QueryParams):
     end_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("end_date")
     )
-    period: Optional[Literal["annual", "quarter"]] = Field(
-        default="annual", description=QUERY_DESCRIPTIONS.get("period")
+    frequency: Optional[
+        Literal["daily", "weekly", "monthly", "quarterly", "yearly"]
+    ] = Field(
+        default="yearly", description="Return historical data in the given frequency."
     )
     limit: Optional[int] = Field(
         default=1000, description=QUERY_DESCRIPTIONS.get("limit")
@@ -35,8 +37,8 @@ class FinancialAttributesQueryParams(QueryParams):
     )
 
 
-class FinancialAttributesData(Data):
-    """Financial Attributes Data."""
+class HistoricalAttributesData(Data):
+    """Historical Attributes Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
     value: Optional[float] = Field(default=None, description="The value of the data.")

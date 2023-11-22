@@ -1,4 +1,4 @@
-"""Intrinio Financial Attributes Model."""
+"""Intrinio Historical Attributes Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -6,27 +6,27 @@ from typing import Any, Dict, List, Optional
 from dateutil.relativedelta import relativedelta
 from openbb_intrinio.utils.helpers import get_data_many
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.financial_attributes import (
-    FinancialAttributesData,
-    FinancialAttributesQueryParams,
+from openbb_provider.standard_models.historical_attributes import (
+    HistoricalAttributesData,
+    HistoricalAttributesQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
 
 
-class IntrinioFinancialAttributesQueryParams(FinancialAttributesQueryParams):
-    """Intrinio Financial Attributes Query."""
+class IntrinioHistoricalAttributesQueryParams(HistoricalAttributesQueryParams):
+    """Intrinio Historical Attributes Query."""
 
     __alias_dict__ = {"sort": "sort_order", "limit": "page_size"}
 
 
-class IntrinioFinancialAttributesData(FinancialAttributesData):
-    """Intrinio Financial Attributes Data."""
+class IntrinioHistoricalAttributesData(HistoricalAttributesData):
+    """Intrinio Historical Attributes Data."""
 
 
-class IntrinioFinancialAttributesFetcher(
+class IntrinioHistoricalAttributesFetcher(
     Fetcher[
-        IntrinioFinancialAttributesQueryParams,
-        List[IntrinioFinancialAttributesData],
+        IntrinioHistoricalAttributesQueryParams,
+        List[IntrinioHistoricalAttributesData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
@@ -34,7 +34,7 @@ class IntrinioFinancialAttributesFetcher(
     @staticmethod
     def transform_query(
         params: Dict[str, Any]
-    ) -> IntrinioFinancialAttributesQueryParams:
+    ) -> IntrinioHistoricalAttributesQueryParams:
         """Transform the query params."""
         transformed_params = params
 
@@ -45,32 +45,28 @@ class IntrinioFinancialAttributesFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return IntrinioFinancialAttributesQueryParams(**transformed_params)
+        return IntrinioHistoricalAttributesQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: IntrinioFinancialAttributesQueryParams,  # pylint: disable=unused-argument
+        query: IntrinioHistoricalAttributesQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
-        frequency = "yearly" if query.period == "annual" else "quarterly"
 
         base_url = "https://api-v2.intrinio.com"
-        query_str = get_querystring(
-            query.model_dump(by_alias=True), ["symbol", "tag", "period"]
-        )
-        query_str = f"{query_str}&frequency={frequency}"
+        query_str = get_querystring(query.model_dump(by_alias=True), ["symbol", "tag"])
 
         url = f"{base_url}/historical_data/{query.symbol}/{query.tag}?{query_str}&api_key={api_key}"
         return get_data_many(url, "historical_data")
 
     @staticmethod
     def transform_data(
-        query: IntrinioFinancialAttributesQueryParams,  # pylint: disable=unused-argument
+        query: IntrinioHistoricalAttributesQueryParams,  # pylint: disable=unused-argument
         data: List[Dict],
         **kwargs: Any,
-    ) -> List[IntrinioFinancialAttributesData]:
+    ) -> List[IntrinioHistoricalAttributesData]:
         """Return the transformed data."""
-        return [IntrinioFinancialAttributesData.model_validate(d) for d in data]
+        return [IntrinioHistoricalAttributesData.model_validate(d) for d in data]

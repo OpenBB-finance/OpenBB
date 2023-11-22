@@ -9,19 +9,20 @@ from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFet
 from openbb_intrinio.models.equity_info import IntrinioEquityInfoFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
 from openbb_intrinio.models.filings import IntrinioFilingsFetcher
-from openbb_intrinio.models.financial_attributes import (
-    IntrinioFinancialAttributesFetcher,
-)
 from openbb_intrinio.models.fred_indices import IntrinioFredIndicesFetcher
+from openbb_intrinio.models.historical_attributes import (
+    IntrinioHistoricalAttributesFetcher,
+)
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 from openbb_intrinio.models.institutional_ownership import (
     IntrinioInstitutionalOwnershipFetcher,
 )
+from openbb_intrinio.models.latest_attributes import IntrinioLatestAttributesFetcher
 from openbb_intrinio.models.market_indices import IntrinioMarketIndicesFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
-from openbb_intrinio.models.search_financial_attributes import (
-    IntrinioSearchFinancialAttributesFetcher,
+from openbb_intrinio.models.search_attributes import (
+    IntrinioSearchAttributesFetcher,
 )
 from openbb_intrinio.models.world_news import IntrinioWorldNewsFetcher
 from openbb_provider.abstract.provider import Provider
@@ -42,14 +43,15 @@ intrinio_provider = Provider(
         "EquityHistorical": IntrinioEquityHistoricalFetcher,
         "EquityInfo": IntrinioEquityInfoFetcher,
         "EquityQuote": IntrinioEquityQuoteFetcher,
-        "FinancialAttributes": IntrinioFinancialAttributesFetcher,
         "FredIndices": IntrinioFredIndicesFetcher,
+        "HistoricalAttributes": IntrinioHistoricalAttributesFetcher,
         "IncomeStatement": IntrinioIncomeStatementFetcher,
         "InstitutionalOwnership": IntrinioInstitutionalOwnershipFetcher,
+        "LatestAttributes": IntrinioLatestAttributesFetcher,
         "MarketIndices": IntrinioMarketIndicesFetcher,
         "OptionsChains": IntrinioOptionsChainsFetcher,
         "OptionsUnusual": IntrinioOptionsUnusualFetcher,
-        "SearchFinancialAttributes": IntrinioSearchFinancialAttributesFetcher,
+        "SearchAttributes": IntrinioSearchAttributesFetcher,
         "WorldNews": IntrinioWorldNewsFetcher,
     },
 )

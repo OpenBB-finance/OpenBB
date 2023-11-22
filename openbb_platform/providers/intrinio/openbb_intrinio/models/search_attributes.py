@@ -1,26 +1,24 @@
-"""Intrinio Search Financial Attributes Model."""
+"""Intrinio Search Attributes Model."""
 
 from typing import Any, Dict, List, Optional
 
 from openbb_intrinio.utils.helpers import get_data_one
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.search_financial_attributes import (
-    SearchFinancialAttributesData,
-    SearchFinancialAttributesQueryParams,
+from openbb_provider.standard_models.search_attributes import (
+    SearchAttributesData,
+    SearchAttributesQueryParams,
 )
 from openbb_provider.utils.helpers import get_querystring
 
 
-class IntrinioSearchFinancialAttributesQueryParams(
-    SearchFinancialAttributesQueryParams
-):
-    """Intrinio Search Financial Attributes Query."""
+class IntrinioSearchAttributesQueryParams(SearchAttributesQueryParams):
+    """Intrinio Search Attributes Query."""
 
     __alias_dict__ = {"limit": "page_size"}
 
 
-class IntrinioSearchFinancialAttributesData(SearchFinancialAttributesData):
-    """Intrinio Search Financial Attributes Data."""
+class IntrinioSearchAttributesData(SearchAttributesData):
+    """Intrinio Search Attributes Data."""
 
     __alias_dict__ = {
         "parent_name": "parent",
@@ -28,24 +26,22 @@ class IntrinioSearchFinancialAttributesData(SearchFinancialAttributesData):
     }
 
 
-class IntrinioSearchFinancialAttributesFetcher(
+class IntrinioSearchAttributesFetcher(
     Fetcher[
-        IntrinioSearchFinancialAttributesQueryParams,
-        List[IntrinioSearchFinancialAttributesData],
+        IntrinioSearchAttributesQueryParams,
+        List[IntrinioSearchAttributesData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(
-        params: Dict[str, Any]
-    ) -> IntrinioSearchFinancialAttributesQueryParams:
+    def transform_query(params: Dict[str, Any]) -> IntrinioSearchAttributesQueryParams:
         """Transform the query params."""
-        return IntrinioSearchFinancialAttributesQueryParams(**params)
+        return IntrinioSearchAttributesQueryParams(**params)
 
     @staticmethod
     def extract_data(
-        query: IntrinioSearchFinancialAttributesQueryParams,
+        query: IntrinioSearchAttributesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -66,11 +62,9 @@ class IntrinioSearchFinancialAttributesFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioSearchFinancialAttributesQueryParams,
+        query: IntrinioSearchAttributesQueryParams,
         data: List[Dict],
         **kwargs: Any,
-    ) -> List[IntrinioSearchFinancialAttributesData]:
+    ) -> List[IntrinioSearchAttributesData]:
         """Return the transformed data."""
-        return [
-            IntrinioSearchFinancialAttributesData.model_validate(item) for item in data
-        ]
+        return [IntrinioSearchAttributesData.model_validate(item) for item in data]

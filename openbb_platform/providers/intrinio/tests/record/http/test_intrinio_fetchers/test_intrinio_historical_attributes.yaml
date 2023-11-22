@@ -9,11 +9,11 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api-v2.intrinio.com/historical_data/AAPL/ebit?api_key=MOCK_API_KEY&end_date=2023-01-01&frequency=yearly&page_size=1000&period=annual&provider=intrinio&sort_order=desc&start_date=2013-01-01&symbol=AAPL&tag=ebit
+    uri: https://api-v2.intrinio.com/historical_data/AAPL/ebit?api_key=MOCK_API_KEY&end_date=2023-01-01&frequency=yearly&page_size=1000&provider=intrinio&sort_order=desc&start_date=2013-01-01
   response:
     body:
       string: !!binary |
-        H4sIAOjTU2UAA3TQ2wrCMAwG4Hfp9ZQkPaTdq4iMokMHZYpuIoy9u7U3LaPrVWg+/qZZxH14T4/X
+        H4sIADIQXmUAA3TQ2wrCMAwG4Hfp9ZQkPaTdq4iMokMHZYpuIoy9u7U3LaPrVWg+/qZZxH14T4/X
         cPGhu/rJi/a0iFj0ohUERAdwB1KiER8f5niJ6BAkpHOEtSkxJqwLDI6A6xgSNhkbhhhds+iStYXV
         LOu5aJN12TK5nYGR/1ZCkavAuro1200YlEx1q7d/Y9Ko61Yly9lqqezOvHK7Bx3fyrnnRoz9d+qe
         /hZ74xzC+gMAAP//AwAceBCU4AEAAA==
@@ -25,7 +25,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 14 Nov 2023 20:09:12 GMT
+      - Wed, 22 Nov 2023 14:29:06 GMT
       Transfer-Encoding:
       - chunked
       Vary:
