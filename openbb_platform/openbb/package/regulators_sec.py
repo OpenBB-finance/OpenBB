@@ -479,7 +479,7 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.symbol_map()
+        >>> obb.regulators.sec.symbol_map(query="320193")
         """  # noqa: E501
 
         inputs = filter_inputs(

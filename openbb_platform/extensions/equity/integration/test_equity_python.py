@@ -1152,7 +1152,7 @@ def test_equity_shorts_short_interest(params, obb):
             {
                 "symbol": "CLOV",
                 "date": "2023-10-26",
-                "provider": "polygon",
+                "provider": "polygon",  # premium endpoint
                 "limit": 1000,
                 "timestamp_lte": None,
                 "timestamp_gte": None,
@@ -1163,7 +1163,7 @@ def test_equity_shorts_short_interest(params, obb):
         (
             {
                 "symbol": "CLOV",
-                "provider": "polygon",
+                "provider": "polygon",  # premium endpoint
                 "timestamp_gt": "2023-10-26T15:20:00.000000000-04:00",
                 "timestamp_lt": "2023-10-26T15:30:00.000000000-04:00",
                 "limit": 5000,
@@ -1203,7 +1203,7 @@ def test_equity_darkpool_otc(params, obb):
     "params",
     [
         ({"provider": "fmp", "market": "EURONEXT"}),
-        ({"provider": "polygon"}),
+        ({"provider": "polygon"}),  # premium endpoint
     ],
 )
 @pytest.mark.integration
