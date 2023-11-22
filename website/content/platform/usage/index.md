@@ -285,7 +285,7 @@ extra: {'metadata': {'arguments': {'provider_choices': {'provider': 'polygon'}, 
 
 Additional class methods are helpers for converting the results to a variety of formats.
 
-- `to_dict()`: converts to a dictionary of lists.
+- `to_dict()`: converts to a dictionary, accepting all standard "orientation" parameters, i.e., "records"
 - `to_df()` / `to_dataframe()`: converts to a Pandas DataFrame.
 - `to_numpy()`: converts to a Numpy array.
 - `to_polars()`: converts to a Polars table.
