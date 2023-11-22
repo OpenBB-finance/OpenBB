@@ -7,8 +7,6 @@ from sys import exc_info
 from time import perf_counter_ns
 from typing import Any, Callable, ContextManager, Dict, List, Optional, Tuple, Union
 
-from openbb_provider.abstract.fetcher import maybe_coroutine
-from openbb_provider.utils.helpers import run_async
 from pydantic import ConfigDict, create_model
 
 from openbb_core.app.charting_service import ChartingService
@@ -25,6 +23,8 @@ from openbb_core.app.router import CommandMap
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
 from openbb_core.env import Env
+from openbb_core.provider.abstract.fetcher import maybe_coroutine
+from openbb_core.provider.utils.helpers import run_async
 
 
 class ExecutionContext:
