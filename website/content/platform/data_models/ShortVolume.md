@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.short_volume import (
+from openbb_core.provider.standard_models.short_volume import (
 ShortVolumeData,
 ShortVolumeQueryParams,
 )
@@ -68,4 +68,3 @@ ShortVolumeQueryParams,
 </TabItem>
 
 </Tabs>
-

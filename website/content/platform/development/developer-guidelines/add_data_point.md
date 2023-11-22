@@ -15,7 +15,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Add a Data Point - Developer Guidelines - Development | OpenBB Platform Docs" />
 
-In this section, we'll be adding a new data point to the OpenBB Platform. We will add a new provider with an existing [standard data](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform/platform/provider/openbb_provider/standard_models) model.
+In this section, we'll be adding a new data point to the OpenBB Platform. We will add a new provider with an existing [standard data](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform/core/provider/standard_models) model.
 
 ## Identify your data
 
@@ -29,7 +29,7 @@ Each router is categorized under the relevant extension (equity, currency, crypt
 
 Given the fact that there's already an endpoint for historical equity data, we can check for the existing standard model.
 
-In this case, it's `EquityHistorical` which can be found in `/OpenBBTerminal/openbb_platform/platform/core/provider/openbb_provider/standard_models/equity_historical`.
+In this case, it's `EquityHistorical` which can be found in `/OpenBBTerminal/openbb_platform/core/provider/standard_models/equity_historical`.
 
 If the standard model doesn't exist:
 
@@ -131,7 +131,7 @@ In order to make the new provider visible to the OpenBB Platform, you need to ad
 
 ```python
 """<Provider Name> Provider module."""
-from openbb_provider.abstract.provider import Provider
+from openbb_core.provider.abstract.provider import Provider
 
 from openbb_<provider_name>.models.equity_historical import <ProviderName>EquityHistoricalFetcher
 

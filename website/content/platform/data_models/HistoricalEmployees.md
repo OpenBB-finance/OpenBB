@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.historical_employees import (
+from openbb_core.provider.standard_models.historical_employees import (
 HistoricalEmployeesData,
 HistoricalEmployeesQueryParams,
 )
@@ -59,4 +59,3 @@ HistoricalEmployeesQueryParams,
 </TabItem>
 
 </Tabs>
-

@@ -22,8 +22,8 @@ Saying that, we highly recommend following the standardization framework, as it 
 
 When standardizing, all data is defined using two different pydantic models:
 
-1. Define the [query parameters](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/platform/provider/openbb_provider/abstract/query_params.py) model.
-2. Define the resulting [data schema](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/platform/provider/openbb_provider/abstract/data.py) model.
+1. Define the [query parameters](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/provider/openbb_core/provider/abstract/query_params.py) model.
+2. Define the resulting [data schema](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/provider/openbb_core/provider/abstract/data.py) model.
 
 > The models can be entirely custom, or inherit from the OpenBB standardized models.
 > They enforce a safe and consistent data structure, validation and type checking.
@@ -36,9 +36,9 @@ After you've defined both models, you'll need to define a `Fetcher` class which 
 2. `extract_data` - makes the request to the API endpoint and returns the raw data.
 3. `transform_data` - transforms the raw data into the defined data model.
 
-> Note that the `Fetcher` should inherit from the [`Fetcher`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/platform/provider/openbb_provider/abstract/fetcher.py) class, which is a generic class that receives the query parameters and the data model as type parameters.
+> Note that the `Fetcher` should inherit from the [`Fetcher`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/provider/openbb_core/provider/abstract/fetcher.py) class, which is a generic class that receives the query parameters and the data model as type parameters.
 
-After finalizing your models, you need to make them visible to the Openbb Platform. This is done by adding the `Fetcher` to the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder as part of the [`Provider`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/platform/provider/openbb_provider/abstract/provider.py).
+After finalizing your models, you need to make them visible to the Openbb Platform. This is done by adding the `Fetcher` to the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder as part of the [`Provider`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/provider/openbb_core/provider/abstract/provider.py).
 
 Any command, that uses the `Fetcher` class you've just defined, will be calling the `transform_query`, `extract_data` and `transform_data` methods under the hood in order to get the data and output it do the end user.
 

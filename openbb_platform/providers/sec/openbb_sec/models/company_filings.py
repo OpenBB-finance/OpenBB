@@ -10,12 +10,12 @@ from typing import Any, Dict, List, Optional, Union
 import pandas as pd
 import requests
 import requests_cache
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.company_filings import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.company_filings import (
     CompanyFilingsData,
     CompanyFilingsQueryParams,
 )
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_sec.utils.definitions import FORM_TYPES, HEADERS
 from openbb_sec.utils.helpers import symbol_map
 from pydantic import Field
