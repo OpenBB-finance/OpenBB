@@ -277,7 +277,7 @@ def test_index_sp500_multiples(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "limit": 100,
-                "provider": "intrinio",
+                "provider": "nasdaq",
             }
         )
     ],

@@ -11,7 +11,7 @@ from openbb_nasdaq.models.top_retail import NasdaqTopRetailFetcher
 
 nasdaq_provider = Provider(
     name="nasdaq",
-    website="https://www.nasdaq.com",
+    website="https://data.nasdaq.com",
     description="""Positioned at the nexus of technology and the capital markets, Nasdaq
 provides premier platforms and services for global capital markets and beyond with
 unmatched technology, insights and markets expertise.""",
