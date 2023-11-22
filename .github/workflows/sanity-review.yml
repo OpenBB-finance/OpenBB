@@ -62,13 +62,16 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const sizeLabel = process.env.SIZE_LABEL;
-            const prNumber = ${{ github.event.number }};
-            const repoName = ${{ github.repository }};
-
+            const prNumber = context.payload.pull_request.number;
+            const repoName = context.repo.repo;
+            const owner = context.repo.owner;
             // Add the label to the PR
             await github.rest.issues.addLabels({
-              owner: repoName.split('/')[0],
-              repo: repoName.split('/')[1],
+              owner: owner,
+              repo: repoName,
               issue_number: prNumber,
               labels: [sizeLabel]
             });
+        env:
+          SIZE_LABEL: ${{ env.SIZE_LABEL }}
+
