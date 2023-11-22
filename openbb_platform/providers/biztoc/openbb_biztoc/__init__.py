@@ -1,7 +1,7 @@
 """Biztoc provider module."""
 
 from openbb_biztoc.models.world_news import BiztocWorldNewsFetcher
-from openbb_provider.abstract.provider import Provider
+from openbb_core.provider.abstract.provider import Provider
 
 biztoc_provider = Provider(
     name="biztoc",

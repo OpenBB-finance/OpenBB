@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.treasury_rates import (
+from openbb_core.provider.standard_models.treasury_rates import (
 TreasuryRatesData,
 TreasuryRatesQueryParams,
 )
@@ -64,4 +64,3 @@ TreasuryRatesQueryParams,
 </TabItem>
 
 </Tabs>
-

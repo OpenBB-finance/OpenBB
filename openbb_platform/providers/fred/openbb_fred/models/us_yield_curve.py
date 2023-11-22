@@ -3,17 +3,17 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.us_yield_curve import (
+    USYieldCurveData,
+    USYieldCurveQueryParams,
+)
 from openbb_fred.utils.fred_base import Fred
 from openbb_fred.utils.fred_helpers import (
     YIELD_CURVE_NOMINAL_RATES,
     YIELD_CURVE_REAL_RATES,
     YIELD_CURVE_SERIES_NOMINAL,
     YIELD_CURVE_SERIES_REAL,
-)
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.us_yield_curve import (
-    USYieldCurveData,
-    USYieldCurveQueryParams,
 )
 
 
