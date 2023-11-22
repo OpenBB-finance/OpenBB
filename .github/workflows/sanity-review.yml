@@ -78,22 +78,22 @@ jobs:
   sanity-checks:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout target branch
+      - name: Checkout base branch
         uses: actions/checkout@v3
         with:
           ref: ${{ github.base_ref }} # This fetches the latest commit from the target branch
-          fetch-depth: 1 # We only need the latest commit
+          fetch-depth: 2 # Fetches 2 commits to ensure we have the commit for merge-base calculation
 
-      - name: Get merge base
-        id: merge-base
+      - name: Get merge base SHA
+        id: get-merge-base
         run: |
-          echo "MERGE_BASE_SHA=$(git merge-base HEAD ${{ github.sha }})" >> $GITHUB_ENV
+          echo "MERGE_BASE_SHA=$(git merge-base HEAD ${{ github.event.pull_request.base.sha }})" >> $GITHUB_ENV
 
       - name: Checkout PR code
         uses: actions/checkout@v3
         with:
           ref: ${{ github.sha }} # This fetches the PR's latest commit
-          fetch-depth: 1 # We only need the latest commit
+          fetch-depth: 0 # Fetches all history for the PR branch only
 
       - name: Check Line Endings
         run: |
@@ -101,14 +101,14 @@ jobs:
           # Flag to track line ending issues
           line_ending_issue_found=0
 
-          # Check that MERGE_BASE_SHA is not empty
-          if [ -z "$MERGE_BASE_SHA" ]; then
+          # Get the SHA for the merge base from the environment variable set in the previous step
+          merge_base_sha=${{ steps.get-merge-base.outputs.MERGE_BASE_SHA }}
+
+          # Check that merge_base_sha is not empty
+          if [ -z "$merge_base_sha" ]; then
             echo "MERGE_BASE_SHA is not set. Exiting."
             exit 1
           fi
-
-          # Get the SHA for the merge base from the environment variable
-          merge_base_sha=$MERGE_BASE_SHA
 
           # List all files modified in the PR, excluding deleted files
           files=$(git diff --name-only --diff-filter=d $merge_base_sha ${{ github.sha }})
@@ -130,5 +130,3 @@ jobs:
           else
             echo "All checked files have LF line endings."
           fi
-        env:
-          MERGE_BASE_SHA: ${{ env.MERGE_BASE_SHA }}
