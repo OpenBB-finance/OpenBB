@@ -9,12 +9,12 @@ from datetime import (
 from typing import Any, Dict, List, Literal, Optional
 
 import requests
-from openbb_nasdaq.utils.helpers import IPO_HEADERS, date_range
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.calendar_ipo import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.calendar_ipo import (
     CalendarIpoData,
     CalendarIpoQueryParams,
 )
+from openbb_nasdaq.utils.helpers import IPO_HEADERS, date_range
 from pydantic import Field, field_validator
 
 

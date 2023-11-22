@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.gdp_forecast import (
+from openbb_core.provider.standard_models.gdp_forecast import (
 GdpForecastData,
 GdpForecastQueryParams,
 )
@@ -67,4 +67,3 @@ GdpForecastQueryParams,
 </TabItem>
 
 </Tabs>
-

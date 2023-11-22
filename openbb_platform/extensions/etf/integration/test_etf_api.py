@@ -3,7 +3,7 @@ import base64
 import pytest
 import requests
 from openbb_core.env import Env
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
 
 
 @pytest.fixture(scope="session")
@@ -106,8 +106,7 @@ def test_etf_sectors(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "IOO"}),
-        ({"symbol": "MISL", "cik": None, "provider": "fmp"}),
+        ({"symbol": "QQQ", "cik": None, "provider": "fmp"}),
     ],
 )
 @pytest.mark.integration

@@ -6,9 +6,9 @@ from io import StringIO
 from typing import Any, List, Optional, TypeVar, Union
 
 import requests
-from openbb_provider import helpers
-from openbb_provider.utils.errors import EmptyDataError
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider import helpers
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import get_querystring
 from pydantic import BaseModel
 from requests.exceptions import SSLError
 

@@ -4,8 +4,8 @@ from datetime import time
 from typing import Any, Dict, List, Optional
 
 from openbb_cboe.utils.helpers import Europe, get_cboe_index_directory
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.available_indices import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.available_indices import (
     AvailableIndicesData,
     AvailableIndicesQueryParams,
 )

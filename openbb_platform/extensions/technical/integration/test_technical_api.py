@@ -6,7 +6,7 @@ from typing import Literal
 import pytest
 import requests
 from openbb_core.env import Env
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
 
 data: dict = {}
 
@@ -889,6 +889,7 @@ def test_technical_cg(params, data_type):
                 "upper_q": "",
                 "model": "",
                 "is_crypto": "",
+                "trading_periods": "",
             },
             "equity",
         ),
@@ -899,7 +900,8 @@ def test_technical_cg(params, data_type):
                 "lower_q": "0.3",
                 "upper_q": "0.7",
                 "model": "Parkinson",
-                "is_crypto": "true",
+                "is_crypto": "True",
+                "trading_periods": "",
             },
             "crypto",
         ),
