@@ -1,6 +1,7 @@
 """Intrinio Company News Model."""
 
 
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -23,7 +24,7 @@ class IntrinioCompanyNewsQueryParams(CompanyNewsQueryParams):
     __alias_dict__ = {"page": "next_page", "limit": "page_size"}
 
     symbols: str = Field(
-        description="A Company identifier (Ticker, CIK, LEI, Intrinio ID)."
+        description="A comma separated list of Company identifiers (Ticker, CIK, LEI, Intrinio ID)."
     )
 
 
@@ -61,12 +62,21 @@ class IntrinioCompanyNewsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
+        results: List[Dict] = []
 
-        base_url = "https://api-v2.intrinio.com/companies"
-        query_str = get_querystring(query.model_dump(by_alias=True), ["symbols"])
-        url = f"{base_url}/{query.symbols}/news?{query_str}&api_key={api_key}"
+        def get_data(symbol):
+            base_url = "https://api-v2.intrinio.com/companies"
+            query_str = get_querystring(query.model_dump(by_alias=True), ["symbols"])
+            url = f"{base_url}/{symbol}/news?{query_str}&api_key={api_key}"
+            data = get_data_many(url, "news", **kwargs)
+            data = [{**d, "symbol": symbol} for d in data]
+            results.append(data)
 
-        return get_data_many(url, "news", **kwargs)
+        with ThreadPoolExecutor() as executor:
+            executor.map(get_data, [s.strip() for s in query.symbols.split(",")])
+
+        results = [item for sublist in results for item in sublist]
+        return results
 
     @staticmethod
     def transform_data(
