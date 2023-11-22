@@ -6,7 +6,7 @@ from openbb_fmp.models.analyst_estimates import FMPAnalystEstimatesFetcher
 from openbb_fmp.models.available_indices import FMPAvailableIndicesFetcher
 from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
 from openbb_fmp.models.balance_sheet_growth import FMPBalanceSheetGrowthFetcher
-from openbb_fmp.models.calendar_dividend import FMPDividendCalendarFetcher
+from openbb_fmp.models.calendar_dividend import FMPCalendarDividendFetcher
 from openbb_fmp.models.calendar_earnings import FMPCalendarEarningsFetcher
 from openbb_fmp.models.calendar_splits import FMPCalendarSplitsFetcher
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
@@ -450,7 +450,7 @@ def test_fmp_index_constituents_fetcher(credentials=test_credentials):
 def test_fmp_calendar_dividend_fetcher(credentials=test_credentials):
     params = {"start_date": date(2023, 11, 6), "end_date": date(2023, 11, 10)}
 
-    fetcher = FMPDividendCalendarFetcher()
+    fetcher = FMPCalendarDividendFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

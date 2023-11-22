@@ -1,5 +1,5 @@
 """Nasdaq provider module."""
-from openbb_nasdaq.models.calendar_dividend import NasdaqDividendCalendarFetcher
+from openbb_nasdaq.models.calendar_dividend import NasdaqCalendarDividendFetcher
 from openbb_nasdaq.models.calendar_earnings import NasdaqCalendarEarningsFetcher
 from openbb_nasdaq.models.calendar_ipo import NasdaqCalendarIpoFetcher
 from openbb_nasdaq.models.cot import NasdaqCotFetcher
@@ -17,7 +17,7 @@ provides premier platforms and services for global capital markets and beyond wi
 unmatched technology, insights and markets expertise.""",
     credentials=["api_key"],
     fetcher_dict={
-        "CalendarDividend": NasdaqDividendCalendarFetcher,
+        "CalendarDividend": NasdaqCalendarDividendFetcher,
         "CalendarEarnings": NasdaqCalendarEarningsFetcher,
         "CalendarIpo": NasdaqCalendarIpoFetcher,
         "COT": NasdaqCotFetcher,

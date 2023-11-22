@@ -11,7 +11,7 @@ from openbb_provider.abstract.query_params import QueryParams
 from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
-class DividendCalendarQueryParams(QueryParams):
+class CalendarDividendQueryParams(QueryParams):
     """Dividend Calendar Query."""
 
     start_date: Optional[dateType] = Field(
@@ -22,14 +22,17 @@ class DividendCalendarQueryParams(QueryParams):
     )
 
 
-class DividendCalendarData(Data):
+class CalendarDividendData(Data):
     """Dividend Calendar Data."""
 
     date: dateType = Field(
         description=DATA_DESCRIPTIONS.get("date", "") + " (Ex-Dividend)"
     )
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    name: Optional[str] = Field(description="Name of the entity.", default=None)
+    amount: Optional[float] = Field(
+        default=None, description="Dividend amount, per-share."
+    )
+    name: Optional[str] = Field(default=None, description="Name of the entity.")
     record_date: Optional[dateType] = Field(
         default=None,
         description="The record date of ownership for eligibility.",
@@ -41,7 +44,4 @@ class DividendCalendarData(Data):
     declaration_date: Optional[dateType] = Field(
         default=None,
         description="Declaration date of the dividend.",
-    )
-    amount: Optional[float] = Field(
-        default=None, description="Dividend amount, per-share."
     )
