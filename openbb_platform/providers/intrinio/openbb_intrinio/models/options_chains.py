@@ -10,12 +10,12 @@ from itertools import repeat
 from typing import Any, Dict, List, Optional
 
 from dateutil import parser
-from openbb_intrinio.utils.helpers import get_data_many, get_weekday
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.options_chains import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.options_chains import (
     OptionsChainsData,
     OptionsChainsQueryParams,
 )
+from openbb_intrinio.utils.helpers import get_data_many, get_weekday
 from pydantic import Field, field_validator
 
 

@@ -3,12 +3,12 @@
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional, Union
 
-from openbb_oecd.utils import constants, helpers
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.gdp_nominal import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.gdp_nominal import (
     GdpNominalData,
     GdpNominalQueryParams,
 )
+from openbb_oecd.utils import constants, helpers
 from pydantic import Field, field_validator
 
 gdp_countries = tuple(constants.COUNTRY_TO_CODE_GDP.keys())

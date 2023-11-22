@@ -9,7 +9,7 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 from typing_extensions import Annotated
 
 
@@ -36,6 +36,7 @@ class ROUTER_equity_fundamental(Container):
     revenue_per_geography
     revenue_per_segment
     search_financial_attributes
+    trailing_dividend_yield
     transcript
     """
 
@@ -57,7 +58,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Annotated[int, Ge(ge=0)]],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 5,
-        provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Balance Sheet. Balance sheet statement.
@@ -70,7 +71,7 @@ class ROUTER_equity_fundamental(Container):
             Time period of the data to return.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -108,7 +109,7 @@ class ROUTER_equity_fundamental(Container):
         OBBject
             results : List[BalanceSheet]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -422,7 +423,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Annotated[int, Ge(ge=0)]],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 5,
-        provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Cash Flow Statement. Information about the cash flow statement.
@@ -435,7 +436,7 @@ class ROUTER_equity_fundamental(Container):
             Time period of the data to return.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -473,7 +474,7 @@ class ROUTER_equity_fundamental(Container):
         OBBject
             results : List[CashFlowStatement]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1278,7 +1279,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[Annotated[int, Ge(ge=0)]],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 5,
-        provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Income Statement. Report on a company's financial performance.
@@ -1291,7 +1292,7 @@ class ROUTER_equity_fundamental(Container):
             Time period of the data to return.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -1329,7 +1330,7 @@ class ROUTER_equity_fundamental(Container):
         OBBject
             results : List[IncomeStatement]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1957,6 +1958,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
+        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
@@ -1968,6 +1970,8 @@ class ROUTER_equity_fundamental(Container):
             Symbol to get data for.
         limit : Optional[int]
             The number of data entries to return.
+        chart : bool
+            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2125,6 +2129,7 @@ class ROUTER_equity_fundamental(Container):
                 "limit": limit,
             },
             extra_params=kwargs,
+            chart=chart,
         )
 
         return self._run(
@@ -2700,6 +2705,69 @@ class ROUTER_equity_fundamental(Container):
 
         return self._run(
             "/equity/fundamental/search_financial_attributes",
+            **inputs,
+        )
+
+    @validate
+    def trailing_dividend_yield(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ] = None,
+        provider: Optional[Literal["tiingo"]] = None,
+        **kwargs
+    ) -> OBBject[List[Data]]:
+        """Trailing 1yr dividend yield.
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for.
+        provider : Optional[Literal['tiingo']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'tiingo' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[TrailingDividendYield]
+                Serializable results.
+            provider : Optional[Literal['tiingo']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        TrailingDividendYield
+        ---------------------
+        date : date
+            The date of the data.
+        trailing_dividend_yield : float
+            Trailing dividend yield.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.equity.fundamental.trailing_dividend_yield(symbol="AAPL")
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._run(
+            "/equity/fundamental/trailing_dividend_yield",
             **inputs,
         )
 

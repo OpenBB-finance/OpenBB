@@ -2,12 +2,12 @@
 
 from typing import Any, Dict, List, Optional
 
-from openbb_fred.utils.fred_base import Fred
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.tmc import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.tmc import (
     TreasuryConstantMaturityData,
     TreasuryConstantMaturityQueryParams,
 )
+from openbb_fred.utils.fred_base import Fred
 from pydantic import field_validator
 
 TMC_PARAMETER_TO_FRED_ID = {

@@ -1,6 +1,6 @@
 import pytest
 import requests
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
 
 
 @pytest.fixture(scope="session")
@@ -14,22 +14,21 @@ def headers():
 @pytest.mark.parametrize(
     "params",
     [
-        ({"limit": 20, "provider": "benzinga"}),
         (
             {
                 "display": "full",
-                "date": "2023-01-01",
+                "date": None,
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "updated_since": 1,
-                "published_since": 1,
+                "updated_since": None,
+                "published_since": None,
                 "sort": "created",
                 "order": "desc",
-                "isin": "US0378331005",
-                "cusip": "037833100",
+                "isin": None,
+                "cusip": None,
                 "channels": "General",
-                "topics": "AAPL",
-                "authors": "Benzinga Insights",
+                "topics": "earnings",
+                "authors": None,
                 "content_types": "headline",
                 "provider": "benzinga",
                 "limit": 20,
@@ -130,12 +129,6 @@ def test_news_world(params, headers):
                 "provider": "intrinio",
                 "symbols": "AAPL",
                 "limit": 20,
-            }
-        ),
-        (
-            {
-                "provider": "ultima",
-                "symbols": "AAPL,MSFT",
             }
         ),
         (

@@ -1,5 +1,5 @@
 """stockgrid provider module."""
-from openbb_provider.abstract.provider import Provider
+from openbb_core.provider.abstract.provider import Provider
 from openbb_stockgrid.models.short_volume import StockgridShortVolumeFetcher
 
 stockgrid_provider = Provider(

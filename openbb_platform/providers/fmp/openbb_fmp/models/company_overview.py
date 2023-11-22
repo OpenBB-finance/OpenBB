@@ -5,12 +5,12 @@ from datetime import (
 )
 from typing import Any, Dict, Optional
 
-from openbb_fmp.utils.helpers import get_data_one
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.company_overview import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.company_overview import (
     CompanyOverviewData,
     CompanyOverviewQueryParams,
 )
+from openbb_fmp.utils.helpers import get_data_one
 from pydantic import field_validator
 
 

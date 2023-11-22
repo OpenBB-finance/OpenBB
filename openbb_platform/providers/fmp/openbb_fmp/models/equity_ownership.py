@@ -6,12 +6,12 @@ from datetime import (
 )
 from typing import Any, Dict, List, Optional
 
-from openbb_fmp.utils.helpers import create_url, get_data_many, most_recent_quarter
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.equity_ownership import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.equity_ownership import (
     EquityOwnershipData,
     EquityOwnershipQueryParams,
 )
+from openbb_fmp.utils.helpers import create_url, get_data_many, most_recent_quarter
 from pydantic import field_validator
 
 

@@ -4,7 +4,7 @@ import json
 import pytest
 import requests
 from openbb_core.env import Env
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
 
 
 @pytest.fixture(scope="session")
@@ -85,29 +85,6 @@ def test_chart_equity_fundamental_multiples(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/multiples?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-    chart = result.json()["chart"]
-    fig = chart.pop("fig", {})
-
-    assert chart
-    assert not fig
-    assert list(chart.keys()) == ["content", "format"]
-
-
-@pytest.mark.parametrize(
-    "params",
-    [({"provider": "yfinance", "symbols": "AAPL", "limit": 20, "chart": True})],
-)
-@pytest.mark.integration
-def test_chart_equity_news(params, headers):
-    """Test chart equity news."""
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/equity/news?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

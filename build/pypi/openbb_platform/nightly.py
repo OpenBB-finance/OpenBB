@@ -49,7 +49,6 @@ def build():
 
     # need to pop these from the dependencies
     DEPENDENCIES.pop("openbb-core", None)
-    DEPENDENCIES.pop("openbb-provider", None)
 
     # add the sub packages
     for package_name, path in SUB_PACKAGES.items():
