@@ -9,7 +9,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Calculate PR size and label
-        id: pr_size
         run: |
           #!/bin/bash
           # Patterns to ignore
@@ -31,8 +30,10 @@ jobs:
           # List all files in PR and calculate size for non-ignored ones
           for file in $(git diff --name-only ${{ github.event.before }} ${{ github.event.after }}); do
             if ! matches_ignore_pattern "$file"; then
-              lines=$(wc -l < "$file")
-              total_lines=$((total_lines + lines))
+              if [ -f "$file" ]; then
+                lines=$(wc -l < "$file")
+                total_lines=$((total_lines + lines))
+              fi
             fi
           done
 
@@ -52,18 +53,19 @@ jobs:
             SIZE_LABEL="feat XL"
           fi
 
-          # Output the size label
+          # Output the size label to an environment file
           echo "Setting PR size label to: $SIZE_LABEL"
-          echo ::set-output name=size_label::$SIZE_LABEL
+          echo "SIZE_LABEL=$SIZE_LABEL" >> $GITHUB_ENV
       - name: Add size label to PR
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const sizeLabel = "${{ steps.pr_size.outputs.size_label }}";
+            const sizeLabel = process.env.SIZE_LABEL;
             const prNumber = ${{ github.event.number }};
             const repoName = ${{ github.repository }};
-                   // Add the label to the PR
+
+            // Add the label to the PR
             await github.rest.issues.addLabels({
               owner: repoName.split('/')[0],
               repo: repoName.split('/')[1],
