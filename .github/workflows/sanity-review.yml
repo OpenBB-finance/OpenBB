@@ -1,0 +1,72 @@
+name: PR Sanity Review
+
+on: [pull_request]
+
+jobs:
+  label-pull-request-with-size:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Calculate PR size and label
+        id: pr_size
+        run: |
+          #!/bin/bash
+          # Patterns to ignore
+          IGNORE_PATTERNS=("*.lock" "*.csv" "*.yaml" "*.txt")
+
+          # Function to check if a file matches any ignored patterns
+          matches_ignore_pattern() {
+            for pattern in "${IGNORE_PATTERNS[@]}"; do
+              if [[ $1 == $pattern ]]; then
+                return 0
+              fi
+            done
+            return 1
+          }
+
+          # Initialize line count
+          total_lines=0
+
+          # List all files in PR and calculate size for non-ignored ones
+          for file in $(git diff --name-only ${{ github.event.before }} ${{ github.event.after }}); do
+            if ! matches_ignore_pattern "$file"; then
+              lines=$(wc -l < "$file")
+              total_lines=$((total_lines + lines))
+            fi
+          done
+
+          echo "Total lines in PR (excluding ignored patterns): $total_lines"
+
+          # Determine the size label based on total lines
+          SIZE_LABEL="feat XS"
+          if [ "$total_lines" -le 100 ]; then
+            SIZE_LABEL="feat XS"
+          elif [ "$total_lines" -le 300 ]; then
+            SIZE_LABEL="feat S"
+          elif [ "$total_lines" -le 900 ]; then
+            SIZE_LABEL="feat M"
+          elif [ "$total_lines" -le 1800 ]; then
+            SIZE_LABEL="feat L"
+          else
+            SIZE_LABEL="feat XL"
+          fi
+
+          # Output the size label
+          echo "Setting PR size label to: $SIZE_LABEL"
+          echo ::set-output name=size_label::$SIZE_LABEL
+      - name: Add size label to PR
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const sizeLabel = "${{ steps.pr_size.outputs.size_label }}";
+            const prNumber = ${{ github.event.number }};
+            const repoName = ${{ github.repository }};
+                   // Add the label to the PR
+            await github.rest.issues.addLabels({
+              owner: repoName.split('/')[0],
+              repo: repoName.split('/')[1],
+              issue_number: prNumber,
+              labels: [sizeLabel]
+            });
