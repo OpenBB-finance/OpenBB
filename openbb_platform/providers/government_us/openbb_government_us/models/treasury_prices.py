@@ -1,9 +1,5 @@
 """US Government Treasury Prices"""
-from datetime import (
-    date as dateType,
-    datetime,
-    timedelta,
-)
+from datetime import datetime, timedelta
 from io import BytesIO
 from typing import Any, Dict, List, Literal, Optional
 
