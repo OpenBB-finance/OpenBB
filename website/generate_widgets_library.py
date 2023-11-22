@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Dict
 
 import requests
 
@@ -7,10 +8,10 @@ def main() -> bool:
     widgets_json_url = "https://raw.githubusercontent.com/OpenBB-finance/widgets-library/main/widgets.json"
 
     response = requests.get(widgets_json_url, timeout=10)
-    widgets_data = response.json()
+    widgets_data: Dict[str, Dict[str, dict]] = response.json()
 
     # Process the data into the desired format
-    all_widgets = {}
+    all_widgets: Dict[str, list] = {}
     for widget_id, widget_info in widgets_data.items():
         if widget_info.get("disabled", False):
             continue
@@ -49,7 +50,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
     base_path = website_path / "content" / "pro" / "widgets-library"
 
     index_path = base_path / "index.mdx"
-    with index_path.open("w") as index_file:
+    with index_path.open("w", encoding="utf-8", newline="\n") as index_file:
         index_file.write(f"{text}\n")
 
     for category, widgets in all_widgets.items():
@@ -69,12 +70,12 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
     title="{widget['name']}"
     description="{widget['description']}"
     url="/pro/widgets-library/{category}/{widget['widgetId']}"
-    chevron={{false}}
+    command
 />"""
         text += "\n</ul>"
 
         index_path = category_path / "index.mdx"
-        with index_path.open("w") as index_file:
+        with index_path.open("w", encoding="utf-8", newline="\n") as index_file:
             index_file.write(f"{text}\n")
 
         # Create each individual widget file
@@ -106,7 +107,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 {'**Source:** ' + ','.join(widget['source']) if widget['source'] else ''}
 """
-            with widget_path.open("w") as widget_file:
+            with widget_path.open("w", encoding="utf-8", newline="\n") as widget_file:
                 widget_file.write(f"{text}\n")
 
     return True
