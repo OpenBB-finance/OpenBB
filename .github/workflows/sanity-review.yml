@@ -90,8 +90,12 @@ jobs:
           # Set the maximum number of allowed lines changed for a .py file
           MAX_DIFF_SIZE=1000
 
+          # Get the base and head commits for the pull request
+          BASE_SHA=$(jq --raw-output .pull_request.base.sha $GITHUB_EVENT_PATH)
+          HEAD_SHA=$(jq --raw-output .pull_request.head.sha $GITHUB_EVENT_PATH)
+
           # Check each .py file in the commit range for the number of lines changed
-          git diff --numstat ${{ github.event.before }} ${{ github.event.after }} -- '*.py' | while read adds deletes file; do
+          git diff --numstat $BASE_SHA $HEAD_SHA -- '*.py' | while read adds deletes file; do
             # Sum adds and deletes to get the total number of lines changed
             total_changes=$((adds + deletes))
             echo "$file has $total_changes lines changed."
@@ -99,7 +103,11 @@ jobs:
             # If the total changes exceed the maximum allowed, fail the check
             if [ "$total_changes" -gt "$MAX_DIFF_SIZE" ]; then
               echo "::error file=$file::File $file has too many lines changed ($total_changes lines)."
+              echo "##[error]File $file has too many lines changed ($total_changes lines)."
               exit 1
             fi
           done
           echo "All modified .py files have an acceptable number of line changes."
+        env:
+          GITHUB_EVENT_PATH: ${{ github.event_path }}
+
