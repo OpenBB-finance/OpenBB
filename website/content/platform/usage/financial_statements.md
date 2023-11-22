@@ -213,7 +213,7 @@ The numbers check out, and the $2B paid to investors over four quarters is more 
 
 The `openbb-intrinio` data extension has an endpoint for extracting a single fact from financial statements.  There is a helper function for looking up the correct `tag`.
 
-#### Seach Financial Attributes
+#### Search Financial Attributes
 
 Search attributes by keyword.
 
