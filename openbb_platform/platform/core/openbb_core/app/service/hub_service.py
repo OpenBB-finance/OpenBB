@@ -51,7 +51,7 @@ class HubService:
             self._session = self._get_session_from_email_password(email, password)
             return self._session
         if pat:
-            self._session = self._get_session_from_sdk_token(pat)
+            self._session = self._get_session_from_platform_token(pat)
             return self._session
         raise OpenBBError("Please provide 'email' and 'password' or 'pat'")
 
@@ -123,7 +123,7 @@ class HubService:
         detail = response.json().get("detail", None)
         raise HTTPException(status_code, detail)
 
-    def _get_session_from_sdk_token(self, token: str) -> HubSession:
+    def _get_session_from_platform_token(self, token: str) -> HubSession:
         """Get session from Platform personal access token."""
         if not token:
             raise OpenBBError("Platform personal access token not found.")
