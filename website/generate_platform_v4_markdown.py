@@ -1,27 +1,108 @@
+import inspect
 import json
 import re
 import shutil
 from inspect import Parameter, _empty, signature
 from pathlib import Path
 from textwrap import shorten
-from typing import Any, Dict, List, TextIO, Tuple, Union
+from typing import Any, Callable, Dict, List, TextIO, Tuple, Union
 
+from docstring_parser import parse
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.static.package_builder import MethodDefinition, PathHandler
 from openbb_provider import standard_models
 from pydantic.fields import FieldInfo
 
 website_path = Path(__file__).parent.absolute()
+SEO_META: Dict[str, Dict[str, Union[str, List[str]]]] = json.loads(
+    (website_path / "metadata/platform_v4_seo_metadata.json").read_text()
+)
 
-REFERENCE_IMPORT = """
-import ReferenceCard from "@site/src/components/General/ReferenceCard";
+REFERENCE_IMPORT_UL = """import ReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
 """
 
+reference_import = (
+    'import ReferenceCard from "@site/src/components/General/NewReferenceCard";\n\n'
+)
+refrence_ul_element = """<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">"""
+
+
+def get_docstring_meta(
+    func: Callable, full_command_path: str, formatted_params: Dict[str, Parameter]
+) -> Dict[str, Any]:
+    """Extracts the meta information from the docstring of a function with no standardized results model."""
+    meta_command = {}
+    doc_parsed = parse(func.__doc__)  # type: ignore
+
+    cmd_params = []
+    for param in doc_parsed.params:
+        arg_default = (
+            formatted_params[param.arg_name].default
+            if param.arg_name in formatted_params
+            else None
+        )
+        cmd_params.append(
+            {
+                "name": param.arg_name,
+                "type": get_annotation_type(param.type_name),
+                "default": str(arg_default)
+                if arg_default is not inspect.Parameter.empty
+                else None,
+                "cleaned_type": re.sub(
+                    r"Literal\[([^\"\]]*)\]",
+                    f"Literal[{type(arg_default).__name__}]",
+                    get_annotation_type(
+                        formatted_params[param.arg_name].annotation
+                        if param.arg_name in formatted_params
+                        else param.type_name
+                    ),
+                ),
+                "optional": bool(arg_default is not inspect.Parameter.empty)
+                or param.is_optional,
+                "doc": param.description,
+            }
+        )
+
+    if doc_parsed.returns:
+        meta_command["returns"] = {
+            "type": doc_parsed.returns.type_name,
+            "doc": doc_parsed.returns.description,
+        }
+
+    examples = []
+    for example in doc_parsed.examples:
+        examples.append(
+            {
+                "snippet": example.snippet,
+                "description": example.description.strip(),  # type: ignore
+            }
+        )
+
+    def_params = [
+        f"{d['name']}: {d['cleaned_type']}{' = ' + d['default'] if d['default'] else ''}"
+        for d in cmd_params
+    ]
+    meta_command.update(
+        {
+            "description": doc_parsed.short_description
+            + (
+                "\n\n" + doc_parsed.long_description
+                if doc_parsed.long_description
+                else ""
+            ),
+            "params": cmd_params,
+            "func_def": f"{full_command_path}({', '.join(def_params)})",
+            "examples": examples,
+        }
+    )
+
+    return meta_command
+
 
 def generate_markdown(meta_command: dict):
-    markdown = f"---\ntitle: {meta_command['name']}\ndescription: OpenBB Platform Function\n---\n\n"
+    markdown = meta_command["header"]
 
     markdown += "<!-- markdownlint-disable MD012 MD031 MD033 -->\n\n"
     markdown += (
@@ -54,6 +135,21 @@ def generate_markdown_section(meta: Dict[str, Any]):
                 example_code = []  # Reset for the next example block
             # Add the current line to the description
             description.append(line.strip())
+
+    prev_snippet = "  "
+    for example in meta.get("examples", []):
+        if isinstance(example["snippet"], str) and ">>>" in example["snippet"]:
+            snippet = example["snippet"].replace(">>> ", "")
+            example_code.append(snippet)
+            if example["description"] and prev_snippet != "":
+                example_code.append(example["description"])
+                prev_snippet = snippet.strip()
+            elif example["description"]:
+                example_code.append(example["description"])
+        else:
+            if example["description"]:
+                example_code.append(example["description"])
+            prev_snippet = ""
 
     # Join the description parts and handle any remaining example code
     if example_code:  # If there's an example block at the end of the docstring
@@ -94,10 +190,10 @@ def create_nested_menus_card(folder: Path, url: str, data_models: bool = False) 
     url = f"/platform/{path}/{url}/{folder.name}".replace("//", "/")
 
     index_card = f"""<ReferenceCard
-        title="{folder.name}"
-        description="{categories}"
-        url="{url}"
-    />\n"""
+    title="{folder.name.replace("_", " ").title()}"
+    description="{categories}"
+    url="{url}"
+/>\n"""
     return index_card
 
 
@@ -110,10 +206,10 @@ def create_cmd_cards(cmd_text: List[Dict[str, str]], data_models: bool = False) 
             url = f"{url}/{cmd['title']}"
         description = shorten(f"{cmd['description']}", width=116, placeholder="...")
         cmd_cards += f"""<ReferenceCard
-    title="{cmd["title"]}"
-    description="{description.replace('"', "'")}"
+    title="{cmd["title"].replace("_", " ").title()}"
+    description="{description.split(".").pop(0).strip().replace(":", "").replace('"', "'")}"
     url="{url}"
-    command="true"
+    command
 />\n"""
     return cmd_cards
 
@@ -144,18 +240,24 @@ def write_reference_index(
     data_models : bool, optional
         Whether the folder is a data_models folder, by default False
     """
-    f.write(f"# {fname}\n{REFERENCE_IMPORT}")
-    for folder in path.glob("*"):
-        if folder.is_dir():
-            f.write(
-                create_nested_menus_card(folder, "/".join(rel_path.parts), data_models)
-            )
+    f.write(f"# {fname}\n\n{REFERENCE_IMPORT_UL if data_models else reference_import}")
+    sub_folders = [sub for sub in path.glob("*") if sub.is_dir()]
+
+    menus = []
+    for folder in sub_folders:
+        menus.append(
+            create_nested_menus_card(folder, "/".join(rel_path.parts), data_models)
+        )
+
+    if sub_folders and not data_models:
+        f.write(f"### Menus\n{refrence_ul_element}\n{''.join(menus)}</ul>\n")
 
     folder_cmd_cards: List[Dict[str, str]] = reference_cards.get(path, {})  # type: ignore
-    if folder_cmd_cards:
-        f.write(create_cmd_cards(folder_cmd_cards, data_models))
 
-    f.write("</ul>\n")
+    if folder_cmd_cards:
+        if not data_models:
+            f.write(f"\n\n### Commands\n{refrence_ul_element}\n")
+        f.write(create_cmd_cards(folder_cmd_cards, data_models) + "</ul>\n")
 
 
 provider_interface = ProviderInterface()
@@ -176,7 +278,10 @@ def get_annotation_type(annotation: Any) -> str:
         .replace("datetime.datetime", "datetime")
         .replace("datetime.date", "date")
         .replace("NoneType", "None")
-        .replace(", None", ""),
+        .replace(", None", "")
+        .replace("openbb_provider.abstract.data.", "")
+        .replace("pandas.core.frame.", "pd.")
+        .replace("pandas.core.series.", "pd."),
     )
     if match := annotated_regex.match(subbed):
         subbed = match.group("type")
@@ -208,6 +313,15 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
         "schema": {},
         "model": model_name,
     }
+
+    # Extract the full path from the 'path' variable, excluding the method name
+    path_components = path.strip("/").split("/")
+    # Construct the full command path, e.g., 'obb.equity.estimates.consensus'
+    full_command_path = "obb." + ".".join(path_components[:-1])
+
+    # Now add the actual function name
+    func_name = route.endpoint.__name__
+    full_command_path += f".{func_name}"
 
     if model_name:
         providers = provider_interface.map[model_name]
@@ -265,15 +379,6 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
                     "doc": description,
                 }
             )
-
-        # Extract the full path from the 'path' variable, excluding the method name
-        path_components = path.strip("/").split("/")
-        # Construct the full command path, e.g., 'obb.equity.estimates.consensus'
-        full_command_path = "obb." + ".".join(path_components[:-1])
-
-        # Now add the actual function name
-        func_name = route.endpoint.__name__
-        full_command_path += f".{func_name}"
 
         # Update the func_def to include the full path
         def_params = [
@@ -350,6 +455,36 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
             "provider_extras": provider_extras,
         }
         meta_command["provider_params"] = provider_params
+
+    if not meta_command.get("params", None):
+        meta_command.update(
+            get_docstring_meta(func, full_command_path, formatted_params)
+        )
+
+    ref_path = full_command_path.replace("obb.", "")
+    cmd_keywords = "\n- ".join(ref_path.split("."))
+    default_desc = (
+        meta_command.get("description", "").split(".").pop(0).strip().replace(":", "")
+    )
+    header = (
+        f"title: {func_name}\ndescription: {default_desc}\nkeywords:\n- {cmd_keywords}"
+    )
+
+    if seo_meta := SEO_META.get(
+        ref_path, SEO_META.get((".".join(path.split("/")[-2:])), None)
+    ):
+        keywords = "\n- ".join(seo_meta["keywords"])
+        header = f"title: {seo_meta['title']}\ndescription: {seo_meta['description']}\nkeywords:\n- {keywords}"
+
+    title = ref_path.split(".")
+    title[0] += " "
+
+    meta_command[
+        "header"
+    ] = f"""---\n{header}\n---\n
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="{'/'.join(title)} - Reference | OpenBB Platform Docs" />\n\n"""
 
     return meta_command
 
@@ -483,22 +618,26 @@ def generate_platform_markdown() -> None:
         if not meta_command:
             continue
         func = PathHandler.get_route(path=path, route_map=route_map).endpoint
-        folder, func_name = path.split("/")[-2:]
+
+        func_name = func.__name__
         if func_name == "index":
             func_name = "index_cmd"
 
+        folder = "/".join(path.strip("/").split("/")[:-1])
         filepath = content_path / folder / f"{func_name}.md"
 
         markdown = generate_markdown(meta_command=meta_command)
+
         if data_model := meta_command.get("model", None):
+            ## title is the desc here - clean this later
             (
                 data_model_card_title,
                 data_model_card_description,
             ) = generate_data_model_card_info(meta_command)
 
             data_markdown = (
-                f"---\ntitle: {data_model_card_title}\n"
-                "description: OpenBB Platform Data Model\n---\n\n"
+                f"---\ntitle: {data_model}\n"
+                f"description: {data_model_card_title}\n---\n\n"
                 "<!-- markdownlint-disable MD012 MD031 MD033 -->\n\n"
                 "import Tabs from '@theme/Tabs';\nimport TabItem from '@theme/TabItem';\n\n"
             )
@@ -519,8 +658,8 @@ def generate_platform_markdown() -> None:
 
             data_reference_cards.setdefault(data_filepath.parent, []).append(
                 dict(
-                    title=data_model_card_title,
-                    description=data_model_card_description or "",
+                    title=data_model,
+                    description=data_model_card_title or "",
                     url=data_models_path.relative_to(data_models_path) / data_model,
                 )
             )
@@ -560,8 +699,12 @@ def generate_platform_markdown() -> None:
         # Generate category json
         f.write(json.dumps({"label": "Reference", "position": 5}, indent=2))
 
-    def gen_category_json(fname: str, path: Path):
+    def gen_category_json(fname: str, path: Path, position: int = 1):
         """Generate category json"""
+        with open(path / "_category_.json", "w", **kwargs) as f:  # type: ignore
+            f.write(
+                json.dumps({"label": fname.title(), "position": position}, indent=2)
+            )
 
         with open(path / "index.mdx", "w", **kwargs) as f:  # type: ignore
             rel_path = path.relative_to(content_path)
@@ -569,13 +712,44 @@ def generate_platform_markdown() -> None:
 
     def gen_category_recursive(nested_path: Path):
         """Generate category json recursively"""
+        position = 1
         for folder in nested_path.iterdir():
             if folder.is_dir():
-                gen_category_json(folder.name, folder)
+                gen_category_json(folder.name, folder, position)
                 gen_category_recursive(folder)  # pylint: disable=cell-var-from-loop
+                position += 1
 
     gen_category_recursive(content_path)
     print(f"Markdown files generated, check the {content_path} folder.")
+
+
+def save_metadata(path: Path) -> Dict[str, Dict[str, Union[str, List[str]]]]:
+    """Save SEO metadata"""
+    regex = re.compile(
+        r"---\ntitle: (.*)\ndescription: (.*)\nkeywords:(.*)\n---\n\nimport HeadTitle",
+        re.MULTILINE | re.DOTALL,
+    )
+
+    metadata = {}
+    for file in path.rglob("*/**/*.md"):
+        context = file.read_text(encoding="utf-8")
+        match = regex.search(context)
+        if match:
+            title, description, keywords = match.groups()
+            key = file.relative_to(path).as_posix().removesuffix(".md")
+            metadata[key.replace("/", ".")] = {
+                "title": title,
+                "description": description,
+                "keywords": [
+                    keyword.strip() for keyword in keywords.split("\n- ") if keyword
+                ],
+            }
+
+    filepath = website_path / "metadata/platform_v4_seo_metadata2.json"
+    with open(filepath, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(metadata, f, indent=2)
+
+    return metadata
 
 
 if __name__ == "__main__":

@@ -1,8 +1,8 @@
 ---
 title: mktcap
-description: "This page provides documentation about the mktcap function of OpenBB-finance\u2019\
-  s Yahoo Finance Module. It explains the operation and usage of the functions for\
-  \ market cap modeling and charting over a certain period."
+description: This page provides documentation about the mktcap function of OpenBB-finance's
+  Yahoo Finance Module. It explains the operation and usage of the functions for
+  market cap modeling and charting over a certain period.
 keywords:
 - OpenBB-finance
 - Yahoo Finance
