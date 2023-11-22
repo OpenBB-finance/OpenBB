@@ -77,19 +77,34 @@ jobs:
 
   sanity-checks:
     runs-on: ubuntu-latest
-    needs: label-pull-request-with-size
     steps:
-      - name: Checkout code
+      - name: Checkout target branch
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.base_ref }} # This fetches the latest commit from the target branch
+          fetch-depth: 1 # We only need the latest commit
+
+      - name: Get merge base
+        id: merge-base
+        run: |
+          echo "MERGE_BASE_SHA=$(git merge-base HEAD ${{ github.sha }})" >> $GITHUB_ENV
+
+      - name: Checkout PR code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.sha }} # This fetches the PR's latest commit
+          fetch-depth: 1 # We only need the latest commit
 
       - name: Check Line Endings
         run: |
           #!/bin/bash
           # Flag to track line ending issues
           line_ending_issue_found=0
+          # Get the SHA for the merge base from the environment variable
+          merge_base_sha=$MERGE_BASE_SHA
 
           # List all files modified in the PR, excluding deleted files
-          files=$(git diff --name-only --diff-filter=d ${{ github.event.before }} ${{ github.event.after }})
+          files=$(git diff --name-only --diff-filter=d $merge_base_sha ${{ github.sha }})
 
           # Check each file for CRLF line endings
           for file in $files; do
