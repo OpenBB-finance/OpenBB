@@ -92,8 +92,8 @@ jobs:
       - name: Checkout PR code
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.sha }} # This fetches the PR's latest commit
-          fetch-depth: 0 # Fetches all history for the PR branch only
+          ref: ${{ github.sha }}
+          fetch-depth: 1
 
       - name: Check Line Endings
         run: |
