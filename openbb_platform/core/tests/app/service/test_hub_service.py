@@ -47,7 +47,7 @@ def test_connect_with_sdk_token():
     with patch(
         "requests.post", return_value=MagicMock(status_code=200, json=lambda: {})
     ), patch.object(
-        HubService, "_get_session_from_sdk_token", return_value=mock_hub_session
+        HubService, "_get_session_from_platform_token", return_value=mock_hub_session
     ):
         hub_service = HubService()
         result = hub_service.connect(pat="pat")
@@ -86,7 +86,7 @@ def test_get_session_from_email_password():
         assert isinstance(result, HubSession)
 
 
-def test_get_session_from_sdk_token():
+def test_get_session_from_platform_token():
     """Test get session from Platform personal access token."""
 
     with patch(
@@ -112,7 +112,7 @@ def test_get_session_from_sdk_token():
             "-JLZnFzyJ6dlHBZnkjQT2tfaaefxnTdAlSmToQwxGykvuatmI7L0wztPQ"
         )
 
-        result = HubService()._get_session_from_sdk_token(mock_token)
+        result = HubService()._get_session_from_platform_token(mock_token)
         assert isinstance(result, HubSession)
 
 

@@ -23,6 +23,8 @@ class Account:
     save
     refresh"""
 
+    SESSION_FILE = ".hub_session.json"
+
     def __init__(self, base_app: "BaseApp"):
         self._base_app = base_app
         self._openbb_directory = (
@@ -66,7 +68,7 @@ class Account:
     ) -> HubService:
         """Create hub service to handle connection."""
         if email is None and password is None and pat is None:
-            session_file = Path(self._openbb_directory, ".sdk_hub_session.json")
+            session_file = Path(self._openbb_directory, self.SESSION_FILE)
             if not session_file.exists():
                 raise OpenBBError("Session not found.")
 
@@ -112,7 +114,7 @@ class Account:
         self._base_app._command_runner.user_settings = updated
         if remember_me:
             Path(self._openbb_directory).mkdir(parents=False, exist_ok=True)
-            session_file = Path(self._openbb_directory, ".sdk_hub_session.json")
+            session_file = Path(self._openbb_directory, self.SESSION_FILE)
             with open(session_file, "w") as f:
                 if not hs.session:
                     raise OpenBBError("Not connected to hub.")
@@ -178,7 +180,7 @@ class Account:
         hs = HubService(hub_session)
         hs.disconnect()
 
-        session_file = Path(self._openbb_directory, ".sdk_hub_session.json")
+        session_file = Path(self._openbb_directory, self.SESSION_FILE)
         if session_file.exists():
             session_file.unlink()
 
