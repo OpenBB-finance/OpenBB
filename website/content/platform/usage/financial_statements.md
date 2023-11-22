@@ -147,7 +147,7 @@ weighted_average_shares_outstanding   -1.3
 dtype: float64
 ```
 
-With an average closing price of $146.45, that represents approximately $190M in buy backs.
+With an average closing price of $143.37, that represents approximately $190M in buy backs.
 
 ```python
 price = obb.equity.price.historical("TGT", start_date="2022-10-29", provider="fmp").to_df()
