@@ -3,12 +3,12 @@
 from typing import Any, Dict, List, Literal, Optional
 
 import nasdaqdatalink
-from openbb_nasdaq.models.query_params import DataLinkQueryParams
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.lbma_fixing import (
     LbmaFixingData,
     LbmaFixingQueryParams,
 )
+from openbb_nasdaq.models.query_params import DataLinkQueryParams
 from pydantic import Field
 
 
