@@ -1,6 +1,7 @@
 """Intrinio provider module."""
 
 from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
+from openbb_intrinio.models.calendar_dividend import IntrinioCalendarDividendFetcher
 from openbb_intrinio.models.calendar_ipo import IntrinioCalendarIpoFetcher
 from openbb_intrinio.models.cash_flow import IntrinioCashFlowStatementFetcher
 from openbb_intrinio.models.company_news import IntrinioCompanyNewsFetcher
@@ -42,6 +43,7 @@ intrinio_provider = Provider(
         "CompanyNews": IntrinioCompanyNewsFetcher,
         "CurrencyPairs": IntrinioCurrencyPairsFetcher,
         "DiscoveryFilings": IntrinioFilingsFetcher,
+        "CalendarDividend": IntrinioCalendarDividendFetcher,
         "EquityHistorical": IntrinioEquityHistoricalFetcher,
         "EquityInfo": IntrinioEquityInfoFetcher,
         "EquityQuote": IntrinioEquityQuoteFetcher,
