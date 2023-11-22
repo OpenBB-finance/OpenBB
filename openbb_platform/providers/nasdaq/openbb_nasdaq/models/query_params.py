@@ -19,7 +19,7 @@ class DataLinkQueryParams(QueryParams):
         default=None,
     )
     transform: Literal["diff", "rdiff", "cumul", "normalize", None] = Field(
-        description="Transform the data as w/w difference, percent change, cumulative, or normalize.",
+        description="Transform the data as difference, percent change, cumulative, or normalize.",
         default=None,
     )
     collapse: Literal[
