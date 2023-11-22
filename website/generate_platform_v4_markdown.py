@@ -279,7 +279,7 @@ def get_annotation_type(annotation: Any) -> str:
         .replace("datetime.date", "date")
         .replace("NoneType", "None")
         .replace(", None", "")
-        .replace("openbb_provider.abstract.data.", "")
+        .replace("openbb_core.provider.abstract.data.", "")
         .replace("pandas.core.frame.", "pd.")
         .replace("pandas.core.series.", "pd."),
     )
