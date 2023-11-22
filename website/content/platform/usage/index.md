@@ -312,7 +312,10 @@ data.to_df()
 :::info
 The preferred output type can be set with a user preference.
 
+```python
 obb.user.preferences.output_type="dataframe"
+```
+
 :::
 
 ## Dynamic Command Execution
