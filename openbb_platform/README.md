@@ -66,9 +66,6 @@ Set your keys at [OpenBB Hub](https://my.openbb.co/app/sdk/api-keys) and get you
 ```python
 >>> from openbb import obb
 >>> openbb.account.login(pat="OPENBB_PAT")
-
->>> # Persist changes in OpenBB Hub
->>> obb.account.save()
 ```
 
 ### 2. Runtime
@@ -77,10 +74,9 @@ Set your keys at [OpenBB Hub](https://my.openbb.co/app/sdk/api-keys) and get you
 >>> from openbb import obb
 >>> obb.user.credentials.fmp_api_key = "REPLACE_ME"
 >>> obb.user.credentials.polygon_api_key = "REPLACE_ME"
-
->>> # Persist changes in ~/.openbb_platform/user_settings.json
->>> obb.account.save()
 ```
+
+> To persist changes in OpenBB Hub, run `obb.account.save()` after the login.
 
 ### 3. Local file
 
