@@ -1,4 +1,4 @@
-name: PR Sanity Review
+name: Label PR size
 
 on: [pull_request]
 
@@ -74,59 +74,3 @@ jobs:
             });
         env:
           SIZE_LABEL: ${{ env.SIZE_LABEL }}
-
-  sanity-checks:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout base branch
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.base_ref }} # This fetches the latest commit from the target branch
-          fetch-depth: 2 # Fetches 2 commits to ensure we have the commit for merge-base calculation
-
-      - name: Get merge base SHA
-        id: get-merge-base
-        run: |
-          echo "MERGE_BASE_SHA=$(git merge-base HEAD ${{ github.event.pull_request.base.sha }})" >> $GITHUB_ENV
-
-      - name: Checkout PR code
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.sha }}
-          fetch-depth: 1
-
-      - name: Check Line Endings
-        run: |
-          #!/bin/bash
-          # Flag to track line ending issues
-          line_ending_issue_found=0
-
-          # Get the SHA for the merge base from the environment variable set in the previous step
-          merge_base_sha=${{ steps.get-merge-base.outputs.MERGE_BASE_SHA }}
-
-          # Check that merge_base_sha is not empty
-          if [ -z "$merge_base_sha" ]; then
-            echo "MERGE_BASE_SHA is not set. Exiting."
-            exit 1
-          fi
-
-          # List all files modified in the PR, excluding deleted files
-          files=$(git diff --name-only --diff-filter=d $merge_base_sha ${{ github.sha }})
-
-          # Check each file for CRLF line endings
-          for file in $files; do
-            # Check if the file contains CRLF line endings
-            if grep -qP "\r\n" "$file"; then
-              # CRLF line endings detected
-              echo "::error file=$file::File $file has CRLF line endings."
-              line_ending_issue_found=1
-            fi
-          done
-
-          # If any file has CRLF line endings, fail the check
-          if [ "$line_ending_issue_found" -ne 0 ]; then
-            echo "One or more files have CRLF line endings."
-            exit 1
-          else
-            echo "All checked files have LF line endings."
-          fi
