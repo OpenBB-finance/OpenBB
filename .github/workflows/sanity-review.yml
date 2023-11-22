@@ -100,6 +100,7 @@ jobs:
           #!/bin/bash
           # Flag to track line ending issues
           line_ending_issue_found=0
+
           # Get the SHA for the merge base from the environment variable
           merge_base_sha=$MERGE_BASE_SHA
 
@@ -122,3 +123,4 @@ jobs:
             exit 1
           else
             echo "All checked files have LF line endings."
+          fi
