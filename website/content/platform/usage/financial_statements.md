@@ -261,3 +261,5 @@ ratios["quick_ratio"].median()
 ```console
 0.5843795019551348
 ```
+
+Explore the rest of the `fundamental` module under the [Reference](/platform/reference/equity/fundamental) section.
