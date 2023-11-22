@@ -33,6 +33,15 @@ OpenBB Platform data extensions provide access to financial statements as quarte
 
 Financial statement functions are grouped under the `obb.equity.fundamental` module.
 
+:::info
+To begin, import the OpenBB Platform into a Python session:
+
+```python
+from openbb import obb
+```
+
+:::
+
 ## Financial Statements
 
 The typical financial statements consist of three endpoints:
@@ -108,7 +117,7 @@ data = (
   .to_df()
 )
 
-shares = data[["weighted_average_shares_outstanding"]]/1000000
+shares = data["weighted_average_shares_outstanding"]/1000000
 ```
 
 Where this data starts,
@@ -134,7 +143,7 @@ shares.tail(1)
 Thirty-seven years later, the share count is approaching a two-thirds reduction.  12.2% over the past five years.
 
 ```python
-shares.pct_change(20).iloc[-1].values[0]
+shares.pct_change(20).iloc[-1]
 ```
 
 ```console
@@ -144,19 +153,18 @@ shares.pct_change(20).iloc[-1].values[0]
 In four reporting periods, 1.3 million shares have been taken out of the float.
 
 ```python
-shares.iloc[-4] - data.iloc[-1]
+shares.iloc[-4] - shares.iloc[-1]
 ```
 
 ```console
-weighted_average_shares_outstanding   -1.3
-dtype: float64
+-1.3000000000000114
 ```
 
-With an average closing price of $143.37, that represents approximately $190M in buy backs.
+With an average closing price of $144.27, that represents approximately $190M in buy backs.
 
 ```python
 price = (
-  obb.equity.price.historical("TGT", start_date="2022-10-29", provider="fmp")
+  obb.equity.price.historical("TGT", start_date="2022-10-01", provider="fmp")
   .to_df()
 )
 
@@ -164,7 +172,7 @@ round((price["close"].mean()*1300000)/1000000, 2)
 ```
 
 ```console
-186.38
+187.55
 ```
 
 ### Dividends Paid
@@ -177,7 +185,7 @@ dividends = (
   .to_df()[["dividends_paid"]]
 )
 
-dividends["shares"] = data.to_df()[["weighted_average_shares_outstanding"]]
+dividends["shares"] = data[["weighted_average_shares_outstanding"]]
 dividends["div_per_share"] = dividends["dividends_paid"]/dividends["shares"]
 
 dividends["div_per_share"].tail(4)
@@ -192,20 +200,24 @@ dividends["div_per_share"].tail(4)
 
 This can be compared against the real amounts paid to common share holders with the historical dividend payments announced.
 
+:::note
+The dates immediately above represent the report date, dividends paid are attributed to the quarter they were paid in.  The value from "2023-01-28" equates to the fourth quarter of 2022.
+:::
+
 ```python
 (
   obb.equity.fundamental.dividends("TGT", provider="fmp")
   .to_df()["dividend"]
-  .tail(4)
+  .loc["2022-11-15":"2023-08-15"]
 )
 ```
 
-| date          |   dividend |
+ date          |   dividend |
 |:--------------|-----------:|
+| 2022-11-15  |       1.08 |
 | 2023-02-14  |       1.08 |
 | 2023-05-16  |       1.08 |
 | 2023-08-15  |       1.1  |
-| 2023-11-14  |       1.1  |
 
 The numbers check out, and the $2B paid to investors over four quarters is more than ten times the $190M returned through share buy backs.
 
@@ -233,24 +245,27 @@ marketcap = (
   .to_df()
 )
 
-marketcap.tail(4)
+marketcap.tail(5)
 ```
 
 | date          |       value |
 |:--------------|------------:|
+| 2022-12-31  | 66929627287 |
 | 2023-03-31  | 75023699391 |
 | 2023-06-30  | 59916953938 |
 | 2023-09-30  | 50614370690 |
-| 2023-11-21  | 59963125000 |
+| 2023-11-22  |  60495000000 |
 
-Doing some quick math, we can see that the market cap of Target is down 20% over four reporting periods.
+Doing some quick math, and ignoring the most recent value, we can see that the market cap of Target was down nearly a quarter over the last four reporting periods.
 
 ```python
-(marketcap.iloc[-1] - marketcap.iloc[-4])/marketcap.iloc[-4].value
+(
+    (marketcap.loc["2023-09-30"] - marketcap.loc["2022-12-31"])/marketcap.loc["2022-12-31"]
+).value
 ```
 
 ```console
--0.200744
+-0.24376733082703084
 ```
 
 ## Ratios and Other Metrics
