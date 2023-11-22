@@ -1,9 +1,9 @@
 ---
 title: Financial Statements
 sidebar_position: 5
-description: This page provides an introduction to financial statement data available in the OpenBB 
+description: This page provides an introduction to financial statement data available in the OpenBB
   Platform.  This includes quarterly and annual reports, along with metrics and ratios by company.
-  This guide provides examples for using the variety of sources. 
+  This guide provides examples for using the variety of sources.
 keywords:
 - stocks
 - companies
@@ -157,7 +157,7 @@ shares.iloc[-4] - shares.iloc[-1]
 ```
 
 ```console
--1.3000000000000114
+-1.3
 ```
 
 With an average closing price of $144.27, that represents approximately $190M in buy backs.
