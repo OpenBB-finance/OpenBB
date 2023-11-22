@@ -7,6 +7,9 @@ from openbb_core.app.service.user_service import UserService
 from openbb_government_us.models.treasury_auctions import (
     GovernmentUSTreasuryAuctionsFetcher,
 )
+from openbb_government_us.models.treasury_prices import (
+    GovernmentUSTreasuryPricesFetcher,
+)
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -33,5 +36,15 @@ def test_government_us_treasury_auctions_fetcher(credentials=test_credentials):
     }
 
     fetcher = GovernmentUSTreasuryAuctionsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_government_us_treasury_prices_fetcher(credentials=test_credentials):
+    """Test GovernmentUSTreasuryAuctionsFetcher."""
+    params = {}
+
+    fetcher = GovernmentUSTreasuryPricesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

@@ -3,7 +3,9 @@
 from openbb_government_us.models.treasury_auctions import (
     GovernmentUSTreasuryAuctionsFetcher,
 )
-from openbb_government_us.models.treasury_prices import GovernmentUSTreasuryPricesFetcher
+from openbb_government_us.models.treasury_prices import (
+    GovernmentUSTreasuryPricesFetcher,
+)
 from openbb_provider.abstract.provider import Provider
 
 government_us_provider = Provider(

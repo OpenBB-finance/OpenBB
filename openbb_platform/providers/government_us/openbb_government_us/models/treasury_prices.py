@@ -8,7 +8,10 @@ from io import BytesIO
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.treasury_prices import USTreasuryPricesData, USTreasuryPricesQueryParams
+from openbb_provider.standard_models.treasury_prices import (
+    USTreasuryPricesData,
+    USTreasuryPricesQueryParams,
+)
 from openbb_provider.utils.helpers import make_request
 from pandas import DataFrame, read_csv, to_datetime
 from pydantic import Field
@@ -23,6 +26,7 @@ class GovernmentUSTreasuryPricesQueryParams(USTreasuryPricesQueryParams):
         default=None,
     )
 
+
 class GovernmentUSTreasuryPricesData(USTreasuryPricesData):
     """US Government Treasury Prices Data."""
 
@@ -33,22 +37,26 @@ class GovernmentUSTreasuryPricesFetcher(
         List[GovernmentUSTreasuryPricesData],
     ]
 ):
-
     @staticmethod
     def transform_query(
         params: Dict[str, Any]
     ) -> GovernmentUSTreasuryPricesQueryParams:
         """Transform query params."""
 
-        if "date" not in  params or params["date"] is None:
+        if "date" not in params or params["date"] is None:
             _date = datetime.now().date()
-        if  "date" in params and params["date"] is not None:
+        if "date" in params and params["date"] is not None:
             _date = (
                 datetime.strptime(params["date"], "%Y-%m-%d").date()
-                if isinstance(params["date"], str) else params["date"]
+                if isinstance(params["date"], str)
+                else params["date"]
             )
         if _date.weekday() > 4:
-            _date = _date - timedelta(days=_date.weekday() - 4) if _date.weekday() > 4 else _date
+            _date = (
+                _date - timedelta(days=_date.weekday() - 4)
+                if _date.weekday() > 4
+                else _date
+            )
         params["date"] = _date
 
         return GovernmentUSTreasuryPricesQueryParams(**params)
@@ -63,7 +71,7 @@ class GovernmentUSTreasuryPricesFetcher(
 
         data: List[Dict] = [{}]
 
-        url= "https://treasurydirect.gov/GA-FI/FedInvest/securityPriceDetail"
+        url = "https://treasurydirect.gov/GA-FI/FedInvest/securityPriceDetail"
 
         HEADERS = {
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
@@ -78,26 +86,40 @@ class GovernmentUSTreasuryPricesFetcher(
             f"&priceDateYear={query.date.year}&fileType=csv&csv=CSV+FORMAT"
         )
 
-        r = make_request(url=url, headers=HEADERS,method="POST", data=payload)
+        r = make_request(url=url, headers=HEADERS, method="POST", data=payload)
 
         if r.status_code != 200:
-            raise RuntimeError("Error with the request: " +str(r.status_code))
+            raise RuntimeError("Error with the request: " + str(r.status_code))
 
         if r.encoding == "ISO-8859-1":
             try:
                 results = read_csv(BytesIO(r.content), header=0)
-                columns = ["cusip", "security_type", "rate", "maturity_date", "call_date", "bid", "offer", "eod_price"]
+                columns = [
+                    "cusip",
+                    "security_type",
+                    "rate",
+                    "maturity_date",
+                    "call_date",
+                    "bid",
+                    "offer",
+                    "eod_price",
+                ]
                 results.columns = columns
                 results["date"] = query.date.strftime("%Y-%m-%d")  # type: ignore
                 for col in ["maturity_date", "call_date"]:
                     results[col] = (
-                    to_datetime(results[col], format="%m/%d/%Y" )
-                    .dt.strftime("%Y-%m-%d")
-                    ).fillna("-").replace("-", None)
+                        (
+                            to_datetime(results[col], format="%m/%d/%Y").dt.strftime(
+                                "%Y-%m-%d"
+                            )
+                        )
+                        .fillna("-")
+                        .replace("-", None)
+                    )
 
                 data = results.to_dict(orient="records")
             except Exception as e:
-                raise RuntimeError("Parsing Error: " +str(e))
+                raise RuntimeError("Parsing Error: " + str(e))
 
         return data
 
@@ -113,4 +135,7 @@ class GovernmentUSTreasuryPricesFetcher(
             df = df[df["security_type"].str.contains(query.security_type, case=False)]
         if query.cusip is not None:
             df = df[df["cusip"] == query.cusip]
-        return [GovernmentUSTreasuryPricesData.model_validate(d) for d in df.to_dict("records")]
+        return [
+            GovernmentUSTreasuryPricesData.model_validate(d)
+            for d in df.to_dict("records")
+        ]

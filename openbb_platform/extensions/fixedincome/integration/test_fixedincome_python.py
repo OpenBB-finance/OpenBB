@@ -433,3 +433,34 @@ def test_fixedincome_government_treasury_auctions(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "date": "2023-11-16",
+                "cusip": None,
+                "security_type": "bond",
+                "provider": "government_us",
+            }
+        ),
+        (
+            {
+                "date": None,
+                "cusip": None,
+                "security_type": "bill",
+                "provider": "government_us",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_government_treasury_prices(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.government.treasury_prices(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
