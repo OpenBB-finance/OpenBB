@@ -7,12 +7,12 @@ from typing import Any, Dict, List, Optional, Union
 import pandas as pd
 import requests
 import xmltodict
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.etf_holdings import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.etf_holdings import (
     EtfHoldingsData,
     EtfHoldingsQueryParams,
 )
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_sec.utils.helpers import HEADERS, get_nport_candidates, sec_session_etf
 from pydantic import Field
 
