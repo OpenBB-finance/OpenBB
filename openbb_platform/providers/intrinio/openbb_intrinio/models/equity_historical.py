@@ -4,14 +4,14 @@ from datetime import datetime, time
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
-from openbb_intrinio.utils.helpers import get_data_one
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.equity_historical import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
     EquityHistoricalQueryParams,
 )
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.helpers import get_querystring
+from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import Field, PrivateAttr, model_validator
 
 

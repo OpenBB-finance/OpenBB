@@ -11,7 +11,7 @@ from openbb_core.app.utils import (
     get_target_column,
     get_target_columns,
 )
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 from pydantic import NonNegativeFloat, NonNegativeInt, PositiveFloat, PositiveInt
 
 from . import helpers

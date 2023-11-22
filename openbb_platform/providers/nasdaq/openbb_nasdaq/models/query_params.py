@@ -3,8 +3,8 @@
 from datetime import date as dateType
 from typing import Literal, Optional
 
-from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.abstract.query_params import QueryParams
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field
 
 

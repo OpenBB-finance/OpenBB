@@ -5,12 +5,12 @@ import math
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.world_news import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
 from pydantic import Field, field_validator
 
 from ..utils.helpers import get_data

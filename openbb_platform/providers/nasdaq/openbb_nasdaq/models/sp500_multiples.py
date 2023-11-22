@@ -3,13 +3,13 @@
 from typing import Any, Dict, List, Optional
 
 import nasdaqdatalink
-from openbb_nasdaq.models.query_params import DataLinkQueryParams
-from openbb_nasdaq.utils.series_ids import SP500MULTIPLES
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.sp500_multiples import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.sp500_multiples import (
     SP500MultiplesData,
     SP500MultiplesQueryParams,
 )
+from openbb_nasdaq.models.query_params import DataLinkQueryParams
+from openbb_nasdaq.utils.series_ids import SP500MULTIPLES
 
 
 class NasdaqSP500MultiplesQueryParams(SP500MultiplesQueryParams, DataLinkQueryParams):

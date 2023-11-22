@@ -3,7 +3,7 @@ import base64
 import pytest
 import requests
 from openbb_core.env import Env
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
 
 
 @pytest.fixture(scope="session")
@@ -277,7 +277,7 @@ def test_index_sp500_multiples(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "limit": 100,
-                "provider": "intrinio",
+                "provider": "nasdaq",
             }
         )
     ],

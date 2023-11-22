@@ -298,7 +298,7 @@ def get_ftd_urls() -> Dict:
     key = "title"
     value = "Fails-to-Deliver Data"
 
-    r = requests.get("https://www.sec.gov/data.json", timeout=5)
+    r = requests.get("https://www.sec.gov/data.json", timeout=5, headers=SEC_HEADERS)
     if r.status_code != 200:
         raise RuntimeError(f"Request failed with status code {str(r.status_code)}")
     data = r.json()["dataset"]

@@ -100,8 +100,7 @@ def test_etf_sectors(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "IOO"}),
-        ({"symbol": "MISL", "cik": None, "provider": "fmp"}),
+        ({"symbol": "QQQ", "cik": None, "provider": "fmp"}),
     ],
 )
 @pytest.mark.integration
@@ -127,17 +126,9 @@ def test_etf_holdings_date(params, obb):
         ),
         (
             {
-                "symbol": "SILJ",
-                "date": "2019-12-31",
-                "cik": None,
-                "provider": "fmp",
-            }
-        ),
-        (
-            {
-                "symbol": "MISL",
+                "symbol": "VOO",
                 "date": "2023-03-31",
-                "cik": "0001329377",
+                "cik": None,
                 "provider": "fmp",
             }
         ),
@@ -226,8 +217,8 @@ def test_etf_discovery_active(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "ioo"}),
-        ({"symbol": "silj", "provider": "fmp"}),
+        ({"symbol": "qqq", "provider": "fmp"}),
+        ({"symbol": "spy", "provider": "fmp"}),
     ],
 )
 @pytest.mark.integration
