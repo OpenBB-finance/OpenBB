@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.cot import (
+from openbb_core.provider.standard_models.cot import (
 COTData,
 COTQueryParams,
 )
@@ -44,7 +44,7 @@ COTQueryParams,
 | ---- | ---- | ----------- | ------- | -------- |
 | id | str | The series ID string for the report. Default report is Two-Year Treasury Note Futures. | 042601 | True |
 | provider | Literal['nasdaq'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'nasdaq' if there is no default. | nasdaq | True |
-| data_type | Literal['F', 'FO', 'CITS'] | 
+| data_type | Literal['F', 'FO', 'CITS'] |
             The type of data to reuturn. Default is "FO".
 
             F = Futures only
@@ -54,7 +54,7 @@ COTQueryParams,
             CITS = Commodity Index Trader Supplemental. Only valid for commodities.
              | FO | True |
 | legacy_format | bool | Returns the legacy format of report. Default is False. | False | True |
-| report_type | Literal['ALL', 'CHG', 'OLD', 'OTR'] | 
+| report_type | Literal['ALL', 'CHG', 'OLD', 'OTR'] |
             The type of report to return. Default is "ALL".
 
             ALL = All
@@ -65,7 +65,7 @@ COTQueryParams,
 
             OTR = Other Crop Years
              | ALL | True |
-| measure | Literal['CR', 'NT', 'OI', 'CHG'] | 
+| measure | Literal['CR', 'NT', 'OI', 'CHG'] |
             The measure to return. Default is None.
 
             CR = Concentration Ratios
@@ -94,4 +94,3 @@ COTQueryParams,
 </TabItem>
 
 </Tabs>
-

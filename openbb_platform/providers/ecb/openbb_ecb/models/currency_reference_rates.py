@@ -4,8 +4,8 @@ from typing import Any, Dict, Optional
 
 import requests
 import xmltodict
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.currency_reference_rates import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.currency_reference_rates import (
     CurrencyReferenceRatesData,
     CurrencyReferenceRatesQueryParams,
 )

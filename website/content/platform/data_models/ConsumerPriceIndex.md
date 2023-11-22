@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.cpi import (
+from openbb_core.provider.standard_models.cpi import (
 ConsumerPriceIndexData,
 ConsumerPriceIndexQueryParams,
 )
@@ -61,4 +61,3 @@ ConsumerPriceIndexQueryParams,
 </TabItem>
 
 </Tabs>
-

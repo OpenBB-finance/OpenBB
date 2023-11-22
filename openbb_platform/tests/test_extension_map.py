@@ -25,7 +25,7 @@ def load_req_ext(file: Path) -> Dict[str, VersionConstraint]:
     deps = pyproject.data["tool"]["poetry"]["dependencies"]
     req_ext = {}
     for k, v in deps.items():
-        if k.startswith("openbb-") and k not in ("openbb-core", "openbb-provider"):
+        if k.startswith("openbb-") and k not in ("openbb-core"):
             name = k[7:]
             if isinstance(v, str):
                 req_ext[name] = parse_constraint(v)

@@ -7,7 +7,7 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 from typing_extensions import Annotated
 
 
@@ -479,7 +479,7 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.symbol_map()
+        >>> obb.regulators.sec.symbol_map(query="320193")
         """  # noqa: E501
 
         inputs = filter_inputs(

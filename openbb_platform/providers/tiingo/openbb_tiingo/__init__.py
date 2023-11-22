@@ -1,6 +1,6 @@
 """Tiingo provider module."""
 
-from openbb_provider.abstract.provider import Provider
+from openbb_core.provider.abstract.provider import Provider
 from openbb_tiingo.models.company_news import TiingoCompanyNewsFetcher
 from openbb_tiingo.models.crypto_historical import TiingoCryptoHistoricalFetcher
 from openbb_tiingo.models.currency_historical import TiingoCurrencyHistoricalFetcher

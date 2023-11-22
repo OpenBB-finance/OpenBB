@@ -21,13 +21,13 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 ```python
 
 # The `Data` class
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 
 # The `QueryParams` class
-from openbb_provider.abstract.query_params import QueryParams
+from openbb_core.provider.abstract.query_params import QueryParams
 
 # The `Fetcher` class
-from openbb_provider.abstract.fetcher import Fetcher
+from openbb_core.provider.abstract.fetcher import Fetcher
 
 # The `OBBject` class
 from openbb_core.app.model.obbject import OBBject
@@ -48,7 +48,7 @@ As the OpenBB Platform has its own standardization framework and the data fetche
     transform_query(params: Dict[str, Any])
     ```
 
-    Transforms the query parameters. Given a `params` dictionary this method should return the transformed query parameters as a [`QueryParams`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/platform/provider/openbb_provider/abstract/query_params.py) child so that we can leverage the pydantic model schemas and validation into the next step. This might also be the place do perform some transformations on any given parameter, i.e., if you want to transform an empty date into a `datetime.now().date()`.
+    Transforms the query parameters. Given a `params` dictionary this method should return the transformed query parameters as a [`QueryParams`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/core/provider/abstract/query_params.py) child so that we can leverage the pydantic model schemas and validation into the next step. This might also be the place do perform some transformations on any given parameter, i.e., if you want to transform an empty date into a `datetime.now().date()`.
 
 2. **Extract** data
 
@@ -64,12 +64,12 @@ As the OpenBB Platform has its own standardization framework and the data fetche
     transform_data(query: ExampleQueryParams, data: Dict, **kwargs: Any) -> List[ExampleHistoricalData]
     ```
 
-    Transforms the raw data into the defined data model. Given the transformed query parameters (might be useful for some filtering), the raw data and any other extra arguments, this method should return the transformed data as a list of [`Data`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/platform/provider/openbb_provider/abstract/data.py) children.
+    Transforms the raw data into the defined data model. Given the transformed query parameters (might be useful for some filtering), the raw data and any other extra arguments, this method should return the transformed data as a list of [`Data`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/core/provider/abstract/data.py) children.
 
 ## Data processing commands
 
 The data processing commands are commands that are used to process the data that may or may not come from the OpenBB Platform.
-In order to create a data processing framework general enough to be used by any extension, we've created a special abstract class called `Data`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/platform/provider/openbb_provider/abstract/data.py) which **all** standardized (and consequently its child classes) will inherit from.
+In order to create a data processing framework general enough to be used by any extension, we've created a special abstract class called `Data`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/core/provider/abstract/data.py) which **all** standardized (and consequently its child classes) will inherit from.
 
 Why is this important?
 So that we can ensure that all `OBBject.results` will share a common ground on which we can apply out-of-the-box data processing commands, such as the `ta`, `qa` or the `econometrics` menus.
@@ -116,7 +116,7 @@ Not at all! Consider the following example:
 
 ```python
 
->>> from openbb_provider.abstract.data import Data
+>>> from openbb_core.provider.abstract.data import Data
 >>> my_data_item_1 = {"open": 1, "high": 2, "low": 3, "close": 4, "volume": 5, "date": "2020-01-01"}
 >>> my_data_item_1_as_data = Data.model_validate(my_data_item_1)
 >>> my_data_item_1_as_data

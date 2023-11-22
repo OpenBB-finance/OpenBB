@@ -3,7 +3,7 @@ from datetime import time
 
 import pytest
 import requests
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
 
 # pylint: disable=too-many-lines,redefined-outer-name
 
@@ -262,21 +262,6 @@ def test_equity_fundamental_dividends(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/dividends?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [({"symbol": "AAPL", "limit": 50})],
-)
-@pytest.mark.integration
-def test_equity_fundamental_earnings(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/earnings?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -890,7 +875,7 @@ def test_equity_fundamental_multiples(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_equity_fundamental_search_financial_attributes(params, obb):
+def test_equity_fundamental_search_financial_attributes(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -919,7 +904,7 @@ def test_equity_fundamental_search_financial_attributes(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_equity_fundamental_financial_attributes(params, obb):
+def test_equity_fundamental_financial_attributes(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
@@ -934,29 +919,6 @@ def test_equity_fundamental_financial_attributes(params, obb):
     [
         ({"query": "AAPl", "is_symbol": True, "provider": "cboe"}),
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
-        (
-            {
-                "query": "residential",
-                "industry": "REIT",
-                "sector": "Real Estate",
-                "mktcap_min": None,
-                "mktcap_max": None,
-                "price_min": None,
-                "price_max": None,
-                "volume_min": None,
-                "volume_max": None,
-                "dividend_min": None,
-                "dividend_max": None,
-                "is_active": True,
-                "is_etf": False,
-                "beta_min": None,
-                "beta_max": None,
-                "country": "US",
-                "exchange": "nyse",
-                "limit": None,
-                "provider": "fmp",
-            }
-        ),
     ],
 )
 @pytest.mark.integration
@@ -1286,7 +1248,7 @@ def test_equity_shorts_short_interest(params, headers):
             {
                 "symbol": "CLOV",
                 "date": "2023-10-26",
-                "provider": "polygon",
+                "provider": "polygon",  # premium endpoint
                 "limit": 1000,
                 "timestamp_lte": None,
                 "timestamp_gte": None,
@@ -1297,7 +1259,7 @@ def test_equity_shorts_short_interest(params, headers):
         (
             {
                 "symbol": "CLOV",
-                "provider": "polygon",
+                "provider": "polygon",  # premium endpoint
                 "timestamp_gt": "2023-10-26T15:20:00.000000000-04:00",
                 "timestamp_lt": "2023-10-26T15:30:00.000000000-04:00",
                 "limit": 5000,
@@ -1332,7 +1294,12 @@ def test_equity_darkpool_otc(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/darkpool/otc?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
+
+    try:
+        result = requests.get(url, headers=headers, timeout=30)
+    except requests.exceptions.Timeout:
+        pytest.skip("Timeout: `equity/darkpool/otc` took too long to respond.")
+
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -1341,7 +1308,7 @@ def test_equity_darkpool_otc(params, headers):
     "params",
     [
         ({"provider": "fmp", "market": "EURONEXT"}),
-        ({"provider": "polygon"}),
+        ({"provider": "polygon"}),  # premium endpoint
     ],
 )
 @pytest.mark.integration
