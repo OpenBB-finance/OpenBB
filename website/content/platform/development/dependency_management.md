@@ -17,8 +17,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## High-Level Overview
 
-- **Provider**: The base package with no dependencies on other `openbb` packages.
-- **Core**: Depends on the Provider and serves as the main infrastructural package.
+- **Core**: Serves as the main infrastructural package.
 - **Extensions**: Utility packages that leverage Core's infrastructure. Each extension is its own package.
 - **Providers**: Utility packages extending functionality to different providers, where each provider is its own package.
 
