@@ -3,12 +3,12 @@ from datetime import datetime, timedelta
 from io import BytesIO
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.treasury_prices import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.treasury_prices import (
     USTreasuryPricesData,
     USTreasuryPricesQueryParams,
 )
-from openbb_provider.utils.helpers import make_request
+from openbb_core.provider.utils.helpers import make_request
 from pandas import DataFrame, read_csv, to_datetime
 from pydantic import Field
 
