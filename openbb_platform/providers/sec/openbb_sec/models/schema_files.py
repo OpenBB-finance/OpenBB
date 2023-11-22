@@ -3,9 +3,9 @@
 
 from typing import Any, Dict, List, Optional
 
-from openbb_provider.abstract.data import Data
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.cot_search import CotSearchQueryParams
+from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.cot_search import CotSearchQueryParams
 from openbb_sec.utils.helpers import get_schema_filelist
 from pydantic import Field
 

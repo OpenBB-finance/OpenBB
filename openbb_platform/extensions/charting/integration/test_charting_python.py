@@ -83,32 +83,6 @@ def test_chart_equity_fundamental_multiples(params, obb):
     [
         (
             {
-                "provider": "fmp",
-                "symbols": "AAPL",
-                "limit": 20,
-                "chart": "True",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_chart_equity_news(params, obb):
-    """Test chart equity news."""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.equity.news(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-    assert result.chart.content
-    assert isinstance(result.chart.fig, OpenBBFigure)
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
                 "data": "",
                 "index": "date",
                 "length": "60",

@@ -4,12 +4,12 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 import requests
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.upcoming_release_days import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.upcoming_release_days import (
     UpcomingReleaseDaysData,
     UpcomingReleaseDaysQueryParams,
 )
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field, field_validator
 
 
@@ -62,12 +62,13 @@ class SAUpcomingReleaseDaysFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the Seeking Alpha endpoint."""
+        url = (
+            f"https://seekingalpha.com/api/v3/earnings_calendar/tickers?"
+            f"filter%5Bselected_date%5D={str(datetime.now().date())}"  # cspell:disable-line
+            f"&filter%5Bwith_rating%5D=false&filter%5Bcurrency%5D=USD"  # cspell:disable-line
+        )
         response = requests.get(
-            url=(
-                f"https://seekingalpha.com/api/v3/earnings_calendar/tickers?"
-                f"filter%5Bselected_date%5D={str(datetime.now().date())}"  # cspell:disable-line
-                f"&filter%5Bwith_rating%5D=false&filter%5Bcurrency%5D=USD"  # cspell:disable-line
-            ),
+            url=url,
             timeout=5,
         )
         if response.status_code != 200:

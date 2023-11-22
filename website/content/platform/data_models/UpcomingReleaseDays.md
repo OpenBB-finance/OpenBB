@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.upcoming_release_days import (
+from openbb_core.provider.standard_models.upcoming_release_days import (
 UpcomingReleaseDaysData,
 UpcomingReleaseDaysQueryParams,
 )
@@ -74,4 +74,3 @@ UpcomingReleaseDaysQueryParams,
 </TabItem>
 
 </Tabs>
-

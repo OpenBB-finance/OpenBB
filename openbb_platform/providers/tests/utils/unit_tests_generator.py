@@ -4,9 +4,9 @@ from pathlib import Path
 from typing import Any, Dict, Tuple
 
 from openbb_core.app.provider_interface import ProviderInterface
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.registry import RegistryLoader
-from openbb_provider.utils.helpers import to_snake_case
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.registry import RegistryLoader
+from openbb_core.provider.utils.helpers import to_snake_case
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
 

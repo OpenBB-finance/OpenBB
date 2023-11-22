@@ -1,7 +1,7 @@
 """Benzinga provider module."""
 from openbb_benzinga.models.company_news import BenzingaCompanyNewsFetcher
 from openbb_benzinga.models.world_news import BenzingaWorldNewsFetcher
-from openbb_provider.abstract.provider import Provider
+from openbb_core.provider.abstract.provider import Provider
 
 benzinga_provider = Provider(
     name="benzinga",

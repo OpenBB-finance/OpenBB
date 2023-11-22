@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.options_chains import (
+from openbb_core.provider.standard_models.options_chains import (
 OptionsChainsData,
 OptionsChainsQueryParams,
 )
@@ -128,4 +128,3 @@ OptionsChainsQueryParams,
 </TabItem>
 
 </Tabs>
-
