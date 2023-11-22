@@ -85,11 +85,14 @@ class YFLosersFetcher(Fetcher[YFLosersQueryParams, List[YFLosersData]]):
         **kwargs: Any,
     ) -> List[YFLosersData]:
         """Transform data."""
-        data["% Change"] = data["% Change"].str.replace("%", "")
+        data["% Change"] = data["% Change"].str.replace("%", "").astype(float)
         data["Volume"] = data["Volume"].str.replace("M", "").astype(float) * 1000000
         data["Avg Vol (3 month)"] = (
             data["Avg Vol (3 month)"].str.replace("M", "").astype(float) * 1000000
         )
-        data = data.to_dict(orient="records")
-        data = sorted(data, key=lambda d: d["% Change"], reverse=query.sort == "asc")
-        return [YFLosersData.model_validate(d) for d in data]
+        return [
+            YFLosersData.model_validate(d)
+            for d in data.sort_values("% Change", ascending=True).to_dict(
+                orient="records"
+            )
+        ]
