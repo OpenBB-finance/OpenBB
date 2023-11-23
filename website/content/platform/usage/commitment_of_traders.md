@@ -191,7 +191,7 @@ For the "old" and "other" figures, spreading is calculated for equal long and sh
 
 #### `measure`
 
-The `measure` paramter has four choices, with `None` as the default state.
+The `measure` parameter has four choices, with `None` as the default state.
 
 - `CR` (concentration ratios)
 - `NT` (number of traders)
