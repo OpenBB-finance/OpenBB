@@ -19,7 +19,10 @@ from pydantic import Field
 
 
 class IntrinioFilingsQueryParams(FilingsQueryParams):
-    """Intrinio Filings Query."""
+    """Intrinio Filings Query.
+
+    Source: https://docs.intrinio.com/documentation/web_api/get_company_filings_v2
+    """
 
     __alias_dict__ = {
         "form_type": "report_type",

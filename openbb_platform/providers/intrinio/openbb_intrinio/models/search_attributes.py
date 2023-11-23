@@ -12,7 +12,10 @@ from openbb_provider.utils.helpers import get_querystring
 
 
 class IntrinioSearchAttributesQueryParams(SearchAttributesQueryParams):
-    """Intrinio Search Attributes Query."""
+    """Intrinio Search Attributes Query.
+
+    Source: https://docs.intrinio.com/documentation/web_api/search_data_tags_v2
+    """
 
     __alias_dict__ = {"limit": "page_size"}
 

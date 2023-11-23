@@ -16,7 +16,8 @@ from pydantic import Field
 class IntrinioInstitutionalOwnershipQueryParams(InstitutionalOwnershipQueryParams):
     """Intrinio Institutional Ownership Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/institutional-stock-ownership-api/
+    Source: https://docs.intrinio.com/documentation/web_api/get_security_insider_ownership_v2
+            https://docs.intrinio.com/documentation/web_api/get_owner_by_id_v2
     """
 
     limit: Optional[int] = Field(

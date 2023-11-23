@@ -18,7 +18,7 @@ from pydantic import Field, NonNegativeInt
 class IntrinioMarketIndicesQueryParams(MarketIndicesQueryParams):
     """Intrinio Market Indices Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/historical-index-price-api/
+    Source: https://docs.intrinio.com/documentation/web_api/get_stock_market_index_historical_data_v2
     """
 
     tag: str = Field(description="Index tag.")

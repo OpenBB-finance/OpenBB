@@ -11,7 +11,11 @@ from openbb_provider.standard_models.latest_attributes import (
 
 
 class IntrinioLatestAttributesQueryParams(LatestAttributesQueryParams):
-    """Intrinio Latest Attributes Query."""
+    """Intrinio Latest Attributes Query.
+
+    Source: https://docs.intrinio.com/documentation/web_api/get_data_point_number_v2
+            https://docs.intrinio.com/documentation/web_api/get_data_point_text_v2
+    """
 
 
 class IntrinioLatestAttributesData(LatestAttributesData):

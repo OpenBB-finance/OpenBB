@@ -14,7 +14,12 @@ from pydantic import Field
 class IntrinioKeyMetricsQueryParams(KeyMetricsQueryParams):
     """Intrinio Key Metrics Query.
 
-    Source: https://site.financialmodelingprep.com/developer/docs/company-key-metrics-api/
+    Source: https://data.intrinio.com/data-tag/beta
+            https://data.intrinio.com/data-tag/volume
+            https://data.intrinio.com/data-tag/52_week_high
+            https://data.intrinio.com/data-tag/52_week_low
+            https://data.intrinio.com/data-tag/dividendyield
+            https://data.intrinio.com/data-tag/pricetoearnings
     """
 
     with_ttm: Optional[bool] = Field(

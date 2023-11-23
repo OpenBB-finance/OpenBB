@@ -14,7 +14,10 @@ from openbb_provider.utils.helpers import get_querystring
 
 
 class IntrinioHistoricalAttributesQueryParams(HistoricalAttributesQueryParams):
-    """Intrinio Historical Attributes Query."""
+    """Intrinio Historical Attributes Query.
+
+    Source: https://docs.intrinio.com/documentation/web_api/get_historical_data_v2
+    """
 
     __alias_dict__ = {"sort": "sort_order", "limit": "page_size"}
 
