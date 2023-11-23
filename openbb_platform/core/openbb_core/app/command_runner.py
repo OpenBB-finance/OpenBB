@@ -23,8 +23,7 @@ from openbb_core.app.router import CommandMap
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
 from openbb_core.env import Env
-from openbb_core.provider.abstract.fetcher import maybe_coroutine
-from openbb_core.provider.utils.helpers import run_async
+from openbb_core.provider.utils.helpers import maybe_coroutine, run_async
 
 
 class ExecutionContext:
