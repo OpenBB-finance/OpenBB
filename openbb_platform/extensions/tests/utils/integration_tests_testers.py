@@ -89,7 +89,7 @@ def check_missing_providers(
         if len(providers) == 1 and len(function_params) == 1:
             pass
         else:
-            missing_providers.append(f"Missing providers for {function}: {providers}")
+            missing_providers.append(f"Missing providers for '{function}': {providers}")
 
     return missing_providers
 
@@ -179,13 +179,13 @@ def check_missing_params(
                     ]:
                         if expected_param not in test_params:
                             missing_params.append(
-                                f"Missing param {expected_param} for provider {provider} in function {function}"
+                                f"Missing param '{expected_param}' for provider '{provider}' in function '{function}'"
                             )
             elif isinstance(command_params, dict):
                 for expected_param in command_params["openbb"]["QueryParams"]["fields"]:
                     if expected_param not in test_params:
                         missing_params.append(
-                            f"Missing standard param {expected_param} in function {function}"
+                            f"Missing standard param '{expected_param}' in function '{function}'"
                         )
     else:
         for test_params in function_params:
@@ -202,7 +202,7 @@ def check_missing_params(
                         used_params = test_params.keys()
                     if expected_param not in used_params and expected_param != "return":
                         missing_params.append(
-                            f"Missing param {expected_param} in function {function}"
+                            f"Missing param '{expected_param}' in function '{function}'"
                         )
     return missing_params
 
@@ -277,7 +277,7 @@ def check_missing_integration_tests(test_type: Literal["api", "python"]) -> List
         functions = get_module_functions(get_integration_tests(test_type="python"))
 
     tested_functions = [
-        function.replace("test_", "")
+        function.replace("test_", "", 1)
         for function in functions
         if function.startswith("test_")
     ]
@@ -289,7 +289,7 @@ def check_missing_integration_tests(test_type: Literal["api", "python"]) -> List
             if test_type == "api" and "econometrics" in route:
                 continue
             missing_integration_tests.append(
-                f"Missing {test_type} integration test for route {route}"
+                f"Missing '{test_type}' integration test for route '{route}'"
             )
 
     return missing_integration_tests
