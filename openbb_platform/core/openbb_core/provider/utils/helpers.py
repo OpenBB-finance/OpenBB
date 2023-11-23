@@ -5,7 +5,7 @@ import re
 import zlib
 from functools import partial
 from inspect import iscoroutinefunction
-from typing import Awaitable, Callable, List, Literal, TypeVar, Union, cast
+from typing import Awaitable, Callable, List, Literal, Optional, TypeVar, Union, cast
 
 import aiohttp
 import requests
@@ -69,9 +69,9 @@ async def async_make_request(
     url: str,
     method: Literal["GET", "POST"] = "GET",
     timeout: int = 10,
-    response_callback: Callable[
+    response_callback: Optional[Callable[
         [aiohttp.ClientResponse], Awaitable[Union[dict, List[dict]]]
-    ] = None,
+    ]] = None,
     **kwargs,
 ) -> Union[dict, List[dict]]:
     """Abstract helper to make requests from a url with potential headers and params.
@@ -127,7 +127,7 @@ async def async_make_request(
         if encoding in ("gzip", "deflate"):
             response_body = await response.read()
             wbits = 16 + zlib.MAX_WBITS if encoding == "gzip" else -zlib.MAX_WBITS
-            response._body = zlib.decompress(response_body, wbits)
+            response._body = zlib.decompress(response_body, wbits)  # pylint: disable=protected-access
 
         return await response_callback(response)
 
