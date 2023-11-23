@@ -31,7 +31,7 @@ class IntrinioFilingsQueryParams(FilingsQueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     thea_enabled: Optional[bool] = Field(
-        default=True,
+        default=None,
         description="Return filings that have been read by Intrinio's Thea NLP.",
     )
 
@@ -78,9 +78,9 @@ class IntrinioFilingsFetcher(
         transformed_params = params
 
         now = datetime.now().date()
-        if "start_date" not in transformed_params:
+        if params.get("start_date") is None:
             transformed_params["start_date"] = now
-        if "end_date" not in transformed_params:
+        if params.get("end_date") is None:
             transformed_params["end_date"] = now - relativedelta(years=1)
 
         return IntrinioFilingsQueryParams(**transformed_params)

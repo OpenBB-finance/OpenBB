@@ -4,23 +4,33 @@ from unittest import mock
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
+from openbb_intrinio.models.calendar_dividend import IntrinioCalendarDividendFetcher
 from openbb_intrinio.models.calendar_ipo import IntrinioCalendarIpoFetcher
 from openbb_intrinio.models.cash_flow import IntrinioCashFlowStatementFetcher
 from openbb_intrinio.models.company_news import IntrinioCompanyNewsFetcher
 from openbb_intrinio.models.currency_pairs import IntrinioCurrencyPairsFetcher
 from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
+from openbb_intrinio.models.equity_info import IntrinioEquityInfoFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
+from openbb_intrinio.models.filings import IntrinioFilingsFetcher
 from openbb_intrinio.models.fred_indices import IntrinioFredIndicesFetcher
 from openbb_intrinio.models.historical_attributes import (
     IntrinioHistoricalAttributesFetcher,
 )
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
+from openbb_intrinio.models.insider_trading import IntrinioInsiderTradingFetcher
+from openbb_intrinio.models.institutional_ownership import (
+    IntrinioInstitutionalOwnershipFetcher,
+)
+from openbb_intrinio.models.key_metrics import IntrinioKeyMetricsFetcher
 from openbb_intrinio.models.latest_attributes import IntrinioLatestAttributesFetcher
+from openbb_intrinio.models.market_indices import IntrinioMarketIndicesFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
 from openbb_intrinio.models.search_attributes import (
     IntrinioSearchAttributesFetcher,
 )
+from openbb_intrinio.models.share_statistics import IntrinioShareStatisticsFetcher
 from openbb_intrinio.models.world_news import IntrinioWorldNewsFetcher
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -200,5 +210,90 @@ def test_intrinio_latest_attributes(credentials=test_credentials):
     }
 
     fetcher = IntrinioLatestAttributesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_equity_info_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = IntrinioEquityInfoFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_market_indices_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "$DJI",
+        "tag": "level",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 6, 6),
+    }
+
+    fetcher = IntrinioMarketIndicesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_calendar_dividend_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "AAPL",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 6, 6),
+    }
+
+    fetcher = IntrinioCalendarDividendFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_filings_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "AAPL",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 6, 6),
+    }
+
+    fetcher = IntrinioFilingsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_insider_trading_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = IntrinioInsiderTradingFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_institutional_ownership_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = IntrinioInstitutionalOwnershipFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_key_metrics_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = IntrinioKeyMetricsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_share_statistics_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = IntrinioShareStatisticsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
