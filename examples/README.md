@@ -23,7 +23,7 @@ This notebook walks through collecting historical price data, at different inter
 
 ### financialStatements
 
-This set of examples introduces financial statements in the OpenBB Platform and compares the free cash flow yields of large-cap retail industry comapnies.
+This set of examples introduces financial statements in the OpenBB Platform and compares the free cash flow yields of large-cap retail industry companies.
 
 - Fnancial statements.
 - What to expect with data from different sources.

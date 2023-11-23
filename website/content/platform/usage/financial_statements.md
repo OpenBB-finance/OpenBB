@@ -1,6 +1,6 @@
 ---
 title: Financial Statements
-sidebar_position: 5
+sidebar_position: 6
 description: This page provides an introduction to financial statement data available in the OpenBB
   Platform.  This includes quarterly and annual reports, along with metrics and ratios by company.
   This guide provides examples for using the variety of sources.
