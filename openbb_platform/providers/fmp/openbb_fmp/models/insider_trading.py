@@ -17,9 +17,7 @@ class FMPInsiderTradingQueryParams(InsiderTradingQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Insider-Trading
     """
 
-    __alias_dict__ = {
-        "transaction_type": "transactionType",
-    }
+    __alias_dict__ = {"transaction_type": "transactionType"}
 
 
 class FMPInsiderTradingData(InsiderTradingData):
@@ -28,6 +26,7 @@ class FMPInsiderTradingData(InsiderTradingData):
     __alias_dict__ = {
         "acquisition_or_disposition": "acquistionOrDisposition",
         "last_number_of_13f_shares": "lastNumberOf13FShares",
+        "securities_owned": "securitiesOwned",
     }
 
 
