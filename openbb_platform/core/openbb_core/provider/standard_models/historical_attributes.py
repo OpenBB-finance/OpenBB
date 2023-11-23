@@ -26,9 +26,7 @@ class HistoricalAttributesQueryParams(QueryParams):
     )
     frequency: Optional[
         Literal["daily", "weekly", "monthly", "quarterly", "yearly"]
-    ] = Field(
-        default="yearly", description="Return historical data in the given frequency."
-    )
+    ] = Field(default="yearly", description=QUERY_DESCRIPTIONS.get("frequency"))
     limit: Optional[int] = Field(
         default=1000, description=QUERY_DESCRIPTIONS.get("limit")
     )
