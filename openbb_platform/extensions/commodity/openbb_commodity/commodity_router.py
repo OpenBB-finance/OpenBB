@@ -15,11 +15,11 @@ router = Router(prefix="")
 
 # pylint: disable=unused-argument
 @router.command(model="LbmaFixing")
-def lbma_fixing(
+async def lbma_fixing(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Daily LBMA Fixing Prices in USD/EUR/GBP."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
