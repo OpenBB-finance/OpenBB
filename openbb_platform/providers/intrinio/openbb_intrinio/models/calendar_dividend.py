@@ -23,7 +23,8 @@ class IntrinioCalendarDividendQueryParams(CalendarDividendQueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     limit: Optional[int] = Field(
-        default=100, description=QUERY_DESCRIPTIONS.get("limit", ""),
+        default=100,
+        description=QUERY_DESCRIPTIONS.get("limit", ""),
         alias="page_size",
     )
 
@@ -90,5 +91,9 @@ class IntrinioCalendarDividendFetcher(
         query: IntrinioCalendarDividendQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioCalendarDividendData]:
         """Return the transformed data."""
-        transformed_data: List[Dict] = [{"symbol": query.symbol, **item} for item in data]
-        return [IntrinioCalendarDividendData.model_validate(d) for d in transformed_data]
+        transformed_data: List[Dict] = [
+            {"symbol": query.symbol, **item} for item in data
+        ]
+        return [
+            IntrinioCalendarDividendData.model_validate(d) for d in transformed_data
+        ]
