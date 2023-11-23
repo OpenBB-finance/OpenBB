@@ -21,10 +21,7 @@ class CboeEuropeanIndicesQueryParams(EuropeanIndicesQueryParams):
     Source: https://www.cboe.com/europe/indices/
     """
 
-    interval: Optional[Literal["1d", "1m"]] = Field(
-        description="Data granularity.",
-        default="1d",
-    )
+    interval: Literal["1d", "1m"] = Field(description="Data granularity.", default="1d")
 
 
 class CboeEuropeanIndicesData(EuropeanIndicesData):

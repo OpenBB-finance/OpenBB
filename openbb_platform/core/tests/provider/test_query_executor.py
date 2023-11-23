@@ -91,15 +91,17 @@ def test_filter_credentials_missing_dont_require(mock_query_executor):
     assert filtered_credentials == {}
 
 
-def test_execute_success(mock_query_executor):
+async def test_execute_success(mock_query_executor: QueryExecutor):
     """Test if the method can execute a query successfully."""
     mock_result = {"data": "test_data"}
 
     params = {"param1": "value1"}
     credentials = {"api_key": SecretStr("12345")}
 
-    with patch.object(Fetcher, "fetch_data", return_value=mock_result) as mock_fetch:
-        result = mock_query_executor.execute(
+    async with patch.object(
+        Fetcher, "fetch_data", return_value=mock_result
+    ) as mock_fetch:
+        result = await mock_query_executor.execute(
             "test_provider", "test_fetcher", params, credentials
         )
 
