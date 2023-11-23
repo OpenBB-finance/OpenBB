@@ -147,7 +147,7 @@ shares.pct_change(20).iloc[-1]
 ```
 
 ```console
--0.12226659060657918
+-0.12
 ```
 
 In four reporting periods, 1.3 million shares have been taken out of the float.
@@ -265,7 +265,7 @@ Doing some quick math, and ignoring the most recent value, we can see that the m
 ```
 
 ```console
--0.24376733082703084
+-0.24
 ```
 
 ## Ratios and Other Metrics
@@ -286,7 +286,7 @@ ratios["quick_ratio"].iloc[-1]
 ```
 
 ```console
-0.2701025641025641
+0.27
 ```
 
 This number falls about 50% below the historical median.
@@ -296,7 +296,7 @@ ratios["quick_ratio"].median()
 ```
 
 ```console
-0.5843795019551348
+0.58
 ```
 
 Explore the rest of the `fundamental` module under the [Reference](/platform/reference/equity/fundamental) section.
