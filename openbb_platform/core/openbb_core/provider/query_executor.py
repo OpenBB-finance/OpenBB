@@ -59,7 +59,7 @@ class QueryExecutor:
 
         return filtered_credentials
 
-    def execute(
+    async def execute(
         self,
         provider_name: str,
         model_name: str,
@@ -93,6 +93,6 @@ class QueryExecutor:
         )
 
         try:
-            return fetcher.fetch_data(params, filtered_credentials, **kwargs)
+            return await fetcher.fetch_data(params, filtered_credentials, **kwargs)
         except Exception as e:
             raise ProviderError(e) from e

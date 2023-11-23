@@ -1,9 +1,19 @@
 """Provider helpers."""
+import asyncio
 import random
 import re
-from typing import List
+import zlib
+from functools import partial
+from inspect import iscoroutinefunction
+from typing import Awaitable, Callable, List, Literal, Optional, TypeVar, Union, cast
 
+import aiohttp
 import requests
+from anyio import start_blocking_portal
+from typing_extensions import ParamSpec
+
+T = TypeVar("T")
+P = ParamSpec("P")
 
 
 def get_querystring(items: dict, exclude: List[str]) -> str:
@@ -53,6 +63,75 @@ def get_user_agent() -> str:
     ]
 
     return random.choice(user_agent_strings)  # nosec # noqa: S311
+
+
+async def async_make_request(
+    url: str,
+    method: Literal["GET", "POST"] = "GET",
+    timeout: int = 10,
+    response_callback: Optional[
+        Callable[[aiohttp.ClientResponse], Awaitable[Union[dict, List[dict]]]]
+    ] = None,
+    **kwargs,
+) -> Union[dict, List[dict]]:
+    """Abstract helper to make requests from a url with potential headers and params.
+
+
+    Parameters
+    ----------
+    url : str
+        Url to make the request to
+    method : str, optional
+        HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    timeout : int, optional
+        Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
+    response_callback : Callable[[aiohttp.ClientResponse], Awaitable[Union[dict, List[dict]]]], optional
+        Callback to run on the response, by default None
+
+
+    Returns
+    -------
+    Union[dict, List[dict]]
+        Response json
+    """
+
+    kwargs["timeout"] = kwargs.pop("preferences", {}).get("request_timeout", timeout)
+    kwargs["headers"] = kwargs.get(
+        "headers",
+        # Default headers, makes sure we accept gzip
+        {
+            "Accept": "*/*",
+            "Accept-Encoding": "gzip, deflate",
+            "Connection": "keep-alive",
+        },
+    )
+
+    raise_for_status = kwargs.pop("raise_for_status", False)
+    response_callback = response_callback or (lambda r: asyncio.ensure_future(r.json()))
+
+    if kwargs["headers"].get("User-Agent", None) is None:
+        kwargs["headers"]["User-Agent"] = get_user_agent()
+
+    if _session := kwargs.pop("session", None):
+        r = getattr(_session, method)(url, **kwargs)
+
+        return await response_callback(r)
+
+    async with aiohttp.ClientSession(
+        auto_decompress=False,
+        connector=aiohttp.TCPConnector(),
+        raise_for_status=raise_for_status,
+    ) as session, session.request(method, url, **kwargs) as response:
+        # we need to decompress the response manually, so pytest-vcr records as bytes
+        encoding = response.headers.get("Content-Encoding", "")
+        if encoding in ("gzip", "deflate"):
+            response_body = await response.read()
+            wbits = 16 + zlib.MAX_WBITS if encoding == "gzip" else -zlib.MAX_WBITS
+            response._body = zlib.decompress(
+                response_body, wbits
+            )  # pylint: disable=protected-access
+
+        return await response_callback(response)
 
 
 def make_request(
@@ -119,3 +198,26 @@ def to_snake_case(string: str) -> str:
         .replace(" ", "_")
         .replace("__", "_")
     )
+
+
+async def maybe_coroutine(
+    func: Callable[P, Union[T, Awaitable[T]]], /, *args: P.args, **kwargs: P.kwargs
+) -> T:
+    """Check if a function is a coroutine and run it accordingly."""
+
+    if not iscoroutinefunction(func):
+        return cast(T, func(*args, **kwargs))
+
+    return await func(*args, **kwargs)
+
+
+def run_async(
+    func: Callable[P, Awaitable[T]], /, *args: P.args, **kwargs: P.kwargs
+) -> T:
+    """Run a coroutine function in a blocking context."""
+
+    if not iscoroutinefunction(func):
+        return cast(T, func(*args, **kwargs))
+
+    with start_blocking_portal() as portal:
+        return portal.call(partial(func, *args, **kwargs))
