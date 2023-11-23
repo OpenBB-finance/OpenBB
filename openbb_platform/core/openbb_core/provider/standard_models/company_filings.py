@@ -1,8 +1,10 @@
 """Company Filings Standard Model."""
 
-
 from datetime import date as dateType
 from typing import List, Literal, Optional, Set, Union
+
+from dateutil import parser
+from pydantic import Field, field_validator
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -10,7 +12,6 @@ from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, field_validator
 
 SEC_FORM_TYPES = Literal[
     "1",
@@ -127,6 +128,7 @@ class CompanyFilingsQueryParams(QueryParams):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -145,6 +147,7 @@ class CompanyFilingsData(Data):
     link: str = Field(description="URL to the document.")
 
     @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def convert_date(cls, v: str):
         """Convert date to date type."""
         return parser.parse(str(v)).date()

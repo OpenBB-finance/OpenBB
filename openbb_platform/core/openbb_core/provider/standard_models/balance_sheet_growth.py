@@ -4,13 +4,14 @@
 from datetime import date as dateType
 from typing import List, Optional, Set, Union
 
+from pydantic import Field, field_validator
+
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-from pydantic import Field, field_validator
 
 
 class BalanceSheetGrowthQueryParams(QueryParams):
@@ -20,6 +21,7 @@ class BalanceSheetGrowthQueryParams(QueryParams):
     limit: int = Field(default=10, description=QUERY_DESCRIPTIONS.get("limit", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -130,6 +132,7 @@ class BalanceSheetGrowthData(Data):
     growth_net_debt: float = Field(description="Growth rate of net debt.")
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
