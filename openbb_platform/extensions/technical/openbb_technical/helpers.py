@@ -378,6 +378,7 @@ def calculate_cones(
         "Rogers-Satchell",
         "Yang-Zhang",
     ],
+    trading_periods: Optional[int] = None,
 ) -> pd.DataFrame:
     """Calculate Cones."""
     estimator = pd.DataFrame()
@@ -412,7 +413,10 @@ def calculate_cones(
 
     for window in windows:
         estimator = model_functions[model](  # type: ignore
-            window=window, data=data, is_crypto=is_crypto
+            window=window,
+            data=data,
+            is_crypto=is_crypto,
+            trading_periods=trading_periods,
         )
 
         if estimator.empty:
