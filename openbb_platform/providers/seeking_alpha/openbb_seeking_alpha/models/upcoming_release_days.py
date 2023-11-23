@@ -62,12 +62,13 @@ class SAUpcomingReleaseDaysFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the Seeking Alpha endpoint."""
+        url = (
+            f"https://seekingalpha.com/api/v3/earnings_calendar/tickers?"
+            f"filter%5Bselected_date%5D={str(datetime.now().date())}"  # cspell:disable-line
+            f"&filter%5Bwith_rating%5D=false&filter%5Bcurrency%5D=USD"  # cspell:disable-line
+        )
         response = requests.get(
-            url=(
-                f"https://seekingalpha.com/api/v3/earnings_calendar/tickers?"
-                f"filter%5Bselected_date%5D={str(datetime.now().date())}"  # cspell:disable-line
-                f"&filter%5Bwith_rating%5D=false&filter%5Bcurrency%5D=USD"  # cspell:disable-line
-            ),
+            url=url,
             timeout=5,
         )
         if response.status_code != 200:

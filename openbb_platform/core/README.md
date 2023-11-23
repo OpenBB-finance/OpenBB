@@ -2,6 +2,9 @@
 
 - [THIS README IS A WORK IN PROGRESS](#this-readme-is-a-work-in-progress)
   - [1. Introduction](#1-introduction)
+    - [1.1 Data Providers](#11-data-providers)
+    - [1.2 Data Standardization](#12-data-standardization)
+    - [1.3 Key Elements](#13-key-elements)
   - [2. How to install?](#2-how-to-install)
     - [Git clone](#git-clone)
     - [Install](#install)
@@ -37,6 +40,43 @@
 
 This directory contains the OpenBB Platform's core functionality. It allows you to create an [extension](../../extensions/README.md) or a [provider](../../providers/README.md) that will be automatically turned into REST API endpoint and allow sharing data between commands.
 
+### 1.1 Data Providers
+
+OpenBB aims to give a coherent access to financial data providers by introducing standardization procedures.
+
+### 1.2 Data Standardization
+
+It's like teaching everyone to speak the same language with their data so we can understand and compare it easily.
+
+**Think of it as a part of**:
+
+Data normalization, a bigger way of organizing data.
+
+**What We Do**:
+
+- **Match Column Names and Formats**: Like making sure everyone calls a "closing price" the same thing.
+
+- **For instance**: Some might say "Close", others might say "c". We make sure everyone uses one term.
+**Unify Date and Time Styles**: Like having everyone use the same calendar format.
+
+**Example**: Whether it's "YYYY-MM-DD" or "MM-DD-YYYY", we pick one style for everyone.
+
+**What We Don’t Do**:
+
+- **Cleaning Data**: We don't act like data detectives and remove mistakes from what providers give us.
+
+- **Change & Combine Data**: Tweaking data or mixing data from different places.
+
+### 1.3 Key Elements
+
+- **QueryParams** : The input model for a particular query. To load equity market data, we would have `EquityPriceQueryParams`, which would have fields like `symbol`, `start_date`, and `end_date`. You can find the standard query params inside the `standard_models` directory.
+- **Data** : The output model of a particular query. Equity market data would be `EquityPriceData` and have fields such as `Open`, `High`, `Low`, `Close`, and `Volume`. You can find the standard data models inside the `standard_models` directory.
+- **Fetcher** : Class containing a set of methods to receive query parameters, extract data and transform it. This class is responsible for implementing the standardization procedures.
+- **Provider** : Entry point class for each provider extension. Contains information about the provider, it's required credentials and available fetchers.
+- **RegistryLoader** : Loads the registry with the installed provider extensions.
+- **Registry** : Maintains a registry of provider extensions installed.
+- **RegistryMap** : Stores the complete characterization of each provider. It centralizes information like required credentials, standardized and extra query parameters/data by provider.
+- **QueryExecutor** : Executes a given query, routing it to the respective provider and fetcher.
 
 ## 2. How to install?
 
@@ -77,26 +117,26 @@ from openbb_core.app.router import Router
 router = Router(prefix="/router_name")
 
 @router.command
-def some_command(
+async def some_command(                # create an async function
     some_param: some_param_type,
 ) -> OBBject[Item]:
     pass
 ```
 
-If your command only makes use of a standard model defined inside `openbb_provider/standard_models` directory, there is no need to repeat its structure in the parameters. Just pass the model name as an argument.
+If your command only makes use of a standard model defined inside `openbb_core/provider/standard_models` directory, there is no need to repeat its structure in the parameters. Just pass the model name as an argument.
 
-This is an example how we do it for `equity.price.historical` which only depends on `EquityHistorical` model defined in `openbb-provider`:
+This is an example how we do it for `equity.price.historical` which only depends on `EquityHistorical` model defined in `openbb-core.provider.standard_models`:
 
 ```python
 @router.command(model="EquityHistorical")
-def historical(
+async def historical(                   # create an async function
     cc: CommandContext,                 # user settings inside
     provider_choices: ProviderChoices,  # available providers
     standard_params: StandardParams,    # symbol, start_date, etc.
     extra_params: ExtraParams,          # provider specific parameters
 ) -> OBBject[BaseModel]:
     """Load equity data for a specific ticker."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 ```
 
 ### Entrypoint

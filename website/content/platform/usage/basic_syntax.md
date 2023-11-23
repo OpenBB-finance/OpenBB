@@ -202,8 +202,79 @@ data.warnings
 [Warning_(category='OpenBBWarning', message="Parameter 'source' is not supported by fmp. Available for: intrinio.")]
 ```
 
+## REST API POST Requests
+
+Most endpoints are for data retrieval, but some [toolkit extensions](/platform/extensions/toolkit_extensions) require data to pass through the function.  In these instances, it must be a POST request, and JSON.
+
+### Example
+
+This example will use a GET request to fetch daily VIX data from the Cboe data extension, and then make a POST request which passes through the data to a technical analysis function.
+
+First, start a development server.
+
+```bash
+uvicorn openbb_core.api.rest_api:app --reload
+```
+
+This example will use Python and the Requests library, so the syntax will vary according to the preferred medium for interacting with the API.
+
+#### Fetch Some Data
+
+```python
+import requests
+
+get_url = "http://127.0.0.1:8000/api/v1/index/market?provider=cboe&symbol=vix&interval=1d"
+get_response = requests.get(get_url)
+data_results = get_response.json()["results"]
+
+data_results[-1]
+```
+
+```json
+{'date': '2023-11-17T00:00:00',
+ 'open': 14.18,
+ 'high': 14.19,
+ 'low': 13.67,
+ 'close': 13.79,
+ 'volume': 0,
+ 'calls_volume': None,
+ 'puts_volume': None,
+ 'total_options_volume': None}
+```
+
+#### Send a POST Request
+
+Next, pass the `data_results` to a function, using the `json` field in the POST headers.  For this example, realized volatiliy cones, the default parameters  assume the time series data is daily and that volatility should be annualized over 252 trading days.
+
+The `index` parameter tells the function which field in the posted data to use as the date index.
+
+```python
+import pandas as pd
+
+post_url = "http://localhost:8000/api/v1/technical/cones"
+post_response = requests.post(post_url, json=data_results)
+ta_results = post_response.json()["results"]
+
+pd.DataFrame.from_records(ta_results)
+```
+
+|   window |   realized |        min |   lower_25% |   median |   upper_75% |     max |
+|---------:|-----------:|-----------:|------------:|---------:|------------:|--------:|
+|        3 |   0.396165 | 0.00701638 |    0.444709 | 0.72414  |     1.11563 | 8.47636 |
+|       10 |   0.623199 | 0.190188   |    0.665584 | 0.852915 |     1.15491 | 4.83264 |
+|       30 |   0.988435 | 0.332913   |    0.750007 | 0.921482 |     1.17072 | 2.98404 |
+|       60 |   0.932594 | 0.47639    |    0.792548 | 0.964617 |     1.20171 | 2.35563 |
+|       90 |   0.915137 | 0.551011   |    0.815229 | 0.965553 |     1.2128  | 2.04104 |
+|      120 |   0.858644 | 0.549233   |    0.836395 | 0.983437 |     1.21097 | 1.86416 |
+|      150 |   0.898628 | 0.557274   |    0.842359 | 0.991539 |     1.23165 | 1.73182 |
+|      180 |   0.902293 | 0.579575   |    0.84876  | 1.00421  |     1.23584 | 1.68786 |
+|      210 |   0.901717 | 0.580214   |    0.854655 | 0.996992 |     1.2271  | 1.65739 |
+|      240 |   0.884282 | 0.587564   |    0.857935 | 1.00491  |     1.22141 | 1.62973 |
+|      300 |   0.852533 | 0.622105   |    0.862097 | 1.00724  |     1.21705 | 1.51887 |
+|      360 |   0.847416 | 0.661648   |    0.869691 | 1.03923  |     1.20488 | 1.48571 |
+
 ## References
 
-All functions, parameters, and responses are detailed under the [Reference pages](/platform/reference/fixedincome/ycrv).  The data models for each provider source are described within the [Data Models](/platform/data_models/StockHistorical) pages.
+All functions, parameters, and responses are detailed under the [Reference pages](/platform/reference).  The data models for each provider source are described within the [Data Models](/platform/data_models) pages.
 
 These pages are a quick way to cross-reference differences between providers.  The same information is provided in a function's signature and docstring.

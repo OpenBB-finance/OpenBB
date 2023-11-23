@@ -35,10 +35,10 @@ class CompanyOverviewData(Data):
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     price: Optional[float] = Field(default=None, description="Price of the company.")
     beta: Optional[float] = Field(default=None, description="Beta of the company.")
-    vol_avg: Optional[StrictInt] = Field(
+    vol_avg: Optional[ForceInt] = Field(
         default=None, description="Volume average of the company."
     )
-    mkt_cap: Optional[StrictInt] = Field(
+    mkt_cap: Optional[ForceInt] = Field(
         default=None, description="Market capitalization of the company."
     )
     last_div: Optional[float] = Field(

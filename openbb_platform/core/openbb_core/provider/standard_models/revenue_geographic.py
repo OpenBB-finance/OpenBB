@@ -36,21 +36,21 @@ class RevenueGeographicData(Data):
     """Revenue by Geographic Segments Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    geographic_segment: Dict[str, int] = Field(
+    geographic_segment: Dict[str, ForceInt] = Field(
         description="Day level data containing the revenue of the geographic segment."
     )
-    americas: Optional[StrictInt] = Field(
+    americas: Optional[ForceInt] = Field(
         default=None, description="Revenue from the the American segment."
     )
-    europe: Optional[StrictInt] = Field(
+    europe: Optional[ForceInt] = Field(
         default=None, description="Revenue from the the European segment."
     )
-    greater_china: Optional[StrictInt] = Field(
+    greater_china: Optional[ForceInt] = Field(
         default=None, description="Revenue from the the Greater China segment."
     )
-    japan: Optional[StrictInt] = Field(
+    japan: Optional[ForceInt] = Field(
         default=None, description="Revenue from the the Japan segment."
     )
-    rest_of_asia_pacific: Optional[StrictInt] = Field(
+    rest_of_asia_pacific: Optional[ForceInt] = Field(
         default=None, description="Revenue from the the Rest of Asia Pacific segment."
     )

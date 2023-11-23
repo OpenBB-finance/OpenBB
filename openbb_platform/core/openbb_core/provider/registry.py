@@ -5,7 +5,7 @@ from functools import lru_cache
 from typing import Dict
 
 from importlib_metadata import entry_points
-from openbb_core.provider.abstract.provider import Provider
+from openbb_core.core.provider.abstract.provider import Provider
 
 
 class Registry:

@@ -53,7 +53,9 @@ class CashFlowStatementData(Data):
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date" ""))
-    period: str = Field(default=None, description="Reporting period of the statement.")
+    period: Optional[str] = Field(
+        default=None, description="Reporting period of the statement."
+    )
     cik: Optional[str] = Field(
         default=None, description="Central Index Key (CIK) of the company."
     )

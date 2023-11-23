@@ -26,16 +26,16 @@ class KeyExecutivesData(Data):
 
     title: str = Field(description="Designation of the key executive.")
     name: str = Field(description="Name of the key executive.")
-    pay: Optional[StrictInt] = Field(
+    pay: Optional[ForceInt] = Field(
         default=None, description="Pay of the key executive."
     )
     currency_pay: str = Field(description="Currency of the pay.")
     gender: Optional[str] = Field(
         default=None, description="Gender of the key executive."
     )
-    year_born: Optional[StrictInt] = Field(
+    year_born: Optional[ForceInt] = Field(
         default=None, description="Birth year of the key executive."
     )
-    title_since: Optional[StrictInt] = Field(
+    title_since: Optional[ForceInt] = Field(
         default=None, description="Date the tile was held since."
     )

@@ -58,8 +58,6 @@ class ProviderChoices:
 class ProviderInterface(metaclass=SingletonMeta):
     """Provider interface class.
 
-    Provides access to 'openbb_provider' package information.
-
     Properties
     ----------
     map : MapType
@@ -186,7 +184,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         if SequenceMatcher(None, curr_detail, inc_detail).ratio() > 0.8:
             new_desc = f"{curr_detail} (provider: {formatted_prov})"
         else:
-            new_desc = f"{current_desc}; {incoming_desc}"
+            new_desc = f"{current_desc};\n    {incoming_desc}"
 
         merged_default = F(  # type: ignore
             default=current.default.default,

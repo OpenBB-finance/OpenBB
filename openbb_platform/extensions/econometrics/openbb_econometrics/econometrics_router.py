@@ -39,7 +39,7 @@ def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
 
     Returns
     -------
-    OBBject[List[Data]]
+    OBBject[List[Data]]:
         Correlation matrix.
     """
     df = basemodel_to_df(data)
@@ -72,12 +72,12 @@ def ols_regression(
         Input dataset.
     y_column: str
         Target column.
-    x_columns: str
+    x_columns: List[str]
         List of columns to use as exogenous variables.
 
     Returns
     -------
-    OBBject[Dict]
+    OBBject[Dict]:
         OBBject with the results being model and results objects.
     """
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
@@ -101,12 +101,12 @@ def ols_regression_summary(
         Input dataset.
     y_column: str
         Target column.
-    x_columns: str
+    x_columns: List[str]
         List of columns to use as exogenous variables.
 
     Returns
     -------
-    OBBject[Dict]
+    OBBject[Data]:
         OBBject with the results being summary object.
     """
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
@@ -166,12 +166,12 @@ def autocorrelation(
         Input dataset.
     y_column: str
         Target column.
-    x_columns: str
+    x_columns: List[str]
         List of columns to use as exogenous variables.
 
     Returns
     -------
-    OBBject[Data]
+    OBBject[Dict]:
         OBBject with the results being the score from the test.
     """
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
@@ -195,14 +195,14 @@ def residual_autocorrelation(
         Input dataset.
     y_column: str
         Target column.
-    x_columns: str
+    x_columns: List[str]
         List of columns to use as exogenous variables.
     lags: PositiveInt
         Number of lags to use in the test.
 
     Returns
     -------
-    OBBject[Data]
+    OBBject[Data]:
         OBBject with the results being the score from the test.
     """
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
@@ -239,7 +239,7 @@ def cointegration(
 
     Returns
     -------
-    OBBject[Data]
+    OBBject[Data]:
         OBBject with the results being the score from the test.
     """
     pairs = list(combinations(columns, 2))
@@ -287,7 +287,7 @@ def causality(
 
     Returns
     -------
-    OBBject[Data]
+    OBBject[Data]:
         OBBject with the results being the score from the test.
     """
     X = get_target_column(basemodel_to_df(data), x_column)
@@ -322,13 +322,13 @@ def unit_root(
         Input dataset.
     column: str
         Data columns to check unit root
-    regression: str
+    regression: Literal["c", "ct", "ctt"]
         Regression type to use in the test.  Either "c" for constant only, "ct" for constant and trend, or "ctt" for
         constant, trend, and trend-squared.
 
     Returns
     -------
-    OBBject[Data]
+    OBBject[Data]:
         OBBject with the results being the score from the test.
     """
     dataset = get_target_column(basemodel_to_df(data), column)
@@ -357,12 +357,12 @@ def panel_random_effects(
         Input dataset.
     y_column: str
         Target column.
-    x_columns: str
+    x_columns: List[str]
         List of columns to use as exogenous variables.
 
     Returns
     -------
-    OBBject[Dict]
+    OBBject[Dict]:
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
@@ -386,12 +386,12 @@ def panel_between(
         Input dataset.
     y_column: str
         Target column.
-    x_columns: str
+    x_columns: List[str]
         List of columns to use as exogenous variables.
 
     Returns
     -------
-    OBBject[Dict]
+    OBBject[Dict]:
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
@@ -415,12 +415,12 @@ def panel_pooled(
         Input dataset.
     y_column: str
         Target column.
-    x_columns: str
+    x_columns: List[str]
         List of columns to use as exogenous variables.
 
     Returns
     -------
-    OBBject[Dict]
+    OBBject[Dict]:
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
@@ -444,12 +444,12 @@ def panel_fixed(
         Input dataset.
     y_column: str
         Target column.
-    x_columns: str
+    x_columns: List[str]
         List of columns to use as exogenous variables.
 
     Returns
     -------
-    OBBject[Dict]
+    OBBject[Dict]:
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
@@ -473,12 +473,12 @@ def panel_first_difference(
         Input dataset.
     y_column: str
         Target column.
-    x_columns: str
+    x_columns: List[str]
         List of columns to use as exogenous variables.
 
     Returns
     -------
-    OBBject[Dict]
+    OBBject[Dict]:
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)
@@ -502,12 +502,12 @@ def panel_fmac(
         Input dataset.
     y_column: str
         Target column.
-    x_columns: str
+    x_columns: List[str]
         List of columns to use as exogenous variables.
 
     Returns
     -------
-    OBBject[Dict]
+    OBBject[Dict]:
         OBBject with the fit model returned
     """
     X = get_target_columns(basemodel_to_df(data), x_columns)

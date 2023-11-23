@@ -41,6 +41,4 @@ class FredIndicesData(Data):
     """FRED Indices Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    value: Optional[PositiveFloat] = Field(
-        default=None, description="Value of the index."
-    )
+    value: Optional[float] = Field(default=None, description="Value of the index.")

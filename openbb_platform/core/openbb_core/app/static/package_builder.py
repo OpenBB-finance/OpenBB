@@ -267,7 +267,7 @@ class ImportDefinition:
         # These imports were not detected before build, so we add them manually and
         # ruff --fix the resulting code to remove unused imports.
         # TODO: Find a better way to handle this. This is a temporary solution.
-        code += "\nimport openbb_provider"
+        code += "\nimport openbb_core.provider"
         code += "\nimport pandas"
         code += "\nimport numpy"
         code += "\nimport datetime"

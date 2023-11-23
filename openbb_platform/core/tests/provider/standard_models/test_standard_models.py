@@ -14,7 +14,10 @@ from openbb_core.provider.utils.descriptions import (
 from pydantic.fields import FieldInfo
 
 models_path = (
-    Path(__file__).parent.parent.parent / "openbb_provider" / "standard_models"
+    Path(__file__).parent.parent.parent.parent
+    / "openbb_core"
+    / "provider"
+    / "standard_models"
 ).resolve()
 model_files = models_path.glob("*.py")
 

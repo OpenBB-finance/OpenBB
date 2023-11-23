@@ -66,6 +66,7 @@ pip uninstall openbb-yfinance
 | openbb-finra | [FINRA](https://www.finra.org/finra-data) data connector. | pip install openbb-finra | Community | None / Free |
 | openbb-fmp | [FMP](https://site.financialmodelingprep.com/developer/) data connector. | pip install openbb-fmp | Core | Free |
 | openbb-fred | [FRED](https://fred.stlouisfed.org/) data connector. | pip install openbb-fred | Core | Free |
+| openbb-government-us | [US Government](https://data.gov) data connector. | pip install openbb-us-government | Core | None |
 | openbb-intrinio | [Intrinio](https://intrinio.com/pricing) data connector. | pip install openbb-intrinio | Core | Paid |
 | openbb-nasdaq | [Nasdaq Data Link](https://data.nasdaq.com/) connector. | pip install openbb-nasdaq | Community | None / Free |
 | openbb-oecd | [OECD](https://data.oecd.org/) data connector. | pip install openbb-oecd | Core | Free |

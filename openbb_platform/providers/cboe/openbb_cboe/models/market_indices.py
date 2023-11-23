@@ -24,7 +24,7 @@ class CboeMarketIndicesQueryParams(MarketIndicesQueryParams):
     Source: https://www.cboe.com/
     """
 
-    interval: Optional[Literal["1d", "1m"]] = Field(
+    interval: Literal["1d", "1m"] = Field(
         description="Use interval, 1m, for intraday prices during the most recent trading period.",
         default="1d",
     )

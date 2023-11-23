@@ -119,7 +119,7 @@ Before moving forward, please take a look at the high-level view of the OpenBB P
 
 The Standardization Framework is a set of tools and guidelines that enable the user to query and obtain data in a consistent way across multiple providers.
 
-Each data model should inherit from a [standard data](platform/provider/openbb_provider/standard_models) model that is already defined inside the OpenBB Platform. All standard models are created and maintained by the OpenBB team.
+Each data model should inherit from a [standard data](platform/provider/openbb_core/provider/standard_models) model that is already defined inside the OpenBB Platform. All standard models are created and maintained by the OpenBB team.
 
 Usage of these models will unlock a set of perks that are only available to standardized data, namely:
 
@@ -129,9 +129,9 @@ Usage of these models will unlock a set of perks that are only available to stan
 - Can expect consistent data types and validation.
 - Will work seamlessly with other providers that use the same standard model.
 
-The standard models are defined under the `/OpenBBTerminal/openbb_platform/platform/core/provider/openbb_provider/standard_models/` directory.
+The standard models are defined under the `/OpenBBTerminal/openbb_platform/platform/core/provider/openbb_core/provider/standard_models/` directory.
 
-They define the [`QueryParams`](platform/provider/openbb_provider/abstract/query_params.py) and [`Data`](platform/provider/openbb_provider/abstract/data.py) models, which are used to query and output data. They are pydantic and you can leverage all the pydantic features such as validators.
+They define the [`QueryParams`](platform/provider/openbb_core/provider/abstract/query_params.py) and [`Data`](platform/provider/openbb_core/provider/abstract/data.py) models, which are used to query and output data. They are pydantic and you can leverage all the pydantic features such as validators.
 
 ##### Standardization Caveats
 
@@ -287,7 +287,7 @@ The high level steps are:
 
 ### How to add a new data point?
 
-In this section, we'll be adding a new data point to the OpenBB Platform. We will add a new provider with an existing [standard data](platform/provider/openbb_provider/standard_models) model.
+In this section, we'll be adding a new data point to the OpenBB Platform. We will add a new provider with an existing [standard data](platform/provider/openbb_core/provider/standard_models) model.
 
 #### Identify which type of data you want to add
 
@@ -300,7 +300,7 @@ Each router is categorized under different extensions (equity, currency, crypto,
 
 Given the fact that there's already an endpoint for OHLCV stock data, we can check if the standard exists.
 
-In this case, it's `EquityHistorical` which can be found in `/OpenBBTerminal/openbb_platform/platform/core/provider/openbb_provider/standard_models/equity_historical`.
+In this case, it's `EquityHistorical` which can be found in `/OpenBBTerminal/openbb_platform/platform/core/provider/openbb_core/provider/standard_models/equity_historical`.
 
 If the standard model doesn't exist:
 
@@ -415,7 +415,7 @@ In order to make the new provider visible to the OpenBB Platform, you'll need to
 
 ```python
 """<Provider Name> Provider module."""
-from openbb_provider.abstract.provider import Provider
+from openbb_core.provider.abstract.provider import Provider
 
 from openbb_<provider_name>.models.equity_historical import <ProviderName>EquityHistoricalFetcher
 
@@ -444,8 +444,8 @@ Saying that, we highly recommend following the standardization framework, as it 
 
 When standardizing, all data is defined using two different pydantic models:
 
-1. Define the [query parameters](platform/provider/openbb_provider/abstract/query_params.py) model.
-2. Define the resulting [data schema](platform/provider/openbb_provider/abstract/data.py) model.
+1. Define the [query parameters](platform/provider/openbb_core/provider/abstract/query_params.py) model.
+2. Define the resulting [data schema](platform/provider/openbb_core/provider/abstract/data.py) model.
 
 > The models can be entirely custom, or inherit from the OpenBB standardized models.
 > They enforce a safe and consistent data structure, validation and type checking.
@@ -458,9 +458,9 @@ After you've defined both models, you'll need to define a `Fetcher` class which 
 2. `extract_data` - makes the request to the API endpoint and returns the raw data.
 3. `transform_data` - transforms the raw data into the defined data model.
 
-> Note that the `Fetcher` should inherit from the [`Fetcher`](platform/provider/openbb_provider/abstract/fetcher.py) class, which is a generic class that receives the query parameters and the data model as type parameters.
+> Note that the `Fetcher` should inherit from the [`Fetcher`](platform/provider/openbb_core/provider/abstract/fetcher.py) class, which is a generic class that receives the query parameters and the data model as type parameters.
 
-After finalizing your models, you need to make them visible to the Openbb Platform. This is done by adding the `Fetcher` to the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder as part of the [`Provider`](platform/provider/openbb_provider/abstract/provider.py).
+After finalizing your models, you need to make them visible to the Openbb Platform. This is done by adding the `Fetcher` to the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder as part of the [`Provider`](platform/provider/openbb_core/provider/abstract/provider.py).
 
 Any command, that uses the `Fetcher` class you've just defined, will be calling the `transform_query`, `extract_data` and `transform_data` methods under the hood in order to get the data and output it do the end user.
 
@@ -483,14 +483,14 @@ You can expect the following endpoint structure when using a `Fetcher` to serve 
 
 ```python
 @router.command(model="Example")
-def model_example(
+async def model_example(    # create an async endpoint
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Example Data."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 ```
 
 Let's break it down:
@@ -513,13 +513,13 @@ You only need to change the `model` parameter to the name of the `Fetcher` dicti
 ```python
 
 # The `Data` class
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 
 # The `QueryParams` class
-from openbb_provider.abstract.query_params import QueryParams
+from openbb_core.provider.abstract.query_params import QueryParams
 
 # The `Fetcher` class
-from openbb_provider.abstract.fetcher import Fetcher
+from openbb_core.provider.abstract.fetcher import Fetcher
 
 # The `OBBject` class
 from openbb_core.app.model.obbject import OBBject
@@ -534,14 +534,14 @@ from openbb_core.app.router import Router
 The TET pattern is a pattern that we use to build the `Fetcher` classes. It stands for **Transform, Extract, Transform**.
 As the OpenBB Platform has its own standardization framework and the data fetcher are a very important part of it, we need to ensure that the data is transformed and extracted in a consistent way, to help us do that, we came up with the **TET** pattern, which helps us build and ship faster as we have a clear structure on how to build the `Fetcher` classes.
 
-1. Transform - `transform_query(params: Dict[str, Any])`: transforms the query parameters. Given a `params` dictionary this method should return the transformed query parameters as a [`QueryParams`](openbb_platform/platform/provider/openbb_provider/abstract/query_params.py) child so that we can leverage the pydantic model schemas and validation into the next step. This might also be the place do perform some transformations on any given parameter, i.e., if you want to transform an empty date into a `datetime.now().date()`.
+1. Transform - `transform_query(params: Dict[str, Any])`: transforms the query parameters. Given a `params` dictionary this method should return the transformed query parameters as a [`QueryParams`](openbb_platform/platform/provider/openbb_core/provider/abstract/query_params.py) child so that we can leverage the pydantic model schemas and validation into the next step. This might also be the place do perform some transformations on any given parameter, i.e., if you want to transform an empty date into a `datetime.now().date()`.
 2. Extract - `extract_data(query: ExampleQueryParams,credentials: Optional[Dict[str, str]],**kwargs: Any,) -> Dict`: makes the request to the API endpoint and returns the raw data. Given the transformed query parameters, the credentials and any other extra arguments, this method should return the raw data as a dictionary.
-3. Transform - `transform_data(query: ExampleQueryParams, data: Dict, **kwargs: Any) -> List[ExampleHistoricalData]`: transforms the raw data into the defined data model. Given the transformed query parameters (might be useful for some filtering), the raw data and any other extra arguments, this method should return the transformed data as a list of [`Data`](openbb_platform/platform/provider/openbb_provider/abstract/data.py) children.
+3. Transform - `transform_data(query: ExampleQueryParams, data: Dict, **kwargs: Any) -> List[ExampleHistoricalData]`: transforms the raw data into the defined data model. Given the transformed query parameters (might be useful for some filtering), the raw data and any other extra arguments, this method should return the transformed data as a list of [`Data`](openbb_platform/platform/provider/openbb_core/provider/abstract/data.py) children.
 
 #### Data processing commands
 
 The data processing commands are commands that are used to process the data that may or may not come from the OpenBB Platform.
-In order to create a data processing framework general enough to be used by any extension, we've created a special abstract class called [`Data`](/openbb_platform/platform/provider/openbb_provider/abstract/data.py) which **all** standardized (and consequently its child classes) will inherit from.
+In order to create a data processing framework general enough to be used by any extension, we've created a special abstract class called [`Data`](/openbb_platform/platform/provider/openbb_core/provider/abstract/data.py) which **all** standardized (and consequently its child classes) will inherit from.
 
 Why is this important?
 So that we can ensure that all `OBBject.results` will share a common ground on which we can apply out-of-the-box data processing commands, such as the `ta`, `qa` or the `econometrics` menus.
@@ -588,7 +588,7 @@ Not at all! Consider the following example:
 
 ```python
 
->>> from openbb_provider.abstract.data import Data
+>>> from openbb_core.provider.abstract.data import Data
 >>> my_data_item_1 = {"open": 1, "high": 2, "low": 3, "close": 4, "volume": 5, "date": "2020-01-01"}
 >>> my_data_item_1_as_data = Data.model_validate(my_data_item_1)
 >>> my_data_item_1_as_data

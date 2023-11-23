@@ -254,20 +254,6 @@ def test_equity_fundamental_dividends(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "limit": 50}),
-    ],
-)
-@pytest.mark.integration
-def test_equity_fundamental_earnings(params, obb):
-    result = obb.equity.fundamental.earnings(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
         ({"symbol": "AAPL"}),
     ],
 )
@@ -885,29 +871,6 @@ def test_equity_fundamental_latest_attributes(params, obb):
     [
         ({"query": "AAPL", "is_symbol": True, "provider": "cboe"}),
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
-        (
-            {
-                "query": "residential",
-                "industry": "REIT",
-                "sector": "Real Estate",
-                "mktcap_min": None,
-                "mktcap_max": None,
-                "price_min": None,
-                "price_max": None,
-                "volume_min": None,
-                "volume_max": None,
-                "dividend_min": None,
-                "dividend_max": None,
-                "is_active": True,
-                "is_etf": False,
-                "beta_min": None,
-                "beta_max": None,
-                "country": "US",
-                "exchange": "nyse",
-                "limit": None,
-                "provider": "fmp",
-            }
-        ),
     ],
 )
 @pytest.mark.integration
@@ -1209,7 +1172,7 @@ def test_equity_shorts_short_interest(params, obb):
             {
                 "symbol": "CLOV",
                 "date": "2023-10-26",
-                "provider": "polygon",
+                "provider": "polygon",  # premium endpoint
                 "limit": 1000,
                 "timestamp_lte": None,
                 "timestamp_gte": None,
@@ -1220,7 +1183,7 @@ def test_equity_shorts_short_interest(params, obb):
         (
             {
                 "symbol": "CLOV",
-                "provider": "polygon",
+                "provider": "polygon",  # premium endpoint
                 "timestamp_gt": "2023-10-26T15:20:00.000000000-04:00",
                 "timestamp_lt": "2023-10-26T15:30:00.000000000-04:00",
                 "limit": 5000,
@@ -1260,7 +1223,7 @@ def test_equity_darkpool_otc(params, obb):
     "params",
     [
         ({"provider": "fmp", "market": "EURONEXT"}),
-        ({"provider": "polygon"}),
+        ({"provider": "polygon"}),  # premium endpoint
     ],
 )
 @pytest.mark.integration

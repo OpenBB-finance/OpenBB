@@ -143,3 +143,8 @@ class CompanyFilingsData(Data):
     )
     type: str = Field(description="Type of document.")
     link: str = Field(description="URL to the document.")
+
+    @field_validator("date", mode="before", check_fields=False)
+    def convert_date(cls, v: str):
+        """Convert date to date type."""
+        return parser.parse(str(v)).date()
