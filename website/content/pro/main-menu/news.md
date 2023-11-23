@@ -20,7 +20,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
-  youtubeLink="https://www.youtube.com/embed/lIzMfaTFhBg?si=otM5brWDxuuYR1Dk"
+  youtubeLink="https://www.youtube.com/embed/f2w3YufZHYU?si=SvT_Wo4bIa8EbZlH"
   videoLegend="Short introduction to Terminal Pro News"
 />
 

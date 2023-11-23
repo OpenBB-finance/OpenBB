@@ -29,7 +29,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
-  youtubeLink="https://www.youtube.com/embed/EOgzGy3DlOQ?si=CCrvCxjTNvB2sxbk"
+  youtubeLink="https://www.youtube.com/embed/g62SatEkc7U?si=pjAuoRR59oeMLaxv"
   videoLegend="Short introduction to Terminal Pro Charting"
 />
 

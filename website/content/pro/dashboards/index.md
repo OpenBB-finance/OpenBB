@@ -20,6 +20,13 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Dashboards | OpenBB Terminal Pro Docs" />
 
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
+
+<TutorialVideo
+  youtubeLink="https://www.youtube.com/embed/YSvPE_SM6Yo?si=VwltUN4AAWEZcLHi"
+  videoLegend="Short introduction to Terminal Pro dashboards"
+/>
+
 <img width="1443" alt="275685305-db3b650a-5e33-4709-acc7-0f86f9522c06" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/e5f957db-3cf8-4873-9629-1fed0f08f2c7"/>
 
 Dashboards are a collection of widgets. In the image above you can see that there are 3 different dashboards and the one selected can be seen in the working area.

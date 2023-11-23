@@ -26,7 +26,7 @@ Welcome to the OpenBB Terminal Pro, your comprehensive tool for investment resea
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
-  youtubeLink="https://www.youtube.com/embed/o6nSIeDI0xk?si=07eb4igmC-AuzKWT"
+  youtubeLink="https://www.youtube.com/embed/kF1Zlupjsv8?si=FR49n_vlRbTCAiQi"
   videoLegend="Short introduction to Terminal Pro interface"
 />
 

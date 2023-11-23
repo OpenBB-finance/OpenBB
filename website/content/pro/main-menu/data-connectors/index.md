@@ -24,7 +24,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
-  youtubeLink="https://www.youtube.com/embed/1UVGYgs0K28?si=RfJ9d6vYLWkcAKF3"
+  youtubeLink="https://www.youtube.com/embed/-5BDrrf4j00?si=84EuiKBgW1e-AEdB"
   videoLegend="Short introduction to Terminal Pro Data Connectors"
 />
 

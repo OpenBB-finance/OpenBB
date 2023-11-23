@@ -21,7 +21,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
-  youtubeLink="https://www.youtube.com/embed/HbKo74HwV-4?si=J6iqvjrPWcEH1I92"
+  youtubeLink="https://www.youtube.com/embed/oW_kwVBx4Eg?si=xGk1a9e5ZaQw8jCt"
   videoLegend="Short introduction to Terminal Pro advanced search"
 />
 
