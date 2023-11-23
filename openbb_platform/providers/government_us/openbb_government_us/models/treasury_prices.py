@@ -3,12 +3,13 @@ from datetime import datetime, timedelta
 from io import BytesIO
 from typing import Any, Dict, List, Literal, Optional
 
+import requests
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.treasury_prices import (
     USTreasuryPricesData,
     USTreasuryPricesQueryParams,
 )
-from openbb_core.provider.utils.helpers import make_request
+from openbb_government_us.utils.helpers import get_random_agent
 from pandas import DataFrame, read_csv, to_datetime
 from pydantic import Field
 
@@ -39,9 +40,9 @@ class GovernmentUSTreasuryPricesFetcher(
     ) -> GovernmentUSTreasuryPricesQueryParams:
         """Transform query params."""
 
-        if "date" not in params or params["date"] is None:
+        if params.get("date") is None:
             _date = datetime.now().date()
-        if "date" in params and params["date"] is not None:
+        else:
             _date = (
                 datetime.strptime(params["date"], "%Y-%m-%d").date()
                 if isinstance(params["date"], str)
@@ -76,46 +77,44 @@ class GovernmentUSTreasuryPricesFetcher(
             "Referer": "https://treasurydirect.gov/",
             "Content-Type": "application/x-www-form-urlencoded",
             "Origin": "https://treasurydirect.gov",
+            "User-Agent": get_random_agent()
         }
-        payload = (
-            f"priceDateDay={query.date.day}&priceDateMonth={query.date.month}"  # type: ignore
-            f"&priceDateYear={query.date.year}&fileType=csv&csv=CSV+FORMAT"
-        )
+        payload = f"priceDateDay={query.date.day}&priceDateMonth={query.date.month}&priceDateYear={query.date.year}&fileType=csv&csv=CSV+FORMAT"  #  type:  ignore[union-attr]  #  pylint: disable=line-too-long  #  noqa E501
 
-        r = make_request(url=url, headers=HEADERS, method="POST", data=payload)
-
+        r = requests.post(url=url, headers=HEADERS, data=payload, timeout=5)
         if r.status_code != 200:
             raise RuntimeError("Error with the request: " + str(r.status_code))
 
-        if r.encoding == "ISO-8859-1":
-            try:
-                results = read_csv(BytesIO(r.content), header=0)
-                columns = [
-                    "cusip",
-                    "security_type",
-                    "rate",
-                    "maturity_date",
-                    "call_date",
-                    "bid",
-                    "offer",
-                    "eod_price",
-                ]
-                results.columns = columns
-                results["date"] = query.date.strftime("%Y-%m-%d")  # type: ignore
-                for col in ["maturity_date", "call_date"]:
-                    results[col] = (
-                        (
-                            to_datetime(results[col], format="%m/%d/%Y").dt.strftime(
-                                "%Y-%m-%d"
-                            )
+        if r.encoding != "ISO-8859-1":
+            raise RuntimeError(f"Expected ISO-8859-1 encoding but got: {r.encoding}")
+        try:
+            results = read_csv(BytesIO(r.content), header=0)
+            columns = [
+                "cusip",
+                "security_type",
+                "rate",
+                "maturity_date",
+                "call_date",
+                "bid",
+                "offer",
+                "eod_price",
+            ]
+            results.columns = columns
+            results["date"] = query.date.strftime("%Y-%m-%d")  # type: ignore
+            for col in ["maturity_date", "call_date"]:
+                results[col] = (
+                    (
+                        to_datetime(results[col], format="%m/%d/%Y").dt.strftime(
+                            "%Y-%m-%d"
                         )
-                        .fillna("-")
-                        .replace("-", None)
                     )
+                    .fillna("-")
+                    .replace("-", None)
+                )
 
-                data = results.to_dict(orient="records")
-            except Exception as e:
-                raise RuntimeError("Parsing Error: " + str(e))
+            data = results.to_dict(orient="records")
+        except Exception as e:
+            raise RuntimeError("No data was returned: " + str(e))
 
         return data
 

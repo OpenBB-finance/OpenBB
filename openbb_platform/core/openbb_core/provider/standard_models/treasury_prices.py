@@ -46,4 +46,4 @@ class USTreasuryPricesData(Data):
     offer: Optional[float] = Field(
         description="The offer price of the security.", default=None
     )
-    eod_price: float = Field(description="The end-of-day price of the security.")
+    eod_price: Optional[float] = Field(description="The end-of-day price of the security.", default=None)
