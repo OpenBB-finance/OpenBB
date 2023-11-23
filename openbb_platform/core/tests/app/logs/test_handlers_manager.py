@@ -11,11 +11,13 @@ from openbb_core.app.logs.handlers_manager import (
 class MockPosthogHandler(logging.NullHandler):
     def __init__(self, settings):
         self.settings = settings
+        self.level = logging.DEBUG
 
 
 class MockPathTrackingFileHandler(logging.NullHandler):
     def __init__(self, settings):
         self.settings = settings
+        self.level = logging.DEBUG
 
 
 class MockFormatterWithExceptions(logging.Formatter):

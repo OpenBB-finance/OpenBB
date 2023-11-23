@@ -10,8 +10,7 @@ from typing import Any, Literal, Optional, Union
 import pandas as pd
 import yfinance as yf
 from dateutil.relativedelta import relativedelta
-
-from .references import MONTHS
+from openbb_yfinance.utils.references import MONTHS
 
 
 def get_futures_data() -> pd.DataFrame:
@@ -107,7 +106,7 @@ def yf_download(
         _start_date = None
 
     if interval in ["2m", "5m", "15m", "30m", "90m"]:
-        _start_date = (datetime.now().date() - relativedelta(days=59)).strftime(
+        _start_date = (datetime.now().date() - relativedelta(days=58)).strftime(
             "%Y-%m-%d"
         )
 

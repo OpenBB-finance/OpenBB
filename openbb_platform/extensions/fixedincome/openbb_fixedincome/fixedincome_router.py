@@ -25,7 +25,7 @@ router.include_router(corporate_router)
 
 
 @router.command(model="SOFR")
-def sofr(
+async def sofr(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -36,4 +36,4 @@ def sofr(
     The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
     borrowing cash overnight collateralizing by Treasury securities.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))

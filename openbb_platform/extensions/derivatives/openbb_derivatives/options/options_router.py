@@ -17,22 +17,22 @@ router = Router(prefix="/options")
 
 
 @router.command(model="OptionsChains")
-def chains(
+async def chains(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Get the complete options chain for a ticker."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="OptionsUnusual")
-def unusual(
+async def unusual(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Get the complete options chain for a ticker."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))

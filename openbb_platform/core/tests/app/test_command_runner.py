@@ -290,7 +290,7 @@ def test_command_runner_run(_):
 
 @patch("openbb_core.app.command_runner.CommandMap.get_command")
 @patch("openbb_core.app.command_runner.StaticCommandRunner._execute_func")
-def test_static_command_runner_run(
+async def test_static_command_runner_run(
     mock_execute_func, mock_get_command, execution_context
 ):
     """Test static command runner run."""
@@ -308,7 +308,7 @@ def test_static_command_runner_run(
     mock_get_command.return_value = other_mock_func
     mock_execute_func.return_value = MockOBBject(results=[1, 2, 3, 4])
 
-    result = StaticCommandRunner.run(execution_context, 1, 2, c=3, d=4)
+    result = await StaticCommandRunner.run(execution_context, 1, 2, c=3, d=4)
 
     assert result.results == [1, 2, 3, 4]
     assert hasattr(result, "extra")
@@ -319,7 +319,7 @@ def test_static_command_runner_run(
 @patch("openbb_core.app.command_runner.ParametersBuilder.build")
 @patch("openbb_core.app.command_runner.StaticCommandRunner._command")
 @patch("openbb_core.app.command_runner.StaticCommandRunner._chart")
-def test_static_command_runner_execute_func(
+async def test_static_command_runner_execute_func(
     mock_chart,
     mock_command,
     mock_parameters_builder_build,
@@ -348,7 +348,7 @@ def test_static_command_runner_execute_func(
     mock_command.return_value = MockOBBject(results=[1, 2, 3, 4])
     mock_chart.return_value = None
 
-    result = StaticCommandRunner._execute_func(
+    result = await StaticCommandRunner._execute_func(
         "mock/route", (1, 2, 3, 4), execution_context, mock_func, {}
     )
 
@@ -385,7 +385,7 @@ def test_static_command_runner_chart(mock_charting_service_chart, execution_cont
     assert mock_obbject.chart == {"mock": "chart"}
 
 
-def test_static_command_runner_command():
+async def test_static_command_runner_command():
     """Test command."""
 
     class MockOBBject:
@@ -406,7 +406,7 @@ def test_static_command_runner_command():
 
     mock_provider_choices = MockProviderChoices(provider="mock_provider")
 
-    result = StaticCommandRunner._command(
+    result = await StaticCommandRunner._command(
         func=other_mock_func,
         kwargs={"provider_choices": mock_provider_choices},
     )

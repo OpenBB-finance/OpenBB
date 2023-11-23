@@ -17,7 +17,7 @@ router = Router(prefix="/cftc")
 
 
 @router.command(model="COTSearch")
-def cot_search(
+async def cot_search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -27,15 +27,15 @@ def cot_search(
 
     Fuzzy search and list of curated Commitment of Traders Reports series information.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="COT")
-def cot(
+async def cot(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Commitment of Traders Reports. Lookup Commitment of Traders Reports by series ID."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))

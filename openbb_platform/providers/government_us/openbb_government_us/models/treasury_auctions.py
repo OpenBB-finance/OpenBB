@@ -1,9 +1,5 @@
 """US Government Treasury Auctions Model."""
 
-from datetime import (
-    datetime,
-    timedelta,
-)
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
@@ -48,14 +44,7 @@ class GovernmentUSTreasuryAuctionsFetcher(
         params: Dict[str, Any]
     ) -> GovernmentUSTreasuryAuctionsQueryParams:
         """Transform query params."""
-        transformed_params = params.copy()
-        if "start_date" not in transformed_params:
-            transformed_params["start_date"] = (
-                datetime.now() - timedelta(days=90)
-            ).strftime("%Y-%m-%d")
-        if "end_date" not in transformed_params:
-            transformed_params["end_date"] = datetime.now().strftime("%Y-%m-%d")
-        return GovernmentUSTreasuryAuctionsQueryParams(**transformed_params)
+        return GovernmentUSTreasuryAuctionsQueryParams(**params)
 
     @staticmethod
     def extract_data(
