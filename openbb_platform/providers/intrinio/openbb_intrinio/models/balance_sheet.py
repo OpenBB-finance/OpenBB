@@ -11,7 +11,6 @@ from openbb_core.provider.standard_models.financial_statements import (
     FinancialStatementsQueryParams,
 )
 from openbb_intrinio.utils.helpers import get_data_one
-from pydantic import alias_generators
 
 
 class IntrinioBalanceSheetQueryParams(FinancialStatementsQueryParams):
@@ -27,7 +26,6 @@ class IntrinioBalanceSheetData(BalanceSheetData):
 
     __alias_dict__ = {
         "cash_and_equivalents": "cashandequivalents",
-        "cash_and_due_from_banks": "cashandequivalents",
         "restricted_cash": "restrictedcash",
         "short_term_investments": "shortterminvestments",
         "federal_funds_sold": "fedfundssold",
@@ -194,7 +192,7 @@ class IntrinioBalanceSheetFetcher(
             sub_dict: Dict[str, Any] = {}
 
             for sub_item in item["financials"]:
-                field_name = alias_generators.to_snake(sub_item["data_tag"]["tag"])
+                field_name = sub_item["data_tag"]["tag"]
                 sub_dict[field_name] = float(sub_item["value"])
 
             sub_dict["period_ending"] = item["period_ending"]
