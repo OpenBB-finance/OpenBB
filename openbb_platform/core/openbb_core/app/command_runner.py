@@ -117,7 +117,7 @@ class ParametersBuilder:
         command_coverage: Dict[str, List[str]],
         route: str,
         kwargs: Dict[str, Any],
-        route_default: Optional[str],
+        route_default: Optional[Dict[str, Optional[str]]],
     ) -> Dict[str, Any]:
         """Update the provider choices with the available providers and set default provider."""
 
@@ -143,7 +143,7 @@ class ParametersBuilder:
 
         def _get_default_provider(
             command_coverage: Dict[str, List[str]],
-            route_default: Optional[str],
+            route_default: Optional[Dict[str, Optional[str]]],
         ) -> Optional[str]:
             """Get the default provider for the given route.
             Either pick it from the user defaults or from the command coverage."""

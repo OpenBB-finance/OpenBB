@@ -200,25 +200,6 @@ def to_snake_case(string: str) -> str:
     )
 
 
-def to_camel_case(string: str):
-    """Convert a string to camel case.
-
-    If all characters are lower case we return title version of the string.
-
-    Examples
-    --------
-    "close" -> "Close"
-    "some_field" -> "someField"
-    """
-    s_list = string.replace("-", " ").replace("_", " ").split()
-    if len(string) == 0:
-        return string
-    result = s_list[0] + "".join(i.capitalize() for i in s_list[1:])
-    if result.islower():
-        return result.title()
-    return result
-
-
 async def maybe_coroutine(
     func: Callable[P, Union[T, Awaitable[T]]], /, *args: P.args, **kwargs: P.kwargs
 ) -> T:
