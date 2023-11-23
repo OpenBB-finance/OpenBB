@@ -79,8 +79,11 @@ class FMPEquityHistoricalFetcher(
 
         return FMPEquityHistoricalQueryParams(**transformed_params)
 
+    # TODO: Fix fetcher to allow async/sync methods or turn everything async
+    # @overloading the method does not work, it breaks the type hinting for the
+    # synchronous method implemented in other providers
     @staticmethod
-    async def extract_data(
+    async def extract_data(  # pylint: disable=invalid-overridden-method
         query: FMPEquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
