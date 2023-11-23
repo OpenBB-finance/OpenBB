@@ -75,6 +75,10 @@ zt.iloc[-1]
 | nonreportable_positions_long  |      267944           |
 | nonreportable_positions_short |      136297           |
 
+:::note
+Look up reports not listed under `obb.regulators.cftc.cot_search()` by using the Nasdaq Data Link code for the series.  Refer to their documentation for a complete list.
+:::
+
 ### Parameters
 
 There are parameters that will alter the type of report returned.
