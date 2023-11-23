@@ -77,7 +77,7 @@ class GovernmentUSTreasuryPricesFetcher(
             "Referer": "https://treasurydirect.gov/",
             "Content-Type": "application/x-www-form-urlencoded",
             "Origin": "https://treasurydirect.gov",
-            "User-Agent": get_random_agent()
+            "User-Agent": get_random_agent(),
         }
         payload = f"priceDateDay={query.date.day}&priceDateMonth={query.date.month}&priceDateYear={query.date.year}&fileType=csv&csv=CSV+FORMAT"  #  type:  ignore[union-attr]  #  pylint: disable=line-too-long  #  noqa E501
 
