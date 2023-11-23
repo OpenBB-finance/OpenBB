@@ -3,14 +3,15 @@
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
+from aiohttp import ClientResponse, ClientSession
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
     EquityHistoricalQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
-from openbb_fmp.utils.helpers import get_data_many, get_interval
+from openbb_core.provider.utils.helpers import get_querystring, make_requests
+from openbb_fmp.utils.helpers import get_interval
 from pydantic import Field, NonNegativeInt
 
 
@@ -96,13 +97,29 @@ class FMPEquityHistoricalFetcher(
         base_url = "https://financialmodelingprep.com/api/v3"
         query_str = get_querystring(query.model_dump(), ["symbol", "interval"])
 
-        url_params = f"{query.symbol}?{query_str}&apikey={api_key}"
-        url = f"{base_url}/historical-chart/{interval}/{url_params}"
+        def get_url_params(symbol: str) -> str:
+            url_params = f"{symbol}?{query_str}&apikey={api_key}"
+            url = f"{base_url}/historical-chart/{interval}/{url_params}"
+            if interval == "1day":
+                url = f"{base_url}/historical-price-full/{url_params}"
+            return url
 
-        if interval == "1day":
-            url = f"{base_url}/historical-price-full/{url_params}"
+        async def response_callback(
+            response: ClientResponse, _: ClientSession
+        ) -> List[Dict]:
+            data: dict = await response.json()
+            symbol = response.url.parts[-1]
 
-        return await get_data_many(url, "historical", **kwargs)
+            data = data.get("historical", [])
+            if "," in query.symbol:
+                for d in data:
+                    d["symbol"] = symbol
+
+            return data
+
+        urls = [get_url_params(symbol) for symbol in query.symbol.split(",")]
+
+        return await make_requests(urls, response_callback=response_callback, **kwargs)
 
     @staticmethod
     def transform_data(

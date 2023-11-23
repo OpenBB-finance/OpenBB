@@ -11,7 +11,6 @@ from typing_extensions import ParamSpec
 from openbb_core.provider.utils.client import (
     ClientResponse,
     ClientSession,
-    aiohttp_client,
 )
 
 T = TypeVar("T")
@@ -81,17 +80,21 @@ async def make_request(
     Union[dict, List[dict]]
         Response json
     """
-
-    kwargs["timeout"] = kwargs.pop("preferences", {}).get("request_timeout", timeout)
-
     response_callback = response_callback or (
         lambda r, _: asyncio.ensure_future(r.json())
     )
 
-    session: ClientSession = kwargs.pop("session", aiohttp_client)
-    response = await session.request(method, url, **kwargs)
+    kwargs["timeout"] = kwargs.pop("preferences", {}).get("request_timeout", timeout)
+    with_session = kwargs.pop("with_session", False)
+    session: ClientSession = kwargs.pop("session", ClientSession())
 
-    return await response_callback(response, session)
+    response = await session.request(method, url, **kwargs)
+    data = await response_callback(response, session)
+
+    if not with_session:
+        await session.close()
+
+    return data
 
 
 async def make_requests(urls: List[str], **kwargs) -> Union[dict, List[dict]]:
@@ -113,8 +116,14 @@ async def make_requests(urls: List[str], **kwargs) -> Union[dict, List[dict]]:
     Union[dict, List[dict]]
         Response json
     """
+    session: ClientSession = kwargs.pop("session", ClientSession())
+    kwargs["with_session"] = True
 
-    results = await asyncio.gather(*[make_request(url, **kwargs) for url in urls])
+    results = await asyncio.gather(
+        *[make_request(url, session=session, **kwargs) for url in urls]
+    )
+
+    await session.close()
 
     if isinstance(results[0], list):
         return [item for sublist in results for item in sublist]

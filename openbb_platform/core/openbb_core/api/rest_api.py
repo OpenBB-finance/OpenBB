@@ -13,7 +13,6 @@ from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.service.auth_service import AuthService
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.env import Env
-from openbb_core.provider.utils.helpers import aiohttp_client
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -42,8 +41,6 @@ Investment research for everyone, anywhere.
 """
     logger.info(banner)
     yield
-    logger.info("Closing aiohttp client session.")
-    await aiohttp_client.close()
 
 
 app = FastAPI(

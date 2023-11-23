@@ -6,6 +6,17 @@ from typing import Any, Dict, Union
 
 import aiohttp
 
+FILTER_QUERY_PARAMS = [
+    "apikey",
+    "apiKey",
+    "api_key",
+    "token",
+    "key",
+    "auth_token",
+    "access_token",
+    "c",
+]
+
 
 def get_user_agent() -> str:
     """Get a not very random user agent."""
@@ -63,7 +74,7 @@ class ClientSession(aiohttp.ClientSession):
         super().__init__(*args, **kwargs)
 
     async def request(
-        self, *args, raise_for_status: bool = True, **kwargs
+        self, *args, raise_for_status: bool = False, **kwargs
     ) -> ClientResponse:
         """Send request."""
         kwargs["headers"] = kwargs.get(
@@ -80,8 +91,26 @@ class ClientSession(aiohttp.ClientSession):
             kwargs["headers"]["User-Agent"] = get_user_agent()
 
         response = await super().request(*args, **kwargs)
-        if raise_for_status:
-            response.raise_for_status()
+        if raise_for_status and not response.ok:
+            query = response.request_info.url.query.copy()
+
+            for param in FILTER_QUERY_PARAMS:
+                if param in query:
+                    query[param] = "*****"
+
+            url = response.request_info.url.with_query(query)
+            raise aiohttp.ClientResponseError(
+                aiohttp.RequestInfo(
+                    url,
+                    response.request_info.method,
+                    response.request_info.headers,
+                    url,
+                ),
+                response.history,
+                status=response.status,
+                message=response.reason,
+                headers=response.headers,
+            )
 
         return response
 
@@ -93,6 +122,3 @@ class ClientSession(aiohttp.ClientSession):
         """Send GET request and return json."""
         response = await self.get(url, **kwargs)
         return await response.json()
-
-
-aiohttp_client = ClientSession()
