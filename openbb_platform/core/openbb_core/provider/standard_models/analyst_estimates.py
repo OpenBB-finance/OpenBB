@@ -4,7 +4,7 @@
 from datetime import date as dateType
 from typing import List, Literal, Set, Union
 
-from openbb_core.provider.abstract.data import Data, StrictInt
+from openbb_core.provider.abstract.data import Data, ForceInt
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
@@ -23,6 +23,7 @@ class AnalystEstimatesQueryParams(QueryParams):
     limit: int = Field(default=30, description=QUERY_DESCRIPTIONS.get("limit", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -71,6 +72,7 @@ class AnalystEstimatesData(Data):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

@@ -11,15 +11,6 @@ from openbb_core.provider.utils.descriptions import (
 )
 from pydantic import Field
 
-<<<<<<<< HEAD:openbb_platform/core/openbb_core/provider/standard_models/historical_attributes.py
-========
-from openbb_core.provider.abstract.data import Data
-from openbb_core.provider.abstract.query_params import QueryParams
-from openbb_core.provider.utils.descriptions import (
-    DATA_DESCRIPTIONS,
-    QUERY_DESCRIPTIONS,
-)
->>>>>>>> develop:openbb_platform/core/openbb_core/provider/standard_models/financial_attributes.py
 
 class HistoricalAttributesQueryParams(QueryParams):
     """Historical Attributes Query."""

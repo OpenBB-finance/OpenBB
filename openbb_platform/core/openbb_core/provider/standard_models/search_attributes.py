@@ -7,12 +7,6 @@ from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field
 
-<<<<<<<< HEAD:openbb_platform/core/openbb_core/provider/standard_models/search_attributes.py
-========
-from openbb_core.provider.abstract.data import Data
-from openbb_core.provider.abstract.query_params import QueryParams
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
->>>>>>>> develop:openbb_platform/core/openbb_core/provider/standard_models/search_financial_attributes.py
 
 class SearchAttributesQueryParams(QueryParams):
     """Search Attributes Query."""

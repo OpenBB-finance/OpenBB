@@ -35,7 +35,7 @@ class FMPKeyMetricsData(KeyMetricsData):
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     period: str = Field(description="Period of the data.")
-    calendar_year: Optional[StrictInt] = Field(
+    calendar_year: Optional[ForceInt] = Field(
         default=None, description="Calendar year."
     )
     revenue_per_share: Optional[float] = Field(
