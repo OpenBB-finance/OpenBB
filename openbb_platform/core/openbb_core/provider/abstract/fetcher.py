@@ -10,7 +10,6 @@ from typing import (
     TypeVar,
     get_args,
     get_origin,
-    overload,
 )
 
 from pandas import DataFrame
