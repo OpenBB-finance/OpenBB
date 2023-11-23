@@ -151,12 +151,9 @@ class YFinanceEquityHistoricalFetcher(
                 data.set_index("date", inplace=True)
                 data.index = to_datetime(data.index)
 
-            start_date_dt = datetime.combine(query.start_date, datetime.min.time())
-            end_date_dt = datetime.combine(query.end_date, datetime.min.time())
-
             data = data[
-                (data.index >= start_date_dt + timedelta(days=days))
-                & (data.index <= end_date_dt)
+                (data.index >= to_datetime(query.start_date))
+                & (data.index <= to_datetime(query.end_date + timedelta(days=days)))
             ]
 
         data.reset_index(inplace=True)
