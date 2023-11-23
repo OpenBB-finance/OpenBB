@@ -94,15 +94,7 @@ async def make_request(
     return await response_callback(response, session)
 
 
-async def make_requests(
-    urls: List[str],
-    method: Literal["GET", "POST"] = "GET",
-    timeout: int = 10,
-    response_callback: Optional[
-        Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]]
-    ] = None,
-    **kwargs,
-) -> Union[dict, List[dict]]:
+async def make_requests(urls: List[str], **kwargs) -> Union[dict, List[dict]]:
     """Make multiple requests asynchronously.
 
     Parameters
@@ -122,18 +114,7 @@ async def make_requests(
         Response json
     """
 
-    results = await asyncio.gather(
-        *[
-            make_request(
-                url,
-                method=method,
-                timeout=timeout,
-                response_callback=response_callback,
-                **kwargs,
-            )
-            for url in urls
-        ]
-    )
+    results = await asyncio.gather(*[make_request(url, **kwargs) for url in urls])
 
     if isinstance(results[0], list):
         return [item for sublist in results for item in sublist]
