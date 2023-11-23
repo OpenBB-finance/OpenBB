@@ -5,7 +5,7 @@ import re
 import zlib
 from functools import partial
 from inspect import iscoroutinefunction
-from typing import Awaitable, Callable, List, Literal, TypeVar, Union
+from typing import Awaitable, Callable, List, Literal, TypeVar, Union, cast
 
 import aiohttp
 import requests
@@ -223,7 +223,7 @@ async def maybe_coroutine(
     """Check if a function is a coroutine and run it accordingly."""
 
     if not iscoroutinefunction(func):
-        return func(*args, **kwargs)
+        return cast(T, func(*args, **kwargs))
 
     return await func(*args, **kwargs)
 
@@ -234,7 +234,7 @@ def run_async(
     """Run a coroutine function in a blocking context."""
 
     if not iscoroutinefunction(func):
-        return func(*args, **kwargs)
+        return cast(T, func(*args, **kwargs))
 
     with start_blocking_portal() as portal:
         return portal.call(partial(func, *args, **kwargs))
