@@ -42,7 +42,7 @@ obb.equity.price.historical()
 
 ['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']
 
-- Common parameters have been standardized across all souces, `start_date`, `end_date`, `interval`.
+- Common parameters have been standardized across all sources, `start_date`, `end_date`, `interval`.
 
 - The default interval will be `1d`.
 
@@ -117,7 +117,7 @@ df_monthly.tail(2)
 | 2023-10-31  | 426.62 | 438.14 | 409.21 |  418.2  | 1999149700 |
 | 2023-11-30  | 419.2  | 456.38 | 418.65 |  455.02 | 1210484176 |
 
-We can see that the current month's total volume is higher when we resample the daily time series.  It is difficult to know where the discrepency lays, and it may just be a temporary glitch.  However, we can verify that the total volume, according to YahooFinance, is the number we just sampled.
+We can see that the current month's total volume is higher when we resample the daily time series.  It is difficult to know where the discrepancy lays, and it may just be a temporary glitch.  However, we can verify that the total volume, according to YahooFinance, is the number we just sampled.
 
 :::note
 If you are following along, the results will not match exactly what is displayed here.
