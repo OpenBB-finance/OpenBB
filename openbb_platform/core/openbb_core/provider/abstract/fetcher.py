@@ -47,17 +47,8 @@ class Fetcher(Generic[Q, R]):
         """Transform the params to the provider-specific query."""
         raise NotImplementedError
 
-    @overload
     @staticmethod
     def extract_data(query: Q, credentials: Optional[Dict[str, str]]) -> Any:
-        """Extract the data from the provider."""
-        raise NotImplementedError
-
-    @overload
-    @staticmethod
-    async def extract_data(
-        query: Q, credentials: Optional[Dict[str, str]]
-    ) -> Any:  # pragma: no cover
         """Extract the data from the provider."""
         raise NotImplementedError
 
