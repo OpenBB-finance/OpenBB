@@ -20,3 +20,12 @@ This notebook walks through collecting historical price data, at different inter
 - A brief explanation of ticker symbology.
 - Resampling a time series index.
 - Some differences between providers, and comparing outputs.
+
+### financialStatements
+
+This set of examples introduces financial statements in the OpenBB Platform and compares the free cash flow yields of large-cap retail industry comapnies.
+
+- Fnancial statements.
+- What to expect with data from different sources.
+- Financial attributes.
+- Ratios and other metrics.

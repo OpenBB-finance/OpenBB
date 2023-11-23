@@ -274,7 +274,9 @@ Other valuation functions are derivatives of the financial statements, but the d
 
 This data set is where you can find EPS, FCF, P/B, EBIT, quick ratio, etc.
 
-Target's quick ratio could be one reason why its share price is losing traction against the market.  Its ability to pay current obligations is not optimistically reflected in a 0.27 score.
+### Quick Ratio
+
+Target's quick ratio could be one reason why its share price is losing traction against the market.  Its ability to pay current obligations is not optimistically reflected in a 0.27 score, approximately 50% below the historical median.
 
 ```python
 ratios = (
@@ -282,21 +284,53 @@ ratios = (
   .to_df()
 )
 
-ratios["quick_ratio"].iloc[-1]
+display(f"Current Quick Ratio: {ratios['quick_ratio'].iloc[-1]}")
+display(f"Median Quick Ratio: {ratios['quick_ratio'].median()}")
 ```
 
 ```console
-0.27
+Current Quick Ratio: 0.27
+Median Quick Ratio: 0.58
 ```
 
-This number falls about 50% below the historical median.
+### Free Cash Flow Yield
+
+The `metrics` endpoint, with the `openbb-fmp` data extension, has a field for free cash flow yield.  It is calculated by taking the free cash flow per share divided by the current share price.  We could arrive at this answer by writing some code, but these types of endpoints do the work so we don't have to.  This is part of the value-add that API data distributors provide, they allow you to get straight to work with data.
+
+We'll use this endpoint to extract the data, and compare with some of Target's competition over the last ten years.
 
 ```python
-ratios["quick_ratio"].median()
+# List of other retail chains
+tickers = ["COST", "BJ", "DLTR", "DG", "WMT", "BIG", "M", "KSS", "TJX"]
+# Create a dictionary of tickers and company names.
+names = {
+    ticker: obb.equity.fundamental.overview(ticker, provider="fmp").results.company_name
+    for ticker in tickers
+}
+# Create a column for each.
+fcf_yield = pd.DataFrame()
+for ticker in tickers:
+    fcf_yield[names[ticker]] = (
+        obb.equity.fundamental.metrics(ticker, provider="fmp", period="annual", limit=10)
+        .to_df()
+        .reset_index()
+        .set_index("calendar_year")
+        .sort_index(ascending=False)
+        ["free_cash_flow_yield"]
+    )
+fcf_yield.transpose()
 ```
 
-```console
-0.58
-```
+|                                    |        2023 |        2022 |      2021 |      2020 |      2019 |       2018 |      2017 |       2016 |      2015 |        2014 |
+|:-----------------------------------|------------:|------------:|----------:|----------:|----------:|-----------:|----------:|-----------:|----------:|------------:|
+| Costco Wholesale Corporation       |   0.0279218 |  0.0148596  | 0.0265818 | 0.0393512 | 0.0259061 |  0.0274379 | 0.0608836 | 0.00894059 | 0.0307414 |   0.0374833 |
+| BJ's Wholesale Club Holdings, Inc. | nan         |  0.0447092  | 0.0672128 | 0.113551  | 0.0566305 |  0.0911069 | 0.0261863 | 0.0658713  | 0.0169474 | nan         |
+| Dollar Tree, Inc.                  | nan         |  0.010756   | 0.013957  | 0.075627  | 0.040338  |  0.0412519 | 0.0340694 | 0.0634655  | 0.0166025 |   0.0410471 |
+| Dollar General Corporation         | nan         |  0.00825589 | 0.0375074 | 0.0589731 | 0.0369217 |  0.0461971 | 0.0426088 | 0.0507761  | 0.0395241 |   0.0460518 |
+| Walmart Inc.                       |   0.0312425 |  0.028372   | 0.0654622 | 0.0445913 | 0.062023  |  0.0572749 | 0.101038  | 0.0735059  | 0.0597117 |   0.0415436 |
+| Big Lots, Inc.                     | nan         | -0.550469   | 0.0252616 | 0.115757  | 0.0694642 | -0.111853  | 0.037219  | 0.100721   | 0.110443  |   0.089253  |
+| Macy's, Inc.                       | nan         |  0.0504726  | 0.27098   | 0.0391114 | 0.0913008 |  0.101426  | 0.155761  | 0.098993   | 0.0656336 |   0.072322  |
+| Kohl's Corporation                 | nan         | -0.143961   | 0.189677  | 0.147968  | 0.119492  |  0.139799  | 0.0961367 | 0.19879    | 0.0816518 |   0.110697  |
+| The TJX Companies, Inc.            |   0.0271588 |  0.0234975  | 0.0517687 | 0.0401668 | 0.0488266 |  0.0399352 | 0.0536965 | 0.0433279  | 0.0464416 |   0.0406432 |
 
 Explore the rest of the `fundamental` module under the [Reference](/platform/reference/equity/fundamental) section.
