@@ -1,8 +1,6 @@
 """FMP Financial Ratios Model."""
 
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
-from itertools import repeat
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -10,7 +8,11 @@ from openbb_core.provider.standard_models.financial_ratios import (
     FinancialRatiosData,
     FinancialRatiosQueryParams,
 )
-from openbb_fmp.utils.helpers import get_data_many, get_data_one
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    ClientSession,
+    make_requests,
+)
 from pydantic import Field
 
 PeriodType = Literal["annual", "quarter"]
@@ -54,7 +56,7 @@ class FMPFinancialRatiosFetcher(
         return FMPFinancialRatiosQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: FMPFinancialRatiosQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -63,32 +65,37 @@ class FMPFinancialRatiosFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        data: List[Dict] = []
 
-        def multiple_symbols(symbol: str, data: List[Dict]) -> None:
-            url = (
-                f"{base_url}/ratios/{symbol}?"
-                f"period={query.period}&limit={query.limit}&apikey={api_key}"
-            )
+        async def response_callback(
+            response: ClientResponse, session: ClientSession
+        ) -> List[Dict]:
+            results = await response.json()
+            symbol = response.url.parts[-1]
 
             # TTM data
             ttm_url = f"{base_url}/ratios-ttm/{symbol}?&apikey={api_key}"
-            if query.with_ttm and (ratios_ttm := get_data_one(ttm_url, **kwargs)):
-                data.append(
+            if query.with_ttm and (ratios_response := await session.get(ttm_url)):
+                ratios_ttm = await ratios_response.get_one()
+
+                results.insert(
+                    0,
                     {
                         "symbol": symbol,
                         "period": "TTM",
                         "date": datetime.now().strftime("%Y-%m-%d"),
                         **{k.replace("TTM", ""): v for k, v in ratios_ttm.items()},
-                    }
+                    },
                 )
 
-            return data.extend(get_data_many(url, **kwargs))
+            return results
 
-        with ThreadPoolExecutor() as executor:
-            executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
+        urls = [
+            f"{base_url}/ratios/{symbol}?"
+            f"period={query.period}&limit={query.limit}&apikey={api_key}"
+            for symbol in query.symbol.split(",")
+        ]
 
-        return data
+        return await make_requests(urls, response_callback=response_callback, **kwargs)
 
     @staticmethod
     def transform_data(

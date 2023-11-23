@@ -58,8 +58,6 @@ def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
         r: Union[requests.Response, BasicResponse] = helpers.make_request(url, **kwargs)
     except SSLError:
         r = request(url)
-    if r.status_code == 404:
-        raise RuntimeError("Alpha Vantage endpoint doesn't exist")
 
     data = r.json()
     if "Information" in data:

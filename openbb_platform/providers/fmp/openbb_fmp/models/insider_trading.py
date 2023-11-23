@@ -44,7 +44,7 @@ class FMPInsiderTradingFetcher(
         return FMPInsiderTradingQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: FMPInsiderTradingQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -62,7 +62,7 @@ class FMPInsiderTradingFetcher(
 
         while limit_reached <= query.limit:
             url = f"{base_url}?{query_str}&page={page}&apikey={api_key}"
-            data.extend(get_data_many(url, **kwargs))
+            data.extend(await get_data_many(url, **kwargs))
             limit_reached += len(data)
             page += 1
 

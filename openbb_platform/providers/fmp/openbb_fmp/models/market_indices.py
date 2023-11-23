@@ -81,7 +81,7 @@ class FMPMarketIndicesFetcher(
         return FMPMarketIndicesQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: FMPMarketIndicesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -98,7 +98,7 @@ class FMPMarketIndicesFetcher(
         if query.interval == "1day":
             url = f"{base_url}/historical-chart/1day/{query.symbol}?apikey={api_key}"
 
-        return get_data_many(url, "historical", **kwargs)
+        return await get_data_many(url, "historical", **kwargs)
 
     @staticmethod
     def transform_data(

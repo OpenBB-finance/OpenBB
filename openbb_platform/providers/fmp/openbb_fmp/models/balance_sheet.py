@@ -107,7 +107,7 @@ class FMPBalanceSheetFetcher(
         return FMPBalanceSheetQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: FMPBalanceSheetQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -119,7 +119,7 @@ class FMPBalanceSheetFetcher(
             3, f"balance-sheet-statement/{query.symbol}", api_key, query, ["symbol"]
         )
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

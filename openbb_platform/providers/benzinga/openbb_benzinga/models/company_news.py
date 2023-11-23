@@ -5,13 +5,12 @@ import math
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_benzinga.utils.helpers import get_data
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import get_querystring, make_requests
 from pydantic import Field, field_validator
 
 
@@ -138,7 +137,7 @@ class BenzingaCompanyNewsFetcher(
         return BenzingaCompanyNewsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: BenzingaCompanyNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -152,16 +151,15 @@ class BenzingaCompanyNewsFetcher(
         querystring = get_querystring(query.model_dump(by_alias=True), ["order"])
 
         pages = math.ceil(query.limit / 100) if query.limit else 1
-        data = []
 
-        for page in range(pages):
-            url = f"{base_url}?{querystring}&page={page}&token={token}"
-            response = get_data(url, **kwargs)
-            data.extend(response)
+        urls = [
+            f"{base_url}?{querystring}&page={page}&token={token}"
+            for page in range(pages)
+        ]
 
-        data = data[: query.limit]
+        data = await make_requests(urls, **kwargs)
 
-        return data
+        return data[: query.limit]
 
     @staticmethod
     def transform_data(

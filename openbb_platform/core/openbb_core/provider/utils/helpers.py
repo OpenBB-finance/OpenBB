@@ -1,16 +1,18 @@
 """Provider helpers."""
 import asyncio
-import random
 import re
-import zlib
 from functools import partial
 from inspect import iscoroutinefunction
 from typing import Awaitable, Callable, List, Literal, Optional, TypeVar, Union, cast
 
-import aiohttp
-import requests
 from anyio import start_blocking_portal
 from typing_extensions import ParamSpec
+
+from openbb_core.provider.utils.client import (
+    ClientResponse,
+    ClientSession,
+    aiohttp_client,
+)
 
 T = TypeVar("T")
 P = ParamSpec("P")
@@ -50,27 +52,12 @@ def get_querystring(items: dict, exclude: List[str]) -> str:
     return f"{querystring}" if querystring else ""
 
 
-def get_user_agent() -> str:
-    """Get a not very random user agent."""
-    user_agent_strings = [
-        "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:86.1) Gecko/20100101 Firefox/86.1",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:86.1) Gecko/20100101 Firefox/86.1",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:82.1) Gecko/20100101 Firefox/82.1",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:86.0) Gecko/20100101 Firefox/86.0",
-        "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:86.0) Gecko/20100101 Firefox/86.0",
-        "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:83.0) Gecko/20100101 Firefox/83.0",
-        "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:84.0) Gecko/20100101 Firefox/84.0",
-    ]
-
-    return random.choice(user_agent_strings)  # nosec # noqa: S311
-
-
-async def async_make_request(
+async def make_request(
     url: str,
     method: Literal["GET", "POST"] = "GET",
     timeout: int = 10,
     response_callback: Optional[
-        Callable[[aiohttp.ClientResponse], Awaitable[Union[dict, List[dict]]]]
+        Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]]
     ] = None,
     **kwargs,
 ) -> Union[dict, List[dict]]:
@@ -96,97 +83,62 @@ async def async_make_request(
     """
 
     kwargs["timeout"] = kwargs.pop("preferences", {}).get("request_timeout", timeout)
-    kwargs["headers"] = kwargs.get(
-        "headers",
-        # Default headers, makes sure we accept gzip
-        {
-            "Accept": "*/*",
-            "Accept-Encoding": "gzip, deflate",
-            "Connection": "keep-alive",
-        },
+
+    response_callback = response_callback or (
+        lambda r, _: asyncio.ensure_future(r.json())
     )
 
-    raise_for_status = kwargs.pop("raise_for_status", False)
-    response_callback = response_callback or (lambda r: asyncio.ensure_future(r.json()))
+    session: ClientSession = kwargs.pop("session", aiohttp_client)
+    response = await session.request(method, url, **kwargs)
 
-    if kwargs["headers"].get("User-Agent", None) is None:
-        kwargs["headers"]["User-Agent"] = get_user_agent()
-
-    if _session := kwargs.pop("session", None):
-        r = getattr(_session, method)(url, **kwargs)
-
-        return await response_callback(r)
-
-    async with aiohttp.ClientSession(
-        auto_decompress=False,
-        connector=aiohttp.TCPConnector(),
-        raise_for_status=raise_for_status,
-    ) as session, session.request(method, url, **kwargs) as response:
-        # we need to decompress the response manually, so pytest-vcr records as bytes
-        encoding = response.headers.get("Content-Encoding", "")
-        if encoding in ("gzip", "deflate"):
-            response_body = await response.read()
-            wbits = 16 + zlib.MAX_WBITS if encoding == "gzip" else -zlib.MAX_WBITS
-            response._body = zlib.decompress(
-                response_body, wbits
-            )  # pylint: disable=protected-access
-
-        return await response_callback(response)
+    return await response_callback(response, session)
 
 
-def make_request(
-    url: str, method: str = "GET", timeout: int = 10, **kwargs
-) -> requests.Response:
-    """Abstract helper to make requests from a url with potential headers and params.
+async def make_requests(
+    urls: List[str],
+    method: Literal["GET", "POST"] = "GET",
+    timeout: int = 10,
+    response_callback: Optional[
+        Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]]
+    ] = None,
+    **kwargs,
+) -> Union[dict, List[dict]]:
+    """Make multiple requests asynchronously.
 
     Parameters
     ----------
-    url : str
-        Url to make the request to
-    method : str, optional
+    urls : List[str]
+        List of urls to make requests to
+    method : Literal["GET", "POST"], optional
         HTTP method to use.  Can be "GET" or "POST", by default "GET"
     timeout : int, optional
         Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
+    response_callback : Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]], optional
+        Callback to run on the response, by default None
 
     Returns
     -------
-    requests.Response
-        Request response object
-
-    Raises
-    ------
-    ValueError
-        If invalid method is passed
+    Union[dict, List[dict]]
+        Response json
     """
-    # We want to add a user agent to the request, so check if there are any headers
-    # If there are headers, check if there is a user agent, if not add one.
-    # Some requests seem to work only with a specific user agent, so we want to be able to override it.
-    headers = kwargs.pop("headers", {})
-    preferences = kwargs.pop("preferences", None)
-    if preferences and "request_timeout" in preferences:
-        timeout = preferences["request_timeout"] or timeout
 
-    if "User-Agent" not in headers:
-        headers["User-Agent"] = get_user_agent()
+    results = await asyncio.gather(
+        *[
+            make_request(
+                url,
+                method=method,
+                timeout=timeout,
+                response_callback=response_callback,
+                **kwargs,
+            )
+            for url in urls
+        ]
+    )
 
-    # Allow a custom session for caching, if desired
-    _session = kwargs.pop("session", None) or requests
+    if isinstance(results[0], list):
+        return [item for sublist in results for item in sublist]
 
-    if method.upper() == "GET":
-        return _session.get(
-            url,
-            headers=headers,
-            timeout=timeout,
-            **kwargs,
-        )
-    if method.upper() == "POST":
-        return _session.post(
-            url,
-            headers=headers,
-            timeout=timeout,
-            **kwargs,
-        )
-    raise ValueError("Method must be GET or POST")
+    return results
 
 
 def to_snake_case(string: str) -> str:

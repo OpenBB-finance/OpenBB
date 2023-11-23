@@ -9,11 +9,14 @@ from datetime import (
 from io import StringIO
 from typing import Any, List, Optional, TypeVar, Union
 
-import aiohttp
 import requests
 from openbb_core.provider import helpers
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import async_make_request
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    ClientSession,
+    make_request,
+)
 from pydantic import BaseModel
 from requests.exceptions import SSLError
 
@@ -62,8 +65,6 @@ def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
         r: Union[requests.Response, BasicResponse] = helpers.make_request(url, **kwargs)
     except SSLError:
         r = request(url)
-    if r.status_code == 404:
-        raise RuntimeError("Intrinio endpoint doesn't exist")
 
     data = r.json()
     if r.status_code != 200:
@@ -128,7 +129,7 @@ def get_weekday(date: dateType) -> str:
     return date.strftime("%Y-%m-%d")
 
 
-async def response_callback(response: aiohttp.ClientResponse) -> dict:
+async def response_callback(response: ClientResponse, _: ClientSession) -> dict:
     """Return the response."""
     data: dict = await response.json()
 
@@ -148,7 +149,7 @@ async def async_get_data_one(
         await asyncio.sleep(sleep)
 
     try:
-        data: dict = await async_make_request(
+        data: dict = await make_request(
             url, response_callback=response_callback, **kwargs
         )
     except Exception as e:

@@ -80,7 +80,7 @@ class FMPCryptoHistoricalFetcher(
         return FMPCryptoHistoricalQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: FMPCryptoHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -101,7 +101,7 @@ class FMPCryptoHistoricalFetcher(
         if query.interval == "1day":
             url = f"{base_url}/historical-price-full/crypto/{url_params}"
 
-        return get_data_many(url, "historical", **kwargs)
+        return await get_data_many(url, "historical", **kwargs)
 
     @staticmethod
     def transform_data(

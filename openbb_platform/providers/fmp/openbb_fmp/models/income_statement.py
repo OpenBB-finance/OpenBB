@@ -137,7 +137,7 @@ class FMPIncomeStatementFetcher(
         return FMPIncomeStatementQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: FMPIncomeStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -153,7 +153,7 @@ class FMPIncomeStatementFetcher(
             f"period={query.period}&limit={query.limit}&apikey={api_key}"
         )
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

@@ -114,7 +114,7 @@ class FMPCashFlowStatementFetcher(
         return FMPCashFlowStatementQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: FMPCashFlowStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -126,7 +126,7 @@ class FMPCashFlowStatementFetcher(
             3, f"cash-flow-statement/{query.symbol}", api_key, query, ["symbol"]
         )
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

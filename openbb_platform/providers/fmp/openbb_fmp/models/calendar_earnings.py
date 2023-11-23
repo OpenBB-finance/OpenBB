@@ -105,7 +105,7 @@ class FMPCalendarEarningsFetcher(
         return FMPCalendarEarningsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: FMPCalendarEarningsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -115,7 +115,7 @@ class FMPCalendarEarningsFetcher(
 
         url = create_url(3, "earning_calendar", api_key, query, [])
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

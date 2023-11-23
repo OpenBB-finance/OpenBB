@@ -90,7 +90,7 @@ class FMPHistoricalEpsFetcher(
         return FMPHistoricalEpsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: FMPHistoricalEpsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -102,7 +102,7 @@ class FMPHistoricalEpsFetcher(
             3, f"historical/earning_calendar/{query.symbol}", api_key, query, ["symbol"]
         )
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

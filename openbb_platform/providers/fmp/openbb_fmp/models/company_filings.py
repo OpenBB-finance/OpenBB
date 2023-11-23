@@ -59,7 +59,7 @@ class FMPCompanyFilingsFetcher(
         return FMPCompanyFilingsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: FMPCompanyFilingsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -71,7 +71,7 @@ class FMPCompanyFilingsFetcher(
             3, f"sec_filings/{query.symbol}", api_key, query, exclude=["symbol"]
         )
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

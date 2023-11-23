@@ -46,7 +46,7 @@ class FMPCalendarSplitsFetcher(
         return FMPCalendarSplitsQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: FMPCalendarSplitsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -57,7 +57,7 @@ class FMPCalendarSplitsFetcher(
         query_str = f"from={query.start_date}&to={query.end_date}"
         url = create_url(3, f"stock_split_calendar?{query_str}", api_key)
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

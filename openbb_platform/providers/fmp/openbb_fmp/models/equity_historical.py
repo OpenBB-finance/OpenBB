@@ -10,7 +10,7 @@ from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalQueryParams,
 )
 from openbb_core.provider.utils.helpers import get_querystring
-from openbb_fmp.utils.helpers import async_get_data_many, get_interval
+from openbb_fmp.utils.helpers import get_data_many, get_interval
 from pydantic import Field, NonNegativeInt
 
 
@@ -102,7 +102,7 @@ class FMPEquityHistoricalFetcher(
         if interval == "1day":
             url = f"{base_url}/historical-price-full/{url_params}"
 
-        return await async_get_data_many(url, "historical", **kwargs)
+        return await get_data_many(url, "historical", **kwargs)
 
     @staticmethod
     def transform_data(

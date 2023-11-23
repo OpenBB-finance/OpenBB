@@ -71,14 +71,13 @@ class FMPFilingsFetcher(
         return FMPFilingsQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: FMPFilingsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-        response: List[Dict] = [{}]
         exclude = []
         if query.form_type is None:
             exclude.append("formType")
@@ -87,12 +86,8 @@ class FMPFilingsFetcher(
         base_url = "https://financialmodelingprep.com/api/v4/rss_feed?"
         query_string = get_querystring(query.model_dump(), exclude)
         url = f"{base_url}{query_string}&apikey={api_key}"
-        data: List[Dict] = get_data_many(url, **kwargs)
 
-        if len(data) > 0:
-            response = data
-
-        return response
+        return await get_data_many(url, **kwargs) or [{}]
 
     @staticmethod
     def transform_data(

@@ -80,25 +80,19 @@ class FMPEconomicCalendarFetcher(
         return FMPEconomicCalendarQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: FMPEconomicCalendarQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the data from the FMP endpoint."""
-        response = []
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3/economic_calendar?"
 
         url = f"{base_url}from={query.start_date}&to={query.end_date}&apikey={api_key}"
 
-        data = make_request(url)
-
-        if data.ok:
-            response = data.json()
-
-        return response
+        return await make_request(url, **kwargs)
 
     @staticmethod
     def transform_data(
