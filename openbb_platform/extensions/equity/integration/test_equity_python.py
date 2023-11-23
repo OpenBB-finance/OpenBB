@@ -96,6 +96,15 @@ def test_equity_fundamental_balance_growth(params, obb):
     [
         ({"start_date": "2023-11-05", "end_date": "2023-11-10", "provider": "fmp"}),
         ({"start_date": "2023-11-05", "end_date": "2023-11-10", "provider": "nasdaq"}),
+        (
+            {
+                "start_date": "2023-11-05",
+                "end_date": "2023-11-10",
+                "symbol": "AAPL",
+                "limit": 100,
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -357,8 +366,26 @@ def test_equity_fundamental_income_growth(params, obb):
         (
             {
                 "symbol": "AAPL",
-                "transaction_type": ["P-Purchase"],
                 "limit": 10,
+            }
+        ),
+        (
+            {
+                "provider": "fmp",
+                "symbol": "AAPL",
+                "limit": 10,
+                "transaction_type": ["P-Purchase"],
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "limit": 10,
+                "start_date": "2021-01-01",
+                "end_date": "2023-06-06",
+                "ownership_type": None,
+                "sort_by": "updated_on",
             }
         ),
     ],
@@ -379,6 +406,14 @@ def test_equity_ownership_insider_trading(params, obb):
                 "symbol": "AAPL",
                 "include_current_quarter": True,
                 "date": "2021-09-30",
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "limit": 100,
             }
         ),
     ],
@@ -426,6 +461,16 @@ def test_equity_calendar_ipo(params, obb):
     "params",
     [
         ({"symbol": "AAPL", "period": "annual", "limit": 100}),
+        (
+            {
+                "provider": "fmp",
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 100,
+                "with_ttm": False,
+            }
+        ),
+        ({"provider": "intrinio", "symbol": "AAPL", "period": "annual", "limit": 100}),
     ],
 )
 @pytest.mark.integration
@@ -571,6 +616,8 @@ def test_equity_fundamental_filings(params, obb):
     "params",
     [
         ({"symbol": "AAPL"}),
+        ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL", "provider": "intrinio"}),
     ],
 )
 @pytest.mark.integration
@@ -851,9 +898,22 @@ def test_equity_fundamental_historical_attributes(params, obb):
     [
         (
             {
+                "symbol": "AAPL",
+                "tag": "ceo",
+            }
+        ),
+        (
+            {
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "tag": "ceo",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "MSFT",
+                "tag": "ebitda",
             }
         ),
     ],
@@ -935,6 +995,7 @@ def test_equity_price_quote(params, obb):
     "params",
     [
         ({"symbol": "AAPL", "provider": "cboe"}),
+        ({"provider": "intrinio", "symbol": "AAPL"}),
     ],
 )
 @pytest.mark.integration
@@ -1106,6 +1167,17 @@ def test_equity_discovery_upcoming_release_days(params, obb):
                 "form_type": "10-Q",
                 "is_done": "true",
                 "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "thea_enabled": None,
+                "start_date": "2023-11-06",
+                "end_date": "2023-11-07",
+                "limit": 50,
+                "form_type": "10-Q",
             }
         ),
     ],
