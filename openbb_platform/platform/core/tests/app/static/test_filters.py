@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 
 
 def test_filter_inputs_not_df():

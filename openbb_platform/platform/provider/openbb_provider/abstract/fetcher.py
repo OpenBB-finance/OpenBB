@@ -4,10 +4,9 @@
 
 from typing import Any, Dict, Generic, Optional, TypeVar, get_args, get_origin
 
+from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.query_params import QueryParams
 from pandas import DataFrame
-
-from openbb_provider.abstract.data import Data
-from openbb_provider.abstract.query_params import QueryParams
 
 Q = TypeVar("Q", bound=QueryParams)
 D = TypeVar("D", bound=Data)

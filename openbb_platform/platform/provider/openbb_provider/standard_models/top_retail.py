@@ -2,11 +2,13 @@
 
 from datetime import date as DateType
 
+from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.query_params import QueryParams
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+    QUERY_DESCRIPTIONS,
+)
 from pydantic import Field
-
-from openbb_provider.abstract.data import Data
-from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class TopRetailQueryParams(QueryParams):

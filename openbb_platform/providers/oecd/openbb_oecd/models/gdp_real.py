@@ -4,9 +4,12 @@
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional, Union
 
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.gdp_real import (
+    GdpRealData,
+    GdpRealQueryParams,
+)
 from openbb_oecd.utils import constants, helpers
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.gdp_real import GdpRealData, GdpRealQueryParams
 from pydantic import Field, field_validator
 
 rgdp_countries = tuple(constants.COUNTRY_TO_CODE_RGDP.keys())

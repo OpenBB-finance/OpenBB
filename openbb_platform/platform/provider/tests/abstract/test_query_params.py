@@ -1,6 +1,6 @@
 """Test QueryParams."""
 
-from openbb_provider.abstract.query_params import QueryParams
+from openbb_core.provider.abstract.query_params import QueryParams
 
 
 def test_query_params_repr():

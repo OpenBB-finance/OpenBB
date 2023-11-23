@@ -4,11 +4,11 @@ from typing import Dict, Iterable, List, Optional, Union
 
 import numpy as np
 import pandas as pd
-from openbb_provider.abstract.data import Data
 from pydantic import ValidationError
 
 from openbb_core.app.model.preferences import Preferences
 from openbb_core.app.model.system_settings import SystemSettings
+from openbb_core.provider.abstract.data import Data
 
 
 def basemodel_to_df(

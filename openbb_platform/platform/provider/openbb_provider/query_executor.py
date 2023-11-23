@@ -1,12 +1,11 @@
 """Query executor module."""
 from typing import Any, Dict, Optional, Type
 
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.abstract.provider import Provider
+from openbb_core.provider.registry import Registry, RegistryLoader
+from openbb_core.provider.utils.errors import ProviderError
 from pydantic import SecretStr
-
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.abstract.provider import Provider
-from openbb_provider.registry import Registry, RegistryLoader
-from openbb_provider.utils.errors import ProviderError
 
 
 class QueryExecutor:

@@ -1,6 +1,6 @@
 """Test the Provider."""
 
-from openbb_provider.abstract.provider import Provider
+from openbb_core.provider.abstract.provider import Provider
 
 
 def test_provider_initialization():

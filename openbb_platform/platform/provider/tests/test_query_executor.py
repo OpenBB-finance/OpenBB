@@ -4,10 +4,10 @@
 from unittest.mock import MagicMock, patch
 
 import pytest
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.abstract.provider import Provider
-from openbb_provider.query_executor import QueryExecutor
-from openbb_provider.utils.errors import ProviderError
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.abstract.provider import Provider
+from openbb_core.provider.query_executor import QueryExecutor
+from openbb_core.provider.utils.errors import ProviderError
 from pydantic import SecretStr
 
 

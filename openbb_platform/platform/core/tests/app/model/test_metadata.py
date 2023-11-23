@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 from openbb_core.app.model.metadata import Metadata
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 
 
 def test_Metadata():

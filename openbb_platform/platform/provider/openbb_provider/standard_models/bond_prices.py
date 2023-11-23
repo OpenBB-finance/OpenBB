@@ -5,10 +5,9 @@ from datetime import (
 )
 from typing import List, Optional, Union
 
+from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.query_params import QueryParams
 from pydantic import Field, field_validator
-
-from openbb_provider.abstract.data import Data
-from openbb_provider.abstract.query_params import QueryParams
 
 
 class BondPricesQueryParams(QueryParams):

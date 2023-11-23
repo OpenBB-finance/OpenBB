@@ -2,7 +2,7 @@
 # pylint: disable=W0621
 
 import pytest
-from openbb_provider.registry_map import RegistryMap
+from openbb_core.provider.registry_map import RegistryMap
 
 
 @pytest.fixture

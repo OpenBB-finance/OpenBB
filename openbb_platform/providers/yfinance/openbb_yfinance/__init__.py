@@ -1,7 +1,7 @@
 """Yahoo Finance provider module."""
 
 
-from openbb_provider.abstract.provider import Provider
+from openbb_core.provider.abstract.provider import Provider
 from openbb_yfinance.models.active import YFActiveFetcher
 from openbb_yfinance.models.aggressive_small_caps import YFAggressiveSmallCapsFetcher
 from openbb_yfinance.models.available_indices import YFinanceAvailableIndicesFetcher

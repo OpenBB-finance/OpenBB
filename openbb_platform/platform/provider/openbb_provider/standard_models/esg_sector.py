@@ -1,8 +1,8 @@
 """ESG Sector Standard Model."""
 
 
-from openbb_provider.abstract.data import Data
-from openbb_provider.abstract.query_params import QueryParams
+from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.query_params import QueryParams
 
 
 class ESGSectorQueryParams(QueryParams):

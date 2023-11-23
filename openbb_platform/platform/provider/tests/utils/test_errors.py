@@ -1,7 +1,7 @@
 """Test custom errors."""
 
 import pytest
-from openbb_provider.utils.errors import EmptyDataError, ProviderError
+from openbb_core.provider.utils.errors import EmptyDataError, ProviderError
 
 
 def function_that_raises_provider_error():

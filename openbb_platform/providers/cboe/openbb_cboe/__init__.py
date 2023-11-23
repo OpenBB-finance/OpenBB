@@ -18,7 +18,7 @@ from openbb_cboe.models.market_indices import (
     CboeMarketIndicesFetcher,
 )
 from openbb_cboe.models.options_chains import CboeOptionsChainsFetcher
-from openbb_provider.abstract.provider import Provider
+from openbb_core.provider.abstract.provider import Provider
 
 cboe_provider = Provider(
     name="cboe",

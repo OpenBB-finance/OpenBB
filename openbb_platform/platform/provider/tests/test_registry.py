@@ -1,7 +1,7 @@
 """Test the Registry."""
 
-from openbb_provider.abstract.provider import Provider
-from openbb_provider.registry import Registry, RegistryLoader
+from openbb_core.provider.abstract.provider import Provider
+from openbb_core.provider.registry import Registry, RegistryLoader
 
 
 def test_registry():

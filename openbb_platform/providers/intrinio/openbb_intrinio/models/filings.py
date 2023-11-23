@@ -7,14 +7,14 @@ from datetime import (
 from typing import Any, Dict, List, Optional
 
 from dateutil.relativedelta import relativedelta
-from openbb_intrinio.utils.helpers import get_data_many
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.filings import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.filings import (
     FilingsData,
     FilingsQueryParams,
 )
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.helpers import get_querystring
+from openbb_intrinio.utils.helpers import get_data_many
 from pydantic import Field
 
 

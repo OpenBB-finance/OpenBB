@@ -2,12 +2,12 @@
 
 from typing import Any, Dict, List, Optional
 
-from openbb_fred.utils.fred_base import Fred
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.iorb_rates import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.iorb_rates import (
     IORBData,
     IORBQueryParams,
 )
+from openbb_fred.utils.fred_base import Fred
 from pydantic import field_validator
 
 

@@ -2,7 +2,7 @@
 
 from typing import Dict, List, Optional, Type
 
-from openbb_provider.abstract.fetcher import Fetcher
+from openbb_core.provider.abstract.fetcher import Fetcher
 
 
 class Provider:

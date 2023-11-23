@@ -2,7 +2,7 @@
 
 from typing import Any, Dict, List, Optional
 
-from openbb_provider.abstract.fetcher import Data, Fetcher, QueryParams
+from openbb_core.provider.abstract.fetcher import Data, Fetcher, QueryParams
 
 # Step 1: Create a dummy subclass of Fetcher
 

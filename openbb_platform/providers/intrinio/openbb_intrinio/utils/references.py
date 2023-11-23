@@ -2,7 +2,7 @@
 
 from typing import Literal, Optional
 
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 from pydantic import Field
 
 SOURCES = Literal[

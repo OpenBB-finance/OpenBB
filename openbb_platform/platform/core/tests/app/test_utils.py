@@ -10,7 +10,7 @@ from openbb_core.app.utils import (
     list_to_basemodel,
     ndarray_to_basemodel,
 )
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 
 df = pd.DataFrame(
     {

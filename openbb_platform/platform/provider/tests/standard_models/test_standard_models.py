@@ -6,8 +6,11 @@ from importlib import import_module
 from pathlib import Path
 
 import pytest
-from openbb_provider.abstract.fetcher import Data, QueryParams
-from openbb_provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from openbb_core.provider.abstract.fetcher import Data, QueryParams
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+    QUERY_DESCRIPTIONS,
+)
 from pydantic.fields import FieldInfo
 
 models_path = (
@@ -20,7 +23,9 @@ for model_file in model_files:
     if model_file.stem == "__init__":
         continue
 
-    model_module = import_module(f"openbb_provider.standard_models.{model_file.stem}")
+    model_module = import_module(
+        f"openbb_core.provider.standard_models.{model_file.stem}"
+    )
 
     for _, obj in inspect.getmembers(model_module):
         if inspect.isclass(obj) and (
@@ -49,13 +54,13 @@ def test_standard_models(standard_model):
                 assert QUERY_DESCRIPTIONS[name] in field.description, (
                     f"Description for {name} is incorrect for the {standard_model.__name__}.\n"
                     f"Please modify the description or change the field name to a non-reserved name."
-                    f"To get a full list of reserved descriptions, navigate to openbb_provider.utils.descriptions.py"
+                    f"To get a full list of reserved descriptions, navigate to openbb_core.provider.utils.descriptions.py"
                     f"You can also add extra information to the existing reserved field description in your model."
                 )
         elif name in DATA_DESCRIPTIONS:
             assert DATA_DESCRIPTIONS[name] in field.description, (
                 f"Description for {name} is incorrect for the {standard_model.__name__}.\n"
                 f"Please modify the description or change the field name to a non-reserved name."
-                f"To get a full list of reserved descriptions, navigate to openbb_provider.utils.descriptions.py"
+                f"To get a full list of reserved descriptions, navigate to openbb_core.provider.utils.descriptions.py"
                 f"You can also add extra information to the existing reserved field description in your model."
             )

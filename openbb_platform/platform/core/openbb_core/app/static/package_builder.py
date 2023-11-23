@@ -27,7 +27,6 @@ from typing import (
 import numpy as np
 import pandas as pd
 from importlib_metadata import entry_points
-from openbb_provider.abstract.data import Data
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
 from starlette.routing import BaseRoute
@@ -38,6 +37,7 @@ from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap, RouterLoader
 from openbb_core.env import Env
+from openbb_core.provider.abstract.data import Data
 
 DataProcessingSupportedTypes = TypeVar(
     "DataProcessingSupportedTypes",
@@ -284,7 +284,7 @@ class ImportDefinition:
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_core.app.static.decorators import validate\n"
         code += "\nfrom openbb_core.app.static.filters import filter_inputs\n"
-        code += "\nfrom openbb_provider.abstract.data import Data"
+        code += "\nfrom openbb_core.provider.abstract.data import Data"
         if path.startswith("/quantitative"):
             code += "\nfrom openbb_quantitative.models import "
             code += "(CAPMModel,NormalityModel,OmegaModel,SummaryModel,UnitRootModel)"
@@ -829,7 +829,9 @@ class MethodDefinition:
         func_params = func_params.replace(
             "pandas.core.frame.DataFrame", "pandas.DataFrame"
         )
-        func_params = func_params.replace("openbb_provider.abstract.data.Data", "Data")
+        func_params = func_params.replace(
+            "openbb_core.provider.abstract.data.Data", "Data"
+        )
 
         return func_params
 

@@ -2,7 +2,7 @@
 
 import pytest
 import requests
-from openbb_provider.utils.helpers import (
+from openbb_core.provider.utils.helpers import (
     get_querystring,
     get_user_agent,
     make_request,
