@@ -22,10 +22,6 @@ class IntrinioKeyMetricsQueryParams(KeyMetricsQueryParams):
             https://data.intrinio.com/data-tag/pricetoearnings
     """
 
-    with_ttm: Optional[bool] = Field(
-        default=False, description="Include trailing twelve months (TTM) data."
-    )
-
 
 class IntrinioKeyMetricsData(KeyMetricsData):
     """Intrinio Key Metrics Data."""
