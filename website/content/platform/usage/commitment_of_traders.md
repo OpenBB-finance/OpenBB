@@ -93,7 +93,7 @@ The `data_type` changes what is returned, futures or futures and options.
 
 - `F` (futures only)
 
-- `FO` = (futures and options)
+- `FO` (futures and options)
 
 - `CITS` (Commodity Index Trader Supplemental - only valid for commodities.)
 
