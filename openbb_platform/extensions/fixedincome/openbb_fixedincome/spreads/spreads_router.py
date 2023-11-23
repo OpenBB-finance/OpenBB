@@ -16,7 +16,7 @@ router = Router(prefix="/spreads")
 
 
 @router.command(model="TreasuryConstantMaturity")
-def tmc(
+async def tmc(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -29,11 +29,11 @@ def tmc(
     Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
     yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="SelectedTreasuryConstantMaturity")
-def tmc_effr(
+async def tmc_effr(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -46,11 +46,11 @@ def tmc_effr(
     Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
     yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="SelectedTreasuryBill")
-def treasury_effr(
+async def treasury_effr(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -64,4 +64,4 @@ def treasury_effr(
     The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
     yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))

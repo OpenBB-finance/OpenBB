@@ -126,7 +126,6 @@ def test_intrinio_balance_sheet_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_intrinio_cash_flow_statement_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
-
     fetcher = IntrinioCashFlowStatementFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
@@ -144,7 +143,7 @@ def test_intrinio_income_statement_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_intrinio_fred_indices_fetcher(credentials=test_credentials):
     params = {
-        "symbol": "GDP",
+        "symbol": "$GDP",
         "start_date": date(2022, 9, 20),
         "end_date": date(2023, 9, 20),
     }

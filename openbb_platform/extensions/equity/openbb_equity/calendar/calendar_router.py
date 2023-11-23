@@ -16,44 +16,44 @@ router = Router(prefix="/calendar")
 
 
 @router.command(model="CalendarIpo")
-def ipo(
+async def ipo(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Upcoming and Historical IPO Calendar."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="CalendarDividend")
-def dividend(
+async def dividend(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Upcoming and Historical Dividend Calendar."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="CalendarSplits")
-def split(
+async def split(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Calendar Splits. Show Stock Split Calendar."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="CalendarEarnings")
-def earnings(
+async def earnings(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Upcoming and Historical earnings calendar."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
