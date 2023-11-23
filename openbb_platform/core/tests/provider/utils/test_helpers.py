@@ -6,7 +6,6 @@ from openbb_core.provider.utils.helpers import (
     get_querystring,
     get_user_agent,
     make_request,
-    to_camel_case,
     to_snake_case,
 )
 
@@ -69,11 +68,3 @@ def test_to_snake_case():
     assert to_snake_case("SomeRandomString") == "some_random_string"
     assert to_snake_case("someRandomString") == "some_random_string"
     assert to_snake_case("already_snake_case") == "already_snake_case"
-
-
-def test_to_camel_case():
-    """Test the to_camel_case helper."""
-    assert to_camel_case("some_field") == "someField"
-    assert to_camel_case("alreadyCamelCase") == "alreadyCamelCase"
-    assert to_camel_case("close") == "Close"
-    assert not to_camel_case("")

@@ -59,7 +59,7 @@ class Query:
 
         return filtered
 
-    def execute(self) -> Any:
+    async def execute(self) -> Any:
         """Execute the query."""
         standard_dict = asdict(self.standard_params)
         extra_dict = (
@@ -69,7 +69,7 @@ class Query:
         )
         query_executor = self.provider_interface.create_executor()
 
-        return query_executor.execute(
+        return await query_executor.execute(
             provider_name=self.provider,
             model_name=self.name,
             params={**standard_dict, **extra_dict},

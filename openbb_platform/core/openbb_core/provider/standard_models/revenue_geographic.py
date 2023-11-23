@@ -6,7 +6,7 @@ from typing import Dict, List, Literal, Optional, Set, Union
 
 from pydantic import Field, field_validator
 
-from openbb_core.provider.abstract.data import Data, StrictInt
+from openbb_core.provider.abstract.data import Data, ForceInt
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
@@ -37,21 +37,21 @@ class RevenueGeographicData(Data):
     """Revenue by Geographic Segments Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    geographic_segment: Dict[str, int] = Field(
+    geographic_segment: Dict[str, ForceInt] = Field(
         description="Day level data containing the revenue of the geographic segment."
     )
-    americas: Optional[StrictInt] = Field(
+    americas: Optional[ForceInt] = Field(
         default=None, description="Revenue from the the American segment."
     )
-    europe: Optional[StrictInt] = Field(
+    europe: Optional[ForceInt] = Field(
         default=None, description="Revenue from the the European segment."
     )
-    greater_china: Optional[StrictInt] = Field(
+    greater_china: Optional[ForceInt] = Field(
         default=None, description="Revenue from the the Greater China segment."
     )
-    japan: Optional[StrictInt] = Field(
+    japan: Optional[ForceInt] = Field(
         default=None, description="Revenue from the the Japan segment."
     )
-    rest_of_asia_pacific: Optional[StrictInt] = Field(
+    rest_of_asia_pacific: Optional[ForceInt] = Field(
         default=None, description="Revenue from the the Rest of Asia Pacific segment."
     )

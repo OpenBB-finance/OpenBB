@@ -8,7 +8,10 @@ from typing import Any, Dict, List, Literal, Optional, TypeVar, Union
 import requests
 from openbb_core.provider import helpers
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import (
+    async_make_request,
+    get_querystring,
+)
 from pydantic import BaseModel
 from requests.exceptions import SSLError
 
@@ -108,6 +111,35 @@ def create_url(
     query_string = get_querystring(the_dict, exclude or [])
     base_url = f"https://financialmodelingprep.com/api/v{version}/"
     return f"{base_url}{endpoint}?{query_string}&apikey={api_key}"
+
+
+async def async_get_data_many(
+    url: str, sub_dict: Optional[str] = None, **kwargs: Any
+) -> List[dict]:
+    """Get data from FMP endpoint and convert to list of schemas.
+
+    Parameters
+    ----------
+    url: str
+        The URL to get the data from.
+    sub_dict: Optional[str]
+        The sub-dictionary to use.
+
+    Returns
+    -------
+    List[dict]
+        Dictionary of data.
+    """
+    data = await async_make_request(url, **kwargs)
+
+    if sub_dict and isinstance(data, dict):
+        data = data.get(sub_dict, [])
+    if isinstance(data, dict):
+        raise ValueError("Expected list of dicts, got dict")
+    if len(data) == 0:
+        raise EmptyDataError()
+
+    return data
 
 
 def get_data_many(

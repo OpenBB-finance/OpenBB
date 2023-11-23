@@ -23,6 +23,7 @@ from openbb_core.app.router import CommandMap
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
 from openbb_core.env import Env
+from openbb_core.provider.utils.helpers import maybe_coroutine, run_async
 
 
 class ExecutionContext:
@@ -116,7 +117,7 @@ class ParametersBuilder:
         command_coverage: Dict[str, List[str]],
         route: str,
         kwargs: Dict[str, Any],
-        route_default: Optional[str],
+        route_default: Optional[Dict[str, Optional[str]]],
     ) -> Dict[str, Any]:
         """Update the provider choices with the available providers and set default provider."""
 
@@ -142,7 +143,7 @@ class ParametersBuilder:
 
         def _get_default_provider(
             command_coverage: Dict[str, List[str]],
-            route_default: Optional[str],
+            route_default: Optional[Dict[str, Optional[str]]],
         ) -> Optional[str]:
             """Get the default provider for the given route.
             Either pick it from the user defaults or from the command coverage."""
@@ -230,7 +231,7 @@ class ParametersBuilder:
 
 class StaticCommandRunner:
     @classmethod
-    def _command(cls, func: Callable, kwargs: Dict[str, Any]) -> OBBject:
+    async def _command(cls, func: Callable, kwargs: Dict[str, Any]) -> OBBject:
         """Run a command and return the output"""
         context_manager: Union[warnings.catch_warnings, ContextManager[None]] = (
             warnings.catch_warnings(record=True)
@@ -239,7 +240,7 @@ class StaticCommandRunner:
         )
 
         with context_manager as warning_list:
-            obbject = func(**kwargs)
+            obbject = await maybe_coroutine(func, **kwargs)
 
             obbject.provider = getattr(
                 kwargs.get("provider_choices", None), "provider", None
@@ -272,7 +273,7 @@ class StaticCommandRunner:
         )
 
     @classmethod
-    def _execute_func(
+    async def _execute_func(
         cls,
         route: str,
         args: Tuple[Any],
@@ -306,7 +307,7 @@ class StaticCommandRunner:
         kwargs.pop("chart", None)
 
         try:
-            obbject = cls._command(
+            obbject = await cls._command(
                 func=func,
                 kwargs=kwargs,
             )
@@ -338,7 +339,7 @@ class StaticCommandRunner:
         return obbject
 
     @classmethod
-    def run(
+    async def run(
         cls,
         execution_context: ExecutionContext,
         /,
@@ -352,7 +353,7 @@ class StaticCommandRunner:
         route = execution_context.route
 
         if func := command_map.get_command(route=route):
-            obbject = cls._execute_func(
+            obbject = await cls._execute_func(
                 route=route,
                 args=args,  # type: ignore
                 execution_context=execution_context,
@@ -413,7 +414,7 @@ class CommandRunner:
     def user_settings(self, user_settings: UserSettings) -> None:
         self._user_settings = user_settings
 
-    def run(
+    async def run(
         self,
         route: str,
         user_settings: Optional[UserSettings] = None,
@@ -431,8 +432,15 @@ class CommandRunner:
             user_settings=self._user_settings,
         )
 
-        return StaticCommandRunner.run(
-            execution_context,
-            *args,
-            **kwargs,
-        )
+        return await StaticCommandRunner.run(execution_context, *args, **kwargs)
+
+    def sync_run(
+        self,
+        route: str,
+        user_settings: Optional[UserSettings] = None,
+        /,
+        *args,
+        **kwargs,
+    ) -> OBBject:
+        """Run a command and return the OBBject as output."""
+        return run_async(self.run, route, user_settings, *args, **kwargs)
