@@ -241,7 +241,7 @@ class StaticCommandRunner:
         )
 
         with context_manager as warning_list:
-            obbject: OBBject = await maybe_coroutine(func, **kwargs)  # type: ignore
+            obbject = await maybe_coroutine(func, **kwargs)
 
             obbject.provider = getattr(
                 kwargs.get("provider_choices", None), "provider", None
