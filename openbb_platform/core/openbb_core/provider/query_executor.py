@@ -51,7 +51,9 @@ class QueryExecutor:
                 credential_value = credentials.get(c)
                 if c not in credentials or credential_value is None:
                     if require_credentials:
-                        raise ProviderError(f"Missing credential '{c}'.")
+                        raise ProviderError(
+                            f"Missing credential '{c}', check {provider.website}."
+                        )
                 else:
                     filtered_credentials[c] = credential_value.get_secret_value()
 
