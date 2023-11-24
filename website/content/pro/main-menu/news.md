@@ -20,30 +20,34 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
-  youtubeLink="https://www.youtube.com/embed/lIzMfaTFhBg?si=otM5brWDxuuYR1Dk"
+  youtubeLink="https://www.youtube.com/embed/f2w3YufZHYU?si=SvT_Wo4bIa8EbZlH"
   videoLegend="Short introduction to Terminal Pro News"
 />
 
 Welcome to the News section of OpenBB Terminal Pro. This is your hub for staying updated with the latest financial news and market trends.
 
-<img width="1792" alt="273495463-5d5ed1cf-f108-469d-9c36-94aa982e6944" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/d1785ad7-7a5d-4c70-949f-795ce7f875e8"/>
+<img className="pro-border-gradient" width="800" alt="1" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/7073b3e3-88f0-4ff4-b16a-36fdcdded679" />
 
 Our News section is divided into various topics such as Overview, Markets, Economics, Industries, Events, Tech, Politics, Ratings, and Opinion. Each topic further branches into subcategories, allowing you to navigate and explore news articles based on your interests.
 
-<img width="1792" alt="273495761-0b5d2ec5-f7e8-43b8-b2bf-36b677a14f7b" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/4b563c60-04af-4894-9579-f8b579e24f55"/>
+<img className="pro-border-gradient" width="800" alt="2" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/7a5e36c5-d481-41fb-b6a7-ab54603d1ff1" />
 
 Every news article can be opened for a detailed read. But that's not all. We've integrated two additional features to enhance your news reading experience:
 
 1. **Interactive Chat** - Click on the chat icon at the top left of the news article to ask questions related to the article. For example, you can ask for a summary of the article or inquire about its impact on your investments.
 
-<img width="1792" alt="273495862-4f52b95c-3113-4f6e-937d-b3f24337c194" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/9abc1daa-6a0b-4db4-b9c8-fb9f74a3fd5c"/>
+<img className="pro-border-gradient" width="800" alt="3" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/df705e9c-2d91-4914-8280-2c4216e4ce21" />
 
 2. **Ticker Analysis** - The top right of the news article displays a list of tickers mentioned in the article. Hover over a ticker to get a quick overview including price, volume, market cap, day price range, 52-week price range, and an interactive chart of the stock price since the previous day.
 
-<img width="1792" alt="273496116-8d59bd44-b338-4e53-bc45-067b131ec164" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/4983040a-c51a-49e8-bac4-d6e4aa3de711"/>
+<img className="pro-border-gradient" width="800" alt="4" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/a51d0d99-56b0-4687-9007-f847735f3691" />
 
-Click on "See profile" to open a comprehensive dashboard for the ticker.
+* Click on the chart to open charting tab with the ticker data.
 
-<img width="1792" alt="273496498-71709b8a-cdc0-4f8d-a28a-c796f2835785" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/6ca6c319-4284-4dff-a76e-7e711a44e890"/>
+<img className="pro-border-gradient" width="800" alt="5" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/c5b2fe49-5d67-4ca9-a1a1-105f284aa54f" />
 
-Please note, the News section is not customizable.
+* Click on "Create Dashboard for MSFT" to open a comprehensive dashboard for the ticker.
+
+<img className="pro-border-gradient" width="800" alt="6" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/47261e9d-4b92-4578-9708-0b1fa102d1c9" />
+
+Please note, that the News section is not customizable.
