@@ -27,8 +27,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 OpenBB copilot is your companion to interact with the OpenBB Terminal Pro.
 
-![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/d7023765-7fcd-4bcb-bded-7ed44d4f7c18)
-
+<img width="3701" alt="COPILOT- New" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/1c2d892e-03b7-4db8-9e8c-6fb1ab8512a1">
 
 To initiate a dialogue with the OpenBB Copilot, simply click on the icon located at the top left of your screen. You have the option to input your request either through typing or voice command.
 
