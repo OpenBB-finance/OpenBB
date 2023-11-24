@@ -7,9 +7,9 @@ from datetime import (
 from typing import List, Optional, Set, Union
 
 from dateutil import parser
-from pydantic import Field, StrictFloat, StrictInt, field_validator
+from pydantic import Field, StrictFloat, field_validator
 
-from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data, ForceInt
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
@@ -44,7 +44,7 @@ class MarketIndicesData(Data):
     high: StrictFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
     low: StrictFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: StrictFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: Optional[StrictInt] = Field(
+    volume: Optional[ForceInt] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )
 

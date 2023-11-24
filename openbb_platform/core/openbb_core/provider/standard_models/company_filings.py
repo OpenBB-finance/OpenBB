@@ -4,6 +4,7 @@
 from datetime import date as dateType
 from typing import List, Literal, Optional, Set, Union
 
+from dateutil import parser
 from pydantic import Field, field_validator
 
 from openbb_core.provider.abstract.data import Data
@@ -144,3 +145,8 @@ class CompanyFilingsData(Data):
     )
     type: str = Field(description="Type of document.")
     link: str = Field(description="URL to the document.")
+
+    @field_validator("date", mode="before", check_fields=False)
+    def convert_date(cls, v: str):
+        """Convert date to date type."""
+        return parser.parse(str(v)).date()
