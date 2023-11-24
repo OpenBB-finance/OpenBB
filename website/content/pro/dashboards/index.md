@@ -27,7 +27,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
   videoLegend="Short introduction to Terminal Pro dashboards"
 />
 
-<img width="1443" alt="275685305-db3b650a-5e33-4709-acc7-0f86f9522c06" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/e5f957db-3cf8-4873-9629-1fed0f08f2c7"/>
+<img width="800" alt="dash" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/156b080a-e32b-4d56-baf6-bb04038f2d63">
 
 Dashboards are a collection of widgets. In the image above you can see that there are 3 different dashboards and the one selected can be seen in the working area.
 
@@ -35,7 +35,7 @@ There are 2 ways to interact with dashboards.
 
 ### The plus icon at the bottom right
 
-<img width="357" alt="275685682-b4fd638e-2b4d-4216-96a6-31605a0c991a" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/5485e465-6685-462b-86ea-ad951fb0532b"/>
+<img width="800" alt="add widget" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/e8a79a68-1712-4c9d-8a63-797aaa7fd541">
 
 This allows to:
 
@@ -46,7 +46,7 @@ This allows to:
 
 ### The settings icon on the Dashboard's sidebar
 
-<img width="380" alt="275685893-b48b8016-dfb0-48ac-9d85-2fefeb3facb1" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/a3ee6182-2010-45fc-bb67-3280df0e1e40"/>
+<img width="800" alt="dash settings" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/13f536e7-dd5a-4f22-be1c-c65fd31eec6d">
 
 
 This allows to:
@@ -61,6 +61,6 @@ This allows to:
 
 ### The plus icon on the sidebar
 
-<img width="223" alt="275686811-6d7daa4d-6b09-4eb9-8972-626950fc7f6d" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/2bf5b35f-3522-4512-aac7-bc9bec178b00"/>
+<img width="800" alt="add dash" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/5104df11-8cf4-4c80-b9ac-c6e831d28294">
 
 Which allows the creation of a new dashboard, or a new folder.
