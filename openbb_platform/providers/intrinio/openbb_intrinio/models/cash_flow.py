@@ -33,11 +33,11 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
         "depreciation_expense": "depreciationexpense",
         "divestitures": "divestitures",
         "effect_of_exchange_rate_changes": "effectofexchangeratechanges",
-        "changes_in_operating_assets_and_liabilities_net": "increasedecreaseinoperatingcapital",
+        "changes_in_operating_assets_and_liabilities": "increasedecreaseinoperatingcapital",
         "issuance_of_common_equity": "issuanceofcommonequity",
         "issuance_of_debt": "issuanceofdebt",
         "issuance_of_preferred_equity": "issuanceofpreferredequity",
-        "loans_held_for_sale_net": "loansheldforsalenet",
+        "loans_held_for_sale": "loansheldforsalenet",
         "net_cash_from_continuing_financing_activities": "netcashfromcontinuingfinancingactivities",
         "net_cash_from_continuing_investing_activities": "netcashfromcontinuinginvestingactivities",
         "net_cash_from_continuing_operating_activities": "netcashfromcontinuingoperatingactivities",
@@ -54,8 +54,8 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
         "net_income_discontinued_operations": "netincomediscontinued",
         "net_increase_in_fed_funds_sold": "netincreaseinfedfundssold",
         "non_cash_adjustments_to_reconcile_net_income": "noncashadjustmentstonetincome",
-        "other_financing_activities_net": "otherfinancingactivitiesnet",
-        "other_investing_activities_net": "otherinvestingactivitiesnet",
+        "other_financing_activities": "otherfinancingactivitiesnet",
+        "other_investing_activities": "otherinvestingactivitiesnet",
         "other_net_changes_in_cash": "othernetchangesincash",
         "payment_of_dividends": "paymentofdividends",
         "provision_for_loan_losses": "provisionforloanlosses",
@@ -151,10 +151,6 @@ class IntrinioCashFlowStatementFetcher(
             sub_dict["period_ending"] = item["period_ending"]
             sub_dict["fiscal_year"] = item["fiscal_year"]
             sub_dict["fiscal_period"] = item["fiscal_period"]
-
-            # Intrinio does not return Q4 data but FY data instead
-            # if query.period == "quarter" and item["period"] == "FY":
-            #    sub_dict["period"] = "Q4"
 
             transformed_data.append(IntrinioCashFlowStatementData(**sub_dict))
 

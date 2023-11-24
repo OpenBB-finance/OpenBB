@@ -6,15 +6,15 @@ from itertools import repeat
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.income_statement import (
+from openbb_core.provider.standard_models.financial_statements import (
+    FinancialStatementsQueryParams,
     IncomeStatementData,
-    IncomeStatementQueryParams,
 )
 from openbb_intrinio.utils.helpers import get_data_one
-from pydantic import alias_generators
+from pydantic import Field
 
 
-class IntrinioIncomeStatementQueryParams(IncomeStatementQueryParams):
+class IntrinioIncomeStatementQueryParams(FinancialStatementsQueryParams):
     """Intrinio Income Statement Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_company_fundamentals_v2
@@ -26,18 +26,94 @@ class IntrinioIncomeStatementData(IncomeStatementData):
     """Intrinio Income Statement Data."""
 
     __alias_dict__ = {
-        "research_and_development_expenses": "ResearchAndDevelopmentExpense",
-        "selling_general_and_administrative_expenses": "SellingGeneralAndAdministrativeExpense",
-        "ebit": "earnings before interest and taxes (ebit)",
-        "ebitda": "earnings before interest, taxes, depreciation and amortization (ebitda)",
-        "ebitda_margin": "ebitda margin",
-        "operating_income": "OperatingIncomeLoss",
-        "income_before_tax": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",  # noqa: E501
-        "eps_diluted": "EarningsPerShareDiluted",
-        "weighted_average_shares_outstanding": "WeightedAverageNumberOfSharesOutstandingBasic",
-        "weighted_average_shares_outstanding_dil": "WeightedAverageNumberOfDilutedSharesOutstanding",
+        "amortization_expense": "amortizationexpense",
+        "amortizationof_deferred_policy_acquisition_costs": "amortizationofdeferredpolicyacquisitioncosts",
+        "basic_and_diluted_earnings_per_share": "basicdilutedeps",
+        "basic_earnings_per_share": "basiceps",
+        "capitalized_lease_obligations_interest_expense": "capitalizedleaseobligationinterestexpense",
+        "cash_dividends_to_common_per_share": "cashdividendspershare",
+        "current_and_future_benefits": "currentandfuturebenefits",
+        "depletion_expense": "depletionexpense",
+        "deposits_interest_expense": "depositsinterestexpense",
+        "deposits_and_money_market_investments_interest_income": "depositsinterestincome",
+        "depreciation_expense": "depreciationexpense",
+        "diluted_earnings_per_share": "dilutedeps",
+        "exploration_expense": "explorationexpense",
+        "extraordinary_income": "extraordinaryincome",
+        "federal_funds_purchased_and_securities_sold_interest_expense": "fedfundsandrepointerestexpense",
+        "federal_funds_sold_and_securities_borrowed_interest_income": "fedfundsandrepointerestincome",
+        "impairment_charge": "impairmentexpense",
+        "income_tax_expense": "incometaxexpense",
+        "investment_banking_income": "investmentbankingincome",
+        "investment_securities_interest_income": "investmentsecuritiesinterestincome",
+        "loans_and_leases_interest_income": "loansandleaseinterestincome",
+        "long_term_debt_interest_expense": "longtermdebtinterestexpense",
+        "marketing_expense": "marketingexpense",
+        "consolidated_net_income": "netincome",
+        "net_income_continuing_operations": "netincomecontinuing",
+        "net_income_discontinued_operations": "netincomediscontinued",
+        "net_income_attributable_to_common_shareholders": "netincometocommon",
+        "net_income_attributable_to_noncontrolling_interest": "netincometononcontrollinginterest",
+        "net_interest_income": "netinterestincome",
+        "net_occupancy_and_equipment_expense": "netoccupancyequipmentexpense",
+        "net_realized_and_unrealized_capital_gainson_investments": "netrealizedcapitalgains",
+        "non_operating_income": "nonoperatingincome",
+        "operating_cost_of_revenue": "operatingcostofrevenue",
+        "operating_revenue": "operatingrevenue",
+        "other_adjustments_to_consolidated_net_income": "otheradjustmentstoconsolidatednetincome",
+        "other_adjustments_to_net_income_attributable_to_common_shareholders": "otheradjustmentstonetincometocommon",
+        "other_adjustment_to_net_income_attributable_to_common_shareholders": "otheradjustmentstonetincometocommon",
+        "other_cost_of_revenue": "othercostofrevenue",
+        "other_gains": "othergains",
+        "other_income": "otherincome",
+        "other_interest_expense": "otherinterestexpense",
+        "other_interest_income": "otherinterestincome",
+        "other_non_interest_income": "othernoninterestincome",
+        "other_operating_expenses": "otheroperatingexpenses",
+        "other_revenue": "otherrevenue",
+        "other_service_charges": "otherservicechargeincome",
+        "other_special_charges": "otherspecialcharges",
+        "insurance_policy_acquisition_costs": "policyacquisitioncosts",
+        "preferred_stock_dividends_declared": "preferreddividends",
+        "premiums_earned": "premiumsearned",
+        "property_and_liability_insurance_claims": "propertyliabilityinsuranceclaims",
+        "provision_for_credit_losses": "provisionforcreditlosses",
+        "research_and_development_expense": "rdexpense",
+        "restructuring_charge": "restructuringcharge",
+        "salaries_and_employee_benefits": "salariesandemployeebenefitsexpense",
+        "service_chargeson_deposit_accounts": "servicechargesondepositsincome",
+        "selling_general_and_admin_expense": "sgaexpense",
+        "short_term_borrowings_interest_expense": "shorttermborrowinginterestexpense",
+        "total_cost_of_revenue": "totalcostofrevenue",
+        "total_gross_profit": "totalgrossprofit",
+        "total_interest_expense": "totalinterestexpense",
+        "interest_and_investment_income": "totalinterestincome",
+        "total_non_interest_expense": "totalnoninterestexpense",
+        "total_non_interest_income": "totalnoninterestincome",
+        "total_operating_expenses": "totaloperatingexpenses",
+        "total_operating_income": "totaloperatingincome",
+        "total_other_income": "totalotherincome",
+        "total_pre_tax_income": "totalpretaxincome",
+        "total_revenue": "totalrevenue",
+        "trading_account_interest_income": "tradingaccountinterestincome",
+        "trust_fees_by_commissions": "trustfeeincome",
+        "weighted_average_basic_and_diluted_shares_outstanding": "weightedavebasicdilutedsharesos",
+        "weighted_average_basic_shares_outstanding": "weightedavebasicsharesos",
+        "weighted_average_diluted_shares_outstanding": "weightedavedilutedsharesos",
+        "ebit": "ebit",
+        "ebitda": "ebitda",
+        "ebitda_margin": "ebitdamargin",
     }
 
+    ebit: Optional[float] = Field(
+        default=None, description="Earnings Before Interest and Taxes."
+    )
+    ebitda: Optional[float] = Field(
+        default=None, description="Earnings Before Interest, Taxes, Depreciation and Amortization."
+    )
+    ebitda_margin: Optional[float] = Field(
+        default=None, description="Margin on Earnings Before Interest, Taxes, Depreciation and Amortization."
+    )
 
 class IntrinioIncomeStatementFetcher(
     Fetcher[
@@ -91,30 +167,30 @@ class IntrinioIncomeStatementFetcher(
             statement_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
             statement_data = get_data_one(statement_url, **kwargs)
 
-            intrinio_id = f"{query.symbol}-calculations-{period}"
-            calculations_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
+            calculations_intrinio_id = f"{query.symbol}-calculations-{period}"
+            calculations_url = f"{base_url}/fundamentals/{calculations_intrinio_id}/standardized_financials?api_key={api_key}"  # noqa E501
             calculations_data = get_data_one(calculations_url, **kwargs).get(
                 "standardized_financials", []
             )
             calculations_data = [
-                item
-                for item in calculations_data
-                if item["data_tag"]["tag"] in data_tags
+               item
+            for item in calculations_data
+            if item["data_tag"]["tag"] in data_tags
             ]
 
             data.append(
                 {
-                    "date": statement_data["fundamental"]["end_date"],
-                    "period": statement_data["fundamental"]["fiscal_period"],
-                    "financials": statement_data["standardized_financials"]
-                    + calculations_data,
+                    "period_ending": statement_data["fundamental"]["end_date"],
+                    "fiscal_year": statement_data["fundamental"]["fiscal_year"],
+                    "fiscal_period": statement_data["fundamental"]["fiscal_period"],
+                    "financials": statement_data["standardized_financials"]+calculations_data,
                 }
             )
 
         with ThreadPoolExecutor() as executor:
             executor.map(get_financial_statement_data, fiscal_periods, repeat(data))
 
-        return data
+        return sorted(data, key=lambda x: x["period_ending"], reverse=True)
 
     @staticmethod
     def transform_data(
@@ -127,15 +203,16 @@ class IntrinioIncomeStatementFetcher(
             sub_dict: Dict[str, Any] = {}
 
             for sub_item in item["financials"]:
-                field_name = alias_generators.to_snake(sub_item["data_tag"]["name"])
+                field_name = sub_item["data_tag"]["tag"]
                 sub_dict[field_name] = float(sub_item["value"])
 
-            sub_dict["date"] = item["date"]
-            sub_dict["period"] = item["period"]
+            sub_dict["period_ending"] = item["period_ending"]
+            sub_dict["fiscal_year"] = item["fiscal_year"]
+            sub_dict["fiscal_period"] = item["fiscal_period"]
 
             # Intrinio does not return Q4 data but FY data instead
-            if query.period == "quarter" and item["period"] == "FY":
-                sub_dict["period"] = "Q4"
+            # if query.period == "quarter" and item["period"] == "FY":
+            #    sub_dict["period"] = "Q4"
 
             transformed_data.append(IntrinioIncomeStatementData(**sub_dict))
 

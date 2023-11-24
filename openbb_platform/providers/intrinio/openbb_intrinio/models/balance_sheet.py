@@ -112,9 +112,8 @@ class IntrinioBalanceSheetData(BalanceSheetData):
         "total_preferred_common_equity": "totalequity",
         "noncontrolling_interest": "noncontrollinginterests",
         "total_equity_noncontrolling_interests": "totalequityandnoncontrollinginterests",
-        "total_liabilities_shareholders_equity": "totalliabilitiesandequity"
+        "total_liabilities_shareholders_equity": "totalliabilitiesandequity",
     }
-
 
 
 class IntrinioBalanceSheetFetcher(
