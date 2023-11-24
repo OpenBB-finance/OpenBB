@@ -21,5 +21,5 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Full transcript of earnings call.
 
-Source: fmp
+**Source:** fmp
 
