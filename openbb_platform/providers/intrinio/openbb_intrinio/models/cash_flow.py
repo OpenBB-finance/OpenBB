@@ -6,15 +6,14 @@ from itertools import repeat
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.cash_flow import (
+from openbb_core.provider.standard_models.financial_statements import (
     CashFlowStatementData,
-    CashFlowStatementQueryParams,
+    FinancialStatementsQueryParams,
 )
 from openbb_intrinio.utils.helpers import get_data_one
-from pydantic import alias_generators
 
 
-class IntrinioCashFlowStatementQueryParams(CashFlowStatementQueryParams):
+class IntrinioCashFlowStatementQueryParams(FinancialStatementsQueryParams):
     """Intrinio Cash Flow Statement Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_company_fundamentals_v2
@@ -26,33 +25,48 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
     """Intrinio Cash Flow Statement Data."""
 
     __alias_dict__ = {
-        "net_income": "NetIncomeLoss",
-        "depreciation_and_amortization": "DepreciationDepletionAndAmortization",
-        "stock_based_compensation": "ShareBasedCompensation",
-        "deferred_income_tax": "DeferredIncomeTaxExpenseBenefit",
-        "other_non_cash_items": "OtherNoncashIncomeExpense",
-        "accounts_receivables": "IncreaseDecreaseInAccountsReceivable",
-        "inventory": "IncreaseDecreaseInInventories",
-        "vendor_non_trade_receivables": "IncreaseDecreaseInOtherReceivables",
-        "other_current_and_non_current_assets": "IncreaseDecreaseInOtherOperatingAssets",
-        "accounts_payables": "IncreaseDecreaseInAccountsPayable",
-        "deferred_revenue": "IncreaseDecreaseInContractWithCustomerLiability",
-        "other_current_and_non_current_liabilities": "IncreaseDecreaseInOtherOperatingLiabilities",
-        "net_cash_flow_from_operating_activities": "NetCashProvidedByUsedInOperatingActivities",
-        "purchases_of_marketable_securities": "PaymentsToAcquireAvailableForSaleSecuritiesDebt",
-        "sales_from_maturities_of_investments": "ProceedsFromSaleOfAvailableForSaleSecuritiesDebt",
-        "investments_in_property_plant_and_equipment": "ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities",  # noqa: E501
-        "payments_from_acquisitions": "PaymentsToAcquireBusinessesNetOfCashAcquired",
-        "other_investing_activities": "PaymentsForProceedsFromOtherInvestingActivities",
-        "net_cash_flow_from_investing_activities": "NetCashProvidedByUsedInInvestingActivities",
-        "taxes_paid_on_net_share_settlement": "PaymentsRelatedToTaxWithholdingForShareBasedCompensation",
-        "dividends_paid": "PaymentsOfDividends",
-        "common_stock_repurchased": "PaymentsForRepurchaseOfCommonStock",
-        "debt_proceeds": "ProceedsFromIssuanceOfLongTermDebt",
-        "debt_repayment": "RepaymentsOfLongTermDebt",
-        "other_financing_activities": "ProceedsFromPaymentsForOtherFinancingActivities",
-        "net_cash_flow_from_financing_activities": "NetCashProvidedByUsedInFinancingActivities",
-        "net_change_in_cash": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",  # noqa: E501
+        "acquisitions": "acquisitions",
+        "amortization_expense": "amortizationexpense",
+        "cash_income_taxes_paid": "cashincometaxespaid",
+        "cash_interest_paid": "cashinterestpaid",
+        "cash_interest_received": "cashinterestreceived",
+        "depreciation_expense": "depreciationexpense",
+        "divestitures": "divestitures",
+        "effect_of_exchange_rate_changes": "effectofexchangeratechanges",
+        "changes_in_operating_assets_and_liabilities_net": "increasedecreaseinoperatingcapital",
+        "issuance_of_common_equity": "issuanceofcommonequity",
+        "issuance_of_debt": "issuanceofdebt",
+        "issuance_of_preferred_equity": "issuanceofpreferredequity",
+        "loans_held_for_sale_net": "loansheldforsalenet",
+        "net_cash_from_continuing_financing_activities": "netcashfromcontinuingfinancingactivities",
+        "net_cash_from_continuing_investing_activities": "netcashfromcontinuinginvestingactivities",
+        "net_cash_from_continuing_operating_activities": "netcashfromcontinuingoperatingactivities",
+        "net_cash_from_discontinued_financing_activities": "netcashfromdiscontinuedfinancingactivities",
+        "net_cash_from_discontinued_investing_activities": "netcashfromdiscontinuedinvestingactivities",
+        "net_cash_from_discontinued_operating_activities": "netcashfromdiscontinuedoperatingactivities",
+        "net_cash_from_financing_activities": "netcashfromfinancingactivities",
+        "net_cash_from_investing_activities": "netcashfrominvestingactivities",
+        "net_cash_from_operating_activities": "netcashfromoperatingactivities",
+        "net_change_in_cash_and_equivalents": "netchangeincash",
+        "net_change_in_deposits": "netchangeindeposits",
+        "consolidated_net_income": "netincome",
+        "net_income_continuing_operations": "netincomecontinuing",
+        "net_income_discontinued_operations": "netincomediscontinued",
+        "net_increase_in_fed_funds_sold": "netincreaseinfedfundssold",
+        "non_cash_adjustments_to_reconcile_net_income": "noncashadjustmentstonetincome",
+        "other_financing_activities_net": "otherfinancingactivitiesnet",
+        "other_investing_activities_net": "otherinvestingactivitiesnet",
+        "other_net_changes_in_cash": "othernetchangesincash",
+        "payment_of_dividends": "paymentofdividends",
+        "provision_for_loan_losses": "provisionforloanlosses",
+        "purchase_of_investments": "purchaseofinvestments",
+        "purchase_of_investment_securities": "purchaseofinvestments",
+        "purchase_of_property_plant_and_equipment": "purchaseofplantpropertyandequipment",
+        "repayment_of_debt": "repaymentofdebt",
+        "repurchase_of_common_equity": "repurchaseofcommonequity",
+        "repurchase_of_preferred_equity": "repurchaseofpreferredequity",
+        "sale_and_maturity_of_investments": "saleofinvestments",
+        "sale_of_property_plant_and_equipment": "saleofplantpropertyandequipment",
     }
 
 
@@ -108,8 +122,9 @@ class IntrinioCashFlowStatementFetcher(
 
             data.append(
                 {
-                    "date": statement_data["fundamental"]["end_date"],
-                    "period": statement_data["fundamental"]["fiscal_period"],
+                    "period_ending": statement_data["fundamental"]["end_date"],
+                    "fiscal_year": statement_data["fundamental"]["fiscal_year"],
+                    "fiscal_period": statement_data["fundamental"]["fiscal_period"],
                     "financials": statement_data["standardized_financials"],
                 }
             )
@@ -117,7 +132,7 @@ class IntrinioCashFlowStatementFetcher(
         with ThreadPoolExecutor() as executor:
             executor.map(get_financial_statement_data, fiscal_periods, repeat(data))
 
-        return data
+        return sorted(data, key=lambda x: x["period_ending"], reverse=True)
 
     @staticmethod
     def transform_data(
@@ -130,15 +145,16 @@ class IntrinioCashFlowStatementFetcher(
             sub_dict: Dict[str, Any] = {}
 
             for sub_item in item["financials"]:
-                field_name = alias_generators.to_snake(sub_item["data_tag"]["name"])
+                field_name = sub_item["data_tag"]["tag"]
                 sub_dict[field_name] = float(sub_item["value"])
 
-            sub_dict["date"] = item["date"]
-            sub_dict["period"] = item["period"]
+            sub_dict["period_ending"] = item["period_ending"]
+            sub_dict["fiscal_year"] = item["fiscal_year"]
+            sub_dict["fiscal_period"] = item["fiscal_period"]
 
             # Intrinio does not return Q4 data but FY data instead
-            if query.period == "quarter" and item["period"] == "FY":
-                sub_dict["period"] = "Q4"
+            # if query.period == "quarter" and item["period"] == "FY":
+            #    sub_dict["period"] = "Q4"
 
             transformed_data.append(IntrinioCashFlowStatementData(**sub_dict))
 
