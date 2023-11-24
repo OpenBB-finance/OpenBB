@@ -104,13 +104,19 @@ class FMPEquityHistoricalFetcher(
                 url = f"{base_url}/historical-price-full/{url_params}"
             return url
 
+        # if there are more than 20 symbols, we need to increase the timeout
+        if len(query.symbol.split(",")) > 20:
+            kwargs.update({"preferences": {"request_timeout": 30}})
+
         async def response_callback(
             response: ClientResponse, _: ClientSession
         ) -> List[Dict]:
             data: dict = await response.json()
             symbol = response.url.parts[-1]
 
-            data = data.get("historical", [])
+            if isinstance(data, dict):
+                data = data.get("historical", [])
+
             if "," in query.symbol:
                 for d in data:
                     d["symbol"] = symbol
