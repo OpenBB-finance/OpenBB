@@ -9,7 +9,11 @@ from typing import Any, Callable, Dict, List, TextIO, Tuple, Union
 
 from docstring_parser import parse
 from openbb_core.app.provider_interface import ProviderInterface
-from openbb_core.app.static.package_builder import MethodDefinition, PathHandler
+from openbb_core.app.static.package_builder import (
+    DocstringGenerator,
+    MethodDefinition,
+    PathHandler,
+)
 from openbb_core.provider import standard_models
 from pydantic.fields import FieldInfo
 
@@ -153,12 +157,17 @@ def generate_markdown_section(meta: Dict[str, Any]):
 
     # Join the description parts and handle any remaining example code
     if example_code:  # If there's an example block at the end of the docstring
-        description.append("```python\n" + "\n".join(example_code) + "\n```\n")
+        if meta.get("examples", []):
+            description.append("\nExample:\n-------\n")
+        description.append("\n\n```python\n" + "\n".join(example_code) + "\n```")
 
     markdown_description = "\n".join(description)
 
-    markdown = markdown_description + "\n\n"
-    if not example_code:  # Only add function definition if there was no example code
+    markdown = markdown_description
+    markdown += "\n\n" if not markdown_description.endswith("\n\n") else ""
+
+    # Only add function definition if there was no example code
+    if not example_code and not re.search(r"```python", markdown):
         markdown += "```python wordwrap\n" + meta["func_def"] + "\n```\n\n"
 
     markdown += "---\n\n## Parameters\n\n"
@@ -201,12 +210,16 @@ def create_cmd_cards(cmd_text: List[Dict[str, str]], data_models: bool = False) 
     path = "reference" if not data_models else "data_models"
     cmd_cards = ""
     for cmd in cmd_text:
+        title = cmd["title"].replace("_", " ")
         url = f"/platform/{path}/{cmd['url']}".replace("//", "/")
-        if not data_models:
-            url = f"{url}/{cmd['title']}"
         description = shorten(f"{cmd['description']}", width=116, placeholder="...")
+
+        if not data_models:
+            title = title.title()
+            url = f"{url}/{cmd['title']}"
+
         cmd_cards += f"""<ReferenceCard
-    title="{cmd["title"].replace("_", " ").title()}"
+    title="{title}"
     description="{description.split(".").pop(0).strip().replace(":", "").replace('"', "'")}"
     url="{url}"
     command
@@ -330,6 +343,10 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
             "fields"
         ]
 
+        meta_command["description"] += "\n\n" + DocstringGenerator.generate_example(
+            model_name, obb_query_fields
+        )
+
         available_fields = list(obb_query_fields.keys())
         available_fields.extend(["chart", "provider"])
 
@@ -369,7 +386,9 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
                 {
                     "name": param.name,
                     "type": get_annotation_type(param_type),
-                    "default": str(default),
+                    "default": str(default)
+                    if not isinstance(default, str) or not default
+                    else f'"{default}"',
                     "cleaned_type": re.sub(
                         r"Literal\[([^\"\]]*)\]",
                         f"Literal[{type(default).__name__}]",
@@ -635,8 +654,16 @@ def generate_platform_markdown() -> None:
                 data_model_card_description,
             ) = generate_data_model_card_info(meta_command)
 
+            title = re.sub(
+                r"([A-Z]{1}[a-z]+)|([A-Z]{3}|[SP500]|[EU])([A-Z]{1}[a-z]+)|([A-Z]{5,})",  # noqa: W605
+                lambda m: f"{m.group(1) or m.group(4)} ".title()
+                if not any([m.group(2), m.group(3)])
+                else f"{m.group(2)} {m.group(3)} ",
+                data_model,
+            ).strip()
+
             data_markdown = (
-                f"---\ntitle: {data_model}\n"
+                f"---\ntitle: {title}\n"
                 f"description: {data_model_card_title}\n---\n\n"
                 "<!-- markdownlint-disable MD012 MD031 MD033 -->\n\n"
                 "import Tabs from '@theme/Tabs';\nimport TabItem from '@theme/TabItem';\n\n"
@@ -658,7 +685,7 @@ def generate_platform_markdown() -> None:
 
             data_reference_cards.setdefault(data_filepath.parent, []).append(
                 dict(
-                    title=data_model,
+                    title=title,
                     description=data_model_card_title or "",
                     url=data_models_path.relative_to(data_models_path) / data_model,
                 )
