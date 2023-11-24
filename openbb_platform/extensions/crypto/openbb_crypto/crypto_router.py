@@ -17,11 +17,11 @@ router.include_router(price_router)
 
 
 @router.command(model="CryptoSearch")
-def search(
+async def search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Cryptocurrency Search. Search available cryptocurrency pairs."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
