@@ -18,19 +18,17 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Free Trial | OpenBB Terminal Pro Docs" />
 
-To unlock the powerful features of **OpenBB Terminal Pro**, follow these steps:
+There are 3 main ways to get started:
 
-1. Create an OpenBB Hub account. It's free and easy. Sign up here: https://my.openbb.co.
-2. Obtain an early access code.
-
-You can get the early access code in one of the following ways:
 1. Join the waitlist at https://my.openbb.co/app/pro/early-access
-2. Get an invite code from a colleague who already has access
+
+2. Get invited by a colleague who already has access
+
 3. Become a design partner and contribute to our product development
 
 The free trial of **OpenBB Terminal Pro** grants you full access to all features and data for a period of 2 weeks.
 
-To continue using the product after the trial period, you will be allowed to request a 1 week extension for free.  After that you will need to contact sales@openbb.finance to extend your trial.
+To continue using the product after the trial period you can reach out to sales@openbb.finance to extend your trial and discuss pricing options.
 
 As an early adopter, your feedback is invaluable. The OpenBB team may reach out to understand your experience and gather insights for improvement.
 

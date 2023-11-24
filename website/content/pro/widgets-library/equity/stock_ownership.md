@@ -21,5 +21,5 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Instutional Ownership by percentage for a ticker.
 
-Source: fmp
+**Source:** fmp
 
