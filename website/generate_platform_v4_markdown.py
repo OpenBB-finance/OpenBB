@@ -707,9 +707,10 @@ def generate_platform_markdown() -> None:
             f.write(markdown)
 
     reference_cards = dict(sorted(reference_cards.items(), key=lambda item: item[0]))
-    data_reference_cards = dict(
-        sorted(data_reference_cards.items(), key=lambda item: item[0])
-    )
+    data_reference_cards = {
+        folder: sorted(cards, key=lambda item: item["title"])
+        for folder, cards in data_reference_cards.items()
+    }
     with open(content_path / "index.mdx", "w", **kwargs) as f:  # type: ignore
         fname = "OpenBB Platform Reference"
         rel_path = content_path.relative_to(content_path)
