@@ -29,7 +29,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 OpenBB Terminal Pro's advanced search is a powerful tool that enables you to perform a wide range of tasks swiftly and efficiently.
 
-<img width="1455" alt="275681118-b5ed496a-5822-49c9-bc56-958dab886f59" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/b10a013f-ad07-4ea6-ac55-17236b249bb2"/>
+<img width="800" alt="add widgets search" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/9758ac66-1a89-4c33-b54a-bf82c64ae07e">
 
 The search is divided into six main categories:
 
