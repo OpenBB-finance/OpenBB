@@ -32,9 +32,8 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 
 Let's get you started by understanding the layout of the Terminal Pro.
-<div className="pro-border-gradient">
-  <img width="800" alt="mainstruct" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/3846be6d-8110-424a-a87a-67bd96c561f7">
-</div>
+
+<img className="pro-border-gradient" width="800" alt="mainstruct" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/3846be6d-8110-424a-a87a-67bd96c561f7" />
 
 The interface is divided into two main areas:
 

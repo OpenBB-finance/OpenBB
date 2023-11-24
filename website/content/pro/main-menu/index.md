@@ -27,7 +27,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Main Menu | OpenBB Terminal Pro Docs" />
 
-<img width="800" alt="Main Menu" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/2b3df52f-83a8-442e-8021-85caa795b68f">
+<img className="pro-border-gradient" width="800" alt="Main Menu" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/2b3df52f-83a8-442e-8021-85caa795b68f" />
 
 The main menu is your gateway to the powerful features of the OpenBB Terminal Pro. It comprises four key sections:
 
