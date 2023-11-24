@@ -51,13 +51,15 @@ class QueryExecutor:
                 credential_value = credentials.get(c)
                 if c not in credentials or credential_value is None:
                     if require_credentials:
-                        raise ProviderError(f"Missing credential '{c}'.")
+                        website = provider.website or ""
+                        extra_msg = f"Check {website} to get it." if website else ""
+                        raise ProviderError(f"Missing credential '{c}'. {extra_msg}")
                 else:
                     filtered_credentials[c] = credential_value.get_secret_value()
 
         return filtered_credentials
 
-    def execute(
+    async def execute(
         self,
         provider_name: str,
         model_name: str,
@@ -91,6 +93,6 @@ class QueryExecutor:
         )
 
         try:
-            return fetcher.fetch_data(params, filtered_credentials, **kwargs)
+            return await fetcher.fetch_data(params, filtered_credentials, **kwargs)
         except Exception as e:
             raise ProviderError(e) from e

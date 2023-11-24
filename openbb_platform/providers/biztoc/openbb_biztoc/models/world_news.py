@@ -79,7 +79,7 @@ class BiztocWorldNewsFetcher(
         api_key = credentials.get("biztoc_api_key") if credentials else ""
 
         data = get_news(
-            api_key=api_key, filter=query.filter, source=query.source, tag=query.tag, term=query.term  # type: ignore
+            api_key=api_key, filter_=query.filter, source=query.source, tag=query.tag, term=query.term  # type: ignore
         )
         if query.filter == "hot":
             data = [post for sublist in data for post in sublist["posts"]]

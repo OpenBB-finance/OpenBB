@@ -10,7 +10,7 @@ from openbb_core.provider.standard_models.fred_indices import (
     FredIndicesQueryParams,
 )
 from openbb_core.provider.utils.helpers import get_querystring
-from openbb_intrinio.utils.helpers import get_data_one
+from openbb_intrinio.utils.helpers import async_get_data_one
 from pydantic import Field
 
 
@@ -20,6 +20,8 @@ class IntrinioFredIndicesQueryParams(FredIndicesQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_economic_index_historical_data_v2
     """
 
+    __alias_dict__ = {"limit": "page_size"}
+
     next_page: Optional[str] = Field(
         default=None,
         description="Token to get the next page of data from a previous API call.",
@@ -27,6 +29,10 @@ class IntrinioFredIndicesQueryParams(FredIndicesQueryParams):
     all_pages: Optional[bool] = Field(
         default=False,
         description="Returns all pages of data from the API call at once.",
+    )
+    sleep: Optional[float] = Field(
+        default=1.0,
+        description="Time to sleep between requests to avoid rate limiting.",
     )
 
 
@@ -57,7 +63,7 @@ class IntrinioFredIndicesFetcher(
         return IntrinioFredIndicesQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: IntrinioFredIndicesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -66,14 +72,16 @@ class IntrinioFredIndicesFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com"
-        query_str = get_querystring(query.model_dump(), ["symbol", "all_pages"])
-        query_str = query_str.replace("limit", "page_size")
+        query_str = get_querystring(
+            query.model_dump(), ["symbol", "all_pages", "sleep"]
+        )
+
         url = (
             f"{base_url}/indices/economic/${query.symbol.replace('$', '')}/historical_data/level"
             f"?{query_str}&api_key={api_key}"
         )
 
-        data = get_data_one(url, **kwargs)
+        data = await async_get_data_one(url, query.limit, query.sleep, **kwargs)
 
         if query.all_pages:
             all_data: list = data.get("historical_data", [])
@@ -81,16 +89,16 @@ class IntrinioFredIndicesFetcher(
 
             while next_page:
                 query_str = get_querystring(
-                    query.model_dump(by_alias=True),
-                    ["symbol", "next_page", "all_pages"],
+                    query.model_dump(), ["symbol", "next_page", "all_pages", "sleep"]
                 )
-                query_str = query_str.replace("limit", "page_size")
+
                 url = (
                     f"{base_url}/indices/economic/${query.symbol.replace('$', '')}/historical_data/level"
                     f"?{query_str}&next_page={next_page}&api_key={api_key}"
                 )
 
-                data = get_data_one(url, **kwargs)
+                data = await async_get_data_one(url, query.limit, query.sleep, **kwargs)
+
                 all_data.extend(data.get("historical_data", []))
 
                 next_page = data.get("next_page", None)

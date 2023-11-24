@@ -13,7 +13,7 @@ from openbb_core.app.constants import (
     USER_SETTINGS_PATH,
 )
 from openbb_core.app.model.abstract.tagged import Tagged
-from openbb_core.app.model.rest_api_settings import FastAPISettings
+from openbb_core.app.model.fast_api_settings import FastAPISettings
 from openbb_core.app.version import VERSION
 
 
