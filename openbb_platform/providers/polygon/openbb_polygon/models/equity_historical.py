@@ -13,7 +13,7 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
-    make_requests,
+    async_requests,
 )
 from pydantic import (
     Field,
@@ -125,7 +125,7 @@ class PolygonEquityHistoricalFetcher(
             next_url = data.get("next_url", None)
             results: list = data.get("results", [])
 
-            symbol = response.url.query.get("ticker", None)
+            symbol = response.url.parts[4]
 
             while next_url:
                 url = f"{next_url}&apiKey={api_key}"
@@ -147,12 +147,12 @@ class PolygonEquityHistoricalFetcher(
                 "https://api.polygon.io/v2/aggs/ticker/"
                 f"{symbol.upper()}/range/{query._multiplier}/{query._timespan}/"
                 f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
-                f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}&ticker={symbol.upper()}"
+                f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
             )
             for symbol in query.symbol.split(",")
         ]
 
-        return await make_requests(urls, response_callback=response_callback, **kwargs)
+        return await async_requests(urls, response_callback=response_callback, **kwargs)
 
     @staticmethod
     def transform_data(

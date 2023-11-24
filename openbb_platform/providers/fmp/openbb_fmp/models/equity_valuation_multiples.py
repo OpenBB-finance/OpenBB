@@ -7,7 +7,7 @@ from openbb_core.provider.standard_models.equity_valuation_multiples import (
     EquityValuationMultiplesData,
     EquityValuationMultiplesQueryParams,
 )
-from openbb_core.provider.utils.helpers import make_requests
+from openbb_core.provider.utils.helpers import async_requests
 from openbb_fmp.utils.helpers import create_url
 
 
@@ -115,7 +115,7 @@ class FMPEquityValuationMultiplesFetcher(
             )
             for symbol in query.symbol.split(",")
         ]
-        return await make_requests(urls, **kwargs)
+        return await async_requests(urls, **kwargs)
 
     @staticmethod
     def transform_data(

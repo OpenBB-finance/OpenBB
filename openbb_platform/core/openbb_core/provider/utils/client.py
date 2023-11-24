@@ -36,21 +36,6 @@ def get_user_agent() -> str:
 class ClientResponse(aiohttp.ClientResponse):
     """Client response class."""
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.auto_decompress = getattr(self._session, "auto_decompress", False)
-
-    async def json(self, **kwargs) -> Union[dict, list]:
-        """Read and decodes JSON response."""
-        encoding = self.headers.get("Content-Encoding", "")
-        if encoding in ("gzip", "deflate") and not self.auto_decompress:
-            response_body = await self.read()
-            wbits = 16 + zlib.MAX_WBITS if encoding == "gzip" else -zlib.MAX_WBITS
-            self._body = zlib.decompress(response_body, wbits)
-
-        return await super().json(**kwargs)
-
     async def get_one(self) -> Dict[str, Any]:
         """Return the first item in the response."""
         data = await self.json()
@@ -112,6 +97,14 @@ class ClientSession(aiohttp.ClientSession):
                 headers=response.headers,
             )
 
+        encoding = response.headers.get("Content-Encoding", "")
+        if encoding in ("gzip", "deflate") and not self.auto_decompress:
+            response_body = await response.read()
+            wbits = 16 + zlib.MAX_WBITS if encoding == "gzip" else -zlib.MAX_WBITS
+            response._body = zlib.decompress(
+                response_body, wbits
+            )  # pylint: disable=protected-access
+
         return response
 
     async def get(self, url: str, **kwargs) -> ClientResponse:
@@ -120,5 +113,5 @@ class ClientSession(aiohttp.ClientSession):
 
     async def get_json(self, url: str, **kwargs) -> Union[dict, list]:
         """Send GET request and return json."""
-        response = await self.get(url, **kwargs)
+        response = await self.request("GET", url, **kwargs)
         return await response.json()

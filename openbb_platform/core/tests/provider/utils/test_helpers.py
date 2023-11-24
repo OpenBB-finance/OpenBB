@@ -2,9 +2,9 @@
 
 import pytest
 import requests
+from openbb_core.provider.utils.client import get_user_agent
 from openbb_core.provider.utils.helpers import (
     get_querystring,
-    get_user_agent,
     make_request,
     to_snake_case,
 )

@@ -10,7 +10,7 @@ from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
     EquityHistoricalQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring, make_requests
+from openbb_core.provider.utils.helpers import async_requests, get_querystring
 from openbb_fmp.utils.helpers import get_interval
 from pydantic import Field, NonNegativeInt
 
@@ -119,7 +119,7 @@ class FMPEquityHistoricalFetcher(
 
         urls = [get_url_params(symbol) for symbol in query.symbol.split(",")]
 
-        return await make_requests(urls, response_callback=response_callback, **kwargs)
+        return await async_requests(urls, response_callback=response_callback, **kwargs)
 
     @staticmethod
     def transform_data(

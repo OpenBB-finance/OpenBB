@@ -9,7 +9,7 @@ from openbb_core.provider.standard_models.equity_quote import (
     EquityQuoteData,
     EquityQuoteQueryParams,
 )
-from openbb_core.provider.utils.helpers import make_requests
+from openbb_core.provider.utils.helpers import async_requests
 from openbb_fmp.utils.helpers import get_querystring
 from pydantic import Field, field_validator
 
@@ -129,7 +129,7 @@ class FMPEquityQuoteFetcher(
             for symbol in symbols_split
         ]
 
-        return await make_requests(urls, **kwargs)
+        return await async_requests(urls, **kwargs)
 
     @staticmethod
     def transform_data(

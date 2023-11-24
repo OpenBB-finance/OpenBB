@@ -3,7 +3,7 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
       - gzip, deflate
       Connection:
@@ -13,14 +13,14 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAA/2yUTWsbMRCG/8ucRZFG8yHtNe2ph0JLTqWU9e6apg0J8e6mlOD/XrTW1yE+CSE/
-        j0fvK7/B9jD9WS4wwN3w6f7r/bePYOBlXy7/7p73pw0GZw1clnV/3NZuZ5x/7+u2zDBsl32pJ2D4
-        /gavMKBFJjbw+hcG98GqJwPPeYlsYMrr4A38uq05egOPt7UzkDyi3tsQbPoYeCrYq8kORtXmsFIc
-        IkjNkXzZIa4ohKsCEalXJGpWkHpXBekrmU82FL4ISuGLoFaBt1oVzottikQtM3R03/DU0Tt4ZacD
-        GW0pSvfr691oSFsZzuwKnNHGRnfv0ClgLHiM4rG/nIQtDmeZfHNozVgsS3EwuibxVcLOhyoJKn3I
-        B7dIMFKkJomhDkLpxqYibA6uPeJ2T6jR9ikf2OLwIr4ViUMLWqWW9ehzdgTX5mhjaDZkxUHNCiVH
-        zSBaq6o2VWYq21Sr2ppKtaooTruwD2gWuK5JsYYtgWrYGttba09NNLQB2LsubIfXHwbWbdz2FQb4
-        8hnSM3/Zl3X7+TDDALwsciLlMdDZySjzfD7504j+vMR4nhgMTOUf4/o/AAD//4GaYFNpBAAA
+        H4sIAAAAAAAA/2yUwW4bIRCG32XOqIJhmAGuaU89VGqVU1VV9nqtpo0Sxbubqor87hVrYDjEJ4Tw
+        93n4f/wG68P0Z75Ahrv86f7r/bePYOBlmy//7p63pxWyswYu87I9rsuwczj93pZ1PkFeL9vcT0D+
+        /gavkNFioGDg9S9k98GKJwPPdYnBwFTX0Rv4dVuH5A083tbOQPGweG9jtOVj4Klhr6Y6Aoqow3Jz
+        MCOpo/iqg11TcOgKRKRRUahVQeJdF5SvVD7Z2PjMyI3PjNIF3kpXOM9WFYXaZhjoXvE00Ad4Z5cD
+        FW0p8fDr+91ILFsVHoJr8IA2Kd29Q6eIqeExscfxcgq2OZwN5NUhPWO2gZsjoFOJ75LgfOySKDyG
+        vHObBBMlUkmKfRAqNzY1oTpC71HQe0JJdkx5xzaHZ/ZapBA1aOFe1r3P1RGdzqFjSDVUxU6tCiFH
+        amDpVRVbKjO1bepV1aZSryqykyHsHVoFbmhS6mFzpB62JH1r+tRYog4QvBvCdnj9YWBZD+u2QIYv
+        n6E885dtXtafDyfIwBOiHCYhnI+nxMfzIZzPkfDoUzofcQIDU/vHuP4PAAD//430f3xpBAAA
     headers:
       Connection:
       - keep-alive
@@ -31,7 +31,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 26 Sep 2023 19:08:19 GMT
+      - Fri, 24 Nov 2023 01:46:10 GMT
       Server:
       - nginx/1.19.2
       Strict-Transport-Security:
@@ -39,7 +39,7 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Request-Id:
-      - 5ee6b475a84f16a6ddfb3ba23fe99fc5
+      - 6c227ac742ebd96bfa5ff842b399fb2c
     status:
       code: 200
       message: OK

@@ -3,9 +3,9 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
@@ -13,10 +13,9 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA6XSTQuCQBAG4Hu/YlnoJqKG9nGrTkZUEJ2iw6SDCrnCOItZ9N9TusYYdNjTvPPw
-        srvnkVLP7iilk8oaplYvlD6ZgjFVRwbGWjufeYNFlvMBKUHDkGEfnEfuzB/rLvByvkp7zpEkwXOn
-        kQTEhDcwqUT4bhhKxLEp+IE0xHjuRGTWYCAFWQgCSVjamgluxQDiTSVkhVTa/3qsoS3BqLjur0R8
-        366MKG2QamxFQVrfYf89hltIxtbesbxWlrIfiNHlDcqTD93xAgAA
+        H4sIAAAAAAAAA4XOvQrCQBAE4D5PcRzYhSOn5rdTKyuFYCUWS7IkB/GEzYag4rsbSSubYqoZPuYa
+        KPWeopSuHoNneupC6Yt3jLUqGRh7Hc79iK5p+YxUoWdo8DfME5NtV3oafMK/0pGwA19LhjVxIhEn
+        bpEkIDKplYBydPxCWvoRmU0uMQfwUIMsrGNJ2CPdhyXCphKxG3om6NwCEmUzEty+AHV1vOEBAAA=
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -36,9 +35,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 05 Nov 2023 05:15:21 GMT
-      ETag:
-      - W/"2f1-z5/4g/ulC3y6Aw5o83OT94EFKKU"
+      - Fri, 24 Nov 2023 01:49:06 GMT
+      Etag:
+      - W/"1e1-O7hBUHlRtDYOo3nufCczBE2ftjk"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:
@@ -56,9 +55,9 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
@@ -66,9 +65,9 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA4XPwQrCMAyA4fueIhS8jTI3nc6beFdBPImHsIa2MCp0KTLEd3djV8kOOSV8/Hlk
-        AJ9xAFT7SoHjoA6g7sEzGbgxMvUqn/dv8tbxlWJLgdHSdNjUulmpcf/N/0Mx2YSDRBR6KxIn5wPK
-        QC0CZ2JHscNgxFcKvd+JHRjQLIRsSkm4TB0yUK0l4Jh6jtj5hYqympHs+QNActKX3gEAAA==
+        H4sIAAAAAAAAA4XPsQrCMBAG4L1PEQJuJdQqMXYTdxWkkzgczZEESoT0ghTx3W3pKtfhprv7+P9H
+        IcRnGiFk98qR0igbIdsYCK24ExAOslz2bwzO0w1Th5HA4Xx41MrojZwOvuVf6exDBE6o1GHLAW3K
+        LsPIE5olLkgeUw/Rsl0qZQxbBSLYlS57Nsh1zsEDO+7/lAdK0IeVEHW9IMXzBySXXNfeAQAA
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -88,9 +87,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 05 Nov 2023 05:15:21 GMT
-      ETag:
-      - W/"1de-u/Rt0fxDvduVLpiU+/1mhnLcZeE"
+      - Fri, 24 Nov 2023 01:49:06 GMT
+      Etag:
+      - W/"1de-EUNS8VgrBdkM4zkqYdYpt3Efch8"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:
@@ -108,9 +107,9 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
@@ -118,9 +117,10 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA4XQPQvCQAwG4L2/Ihy4leOqpX6Mbi4qFCdxOHqhPagnpClFxf/uHV0lDpne5CHJ
-        NQN4xwJQzWMMTE+1A3UJntFBzZZxUPmcT+jbjs9IDQa2LabG7XqhYvrJfzIHwt4GJwGFrjYSceIO
-        SQKMrqT5evL8Qvq3htHlSmL2SPfRWZkoROKI6ZS0iPjRyJTiTwey2MuCWc5CdvsCtZKIl98BAAA=
+        H4sIAAAAAAAAA4XQsQrCMBCA4b1PEQJuJSRYCnXUqYsKxUkcjuZoC22E65Wi4rvboqNchkx3fPyX
+        a6LUa3lK6fo+BaaH3il9CR2jVxUD46jT73zGrmn5jFRjYGhwXSxyU2z0Mn+nf6GSsIfgJcKZfCsR
+        J26RJMBGgGru+IkU67AmyyTmiGvIqog/Yo0Ta/ZIw+QhQogl5UiAvSxYJwkHCBBt+J2R3D5fyxAo
+        JAIAAA==
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -140,9 +140,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 05 Nov 2023 05:15:22 GMT
-      ETag:
-      - W/"1df-OEmfqekeHOVvwG/zgq/j7mJKmsQ"
+      - Fri, 24 Nov 2023 01:49:07 GMT
+      Etag:
+      - W/"224-3CxWVtWAWG91Y9ji+9HvqO4TS+E"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:
@@ -160,9 +160,9 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
@@ -170,11 +170,11 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA6XTTUvDQBAG4Ht/xbLQWwlJa9R6jNAS8aNQPImHaTIkgWQik100iv/dBPEm7woe
-        9rTLw7vz8bQw5mM6xtii9+J0tFfG5sotSWlX3zev3FS1O7AWLI4qnp/EUbpZ2un+c/Ur8SiN49Ic
-        HTkeELRNo80aSdc0diQmH+ZIkJoynSEpY+18SYhIovMEEQ+uZsUZtrAud71Q0WMhuUTCsZGKXnrl
-        AAJLsVOSIiQgIB+UuP1PhEzpvQkI8QWeDCHczjhap0i49W/cnXqvVSAHVDKqqaPAaMawGIfpK13g
-        KzEcrL1nlYHHgAFX7YY1LMCx2DcnpdYR3hEk3PO8Yn/Y9Z+eLJ6/ANaC2CnFBAAA
+        H4sIAAAAAAAAA43UT2uDMBgG8Hs/RRB6KxLbudEeO1hx7E+h7DR2eKsvGjDJeE3Y3Nh3n9LreLKD
+        F40/njc+8XWh1Pd0KZXVProgY7ZT2XPoWLLV5f4Hm7YLR5aaXaCW5wVFXiyz6fHP6s/3X5wJ3KhT
+        oMADcrZlvkbQLY2WnKqGnlwDJZ2XWyTtWWxsCA9VwjCV8BwjkQJuzKN3VHssFDdIOBnX0rsXTiBX
+        CLkTcnVKgLsp9GV6DGj4PapBiBMCHuIhfrI9+yhtIsc1bpgjXAudr2GOPXVkKVFODYknng/cPzqO
+        meM0i03MojdIOEQWN/CYMOAxuWdJC7BdB3MW6gPBX5C+CIu3X0wZZ6XDBAAA
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -194,9 +194,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 05 Nov 2023 05:15:22 GMT
-      ETag:
-      - W/"4c5-b5x+LUJL2Tk17h5pypIQmPJe3ag"
+      - Fri, 24 Nov 2023 01:49:07 GMT
+      Etag:
+      - W/"4c3-iDPTzCVm3VPFR9jDMd+CHxPtUAc"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:

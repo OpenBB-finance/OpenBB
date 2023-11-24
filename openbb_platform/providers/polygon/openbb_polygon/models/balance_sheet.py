@@ -9,7 +9,7 @@ from openbb_core.provider.standard_models.balance_sheet import (
     BalanceSheetQueryParams,
 )
 from openbb_core.provider.utils.helpers import get_querystring
-from openbb_polygon.utils.helpers import get_data
+from openbb_polygon.utils.helpers import get_data_many
 from pydantic import Field, field_validator
 
 
@@ -116,7 +116,7 @@ class PolygonBalanceSheetFetcher(
         return PolygonBalanceSheetQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: PolygonBalanceSheetQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -137,7 +137,7 @@ class PolygonBalanceSheetFetcher(
 
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
 
-        return get_data(request_url, **kwargs).get("results", [])
+        return await get_data_many(request_url, "results", **kwargs)
 
     @staticmethod
     def transform_data(

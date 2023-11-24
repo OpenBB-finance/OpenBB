@@ -8,7 +8,7 @@ from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
-    make_request,
+    async_request,
 )
 from pydantic import BaseModel
 
@@ -71,7 +71,7 @@ async def response_callback(
 
 async def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     """Get data from Polygon endpoint."""
-    return await make_request(url, response_callback=response_callback, **kwargs)
+    return await async_request(url, response_callback=response_callback, **kwargs)
 
 
 async def get_data_many(

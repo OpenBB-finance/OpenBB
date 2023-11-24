@@ -15,7 +15,7 @@ from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
-    make_request,
+    async_request,
 )
 from pydantic import BaseModel
 from requests.exceptions import SSLError
@@ -149,7 +149,7 @@ async def async_get_data_one(
         await asyncio.sleep(sleep)
 
     try:
-        data: dict = await make_request(
+        data: dict = await async_request(
             url, response_callback=response_callback, **kwargs
         )
     except Exception as e:

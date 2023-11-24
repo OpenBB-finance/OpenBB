@@ -101,7 +101,7 @@ class PolygonMarketSnapshotsFetcher(
         return PolygonMarketSnapshotsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: PolygonMarketSnapshotsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -110,7 +110,7 @@ class PolygonMarketSnapshotsFetcher(
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         url = f"https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers?apiKey={api_key}"
-        response = get_data(url, **kwargs)
+        response = await get_data(url, **kwargs)
 
         return response["tickers"]
 

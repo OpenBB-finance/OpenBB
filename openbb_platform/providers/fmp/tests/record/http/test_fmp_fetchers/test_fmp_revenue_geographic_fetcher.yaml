@@ -3,9 +3,9 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
@@ -13,14 +13,16 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA43US2sCMRAA4Lu/YulZIZmZzCS9LVaoPdiCeio9LLKle6iKj1Pxvze7ammTuKmg
-        YHZMPueR10FRfPl3UdyBAhgpNwK6u7+s+dXx43RW+gUhUJfX8Prs+fBR74rx5rg+7Jp676O0ALAL
-        wpaz6WLyUMwX5WIyb4NIrLkEdTEn/3ka/pHoTmJSErbInJcwMtmcBNEq7JeoTsIpCfnfhkckJGCU
-        DlMXSZTTTnol2nUSm5Qgyz8kmgDzEl9C7pfYTuJSEqPdtVN6Jca4MCyUOKtY90OkhaBKpoSEKQ9R
-        SqPOQCwh9ver5tuTQ4wUjkQMccjX2tx0iGHO9Ii53a2GDUneYXwv5fKhBaHfQZ1DUg5U7Kcu57AI
-        2fFl61SmLpiYmWLmv4JxlL9FxAqHOVsW3dmcnVdITMn5bBCXr4SAcDQi57OVo8z/1nE/lp/1rllV
-        7dZoUZtg63LfVKOXatW8N6vOGA/o5LjbbOv2oUh03TxV22rdthlhJi8qvtt/2YDIhXsHNgsmLN0P
-        TVt2UW8O3r4BGxCbuegGAAA=
+        H4sIAAAAAAAAA5WVPW/bMBCG9/wKwnMMkLzjkdfNSIw0Hdyidqaig2AojYbYgaxMRf57RfoD7lES
+        EQPyIB3J97mPl79ulPrbP0rNrLYw1zwHPftyete/XbzWbbOtDmpd/3mtd13/zZB1pI+/23Pc8r3d
+        v9VXUYyWUQQ9tHXV1a26e2l21VWst86xiP1WvVW7qxiL1nkR87M+dGr/rBaHplI/qm3z3GyvlzAZ
+        d1ySVnz0/x+3/xHbSGyxSMzkQpHYGSODRonRapnCjNix/zQx+AKxScSuROwANJWIA4OWCseIKQDJ
+        DTPigMF+kpjg3IxjxDoRU4nYonNFYgp0auoyMWrQsh8yYoNZzxSIDbs+7VPEhhNxuCa++/q4WkRR
+        QF4e+L17ifL377uubepDPMOgBcn5tHrcLO/VerPYLNcxqB8fms69CUkJDylxhlEWe0hJbw0yTCrh
+        oMlMC/G5tV1Sgp6kUw0I0dqAKQgJCMDTQih3nIsQApQ2mAthoHNtRnV4R+Sndbh8Ki6VIYdyrAd0
+        uL6XSvkwHuy0Dkw6/JCO3oGg3KsBLMooqYMC60JdYGBm1GqWbBglZ67CB08yZ08qnU2GC7WwA1Ny
+        PNt6LlfCW0/ZiBzP1owFbjN+A8YSBDhfoZetoy/NT76UNOYDuky+GT96n9lN8sDYZgiFvOjxuyru
+        jchyb6Et2BFLjwMdiLPevPn9D8lau3sSCQAA
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -40,9 +42,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 16 Oct 2023 12:22:05 GMT
-      ETag:
-      - W/"6e8-hNE1JdkgArZ+ciKzEMueoazLOYw"
+      - Fri, 24 Nov 2023 01:48:56 GMT
+      Etag:
+      - W/"912-ZK+N7hiDCOgBJdrQTuxE+QVjtWQ"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:

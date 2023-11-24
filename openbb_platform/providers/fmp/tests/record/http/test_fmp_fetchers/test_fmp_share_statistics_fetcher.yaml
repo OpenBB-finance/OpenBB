@@ -3,9 +3,9 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
@@ -13,10 +13,10 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA02PQYvCMBCF7/6KkLNtJjOJbXrrZU97WPAoHmIbW6EaSaJlkf3vG9ctODDwePMx
-        82a3YuyRmzEev88HP/GG8bb9+uTrl9vb5J4eAlIBdYGKSdUQNBoX5Bic+5i8TZkzpqwNIFQkK1MT
-        LshzvB1tcDFDUm9kBaRI6f+5v6WY7KU/XYZ3ipQ0RutlS/S30P2lGVO6xkaIeZ7L6Lpy8HfRhm48
-        3V0Urh9sEDm4FYQgDQnI9ZKIWUqohbXXqchPIRhU5ZjOPN/4We1/AT/SWFERAQAA
+        H4sIAAAAAAAAA02PzQrCMBCE7z5FyNk2yW7TmN568eRB8CgeYhtboRpJokXEdzf1B1xYGGY+2Nnt
+        jJBHWkJouJ/2bqAVoXW9XtH5x21NtJMHHDATIgMkgleIFcgfcvDWLgdnYuK0zheLstSIpYRCKvgx
+        U77pjbchUUJKlEIp1Pybu2sM0Zzb47n7pyQorVVRfKngrr551+ljvISKsXEc82CbvHM3VvumP95s
+        YLbtjGepuWEIXGhkPM1HAiYpeMmMuQzZ9BXXyPM+nmi68ZztXn6uGhkSAQAA
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -36,9 +36,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 16 Oct 2023 12:22:04 GMT
-      ETag:
-      - W/"111-tscGaCDcONkg4gVxmiB3HjEcTgY"
+      - Fri, 24 Nov 2023 01:48:56 GMT
+      Etag:
+      - W/"112-6g3MBbU+UiRhPjp/4L8w334Ua30"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:

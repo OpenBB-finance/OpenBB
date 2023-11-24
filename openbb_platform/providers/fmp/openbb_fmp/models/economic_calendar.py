@@ -9,7 +9,7 @@ from openbb_core.provider.standard_models.economic_calendar import (
     EconomicCalendarData,
     EconomicCalendarQueryParams,
 )
-from openbb_core.provider.utils.helpers import make_request
+from openbb_core.provider.utils.helpers import async_request
 from pydantic import Field, field_validator
 
 
@@ -92,7 +92,7 @@ class FMPEconomicCalendarFetcher(
 
         url = f"{base_url}from={query.start_date}&to={query.end_date}&apikey={api_key}"
 
-        return await make_request(url, **kwargs)
+        return await async_request(url, **kwargs)
 
     @staticmethod
     def transform_data(

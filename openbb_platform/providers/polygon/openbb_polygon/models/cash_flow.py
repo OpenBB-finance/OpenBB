@@ -9,7 +9,7 @@ from openbb_core.provider.standard_models.cash_flow import (
     CashFlowStatementQueryParams,
 )
 from openbb_core.provider.utils.helpers import get_querystring
-from openbb_polygon.utils.helpers import get_data
+from openbb_polygon.utils.helpers import get_data_many
 from pydantic import Field, field_validator
 
 
@@ -98,7 +98,7 @@ class PolygonCashFlowStatementFetcher(
         return PolygonCashFlowStatementQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: PolygonCashFlowStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -119,7 +119,7 @@ class PolygonCashFlowStatementFetcher(
 
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
 
-        return get_data(request_url, **kwargs).get("results", [])
+        return await get_data_many(request_url, "results", **kwargs)
 
     @staticmethod
     def transform_data(

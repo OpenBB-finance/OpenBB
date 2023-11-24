@@ -9,7 +9,7 @@ from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import make_requests
+from openbb_core.provider.utils.helpers import async_requests
 from pydantic import Field, field_validator
 
 
@@ -63,7 +63,7 @@ class FMPWorldNewsFetcher(
             for page in range(pages)
         ]
 
-        response = await make_requests(urls, **kwargs)
+        response = await async_requests(urls, **kwargs)
         data = sorted(response, key=lambda x: x["publishedDate"], reverse=True)
 
         return data[: query.limit]

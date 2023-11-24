@@ -5,12 +5,14 @@ from functools import partial
 from inspect import iscoroutinefunction
 from typing import Awaitable, Callable, List, Literal, Optional, TypeVar, Union, cast
 
+import requests
 from anyio import start_blocking_portal
 from typing_extensions import ParamSpec
 
 from openbb_core.provider.utils.client import (
     ClientResponse,
     ClientSession,
+    get_user_agent,
 )
 
 T = TypeVar("T")
@@ -51,7 +53,7 @@ def get_querystring(items: dict, exclude: List[str]) -> str:
     return f"{querystring}" if querystring else ""
 
 
-async def make_request(
+async def async_request(
     url: str,
     method: Literal["GET", "POST"] = "GET",
     timeout: int = 10,
@@ -97,7 +99,7 @@ async def make_request(
     return data
 
 
-async def make_requests(urls: List[str], **kwargs) -> Union[dict, List[dict]]:
+async def async_requests(urls: List[str], **kwargs) -> Union[dict, List[dict]]:
     """Make multiple requests asynchronously.
 
     Parameters
@@ -120,7 +122,7 @@ async def make_requests(urls: List[str], **kwargs) -> Union[dict, List[dict]]:
     kwargs["with_session"] = True
 
     results = await asyncio.gather(
-        *[make_request(url, session=session, **kwargs) for url in urls]
+        *[async_request(url, session=session, **kwargs) for url in urls]
     )
 
     await session.close()
@@ -129,6 +131,61 @@ async def make_requests(urls: List[str], **kwargs) -> Union[dict, List[dict]]:
         return [item for sublist in results for item in sublist]
 
     return results
+
+
+def make_request(
+    url: str, method: str = "GET", timeout: int = 10, **kwargs
+) -> requests.Response:
+    """Abstract helper to make requests from a url with potential headers and params.
+
+    Parameters
+    ----------
+    url : str
+        Url to make the request to
+    method : str, optional
+        HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    timeout : int, optional
+        Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
+
+    Returns
+    -------
+    requests.Response
+        Request response object
+
+    Raises
+    ------
+    ValueError
+        If invalid method is passed
+    """
+    # We want to add a user agent to the request, so check if there are any headers
+    # If there are headers, check if there is a user agent, if not add one.
+    # Some requests seem to work only with a specific user agent, so we want to be able to override it.
+    headers = kwargs.pop("headers", {})
+    preferences = kwargs.pop("preferences", None)
+    if preferences and "request_timeout" in preferences:
+        timeout = preferences["request_timeout"] or timeout
+
+    if "User-Agent" not in headers:
+        headers["User-Agent"] = get_user_agent()
+
+    # Allow a custom session for caching, if desired
+    _session = kwargs.pop("session", None) or requests
+
+    if method.upper() == "GET":
+        return _session.get(
+            url,
+            headers=headers,
+            timeout=timeout,
+            **kwargs,
+        )
+    if method.upper() == "POST":
+        return _session.post(
+            url,
+            headers=headers,
+            timeout=timeout,
+            **kwargs,
+        )
+    raise ValueError("Method must be GET or POST")
 
 
 def to_snake_case(string: str) -> str:

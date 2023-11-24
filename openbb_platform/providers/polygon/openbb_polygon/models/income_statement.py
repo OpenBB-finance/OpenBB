@@ -10,7 +10,7 @@ from openbb_core.provider.standard_models.income_statement import (
     IncomeStatementQueryParams,
 )
 from openbb_core.provider.utils.helpers import get_querystring
-from openbb_polygon.utils.helpers import get_data
+from openbb_polygon.utils.helpers import get_data_many
 from pydantic import Field, field_validator
 
 
@@ -145,7 +145,7 @@ class PolygonIncomeStatementFetcher(
         return PolygonIncomeStatementQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: PolygonIncomeStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -166,7 +166,7 @@ class PolygonIncomeStatementFetcher(
 
         request_url = f"{base_url}?{query_string}&apiKey={api_key}"
 
-        return get_data(request_url, **kwargs).get("results", [])
+        return await get_data_many(request_url, "results", **kwargs)
 
     @staticmethod
     def transform_data(
