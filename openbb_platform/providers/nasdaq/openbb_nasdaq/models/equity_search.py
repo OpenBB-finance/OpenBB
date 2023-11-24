@@ -13,7 +13,7 @@ from openbb_core.provider.standard_models.equity_search import (
     EquitySearchQueryParams,
 )
 from pandas import read_csv
-from pydantic import Field, field_validator
+from pydantic import Field
 
 cache_dir = get_user_cache_directory()
 
