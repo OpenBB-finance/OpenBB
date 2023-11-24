@@ -32,6 +32,9 @@ OpenBB Terminal Pro's Data Connectors are designed to empower teams by allowing 
 
 <img width="800" alt="data connectors" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/5df818ce-e4a1-4241-b8d5-be60ec25c7d4">
 
+<img width="800" alt="data connectors - my widgets" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/e3d74bb6-ce1e-4cdf-8f5e-d9053403ce9a">
+
+
 We offer three distinct methods for importing your data into the platform.
 
 ## No code
