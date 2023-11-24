@@ -851,6 +851,7 @@ def test_equity_fundamental_financial_attributes(params, obb):
     [
         ({"query": "AAPL", "is_symbol": True, "provider": "cboe"}),
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
+        ({"query": "", "provider": "nasdaq", "use_cache": False, "is_etf": True}),
     ],
 )
 @pytest.mark.integration
