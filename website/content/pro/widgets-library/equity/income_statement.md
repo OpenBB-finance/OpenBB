@@ -21,5 +21,5 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Income Statement for a certain ticker Quarterly and Annual.
 
-Source: intrinio
+**Source:** intrinio
 

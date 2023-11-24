@@ -29,9 +29,16 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Widgets | OpenBB Terminal Pro Docs" />
 
-<img width="616" alt="275681758-87fda536-c62c-4b3b-a6c0-42b4b2a3a3cc" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/42b9321b-2912-4853-af1e-abb256573fec"/>
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
+
+<TutorialVideo
+  youtubeLink="https://www.youtube.com/embed/cGgWWnFC_6I?si=dLHEVWrECtqZmFBq"
+  videoLegend="Short introduction to Terminal Pro widgets"
+/>
 
 ## Upper Tab
+
+<img className="pro-border-gradient" width="800" alt="Widget-rev" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/97943512-5488-4e94-8a06-b59ec6e51e4c" />
 
 The upper tab houses all the interactive elements and additional information related to the widget's content.
 
@@ -71,7 +78,7 @@ This feature allows you to group widgets together. When widgets are grouped, the
 
 #### Settings
 
-<img width="623" alt="275681803-98815926-3d46-4555-a81a-8832c1b50a05" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/c3b35a8f-2188-48b0-89a7-17c03a2dbe37"/>
+<img className="pro-border-gradient" width="800" alt="Widget settings" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/aaef053c-dacb-4f92-af02-583b4924a546" />
 
 * Settings - View the data source and select or hide columns.
 * Share - Share this widget with your team.
@@ -92,13 +99,12 @@ OpenBB widgets support two main types of content:
 
 Displayed in a table format. This is powerful as it allows to leverage the charting from raw data capabilities of the application.
 
-<img width="883" alt="275682032-e314c938-8069-4bf1-9aea-a0c2e4e239ff" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/9a481f04-7ba1-45bb-84c3-0eed3da68eca"/>
-
+<img className="pro-border-gradient" width="800" alt="dividend" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/a71c683a-92df-4e5b-9ce3-1f8a91b9dcfc" />
 
 #### Charts
 
 Visual representations of data, including line charts, bar charts, pie charts, and other custom charts. Some examples below,
 
-<img width="620" alt="275682286-bb6b2323-afec-42ff-bbc0-f07f92e8978e" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/d235fec9-8c82-46d3-b226-d67c8b86a5c9"/>
+<img className="pro-border-gradient" width="800" alt="newswidget" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/5ada7e7f-c619-46fb-850f-006c6e0d0cd2" />
 
-<img width="621" alt="275682325-d8c1a586-3348-4814-b2e6-20930822de7a" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/05fe6a91-8f87-49fa-a050-9bfe2a4cadb5"/>
+<img className="pro-border-gradient" width="800" alt="widget-revbiz" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/bbc0b737-ce03-4241-acaa-ad6b71c2a5ba" />

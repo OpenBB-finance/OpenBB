@@ -21,5 +21,5 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Balance sheet, Income Statement, Cashflow Statement.
 
-Source: intrinio
+**Source:** intrinio
 

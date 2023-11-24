@@ -21,5 +21,5 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Show watchlist for one or more tickers.
 
-Source: fmp,intrinio
+**Source:** fmp,intrinio
 

@@ -21,5 +21,5 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Show charting.
 
-Source: fmp,intrinio,fred
+**Source:** fmp,intrinio,fred
 

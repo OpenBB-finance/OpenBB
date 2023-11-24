@@ -21,5 +21,5 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Show company news for a certain ticker.
 
-Source: benzinga
+**Source:** benzinga
 

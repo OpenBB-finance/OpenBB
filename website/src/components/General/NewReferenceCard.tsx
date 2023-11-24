@@ -22,7 +22,8 @@ export default function NewReferenceCard({
   const cleanedPath = pathname.replace(/\/v\d+/, "");
   const chevron =
     !cleanedPath.includes("/reference") &&
-    !cleanedPath.includes("/widgets-library/");
+    !cleanedPath.includes("/widgets-library/") &&
+    !cleanedPath.includes("/data_models");
 
   return (
     <Link

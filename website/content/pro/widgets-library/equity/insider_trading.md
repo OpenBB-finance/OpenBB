@@ -21,5 +21,5 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Recent Insider Trading.
 
-Source: fmp
+**Source:** fmp
 
