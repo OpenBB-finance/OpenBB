@@ -17,8 +17,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Chat with widgets | OpenBB Terminal Pro Docs" />
 
-
-<img width="614" alt="275683124-b19067d7-abf1-4efb-9abb-93bb7bc3b03d" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/6f180d91-207a-4a37-86a8-ba78969f6e0a"/>
+<img width="800" alt="chat w widget" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/9952e040-b8e4-413e-a8bf-be61087ba469">
 
 Experience the power of our unique generative AI feature, the Chat Widget. This tool empowers you to interact directly with your data, asking questions to gain deeper insights.
 
