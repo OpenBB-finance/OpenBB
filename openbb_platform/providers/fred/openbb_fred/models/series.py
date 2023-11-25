@@ -1,5 +1,7 @@
 """FRED Series Model."""
 
+import json
+import warnings
 from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
@@ -11,6 +13,8 @@ from openbb_core.provider.standard_models.fred_series import (
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import async_make_request, get_querystring
 from pydantic import Field
+
+_warn = warnings.warn
 
 
 class FredSeriesQueryParams(SeriesQueryParams):
@@ -118,21 +122,24 @@ class FredSeriesFetcher(
         base_url = "https://api.stlouisfed.org/fred/series/observations?"
         querystring = get_querystring(query.model_dump(), ["series_id"])
         results = {}
+        metadata = {}
         series_ids = query.symbol.split(",") if "," in query.symbol else [query.symbol]
 
-        urls = []
-        for series_id in series_ids:
-            url = (
-                base_url
-                + f"series_id={series_id}&"
-                + querystring
-                + f"&file_type=json&api_key={api_key}"
-            )
-            urls.append(url)
+        urls = [
+            f"{base_url}series_id={series_id}&{querystring}&file_type=json&api_key={api_key}"
+            for series_id in series_ids
+        ]
+        metadata_urls = [
+            f"https://api.stlouisfed.org/fred/series?series_id={series_id}&file_type=json&api_key={api_key}"
+            for series_id in series_ids
+        ]
 
-        async def async_get_fred_data(url, series_id, **kwargs):
+        async def async_get_fred_data(url, metadata_url, series_id, **kwargs):
             response = await async_make_request(url, timeout=5, **kwargs)
-
+            metadata_response = await async_make_request(
+                metadata_url, timeout=5, **kwargs
+            )
+            _metadata = metadata_response.get("seriess")[0]
             data = response.get("observations")
             try:
                 [d.pop("realtime_start") for d in data]
@@ -151,10 +158,25 @@ class FredSeriesFetcher(
                 data = {}
             if data != {}:
                 results.update({series_id: data})
+                metadata.update(
+                    {
+                        series_id: {
+                            "title": _metadata.get("title"),
+                            "units": _metadata.get("units"),
+                            "frequency": _metadata.get("frequency"),
+                            "seasonal_adjustment": _metadata.get("seasonal_adjustment"),
+                            "notes": _metadata.get("notes"),
+                        }
+                    }
+                )
             return results
 
         for i in range(0, len(series_ids)):
-            await async_get_fred_data(urls[i], series_ids[i], **kwargs)
+            await async_get_fred_data(
+                urls[i], metadata_urls[i], series_ids[i], **kwargs
+            )
+
+        _warn(json.dumps(metadata))
 
         return results
 
