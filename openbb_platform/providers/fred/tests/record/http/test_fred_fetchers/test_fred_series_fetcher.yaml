@@ -519,9 +519,9 @@ interactions:
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Sat, 25 Nov 2023 08:44:46 GMT
+      - Sat, 25 Nov 2023 22:48:13 GMT
       Expires:
-      - Sat, 25 Nov 2023 08:45:46 GMT
+      - Sat, 25 Nov 2023 22:49:13 GMT
       Last-Modified:
       - Sat, 25 Nov 2023 01:11:01 GMT
       Vary:
@@ -530,6 +530,75 @@ interactions:
       - '120'
       x-rate-limit-remaining:
       - '120'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series?api_key=MOCK_API_KEY&file_type=json&series_id=SP500
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1638'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 25 Nov 2023 22:48:14 GMT
+      Expires:
+      - Sat, 25 Nov 2023 22:49:14 GMT
+      Last-Modified:
+      - Sat, 25 Nov 2023 01:11:01 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '119'
     status:
       code: 200
       message: OK

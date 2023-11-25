@@ -288,7 +288,7 @@ def test_economy_fred_search(params, obb):
                 "start_date": None,
                 "end_date": None,
                 "limit": 10000,
-                "all_page": True,
+                "all_pages": True,
                 "provider": "intrinio",
                 "sleep": None,
             }
