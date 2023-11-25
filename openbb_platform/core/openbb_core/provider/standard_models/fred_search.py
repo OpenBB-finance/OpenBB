@@ -1,10 +1,10 @@
-"""Economic Releases Series Model."""
+"""FRED Search Model."""
 
 from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Optional
+from typing import Optional, Union
 
 from dateutil import parser
 from pydantic import Field, field_validator
@@ -13,22 +13,31 @@ from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 
 
-class EconomicReleasesSeriesQueryParams(QueryParams):
-    """Economic Releases Series Query Params."""
+class SearchQueryParams(QueryParams):
+    """FRED Search Query Params."""
 
-    release_id: str = Field(description="The release ID.")
+    query: Optional[str] = Field(default=None, description="The search word(s).")
 
 
-class EconomicReleasesSeriesData(Data):
-    """
-    Economic Releases Series Data.
+class SearchData(Data):
+    """FRED Search Data."""
 
-    Get the series on a release of economic data.
-
-    """
-
-    series_id: str = Field(description="The series ID for the item in the release.")
-    title: str = Field(description="The title of the series.")
+    release_id: Optional[Union[str, int]] = Field(
+        default=None,
+        description="The release ID for queries.",
+    )
+    series_id: Optional[str] = Field(
+        default=None,
+        description="The series ID for the item in the release.",
+    )
+    name: Optional[str] = Field(
+        default=None,
+        description="The name of the release.",
+    )
+    title: Optional[str] = Field(
+        default=None,
+        description="The title of the series.",
+    )
     observation_start: Optional[dateType] = Field(
         default=None, description="The date of the first observation in the series."
     )
@@ -66,6 +75,11 @@ class EconomicReleasesSeriesData(Data):
     notes: Optional[str] = Field(
         default=None, description="Description of the release."
     )
+    press_release: Optional[bool] = Field(
+        description="If the release is a press release.",
+        default=None,
+    )
+    url: Optional[str] = Field(default=None, description="URL to the release.")
 
     @field_validator("last_updated", mode="before", check_fields=False)
     @classmethod

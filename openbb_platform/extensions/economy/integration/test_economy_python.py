@@ -20,7 +20,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 @pytest.mark.parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "fmp"}),
         (
             {
                 "provider": "nasdaq",
@@ -37,11 +37,6 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
                 "country": "mexico,sweden",
                 "importance": "Medium",
                 "group": "gdp",
-            }
-        ),
-        (
-            {
-                "provider": "fmp",
             }
         ),
     ],
@@ -220,33 +215,42 @@ def test_economy_balance_of_payments(params, obb):
     [
         (
             {
-                "query": "financial",
-                "provider": "fred",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_economy_economic_releases_search(params, obb):
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.economy.economic_releases.search(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
+                "query": None,
+                "is_release": False,
                 "release_id": "15",
                 "offset": 0,
                 "limit": 1000,
                 "filter_variable": "frequency",
-                "filter_value": "Quarterly",
+                "filter_value": "Monthly",
                 "tag_names": "nsa",
+                "exclude_tag_names": None,
+                "provider": "fred",
+            }
+        ),
+        (
+            {
+                "query": "GDP",
+                "is_release": True,
+                "release_id": None,
+                "offset": 0,
+                "limit": 1000,
+                "filter_variable": None,
+                "filter_value": None,
+                "tag_names": None,
+                "exclude_tag_names": None,
+                "provider": "fred",
+            }
+        ),
+        (
+            {
+                "query": None,
+                "is_release": False,
+                "release_id": None,
+                "offset": None,
+                "limit": None,
+                "filter_variable": None,
+                "filter_value": None,
+                "tag_names": None,
                 "exclude_tag_names": None,
                 "provider": "fred",
             }
@@ -254,10 +258,10 @@ def test_economy_economic_releases_search(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_economy_economic_releases_series(params, obb):
+def test_economy_fred_search(params, obb):
     params = {p: v for p, v in params.items() if v}
 
-    result = obb.economy.economic_releases.search(**params)
+    result = obb.economy.fred_search(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -295,7 +299,7 @@ def test_economy_economic_releases_series(params, obb):
 def test_economy_fred_series(params, obb):
     params = {p: v for p, v in params.items() if v}
 
-    result = obb.economy.economic_releases.search(**params)
+    result = obb.economy.fred_series(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

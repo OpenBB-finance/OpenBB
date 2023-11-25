@@ -256,34 +256,42 @@ def test_economy_balance_of_payments(params, headers):
     [
         (
             {
-                "query": "financial",
-                "provider": "fred",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_economy_economic_releases_search(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/economy/economic_releases_search?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "release_id": "15",
+                "query": None,
+                "is_release": False,
+                "release_id": 15,
                 "offset": 0,
                 "limit": 1000,
                 "filter_variable": "frequency",
-                "filter_value": "Quarterly",
+                "filter_value": "Monthly",
                 "tag_names": "nsa",
+                "exclude_tag_names": None,
+                "provider": "fred",
+            }
+        ),
+        (
+            {
+                "query": "GDP",
+                "is_release": True,
+                "release_id": None,
+                "offset": 0,
+                "limit": 1000,
+                "filter_variable": None,
+                "filter_value": None,
+                "tag_names": None,
+                "exclude_tag_names": None,
+                "provider": "fred",
+            }
+        ),
+        (
+            {
+                "query": None,
+                "is_release": False,
+                "release_id": None,
+                "offset": None,
+                "limit": None,
+                "filter_variable": None,
+                "filter_value": None,
+                "tag_names": None,
                 "exclude_tag_names": None,
                 "provider": "fred",
             }
@@ -291,11 +299,11 @@ def test_economy_economic_releases_search(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_economy_economic_releases_series(params, headers):
+def test_economy_fred_search(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/economy/economic_releases_series?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/economy/fred_search?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

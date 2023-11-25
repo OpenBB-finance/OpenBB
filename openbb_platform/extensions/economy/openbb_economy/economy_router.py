@@ -62,28 +62,17 @@ async def balance_of_payments(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EconomicReleasesSearch")
-async def economic_releases_search(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Search for information on economic releases."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(model="EconomicReleasesSeries")
-async def economic_releases_series(
+@router.command(model="FredSearch")
+async def fred_search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """
-    Get the series information for an economic release, by release ID.
-    This does not return the observation values, only the metadata
-    of the individual series comprising the release.
+    Search for FRED series or economic releases by ID or fuzzy query.
+    This does not return the observation values, only the metadata.
+    Use this function to find series IDs for `fred_series()`.
     """
     return await OBBject.from_query(Query(**locals()))
 
