@@ -395,7 +395,7 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
                         get_annotation_type(param_type),
                     ),
                     "optional": optional,
-                    "doc": description,
+                    "doc": (description or "").replace("\n", "<br/>").strip(),
                 }
             )
 
@@ -449,14 +449,16 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
                 for name, field in data_fields.items():
                     standard[name] = {
                         "type": get_annotation_type(field.annotation),
-                        "doc": field.description,
+                        "doc": (field.description or "").replace("\n", "<br/>").strip(),
                     }
             else:
                 for name, field in query_fields.items():
                     if name not in obb_query_fields:
                         provider_params.setdefault(provider_name, {})[name] = {
                             "type": get_annotation_type(field.annotation),
-                            "doc": field.description,
+                            "doc": (field.description or "")
+                            .replace("\n", "<br/>")
+                            .strip(),
                             "optional": "True" if not field.is_required() else "False",
                             "default": str(field.default).replace(
                                 "PydanticUndefined", ""
@@ -466,7 +468,9 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
                     if name not in providers["openbb"]["Data"]["fields"]:
                         provider_extras.setdefault(provider_name, {})[name] = {
                             "type": get_annotation_type(field.annotation),
-                            "doc": field.description,
+                            "doc": (field.description or "")
+                            .replace("\n", "<br/>")
+                            .strip(),
                         }
 
         meta_command["schema"] = {
