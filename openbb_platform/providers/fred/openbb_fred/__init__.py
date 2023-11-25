@@ -7,6 +7,9 @@ from openbb_fred.models.dwpcr_rates import FREDDiscountWindowPrimaryCreditRateFe
 from openbb_fred.models.ecb_interest_rates import (
     FREDEuropeanCentralBankInterestRatesFetcher,
 )
+from openbb_fred.models.economic_releases_search import (
+    FredEconomicReleasesSearchFetcher,
+)
 from openbb_fred.models.estr_rates import FREDESTRFetcher
 from openbb_fred.models.fed_projections import FREDPROJECTIONFetcher
 from openbb_fred.models.fed_rates import FREDFEDFetcher
@@ -44,6 +47,7 @@ fred_provider = Provider(
         "ICEBofA": FREDICEBofAFetcher,
         "MoodyCorporateBondIndex": FREDMoodyCorporateBondIndexFetcher,
         "CommercialPaper": FREDCommercialPaperFetcher,
+        "EconomicReleasesSearch": FredEconomicReleasesSearchFetcher,
         "SpotRate": FREDSpotRateFetcher,
         "HighQualityMarketCorporateBond": FREDHighQualityMarketCorporateBondFetcher,
         "TreasuryConstantMaturity": FREDTreasuryConstantMaturityFetcher,

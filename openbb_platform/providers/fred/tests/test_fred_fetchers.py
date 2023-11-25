@@ -11,6 +11,9 @@ from openbb_fred.models.dwpcr_rates import FREDDiscountWindowPrimaryCreditRateFe
 from openbb_fred.models.ecb_interest_rates import (
     FREDEuropeanCentralBankInterestRatesFetcher,
 )
+from openbb_fred.models.economic_releases_search import (
+    FredEconomicReleasesSearchFetcher,
+)
 from openbb_fred.models.estr_rates import FREDESTRFetcher
 from openbb_fred.models.fed_projections import FREDPROJECTIONFetcher
 from openbb_fred.models.fed_rates import FREDFEDFetcher
@@ -266,5 +269,15 @@ def test_fred_selected_treasury_bill_fetcher(credentials=test_credentials):
     }
 
     fetcher = FREDSelectedTreasuryBillFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_economic_releases_search_fetcher(credentials=test_credentials):
+    """Test FredEconomicReleasesSearchFetcher."""
+    params = {"query": "Consumer Price Index"}
+
+    fetcher = FredEconomicReleasesSearchFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
