@@ -189,6 +189,8 @@ class FredSeriesFetcher(
             pd.DataFrame(data)
             .reset_index()
             .rename(columns={"index": "date"})
+            .fillna("N/A")
+            .replace("N/A", None)
             .to_dict("records")
         )
         return [FredSeriesData.model_validate(d) for d in results]
