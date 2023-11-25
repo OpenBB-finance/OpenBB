@@ -17,7 +17,7 @@ class EconomicReleasesSearchQueryParams(QueryParams):
 class EconomicReleasesSearchData(Data):
     """Economic Releases Search Data."""
 
-    id: int = Field(description="The release ID for FRED queries.")
+    id: int = Field(description="The release ID for queries.")
     name: str = Field(description="The name of the release.")
     press_release: Optional[bool] = Field(
         description="If the release is a press release.",
