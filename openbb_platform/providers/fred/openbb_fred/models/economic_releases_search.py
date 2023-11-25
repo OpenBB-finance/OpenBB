@@ -3,13 +3,12 @@
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
-import requests
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.economic_releases_search import (
     EconomicReleasesSearchData,
     EconomicReleasesSearchQueryParams,
 )
-from openbb_core.provider.utils.helpers import async_make_request, get_querystring
+from openbb_core.provider.utils.helpers import async_make_request
 
 
 class FredReleasesSearchQueryParams(EconomicReleasesSearchQueryParams):
