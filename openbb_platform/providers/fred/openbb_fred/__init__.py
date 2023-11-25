@@ -10,6 +10,9 @@ from openbb_fred.models.ecb_interest_rates import (
 from openbb_fred.models.economic_releases_search import (
     FredEconomicReleasesSearchFetcher,
 )
+from openbb_fred.models.economic_releases_series import (
+    FredEconomicReleasesSeriesFetcher,
+)
 from openbb_fred.models.estr_rates import FREDESTRFetcher
 from openbb_fred.models.fed_projections import FREDPROJECTIONFetcher
 from openbb_fred.models.fed_rates import FREDFEDFetcher
@@ -18,6 +21,7 @@ from openbb_fred.models.hqm import FREDHighQualityMarketCorporateBondFetcher
 from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
 from openbb_fred.models.iorb_rates import FREDIORBFetcher
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
+from openbb_fred.models.series import FredSeriesFetcher
 from openbb_fred.models.sofr_rates import FREDSOFRFetcher
 from openbb_fred.models.sonia_rates import FREDSONIAFetcher
 from openbb_fred.models.spot import FREDSpotRateFetcher
@@ -48,6 +52,8 @@ fred_provider = Provider(
         "MoodyCorporateBondIndex": FREDMoodyCorporateBondIndexFetcher,
         "CommercialPaper": FREDCommercialPaperFetcher,
         "EconomicReleasesSearch": FredEconomicReleasesSearchFetcher,
+        "EconomicReleasesSeries": FredEconomicReleasesSeriesFetcher,
+        "FredSeries": FredSeriesFetcher,
         "SpotRate": FREDSpotRateFetcher,
         "HighQualityMarketCorporateBond": FREDHighQualityMarketCorporateBondFetcher,
         "TreasuryConstantMaturity": FREDTreasuryConstantMaturityFetcher,

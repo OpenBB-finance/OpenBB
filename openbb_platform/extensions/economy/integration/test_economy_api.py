@@ -249,3 +249,92 @@ def test_economy_balance_of_payments(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "query": "financial",
+                "provider": "fred",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_economic_releases_search(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/economic_releases_search?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "release_id": "15",
+                "offset": 0,
+                "limit": 1000,
+                "filter_variable": "frequency",
+                "filter_value": "Quarterly",
+                "tag_names": "nsa",
+                "exclude_tag_names": None,
+                "provider": "fred",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_economic_releases_series(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/economic_releases_series?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "SP500",
+                "start_date": None,
+                "end_date": None,
+                "limit": 10000,
+                "frequency": "q",
+                "aggregation_method": "eop",
+                "transform": "chg",
+                "provider": "fred",
+            }
+        ),
+        (
+            {
+                "symbol": "FEDFUNDS",
+                "start_date": None,
+                "end_date": None,
+                "limit": 10000,
+                "all_page": True,
+                "provider": "intrinio",
+                "sleep": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_fred_series(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/fred_series?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200

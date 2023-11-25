@@ -1,0 +1,72 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/release/series?api_key=MOCK_API_KEY&file_type=json&filter_value=Daily&filter_variable=frequency&offset=0&release_id=473
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1684'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Sat, 25 Nov 2023 08:46:15 GMT
+      Etag:
+      - '"1870c60b91912a3b264c83b321c2be0c-gzip"'
+      Expires:
+      - Sat, 25 Nov 2023 08:56:15 GMT
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '120'
+    status:
+      code: 200
+      message: OK
+version: 1

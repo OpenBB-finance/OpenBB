@@ -9,6 +9,7 @@ from openbb_core.provider.standard_models.economic_releases_search import (
     EconomicReleasesSearchData,
     EconomicReleasesSearchQueryParams,
 )
+from openbb_core.provider.utils.helpers import async_make_request, get_querystring
 
 
 class FredReleasesSearchQueryParams(EconomicReleasesSearchQueryParams):
@@ -35,7 +36,7 @@ class FredEconomicReleasesSearchFetcher(
         return FredReleasesSearchQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: FredReleasesSearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -47,12 +48,9 @@ class FredEconomicReleasesSearchFetcher(
             f"https://api.stlouisfed.org/fred/releases?api_key={api_key}&file_type=json"
         )
 
-        response = requests.get(url, timeout=5)
+        response = await async_make_request(url, timeout=5, **kwargs)
 
-        if response.status_code != 200:
-            raise RuntimeError(f"Error with the FRED request: {response.status_code}")
-
-        return response.json().get("releases")
+        return response.get("releases")  #  type: ignore[return-value, union-attr]
 
     @staticmethod
     def transform_data(

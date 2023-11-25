@@ -39,6 +39,8 @@ class IntrinioFredIndicesQueryParams(FredIndicesQueryParams):
 class IntrinioFredIndicesData(FredIndicesData):
     """Intrinio FRED Indices Data."""
 
+    value: Optional[float] = Field(default=None, description="Value of the index.")
+
 
 class IntrinioFredIndicesFetcher(
     Fetcher[

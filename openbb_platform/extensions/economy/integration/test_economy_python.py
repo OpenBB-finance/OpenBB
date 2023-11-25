@@ -213,3 +213,89 @@ def test_economy_balance_of_payments(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "query": "financial",
+                "provider": "fred",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_economic_releases_search(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.economic_releases.search(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "release_id": "15",
+                "offset": 0,
+                "limit": 1000,
+                "filter_variable": "frequency",
+                "filter_value": "Quarterly",
+                "tag_names": "nsa",
+                "exclude_tag_names": None,
+                "provider": "fred",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_economic_releases_series(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.economic_releases.search(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "SP500",
+                "start_date": None,
+                "end_date": None,
+                "limit": 10000,
+                "frequency": "q",
+                "aggregation_method": "eop",
+                "transform": "chg",
+                "provider": "fred",
+            }
+        ),
+        (
+            {
+                "symbol": "FEDFUNDS",
+                "start_date": None,
+                "end_date": None,
+                "limit": 10000,
+                "all_page": True,
+                "provider": "intrinio",
+                "sleep": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_fred_series(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.economic_releases.search(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

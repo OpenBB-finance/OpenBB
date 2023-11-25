@@ -27,7 +27,7 @@ class FredIndicesQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("end_date", ""), default=None
     )
     limit: Optional[int] = Field(
-        description=QUERY_DESCRIPTIONS.get("limit", ""), default=100
+        description=QUERY_DESCRIPTIONS.get("limit", ""), default=100000
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
@@ -42,4 +42,3 @@ class FredIndicesData(Data):
     """FRED Indices Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    value: Optional[float] = Field(default=None, description="Value of the index.")
