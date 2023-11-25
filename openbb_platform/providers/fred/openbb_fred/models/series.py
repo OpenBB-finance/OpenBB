@@ -4,16 +4,16 @@ from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.fred_indices import (
-    FredIndicesData,
-    FredIndicesQueryParams,
+from openbb_core.provider.standard_models.fred_series import (
+    SeriesData,
+    SeriesQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import async_make_request, get_querystring
 from pydantic import Field
 
 
-class FredSeriesQueryParams(FredIndicesQueryParams):
+class FredSeriesQueryParams(SeriesQueryParams):
     """FRED Series Query Params."""
 
     __alias_dict__ = {
@@ -89,7 +89,7 @@ class FredSeriesQueryParams(FredIndicesQueryParams):
     limit: int = Field(description=QUERY_DESCRIPTIONS.get("limit", ""), default=100000)
 
 
-class FredSeriesData(FredIndicesData):
+class FredSeriesData(SeriesData):
     """FRED Series Data."""
 
 
