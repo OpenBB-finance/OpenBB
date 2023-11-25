@@ -24,13 +24,16 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
-  youtubeLink="https://www.youtube.com/embed/1UVGYgs0K28?si=RfJ9d6vYLWkcAKF3"
+  youtubeLink="https://www.youtube.com/embed/-5BDrrf4j00?si=84EuiKBgW1e-AEdB"
   videoLegend="Short introduction to Terminal Pro Data Connectors"
 />
 
 OpenBB Terminal Pro's Data Connectors are designed to empower teams by allowing them to integrate their own private datasets. This feature enhances the platform's capabilities by providing a seamless experience alongside the data that matters most to you.
 
-<img width="1785" alt="273497891-d9436d87-422c-4d73-a81c-bdc746695a28" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/f06f340b-0150-4475-baae-69a28a8d4493"/>
+<img className="pro-border-gradient" width="800" alt="data connectors" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/5df818ce-e4a1-4241-b8d5-be60ec25c7d4" />
+
+<img className="pro-border-gradient" width="800" alt="data connectors - my widgets" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/e3d74bb6-ce1e-4cdf-8f5e-d9053403ce9a" />
+
 
 We offer three distinct methods for importing your data into the platform.
 

@@ -21,5 +21,5 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Economic events from the global economy.
 
-Source: tradingeconomics
+**Source:** tradingeconomics
 

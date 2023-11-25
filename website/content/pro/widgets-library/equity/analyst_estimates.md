@@ -21,5 +21,5 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Analyst Estimates for a certain ticker Quarterly and Annual.
 
-Source: fmp
+**Source:** fmp
 
