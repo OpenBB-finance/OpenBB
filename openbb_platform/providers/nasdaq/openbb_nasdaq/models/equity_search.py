@@ -1,5 +1,6 @@
 """Nasdaq Equity Search Model."""
 
+import asyncio
 from datetime import timedelta
 from io import StringIO
 from typing import Any, Dict, List, Optional
@@ -110,22 +111,37 @@ class NasdaqEquitySearchFetcher(
         return NasdaqEquitySearchQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: NasdaqEquitySearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> str:
+        """Extract data from Nasdaq."""
+
         url = "https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqtraded.txt"
 
-        r = (
-            nasdaq_session_companies.get(url, timeout=5)
-            if query.use_cache is True
-            else requests.get(url, timeout=5)
-        )
-        if r.status_code != 200:
-            raise RuntimeError(f"Error with the request: {r.status_code}")
+        def fetch_data():
+            r = (
+                nasdaq_session_companies.get(url, timeout=5)
+                if query.use_cache is True
+                else requests.get(url, timeout=5)
+            )
+            if r.status_code != 200:
+                raise RuntimeError(f"Error with the request: {r.status_code}")
+            return r.text
 
-        directory = read_csv(StringIO(r.text), sep="|").iloc[:-1]
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(None, fetch_data)
+
+    @staticmethod
+    def transform_data(
+        query: NasdaqEquitySearchQueryParams,
+        data: str,
+        **kwargs: Any,
+    ) -> List[NasdaqEquitySearchData]:
+        """Transform the data and filter the results."""
+
+        directory = read_csv(StringIO(data), sep="|").iloc[:-1]
 
         if query.is_etf is True:
             directory = directory[directory["ETF"] == "Y"]
@@ -141,17 +157,11 @@ class NasdaqEquitySearchFetcher(
             ]
         directory["Market Category"] = directory["Market Category"].replace(" ", None)
 
-        return (
+        results = (
             directory.astype(object)
-            .fillna("-")
-            .replace("-", None)
+            .fillna("N/A")
+            .replace("N/A", None)
             .to_dict(orient="records")
         )
 
-    @staticmethod
-    def transform_data(
-        query: NasdaqEquitySearchQueryParams,
-        data: List[Dict],
-        **kwargs: Any,
-    ) -> List[NasdaqEquitySearchData]:
-        return [NasdaqEquitySearchData.model_validate(d) for d in data]
+        return [NasdaqEquitySearchData.model_validate(d) for d in results]
