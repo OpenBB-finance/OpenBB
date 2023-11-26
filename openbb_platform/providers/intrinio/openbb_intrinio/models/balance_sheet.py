@@ -18,10 +18,7 @@ class IntrinioBalanceSheetQueryParams(FinancialStatementsQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
 
-    period: Literal["annual", "quarter"] = Field(
-        default="annual",
-        description="The reporting period, i.e., annual, quarterly, TTM.",
-    )
+    period: Literal["annual", "quarter"] = Field(default="annual")
 
     @field_validator("period", mode="after", check_fields=False)
     @classmethod

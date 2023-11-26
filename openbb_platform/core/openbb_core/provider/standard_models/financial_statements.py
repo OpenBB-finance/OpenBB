@@ -16,9 +16,7 @@ class FinancialStatementsQueryParams(QueryParams):
     """Financial Statement Query Params."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    period: str = Field(
-        default="annual", description="The reporting period."
-    )
+    period: str = Field(default="annual", description="The reporting period.")
     limit: Optional[int] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("limit", "")
     )

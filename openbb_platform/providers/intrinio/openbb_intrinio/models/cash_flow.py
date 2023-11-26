@@ -19,10 +19,7 @@ class IntrinioCashFlowStatementQueryParams(FinancialStatementsQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
 
-    period: Literal["annual", "quarter", "ttm", "ytd"] = Field(
-        default="annual",
-        description="The reporting period, i.e., annual, quarterly, TTM.",
-    )
+    period: Literal["annual", "quarter", "ttm", "ytd"] = Field(default="annual")
 
 
 class IntrinioCashFlowStatementData(CashFlowStatementData):
