@@ -1,16 +1,14 @@
 """Intrinio Balance Sheet Model."""
 
-
-from concurrent.futures import ThreadPoolExecutor
-from itertools import repeat
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.financial_statements import (
     BalanceSheetData,
     FinancialStatementsQueryParams,
 )
-from openbb_intrinio.utils.helpers import get_data_one
+from openbb_intrinio.utils.helpers import async_get_data_one
+from pydantic import Field, field_validator
 
 
 class IntrinioBalanceSheetQueryParams(FinancialStatementsQueryParams):
@@ -19,6 +17,18 @@ class IntrinioBalanceSheetQueryParams(FinancialStatementsQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_company_fundamentals_v2
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
+
+    period: Literal["annual", "quarter"] = Field(
+        default="annual",
+        description="The reporting period, i.e., annual, quarterly, TTM.",
+    )
+
+    @field_validator("period", mode="after", check_fields=False)
+    @classmethod
+    def validate_period(cls, v):
+        """Validate period."""
+        v = "FY" if v == "annual" else "QTR"
+        return v
 
 
 class IntrinioBalanceSheetData(BalanceSheetData):
@@ -33,7 +43,7 @@ class IntrinioBalanceSheetData(BalanceSheetData):
         "interest_bearing_deposits_at_other_banks": "interestbearingdepositsatotherbanks",
         "accounts_receivable": "accountsreceivable",
         "time_deposits_placed_and_other_short_term_investments": "timedepositsplaced",
-        "inventories_net": "netinventory",
+        "inventories": "netinventory",
         "trading_account_securities": "tradingaccountsecurities",
         "prepaid_expenses": "prepaidexpenses",
         "loans_and_leases": "loansandleases",
@@ -130,7 +140,7 @@ class IntrinioBalanceSheetFetcher(
         return IntrinioBalanceSheetQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: IntrinioBalanceSheetQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -138,33 +148,32 @@ class IntrinioBalanceSheetFetcher(
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         statement_code = "balance_sheet_statement"
-        period_type = "FY" if query.period == "annual" else "QTR"
 
         fundamentals_data: Dict = {}
         data: List[Dict] = []
 
         base_url = "https://api-v2.intrinio.com"
-        fundamentals_url_params = f"statement_code={statement_code}&type={period_type}"
+        fundamentals_url_params = f"statement_code={statement_code}&type={query.period}"
         fundamentals_url = (
             f"{base_url}/companies/{query.symbol}/fundamentals?"
             f"{fundamentals_url_params}&api_key={api_key}"
         )
 
-        fundamentals_data = get_data_one(fundamentals_url, **kwargs).get(
-            "fundamentals", []
-        )
+        fundamentals_data = await async_get_data_one(fundamentals_url, **kwargs)
         fiscal_periods = [
             f"{item['fiscal_year']}-{item['fiscal_period']}"
-            for item in fundamentals_data
+            for item in fundamentals_data.get("fundamentals", [])
         ]
         fiscal_periods = fiscal_periods[: query.limit]
 
-        def get_financial_statement_data(period: str, data: List[Dict]) -> None:
+        async def async_get_financial_statement_data(
+            period: str, data: List[Dict]
+        ) -> None:
             statement_data: Dict = {}
 
             intrinio_id = f"{query.symbol}-{statement_code}-{period}"
             statement_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
-            statement_data = get_data_one(statement_url, **kwargs)
+            statement_data = await async_get_data_one(statement_url, **kwargs)
 
             data.append(
                 {
@@ -175,8 +184,8 @@ class IntrinioBalanceSheetFetcher(
                 }
             )
 
-        with ThreadPoolExecutor() as executor:
-            executor.map(get_financial_statement_data, fiscal_periods, repeat(data))
+        for i in range(0, len(fiscal_periods)):
+            await async_get_financial_statement_data(fiscal_periods[i], data)
 
         return sorted(data, key=lambda x: x["period_ending"], reverse=True)
 
@@ -199,7 +208,7 @@ class IntrinioBalanceSheetFetcher(
             sub_dict["fiscal_period"] = item["fiscal_period"]
 
             # Intrinio does not return Q4 data but FY data instead
-            if query.period == "quarter" and item["fiscal_period"] == "FY":
+            if query.period == "QTR" and item["fiscal_period"] == "FY":
                 sub_dict["fiscal_period"] = "Q4"
 
             transformed_data.append(IntrinioBalanceSheetData(**sub_dict))

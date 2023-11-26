@@ -18,7 +18,7 @@ class CashFlowStatementQueryParams(QueryParams):
     """Cash Flow Statement Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    period: Optional[Literal["annual", "quarter"]] = Field(
+    period: str = Field(
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
     )

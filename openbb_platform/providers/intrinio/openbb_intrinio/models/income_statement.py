@@ -1,16 +1,13 @@
 """Intrinio Income Statement Model."""
 
-
-from concurrent.futures import ThreadPoolExecutor
-from itertools import repeat
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.financial_statements import (
     FinancialStatementsQueryParams,
     IncomeStatementData,
 )
-from openbb_intrinio.utils.helpers import get_data_one
+from openbb_intrinio.utils.helpers import async_get_data_one
 from pydantic import Field
 
 
@@ -20,6 +17,11 @@ class IntrinioIncomeStatementQueryParams(FinancialStatementsQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_company_fundamentals_v2
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
+
+    period: Literal["annual", "quarter", "ttm", "ytd"] = Field(
+        default="annual",
+        description="The reporting period, i.e., annual, quarterly, TTM.",
+    )
 
 
 class IntrinioIncomeStatementData(IncomeStatementData):
@@ -109,11 +111,14 @@ class IntrinioIncomeStatementData(IncomeStatementData):
         default=None, description="Earnings Before Interest and Taxes."
     )
     ebitda: Optional[float] = Field(
-        default=None, description="Earnings Before Interest, Taxes, Depreciation and Amortization."
+        default=None,
+        description="Earnings Before Interest, Taxes, Depreciation and Amortization.",
     )
     ebitda_margin: Optional[float] = Field(
-        default=None, description="Margin on Earnings Before Interest, Taxes, Depreciation and Amortization."
+        default=None,
+        description="Margin on Earnings Before Interest, Taxes, Depreciation and Amortization.",
     )
+
 
 class IntrinioIncomeStatementFetcher(
     Fetcher[
@@ -129,7 +134,7 @@ class IntrinioIncomeStatementFetcher(
         return IntrinioIncomeStatementQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: IntrinioIncomeStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -137,7 +142,10 @@ class IntrinioIncomeStatementFetcher(
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         statement_code = "income_statement"
-        period_type = "FY" if query.period == "annual" else "QTR"
+        if query.period in ["quarter", "annual"]:
+            period_type = "FY" if query.period == "annual" else "QTR"
+        if query.period in ["ttm", "ytd"]:
+            period_type = query.period.upper()
         data_tags = ["ebit", "ebitda", "ebitdamargin"]
 
         fundamentals_data: Dict = {}
@@ -150,32 +158,31 @@ class IntrinioIncomeStatementFetcher(
             f"{fundamentals_url_params}&api_key={api_key}"
         )
 
-        fundamentals_data = get_data_one(fundamentals_url, **kwargs).get(
-            "fundamentals", []
-        )
+        fundamentals_data = await async_get_data_one(fundamentals_url, **kwargs)
+
         fiscal_periods = [
             f"{item['fiscal_year']}-{item['fiscal_period']}"
-            for item in fundamentals_data
+            for item in fundamentals_data.get("fundamentals", [])
         ]
         fiscal_periods = fiscal_periods[: query.limit]
 
-        def get_financial_statement_data(period: str, data: List[Dict]) -> None:
+        async def async_get_financial_statement_data(
+            period: str, data: List[Dict]
+        ) -> None:
             statement_data: Dict = {}
             calculations_data: List = []
 
             intrinio_id = f"{query.symbol}-{statement_code}-{period}"
             statement_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
-            statement_data = get_data_one(statement_url, **kwargs)
+            statement_data = await async_get_data_one(statement_url, **kwargs)
 
             calculations_intrinio_id = f"{query.symbol}-calculations-{period}"
             calculations_url = f"{base_url}/fundamentals/{calculations_intrinio_id}/standardized_financials?api_key={api_key}"  # noqa E501
-            calculations_data = get_data_one(calculations_url, **kwargs).get(
-                "standardized_financials", []
-            )
+            calculations_data = await async_get_data_one(calculations_url, **kwargs)
             calculations_data = [
-               item
-            for item in calculations_data
-            if item["data_tag"]["tag"] in data_tags
+                item
+                for item in calculations_data.get("standardized_financials", [])
+                if item["data_tag"]["tag"] in data_tags
             ]
 
             data.append(
@@ -183,12 +190,13 @@ class IntrinioIncomeStatementFetcher(
                     "period_ending": statement_data["fundamental"]["end_date"],
                     "fiscal_year": statement_data["fundamental"]["fiscal_year"],
                     "fiscal_period": statement_data["fundamental"]["fiscal_period"],
-                    "financials": statement_data["standardized_financials"]+calculations_data,
+                    "financials": statement_data["standardized_financials"]
+                    + calculations_data,
                 }
             )
 
-        with ThreadPoolExecutor() as executor:
-            executor.map(get_financial_statement_data, fiscal_periods, repeat(data))
+        for i in range(0, len(fiscal_periods)):
+            await async_get_financial_statement_data(fiscal_periods[i], data)
 
         return sorted(data, key=lambda x: x["period_ending"], reverse=True)
 
