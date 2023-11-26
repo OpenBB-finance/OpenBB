@@ -74,9 +74,7 @@ class FMPFinancialRatiosFetcher(
 
             # TTM data
             ttm_url = f"{base_url}/ratios-ttm/{symbol}?&apikey={api_key}"
-            if query.with_ttm and (ratios_response := await session.get(ttm_url)):
-                ratios_ttm = await ratios_response.get_one()
-
+            if query.with_ttm and (ratios_ttm := await session.get_one(ttm_url)):
                 results.insert(
                     0,
                     {

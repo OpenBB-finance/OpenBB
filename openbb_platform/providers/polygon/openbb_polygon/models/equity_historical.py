@@ -117,15 +117,24 @@ class PolygonEquityHistoricalFetcher(
         """Return the raw data from the Polygon endpoint."""
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
-        async def response_callback(
+        urls = [
+            (
+                "https://api.polygon.io/v2/aggs/ticker/"
+                f"{symbol.upper()}/range/{query._multiplier}/{query._timespan}/"
+                f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
+                f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
+            )
+            for symbol in query.symbol.split(",")
+        ]
+
+        async def callback(
             response: ClientResponse, session: ClientSession
         ) -> List[Dict]:
-            data: dict = await response.json()
-
-            next_url = data.get("next_url", None)
-            results: list = data.get("results", [])
+            data = await response.json()
 
             symbol = response.url.parts[4]
+            next_url = data.get("next_url", None)
+            results: list = data.get("results", [])
 
             while next_url:
                 url = f"{next_url}&apiKey={api_key}"
@@ -142,17 +151,7 @@ class PolygonEquityHistoricalFetcher(
 
             return results
 
-        urls = [
-            (
-                "https://api.polygon.io/v2/aggs/ticker/"
-                f"{symbol.upper()}/range/{query._multiplier}/{query._timespan}/"
-                f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
-                f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
-            )
-            for symbol in query.symbol.split(",")
-        ]
-
-        return await async_requests(urls, response_callback=response_callback, **kwargs)
+        return await async_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(

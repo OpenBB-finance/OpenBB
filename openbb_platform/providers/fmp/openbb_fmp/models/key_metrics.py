@@ -74,9 +74,7 @@ class FMPKeyMetricsFetcher(
 
             # TTM data
             ttm_url = f"{base_url}/key-metrics-ttm/{symbol}?&apikey={api_key}"
-            if query.with_ttm and (metrics_response := await session.get(ttm_url)):
-                metrics_ttm = await metrics_response.get_one()
-
+            if query.with_ttm and (metrics_ttm := await session.get_one(ttm_url)):
                 results.insert(
                     0,
                     {

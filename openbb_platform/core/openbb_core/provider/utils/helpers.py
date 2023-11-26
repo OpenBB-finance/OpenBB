@@ -73,8 +73,10 @@ async def async_request(
         HTTP method to use.  Can be "GET" or "POST", by default "GET"
     timeout : int, optional
         Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
-    response_callback : Callable[[aiohttp.ClientResponse], Awaitable[Union[dict, List[dict]]]], optional
-        Callback to run on the response, by default None
+    response_callback : Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]], optional
+        Async callback with response and session as arguments that returns the json, by default None
+    session : ClientSession, optional
+        Custom session to use for requests, by default None
 
 
     Returns
@@ -82,36 +84,49 @@ async def async_request(
     Union[dict, List[dict]]
         Response json
     """
+    if method.upper() not in ["GET", "POST"]:
+        raise ValueError("Method must be GET or POST")
+
+    kwargs["timeout"] = kwargs.pop("preferences", {}).get("request_timeout", timeout)
+
     response_callback = response_callback or (
         lambda r, _: asyncio.ensure_future(r.json())
     )
 
-    kwargs["timeout"] = kwargs.pop("preferences", {}).get("request_timeout", timeout)
-    with_session = kwargs.pop("with_session", False)
+    with_session = kwargs.pop("with_session", "session" in kwargs)
     session: ClientSession = kwargs.pop("session", ClientSession())
 
-    response = await session.request(method, url, **kwargs)
-    data = await response_callback(response, session)
+    try:
+        response = await session.request(method, url, **kwargs)
+        return await response_callback(response, session)
+    finally:
+        if not with_session:
+            await session.close()
 
-    if not with_session:
-        await session.close()
 
-    return data
-
-
-async def async_requests(urls: List[str], **kwargs) -> Union[dict, List[dict]]:
+async def async_requests(
+    urls: Union[str, List[str]],
+    response_callback: Optional[
+        Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]]
+    ] = None,
+    **kwargs,
+):
     """Make multiple requests asynchronously.
+
 
     Parameters
     ----------
-    urls : List[str]
+    urls : Union[str, List[str]]
         List of urls to make requests to
     method : Literal["GET", "POST"], optional
         HTTP method to use.  Can be "GET" or "POST", by default "GET"
     timeout : int, optional
         Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
     response_callback : Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]], optional
-        Callback to run on the response, by default None
+        Async callback with response and session as arguments that returns the json, by default None
+    session : ClientSession, optional
+        Custom session to use for requests, by default None
+
 
     Returns
     -------
@@ -119,18 +134,21 @@ async def async_requests(urls: List[str], **kwargs) -> Union[dict, List[dict]]:
         Response json
     """
     session: ClientSession = kwargs.pop("session", ClientSession())
-    kwargs["with_session"] = True
+    kwargs["response_callback"] = response_callback
 
-    results = await asyncio.gather(
-        *[async_request(url, session=session, **kwargs) for url in urls]
-    )
+    urls = urls if isinstance(urls, list) else [urls]
 
-    await session.close()
+    try:
+        results = await asyncio.gather(
+            *[async_request(url, session=session, **kwargs) for url in urls]
+        )
 
-    if isinstance(results[0], list):
-        return [item for sublist in results for item in sublist]
+        if isinstance(results[0], list):
+            return [item for sublist in results for item in sublist if item]
 
-    return results
+        return results
+    finally:
+        await session.close()
 
 
 def make_request(

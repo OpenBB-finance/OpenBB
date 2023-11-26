@@ -20,6 +20,8 @@ class FMPCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Historical-Forex-Price
     """
 
+    __alias_dict__ = {"start_date": "from", "end_date": "to"}
+
     interval: Literal[
         "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
     ] = Field(default="1day", description="Data granularity.")
@@ -82,11 +84,7 @@ class FMPCurrencyHistoricalFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        query_str = (
-            get_querystring(query.model_dump(), ["symbol"])
-            .replace("start_date", "from")
-            .replace("end_date", "to")
-        )
+        query_str = get_querystring(query.model_dump(), ["symbol"])
 
         url_params = f"{query.symbol}?{query_str}&apikey={api_key}"
         url = f"{base_url}/historical-chart/{query.interval}/{url_params}"

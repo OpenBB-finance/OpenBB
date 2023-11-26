@@ -1,21 +1,22 @@
 """Aiohttp client."""
 # pylint: disable=protected-access
+import asyncio
 import random
+import re
 import zlib
 from typing import Any, Dict, Union
 
 import aiohttp
 
-FILTER_QUERY_PARAMS = [
-    "apikey",
-    "apiKey",
-    "api_key",
-    "token",
-    "key",
-    "auth_token",
-    "access_token",
-    "c",
-]
+FILTER_QUERY_REGEX = r".*key.*|.*token.*|.*auth.*|(c$)"
+
+
+def obfuscate(params: dict) -> dict:
+    """Obfuscate sensitive information."""
+    return {
+        param: "********" if re.match(FILTER_QUERY_REGEX, param, re.IGNORECASE) else val
+        for param, val in params.items()
+    }
 
 
 def get_user_agent() -> str:
@@ -36,6 +37,21 @@ def get_user_agent() -> str:
 class ClientResponse(aiohttp.ClientResponse):
     """Client response class."""
 
+    def __init__(self, *args, **kwargs):
+        kwargs["request_info"] = self.obfuscate_request_info(kwargs["request_info"])
+        super().__init__(*args, **kwargs)
+
+    @classmethod
+    def obfuscate_request_info(
+        cls, request_info: aiohttp.RequestInfo
+    ) -> aiohttp.RequestInfo:
+        """Remove sensitive information from request info."""
+        query = obfuscate(request_info.url.query.copy())
+        headers = obfuscate(request_info.headers.copy())
+        url = request_info.url.with_query(query)
+
+        return aiohttp.RequestInfo(url, request_info.method, headers, url)
+
     async def get_one(self) -> Dict[str, Any]:
         """Return the first item in the response."""
         data = await self.json()
@@ -43,6 +59,10 @@ class ClientResponse(aiohttp.ClientResponse):
             return data[0]
 
         return data
+
+    async def json(self, **kwargs) -> Union[dict, list]:
+        """Return the json response."""
+        return await super().json(**kwargs)
 
 
 class ClientSession(aiohttp.ClientSession):
@@ -57,6 +77,29 @@ class ClientSession(aiohttp.ClientSession):
         kwargs["auto_decompress"] = kwargs.get("auto_decompress", False)
 
         super().__init__(*args, **kwargs)
+
+    def __del__(self):
+        """Close the session."""
+        if not self.closed:
+            asyncio.create_task(self.close())
+
+    async def get(self, url: str, **kwargs) -> ClientResponse:
+        """Send GET request."""
+        return await self.request("GET", url, **kwargs)
+
+    async def post(self, url: str, **kwargs) -> ClientResponse:
+        """Send POST request."""
+        return await self.request("POST", url, **kwargs)
+
+    async def get_json(self, url: str, **kwargs) -> Union[dict, list]:
+        """Send GET request and return json."""
+        response = await self.request("GET", url, **kwargs)
+        return await response.json()
+
+    async def get_one(self, url: str, **kwargs) -> Dict[str, Any]:
+        """Send GET request and return first item in json if list."""
+        response = await self.request("GET", url, **kwargs)
+        return await response.get_one()
 
     async def request(
         self, *args, raise_for_status: bool = False, **kwargs
@@ -76,26 +119,9 @@ class ClientSession(aiohttp.ClientSession):
             kwargs["headers"]["User-Agent"] = get_user_agent()
 
         response = await super().request(*args, **kwargs)
-        if raise_for_status and not response.ok:
-            query = response.request_info.url.query.copy()
 
-            for param in FILTER_QUERY_PARAMS:
-                if param in query:
-                    query[param] = "*****"
-
-            url = response.request_info.url.with_query(query)
-            raise aiohttp.ClientResponseError(
-                aiohttp.RequestInfo(
-                    url,
-                    response.request_info.method,
-                    response.request_info.headers,
-                    url,
-                ),
-                response.history,
-                status=response.status,
-                message=response.reason,
-                headers=response.headers,
-            )
+        if raise_for_status:
+            response.raise_for_status()
 
         encoding = response.headers.get("Content-Encoding", "")
         if encoding in ("gzip", "deflate") and not self.auto_decompress:
@@ -106,12 +132,3 @@ class ClientSession(aiohttp.ClientSession):
             )  # pylint: disable=protected-access
 
         return response
-
-    async def get(self, url: str, **kwargs) -> ClientResponse:
-        """Send GET request."""
-        return await self.request("GET", url, **kwargs)
-
-    async def get_json(self, url: str, **kwargs) -> Union[dict, list]:
-        """Send GET request and return json."""
-        response = await self.request("GET", url, **kwargs)
-        return await response.json()

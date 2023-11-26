@@ -3,13 +3,13 @@
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
-from aiohttp import ClientResponse, ClientSession
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
     EquityHistoricalQueryParams,
 )
+from openbb_core.provider.utils.client import ClientResponse
 from openbb_core.provider.utils.helpers import async_requests, get_querystring
 from openbb_fmp.utils.helpers import get_interval
 from pydantic import Field, NonNegativeInt
@@ -108,9 +108,7 @@ class FMPEquityHistoricalFetcher(
         if len(query.symbol.split(",")) > 20:
             kwargs.update({"preferences": {"request_timeout": 30}})
 
-        async def response_callback(
-            response: ClientResponse, _: ClientSession
-        ) -> List[Dict]:
+        async def callback(response: ClientResponse, _: Any) -> List[Dict]:
             data: dict = await response.json()
             symbol = response.url.parts[-1]
 
@@ -125,7 +123,7 @@ class FMPEquityHistoricalFetcher(
 
         urls = [get_url_params(symbol) for symbol in query.symbol.split(",")]
 
-        return await async_requests(urls, response_callback=response_callback, **kwargs)
+        return await async_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(
