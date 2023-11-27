@@ -67,11 +67,12 @@ Before installation, update the package manager so that `pip` is current, then c
 pip install poetry toml
 ```
 :::note
-Installing packages directly to the system Python or `base` environment is not recommended.  Create a new environment first.
+Installing packages directly to the system Python or `base` environment is not recommended.  Create a new environment first (can be any name, uisng openbb here for example).
 
-```conda create -n openbb python=3.11```
-
-```conda activate openbb```
+```
+conda create -n openbb python=3.11
+conda activate openbb
+```
 :::
 
 ### PyPI
@@ -82,9 +83,9 @@ Install from PyPI with:
 pip install openbb --pre
 ```
 
-This will install the core OpenBB Platform, along with officially supported extensions and providers
+This will install the core OpenBB Platform, along with officially supported extensions and providers.
 
-To install all of the extensions and providers:
+To install all extensions and providers (both officially supported and community maintained ones):
 
 ```console
 pip install openbb[all] --pre
@@ -115,8 +116,14 @@ From your python interpreter, import the OpenBB Platform:
 ```console
 from openbb import obb
 ```
+:::warning
+This import statement is required due to the statefulness of the obb package.  There is currently no support for imports such as
+```
+from openbb.obb.equity import *
+```
+:::
 
-On import, any installed extensions will be loaded and available for use.
+When the package is imported, any installed extensions will be discovered, imported and available for use.
 
 :::note
 Currently if you wish to have the bare-bones openbb package with no extensions or providers, you can install with:
@@ -129,7 +136,7 @@ pip install openbb --pre --no-deps
 
 ### Docker
 
-OpenBB supplies a `.dockerfile` on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal).
+OpenBB provides a `.dockerfile` on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal).
 
 Run the following command from the repo root to build the image:
 
