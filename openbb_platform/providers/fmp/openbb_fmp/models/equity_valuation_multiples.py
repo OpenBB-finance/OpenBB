@@ -117,7 +117,6 @@ class FMPEquityValuationMultiplesFetcher(
             url = create_url(
                 3, f"key-metrics-ttm/{symbol}", api_key, query, exclude=["symbol"]
             )
-            # return data.extend(get_data_many(url, **kwargs))
             response = get_data_many(url, **kwargs)
             response[0]["symbol"] = symbol
             return data.extend(response)
