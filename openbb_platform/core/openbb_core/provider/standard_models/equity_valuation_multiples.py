@@ -16,9 +16,6 @@ class EquityValuationMultiplesQueryParams(QueryParams):
     """Equity Valuation Multiples Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    limit: Optional[int] = Field(
-        default=100, description=QUERY_DESCRIPTIONS.get("limit", "")
-    )
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
