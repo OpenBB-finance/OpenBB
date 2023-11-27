@@ -14,7 +14,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Build OpenBB Extensions - Developer Guidelines - Development | OpenBB Platform Docs" />
 
-In order to speed up the process of building an extension, we have provided a **Cookiecutter** template.  It serves as a jumpstart for your extension development, so you can focus on the data and not on the boilerplate.
+In order to speed up the process of building an extension, we have provided a **Cookiecutter** template. It serves as a jumpstart for your extension development, so you can focus on the data and not on the boilerplate.
 
 Please refer to the [Cookiecutter template](https://github.com/OpenBB-finance/openbb-cookiecutter) and follow the instructions there.
 

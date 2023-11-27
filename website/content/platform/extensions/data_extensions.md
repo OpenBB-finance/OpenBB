@@ -25,9 +25,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Data - Extensions | OpenBB Platform Docs" />
 
-Data extensions will expand the breadth and coverage of the data available in the OpenBB Platform.  Each source (provider) is its own independent extension, even if there is only one endpoint accessible.  This allows every data source to be inserted or removed, at any time, without distrubing the operation of the Core components.
+Data extensions will expand the breadth and coverage of the data available in the OpenBB Platform. Each source (provider) is its own independent extension, even if there is only one endpoint accessible. This allows every data source to be inserted or removed, at any time, without disturbing the operation of the Core components.
 
-Functions will appear in the Python Interface and Fast API only if a supported provider, for that specific endpoint, is installed.  Additional Python libraries will be installed, where required, by the extension.
+Functions will appear in the Python Interface and Fast API only if a supported provider, for that specific endpoint, is installed. Additional Python libraries will be installed, where required, by the extension.
 
 ## Provider Coverage
 
@@ -40,13 +40,13 @@ obb.coverage.providers
 
 ## Installation
 
-All data extensions are installed with similar syntax.  Published data extensions will have names beginning with `openbb`.  For example, yFinance.
+All data extensions are installed with similar syntax. Published data extensions will have names beginning with `openbb`. For example, yFinance.
 
 ```console
 pip install openbb-yfinance
 ```
 
-Additions and removals update the router automatically to reflect the changes when the Python interpreter is refreshed.  Below is a list of data provider extensions.
+Additions and removals update the router automatically to reflect the changes when the Python interpreter is refreshed. Below is a list of data provider extensions.
 
 Uninstall any extension with `pip uninstall`.
 
@@ -80,6 +80,6 @@ pip uninstall openbb-yfinance
 | openbb-wsj | [Wall Street Journal](https://www.wsj.com/) data connector. | pip install openbb-wsj | Community | None |
 | openbb-yfinance | [Yahoo Finance](https://finance.yahoo.com/) data connector. | pip install openbb-yfinance | Community | None |
 
-Have you published a data provider extension and want it featured on this list?  Tell us about it!  Open a pull request on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/) to submit an extension for inclusion.  Code contributions, for new and existing, data providers are always welcome.
+Have you published a data provider extension and want it featured on this list? Tell us about it! Open a pull request on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/) to submit an extension for inclusion. Code contributions, for new and existing, data providers are always welcome.
 
 Search [PyPI](https://pypi.org/search/?q=openbb-) to find more extensions.

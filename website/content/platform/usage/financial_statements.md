@@ -29,7 +29,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Financial Statements - Usage | OpenBB Platform Docs" />
 
-OpenBB Platform data extensions provide access to financial statements as quarterly or annual.  There are also endpoints for ratios and other common non-GAAP metrics.  Most data providers require a subscription to access all data, refer to the website of a specific provider for details on entitlements and coverage.
+OpenBB Platform data extensions provide access to financial statements as quarterly or annual. There are also endpoints for ratios and other common non-GAAP metrics. Most data providers require a subscription to access all data, refer to the website of a specific provider for details on entitlements and coverage.
 
 Financial statement functions are grouped under the `obb.equity.fundamental` module.
 
@@ -53,8 +53,8 @@ The typical financial statements consist of three endpoints:
 The main parameters are:
 
 - `symbol`: The company's ticker symbol.
-- `period`: 'annual' or 'quarter'.  Default is 'annual'.
-- `limit`: Limit the number of results returned, from the latest.  Default is 5.  For perspective, 150 will go back to 1985.  The amount of historical records varies by provider.
+- `period`: 'annual' or 'quarter'. Default is 'annual'.
+- `limit`: Limit the number of results returned, from the latest. Default is 5. For perspective, 150 will go back to 1985. The amount of historical records varies by provider.
 
 ### Field Names
 
@@ -105,7 +105,7 @@ df
 
 ### Weighted Average Shares Outstanding
 
-This key metric will be found under the income statement.  It might also be called, 'basic', and the numbers do not include authorized but unissued shares.  A declining count over time is a sign that the company is returning capital to shareholders in the form of buy backs.  Under ideal circumstances, it is more capital-efficient, for both company and shareholders, because distributions are double-taxed.  The company pays income tax on dividends paid, and the beneficiary pays income tax again on receipt.
+This key metric will be found under the income statement. It might also be called, 'basic', and the numbers do not include authorized but unissued shares. A declining count over time is a sign that the company is returning capital to shareholders in the form of buy backs. Under ideal circumstances, it is more capital-efficient, for both company and shareholders, because distributions are double-taxed. The company pays income tax on dividends paid, and the beneficiary pays income tax again on receipt.
 
 A company will disclose how many shares are outstanding at the end of the period  as a weighted average over the reporting period - three months.
 
@@ -177,7 +177,7 @@ round((price["close"].mean()*1300000)/1000000, 2)
 
 ### Dividends Paid
 
-Dividends paid is in the cash flow statement.  We can calculate the amount-per-share with the reported data.
+Dividends paid is in the cash flow statement. We can calculate the amount-per-share with the reported data.
 
 ```python
 dividends = (
@@ -201,7 +201,7 @@ dividends["div_per_share"].tail(4)
 This can be compared against the real amounts paid to common share holders, as announced.
 
 :::note
-The dates immediately above represent the report date, dividends paid are attributed to the quarter they were paid in.  The value from "2023-01-28" equates to the fourth quarter of 2022.
+The dates immediately above represent the report date, dividends paid are attributed to the quarter they were paid in. The value from "2023-01-28" equates to the fourth quarter of 2022.
 :::
 
 ```python
@@ -223,7 +223,7 @@ The numbers check out, and the $2B paid to investors over four quarters is more 
 
 ### Financial Attributes
 
-The `openbb-intrinio` data extension has an endpoint for extracting a single fact from financial statements.  There is a helper function for looking up the correct `tag`.
+The `openbb-intrinio` data extension has an endpoint for extracting a single fact from financial statements. There is a helper function for looking up the correct `tag`.
 
 #### Search Financial Attributes
 
@@ -270,13 +270,13 @@ Doing some quick math, and ignoring the most recent value, we can see that the m
 
 ## Ratios and Other Metrics
 
-Other valuation functions are derivatives of the financial statements, but the data provider does the math.  Values are typically ratios between line items, on a per-share basis, or as a percent growth.
+Other valuation functions are derivatives of the financial statements, but the data provider does the math. Values are typically ratios between line items, on a per-share basis, or as a percent growth.
 
 This data set is where you can find EPS, FCF, P/B, EBIT, quick ratio, etc.
 
 ### Quick Ratio
 
-Target's quick ratio could be one reason why its share price is losing traction against the market.  Its ability to pay current obligations is not optimistically reflected in a 0.27 score, approximately 50% below the historical median.
+Target's quick ratio could be one reason why its share price is losing traction against the market. Its ability to pay current obligations is not optimistically reflected in a 0.27 score, approximately 50% below the historical median.
 
 ```python
 ratios = (
@@ -295,7 +295,7 @@ Median Quick Ratio: 0.58
 
 ### Free Cash Flow Yield
 
-The `metrics` endpoint, with the `openbb-fmp` data extension, has a field for free cash flow yield.  It is calculated by taking the free cash flow per share divided by the current share price.  We could arrive at this answer by writing some code, but these types of endpoints do the work so we don't have to.  This is part of the value-add that API data distributors provide, they allow you to get straight to work with data.
+The `metrics` endpoint, with the `openbb-fmp` data extension, has a field for free cash flow yield. It is calculated by taking the free cash flow per share divided by the current share price. We could arrive at this answer by writing some code, but these types of endpoints do the work so we don't have to. This is part of the value-add that API data distributors provide, they allow you to get straight to work with data.
 
 We'll use this endpoint to extract the data, and compare with some of Target's competition over the last ten years.
 

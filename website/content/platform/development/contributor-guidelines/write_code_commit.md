@@ -131,10 +131,7 @@ This is the main directory for the OpenBB package, containing the core functiona
 
 ### `platform`
 
-This directory hosts the core platform functionalities, divided into:
-
-- Core (`core`): The central part of the OpenBB Platform application.
-- Provider (`provider`): Manages provider-specific functionalities.
+This directory hosts the core platform functionalities (`core`) which is the central part of the OpenBB Platform application.
 
 ### Root Directory Files
 

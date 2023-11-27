@@ -17,7 +17,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 Please refer to the following PyPI distributed package: https://pypi.org/project/openbb-devtools/
 
 This Python package, `openbb-devtools`, is designed for OpenBB Platform Developers and contains a range of dependencies essential for robust and efficient software development.
+
 These dependencies cater to various aspects like code formatting, security analysis, type checking, testing, and kernel management.
+
 The inclusion of these packages ensures that the development process is streamlined, the code quality is maintained, and the software is secure and reliable.
 
 Included dependencies:

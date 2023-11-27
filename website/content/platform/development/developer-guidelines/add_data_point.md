@@ -77,7 +77,8 @@ class <ProviderName>EquityHistoricalData(EquityHistoricalData):
 
 ### Build the Fetcher
 
-The `Fetcher` class is responsible for processing the Query and turning that into an API request and finally returning the Data model.  Each fetcher contains three methods that are implemented by the core (see below for a link to the contributing guidelines):
+The `Fetcher` class is responsible for processing the Query and turning that into an API request and finally returning the Data model. Each fetcher contains three methods that are implemented by the core (see below for a link to the contributing guidelines):
+
 - `transform_query`
   - Convert a standard query into a provider-specific query
 - `extract_data`
