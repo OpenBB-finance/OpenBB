@@ -41,6 +41,16 @@ def vcr_config():
         ],
     }
 
+@pytest.mark.record_http
+def test_y_finance_equity_historical_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "AAPL",
+    }
+
+    fetcher = YFinanceEquityHistoricalFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
 
 @pytest.mark.record_http
 def test_y_finance_crypto_historical_fetcher(credentials=test_credentials):
@@ -77,20 +87,6 @@ def test_y_finance_market_indices_fetcher(credentials=test_credentials):
     }
 
     fetcher = YFinanceMarketIndicesFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-def test_y_finance_equity_historical_fetcher(credentials=test_credentials):
-    params = {
-        "symbol": "AAPL",
-        "start_date": date(2023, 1, 1),
-        "end_date": date(2023, 1, 10),
-        "interval": "1d",
-    }
-
-    fetcher = YFinanceEquityHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
