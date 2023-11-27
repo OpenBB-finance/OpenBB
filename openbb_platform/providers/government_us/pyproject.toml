@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-government-us"
-version = "1.0.0b1"
+version = "1.0.0b2"
 description = "US Government Data Extension for OpenBB"
 authors = ["OpenBB <hello@openbb.co>"]
 readme = "README.md"
@@ -8,7 +8,7 @@ packages = [{ include = "openbb_government_us" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-openbb-core = "^1.0.0b1"
+openbb-core = "^1.0.0b2"
 
 [build-system]
 requires = ["poetry-core"]
