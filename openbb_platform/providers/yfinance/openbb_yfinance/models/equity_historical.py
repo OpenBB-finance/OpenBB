@@ -54,9 +54,6 @@ class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         default=False,
         description="Adjust all OHLC data automatically.",
     )
-    back_adjust: bool = Field(
-        default=False, description="Attempt to adjust all the data automatically."
-    )
     ignore_tz: bool = Field(
         default=True,
         description="When combining from different timezones, ignore that part of datetime.",
@@ -99,6 +96,9 @@ class YFinanceEquityHistoricalFetcher(
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
+        if params.get("adjusted") is True:
+            transformed_params["back_adjust"] = True
+            transformed_params["auto_adjust"] = True
 
         return YFinanceEquityHistoricalQueryParams(**params)
 
@@ -126,7 +126,7 @@ class YFinanceEquityHistoricalFetcher(
             prepost=query.prepost,
             actions=query.include,
             auto_adjust=query.adjusted,
-            back_adjust=query.back_adjust,
+            back_adjust=query.adjusted,
             progress=query._progress,
             ignore_tz=query.ignore_tz,
             keepna=query._keepna,

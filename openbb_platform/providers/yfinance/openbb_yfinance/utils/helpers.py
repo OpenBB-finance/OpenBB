@@ -86,8 +86,7 @@ def yf_download(
     period: str = "max",
     prepost: bool = False,
     actions: bool = False,
-    auto_adjust: bool = False,
-    back_adjust: bool = False,
+    adjusted: bool = True,
     progress: bool = False,
     ignore_tz: bool = True,
     keepna: bool = False,
@@ -121,8 +120,6 @@ def yf_download(
         interval=interval,
         period=period,
         prepost=prepost,
-        auto_adjust=auto_adjust,
-        back_adjust=back_adjust,
         actions=actions,
         progress=progress,
         ignore_tz=ignore_tz,
@@ -165,7 +162,7 @@ def yf_download(
         if interval not in ["1m", "2m", "5m", "15m", "30m", "90m", "60m", "1h"]:
             data["date"] = data["date"].dt.tz_localize(None).dt.strftime("%Y-%m-%d")
 
-        if keep_adjusted is False:
+        if adjusted is False:
             data = data.drop(columns=["Adj Close"])
 
         data.columns = data.columns.str.lower().to_list()
