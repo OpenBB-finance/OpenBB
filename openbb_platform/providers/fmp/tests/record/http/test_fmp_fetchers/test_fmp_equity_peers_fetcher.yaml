@@ -3,9 +3,9 @@ interactions:
     body: null
     headers:
       Accept:
-      - application/json
+      - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
     method: GET
@@ -35,8 +35,8 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 24 Nov 2023 01:49:01 GMT
-      Etag:
+      - Mon, 16 Oct 2023 12:22:33 GMT
+      ETag:
       - W/"ff-HJTrlTghkVRaOX8gByhhLvxuWfA"
       Server:
       - nginx/1.18.0 (Ubuntu)

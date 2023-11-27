@@ -3,9 +3,9 @@ interactions:
     body: null
     headers:
       Accept:
-      - application/json
+      - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
     method: GET
@@ -13,17 +13,17 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA+3VTW/aMBgH8Hs/hcWplQixHef1hmBrKxZYR18mTdMUJR5YDQ5LnNJq2nefscka
-        CRolVNoJBJc/zvPYP9nOtzMAfssfAD3BREp7Aeh5xgQYYJ6lJY/AVZYmjC+KPrjmMTiH249DiGNd
-        gPOPLKX5Ra+vn08ioR7HEFsGQgbGALmBBQOEqyEp44/bIUsh1kVgmpvNZlDQeLDInsxhHi/ZEy1M
-        miyi3JTVIlM1MmVHRHwL2RhbkGDb8mqRIZvp0GA8oc+DpVhV7WKmur3OufrjZ5avfoiXdbXcKhcs
-        fqT5Npx/ml59/reyjG9HirykMvjTP5m9adaZbCznDCacLZaiAMP4V8kKJljGwSjL1wOFhzw5bQ/+
-        D7xdq30+9xCf28S3K9WebzwZj+5Ofu/yezj5vctv2NnvMmIc3C5pHq1pKYvpS6+CQz5BqCUcll/n
-        eDjVSikhSBzbxxbCUKa1aAunw2Y4Vao93OVw+rWzW5glZRrlIKQJi6O0rgZd4rmt1ZwA2ker6VaK
-        CCPLh7I09HzHIbVIbTcVNqrpUu3Vwtl43FntnuaCPoMPnOaLl1cyOT1IiNuWzA4s71gy3Unx+L5v
-        uUiKQUh8vxYpMRU2vl91qfZi97fTL53FZuH0+qZ2mUHsesix21NheCyV7rR/l5FDd1nj5tpNuj3V
-        LLyZd6aaC5qmZQFG0ZqJKJXbSy5IrCgXyk8fTttGPmx9OEmA3GP5dq32rzT70JVmNx5OXaq933wU
-        vsF39v0v8WBMrjMMAAA=
+        H4sIAAAAAAAAA+2WXW+bMBSG7/srrFy1UohtbMLHXcJYG60hUUK1btM0MeI1qElAhCSdpv33GZs0
+        TFuRIbeRQDKvj8+LHx3r+MsVAL/4C0Anj/MV6zigY2kfgAbcSfAJjHy3B64RQhjplCDjBly/j1cs
+        u+l05aJFmIs1OtKJhrGGTID7jlE8x5BVvHkuQpZ5nm4dCA+HQ2/Lot5TsoeDLFrGe7aFbPEUZpBn
+        C2FpBU+uOuFjZFsVSeN2UtTizYK99Jb5+mgYxcLvFHyc+JFk62/5z/S4y6Oex9Ezywqx2PTr1pJN
+        EZhnO8aF3903Sc1zHvkIbrNkl4LRJpLEkI2J2UfqxIjelph0gidTAQxTsyKVwLhYB6wMVgc2973H
+        5sBWjKXA362/swy4SZZKYJZuYstUB4Zbl5h0EuWkY2KjAphFiUkrkgAmxFpgMlUTYMNZY2DefDqZ
+        BXPg+YE3CwYjf8xH4HY2eZh2K2eUGphSSxWg4VDUFmBpJXBRm2BD5wSJbZq4IgmCQqw9ozKVOsHb
+        8fB+ekF4LsKPF4TnIvx8QXguwsYE+SaSbdg99VlsEptS5ZsJdXDrPltawZNr2WjtivTaaO1aWDJY
+        HdbAHTRm5U7GgefegcC79/h4/OCP3EEwmvhzPjWbAvjOg7L1ckbYVm691EG0LUNhJHBhRPuGzb95
+        hZV3OylpwqwQazuv/Gd1gu44aF5uwZJl4T7cRAwM4yRdhtn6r+IzLIKRMjjioPbFJ63+Rdf/H7p+
+        bfHJVOroguH07g10V1//AFf2mClDDAAA
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -43,9 +43,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 24 Nov 2023 01:49:08 GMT
-      Etag:
-      - W/"c33-tJzGzac8r89sWMkjHQktqPKEGvs"
+      - Tue, 07 Nov 2023 21:59:03 GMT
+      ETag:
+      - W/"c43-Wq4q+y+esq/ZbGYXS+Rgb98YS8g"
       Server:
       - nginx/1.18.0 (Ubuntu)
       Transfer-Encoding:

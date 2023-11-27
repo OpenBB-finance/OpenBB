@@ -3,7 +3,7 @@ interactions:
     body: null
     headers:
       Accept:
-      - application/json
+      - '*/*'
       Accept-Encoding:
       - gzip, deflate
       Connection:
@@ -42,7 +42,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 24 Nov 2023 01:48:54 GMT
+      - Mon, 20 Nov 2023 16:20:05 GMT
       Etag:
       - W/"88d-adA4cXKEeZidNHszMb/I+j1svdc"
       Server:

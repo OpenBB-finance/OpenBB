@@ -3,9 +3,9 @@ interactions:
     body: null
     headers:
       Accept:
-      - application/json
+      - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
     method: GET
@@ -13,7 +13,7 @@ interactions:
   response:
     body:
       string: "[\n  {\n    \"symbol\": \"AAPL\",\n    \"targetHigh\": 240,\n    \"targetLow\":
-        110,\n    \"targetConsensus\": 190.69,\n    \"targetMedian\": 195\n  }\n]"
+        110,\n    \"targetConsensus\": 190.63,\n    \"targetMedian\": 195\n  }\n]"
     headers:
       Access-Control-Allow-Credentials:
       - 'true'
@@ -33,9 +33,9 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Fri, 24 Nov 2023 01:48:58 GMT
-      Etag:
-      - W/"85-HoAdz65GO5o8ddvhlAnfsy9GfQc"
+      - Mon, 16 Oct 2023 12:22:16 GMT
+      ETag:
+      - W/"85-5KEIQel+kr4cTZVp1ZaJCma4um0"
       Server:
       - nginx/1.18.0 (Ubuntu)
       X-Frame-Options:
