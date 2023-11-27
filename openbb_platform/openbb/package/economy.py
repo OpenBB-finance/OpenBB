@@ -55,9 +55,9 @@ class ROUTER_economy(Container):
             no default.
         country : Optional[Union[str, List[str]]]
             Country of the event (provider: tradingeconomics)
-        importance : Literal['Low', 'Medium', 'High']
+        importance : Optional[Literal['Low', 'Medium', 'High']]
             Importance of the event. (provider: tradingeconomics)
-        group : Literal['interest rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']
+        group : Optional[Literal['interest rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']]
             Grouping of events (provider: tradingeconomics)
 
         Returns
