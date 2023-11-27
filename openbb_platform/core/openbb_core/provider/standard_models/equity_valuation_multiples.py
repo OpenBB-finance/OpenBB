@@ -6,7 +6,10 @@ from pydantic import Field, field_validator
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
+    QUERY_DESCRIPTIONS,
+)
 
 
 class EquityValuationMultiplesQueryParams(QueryParams):
@@ -29,6 +32,7 @@ class EquityValuationMultiplesQueryParams(QueryParams):
 class EquityValuationMultiplesData(Data):
     """Equity Valuation Multiples Data."""
 
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     revenue_per_share_ttm: Optional[float] = Field(
         default=None,
         description="Revenue per share calculated as trailing twelve months.",
