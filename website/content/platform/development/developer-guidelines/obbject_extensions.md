@@ -62,7 +62,8 @@ class Example:
 
 ### Entry Point
 
-In the new folder, we create the `pyproject.toml` file with the usual setup and dependency information. In the toml file, we need to include the following block:
+The `pyproject.toml` file will specify the usual setup and dependency information. Additionally, we need to include the following block:
+
 ```toml
 [tool.poetry.plugins."openbb_obbject_extension"]
 example = "openbb_example:ext"
