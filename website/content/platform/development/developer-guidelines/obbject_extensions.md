@@ -20,29 +20,34 @@ The architecture for extensions was designed similar to how extensions and acces
 
 This page will go through the steps of developing a simple, custom extension for the OBBject class.
 
-### Entry Point
+### Folder structure
 
-In our extension, we create the `openbb_example` extension.  In the new folder, we create the `pyproject.toml` file with the usual setup and dependency information.  In the toml file, we will include the following block:
-```toml
-[tool.poetry.plugins."openbb_obbject_extension"]
-example = "openbb_example:ext"
+```shell
+example
+├── README.md
+├── openbb_example
+│   └── __init__.py
+├── poetry.lock
+└── pyproject.toml
 ```
-
-With this in the file, we can install the extension by running `poetry install` from the extension folder.
 
 ### Writing the extension
 
-We provide a class for handling the extensions.  In your code, we define our extension class as follows:
+In this example the extension code all lives inside `__init__.py`.
+
+First we create an `Extension` class instance to tell `openbb-core` our extension name and any required credentials to be available at `obb.user.credentials`.
 
 ```python
 from openbb_core.app.model.extension import Extension
+
 ext = Extension(name="example", credentials=["some_api_key"])
 ```
 
-The credentials are required if the extension requires a key for data or a service, or it can alternatively be connection information for a database, or any other information that needs to be passed to the extension.
+The credentials are required if the extension uses a key for data or a service, or it can alternatively be connection information for a database, or any other information that needs to be passed to the extension.
 
-Now we define the extension functionality.  Here, we just add a method to say hi:
+Now we define the extension functionality. The decorator `@ext.obbject_accessor` registers an accessor in each `OBBject` that is returned when a command is executed. This accessor is just a namespace that will contain the methods defined in the decorated class.
 
+Here, we just add a method to say hi:
 
 ```python
 @ext.obbject_accessor
@@ -51,9 +56,19 @@ class Example:
         self._obbject = obbject
 
     def hello(self):
-        api_key = self._obbject._credentials.some_api_key
+        api_key = self._obbject._credentials.some_api_key.get_secret_value()
         print(f"Hello, this is my credential: {api_key}!")
 ```
+
+### Entry Point
+
+In the new folder, we create the `pyproject.toml` file with the usual setup and dependency information. In the toml file, we need to include the following block:
+```toml
+[tool.poetry.plugins."openbb_obbject_extension"]
+example = "openbb_example:ext"
+```
+
+With this in the file, we can install the extension by running `poetry install` from the extension folder.
 
 ### Using the extension
 
@@ -61,9 +76,10 @@ Now that the extension is installed and built, we can use it!  Because we are ex
 
 ```shell
 >>> from openbb import obb
+>>> obb.user.credentials.some_api_key = "test"
 >>> obbject = obb.equity.price.historical("AAPL")
 >>> obbject.example.hello()
-Hello, this is my credential: None!
+Hello, this is my credential: test!
 ```
 
 In this example, we have added obbject.example as the extension and can use the .hello() functionality right from our OBBject.
