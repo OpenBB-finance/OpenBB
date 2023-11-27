@@ -1,59 +1,27 @@
 """Insider Trading Standard Model."""
 
 from datetime import date, datetime, time
-from typing import List, Literal, Optional, Set, Union
+from typing import List, Optional, Set, Union
 
 from dateutil import parser
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, StrictInt, field_validator
 
-from openbb_core.provider.abstract.data import Data, ForceInt
+from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
 
-TRANSACTION_TYPES = Literal[
-    "A-Award",
-    "C-Conversion",
-    "D-Return",
-    "E-ExpireShort",
-    "F-InKind",
-    "G-Gift",
-    "H-ExpireLong",
-    "I-Discretionary",
-    "J-Other",
-    "L-Small",
-    "M-Exempt",
-    "O-OutOfTheMoney",
-    "P-Purchase",
-    "S-Sale",
-    "U-Tender",
-    "W-Will",
-    "X-InTheMoney",
-    "Z-Trust",
-]
-
 
 class InsiderTradingQueryParams(QueryParams):
     """Insider Trading Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    transaction_type: Union[List[TRANSACTION_TYPES], str, None] = Field(
-        default=None, description="Type of the transaction."
-    )
-    limit: ForceInt = Field(
+    limit: StrictInt = Field(
         default=100,
         description=QUERY_DESCRIPTIONS.get("limit", ""),
     )
-
-    @model_validator(mode="after")
-    @classmethod
-    def validate_transaction_type(cls, values: "InsiderTradingQueryParams"):
-        """Validate the transaction type."""
-        if isinstance(values.transaction_type, list):
-            values.transaction_type = ",".join(values.transaction_type)
-        return values
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
@@ -68,44 +36,35 @@ class InsiderTradingData(Data):
     """Insider Trading Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
+    company_cik: int = Field(description="Company CIK of the insider trading.")
     filing_date: datetime = Field(description="Filing date of the insider trading.")
-    transaction_date: date = Field(
-        description="Transaction date of the insider trading."
+    transaction_date: Optional[date] = Field(
+        default=None, description="Transaction date of the insider trading."
     )
-    reporting_cik: Optional[int] = Field(
-        default=None, description="Reporting CIK of the insider trading."
+    owner_cik: int = Field(description="Reporting CIK of the insider trading.")
+    owner_name: str = Field(description="Reporting name of the insider trading.")
+    owner_title: Optional[str] = Field(
+        default=None, description="Designation of owner of the insider trading."
     )
     transaction_type: str = Field(
         description="Transaction type of the insider trading."
-    )
-    securities_owned: Optional[ForceInt] = Field(
-        default=None, description="Securities owned of the insider trading."
-    )
-    company_cik: Optional[int] = Field(
-        default=None, description="Company CIK of the insider trading."
-    )
-    reporting_name: Optional[str] = Field(
-        default=None, description="Reporting name of the insider trading."
-    )
-    type_of_owner: Optional[str] = Field(
-        default=None, description="Type of owner of the insider trading."
     )
     acquisition_or_disposition: Optional[str] = Field(
         default=None,
         description="Acquisition or disposition of the insider trading.",
     )
-    form_type: str = Field(description="Form type of the insider trading.")
+    security_type: str = Field(description="Security type of the insider trading.")
+    securities_owned: Optional[float] = Field(
+        default=None, description="Number of securities owned in the insider trading."
+    )
     securities_transacted: Optional[float] = Field(
         default=None, description="Securities transacted of the insider trading."
     )
-    price: Optional[float] = Field(
+    transaction_price: Optional[float] = Field(
         default=None,
         description="Price of the insider trading.",
     )
-    security_name: Optional[str] = Field(
-        default=None, description="Security name of the insider trading."
-    )
-    link: str = Field(description="Link of the insider trading.")
+    filing_url: str = Field(description="Link of the insider trading.")
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
