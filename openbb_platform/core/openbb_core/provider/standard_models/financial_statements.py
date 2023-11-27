@@ -316,38 +316,48 @@ class CashFlowStatementData(Data):
     fiscal_period: Optional[str] = Field(
         description="Fiscal period of the report.", default=None
     )
+    net_income_continuing_operations: Optional[float] = Field(
+        default=None, description="Net Income (Continuing Operations)"
+    )
+    net_income_discontinued_operations: Optional[float] = Field(
+        default=None, description="Net Income (Discontinued Operations)"
+    )
+    consolidated_net_income: Optional[float] = Field(
+        default=None, description="Consolidated Net Income"
+    )
     acquisitions: Optional[float] = Field(default=None, description="Acquisitions")
-    amortization_expense: Optional[float] = Field(
-        default=None, description="Amortization Expense"
-    )
-    cash_income_taxes_paid: Optional[float] = Field(
-        default=None, description="Cash Income Taxes Paid"
-    )
-    cash_interest_paid: Optional[float] = Field(
-        default=None, description="Cash Interest Paid"
-    )
-    cash_interest_received: Optional[float] = Field(
-        default=None, description="Cash Interest Received"
-    )
-    depreciation_expense: Optional[float] = Field(
-        default=None, description="Depreciation Expense"
-    )
     divestitures: Optional[float] = Field(default=None, description="Divestitures")
-    effect_of_exchange_rate_changes: Optional[float] = Field(
-        default=None, description="Effect of Exchange Rate Changes"
-    )
-    changes_in_operating_assets_and_liabilities: Optional[float] = Field(
-        default=None, description="Changes in Operating Assets and Liabilities (Net)"
-    )
+
     issuance_of_common_equity: Optional[float] = Field(
         default=None, description="Issuance of Common Equity"
-    )
-    issuance_of_debt: Optional[float] = Field(
-        default=None, description="Issuance of Debt"
     )
     issuance_of_preferred_equity: Optional[float] = Field(
         default=None, description="Issuance of Preferred Equity"
     )
+
+    non_cash_adjustments_to_reconcile_net_income: Optional[float] = Field(
+        default=None, description="Non-Cash Adjustments to Reconcile Net Income"
+    )
+    amortization_expense: Optional[float] = Field(
+        default=None, description="Amortization Expense"
+    )
+    depreciation_expense: Optional[float] = Field(
+        default=None, description="Depreciation Expense"
+    )
+
+    changes_in_operating_assets_and_liabilities: Optional[float] = Field(
+        default=None, description="Changes in Operating Assets and Liabilities (Net)"
+    )
+    net_cash_from_continuing_operating_activities: Optional[float] = Field(
+        default=None, description="Net Cash from Continuing Operating Activities"
+    )
+    net_cash_from_discontinued_operating_activities: Optional[float] = Field(
+        default=None, description="Net Cash from Discontinued Operating Activities"
+    )
+    net_cash_from_operating_activities: Optional[float] = Field(
+        default=None, description="Net Cash from Operating Activities"
+    )
+
     loans_held_for_sale: Optional[float] = Field(
         default=None, description="Loans Held for Sale (Net)"
     )
@@ -357,17 +367,16 @@ class CashFlowStatementData(Data):
     net_cash_from_continuing_investing_activities: Optional[float] = Field(
         default=None, description="Net Cash from Continuing Investing Activities"
     )
-    net_cash_from_continuing_operating_activities: Optional[float] = Field(
-        default=None, description="Net Cash from Continuing Operating Activities"
+
+    issuance_of_debt: Optional[float] = Field(
+        default=None, description="Issuance of Debt"
     )
+
     net_cash_from_discontinued_financing_activities: Optional[float] = Field(
         default=None, description="Net Cash from Discontinued Financing Activities"
     )
     net_cash_from_discontinued_investing_activities: Optional[float] = Field(
         default=None, description="Net Cash from Discontinued Investing Activities"
-    )
-    net_cash_from_discontinued_operating_activities: Optional[float] = Field(
-        default=None, description="Net Cash from Discontinued Operating Activities"
     )
     net_cash_from_financing_activities: Optional[float] = Field(
         default=None, description="Net Cash from Financing Activities"
@@ -375,44 +384,19 @@ class CashFlowStatementData(Data):
     net_cash_from_investing_activities: Optional[float] = Field(
         default=None, description="Net Cash from Investing Activities"
     )
-    net_cash_from_operating_activities: Optional[float] = Field(
-        default=None, description="Net Cash from Operating Activities"
+
+    payment_of_dividends: Optional[float] = Field(
+        default=None, description="Payment of Dividends"
     )
-    net_change_in_cash_and_equivalents: Optional[float] = Field(
-        default=None, description="Net Change in Cash and Equivalents"
-    )
-    net_change_in_deposits: Optional[float] = Field(
-        default=None, description="Net Change in Deposits"
-    )
-    consolidated_net_income: Optional[float] = Field(
-        default=None, description="Consolidated Net Income"
-    )
-    net_income_continuing_operations: Optional[float] = Field(
-        default=None, description="Net Income (Continuing Operations)"
-    )
-    net_income_discontinued_operations: Optional[float] = Field(
-        default=None, description="Net Income (Discontinued Operations)"
-    )
+
     net_increase_in_fed_funds_sold: Optional[float] = Field(
         default=None, description="Net Increase in Fed Funds Sold"
-    )
-    non_cash_adjustments_to_reconcile_net_income: Optional[float] = Field(
-        default=None, description="Non-Cash Adjustments to Reconcile Net Income"
-    )
-    non_cash_adjustmentsto_reconcile_net_income: Optional[float] = Field(
-        default=None, description="Non-Cash Adjustments to Reconcile Net Income"
     )
     other_financing_activities: Optional[float] = Field(
         default=None, description="Other Financing Activities (Net)"
     )
     other_investing_activities: Optional[float] = Field(
         default=None, description="Other Investing Activities (Net)"
-    )
-    other_net_changes_in_cash: Optional[float] = Field(
-        default=None, description="Other Net Changes in Cash"
-    )
-    payment_of_dividends: Optional[float] = Field(
-        default=None, description="Payment of Dividends"
     )
     provision_for_loan_losses: Optional[float] = Field(
         default=None, description="Provision for Loan Losses"
@@ -425,6 +409,9 @@ class CashFlowStatementData(Data):
     )
     purchase_of_property_plant_and_equipment: Optional[float] = Field(
         default=None, description="Purchase of Property, Plant, and Equipment"
+    )
+    cash_interest_received: Optional[float] = Field(
+        default=None, description="Cash Interest Received"
     )
     repayment_of_debt: Optional[float] = Field(
         default=None, description="Repayment of Debt"
@@ -440,6 +427,27 @@ class CashFlowStatementData(Data):
     )
     sale_of_property_plant_and_equipment: Optional[float] = Field(
         default=None, description="Sale of Property, Plant, and Equipment"
+    )
+
+    effect_of_exchange_rate_changes: Optional[float] = Field(
+        default=None, description="Effect of Exchange Rate Changes"
+    )
+
+    net_change_in_deposits: Optional[float] = Field(
+        default=None, description="Net Change in Deposits"
+    )
+    other_net_changes_in_cash: Optional[float] = Field(
+        default=None, description="Other Net Changes in Cash"
+    )
+    net_change_in_cash_and_equivalents: Optional[float] = Field(
+        default=None, description="Net Change in Cash and Equivalents"
+    )
+
+    cash_income_taxes_paid: Optional[float] = Field(
+        default=None, description="Cash Income Taxes Paid"
+    )
+    cash_interest_paid: Optional[float] = Field(
+        default=None, description="Cash Interest Paid"
     )
 
 
@@ -458,11 +466,15 @@ class IncomeStatementData(Data):
     fiscal_period: Optional[str] = Field(
         description="Fiscal period of the report.", default=None
     )
-    operating_revenue: Optional[float] = Field(
-        default=None, description="Operating revenue"
+    revenue: Optional[float] = Field(default=None, description="Total revenue")
+    cost_of_revenue: Optional[float] = Field(
+        default=None, description="Total cost of revenue"
     )
-    operating_cost_of_revenue: Optional[float] = Field(
-        default=None, description="Operating cost of revenue"
+    gross_profit: Optional[float] = Field(
+        default=None, description="Total gross profit"
+    )
+    gross_margin: Optional[float] = Field(
+        default=None, description="Gross margin"
     )
     research_and_development_expense: Optional[float] = Field(
         default=None, description="Research and development expense"
@@ -470,8 +482,32 @@ class IncomeStatementData(Data):
     selling_general_and_admin_expense: Optional[float] = Field(
         default=None, description="Selling, general, and admin expense"
     )
+    salaries_and_employee_benefits: Optional[float] = Field(
+        default=None, description="Salaries and employee benefits"
+    )
     marketing_expense: Optional[float] = Field(
         default=None, description="Marketing expense"
+    )
+    net_occupancy_and_equipment_expense: Optional[float] = Field(
+        default=None, description="Net occupancy and equipment expense"
+    )
+    other_operating_expenses: Optional[float] = Field(
+        default=None, description="Other operating expenses"
+    )
+    depreciation_expense: Optional[float] = Field(
+        default=None, description="Depreciation expense"
+    )
+    amortization_expense: Optional[float] = Field(
+        default=None, description="Amortization expense"
+    )
+    amortization_of_deferred_policy_acquisition_costs: Optional[float] = Field(
+        default=None, description="Amortization of deferred policy acquisition costs"
+    )
+    exploration_expense: Optional[float] = Field(
+        default=None, description="Exploration expense"
+    )
+    depletion_expense: Optional[float] = Field(
+        default=None, description="Depletion expense"
     )
     total_operating_expenses: Optional[float] = Field(
         default=None, description="Total operating expenses"
@@ -479,68 +515,13 @@ class IncomeStatementData(Data):
     total_operating_income: Optional[float] = Field(
         default=None, description="Total operating income"
     )
-    other_income: Optional[float] = Field(default=None, description="Other income")
-    total_other_income: Optional[float] = Field(
-        default=None, description="Total other income"
-    )
-    total_pre_tax_income: Optional[float] = Field(
-        default=None, description="Total pre-tax income"
-    )
-    income_tax_expense: Optional[float] = Field(
-        default=None, description="Income tax expense"
-    )
-    consolidated_net_income: Optional[float] = Field(
-        default=None, description="Consolidated net income"
-    )
-    amortization_expense: Optional[float] = Field(
-        default=None, description="Amortization expense"
-    )
-    amortizationof_deferred_policy_acquisition_costs: Optional[float] = Field(
-        default=None, description="Amortization of deferred policy acquisition costs"
-    )
-    capitalized_lease_obligations_interest_expense: Optional[float] = Field(
-        default=None, description="Capitalized lease obligations interest expense"
-    )
-    cash_dividends_to_common_per_share: Optional[float] = Field(
-        default=None, description="Cash dividends to common per share"
-    )
-    current_and_future_benefits: Optional[float] = Field(
-        default=None, description="Current and future benefits"
-    )
-    depletion_expense: Optional[float] = Field(
-        default=None, description="Depletion expense"
-    )
-    deposits_interest_expense: Optional[float] = Field(
-        default=None, description="Deposits interest expense"
-    )
     deposits_and_money_market_investments_interest_income: Optional[float] = Field(
         default=None,
         description="Deposits and money market investments interest income",
     )
-    depreciation_expense: Optional[float] = Field(
-        default=None, description="Depreciation expense"
-    )
-    exploration_expense: Optional[float] = Field(
-        default=None, description="Exploration expense"
-    )
-    extraordinary_income: Optional[float] = Field(
-        default=None, description="Extraordinary income"
-    )
-    federal_funds_purchased_and_securities_sold_interest_expense: Optional[
-        float
-    ] = Field(
-        default=None,
-        description="Federal funds purchased and securities sold interest expense",
-    )
     federal_funds_sold_and_securities_borrowed_interest_income: Optional[float] = Field(
         default=None,
         description="Federal funds sold and securities borrowed interest income",
-    )
-    impairment_charge: Optional[float] = Field(
-        default=None, description="Impairment charge"
-    )
-    investment_banking_income: Optional[float] = Field(
-        default=None, description="Investment banking income"
     )
     investment_securities_interest_income: Optional[float] = Field(
         default=None, description="Investment securities interest income"
@@ -548,8 +529,100 @@ class IncomeStatementData(Data):
     loans_and_leases_interest_income: Optional[float] = Field(
         default=None, description="Loans and leases interest income"
     )
+    trading_account_interest_income: Optional[float] = Field(
+        default=None, description="Trading account interest income"
+    )
+    other_interest_income: Optional[float] = Field(
+        default=None, description="Other interest income"
+    )
+    total_non_interest_income: Optional[float] = Field(
+        default=None, description="Total non-interest income"
+    )
+    interest_and_investment_income: Optional[float] = Field(
+        default=None, description="Interest and investment income"
+    )
+    short_term_borrowings_interest_expense: Optional[float] = Field(
+        default=None, description="Short-term borrowings interest expense"
+    )
     long_term_debt_interest_expense: Optional[float] = Field(
         default=None, description="Long-term debt interest expense"
+    )
+    capitalized_lease_obligations_interest_expense: Optional[float] = Field(
+        default=None, description="Capitalized lease obligations interest expense"
+    )
+    deposits_interest_expense: Optional[float] = Field(
+        default=None, description="Deposits interest expense"
+    )
+    federal_funds_purchased_and_securities_sold_interest_expense: Optional[
+        float
+    ] = Field(
+        default=None,
+        description="Federal funds purchased and securities sold interest expense",
+    )
+    other_interest_expense: Optional[float] = Field(
+        default=None, description="Other interest expense"
+    )
+    total_interest_expense: Optional[float] = Field(
+        default=None, description="Total interest expense"
+    )
+    net_interest_income: Optional[float] = Field(
+        default=None, description="Net interest income"
+    )
+    other_non_interest_income: Optional[float] = Field(
+        default=None, description="Other non-interest income"
+    )
+    service_charges_on_deposit_accounts: Optional[float] = Field(
+        default=None, description="Service charges on deposit accounts"
+    )
+    investment_banking_income: Optional[float] = Field(
+        default=None, description="Investment banking income"
+    )
+    trust_fees_by_commissions: Optional[float] = Field(
+        default=None, description="Trust fees by commissions"
+    )
+    premiums_earned: Optional[float] = Field(
+        default=None, description="Premiums earned"
+    )
+    insurance_policy_acquisition_costs: Optional[float] = Field(
+        default=None, description="Insurance policy acquisition costs"
+    )
+    current_and_future_benefits: Optional[float] = Field(
+        default=None, description="Current and future benefits"
+    )
+    property_and_liability_insurance_claims: Optional[float] = Field(
+        default=None, description="Property and liability insurance claims"
+    )
+    total_non_interest_expense: Optional[float] = Field(
+        default=None, description="Total non-interest expense"
+    )
+    net_realized_and_unrealized_capital_gains_on_investments: Optional[float] = Field(
+        default=None,
+        description="Net realized and unrealized capital gains on investments",
+    )
+    other_gains: Optional[float] = Field(default=None, description="Other gains")
+    non_operating_income: Optional[float] = Field(
+        default=None, description="Non-operating income"
+    )
+    other_income: Optional[float] = Field(default=None, description="Other income")
+    other_revenue: Optional[float] = Field(default=None, description="Other revenue")
+
+    extraordinary_income: Optional[float] = Field(
+        default=None, description="Extraordinary income"
+    )
+    total_other_income: Optional[float] = Field(
+        default=None, description="Total other income"
+    )
+    total_pre_tax_income: Optional[float] = Field(
+        default=None, description="Total pre-tax income"
+    )
+    pre_tax_income_margin: Optional[float] = Field(
+        default=None, description="Pre-Tax Income Margin."
+    )
+    income_tax_expense: Optional[float] = Field(
+        default=None, description="Income tax expense"
+    )
+    other_cost_of_revenue: Optional[float] = Field(
+        default=None, description="Other cost of revenue"
     )
     net_income_continuing_operations: Optional[float] = Field(
         default=None, description="Net income (continuing operations)"
@@ -557,24 +630,23 @@ class IncomeStatementData(Data):
     net_income_discontinued_operations: Optional[float] = Field(
         default=None, description="Net income (discontinued operations)"
     )
-    net_income_attributable_to_common_shareholders: Optional[float] = Field(
-        default=None, description="Net income attributable to common shareholders"
+    consolidated_net_income: Optional[float] = Field(
+        default=None, description="Consolidated net income"
     )
-    net_income_attributable_to_noncontrolling_interest: Optional[float] = Field(
-        default=None, description="Net income attributable to noncontrolling interest"
+    impairment_charge: Optional[float] = Field(
+        default=None, description="Impairment charge"
     )
-    net_interest_income: Optional[float] = Field(
-        default=None, description="Net interest income"
+    restructuring_charge: Optional[float] = Field(
+        default=None, description="Restructuring charge"
     )
-    net_occupancy_and_equipment_expense: Optional[float] = Field(
-        default=None, description="Net occupancy and equipment expense"
+    other_service_charges: Optional[float] = Field(
+        default=None, description="Other service charges"
     )
-    net_realized_and_unrealized_capital_gainson_investments: Optional[float] = Field(
-        default=None,
-        description="Net realized and unrealized capital gains on investments",
+    other_special_charges: Optional[float] = Field(
+        default=None, description="Other special charges"
     )
-    non_operating_income: Optional[float] = Field(
-        default=None, description="Non-operating income"
+    provision_for_credit_losses: Optional[float] = Field(
+        default=None, description="Provision for credit losses"
     )
     other_adjustments_to_consolidated_net_income: Optional[float] = Field(
         default=None, description="Other adjustments to consolidated net income"
@@ -585,90 +657,22 @@ class IncomeStatementData(Data):
         default=None,
         description="Other adjustment to net income attributable to common shareholders",
     )
-    other_cost_of_revenue: Optional[float] = Field(
-        default=None, description="Other cost of revenue"
+    net_income_attributable_to_noncontrolling_interest: Optional[float] = Field(
+        default=None, description="Net income attributable to noncontrolling interest"
     )
-    other_gains: Optional[float] = Field(default=None, description="Other gains")
-    other_interest_expense: Optional[float] = Field(
-        default=None, description="Other interest expense"
+    retained_earnings: Optional[float] = Field(
+        default=None, description="Net income attributable to common shareholders"
     )
-    other_interest_income: Optional[float] = Field(
-        default=None, description="Other interest income"
+    ebit: Optional[float] = Field(
+        default=None, description="Earnings Before Interest and Taxes."
     )
-    other_non_interest_income: Optional[float] = Field(
-        default=None, description="Other non-interest income"
-    )
-    other_operating_expenses: Optional[float] = Field(
-        default=None, description="Other operating expenses"
-    )
-    other_revenue: Optional[float] = Field(default=None, description="Other revenue")
-    other_service_charges: Optional[float] = Field(
-        default=None, description="Other service charges"
-    )
-    other_special_charges: Optional[float] = Field(
-        default=None, description="Other special charges"
-    )
-    insurance_policy_acquisition_costs: Optional[float] = Field(
-        default=None, description="Insurance policy acquisition costs"
-    )
-    preferred_stock_dividends_declared: Optional[float] = Field(
-        default=None, description="Preferred stock dividends declared"
-    )
-    premiums_earned: Optional[float] = Field(
-        default=None, description="Premiums earned"
-    )
-    property_and_liability_insurance_claims: Optional[float] = Field(
-        default=None, description="Property and liability insurance claims"
-    )
-    provision_for_credit_losses: Optional[float] = Field(
-        default=None, description="Provision for credit losses"
-    )
-    restructuring_charge: Optional[float] = Field(
-        default=None, description="Restructuring charge"
-    )
-    salaries_and_employee_benefits: Optional[float] = Field(
-        default=None, description="Salaries and employee benefits"
-    )
-    service_chargeson_deposit_accounts: Optional[float] = Field(
-        default=None, description="Service charges on deposit accounts"
-    )
-    short_term_borrowings_interest_expense: Optional[float] = Field(
-        default=None, description="Short-term borrowings interest expense"
-    )
-    total_cost_of_revenue: Optional[float] = Field(
-        default=None, description="Total cost of revenue"
-    )
-    total_gross_profit: Optional[float] = Field(
-        default=None, description="Total gross profit"
-    )
-    total_interest_expense: Optional[float] = Field(
-        default=None, description="Total interest expense"
-    )
-    interest_and_investment_income: Optional[float] = Field(
-        default=None, description="Interest and investment income"
-    )
-    total_non_interest_expense: Optional[float] = Field(
-        default=None, description="Total non-interest expense"
-    )
-    total_non_interest_income: Optional[float] = Field(
-        default=None, description="Total non-interest income"
-    )
-    total_revenue: Optional[float] = Field(default=None, description="Total revenue")
-    trading_account_interest_income: Optional[float] = Field(
-        default=None, description="Trading account interest income"
-    )
-    trust_fees_by_commissions: Optional[float] = Field(
-        default=None, description="Trust fees by commissions"
-    )
-    weighted_average_basic_and_diluted_shares_outstanding: Optional[float] = Field(
+    ebitda: Optional[float] = Field(
         default=None,
-        description="Weighted average basic and diluted shares outstanding",
+        description="Earnings Before Interest, Taxes, Depreciation and Amortization.",
     )
-    weighted_average_basic_shares_outstanding: Optional[float] = Field(
-        default=None, description="Weighted average basic shares outstanding"
-    )
-    weighted_average_diluted_shares_outstanding: Optional[float] = Field(
-        default=None, description="Weighted average diluted shares outstanding"
+    ebitda_margin: Optional[float] = Field(
+        default=None,
+        description="Margin on Earnings Before Interest, Taxes, Depreciation and Amortization.",
     )
     basic_earnings_per_share: Optional[float] = Field(
         default=None, description="Basic earnings per share"
@@ -678,4 +682,20 @@ class IncomeStatementData(Data):
     )
     basic_and_diluted_earnings_per_share: Optional[float] = Field(
         default=None, description="Basic and diluted earnings per share"
+    )
+    cash_dividends_to_common_per_share: Optional[float] = Field(
+        default=None, description="Cash dividends to common per share"
+    )
+    preferred_stock_dividends_declared: Optional[float] = Field(
+        default=None, description="Preferred stock dividends declared"
+    )
+    weighted_average_basic_shares_outstanding: Optional[float] = Field(
+        default=None, description="Weighted average basic shares outstanding"
+    )
+    weighted_average_diluted_shares_outstanding: Optional[float] = Field(
+        default=None, description="Weighted average diluted shares outstanding"
+    )
+    weighted_average_basic_and_diluted_shares_outstanding: Optional[float] = Field(
+        default=None,
+        description="Weighted average basic and diluted shares outstanding",
     )

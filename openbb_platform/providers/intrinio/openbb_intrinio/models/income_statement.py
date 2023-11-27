@@ -43,6 +43,7 @@ class IntrinioIncomeStatementData(IncomeStatementData):
         "federal_funds_sold_and_securities_borrowed_interest_income": "fedfundsandrepointerestincome",
         "impairment_charge": "impairmentexpense",
         "income_tax_expense": "incometaxexpense",
+        "pre_tax_income_margin": "pretaxincomemargin",
         "investment_banking_income": "investmentbankingincome",
         "investment_securities_interest_income": "investmentsecuritiesinterestincome",
         "loans_and_leases_interest_income": "loansandleaseinterestincome",
@@ -51,14 +52,13 @@ class IntrinioIncomeStatementData(IncomeStatementData):
         "consolidated_net_income": "netincome",
         "net_income_continuing_operations": "netincomecontinuing",
         "net_income_discontinued_operations": "netincomediscontinued",
-        "net_income_attributable_to_common_shareholders": "netincometocommon",
+        "retained_earnings": "netincometocommon",
         "net_income_attributable_to_noncontrolling_interest": "netincometononcontrollinginterest",
         "net_interest_income": "netinterestincome",
         "net_occupancy_and_equipment_expense": "netoccupancyequipmentexpense",
         "net_realized_and_unrealized_capital_gainson_investments": "netrealizedcapitalgains",
         "non_operating_income": "nonoperatingincome",
         "operating_cost_of_revenue": "operatingcostofrevenue",
-        "operating_revenue": "operatingrevenue",
         "other_adjustments_to_consolidated_net_income": "otheradjustmentstoconsolidatednetincome",
         "other_adjustments_to_net_income_attributable_to_common_shareholders": "otheradjustmentstonetincometocommon",
         "other_adjustment_to_net_income_attributable_to_common_shareholders": "otheradjustmentstonetincometocommon",
@@ -83,8 +83,9 @@ class IntrinioIncomeStatementData(IncomeStatementData):
         "service_chargeson_deposit_accounts": "servicechargesondepositsincome",
         "selling_general_and_admin_expense": "sgaexpense",
         "short_term_borrowings_interest_expense": "shorttermborrowinginterestexpense",
-        "total_cost_of_revenue": "totalcostofrevenue",
-        "total_gross_profit": "totalgrossprofit",
+        "cost_of_revenue": "totalcostofrevenue",
+        "gross_profit": "totalgrossprofit",
+        "gross_margin": "grossmargin",
         "total_interest_expense": "totalinterestexpense",
         "interest_and_investment_income": "totalinterestincome",
         "total_non_interest_expense": "totalnoninterestexpense",
@@ -93,28 +94,16 @@ class IntrinioIncomeStatementData(IncomeStatementData):
         "total_operating_income": "totaloperatingincome",
         "total_other_income": "totalotherincome",
         "total_pre_tax_income": "totalpretaxincome",
-        "total_revenue": "totalrevenue",
+        "revenue": "totalrevenue",
         "trading_account_interest_income": "tradingaccountinterestincome",
         "trust_fees_by_commissions": "trustfeeincome",
-        "weighted_average_basic_and_diluted_shares_outstanding": "weightedavebasicdilutedsharesos",
-        "weighted_average_basic_shares_outstanding": "weightedavebasicsharesos",
-        "weighted_average_diluted_shares_outstanding": "weightedavedilutedsharesos",
         "ebit": "ebit",
         "ebitda": "ebitda",
         "ebitda_margin": "ebitdamargin",
+        "weighted_average_basic_and_diluted_shares_outstanding": "weightedavebasicdilutedsharesos",
+        "weighted_average_basic_shares_outstanding": "weightedavebasicsharesos",
+        "weighted_average_diluted_shares_outstanding": "weightedavedilutedsharesos",
     }
-
-    ebit: Optional[float] = Field(
-        default=None, description="Earnings Before Interest and Taxes."
-    )
-    ebitda: Optional[float] = Field(
-        default=None,
-        description="Earnings Before Interest, Taxes, Depreciation and Amortization.",
-    )
-    ebitda_margin: Optional[float] = Field(
-        default=None,
-        description="Margin on Earnings Before Interest, Taxes, Depreciation and Amortization.",
-    )
 
 
 class IntrinioIncomeStatementFetcher(
@@ -143,7 +132,7 @@ class IntrinioIncomeStatementFetcher(
             period_type = "FY" if query.period == "annual" else "QTR"
         if query.period in ["ttm", "ytd"]:
             period_type = query.period.upper()
-        data_tags = ["ebit", "ebitda", "ebitdamargin"]
+        data_tags = ["ebit", "ebitda", "ebitdamargin", "pretaxincomemargin", "grossmargin"]
 
         fundamentals_data: Dict = {}
         data: List[Dict] = []
@@ -175,10 +164,10 @@ class IntrinioIncomeStatementFetcher(
 
             calculations_intrinio_id = f"{query.symbol}-calculations-{period}"
             calculations_url = f"{base_url}/fundamentals/{calculations_intrinio_id}/standardized_financials?api_key={api_key}"  # noqa E501
-            calculations_data = await async_get_data_one(calculations_url, **kwargs)
+            _calculations_data = await async_get_data_one(calculations_url, **kwargs)
             calculations_data = [
                 item
-                for item in calculations_data.get("standardized_financials", [])
+                for item in _calculations_data.get("standardized_financials", [])
                 if item["data_tag"]["tag"] in data_tags
             ]
 
@@ -208,8 +197,9 @@ class IntrinioIncomeStatementFetcher(
             sub_dict: Dict[str, Any] = {}
 
             for sub_item in item["financials"]:
-                field_name = sub_item["data_tag"]["tag"]
-                sub_dict[field_name] = float(sub_item["value"])
+                if sub_item["data_tag"]["tag"] not in ["operatingrevenue", "operatingcostofrevenue"]:
+                    field_name = sub_item["data_tag"]["tag"]
+                    sub_dict[field_name] = float(sub_item["value"])
 
             sub_dict["period_ending"] = item["period_ending"]
             sub_dict["fiscal_year"] = item["fiscal_year"]
