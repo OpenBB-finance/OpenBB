@@ -29,6 +29,7 @@ class MarketIndicesQueryParams(QueryParams):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -40,10 +41,18 @@ class MarketIndicesData(Data):
     """Market Indices Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    open: StrictFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
-    high: StrictFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
-    low: StrictFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
-    close: StrictFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
+    open: Optional[StrictFloat] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("open", "")
+    )
+    high: Optional[StrictFloat] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("high", "")
+    )
+    low: Optional[StrictFloat] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("low", "")
+    )
+    close: Optional[StrictFloat] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("close", "")
+    )
     volume: Optional[ForceInt] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )
