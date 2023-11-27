@@ -6,7 +6,7 @@ from pathlib import Path
 
 PLATFORM_PATH = Path(__file__).parent.parent.parent.parent.resolve() / "openbb_platform"
 
-CORE_PACKAGES = ["platform/provider", "platform/core"]
+CORE_PACKAGES = ["core"]
 EXTENSION_PACKAGES = ["extensions", "providers"]
 
 CMD = [sys.executable, "-m", "poetry"]
