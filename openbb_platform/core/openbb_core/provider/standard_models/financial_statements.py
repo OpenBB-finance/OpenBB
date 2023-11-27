@@ -660,7 +660,7 @@ class IncomeStatementData(Data):
     net_income_attributable_to_noncontrolling_interest: Optional[float] = Field(
         default=None, description="Net income attributable to noncontrolling interest"
     )
-    retained_earnings: Optional[float] = Field(
+    net_income_attributable_to_common_shareholders: Optional[float] = Field(
         default=None, description="Net income attributable to common shareholders"
     )
     ebit: Optional[float] = Field(

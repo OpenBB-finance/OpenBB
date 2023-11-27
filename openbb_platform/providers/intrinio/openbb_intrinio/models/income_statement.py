@@ -52,7 +52,7 @@ class IntrinioIncomeStatementData(IncomeStatementData):
         "consolidated_net_income": "netincome",
         "net_income_continuing_operations": "netincomecontinuing",
         "net_income_discontinued_operations": "netincomediscontinued",
-        "retained_earnings": "netincometocommon",
+        "net_income_attributable_to_common_shareholders": "netincometocommon",
         "net_income_attributable_to_noncontrolling_interest": "netincometononcontrollinginterest",
         "net_interest_income": "netinterestincome",
         "net_occupancy_and_equipment_expense": "netoccupancyequipmentexpense",
