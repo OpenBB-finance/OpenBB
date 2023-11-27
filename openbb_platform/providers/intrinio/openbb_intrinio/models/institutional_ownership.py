@@ -1,5 +1,6 @@
 """Intrinio Institutional Ownership Model."""
 
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -85,17 +86,24 @@ class IntrinioInstitutionalOwnershipFetcher(
 
         base_url = "https://api-v2.intrinio.com"
         query_str = get_querystring(query.model_dump(by_alias=True), ["symbol"])
-        url = f"{base_url}/securities/{query.symbol}/institutional_ownership?{query_str}&api_key={api_key}"
+        url = (
+            f"{base_url}/securities/{query.symbol}/institutional_ownership?"
+            f"{query_str}&api_key={api_key}"
+        )
         data = get_data_many(url, "ownership", **kwargs)
 
-        cik = data[0].get("owner_cik", "")
-        cik_url = f"{base_url}/owners/{cik}?api_key={api_key}"
-        cik_data = get_data_one(cik_url, **kwargs)
-        owner_name = cik_data.get("owner_name", "")
+        def get_owner_name(item: Dict) -> Dict:
+            cik = item["owner_cik"]
+            cik_url = f"{base_url}/owners/{cik}?api_key={api_key}"
+            cik_data = get_data_one(cik_url, **kwargs)
+            owner_name = cik_data["owner_name"]
+            item["symbol"] = query.symbol
+            item["owner_name"] = owner_name
+            return item
 
-        data = [
-            {**item, "symbol": query.symbol, "owner_name": owner_name} for item in data
-        ]
+        with ThreadPoolExecutor() as executor:
+            data = list(executor.map(get_owner_name, data))
+
         return data
 
     @staticmethod
