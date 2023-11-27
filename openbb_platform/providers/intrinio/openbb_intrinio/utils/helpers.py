@@ -73,8 +73,8 @@ def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
         value = error or message
         raise RuntimeError(f"Error in Intrinio request -> {value}")
 
-    if "Error Message" in data:
-        raise RuntimeError("Intrinio Error Message -> " + data["Error Message"])
+    if isinstance(data, (str, float)):
+        data = {"value": data}
 
     if len(data) == 0:
         raise EmptyDataError()

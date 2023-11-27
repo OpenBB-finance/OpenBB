@@ -7,7 +7,8 @@ from openbb_core.provider.standard_models.market_snapshots import (
     MarketSnapshotsData,
     MarketSnapshotsQueryParams,
 )
-from openbb_fmp.utils.helpers import MARKETS, get_data
+from openbb_fmp.utils.definitions import MARKETS
+from openbb_fmp.utils.helpers import get_data
 from pydantic import Field
 
 

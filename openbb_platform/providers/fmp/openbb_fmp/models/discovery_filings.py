@@ -1,97 +1,83 @@
-"""FMP Filings Model."""
+"""FMP Discovery Filings Model."""
 
-import datetime
-from typing import Any, Dict, List, Literal, Optional
+import math
+from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.filings import (
-    FilingsData,
-    FilingsQueryParams,
+from openbb_core.provider.standard_models.discovery_filings import (
+    DiscoveryFilingsData,
+    DiscoveryFilingsQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
-from openbb_fmp.utils.helpers import get_data_many
-from pydantic import Field, field_validator
+from openbb_core.provider.utils.helpers import async_requests, get_querystring
+from pydantic import Field
 
 
-class FMPFilingsQueryParams(FilingsQueryParams):
-    """FMP Filings Query."""
+class FMPDiscoveryFilingsQueryParams(DiscoveryFilingsQueryParams):
+    """FMP Discovery Filings Query.
+
+    Source: https://site.financialmodelingprep.com/developer/docs/sec-rss-feeds-api/
+    """
 
     __alias_dict__ = {
-        "form_type": "type",
-        "is_done": "isDone",
         "start_date": "from",
         "end_date": "to",
+        "form_type": "type",
     }
 
-    is_done: Optional[Literal["true", "false"]] = Field(
+    is_done: Optional[bool] = Field(
         default=None,
         description="Flag for whether or not the filing is done.",
+        alias="isDone",
     )
 
 
-class FMPFilingsData(FilingsData):
-    """FMP Filings Data."""
+class FMPDiscoveryFilingsData(DiscoveryFilingsData):
+    """FMP Discovery Filings Data."""
 
-    __alias_dict__ = {
-        "timestamp": "date",
-        "symbol": "ticker",
-        "url": "link",
-    }
-
-    is_done: Optional[Literal["True", "False"]] = Field(
-        default=None, description="Whether or not the filing is done."
-    )
-
-    @field_validator("timestamp", mode="before")
-    def validate_timestamp(cls, v: Any) -> Any:  # pylint: disable=no-self-argument
-        """Validate the timestamp."""
-        return datetime.datetime.strptime(v, "%Y-%m-%d %H:%M:%S")
+    __alias_dict__ = {"symbol": "ticker"}
 
 
-class FMPFilingsFetcher(
+class FMPDiscoveryFilingsFetcher(
     Fetcher[
-        FMPFilingsQueryParams,
-        List[FMPFilingsData],
+        FMPDiscoveryFilingsQueryParams,
+        List[FMPDiscoveryFilingsData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPFilingsQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPDiscoveryFilingsQueryParams:
         """Transform the query."""
-        transformed_params = params
-        if "start_date" not in transformed_params:
-            transformed_params["start_date"] = datetime.datetime.now().strftime(
-                "%Y-%m-%d"
-            )
-        if "end_date" not in transformed_params:
-            transformed_params["end_date"] = datetime.datetime.now().strftime(
-                "%Y-%m-%d"
-            )
-        return FMPFilingsQueryParams(**transformed_params)
+        return FMPDiscoveryFilingsQueryParams(**params)
 
     @staticmethod
     async def extract_data(
-        query: FMPFilingsQueryParams,
+        query: FMPDiscoveryFilingsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-        exclude = []
-        if query.form_type is None:
-            exclude.append("formType")
-        if not query.is_done:
-            exclude.append("isDone")
-        base_url = "https://financialmodelingprep.com/api/v4/rss_feed?"
-        query_string = get_querystring(query.model_dump(), exclude)
-        url = f"{base_url}{query_string}&apikey={api_key}"
+        data: List[Dict] = []
 
-        return await get_data_many(url, **kwargs) or [{}]
+        base_url = "https://financialmodelingprep.com/api/v4/rss_feed"
+        query_str = get_querystring(query.model_dump(by_alias=True), ["limit"])
+
+        # FMP only allows 1000 results per page
+        pages = math.ceil(query.limit / 1000)
+
+        urls = [
+            f"{base_url}/{query.symbol}?{query_str}&page={page}&apikey={api_key}"
+            for page in range(pages)
+        ]
+
+        data = await async_requests(urls, **kwargs)
+
+        return data[: query.limit]
 
     @staticmethod
     def transform_data(
-        query: FMPFilingsQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPFilingsData]:
+        query: FMPDiscoveryFilingsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPDiscoveryFilingsData]:
         """Return the transformed data."""
-        return [FMPFilingsData.model_validate(d) for d in data]
+        return [FMPDiscoveryFilingsData.model_validate(d) for d in data]

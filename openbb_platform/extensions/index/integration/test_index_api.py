@@ -120,6 +120,18 @@ def test_index_constituents(params, headers):
                 "end_date": "2023-06-06",
             }
         ),
+        (
+            {
+                "provider": "intrinio",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "symbol": "$DJI",
+                "tag": "level",
+                "sort": "desc",
+                "limit": 100,
+                "type": None,
+            }
+        ),
     ],
 )
 @pytest.mark.integration

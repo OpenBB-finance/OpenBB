@@ -1,0 +1,51 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/indices/stock_market/$DJI/historical_data/level?api_key=MOCK_API_KEY&end_date=2023-06-06&page_size=100&sort_order=desc&start_date=2023-01-01
+  response:
+    body:
+      string: !!binary |
+        H4sIAIByX2UAA3RXTW8bRwz9K8KiR3vAj/kUkIOBXBLA6SHtpUUhbKxNo0BeJdLKsWP4v5ebIOhy
+        hgJ0kLQP5PANHx/3ufu0O02H4+6u32+2/dR367+fO/kydOuOgPgaony6q+6h35/lT+aQ2FF+uWph
+        QcEiuRwtGC1hSWDJhOESBhFdSA0sXPMSRgWyIxMGKpqXpG0J4ZrK/7DxvN9bEEUGFHbsLdiSDErR
+        uxgsmFewUlwhC8YqaQguoAVT1FKOLlhVYlnCPEUX2YJldZ8cXLGSYtLRwCXrBlDzhuTQ4g1VE7HP
+        rm0OQalCGcBFizZEDSs2bQi6UHRs8QFF9ze6bEUDRVtEqaBYMFVoTN6xdVewbBBGSi5ZtIFqEI/e
+        kQlTvMXsXTArXfLmIaBrb9RfU1aokh22dyUw1R9Zus2GRX1Xwq6ZVA8ZBpfbCrzWFecUXEuHoFR/
+        ZBkexTya6o8ksjK6zVeyyiU5aPvDV7IqyVSfr2RVcnLY9ofAdKFyNm/RhqzuiorVlL7SVfQyQCwU
+        1l2UzGBaVvM0smiDRaHmzPWVAfkcHFkJtaR8liFvJlSUCRmW8nwlqSgNiS0ZrA1IRri/AFuSQTkU
+        B+2tszIgCYbJGH+slUdcRO1WTqU88kwO2kK58iDiZA0F1h5ECOFC0mULEYhAsVUBa+lRiGAXqlgj
+        7y1DY60VzDKZiwmLOpo0pFWBsiDMcqPG5sFaeYTBGjGshYcZi2V7rLWCRZwqWjBlQUTBWysWawuS
+        rSKbR4OkW1JGhxlMi0/c0ZvRlFy4gCsWa9qBANgmVzkQxdlr26RUCSFKCW0wqnSQs2ivHR9U6SBj
+        tHYxqnYxDGytRVTtYuDDhaRqfKAM5mDCFv1hDkmqDGP2WWPEU7WHxRJdbkVAWgQeKTswYUvOPAi1
+        xvpNlf2QkFHaEUOVY+R4IZpexKIszbmVO1WLWPHF8mPSMvAYLvCmZZALOrC6Q8ugyC3YSUnxNjeR
+        1d/VIlbIWlBQe5DcgiRto2H1EjSbi9GSWC1sJWXLNrBa2GZ6fVspVgtb8mwpGauFLTHblWrxxVku
+        JkxVyvP6Z1WqNzaY7cWKpjc2EsnI2f656nbjdnjs1s/dbito+bWh7w/vvt8I+vR0/+Gwl39/e/32
+        jfwe+/s54uvDt9XbwzicVm/G7fk0HXf9fnXzMBz7fwdB3R3GaTcO4yTQd4fj9Gl1cz/M7+Y/np3H
+        6fgkT/4cd9OwXb2f5JSn1eHjAnT+Mh998/E4fD0P492M3va7/ZM82venafPz+fZXbTgT+gfgGnkt
+        rwwA8JcgDx9Ow/Ghn3aHcXOa+uP0A44/4aECDKOKRt2LFDs8Tpsvc0nr7vbzzdPtE3y7fQ+Pv9+8
+        etW9/AcAAP//AAAA//8DAF+LRxtzEAAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 23 Nov 2023 15:40:48 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1
