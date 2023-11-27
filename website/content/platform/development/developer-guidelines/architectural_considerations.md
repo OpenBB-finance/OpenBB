@@ -37,6 +37,7 @@ Key Features:
     conventions across various data formats.
 
 Usage:
+
 The `Data` class can be instantiated with keyword arguments corresponding to the fields of the
 expected data. It can also parse and validate data from JSON or other serializable formats, and
 convert them to a `Data` instance for easy manipulation and access.
@@ -64,23 +65,23 @@ The class includes a dictionary, `__alias_dict__`, which can be used to map the 
 
 The `__repr__` method provides a string representation of the QueryParams object, which includes the class name and a list of the model's parameters and their values.
 
-The model_config attribute is a ConfigDict instance that allows extra fields not defined in the model and populates the model by name.
+The `model_config` attribute is a `ConfigDict` instance that allows extra fields not defined in the model and populates the model by name.
 
-The model_dump method is used to serialize the model into a dictionary. If the `__alias_dict__` is not empty, it will use the aliases defined in it for the keys in the returned dictionary. If the `__alias_dict__` is empty, it will return the original serialized model.
+The `model_dump` method is used to serialize the model into a dictionary. If the `__alias_dict__` is not empty, it will use the aliases defined in it for the keys in the returned dictionary. If the `__alias_dict__` is empty, it will return the original serialized model.
 
 ### The `Fetcher` class
 
 The `Fetcher` class is an abstract base class designed to provide a structured way to fetch data from various providers. It uses generics to allow for flexibility in the types of queries, data, and return values it handles.
 
-The class defines a series of methods that must be implemented by any subclass: transform_query, extract_data, and transform_data. These methods represent the core steps of fetching data: transforming input parameters into a provider-specific query, extracting data from the provider using the query, and then transforming the provider-specific data into a desired format.
+The class defines a series of methods that must be implemented by any subclass: `transform_query`, `extract_data`, and `transform_data`. These methods represent the core steps of fetching data: transforming input parameters into a provider-specific query, extracting data from the provider using the query, and then transforming the provider-specific data into a desired format.
 
-The fetch_data method orchestrates these steps, taking in parameters and optional credentials, and returning the transformed data.
+The `fetch_data` method orchestrates these steps, taking in parameters and optional credentials, and returning the transformed data.
 
 The class also includes a test method for validating the functionality of a fetcher, performing assertions on each stage of the fetch process.
 
 Additionally, the `Fetcher` class uses a custom `classproperty` decorator to define class-level properties that return the types of the query parameters, return value, and data.
 
-The require_credentials class variable indicates whether credentials are needed to fetch data from the provider. This can be overridden by subclasses as needed.
+The `require_credentials` class variable indicates whether credentials are needed to fetch data from the provider. This can be overridden by subclasses as needed.
 
 ### The `OBBject` class
 
@@ -92,11 +93,11 @@ The class provides several methods for converting the fetched data into differen
 
 The `to_chart` method allows for creating or updating a chart based on the fetched data, and the show method is used to display the chart.
 
-The class also includes a `__repr__` method for a human-readable representation of the object, and a model_parametrized_name method for returning the model name with its parameters.
+The class also includes a `__repr__` method for a human-readable representation of the object, and a `model_parametrized_name method` for returning the model name with its parameters.
 
 ### The `Router` class
 
-The Router class in the OpenBB platform is responsible for managing and routing API requests. It uses the `APIRouter` from the FastAPI library to handle routing.
+The `Router` class in the OpenBB platform is responsible for managing and routing API requests. It uses the `APIRouter` from the FastAPI library to handle routing.
 
 The class includes a command method that allows for the registration of callable functions as API endpoints. This method takes care of setting up the API route, including defining the HTTP methods, response models, operation IDs, and other necessary parameters for the API endpoint.
 
@@ -130,6 +131,7 @@ from openbb_core.app.router import Router
 ## The TET pattern
 
 The TET pattern is a pattern that we use to build the `Fetcher` classes. It stands for **Transform, Extract, Transform**.
+
 As the OpenBB Platform has its own standardization framework and the data fetcher are a very important part of it, we need to ensure that the data is transformed and extracted in a consistent way, to help us do that, we came up with the **TET** pattern, which helps us build and ship faster as we have a clear structure on how to build the `Fetcher` classes.
 
 1. **Transform** query
@@ -159,12 +161,15 @@ As the OpenBB Platform has its own standardization framework and the data fetche
 ## Data processing commands
 
 The data processing commands are commands that are used to process the data that may or may not come from the OpenBB Platform.
-In order to create a data processing framework general enough to be used by any extension, we've created a special abstract class called `Data`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/core/provider/abstract/data.py) which **all** standardized (and consequently its child classes) will inherit from.
 
-Why is this important?
-So that we can ensure that all `OBBject.results` will share a common ground on which we can apply out-of-the-box data processing commands, such as the `ta`, `qa` or the `econometrics` menus.
+In order to create a data processing framework general enough to be used by any extension, we've created a special abstract class called [`Data`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/core/provider/abstract/data.py) which **all** standardized (and consequently its child classes) will inherit from.
 
-But what's really the `Data` class?
+**Why is this important?**
+
+We ensure that all `OBBject.results` will share a common ground on which we can apply out-of-the-box data processing commands, such as the `ta`, `qa`, or the `econometrics` menus.
+
+**But what's really the `Data` class?**
+
 It's a pydantic model that inherits from the `BaseModel` and can contain any given number of extra fields. In practice, it looks as follows:
 
 ```python
@@ -181,6 +186,7 @@ AVEquityHistoricalData(date=2023-11-03 00:00:00, open=174.24, high=176.82, low=1
 Note how we've indexed to get only the first element of the `results` list (which represents a single row, if we want to think about it as a tabular output). This simply means that we are getting a `List` of `AVEquityHistoricalData` from the `obb.equity.price.historical` command. Or, we can also say that that's equivalent to `List[Data]`!
 
 This is very powerful, as we can now apply any data processing command to the `results` list, without worrying about the underlying data structure.
+
 That's why, on data processing commands (such as the `ta` menu) we will find on its function signature the following:
 
 ```python
@@ -216,7 +222,9 @@ Data(open=1, high=2, low=3, close=4, volume=5, date=2020-01-01)
 ```
 
 This means that the `Data` class is cleaver enough to understand that you are passing a dictionary and it will try to validate it for you.
-In other words, if you're using data that doesn't come from the OpenBBPlatform, you only need to ensure it's parsable by the `Data` class and you'll be able to use the data processing commands.
+
+In other words, if you're using data that doesn't come from the OpenBB Platform, you only need to ensure it's parsable by the `Data` class and you'll be able to use the data processing commands.
+
 In other words, imagine you have a dataframe that you want to use with the `ta` menu. You can do the following:
 
 ```python
@@ -238,6 +246,7 @@ results: [{'close': 77.62, 'close_EMA_50': None}, {'close': 80.25, 'close_EMA_50
 ## Python Interface
 
 When using the OpenBB Platform on a Python Interface, docstrings and type hints are your best friends as it provides plenty of context on how to use the commands.
+
 Looking at an example on the `ta` menu:
 
 ```python

@@ -27,7 +27,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Overview - Usage | OpenBB Platform Docs" />
 
-At its base, the OpenBB Platform supplies core architecture and services for connecting data providers and extensions, consumable as a Python client and Fast API.  The extension framework provides interoperability between as many, or few, services required.  Optional extras are not included with the base installation, and these include:
+At its base, the OpenBB Platform supplies core architecture and services for connecting data providers and extensions, consumable as a Python client and Fast API. The extension framework provides interoperability between as many, or few, services required.  Optional extras are not included with the base installation, and these include:
 
 - Charting libraries and views
 - Data cleaning
@@ -37,15 +37,15 @@ At its base, the OpenBB Platform supplies core architecture and services for con
 
 ## Authorization
 
-By default, authorization is not required to initialize and use the core services.  Most data providers, however,  require an API key to access their data.  They can be stored locally, or securely on the OpenBB Hub for convenient remote access.  Refer to our Developer Guidelines for best practices within a production environment.
+By default, authorization is not required to initialize and use the core services. Most data providers, however,  require an API key to access their data. They can be stored locally, or securely on the OpenBB Hub for convenient remote access. Refer to our Developer Guidelines for best practices within a production environment.
 
 ### OpenBB Hub
 
-Data provider credentials and user preferences can be securely stored on the OpenBB Hub and accessed via a revokable Personal Access Token (PAT).  Login to the [Hub](https://my.openbb.co/) to manage this method of remote authorization.
+Data provider credentials and user preferences can be securely stored on the OpenBB Hub and accessed via a revokable Personal Access Token (PAT). Login to the [Hub](https://my.openbb.co/) to manage this method of remote authorization.
 
 #### Python Client
 
-The OpenBB Hub is a convenient solution for accessing data in temporary environments, like Google Colab.  Login using the Python client with:
+The OpenBB Hub is a convenient solution for accessing data in temporary environments, like Google Colab. Login using the Python client with:
 
 ```jupyterpython
 from openbb import obb
@@ -79,7 +79,7 @@ Activate the Python environment and then start the server from a Terminal comman
 uvicorn openbb_core.api.rest_api:app
 ```
 
-To use the Fast API documentation page, navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).  By default, no authorization is required.  Basic authorization can be enabled with environment variables.  In the home folder, along with `user_settings.json`, create a new file, `.env`, if it does not yet exist.
+To use the Fast API documentation page, navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).  By default, no authorization is required.  Basic authorization can be enabled with environment variables. In the home folder, along with `user_settings.json`, create a new file, `.env`, if it does not yet exist.
 
 ```.env
 OPENBB_API_AUTH="True"
@@ -112,7 +112,7 @@ Refer to the Developer Guidelines for custom authorization procedures.
 
 ### Local Environment
 
-Credentials and user preferences  are stored locally, `~/.openbb_platform/`, as a JSON file, `user_settings.json`.  It is read upon initializing the Python client, or when the Fast API is authorized.  If the file does not exist, create it with any text editor.  The schema below can be copy/pasted if required, providers not listed here are added using the same format:
+Credentials and user preferences  are stored locally, `~/.openbb_platform/`, as a JSON file, `user_settings.json`.  It is read upon initializing the Python client, or when the Fast API is authorized. If the file does not exist, create it with any text editor. The schema below can be copy/pasted if required, providers not listed here are added using the same format:
 
 ```json
 {
@@ -136,7 +136,7 @@ obb.user.credentials.intrinio_api_key = "REPLACE_WITH_KEY"
 
 ## Environment Variables
 
-Environment variables are defined in a `.env` file.  If this file does not exist, create it inside the same folder `user_settings.json` is located.
+Environment variables are defined in a `.env` file. If this file does not exist, create it inside the same folder `user_settings.json` is located.
 
 - `OPENBB_DEBUG_MODE`: enables verbosity while running the program
 - `OPENBB_DEVELOP_MODE`: points hub service to .co or .dev
@@ -199,7 +199,7 @@ obb.user.preferences
 obb.user.defaults
 ```
 
-Notably, `obb.user.defaults`, defines default providers for any command.  They are stored in the `user_settings.json` file, under `routes`.  Below is an example of what it might look like.
+Notably, `obb.user.defaults`, defines default providers for any command. They are stored in the `user_settings.json` file, under `routes`. Below is an example of what it might look like.
 
 ```json
 {
@@ -255,7 +255,7 @@ Notably, `obb.user.defaults`, defines default providers for any command.  They a
 
 ## Basic Response
 
-The output of every command is an object which contains the results of the request, along with additional information.  It is a custom class, `OBBject`, and always returns with the fields listed below:
+The output of every command is an object which contains the results of the request, along with additional information. It is a custom class, `OBBject`, and always returns with the fields listed below:
 
 ```console
 id: ...                 # UUID Tag
@@ -322,7 +322,7 @@ obb.user.preferences.output_type="dataframe"
 
 ## Dynamic Command Execution
 
-Dynamic execution provides an alternate entry point to functions.  This method requires formatting the query as demonstrated below.
+Dynamic execution provides an alternate entry point to functions. This method requires formatting the query as demonstrated below.
 
 ```python
 from openbb_core.app.command_runner import CommandRunner

@@ -40,7 +40,7 @@ Ensure you're in a fresh conda environment before adjusting dependencies.
 
 ## Core and Extensions
 
-### Installation
+### Dev Installation
 
 For development setup, use the provided script to install all extensions and their dependencies:
 

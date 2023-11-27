@@ -15,7 +15,7 @@ keywords:
 - Numpy
 ---
 
-The OBBject (OpenBB Object) is at the heart of developing around the OpenBB Platform.  Every command will return this class as the command output.  This class contains the following attributes:
+The OBBject (OpenBB Object) is at the heart of developing around the OpenBB Platform. Every command will return this class as the command output. This class contains the following attributes:
 
 - results
   - This contains serializable data that was obtained by running the command.
@@ -27,7 +27,8 @@ The OBBject (OpenBB Object) is at the heart of developing around the OpenBB Plat
   - Additional metadata about the command run, including any arguments, the route, the timestamp, etc.
 
 ## Example
-In the python interface, the OBBject class is returned by every command.  The following example shows how to access the results of a command:
+
+In the python interface, the OBBject class is returned by every command. The following example shows how to access the results of a command:
 
 ```python
 >>> obb.equity.price.historical("AAPL", provider="fmp")
@@ -54,10 +55,11 @@ In general, this will not be how you want to ingest or modify your data, so to h
 
 ## OBBject Methods
 
-We understand that there is no one size fits all solution for data ingestion and manipulation, so we have provided a few methods to help with this and handle the conversion from Obbject to your preferred data type.  These methods are accessed by running `obbject.<method>`.
+We understand that there is no one size fits all solution for data ingestion and manipulation, so we have provided a few methods to help with this and handle the conversion from Obbject to your preferred data type. These methods are accessed by running `obbject.<method>`.
 
 ### to_dataframe()
-One of the most popular libraries for python data manipulation, this method will return a pandas dataframe with the results.  We have designed this function to work with various data structures we have encountered.  We note that given the time series nature of the data, we set the index to be `date` if that column appears in the models.
+
+One of the most popular libraries for python data manipulation, this method will return a pandas dataframe with the results. We have designed this function to work with various data structures we have encountered. Given the time series nature of the data, we set the index to be `date` if that column appears in the models.
 
 This also has the shorter alias `to_df()`.
 
@@ -65,16 +67,17 @@ This also has the shorter alias `to_df()`.
 >>> type( obb.equity.price.historical("AAPL", provider="fmp").to_dataframe() )
 <class 'pandas.core.frame.DataFrame'>
 ```
+
 ### to_dict(orient)
 
-A very common data structure is to return the data in a dictionary.  This model provides an interface to do so, with options to return the dictionary in different orientations, just as in the pandas `to_dict()` method.  The default method will return a dictionary that allows you to index to obtain data:
+A very common data structure is to return the data in a dictionary. This model provides an interface to do so, with options to return the dictionary in different orientations, just as in the pandas `to_dict()` method. The default method will return a dictionary that allows you to index to obtain data:
 
 ```python
 >>> obb.equity.price.historical("AAPL", provider="fmp").to_dict()["open"][:10]
 [150.16, 148.13, 149.45, 148.31, 145.14, 144.29, 141.4, 148.21, 145.96, 147.77]
 ```
 
-Orienting as records will give you a list of dictionaries, commonly used in json data structures:
+Orienting as records will give you a list of dictionaries, commonly used in JSON data structures:
 
 ```python
 >>> obb.equity.price.historical("AAPL", provider="fmp").to_dict("records")[0]
@@ -87,11 +90,11 @@ In addition to these two highly used methods, we have also provided the followin
 
 #### to_numpy()
 
-Returns numpy arrays of the results.  Note that this loses the column names, so you will need to index the array to obtain the data.
+Returns numpy arrays of the results. Note that this loses the column names, so you will need to index the array to obtain the data.
 
 #### to_polars()
 
-Growing in popularity, polars is a blazingly fast dataframe library.  This method will return a polars dataframe.  Note that we do not include polars in the core dependency tree, so it needs to be installed separately.
+Growing in popularity, polars is a blazingly fast dataframe library. This method will return a polars dataframe. Note that we do not include polars in the core dependency tree, so it needs to be installed separately.
 
 
 ---

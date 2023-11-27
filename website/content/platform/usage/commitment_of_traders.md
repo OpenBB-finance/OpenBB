@@ -1,9 +1,9 @@
 ---
 title: Commitment of Traders
 sidebar_position: 7
-description: This page provides details on the accessing Commitment of Traders reports with 
+description: This page provides details on the accessing Commitment of Traders reports with
   the OpenBB Platform, published by the CFTC weekly.  This guide provides examples for
-  using the combinations of parameters used to get aspects of the report's data. 
+  using the combinations of parameters used to get aspects of the report's data.
 keywords:
 - futures
 - commodities
@@ -27,11 +27,11 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Commitment of Traders - Usage | OpenBB Platform Docs" />
 
-Commitment of Traders (COT) reports are published on Fridays, by the [CFTC](https://www.cftc.gov/MarketReports/CommitmentsofTraders/index.htm).  CFTC COT reports provide a breakdown of each Tuesday’s open interest for futures and options on futures markets in which 20 or more traders hold positions equal to or above the reporting levels established by the CFTC.
+Commitment of Traders (COT) reports are published on Fridays, by the [CFTC](https://www.cftc.gov/MarketReports/CommitmentsofTraders/index.htm). CFTC COT reports provide a breakdown of each Tuesday’s open interest for futures and options on futures markets in which 20 or more traders hold positions equal to or above the reporting levels established by the CFTC.
 
 ## Regulators Module
 
-The `obb.regulators` module contains data published by industry regulators and agencies.  The data will not be specific to any particular asset class, and the information is available to the general public.  The COT reports have two end points:
+The `obb.regulators` module contains data published by industry regulators and agencies. The data will not be specific to any particular asset class, and the information is available to the general public. The COT reports have two end points:
 
 - `obb.regulators.cftc.cot()`
 - `obb.regulators.cfc.cot_search()`
@@ -40,7 +40,7 @@ While the data is public and available directly from the CFTC website, [Nasdaq D
 
 ### COT Search
 
-The `obb.regulators.cftc.cot_search()` end point is a curated list of the 100 most common reports.  The list can be searched by fuzzy query - i.e., "commodities" - and they are classified under categories and subcategories.  Get the whole list with an empty query.
+The `obb.regulators.cftc.cot_search()` end point is a curated list of the 100 most common reports. The list can be searched by fuzzy query - i.e., "commodities" - and they are classified under categories and subcategories. Get the whole list with an empty query.
 
 ```python
 reports = obb.regulators.cftc.cot_search().to_df()
@@ -54,7 +54,7 @@ reports[reports["category"] == "Index"]
 
 ### COT Reports
 
-There is a default report, Two-Year Treasury Note Futures, which has the code: `042601`.  Where available, like the two-year note, the futures continuation symbol (ZT=F) can be used instead of the code.  The name can also be used:
+There is a default report, Two-Year Treasury Note Futures, which has the code: `042601`. Where available, like the two-year note, the futures continuation symbol (ZT=F) can be used instead of the code. The name can also be used:
 
 ```python
 zt = obb.regulators.cftc.cot("Two-Year Treasury Note Futures (CBT)").to_df()
@@ -76,7 +76,7 @@ zt.iloc[-1]
 | nonreportable_positions_short |      136297           |
 
 :::note
-Look up reports not listed under `obb.regulators.cftc.cot_search()` by using the Nasdaq Data Link code for the series.  Refer to their documentation for a complete list.
+Look up reports not listed under `obb.regulators.cftc.cot_search()` by using the Nasdaq Data Link code for the series. Refer to their documentation for a complete list.
 :::
 
 ### Parameters
@@ -84,7 +84,7 @@ Look up reports not listed under `obb.regulators.cftc.cot_search()` by using the
 There are parameters that will alter the type of report returned.
 
 :::note
-Not every combination of parameters is valid for all reports.  An error will be raised when parameters are invalid.
+Not every combination of parameters is valid for all reports. An error will be raised when parameters are invalid.
 :::
 
 #### `data_type`

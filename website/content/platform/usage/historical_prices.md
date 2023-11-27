@@ -19,7 +19,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Historical Prices - Usage | OpenBB Platform Docs" />
 
-Historical market prices typically come in the form of OHLC+V - open, high, low, close, volume.  There may be additional fields returned by a provider, but those are the expected columns.  Granularity and amount of historical data will vary by provider and subscription status.  Visit their websites to understand what your entitlements are.
+Historical market prices typically come in the form of OHLC+V - open, high, low, close, volume.  There may be additional fields returned by a provider, but those are the expected columns. Granularity and amount of historical data will vary by provider and subscription status. Visit their websites to understand what your entitlements are.
 
 :::info
 These examples will assume that the OpenBB Platform is initialized in a Python session.
@@ -32,7 +32,7 @@ from openbb import obb
 
 ## Historical OHLC
 
-The `historical` function is located under a submodule for each asset type.  In the `openbb-equity` module.
+The `historical` function is located under a submodule for each asset type. In the `openbb-equity` module.
 
 ```python
 obb.equity.price.historical()
@@ -46,7 +46,7 @@ obb.equity.price.historical()
 
 - The default interval will be `1d`.
 
-- The depth of historical data and choices for granularity will vary by provider and subscription status.  Refer to the website and documentation of each source understand your specific entitlements.
+- The depth of historical data and choices for granularity will vary by provider and subscription status. Refer to the website and documentation of each source understand your specific entitlements.
 
 - Despite being in the `equity` module, it's might be possible to get other asset types, like currencies or crypto, from the same endpoint.
 
@@ -85,7 +85,7 @@ The intervals are entered according to this pattern:
 - `1W` = One Week
 - `1M` = One Month
 
-The date for monthly value is the first or last, depending on the provider.  This can be easily resampled from daily data.
+The date for monthly value is the first or last, depending on the provider. This can be easily resampled from daily data.
 
 ```python
 df_monthly = (
@@ -102,7 +102,7 @@ df_monthly.tail(2)
 
 ### Resample a Time Series
 
-`yfinance` returns the monthly data for the first day of each month.  Let's resample it to take from the last, using the daily information captured in the previous cells.
+`yfinance` returns the monthly data for the first day of each month. Let's resample it to take from the last, using the daily information captured in the previous cells.
 
 (
     df_daily[["open", "high", "low", "close", "volume"]]
@@ -117,7 +117,7 @@ df_monthly.tail(2)
 | 2023-10-31  | 426.62 | 438.14 | 409.21 |  418.2  | 1999149700 |
 | 2023-11-30  | 419.2  | 456.38 | 418.65 |  455.02 | 1210484176 |
 
-We can see that the current month's total volume is higher when we resample the daily time series.  It is difficult to know where the discrepancy lays, and it may just be a temporary glitch.  However, we can verify that the total volume, according to YahooFinance, is the number we just sampled.
+We can see that the current month's total volume is higher when we resample the daily time series. It is difficult to know where the discrepancy lays, and it may just be a temporary glitch. However, we can verify that the total volume, according to YahooFinance, is the number we just sampled.
 
 :::note
 If you are following along, the results will not match exactly what is displayed here.
@@ -186,11 +186,11 @@ obb.equity.price.historical("brk.b", provider="polygon")
 obb.equity.price.historical("brk-b", provider="fmp")
 ```
 
-While some providers handle the different formats on their end, others do not.  This is something to consider when no results are returned from one source.  Some may even use a combination, or accept multiple variations.  Sometimes there is no real logic behind the additional characters, `GOOGL` vs. `GOOG`.  These are known unknown variables of ticker symbology, what's good for one source may return errors from another.
+While some providers handle the different formats on their end, others do not. This is something to consider when no results are returned from one source. Some may even use a combination, or accept multiple variations. Sometimes there is no real logic behind the additional characters, `GOOGL` vs. `GOOG`. These are known unknown variables of ticker symbology, what's good for one source may return errors from another.
 
 ### Regional Identifiers
 
-With providers supporting market data from multiple jurisdictions, the most common method for requesting data outside of US-listings is to append a suffix to the ticker symbol (e.g., `RELIANCE.NS`).  Formats may be unique to a provider, so it is best to review the source's documentation for an overview of their specific conventions.  [This page](https://help.yahoo.com/kb/SLN2310.html) on Yahoo describes how they format symbols, which many others follow to some degree.
+With providers supporting market data from multiple jurisdictions, the most common method for requesting data outside of US-listings is to append a suffix to the ticker symbol (e.g., `RELIANCE.NS`). Formats may be unique to a provider, so it is best to review the source's documentation for an overview of their specific conventions. [This page](https://help.yahoo.com/kb/SLN2310.html) on Yahoo describes how they format symbols, which many others follow to some degree.
 
 ### Indices
 
@@ -221,7 +221,7 @@ obb.equity.price.historical("^RUT", provider="fmp").to_df().tail(1)
 
 ### Currencies
 
-FX symbols face the same dilemna as share classes, there are several variations of the same symbol.
+FX symbols face the same dilemma as share classes, there are several variations of the same symbol.
 
 - YahooFinance: `EURUSD=X`
 - Polygon: `C:EURUSD`
