@@ -32,7 +32,7 @@ class IntrinioMarketIndicesQueryParams(MarketIndicesQueryParams):
         alias="sort_order",
     )
     limit: NonNegativeInt = Field(
-        default=100,
+        default=1000,
         description=QUERY_DESCRIPTIONS.get("limit", ""),
         alias="page_size",
     )
