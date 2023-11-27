@@ -915,7 +915,7 @@ def test_equity_price_historical(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL", "limit": 100, "provider": "fmp"})],
+    [({"symbol": "AAPL", "provider": "fmp"})],
 )
 @pytest.mark.integration
 def test_equity_fundamental_multiples(params, headers):
