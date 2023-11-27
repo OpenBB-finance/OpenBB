@@ -62,4 +62,4 @@ Now that the extension is installed and built, we can use it!  Because we are ex
 Hello, this is my credential: None!
 ```
 
-IN this example, we have added obbject.example as the extension and can use the .hello() functionality right from our OBBject.
+In this example, we have added obbject.example as the extension and can use the .hello() functionality right from our OBBject.
