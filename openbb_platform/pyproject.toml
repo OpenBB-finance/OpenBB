@@ -56,13 +56,11 @@ cboe = ["openbb-cboe"]
 charting = ["openbb-charting"]
 ecb = ["openbb-ecb"]
 econometrics = ["openbb-econometrics"]
-finra = ["openbb-finra"]
 nasdaq = ["openbb-nasdaq"]
 quantitative = ["openbb-quantitative"]
 seeking_alpha = ["openbb-seeking-alpha"]
 stockgrid = ["openbb-stockgrid"]
 technical = ["openbb-technical"]
-wsj = ["openbb-wsj"]
 yfinance = ["openbb-yfinance"]
 
 all = [
@@ -72,15 +70,12 @@ all = [
     "openbb-charting",
     "openbb-ecb",
     "openbb-econometrics",
-    "openbb-finra",
     "openbb-nasdaq",
     "openbb-quantitative",
     "openbb-seeking-alpha",
     "openbb-stockgrid",
     "openbb-technical",
-    "openbb-wsj",
     "openbb-yfinance",
-    "openbb-tiingo"
 ]
 
 [tool.poetry.group.dev.dependencies]
