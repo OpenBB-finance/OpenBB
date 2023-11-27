@@ -19,7 +19,7 @@ class PolygonCompanyNewsQueryParams(CompanyNewsQueryParams):
     Source: https://polygon.io/docs/stocks/get_v2_reference_news
     """
 
-    __alias_dict__ = {"symbols": "ticker"}
+    __alias_dict__ = {"symbols": "tickers"}
 
     published_utc: Optional[str] = Field(
         default=None,
@@ -48,10 +48,17 @@ class PolygonCompanyNewsData(CompanyNewsData):
     """Polygon Company News Data."""
 
     __alias_dict__ = {
+        "symbols": "tickers",
         "url": "article_url",
         "text": "description",
         "date": "published_utc",
     }
+
+    @field_validator("symbols", mode="before", check_fields=False)
+    @classmethod
+    def symbols_string(cls, v):
+        """Symbols string validator."""
+        return ",".join(v)
 
     amp_url: Optional[str] = Field(default=None, description="AMP URL.")
     author: Optional[str] = Field(default=None, description="Author of the article.")
@@ -61,7 +68,6 @@ class PolygonCompanyNewsData(CompanyNewsData):
         default=None, description="Keywords in the article"
     )
     publisher: PolygonPublisher = Field(description="Publisher of the article.")
-    tickers: List[str] = Field(description="Tickers covered in the article.")
 
 
 class PolygonCompanyNewsFetcher(
