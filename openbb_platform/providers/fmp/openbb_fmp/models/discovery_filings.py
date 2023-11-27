@@ -67,7 +67,7 @@ class FMPDiscoveryFilingsFetcher(
         pages = math.ceil(query.limit / 1000)
 
         urls = [
-            f"{base_url}/{query.symbol}?{query_str}&page={page}&apikey={api_key}"
+            f"{base_url}?{query_str}&page={page}&apikey={api_key}"
             for page in range(pages)
         ]
 
