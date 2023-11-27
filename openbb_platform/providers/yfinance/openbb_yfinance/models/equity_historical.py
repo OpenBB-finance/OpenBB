@@ -96,9 +96,6 @@ class YFinanceEquityHistoricalFetcher(
 
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
-        if params.get("adjusted") is True:
-            transformed_params["back_adjust"] = True
-            transformed_params["auto_adjust"] = True
 
         return YFinanceEquityHistoricalQueryParams(**params)
 
