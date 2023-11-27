@@ -15,6 +15,11 @@ keywords:
 - Numpy
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="OBBject - Developer Guidelines - Development | OpenBB Platform Docs" />
+
+
 The OBBject (OpenBB Object) is at the heart of developing around the OpenBB Platform. Every command will return this class as the command output. This class contains the following attributes:
 
 - results

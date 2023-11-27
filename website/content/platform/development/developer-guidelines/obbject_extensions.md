@@ -9,6 +9,10 @@ keywords:
 - OpenBB Platform
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="OBBject Extensions - Developer Guidelines - Development | OpenBB Platform Docs" />
+
 As mentioned, OpenBB provides some basic methods for interacting with common data structures that will be seen in the results attribute.
 If you are working with custom data, or adding new endpoints, it is possible that you will want to have your own methods for interacting with the data.
 The OpenBB Platform provides a way to do this by extending the OBBject class.
