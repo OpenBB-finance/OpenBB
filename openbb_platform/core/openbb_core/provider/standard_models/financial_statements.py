@@ -473,8 +473,8 @@ class IncomeStatementData(Data):
     gross_profit: Optional[float] = Field(
         default=None, description="Total gross profit"
     )
-    gross_margin: Optional[float] = Field(
-        default=None, description="Gross margin"
+    gross_profit_ratio: Optional[float] = Field(
+        default=None, description="Gross margin ratio."
     )
     research_and_development_expense: Optional[float] = Field(
         default=None, description="Research and development expense"
