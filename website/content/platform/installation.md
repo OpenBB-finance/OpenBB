@@ -67,7 +67,7 @@ Before installation, update the package manager so that `pip` is current, then c
 pip install poetry toml
 ```
 :::note
-Installing packages directly to the system Python or `base` environment is not recommended.  Create a new environment first (can be any name, uisng openbb here for example).
+Installing packages directly to the system Python or `base` environment is not recommended.  Create a new environment first (can be any name, using openbb here for example).
 
 ```
 conda create -n openbb python=3.11
