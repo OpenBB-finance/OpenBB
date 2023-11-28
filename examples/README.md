@@ -29,3 +29,13 @@ This set of examples introduces financial statements in the OpenBB Platform and 
 - What to expect with data from different sources
 - Financial attributes
 - Ratios and other metrics
+
+
+### copperToGoldRatio
+
+This notebook explains how to calculate and plot the Copper-to-Gold ratio.
+
+- Loading historical front-month futures prices.
+- Getting the historical series from FRED for the 10-year constant maturity US treasury bill.
+- Performing basic DataFrame operations.
+- Creating charts with Plotly Graph Objects.
