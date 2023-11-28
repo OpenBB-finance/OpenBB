@@ -129,7 +129,6 @@ class FMPIncomeStatementData(IncomeStatementData):
         return {k: None if v == 0 else v for k, v in values.items()}
 
 
-
 class FMPIncomeStatementFetcher(
     Fetcher[
         FMPIncomeStatementQueryParams,
