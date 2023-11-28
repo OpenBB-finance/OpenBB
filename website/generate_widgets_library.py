@@ -11,7 +11,6 @@ def main() -> bool:
     widgets_data: Dict[str, Dict[str, dict]] = response.json()
 
     # Process the data into the desired format
-    all_widgets: Dict[str, list] = {}
     # New all widgets
     new_all_widgets = {}
     for widget_id, widget_info in widgets_data.items():
@@ -20,7 +19,7 @@ def main() -> bool:
             continue
 
         # Get category information
-        category = widget_info.get("category")
+        widget_info.get("category")
 
         category_root = widget_info.get("category_root")  # this is a mandatory field
 
@@ -31,7 +30,6 @@ def main() -> bool:
 
             category_1 = widget_info.get("category_1")  # this is a mandatory field
             if category_1:
-
                 # Initialize dict for category_1 within category_root
                 if category_1 not in new_all_widgets[category_root]:
                     new_all_widgets[category_root][category_1] = {}
@@ -67,8 +65,7 @@ def main() -> bool:
         else:
             print("SHOULD NEVER GET HERE BECAUSE CATEGORY_ROOT IS A MANDATORY FIELD!")
 
-
-        '''
+        """
         if category:
             # Initialize all widgets
             if category not in all_widgets:
@@ -82,13 +79,13 @@ def main() -> bool:
                     "widgetId": widget_info.get("widgetId"),
                 }
             )
-        '''
+        """
 
     website_path = Path(__file__).parent.absolute()
     base_path = website_path / "content" / "pro" / "widgets-library"
 
     ## Handle category_root level
-    index_path = base_path /  "index.mdx"
+    index_path = base_path / "index.mdx"
 
     # Check if the directory exists, if not create it
     if not index_path.parent.exists():
@@ -116,9 +113,8 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
     ## Handle category_1 level
     for category_root, widgets in new_all_widgets.items():
-
         # Check if the directory exists, if not create it
-        index_path = base_path / category_root.lower().replace(' ', '-') / "index.mdx"
+        index_path = base_path / category_root.lower().replace(" ", "-") / "index.mdx"
         if not index_path.parent.exists():
             index_path.parent.mkdir(parents=True)
 
@@ -134,7 +130,10 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
             l_elements = list(new_all_widgets[category_root][category_1].keys())
             if "CATEGORYLESS" in new_all_widgets[category_root][category_1]:
                 l_elements.remove("CATEGORYLESS")
-                l_elements += [k["name"] for k in new_all_widgets[category_root][category_1]["CATEGORYLESS"]]
+                l_elements += [
+                    k["name"]
+                    for k in new_all_widgets[category_root][category_1]["CATEGORYLESS"]
+                ]
 
             text += f"""
 <NewReferenceCard
@@ -155,9 +154,13 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
             index_file.write(f"{text}\n")
 
         for category_1, widgets in new_all_widgets[category_root].items():
-
             # Check if the directory exists, if not create it
-            index_path = base_path / category_root.lower().replace(' ', '-') / category_1.lower().replace(' ', '-') / "index.mdx"
+            index_path = (
+                base_path
+                / category_root.lower().replace(" ", "-")
+                / category_1.lower().replace(" ", "-")
+                / "index.mdx"
+            )
             if not index_path.parent.exists():
                 index_path.parent.mkdir(parents=True)
 
@@ -168,7 +171,9 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 <ul className="grid grid-cols-1 gap-4 -ml-6">
 """
 
-            for category_2, widgets in new_all_widgets[category_root][category_1].items():
+            for category_2, widgets in new_all_widgets[category_root][
+                category_1
+            ].items():
                 # Get all elements
                 if category_2 != "CATEGORYLESS":
                     text += f"""
@@ -191,7 +196,12 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
             text += "\n</ul>"
 
             # Check if the path is a directory
-            index_path = base_path / category_root.lower().replace(' ', '-') / category_1.lower().replace(' ', '-') / "index.mdx"
+            index_path = (
+                base_path
+                / category_root.lower().replace(" ", "-")
+                / category_1.lower().replace(" ", "-")
+                / "index.mdx"
+            )
             if index_path.is_dir():
                 print(f"{index_path} is a directory, not a file.")
                 continue
@@ -201,11 +211,18 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
                 index_file.write(f"{text}\n")
 
             # Handle category_2 level index
-            for category_2, widgets in new_all_widgets[category_root][category_1].items():
-
+            for category_2, widgets in new_all_widgets[category_root][
+                category_1
+            ].items():
                 if category_2 != "CATEGORYLESS":
                     # Check if the directory exists, if not create it
-                    index_path = base_path / category_root.lower().replace(' ', '-') / category_1.lower().replace(' ', '-') / category_2.lower().replace(' ', '-') / "index.mdx"
+                    index_path = (
+                        base_path
+                        / category_root.lower().replace(" ", "-")
+                        / category_1.lower().replace(" ", "-")
+                        / category_2.lower().replace(" ", "-")
+                        / "index.mdx"
+                    )
                     if not index_path.parent.exists():
                         index_path.parent.mkdir(parents=True)
 
@@ -226,11 +243,19 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
                     text += "\n</ul>"
                     # Create index file
-                    with index_path.open("w", encoding="utf-8", newline="\n") as index_file:
+                    with index_path.open(
+                        "w", encoding="utf-8", newline="\n"
+                    ) as index_file:
                         index_file.write(f"{text}\n")
 
                     # Check if the path is a directory
-                    index_path = base_path / category_root.lower().replace(' ', '-') / category_1.lower().replace(' ', '-') / category_2.lower().replace(' ', '-') / "index.mdx"
+                    index_path = (
+                        base_path
+                        / category_root.lower().replace(" ", "-")
+                        / category_1.lower().replace(" ", "-")
+                        / category_2.lower().replace(" ", "-")
+                        / "index.mdx"
+                    )
                     if index_path.is_dir():
                         print(f"{index_path} is a directory, not a file.")
                         continue
@@ -241,7 +266,12 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
                 if category_2 == "CATEGORYLESS":
                     # Create each individual widget file
                     for widget in widgets:
-                        widget_path = base_path / category_root.lower().replace(' ', '-') / category_1.lower().replace(' ', '-') / f"{widget['widgetId']}.md"
+                        widget_path = (
+                            base_path
+                            / category_root.lower().replace(" ", "-")
+                            / category_1.lower().replace(" ", "-")
+                            / f"{widget['widgetId']}.md"
+                        )
 
                         text = f"""---
 title: {widget['name']}
@@ -271,13 +301,21 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 {'**Source:** ' + ','.join(widget['source']) if widget['source'] else ''}
 """
 
-                        with widget_path.open("w", encoding="utf-8", newline="\n") as widget_file:
+                        with widget_path.open(
+                            "w", encoding="utf-8", newline="\n"
+                        ) as widget_file:
                             widget_file.write(f"{text}\n")
 
                 else:
-                   # Create each individual widget file
+                    # Create each individual widget file
                     for widget in widgets:
-                        widget_path = base_path / category_root.lower().replace(' ', '-') / category_1.lower().replace(' ', '-') / category_2.lower().replace(' ', '-') / f"{widget['widgetId']}.md"
+                        widget_path = (
+                            base_path
+                            / category_root.lower().replace(" ", "-")
+                            / category_1.lower().replace(" ", "-")
+                            / category_2.lower().replace(" ", "-")
+                            / f"{widget['widgetId']}.md"
+                        )
 
                         text = f"""---
 title: {widget['name']}
@@ -308,7 +346,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 {'**Source:** ' + ','.join(widget['source']) if widget['source'] else ''}
 """
 
-                        with widget_path.open("w", encoding="utf-8", newline="\n") as widget_file:
+                        with widget_path.open(
+                            "w", encoding="utf-8", newline="\n"
+                        ) as widget_file:
                             widget_file.write(f"{text}\n")
 
     return True
