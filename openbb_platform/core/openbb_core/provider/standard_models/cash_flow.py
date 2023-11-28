@@ -58,7 +58,8 @@ class CashFlowStatementData(Data):
         default=None, description="Reporting period of the statement."
     )
     cik: Optional[str] = Field(
-        default=None, description="Central Index Key (CIK) of the company."
+        default=None,
+        description=DATA_DESCRIPTIONS.get("cik", ""),
     )
 
     net_income: Optional[StrictFloat] = Field(default=None, description="Net income.")

@@ -58,7 +58,8 @@ class BalanceSheetData(Data):
     )
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     cik: Optional[str] = Field(
-        default=None, description="Central Index Key (CIK) of the company."
+        default=None,
+        description=DATA_DESCRIPTIONS.get("cik", ""),
     )
     currency: Optional[str] = Field(default=None, description="Reporting currency.")
     filling_date: Optional[dateType] = Field(default=None, description="Filling date.")
