@@ -81,7 +81,12 @@ class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
 class BenzingaCompanyNewsData(CompanyNewsData):
     """Benzinga Company News Data."""
 
-    __alias_dict__ = {"date": "created", "text": "body", "images": "image"}
+    __alias_dict__ = {
+        "symbols": "stocks",
+        "date": "created",
+        "text": "body",
+        "images": "image",
+    }
 
     id: str = Field(description="ID of the news.")
     author: Optional[str] = Field(default=None, description="Author of the news.")
@@ -104,6 +109,12 @@ class BenzingaCompanyNewsData(CompanyNewsData):
     updated: Optional[datetime] = Field(
         default=None, description="Updated date of the news."
     )
+
+    @field_validator("symbols", mode="before", check_fields=False)
+    @classmethod
+    def symbols_string(cls, v):
+        """Symbols string validator."""
+        return ",".join([item["name"] for item in v])
 
     @field_validator("date", "updated", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
