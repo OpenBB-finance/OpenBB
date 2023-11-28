@@ -31,7 +31,11 @@ class IntrinioCompanyNewsQueryParams(CompanyNewsQueryParams):
 class IntrinioCompanyNewsData(CompanyNewsData):
     """Intrinio Company News Data."""
 
-    __alias_dict__ = {"date": "publication_date", "text": "summary"}
+    __alias_dict__ = {
+        "symbols": "symbol",
+        "date": "publication_date",
+        "text": "summary",
+    }
 
     id: str = Field(description="Intrinio ID for the article.")
 
