@@ -64,7 +64,7 @@ class GovernmentUSTreasuryPricesFetcher(
         query: GovernmentUSTreasuryPricesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> str:
+    ) -> bytes:
         """Extract the raw data from US Treasury website."""
 
         url = "https://treasurydirect.gov/GA-FI/FedInvest/securityPriceDetail"
@@ -98,7 +98,7 @@ class GovernmentUSTreasuryPricesFetcher(
     @staticmethod
     def transform_data(
         query: GovernmentUSTreasuryPricesQueryParams,
-        data: str,
+        data: bytes,
         **kwargs: Any,
     ) -> List[GovernmentUSTreasuryPricesData]:
         """Transform the data."""
