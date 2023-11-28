@@ -45,10 +45,7 @@ class NasdaqTopRetailFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Get data from Nasdaq."""
-        api_key = credentials.get("nasdaq_api_key")
-        if not api_key:
-            raise ValueError("Nasdaq API key is required")
-
+        api_key = credentials.get("nasdaq_api_key") if credentials else None
         response = requests.get(
             f"https://data.nasdaq.com/api/v3/datatables/NDAQ/RTAT10/?api_key={api_key}",
             timeout=5,
