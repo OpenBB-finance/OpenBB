@@ -562,9 +562,6 @@ class IncomeStatementData(Data):
     other_non_interest_income: Optional[float] = Field(
         default=None, description="Other non-interest income"
     )
-    service_charges_on_deposit_accounts: Optional[float] = Field(
-        default=None, description="Service charges on deposit accounts"
-    )
     investment_banking_income: Optional[float] = Field(
         default=None, description="Investment banking income"
     )
@@ -612,6 +609,24 @@ class IncomeStatementData(Data):
     income_tax_expense: Optional[float] = Field(
         default=None, description="Income tax expense"
     )
+    impairment_charge: Optional[float] = Field(
+        default=None, description="Impairment charge"
+    )
+    restructuring_charge: Optional[float] = Field(
+        default=None, description="Restructuring charge"
+    )
+    service_charges_on_deposit_accounts: Optional[float] = Field(
+        default=None, description="Service charges on deposit accounts"
+    )
+    other_service_charges: Optional[float] = Field(
+        default=None, description="Other service charges"
+    )
+    other_special_charges: Optional[float] = Field(
+        default=None, description="Other special charges"
+    )
+    provision_for_credit_losses: Optional[float] = Field(
+        default=None, description="Provision for credit losses"
+    )
     other_cost_of_revenue: Optional[float] = Field(
         default=None, description="Other cost of revenue"
     )
@@ -623,21 +638,6 @@ class IncomeStatementData(Data):
     )
     consolidated_net_income: Optional[float] = Field(
         default=None, description="Consolidated net income"
-    )
-    impairment_charge: Optional[float] = Field(
-        default=None, description="Impairment charge"
-    )
-    restructuring_charge: Optional[float] = Field(
-        default=None, description="Restructuring charge"
-    )
-    other_service_charges: Optional[float] = Field(
-        default=None, description="Other service charges"
-    )
-    other_special_charges: Optional[float] = Field(
-        default=None, description="Other special charges"
-    )
-    provision_for_credit_losses: Optional[float] = Field(
-        default=None, description="Provision for credit losses"
     )
     other_adjustments_to_consolidated_net_income: Optional[float] = Field(
         default=None, description="Other adjustments to consolidated net income"
