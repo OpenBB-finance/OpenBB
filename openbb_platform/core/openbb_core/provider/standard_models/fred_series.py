@@ -1,4 +1,4 @@
-"""FRED Indices Standard Model."""
+"""FRED Series Standard Model."""
 
 
 from datetime import date as dateType
@@ -14,8 +14,8 @@ from openbb_core.provider.utils.descriptions import (
 )
 
 
-class FredIndicesQueryParams(QueryParams):
-    """FRED Indices Query."""
+class SeriesQueryParams(QueryParams):
+    """FRED Series Query."""
 
     symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", ""),
@@ -27,7 +27,7 @@ class FredIndicesQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("end_date", ""), default=None
     )
     limit: Optional[int] = Field(
-        description=QUERY_DESCRIPTIONS.get("limit", ""), default=100
+        description=QUERY_DESCRIPTIONS.get("limit", ""), default=100000
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
@@ -38,8 +38,7 @@ class FredIndicesQueryParams(QueryParams):
         return ",".join([symbol.upper() for symbol in list(v)])
 
 
-class FredIndicesData(Data):
-    """FRED Indices Data."""
+class SeriesData(Data):
+    """FRED Series Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    value: Optional[float] = Field(default=None, description="Value of the index.")

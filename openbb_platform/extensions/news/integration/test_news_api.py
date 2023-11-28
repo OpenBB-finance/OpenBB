@@ -139,6 +139,13 @@ def test_news_world(params, headers):
                 "source": "bloomberg.com",
             }
         ),
+        (
+            {
+                "provider": "ultima",
+                "symbols": "AAPL,MSFT",
+                "limit": 20,
+            }
+        ),
     ],
 )
 @pytest.mark.integration

@@ -60,3 +60,29 @@ async def balance_of_payments(
 ) -> OBBject[BaseModel]:
     """Balance of Payments Reports."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(model="FredSearch")
+async def fred_search(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """
+    Search for FRED series or economic releases by ID or fuzzy query.
+    This does not return the observation values, only the metadata.
+    Use this function to find series IDs for `fred_series()`.
+    """
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(model="FredSeries")
+async def fred_series(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get data by series ID from FRED."""
+    return await OBBject.from_query(Query(**locals()))
