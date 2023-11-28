@@ -806,7 +806,6 @@ def test_equity_compare_peers(params, obb):
                 "prepost": False,
                 "include": True,
                 "adjusted": False,
-                "back_adjust": False,
                 "ignore_tz": True,
                 "provider": "yfinance",
                 "symbol": "AAPL",
@@ -820,7 +819,6 @@ def test_equity_compare_peers(params, obb):
                 "prepost": False,
                 "include": True,
                 "adjusted": False,
-                "back_adjust": False,
                 "ignore_tz": True,
                 "provider": "yfinance",
                 "symbol": "AAPL",
@@ -863,7 +861,7 @@ def test_equity_price_historical(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "limit": 100, "provider": "fmp"}),
+        ({"symbol": "AAPL", "provider": "fmp"}),
     ],
 )
 @pytest.mark.integration
