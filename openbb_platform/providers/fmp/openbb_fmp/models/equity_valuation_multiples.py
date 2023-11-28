@@ -7,6 +7,7 @@ from openbb_core.provider.standard_models.equity_valuation_multiples import (
     EquityValuationMultiplesData,
     EquityValuationMultiplesQueryParams,
 )
+from openbb_core.provider.utils.client import ClientResponse
 from openbb_core.provider.utils.helpers import async_requests
 from openbb_fmp.utils.helpers import create_url
 
@@ -115,7 +116,14 @@ class FMPEquityValuationMultiplesFetcher(
             )
             for symbol in query.symbol.split(",")
         ]
-        return await async_requests(urls, **kwargs)
+
+        async def callback(response: ClientResponse, _: Any) -> List[Dict]:
+            data = await response.json()
+            symbol = response.url.parts[-1]
+
+            return [{**d, "symbol": symbol} for d in data]
+
+        return await async_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(
