@@ -32,7 +32,7 @@ There are two primary types of extensions for the OpenBB Platform:
 The OpenBB Core installation does not include any toolkit extensions. Install the OpenBB Platform with all data and toolkit extensions from PyPI with:
 
 ```python
-pip install openbb[all] --pre
+pip install openbb[all]
 ```
 
 When installing from source, navigate into the `openbb_platform` folder from the root of the project and enter:

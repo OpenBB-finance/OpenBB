@@ -80,7 +80,7 @@ conda activate openbb
 Install from PyPI with:
 
 ```console
-pip install openbb --pre
+pip install openbb
 ```
 
 This will install the core OpenBB Platform, along with officially supported extensions and providers.
@@ -88,27 +88,31 @@ This will install the core OpenBB Platform, along with officially supported exte
 To install all extensions and providers (both officially supported and community maintained ones):
 
 ```console
-pip install openbb[all] --pre
+pip install openbb[all]
 ```
 
 :::note
-While still under active development, the `pre` flag is required to install the core OpenBB Platform latest version.
+While still under active development, the `pre` flag is required to install the core OpenBB Platform latest version:
+
+```console
+pip install openbb
+```
 :::
 
 To install a single extension:
 
 ```console
-pip install openbb[charting] --pre
+pip install openbb[charting]
 ```
 
 ```console
-pip install openbb[ta] --pre
+pip install openbb[ta]
 ```
 
 Or import a single provider:
 
 ```console
-pip install openbb-yfinance --pre
+pip install openbb-yfinance
 ```
 
 From your python interpreter, import the OpenBB Platform:
@@ -116,11 +120,14 @@ From your python interpreter, import the OpenBB Platform:
 ```console
 from openbb import obb
 ```
+
 :::warning
 This import statement is required due to the statefulness of the obb package.  There is currently no support for imports such as
-```
+
+```console
 from openbb.obb.equity import *
 ```
+
 :::
 
 When the package is imported, any installed extensions will be discovered, imported and available for use.
@@ -129,7 +136,7 @@ When the package is imported, any installed extensions will be discovered, impor
 Currently if you wish to have the bare-bones openbb package with no extensions or providers, you can install with:
 
 ```console
-pip install openbb --pre --no-deps
+pip install openbb --no-deps
 ```
 
 :::
