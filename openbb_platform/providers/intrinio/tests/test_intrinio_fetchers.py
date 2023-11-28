@@ -4,7 +4,6 @@ from unittest import mock
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
-from openbb_intrinio.models.calendar_dividend import IntrinioCalendarDividendFetcher
 from openbb_intrinio.models.calendar_ipo import IntrinioCalendarIpoFetcher
 from openbb_intrinio.models.cash_flow import IntrinioCashFlowStatementFetcher
 from openbb_intrinio.models.company_filings import IntrinioCompanyFilingsFetcher
@@ -16,6 +15,9 @@ from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
 from openbb_intrinio.models.fred_series import IntrinioFredSeriesFetcher
 from openbb_intrinio.models.historical_attributes import (
     IntrinioHistoricalAttributesFetcher,
+)
+from openbb_intrinio.models.historical_dividends import (
+    IntrinioHistoricalDividendsFetcher,
 )
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 from openbb_intrinio.models.insider_trading import IntrinioInsiderTradingFetcher
@@ -238,14 +240,14 @@ def test_intrinio_market_indices_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_intrinio_calendar_dividend_fetcher(credentials=test_credentials):
+def test_intrinio_historical_dividends_fetcher(credentials=test_credentials):
     params = {
         "symbol": "AAPL",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 6, 6),
     }
 
-    fetcher = IntrinioCalendarDividendFetcher()
+    fetcher = IntrinioHistoricalDividendsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

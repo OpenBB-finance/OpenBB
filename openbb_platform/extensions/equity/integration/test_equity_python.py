@@ -96,15 +96,6 @@ def test_equity_fundamental_balance_growth(params, obb):
     [
         ({"start_date": "2023-11-05", "end_date": "2023-11-10", "provider": "fmp"}),
         ({"start_date": "2023-11-05", "end_date": "2023-11-10", "provider": "nasdaq"}),
-        (
-            {
-                "start_date": "2023-11-05",
-                "end_date": "2023-11-10",
-                "symbol": "AAPL",
-                "limit": 100,
-                "provider": "intrinio",
-            }
-        ),
     ],
 )
 @pytest.mark.integration
@@ -250,6 +241,14 @@ def test_equity_fundamental_historical_splits(params, obb):
     "params",
     [
         ({"symbol": "AAPL"}),
+        ({"symbol": "AAPL", "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "limit": 100,
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
