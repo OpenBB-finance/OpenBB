@@ -4,10 +4,10 @@
 from unittest.mock import MagicMock, patch
 
 import pytest
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.provider import Provider
 from openbb_core.provider.query_executor import QueryExecutor
-from openbb_core.provider.utils.errors import ProviderError
 from pydantic import SecretStr
 
 
@@ -34,7 +34,7 @@ def test_get_provider_success(mock_query_executor):
 
 def test_get_provider_failure(mock_query_executor):
     """Test if the method fails properly when the provider does not exist."""
-    with pytest.raises(ProviderError, match="Provider 'nonexistent' not found"):
+    with pytest.raises(OpenBBError, match="Provider 'nonexistent' not found"):
         mock_query_executor.get_provider("nonexistent")
 
 
@@ -48,7 +48,7 @@ def test_get_fetcher_success(mock_query_executor):
 def test_get_fetcher_failure(mock_query_executor):
     """Test if the method fails properly when the fetcher does not exist."""
     provider = mock_query_executor.get_provider("test_provider")
-    with pytest.raises(ProviderError, match="Fetcher not found"):
+    with pytest.raises(OpenBBError, match="Fetcher not found"):
         mock_query_executor.get_fetcher(provider, "nonexistent_fetcher")
 
 
@@ -74,7 +74,7 @@ def test_filter_credentials_missing_require(mock_query_executor):
     provider.credentials = ["test_provider_api_key"]
     credentials = {"other_api_key": SecretStr("12345")}
 
-    with pytest.raises(ProviderError, match="Missing credential"):
+    with pytest.raises(OpenBBError, match="Missing credential"):
         mock_query_executor.filter_credentials(credentials, provider, True)
 
 
