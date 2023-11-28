@@ -1,14 +1,19 @@
 """Intrinio Cash Flow Statement Model."""
 
-
+import asyncio
 from typing import Any, Dict, List, Literal, Optional
 
+import requests
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.financial_statements import (
     CashFlowStatementData,
     FinancialStatementsQueryParams,
 )
-from openbb_intrinio.utils.helpers import async_get_data_one
+from openbb_intrinio.utils.helpers import (
+    async_get_all_fundamentals_ids,
+    generate_fundamentals_url,
+    intrinio_fundamentals_session,
+)
 from pydantic import Field
 
 
@@ -20,12 +25,17 @@ class IntrinioCashFlowStatementQueryParams(FinancialStatementsQueryParams):
     """
 
     period: Literal["annual", "quarter", "ttm", "ytd"] = Field(default="annual")
+    use_cache: Optional[bool] = Field(
+        default=True,
+        description="If true, use cached data. Cache expires after one day.",
+    )
 
 
 class IntrinioCashFlowStatementData(CashFlowStatementData):
     """Intrinio Cash Flow Statement Data."""
 
     __alias_dict__ = {
+        "cash_and_equivalents": "cashandequivalents",
         "acquisitions": "acquisitions",
         "amortization_expense": "amortizationexpense",
         "cash_income_taxes_paid": "cashincometaxespaid",
@@ -50,7 +60,7 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
         "net_cash_from_operating_activities": "netcashfromoperatingactivities",
         "net_change_in_cash_and_equivalents": "netchangeincash",
         "net_change_in_deposits": "netchangeindeposits",
-        "consolidated_net_income": "netincome",
+        "net_income": "netincome",
         "net_income_continuing_operations": "netincomecontinuing",
         "net_income_discontinued_operations": "netincomediscontinued",
         "net_increase_in_fed_funds_sold": "netincreaseinfedfundssold",
@@ -95,34 +105,36 @@ class IntrinioCashFlowStatementFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         statement_code = "cash_flow_statement"
         if query.period in ["quarter", "annual"]:
-            period_type = "FY" if query.period == "annual" else "QTR"
+            period_type = "FY" if query.period == "annual" else "Q"
         if query.period in ["ttm", "ytd"]:
             period_type = query.period.upper()
 
-        fundamentals_data: Dict = {}
         data: List[Dict] = []
 
-        base_url = "https://api-v2.intrinio.com"
-        fundamentals_url_params = f"statement_code={statement_code}&type={period_type}"
-        fundamentals_url = (
-            f"{base_url}/companies/{query.symbol}/fundamentals?"
-            f"{fundamentals_url_params}&api_key={api_key}"
+        fundamentals_ids = await async_get_all_fundamentals_ids(
+            symbol=query.symbol,
+            api_key=api_key,
+            period=period_type,
+            statement=statement_code,
+            as_reported=False,
+            use_cache=query.use_cache,
         )
 
-        fundamentals_data = await async_get_data_one(fundamentals_url, **kwargs)
-        fiscal_periods = [
-            f"{item['fiscal_year']}-{item['fiscal_period']}"
-            for item in fundamentals_data.get("fundamentals", [])
-        ]
-        fiscal_periods = fiscal_periods[: query.limit]
+        if len(fundamentals_ids) > 0:
+            ids = fundamentals_ids.iloc[: query.limit]["id"].to_list()
 
-        async def async_get_financial_statement_data(period: str, data: List[Dict]):
+        urls = [generate_fundamentals_url(id, api_key, as_reported=False) for id in ids]
+
+        def fetch_data(url):
             statement_data: Dict = {}
-
-            intrinio_id = f"{query.symbol}-{statement_code}-{period}"
-            statement_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
-            statement_data = await async_get_data_one(statement_url, **kwargs)
-
+            response = (
+                requests.get(url, timeout=5)
+                if query.use_cache is False
+                else intrinio_fundamentals_session.get(url, timeout=5)
+            )
+            if response.status_code != 200:
+                return {}
+            statement_data = response.json()
             data.append(
                 {
                     "period_ending": statement_data["fundamental"]["end_date"],
@@ -131,9 +143,10 @@ class IntrinioCashFlowStatementFetcher(
                     "financials": statement_data["standardized_financials"],
                 }
             )
+            return data
 
-        for i in range(0, len(fiscal_periods)):
-            await async_get_financial_statement_data(fiscal_periods[i], data)
+        loop = asyncio.get_running_loop()
+        [await loop.run_in_executor(None, fetch_data, url) for url in urls]
 
         return sorted(data, key=lambda x: x["period_ending"], reverse=True)
 
@@ -143,7 +156,6 @@ class IntrinioCashFlowStatementFetcher(
     ) -> List[IntrinioCashFlowStatementData]:
         """Return the transformed data."""
         transformed_data: List[IntrinioCashFlowStatementData] = []
-
         for item in data:
             sub_dict: Dict[str, Any] = {}
 

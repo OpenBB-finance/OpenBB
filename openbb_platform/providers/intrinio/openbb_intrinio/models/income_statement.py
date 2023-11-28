@@ -132,7 +132,13 @@ class IntrinioIncomeStatementFetcher(
             period_type = "FY" if query.period == "annual" else "QTR"
         if query.period in ["ttm", "ytd"]:
             period_type = query.period.upper()
-        data_tags = ["ebit", "ebitda", "ebitdamargin", "pretaxincomemargin", "grossmargin"]
+        data_tags = [
+            "ebit",
+            "ebitda",
+            "ebitdamargin",
+            "pretaxincomemargin",
+            "grossmargin",
+        ]
 
         fundamentals_data: Dict = {}
         data: List[Dict] = []
@@ -197,7 +203,10 @@ class IntrinioIncomeStatementFetcher(
             sub_dict: Dict[str, Any] = {}
 
             for sub_item in item["financials"]:
-                if sub_item["data_tag"]["tag"] not in ["operatingrevenue", "operatingcostofrevenue"]:
+                if sub_item["data_tag"]["tag"] not in [
+                    "operatingrevenue",
+                    "operatingcostofrevenue",
+                ]:
                     field_name = sub_item["data_tag"]["tag"]
                     sub_dict[field_name] = float(sub_item["value"])
 
