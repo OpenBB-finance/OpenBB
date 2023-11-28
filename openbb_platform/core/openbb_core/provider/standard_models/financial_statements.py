@@ -351,9 +351,6 @@ class CashFlowStatementData(Data):
         default=None, description="Sale of Property, Plant, and Equipment"
     )
     acquisitions: Optional[float] = Field(default=None, description="Acquisitions")
-    purchase_of_property_plant_and_equipment: Optional[float] = Field(
-        default=None, description="Purchase of Property, Plant, and Equipment"
-    )
     purchase_of_investments: Optional[float] = Field(
         default=None, description="Purchase of Investments"
     )
@@ -368,6 +365,9 @@ class CashFlowStatementData(Data):
     )
     provision_for_loan_losses: Optional[float] = Field(
         default=None, description="Provision for Loan Losses"
+    )
+    purchase_of_property_plant_and_equipment: Optional[float] = Field(
+        default=None, description="Purchase of Property, Plant, and Equipment"
     )
     other_investing_activities: Optional[float] = Field(
         default=None, description="Other Investing Activities (Net)"
