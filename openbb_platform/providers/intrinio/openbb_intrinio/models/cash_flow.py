@@ -1,17 +1,16 @@
 """Intrinio Cash Flow Statement Model."""
 
-import asyncio
+from concurrent.futures import ThreadPoolExecutor
+from itertools import repeat
 from typing import Any, Dict, List, Literal, Optional
 
-import requests
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.financial_statements import (
     CashFlowStatementData,
     FinancialStatementsQueryParams,
 )
 from openbb_intrinio.utils.helpers import (
-    async_get_all_fundamentals_ids,
-    generate_fundamentals_url,
+    get_data_one,
     intrinio_fundamentals_session,
 )
 from pydantic import Field
@@ -109,32 +108,39 @@ class IntrinioCashFlowStatementFetcher(
         if query.period in ["ttm", "ytd"]:
             period_type = query.period.upper()
 
+        base_url = "https://api-v2.intrinio.com"
+        fundamentals_data: Dict = {}
         data: List[Dict] = []
 
-        fundamentals_ids = await async_get_all_fundamentals_ids(
-            symbol=query.symbol,
-            api_key=api_key,
-            period=period_type,
-            statement=statement_code,
-            as_reported=False,
-            use_cache=query.use_cache,
+        fundamentals_url_params = f"statement_code={statement_code}&type={period_type}"
+        fundamentals_url = (
+            f"{base_url}/companies/{query.symbol}/fundamentals?"
+            f"{fundamentals_url_params}&api_key={api_key}"
         )
 
-        if len(fundamentals_ids) > 0:
-            ids = fundamentals_ids.iloc[: query.limit]["id"].to_list()
+        fundamentals_data_request = (
+            get_data_one(fundamentals_url, **kwargs)
+            if query.use_cache is False
+            else intrinio_fundamentals_session.get(fundamentals_url, timeout=5).json()
+        )
+        fundamentals_data = fundamentals_data_request.get("fundamentals", [])
+        fiscal_periods = [
+            f"{item['fiscal_year']}-{item['fiscal_period']}"
+            for item in fundamentals_data
+        ]
+        fiscal_periods = fiscal_periods[: query.limit]
 
-        urls = [generate_fundamentals_url(id, api_key, as_reported=False) for id in ids]
-
-        def fetch_data(url):
+        def get_financial_statement_data(period: str, data: List[Dict]) -> None:
             statement_data: Dict = {}
-            response = (
-                requests.get(url, timeout=5)
+
+            intrinio_id = f"{query.symbol}-{statement_code}-{period}"
+            statement_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
+            statement_data = (
+                get_data_one(statement_url, **kwargs)
                 if query.use_cache is False
-                else intrinio_fundamentals_session.get(url, timeout=5)
+                else intrinio_fundamentals_session.get(statement_url, timeout=5).json()
             )
-            if response.status_code != 200:
-                return {}
-            statement_data = response.json()
+
             data.append(
                 {
                     "period_ending": statement_data["fundamental"]["end_date"],
@@ -143,10 +149,9 @@ class IntrinioCashFlowStatementFetcher(
                     "financials": statement_data["standardized_financials"],
                 }
             )
-            return data
 
-        loop = asyncio.get_running_loop()
-        [await loop.run_in_executor(None, fetch_data, url) for url in urls]
+        with ThreadPoolExecutor() as executor:
+            executor.map(get_financial_statement_data, fiscal_periods, repeat(data))
 
         return sorted(data, key=lambda x: x["period_ending"], reverse=True)
 

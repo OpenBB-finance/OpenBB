@@ -11,6 +11,8 @@ from typing import Any, List, Optional, TypeVar, Union
 
 import aiohttp
 import requests
+import requests_cache
+from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider import helpers
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import async_make_request
@@ -18,6 +20,11 @@ from pydantic import BaseModel
 from requests.exceptions import SSLError
 
 T = TypeVar("T", bound=BaseModel)
+
+cache_dir = get_user_cache_directory()
+intrinio_fundamentals_session = requests_cache.CachedSession(
+    f"{cache_dir}/http/intrinio_fundamentals", expire_after=timedelta(days=1)
+)
 
 
 class BasicResponse:
