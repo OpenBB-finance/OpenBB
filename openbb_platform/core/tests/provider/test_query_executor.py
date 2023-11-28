@@ -87,7 +87,7 @@ def test_filter_credentials_empty_require(mock_query_executor):
         "other_api_key": SecretStr("12345"),
     }
 
-    with pytest.raises(ProviderError, match="Missing credential"):
+    with pytest.raises(OpenBBError, match="Missing credential"):
         mock_query_executor.filter_credentials(credentials, provider, True)
 
 
