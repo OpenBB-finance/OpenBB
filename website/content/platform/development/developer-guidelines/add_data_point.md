@@ -86,6 +86,8 @@ The `Fetcher` class is responsible for processing the Query and turning that int
 - `transform_data`
   - Convert the API response data into a list of standard data models.
 
+> Read more on the `TET` pattern [here](/platform/development/developer-guidelines/architectural_considerations#the-tet-pattern).
+
 For the `EquityHistorical` example, this would look like the following:
 
 ```python
