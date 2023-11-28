@@ -50,39 +50,6 @@ def test_regulators_sec_institutions_search(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "symbol": "AAPL",
-                "limit": 3,
-                "type": "8-K",
-                "cik": None,
-                "provider": "sec",
-                "use_cache": False,
-            }
-        ),
-        (
-            {
-                "cik": "0001067983",
-                "limit": 3,
-                "type": "10-Q",
-                "symbol": None,
-                "provider": "sec",
-                "use_cache": False,
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_regulators_sec_filings(params, obb):
-    result = obb.regulators.sec.filings(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
         ({"query": "2022", "provider": "sec", "url": None}),
         (
             {

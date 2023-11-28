@@ -23,7 +23,11 @@ class YFinanceCompanyNewsQueryParams(CompanyNewsQueryParams):
 class YFinanceCompanyNewsData(CompanyNewsData):
     """YFinance Company News Data."""
 
-    __alias_dict__ = {"date": "providerPublishTime", "url": "link"}
+    __alias_dict__ = {
+        "symbols": "relatedTickers",
+        "date": "providerPublishTime",
+        "url": "link",
+    }
 
     uuid: str = Field(description="Unique identifier for the news article")
     publisher: str = Field(description="Publisher of the news article")
@@ -31,7 +35,12 @@ class YFinanceCompanyNewsData(CompanyNewsData):
     thumbnail: Optional[List] = Field(
         default=None, description="Thumbnail related data to the ticker news article."
     )
-    relatedTickers: str = Field(description="Tickers related to the news article.")
+
+    @field_validator("symbols", mode="before", check_fields=False)
+    @classmethod
+    def symbols_string(cls, v):
+        """Symbols string validator."""
+        return ",".join(v)
 
     @field_validator("providerPublishTime", mode="before", check_fields=False)
     @classmethod

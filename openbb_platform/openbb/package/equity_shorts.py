@@ -15,7 +15,6 @@ class ROUTER_equity_shorts(Container):
     """/equity/shorts
     fails_to_deliver
     short_interest
-    short_volume
     """
 
     def __repr__(self) -> str:
@@ -162,7 +161,7 @@ class ROUTER_equity_shorts(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.shorts.short_interest(symbol="AAPL")
+        >>> obb.equity.shorts.short_interest()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -177,78 +176,5 @@ class ROUTER_equity_shorts(Container):
 
         return self._run(
             "/equity/shorts/short_interest",
-            **inputs,
-        )
-
-    @validate
-    def short_volume(
-        self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ] = None,
-        provider: Optional[Literal["stockgrid"]] = None,
-        **kwargs
-    ) -> OBBject[List[Data]]:
-        """Get reported Fail-to-deliver (FTD) data.
-
-        Parameters
-        ----------
-        symbol : str
-            Symbol to get data for.
-        provider : Optional[Literal['stockgrid']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'stockgrid' if there is
-            no default.
-
-        Returns
-        -------
-        OBBject
-            results : List[ShortVolume]
-                Serializable results.
-            provider : Optional[Literal['stockgrid']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        ShortVolume
-        -----------
-        date : Optional[date]
-            The date of the data.
-        market : Optional[str]
-            Reporting Facility ID. N=NYSE TRF, Q=NASDAQ TRF Carteret, B=NASDAQ TRY Chicago, D=FINRA ADF
-        short_volume : Optional[int]
-            Aggregate reported share volume of executed short sale and short sale exempt trades during regular trading hours
-        short_exempt_volume : Optional[int]
-            Aggregate reported share volume of executed short sale exempt trades during regular trading hours
-        total_volume : Optional[int]
-            Aggregate reported share volume of executed trades during regular trading hours
-        close : Optional[float]
-            Closing price of the stock on the date. (provider: stockgrid)
-        short_volume_percent : Optional[float]
-            Percentage of the total volume that was short volume. (provider: stockgrid)
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.equity.shorts.short_volume(symbol="AAPL")
-        """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
-        return self._run(
-            "/equity/shorts/short_volume",
             **inputs,
         )

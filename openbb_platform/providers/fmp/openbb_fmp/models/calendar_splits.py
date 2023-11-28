@@ -9,7 +9,8 @@ from openbb_core.provider.standard_models.calendar_splits import (
     CalendarSplitsData,
     CalendarSplitsQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
+from openbb_core.provider.utils.helpers import get_querystring
+from openbb_fmp.utils.helpers import get_data_many
 
 
 class FMPCalendarSplitsQueryParams(CalendarSplitsQueryParams):
@@ -17,6 +18,8 @@ class FMPCalendarSplitsQueryParams(CalendarSplitsQueryParams):
 
     Source: https://site.financialmodelingprep.com/developer/docs/stock-split-calendar-api/
     """
+
+    __alias_dict__ = {"start_date": "from", "end_date": "to"}
 
 
 class FMPCalendarSplitsData(CalendarSplitsData):
@@ -38,10 +41,10 @@ class FMPCalendarSplitsFetcher(
 
         now = date.today()
         if params.get("start_date") is None:
-            transformed_params["start_date"] = now - relativedelta(years=1)
+            transformed_params["start_date"] = now
 
         if params.get("end_date") is None:
-            transformed_params["end_date"] = now
+            transformed_params["end_date"] = now + relativedelta(days=30)
 
         return FMPCalendarSplitsQueryParams(**transformed_params)
 
@@ -53,10 +56,9 @@ class FMPCalendarSplitsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-
-        query_str = f"from={query.start_date}&to={query.end_date}"
-        url = create_url(3, f"stock_split_calendar?{query_str}", api_key)
-
+        base_url = "https://financialmodelingprep.com/api/v3/stock_split_calendar"
+        query_str = get_querystring(query.model_dump(by_alias=True), [])
+        url = f"{base_url}?{query_str}&apikey={api_key}"
         return get_data_many(url, **kwargs)
 
     @staticmethod

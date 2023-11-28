@@ -15,17 +15,6 @@ from pydantic import BaseModel
 router = Router(prefix="/sec")
 
 
-@router.command(model="Filings")
-async def filings(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Look up filings to the SEC by ticker symbol or CIK."""
-    return await OBBject.from_query(Query(**locals()))
-
-
 @router.command(model="CikMap")
 async def cik_map(
     cc: CommandContext,
