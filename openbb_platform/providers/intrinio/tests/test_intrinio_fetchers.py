@@ -13,7 +13,7 @@ from openbb_intrinio.models.currency_pairs import IntrinioCurrencyPairsFetcher
 from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
 from openbb_intrinio.models.equity_info import IntrinioEquityInfoFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
-from openbb_intrinio.models.fred_indices import IntrinioFredIndicesFetcher
+from openbb_intrinio.models.fred_series import IntrinioFredSeriesFetcher
 from openbb_intrinio.models.historical_attributes import (
     IntrinioHistoricalAttributesFetcher,
 )
@@ -152,14 +152,14 @@ def test_intrinio_income_statement_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_intrinio_fred_indices_fetcher(credentials=test_credentials):
+def test_intrinio_fred_series_fetcher(credentials=test_credentials):
     params = {
         "symbol": "$GDP",
         "start_date": date(2022, 9, 20),
         "end_date": date(2023, 9, 20),
     }
 
-    fetcher = IntrinioFredIndicesFetcher()
+    fetcher = IntrinioFredSeriesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
