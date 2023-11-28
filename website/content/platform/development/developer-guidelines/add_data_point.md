@@ -75,6 +75,28 @@ class <ProviderName>EquityHistoricalData(EquityHistoricalData):
 
 > Note that, since `EquityHistoricalData` inherits from pydantic's `BaseModel`, we can leverage validators to perform additional checks on the output model. A very good example of this, would be to transform a string date into a datetime object.
 
+### Optional vs Required fields when creating models
+
+When creating a new model, you need to decide whether a field is required or not.
+
+This is done by using `typing`'s `Optional` when defining the field type.
+
+In the context of the **Standard Models**:
+
+- Required: all the providers use that field (either to query or to present data).
+- Optional: at least two providers use that field (either to query or to present data).
+
+In the context of the **Provider Models**:
+
+- Required: the provider uses that field:
+  - Needs the field to query the API.
+  - The data presented by the provider contains that field.
+- Optional: the may or may not use that field:
+  - If the user uses that field, the provider will also use it to query the API.
+  - The data presented by the provider may or may not contain that field.
+
+> Learn more about Pydantic's fields [here](https://docs.pydantic.dev/latest/concepts/fields/).
+
 ### Build the Fetcher
 
 The `Fetcher` class is responsible for processing the Query and turning that into an API request and finally returning the Data model. Each fetcher contains three methods that are implemented by the core (see below for a link to the contributing guidelines):
