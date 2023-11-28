@@ -125,7 +125,7 @@ def test_equity_calendar_dividend(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_equity_calendar_split(params, headers):
+def test_equity_calendar_splits(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
