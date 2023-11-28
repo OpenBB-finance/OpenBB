@@ -11,7 +11,7 @@ from openbb_core.provider.standard_models.fred_series import (
     SeriesQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import async_make_request, get_querystring
+from openbb_core.provider.utils.helpers import async_request, get_querystring
 from pydantic import Field
 
 _warn = warnings.warn
@@ -135,10 +135,8 @@ class FredSeriesFetcher(
         ]
 
         async def async_get_fred_data(url, metadata_url, series_id, **kwargs):
-            response = await async_make_request(url, timeout=5, **kwargs)
-            metadata_response = await async_make_request(
-                metadata_url, timeout=5, **kwargs
-            )
+            response = await async_request(url, timeout=5, **kwargs)
+            metadata_response = await async_request(metadata_url, timeout=5, **kwargs)
             _metadata = metadata_response.get("seriess")[0]
             data = response.get("observations")
             try:
