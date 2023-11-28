@@ -35,3 +35,78 @@ The high level steps are:
 2. **Use Loose Versioning**: If possible, specify a range to maintain compatibility. E.g., `>=1.4,<1.5`.
 3. **Testing**: Test your extension with the Platform's core to avoid conflicts. Both unit and integration tests are recommended.
 4. **Document Dependencies**: Use `pyproject.toml` and `poetry.lock` for clear, up-to-date records.
+
+
+## Walkthrough
+
+If you do not wish to use the cookiecutter template, this section will walk through the steps of creating a new provider extension.
+
+### Generate the extension structure
+
+We first create a new directory for our provider.  This should be located under the `openbb_platform/providers` directory.  If I am adding `cooldatasource`, I would create the following directory structure:
+
+```md
+cooldatasource/
+├── openbb_cooldatasource/
+│   ├── models/
+│   │   └── cooldatamodel.py
+│   ├── utils/
+│   │   └── helper_functions.py
+│   └── __init__.py
+├── pyproject.toml
+└── README.md
+```
+
+In this structure, the `cooldatamodel.py` and `helper_functions.py` are the folders handling the logic for obtaining data, as described in the next sections.
+The `__init__.py` defines the provider, using the following code:
+
+```python
+from openbb_core.provider.abstract.provider import Provider
+cooldatasource_provider = Provider(
+    name="cooldatasource",
+    website="",
+    description="",
+    credentials=["api_key"],
+    fetcher_dict={
+        "MyModel": MyFetcher,
+    },
+)
+```
+The pyproject.toml defines the package itself
+
+```[tool.poetry]
+name = "openbb-cooldatasource"
+version = "latest version"
+description = "Cool OpenBB Extension"
+authors = ["You"]
+readme = "README.md"
+packages = [{ include = "openbb_cooldatasource" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+openbb-core = "latest openbb core version"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+cooldatasource = "openbb_cooldatasource:cooldatasource_provider"
+```
+Where the last line (poetry.plugins) maps to the provider defined in the `__init__.py` file.
+
+### Install your dependencies and package
+
+The next step is to install the dependencies.  We use poetry for dependency management, so from our new directory, we generate the lock file uisng:
+```console
+poetry lock
+```
+In order to use the extension we will install it using pip.  For development mode, we run the following from our directory
+```console
+pip install -e .
+```
+This will install the extension in editable mode, so any changes we make will be reflected in the installed package.
+
+### Use your provider extension
+
+Once this is installed, you can use it directly in the openbb package.  If you wish to add this to the repo, please follow the instructions in the contributing section, which enforces QA guideleines for adding tests and ensuring the package is implemented properly.
