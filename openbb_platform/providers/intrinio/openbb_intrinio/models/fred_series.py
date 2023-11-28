@@ -1,31 +1,27 @@
-"""Intrinio FRED Indices Model."""
+"""Intrinio FRED Series Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.fred_indices import (
-    FredIndicesData,
-    FredIndicesQueryParams,
+from openbb_core.provider.standard_models.fred_series import (
+    SeriesData,
+    SeriesQueryParams,
 )
 from openbb_core.provider.utils.helpers import get_querystring
 from openbb_intrinio.utils.helpers import async_get_data_one
 from pydantic import Field
 
 
-class IntrinioFredIndicesQueryParams(FredIndicesQueryParams):
-    """Intrinio FRED Indices Query.
+class IntrinioFredSeriesQueryParams(SeriesQueryParams):
+    """Intrinio FRED Series Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_economic_index_historical_data_v2
     """
 
     __alias_dict__ = {"limit": "page_size"}
 
-    next_page: Optional[str] = Field(
-        default=None,
-        description="Token to get the next page of data from a previous API call.",
-    )
     all_pages: Optional[bool] = Field(
         default=False,
         description="Returns all pages of data from the API call at once.",
@@ -36,20 +32,22 @@ class IntrinioFredIndicesQueryParams(FredIndicesQueryParams):
     )
 
 
-class IntrinioFredIndicesData(FredIndicesData):
-    """Intrinio FRED Indices Data."""
+class IntrinioFredSeriesData(SeriesData):
+    """Intrinio FRED Series Data."""
+
+    value: Optional[float] = Field(default=None, description="Value of the index.")
 
 
-class IntrinioFredIndicesFetcher(
+class IntrinioFredSeriesFetcher(
     Fetcher[
-        IntrinioFredIndicesQueryParams,
-        List[IntrinioFredIndicesData],
+        IntrinioFredSeriesQueryParams,
+        List[IntrinioFredSeriesData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioFredIndicesQueryParams:
+    def transform_query(params: Dict[str, Any]) -> IntrinioFredSeriesQueryParams:
         """Transform the query params."""
         transformed_params = params
 
@@ -60,11 +58,11 @@ class IntrinioFredIndicesFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return IntrinioFredIndicesQueryParams(**transformed_params)
+        return IntrinioFredSeriesQueryParams(**transformed_params)
 
     @staticmethod
     async def extract_data(
-        query: IntrinioFredIndicesQueryParams,
+        query: IntrinioFredSeriesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -109,7 +107,7 @@ class IntrinioFredIndicesFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioFredIndicesQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioFredIndicesData]:
+        query: IntrinioFredSeriesQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[IntrinioFredSeriesData]:
         """Return the transformed data."""
-        return [IntrinioFredIndicesData.model_validate(d) for d in data]
+        return [IntrinioFredSeriesData.model_validate(d) for d in data]

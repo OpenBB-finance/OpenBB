@@ -3,10 +3,10 @@ from typing import Any, Dict, Optional, Type
 
 from pydantic import SecretStr
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.provider import Provider
 from openbb_core.provider.registry import Registry, RegistryLoader
-from openbb_core.provider.utils.errors import ProviderError
 
 
 class QueryExecutor:
@@ -20,7 +20,7 @@ class QueryExecutor:
         """Get a provider from the registry."""
         name = provider_name.lower()
         if name not in self.registry.providers:
-            raise ProviderError(
+            raise OpenBBError(
                 f"Provider '{name}' not found in the registry."
                 f"Available providers: {list(self.registry.providers.keys())}"
             )
@@ -29,7 +29,7 @@ class QueryExecutor:
     def get_fetcher(self, provider: Provider, model_name: str) -> Type[Fetcher]:
         """Get a fetcher from a provider."""
         if model_name not in provider.fetcher_dict:
-            raise ProviderError(
+            raise OpenBBError(
                 f"Fetcher not found for model '{model_name}' in provider '{provider.name}'."
             )
         return provider.fetcher_dict[model_name]
@@ -56,7 +56,7 @@ class QueryExecutor:
                     if require_credentials:
                         website = provider.website or ""
                         extra_msg = f"Check {website} to get it." if website else ""
-                        raise ProviderError(f"Missing credential '{c}'. {extra_msg}")
+                        raise OpenBBError(f"Missing credential '{c}'. {extra_msg}")
                 else:
                     filtered_credentials[c] = secret_value
 
@@ -98,4 +98,4 @@ class QueryExecutor:
         try:
             return await fetcher.fetch_data(params, filtered_credentials, **kwargs)
         except Exception as e:
-            raise ProviderError(e) from e
+            raise OpenBBError(e) from e
