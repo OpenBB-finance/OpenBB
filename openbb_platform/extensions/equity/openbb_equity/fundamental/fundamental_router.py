@@ -103,25 +103,36 @@ async def employee_count(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="SearchFinancialAttributes")
-async def search_financial_attributes(
+@router.command(model="SearchAttributes")
+async def search_attributes(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Search financial attributes for financial statements."""
+    """Search Intrinio data tags."""
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="FinancialAttributes")
-async def financial_attributes(
+@router.command(model="LatestAttributes")
+async def latest_attributes(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Fetch the value of financial attributes for a selected company and fiscal period."""
+    """Fetch the latest value of a data tag from Intrinio."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(model="HistoricalAttributes")
+async def historical_attributes(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Fetch the historical values of a data tag from Intrinio."""
     return await OBBject.from_query(Query(**locals()))
 
 

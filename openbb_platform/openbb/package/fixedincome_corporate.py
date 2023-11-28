@@ -132,9 +132,9 @@ class ROUTER_fixedincome_corporate(Container):
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
         yield_curve: Annotated[
-            List[Literal["spot", "par"]],
+            Literal["spot", "par"],
             OpenBBCustomParameter(description="The yield curve type."),
-        ] = ["spot"],
+        ] = "spot",
         provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
@@ -150,7 +150,7 @@ class ROUTER_fixedincome_corporate(Container):
         ----------
         date : Optional[datetime.date]
             A specific date to get data for.
-        yield_curve : List[Literal['spot', 'par']]
+        yield_curve : Literal['spot', 'par']
             The yield curve type.
         provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
@@ -185,7 +185,7 @@ class ROUTER_fixedincome_corporate(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.corporate.hqm(yield_curve=['spot'])
+        >>> obb.fixedincome.corporate.hqm(yield_curve="spot")
         """  # noqa: E501
 
         inputs = filter_inputs(
