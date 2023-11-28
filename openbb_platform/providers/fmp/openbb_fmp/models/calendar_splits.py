@@ -9,8 +9,7 @@ from openbb_core.provider.standard_models.calendar_splits import (
     CalendarSplitsData,
     CalendarSplitsQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
-from openbb_fmp.utils.helpers import get_data_many
+from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPCalendarSplitsQueryParams(CalendarSplitsQueryParams):

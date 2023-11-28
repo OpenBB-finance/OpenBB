@@ -10,6 +10,7 @@ from typing import (
     TypeVar,
     get_args,
     get_origin,
+    overload,
 )
 
 from pandas import DataFrame
@@ -45,6 +46,11 @@ class Fetcher(Generic[Q, R]):
     def transform_query(params: Dict[str, Any]) -> Q:
         """Transform the params to the provider-specific query."""
         raise NotImplementedError
+
+    @overload
+    @staticmethod
+    async def extract_data(query: Q, credentials: Optional[Dict[str, str]]) -> Any:
+        """Extract the data from the provider."""
 
     @staticmethod
     def extract_data(query: Q, credentials: Optional[Dict[str, str]]) -> Any:
