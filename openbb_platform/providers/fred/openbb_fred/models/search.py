@@ -134,8 +134,9 @@ class FredSearchFetcher(
 
         df = pd.DataFrame()
         if data is not None:
-            [d.pop("realtime_start") for d in data]
-            [d.pop("realtime_end") for d in data]
+            for d in data:
+                d.pop("realtime_start", None)
+                d.pop("realtime_end", None)
             df = (
                 pd.DataFrame.from_records(data)
                 .fillna("N/A")
