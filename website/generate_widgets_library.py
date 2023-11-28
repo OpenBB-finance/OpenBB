@@ -261,6 +261,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 <HeadTitle title="{widget['name']} - {category_1} - {category_root} | OpenBB Terminal Pro Docs" />
 
 <img
+    className="pro-border-gradient"
     src="https://raw.githubusercontent.com/OpenBB-finance/widgets-library/main/{category_root.lower().replace(' ', '_')}/{category_1.lower().replace(' ', '_')}/{widget['widgetId']}.png"
     alt="OpenBB Terminal Pro Widgets Library"
 />
@@ -297,6 +298,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 <HeadTitle title="{widget['name']} - {category_2} - {category_1} - {category_root} | OpenBB Terminal Pro Docs" />
 
 <img
+    className="pro-border-gradient"
     src="https://raw.githubusercontent.com/OpenBB-finance/widgets-library/main/{category_root.lower().replace(' ', '_')}/{category_1.lower().replace(' ', '_')}/{category_2.lower().replace(' ', '_')}/{widget['widgetId']}.png"
     alt="OpenBB Terminal Pro Widgets Library"
 />
