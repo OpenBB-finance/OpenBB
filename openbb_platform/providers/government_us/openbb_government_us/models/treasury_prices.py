@@ -1,4 +1,5 @@
 """US Government Treasury Prices"""
+import asyncio
 from datetime import datetime, timedelta
 from io import BytesIO
 from typing import Any, Dict, List, Literal, Optional
@@ -10,7 +11,7 @@ from openbb_core.provider.standard_models.treasury_prices import (
     USTreasuryPricesQueryParams,
 )
 from openbb_government_us.utils.helpers import get_random_agent
-from pandas import DataFrame, read_csv, to_datetime
+from pandas import read_csv, to_datetime
 from pydantic import Field
 
 
@@ -59,14 +60,12 @@ class GovernmentUSTreasuryPricesFetcher(
         return GovernmentUSTreasuryPricesQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: GovernmentUSTreasuryPricesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[Dict]:
+    ) -> BytesIO:
         """Extract the raw data from US Treasury website."""
-
-        data: List[Dict] = [{}]
 
         url = "https://treasurydirect.gov/GA-FI/FedInvest/securityPriceDetail"
 
@@ -81,14 +80,31 @@ class GovernmentUSTreasuryPricesFetcher(
         }
         payload = f"priceDateDay={query.date.day}&priceDateMonth={query.date.month}&priceDateYear={query.date.year}&fileType=csv&csv=CSV+FORMAT"  #  type:  ignore[union-attr]  #  pylint: disable=line-too-long  #  noqa E501
 
-        r = requests.post(url=url, headers=HEADERS, data=payload, timeout=5)
-        if r.status_code != 200:
-            raise RuntimeError("Error with the request: " + str(r.status_code))
+        def fetch_data():
+            r = requests.post(url=url, headers=HEADERS, data=payload, timeout=5)
 
-        if r.encoding != "ISO-8859-1":
-            raise RuntimeError(f"Expected ISO-8859-1 encoding but got: {r.encoding}")
+            if r.status_code != 200:
+                raise RuntimeError("Error with the request: " + str(r.status_code))
+
+            if r.encoding != "ISO-8859-1":
+                raise RuntimeError(
+                    f"Expected ISO-8859-1 encoding but got: {r.encoding}"
+                )
+            return r.content
+
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(None, fetch_data)
+
+    @staticmethod
+    def transform_data(
+        query: GovernmentUSTreasuryPricesQueryParams,
+        data: BytesIO,
+        **kwargs: Any,
+    ) -> List[GovernmentUSTreasuryPricesData]:
+        """Transform the data."""
+
         try:
-            results = read_csv(BytesIO(r.content), header=0)
+            results = read_csv(BytesIO(data), header=0)
             columns = [
                 "cusip",
                 "security_type",
@@ -112,25 +128,16 @@ class GovernmentUSTreasuryPricesFetcher(
                     .replace("-", None)
                 )
 
-            data = results.to_dict(orient="records")
         except Exception as e:
             raise RuntimeError("No data was returned: " + str(e))
 
-        return data
-
-    @staticmethod
-    def transform_data(
-        query: GovernmentUSTreasuryPricesQueryParams,
-        data: List[Dict],
-        **kwargs: Any,
-    ) -> List[GovernmentUSTreasuryPricesData]:
-        """Transform the data."""
-        df = DataFrame.from_records(data)
         if query.security_type is not None:
-            df = df[df["security_type"].str.contains(query.security_type, case=False)]
+            results = results[
+                results["security_type"].str.contains(query.security_type, case=False)
+            ]
         if query.cusip is not None:
-            df = df[df["cusip"] == query.cusip]
+            results = results[results["cusip"] == query.cusip]
         return [
             GovernmentUSTreasuryPricesData.model_validate(d)
-            for d in df.to_dict("records")
+            for d in results.to_dict("records")
         ]
