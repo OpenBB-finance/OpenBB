@@ -132,6 +132,8 @@ from openbb_core.app.router import Router
 
 The TET pattern is a pattern that we use to build the `Fetcher` classes. It stands for **Transform, Extract, Transform**.
 
+![Diagram](https://github.com/OpenBB-finance/OpenBBTerminal/assets/48914296/ae9908be-00c0-40af-8acb-afeeb9629f2b)
+
 As the OpenBB Platform has its own standardization framework and the data fetcher are a very important part of it, we need to ensure that the data is transformed and extracted in a consistent way, to help us do that, we came up with the **TET** pattern, which helps us build and ship faster as we have a clear structure on how to build the `Fetcher` classes.
 
 1. **Transform** query
