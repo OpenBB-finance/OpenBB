@@ -220,7 +220,11 @@ class IntrinioIncomeStatementFetcher(
                     "operatingcostofrevenue",
                 ]:
                     field_name = sub_item["data_tag"]["tag"]
-                    sub_dict[field_name] = float(sub_item["value"])
+                    sub_dict[field_name] = (
+                        float(sub_item["value"])
+                        if sub_item["value"] and sub_item["value"] != 0
+                        else None
+                    )
 
             sub_dict["period_ending"] = item["period_ending"]
             sub_dict["fiscal_year"] = item["fiscal_year"]
