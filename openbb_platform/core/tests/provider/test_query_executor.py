@@ -77,6 +77,7 @@ def test_filter_credentials_missing_require(mock_query_executor):
     with pytest.raises(ProviderError, match="Missing credential"):
         mock_query_executor.filter_credentials(credentials, provider, True)
 
+
 def test_filter_credentials_empty_require(mock_query_executor):
     """Test if the proper error is raised when a credential is missing."""
     provider = mock_query_executor.get_provider("test_provider")
@@ -88,6 +89,7 @@ def test_filter_credentials_empty_require(mock_query_executor):
 
     with pytest.raises(ProviderError, match="Missing credential"):
         mock_query_executor.filter_credentials(credentials, provider, True)
+
 
 def test_filter_credentials_missing_dont_require(mock_query_executor):
     """Test if the proper error is raised when a credential is missing."""
