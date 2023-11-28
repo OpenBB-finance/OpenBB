@@ -20,26 +20,29 @@ Routers:
     /regulators
 
 Extensions:
-    - crypto@1.0.0b1
-    - currency@1.0.0b1
-    - derivatives@1.0.0b1
-    - economy@1.0.0b1
-    - equity@1.0.0b1
-    - etf@1.0.0b1
-    - fixedincome@1.0.0b1
-    - index@1.0.0b1
-    - news@1.0.0b1
-    - regulators@1.0.0b1
+    - crypto@1.0.0b2
+    - currency@1.0.0b2
+    - derivatives@1.0.0b2
+    - economy@1.0.0b2
+    - equity@1.0.0b2
+    - etf@1.0.0b2
+    - fixedincome@1.0.0b2
+    - index@1.0.0b2
+    - news@1.0.0b2
+    - regulators@1.0.0b2
 
-    - benzinga@1.0.0b1
-    - fmp@1.0.0b1
-    - fred@1.0.0b1
-    - government_us@1.0.0b1
-    - intrinio@1.0.0b1
-    - oecd@1.0.0b1
-    - polygon@1.0.0b1
-    - sec@1.0.0b1
-    - tradingeconomics@1.0.0b1    """
+    - benzinga@1.0.0b2
+    - finra@1.0.0b2
+    - fmp@1.0.0b2
+    - fred@1.0.0b2
+    - government_us@1.0.0b2
+    - intrinio@1.0.0b2
+    - oecd@1.0.0b2
+    - polygon@1.0.0b2
+    - sec@1.0.0b2
+    - tiingo@1.0.0b2
+    - tradingeconomics@1.0.0b2
+    - wsj@1.0.0b2    """
     # fmt: on
     def __repr__(self) -> str:
         return self.__doc__ or ""

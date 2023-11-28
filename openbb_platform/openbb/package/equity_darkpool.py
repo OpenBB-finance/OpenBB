@@ -75,7 +75,7 @@ class ROUTER_equity_darkpool(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.darkpool.otc(symbol="AAPL")
+        >>> obb.equity.darkpool.otc()
         """  # noqa: E501
 
         inputs = filter_inputs(

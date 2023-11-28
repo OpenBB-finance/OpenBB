@@ -1,0 +1,3692 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/securities/AAPL/institutional_ownership?api_key=MOCK_API_KEY&page_size=100
+  response:
+    body:
+      string: !!binary |
+        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
+        iOFvAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:28 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000002230?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAPloZGUAA6yQ0UvDMBDG/5Ujz91IsqZ1eas2g4Kd2maCeymxjRpck9GmyBD/d1OZoOCj93Lw
+        3Y/v7r535N6sHprWvCKO8FdRusIoQq3rj8qeGtMhHqcpi86oVb0ObJZnZQ15cS+qutgUIgdxtyvk
+        A2x22zyCYnu1DCajV36mSzWcDsp231JjbPtbbt1k/XA6D3bWeN1BPbMjuCfIej2YVgXwcRqN1ePY
+        qK4bQg80wxhEVku4rTIpoZaVEDKCOtwjgKwwjuAyu5ZFeVOJCMocKKGY/vQ6vjirG+uCWUxwyihb
+        4zmEXpmDsc//scvY0Rs/eeOsOiDuh0lHaDp24cOucTZYU0ySBb5YUCJxwumaU7KMGd3P6Qz6b45x
+        RnicLJOU7NHHJwAAAP//AwAJSH4RzwEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:29 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000003520?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAPpoZGUAA5yQ0UvDMBDG/5Ujz+1IWltK3orGKXOddJvSvZTYRg1rLyNNGUP8303HBAWfvJc7
+        vvt9fNx9EHNEZetG7wkn9FxxElESkMb0B4mnWreE49h1wQVF2SvP3pbiBvKHuShhmRf5XCxFsYH7
+        4tpbByfdxBTqCJWx+2+p1tj8lhszorOny2KL2qkW1hM7gHmFvFdWN9KDL+OgUQ1DLdvW+u7pOKXw
+        mJcLyJ9EsRWwXm03dwEU4hmqVbnwUwWMUkZ/2g/vBlWNxvsjFoUZTcMsoxPSS91pfPtngMbBaTc6
+        bVB2hDs7qoCMh9Zf0tYGpzjK0pBmYcQ2NOVxzK/ojLF0N33Bqr+5hCcRp9GMxcmOfH4BAAD//wMA
+        ZEUYIK0BAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:30 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000005272?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAPtoZGUAA5SPwWrDMAyGX8X4nBbHmevOt9CFUbalI00p6SV4ibeZNnJxHEoZe/cppYUddpku
+        Er8+/ZK+qDuB8XVj91RRdgnBJacRbVx31HCubUtVzOZJdEVBdwbZ9CUrlos0J8u8zIo8LZerPH0m
+        j8Vq84raAh36oMOI5uZEKuf3N6m20KD8YA76pL257Bog+PO1sQEbTEvWI9sT907SznjbaATfht6C
+        6ftat63HjHQsBdmmeANZl0WWlRHJsy2pVsUTVhWJGUvmvyePnw5MDQ5HecylZBJ/RqDT9mDh4//O
+        FvpgwxCsA32gKvjBRHQ4tnh9WzsY97B4NmHzCY9LNlPJvRJiKu+S3fi5N39zQgmu+GzKpNjR7x8A
+        AAD//wMAOYjFq6gBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:31 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000007195?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAPxoZGUAA7SRwWrDMAyGX8X4sosb7LRNG99CmmyFNC5JOlguIUvMZpbKJbEZZezd55YVeth1
+        ugh+ffolpC+sP0GOTac+MMf0GisWLjHBnT6eWjg3qscc7DCQXxTao3RsVDweSrTNn5OyEkX5gGJx
+        yMskI06LPdc/mdZcwFgDyM6ozpqb2ijobqadtmDG8730aicFcpqatu9Hl53Jk8iyF7QX+Qbts6iO
+        CGL+mqHEQ7tom6OyKpKkIijdFmWF0kyIgjgx2qWi2BAUV4gGIfXxnffpXYNsQDtzn87nzNUpdcCx
+        VYOCt/+YrWAyylijNLQD5ma0kmB76t1F+kbDdRMWzOh65rOKBnyx5mzlsYDVl3eM8m9uyZc+XwTe
+        KqQ1/v4BAAD//wMAePkPo9EBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:32 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000007773?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAP5oZGUAA3yQX0uFQBDFv8qwzyqulv/erCsXSVTUIu6LbLrVks6KrsQl+u6tl1tEUfMyMPM7
+        5zDzRuQr8rntxAuJiH0q3/ddYpBOjhPDYyt6EuE6DMYZRTZyzcZ1nTRQZnGep/kerouqLKq4SYtc
+        axfF1AY1HJEvC+efs1Zg92PeyRXVfDxvblEo3kO9wQvIR4hHPouOafBhXcSmalnfz7pr2nEDqC0o
+        kyapaqh2Blxluz3EBtzkxf1dmmWJAU0Orh867neL6Vkib1Fqj8C7NL3QNqnjUo2MTAwCn36FfGVY
+        pwzr7xCBixJqVUIiG0ik5pUbZJ16fVHfStwcbYeatmNSr6FuZIeRHVg0vDhs35j5f5xvhTQ4kPcP
+        AAAA//8DAHcnCLi4AQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:34 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000007789?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAP9oZGUAA5SPQUvEMBCF/0rIuV2SNNnu5lZrkR7syrayuJcS26jB7aQ0KbKI/91UVhDx4lwe
+        vPne8OYd2zfQU9uZVywx+Zo03WxxhDs7jArOremx5JSJ6IKCGnRgs7re5WXWFNfoKqvyON/t70LK
+        eeWX9cG4zoIz8O21Brpffmdn8NP5srkH43WP6gV2yD6hbNCT6VQAH+cQ0M61qu+noIHmSYJus7JC
+        dbMviiZCN0GqUOUhQocSCZ4Q+jM5vljQLdgQ3TIS8y2NU0FIQAZlTgae/3/bgPPGz95YUCcs/TTr
+        CM9jH/r3rYVwiBG6jskmZrQhaymopGxFhTguv0/6b05IwaTgq5SzI/74BAAA//8DAMjlV8SgAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:35 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000009015?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAABpZGUAA6TQTU/DIBgH8K9COLcL4EonNzarLula49CDlwZbdMQWFl6yLMbvLltm4sGbXEh4
+        fvyfBz6hPRjlul5/QAbReV0jXMAM9nbaS3Ps9ACZieOYXaiRk0p2yZfbtgEr/rAWvAYb3vC7alM1
+        AtT1Kl33QYaT20jvZb+LXoXgf847bfpUu1GjPEinzt2iCe54KTwZHdQAtifrgX0DfFJO9zLB1+i1
+        Ud53chhc2pOelwhwUfNGrFeAP1fNU5UBjMQ9uK3b9jEDy3Yr2iZLQwJECEa/Y/Y7a1RnbMqhuMxL
+        inNKKUlkknrU5v2fjbTxQYcYtDVyhCy4qDIY90N62dBZk1IJwjRHi5xggSgr5gwVM0TKl9OvOPW3
+        K1hxxfBiRmhyX98AAAD//wMAgkwBtMYBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:36 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000009631?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAFpZGUAA6yR0U/CMBDG/5VLnyAZZN1GGX2rCELAzUCjCS9LpY02jivZOg0x/u8WxcQHH72X
+        S+5+3/cld+/EvaFpqr19IZzEXzVhKSUR2bvDUeGpsprwLGZ5dEFRHUxgr0SxgnIORXkvYDst5VIE
+        UeuVP29L9Kqx7mdSWdwTjl1dn3079M3pe0SmCpVW0JsbbRpVw9q8mrofdI9da9G0baW0bkIPbJbB
+        alncwFZuZjMJD7OtjC7RcLcWOwG5XMB8PYxAlpuykGUEU1GIawG3owXQBf3te3x2aCp0wbiXUdaH
+        nLFBysZJgA7K1haf/jvbYuut77x1qGrCfdOZiHRHHS6kK4chJokpG8T5IKEyHnMa84QOxxO2O/+j
+        MX9zIz5KeZoO80myIx+fAAAA//8DAOqnG2fSAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:37 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000009634?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAJpZGUAA2yQzWrDMBCEX0Xo7ATJ8q9uTnEhxLVL49KSi1Bt0YraK2NLlFD67lVDAz5kL8sO
+        3wzMfmPzBWoWnf7EHJPL5AmLcIA7M04SzkL3mIMbhuAfBTkqz+6aw32A6sKTi5VWXaHLITR0V6Ez
+        Dux8XktvbtGglkXIvp/99nFNXaKXfVXti4cjuivrtnwKUPtcHQvUHFAa0TTEK+P0YUAJMN6Z0yzO
+        soTmzAOj1IOG91XwY4N2zSsKGSE3AjUsVltntQE5YG5npwLspt536IUB7w8JTTYk24S0JSmnhIfx
+        lpDs9PehWd3mYh4zzqIty6MT/vkFAAD//wMAhEJVi2QBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:38 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000010742?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAANpZGUAA4yQbUvDMBDHv0rI624k3dqVvKuz4lhtYU+yIZTYRg1rLyNNGEP87l5hgoKCB7mE
+        u9/dP3fv1JxB2arWRyooG4yz2TSkAa1Nd5JwqXRDBfi2Da4oyE4he5PNl+QhRffkGQtjUuaLXbYi
+        eT7H4t5JN1CFOpO9scevUKWh/hmujQdnL9fEFrRTDVkPbE/MC0k7ZXUtEXz2vQbV95VsGos30pOY
+        4RduF+uyIOkuCwhPNvfkLi/LVUCK7JHsy9USX3vCca7Z9yanNwOqAoNdQh7GMZ4pQ6CTutXw+rdI
+        sf2PjobeaeedNiBbKpz1KqD+1OBYTWVgUGU8HrFkFPINmwmeiJCPWRQfhpVY9TsXiWgiomQ8iZID
+        /fgEAAD//wMA+LTF67wBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:39 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000012933?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAARpZGUAA7SQUWuDMBSF/0rIs0oSrau+qZW2DExJHYUxkEyzLUxvisaNMvbfF6GDwfa6+3Lh
+        no9zLucDm3dQY9PqV5xisgxlSRhiD7dmOEu4NLrDKcx9711RkINybM7LqtpXW/QwE8JidCyyui7F
+        lvONh/ZVETiLyUq7sAcFMF36Nwlafp8bDe1vqTUz2PFyFe9AW9Wh48JPyDyhbFCjbhfwcZ40qGlq
+        ZNeNbjs6QjU/lQLlYr/Zlj4jBOWZEGiXiZwLtBF+xYOQEA+dymONCl4dd3zHi9uy8tAhQzSJ2Npn
+        yU3y0//8YkA1YFxATIm/Dpm/YjRyyCB1r+H5vz7QMFltZ6sNyB6ndpyVh+dz57roGgMujhFGfEL9
+        kNaMpSRMySqIKb1fehzV3xxNw1UaxUHM1vf48wsAAP//AwBObKTl/wEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:40 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000014661?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAVpZGUAA5yQ32uDMBDH/5WQZy2JjbbmzW2FjjEFVxDLIGQatlC9iCaUMva/L4F17KFPu4e7
+        4/jc9358YnMGNYtOnzDHJBhlWUZxhDszThIuQveYgxuG6AcFOSrP3tVVUyLvD/td/YL2RV0/Phcl
+        enWEJBm6r7zEYqUNbKnOqDXz6VoSGrqraGcc2Pnyt/TmFg1qWYTs+9lHr0AZCbOKh6ZoI1TuGtRW
+        9ZPPWkT9zmlMKQlL/7ZOHwaUAON7E5qwfL1NCPHAKPWg4f0f0hoWq62z2oAcMLezUxF2U+/v6YWB
+        MIjQLCbbOKEHsuGMcZqvCN0cwzNndZtLecr4mq1onh3x1zcAAAD//wMAt6Nd848BAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:41 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000016972?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAZpZGUAA6SQUUvDMBDHv8qR524k2bJp3+pWcThT2aayIZTYRg1rLyNNGEP87qYywQffTB5y
+        3P3u/8/dB7FH1K6szJ6khPaHTS6nnCSksu1B4ak0NUkxNE1yRlG1OrKzTMp8uYT7fJOv4AqeA6V8
+        ArMCFnIW2zuvfM9JfYStdfufVGmwium5btRROf1tFNC707nwgMbrGtY924F9hazVzlQqgi+hM6i7
+        rlR17eIbaTEWcJfNF+tCQvaYy4c8AcY2N3C9LIpVAjJ/gm2xuo3RFlj8If+tc3i3qEu0UYgzPhU8
+        XhGBVpnG4Nt/fQx23vjgjUXVkNS7oBMSDnWcrC4t9q5x2wN6MeBsQ6epoOlIDNmE7vqtOP03J1Ix
+        juiQjsY78vkFAAD//wMA7atg7cEBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:42 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000018349?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAdpZGUAA6yQX2vCMBTFv8olz1WSWLs2b604EVwrq5XpS8nazIXZG0lThox996XgYIM97rxc
+        OPzuuX8+iHlHZetGvxFB6CgWz8KEBKQx3UXitdYtEYyHSXBDUXbKs+UhL/ZVCffrPM0X63QDi+Jx
+        6/t6J90IrJSxJy2/nVpj88ttzIDOXm9+hdqpFsoR7cG8QNopq5sRfB56jarva9m21ldPMy/I0gOk
+        +2VeLQMod0uYUwrbArLiCRingd9nUz1kVRnAKoUZSyj7GXZ5NahqND7tjkZRmIQxiz3QSX3WePqX
+        YRp7p93gtEF5JsLZQQVkuLT+xrY26LM5ZdGExhPOdoyLcCbmdEo5P47/sepPjkaCzQWn04THR/L5
+        BQAA//8DAGC5QyLCAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:43 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000019475?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAhpZGUAA6yQTWvDMAyG/4rxOS2KGzeNb6EYVsjS0nwcegle4nVmiVwSh1HG/vsc2GCDHaeL
+        4NUjvZLeqX1DPTateaWCwhJhEsWcBrS1w03hvTEdFTj3ffCFohq0Z/cPaSHJIa9lUT7KvCT7Y5UX
+        MvP5fPLtk1Nu4WozXg0a9S01BtvfcmtndOP9q1ChcbojxcJOxD6TdNCjaRfwaZ4M6mlqVNeNPnt6
+        A0BOZ7/CMSdpLfNKkqI6lJJwgID4Hc/ZsSxlUR+yTAakTgljCbAVh2T7c+LtxaJu0PqR0SZiySYJ
+        IfLAoExv8Pp/jgYnZ9zsjEXVU+HGWQd0vnX+2q6x6A0YhNsV7FYsLCEWfCfC7TqO4LJ8atR/c1xw
+        Lli8Bthd6McnAAAA//8DAKe0w5LVAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:44 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000019481?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAlpZGUAA6SQQU/DMAyF/0qUczol3dZ1vVVj05CGhrrCYZcqJIFFtM6UOEMT4r+TIpA4cMMX
+        S8+f35P9Tt0bGN8p+0oryscSy1kpKKPKDWcJ185qWkHse/aNghxMYh+txxjILVxMwMEAklpfbDA+
+        sCSqSXIIKHFEVw7AKLQq4o/aWVBpcidDkOoUg0EMX5kR0F+/pw9g0WhyGBcCcc+kHoy3SibwKQYL
+        JoROau1TT7TgnNyv62ZHDm2zXreMLNst2ez2+4aRbd20m31zw8iqJbwQfPrb5HxyYDpwyaXkPMtn
+        ZbZYLsYnDNL2Fl7+FWMhoMWI1oHsaYU+GkbjWaerdOcgeeZcFBkvs1y0QlTTeTUXk2IujuNHvPmT
+        40UleDXlk7yYHenHJwAAAP//AwAYaKdlyAEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:45 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000019617?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAppZGUAA3SPb0vDMBDGv8qR191Iui3d8q7M6nDajf1ROoQS26hh7aWkKWOI391UJvjC3Zs7
+        7n7PczyfxJxQ2bzQRyII7YvNOItIQApTNxLPuS6JYJSNgguKslaevV8/rjZ3cQrzRbxN4KWjNOQw
+        X3ll66TrkVSdIDP2+LvKNRZ+faMqeZJW/fzo0Nnz5bBH7VQJ255twbxBXCurC+nB167VqNo2l2Vp
+        ffd0GFFYx5slxE9JAKPpbgG3DwGkyTNkq83STxkwHyf6K28+DKocTa9nobfgPrEHaqkrje9X7NN9
+        csVYY+u065w2KCsinO1UQLqm9AnK3GDvQxkf0OkgZDs6FXQkGB/yWXTo01v1PzcRk4kIoyEfjw/k
+        6xsAAP//AwD90YqopAEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:46 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000020171?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAtpZGUAA5zQ30vDMBAH8H8l5LkbSUfXH2/dHLiBrdTNgS8htlGD7aXkB6OI/7tXmCDik3kJ
+        3H3u4Hsf1FxAWdHqd1pQNr+Y8ZTTiLZmGCVMQne0gND30ZWCHBTa7e1psyHburlH67z0c7FSF3JQ
+        1qnpuyg0tL8brQng7XRtnUB71ZGHWTtiXkg5KKtbifA5OA3KOSG7zuKPmifkrj5Vx3Jfkcf97kya
+        uryJyLlsml0VkepAWMqS/Ofw+GZACTA4nbMsZ6sYUyIYpO41vP5ruQbntQ9eG5A9LbwNKqJh7DBD
+        JwzgLjzjesGyRcyPLCtYUiTrZZrnT3N+q/52iJJilS05R/f5BQAA//8DAKguPCCcAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:47 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000020286?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAxpZGUAA2yPX2vCMBTFv8olz1WSLKlt3jqnW8FZqQ6GLyVrsxlmE2lThox9992CQx92uXD/
+        8DsHzjfxX850VW0/iSJ0LE55EpOI1L49aXeubEOUoGkaXVCnW4PsPF9jr7NdDst8neGRrWBelBuU
+        9kGHkSkO1v+dlXX19VX7wYXufHm+OBtMA9uR68G/Q9aaztYawbeht870faWbpsOJdMwphS085qvn
+        olxA+RDBMsvLZb5Y4Vo8gZCUiVvt6eCdqZxHsWR3yQwzUopAq+3Ruo8b7820mMJ98QpMSJHGEVxj
+        Xqy5HJXW9cGGIVjv9JGo0A0mIsOpwQBN5R06ccriCU0mnO1oouhMUTZlqdiP4TvzPyeVlEpw5Pie
+        /PwCAAD//wMASCLR/5wBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:48 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000022657?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAA1pZGUAA6SQUUvDMBDHv0rIczfSrOu6vG21uKGu0K2TDaHENs7D9jLSBBnidzeFCQq+eQ93
+        8L/f/Y+7D6rfUZmqhjcqKBuC83g6owGtdXeWeKmgoQJd2wZXFGWnPHufP2ZkWeTpXbbxpbxdkSfn
+        p2OS5mS9Sb1Db6Ud0D2YEyDIb6kCrH/LtXZozeXaKBGsash2YHuiX8iiUwbqAXx2PaDq+0o2jfHV
+        02HCOFkuDsusKA5+eVnsArIt17uMRIwFpFinq4d8cxOQ/YLwiT/vp8/5VaOqUHujhEU88YlFHugk
+        tICn/+4B7C1YZ0GjbKmwxqmAunPjL2sqjd6WszAesWTEw13IxGQuWDhO5tFx+IpRf3IsFmwqprPx
+        LImP9PMLAAD//wMA8VPMysQBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:49 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000033250?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAA5pZGUAA6SQTUvEMBCG/0rIuV3SpB+aW9XiFkvVbdfDXkpsowbbSUlSZBH/uynsgog35zLw
+        zjPvfHxi/QHSdL16xxyTNRijCcEB7vU0Czh2asAclnEMTiiISXq2eNyXbX5VFajd7ZsWXd/7HuuE
+        W4utBJDWSnnWOgX9L73XCzhzPFX2oJwcULPCFukXlE/SqF548Hmxau3qxDAYnz0dx4Sgbb67Ketb
+        9FDeFQFq/DoFYhEJUJ0326eyqrza1ohllCQ/beY3DbID7X3SKAnjlISXGV2RSahRwes/BymwTrnF
+        KQ1ixNyZRQZ4mQd/2dBp8K6UUBKSKGRRSyknlLN0k7HosH7FyL+5iLOEx+kmpRcH/PUNAAD//wMA
+        /VQyeLgBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:50 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000035442?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAA9pZGUAA3SQ0WuDMBDG/5WQZytJZqzzzbUWCuscamHri2SarWF6EZMwytj/vggd9MHdy8F9
+        v+877r6x/gI5Na36xCkmc93xKGI4wK0eRgGXRnU4Bdf3wRUFMUjP7vbb42afla+oLo9VjTaF9xgr
+        7CwehDGiPTsjrTV/80ZBu6C12oGdLlf1CMrKDlWzwSD9jrJBTqoVHnxzRoE0phFdN/nuabrmaJdv
+        8zJ7RFVd5nkdoIeiqounAB0yRBil5NY5njXIBrS3xnQdJYyz9QwMQvUKPv5NDgP0HBahz35BnCck
+        XlyjwFhlnVUaRI9TOzkZYDd2/pSu0eBTGaHxiiQrRmtyn1KeMhLGnJzmN0xymeMp9ygLOYtO+OcX
+        AAD//wMAZ0/ZOrEBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:51 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000035527?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIABBpZGUAA6yQX2uDMBDAv0rIsy0xaarmzbmKwtCutS++SKbZGlYvopFRxr77InSsD3vccXDc
+        3e/+fmLzAWpsWv2OBSaLMM5pgD3cmn6QcG10h4XvU+7dUJC9cmyap1WGqiw/PKKHuEjKw94VTVba
+        JVuetflxGw3tb6g1M9jxegueQFvVoePCTci8orhXo26lA1/mSYOapkZ23eiso1mI0vJUVHFeoOMz
+        2j/VHrrfI9kV1e7goSQvnBZxlXuozNCG0y277zicDagGjGvJfcaDiDNCHNBLfdHw9n8TNUxW29lq
+        A/KChR1n5eF56Ny1XWPADaDE365IuKJ+RSJBiWCbNYnCevnUqP7muOCR8NmaRkGNv74BAAD//wMA
+        9EG3+8MBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:52 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000036066?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIABFpZGUAA5yQzWrDMBCEX0Xo7ARJju1ENzU0kEN9sF1KcxGqLRJRe2X0Qwml716lNBBKT9nL
+        ssM3s+x+YvsB2snevGOOyaXykpQlznBvp1nBWZoBc4jjmP2ioCad2N2+aTsknh6b/VbUqGue2y5D
+        u/YhWX1QQV9dP4M00F+F3kYI7nwrvUVvQHsv1TC41FN+gf5seBGvGWpF3QkkaoG2Am1YRSp8455P
+        FrQEm+wVXbGCrBnJEzApMxo43pduwAcTYjAW1Ih5cFFnOM5DumqQFlIYI7RckPWC0Y5sOGN8lS9p
+        QQ6XJzr9P1fwIqF0Sar8gL++AQAA//8DAOgplneHAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:53 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000036104?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIABJpZGUAA6yQS2+DMAyA/0qUM6AQHmu5sZYDEo9qtJcKKcog26KBg0JQVU377wtTK/Ww43yJ
+        bH/+LOcLqwsIzTr5iRNM1ghin4TYwZ0aJw5XJnuc+GRDnRsKfBSWPTXoOa129csBte0+a1s7Mhtu
+        1l4pAcSsDL/XmITO1vdi4Beuxa99AaOvt8YJpBE9alZ2RuoNpaPQslvnX5dZWtnMeN9r+66013j3
+        5Q7aEIKqfFcXRXZEZVoUDirzqsrSQ13kjU0qFEUhoe4ToeRROH0oEAyUNcaR74Zx7Ab2fouMXA4S
+        3v9tpYTZSLMYqYAPODF6EQ5ept5e2zMF1k+JH7tk41L/SLYJDZOAeiHZntef0uJvLkoii/peHNIz
+        /v4BAAD//wMAfgNPqMoBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:54 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000036270?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIABNpZGUAA6SQTU/DMAyG/4qVczfS9GvrrZs2QIwGle6wCakKbYBoqzOlqaYJ8d9J0UAgwQlf
+        bNmP/VrvK9FHlKaq1Y6khA4RxCyhxCO1bg8CT5VqSOr7LPHOKIpWOvb2oaeUxSXMsvwG5ry4czud
+        FXYY5vIIG212n61KYf2zXeserTmdB2tUVjZwP7Ad6CfIWmlULRz42HcKZddVommMy46eX/APQV5k
+        5QKKhSvK6/zSA54v4Ouvu1W2zSAqr2C54rzwYLZeLrMV9yDfgB8yGny/fnjRKCvU7nzix5OQRcF0
+        cKEVaq/w+V/qf2gr7KyyvVUaxZ6k1vTSI/2hcR40lUYnxagfj+hkxPySTlMWp2EynoTT7eCfkb9z
+        URo5NBgncbQlb+8AAAD//wMAevYJAeABAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:55 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000036644?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIABRpZGUAA5TPTUvEMBAG4L8Scm6X9Cv9uFW2q4vawrZe9hKybdSw7aQkKbKI/90UV1DwYiAE
+        Zp53mLxj9QZCs16ecYHJeiJK4xh7uFfTzOHC5IALWMbRu1Lgk3B2tz+0HarLbt/U5QO6Ket71OxQ
+        81jelS5tLLcrq8VJc3Pm3yUmof9d7tUCVl+ujSeQVgyoXa1B6hmVk9CyX+FpMRKEMYwPg3av0wEl
+        Ado229sKtd2hqjrvawEP1RWiWZCnP3PzqwLBQLlgTEKfuhtFWe7IxOUo4eW/kyUYK+1ipQI+4sLq
+        RXh4mQe3+8AUuDEhCahPMj8MOpIXYV4QsiFJflz/rcXfLikSR9NNSuMj/vgEAAD//wMAxnK6GaIB
+        AAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:56 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000036966?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIABVpZGUAA5zPUWuDMBAH8K8S8mxLEjHVvMnmqDC1VNsHXyTTbAurFzGRUca++yJ0MMaedi+B
+        y+9/3H1g8w5q7nr9hgUma4U84RwHuDfjJOHa6QELynYkuFGQo/L2IT/WDdpXx7ytSlSmTV6V6SO6
+        q44HH7ZOulU1CkBZq9R3r9PQ/+r3ZgE3X28/J9BODahesUXmGaWjmnUvPXxarF5TnRyG2b9eUx6h
+        Ir3Pa79Des7KUxagIisO+7wOUFOiMKYk/BmdXg2oDozPJoTGNOYsZB6MUl80vPxjtAbrtFucNiAv
+        WLh5UQFepsHvP3QG/CRGKN+QeMNoQxLBdoLFW8aTdr19Vn+7SESeRtuQsBZ/fgEAAP//AwA/RMbc
+        pwEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:57 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000038777?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIABZpZGUAA2yQwW6DMAyGXyXKOVQBSincMsom1I5O0GpaLyiDdIsGThWCqmrauy9U3dQDvljy
+        /9m/7W+sziB0VcsvHGM6hr8MwxATXKvuxOFSyQbHLo0CckOBd8KyjwXL15ssR0VabvdFkpYoyxPb
+        1xtuRiDhrTwqDZL/FSsJtRVWouVnrsXVYwCjLzdhD9KIBpUj2yN1RKwTWtZj//vQSxB9X/Gm0TZb
+        epun6H+JF1asX9kbQQ/7bLPK8icUeZSgkuXome3SLUEJQ9F8Tv37YadPBaICZactAur4rud49gMW
+        6bhsJXzc2U3fS9D0GtPGEnojzWCkAt7i2OhBEDycGntvUymwLh51Fw5dOp67o1HsB3HgznwaHMZf
+        aTHNWSiKg/ksDKMD/vkFAAD//wMAx330btIBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:58 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000039263?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIABdpZGUAA2zQUWvCMBAA4L9y5Ll1l7jWtm9VlMmkHbYy8aVkbbaF2USalE3G/vsSUPDBvIS7
+        fHfH5ZfobyWGppVfJCPozzRl8ZQEpNX9iatzIzuSUYYsuFDFe+HsYrfZLIuH1basapjnxfNyWwWw
+        LhYTV2sstx7V4oeba9xI1d7kWj0qO5wv2Z2SVnRQeWhAv0Pei0G23MG30UgljGl41w3udpoiwis8
+        lbuqLguo6gCqvIC8cNG6DKDewyxhGN0Wnz61Eo3SrppRDBnD8BEpdaTn8ijVx037F79TuVqtF0uY
+        l3ugMeLdEWkc+jfXRCpjpR2t1IofSWaHUQRkPHVuna7Ryk9FGoeYhIzWmGTTKIuSSZpGB/8Vg7jv
+        HIq9i2bJgfz9AwAA//8DAPymsFKtAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:01:59 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000040417?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIABhpZGUAA6SQy27CMBBFf2XkdUCT4KTgXUTdFkGTKjwq2ERu4rYWxEaOI4Sq/nsdRFl119nM
+        6+hezXwRc9LSlpXaE0awD4o0vCMBqUxzFPpcqpqwOEEaXFEtGunZR57xIl1A+syL2TTNYJZt+HKV
+        F0uY5r6ZeonWCdezmTzB1tj976hUuvLje3kQJ2HlxazTzp6vi7VWTtaw7NkWzDukjbSqEh5861ql
+        ZduWoq6tz54OEeElLeaQbni25gGM4tUTPCzyvAgg46+wzYu5r7bgyctpN5Hjp9Gy1MarRGE0CZMx
+        RfRAI9RB6Y9/mSjdOuU6p4wWB8Kc7WRAumPtb6pLo3tLDJMBjgdRuMIJoyMW4jCmo13/Dyv/5hKG
+        yKJ4iDTake8fAAAA//8DAAaLKua/AQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:00 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000040729?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIABlpZGUAA6yQQWvDMAyF/4rxOSm2m6Spb1maQWBtoc0uuwTP8VqxRC6OQylj/33O6GCHHaeL
+        4Ol7T0gf1F7RuFbDO5WUzZWwlVjTiGo7XBTeWuio5HyZRncU1WACW/T9jTwCKtSgelKjXgTT6JWf
+        p1vQZzgp/JFaQB3kjenVVTnzHT+hd7f74BnBm44cZ3Yk9o0Ug3GgVQBfpxHQjGOrus6FPqcX9RMp
+        95tKkiQX8QNbx6VIIiIYI4dqV9THY7ErK1JWu6Y6RGRTNYd93URkW8+GLP0dezlbNC3akJtnWbzi
+        LE4ysQzIoKAHPP3zYsDRg588WFQ9ld5NJqLTpQuXd63FsEUwnsUsjwVvWCaXqUyzxSrhL/PXnPmb
+        C5CQXCxylrzQzy8AAAD//wMAJ/pcH9cBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:01 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000044365?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIABppZGUAA5yQzWrDMBCEX0XobAcptuxENxMcSIkTsJ1DczGqrbai9srohxJK370ypNBCT93L
+        wuy3M+x+YP0O0nS9esMck6XSNMkYjnCvp1nArVMD5uDHMbqjICYZ2F15auviiNr60rRop8OGdcIt
+        o0pZq71R31KnoP8t99qDM7f74ALKyQE1C2uRfkbFJI3qRQCfvFUgre3EMJjQA00pRWURMqvD8VjW
+        qGkj9FDu92XdnE9od2gfI1SdUcYooT8d5lcNsgMdLFiexFmSxpSS5dJJqFHBy/8zFFinnHdKgxgx
+        d8bLCPt5CPcMnYZguCY0i8kmXtOW5JzlnGxW6Ta/Lr8w8m+OccY43a4Sklzx5xcAAAD//wMAeqkg
+        DKoBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:02 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000045319?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIABtpZGUAA6yQTWvDMAyG/4rwOSl2m6aJb1ln6NiaQtNupJfgJd5mmsjFcShl7L/PgRY22HE6
+        SCA9evXxScwZla1qfSSc0NGi+YylJCC16U4SL5VuCMehbYMrirJTnl2LUmxhleX34mmd5bDc+J7e
+        STcWc3WG0tjjLVVprH+nazOgs5drYY/aqQaKke3BvEHWKatr6cHXodeo+r6STWN99HRCKbyIYrdc
+        eeeXyJ5FAMX+YSegCGOWBLAtBdxtN5vHAPISGJ0vZj+lTh8GVYXGa6UsCtNZGkY0ph7ppG41vv/D
+        MI29025w2qBsCXd2UAEZTo2/sKkMeuUpZXFIk3DKdozyecRZNFmw6DB+x6o/ORpzuuCUTVicHMjX
+        NwAAAP//AwCPn1b4vgEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:03 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000046392?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIABxpZGUAA5yQX0vDMBTFv0rIczvSpCuub3UUOxhVtm6DIZTYxnmxvRn5gwzxu5vCBB+GD4ZA
+        Luf+zuHmflL9gcq0HbzTnLLppJlYcBrRTo9niZcWepqjH4boiqIcVWCr4rgumyYi97tNQ549Yzwj
+        h6LZPtYRWdXLWYiwTrqJPSjryB7MCRDkj94Cdjd6nfbozOXa3SE41ZPtZLBEv5JiVAa6CXzxFlBZ
+        28q+N+ENdCIYI8uqeFqv6pJsm01ZhgEPVVkG4SFUe8IzxsRv9/lNo2pRB7tgacyFiIVIpgWMEgbA
+        0//yAa0D5x1olAPNnfEqov7ch3/0rcYQxhnnMZuH2ySLfJ7kjM/uEn6cdmDU31yWBu7rGwAA//8D
+        AD3hHVG9AQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:04 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000047288?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAB1pZGUAA6SQXWuDMBSG/0rItZZo/cxdKA6kRUt1G/ZGnIYtVE8kJpQy9t8Xxwq92N1yc3IO
+        D8/LOZ9YXoGrthcXTDFZXxD7SYId3Mtp7uDWigFTMOPo/KLQTdyyO3bMa3ZAZZE5qGB1Xha2Y1VV
+        7vKfzioW3emVLfgVNVJd7qNWQH+X9tKAVrfH0ZtZBPBlabthULZag5+m6MhOe8ResuLZJm69qkZP
+        h7I82fTsFTXlaW9/DfII8WL8IJk/JPAWpLVEQeQm28gNSboiUydGAe//ihGwaKGNFhK6EVOtDHew
+        mQe75dBKWJ3Ei1ySuL5Xk5iGPvXijR+l5/XEiv/NhTQMaJhuAj84469vAAAA//8DAFqxbpylAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:05 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000048966?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAB5pZGUAA6SQTU/DMAyG/4qVczul2ZptvU1b+RAlRWNjdJcqtAGitc6UppomxH8nRUPiwglf
+        bNmPX398EHNCZctKH0hC6GCT2ZxzEpDKtEeJ51LXJMG+aYILirJVnl3mu1TAQqxgmd8/LEQRQJYt
+        fV/npBsAoU5QGHv4SZUaK59eqUaepFXfE3p09nwpbFE7VcPjwHZgXmHRKqsr6cGXvtOouq6UdW29
+        93Q8n0OWPt+K603u13hKxTYNgNHNDVxleb4OQKQ7KPL1nY8KiChl7LfS8d2gKtF4KT7hYcxZGE3Z
+        1COt1I3Gt//P0tg57XqnDcqGJM72KiD9sfb31aVBL8wooyGNwnG0YVESsySmI0qj/fAbq/7ixnEy
+        4SPOZnvy+QUAAP//AwC2sT6owAEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:06 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000049096?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAB9pZGUAA2yQXWuDMBSG/8oh1xoStdp657psFWwd1e6jN5JptoVpUjRSyth/bxwdFLZzc+A9
+        z3nPxxfSRyX6qpafKEZkimBBFiFyUK27A1enSjYoVmPbOhdU8U5Y9il52TBY7dZrtoV088iKcs02
+        ZQEZzvASW4PBcDORadtKpeXwK1VS1Va+FS0/8l78jBqV6U+Xwk5JIxooJnYA/QZJJ3pZcwu+joNU
+        Yhgq3jS9zZb2fApFvitXkCVFkmUMinLLWOkA9a14l+X51oHlKl0m97kDaQYhCUlwbXb40EpUSls3
+        n3oQ+NSlESEW6bi0u79fjXvAOYab/BmiGfljuyAusbptlGow0oxGasVbFJt+FA4aD409qam0mvYm
+        NHTJ3PVoSf3YC2IS4bkf7qd39OJfjoQxjWJvhn1C9+j7DAAA//8DAN3ECzq8AQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:07 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000049205?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIACBpZGUAA2yQUWuDMBSF/0rIs5YkjdbmzYrUsi5CjS99kUyzNUyTopFRxv77InSssN2Xy718
+        51zO/YT2w6ixafU7ZBAtRbcERTCArR2u0twa3UFm5r4P7qiRg/JsUXNx4HtRcsBTcSh5egS7lD95
+        5eSkW5Dyou3P2GjT/q5aOxs33u7L2minOlAt3ATsK0gHNepWevBlnrRR09TIrht99zTFoCprUYDi
+        sC9AJU55LgKQlcf6eVdXASgLQNcEx4/q68Ua1Rjr5TGmIY3XISUeGKTutXl7cL/H8qmynIv8FIAi
+        AxgT8vdEsvEO2kxOu9lpa2QPmRtnFcD52vkoXWONdyQIxyFKQoIFRgxtWZSsNhE5L28Y1b8cihki
+        jEarJEnO8OsbAAD//wMAcZUPEqUBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:08 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000049969?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIACFpZGUAA6yQwW6DMAyGXyXKmXYBGii5IcYYh4EEWSf1EjGItmjgIEg0VdPefWm1Sj3sOF9s
+        /f78W/YX1p8gF9GrD8wwOccuSaIEe7jX09zBSagBM7Dj6P2i0E3SsVlZVCkqq0Pe8qe84q2rM3RX
+        5S9udjWduUAaQPZG9dZcVaGgvxr22oJZTrfSq10VyHUV3TAsLjuThBCU1ZynRY6Kpj7kqKnTew+1
+        zyXPUYt8n3roMW34Q904OeOIRD4NNoFr4BvH+V2DFKCdZUDCOIho4ocOmDo1Knj7v40KVqOMNUpD
+        N2JmFis9bOfBXT8IDZf9frQhezfAyZ6RiNFwS4LgeH77Iv/mKKOU7ch2H8dH/P0DAAD//wMADOV7
+        1LkBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:09 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000050672?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIACJpZGUAA6yQTU/DMAyG/0qUczs5/Rr0VpWJRVQbWrMLlyq0ASJaZ0pSTRPiv5NOIHHgiC+W
+        7Mfva/uDmjMq2/X6nZYUlsihWCc0or2ZThIvnR5oifM4Rt8oykkFlu9awcVR8P2uakhdPXIRctPU
+        YdR56a/MOGo02v2UOo19KN+pUZ6lVVeTGb29fDeOqL0aSLuwjpgXUk3K6l4G8Hl2GpVznRwGG3Kg
+        0zwlu/1BbEndVIcH0orDZiMi0h652JA0B4hIveV1db+PCG9IAUWe/ZY6vRlUHZpFiyVxlmTxLQMI
+        yCR12Pz1H8w0Oq/97LVBOdLS21lFdD4N4cKhMxiUE2BFDDdxwgSDkqVlBqsw/LR8x6o/OShKSEu2
+        XjEI3OcXAAAA//8DAJESzJnFAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:10 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000051762?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIACNpZGUAA4TQ0UrDMBQG4FcJue5Kkq6Z612tdRtkVdaqsJsS20yD7clIU2SI724KG4iI5iaQ
+        8+U/J/nA5h2UrRv9hhNMphXTBWc4wI3pjxJOtW5xAmPXBWcKslfe7ooMZen9pkoF2qZFusq3eVEh
+        ITJ/d3DSTSiTnT4YC1peDmsNzc9CY0Zw9nQuPYB2qkXlpAdkDijtldXNBJ/HQYMahlq2rfW715Ry
+        QtHTRpTrzS5H1+LxBrG4WqNbESBxV6K0WOUiLwM/LFoSwuLvOcdXA6oG44MiSuaLBY/nkQe91J2G
+        l7/7hP830jA47UanDcgOJ86OKsDjsfVPa2sDPpcRymfkasZoRVlCaBLzMI6i/fQtVv3qCE88ZTyk
+        S77Hn18AAAD//wMAIVMhBsMBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:11 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000051812?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIACRpZGUAA6yQQWvDMAyF/4rxOS22mzRpbl5mSlibliY9rJfgJe5mlsjFcRhl7L/PgQ7K2HG6
+        CPQ+3pP0ic0HKFs3+h2nmEwV0YQyHODG9BcJ11q3OIWx64IbCrJXni2rXSEeDvnjWqCM7/OKb9CW
+        F3wttqKoUF5k3mNw0k1wJjt9Nha0/BnWGprfQmNGcPZ6k46gnWpROdEDMmfEe2V1M4Ev46BBDUMt
+        29b67mmaEIoyn3w8PKM9PzwhwcsKlce8EsiLJECbXYl4sRYbUQZ+ZbQiZBnfu13eDKgajLdbUMLi
+        mIYR8UAvdafh9X/SNAxOu9FpA7LDqbOjCvB4af2VbW3AmzNClzOSzBitKEtDki7ieRix0/Qhq/7k
+        yDKlYRqt5iyhJ/z1DQAA//8DAJ48bezWAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:12 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000053417?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIACVpZGUAA5yP32uDMBDH/5WQZ1sStbb4JkWGm0SYbqt9kcxkW6heJEZKGfvfl4xuMNjTjoM7
+        7j7f+/GO9Rmk6Xp1wikm3jZRTLc4wL0eJw6XTgmcwjIMwRUFPkrH3uaMFXXFUFbX1b7ImrxGZbl3
+        wtly6wkmz6jV5vRd6hT0v8u9XsCay7XxAMpKgWrPzki/oGyURvXcgc/LrEDOc8eFMC46Ok4SVOaH
+        gt00/ojHPEAsf0JtdX/nshZRQr7e+JFObxpkB9ppQxrGIXUEccDI1aDg9R+jFcxW2cUqDXzAqTWL
+        DPAyCXe/6DT4RYQmK7JbhbShJA1JutmtKd0e/e9G/smRJCWx83UU0SP++AQAAP//AwDZ4p3goQEA
+        AA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:13 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000059470?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIACZpZGUAA5SQUWuDMBDHv0rIs5YYY9Q8rggtKA7WwVYKIdPQhupFNGGUse++CCv0YS+7l4O7
+        3/8Hd1/YfoKeZWeuWGCyVlaynOAId3acFNyk6bEAPwzRLwpq1IGt93VdvaOTJ4RytG1DYnHKravG
+        dBdzVnAfSQPd3dFZD26+PY4+/GJAL4tUfT+HHgzPLXpq3xBlRYQO1fa1eal2EWr2iJU05fghM10s
+        aAk2hLIkjxllMc94EpBRmcHA+T9WA4szzjtjQQ1YuNnrCPupDzf00kJQUJLwmBQxTQ4JEWkmCN8U
+        OTuu/5r1nxzhgmQipZuyLI74+wcAAP//AwCXTajycgEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:14 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000059558?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIACdpZGUAA5yQQWvDMAyF/4rxOS12EzeJb6EtrFCSkmaXXoIXe5tYI5fY2Shj/33OyGCHnqaL
+        4L3vSUif1H6gGdoO3qikbCqRC5HRiHa2vyq8taCp5Dzm0Yyi6k1gD/tyUx1KUhbNviqLA9lU9THE
+        nFd+8o8G0d0u7wpB/cotYBesPWpQqH52jOiH26w/InijyWlCHbHPpOjNAN0EPo0O0DjXKq2H0APN
+        BSMlqYttWdVk87A7Nbua1NtoliJyLAjPWZb+jV9fLZoWbcgnWSKymCeMBaBXcAF8+ed4QOfBjx4s
+        qguVfhhNRMerDnfo1mKYtmJ8vWDZYsUbzmQsJBfLJM3P0w8Gc5dja8mEjNdLkaRn+vUNAAD//wMA
+        AG5ftaoBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:15 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000059951?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAClpZGUAA2yQ3WqDQBCFX2XYay2rxt87E7YtJNGghra5ka1u2qU6G3SlhNJ370pSCKVzMzDn
+        O2eY+SLqE8VQN/KDJITO5cex7xCLNKo/cTzXsiUJTl1nXVHkvTDsMs3WkN9D9cjgiZWVcYya61la
+        8U4e1YCS/w5ric1foVET6uF8lfYotWihnOkR1BHSXgyymcHXaZQoxrHmbTuYbmgnDkMo02pfZFBW
+        BWOVBeXK3u7WNvXsrQXbPKtYwV5glxZrC1YpxE7o+7dpp3eFokZl4jzXC93Qi4LIAD2XncS3m227
+        HJb5MwSUhpEFm7yENHtgG1ZegikNqPFJHLXUk5YKeUcSPUzCItOpNQe1tUKT41InsGlku05Fw8Sh
+        ibe4c2P/MD9jEP9zfuJ7Mxd7iwP5/gEAAP//AwAA1xUNrwEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:17 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000063995?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIACppZGUAA6yQ22rDMAyGX0X4Og12Tm1yl2alBBq30K473AQv8TazRC6xs1HG3n0OdFDYLicE
+        Av2ffiF9Ev2Bcqgb9UYyQqdIwjSNiUca3Z8EnmvVkgzHrvMuKIpeOrYq1puScyjyXXnIN1DlPF+v
+        qhU/QMkLN2+ssBO4k4jm3L0LVOKnXStsfkuNHtEO54t4i8rKFvYTb0A/Q97LQTUT+DQahdKYWrTt
+        4KqjFzEFDncP26rc70u+huXmeOPBzt/6sNzeQ8LihXelOykHliaUXfudXjXKGrUzTBgN51HMgukX
+        vVCdwpf/2qfQWGVHqzSKjmR2GKVHxlPrLm1rjc4+oCyZ0cUsYAdGsyjNgsgPwvRx+tIg/+RokrmM
+        Qj+aO+7rGwAA//8DAJTvhHXaAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:18 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000065957?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIACtpZGUAA5yPTU+EMBCG/0rTM7tpWfnqjbhEjQGU3dWwF1KharMwJaUN2Rj/u8WsiQdPzmUm
+        7zzvfHxgNYPQTStPmGGyRBgkQYQ93Kph5HBuZIcZ2L73LijwQTg2v9umO5SnRXqT5VmxR9dl9eBs
+        k+Fm6RdiRrXSpx+pkdA6eSt6PnMtvhdYMPp8aRxAGtGh3cJOSL2idBBattyBL3aSIKap4V2nXXY0
+        peg2LcqnrEK7x0NaZR4qsmdUl9W9q2pE3SPBb+v4rkA0oJzXp34UByQhxAEDl72Et3+MljAZaayR
+        CniPmdFWeNiOnbu/axQsiwgNVyRe+XRPCQuumL9Zh3FyXH7X4k+OhIxEjGzWUUKO+PMLAAD//wMA
+        p/0MeZ8BAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:19 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000067698?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIACxpZGUAA6TQQWvDIBgG4L/y4dkWYxKTeZM2dIesHW3GoAyCS1wnS7QYZZSx/z4DHWyw27wI
+        L4+vn34g+26Uazv9hjgi82IFuykRRp0dz9JcWt0jbsIw4Cs1clTR3u22jdjAUyCEMliJev1Y1TWG
+        ul7Fw5OXflYbZd1Jy++k1ab7lXY2GO8u1/zBaK96OMx0AvsCYlROdzN8DpM2appa2fcu7lGnWZ7D
+        fSVWt82+qmC/E2vYVhgOTQUJJQSDaGoRp8SwEZCSlLKfRedXa1RrbGzKSFamrEjoTQSj1IM2p39f
+        pM3ktQ9eWyMHxL0LCqNw7uPb+taa2EtJwhakXNCkSQjPGc/zZVJkx/lfnPrTEcZJwSlZpiU5os8v
+        AAAA//8DAEF/4re/AQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:20 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000070858?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAC1pZGUAA7SQMU/DMBCF/8rJc9qe0yaxsoU0CAQkKDUDXSKTGGrR2JXjqKoQ/x2nKhIDjNxy
+        w/vu3r37IOaopW1a9U5SglMlyCJGAtKa/iD0qVEdSSkmSXBBteilZ6+y8g6qa8geivo2zyCv6kdY
+        rIuFHx2ccBNTGut2kAtr9kqLb6FRuvXiWu7FUVh5thq1s6eL8KSVkx1sJnYA8wpZL61qp/mXcVBa
+        DkMjus76/scdVZ3xAvKi5EUdAEWEEnj9XJWw4QHkN1l9X3FeBFDmELIwin6uPuyMlo02fneCqyWL
+        2YrFHuiF8ine/sFa6cEpNzpltNiT1NlRBmQ8dD5/1xjtnUKk8QzZLKQckxRpijhHjLfT76z8nYvS
+        aJku6Tyiqy35/AIAAP//AwC90kGx6QEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:21 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000071210?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAC5pZGUAA5TP30vDMBAH8H/lyHM3ktAfo2/FFSzOFjbdqAgltlHD2ktJE8YQ/3fTMUHBF/OS
+        cPl8j7sPok8oTdOqI0kJnU/COKMkIK0eRoHnRnUkRdf3wZWiGKS3Zb4vNpscttW6yOHZUcpj2N1m
+        ByjKGx+frLAXJ09Qa3P8LjUK29/lVju05nz9eERlZQe72U6gXyEbpFGt8PDFTQrlNDWi64y/veaU
+        wn22LnZVCdk+D6DMD1BX2zv/qoFRyuKfwfFdo2xQz0nGEx6xMJx3HYTqFb79u7HCySrrrNIoepJa
+        42RA3Nj52btG46UPixd0teDsgbGUsjSKl0nEn+a9jfzT0TilK0+XPPTu8wsAAP//AwAuoMURowEA
+        AA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:22 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000071259?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAC9pZGUAA6TQXUvDMBQG4L9yyHU3krb7sHdhRld0Haydst2U2EYNa09KmjKG+N9NYYKCd+Ym
+        4eThPSf5IOaMypaVPpGE0HEtWDi7IQGpTNtJvJS6JgkOTRNcKcpWebvbFut8tU4fb4HnuShgwzN+
+        LzYiKyDNVj6gd9KNMlNnOBh7+i6VGqvf5coM6OzlerFH7VQN+Wh7MK/AW2V1JT18GXqNqu9LWdfW
+        7177aRnwJ5HtBWzvoFgL4BuxS1c8DyATz3DY7h786QCM0pD+DOneDaoSjU8JWRjTKJrREbRSNxrf
+        /tVEY++0G5w2KBuSODuogAxd7d9UlwbHlpTNJ3Q5CVnBwoTGCY2mcbw4jv9h1Z+OzhNPo3gazZZH
+        8vkFAAD//wMA6CFROL0BAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:23 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000072971?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIADBpZGUAA6SQUWuDMBSF/0rIs+2SGGKbN3G2DKoOtYyWgWSabmGalBgpZey/L44O9rC33ZcL
+        93z3HO79gOaipW1a9Q45RHNFZB1hGMDWDGehr43qIMcoYsEN1WKQnn1Kd7sKbOJyW4DnCSHCQFJk
+        j3F+uMtyvz464WYuEb06GauV+Bk2SrdeuJe9uAgrv6Mm7ez1Juy1crID1cyOwJxAPEir2nn/ZRqV
+        luPYiK6zvnuaEgSyIq+3RZaWB1DVZZrWAajiHGzKOE8eqqQIQBKDNcUs/O1xfjNaNtp4E4YJYxEm
+        IfXAIFSv9Ot/MpQenXKTU0aLHnJnJxnA6dz5i7rGaG9JEGYLtFoQXGPMccQpWYaUHOdvWPknhxhH
+        K07DJQ1XR/j5BQAA//8DANqCSoy7AQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:24 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000073124?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIADFpZGUAA5SPwWrDMBBEf0Xo7ARJdh2jm3FDYzBJsZ1LLka11VbUXgVJJoTSf++6pNBDL9nL
+        ws6bYfaT2gto1/Xmg0rKltnEXCQ0or2dzgqunRmo5Fxk0Q0FNWlk94e63W3rPWnrY9OS4lA/o8kH
+        FRa1HEcD1vjfU2egx/OjHtVFOf0TP0Nw15twBBP0QJqF9cS+knzSzvQKwZfZG9Ded2oYHG6kHxhp
+        SJU3eVVtSdNGpNiVRf50iEhZkZSlLP7rO79b0B1YNOJraYw6YwhMymDJt3tzDfhgwhyMBTVSGdys
+        IzqfB2w+dBYwRjCerli2ErzlXHImuVgLkZyWr53+l2OpZJmMN+skEyf69Q0AAP//AwD5hdHClwEA
+        AA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:25 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000080255?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIADJpZGUAA2zQ0WqDMBQG4Fc55GoDaxOrot7Z1gthzqIZG72RTLMtTE+KRkYZe/dF6KCD5iZw
+        8v0/nHwT/YVybFr1SRJClxNRLwiIQ1o9nASeG9WRBOe+dy4UxSCtPVT5LgMOVfmcQVrX5S5PeVZD
+        /riDdbFf24bJCLPQQoznXmD3N2oUtv/HrZ7RjOfLwxMqIzuoFzuBfoN0kKNqhYWv86RQTlMjum60
+        t9WMUsjSmsOhSjmHmjuwTR94XpRV5kCxB4951LvOnj40yga1Dd/5jN5v/GAVhnRjzSBUr/D9qv7g
+        li5syxeIYvs5N7qj2OYUTkaZ2SiNoieJGWfpkPnU2Q26RqPt8SgLVzRaeYwzlvh+EgQu84Pjsv0o
+        bzoaJpbSwKVxfCQ/vwAAAP//AwCAK/94rAEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:26 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000084616?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIADNpZGUAA5yQX0vDMBTFv0rIczeSVLPZtzKLE10LbaewlxKb6ILtTckfZIjf3VQm+LAn78uF
+        e37nwLmf2HyAsl2v33GGyTzrK045TnBvxknAqdMSZxCGITmjIEYV2braPDzm5S1q633Tok0VLc4L
+        P2s74Zzoj8Ep793vvdPQX9B6E8Db01ndg/ZKomY2OGReUT4qq3sRwZfgNCjnOiGljTvSjKQcPefN
+        9r68a6sSNW1dFG2CtnlZPRV1gnY5IixNb/7ap6MB1YGJ/nVsyzinhEZgFHrQ8PbPeA3Oax+8NiAG
+        nHkbVILDJGMP2Rn4SaN8QdYLRlvKMsKya7Zcrehh/oFVFznCs4imZMk5OeCvbwAAAP//AwCtazE8
+        rQEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:27 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000089014?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIADRpZGUAA3yQUWuDMBSF/0rIsy1JmlqXt7JJJ7R2qFjWF3EqW5jeiEZGGfvvu651+DCWl+Qe
+        zv0OJ5/UfEDVZYV+p4qy8Xh3jEvq0MI0bQ6XTJdUwVDXzs0KeVOhN/bDJHomQZj6cXLAgRy24Xbn
+        /zz3+3sk9Da3o/Wk+8JAr2HSMg3FBC3MALa7zKWXAb1V32d5WXZ4I4J7jJGQPB0DpD9EDokTP/XD
+        +Ko45BSQtZQep7Pt9s1AlYHB9Q1fr6TrYjs0NLmuNbzO6BPsWmYsskPmNfMYJY+/uUHq/xetobfa
+        DlYbyGuqbDdUDh3aEiuXmQFMEoy7C+YtBE+4UEIoyZeeJ87jf3fVnz7mKr5SUiw30j3Tr28AAAD/
+        /wMAW9kJXbIBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:28 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000092230?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIADVpZGUAA6SQTUvEMBCG/0rIuV3yQVu3t93ag6CtbCsLixBiG93gdlKSFFnE/24iK3jYm8PA
+        HN5n3vn4xOYDlBWDfsclJjHWjHGCEzyYaZZwFnrEJaWEJxcU5KQCu90+L4SwvEdVu3sMvPPSR6Ex
+        1h9RJa05aZC/gtAwXBMHs4C354v8BNqrEXWxwyHzijaTsnqI4MviNCjnhBxHG2qgGSFoX3c96uqq
+        bW5R1+/quk/Q/q7p+rZJu819/ZCgpkKsoIT+NZmPBpQAE1w4zwvOg1c8epI6LPb2ryEanNd+8dqA
+        POHS20UleJnHcNMoDPx40jwlNymjPSlKGpKtsoIf4j+sus5lZcZDrvJ1dsBf3wAAAP//AwArA6XA
+        uAEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:29 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000093751?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIADZpZGUAA5SPS2vDMBCE/4rQ2Q6Sn4lubvChkNgldi+5CMVWG9F4ZfSghNL/Xhlc6CGX7mVh
+        55tl5gvrT5CGD+oDM0yW2aVlTnGEBz3NAu5cjZhRQpNoRUFMMrBdX/U16vpTXfdo355egsU64Rbt
+        KKwVw9Vb6Zz9vXMFwwNt0B6cua/qKygnR9QtBov0G6omadQgAnjxVoG0lotxNGEHum1qdHhu9u2h
+        WZNE6Knt+raJ0LFCJKGU/nXOVw2Sgw7Wgpao3BZxGhoHZBLqpuD9/78VWKecd0qDuGHmjJcR9vMY
+        8o9cQ3iUEFrEZBsntKcJSzOW5xuyy85LdyMfcqRgNGNZucnL/Iy/fwAAAP//AwCs6W0TpQEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:30 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000096223?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIADdpZGUAA5yPy2rDMBBFf0Vo7QRZfiTWTqRehKZyyaPF2QjVVluReGRkmRBK/70ypNBCV53N
+        DHfOnccHthfQTjbmhBkmUxQ5pQmOcGO7XsFVmhazNCYkuqGgOh3YTXlY8bs1R4Lv15XgG7Sqto/B
+        N3jlJ0DoC6qtO31L0kDzW27sCN5db40DGK9btJvYAdlXxDvtTKMC+DIOBvQwSNW2LuRAZ5Sgh7B/
+        VwnEn0pxKCMkymdUV9v7UNUoXEzpT2//bkFLsMFMY5rmJC4ICUCnzNnA239mGxi88aM3FtQZM+9G
+        HeGxb8MHrbQwbSJxPiPLGY33MWFJwmg2X9DiOH3v9J8cyRnJGE3ni2J5xJ9fAAAA//8DAIIX7Wyi
+        AQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:31 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000098758?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIADhpZGUAA6zQXWuDMBQG4L8Scq3lxKrV3LlWWKEfUO3KeiOZybYwPSkxMsrYf1+EDjbY5XIT
+        eM/DG04+qHlHZZtWv1FOYTp5tkgyGtDW9BeB10ZLynHsuuBGUfTK23p/OBSPZLNZejs44aZwK+y1
+        Eyi/o0Zj+ztuzYjOXm+DI2qnJKkmOxDzTIpeWd0KD5/GQaMahkZIaf3t9SIBRk7rarnfVesdKR7K
+        3bEMSHVc1yXxw1NA7sr6vqxWRUC2KxJBxuIwTVj+s+/yalA1aHzhHFgY5/MwTgE86YXuNL7814sa
+        B6fd6LRB0VHu7KgCOl6k31U2Bn19BCwNIQsjVrOIJzGHdAbJ4jz9k1V/Okg5SznAjLH8TD+/AAAA
+        //8DAKW11LjAAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:32 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000101199?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIADlpZGUAA3SQTWuEMBCG/0rI2V0S46rJzaotXlTc3VL2IqmGNlQnopFlKf3vjdDCHtq5zNf7
+        vDDzic0V1Nx2+gMLTFxQQinn2MOdGScJt1b3WAR+RLwfKchROe25LE55hh6LJkdPTXWuUVGmDlus
+        tNu+MFf527YaOixgHYbNdgU73+5Hr+uiQS1LK/t+dtnRlMbomKdVmaHkOXelh9I8SxrUJHWRHT1U
+        JOjgB4TiO3x6N6BaMI5nlDPODxEhTjBKPWh4u7OvUYUeqhcUMU74P9aRIzUsVtvVagNywMLOq/Lw
+        OvXupr414Jx8QsMdiXc+PVEmCBck2EeUXbYHzupPHQkFDQWL9nHIL/jrGwAA//8DAMKJgGuDAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:33 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000101507?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIADppZGUAA6SQTW+DMAyG/0qUc1olgTGaG1vZVolCxccOXFAGaIsGDoJEUzXtvy9Iq9RDb/PF
+        svX4fW1/Y/0F/dy06hMLTF0wyu7oPSa41eMk4dyoDguww0D+UJBj79iqQM9J9hAl6JC+xkWZ5QV6
+        qtJ94UYXI83KHKWC/lI3CtqLUqstmPl83Xqzi4OXpZFdN7vsxsuXPI7RY5Q6k1MS1RFBRXUoYxRQ
+        StApy8skSvcEHWNEfbc3vlKZPjT0DWgnwxn1aMi45ztglGpQ8P4/FwWLUcYapUEOWJjZ9gTbqXNX
+        do2G1ZOyYEPDDWcl8wTdCe5v/R2v17/O/U2OBoIFwgu3Ox7W+OcXAAD//wMArrUJs5oBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:34 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000102212?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIADtpZGUAA6yQQUvEMBCF/8qQc7ck3Zi1uVWtuKBtabuL7qXENmpwO1naVFnE/24KKwh6dC4D
+        876Zx7wPYt9RD01rXokk1BejUcQiEpDW9geFx8Z0RPJlTIMTiqrXnt1k621a1XCZlwXk11CkWVY9
+        3G6TbJ347dEpN2OFRhyP+zeFRn2PG4Ptb6m1E7rheBI3aJzuoJr5EewTJL0eTDuDj9NoUI9jo7pu
+        8N3TjEOWl/UN3CXrDKq6TNM6gCKEPISL/B4EZ/EqgCrfXKVlnWdeS4Cdx4L/vHd4sagbtP5gxM5W
+        PgZOqQd6ZfYGn//Lz+DojJucsaj2RLph0gGZDp3/tGsszu6UiQU9X0SsZktJY7nk4Yrx3ZzSoP/k
+        qJBMSM5CIeiOfH4BAAD//wMAJIZcN9gBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:35 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000102909?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIADxpZGUAA6SQwUrEMBCGXyXk3C5Jdhva3KquRVi2pdpF91JiGzXYTkqTKkV8d9NlBUFvzmEG
+        5v/mH2Y+sHkHNdaNfsUCEx+UsIQkOMCN6QcJc61bLGDquuCMguyVZw/pPqvS8gplZV4V6GZ/6Wes
+        k24RCwVg5+5Ngpbf7VpD81tqzARunM9iBdqpFt0uvEXmCaW9GnWzgI+T1aCsrWXbjr4uVjm6yO8R
+        44QE6MC4T+lut31A13mZbQNUpIgmm5iFC/HTYngxoGow3oNTwnlCyQnope40PP9jhQbrtJucNiA7
+        LNw4qQBPQ+vvaWsD3pERykMSh4ze0bWgkWDrFY/i4/KLUf3JES4oFxFdbSg74s8vAAAA//8DAEnY
+        81O0AQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:36 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000105495?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAD5pZGUAA5SPy2rDMBBFf0VobQc9YifVLkldsnBqiF0CoWBUW21E7VHQgxBK/71ySaGLbjqb
+        gbnnzsz9wOYCyradfscCk1iUZPO7DCe4M+NZwrXVPRYQhiG5oSBHFdlDUW626DkQwnL0UO3XRY3K
+        chONzks/ETvpnOxOwSnv3c+81dBF7V4N8iKt+r4TwNvrTXgC7VWP6ol1yLyi1ais7mQEX4LToJxr
+        Zd/b2CM9z1C92VZViepmXxRNgtZV3VSPCdqtEGGULH/7zicDqgUTjTldpBnjKc35lHWUetDw9t/N
+        GpzXPnhtQA5YeBtUgsO5j7/3rYG4hhGap2SZMtpQLlgmMjJji+Vxym3VnxzJBV0IPp9xzo/48wsA
+        AP//AwBo0sB5ogEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:38 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000106077?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAD9pZGUAA6SQQWuEMBCF/0rIWZdJVt2uN2ttEYoWtRSWBUk124bqRGKkLKX/vRG2UHropXN5
+        MO+bN8x8UP2O0rSdeqMxBVcMItjtqEc7PU4Cz63qaYzLMHgXFMUoHfuU1U1WFeQ2L5IizZN7kpbV
+        Q1klTV4Wbny2wq5cKgZ10gaV+G62CrvfRqcXtOZ8sR5RWdmTeqVnok8kGaVR3Qo+L7NCOc+t6Hvj
+        1NERADnS6yMldVNlWeMk2xDOIfBInRTkJs/uSo+kCdlzBswPQtj9TJpeNcoW9RrF9n4YBD7wCBwy
+        CjUofPn/LoWzVXaxSqMYaGzNIj26TL27r281umAOnLm1PmwbxmK4ijlstiE7rL8x8m+O8/BAP78A
+        AAD//wMAV3LRH8sBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:39 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000107136?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAEBpZGUAA6yQUWuDMBDHv8qR51QSbXT4ZjuhQrCjphvrizjNtjC9FI2MMvbdF6GDMfa44+Dg
+        f7/7H3cfxL6jHuvWvJGUMB+cJTyKCSWtHc4NXmrTkRTnvqdXFJtBe/ahkPkjbA77KlhlRakOeQ7b
+        7K5QmaQg5dY7TK5xC6o0op4mrb+12mD7S2/tjG68XDtHNE53UC3wBPYZskGPpm08+DRPZpmqm64b
+        ffX0msHmeFD7EnaFlBVs5P1tQKE6FiqHSDAKZVbt7n0vp6BKiJKQi59W51eLukbrvWIuIBQC4nXE
+        PTI0pjf48g/LDE7OuNkZi01PUjfOmpL53PkLu9qidw5ZyFaMryKuwjBlPpMgTsRp+c6o/+Z4Gol0
+        HQdxeHMin18AAAD//wMAiulIz84BAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:40 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000108572?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAEFpZGUAA5zQUWuDMBAA4L8S8mxLolaDbyKh9WFuqG2hL5LFbAvTi2jCKGP/fXF0MNiedi+B
+        u+/ukrxj8wZq7qR+xRkmPihhuzTEAZZmnARcO93jDNwwBDcKYlTenutyf2hRWZ14097XDWp4fSoL
+        7jOF716ssCsrDICSVktnv7OdBvmrIo0DO19vtSNoq3rUrHxB5gnlo5q1FB4+ukWDWpZO9P3sT69p
+        mqKzvwV6OLZVfofyE6+OPED7mvPqXBaHABUtIgmLyM8B04sB1YHxE0ISpSyKY0I9GIUeNDz/e4GG
+        xWrrrDYgBpzZ2akAu6n3b+k7A1/raLIhbBPSlkZZxLIw3u5idln/YVZ/OpJk1Du6ZWl0wR+fAAAA
+        //8DAAp1HRe4AQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:41 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000108634?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAEJpZGUAA6yQUWuDMBDHv0rIs0rUKK1vwSktdBZmy6AMJNN0O6aXEhNGGfvui9DB2MOelofL
+        cf/f/Y+7D6rfUZmuhzdaUOZfzFZ5ymlAez1dJF47GGiBbhyDG4pyUp59PO7qOiAb0bRVQ54cY0lO
+        yn3kO2cr7YKUcoSzNgjyu9gB9r+FXju05nqTjghWDaRd6JnoMxGTMtAv4LObAdU8d3IYjP89HTNG
+        2vvtYUMeRFP6uBd3AWmP20NF0pT5VDReqkW1C0gpyJqvWfrT6vKqUXWovRePs5AncbhaM+aRScII
+        +PIPwwBnC9ZZ0ChHWljjVEDdZfAbDp1G75ywJAlZEsb8EOdFxos0i1KWnZbrGPUXx6Oc8xP9/AIA
+        AP//AwBpNckPyAEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:42 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000200217?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAENpZGUAA6zQ0WrDIBQG4FcRr9OiWWxa70LaboXSQJJBKYPgErsdlhyLUUYZe/cZ6GCMXU4E
+        wf/zF/2g5h21bVp4o5KyMOIweUoj2prhovDaQEcl+r6PbhTVoINdF+v7DXnygS9IXhzDidEpN0W5
+        6uFsLIL63mwA299Bazw6e71FjwhOd6Sa9EjMmWSDttBO8NmPgHocG9V1NqxBCyFInu1326I87DJS
+        1eVmU0ckYfUD2e6LooxIlR3ItswO+a7Kiyhosko4S372XV4N6gZNKEy4WC05TzkLYFDQA778132A
+        owPnHRhUPZXOeh1Rf+nCS7vGYKiPGV/M2HIW85otpVhIEc9XLD1Nv2T1305IkcpEzBm/O9HPLwAA
+        AP//AwAFQBTxyAEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:43 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000200648?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAERpZGUAA6SQTUvEQAyG/0qYcysz3e0HvVUtuOC20nYX3EsZ21EH20zpTJFF/O+msIJevJhL
+        IHnyvkk+mHlHNbedfmMp4xQB59E2YR7rzDhJPLe6Zykuw+BdUJSjIrYq91lRwnVVNnd5VUNW3MJN
+        uX/Iikcatk66ldoNg0aj7Xep1dj9LndmQTefL40Daqd6qFfWgnmGbFSz7iSBT4vVqKxtZd/PlIkW
+        YcShJntaBbJjXhxyD+rDrslBbDj3ID9mRd2UhQe7e4joNvFTaHo1qFo0pJRsYz+JIj+OOSdklJoW
+        fPm3lUbrtFucNigHlrp5UR5bpp6u61uDpBvwIPAF90XSiCTdilREV/EmOa2fmdXfXBgGJ/b5BQAA
+        //8DAHtZW6DDAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:44 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000200724?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAEVpZGUAA6SQXUvDMBSG/0rIdVuSrEvX3M1R2MCu4DrBIZTYRg22JyMfyBD/uylMUPDO9+bA
+        Oc95z8cHNu+gbNfrNywwiWKEFCzHCe7NdJZw6fSABYRxTK4oyElF9lDv2m2C6qa5q9BjiI0cbZos
+        Njov/UzU2jkTrP5OdRr63+neBPD2ci0cQXs1oMPMOmSe0XpSVvcygk/BaVDOdXIYbIyRLqLQTbPf
+        NnVdofV9lSXocNy1FWI5IQna3K4f2mY/b4j4gpLlT5vzqwHVgYk+C5qnec5TymkZkUnqUcPLPwdp
+        cF774LUBOWLhbVAJDuchXjZ0BqIrI5SnZJUy2lImWCFImdElP81fsepPjnBBc8FIVtLVCX9+AQAA
+        //8DADLnBOC7AQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:45 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000201772?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAEZpZGUAA6TQXWvDIBQG4L8iXqdD04+43HWdtIU2hWnH6E1wiVtlybH4QSlj/32mdLCL3c0b
+        xfPwHj2f2J5Bu7oxH7jEJK2c0KLIcYYb258UXGrT4hJi12U3CqrXyXIh+AtaV89cyC2vJNrOq/mS
+        X4+LHdpsFinDBxUGvFXeq+YYvQ7B/9zXBppUe9SdOiunry0jBHe5FfZggm6RGKxH9g3Ne+1MoxJ8
+        jd6A9r5WbevSnjTNp2i1Xq6QkE+cywyJ/VpyRBkZZ+hhJ+SuytIbEckpJb8jTkcLugabMma0mLB8
+        wooB9Mp0Bt7/0cKADybEYCyoDpfBRZ3heGrTf9raQkpMw56NCBvlVJL7krBywu7IjB2GWTj9t5uW
+        U1aOkxsXB/z1DQAA//8DAPO0s3fBAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:46 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000225816?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAEdpZGUAA5yQUUvDMBSF/0rIczfTtA2zb6GrczA76boJQyixjTPYJiNNkCH+d29hgwnig3kJ
+        OfnuOffeT2w+tLR1o95xigkcSpNZyHCAG9MfhT7VqsWp9l0XnFEteglsuX5a8WKOnj3UMJSt0bLY
+        5ZvqIS8qeG2LTb664fMdOA1OuLFkIY09KHFRaqWbH2pjvHb2dNa3WjnZos2IDsi8It5Lq5oRfPGD
+        0nIYatG2Fm6goyiJ0GPOs/uqzHNUrvk8QEmSIF5BmxVHd8uCF9mSr1AGHeZlcPkJ0IKjiESUXTsf
+        34yWtTZgHZMYNpJECQGgF6pT+vBH8r9ylR6cct4po0WHU2e9DLA/tjB7WxsNMZSEbEJmExpWIU1J
+        nNJ4ehuz/bg3K3/lCEsBjdiUstkef30DAAD//wMAKE56kOwBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:47 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000276101?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAEhpZGUAA6SQUWvCMBDHv8qR56pJ2mrsmxOHbqWF2iGVQcnabAu2iaQJImPffSk42GBvu5c7
+        /ve7/3H3gfRFCVM38oQShH3QxZxgggLU6P7M1bWWLUqU67rghireC8/eFbt9mafwkG8zOMCz86Nz
+        WOewy9Ywy6qZtxgstyObiQtU2py+pVqq5rfcaKesud4aT0pa0cJ+ZAfQr7DqhZEN9+CLG6QSw1Dz
+        tjU+ezpicFilKezLYrMpAyCs3MJ9mudFANnmAFVePPqqAuLPiyd0GS5+Gp3ftRK10t6JEhqyZcwY
+        9kDPZSfV278XSTVYaZ2VWvEOJdY4ESB3bv1tba3VuBaT+QSzCSUlXiQRTSibhhQfx78Y8TcXJ3GU
+        hGQaL6Mj+vwCAAD//wMAjgROQMcBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:48 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000310051?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAElpZGUAA6SQUUvDMBDHv0rIczeSdO1G38qs23DdRs1Q9lJiGzXYXkaSMof43b3JBB98Mwd3
+        3N2P/5/LB7Un0K5uzBvNKMMXc8YSTiPa2P6o4FyblmYwdF10RUH1Gtm71WZB1nu5LCoyz3crma9J
+        mW/yRVEWG0nm22qHIj6ocKGlflf+p68NNDi70Z06Kae/vQYI7nxd7MEE3ZL7C+uJfSZ5r51pFIJP
+        gzegva9V2zqsSMeMo1tZFtW8IPf7lSwITxmLyO22kuQB0zIi8pFMU87Eb4njqwVdg0WNGZ/GscBI
+        EOiV6Qy8/MPCgA8mDMFYUB3Nght0RIdji/e0tQVUFIynIzYbCS45y0SaJbPxVMSHy184/SfH0oxN
+        skkyFjE70M8vAAAA//8DAKprTd26AQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:49 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000312069?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAEppZGUAA6yQTU/DMAyG/0qUczcl/WLLrbSDTivdVFah7VKVJoKI1pnaRGhC/HcMDIkDR3yx
+        /OqxX9tv1LyCGptOv1BBGUbAfRYvqUc7M5xaODdaUhGi5F1QaAeF7HVSpUVyuCe7IkV6sq1FGVzf
+        X4pGQ/cjdMaBHc/fEq1BWyXJRsOTNAM2P7pJg5qmppVyxIwMJ2leV2m+Lgp0SNKVR9KkTKoDeciT
+        6sYjxbbMtqVH6nK9X2Vksy5vs+0dWfGQRPnu99DTswHVgPk6MAx9PDEI2TLyERpa3eMa/2qsYbLa
+        OqsNtD0VdnTKo+4k8SeyMYAePuPxjC1mPt+zK8EjwRdzXOj4+fVR/c1FIgpEGM1jFh/p+wcAAAD/
+        /wMALGrKXrgBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:50 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000312272?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAEtpZGUAA3yQTWvDMAyG/4rxOSm2kyadb6FzWVnTbEk/aC/BS7zVLLFLbDPK2H+fAx3sUKqL
+        QHpeSa++of5SYqgb+QkpRD4iTEhKYAAb3Z+5utSyhVS5rguuqOK98Oy8yPNivWfZavME2Ot2uTmA
+        ipW75ZxVAVit5n6EsdyObM6N4c3JGWGt+avXUjU3eo12yg6Xa3erpBUtqEaBAfodZL0YZMM9+OaM
+        VMKYmrft4LOnyQOosv2BlaAssscA7MfjsjwAeQYQiadRGMWz6L/2fNJK1Ep7cTrDYRolIUoR8kjP
+        ZSfVx53pxZqB7Xq5Y2U1mi8WC+8dvGTl853NUhkrrbNSK95BagcnAujOrffX1lqNaxBBIcJhhDeE
+        UBRTjCdTlBzH3wziNodpNKVxMknI7Ah/fgEAAP//AwAoMsEH1QEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:51 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000312348?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAExpZGUAA4SQXUvDMBSG/0rIdTuSbG1n7mrptNCPsfbGIZTYBhfsTkaTIEP872bgZBeKuUk4
+        ec7zHs4H1u8g535Qb5hj4s+SsuVqjQM86ONJwLlXI+bgpin4RkEcpWfLpqmKFrXpU5m36NkRwmKU
+        NahEW99srLAXqhLGiOHgjLTWXOu9guHqHLQDO59vSy/OKJDG9GIcZ397TVPnaFPUaZ0VaYmybheg
+        Mn/wz5/calsW/jsPEEu6R7Tx43novmm7pg5QlSLCKKX4xn46aJA9aK+PaRImq3VIk/iCHIWaFLz+
+        nZ/XXb77N0mBsco6qzSICXM7Oxlgdxr9BsZeg9cyQuOQrENGO0r4MuFRsljdRfvL9mf5K0diTiIe
+        RYuIkT3+/AIAAP//AwDrHj7mwAEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:52 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000312955?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAE1pZGUAA4yQUUvDMBDHv0rIczeSlXZp3soWtNB10nZO9lJiGzXYXkaTIkP87qYwQUTEezm4
+        +93/f3fv2LyBGptWv2KOiY+QrpIowgFuzXCWcGl0hzlMfR9cUZCD8myxL+tbURZok95ldZqjXVqk
+        N2Inihrl+cYLWCfdTB61bQ1YDV+1RkP7o96aCdx4uXYOoJ3qUDXDFpknlA5q1K304OPkB5S1jey6
+        0WdPM781Eg8bkVfZvkTbElWHrBZoRWjgt9pm1b4I0DFDUbim6wVNIvpd6PxiQDVgvFJMGAspI5R5
+        YJC61/D8l1F2L/7lpcE67SanDcgeczdOKsDTufPndY0BL+3n4wVhixWtKeWUcJIsE5ac5teM6leO
+        xJwwHsZLEoUn/PEJAAD//wMAlltaAsoBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:53 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000314169?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAE5pZGUAA2yQXWuDMBSG/0rItQaj1rTerZ1lQluHWhi9kUyzLUyTkg9GGfvvO0IHHTQ3Ce95
+        zpOcfGP9pYTpevmJcxzBSmhKsxUOcK+nM1eXTg44V34cgyuq+CSAbYu6LndoXVftU1E3ASoPGwJt
+        1nE31/fSWu2N/Is6qfr/ca+9cuZyLRyVdGJAzcxapN/QwySM7DmAr95KJazt+DAY2IGmEWMMNcdD
+        U7So2m7LTYEeaxJAVLYFSiiDY0vQrjqW8LZ9hbKExuxWdv7QSnRKgw1mXmWLKElTACYuR6neby57
+        JhVB6+oFzQoQh3fcCYVWqayTzjupFR9x7owXAfbnAUYaOq1AFUc0C6NlGNOWxnnK8nRFWLo4zd9h
+        xF0uynK6yJMlyWJ6wj+/AAAA//8DAOPCQSWyAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:54 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000314949?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAE9pZGUAA6SQy07DMBBFf2XkdYrsJoQmu9BaUJE+lLgLuolMYsAiGVexA6oQ/44jFSkS7JjN
+        SHPP3Hl8EvOBqq9q/UZSQn2ELEqihASkNt1J4rnSDUlxaNvggqLslGfvcr7d8BUHURxKAcsdbDPf
+        ZZ10o7xXiPbcvkvU8qdcaax/S7UZ0PXni3hA7VQD5chbMM+QdarX9Qg+DVajsraSTdP77OndlkO+
+        vuWFeIR9ni35rDysBQc2pzQAFl9T2GTFAxdQioJzMXU5vRpUFZpxo/t1nq147nMG+wxYwmjo2U7q
+        VuPLPwYGMPUOpuYardNucNqgbEnq+kEFZDg1/vCmMuiHzSmLZ3QxmzNBkzSK0jC8ihfRcXxar/7m
+        4pTSNPJcfHMkX98AAAD//wMAfwG8Ft8BAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:55 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000314965?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAFBpZGUAA6SQwWrDMAyGX0X4nBa7ids0N5N1bSE0pUkuvQQvcTezRC6Owyhj7z5ndDDGbtNF
+        SPr0/0jvxLyhsnWjX0lCqI+QReslJwFpTH+VeKt1SxIcuy64oyh75dlUHPelyGBbidPDXhygPFVF
+        CWnuVwcn3RcjO30xFrX8btYam9+Dxozo7O0+qlA71UIx0QOYC4heWd1M4NM4aFTDUMu2tT57OgxD
+        KPKq3MEuP26gKAPg3FePWQBZXoA4bDfZpgggFbCmdMV+ylxfDKoajddZsDCKl+sFpR7ope40Pv/T
+        RuPgtBudNig7kjg7qoCM19bf1dYGJ1PKljMazxaspKuEsySM54zx8/QTq/7meMKjhK/mMYvO5OMT
+        AAD//wMAQKPpKL8BAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:56 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000314969?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAFFpZGUAA6SQXUvDMBSG/0rIdTuSttva3NUt4NC1kkZHd1NiGzWsTUaaMob4381kgoJ3npsD
+        73nOez7eoTlpaZtWHSCByEeMk2yRwQC2ZjgKfW5UB4me+j64oloM0rMF3YG6ZHeg4jmngNN8dUtZ
+        BRjlG0a3tOCgqitOt95qdMJ99cgTqI09fEuN0u1vuTWTdvZ8LTxq5WQHqgs7AvMC8kFa1QoPPk+j
+        0nIcG9F11mdPYwRWJXso2WWfXVmuK7BmmycagPz+Ji/qABQ1wFGEcRjF2fynyfHNaNlo413mOA2T
+        ZBlGyyjxyCBUr/Trv8YoPTrlJqeMFj0kzk4ygNOx81d1jdHeM0J4EaI0jDDHmKCEIDxLl/H+8hEr
+        /+TQgqCUoGwWz9EefnwCAAD//wMAlx9PrskBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:57 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000314984?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAFJpZGUAA6SQXUvDMBSG/0rIdTfatKkzd0U6Vtgy6YfCbkpsowbbk9GkyBD/u6dDwQvvzE3I
+        OU+e9yQf1L6DntrOvFFBQ1xxlNxuEhrQzo5nBZfW9FTAPAzBNwpq1MjWu7J4yGVNtoXM5F2R7cn2
+        WJJ9U+/yMpMVGpxXfkEPBkA769VPrTXQYf3RuM6CM3BNm8FPl+9OA8brnlQL7Ih9JtmoJ9MtgqcZ
+        L2jnWtX3E+5Ip4xjdlPWO5LhSE1OqiOOEZBDIWWe3R/3RYUHSThPIv7bcX61oFuwiyRicRLesCsw
+        KjMYePlPhgHnjZ+9saAGKvw064DO5x5f1LcWUMnCKF2FmxWL6jAVMRM8XrM0OS2/Mem/OS54JDhf
+        M7450c8vAAAA//8DADDDVG2+AQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:58 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000315014?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAFNpZGUAA6zQzUrEMBAA4FcJOXeXpD/ZmltZC1alLdsuwl5KbKMG20lpUqWI724quyDo0bkM
+        zHzMMPOB9TvIqWnVK+aYuAhoRGiIPdzqYRSwNKrDHOa+984UxCCdLbN6n2SHHO0Lh40V9rsqAczS
+        vwlQ4lJuFLS/W62ewU7LuXkEZWWHqtUbpJ9QMshJtSt8nI0CaUwjum5y2WnKIlQXD3l1k5XoPstT
+        dCiSaw9Vx6xOUeCu8NBtmt9l+ao8VCaIXpGQ/Zw2vmiQDWg3zqdRHO/YjhAHBqF6Bc//s02BscrO
+        VmkQPeZ2mqWH57FzV3aNhnU3oWxD4o1Pa0p5EHPf37KAntYPTfJPRxinhIdkSxg54c8vAAAA//8D
+        AA4ZlMbDAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:02:59 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000315027?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAFRpZGUAA6yQT2uEMBDFv0rIObsk/jc3KS71UIVVabsXSTVtQ3UiJtIupd+9EXZhDz12LsM8
+        frzHm2+sP0EuXa8+MMfUjc9C6sWY4F5Ps4BzpwbMYR1HckFBTNKxdXasDsUDOmTP+cnhxgq76Y38
+        EuZ6dwr6G63XK9jlfFFbUFYOqN5Ag/Qryia5qF448GU1CqQxnRiGxe3N47FC91VbN1WJ7vKyyY8E
+        pTR1+WVZlATVbdHkyEtpTK4cQc0TimPK6K3l/K5BdqCdZ8z8KAyCIAkcMAk1Knj7x0gFxiq7WqVB
+        jJjbZZUEr/Pg+g6dBpfgURbtaLLzWMM8ziLuJ3uPRts/+0X+ydGIM59Tf++n4Qn//AIAAP//AwBu
+        +oc7wQEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:03:00 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000315032?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAFVpZGUAA5yQwWrDMAyGX8X4nBQ7Sd3ON7dkI5DEo00uvQQv8TazRC6xwyhj7z4XOthgp+ki
+        kD79+qUPbN9Bz11v3jDHJERK1yRNcIR7O50VXDozYA7LOEY3FNSkA3tsRJOje3GoUNU2rSiRaBtZ
+        yV1R5qioj+1B1Psc7WWQcl7560wxjgascd+lzkD/u9zbBfx8uTVaMF4P6HhlHbLPSEx6Nr0K4NPi
+        DGjnOjUMc8iBlnWOfrh6LMVJRGhXSlkV9UMj6wgVJWJ0Q8lPgfOrBd2BDQopuYs3jMXbjNKATMoE
+        Yy//XmHAeeMXbyyoEXM/LzrCy3kI1wydhaCXEMpiso0T2tCEpwlfZyuapKfrJ2b9J0cYpxnP2GrN
+        6Al/fgEAAP//AwCMXJ/JwQEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:03:01 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000315066?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAFZpZGUAA5SPzWrDMBCEX0Xo7ATJipREt7R1T3EDtnPJxai22ojaK6MfQih998olhR56yV4W
+        Zr4Zdj+xvYB2bWc+sMQkDaOcCIEz3NlxUnBtTY8lxGHIbiioUSf2uazQfv+YQB9UmJVSea+6c/Q6
+        BP+rtwa65D3pQV2U0z+9EYK73owjmKB7VM+sR/YN7UbtTKcS+Bq9Ae19q/repZ3ofMVRfSzLokJ1
+        UxVFk6GHQ90cXjJU7hDJc0r+BqezBd2CTUlB13xNBGPbBIzKDAbe7y424IMJMRgLasAyuKgzHKc+
+        3d63FuYeQsWCbBY5bchWMiYpXfJcnOa/nf6f45Jv5YosN5yd8Nc3AAAA//8DAI1GznCSAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:03:02 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000315080?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAFdpZGUAA4yQW0vDQBCF/8qwviZhN2kuzVtaVxNsk5JLlb6ENVl1sdktuVBE/O9uoEIfRJyX
+        Gc58zDnMJ1Jnyfu6Ee8oRFiXQ1wcYGSgRnUnJj9q0aJQTsejcUEl67hmV1H6ANkdxNFjlCSaH0Y2
+        zouYnZkQP0ItZHMtNmqSY/9xkSspRt5CMZMDqBeIOt6LhmnweRqE5MNQs7btddd0ku5pUW5pWkJB
+        832ypgXc51m1M4A4GLY0X8fRvCxzSksD4izNNtWm0lMCSy/AtukQH18fP70pyWup9PUAB6a3XJgL
+        3w000jFxFPL1P/ZwS3cl3Ph4acDOyixYZU8wO/0VQchhFOM0CiXZEYVjP3EDTadWf6KtldR+Niae
+        qUPZpMR+iEmIsRV4+DB/see/c27oOqFjWwSTA/r6BgAA//8DAM+M5dbeAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:03:03 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000315297?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAFhpZGUAA5yQX2uDMBTFv0rIsy2J/1p9czYDwZqittC+SGayLUwTiZFRxr77Uuhggz3tvlw4
+        93cO994PqN+VMF0v32AKkasAR36ygR7s9Tgxde0kh6lahsG7o4qNwrGH40NZ5IDsDyU9E9KAmrRF
+        TfakakHWNDQvsragFaCPIKclrbMddaGzZfbmzvWgDeP6W+qk6n/LvV6UNdf74KikFRw0N3YG+hlk
+        ozCyZw58WmapxDx3jHPjuqNxgDA4kKpqzuUpq4oMNG1NSOuBHalOpPbcSmCLfBT89E+vWolOaRcQ
+        oGAb+EkUIQeMTA5Svfw3X6rZSrtYqRUbYGrNIjy4TNxdwjutXJyPcLxC25WPW4zTMEnDeJ3E0eX2
+        BSP+5FCcOtQP15swuMDPLwAAAP//AwCLesM1xwEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:03:04 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000315498?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAFlpZGUAA3yQYWuDMBCG/8qRz7ZNrIr1mxPrBKmj2g8rA8k028L0UkzCKGP/fSl0sMG2IxB4
+        8/Bc7t6JekMxd718JQmhrtYsDDYx8UivphPHcycHkqAdR++KIp+EY4t6m+/gwVLqR1BUddPc5PsC
+        qiqDVVmtnEAbbi5kOY4SldRfUSex/xn3yqKZz9eHA0ojBmgurAb1BOkkZtlzBz5aLVFo3fFhmN3t
+        6CAMISvb++2+3rVwV6XHFJo2h7WbxYPstszSovagrCCiEWPfJacXhaJD5Sxr5sd+zBilDpi4dF97
+        /rPJ/3qJ2khjjVTIR5KY2QqP2NPgphk6hc7mUxYtaLzwWUs3SRC6s/TDzfGyiVn8zkUJpUlIlyyg
+        R/LxCQAA//8DAE6/G3i3AQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:03:05 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000318989?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAFtpZGUAA5yQwWrDMAxAf8X4nBo7TZzEt5ZttJAsY3QwejFebFqzRA6JzShj/z63rNBDT9NF
+        SDw9JH1j9wVmkp39xALTGEtWVmWFE9y5YVRwklZjAaHvkz8U1GAi+7StUe11BGevvLkyl0Ja6K6N
+        zgXw0+m29RFmC2aepdJ6ijnaXkhL0Lp9RxvSEMQLmqDNqtnWu/Y5QevH1+btYYXO61F8Mz8eHRgJ
+        Lgo4K3K+LNgFGJTtLRz+67cwe+uDtw5Uj4WfgklwGHW8TEsHUZdSxhe0XKRsRyvBMpGVpGJ8f37b
+        ZO5zucgrQTnJ8nSPf34BAAD//wMA0Ijb+HkBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:03:07 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000320376?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAFxpZGUAA5yQb0vDMBDGv0rIK4VupO3Wf+9CLdJhM1k7hb0psY0abC8jSRlD/O6msIGIrzwO
+        Du5+zz3cfWJ1AqHbTn7gDBMXYUDCOMIe7tR45HBuZY8zmIbBu6DAR+HYKt/RAuX0sWzoA6ooo/dF
+        VbAGlSx3amO5nTEmTmgjtBHna7OV0P0edGoCq8+X0R6kFT2qZ9og9YroKLTsuANfJiNBGNPyvteu
+        OjoIibO/K+stQ/SpYPvCQ9V2tyvrZvvMPMQ2iMRpRH6qj+8KRAvKyW/SOLxFYRIvfJLM0MjlIOHt
+        fw4SjJV2slIBH3Bm9SQ8PB17d0nfKpiXET9akGQR+I1PslWarf2lvw4P8xe0+JMjUeZytV6mq+CA
+        v74BAAD//wMAQENkJbQBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:03:08 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000350894?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAF1pZGUAA5yQwWrDMAyGX8X4nBQradLUt7B6UNY2pWkD6yV4ibeZNXKJnY0y9u5zRgeD7TQd
+        JND/6RfSOzVvqPq60S+UU+YjTlg2n9KANqY7S7zUuqUcIGPBFUXZKc+WYkmWm0qU+7XY7EtyU/gZ
+        66Qbxa1CtJfTq0Qtv9u1xua31JgBXX+5igfUTrWkHHlLzCPJO9XrZgQfBqtRWVvLtu199TSQ250Q
+        i2JNqny1EvdksVtWIiBFflcGZJsTmE+TNARg7KfB+dmgqtF4hxRYOvPpC+ikPml8+vcCjdZpNzht
+        UJ4od/2gAjqcW39LWxv0fhGDNGRZGMEeIh5FHNgkSdhx/EOv/uRYyiHm8WySQnykH58AAAD//wMA
+        cgRvfbABAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:03:09 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000351262?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAF5pZGUAA6SQTWvDMAyG/4rxOQ2223zMt9BmW1lIRtKutJfgJd5mmsjFcShl7L/PgRY22G26
+        SLx6pBfpE+szSFM36og5Ji7mAWUhwx5udH8ScKlVizmMXeddURC9dGz1XK7zh2KXoaSqiuU62aQV
+        yrKlmxyssBOSyzPaa3O8SbWC5rfc6BGsuVwbW1BWtqia2AHpN5T00qhGOPB1HBTIYahF2xqXHR2F
+        Edo8rssVSl7SfJt6aM7yFbrPiqL0UJ7u0L4on1y1R5QQGv3ccvrQIGvQbg2jzF8sAj+KWeiQXqhO
+        wfv/fBQMVtnRKg2iw9yaUXp4PLXurrbWMLkSGs5IPGN0Q2I+DzkhfrQID9NPjPybC3gQ8iD27yJ6
+        wF/fAAAA//8DABeoP/S6AQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:03:10 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000354204?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAF9pZGUAA6SQT0vEMBDFv8qQk0JX0v81t66tUlhb2baL7KXENmqwTZYkZV3E724qK3jw5lyG
+        YX7vPWY+kDwKprqevyGCsC0/DDwcIAf1cjpQcer4gIiYx9E5o4JOzLJZcZ+XdVGV6QZu2zKDNNsV
+        dbWtYfNg1dpQs2ANe6f6Z+646BcpG+mRKvYdMgujTudFK7hhA9QLq0E+QzoxxXtqwadZc8G07ugw
+        KNstHfkYwzrP4Sbd5bCt0syBdVtssqK8g6rMHUjbuilKB5pHiJM4iH77HF6lYJ2Q1ugidL1L8HG0
+        igOMLTRRPnLx8t8sLrThZjZcCjoiYtTMHDQfBnvd0ElhbT3sRiucrDy3wQkJI+KGV0ng75fPKPY3
+        F5IwJv71lR+7e/T5BQAA//8DAJPaLk3BAQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:03:11 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/owners/0000354497?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAGBpZGUAA5yQTUvEMBCG/0rIuS3pdze3sta16C6lH4p7KbGNa7CdlDRFFvG/m8IuKHhyLjO8
+        88w7zHxi+QFctZ14xxQTE34YBJsYW7iT48Tg3IoeU1iGwbqgwEZu2OK2QvnhMavqfXao13rrmKlZ
+        M722d1yqk2BXpRXQ/VI7uYBW54vegNC8R9WKzki+onTkSnQr+LLMAvg8t6zvlcmGdlFR5vuszLcp
+        KtLy/il9ttBN89DUdxbapcgnZLOxzS3uz/npTQJvQRqDICZ2GAV2HCUrMjIxCDj9d4OAWQu9aCGB
+        DZhqtXALL1NvbulbCcbOIx6xiWv7bu15lATUJU4SRcf1D4r/zbnUD2kQOZGXHPHXNwAAAP//AwAW
+        S1mXqAEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 27 Nov 2023 10:03:12 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1
