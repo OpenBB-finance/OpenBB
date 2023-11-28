@@ -8,7 +8,7 @@ from openbb_core.provider.standard_models.lbma_fixing import (
     LbmaFixingData,
     LbmaFixingQueryParams,
 )
-from openbb_nasdaq.models.query_params import DataLinkQueryParams
+from openbb_nasdaq.utils.query_params import DataLinkQueryParams
 from pydantic import Field
 
 

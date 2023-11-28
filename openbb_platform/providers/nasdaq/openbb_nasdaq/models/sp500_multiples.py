@@ -8,7 +8,7 @@ from openbb_core.provider.standard_models.sp500_multiples import (
     SP500MultiplesData,
     SP500MultiplesQueryParams,
 )
-from openbb_nasdaq.models.query_params import DataLinkQueryParams
+from openbb_nasdaq.utils.query_params import DataLinkQueryParams
 from openbb_nasdaq.utils.series_ids import SP500MULTIPLES
 
 

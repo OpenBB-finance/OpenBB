@@ -10,7 +10,7 @@ import pandas as pd
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.cot import COTData, COTQueryParams
 from openbb_core.provider.utils.helpers import to_snake_case
-from openbb_nasdaq.models.query_params import DataLinkQueryParams
+from openbb_nasdaq.utils.query_params import DataLinkQueryParams
 from openbb_nasdaq.utils.series_ids import CFTC
 from pydantic import Field, field_validator
 
