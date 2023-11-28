@@ -97,7 +97,7 @@ Where the last line (poetry.plugins) maps to the provider defined in the `__init
 
 ### Install your dependencies and package
 
-The next step is to install the dependencies.  We use poetry for dependency management, so from our new directory, we generate the lock file uisng:
+The next step is to install the dependencies.  We use poetry for dependency management, so from our new directory, we generate the lock file using:
 ```console
 poetry lock
 ```
@@ -109,4 +109,4 @@ This will install the extension in editable mode, so any changes we make will be
 
 ### Use your provider extension
 
-Once this is installed, you can use it directly in the openbb package.  If you wish to add this to the repo, please follow the instructions in the contributing section, which enforces QA guideleines for adding tests and ensuring the package is implemented properly.
+Once this is installed, you can use it directly in the openbb package.  If you wish to add this to the repo, please follow the instructions in the contributing section, which enforces QA guidelines for adding tests and ensuring the package is implemented properly.
