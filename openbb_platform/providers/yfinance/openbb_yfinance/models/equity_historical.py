@@ -54,9 +54,6 @@ class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         default=False,
         description="Adjust all OHLC data automatically.",
     )
-    back_adjust: bool = Field(
-        default=False, description="Attempt to adjust all the data automatically."
-    )
     ignore_tz: bool = Field(
         default=True,
         description="When combining from different timezones, ignore that part of datetime.",
@@ -125,14 +122,13 @@ class YFinanceEquityHistoricalFetcher(
             period=query._period,
             prepost=query.prepost,
             actions=query.include,
-            auto_adjust=query.adjusted,
-            back_adjust=query.back_adjust,
             progress=query._progress,
             ignore_tz=query.ignore_tz,
             keepna=query._keepna,
             repair=query._repair,
             rounding=query._rounding,
             group_by=query._group_by,
+            adjusted=query.adjusted,
         )
 
         if data.empty:
