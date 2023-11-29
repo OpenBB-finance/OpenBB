@@ -1,9 +1,10 @@
 """API integration tests for equity extension."""
-from datetime import time
-from openbb_core.env import Env
 import base64
+from datetime import time
+
 import pytest
 import requests
+from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
 # pylint: disable=too-many-lines,redefined-outer-name
