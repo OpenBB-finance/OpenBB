@@ -64,7 +64,7 @@ No, you will lose your access but you get a credit on your account of the prorat
 </details>
 
 
-<details><summary>What's the difference in an individual plan and server plan on OpenBB Bot?</summary>
+<details><summary>What's the difference between an individual plan and server plan on OpenBB Bot?</summary>
 
 An individual plan gives your account access to OpenBB Bot while a server plan gives the whole server access. An individual plan carries more perks with it than a server plan, which you can find by clicking on the plan.
 
