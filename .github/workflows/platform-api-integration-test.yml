@@ -61,6 +61,7 @@ jobs:
           cat ~/.openbb_platform/system_settings.json
           echo ~
           pwd
+          python -c "from pathlib import Path;print(Path.home())"
 
       - name: Create and Populate user_settings.json from GitHub Secrets
         run: |
