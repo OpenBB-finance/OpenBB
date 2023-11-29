@@ -81,7 +81,9 @@ class Editor:
                 url = "/".join([*md.parts[ref:-1], md.stem])
                 content += get_card(
                     title=md.stem,
-                    description="abc",
+                    description=self.cmd_lib.get_cmd_info(md.stem).get(
+                        "description", ""
+                    ),
                     url=url,
                     command=True,
                 )
