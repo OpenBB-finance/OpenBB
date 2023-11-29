@@ -78,7 +78,9 @@ jobs:
               "quandl_api_key": "${{ secrets.QUANDL_API_KEY }}",
               "biztoc_api_key": "${{ secrets.BIZTOC_API_KEY }}",
               "nasdaq_api_key": "${{ secrets.NASDAQ_API_KEY }}",
-              "tiingo_token": "${{ secrets.TIINGO_TOKEN }}"
+              "tiingo_token": "${{ secrets.TIINGO_TOKEN }}",
+              "OPENBB_API_USERNAME": "${{ secrets.OPENBB_API_USERNAME }}",
+              "OPENBB_API_PASSWORD": "${{ secrets.OPENBB_API_PASSWORD }}"
             }
           }' > ~/.openbb_platform/user_settings.json
 

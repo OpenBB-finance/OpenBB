@@ -1214,7 +1214,6 @@ def test_equity_discovery_growth_tech(params, headers):
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/discovery/growth_tech?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
-    print(result.json())
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
