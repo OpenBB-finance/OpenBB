@@ -5,6 +5,7 @@ import requests
 
 # ruff: noqa
 
+
 def main() -> bool:
     widgets_json_url = "https://raw.githubusercontent.com/OpenBB-finance/widgets-library/main/widgets.json"
 
