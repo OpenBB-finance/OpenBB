@@ -149,7 +149,7 @@ async def async_requests(
         if isinstance(results[0], list):
             return [item for sublist in results for item in sublist if item]
 
-        return results
+        return [item for item in results if item]
     finally:
         await session.close()
 

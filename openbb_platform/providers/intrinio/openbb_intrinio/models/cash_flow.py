@@ -1,8 +1,6 @@
 """Intrinio Cash Flow Statement Model."""
 
 
-from concurrent.futures import ThreadPoolExecutor
-from itertools import repeat
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -10,6 +8,7 @@ from openbb_core.provider.standard_models.cash_flow import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
+from openbb_core.provider.utils.helpers import ClientResponse, async_requests
 from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import alias_generators
 
@@ -70,7 +69,7 @@ class IntrinioCashFlowStatementFetcher(
         return IntrinioCashFlowStatementQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def extract_data(
         query: IntrinioCashFlowStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -80,9 +79,6 @@ class IntrinioCashFlowStatementFetcher(
         statement_code = "cash_flow_statement"
         period_type = "FY" if query.period == "annual" else "QTR"
 
-        fundamentals_data: Dict = {}
-        data: List[Dict] = []
-
         base_url = "https://api-v2.intrinio.com"
         fundamentals_url_params = f"statement_code={statement_code}&type={period_type}"
         fundamentals_url = (
@@ -90,34 +86,31 @@ class IntrinioCashFlowStatementFetcher(
             f"{fundamentals_url_params}&api_key={api_key}"
         )
 
-        fundamentals_data = get_data_one(fundamentals_url, **kwargs).get(
-            "fundamentals", []
-        )
+        fundamentals_response = await get_data_one(fundamentals_url, **kwargs)
+        fundamentals_data = fundamentals_response.get("fundamentals", [])
+
         fiscal_periods = [
             f"{item['fiscal_year']}-{item['fiscal_period']}"
             for item in fundamentals_data
         ]
         fiscal_periods = fiscal_periods[: query.limit]
 
-        def get_financial_statement_data(period: str, data: List[Dict]) -> None:
-            statement_data: Dict = {}
+        async def callback(response: ClientResponse, _: Any) -> Dict:
+            """Return the response."""
+            statement_data = await response.json()
+            return {
+                "date": statement_data["fundamental"]["end_date"],
+                "period": statement_data["fundamental"]["fiscal_period"],
+                "financials": statement_data["standardized_financials"],
+            }
 
-            intrinio_id = f"{query.symbol}-{statement_code}-{period}"
-            statement_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
-            statement_data = get_data_one(statement_url, **kwargs)
+        intrinio_id = f"{query.symbol}-{statement_code}"
+        urls = [
+            f"{base_url}/fundamentals/{intrinio_id}-{period}/standardized_financials?api_key={api_key}"
+            for period in fiscal_periods
+        ]
 
-            data.append(
-                {
-                    "date": statement_data["fundamental"]["end_date"],
-                    "period": statement_data["fundamental"]["fiscal_period"],
-                    "financials": statement_data["standardized_financials"],
-                }
-            )
-
-        with ThreadPoolExecutor() as executor:
-            executor.map(get_financial_statement_data, fiscal_periods, repeat(data))
-
-        return data
+        return await async_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(

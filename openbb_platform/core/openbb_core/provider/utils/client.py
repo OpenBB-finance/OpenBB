@@ -53,14 +53,6 @@ class ClientResponse(aiohttp.ClientResponse):
 
         return aiohttp.RequestInfo(url, request_info.method, headers, url)
 
-    async def get_one(self) -> Dict[str, Any]:
-        """Return the first item in the response."""
-        data = await self.json()
-        if isinstance(data, list):
-            return data[0]
-
-        return data
-
     async def json(self, **kwargs) -> Union[dict, list]:
         """Return the json response."""
         return await super().json(**kwargs)
@@ -100,7 +92,12 @@ class ClientSession(aiohttp.ClientSession):
     async def get_one(self, url: str, **kwargs) -> Dict[str, Any]:
         """Send GET request and return first item in json if list."""
         response = await self.request("GET", url, **kwargs)
-        return await response.get_one()
+        data = await response.json()
+
+        if isinstance(data, list):
+            return data[0]
+
+        return data
 
     async def request(
         self, *args, raise_for_status: bool = False, **kwargs
