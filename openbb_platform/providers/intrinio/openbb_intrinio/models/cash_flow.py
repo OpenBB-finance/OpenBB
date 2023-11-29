@@ -10,7 +10,7 @@ from openbb_core.provider.standard_models.cash_flow import (
 )
 from openbb_core.provider.utils.helpers import ClientResponse, async_requests
 from openbb_intrinio.utils.helpers import get_data_one
-from pydantic import alias_generators
+from pydantic import Field
 
 
 class IntrinioCashFlowStatementQueryParams(CashFlowStatementQueryParams):
@@ -25,11 +25,9 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
     """Intrinio Cash Flow Statement Data."""
 
     __alias_dict__ = {
-        "net_income": "NetIncomeLoss",
-        "depreciation_and_amortization": "DepreciationDepletionAndAmortization",
-        "stock_based_compensation": "ShareBasedCompensation",
-        "deferred_income_tax": "DeferredIncomeTaxExpenseBenefit",
-        "other_non_cash_items": "OtherNoncashIncomeExpense",
+        "net_income": "netincome",
+        "depreciation_and_amortization": "depreciationexpense",
+        "other_non_cash_items": "noncashadjustmentstonetincome",
         "accounts_receivables": "IncreaseDecreaseInAccountsReceivable",
         "inventory": "IncreaseDecreaseInInventories",
         "vendor_non_trade_receivables": "IncreaseDecreaseInOtherReceivables",
@@ -37,22 +35,61 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
         "accounts_payables": "IncreaseDecreaseInAccountsPayable",
         "deferred_revenue": "IncreaseDecreaseInContractWithCustomerLiability",
         "other_current_and_non_current_liabilities": "IncreaseDecreaseInOtherOperatingLiabilities",
-        "net_cash_flow_from_operating_activities": "NetCashProvidedByUsedInOperatingActivities",
-        "purchases_of_marketable_securities": "PaymentsToAcquireAvailableForSaleSecuritiesDebt",
-        "sales_from_maturities_of_investments": "ProceedsFromSaleOfAvailableForSaleSecuritiesDebt",
-        "investments_in_property_plant_and_equipment": "ProceedsFromMaturitiesPrepaymentsAndCallsOfAvailableForSaleSecurities",  # noqa: E501
-        "payments_from_acquisitions": "PaymentsToAcquireBusinessesNetOfCashAcquired",
-        "other_investing_activities": "PaymentsForProceedsFromOtherInvestingActivities",
-        "net_cash_flow_from_investing_activities": "NetCashProvidedByUsedInInvestingActivities",
-        "taxes_paid_on_net_share_settlement": "PaymentsRelatedToTaxWithholdingForShareBasedCompensation",
-        "dividends_paid": "PaymentsOfDividends",
-        "common_stock_repurchased": "PaymentsForRepurchaseOfCommonStock",
-        "debt_proceeds": "ProceedsFromIssuanceOfLongTermDebt",
-        "debt_repayment": "RepaymentsOfLongTermDebt",
-        "other_financing_activities": "ProceedsFromPaymentsForOtherFinancingActivities",
-        "net_cash_flow_from_financing_activities": "NetCashProvidedByUsedInFinancingActivities",
-        "net_change_in_cash": "CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalentsPeriodIncreaseDecreaseIncludingExchangeRateEffect",  # noqa: E501
+        "net_cash_flow_from_operating_activities": "netcashfromoperatingactivities",
+        "purchases_of_marketable_securities": "purchaseofinvestments",
+        "sales_from_maturities_of_investments": "saleofinvestments",
+        "investments_in_property_plant_and_equipment": "purchaseofplantpropertyandequipment",
+        "payments_from_acquisitions": "acquisitions",
+        "other_investing_activities": "otherinvestingactivitiesnet",
+        "net_cash_flow_from_investing_activities": "netcashfrominvestingactivities",
+        "dividends_paid": "paymentofdividends",
+        "common_stock_repurchased": "repurchaseofcommonequity",
+        "debt_proceeds": "issuanceofdebt",
+        "debt_repayment": "repaymentofdebt",
+        "other_financing_activities": "otherfinancingactivitiesnet",
+        "net_cash_flow_from_financing_activities": "netcashfromfinancingactivities",
+        "net_change_in_cash": "netchangeincash",
     }
+
+    changes_in_operating_assets_and_liabilities: Optional[float] = Field(
+        None,
+        alias="increasedecreaseinoperatingcapital",
+        description="Changes in operating assets and liabilities.",
+    )
+
+    net_income_continuing: Optional[float] = Field(
+        default=None,
+        alias="netincomecontinuing",
+        description="Net income from continuing operations.",
+    )
+    net_cash_from_continuing_operating_activities: Optional[float] = Field(
+        default=None,
+        alias="netcashfromcontinuingoperatingactivities",
+        description="Net cash from continuing operating activities.",
+    )
+    net_cash_from_continuing_investing_activities: Optional[float] = Field(
+        default=None,
+        alias="netcashfromcontinuinginvestingactivities",
+        description="Net cash from continuing investing activities.",
+    )
+    net_cash_from_continuing_financing_activities: Optional[float] = Field(
+        default=None,
+        alias="netcashfromcontinuingfinancingactivities",
+        description="Net cash from continuing financing activities.",
+    )
+    cash_interest_paid: Optional[float] = Field(
+        default=None, alias="cashinterestpaid", description="Cash paid for interest."
+    )
+    cash_income_taxes_paid: Optional[float] = Field(
+        default=None,
+        alias="cashincometaxespaid",
+        description="Cash paid for income taxes.",
+    )
+    issuance_of_common_equity: Optional[float] = Field(
+        default=None,
+        alias="issuanceofcommonequity",
+        description="Issuance of common equity.",
+    )
 
 
 class IntrinioCashFlowStatementFetcher(
@@ -123,7 +160,7 @@ class IntrinioCashFlowStatementFetcher(
             sub_dict: Dict[str, Any] = {}
 
             for sub_item in item["financials"]:
-                field_name = alias_generators.to_snake(sub_item["data_tag"]["name"])
+                field_name = sub_item["data_tag"]["tag"]
                 sub_dict[field_name] = float(sub_item["value"])
 
             sub_dict["date"] = item["date"]

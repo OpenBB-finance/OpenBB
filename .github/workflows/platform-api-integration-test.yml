@@ -82,7 +82,6 @@ jobs:
       - name: Launch the Uvicorn Process
         run: |
           source runner_env/bin/activate
-          pip list
           uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
       - name: Wait for 42 seconds

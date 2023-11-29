@@ -14,7 +14,7 @@ from openbb_core.provider.utils.helpers import (
     async_requests,
 )
 from openbb_intrinio.utils.helpers import get_data_one
-from pydantic import alias_generators
+from pydantic import Field
 
 
 class IntrinioIncomeStatementQueryParams(IncomeStatementQueryParams):
@@ -29,17 +29,68 @@ class IntrinioIncomeStatementData(IncomeStatementData):
     """Intrinio Income Statement Data."""
 
     __alias_dict__ = {
-        "research_and_development_expenses": "ResearchAndDevelopmentExpense",
-        "selling_general_and_administrative_expenses": "SellingGeneralAndAdministrativeExpense",
-        "ebit": "earnings before interest and taxes (ebit)",
-        "ebitda": "earnings before interest, taxes, depreciation and amortization (ebitda)",
-        "ebitda_margin": "ebitda margin",
-        "operating_income": "OperatingIncomeLoss",
-        "income_before_tax": "IncomeLossFromContinuingOperationsBeforeIncomeTaxesExtraordinaryItemsNoncontrollingInterest",  # noqa: E501
-        "eps_diluted": "EarningsPerShareDiluted",
-        "weighted_average_shares_outstanding": "WeightedAverageNumberOfSharesOutstandingBasic",
-        "weighted_average_shares_outstanding_dil": "WeightedAverageNumberOfDilutedSharesOutstanding",
+        "revenue": "totalrevenue",
+        "cost_of_revenue": "totalcostofrevenue",
+        "gross_profit": "totalgrossprofit",
+        "research_and_development_expenses": "rdexpense",
+        "selling_general_and_administrative_expenses": "sgaexpense",
+        "operating_expenses": "totaloperatingexpenses",
+        "operating_income": "totaloperatingincome",
+        "interest_expense": "interestexpense",
+        "income_before_tax": "totalpretaxincome",
+        "income_tax_expense": "incometaxexpense",
+        "net_income": "netincome",
+        "eps": "basiceps",
+        "eps_diluted": "dilutedeps",
+        "weighted_average_shares_outstanding": "weightedavebasicsharesos",
+        "ebit": "ebit",
+        "ebitda": "ebitda",
     }
+    # Intrinio-specific fields that don't have a direct mapping to the standard model
+    operating_revenue: Optional[float] = Field(
+        default=None, alias="operatingrevenue", description="Operating revenue."
+    )
+    operating_cost_of_revenue: Optional[float] = Field(
+        default=None,
+        alias="operatingcostofrevenue",
+        description="Operating cost of revenue.",
+    )
+    total_other_income_expenses_net: Optional[float] = Field(
+        default=None,
+        alias="totalotherincome",
+        description="Total other income/expenses net.",
+    )
+    net_income_continuing: Optional[float] = Field(
+        default=None,
+        alias="netincomecontinuing",
+        description="Net income from continuing operations.",
+    )
+    net_income_to_common: Optional[float] = Field(
+        default=None,
+        alias="netincometocommon",
+        description="Net income to common shareholders.",
+    )
+    weighted_average_shares_outstanding_dil: Optional[float] = Field(
+        default=None,
+        alias="weightedavedilutedsharesos",
+        description="Weighted average diluted shares outstanding.",
+    )
+    cash_dividends_per_share: Optional[float] = Field(
+        default=None,
+        alias="cashdividendspershare",
+        description="Cash dividends per share.",
+    )
+    ebitda_ratio: Optional[float] = Field(
+        default=None, alias="ebitdamargin", description="EBITDA margin."
+    )
+    other_income: Optional[float] = Field(
+        default=None, alias="otherincome", description="Other income."
+    )
+    weighted_ave_basic_diluted_shares_os: Optional[float] = Field(
+        default=None,
+        alias="weightedavebasicdilutedsharesos",
+        description="Weighted average basic and diluted shares outstanding.",
+    )
 
 
 class IntrinioIncomeStatementFetcher(
@@ -126,7 +177,7 @@ class IntrinioIncomeStatementFetcher(
             sub_dict: Dict[str, Any] = {}
 
             for sub_item in item["financials"]:
-                field_name = alias_generators.to_snake(sub_item["data_tag"]["name"])
+                field_name = sub_item["data_tag"]["tag"]
                 sub_dict[field_name] = float(sub_item["value"])
 
             sub_dict["date"] = item["date"]
