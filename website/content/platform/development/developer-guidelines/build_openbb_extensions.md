@@ -18,7 +18,7 @@ In order to speed up the process of building an extension, we have provided a **
 
 :::info
 Take into consideration that building an extension requires a good understanding of the OpenBB Platform and that it is limited to a small set of use cases.
-Before starting, please read the [Integrating Data Sources and Points](/platform/platform/development/developer-guidelines/add_data_point) guide to make sure you really need a new extension.
+Before starting, please read the [Integrating Data Sources and Points](/platform/development/developer-guidelines/add_data_point) guide to make sure you really need a new extension.
 
 Extension use cases might include:
 
