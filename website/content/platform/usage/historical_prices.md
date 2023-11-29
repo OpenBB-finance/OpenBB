@@ -26,6 +26,7 @@ These examples will assume that the OpenBB Platform is initialized in a Python s
 
 ```python
 from openbb import obb
+import pandas as pd
 ```
 
 :::
