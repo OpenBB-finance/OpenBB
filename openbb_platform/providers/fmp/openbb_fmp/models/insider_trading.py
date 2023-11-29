@@ -1,6 +1,6 @@
 """FMP Insider Trading Model."""
 
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.insider_trading import (
@@ -8,9 +8,9 @@ from openbb_core.provider.standard_models.insider_trading import (
     InsiderTradingQueryParams,
 )
 from openbb_core.provider.utils.helpers import get_querystring
-from openbb_fmp.utils.definitions import TRANSACTION_TYPES
+from openbb_fmp.utils.definitions import TRANSACTION_TYPES, TRANSACTION_TYPES_DICT
 from openbb_fmp.utils.helpers import get_data_many
-from pydantic import Field, model_validator
+from pydantic import Field
 
 
 class FMPInsiderTradingQueryParams(InsiderTradingQueryParams):
@@ -71,7 +71,11 @@ class FMPInsiderTradingFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-
+        query.transaction_type = (
+            TRANSACTION_TYPES_DICT[query.transaction_type]
+            if query.transaction_type
+            else None
+        )
         base_url = "https://financialmodelingprep.com/api/v4/insider-trading"
         query_str = get_querystring(query.model_dump(by_alias=True), ["page"])
 
