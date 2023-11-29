@@ -2,7 +2,6 @@
 
 from openbb_core.provider.abstract.provider import Provider
 from openbb_intrinio.models.balance_sheet import IntrinioBalanceSheetFetcher
-from openbb_intrinio.models.calendar_dividend import IntrinioCalendarDividendFetcher
 from openbb_intrinio.models.calendar_ipo import IntrinioCalendarIpoFetcher
 from openbb_intrinio.models.cash_flow import IntrinioCashFlowStatementFetcher
 from openbb_intrinio.models.company_filings import IntrinioCompanyFilingsFetcher
@@ -11,9 +10,12 @@ from openbb_intrinio.models.currency_pairs import IntrinioCurrencyPairsFetcher
 from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
 from openbb_intrinio.models.equity_info import IntrinioEquityInfoFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
-from openbb_intrinio.models.fred_indices import IntrinioFredIndicesFetcher
+from openbb_intrinio.models.fred_series import IntrinioFredSeriesFetcher
 from openbb_intrinio.models.historical_attributes import (
     IntrinioHistoricalAttributesFetcher,
+)
+from openbb_intrinio.models.historical_dividends import (
+    IntrinioHistoricalDividendsFetcher,
 )
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 from openbb_intrinio.models.insider_trading import IntrinioInsiderTradingFetcher
@@ -44,12 +46,12 @@ intrinio_provider = Provider(
         "CompanyFilings": IntrinioCompanyFilingsFetcher,
         "CompanyNews": IntrinioCompanyNewsFetcher,
         "CurrencyPairs": IntrinioCurrencyPairsFetcher,
-        "CalendarDividend": IntrinioCalendarDividendFetcher,
         "EquityHistorical": IntrinioEquityHistoricalFetcher,
         "EquityInfo": IntrinioEquityInfoFetcher,
         "EquityQuote": IntrinioEquityQuoteFetcher,
-        "FredIndices": IntrinioFredIndicesFetcher,
+        "FredSeries": IntrinioFredSeriesFetcher,
         "HistoricalAttributes": IntrinioHistoricalAttributesFetcher,
+        "HistoricalDividends": IntrinioHistoricalDividendsFetcher,
         "IncomeStatement": IntrinioIncomeStatementFetcher,
         "InsiderTrading": IntrinioInsiderTradingFetcher,
         "InstitutionalOwnership": IntrinioInstitutionalOwnershipFetcher,
