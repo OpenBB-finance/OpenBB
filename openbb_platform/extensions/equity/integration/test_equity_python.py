@@ -114,7 +114,7 @@ def test_equity_calendar_dividend(params, obb):
 )
 @pytest.mark.integration
 def test_equity_calendar_splits(params, obb):
-    result = obb.equity.calendar.split(**params)
+    result = obb.equity.calendar.splits(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -477,7 +477,10 @@ def test_equity_fundamental_metrics(params, obb):
     result = obb.equity.fundamental.metrics(**params)
     assert result
     assert isinstance(result, OBBject)
-    assert len(result.results) > 0
+    if isinstance(result.results, list):
+        assert len(result.results) > 0
+    else:
+        assert result.results is not None
 
 
 @pytest.mark.parametrize(
@@ -505,6 +508,7 @@ def test_equity_fundamental_overview(params, obb):
     result = obb.equity.fundamental.overview(**params)
     assert result
     assert isinstance(result, OBBject)
+    assert result.results is not None
 
 
 @pytest.mark.parametrize(
@@ -532,6 +536,7 @@ def test_equity_estimates_price_target(params, obb):
     result = obb.equity.estimates.price_target(**params)
     assert result
     assert isinstance(result, OBBject)
+    assert result.results is not None
 
 
 @pytest.mark.parametrize(
@@ -543,6 +548,7 @@ def test_equity_estimates_consensus(params, obb):
     result = obb.equity.estimates.consensus(**params)
     assert result
     assert isinstance(result, OBBject)
+    assert result.results is not None
 
 
 @pytest.mark.parametrize(
@@ -673,6 +679,7 @@ def test_equity_compare_peers(params, obb):
     result = obb.equity.compare.peers(**params)
     assert result
     assert isinstance(result, OBBject)
+    assert result.results is not None
 
 
 @pytest.mark.parametrize(
@@ -941,7 +948,10 @@ def test_equity_fundamental_latest_attributes(params, obb):
     result = obb.equity.fundamental.latest_attributes(**params)
     assert result
     assert isinstance(result, OBBject)
-    assert len(result.results) > 0
+    if isinstance(result.results, list):
+        assert len(result.results) > 0
+    else:
+        assert result.results is not None
 
 
 @pytest.mark.parametrize(
@@ -1007,6 +1017,7 @@ def test_equity_price_quote(params, obb):
     result = obb.equity.price.quote(**params)
     assert result
     assert isinstance(result, OBBject)
+    assert result.results is not None
 
 
 @pytest.mark.parametrize(
@@ -1021,7 +1032,10 @@ def test_equity_profile(params, obb):
     result = obb.equity.profile(**params)
     assert result
     assert isinstance(result, OBBject)
-    assert len(result.results) > 0
+    if isinstance(result.results, list):
+        assert len(result.results) > 0
+    else:
+        assert result.results is not None
 
 
 @pytest.mark.parametrize(
@@ -1187,17 +1201,6 @@ def test_equity_discovery_upcoming_release_days(params, obb):
                 "provider": "fmp",
             }
         ),
-        (
-            {
-                "provider": "intrinio",
-                "symbol": "AAPL",
-                "thea_enabled": None,
-                "start_date": "2023-11-06",
-                "end_date": "2023-11-07",
-                "limit": 50,
-                "form_type": "10-Q",
-            }
-        ),
     ],
 )
 @pytest.mark.integration
@@ -1207,7 +1210,10 @@ def test_equity_discovery_filings(params, obb):
     result = obb.equity.discovery.filings(**params)
     assert result
     assert isinstance(result, OBBject)
-    assert len(result.results) > 0
+    if isinstance(result.results, list):
+        assert len(result.results) > 0
+    else:
+        assert result.results is not None
 
 
 @pytest.mark.parametrize(

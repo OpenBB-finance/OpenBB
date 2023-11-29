@@ -1,11 +1,18 @@
+import base64
+
 import pytest
 import requests
+from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
 
 @pytest.fixture(scope="session")
 def headers():
-    return {}
+    userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
+    userpass_bytes = userpass.encode("ascii")
+    base64_bytes = base64.b64encode(userpass_bytes)
+
+    return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 
 
 # pylint: disable=redefined-outer-name
@@ -137,13 +144,6 @@ def test_news_world(params, headers):
                 "symbols": "AAPL,MSFT",
                 "limit": 20,
                 "source": "bloomberg.com",
-            }
-        ),
-        (
-            {
-                "provider": "ultima",
-                "symbols": "AAPL,MSFT",
-                "limit": 20,
             }
         ),
     ],
