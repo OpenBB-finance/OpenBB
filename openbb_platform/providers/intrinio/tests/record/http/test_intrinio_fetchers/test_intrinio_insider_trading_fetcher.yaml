@@ -5,7 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
@@ -13,7 +13,7 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIALKaZmUAA+xd21fayh7+V7J4OS+Kc7/wFhWtrYILtLt777UXKxtizSoCJwlWT1f/9zPhVhSS
+        H4sIAGlVZ2UAA+xd21fayh7+V7J4OS+Kc7/wFhWtrYILtLt777UXKxtizSoCJwlWT1f/9zPhVhSS
         apxJEOalRXKZMPm+b363mflRiUNvEHndOBgOOjdBPxh8jSq1v39Upp87PS/2K7UKAgjvA7oPxRUU
         NYxqCFYBAH9V9uYnjsO+Ou82jkdR7eDg+/fv1cjvVr8O7w/csHsb3PvRgd/76oUH6o7eAUYASnyg
         bgGmHxFOPnNw8BD1TzChXwA5+H6zfzMM70gHMkEIkRARSCFm1Ye7vmo4iKKxH3bioPvND1Xbrnt5
@@ -74,7 +74,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 29 Nov 2023 01:58:10 GMT
+      - Wed, 29 Nov 2023 15:14:49 GMT
       Transfer-Encoding:
       - chunked
       Vary:
