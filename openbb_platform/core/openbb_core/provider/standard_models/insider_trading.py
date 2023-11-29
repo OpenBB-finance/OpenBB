@@ -19,8 +19,7 @@ class InsiderTradingQueryParams(QueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     limit: StrictInt = Field(
-        default=100,
-        description=QUERY_DESCRIPTIONS.get("limit", ""),
+        default=100, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
@@ -53,7 +52,9 @@ class InsiderTradingData(Data):
         default=None,
         description="Acquisition or disposition of the insider trading.",
     )
-    security_type: str = Field(description="Security type of the insider trading.")
+    security_type: Optional[str] = Field(
+        default=None, description="Security type of the insider trading."
+    )
     securities_owned: Optional[float] = Field(
         default=None, description="Number of securities owned in the insider trading."
     )

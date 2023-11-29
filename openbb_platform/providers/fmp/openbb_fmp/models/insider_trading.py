@@ -1,5 +1,6 @@
 """FMP Insider Trading Model."""
 
+import math
 from typing import Any, Dict, List, Optional, Union
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -7,9 +8,8 @@ from openbb_core.provider.standard_models.insider_trading import (
     InsiderTradingData,
     InsiderTradingQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import async_requests, get_querystring
 from openbb_fmp.utils.definitions import TRANSACTION_TYPES
-from openbb_fmp.utils.helpers import get_data_many
 from pydantic import Field, model_validator
 
 
@@ -75,18 +75,13 @@ class FMPInsiderTradingFetcher(
         base_url = "https://financialmodelingprep.com/api/v4/insider-trading"
         query_str = get_querystring(query.model_dump(by_alias=True), ["page"])
 
-        data: List[Dict] = []
+        pages = math.ceil(query.limit / 100)
+        urls = [
+            f"{base_url}?{query_str}&page={page}&apikey={api_key}"
+            for page in range(pages)
+        ]
 
-        limit_reached = 0
-        page = 0
-
-        while limit_reached <= query.limit:
-            url = f"{base_url}?{query_str}&page={page}&apikey={api_key}"
-            data.extend(await get_data_many(url, **kwargs))
-            limit_reached += len(data)
-            page += 1
-
-        return data[: query.limit]
+        return await async_requests(urls, raise_for_status=True, **kwargs)
 
     @staticmethod
     def transform_data(

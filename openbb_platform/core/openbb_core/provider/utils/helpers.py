@@ -113,7 +113,6 @@ async def async_requests(
 ):
     """Make multiple requests asynchronously.
 
-
     Parameters
     ----------
     urls : Union[str, List[str]]
@@ -127,7 +126,6 @@ async def async_requests(
     session : ClientSession, optional
         Custom session to use for requests, by default None
 
-
     Returns
     -------
     Union[dict, List[dict]]
@@ -140,8 +138,13 @@ async def async_requests(
 
     try:
         results = await asyncio.gather(
-            *[async_request(url, session=session, **kwargs) for url in urls]
+            *[async_request(url, session=session, **kwargs) for url in urls],
+            return_exceptions=True,
         )
+
+        for i, result in enumerate(results):
+            if isinstance(result, Exception):
+                results[i] = None
 
         if isinstance(results[0], list):
             return [item for sublist in results for item in sublist if item]

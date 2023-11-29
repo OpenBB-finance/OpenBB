@@ -1,8 +1,9 @@
 """Aiohttp client."""
-# pylint: disable=protected-access
+# pylint: disable=protected-access,invalid-overridden-method
 import asyncio
 import random
 import re
+import warnings
 import zlib
 from typing import Any, Dict, Union
 
@@ -78,7 +79,7 @@ class ClientSession(aiohttp.ClientSession):
 
         super().__init__(*args, **kwargs)
 
-    def __del__(self):
+    def __del__(self, _warnings: Any = warnings) -> None:
         """Close the session."""
         if not self.closed:
             asyncio.create_task(self.close())
