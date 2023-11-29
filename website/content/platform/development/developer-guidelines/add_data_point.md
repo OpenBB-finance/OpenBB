@@ -1,6 +1,6 @@
 ---
 title: Integrating Data Sources and Points
-sidebar_position: 4
+sidebar_position: 3
 description: This comprehensive guide is designed to assist developers in integrating custom data sources and adding new data points to the OpenBB Platform. It covers the creation of custom extensions, standardization of data, definition of models, and the construction of a Fetcher class. This document is essential for developers looking to enhance the platform with new data capabilities.
 keywords:
 - OpenBB Platform

@@ -1,6 +1,6 @@
 ---
 title: Building Extensions for OpenBB Platform
-sidebar_position: 3
+sidebar_position: 4
 description: This guide provides a comprehensive walkthrough on how to create custom extensions for the OpenBB Platform. It covers the process from generating the extension structure to sharing it with the community.
 keywords:
 - OpenBB Platform
@@ -15,6 +15,18 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 <HeadTitle title="Build OpenBB Extensions - Developer Guidelines - Development | OpenBB Platform Docs" />
 
 In order to speed up the process of building an extension, we have provided a **Cookiecutter** template. It serves as a jumpstart for your extension development, so you can focus on the data and not on the boilerplate.
+
+:::info
+Take into consideration that building an extension requires a good understanding of the OpenBB Platform and that it is limited to a small set of use cases.
+Before starting, please read the [Integrating Data Sources and Points](/platform/platform/development/developer-guidelines/add_data_point) guide to make sure you really need a new extension.
+
+Extension use cases might include:
+
+- Adding a new data provider
+- Adding a new toolkit
+- Adding a new charting library
+- Adding a new asset class
+:::
 
 Please refer to the [Cookiecutter template](https://github.com/OpenBB-finance/openbb-cookiecutter) and follow the instructions there.
 
