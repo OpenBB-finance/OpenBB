@@ -3,12 +3,15 @@
 import json
 from datetime import date as dateType
 from io import StringIO
-from typing import Any, Dict, List, Literal, Optional, TypeVar, Union
+from typing import Any, Dict, List, Optional, TypeVar, Union
 
 import requests
-from openbb_provider import helpers
-from openbb_provider.utils.errors import EmptyDataError
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider import helpers
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import (
+    async_make_request,
+    get_querystring,
+)
 from pydantic import BaseModel
 from requests.exceptions import SSLError
 
@@ -110,6 +113,35 @@ def create_url(
     return f"{base_url}{endpoint}?{query_string}&apikey={api_key}"
 
 
+async def async_get_data_many(
+    url: str, sub_dict: Optional[str] = None, **kwargs: Any
+) -> List[dict]:
+    """Get data from FMP endpoint and convert to list of schemas.
+
+    Parameters
+    ----------
+    url: str
+        The URL to get the data from.
+    sub_dict: Optional[str]
+        The sub-dictionary to use.
+
+    Returns
+    -------
+    List[dict]
+        Dictionary of data.
+    """
+    data = await async_make_request(url, **kwargs)
+
+    if sub_dict and isinstance(data, dict):
+        data = data.get(sub_dict, [])
+    if isinstance(data, dict):
+        raise ValueError("Expected list of dicts, got dict")
+    if len(data) == 0:
+        raise EmptyDataError()
+
+    return data
+
+
 def get_data_many(
     url: str, sub_dict: Optional[str] = None, **kwargs: Any
 ) -> List[dict]:
@@ -167,68 +199,6 @@ def most_recent_quarter(base: dateType = dateType.today()) -> dateType:
     if base.month < 10:
         return dateType(base.year, 6, 30)
     return dateType(base.year, 9, 30)
-
-
-MARKETS = Literal[
-    "AMEX",
-    "AMS",
-    "ASE",
-    "ASX",
-    "ATH",
-    "BME",
-    "BRU",
-    "BUD",
-    "BUE",
-    "CAI",
-    "CNQ",
-    "CPH",
-    "DFM",
-    "DOH",
-    "DUS",
-    "ETF",
-    "EURONEXT",
-    "HEL",
-    "HKSE",
-    "ICE",
-    "IOB",
-    "IST",
-    "JKT",
-    "JNB",
-    "JPX",
-    "KLS",
-    "KOE",
-    "KSC",
-    "KUW",
-    "LSE",
-    "MEX",
-    "MIL",
-    "NASDAQ",
-    "NEO",
-    "NSE",
-    "NYSE",
-    "NZE",
-    "OSL",
-    "OTC",
-    "PNK",
-    "PRA",
-    "RIS",
-    "SAO",
-    "SAU",
-    "SES",
-    "SET",
-    "SGO",
-    "SHH",
-    "SHZ",
-    "SIX",
-    "STO",
-    "TAI",
-    "TLV",
-    "TSX",
-    "TWO",
-    "VIE",
-    "WSE",
-    "XETRA",
-]
 
 
 def get_interval(value: str) -> str:

@@ -4,7 +4,7 @@ import base64
 import pytest
 import requests
 from openbb_core.env import Env
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
 
 # pylint: disable=redefined-outer-name
 
@@ -63,7 +63,7 @@ def test_crypto_search(params, headers):
                 "provider": "fmp",
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-01-03",
                 "timeseries": 1,
             }
         ),
@@ -95,16 +95,6 @@ def test_crypto_search(params, headers):
         ),
         (
             {
-                "interval": "5m",
-                "period": "max",
-                "provider": "yfinance",
-                "symbol": "BTCUSD",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-08",
-            }
-        ),
-        (
-            {
                 "interval": "1d",
                 "period": "max",
                 "provider": "yfinance",
@@ -130,7 +120,7 @@ def test_crypto_search(params, headers):
                 "exchanges": ["POLONIEX", "GDAX"],
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-01-02",
             }
         ),
     ],

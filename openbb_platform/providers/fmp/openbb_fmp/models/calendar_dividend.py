@@ -1,20 +1,20 @@
 """FMP Dividend Calendar Model."""
 
-
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from dateutil.relativedelta import relativedelta
-from openbb_fmp.utils.helpers import get_data_many, get_querystring
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.calendar_dividend import (
-    DividendCalendarData,
-    DividendCalendarQueryParams,
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.calendar_dividend import (
+    CalendarDividendData,
+    CalendarDividendQueryParams,
 )
+from openbb_core.provider.utils.helpers import get_querystring
+from openbb_fmp.utils.helpers import get_data_many
 from pydantic import Field, field_validator
 
 
-class FMPDividendCalendarQueryParams(DividendCalendarQueryParams):
+class FMPCalendarDividendQueryParams(CalendarDividendQueryParams):
     """FMP Dividend Calendar Query.
 
     Source: https://site.financialmodelingprep.com/developer/docs/dividend-calendar-api/
@@ -23,7 +23,7 @@ class FMPDividendCalendarQueryParams(DividendCalendarQueryParams):
     """
 
 
-class FMPDividendCalendarData(DividendCalendarData):
+class FMPCalendarDividendData(CalendarDividendData):
     """FMP Dividend Calendar Data."""
 
     __alias_dict__ = {
@@ -56,16 +56,16 @@ class FMPDividendCalendarData(DividendCalendarData):
         return datetime.strptime(v, "%Y-%m-%d") if v else None
 
 
-class FMPDividendCalendarFetcher(
+class FMPCalendarDividendFetcher(
     Fetcher[
-        FMPDividendCalendarQueryParams,
-        List[FMPDividendCalendarData],
+        FMPCalendarDividendQueryParams,
+        List[FMPCalendarDividendData],
     ]
 ):
     """Transform the query, extract and transform the data from the FMP endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> FMPDividendCalendarQueryParams:
+    def transform_query(params: Dict[str, Any]) -> FMPCalendarDividendQueryParams:
         """Transform the query params."""
         transformed_params = params
 
@@ -73,13 +73,13 @@ class FMPDividendCalendarFetcher(
         if params.get("start_date") is None:
             transformed_params["start_date"] = now
         if params.get("end_date") is None:
-            transformed_params["end_date"] = now + relativedelta(days=3)
+            transformed_params["end_date"] = now + relativedelta(days=30)
 
-        return FMPDividendCalendarQueryParams(**transformed_params)
+        return FMPCalendarDividendQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: FMPDividendCalendarQueryParams,
+        query: FMPCalendarDividendQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -95,7 +95,7 @@ class FMPDividendCalendarFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPDividendCalendarQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[FMPDividendCalendarData]:
+        query: FMPCalendarDividendQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[FMPCalendarDividendData]:
         """Return the transformed data."""
-        return [FMPDividendCalendarData.model_validate(d) for d in data]
+        return [FMPCalendarDividendData.model_validate(d) for d in data]

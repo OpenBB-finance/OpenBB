@@ -3,12 +3,12 @@
 import sqlite3
 from typing import Any, Dict, List, Optional
 
-from openbb_finra.utils.data_storage import DB_PATH, prepare_data
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.equity_short_interest import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.equity_short_interest import (
     ShortInterestData,
     ShortInterestQueryParams,
 )
+from openbb_finra.utils.data_storage import DB_PATH, prepare_data
 
 
 class FinraShortInterestQueryParams(ShortInterestQueryParams):

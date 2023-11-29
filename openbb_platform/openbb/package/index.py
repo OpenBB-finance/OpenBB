@@ -8,7 +8,7 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 from typing_extensions import Annotated
 
 
@@ -132,7 +132,7 @@ class ROUTER_index(Container):
         date_first_added : Optional[Union[str, date]]
             Date the constituent company was added to the index.
         cik : int
-            Central Index Key of the constituent company in the index.
+            Central Index Key (CIK) for the requested entity.
         founded : Optional[Union[str, date]]
             Founding year of the constituent company in the index.
 
@@ -203,6 +203,8 @@ class ROUTER_index(Container):
             Token to get the next page of data from a previous API call. (provider: intrinio)
         all_pages : Optional[bool]
             Returns all pages of data from the API call at once. (provider: intrinio)
+        sleep : Optional[float]
+            Time to sleep between requests to avoid rate limiting. (provider: intrinio)
 
         Returns
         -------
@@ -222,7 +224,7 @@ class ROUTER_index(Container):
         -----------
         date : date
             The date of the data.
-        value : Optional[Annotated[float, Gt(gt=0)]]
+        value : Optional[float]
             Value of the index.
 
         Example
@@ -268,7 +270,7 @@ class ROUTER_index(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Historical Market Indices.
@@ -281,7 +283,7 @@ class ROUTER_index(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'polygon']]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -289,12 +291,17 @@ class ROUTER_index(Container):
             Number of days to look back. (provider: fmp)
         interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
             Data granularity. (provider: fmp)
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            Timespan of the data. (provider: polygon)
+        tag : Optional[str]
+            Index tag. (provider: intrinio)
+        type : Optional[str]
+            Index type. (provider: intrinio)
         sort : Literal['asc', 'desc']
+            Sort order. (provider: intrinio);
             Sort order of the data. (provider: polygon)
         limit : int
-            The number of data entries to return. (provider: polygon)
+            The number of data entries to return. (provider: intrinio, polygon)
+        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
+            Timespan of the data. (provider: polygon)
         adjusted : bool
             Whether the data is adjusted. (provider: polygon)
         multiplier : int
@@ -305,7 +312,7 @@ class ROUTER_index(Container):
         OBBject
             results : List[MarketIndices]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -318,15 +325,15 @@ class ROUTER_index(Container):
         -------------
         date : datetime
             The date of the data.
-        open : float
+        open : Optional[Annotated[float, Strict(strict=True)]]
             The open price.
-        high : float
+        high : Optional[Annotated[float, Strict(strict=True)]]
             The high price.
-        low : float
+        low : Optional[Annotated[float, Strict(strict=True)]]
             The low price.
-        close : float
+        close : Optional[Annotated[float, Strict(strict=True)]]
             The close price.
-        volume : Optional[Annotated[int, Strict(strict=True)]]
+        volume : Optional[int]
             The trading volume.
         adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)
@@ -340,6 +347,8 @@ class ROUTER_index(Container):
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
             Change % in the price of the symbol over a period of time. (provider: fmp)
+        value : Optional[float]
+            Index value. (provider: intrinio)
         transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
 

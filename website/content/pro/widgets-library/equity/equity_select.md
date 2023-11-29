@@ -21,5 +21,5 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Ticker Information.
 
-Source: fmp
+**Source:** fmp
 

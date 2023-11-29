@@ -8,7 +8,7 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 from typing_extensions import Annotated
 
 
@@ -41,7 +41,7 @@ class ROUTER_crypto_price(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["fmp", "polygon", "tiingo"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Cryptocurrency Historical Price. Cryptocurrency historical price data.
@@ -54,14 +54,14 @@ class ROUTER_crypto_price(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'polygon']]
+        provider : Optional[Literal['fmp', 'polygon', 'tiingo']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         timeseries : Optional[Annotated[int, Ge(ge=0)]]
             Number of days to look back. (provider: fmp)
         interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
-            Data granularity. (provider: fmp)
+            Data granularity. (provider: fmp, tiingo)
         multiplier : int
             Multiplier of the timespan. (provider: polygon)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
@@ -72,13 +72,15 @@ class ROUTER_crypto_price(Container):
             The number of data entries to return. (provider: polygon)
         adjusted : bool
             Whether the data is adjusted. (provider: polygon)
+        exchanges : Optional[List[str]]
+            To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX'] (provider: tiingo)
 
         Returns
         -------
         OBBject
             results : List[CryptoHistorical]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon']]
+            provider : Optional[Literal['fmp', 'polygon', 'tiingo']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -115,8 +117,11 @@ class ROUTER_crypto_price(Container):
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
             Change % in the price of the symbol over a period of time. (provider: fmp)
-        transactions : Optional[Annotated[int, Gt(gt=0)]]
-            Number of transactions for the symbol in the time period. (provider: polygon)
+        transactions : Optional[Union[Annotated[int, Gt(gt=0)], int]]
+            Number of transactions for the symbol in the time period. (provider: polygon);
+            Number of trades. (provider: tiingo)
+        volume_notional : Optional[float]
+            The last size done for the asset on the specific date in the quote currency. The volume of the asset on the specific date in the quote currency. (provider: tiingo)
 
         Example
         -------

@@ -8,7 +8,7 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 from typing_extensions import Annotated
 
 
@@ -38,7 +38,7 @@ class ROUTER_equity_discovery(Container):
         form_type: Annotated[
             Optional[str],
             OpenBBCustomParameter(
-                description="Fuzzy filter by form type. E.g. 10-K, 10, 8, 6-K, etc."
+                description="Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types."
             ),
         ] = None,
         limit: Annotated[
@@ -57,14 +57,14 @@ class ROUTER_equity_discovery(Container):
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
         form_type : Optional[str]
-            Fuzzy filter by form type. E.g. 10-K, 10, 8, 6-K, etc.
+            Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types.
         limit : int
             The number of data entries to return.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        is_done : Optional[Literal['true', 'false']]
+        is_done : Optional[bool]
             Flag for whether or not the filing is done. (provider: fmp)
 
         Returns
@@ -83,20 +83,18 @@ class ROUTER_equity_discovery(Container):
 
         DiscoveryFilings
         ----------------
-        timestamp : datetime
-            The timestamp from when the filing was accepted.
-        symbol : Optional[str]
+        symbol : str
             Symbol representing the entity requested in the data.
         cik : str
-            The CIK of the filing
+            Central Index Key (CIK) for the requested entity.
         title : str
-            The title of the filing
+            Title of the filing.
+        date : datetime
+            The date of the data.
         form_type : str
             The form type of the filing
-        url : Optional[str]
-            The URL of the filing
-        is_done : Optional[Literal['True', 'False']]
-            Whether or not the filing is done. (provider: fmp)
+        link : str
+            URL to the filing page on the SEC site.
 
         Example
         -------

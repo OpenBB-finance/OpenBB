@@ -11,7 +11,7 @@ from openbb_core.app.utils import (
     get_target_column,
     get_target_columns,
 )
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 from pydantic import NonNegativeFloat, PositiveInt
 
 from .helpers import get_fama_raw
@@ -76,7 +76,7 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
 @router.command(methods=["POST"])
 def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     """Get Capital Asset Pricing Model."""
-    import statsmodels.api as sm  # pylint: disable=import-outside-toplevel
+    import statsmodels.api as sm  # pylint: disable=import-outside-toplevel # type: ignore
 
     df = basemodel_to_df(data)
 
@@ -173,7 +173,7 @@ def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
     OBBject[List[Data]]
         Kurtosis.
     """
-    import pandas_ta as ta  # pylint: disable=import-outside-toplevel
+    import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -211,7 +211,8 @@ def unitroot_test(
     OBBject[UnitRootModel]
         Unit root tests summary.
     """
-    from statsmodels.tsa import stattools  # pylint: disable=import-outside-toplevel
+    # pylint: disable=import-outside-toplevel
+    from statsmodels.tsa import stattools  # type: ignore
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -336,7 +337,7 @@ def skewness(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
     OBBject[List[Data]]
         Skewness.
     """
-    import pandas_ta as ta  # pylint: disable=import-outside-toplevel
+    import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -364,14 +365,13 @@ def quantile(
     window : PositiveInt
         Window size.
     quantile_pct : NonNegativeFloat, optional
-        Quantile percentage, by default 0.5
 
     Returns
     -------
     OBBject[List[Data]]
         Quantile.
     """
-    import pandas_ta as ta  # pylint: disable=import-outside-toplevel
+    import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)

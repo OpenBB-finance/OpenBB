@@ -8,7 +8,7 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 from typing_extensions import Annotated
 
 
@@ -38,7 +38,7 @@ class ROUTER_equity_calendar(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Upcoming and Historical Dividend Calendar.
@@ -49,17 +49,21 @@ class ROUTER_equity_calendar(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        symbol : Optional[str]
+            Symbol to get data for. (provider: intrinio)
+        limit : Optional[int]
+            The number of data entries to return. (provider: intrinio)
 
         Returns
         -------
         OBBject
             results : List[CalendarDividend]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -74,6 +78,8 @@ class ROUTER_equity_calendar(Container):
             The date of the data. (Ex-Dividend)
         symbol : str
             Symbol representing the entity requested in the data.
+        amount : Optional[float]
+            Dividend amount, per-share.
         name : Optional[str]
             Name of the entity.
         record_date : Optional[date]
@@ -82,12 +88,16 @@ class ROUTER_equity_calendar(Container):
             The payment date of the dividend.
         declaration_date : Optional[date]
             Declaration date of the dividend.
-        amount : Optional[float]
-            Dividend amount, per-share.
         adjusted_amount : Optional[float]
             The adjusted-dividend amount. (provider: fmp)
         label : Optional[str]
             Ex-dividend date formatted for display. (provider: fmp)
+        factor : Optional[float]
+            factor by which to multiply stock prices before this date, in order to calculate historically-adjusted stock prices. (provider: intrinio)
+        dividend_currency : Optional[str]
+            The currency of the dividend. (provider: intrinio)
+        split_ratio : Optional[float]
+            The ratio of the stock split, if a stock split occurred. (provider: intrinio)
 
         Example
         -------

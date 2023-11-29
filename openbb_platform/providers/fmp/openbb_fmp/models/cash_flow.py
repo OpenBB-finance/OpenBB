@@ -7,14 +7,14 @@ from datetime import (
 )
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_fmp.utils.helpers import create_url, get_data_many
-from openbb_provider.abstract.data import StrictInt
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.cash_flow import (
+from openbb_core.provider.abstract.data import ForceInt
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.cash_flow import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_fmp.utils.helpers import create_url, get_data_many
 from pydantic import Field, model_validator
 
 
@@ -60,37 +60,37 @@ class FMPCashFlowStatementData(CashFlowStatementData):
     reported_currency: str = Field(description="Reported currency in the statement.")
     filling_date: dateType = Field(description="Filling date.")
     accepted_date: datetime = Field(description="Accepted date.")
-    calendar_year: Optional[StrictInt] = Field(
+    calendar_year: Optional[ForceInt] = Field(
         default=None, description="Calendar year."
     )
 
-    change_in_working_capital: Optional[StrictInt] = Field(
+    change_in_working_capital: Optional[ForceInt] = Field(
         default=None, description="Change in working capital."
     )
-    other_working_capital: Optional[StrictInt] = Field(
+    other_working_capital: Optional[ForceInt] = Field(
         default=None, description="Other working capital."
     )
-    common_stock_issued: Optional[StrictInt] = Field(
+    common_stock_issued: Optional[ForceInt] = Field(
         default=None, description="Common stock issued."
     )
-    effect_of_forex_changes_on_cash: Optional[StrictInt] = Field(
+    effect_of_forex_changes_on_cash: Optional[ForceInt] = Field(
         default=None, description="Effect of forex changes on cash."
     )
 
-    cash_at_beginning_of_period: Optional[StrictInt] = Field(
+    cash_at_beginning_of_period: Optional[ForceInt] = Field(
         default=None, description="Cash at beginning of period."
     )
-    cash_at_end_of_period: Optional[StrictInt] = Field(
+    cash_at_end_of_period: Optional[ForceInt] = Field(
         default=None,
         description="Cash, cash equivalents, and restricted cash at end of period",
     )
-    operating_cash_flow: Optional[StrictInt] = Field(
+    operating_cash_flow: Optional[ForceInt] = Field(
         default=None, description="Operating cash flow."
     )
-    capital_expenditure: Optional[StrictInt] = Field(
+    capital_expenditure: Optional[ForceInt] = Field(
         default=None, description="Capital expenditure."
     )
-    free_cash_flow: Optional[StrictInt] = Field(
+    free_cash_flow: Optional[ForceInt] = Field(
         default=None, description="Free cash flow."
     )
 

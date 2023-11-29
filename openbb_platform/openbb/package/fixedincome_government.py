@@ -8,7 +8,7 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 from typing_extensions import Annotated
 
 
@@ -52,13 +52,13 @@ class ROUTER_fixedincome_government(Container):
             OpenBBCustomParameter(
                 description="Start date of the data, in YYYY-MM-DD format. The default is 90 days ago."
             ),
-        ] = "2023-08-22",
+        ] = None,
         end_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="End date of the data, in YYYY-MM-DD format. The default is today."
             ),
-        ] = "2023-11-20",
+        ] = None,
         provider: Optional[Literal["government_us"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
@@ -343,7 +343,7 @@ class ROUTER_fixedincome_government(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.government.treasury_auctions(start_date="2023-08-22", end_date="2023-11-20")
+        >>> obb.fixedincome.government.treasury_auctions()
         """  # noqa: E501
 
         inputs = filter_inputs(

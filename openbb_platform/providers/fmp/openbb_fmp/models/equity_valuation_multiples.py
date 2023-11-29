@@ -4,12 +4,12 @@ from concurrent.futures import ThreadPoolExecutor
 from itertools import repeat
 from typing import Any, Dict, List, Optional
 
-from openbb_fmp.utils.helpers import create_url, get_data_many
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.equity_valuation_multiples import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.equity_valuation_multiples import (
     EquityValuationMultiplesData,
     EquityValuationMultiplesQueryParams,
 )
+from openbb_fmp.utils.helpers import create_url, get_data_many
 
 
 class FMPEquityValuationMultiplesQueryParams(EquityValuationMultiplesQueryParams):
@@ -117,7 +117,9 @@ class FMPEquityValuationMultiplesFetcher(
             url = create_url(
                 3, f"key-metrics-ttm/{symbol}", api_key, query, exclude=["symbol"]
             )
-            return data.extend(get_data_many(url, **kwargs))
+            response = get_data_many(url, **kwargs)
+            response[0]["symbol"] = symbol
+            return data.extend(response)
 
         with ThreadPoolExecutor() as executor:
             executor.map(multiple_symbols, query.symbol.split(","), repeat(data))

@@ -1,14 +1,16 @@
 """FMP Insider Trading Model."""
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
-from openbb_fmp.utils.helpers import get_data_many
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.insider_trading import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.insider_trading import (
     InsiderTradingData,
     InsiderTradingQueryParams,
 )
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
+from openbb_fmp.utils.definitions import TRANSACTION_TYPES
+from openbb_fmp.utils.helpers import get_data_many
+from pydantic import Field, model_validator
 
 
 class FMPInsiderTradingQueryParams(InsiderTradingQueryParams):
@@ -17,18 +19,35 @@ class FMPInsiderTradingQueryParams(InsiderTradingQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Insider-Trading
     """
 
-    __alias_dict__ = {
-        "transaction_type": "transactionType",
-    }
+    transaction_type: Optional[Union[List[TRANSACTION_TYPES], str]] = Field(
+        default=["P-Purchase"],
+        description="Type of the transaction.",
+        alias="transactionType",
+    )
+
+    @model_validator(mode="after")
+    @classmethod
+    def validate_transaction_type(cls, values: "InsiderTradingQueryParams"):
+        """Validate the transaction type."""
+        if isinstance(values.transaction_type, list):
+            values.transaction_type = ",".join(values.transaction_type)
+        return values
 
 
 class FMPInsiderTradingData(InsiderTradingData):
     """FMP Insider Trading Data."""
 
     __alias_dict__ = {
+        "owner_cik": "reportingCik",
+        "owner_name": "reportingName",
+        "owner_title": "typeOfOwner",
+        "security_type": "securityName",
+        "transaction_price": "price",
         "acquisition_or_disposition": "acquistionOrDisposition",
-        "last_number_of_13f_shares": "lastNumberOf13FShares",
+        "filing_url": "link",
     }
+
+    form_type: str = Field(description="Form type of the insider trading.")
 
 
 class FMPInsiderTradingFetcher(

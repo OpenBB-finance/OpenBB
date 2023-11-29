@@ -21,5 +21,5 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Recent SEC Filings for a certain ticker.
 
-Source: fmp
+**Source:** fmp
 

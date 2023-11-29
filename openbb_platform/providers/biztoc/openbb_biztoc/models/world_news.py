@@ -3,8 +3,8 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_biztoc.utils.helpers import get_news
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.world_news import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
@@ -79,7 +79,7 @@ class BiztocWorldNewsFetcher(
         api_key = credentials.get("biztoc_api_key") if credentials else ""
 
         data = get_news(
-            api_key=api_key, filter=query.filter, source=query.source, tag=query.tag, term=query.term  # type: ignore
+            api_key=api_key, filter_=query.filter, source=query.source, tag=query.tag, term=query.term  # type: ignore
         )
         if query.filter == "hot":
             data = [post for sublist in data for post in sublist["posts"]]

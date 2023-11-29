@@ -5,23 +5,23 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 import requests
-from openbb_nasdaq.utils.helpers import IPO_HEADERS, date_range
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.calendar_dividend import (
-    DividendCalendarData,
-    DividendCalendarQueryParams,
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.calendar_dividend import (
+    CalendarDividendData,
+    CalendarDividendQueryParams,
 )
+from openbb_nasdaq.utils.helpers import IPO_HEADERS, date_range
 from pydantic import Field, field_validator
 
 
-class NasdaqDividendCalendarQueryParams(DividendCalendarQueryParams):
+class NasdaqCalendarDividendQueryParams(CalendarDividendQueryParams):
     """Nasdaq Dividend Calendar Query.
 
     Source: https://www.nasdaq.com/market-activity/dividends
     """
 
 
-class NasdaqDividendCalendarData(DividendCalendarData):
+class NasdaqCalendarDividendData(CalendarDividendData):
     """Nasdaq Dividend Calendar Data."""
 
     __alias_dict__ = {
@@ -52,10 +52,10 @@ class NasdaqDividendCalendarData(DividendCalendarData):
         return datetime.strptime(v, "%m/%d/%Y").date() if v else None
 
 
-class NasdaqDividendCalendarFetcher(
+class NasdaqCalendarDividendFetcher(
     Fetcher[
-        NasdaqDividendCalendarQueryParams,
-        List[NasdaqDividendCalendarData],
+        NasdaqCalendarDividendQueryParams,
+        List[NasdaqCalendarDividendData],
     ]
 ):
     """Transform the query, extract and transform the data from the Nasdaq endpoints."""
@@ -63,7 +63,7 @@ class NasdaqDividendCalendarFetcher(
     require_credentials = False
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> NasdaqDividendCalendarQueryParams:
+    def transform_query(params: Dict[str, Any]) -> NasdaqCalendarDividendQueryParams:
         """Transform the query params."""
         now = datetime.today().date()
         transformed_params = params
@@ -74,11 +74,11 @@ class NasdaqDividendCalendarFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now + timedelta(days=3)
 
-        return NasdaqDividendCalendarQueryParams(**transformed_params)
+        return NasdaqCalendarDividendQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: NasdaqDividendCalendarQueryParams,
+        query: NasdaqCalendarDividendQueryParams,
         credentials: Optional[Dict[str, str]],  # pylint: disable=unused-argument
         **kwargs: Any,
     ) -> List[Dict]:
@@ -110,9 +110,9 @@ class NasdaqDividendCalendarFetcher(
 
     @staticmethod
     def transform_data(
-        query: NasdaqDividendCalendarQueryParams,  # pylint: disable=unused-argument
+        query: NasdaqCalendarDividendQueryParams,  # pylint: disable=unused-argument
         data: List[Dict],
         **kwargs: Any,  # pylint: disable=unused-argument
-    ) -> List[NasdaqDividendCalendarData]:
+    ) -> List[NasdaqCalendarDividendData]:
         """Return the transformed data."""
-        return [NasdaqDividendCalendarData.model_validate(d) for d in data]
+        return [NasdaqCalendarDividendData.model_validate(d) for d in data]

@@ -3,13 +3,13 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from openbb_fmp.utils.helpers import get_data_many, get_querystring
-from openbb_provider.abstract.data import StrictInt
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.equity_quote import (
+from openbb_core.provider.abstract.data import ForceInt
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.equity_quote import (
     EquityQuoteData,
     EquityQuoteQueryParams,
 )
+from openbb_fmp.utils.helpers import get_data_many, get_querystring
 from pydantic import Field, field_validator
 
 
@@ -52,14 +52,14 @@ class FMPEquityQuoteData(EquityQuoteData):
     price_avg50: Optional[float] = Field(
         default=None, description="50 days average price of the equity."
     )
-    price_avg200: Optional[StrictInt] = Field(
+    price_avg200: Optional[float] = Field(
         default=None, description="200 days average price of the equity."
     )
-    volume: Optional[StrictInt] = Field(
+    volume: Optional[ForceInt] = Field(
         default=None,
         description="Volume of the equity in the current trading day.",
     )
-    avg_volume: Optional[StrictInt] = Field(
+    avg_volume: Optional[ForceInt] = Field(
         default=None,
         description="Average volume of the equity in the last 10 trading days.",
     )
@@ -82,7 +82,7 @@ class FMPEquityQuoteData(EquityQuoteData):
     earnings_announcement: Optional[str] = Field(
         default=None, description="Earnings announcement date of the equity."
     )
-    shares_outstanding: Optional[StrictInt] = Field(
+    shares_outstanding: Optional[ForceInt] = Field(
         default=None, description="Number of shares outstanding of the equity."
     )
 

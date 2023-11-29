@@ -3,14 +3,14 @@
 
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_fmp.utils.helpers import create_url, get_data_many
-from openbb_provider.abstract.data import StrictInt
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.balance_sheet import (
+from openbb_core.provider.abstract.data import ForceInt
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_fmp.utils.helpers import create_url, get_data_many
 from pydantic import Field, model_validator
 
 
@@ -54,40 +54,38 @@ class FMPBalanceSheetData(BalanceSheetData):
     }
 
     # Leftovers below
-    calendar_year: Optional[StrictInt] = Field(
-        default=None, description="Calendar Year"
-    )
+    calendar_year: Optional[ForceInt] = Field(default=None, description="Calendar Year")
 
-    cash_and_short_term_investments: Optional[StrictInt] = Field(
+    cash_and_short_term_investments: Optional[ForceInt] = Field(
         default=None, description="Cash and Short Term Investments"
     )
-    goodwill_and_intangible_assets: Optional[StrictInt] = Field(
+    goodwill_and_intangible_assets: Optional[ForceInt] = Field(
         default=None, description="Goodwill and Intangible Assets"
     )
-    deferred_revenue_non_current: Optional[StrictInt] = Field(
+    deferred_revenue_non_current: Optional[ForceInt] = Field(
         default=None, description="Deferred Revenue Non Current"
     )
-    total_investments: Optional[StrictInt] = Field(
+    total_investments: Optional[ForceInt] = Field(
         default=None, description="Total Investments"
     )
 
-    capital_lease_obligations: Optional[StrictInt] = Field(
+    capital_lease_obligations: Optional[ForceInt] = Field(
         default=None, description="Capital Lease Obligations"
     )
-    deferred_tax_liabilities_non_current: Optional[StrictInt] = Field(
+    deferred_tax_liabilities_non_current: Optional[ForceInt] = Field(
         default=None, description="Deferred Tax Liabilities Non Current"
     )
-    capital_lease_obligations: Optional[StrictInt] = Field(
+    capital_lease_obligations: Optional[ForceInt] = Field(
         default=None, description="Capital lease obligations"
     )
-    total_investments: Optional[StrictInt] = Field(
+    total_investments: Optional[ForceInt] = Field(
         default=None, description="Total investments"
     )
-    total_debt: Optional[StrictInt] = Field(default=None, description="Total debt")
-    net_debt: Optional[StrictInt] = Field(default=None, description="Net debt")
+    total_debt: Optional[ForceInt] = Field(default=None, description="Total debt")
+    net_debt: Optional[ForceInt] = Field(default=None, description="Net debt")
 
-    total_debt: Optional[StrictInt] = Field(default=None, description="Total Debt")
-    net_debt: Optional[StrictInt] = Field(default=None, description="Net Debt")
+    total_debt: Optional[ForceInt] = Field(default=None, description="Total Debt")
+    net_debt: Optional[ForceInt] = Field(default=None, description="Net Debt")
 
     link: Optional[str] = Field(default=None, description="Link to the statement.")
     final_link: Optional[str] = Field(

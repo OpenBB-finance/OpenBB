@@ -1,5 +1,5 @@
 """Trading Economics provider module."""
-from openbb_provider.abstract.provider import Provider
+from openbb_core.provider.abstract.provider import Provider
 from openbb_tradingeconomics.models.economic_calendar import TEEconomicCalendarFetcher
 
 tradingeconomics_provider = Provider(

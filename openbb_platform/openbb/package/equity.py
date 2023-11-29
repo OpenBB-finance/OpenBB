@@ -1,13 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional
+from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 from typing_extensions import Annotated
 
 
@@ -15,12 +15,14 @@ class ROUTER_equity(Container):
     """/equity
     /calendar
     /compare
+    /darkpool
     /discovery
     /estimates
     /fundamental
     market_snapshots
     /ownership
     /price
+    profile
     screener
     search
     /shorts
@@ -42,6 +44,14 @@ class ROUTER_equity(Container):
         from . import equity_compare
 
         return equity_compare.ROUTER_equity_compare(command_runner=self._command_runner)
+
+    @property
+    def darkpool(self):  # route = "/equity/darkpool"
+        from . import equity_darkpool
+
+        return equity_darkpool.ROUTER_equity_darkpool(
+            command_runner=self._command_runner
+        )
 
     @property
     def discovery(self):  # route = "/equity/discovery"
@@ -211,6 +221,141 @@ class ROUTER_equity(Container):
         from . import equity_price
 
         return equity_price.ROUTER_equity_price(command_runner=self._command_runner)
+
+    @validate
+    def profile(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        provider: Optional[Literal["intrinio"]] = None,
+        **kwargs
+    ) -> OBBject[Data]:
+        """Equity Info. Get general price and performance metrics of a stock.
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for.
+        provider : Optional[Literal['intrinio']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'intrinio' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : EquityInfo
+                Serializable results.
+            provider : Optional[Literal['intrinio']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        EquityInfo
+        ----------
+        symbol : str
+            Symbol representing the entity requested in the data.
+        name : Optional[str]
+            Common name of the company.
+        cik : Optional[str]
+            Central Index Key (CIK) for the requested entity.
+        lei : Optional[str]
+            Legal Entity Identifier assigned to the company.
+        legal_name : Optional[str]
+            Official legal name of the company.
+        stock_exchange : Optional[str]
+            Stock exchange where the company is traded.
+        sic : Optional[int]
+            Standard Industrial Classification code for the company.
+        short_description : Optional[str]
+            Short description of the company.
+        long_description : Optional[str]
+            Long description of the company.
+        ceo : Optional[str]
+            Chief Executive Officer of the company.
+        company_url : Optional[str]
+            URL of the company's website.
+        business_address : Optional[str]
+            Address of the company's headquarters.
+        mailing_address : Optional[str]
+            Mailing address of the company.
+        business_phone_no : Optional[str]
+            Phone number of the company's headquarters.
+        hq_address1 : Optional[str]
+            Address of the company's headquarters.
+        hq_address2 : Optional[str]
+            Address of the company's headquarters.
+        hq_address_city : Optional[str]
+            City of the company's headquarters.
+        hq_address_postal_code : Optional[str]
+            Zip code of the company's headquarters.
+        hq_state : Optional[str]
+            State of the company's headquarters.
+        hq_country : Optional[str]
+            Country of the company's headquarters.
+        inc_state : Optional[str]
+            State in which the company is incorporated.
+        inc_country : Optional[str]
+            Country in which the company is incorporated.
+        employees : Optional[int]
+            Number of employees working for the company.
+        entity_legal_form : Optional[str]
+            Legal form of the company.
+        entity_status : Optional[str]
+            Status of the company.
+        latest_filing_date : Optional[date]
+            Date of the company's latest filing.
+        irs_number : Optional[str]
+            IRS number assigned to the company.
+        sector : Optional[str]
+            Sector in which the company operates.
+        industry_category : Optional[str]
+            Category of industry in which the company operates.
+        industry_group : Optional[str]
+            Group of industry in which the company operates.
+        template : Optional[str]
+            Template used to standardize the company's financial statements.
+        standardized_active : Optional[bool]
+            Whether the company is active or not.
+        first_fundamental_date : Optional[date]
+            Date of the company's first fundamental.
+        last_fundamental_date : Optional[date]
+            Date of the company's last fundamental.
+        first_stock_price_date : Optional[date]
+            Date of the company's first stock price.
+        last_stock_price_date : Optional[date]
+            Date of the company's last stock price.
+        id : Optional[str]
+            Intrinio ID for the company. (provider: intrinio)
+        thea_enabled : Optional[bool]
+            Whether the company has been enabled for Thea. (provider: intrinio)
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.equity.profile(symbol="AAPL")
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._run(
+            "/equity/profile",
+            **inputs,
+        )
 
     @validate
     def screener(

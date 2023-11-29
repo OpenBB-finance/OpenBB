@@ -7,13 +7,14 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 from typing_extensions import Annotated
 
 
 class ROUTER_etf(Container):
     """/etf
     countries
+    /discovery
     holdings
     holdings_date
     holdings_performance
@@ -86,6 +87,12 @@ class ROUTER_etf(Container):
             "/etf/countries",
             **inputs,
         )
+
+    @property
+    def discovery(self):  # route = "/etf/discovery"
+        from . import etf_discovery
+
+        return etf_discovery.ROUTER_etf_discovery(command_runner=self._command_runner)
 
     @validate
     def holdings(

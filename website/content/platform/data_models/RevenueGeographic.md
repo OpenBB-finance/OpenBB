@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.revenue_geographic import (
+from openbb_core.provider.standard_models.revenue_geographic import (
 RevenueGeographicData,
 RevenueGeographicQueryParams,
 )
@@ -59,4 +59,3 @@ RevenueGeographicQueryParams,
 </TabItem>
 
 </Tabs>
-

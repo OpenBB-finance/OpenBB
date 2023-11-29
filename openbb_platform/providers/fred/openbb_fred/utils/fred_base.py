@@ -3,7 +3,7 @@ from datetime import date
 from typing import Any, Optional
 from urllib.parse import urlencode
 
-from openbb_provider import helpers
+from openbb_core.provider import helpers
 
 ROOT_URL = "https://api.stlouisfed.org/fred"
 

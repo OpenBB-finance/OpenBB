@@ -7,13 +7,14 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 from typing_extensions import Annotated
 
 
 class ROUTER_equity_shorts(Container):
     """/equity/shorts
     fails_to_deliver
+    short_interest
     """
 
     def __repr__(self) -> str:
@@ -96,5 +97,84 @@ class ROUTER_equity_shorts(Container):
 
         return self._run(
             "/equity/shorts/fails_to_deliver",
+            **inputs,
+        )
+
+    @validate
+    def short_interest(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ] = None,
+        provider: Optional[Literal["finra"]] = None,
+        **kwargs
+    ) -> OBBject[List[Data]]:
+        """Get reported Short Volume and Days to Cover data.
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for.
+        provider : Optional[Literal['finra']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'finra' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[EquityShortInterest]
+                Serializable results.
+            provider : Optional[Literal['finra']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        EquityShortInterest
+        -------------------
+        settlement_date : date
+            The mid-month short interest report is based on short positions held by members on the settlement date of the 15th of each month. If the 15th falls on a weekend or another non-settlement date, the designated settlement date will be the previous business day on which transactions settled. The end-of-month short interest report is based on short positions held on the last business day of the month on which transactions settle. Once the short position reports are received, the short interest data is compiled for each equity security and provided for publication on the 7th business day after the reporting settlement date.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        issue_name : str
+            Unique identifier of the issue.
+        market_class : str
+            Primary listing market.
+        current_short_position : float
+            The total number of shares in the issue that are reflected on the books and records of the reporting firms as short as defined by Rule 200 of Regulation SHO as of the current cycle’s designated settlement date.
+        previous_short_position : float
+            The total number of shares in the issue that are reflected on the books and records of the reporting firms as short as defined by Rule 200 of Regulation SHO as of the previous cycle’s designated settlement date.
+        avg_daily_volume : float
+            Total Volume or Adjusted Volume in case of splits / Total trade days between (previous settlement date + 1) to (current settlement date). The NULL values are translated as zero.
+        days_to_cover : float
+            The number of days of average share volume it would require to buy all of the shares that were sold short during the reporting cycle. Formula: Short Interest / Average Daily Share Volume, Rounded to Hundredths. 1.00 will be displayed for any values equal or less than 1 (i.e., Average Daily Share is equal to or greater than Short Interest). N/A will be displayed If the days to cover is Zero (i.e., Average Daily Share Volume is Zero).
+        change : float
+            Change in Shares Short from Previous Cycle: Difference in short interest between the current cycle and the previous cycle.
+        change_pct : float
+            Change in Shares Short from Previous Cycle as a percent.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.equity.shorts.short_interest()
+        """  # noqa: E501
+
+        inputs = filter_inputs(
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
+            extra_params=kwargs,
+        )
+
+        return self._run(
+            "/equity/shorts/short_interest",
             **inputs,
         )
