@@ -83,6 +83,14 @@ Additionally, the `Fetcher` class uses a custom `classproperty` decorator to def
 
 The `require_credentials` class variable indicates whether credentials are needed to fetch data from the provider. This can be overridden by subclasses as needed.
 
+:::info
+The `Fetcher` class implementation is based on the [TET pattern](/platform/development/developer-guidelines/architectural_considerations#the-tet-pattern). This pattern imposes a standardized structure, namely:
+
+- Transform the query: the output of this method should be `QueryParams` child.
+- Extract the data: the output of this method can be `Any` but it's recommended to be a `Dict` (will facilitate the next step of the fetcher's action, the data transformation).
+- Transform the data: the output of this method should be a `List[Data]` or `Data` (or a child of it).
+:::
+
 ### The `OBBject` class
 
 The OBBject class is a generic class in the OpenBB platform that represents a standardized object for handling and manipulating data fetched from various providers. It extends the `Tagged` class and uses Python's generics to allow flexibility in the type of results it can handle.
@@ -106,6 +114,12 @@ The `include_router` method allows for the inclusion of another router, effectiv
 The `Router` class also interacts with the `SignatureInspector` class to validate and complete function signatures, ensuring that the functions registered as API endpoints have the correct parameters and return types.
 
 The `api_router` property provides access to the underlying APIRouter instance, allowing for direct interaction with the FastAPI routing system if needed.
+
+:::info
+The `Router` class exposes a `command` decorator that allows for the registration of callable functions as API endpoints. This method takes care of setting up the API route, including defining the HTTP methods, response models, operation IDs, and other necessary parameters for the API endpoint.
+
+This decorator enforces that the decorated function (of type `Callable`) returns an `OBBject` instance. I.e., the signature of a decorated function should translate to `Callable[P, OBBject]` (a callable object (like a function) that takes arguments of type `P` and returns an object of type `OBBject`).
+:::
 
 ## Import statements
 
