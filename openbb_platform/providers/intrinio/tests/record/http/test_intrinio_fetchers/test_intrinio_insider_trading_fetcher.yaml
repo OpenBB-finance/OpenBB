@@ -5,15 +5,15 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://api-v2.intrinio.com/companies/AAPL/insider_transaction_filings?api_key=MOCK_API_KEY&end_date=2023-11-28&page_size=100&sort_by=updated_on&start_date=2018-11-28
+    uri: https://api-v2.intrinio.com/companies/AAPL/insider_transaction_filings?api_key=MOCK_API_KEY&end_date=2023-11-29&page_size=100&sort_by=updated_on&start_date=2018-11-29
   response:
     body:
       string: !!binary |
-        H4sIAN78ZGUAA+xda1McybH9Kx188RcxqsrMek2EP4wQQkjAKADtWr7hUHDRaIUXgS4g7cqO/e+3
+        H4sIAAdLZ2UAA+xda1McybH9Kx188RcxqsrMek2EP4wQQkjAKADtWr7hUHDRaIUXgS4g7cqO/e+3
         el4gQTVMU49+lGO9lgVDDdMns/Lk4+R/164ujs4uj46vTs7P3n88OT05++1ybfg//12b/fn9h6Or
         ydpwDRjgOufrwA65HiIfAh8wxv659mTxjV8vTu33fbq6+nI5fPr0jz/+GFxOjge/nX97Oro4/nTy
         bXL5dPLht6OLp/YnHj1FYNzgU/sj2OyPgPaPnPOnf16evkAS/2Di6R+/r388v/hM77liTNjvkGrw
@@ -195,7 +195,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 27 Nov 2023 20:32:30 GMT
+      - Wed, 29 Nov 2023 14:30:31 GMT
       Transfer-Encoding:
       - chunked
       Vary:
