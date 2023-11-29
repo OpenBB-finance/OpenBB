@@ -1,6 +1,6 @@
 """FMP Insider Trading Model."""
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.insider_trading import (
@@ -10,7 +10,7 @@ from openbb_core.provider.standard_models.insider_trading import (
 from openbb_core.provider.utils.helpers import get_querystring
 from openbb_fmp.utils.definitions import TRANSACTION_TYPES, TRANSACTION_TYPES_DICT
 from openbb_fmp.utils.helpers import get_data_many
-from pydantic import Field
+from pydantic import Field, model_validator
 
 
 class FMPInsiderTradingQueryParams(InsiderTradingQueryParams):
