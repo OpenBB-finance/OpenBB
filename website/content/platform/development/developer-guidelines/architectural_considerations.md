@@ -307,7 +307,7 @@ When using the OpenBB Platform on a API Interface, the types are a bit more limi
 
 The OpenBB Platform core relies on a set of carefully selected Python libraries to provide its functionality. These dependencies include:
 
-> Note that, in this context by core we mean the `openbb-core` package and the `openbb-provider` package.
+> Note that, in this context by core we mean the `openbb-core` package.
 
 - FastAPI for building the API.
 - Uvicorn as the ASGI server.
