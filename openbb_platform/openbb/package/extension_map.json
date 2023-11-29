@@ -1,28 +1,28 @@
 {
     "openbb_core_extension": [
-        "crypto@1.0.0b2",
-        "currency@1.0.0b2",
-        "derivatives@1.0.0b2",
-        "economy@1.0.0b2",
-        "equity@1.0.0b2",
-        "etf@1.0.0b2",
-        "fixedincome@1.0.0b2",
-        "index@1.0.0b2",
-        "news@1.0.0b2",
-        "regulators@1.0.0b2"
+        "crypto@1.0.0rc0",
+        "currency@1.0.0rc0",
+        "derivatives@1.0.0rc0",
+        "economy@1.0.0rc0",
+        "equity@1.0.0rc0",
+        "etf@1.0.0rc0",
+        "fixedincome@1.0.0rc0",
+        "index@1.0.0rc0",
+        "news@1.0.0rc0",
+        "regulators@1.0.0rc0"
     ],
     "openbb_provider_extension": [
-        "benzinga@1.0.0b2",
-        "finra@1.0.0b2",
-        "fmp@1.0.0b2",
-        "fred@1.0.0b2",
-        "government_us@1.0.0b2",
-        "intrinio@1.0.0b2",
-        "oecd@1.0.0b2",
-        "polygon@1.0.0b2",
-        "sec@1.0.0b2",
-        "tiingo@1.0.0b2",
-        "tradingeconomics@1.0.0b2",
-        "wsj@1.0.0b2"
+        "benzinga@1.0.0rc0",
+        "finra@1.0.0rc0",
+        "fmp@1.0.0rc0",
+        "fred@1.0.0rc0",
+        "government_us@1.0.0rc0",
+        "intrinio@1.0.0rc0",
+        "oecd@1.0.0rc0",
+        "polygon@1.0.0rc0",
+        "sec@1.0.0rc0",
+        "tiingo@1.0.0rc0",
+        "tradingeconomics@1.0.0rc0",
+        "wsj@1.0.0rc0"
     ]
 }
