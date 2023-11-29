@@ -1,7 +1,7 @@
 """Financial Ratios Standard Model."""
 
 
-from typing import List, Literal, Optional, Set, Union
+from typing import List, Optional, Set, Union
 
 from pydantic import Field, NonNegativeInt, field_validator
 
@@ -17,7 +17,7 @@ class FinancialRatiosQueryParams(QueryParams):
     """Financial Ratios Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    period: Literal["annual", "quarter"] = Field(
+    period: str = Field(
         default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     limit: NonNegativeInt = Field(
@@ -35,9 +35,12 @@ class FinancialRatiosQueryParams(QueryParams):
 class FinancialRatiosData(Data):
     """Financial Ratios Standard Model."""
 
-    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    date: str = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    period: str = Field(description="Period of the financial ratios.")
+    symbol: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
+    )
+    period_ending: str = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    fiscal_period: str = Field(description="Period of the financial ratios.")
+    fiscal_year: Optional[int] = Field(default=None, description="Fiscal year.")
     current_ratio: Optional[float] = Field(default=None, description="Current ratio.")
     quick_ratio: Optional[float] = Field(default=None, description="Quick ratio.")
     cash_ratio: Optional[float] = Field(default=None, description="Cash ratio.")

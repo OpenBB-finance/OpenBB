@@ -10,6 +10,7 @@ from openbb_core.provider.standard_models.financial_ratios import (
     FinancialRatiosData,
     FinancialRatiosQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_fmp.utils.helpers import get_data_many, get_data_one
 from pydantic import Field
 
@@ -22,6 +23,9 @@ class FMPFinancialRatiosQueryParams(FinancialRatiosQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Company-Financial-Ratios
     """
 
+    period: Literal["annual", "quarter"] = Field(
+        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
+    )
     with_ttm: Optional[bool] = Field(
         default=False, description="Include trailing twelve months (TTM) data."
     )
@@ -37,6 +41,8 @@ class FMPFinancialRatiosData(FinancialRatiosData):
         "dividend_per_share": "dividendPerShare",
         "research_and_developement_to_revenue": "researchAndDevelopementToRevenue",
         "debt_to_market_cap": "debtToMarketCap",
+        "period_ending": "date",
+        "fiscal_period": "period",
     }
 
 

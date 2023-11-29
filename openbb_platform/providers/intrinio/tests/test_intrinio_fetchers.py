@@ -12,6 +12,7 @@ from openbb_intrinio.models.currency_pairs import IntrinioCurrencyPairsFetcher
 from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
 from openbb_intrinio.models.equity_info import IntrinioEquityInfoFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
+from openbb_intrinio.models.financial_ratios import IntrinioFinancialRatiosFetcher
 from openbb_intrinio.models.fred_series import IntrinioFredSeriesFetcher
 from openbb_intrinio.models.historical_attributes import (
     IntrinioHistoricalAttributesFetcher,
@@ -126,7 +127,6 @@ def test_intrinio_options_unusual_fetcher(credentials=test_credentials):
     result = fetcher.test(params, credentials)
     assert result is None
 
-
 @pytest.mark.record_http
 def test_intrinio_balance_sheet_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
@@ -134,7 +134,6 @@ def test_intrinio_balance_sheet_fetcher(credentials=test_credentials):
     fetcher = IntrinioBalanceSheetFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
-
 
 @pytest.mark.record_http
 def test_intrinio_cash_flow_statement_fetcher(credentials=test_credentials):
@@ -303,5 +302,14 @@ def test_intrinio_share_statistics_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = IntrinioShareStatisticsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_financial_ratios_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL", "period": "annual", "limit": 2, "use_cache": False}
+
+    fetcher = IntrinioFinancialRatiosFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

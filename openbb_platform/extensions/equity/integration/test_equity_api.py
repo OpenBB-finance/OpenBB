@@ -587,7 +587,18 @@ def test_equity_estimates_consensus(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL", "period": "annual", "limit": 12})],
+    [
+        ({"symbol": "AAPL", "period": "annual", "limit": 12, "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 12,
+                "provider": "intrinio",
+                "use_cache": False,
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_equity_fundamental_ratios(params, headers):
