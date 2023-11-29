@@ -392,7 +392,7 @@ def test_equity_fundamental_income_growth(params, headers):
                 "provider": "fmp",
                 "symbol": "AAPL",
                 "limit": 10,
-                "transaction_type": ["P-Purchase"],
+                "transaction_type": None,
             }
         ),
         (
