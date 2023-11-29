@@ -21,5 +21,5 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Show company profile for a certain ticker.
 
-Source: fmp
+**Source:** fmp
 

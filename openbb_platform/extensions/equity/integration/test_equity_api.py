@@ -1,8 +1,10 @@
 """API integration tests for equity extension."""
+import base64
 from datetime import time
 
 import pytest
 import requests
+from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
 # pylint: disable=too-many-lines,redefined-outer-name
@@ -10,7 +12,11 @@ from openbb_core.provider.utils.helpers import get_querystring
 
 @pytest.fixture(scope="session")
 def headers():
-    return {}
+    userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
+    userpass_bytes = userpass.encode("ascii")
+    base64_bytes = base64.b64encode(userpass_bytes)
+
+    return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 
 
 @pytest.mark.parametrize(
@@ -116,11 +122,11 @@ def test_equity_calendar_dividend(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_equity_calendar_split(params, headers):
+def test_equity_calendar_splits(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/equity/calendar/split?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/equity/calendar/splits?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -254,7 +260,16 @@ def test_equity_fundamental_historical_splits(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL"})],
+    [
+        ({"symbol": "AAPL", "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "limit": 100,
+                "provider": "intrinio",
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_equity_fundamental_dividends(params, headers):
@@ -380,12 +395,23 @@ def test_equity_fundamental_income_growth(params, headers):
     [
         (
             {
-                "symbol": "AAPL",
-                "transaction_type": "P-Purchase",
-                "limit": 10,
                 "provider": "fmp",
+                "symbol": "AAPL",
+                "limit": 10,
+                "transaction_type": None,
             }
-        )
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "limit": 10,
+                "start_date": "2021-01-01",
+                "end_date": "2023-06-06",
+                "ownership_type": None,
+                "sort_by": "updated_on",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -409,7 +435,14 @@ def test_equity_ownership_insider_trading(params, headers):
                 "date": "2021-09-30",
                 "provider": "fmp",
             }
-        )
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "limit": 100,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -418,7 +451,7 @@ def test_equity_ownership_institutional(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/ownership/institutional?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
+    result = requests.get(url, headers=headers, timeout=20)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -459,7 +492,18 @@ def test_equity_calendar_ipo(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL", "period": "annual", "limit": 100})],
+    [
+        (
+            {
+                "provider": "fmp",
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 100,
+                "with_ttm": False,
+            }
+        ),
+        ({"provider": "intrinio", "symbol": "AAPL", "period": "annual", "limit": 100}),
+    ],
 )
 @pytest.mark.integration
 def test_equity_fundamental_metrics(params, headers):
@@ -597,15 +641,36 @@ def test_equity_fundamental_revenue_per_segment(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "type": "1", "page": 1, "limit": 100, "provider": "fmp"}),
+        ({"symbol": "AAPL", "form_type": "1", "limit": 100, "provider": "fmp"}),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "start_date": "2021-01-01",
+                "end_date": "2023-11-01",
+                "form_type": None,
+                "limit": 100,
+                "thea_enabled": None,
+            }
+        ),
         (
             {
                 "symbol": "AAPL",
-                "type": "10-K",
-                "limit": 100,
+                "limit": 3,
+                "type": "8-K",
                 "cik": None,
-                "use_cache": False,
                 "provider": "sec",
+                "use_cache": False,
+            }
+        ),
+        (
+            {
+                "cik": "0001067983",
+                "limit": 3,
+                "type": "10-Q",
+                "symbol": None,
+                "provider": "sec",
+                "use_cache": False,
             }
         ),
     ],
@@ -623,7 +688,10 @@ def test_equity_fundamental_filings(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL"})],
+    [
+        ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL", "provider": "intrinio"}),
+    ],
 )
 @pytest.mark.integration
 def test_equity_ownership_share_statistics(params, headers):
@@ -797,7 +865,6 @@ def test_equity_compare_peers(params, headers):
                 "prepost": False,
                 "include": True,
                 "adjusted": False,
-                "back_adjust": False,
                 "ignore_tz": True,
                 "provider": "yfinance",
                 "symbol": "AAPL",
@@ -811,7 +878,6 @@ def test_equity_compare_peers(params, headers):
                 "prepost": False,
                 "include": True,
                 "adjusted": False,
-                "back_adjust": False,
                 "ignore_tz": True,
                 "provider": "yfinance",
                 "symbol": "AAPL",
@@ -855,7 +921,7 @@ def test_equity_price_historical(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL", "limit": 100, "provider": "fmp"})],
+    [({"symbol": "AAPL", "provider": "fmp"})],
 )
 @pytest.mark.integration
 def test_equity_fundamental_multiples(params, headers):
@@ -875,11 +941,11 @@ def test_equity_fundamental_multiples(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_equity_fundamental_search_financial_attributes(params, headers):
+def test_equity_fundamental_search_attributes(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/search_financial_attributes?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/search_attributes?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -893,7 +959,7 @@ def test_equity_fundamental_search_financial_attributes(params, headers):
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "tag": "ebit",
-                "period": "annual",
+                "frequency": "yearly",
                 "limit": 1000,
                 "type": None,
                 "start_date": "2013-01-01",
@@ -904,11 +970,41 @@ def test_equity_fundamental_search_financial_attributes(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_equity_fundamental_financial_attributes(params, headers):
+def test_equity_fundamental_historical_attributes(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/financial_attributes?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/historical_attributes?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "tag": "ceo",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "MSFT",
+                "tag": "ebitda",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_fundamental_latest_attributes(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/latest_attributes?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -990,7 +1086,10 @@ def test_equity_price_quote(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL", "provider": "cboe"})],
+    [
+        ({"symbol": "AAPL", "provider": "cboe"}),
+        ({"provider": "intrinio", "symbol": "AAPL"}),
+    ],
 )
 @pytest.mark.integration
 def test_equity_profile(params, headers):
@@ -1206,7 +1305,7 @@ def test_equity_shorts_fails_to_deliver(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/shorts/fails_to_deliver?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
+    result = requests.get(url, headers=headers, timeout=20)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -1236,7 +1335,7 @@ def test_equity_shorts_short_interest(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/shorts/short_interest?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
+    result = requests.get(url, headers=headers, timeout=20)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -1276,7 +1375,7 @@ def test_equity_price_nbbo(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/price/nbbo?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
+    result = requests.get(url, headers=headers, timeout=20)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -1317,7 +1416,7 @@ def test_equity_market_snapshots(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/market_snapshots?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
+    result = requests.get(url, headers=headers, timeout=20)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 

@@ -45,7 +45,7 @@ class EquityOwnershipData(Data):
     """Equity Ownership Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    cik: int = Field(description="Cik of the stock ownership.")
+    cik: int = Field(description=DATA_DESCRIPTIONS.get("cik", ""))
     filing_date: dateType = Field(description="Filing date of the stock ownership.")
     investor_name: str = Field(
         ...,

@@ -21,5 +21,5 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Show news from around the world.
 
-Source: benzinga
+**Source:** benzinga
 

@@ -21,5 +21,5 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Analyst Price Targets for a certain ticker.
 
-Source: fmp
+**Source:** fmp
 

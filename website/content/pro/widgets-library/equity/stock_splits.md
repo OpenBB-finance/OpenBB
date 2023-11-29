@@ -21,5 +21,5 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 History of stock splits.
 
-Source: fmp
+**Source:** fmp
 

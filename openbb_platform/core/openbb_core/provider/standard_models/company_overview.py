@@ -20,6 +20,7 @@ class CompanyOverviewQueryParams(QueryParams):
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -55,7 +56,9 @@ class CompanyOverviewData(Data):
     currency: Optional[str] = Field(
         default=None, description="Currency of the company."
     )
-    cik: Optional[str] = Field(default=None, description="CIK of the company.")
+    cik: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("cik", "")
+    )
     isin: Optional[str] = Field(default=None, description="ISIN of the company.")
     cusip: Optional[str] = Field(default=None, description="CUSIP of the company.")
     exchange: Optional[str] = Field(
@@ -99,6 +102,7 @@ class CompanyOverviewData(Data):
     is_fund: bool = Field(description="If the company is a fund.")
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

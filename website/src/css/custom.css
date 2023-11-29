@@ -498,3 +498,14 @@ html[data-theme='dark'] .sidebar-divider {
   justify-content: left;
   align-items: center;
 }
+
+.pro-border-gradient {
+  background: linear-gradient(to right, white, #6BD2F3, #00AAFF);
+  border-radius: 20px;
+  overflow: hidden;
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  position: relative;
+}
