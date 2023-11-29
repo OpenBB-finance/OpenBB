@@ -59,6 +59,8 @@ jobs:
           touch ~/.openbb_platform/system_settings.json
           echo '{"log_collect":false}' > ~/.openbb_platform/system_settings.json
           cat ~/.openbb_platform/system_settings.json
+          echo ~
+          pwd
 
       - name: Create and Populate user_settings.json from GitHub Secrets
         run: |
