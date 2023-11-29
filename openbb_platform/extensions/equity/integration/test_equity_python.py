@@ -96,15 +96,6 @@ def test_equity_fundamental_balance_growth(params, obb):
     [
         ({"start_date": "2023-11-05", "end_date": "2023-11-10", "provider": "fmp"}),
         ({"start_date": "2023-11-05", "end_date": "2023-11-10", "provider": "nasdaq"}),
-        (
-            {
-                "start_date": "2023-11-05",
-                "end_date": "2023-11-10",
-                "symbol": "AAPL",
-                "limit": 100,
-                "provider": "intrinio",
-            }
-        ),
     ],
 )
 @pytest.mark.integration
@@ -122,7 +113,7 @@ def test_equity_calendar_dividend(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_equity_calendar_split(params, obb):
+def test_equity_calendar_splits(params, obb):
     result = obb.equity.calendar.split(**params)
     assert result
     assert isinstance(result, OBBject)
@@ -250,6 +241,14 @@ def test_equity_fundamental_historical_splits(params, obb):
     "params",
     [
         ({"symbol": "AAPL"}),
+        ({"symbol": "AAPL", "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "limit": 100,
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -813,7 +812,6 @@ def test_equity_compare_peers(params, obb):
                 "prepost": False,
                 "include": True,
                 "adjusted": False,
-                "back_adjust": False,
                 "ignore_tz": True,
                 "provider": "yfinance",
                 "symbol": "AAPL",
@@ -827,7 +825,6 @@ def test_equity_compare_peers(params, obb):
                 "prepost": False,
                 "include": True,
                 "adjusted": False,
-                "back_adjust": False,
                 "ignore_tz": True,
                 "provider": "yfinance",
                 "symbol": "AAPL",
