@@ -19,7 +19,8 @@ class InsiderTradingQueryParams(QueryParams):
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     limit: StrictInt = Field(
-        default=100, description=QUERY_DESCRIPTIONS.get("limit", "")
+        default=500,
+        description=QUERY_DESCRIPTIONS.get("limit", ""),
     )
 
     @field_validator("symbol", mode="before", check_fields=False)

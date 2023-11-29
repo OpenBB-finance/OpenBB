@@ -99,6 +99,12 @@ class FMPCashFlowStatementData(CashFlowStatementData):
         default=None, description="Link to the final statement."
     )
 
+    @model_validator(mode="before")
+    @classmethod
+    def replace_zero(cls, values):  # pylint: disable=no-self-argument
+        """Check for zero values and replace with None."""
+        return {k: None if v == 0 else v for k, v in values.items()}
+
 
 class FMPCashFlowStatementFetcher(
     Fetcher[
