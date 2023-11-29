@@ -114,7 +114,7 @@ def test_equity_calendar_dividend(params, obb):
 )
 @pytest.mark.integration
 def test_equity_calendar_splits(params, obb):
-    result = obb.equity.calendar.split(**params)
+    result = obb.equity.calendar.splits(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
