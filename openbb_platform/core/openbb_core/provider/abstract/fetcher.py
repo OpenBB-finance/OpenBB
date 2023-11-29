@@ -1,6 +1,4 @@
 """Abstract class for the fetcher."""
-# ruff: noqa: S101
-# pylint: disable=E1101
 
 from typing import (
     Any,
@@ -10,7 +8,6 @@ from typing import (
     TypeVar,
     get_args,
     get_origin,
-    overload,
 )
 
 from pandas import DataFrame
@@ -47,15 +44,15 @@ class Fetcher(Generic[Q, R]):
         """Transform the params to the provider-specific query."""
         raise NotImplementedError
 
-    @overload
     @staticmethod
-    async def extract_data(query: Q, credentials: Optional[Dict[str, str]]) -> Any:
+    async def extract_data_async(
+        query: Q, credentials: Optional[Dict[str, str]]
+    ) -> Any:
         """Extract the data from the provider."""
 
     @staticmethod
     def extract_data(query: Q, credentials: Optional[Dict[str, str]]) -> Any:
         """Extract the data from the provider."""
-        raise NotImplementedError
 
     @staticmethod
     def transform_data(query: Q, data: Any, **kwargs) -> R:
@@ -79,19 +76,19 @@ class Fetcher(Generic[Q, R]):
     @classproperty
     def query_params_type(self) -> Q:
         """Get the type of query."""
-        # pylint: disable=E1101
+        # pylint: disable=no-member
         return self.__orig_bases__[0].__args__[0]  # type: ignore
 
     @classproperty
     def return_type(self) -> R:
         """Get the type of return."""
-        # pylint: disable=E1101
+        # pylint: disable=no-member
         return self.__orig_bases__[0].__args__[1]  # type: ignore
 
     @classproperty
     def data_type(self) -> D:  # type: ignore
         """Get the type data."""
-        # pylint: disable=E1101
+        # pylint: disable=no-member
         return self._get_data_type(self.__orig_bases__[0].__args__[1])  # type: ignore
 
     @staticmethod
@@ -101,6 +98,8 @@ class Fetcher(Generic[Q, R]):
             data = get_args(data)[0]
         return data
 
+    # pylint: disable=no-member
+    # ruff: noqa: S101
     @classmethod
     def test(
         cls,
@@ -125,9 +124,20 @@ class Fetcher(Generic[Q, R]):
             If any of the tests fail.
         """
         query = cls.transform_query(params=params)
-        data = run_async(
-            cls.extract_data, query=query, credentials=credentials, **kwargs
-        )
+        # Select async or sync extract functions to test
+        extract_func = None
+
+        if cls.extract_data_async != Fetcher.extract_data_async:
+            extract_func = cls.extract_data_async
+        elif cls.extract_data != Fetcher.extract_data:
+            extract_func = cls.extract_data
+
+        if extract_func is None:
+            raise NotImplementedError(
+                "Fetchers must implement either extract_data_async or extract_data method."
+            )
+
+        data = run_async(extract_func, query=query, credentials=credentials, **kwargs)
         transformed_data = cls.transform_data(query=query, data=data, **kwargs)
 
         # Class Assertions
