@@ -24,25 +24,23 @@ Developing and maintaining a full-blown investment research infrastructure from 
 
 
 ## What is the OpenBB Platform?
+
 Starting with V4, we have completely restructured the previous version of the OpenBB SDK.
 Instead of a single monolithic SDK, that comes with dependency nightmares and compatibility issues with things you may not need, we have morphed into the OpenBB Platform, which serves as a collection of building blocks to be used for your own need.
 
-We have broken the Platform into 2 main components:
+We have broken the Platform into two main components:
+
 - OpenBB Core
 - OpenBB Extensions
-   - OpenBB Providers
-   - OpenBB Toolkits
+  - OpenBB Providers
+  - OpenBB Toolkits
 
-The OpenBB core provides all of the groundwork for building custom applications.  It is a lightweight package that provides the ability to connect with data providers in a standardized way, or to build additional toolkits on top.  Additionally, this provides the ability to launch with not just a python library, but with a web api.
+The OpenBB Core provides all of the groundwork for building custom applications.  It is a lightweight package providing connections with data providers in a standardized way, and the ability to build additional toolkits on top.  Additionally, the `openbb-core` library contains the infrastructure for Fast API deployments.
 
-OpenBB extensions are the pieces that can be added to the core for building on top of.  We have distinguished into Providers and Toolkits here.
-As the name suggests, Providers are the interface to obtaining any raw data from any data source. The data providers are accessed through asset class extensions, such as `openbb-equity`.
-The OpenBB toolkits, such as `openbb-technical`, provide additional functionalities on top of the raw data access.
+OpenBB Extensions are the pieces that can be added to the core for building on top of.  We have grouped them categorically as, Providers and Toolkits.
+As the name suggests, Providers are the interface to obtaining any raw data from any data source. The data providers are accessed through asset class extensions, such as `openbb-equity`. OpenBB toolkits, such as `openbb-technical`, provide additional functionalities on top of the raw data access.
 
-When you install the platform (openbb), we provide a default set of extensions that give access to a wide range of functionalities and data.  Additional data, functionalities and extensions are available to be used as desired.
-The reason we are doing this is to avoid an overcomplicated environment with many dependencies that can cause issues.
-The goal is that OpenBB can be used as a drop in to any environment for access and building of applications on top of.
-
+When you install the Platform (openbb), we provide a default set of extensions that give access to a wide range of functionalities and data.  Additional data and processing tools are available to be installed and used as desired. The reason we are doing this is to avoid an overcomplicated environment with many dependencies that can cause issues. The goal is that OpenBB can be used as a drop-in within any environment for building and extending applications.
 
 ---
 
