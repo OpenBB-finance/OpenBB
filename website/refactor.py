@@ -23,7 +23,14 @@ class CommandLib(PathHandler):
 
     def get_cmd_info(self, cmd: str) -> dict:
         """Get the info for a command."""
-        return {}
+        func = self.get_cmd_func(cmd)
+        if func is None:
+            return {}
+        name = func.__name__ if func.__name__ != "index" else "index_cmd"
+        return {
+            "name": name,
+            "description": func.__doc__.strip() if func.__doc__ else "",
+        }
 
 
 class Editor:
@@ -77,7 +84,7 @@ class Editor:
             content += "import ReferenceCard from '@site/src/components/General/NewReferenceCard';\n\n"
             content += "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>"
             for md in md_files:
-                ref = md.parts.index("reference")
+                ref = md.parts.index(label.lower())
                 url = "/".join([*md.parts[ref:-1], md.stem])
                 content += get_card(
                     title=md.stem,
@@ -111,7 +118,6 @@ class Editor:
     def generate_md(self, path: Path, cmd_info: dict):
         def get_header() -> str:
             title = cmd_info["name"]
-
             header = "---\n"
             header += f"title: {title}\n"
             header += "description: test\n"
@@ -128,19 +134,46 @@ class Editor:
             return tab
 
         def get_description() -> str:
-            return ""
+            description = cmd_info.get("description", "")
+            description += "\n\n"
+            return description
 
         def get_signature() -> str:
-            return ""
+            signature = "## Signature\n\n"
+            signature += "```python wordwrap\n"
+            signature += "test\n"
+            signature += "```\n\n"
+            signature += "---\n\n"
+            return signature
 
         def get_parameters() -> str:
-            return ""
+            parameters = "## Parameters\n\n"
+            parameters += "<Tabs>\n"
+            parameters += '<TabItem value="standard" label="Standard">\n\n'
+            parameters += "| Name | Type | Description | Default | Optional |\n"
+            parameters += "| ---- | ---- | ----------- | ------- | -------- |\n"
+            parameters += "| start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |\n"
+            parameters += "</TabItem>\n"
+            parameters += "</Tabs>\n\n"
+            return parameters
 
         def get_returns() -> str:
-            return ""
+            returns = "## Returns\n\n"
+            returns += "```python wordwrap\n"
+            returns += "test\n"
+            returns += "```\n\n"
+            return returns
 
         def get_data() -> str:
-            return ""
+            data = "## Data\n\n"
+            data += "<Tabs>\n"
+            data += '<TabItem value="standard" label="Standard">\n\n'
+            data += "| Name | Type | Description | Default | Optional |\n"
+            data += "| ---- | ---- | ----------- | ------- | -------- |\n"
+            data += "| start_date | Union[date, str] | Start date of the data, in YYYY-MM-DD format. | None | True |\n"
+            data += "</TabItem>\n"
+            data += "</Tabs>\n\n"
+            return data
 
         content = get_header()
         content += get_tab()
@@ -155,25 +188,13 @@ class Editor:
         """Generate the website reference."""
 
         self.delete(self.target_dir)
-
         for cmd in self.cmd_lib.get_cmd_list():
-            func = self.cmd_lib.get_cmd_func(cmd)
-            func_name = func.__name__ if func else None
-            if not func_name:
-                continue
-            func_name = "index_cmd" if func_name == "index" else func_name
-
-            folder = "/".join(cmd.strip("/").split("/")[:-1])
-            path = self.target_dir / folder / f"{func_name}.md"
-
-            cmd_info = self.cmd_lib.get_cmd_info(cmd)
-            cmd_info["name"] = func_name
-
-            if self.output == "data_models":
-                pass
-            elif self.output == "reference":
-                path.parent.mkdir(parents=True, exist_ok=True)
-                self.generate_md(path, cmd_info)
+            if cmd_info := self.cmd_lib.get_cmd_info(cmd):
+                folder = "/".join(cmd.split("/")[1:-1])
+                filename = cmd.split("/")[-1] + ".md"
+                filepath = self.target_dir / folder / filename
+                filepath.parent.mkdir(parents=True, exist_ok=True)
+                self.generate_md(filepath, cmd_info)
 
         self.generate_sidebar()
         print(f"Markdown files generated, check the {self.target_dir} folder.")
