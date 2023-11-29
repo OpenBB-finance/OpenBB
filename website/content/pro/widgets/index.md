@@ -32,7 +32,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
-  youtubeLink="https://www.youtube.com/embed/cGgWWnFC_6I?si=dLHEVWrECtqZmFBq"
+  youtubeLink="https://www.youtube.com/embed/_kg8bCTNM14?si=OLAa1ehCEm57SFjd"
   videoLegend="Short introduction to Terminal Pro widgets"
 />
 

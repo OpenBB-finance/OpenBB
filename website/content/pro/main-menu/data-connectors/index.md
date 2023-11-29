@@ -37,15 +37,15 @@ OpenBB Terminal Pro's Data Connectors are designed to empower teams by allowing 
 
 We offer three distinct methods for importing your data into the platform.
 
-## No code
+## Single Widget
 
 This method allows users to import an API endpoint that is directly rendered into a table format. While customization is limited, it provides a quick and easy way to visualize your data. More information can be found here (add link)
 
-## Advanced
+## Integrate your own backend
 
 For those who prefer a more hands-on approach, you can create your own backend. You can either leverage OpenBB's cookie-cutter or build a language-agnostic API. More information can be found here (add link)
 
-## Third-party
+## Native Integrations
 
 OpenBB has established partnerships with several companies to streamline the process of importing external data. This includes data providers that require an API key, or integration with a data warehouse or database. More information can be found here (add link)
 

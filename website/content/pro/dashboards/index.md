@@ -23,7 +23,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
-  youtubeLink="https://www.youtube.com/embed/YSvPE_SM6Yo?si=VwltUN4AAWEZcLHi"
+  youtubeLink="https://www.youtube.com/embed/kSZvLAPmwvo?si=O6FaSchvvxpBWtDR"
   videoLegend="Short introduction to Terminal Pro dashboards"
 />
 
