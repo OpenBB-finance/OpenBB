@@ -1,14 +1,6 @@
 """Abstract class for the fetcher."""
 
-from typing import (
-    Any,
-    Dict,
-    Generic,
-    Optional,
-    TypeVar,
-    get_args,
-    get_origin,
-)
+from typing import Any, Callable, Dict, Generic, Optional, TypeVar, get_args, get_origin
 
 from pandas import DataFrame
 
@@ -69,7 +61,7 @@ class Fetcher(Generic[Q, R]):
         """Fetch data from a provider."""
         query = cls.transform_query(params=params)
         data = await maybe_coroutine(
-            cls.extract_data, query=query, credentials=credentials, **kwargs
+            cls.get_extraction_func(), query=query, credentials=credentials, **kwargs
         )
         return cls.transform_data(query=query, data=data, **kwargs)
 
@@ -98,6 +90,20 @@ class Fetcher(Generic[Q, R]):
             data = get_args(data)[0]
         return data
 
+    @classmethod
+    def get_extraction_func(cls) -> Callable:
+        """Get the extraction function."""
+        extract_func = None
+        if cls.extract_data_async != Fetcher.extract_data_async:
+            extract_func = cls.extract_data_async
+        elif cls.extract_data != Fetcher.extract_data:
+            extract_func = cls.extract_data
+        if extract_func is None:
+            raise NotImplementedError(
+                "Fetchers must implement either extract_data_async or extract_data method."
+            )
+        return extract_func
+
     # pylint: disable=no-member
     # ruff: noqa: S101
     @classmethod
@@ -125,17 +131,8 @@ class Fetcher(Generic[Q, R]):
         """
         query = cls.transform_query(params=params)
         # Select async or sync extract functions to test
-        extract_func = None
-
-        if cls.extract_data_async != Fetcher.extract_data_async:
-            extract_func = cls.extract_data_async
-        elif cls.extract_data != Fetcher.extract_data:
-            extract_func = cls.extract_data
-
-        if extract_func is None:
-            raise NotImplementedError(
-                "Fetchers must implement either extract_data_async or extract_data method."
-            )
+        extract_func = cls.get_extraction_func()
+        assert callable(extract_func)
 
         data = run_async(extract_func, query=query, credentials=credentials, **kwargs)
         transformed_data = cls.transform_data(query=query, data=data, **kwargs)
