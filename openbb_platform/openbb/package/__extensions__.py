@@ -32,17 +32,14 @@ Extensions:
     - regulators@1.0.0rc0
 
     - benzinga@1.0.0rc0
-    - finra@1.0.0rc0
     - fmp@1.0.0rc0
     - fred@1.0.0rc0
-    - government_us@1.0.0rc0
     - intrinio@1.0.0rc0
     - oecd@1.0.0rc0
     - polygon@1.0.0rc0
     - sec@1.0.0rc0
     - tiingo@1.0.0rc0
-    - tradingeconomics@1.0.0rc0
-    - wsj@1.0.0rc0    """
+    - tradingeconomics@1.0.0rc0    """
     # fmt: on
     def __repr__(self) -> str:
         return self.__doc__ or ""
