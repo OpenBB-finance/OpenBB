@@ -269,7 +269,11 @@ def test_intrinio_company_filings_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_insider_trading_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
+    params = {
+        "symbol": "AAPL",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 6, 6),
+    }
 
     fetcher = IntrinioInsiderTradingFetcher()
     result = fetcher.test(params, credentials)
