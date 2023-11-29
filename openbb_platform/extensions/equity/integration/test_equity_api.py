@@ -445,7 +445,7 @@ def test_equity_ownership_institutional(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/ownership/institutional?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
+    result = requests.get(url, headers=headers, timeout=20)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -1299,7 +1299,7 @@ def test_equity_shorts_fails_to_deliver(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/shorts/fails_to_deliver?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
+    result = requests.get(url, headers=headers, timeout=20)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
