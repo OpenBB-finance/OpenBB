@@ -35,7 +35,7 @@ from openbb import obb
 The `historical` function is located under a submodule for each asset type. In the `openbb-equity` module.
 
 ```python
-obb.equity.price.historical()
+help(obb.equity.price.historical)
 ```
 
 - This endpoint has the most number of providers out of any function. At the time of writing, choices are:
