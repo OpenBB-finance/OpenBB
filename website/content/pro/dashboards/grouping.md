@@ -34,6 +34,7 @@ This means that if a user changes the ticker on any of these widgets, the remain
 
 Also note that the grouping is visible on the sidebar, immediately under the dashboard naming.
 
+A trick that you can use to group up widgets together faster is using the SHIFT while clicking on each widget, once creating a group in one of them - the grouping will replicate throughout selected widgets.
 
 ### Watchlist and grouping
 
