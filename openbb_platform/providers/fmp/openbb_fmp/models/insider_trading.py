@@ -73,7 +73,7 @@ class FMPInsiderTradingFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         transaction_type = TRANSACTION_TYPES_DICT.get(query.transaction_type, None)
-        query = query.model_copy({"transaction_type": transaction_type})
+        query = query.model_copy(update={"transaction_type": transaction_type})
 
         base_url = "https://financialmodelingprep.com/api/v4/insider-trading"
         query_str = get_querystring(query.model_dump(by_alias=True), ["page"])
