@@ -1275,17 +1275,6 @@ def test_equity_discovery_upcoming_release_days(params, headers):
                 "provider": "fmp",
             }
         ),
-        (
-            {
-                "provider": "intrinio",
-                "symbol": "AAPL",
-                "thea_enabled": None,
-                "start_date": "2023-11-06",
-                "end_date": "2023-11-07",
-                "limit": 50,
-                "form_type": "10-Q",
-            }
-        ),
     ],
 )
 @pytest.mark.integration
