@@ -120,7 +120,7 @@ def test_equity_calendar_splits(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/equity/calendar/split?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/equity/calendar/splits?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
