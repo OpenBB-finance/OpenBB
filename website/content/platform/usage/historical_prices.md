@@ -104,6 +104,7 @@ df_monthly.tail(2)
 
 `yfinance` returns the monthly data for the first day of each month. Let's resample it to take from the last, using the daily information captured in the previous cells.
 
+```python
 (
     df_daily[["open", "high", "low", "close", "volume"]]
     .resample("M")
@@ -111,6 +112,7 @@ df_monthly.tail(2)
         {"open": "first", "high": "max", "low": "min", "close": "last", "volume": "sum"}
     ).tail(2)
 )
+```
 
 | date          |   open |   high |    low |   close |      volume |
 |:--------------|-------:|-------:|-------:|--------:|------------:|
