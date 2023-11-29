@@ -19,15 +19,15 @@ class FMPInsiderTradingQueryParams(InsiderTradingQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Insider-Trading
     """
 
-    transaction_type: Optional[Union[List[TRANSACTION_TYPES], str]] = Field(
-        default=["P-Purchase"],
+    transaction_type: Union[List[TRANSACTION_TYPES], str, None] = Field(
+        default=None,
         description="Type of the transaction.",
         alias="transactionType",
     )
 
     @model_validator(mode="after")
     @classmethod
-    def validate_transaction_type(cls, values: "InsiderTradingQueryParams"):
+    def validate_transaction_type(cls, values: "FMPInsiderTradingQueryParams"):
         """Validate the transaction type."""
         if isinstance(values.transaction_type, list):
             values.transaction_type = ",".join(values.transaction_type)
