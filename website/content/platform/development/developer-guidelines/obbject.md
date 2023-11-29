@@ -19,7 +19,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="OBBject - Developer Guidelines - Development | OpenBB Platform Docs" />
 
-
 The OBBject (OpenBB Object) is at the heart of developing around the OpenBB Platform. Every command will return this class as the command output. This class contains the following attributes:
 
 - results
@@ -36,7 +35,14 @@ The OBBject (OpenBB Object) is at the heart of developing around the OpenBB Plat
 In the python interface, the OBBject class is returned by every command. The following example shows how to access the results of a command:
 
 ```python
->>> obb.equity.price.historical("AAPL", provider="fmp")
+from openbb import obb
+
+obbject = obb.equity.price.historical("AAPL", provider="fmp")
+
+display(obbject)
+```
+
+```console
 OBBject
 
 id: 0655d06a-8797-7310-8000-4daaa1d47936
@@ -52,7 +58,10 @@ The output type is `<class 'openbb_core.app.model.obbject.OBBject'>`.
 If we look at the results attribute, we see that we are returned a list of the Data models used, i.e
 
 ```python
->>> obbject.results[0]
+obbject.results[0]
+```
+
+```console
 FMPEquityHistoricalData(date=2023-11-21 00:00:00, open=191.41, high=191.5, low=189.74, close=190.375, volume=24029603, vwap=190.54, label=November 21, 23, adj_close=190.375, unadjusted_volume=24029603.0, change=-1.03, change_percent=-0.5407241, change_over_time=-0.005407241)
 ```
 
@@ -69,7 +78,10 @@ One of the most popular libraries for python data manipulation, this method will
 This also has the shorter alias `to_df()`.
 
 ```python
->>> type( obb.equity.price.historical("AAPL", provider="fmp").to_dataframe() )
+type(obb.equity.price.historical("AAPL", provider="fmp").to_dataframe())
+```
+
+```console
 <class 'pandas.core.frame.DataFrame'>
 ```
 
@@ -78,15 +90,32 @@ This also has the shorter alias `to_df()`.
 A very common data structure is to return the data in a dictionary. This model provides an interface to do so, with options to return the dictionary in different orientations, just as in the pandas `to_dict()` method. The default method will return a dictionary that allows you to index to obtain data:
 
 ```python
->>> obb.equity.price.historical("AAPL", provider="fmp").to_dict()["open"][:10]
+to_dict = obb.equity.price.historical("AAPL", provider="fmp").to_dict()["open"][:10]
+```
+
+```console
 [150.16, 148.13, 149.45, 148.31, 145.14, 144.29, 141.4, 148.21, 145.96, 147.77]
 ```
 
 Orienting as records will give you a list of dictionaries, commonly used in JSON data structures:
 
 ```python
->>> obb.equity.price.historical("AAPL", provider="fmp").to_dict("records")[0]
-{'open': 150.16, 'high': 150.37, 'low': 147.72, 'close': 148.01, 'volume': 58724100, 'vwap': 148.7, 'label': 'November 21, 22', 'adj_close': 147.19, 'unadjusted_volume': 58724100.0, 'change': -2.15, 'change_percent': -1.43, 'change_over_time': -0.0143}
+obb.equity.price.historical("AAPL", provider="fmp").to_dict("records")[0]
+```
+
+```python
+{'open': 144.29,
+'high': 144.81,
+'low': 140.35,
+'close': 141.17,
+'volume': 83763800,
+'vwap': 142.11,
+'label': 'November 29, 22',
+'adj_close': 140.39,
+'unadjusted_volume': 83763800.0,
+'change': -3.12,
+'change_percent': -2.16,
+'change_over_time': -0.0216}
 ```
 
 ### Others
@@ -101,7 +130,6 @@ Returns numpy arrays of the results. Note that this loses the column names, so y
 
 Growing in popularity, polars is a blazingly fast dataframe library. This method will return a polars dataframe. Note that we do not include polars in the core dependency tree, so it needs to be installed separately.
 
-
 ---
 
-More information can be found on the [OpenBB Core Readme](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/platform/core/README.md)
+More information can be found on the [OpenBB Core Readme](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/core/README.md)
