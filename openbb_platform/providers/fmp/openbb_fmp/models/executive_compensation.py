@@ -49,7 +49,7 @@ class FMPExecutiveCompensationFetcher(
         return FMPExecutiveCompensationQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPExecutiveCompensationQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

@@ -82,7 +82,7 @@ class IntrinioCompanyFilingsFetcher(
         return IntrinioCompanyFilingsQueryParams(**transformed_params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: IntrinioCompanyFilingsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

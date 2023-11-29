@@ -121,7 +121,7 @@ class IntrinioInsiderTradingFetcher(
         return IntrinioInsiderTradingQueryParams(**transformed_params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: IntrinioInsiderTradingQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

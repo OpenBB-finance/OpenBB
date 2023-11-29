@@ -35,7 +35,7 @@ class FMPRiskPremiumFetcher(
         return FMPRiskPremiumQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPRiskPremiumQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

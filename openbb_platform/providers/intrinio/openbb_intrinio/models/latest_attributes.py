@@ -36,7 +36,7 @@ class IntrinioLatestAttributesFetcher(
         return IntrinioLatestAttributesQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: IntrinioLatestAttributesQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

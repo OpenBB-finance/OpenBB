@@ -43,7 +43,7 @@ class FMPHistoricalSplitsFetcher(
         return FMPHistoricalSplitsQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPHistoricalSplitsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

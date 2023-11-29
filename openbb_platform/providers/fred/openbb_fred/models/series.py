@@ -112,7 +112,7 @@ class FredSeriesFetcher(
         return FredSeriesQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FredSeriesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

@@ -56,7 +56,7 @@ class IntrinioShareStatisticsFetcher(
         return IntrinioShareStatisticsQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: IntrinioShareStatisticsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

@@ -67,7 +67,7 @@ class IntrinioMarketIndicesFetcher(
         return IntrinioMarketIndicesQueryParams(**transformed_params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: IntrinioMarketIndicesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

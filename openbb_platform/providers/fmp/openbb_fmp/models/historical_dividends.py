@@ -68,7 +68,7 @@ class FMPHistoricalDividendsFetcher(
         return FMPHistoricalDividendsQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPHistoricalDividendsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

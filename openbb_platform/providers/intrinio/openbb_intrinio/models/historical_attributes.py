@@ -51,7 +51,7 @@ class IntrinioHistoricalAttributesFetcher(
         return IntrinioHistoricalAttributesQueryParams(**transformed_params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: IntrinioHistoricalAttributesQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

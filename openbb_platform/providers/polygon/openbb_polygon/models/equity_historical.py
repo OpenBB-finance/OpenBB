@@ -109,7 +109,7 @@ class PolygonEquityHistoricalFetcher(
         return PolygonEquityHistoricalQueryParams(**transformed_params)
 
     @staticmethod
-    async def extract_data(  # pylint: disable=protected-access
+    async def extract_data_async(  # pylint: disable=protected-access
         query: PolygonEquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

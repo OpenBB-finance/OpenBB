@@ -10,7 +10,6 @@ from typing import (
     TypeVar,
     get_args,
     get_origin,
-    overload,
 )
 
 from pandas import DataFrame
@@ -47,20 +46,33 @@ class Fetcher(Generic[Q, R]):
         """Transform the params to the provider-specific query."""
         raise NotImplementedError
 
-    @overload
     @staticmethod
-    async def extract_data(query: Q, credentials: Optional[Dict[str, str]]) -> Any:
-        """Extract the data from the provider."""
+    async def extract_data_async(
+        query: Q, credentials: Optional[Dict[str, str]]
+    ) -> Any:
+        """Asynchronously extract the data from the provider."""
 
     @staticmethod
     def extract_data(query: Q, credentials: Optional[Dict[str, str]]) -> Any:
         """Extract the data from the provider."""
-        raise NotImplementedError
 
     @staticmethod
     def transform_data(query: Q, data: Any, **kwargs) -> R:
         """Transform the provider-specific data."""
         raise NotImplementedError
+
+    def __init_subclass__(cls, **kwargs):
+        """Initialize the subclass."""
+        super().__init_subclass__(**kwargs)
+
+        if cls.extract_data_async != Fetcher.extract_data_async:
+            cls.extract_data = cls.extract_data_async
+        elif cls.extract_data == Fetcher.extract_data:
+            raise NotImplementedError(
+                "Fetcher subclass must implement either extract_data or extract_data_async"
+                " method. If both are implemented, extract_data_async will be used as the"
+                " default."
+            )
 
     @classmethod
     async def fetch_data(

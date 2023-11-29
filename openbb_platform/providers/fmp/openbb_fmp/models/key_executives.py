@@ -43,7 +43,7 @@ class FMPKeyExecutivesFetcher(
         return FMPKeyExecutivesQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPKeyExecutivesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

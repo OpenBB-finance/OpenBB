@@ -53,7 +53,7 @@ class FMPCashFlowStatementGrowthFetcher(
         return FMPCashFlowStatementGrowthQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPCashFlowStatementGrowthQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

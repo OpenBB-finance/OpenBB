@@ -44,7 +44,7 @@ class FMPBalanceSheetGrowthFetcher(
         return FMPBalanceSheetGrowthQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPBalanceSheetGrowthQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

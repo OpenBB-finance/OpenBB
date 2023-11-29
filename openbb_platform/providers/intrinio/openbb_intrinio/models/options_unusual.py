@@ -73,7 +73,7 @@ class IntrinioOptionsUnusualFetcher(
         return IntrinioOptionsUnusualQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: IntrinioOptionsUnusualQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

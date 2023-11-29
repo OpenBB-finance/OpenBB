@@ -61,7 +61,7 @@ class IntrinioCompanyNewsFetcher(
         return IntrinioCompanyNewsQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: IntrinioCompanyNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

@@ -106,7 +106,7 @@ class IntrinioCashFlowStatementFetcher(
         return IntrinioCashFlowStatementQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: IntrinioCashFlowStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

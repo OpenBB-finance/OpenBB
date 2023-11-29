@@ -107,7 +107,7 @@ class IntrinioIncomeStatementFetcher(
         return IntrinioIncomeStatementQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: IntrinioIncomeStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

@@ -69,7 +69,7 @@ class IntrinioHistoricalDividendsFetcher(
         return IntrinioHistoricalDividendsQueryParams(**transformed_params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: IntrinioHistoricalDividendsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

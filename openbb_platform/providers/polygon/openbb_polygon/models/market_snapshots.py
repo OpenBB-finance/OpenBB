@@ -101,7 +101,7 @@ class PolygonMarketSnapshotsFetcher(
         return PolygonMarketSnapshotsQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: PolygonMarketSnapshotsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
