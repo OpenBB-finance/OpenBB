@@ -45,9 +45,9 @@ class PolygonEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     _multiplier: PositiveInt = PrivateAttr(default=None)
     _timespan: str = PrivateAttr(default=None)
 
-    # pylint: disable=protected-access
     @model_validator(mode="after")
     @classmethod
+    # pylint: disable=protected-access
     def get_api_interval_params(cls, values: "PolygonEquityHistoricalQueryParams"):
         """Get the multiplier and timespan parameters for the Polygon API."""
         intervals = {
@@ -109,7 +109,7 @@ class PolygonEquityHistoricalFetcher(
         return PolygonEquityHistoricalQueryParams(**transformed_params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: PolygonEquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -120,7 +120,7 @@ class PolygonEquityHistoricalFetcher(
         urls = [
             (
                 "https://api.polygon.io/v2/aggs/ticker/"
-                f"{symbol.upper()}/range/{query._multiplier}/{query._timespan}/"
+                f"{symbol.upper()}/range/{query._multiplier}/{query._timespan}/"  # pylint: disable=protected-access
                 f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
                 f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
             )
@@ -144,7 +144,11 @@ class PolygonEquityHistoricalFetcher(
 
             for r in results:
                 r["t"] = datetime.fromtimestamp(r["t"] / 1000)
-                if query._timespan not in ["second", "minute", "hour"]:
+                if query._timespan not in [  # pylint: disable=protected-access
+                    "second",
+                    "minute",
+                    "hour",
+                ]:
                     r["t"] = r["t"].date()
                 if "," in query.symbol:
                     r["symbol"] = symbol

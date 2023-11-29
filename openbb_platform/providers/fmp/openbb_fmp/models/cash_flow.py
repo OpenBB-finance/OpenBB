@@ -114,7 +114,7 @@ class FMPCashFlowStatementFetcher(
         return FMPCashFlowStatementQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPCashFlowStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

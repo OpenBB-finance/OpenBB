@@ -51,7 +51,7 @@ class FMPDiscoveryFilingsFetcher(
         return FMPDiscoveryFilingsQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPDiscoveryFilingsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

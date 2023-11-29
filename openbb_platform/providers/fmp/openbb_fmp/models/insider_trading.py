@@ -64,7 +64,7 @@ class FMPInsiderTradingFetcher(
         return FMPInsiderTradingQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPInsiderTradingQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

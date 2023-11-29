@@ -112,13 +112,12 @@ class FredSeriesFetcher(
         return FredSeriesQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FredSeriesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict:
         """Extract data."""
-
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         base_url = "https://api.stlouisfed.org/fred/series/observations"

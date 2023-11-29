@@ -52,7 +52,7 @@ class FMPCompanyNewsFetcher(
         return FMPCompanyNewsQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPCompanyNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

@@ -50,7 +50,7 @@ class FMPPricePerformanceFetcher(
         return FMPPricePerformanceQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPPricePerformanceQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

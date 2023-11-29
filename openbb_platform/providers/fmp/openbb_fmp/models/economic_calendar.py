@@ -80,7 +80,7 @@ class FMPEconomicCalendarFetcher(
         return FMPEconomicCalendarQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPEconomicCalendarQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -96,6 +96,7 @@ class FMPEconomicCalendarFetcher(
 
     @staticmethod
     def transform_data(
+        query: FMPEconomicCalendarQueryParams,
         data: List[Dict],
         **kwargs: Any,
     ) -> List[FMPEconomicCalendarData]:

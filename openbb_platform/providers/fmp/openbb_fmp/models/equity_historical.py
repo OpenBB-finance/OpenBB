@@ -84,7 +84,7 @@ class FMPEquityHistoricalFetcher(
     # @overloading the method does not work, it breaks the type hinting for the
     # synchronous method implemented in other providers
     @staticmethod
-    async def extract_data(  # pylint: disable=invalid-overridden-method
+    async def extract_data_async(  # pylint: disable=invalid-overridden-method
         query: FMPEquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

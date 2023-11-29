@@ -91,13 +91,12 @@ class FredSearchFetcher(
         return transformed_params
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FredSearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data."""
-
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         if query.is_release is True:
@@ -131,7 +130,6 @@ class FredSearchFetcher(
         query: FredSearchQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FredSearchData]:
         """Transform data."""
-
         df = pd.DataFrame()
         if data is not None:
             for d in data:

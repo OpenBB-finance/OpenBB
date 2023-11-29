@@ -56,7 +56,7 @@ class FMPFinancialRatiosFetcher(
         return FMPFinancialRatiosQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPFinancialRatiosQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

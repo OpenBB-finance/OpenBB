@@ -34,7 +34,7 @@ class FMPEtfSectorsFetcher(
         return FMPEtfSectorsQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPEtfSectorsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

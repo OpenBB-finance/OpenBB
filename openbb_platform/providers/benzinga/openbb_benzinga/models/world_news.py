@@ -132,7 +132,7 @@ class BenzingaWorldNewsFetcher(
         return BenzingaWorldNewsQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: BenzingaWorldNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

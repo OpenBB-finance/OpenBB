@@ -59,7 +59,7 @@ class FMPEtfInfoFetcher(
         return FMPEtfInfoQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPEtfInfoQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

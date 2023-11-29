@@ -46,7 +46,7 @@ class FMPCompanyFilingsFetcher(
         return FMPCompanyFilingsQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPCompanyFilingsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

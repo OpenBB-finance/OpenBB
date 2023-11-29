@@ -33,7 +33,7 @@ class FMPEtfCountriesFetcher(
         return FMPEtfCountriesQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPEtfCountriesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

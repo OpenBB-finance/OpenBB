@@ -43,7 +43,7 @@ class FMPRevenueGeographicFetcher(
         return FMPRevenueGeographicQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def extract_data_async(
         query: FMPRevenueGeographicQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
