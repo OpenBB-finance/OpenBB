@@ -1,6 +1,6 @@
 ---
 title: Architectural Considerations
-sidebar_position: 7
+sidebar_position: 6
 description: This guide provides insights into the architectural considerations of the OpenBB Platform. It covers the key classes, import statements, and the TET pattern used in building the Fetcher classes.
 keywords:
 - OpenBB Platform Architecture

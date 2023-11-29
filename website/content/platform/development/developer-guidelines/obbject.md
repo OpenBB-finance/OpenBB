@@ -1,6 +1,6 @@
 ---
 title: OpenBB OBBject
-sidebar_position: 8
+sidebar_position: 7
 description: This page provides information about the OBBject class in the OpenBB Platform.  This class provides the interface to interact with commands
 keywords:
 - OBBject

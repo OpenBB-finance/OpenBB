@@ -1,6 +1,6 @@
 ---
 title: OBBject Extensions
-sidebar_position: 9
+sidebar_position: 8
 description: This page provides information about how to write extensions for the OpenBB OBBject class.
 keywords:
 - OBBject

@@ -1,7 +1,7 @@
 ---
-title: Add a Data Point
+title: Integrating Data Sources and Points
 sidebar_position: 4
-description: This guide provides detailed instructions on how to add a new data point to the OpenBB Platform. It covers the process of creating a new provider, defining query parameters and data output models, and building a Fetcher class.
+description: This comprehensive guide is designed to assist developers in integrating custom data sources and adding new data points to the OpenBB Platform. It covers the creation of custom extensions, standardization of data, definition of models, and the construction of a Fetcher class. This document is essential for developers looking to enhance the platform with new data capabilities.
 keywords:
 - OpenBB Platform
 - Data point addition
@@ -9,17 +9,39 @@ keywords:
 - Query parameters
 - Data output models
 - Fetcher class
+- OpenBB custom data sources
+- Data standardization
+- Pydantic models
+- OpenBB extensions
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Add a Data Point - Developer Guidelines - Development | OpenBB Platform Docs" />
+<HeadTitle title="Integrating Data Sources and Points - Developer Guidelines - Development | OpenBB Platform Docs" />
 
 In this section, we'll be adding a new data point to the OpenBB Platform. We will add a new provider with an existing [standard data](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform/core/provider/standard_models) model.
 
 ## Identify your data
 
-In this example, we'll be adding historical, end-of-day OHLC (open, high, low, close) equity data that is used by the `obb.equity.price.historical` command.
+You will get your data either from a CSV file, local database or from an API endpoint.
+
+:::note
+If you don't want or don't need to partake in the data standardization framework, you have the option to add all the logic straight inside the router file. This is usually the case when you are returning custom data from your local CSV file, or similar. Keep in mind that we also serve the REST API and that you shouldn't send non-serializable objects as a response (e.g. a pandas dataframe).
+:::
+
+We highly recommend following the standardization framework, as it will make your life easier in the long run and unlock a set of features that are only available to standardized data.
+
+When standardizing, all data is defined using two different pydantic models:
+
+1. Define the [query parameters](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/provider/openbb_core/provider/abstract/query_params.py) model.
+2. Define the resulting [data schema](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/provider/openbb_core/provider/abstract/data.py) model.
+
+> The models can be entirely custom, or inherit from the OpenBB standardized models.
+> They enforce a safe and consistent data structure, validation and type checking.
+
+We call this the ***Know-Your-Data*** principle.
+
+In the following example, we'll be adding historical, end-of-day OHLC (open, high, low, close) equity data that is used by the `obb.equity.price.historical` command.
 
 Note that if no command exists for your data, we need to add one under the right router.
 
@@ -99,7 +121,7 @@ In the context of the **Provider Models**:
 
 ### Build the Fetcher
 
-The `Fetcher` class is responsible for processing the Query and turning that into an API request and finally returning the Data model. Each fetcher contains three methods that are implemented by the core (see below for a link to the contributing guidelines):
+The `Fetcher` class is responsible for processing the Query and turning that into an API request and finally returning the data model. Each fetcher contains three methods that are implemented by its abstract definition:
 
 - `transform_query`
   - Convert a standard query into a provider-specific query
@@ -109,6 +131,10 @@ The `Fetcher` class is responsible for processing the Query and turning that int
   - Convert the API response data into a list of standard data models.
 
 > Read more on the `TET` pattern [here](/platform/development/developer-guidelines/architectural_considerations#the-tet-pattern).
+
+:::note
+Note that the `Fetcher` should inherit from the [`Fetcher`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/provider/openbb_core/provider/abstract/fetcher.py) class, which is a generic class that receives the query parameters and the data model as type parameters.
+:::
 
 For the `EquityHistorical` example, this would look like the following:
 
@@ -148,11 +174,10 @@ class <ProviderName>EquityHistoricalFetcher(
         return [<ProviderName>EquityHistoricalData.model_validate(d) for d in data]
 ```
 
-> Make sure that you're following the TET pattern when building a `Fetcher` - **Transform, Extract, Transform**. See more on this [here](/platform/contributing/developer-guidelines/architectural_considerations#the-tet-pattern).
-
 ## Make the provider visible
 
-In order to make the new provider visible to the OpenBB Platform, you need to add it to the `__init__.py` file of the `providers/<provider_name>/openbb_<provider_name>/` folder.
+After finalizing your models, you need to make them visible to the Openbb Platform.
+This is done by adding the `Fetcher` to the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder as part of the [`Provider`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/provider/openbb_core/provider/abstract/provider.py).
 
 ```python
 """<Provider Name> Provider module."""
@@ -171,6 +196,50 @@ from openbb_<provider_name>.models.equity_historical import <ProviderName>Equity
 )
 ```
 
+Any command, that uses the `Fetcher` class you've just defined, will be calling the `transform_query`, `extract_data` and `transform_data` methods under the hood in order to get the data and output it do the end user.
+
 If the provider does not require any credentials, you can remove that parameter. On the other hand, if it requires more than 2 items to authenticate, you can add a list of all the required items to the `credentials` list.
 
+:::info
 After running `pip install .` on `openbb_platform/providers/<provider_name>` your provider should be ready for usage, both from the Python interface and the API.
+:::
+
+If you're not sure what's a command and why is it even using the `Fetcher` class, follow along!
+
+## OpenBB Platform Commands
+
+The OpenBB Platform will enable you to query and output your data in a very simple way.
+
+> Any Platform endpoint will be available both from a Python interface and the API.
+
+The command definition on the Platform follows [FastAPI](https://fastapi.tiangolo.com/) conventions, meaning that you'll be creating **endpoints**.
+
+The [Cookiecutter template](https://github.com/OpenBB-finance/openbb-cookiecutter) generates for you a `router.py` file with a set of examples that you can follow, namely:
+
+- Perform a simple `GET` and `POST` request - without worrying on any custom data definition.
+- Using a custom data definition so you get your data the exact way you want it.
+
+You can expect the following endpoint structure when using a `Fetcher` to serve the data:
+
+```python
+@router.command(model="Example")
+def model_example(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Example Data."""
+    return OBBject(results=Query(**locals()).execute())
+```
+
+Let's break it down:
+
+- `@router.command(...)` - this tells the OpenBB Platform that this is a command.
+- `model="Example"` - this is the name of the `Fetcher` dictionary key that you've defined in the `__init__.py` file of the `<your_package_name>/<your_module_name>` folder.
+- `cc: CommandContext` - this contains a set of user and system settings that is useful during the execution of the command - eg. api keys.
+- `provider_choices: ProviderChoices` - all the providers that implement the `Example` `Fetcher`.
+- `standard_params: StandardParams` - standardized parameters that are common to all providers that implement the `Example` `Fetcher`.
+- `extra_params: ExtraParams` - it contains the provider specific arguments that are not standardized.
+
+You only need to change the `model` parameter to the name of the `Fetcher` dictionary key and everything else will be handled by the OpenBB Platform.
