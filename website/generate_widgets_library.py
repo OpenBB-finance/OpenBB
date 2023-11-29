@@ -228,7 +228,7 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 
                 # HANDLE ALL FILES BELOW
 
-                # This means that there's no subcategory, i.e. category_2 is non existant
+                # This means that there's no subcategory, i.e. category_2 is non existent
                 if category_2 == "CATEGORYLESS":
                     # Create each individual widget file
                     for widget in widgets:
