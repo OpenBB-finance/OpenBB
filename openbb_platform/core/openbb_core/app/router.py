@@ -565,10 +565,13 @@ class RouterLoader:
                 if isinstance(entry, Router):
                     router.include_router(router=entry, prefix=f"/{entry_point.name}")
             except Exception as e:
-                traceback.print_exception(type(e), e, e.__traceback__)
-                raise LoadingError(
-                    f"Error loading extension: {entry_point.name}\n"
-                    f"\033[91m{e}\033[0m"
+                msg = f"Error loading extension: {entry_point.name}\n"
+                if Env().DEBUG_MODE:
+                    traceback.print_exception(type(e), e, e.__traceback__)
+                    raise LoadingError(msg + f"\033[91m{e}\033[0m") from e
+                warnings.warn(
+                    message=msg,
+                    category=OpenBBWarning,
                 )
 
         return router

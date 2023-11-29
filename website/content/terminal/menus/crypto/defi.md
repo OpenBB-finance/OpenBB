@@ -1,6 +1,6 @@
 ---
 title: Decentralized Finance (DeFi)
-description: This doc provides information on the DeFi sub-menu, within the Crypto menu of the the OpenBB Terminal.
+description: This doc provides information on the DeFi sub-menu, within the Crypto menu of the OpenBB Terminal.
 keywords:
 - Cryptocurrency
 - Decentralized Finance
