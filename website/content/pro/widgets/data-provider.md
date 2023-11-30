@@ -1,6 +1,6 @@
 ---
 title: Data providers
-sidebar_position: 2
+sidebar_position: 3
 description: OpenBB Terminal Pro remains a leading platform in aggregating and standardizing
   financial data. Be at the helm of choosing quality and affordable data vendors through
   OpenBB.

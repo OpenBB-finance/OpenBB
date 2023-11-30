@@ -29,8 +29,8 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
-  youtubeLink="https://www.youtube.com/embed/g62SatEkc7U?si=pjAuoRR59oeMLaxv"
-  videoLegend="Short introduction to Terminal Pro Charting"
+  youtubeLink="https://www.youtube.com/embed/kHYqLwiQeoM?si=sbRikFA_kWfDE9GY"
+  videoLegend="Short introduction to Charting"
 />
 
 Our charting feature is powered by the renowned TradingView charting library, offering you a comprehensive and intuitive platform for financial analysis. With this feature, you can access all the functionalities typically available on TradingView. To get the most out of this feature, we recommend familiarizing yourself with TradingView's capabilities here: https://www.tradingview.com/charting-library-docs/latest/getting_started/

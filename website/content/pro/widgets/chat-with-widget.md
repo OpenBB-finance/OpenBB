@@ -1,6 +1,6 @@
 ---
 title: Chat with widgets
-sidebar_position: 0
+sidebar_position: 2
 description: Learn about OpenBB Terminal Pro innovative feature, the Chat Widget.
   This generative AI tool enhances efficiency and productivity in investment research
   by offering direct data interaction.
@@ -17,9 +17,16 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Chat with widgets | OpenBB Terminal Pro Docs" />
 
-<img className="pro-border-gradient" width="800" alt="chat w widget" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/9952e040-b8e4-413e-a8bf-be61087ba469" />
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
+
+<TutorialVideo
+  youtubeLink="https://www.youtube.com/embed/fkC_CMeT1Es?si=Zk5bC96lJKO988CQ"
+  videoLegend="Short introduction to chatting with widgets"
+/>
 
 Experience the power of our unique generative AI feature, the Chat Widget. This tool empowers you to interact directly with your data, asking questions to gain deeper insights.
+
+<img className="pro-border-gradient" width="800" alt="chat w widget" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/9952e040-b8e4-413e-a8bf-be61087ba469" />
 
 Imagine asking the widget to summarize its contents, or to explain how the data it presents could impact your investment positions in related tickers. The possibilities are endless.
 
