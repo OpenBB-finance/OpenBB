@@ -12,20 +12,31 @@ XL_FUNCS_PATH = CONTENT_PATH / "excel" / "functions.json"
 
 
 class CommandLib(PathHandler):
+    """Command library."""
+
+    MANUAL_MAP = {
+        "/last": "/equity/fundamental/latest_attributes",
+        "/hist": "/equity/fundamental/historical_attributes",
+    }
+
     def __init__(self):
-        self.route_map = self.build_route_map()
         self.pi = ProviderInterface()
+        self.route_map = self.build_route_map()
+        self.update_route_map()
         self.xl_funcs = self.read_xl_funcs()
+
+    def update_route_map(self):
+        """Update the route map with the manual map."""
+        for key, value in self.MANUAL_MAP.items():
+            self.route_map[key] = self.route_map[value]
 
     def read_xl_funcs(self) -> dict:
         """Get a list of all the commands in the docs."""
         with open(XL_FUNCS_PATH) as f:
             funcs = json.load(f)
-        exclude = ["LAST", "HIST"]
         xl_funcs = {
             "/" + func["name"].replace(".", "/").lower(): func
             for func in funcs["functions"]
-            if func["name"] not in exclude
         }
         return xl_funcs
 
