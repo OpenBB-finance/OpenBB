@@ -21,7 +21,7 @@ class IntrinioMarketIndicesQueryParams(MarketIndicesQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_stock_market_index_historical_data_v2
     """
 
-    tag: str = Field(description="Index tag.")
+    tag: Optional[str] = Field(default="level", description="Index tag.")
     type: Optional[str] = Field(
         default=None,
         description="Index type.",
@@ -32,7 +32,7 @@ class IntrinioMarketIndicesQueryParams(MarketIndicesQueryParams):
         alias="sort_order",
     )
     limit: NonNegativeInt = Field(
-        default=100,
+        default=1000,
         description=QUERY_DESCRIPTIONS.get("limit", ""),
         alias="page_size",
     )
@@ -41,7 +41,7 @@ class IntrinioMarketIndicesQueryParams(MarketIndicesQueryParams):
 class IntrinioMarketIndicesData(MarketIndicesData):
     """Intrinio Market Indices Data."""
 
-    value: Optional[float] = Field(default=None, description="Index value.")
+    __alias_dict__ = {"close": "value"}
 
 
 class IntrinioMarketIndicesFetcher(

@@ -37,17 +37,6 @@ async def european(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="FredIndices")
-async def fred(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Historical Fred Indices. Close values for selected Fred indices."""
-    return await OBBject.from_query(Query(**locals()))
-
-
 @router.command(model="IndexConstituents")
 async def constituents(
     cc: CommandContext,
