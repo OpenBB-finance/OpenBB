@@ -1,3 +1,4 @@
+"""Account service."""
 # pylint: disable=W0212:protected-access
 import json
 from functools import wraps
@@ -17,24 +18,31 @@ if TYPE_CHECKING:
 
 
 class Account:
-    """/account
-    login
-    logout
-    save
-    refresh"""
+    """The account service handles the following commands.
+
+    /account
+        login
+        logout
+        save
+        refresh
+    """
 
     SESSION_FILE = ".hub_session.json"
 
     def __init__(self, base_app: "BaseApp"):
+        """Initialize account service."""
         self._base_app = base_app
         self._openbb_directory = (
             base_app._command_runner.system_settings.openbb_directory
         )
 
     def __repr__(self) -> str:
+        """Human readable representation of the object."""
         return self.__doc__ or ""
 
     def _log_account_command(func):  # pylint: disable=E0213
+        """Log account command."""
+
         @wraps(func)
         def wrapped(self, *args, **kwargs):
             try:
@@ -82,14 +90,15 @@ class Account:
             hs.connect(email, password, pat)
         return hs
 
-    @_log_account_command
+    @_log_account_command  # type: ignore
     def login(
         self,
         email: Optional[str] = None,
         password: Optional[str] = None,
         pat: Optional[str] = None,
         remember_me: bool = False,
-    ) -> UserSettings:
+        verbosity: bool = False,
+    ) -> Optional[UserSettings]:
         """Login to hub.
 
         Parameters
@@ -121,9 +130,11 @@ class Account:
 
                 json.dump(hs.session.model_dump(mode="json"), f, indent=4)
 
-        return self._base_app._command_runner.user_settings
+        if verbosity:
+            return self._base_app._command_runner.user_settings
+        return None
 
-    @_log_account_command
+    @_log_account_command  # type: ignore
     def save(self) -> UserSettings:
         """Save user settings.
 
@@ -142,7 +153,7 @@ class Account:
             hs.push(self._base_app._command_runner.user_settings)
         return self._base_app._command_runner.user_settings
 
-    @_log_account_command
+    @_log_account_command  # type: ignore
     def refresh(self) -> UserSettings:
         """Refresh user settings.
 
@@ -164,7 +175,7 @@ class Account:
             self._base_app._command_runner.user_settings = updated
         return self._base_app._command_runner.user_settings
 
-    @_log_account_command
+    @_log_account_command  # type: ignore
     def logout(self) -> UserSettings:
         """Logout from hub.
 
