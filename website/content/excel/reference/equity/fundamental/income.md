@@ -57,24 +57,24 @@ Income Statement. Report on a company's financial performance.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. | false |
-| provider | string | Options: fmp, intrinio, polygon | true |
-| period | string | Time period of the data to return. | true |
-| limit | number | The number of data entries to return. | true |
-| cik | string | The CIK of the company if no symbol is provided. (provider: fmp) | true |
-| filing_date | string | Filing date of the financial statement. (provider: polygon) | true |
-| filing_date_lt | string | Filing date less than the given date. (provider: polygon) | true |
-| filing_date_lte | string | Filing date less than or equal to the given date. (provider: polygon) | true |
-| filing_date_gt | string | Filing date greater than the given date. (provider: polygon) | true |
-| filing_date_gte | string | Filing date greater than or equal to the given date. (provider: polygon) | true |
-| period_of_report_date | string | Period of report date of the financial statement. (provider: polygon) | true |
-| period_of_report_date_lt | string | Period of report date less than the given date. (provider: polygon) | true |
-| period_of_report_date_lte | string | Period of report date less than or equal to the given date. (provider: polygon) | true |
-| period_of_report_date_gt | string | Period of report date greater than the given date. (provider: polygon) | true |
-| period_of_report_date_gte | string | Period of report date greater than or equal to the given date. (provider: polygon) | true |
-| include_sources | boolean | Whether to include the sources of the financial statement. (provider: polygon) | true |
-| order | string | Order of the financial statement. (provider: polygon) | true |
-| sort | string | Sort of the financial statement. (provider: polygon) | true |
+| symbol | Text | Symbol to get data for. | False |
+| provider | Text | Options: fmp, intrinio, polygon | True |
+| period | Text | Time period of the data to return. | True |
+| limit | Number | The number of data entries to return. | True |
+| cik | Text | The CIK of the company if no symbol is provided. (provider: fmp) | True |
+| filing_date | Text | Filing date of the financial statement. (provider: polygon) | True |
+| filing_date_lt | Text | Filing date less than the given date. (provider: polygon) | True |
+| filing_date_lte | Text | Filing date less than or equal to the given date. (provider: polygon) | True |
+| filing_date_gt | Text | Filing date greater than the given date. (provider: polygon) | True |
+| filing_date_gte | Text | Filing date greater than or equal to the given date. (provider: polygon) | True |
+| period_of_report_date | Text | Period of report date of the financial statement. (provider: polygon) | True |
+| period_of_report_date_lt | Text | Period of report date less than the given date. (provider: polygon) | True |
+| period_of_report_date_lte | Text | Period of report date less than or equal to the given date. (provider: polygon) | True |
+| period_of_report_date_gt | Text | Period of report date greater than the given date. (provider: polygon) | True |
+| period_of_report_date_gte | Text | Period of report date greater than or equal to the given date. (provider: polygon) | True |
+| include_sources | Boolean | Whether to include the sources of the financial statement. (provider: polygon) | True |
+| order | Text | Order of the financial statement. (provider: polygon) | True |
+| sort | Text | Sort of the financial statement. (provider: polygon) | True |
 
 ## Data
 

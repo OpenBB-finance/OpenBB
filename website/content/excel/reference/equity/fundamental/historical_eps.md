@@ -21,9 +21,9 @@ Historical earnings-per-share for a given company.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. | false |
-| provider | string | Options: fmp | true |
-| limit | number | The number of data entries to return. (provider: fmp) | true |
+| symbol | Text | Symbol to get data for. | False |
+| provider | Text | Options: fmp | True |
+| limit | Number | The number of data entries to return. (provider: fmp) | True |
 
 ## Data
 

@@ -55,10 +55,10 @@ Get the holdings for an individual ETF.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. (ETF) | false |
-| provider | string | Options: fmp | true |
-| date | string | A specific date to get data for. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp) | true |
-| cik | string | The CIK of the filing entity. Overrides symbol. (provider: fmp) | true |
+| symbol | Text | Symbol to get data for. (ETF) | False |
+| provider | Text | Options: fmp | True |
+| date | Text | A specific date to get data for. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp) | True |
+| cik | Text | The CIK of the filing entity. Overrides symbol. (provider: fmp) | True |
 
 ## Data
 

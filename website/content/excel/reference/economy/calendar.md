@@ -52,12 +52,12 @@ Economic Calendar.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: fmp, tradingeconomics | true |
-| start_date | string | Start date of the data, in YYYY-MM-DD format. | true |
-| end_date | string | End date of the data, in YYYY-MM-DD format. | true |
-| country | any | Country of the event (provider: tradingeconomics) | true |
-| importance | string | Importance of the event. (provider: tradingeconomics) | true |
-| group | string | Grouping of events (provider: tradingeconomics) | true |
+| provider | Text | Options: fmp, tradingeconomics | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
+| country | Any | Country of the event (provider: tradingeconomics) | True |
+| importance | Text | Importance of the event. (provider: tradingeconomics) | True |
+| group | Text | Grouping of events (provider: tradingeconomics) | True |
 
 ## Data
 

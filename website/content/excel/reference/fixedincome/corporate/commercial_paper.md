@@ -39,12 +39,12 @@ Commercial Paper.  Commercial paper (CP) consists of short-term, promissory note
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: fred | true |
-| start_date | string | Start date of the data, in YYYY-MM-DD format. | true |
-| end_date | string | End date of the data, in YYYY-MM-DD format. | true |
-| maturity | string | The maturity. | true |
-| category | string | The category. | true |
-| grade | string | The grade. | true |
+| provider | Text | Options: fred | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
+| maturity | Text | The maturity. | True |
+| category | Text | The category. | True |
+| grade | Text | The grade. | True |
 
 ## Data
 

@@ -42,9 +42,9 @@ Upcoming and Historical earnings calendar.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: fmp | true |
-| start_date | string | Start date of the data, in YYYY-MM-DD format. | true |
-| end_date | string | End date of the data, in YYYY-MM-DD format. | true |
+| provider | Text | Options: fmp | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
 
 ## Data
 

@@ -30,8 +30,8 @@ Share Statistics. Share statistics for a given company.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. | false |
-| provider | string | Options: fmp, intrinio | true |
+| symbol | Text | Symbol to get data for. | False |
+| provider | Text | Options: fmp, intrinio | True |
 
 ## Data
 

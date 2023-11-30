@@ -39,18 +39,18 @@ Equity Historical price. Load stock data for a specific ticker.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. | false |
-| provider | string | Options: fmp, intrinio, polygon, tiingo | true |
-| interval | string | Time interval of the data to return. | true |
-| start_date | string | Start date of the data, in YYYY-MM-DD format. | true |
-| end_date | string | End date of the data, in YYYY-MM-DD format. | true |
-| limit | number | Number of days to look back (Only for interval 1d). (provider: fmp); The number of data entries to return. (provider: polygon) | true |
-| start_time | string | Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio) | true |
-| end_time | string | Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'. (provider: intrinio) | true |
-| timezone | string | Timezone of the data, in the IANA format (Continent/City). (provider: intrinio) | true |
-| source | string | The source of the data. (provider: intrinio) | true |
-| sort | string | Sort order of the data. (provider: polygon) | true |
-| adjusted | boolean | Output time series is adjusted by historical split and dividend events. (provider: polygon) | true |
+| symbol | Text | Symbol to get data for. | False |
+| provider | Text | Options: fmp, intrinio, polygon, tiingo | True |
+| interval | Text | Time interval of the data to return. | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
+| limit | Number | Number of days to look back (Only for interval 1d). (provider: fmp); The number of data entries to return. (provider: polygon) | True |
+| start_time | Text | Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio) | True |
+| end_time | Text | Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'. (provider: intrinio) | True |
+| timezone | Text | Timezone of the data, in the IANA format (Continent/City). (provider: intrinio) | True |
+| source | Text | The source of the data. (provider: intrinio) | True |
+| sort | Text | Sort order of the data. (provider: polygon) | True |
+| adjusted | Boolean | Output time series is adjusted by historical split and dividend events. (provider: polygon) | True |
 
 ## Data
 

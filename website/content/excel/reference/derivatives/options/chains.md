@@ -50,9 +50,9 @@ Get the complete options chain for a ticker.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. | false |
-| provider | string | Options: intrinio | true |
-| date | string | Date for which the options chains are returned. (provider: intrinio) | true |
+| symbol | Text | Symbol to get data for. | False |
+| provider | Text | Options: intrinio | True |
+| date | Text | Date for which the options chains are returned. (provider: intrinio) | True |
 
 ## Data
 

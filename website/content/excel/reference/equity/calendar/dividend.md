@@ -42,11 +42,11 @@ Upcoming and Historical Dividend Calendar.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: fmp, intrinio | true |
-| start_date | string | Start date of the data, in YYYY-MM-DD format. | true |
-| end_date | string | End date of the data, in YYYY-MM-DD format. | true |
-| symbol | string | Symbol to get data for. (provider: intrinio) | true |
-| page_size | number | The number of data entries to return. (provider: intrinio) | true |
+| provider | Text | Options: fmp, intrinio | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
+| symbol | Text | Symbol to get data for. (provider: intrinio) | True |
+| page_size | Number | The number of data entries to return. (provider: intrinio) | True |
 
 ## Data
 

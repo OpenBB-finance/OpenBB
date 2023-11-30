@@ -35,9 +35,9 @@ Price Target. Price target data.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. | false |
-| provider | string | Options: fmp | true |
-| with_grade | boolean | Include upgrades and downgrades in the response. (provider: fmp) | true |
+| symbol | Text | Symbol to get data for. | False |
+| provider | Text | Options: fmp | True |
+| with_grade | Boolean | Include upgrades and downgrades in the response. (provider: fmp) | True |
 
 ## Data
 

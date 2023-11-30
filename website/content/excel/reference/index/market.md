@@ -56,19 +56,19 @@ Historical Market Indices.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. | false |
-| provider | string | Options: fmp, intrinio, polygon | true |
-| start_date | string | Start date of the data, in YYYY-MM-DD format. | true |
-| end_date | string | End date of the data, in YYYY-MM-DD format. | true |
-| timeseries | number | Number of days to look back. (provider: fmp) | true |
-| interval | string | Data granularity. (provider: fmp) | true |
-| tag | string | Index tag. (provider: intrinio) | true |
-| type | string | Index type. (provider: intrinio) | true |
-| sort | string | Sort order. (provider: intrinio); Sort order of the data. (provider: polygon) | true |
-| limit | number | The number of data entries to return. (provider: intrinio, polygon) | true |
-| timespan | string | Timespan of the data. (provider: polygon) | true |
-| adjusted | boolean | Whether the data is adjusted. (provider: polygon) | true |
-| multiplier | number | Multiplier of the timespan. (provider: polygon) | true |
+| symbol | Text | Symbol to get data for. | False |
+| provider | Text | Options: fmp, intrinio, polygon | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
+| timeseries | Number | Number of days to look back. (provider: fmp) | True |
+| interval | Text | Data granularity. (provider: fmp) | True |
+| tag | Text | Index tag. (provider: intrinio) | True |
+| type | Text | Index type. (provider: intrinio) | True |
+| sort | Text | Sort order. (provider: intrinio); Sort order of the data. (provider: polygon) | True |
+| limit | Number | The number of data entries to return. (provider: intrinio, polygon) | True |
+| timespan | Text | Timespan of the data. (provider: polygon) | True |
+| adjusted | Boolean | Whether the data is adjusted. (provider: polygon) | True |
+| multiplier | Number | Multiplier of the timespan. (provider: polygon) | True |
 
 ## Data
 

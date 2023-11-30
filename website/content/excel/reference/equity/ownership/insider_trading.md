@@ -46,14 +46,14 @@ Insider Trading. Information about insider trading.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. | false |
-| provider | string | Options: fmp, intrinio | true |
-| limit | number | The number of data entries to return. | true |
-| transactionType | any | Type of the transaction. (provider: fmp) | true |
-| start_date | string | Start date of the data, in YYYY-MM-DD format. (provider: intrinio) | true |
-| end_date | string | End date of the data, in YYYY-MM-DD format. (provider: intrinio) | true |
-| ownership_type | string | Type of ownership. (provider: intrinio) | true |
-| sort_by | string | Field to sort by. (provider: intrinio) | true |
+| symbol | Text | Symbol to get data for. | False |
+| provider | Text | Options: fmp, intrinio | True |
+| limit | Number | The number of data entries to return. | True |
+| transactionType | Any | Type of the transaction. (provider: fmp) | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. (provider: intrinio) | True |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. (provider: intrinio) | True |
+| ownership_type | Text | Type of ownership. (provider: intrinio) | True |
+| sort_by | Text | Field to sort by. (provider: intrinio) | True |
 
 ## Data
 

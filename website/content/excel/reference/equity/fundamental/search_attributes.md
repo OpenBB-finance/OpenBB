@@ -12,9 +12,9 @@ Search Intrinio data tags.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| query | string | Query to search for. | false |
-| provider | string | Options: intrinio | true |
-| limit | number | The number of data entries to return. | true |
+| query | Text | Query to search for. | False |
+| provider | Text | Options: intrinio | True |
+| limit | Number | The number of data entries to return. | True |
 
 ## Data
 

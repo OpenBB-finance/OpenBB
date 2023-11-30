@@ -47,26 +47,26 @@ Company News. Get news for one or more companies.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbols | string | Here it is a separated list of symbols. | false |
-| provider | string | Options: benzinga, fmp, intrinio, polygon, tiingo | true |
-| limit | number | The number of data entries to return. | true |
-| display | string | Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga) | true |
-| date | string | Date of the news to retrieve. (provider: benzinga) | true |
-| start_date | string | Start date of the news to retrieve. (provider: benzinga) | true |
-| end_date | string | End date of the news to retrieve. (provider: benzinga) | true |
-| updated_since | number | Number of seconds since the news was updated. (provider: benzinga) | true |
-| published_since | number | Number of seconds since the news was published. (provider: benzinga) | true |
-| sort | string | Key to sort the news by. (provider: benzinga) | true |
-| order | string | Order to sort the news by. (provider: benzinga); Sort order of the articles. (provider: polygon) | true |
-| isin | string | The ISIN of the news to retrieve. (provider: benzinga) | true |
-| cusip | string | The CUSIP of the news to retrieve. (provider: benzinga) | true |
-| channels | string | Channels of the news to retrieve. (provider: benzinga) | true |
-| topics | string | Topics of the news to retrieve. (provider: benzinga) | true |
-| authors | string | Authors of the news to retrieve. (provider: benzinga) | true |
-| content_types | string | Content types of the news to retrieve. (provider: benzinga) | true |
-| page | number | Page number of the results. Use in combination with limit. (provider: fmp) | true |
-| published_utc | string | Date query to fetch articles. Supports operators <, <=, >, >= (provider: polygon) | true |
-| source | string | A comma-separated list of the domains requested. (provider: tiingo) | true |
+| symbols | Text | Here it is a separated list of symbols. | False |
+| provider | Text | Options: benzinga, fmp, intrinio, polygon, tiingo | True |
+| limit | Number | The number of data entries to return. | True |
+| display | Text | Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga) | True |
+| date | Text | Date of the news to retrieve. (provider: benzinga) | True |
+| start_date | Text | Start date of the news to retrieve. (provider: benzinga) | True |
+| end_date | Text | End date of the news to retrieve. (provider: benzinga) | True |
+| updated_since | Number | Number of seconds since the news was updated. (provider: benzinga) | True |
+| published_since | Number | Number of seconds since the news was published. (provider: benzinga) | True |
+| sort | Text | Key to sort the news by. (provider: benzinga) | True |
+| order | Text | Order to sort the news by. (provider: benzinga); Sort order of the articles. (provider: polygon) | True |
+| isin | Text | The ISIN of the news to retrieve. (provider: benzinga) | True |
+| cusip | Text | The CUSIP of the news to retrieve. (provider: benzinga) | True |
+| channels | Text | Channels of the news to retrieve. (provider: benzinga) | True |
+| topics | Text | Topics of the news to retrieve. (provider: benzinga) | True |
+| authors | Text | Authors of the news to retrieve. (provider: benzinga) | True |
+| content_types | Text | Content types of the news to retrieve. (provider: benzinga) | True |
+| page | Number | Page number of the results. Use in combination with limit. (provider: fmp) | True |
+| published_utc | Text | Date query to fetch articles. Supports operators <, <=, >, >= (provider: polygon) | True |
+| source | Text | A comma-separated list of the domains requested. (provider: tiingo) | True |
 
 ## Data
 

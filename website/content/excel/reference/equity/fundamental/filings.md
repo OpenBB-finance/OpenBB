@@ -48,15 +48,15 @@ Company Filings. Company filings data.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: fmp, intrinio, sec | true |
-| symbol | string | Symbol to get data for. | true |
-| form_type | string | Type of the SEC filing form. (provider: sec) | true |
-| limit | number | The number of data entries to return. | true |
-| start_date | string | Start date of the data, in YYYY-MM-DD format. (provider: intrinio) | true |
-| end_date | string | End date of the data, in YYYY-MM-DD format. (provider: intrinio) | true |
-| thea_enabled | boolean | Return filings that have been read by Intrinio's Thea NLP. (provider: intrinio) | true |
-| cik | any | Lookup filings by Central Index Key (CIK) instead of by symbol. (provider: sec) | true |
-| use_cache | boolean | Whether or not to use cache.  If True, cache will store for one day. (provider: sec) | true |
+| provider | Text | Options: fmp, intrinio, sec | True |
+| symbol | Text | Symbol to get data for. | True |
+| form_type | Text | Type of the SEC filing form. (provider: sec) | True |
+| limit | Number | The number of data entries to return. | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. (provider: intrinio) | True |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. (provider: intrinio) | True |
+| thea_enabled | Boolean | Return filings that have been read by Intrinio's Thea NLP. (provider: intrinio) | True |
+| cik | Any | Lookup filings by Central Index Key (CIK) instead of by symbol. (provider: sec) | True |
+| use_cache | Boolean | Whether or not to use cache.  If True, cache will store for one day. (provider: sec) | True |
 
 ## Data
 

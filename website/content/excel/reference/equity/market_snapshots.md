@@ -38,8 +38,8 @@ Get a current, complete, market snapshot.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: fmp, polygon | true |
-| market | string | The market to fetch data for. (provider: fmp) | true |
+| provider | Text | Options: fmp, polygon | True |
+| market | Text | The market to fetch data for. (provider: fmp) | True |
 
 ## Data
 

@@ -20,7 +20,7 @@ Available Indices. Available indices for a given provider.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: fmp | true |
+| provider | Text | Options: fmp | True |
 
 ## Data
 

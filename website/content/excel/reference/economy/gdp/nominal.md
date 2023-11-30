@@ -21,11 +21,11 @@ Nominal GDP Data.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: oecd | true |
-| units | string | The unit of measurement for the data. Units to get nominal GDP in. Either usd or usd_cap indicating per capita. | true |
-| start_date | string | Start date of the data, in YYYY-MM-DD format. | true |
-| end_date | string | End date of the data, in YYYY-MM-DD format. | true |
-| country | string | Country to get GDP for. (provider: oecd) | true |
+| provider | Text | Options: oecd | True |
+| units | Text | The unit of measurement for the data. Units to get nominal GDP in. Either usd or usd_cap indicating per capita. | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
+| country | Text | Country to get GDP for. (provider: oecd) | True |
 
 ## Data
 

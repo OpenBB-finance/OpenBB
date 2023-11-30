@@ -34,9 +34,9 @@ US Yield Curve. Get United States yield curve.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: fred | true |
-| date | string | A specific date to get data for. Defaults to the most recent FRED entry. | true |
-| inflation_adjusted | boolean | Get inflation adjusted rates. | true |
+| provider | Text | Options: fred | True |
+| date | Text | A specific date to get data for. Defaults to the most recent FRED entry. | True |
+| inflation_adjusted | Boolean | Get inflation adjusted rates. | True |
 
 ## Data
 

@@ -21,12 +21,12 @@ Get the most-recent filings submitted to the SEC.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: fmp | true |
-| start_date | string | Start date of the data, in YYYY-MM-DD format. | true |
-| end_date | string | End date of the data, in YYYY-MM-DD format. | true |
-| form_type | string | Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types. | true |
-| limit | number | The number of data entries to return. | true |
-| isDone | boolean | Flag for whether or not the filing is done. (provider: fmp) | true |
+| provider | Text | Options: fmp | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
+| form_type | Text | Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types. | True |
+| limit | Number | The number of data entries to return. | True |
+| isDone | Boolean | Flag for whether or not the filing is done. (provider: fmp) | True |
 
 ## Data
 

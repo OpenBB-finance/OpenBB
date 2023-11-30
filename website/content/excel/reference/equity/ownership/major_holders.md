@@ -49,10 +49,10 @@ Equity Ownership. Information about the company ownership.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. | false |
-| provider | string | Options: fmp | true |
-| date | string | A specific date to get data for. | true |
-| page | number | Page number of the data to fetch. | true |
+| symbol | Text | Symbol to get data for. | False |
+| provider | Text | Options: fmp | True |
+| date | Text | A specific date to get data for. | True |
+| page | Number | Page number of the data to fetch. | True |
 
 ## Data
 

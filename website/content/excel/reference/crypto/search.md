@@ -36,8 +36,8 @@ Cryptocurrency Search. Search available cryptocurrency pairs.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: fmp | true |
-| query | string | Search query. | true |
+| provider | Text | Options: fmp | True |
+| query | Text | Search query. | True |
 
 ## Data
 

@@ -37,9 +37,9 @@ Fuzzy search for Industry Titles, Reporting Office, and SIC Codes.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: sec | true |
-| query | string | Search query. | true |
-| use_cache | boolean | Whether to use the cache or not. The full list will be cached for seven days if True. (provider: sec) | true |
+| provider | Text | Options: sec | True |
+| query | Text | Search query. | True |
+| use_cache | Boolean | Whether to use the cache or not. The full list will be cached for seven days if True. (provider: sec) | True |
 
 ## Data
 

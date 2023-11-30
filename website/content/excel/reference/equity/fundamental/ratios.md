@@ -37,11 +37,11 @@ Extensive set of ratios over time. Financial ratios for a given company.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. | false |
-| provider | string | Options: fmp | true |
-| period | string | Time period of the data to return. | true |
-| limit | number | The number of data entries to return. | true |
-| with_ttm | boolean | Include trailing twelve months (TTM) data. (provider: fmp) | true |
+| symbol | Text | Symbol to get data for. | False |
+| provider | Text | Options: fmp | True |
+| period | Text | Time period of the data to return. | True |
+| limit | Number | The number of data entries to return. | True |
+| with_ttm | Boolean | Include trailing twelve months (TTM) data. (provider: fmp) | True |
 
 ## Data
 

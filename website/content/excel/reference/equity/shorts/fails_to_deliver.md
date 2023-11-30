@@ -32,10 +32,10 @@ Get reported Fail-to-deliver (FTD) data.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. | false |
-| provider | string | Options: sec | true |
-| limit | number | Limit the number of reports to parse, from most recent. Approximately 24 reports per year, going back to 2009. (provider: sec) | true |
-| skip_reports | number | Skip N number of reports from current. A value of 1 will skip the most recent report. (provider: sec) | true |
+| symbol | Text | Symbol to get data for. | False |
+| provider | Text | Options: sec | True |
+| limit | Number | Limit the number of reports to parse, from most recent. Approximately 24 reports per year, going back to 2009. (provider: sec) | True |
+| skip_reports | Number | Skip N number of reports from current. A value of 1 will skip the most recent report. (provider: sec) | True |
 
 ## Data
 

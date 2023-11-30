@@ -56,14 +56,14 @@ Currency Search. Search available currency pairs.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: fmp, intrinio, polygon | true |
-| symbol | string | Symbol of the pair to search. (provider: polygon) | true |
-| date | string | A specific date to get data for. (provider: polygon) | true |
-| search | string | Search for terms within the ticker and/or company name. (provider: polygon) | true |
-| active | boolean | Specify if the tickers returned should be actively traded on the queried date. (provider: polygon) | true |
-| order | string | Order data by ascending or descending. (provider: polygon) | true |
-| sort | string | Sort field used for ordering. (provider: polygon) | true |
-| limit | number | The number of data entries to return. (provider: polygon) | true |
+| provider | Text | Options: fmp, intrinio, polygon | True |
+| symbol | Text | Symbol of the pair to search. (provider: polygon) | True |
+| date | Text | A specific date to get data for. (provider: polygon) | True |
+| search | Text | Search for terms within the ticker and/or company name. (provider: polygon) | True |
+| active | Boolean | Specify if the tickers returned should be actively traded on the queried date. (provider: polygon) | True |
+| order | Text | Order data by ascending or descending. (provider: polygon) | True |
+| sort | Text | Sort field used for ordering. (provider: polygon) | True |
+| limit | Number | The number of data entries to return. (provider: polygon) | True |
 
 ## Data
 

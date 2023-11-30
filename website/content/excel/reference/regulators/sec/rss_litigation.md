@@ -37,7 +37,7 @@ The RSS feed provides links to litigation releases concerning civil lawsuits bro
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: sec | true |
+| provider | Text | Options: sec | True |
 
 ## Data
 

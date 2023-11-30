@@ -49,14 +49,14 @@ ICE BofA US Corporate Bond Indices.  The ICE BofA US Corporate Index tracks the 
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: fred | true |
-| start_date | string | Start date of the data, in YYYY-MM-DD format. | true |
-| end_date | string | End date of the data, in YYYY-MM-DD format. | true |
-| index_type | string | The type of series. | true |
-| category | string | The type of category. (provider: fred) | true |
-| area | string | The type of area. (provider: fred) | true |
-| grade | string | The type of grade. (provider: fred) | true |
-| options | boolean | Whether to include options in the results. (provider: fred) | true |
+| provider | Text | Options: fred | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
+| index_type | Text | The type of series. | True |
+| category | Text | The type of category. (provider: fred) | True |
+| area | Text | The type of area. (provider: fred) | True |
+| grade | Text | The type of grade. (provider: fred) | True |
+| options | Boolean | Whether to include options in the results. (provider: fred) | True |
 
 ## Data
 

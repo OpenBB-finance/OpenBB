@@ -37,9 +37,9 @@ Look up institutions regulated by the SEC.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: sec | true |
-| query | string | Search query. | true |
-| use_cache | boolean | Whether or not to use cache. If True, cache will store for seven days. (provider: sec) | true |
+| provider | Text | Options: sec | True |
+| query | Text | Search query. | True |
+| use_cache | Boolean | Whether or not to use cache. If True, cache will store for seven days. (provider: sec) | True |
 
 ## Data
 

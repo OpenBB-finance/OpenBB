@@ -19,6 +19,14 @@ class CommandLib(PathHandler):
         "/last": "/equity/fundamental/latest_attributes",
         "/hist": "/equity/fundamental/historical_attributes",
     }
+    XL_TYPE_MAP = {
+        "bool": "Boolean",
+        "float": "Number",
+        "int": "Number",
+        "integer": "Number",
+        "str": "Text",
+        "string": "Text",
+    }
 
     def __init__(self):
         self.pi = ProviderInterface()
@@ -48,6 +56,10 @@ class CommandLib(PathHandler):
             for func in funcs["functions"]
         }
 
+    def to_xl(self, type_: str) -> str:
+        """Convert a type to an Excel type."""
+        return self.XL_TYPE_MAP.get(type_, type_).title()
+
     def get_func(self, cmd: str) -> str:
         """Get the func of the command."""
         if cmd in self.route_map:
@@ -73,9 +85,9 @@ class CommandLib(PathHandler):
         cmd_info = self.xl_funcs[cmd]
         for p in cmd_info["parameters"]:
             parameters[p["name"]] = {
-                "type": p["type"],
+                "type": self.to_xl(str(p["type"])),
                 "description": p["description"].replace("\n", " "),
-                "optional": str(p.get("optional", False)).lower(),
+                "optional": str(p.get("optional", False)).title(),
             }
 
         return parameters
@@ -85,7 +97,6 @@ class CommandLib(PathHandler):
         model_name = self.get_model(cmd)
         if model_name:
             schema = self.pi.return_schema[model_name].model_json_schema()["properties"]
-
             data = {}
             for name, info in schema.items():
                 data[name] = {

@@ -12,8 +12,8 @@ Get latest data point by providing symbol and field tag.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for, e.g. 'AAPL'. | false |
-| field | string | Field to get data for, e.g. 'ebitda'. | false |
+| symbol | Text | Symbol to get data for, e.g. 'AAPL'. | False |
+| field | Text | Field to get data for, e.g. 'ebitda'. | False |
 
 ## Data
 

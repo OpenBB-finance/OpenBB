@@ -21,8 +21,8 @@ Trailing 1yr dividend yield.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: tiingo | true |
-| symbol | string | Symbol to get data for. | true |
+| provider | Text | Options: tiingo | True |
+| symbol | Text | Symbol to get data for. | True |
 
 ## Data
 

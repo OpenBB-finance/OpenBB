@@ -39,16 +39,16 @@ Currency Historical Price. Currency historical data.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. | false |
-| provider | string | Options: fmp, polygon, tiingo | true |
-| start_date | string | Start date of the data, in YYYY-MM-DD format. | true |
-| end_date | string | End date of the data, in YYYY-MM-DD format. | true |
-| interval | string | Data granularity. (provider: fmp, tiingo) | true |
-| multiplier | number | Multiplier of the timespan. (provider: polygon) | true |
-| timespan | string | Timespan of the data. (provider: polygon) | true |
-| sort | string | Sort order of the data. (provider: polygon) | true |
-| limit | number | The number of data entries to return. (provider: polygon) | true |
-| adjusted | boolean | Whether the data is adjusted. (provider: polygon) | true |
+| symbol | Text | Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. | False |
+| provider | Text | Options: fmp, polygon, tiingo | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
+| interval | Text | Data granularity. (provider: fmp, tiingo) | True |
+| multiplier | Number | Multiplier of the timespan. (provider: polygon) | True |
+| timespan | Text | Timespan of the data. (provider: polygon) | True |
+| sort | Text | Sort order of the data. (provider: polygon) | True |
+| limit | Number | The number of data entries to return. (provider: polygon) | True |
+| adjusted | Boolean | Whether the data is adjusted. (provider: polygon) | True |
 
 ## Data
 

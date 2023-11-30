@@ -12,11 +12,11 @@ Get historical data by providing symbol and field tag.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for, e.g. 'AAPL'. | false |
-| field | string | Field to get data for, e.g. 'ebitda'. | false |
-| start_date | string | Start date of the data, in YYYY-MM-DD format, defaults to 5 years ago. | true |
-| end_date | string | End date of the data, in YYYY-MM-DD format, defaults to today. | true |
-| frequency | string | The frequency of the data, can be 'yearly' or 'quarterly', defaults to 'yearly'. | true |
+| symbol | Text | Symbol to get data for, e.g. 'AAPL'. | False |
+| field | Text | Field to get data for, e.g. 'ebitda'. | False |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format, defaults to 5 years ago. | True |
+| end_date | Text | End date of the data, in YYYY-MM-DD format, defaults to today. | True |
+| frequency | Text | The frequency of the data, can be 'yearly' or 'quarterly', defaults to 'yearly'. | True |
 
 ## Data
 

@@ -63,11 +63,11 @@ Equity Search. Search for a company or stock ticker.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: sec | true |
-| query | string | Search query. | true |
-| is_symbol | boolean | Whether to search by ticker symbol. | true |
-| is_fund | boolean | Whether to direct the search to the list of mutual funds and ETFs. (provider: sec) | true |
-| use_cache | boolean | Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec) | true |
+| provider | Text | Options: sec | True |
+| query | Text | Search query. | True |
+| is_symbol | Boolean | Whether to search by ticker symbol. | True |
+| is_fund | Boolean | Whether to direct the search to the list of mutual funds and ETFs. (provider: sec) | True |
+| use_cache | Boolean | Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec) | True |
 
 ## Data
 

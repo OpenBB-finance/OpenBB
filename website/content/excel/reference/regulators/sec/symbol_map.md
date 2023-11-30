@@ -33,8 +33,8 @@ Get the ticker symbol corresponding to a company's CIK.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: sec | true |
-| query | string | Search query. | true |
+| provider | Text | Options: sec | True |
+| query | Text | Search query. | True |
 
 ## Data
 

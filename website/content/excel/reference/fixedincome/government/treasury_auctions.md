@@ -21,13 +21,13 @@ Government Treasury Auctions.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: government_us | true |
-| type | any | Used to only return securities of a particular type. | true |
-| cusip | string | Filter securities by CUSIP. | true |
-| pagesize | number | Maximum number of results to return; you must also include pagenum when using pagesize. | true |
-| pagenum | number | The first page number to display results for; used in combination with page size. | true |
-| start_date | string | Start date of the data, in YYYY-MM-DD format. The default is 90 days ago. | true |
-| end_date | string | End date of the data, in YYYY-MM-DD format. The default is today. | true |
+| provider | Text | Options: government_us | True |
+| type | Any | Used to only return securities of a particular type. | True |
+| cusip | Text | Filter securities by CUSIP. | True |
+| pagesize | Number | Maximum number of results to return; you must also include pagenum when using pagesize. | True |
+| pagenum | Number | The first page number to display results for; used in combination with page size. | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. The default is 90 days ago. | True |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. The default is today. | True |
 
 ## Data
 

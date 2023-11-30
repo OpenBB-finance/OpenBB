@@ -34,8 +34,8 @@ Price Target Consensus. Price target consensus data.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. | false |
-| provider | string | Options: fmp | true |
+| symbol | Text | Symbol to get data for. | False |
+| provider | Text | Options: fmp | True |
 
 ## Data
 

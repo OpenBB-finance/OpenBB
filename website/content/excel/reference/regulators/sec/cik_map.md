@@ -32,8 +32,8 @@ Get the CIK number corresponding to a ticker symbol.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. | false |
-| provider | string | Options: sec | true |
+| symbol | Text | Symbol to get data for. | False |
+| provider | Text | Options: sec | True |
 
 ## Data
 

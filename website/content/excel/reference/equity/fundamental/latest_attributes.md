@@ -12,9 +12,9 @@ Fetch the latest value of a data tag from Intrinio.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. | false |
-| tag | string | Intrinio data tag ID or code. | false |
-| provider | string | Options: intrinio | true |
+| symbol | Text | Symbol to get data for. | False |
+| tag | Text | Intrinio data tag ID or code. | False |
+| provider | Text | Options: intrinio | True |
 
 ## Data
 

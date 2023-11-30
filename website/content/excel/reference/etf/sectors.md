@@ -36,8 +36,8 @@ ETF Sector weighting.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. (ETF) | false |
-| provider | string | Options: fmp | true |
+| symbol | Text | Symbol to get data for. (ETF) | False |
+| provider | Text | Options: fmp | True |
 
 ## Data
 

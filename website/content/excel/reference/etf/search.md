@@ -35,10 +35,10 @@ Search for ETFs.  An empty query returns the full list of ETFs from the provider
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: fmp | true |
-| query | string | Search query. | true |
-| exchange | string | The exchange code the ETF trades on. (provider: fmp) | true |
-| is_active | boolean | Whether the ETF is actively trading. (provider: fmp) | true |
+| provider | Text | Options: fmp | True |
+| query | Text | Search query. | True |
+| exchange | Text | The exchange code the ETF trades on. (provider: fmp) | True |
+| is_active | Boolean | Whether the ETF is actively trading. (provider: fmp) | True |
 
 ## Data
 

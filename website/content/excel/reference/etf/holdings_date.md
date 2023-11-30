@@ -35,9 +35,9 @@ Get the holdings filing date for an individual ETF.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. (ETF) | false |
-| provider | string | Options: fmp | true |
-| cik | string | The CIK of the filing entity. Overrides symbol. (provider: fmp) | true |
+| symbol | Text | Symbol to get data for. (ETF) | False |
+| provider | Text | Options: fmp | True |
+| cik | Text | The CIK of the filing entity. Overrides symbol. (provider: fmp) | True |
 
 ## Data
 

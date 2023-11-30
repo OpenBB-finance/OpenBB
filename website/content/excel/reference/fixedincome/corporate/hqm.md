@@ -32,9 +32,9 @@ High Quality Market Corporate Bond.  The HQM yield curve represents the high qua
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: fred | true |
-| date | string | A specific date to get data for. | true |
-| yield_curve | string | The yield curve type. | true |
+| provider | Text | Options: fred | True |
+| date | Text | A specific date to get data for. | True |
+| yield_curve | Text | The yield curve type. | True |
 
 ## Data
 

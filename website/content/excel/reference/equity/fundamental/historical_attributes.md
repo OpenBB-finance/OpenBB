@@ -12,15 +12,15 @@ Fetch the historical values of a data tag from Intrinio.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. | false |
-| tag | string | Intrinio data tag ID or code. | false |
-| provider | string | Options: intrinio | true |
-| start_date | string | Start date of the data, in YYYY-MM-DD format. | true |
-| end_date | string | End date of the data, in YYYY-MM-DD format. | true |
-| frequency | string | The frequency of the data. | true |
-| limit | number | The number of data entries to return. | true |
-| type | string | Filter by type, when applicable. | true |
-| sort | string | Sort order. | true |
+| symbol | Text | Symbol to get data for. | False |
+| tag | Text | Intrinio data tag ID or code. | False |
+| provider | Text | Options: intrinio | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
+| frequency | Text | The frequency of the data. | True |
+| limit | Number | The number of data entries to return. | True |
+| type | Text | Filter by type, when applicable. | True |
+| sort | Text | Sort order. | True |
 
 ## Data
 

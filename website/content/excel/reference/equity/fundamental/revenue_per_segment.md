@@ -33,10 +33,10 @@ Revenue Business Line. Business line revenue data.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | string | Symbol to get data for. | false |
-| provider | string | Options: fmp | true |
-| period | string | Time period of the data to return. | true |
-| structure | string | Structure of the returned data. | true |
+| symbol | Text | Symbol to get data for. | False |
+| provider | Text | Options: fmp | True |
+| period | Text | Time period of the data to return. | True |
+| structure | Text | Structure of the returned data. | True |
 
 ## Data
 

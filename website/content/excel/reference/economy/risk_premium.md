@@ -37,7 +37,7 @@ Historical Market Risk Premium.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: fmp | true |
+| provider | Text | Options: fmp | True |
 
 ## Data
 

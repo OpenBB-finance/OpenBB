@@ -41,9 +41,9 @@ Get the complete options chain for a ticker.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: intrinio | true |
-| symbol | string | Symbol to get data for. (the underlying symbol) | true |
-| source | string | The source of the data. Either realtime or delayed. (provider: intrinio) | true |
+| provider | Text | Options: intrinio | True |
+| symbol | Text | Symbol to get data for. (the underlying symbol) | True |
+| source | Text | The source of the data. Either realtime or delayed. (provider: intrinio) | True |
 
 ## Data
 

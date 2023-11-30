@@ -32,9 +32,9 @@ Get lists of SEC XML schema files by year.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: sec | true |
-| query | string | Search query. | true |
-| url | string | Enter an optional URL path to fetch the next level. (provider: sec) | true |
+| provider | Text | Options: sec | True |
+| query | Text | Search query. | True |
+| url | Text | Enter an optional URL path to fetch the next level. (provider: sec) | True |
 
 ## Data
 

@@ -21,8 +21,8 @@ Fed Funds Rate Projections.  The projections for the federal funds rate are the 
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: fred | true |
-| long_run | boolean | Flag to show long run projections (provider: fred) | true |
+| provider | Text | Options: fred | True |
+| long_run | Boolean | Flag to show long run projections (provider: fred) | True |
 
 ## Data
 

@@ -66,14 +66,14 @@ Upcoming and Historical IPO Calendar.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | string | Options: intrinio | true |
-| symbol | string | Symbol to get data for. | true |
-| start_date | string | Start date of the data, in YYYY-MM-DD format. | true |
-| end_date | string | End date of the data, in YYYY-MM-DD format. | true |
-| limit | number | The number of data entries to return. | true |
-| status | string | Status of the IPO. [upcoming, priced, or withdrawn] (provider: intrinio) | true |
-| offer_amount_greater_than | number | Return IPOs with an offer dollar amount greater than the given amount. (provider: intrinio) | true |
-| offer_amount_less_than | number | Return IPOs with an offer dollar amount less than the given amount. (provider: intrinio) | true |
+| provider | Text | Options: intrinio | True |
+| symbol | Text | Symbol to get data for. | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
+| limit | Number | The number of data entries to return. | True |
+| status | Text | Status of the IPO. [upcoming, priced, or withdrawn] (provider: intrinio) | True |
+| offer_amount_greater_than | Number | Return IPOs with an offer dollar amount greater than the given amount. (provider: intrinio) | True |
+| offer_amount_less_than | Number | Return IPOs with an offer dollar amount less than the given amount. (provider: intrinio) | True |
 
 ## Data
 
