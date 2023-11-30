@@ -1166,7 +1166,7 @@ def test_equity_discovery_top_retail(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [({"limit": 5})],
+    [({})],
 )
 @pytest.mark.integration
 def test_equity_discovery_upcoming_release_days(params, obb):
