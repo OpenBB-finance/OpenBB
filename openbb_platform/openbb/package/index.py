@@ -252,8 +252,6 @@ class ROUTER_index(Container):
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
             Change % in the price of the symbol over a period of time. (provider: fmp)
-        value : Optional[float]
-            Index value. (provider: intrinio)
         transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
 

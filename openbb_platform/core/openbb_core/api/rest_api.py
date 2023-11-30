@@ -36,7 +36,7 @@ async def lifespan(_: FastAPI):
      ╚═════════════╝  ╚═════════════╝
 Investment research for everyone, anywhere.
 
-       https://my.openbb.co/app/sdk
+    https://my.openbb.co/app/platform
 
 """
     logger.info(banner)
