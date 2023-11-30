@@ -11,6 +11,7 @@ QUERY_DESCRIPTIONS = {
     "countries": "The country or countries to get data.",
     "units": "The unit of measurement for the data.",
     "frequency": "The frequency of the data.",
+    "symbol_list_warning": "Lists of symbols are not allowed for this function. Multiple symbols will be ignored in favour of the first symbol."  # pylint: disable=line-too-long  # noqa E501
 }
 
 DATA_DESCRIPTIONS = {
