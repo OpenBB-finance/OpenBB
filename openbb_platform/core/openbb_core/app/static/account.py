@@ -111,6 +111,8 @@ class Account:
             Personal access token, by default None
         remember_me : bool, optional
             Remember me, by default False
+        return_settings : bool, optional
+            Return user settings, by default False
 
         Returns
         -------
@@ -138,6 +140,11 @@ class Account:
     def save(self, return_settings: bool = False) -> Optional[UserSettings]:
         """Save user settings.
 
+        Parameters
+        ----------
+        return_settings : bool, optional
+            Return user settings, by default False
+
         Returns
         -------
         UserSettings
@@ -159,6 +166,11 @@ class Account:
     @_log_account_command  # type: ignore
     def refresh(self, return_settings: bool = False) -> Optional[UserSettings]:
         """Refresh user settings.
+
+        Parameters
+        ----------
+        return_settings : bool, optional
+            Return user settings, by default False
 
         Returns
         -------
@@ -184,6 +196,11 @@ class Account:
     @_log_account_command  # type: ignore
     def logout(self, return_settings: bool = False) -> Optional[UserSettings]:
         """Logout from hub.
+
+        Parameters
+        ----------
+        return_settings : bool, optional
+            Return user settings, by default False
 
         Returns
         -------
