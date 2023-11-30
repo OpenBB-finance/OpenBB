@@ -19,9 +19,17 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Templates | OpenBB Terminal Pro Docs" />
 
-<img className="pro-border-gradient" width="800" alt="template" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/f1e7e276-d5b8-4568-baa3-f1141a9957bd" />
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
+
+<TutorialVideo
+  youtubeLink="https://www.youtube.com/embed/_Fti4R5Fwrw?si=K82sUCpsvz0CNMSy"
+  videoLegend="Short introduction to templates"
+/>
+
 
 The widget layouts in dashboards can be saved as templates. This capability allows users to save dashboard layouts for future dashboards where another ticker is used, or to share with colleagues.
+
+<img className="pro-border-gradient" width="800" alt="template" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/f1e7e276-d5b8-4568-baa3-f1141a9957bd" />
 
 Using the advanced search, users can find their template library.
 
