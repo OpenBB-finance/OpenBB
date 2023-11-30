@@ -250,7 +250,7 @@ class Editor:
             content += "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>"
             for md in md_files:
                 url = filter_path(md.parts.index(label.lower()), md)
-                cmd = "/" + filter_path(md.parts.index("reference") + 1, md)
+                cmd = "/" + filter_path(md.parts.index(self.output) + 1, md)
                 description = (
                     self.cmd_lib.get_info(cmd).get("description", "").replace("\n", " ")
                 )
