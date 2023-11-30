@@ -500,12 +500,12 @@ html[data-theme='dark'] .sidebar-divider {
 }
 
 .pro-border-gradient {
-  background: linear-gradient(to right, white, #6BD2F3, #00AAFF);
-  border-radius: 20px;
+  background: linear-gradient(to right, #66CCFF, #005CA9);
+  border-radius: 6px;
   overflow: hidden;
   display: inline-block;
   justify-content: center;
   align-items: center;
-  padding: 8px;
+  padding: 3px;
   position: relative;
 }
