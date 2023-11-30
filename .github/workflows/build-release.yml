@@ -10,8 +10,7 @@ env:
 on:
   push:
     branches:
-      - release/*
-      - main
+      - release/v3/*
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

@@ -37,7 +37,7 @@ def get_equity_data():
         return data["stocks_data"]
 
     url = "http://0.0.0.0:8000/api/v1/equity/price/historical?symbol=AAPL&provider=fmp"
-    result = requests.get(url, headers=get_headers(), timeout=20)
+    result = requests.get(url, headers=get_headers(), timeout=10)
     data["stocks_data"] = result.json()["results"]
 
     return data["stocks_data"]
@@ -62,7 +62,7 @@ def test_chart_equity_price_historical(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/price/historical?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
+    result = requests.get(url, headers=headers, timeout=40)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
