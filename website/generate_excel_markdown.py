@@ -269,7 +269,6 @@ class Editor:
             if md_files:
                 content += "### Commands\n"
                 content += OPEN_UL
-
                 for md in md_files:
                     cmd = "/" + filter_path(md.parts.index(self.output) + 1, md)
                     description = (
