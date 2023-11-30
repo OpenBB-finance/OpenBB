@@ -24,12 +24,12 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
   youtubeLink="https://www.youtube.com/embed/kSZvLAPmwvo?si=O6FaSchvvxpBWtDR"
-  videoLegend="Short introduction to Terminal Pro dashboards"
+  videoLegend="Short introduction to dashboards"
 />
 
-<img className="pro-border-gradient" width="800" alt="dash" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/156b080a-e32b-4d56-baf6-bb04038f2d63" />
-
 Dashboards are a collection of widgets. In the image above you can see that there are 3 different dashboards and the one selected can be seen in the working area.
+
+<img className="pro-border-gradient" width="800" alt="dash" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/156b080a-e32b-4d56-baf6-bb04038f2d63" />
 
 There are 2 ways to interact with dashboards.
 

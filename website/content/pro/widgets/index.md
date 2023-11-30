@@ -33,7 +33,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
   youtubeLink="https://www.youtube.com/embed/_kg8bCTNM14?si=OLAa1ehCEm57SFjd"
-  videoLegend="Short introduction to Terminal Pro widgets"
+  videoLegend="Short introduction to widgets"
 />
 
 ## Upper Tab

@@ -17,9 +17,9 @@ import NewReferenceCard from "@site/src/components/General/NewReferenceCard";
 <ul className="grid grid-cols-1 gap-4 -ml-6">
 
 <NewReferenceCard
-    title="Simple Research"
-    description="This workflow involves researching a group of sector companies. You will create a new dashboard from the analyst template, add a new ticker to the Watchlist and then change the selection to the newly added ticker."
-    url="/pro/workflows/research"
+    title="Layouts and Watchlist"
+    description="In this workflow you will create a new dashboard from the analyst template, add a new ticker to the Watchlist and then change the selection to the newly added ticker."
+    url="/pro/workflows/layouts-watchlist"
 />
 
 <NewReferenceCard

@@ -23,8 +23,8 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
-  youtubeLink="https://www.youtube.com/embed/42DS0EDFhwc?si=HU9XS86OhGy6X6ej"
-  videoLegend="Short introduction to Terminal Pro advanced search"
+  youtubeLink="https://www.youtube.com/embed/vn9des6C1H8?si=VBLPeXKNPrVTRWKc"
+  videoLegend="Short introduction to advanced search"
 />
 
 OpenBB Terminal Pro's advanced search is a powerful tool that enables you to perform a wide range of tasks swiftly and efficiently.
