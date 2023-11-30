@@ -66,13 +66,15 @@ Before installation, update the package manager so that `pip` is current, then c
 ```console
 pip install poetry toml
 ```
+
 :::note
 Installing packages directly to the system Python or `base` environment is not recommended.  Create a new environment first (can be any name, using openbb here for example).
 
-```
+```bash
 conda create -n openbb python=3.11
 conda activate openbb
 ```
+
 :::
 
 ### PyPI
@@ -90,14 +92,6 @@ To install all extensions and providers (both officially supported and community
 ```console
 pip install openbb[all]
 ```
-
-:::note
-While still under active development, the `pre` flag is required to install the core OpenBB Platform latest version:
-
-```console
-pip install openbb
-```
-:::
 
 To install a single extension:
 
