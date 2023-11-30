@@ -73,14 +73,15 @@ jobs:
               "intrinio_api_key": "${{ secrets.INTRINIO_API_KEY }}",
               "tradingeconomics_api_key": "${{ secrets.TRADINGECONOMICS_API_KEY }}",
               "quandl_api_key": "${{ secrets.QUANDL_API_KEY }}",
-              "biztoc_api_key": "${{ secrets.BIZTOC_API_KEY }}"
+              "biztoc_api_key": "${{ secrets.BIZTOC_API_KEY }}",
+              "nasdaq_api_key": "${{ secrets.NASDAQ_API_KEY }}",
+              "tiingo_token": "${{ secrets.TIINGO_TOKEN }}"
             }
           }' > ~/.openbb_platform/user_settings.json
 
       - name: Launch the Uvicorn Process
         run: |
           source runner_env/bin/activate
-          pip list
           uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
       - name: Wait for 42 seconds
