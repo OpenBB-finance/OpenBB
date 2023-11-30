@@ -7,6 +7,7 @@ The Core extension serves as the foundational component of the OpenBB Platform. 
 ## Key Features
 
 - **Standardized Data Model** (`Data` Class): A flexible and dynamic Pydantic model capable of handling various data structures.
+- **Standardized Query Params** (`QueryParams` Class): A Pydantic model for handling querying to different providers.
 - **Dynamic Field Support**: Enables handling of undefined fields, providing versatility in data processing.
 - **Robust Data Validation**: Utilizes Pydantic's validation features to ensure data integrity.
 - **API Routing Mechanism** (`Router` Class): Simplifies the process of defining API routes and endpoints - out of the box Python and Web endpoints.
