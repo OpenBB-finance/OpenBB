@@ -26,6 +26,7 @@ These examples will assume that the OpenBB Platform is initialized in a Python s
 
 ```python
 from openbb import obb
+import pandas as pd
 ```
 
 :::
@@ -35,7 +36,7 @@ from openbb import obb
 The `historical` function is located under a submodule for each asset type. In the `openbb-equity` module.
 
 ```python
-obb.equity.price.historical()
+help(obb.equity.price.historical)
 ```
 
 - This endpoint has the most number of providers out of any function. At the time of writing, choices are:
@@ -104,6 +105,7 @@ df_monthly.tail(2)
 
 `yfinance` returns the monthly data for the first day of each month. Let's resample it to take from the last, using the daily information captured in the previous cells.
 
+```python
 (
     df_daily[["open", "high", "low", "close", "volume"]]
     .resample("M")
@@ -111,6 +113,7 @@ df_monthly.tail(2)
         {"open": "first", "high": "max", "low": "min", "close": "last", "volume": "sum"}
     ).tail(2)
 )
+```
 
 | date          |   open |   high |    low |   close |      volume |
 |:--------------|-------:|-------:|-------:|--------:|------------:|

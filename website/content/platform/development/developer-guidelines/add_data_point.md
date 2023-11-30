@@ -19,7 +19,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Integrating Data Sources and Points - Developer Guidelines - Development | OpenBB Platform Docs" />
 
-In this section, we'll be adding a new data point to the OpenBB Platform. We will add a new provider with an existing [standard data](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform/core/provider/standard_models) model.
+In this section, we'll be adding a new data point to the OpenBB Platform. We will add a new provider with an existing model, imported from: [openbb_core.provider.standard_models](/platform/data_models).
 
 ## Identify your data
 
@@ -51,7 +51,7 @@ Each router is categorized under the relevant extension (equity, currency, crypt
 
 Given the fact that there's already an endpoint for historical equity data, we can check for the existing standard model.
 
-In this case, it's `EquityHistorical` which can be found in `/OpenBBTerminal/openbb_platform/core/provider/standard_models/equity_historical`.
+In this case, it's `EquityHistorical` which can be found in the list of data models [here](/platform/data_models).
 
 If the standard model doesn't exist:
 

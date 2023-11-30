@@ -45,6 +45,8 @@ convert them to a `Data` instance for easy manipulation and access.
 Example:
 
 ```python
+from openbb_core.provider.abstract.data import Data
+
 # Direct instantiation
 data_record = Data(name="OpenBB", value=42)
 
@@ -156,7 +158,7 @@ As the OpenBB Platform has its own standardization framework and the data fetche
     transform_query(params: Dict[str, Any])
     ```
 
-    Transforms the query parameters. Given a `params` dictionary this method should return the transformed query parameters as a [`QueryParams`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/core/provider/abstract/query_params.py) child so that we can leverage the pydantic model schemas and validation into the next step. This might also be the place do perform some transformations on any given parameter, i.e., if you want to transform an empty date into a `datetime.now().date()`.
+    Transforms the query parameters. Given a `params` dictionary this method should return the transformed query parameters as a [`QueryParams`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/core/openbb_core/provider/abstract/query_params.py) child so that we can leverage the pydantic model schemas and validation into the next step. This might also be the place do perform some transformations on any given parameter, i.e., if you want to transform an empty date into a `datetime.now().date()`.
 
 2. **Extract** data
 
@@ -172,13 +174,13 @@ As the OpenBB Platform has its own standardization framework and the data fetche
     transform_data(query: ExampleQueryParams, data: Dict, **kwargs: Any) -> List[ExampleHistoricalData]
     ```
 
-    Transforms the raw data into the defined data model. Given the transformed query parameters (might be useful for some filtering), the raw data and any other extra arguments, this method should return the transformed data as a list of [`Data`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/core/provider/abstract/data.py) children.
+    Transforms the raw data into the defined data model. Given the transformed query parameters (might be useful for some filtering), the raw data and any other extra arguments, this method should return the transformed data as a list of [`Data`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/core/openbb_core/provider/abstract/data.py) children.
 
 ## Data processing commands
 
 The data processing commands are commands that are used to process the data that may or may not come from the OpenBB Platform.
 
-In order to create a data processing framework general enough to be used by any extension, we've created a special abstract class called [`Data`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/core/provider/abstract/data.py) which **all** standardized (and consequently its child classes) will inherit from.
+In order to create a data processing framework general enough to be used by any extension, we've created a special abstract class called [`Data`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/core/openbb_core/provider/abstract/data.py) which **all** standardized (and consequently its child classes) will inherit from.
 
 **Why is this important?**
 
@@ -189,12 +191,14 @@ We ensure that all `OBBject.results` will share a common ground on which we can 
 It's a pydantic model that inherits from the `BaseModel` and can contain any given number of extra fields. In practice, it looks as follows:
 
 ```python
+from openbb import obb
 
->>> res = obb.equity.price.historical("AAPL")
->>> res.results[0]
+res = obb.equity.price.historical("AAPL")
+res.results[0]
+```
 
+```python
 AVEquityHistoricalData(date=2023-11-03 00:00:00, open=174.24, high=176.82, low=173.35, close=176.65, volume=79829246.0, vwap=None, adj_close=None, dividend_amount=None, split_coefficient=None)
-
 ```
 
 > The `AVEquityHistoricalData` class, is a child class of the `Data` class.
@@ -228,13 +232,14 @@ Not at all! Consider the following example:
 
 ```python
 
->>> from openbb_core.provider.abstract.data import Data
->>> my_data_item_1 = {"open": 1, "high": 2, "low": 3, "close": 4, "volume": 5, "date": "2020-01-01"}
->>> my_data_item_1_as_data = Data.model_validate(my_data_item_1)
->>> my_data_item_1_as_data
+from openbb_core.provider.abstract.data import Data
+my_data_item_1 = {"open": 1, "high": 2, "low": 3, "close": 4, "volume": 5, "date": "2020-01-01"}
+my_data_item_1_as_data = Data.model_validate(my_data_item_1)
+my_data_item_1_as_data
+```
 
-Data(open=1, high=2, low=3, close=4, volume=5, date=2020-01-01)
-
+```python
+Data(open=1, high=2, low=3, close=4, volume=5, date="2020-01-01")
 ```
 
 This means that the `Data` class is cleaver enough to understand that you are passing a dictionary and it will try to validate it for you.
@@ -245,16 +250,17 @@ In other words, imagine you have a dataframe that you want to use with the `ta` 
 
 ```python
 
->>> res = obb.equity.price.historical("AAPL")
->>> my_df = res.to_dataframe() # yes, you can convert your OBBject.results into a dataframe out-of-the-box!
->>> my_records = df.to_dict(orient="records")
+res = obb.equity.price.historical("AAPL")
+my_df = res.to_dataframe() # yes, you can convert your OBBject.results into a dataframe out-of-the-box!
+my_records = df.to_dict(orient="records")
 
->>> obb.ta.ema(data=my_record)
+obb.ta.ema(data=my_record)
+```
 
+```console
 OBBject
 
-results: [{'close': 77.62, 'close_EMA_50': None}, {'close': 80.25, 'close_EMA_50': ... # this is a `List[Data]` yet again
-
+results: [{'close': 77.62, 'close_EMA_50': None}, {'close': 80.25, 'close_EMA_50': ...}] # this is a `List[Data]` yet again
 ```
 
 > Note that that for this example we've used the `OBBject.to_dataframe()` method to have an example dataframe, but it could be any other dataframe that you have.
@@ -266,7 +272,6 @@ When using the OpenBB Platform on a Python Interface, docstrings and type hints 
 Looking at an example on the `ta` menu:
 
 ```python
-
 def ema(
         self,
         data: Union[List[Data], pandas.DataFrame],
@@ -276,9 +281,6 @@ def ema(
         offset: int = 0,
         chart: bool = False,
     ) -> OBBject[List[Data]]:
-
-    ...
-
 ```
 
 We can easily deduct that the `ema` command accept data in the formats of `List[Data]` or `pandas.DataFrame`.
@@ -290,7 +292,6 @@ We can easily deduct that the `ema` command accept data in the formats of `List[
 When using the OpenBB Platform on a API Interface, the types are a bit more limited than on the Python one, as, for example, we can't use `pandas.DataFrame` as a type. However the same principles apply for what `Data` means, i.e., any given data processing command, which are characterized as POST endpoints on the API, will accept data as a list of records on the **request body**, i.e.:
 
 ```json
-
 [
     {
         "open": 80,
@@ -299,16 +300,14 @@ When using the OpenBB Platform on a API Interface, the types are a bit more limi
         "close": 77.62,
         "volume": 2487300
     }
-    ...
 ]
-
 ```
 
 ## Core Dependencies
 
 The OpenBB Platform core relies on a set of carefully selected Python libraries to provide its functionality. These dependencies include:
 
-> Note that, in this context by core we mean the `openbb-core` package and the `openbb-provider` package.
+> Note that, in this context by core we mean the `openbb-core` package.
 
 - FastAPI for building the API.
 - Uvicorn as the ASGI server.

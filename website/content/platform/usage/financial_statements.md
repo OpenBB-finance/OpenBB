@@ -230,7 +230,7 @@ The `openbb-intrinio` data extension has an endpoint for extracting a single fac
 Search attributes by keyword.
 
 ```python
-obb.equity.fundamental.search_financial_attributes("marketcap").head(1)
+obb.equity.fundamental.search_attributes("marketcap").head(1)
 ```
 
 |    | id         | name                  | tag       | statement_code   | statement_type   | parent_name   |   sequence | factor   | transaction   | type      | unit   |
@@ -241,7 +241,7 @@ The `tag` is what we need, in this case it is what we searched for.
 
 ```python
 marketcap = (
-  obb.equity.fundamental.financial_attributes(symbol="TGT", tag = "marketcap", period="quarter")
+  obb.equity.fundamental.historical_attributes(symbol="TGT", tag = "marketcap", frequency="quarterly")
   .to_df()
 )
 

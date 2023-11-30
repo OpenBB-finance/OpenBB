@@ -48,6 +48,7 @@ Examples on this page will assume that the OpenBB Platform is installed, the Pyt
 
 ```python
 from openbb import obb
+import pandas as pd
 ```
 
 :::
