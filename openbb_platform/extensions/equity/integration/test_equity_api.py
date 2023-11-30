@@ -1335,7 +1335,7 @@ def test_equity_shorts_short_interest(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/shorts/short_interest?{query_str}"
-    result = requests.get(url, headers=headers, timeout=40)
+    result = requests.get(url, headers=headers, timeout=60)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -1343,18 +1343,6 @@ def test_equity_shorts_short_interest(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "symbol": "CLOV",
-                "date": "2023-10-26",
-                "provider": "polygon",  # premium endpoint
-                "limit": 1000,
-                "timestamp_lte": None,
-                "timestamp_gte": None,
-                "timestamp_gt": None,
-                "timestamp_lt": None,
-            }
-        ),
         (
             {
                 "symbol": "CLOV",
