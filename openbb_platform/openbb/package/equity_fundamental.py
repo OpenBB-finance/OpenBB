@@ -743,7 +743,7 @@ class ROUTER_equity_fundamental(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Historical Dividends. Historical dividends data for a given company.
@@ -752,17 +752,19 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        limit : Optional[int]
+            The number of data entries to return. (provider: intrinio)
 
         Returns
         -------
         OBBject
             results : List[HistoricalDividends]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -775,18 +777,24 @@ class ROUTER_equity_fundamental(Container):
         -------------------
         date : date
             The date of the data.
-        label : str
-            Label of the historical dividends.
-        adj_dividend : float
-            Adjusted dividend of the historical dividends.
         dividend : float
             Dividend of the historical dividends.
+        label : Optional[str]
+            Label of the historical dividends. (provider: fmp)
+        adj_dividend : Optional[float]
+            Adjusted dividend of the historical dividends. (provider: fmp)
         record_date : Optional[date]
-            Record date of the historical dividends.
+            Record date of the historical dividends. (provider: fmp)
         payment_date : Optional[date]
-            Payment date of the historical dividends.
+            Payment date of the historical dividends. (provider: fmp)
         declaration_date : Optional[date]
-            Declaration date of the historical dividends.
+            Declaration date of the historical dividends. (provider: fmp)
+        factor : Optional[float]
+            factor by which to multiply stock prices before this date, in order to calculate historically-adjusted stock prices. (provider: intrinio)
+        dividend_currency : Optional[str]
+            The currency of the dividend. (provider: intrinio)
+        split_ratio : Optional[float]
+            The ratio of the stock split, if a stock split occurred. (provider: intrinio)
 
         Example
         -------
@@ -2055,10 +2063,6 @@ class ROUTER_equity_fundamental(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        limit: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 100,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
@@ -2068,8 +2072,6 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        limit : Optional[int]
-            The number of data entries to return.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2091,6 +2093,8 @@ class ROUTER_equity_fundamental(Container):
 
         EquityValuationMultiples
         ------------------------
+        symbol : str
+            Symbol representing the entity requested in the data.
         revenue_per_share_ttm : Optional[float]
             Revenue per share calculated as trailing twelve months.
         net_income_per_share_ttm : Optional[float]
@@ -2215,7 +2219,7 @@ class ROUTER_equity_fundamental(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.fundamental.multiples(symbol="AAPL", limit=100)
+        >>> obb.equity.fundamental.multiples(symbol="AAPL")
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -2224,7 +2228,6 @@ class ROUTER_equity_fundamental(Container):
             },
             standard_params={
                 "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "limit": limit,
             },
             extra_params=kwargs,
         )
