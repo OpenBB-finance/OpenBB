@@ -1,7 +1,8 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
 import { DocSearchButton, useDocSearchKeyboardEvents } from "@docsearch/react";
+import BrowserOnly from "@docusaurus/BrowserOnly";
 import Head from "@docusaurus/Head";
 import Link from "@docusaurus/Link";
+import Translate from "@docusaurus/Translate";
 import { useHistory } from "@docusaurus/router";
 import { isRegexpStringMatch } from "@docusaurus/theme-common";
 import { useSearchPage } from "@docusaurus/theme-common/internal";
@@ -9,10 +10,10 @@ import {
   useAlgoliaContextualFacetFilters,
   useSearchResultUrlProcessor,
 } from "@docusaurus/theme-search-algolia/client";
-import Translate from "@docusaurus/Translate";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import { createPortal } from "react-dom";
 import translations from "@theme/SearchTranslations";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useIFrameContext } from "../Root";
 let DocSearchModal = null;
 function Hit({ hit, children }) {
@@ -157,7 +158,8 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
         translations={translations.button}
       />
 
-      {isOpen &&
+      <BrowserOnly>
+      {() => isOpen &&
         DocSearchModal &&
         searchContainer.current &&
         createPortal(
@@ -179,6 +181,7 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
           />,
           searchContainer.current
         )}
+        </BrowserOnly>
     </>
   );
 }
