@@ -1,5 +1,4 @@
 """Install for development script."""
-# noqa: S603,PLW1510,T201
 import subprocess
 import sys
 from pathlib import Path
@@ -57,41 +56,64 @@ openbb-quantitative = { path = "./extensions/quantitative", optional = true, dev
 openbb-technical = { path = "./extensions/technical", optional = true, develop = true }
 """
 
-pyproject_toml = toml.load(PYPROJECT)
-pyproject_toml["tool"]["poetry"]["dependencies"] = toml.loads(LOCAL_DEPS)["tool"][
-    "poetry"
-]["dependencies"]
 
-TEMP_PYPROJECT = toml.dumps(pyproject_toml)
+def extract_dev_dependencies(local_dep_path):
+    """Extract development dependencies from a given package's pyproject.toml."""
+    package_pyproject_path = PLATFORM_PATH / local_dep_path
+    if package_pyproject_path.exists():
+        package_pyproject_toml = toml.load(package_pyproject_path / "pyproject.toml")
+        return (
+            package_pyproject_toml.get("tool", {})
+            .get("poetry", {})
+            .get("group", {})
+            .get("dev", {})
+            .get("dependencies", {})
+        )
+    return {}
+
+
+def get_all_dev_dependencies():
+    """Aggregate development dependencies from all local packages."""
+    all_dev_dependencies = {}
+    local_deps = toml.loads(LOCAL_DEPS)["tool"]["poetry"]["dependencies"]
+    for _, package_info in local_deps.items():
+        if "path" in package_info:
+            dev_deps = extract_dev_dependencies(Path(package_info["path"]))
+            all_dev_dependencies.update(dev_deps)
+    return all_dev_dependencies
 
 
 def install_local(_extras: bool = False):
-    """Install the Platform locally for development purposes.
-
-    Installs the Platform in editable mode, instead of copying the source code to
-    the site-packages directory. This makes any changes immediately available
-    to the interpreter.
-
-    Parameters
-    ----------
-    _extras : bool, optional
-        Whether to install the Platform with the extra dependencies, by default False
-    """
+    """Install the Platform locally for development purposes."""
     original_lock = LOCK.read_text()
     original_pyproject = PYPROJECT.read_text()
-    extras_args = ["-E", "all"] if _extras else []
+
+    pyproject_toml = toml.load(PYPROJECT)
+    local_deps = toml.loads(LOCAL_DEPS)["tool"]["poetry"]["dependencies"]
+    pyproject_toml["tool"]["poetry"]["dependencies"].update(local_deps)
+
+    if _extras:
+        dev_dependencies = get_all_dev_dependencies()
+        pyproject_toml["tool"]["poetry"].setdefault("group", {}).setdefault(
+            "dev", {}
+        ).setdefault("dependencies", {})
+        pyproject_toml["tool"]["poetry"]["group"]["dev"]["dependencies"].update(
+            dev_dependencies
+        )
+
+    TEMP_PYPROJECT = toml.dumps(pyproject_toml)
 
     try:
-        # we create a temporary pyproject.toml
         with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
             f.write(TEMP_PYPROJECT)
 
         CMD = [sys.executable, "-m", "poetry"]
+        extras_args = ["-E", "all"] if _extras else []
 
-        subprocess.run(  # noqa: PLW1510
+        subprocess.run(
             CMD + ["lock", "--no-update"], cwd=PLATFORM_PATH, check=True  # noqa: S603
         )
-        subprocess.run(  # noqa: PLW1510
+        subprocess.run(
             CMD + ["install"] + extras_args, cwd=PLATFORM_PATH, check=True  # noqa: S603
         )
 
@@ -99,19 +121,16 @@ def install_local(_extras: bool = False):
         print(e)  # noqa: T201
         print("Restoring pyproject.toml and poetry.lock")  # noqa: T201
 
-    # we restore the original pyproject.toml
-    with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
-        f.write(original_pyproject)
+    finally:
+        # Revert pyproject.toml and poetry.lock to their original state
+        with open(PYPROJECT, "w", encoding="utf-8", newline="\n") as f:
+            f.write(original_pyproject)
 
-    # we restore the original poetry.lock
-    with open(LOCK, "w", encoding="utf-8", newline="\n") as f:
-        f.write(original_lock)
+        with open(LOCK, "w", encoding="utf-8", newline="\n") as f:
+            f.write(original_lock)
 
 
 if __name__ == "__main__":
     args = sys.argv[1:]
-
-    # pylint: disable=use-a-generator
-    extras = any([arg.lower() in ["-e", "--extras"] for arg in args])
-
+    extras = any(arg.lower() in ["-e", "--extras"] for arg in args)
     install_local(extras)
