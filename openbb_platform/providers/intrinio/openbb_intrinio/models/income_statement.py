@@ -120,14 +120,14 @@ class IntrinioIncomeStatementFetcher(
         data_tags = ["ebit", "ebitda", "ebitdamargin"]
 
         base_url = "https://api-v2.intrinio.com"
-        fundamentals_url_params = f"statement_code={statement_code}&type={period_type}"
+
         fundamentals_url = (
             f"{base_url}/companies/{query.symbol}/fundamentals?"
-            f"{fundamentals_url_params}&api_key={api_key}"
+            f"statement_code={statement_code}&type={period_type}&api_key={api_key}"
         )
-
-        fundamentals_response = await get_data_one(fundamentals_url, **kwargs)
-        fundamentals_data = fundamentals_response.get("fundamentals", [])
+        fundamentals_data = (await get_data_one(fundamentals_url, **kwargs)).get(
+            "fundamentals", []
+        )
 
         fiscal_periods = [
             f"{item['fiscal_year']}-{item['fiscal_period']}"
@@ -142,9 +142,8 @@ class IntrinioIncomeStatementFetcher(
             statement_data = await response.json()
 
             calculations_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
-            calculations_response = await session.get(calculations_url)
+            calculations_data = await session.get_json(calculations_url)
 
-            calculations_data = await calculations_response.json()
             calculations_data = [
                 item
                 for item in calculations_data.get("standardized_financials", [])

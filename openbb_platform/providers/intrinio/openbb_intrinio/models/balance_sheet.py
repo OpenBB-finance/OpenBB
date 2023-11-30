@@ -120,14 +120,15 @@ class IntrinioBalanceSheetFetcher(
         period_type = "FY" if query.period == "annual" else "QTR"
 
         base_url = "https://api-v2.intrinio.com"
-        fundamentals_url_params = f"statement_code={statement_code}&type={period_type}"
+
         fundamentals_url = (
             f"{base_url}/companies/{query.symbol}/fundamentals?"
-            f"{fundamentals_url_params}&api_key={api_key}"
+            f"statement_code={statement_code}&type={period_type}&api_key={api_key}"
+        )
+        fundamentals_data = (await get_data_one(fundamentals_url, **kwargs)).get(
+            "fundamentals", []
         )
 
-        fundamentals_response = await get_data_one(fundamentals_url, **kwargs)
-        fundamentals_data = fundamentals_response.get("fundamentals", [])
         fiscal_periods = [
             f"{item['fiscal_year']}-{item['fiscal_period']}"
             for item in fundamentals_data

@@ -145,10 +145,8 @@ class NasdaqCalendarIpoFetcher(
         dates = sorted(
             list(
                 set(
-                    [
-                        date.strftime("%Y-%m")
-                        for date in date_range(query.start_date, query.end_date)
-                    ]
+                    date.strftime("%Y-%m")
+                    for date in date_range(query.start_date, query.end_date)
                 )
             )
         )

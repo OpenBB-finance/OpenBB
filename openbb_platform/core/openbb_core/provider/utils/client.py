@@ -71,6 +71,7 @@ class ClientSession(aiohttp.ClientSession):
 
         super().__init__(*args, **kwargs)
 
+    # pylint: disable=unused-argument
     def __del__(self, _warnings: Any = warnings) -> None:
         """Close the session."""
         if not self.closed:

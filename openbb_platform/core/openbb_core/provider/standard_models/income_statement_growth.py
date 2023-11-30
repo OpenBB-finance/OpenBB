@@ -116,4 +116,3 @@ class IncomeStatementGrowthData(Data):
         if isinstance(v, str):
             return v.upper()
         return ",".join([symbol.upper() for symbol in list(v)]) if v else None
-        return ",".join([symbol.upper() for symbol in list(v)]) if v else None

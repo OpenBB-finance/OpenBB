@@ -49,6 +49,7 @@ class IntrinioOptionsChainsData(OptionsChainsData):
         # only pass it to the parser if it is not a datetime object
         if isinstance(v, str):
             return parser.parse(v)
+        return v
 
 
 class IntrinioOptionsChainsFetcher(

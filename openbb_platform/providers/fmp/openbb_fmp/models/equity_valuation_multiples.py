@@ -7,8 +7,7 @@ from openbb_core.provider.standard_models.equity_valuation_multiples import (
     EquityValuationMultiplesData,
     EquityValuationMultiplesQueryParams,
 )
-from openbb_core.provider.utils.client import ClientResponse
-from openbb_core.provider.utils.helpers import async_requests
+from openbb_core.provider.utils.helpers import ClientResponse, async_requests
 from openbb_fmp.utils.helpers import create_url
 
 

@@ -166,8 +166,7 @@ class NasdaqCalendarEarningsFetcher(
                     r_json["data"]["asOf"], "%a, %b %d, %Y"
                 ).date()
                 if len(response) > 0:
-                    [d.update({"date": _as_of_date}) for d in response]
-                    data.extend(response)
+                    data.extend([{**d, "date": _as_of_date} for d in response])
 
         with ThreadPoolExecutor() as executor:
             executor.map(get_calendar_data, dates)

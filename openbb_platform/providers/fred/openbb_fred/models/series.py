@@ -10,9 +10,13 @@ from openbb_core.provider.standard_models.fred_series import (
     SeriesData,
     SeriesQueryParams,
 )
-from openbb_core.provider.utils.client import ClientResponse, ClientSession
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import async_requests, get_querystring
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    ClientSession,
+    async_requests,
+    get_querystring,
+)
 from pydantic import Field
 
 _warn = warnings.warn

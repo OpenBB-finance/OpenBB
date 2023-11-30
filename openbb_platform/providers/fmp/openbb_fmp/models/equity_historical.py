@@ -9,8 +9,11 @@ from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
     EquityHistoricalQueryParams,
 )
-from openbb_core.provider.utils.client import ClientResponse
-from openbb_core.provider.utils.helpers import async_requests, get_querystring
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    async_requests,
+    get_querystring,
+)
 from openbb_fmp.utils.helpers import get_interval
 from pydantic import Field, NonNegativeInt
 
