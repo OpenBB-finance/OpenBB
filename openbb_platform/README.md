@@ -18,6 +18,7 @@ The command below provides access to the core functionalities behind the OpenBB 
 
 ```bash
 pip install openbb
+pip install openbb
 ```
 
 To install extensions that expand the core functionalities specify the extension name or use `all` to install all.
@@ -27,8 +28,8 @@ To install extensions that expand the core functionalities specify the extension
 pip install openbb[charting]
 
 # Install all available extensions
-pip install openbb[all]
-```
+pip install openbb[all] --pre
+``````
 
 > Note: These instruction are specific to v4. For installation instructions and documentation for v3 go to our [website](https://docs.openbb.co/sdk).
 
@@ -103,7 +104,7 @@ Populate this file with the following template and replace the values with your 
 The OpenBB Platform comes with a ready to use REST API built with FastAPI. Start the application using this command:
 
 ```bash
-uvicorn openbb_platform.platform.core.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
+uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 Check `openbb-core` [README](https://pypi.org/project/openbb-core/) for additional info.
