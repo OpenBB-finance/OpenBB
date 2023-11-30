@@ -244,7 +244,7 @@ class Editor:
             """Generate the index.mdx file."""
 
             OPEN_UL = "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>\n"
-            CLOSE_UL = "\n</ul>\n"
+            CLOSE_UL = "\n</ul>\n\n"
 
             def filter_path(ref: int, md: Path) -> str:
                 return "/".join([*md.parts[ref:-1], md.stem])
