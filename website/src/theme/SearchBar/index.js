@@ -5,7 +5,6 @@ import Link from "@docusaurus/Link";
 import Translate from "@docusaurus/Translate";
 import { useHistory } from "@docusaurus/router";
 import { isRegexpStringMatch } from "@docusaurus/theme-common";
-import { useSearchPage } from "@docusaurus/theme-common/internal";
 import {
   useAlgoliaContextualFacetFilters,
   useSearchResultUrlProcessor,
@@ -20,9 +19,8 @@ function Hit({ hit, children }) {
   return <Link to={hit.url}>{children}</Link>;
 }
 function ResultsFooter({ state, onClose }) {
-  const { generateSearchPageLink } = useSearchPage();
   return (
-    <Link to={generateSearchPageLink(state.query)} onClick={onClose}>
+    <Link to={`/search?q=${state.query}`} onClick={onClose}>
       <Translate
         id="theme.SearchBar.seeAll"
         values={{ count: state.context.nbHits }}
