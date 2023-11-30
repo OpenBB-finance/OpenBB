@@ -14,7 +14,7 @@ from openbb_intrinio.utils.helpers import (
     get_data_one,
     intrinio_fundamentals_session,
 )
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class IntrinioFinancialRatiosQueryParams(FinancialRatiosQueryParams):
@@ -32,6 +32,12 @@ class IntrinioFinancialRatiosQueryParams(FinancialRatiosQueryParams):
         default=True,
         description="If true, use cached data. Cache expires after one day.",
     )
+
+    @field_validator("symbol", mode="after", check_fields=False)
+    @classmethod
+    def handle_symbol(cls, v) -> dict:
+        """Handle symbols with a dash and replace it with a dot for Intrinio."""
+        return v.replace("-", ".")
 
 
 class IntrinioFinancialRatiosData(FinancialRatiosData):

@@ -33,6 +33,12 @@ class IntrinioBalanceSheetQueryParams(FinancialStatementsQueryParams):
         v = "FY" if v == "annual" else "QTR"
         return v
 
+    @field_validator("symbol", mode="after", check_fields=False)
+    @classmethod
+    def handle_symbol(cls, v) -> dict:
+        """Handle symbols with a dash and replace it with a dot for Intrinio."""
+        return v.replace("-", ".")
+
 
 class IntrinioBalanceSheetData(BalanceSheetData):
     """Intrinio Balance Sheet Data."""
