@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from textwrap import shorten
 from typing import Literal
 
 from openbb_core.app.provider_interface import ProviderInterface
@@ -229,13 +230,15 @@ class Editor:
         """Write the group of index.mdx and _category_.json to create a sidebar."""
 
         def get_card(title: str, description: str, url: str, command: bool):
-            return f"""
-<ReferenceCard
-    title="{title}"
-    description="{description}"
-    url="{url}"
-    command="{str(command).lower()}"
-/>"""
+            description = shorten(description, width=100, placeholder="...")
+            card = "<ReferenceCard\n"
+            card += f"    title=\"{title}\"\n"
+            card += f"    description=\"{description}\"\n"
+            card += f"    url=\"{url}\"\n"
+            if command:
+                card += "    command\n"
+            card += "/>"
+            return card
 
         def get_index(path: Path, label: str) -> str:
             """Generate the index.mdx file."""
@@ -243,24 +246,40 @@ class Editor:
             def filter_path(ref: int, md: Path) -> str:
                 return "/".join([*md.parts[ref:-1], md.stem])
 
-            md_files = list(path.glob("*md"))
 
             content = f"# {label}\n\n"
             content += "import ReferenceCard from '@site/src/components/General/NewReferenceCard';\n\n"
-            content += "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>"
-            for md in md_files:
-                url = filter_path(md.parts.index(label.lower()), md)
-                cmd = "/" + filter_path(md.parts.index(self.output) + 1, md)
-                description = (
-                    self.cmd_lib.get_info(cmd).get("description", "").replace("\n", " ")
-                )
-                content += get_card(
-                    title=md.stem,
-                    description=description,
-                    url=url,
-                    command=True,
-                )
-            content += "\n</ul>\n"
+
+            folders = [f for f in path.glob("*") if f.is_dir()]
+            if folders:
+                content += "### Menus\n"
+                content += "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>"
+                for f in folders:
+                    content += get_card(
+                        title=f.stem,
+                        description=", ".join([c.stem for c in f.glob("*md")]),
+                        url=filter_path(f.parts.index(label.lower()), f),
+                        command=False,
+                    )
+                content += "\n</ul>\n\n"
+
+            md_files = list(path.glob("*md"))
+            if md_files:
+                content += "### Commands\n"
+                content += "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>"
+
+                for md in md_files:
+                    cmd = "/" + filter_path(md.parts.index(self.output) + 1, md)
+                    description = (
+                        self.cmd_lib.get_info(cmd).get("description", "").replace("\n", " ")
+                    )
+                    content += get_card(
+                        title=md.stem,
+                        description=description,
+                        url=filter_path(md.parts.index(label.lower()), md),
+                        command=True,
+                    )
+                content += "\n</ul>\n"
             return content
 
         def write_mdx_and_category(path: Path, label: str, position: int):
@@ -274,11 +293,11 @@ class Editor:
             position = 1
             for p in path.iterdir():
                 if p.is_dir():
-                    write_mdx_and_category(p, p.name.title(), position)
+                    write_mdx_and_category(p, p.name, position)
                     recursive(p)
                     position += 1
 
-        write_mdx_and_category(self.target_dir, "Reference", 5)
+        write_mdx_and_category(self.target_dir, self.output.title(), 5)
         recursive(self.target_dir)
 
     def generate(self):

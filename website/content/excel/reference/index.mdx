@@ -2,17 +2,60 @@
 
 import ReferenceCard from '@site/src/components/General/NewReferenceCard';
 
-<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>
-<ReferenceCard
+### Menus
+<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'><ReferenceCard
+    title="crypto"
+    description="search"
+    url="reference/crypto"
+/><ReferenceCard
+    title="economy"
+    description="calendar, risk_premium, cpi"
+    url="reference/economy"
+/><ReferenceCard
+    title="derivatives"
+    description=""
+    url="reference/derivatives"
+/><ReferenceCard
+    title="news"
+    description="company, world"
+    url="reference/news"
+/><ReferenceCard
+    title="fixedincome"
+    description="sofr"
+    url="reference/fixedincome"
+/><ReferenceCard
+    title="equity"
+    description="search, market_snapshots, screener, profile"
+    url="reference/equity"
+/><ReferenceCard
+    title="index"
+    description="available, constituents, market"
+    url="reference/index"
+/><ReferenceCard
+    title="etf"
+    description="search, holdings, info, sectors, holdings_date, holdings_performance, countries, price_performance"
+    url="reference/etf"
+/><ReferenceCard
+    title="currency"
+    description="search"
+    url="reference/currency"
+/><ReferenceCard
+    title="regulators"
+    description=""
+    url="reference/regulators"
+/>
+</ul>
+
+### Commands
+<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'><ReferenceCard
     title="last"
     description="Get latest data point by providing symbol and field tag."
     url="reference/last"
-    command="true"
-/>
-<ReferenceCard
+    command
+/><ReferenceCard
     title="hist"
     description="Get historical data by providing symbol and field tag."
     url="reference/hist"
-    command="true"
+    command
 />
 </ul>
