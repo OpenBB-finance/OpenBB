@@ -243,6 +243,9 @@ class Editor:
         def get_index(path: Path, label: str) -> str:
             """Generate the index.mdx file."""
 
+            OPEN_UL = "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>\n"
+            CLOSE_UL = "\n</ul>\n"
+
             def filter_path(ref: int, md: Path) -> str:
                 return "/".join([*md.parts[ref:-1], md.stem])
 
@@ -252,7 +255,7 @@ class Editor:
             folders = [f for f in path.glob("*") if f.is_dir()]
             if folders:
                 content += "### Menus\n"
-                content += "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>"
+                content += OPEN_UL
                 for f in folders:
                     content += get_card(
                         title=f.stem,
@@ -260,12 +263,12 @@ class Editor:
                         url=filter_path(f.parts.index(label.lower()), f),
                         command=False,
                     )
-                content += "\n</ul>\n\n"
+                content += CLOSE_UL
 
             md_files = list(path.glob("*md"))
             if md_files:
                 content += "### Commands\n"
-                content += "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>"
+                content += OPEN_UL
 
                 for md in md_files:
                     cmd = "/" + filter_path(md.parts.index(self.output) + 1, md)
@@ -280,7 +283,7 @@ class Editor:
                         url=filter_path(md.parts.index(label.lower()), md),
                         command=True,
                     )
-                content += "\n</ul>\n"
+                content += CLOSE_UL
             return content
 
         def write_mdx_and_category(path: Path, label: str, position: int):
