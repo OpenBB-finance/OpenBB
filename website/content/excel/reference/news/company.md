@@ -1,0 +1,68 @@
+<!-- markdownlint-disable MD012 MD031 MD033 -->
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Company News. Get news for one or more companies.
+
+```excel wordwrap
+=OBB.NEWS.COMPANY(required, [optional])
+```
+
+---
+
+## Parameters
+
+| Name | Type | Description | Optional |
+| ---- | ---- | ----------- | -------- |
+| symbols | string | Here it is a separated list of symbols. | false |
+| provider | string | Options: benzinga, fmp, intrinio, polygon, tiingo | true |
+| limit | number | The number of data entries to return. | true |
+| display | string | Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga) | true |
+| date | string | Date of the news to retrieve. (provider: benzinga) | true |
+| start_date | string | Start date of the news to retrieve. (provider: benzinga) | true |
+| end_date | string | End date of the news to retrieve. (provider: benzinga) | true |
+| updated_since | number | Number of seconds since the news was updated. (provider: benzinga) | true |
+| published_since | number | Number of seconds since the news was published. (provider: benzinga) | true |
+| sort | string | Key to sort the news by. (provider: benzinga) | true |
+| order | string | Order to sort the news by. (provider: benzinga);
+Sort order of the articles. (provider: polygon) | true |
+| isin | string | The ISIN of the news to retrieve. (provider: benzinga) | true |
+| cusip | string | The CUSIP of the news to retrieve. (provider: benzinga) | true |
+| channels | string | Channels of the news to retrieve. (provider: benzinga) | true |
+| topics | string | Topics of the news to retrieve. (provider: benzinga) | true |
+| authors | string | Authors of the news to retrieve. (provider: benzinga) | true |
+| content_types | string | Content types of the news to retrieve. (provider: benzinga) | true |
+| page | number | Page number of the results. Use in combination with limit. (provider: fmp) | true |
+| published_utc | string | Date query to fetch articles. Supports operators <, <=, >, >= (provider: polygon) | true |
+| source | string | A comma-separated list of the domains requested. (provider: tiingo) | true |
+
+## Data
+
+| Name | Description |
+| ---- | ----------- |
+| symbols |  Here it is a separated list of symbols.  |
+| date | The date of the data. Here it is the date of the news.  |
+| title | Title of the news.  |
+| image | Image URL of the news.  |
+| text | Text/body of the news.  |
+| url | URL of the news.  |
+| id | ID of the news. (provider: benzinga);
+    Intrinio ID for the article. (provider: intrinio);
+    Article ID. (provider: polygon) |
+| author | Author of the news. (provider: benzinga);
+    Author of the article. (provider: polygon) |
+| teaser | Teaser of the news. (provider: benzinga) |
+| images | Images associated with the news. (provider: benzinga);
+    URL to the images of the news. (provider: fmp) |
+| channels | Channels associated with the news. (provider: benzinga) |
+| stocks | Stocks associated with the news. (provider: benzinga) |
+| tags | Tags associated with the news. (provider: benzinga, tiingo) |
+| updated | Updated date of the news. (provider: benzinga) |
+| site | Name of the news source. (provider: fmp, tiingo) |
+| amp_url | AMP URL. (provider: polygon) |
+| image_url | Image URL. (provider: polygon) |
+| keywords | Keywords in the article (provider: polygon) |
+| publisher | Publisher of the article. (provider: polygon) |
+| article_id | Unique ID of the news article. (provider: tiingo) |
+| crawl_date | Date the news article was crawled. (provider: tiingo) |

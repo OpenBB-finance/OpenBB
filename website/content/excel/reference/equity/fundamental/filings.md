@@ -1,0 +1,57 @@
+<!-- markdownlint-disable MD012 MD031 MD033 -->
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Company Filings. Company filings data.
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.FILINGS(required, [optional])
+```
+
+---
+
+## Parameters
+
+| Name | Type | Description | Optional |
+| ---- | ---- | ----------- | -------- |
+| provider | string | Options: fmp, intrinio, sec | true |
+| symbol | string | Symbol to get data for. | true |
+| form_type | string | Type of the SEC filing form. (provider: sec) | true |
+| limit | number | The number of data entries to return. | true |
+| start_date | string | Start date of the data, in YYYY-MM-DD format. (provider: intrinio) | true |
+| end_date | string | End date of the data, in YYYY-MM-DD format. (provider: intrinio) | true |
+| thea_enabled | boolean | Return filings that have been read by Intrinio's Thea NLP. (provider: intrinio) | true |
+| cik | any | Lookup filings by Central Index Key (CIK) instead of by symbol. (provider: sec) | true |
+| use_cache | boolean | Whether or not to use cache.  If True, cache will store for one day. (provider: sec) | true |
+
+## Data
+
+| Name | Description |
+| ---- | ----------- |
+| symbol | Symbol representing the entity requested in the data.  |
+| cik | Central Index Key (CIK) for the requested entity.  |
+| filing_date | Filing date of the SEC report.  |
+| accepted_date | Accepted date of the SEC report.  |
+| report_type | Type of the SEC report.  |
+| filing_url | URL to the filing page on the SEC site.  |
+| report_url | URL to the actual report on the SEC site.  |
+| id | Intrinio ID of the filing. (provider: intrinio) |
+| period_end_date | Ending date of the fiscal period for the filing. (provider: intrinio) |
+| sec_unique_id | SEC unique ID of the filing. (provider: intrinio) |
+| instance_url | URL for the XBRL filing for the report. (provider: intrinio) |
+| industry_group | Industry group of the company. (provider: intrinio) |
+| industry_category | Industry category of the company. (provider: intrinio) |
+| report_date | The date of the filing. (provider: sec) |
+| act | The SEC Act number. (provider: sec) |
+| items | The SEC Item numbers. (provider: sec) |
+| primary_doc_description | The description of the primary document. (provider: sec) |
+| primary_doc | The filename of the primary document. (provider: sec) |
+| accession_number | The accession number. (provider: sec) |
+| file_number | The file number. (provider: sec) |
+| film_number | The film number. (provider: sec) |
+| is_inline_xbrl | Whether the filing is an inline XBRL filing. (provider: sec) |
+| is_xbrl | Whether the filing is an XBRL filing. (provider: sec) |
+| size | The size of the filing. (provider: sec) |
+| complete_submission_url | The URL to the complete filing submission. (provider: sec) |
+| xml | The URL to the primary XML document. (provider: sec) |

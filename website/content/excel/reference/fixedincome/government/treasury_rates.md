@@ -1,0 +1,38 @@
+<!-- markdownlint-disable MD012 MD031 MD033 -->
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Government Treasury Rates.
+
+```excel wordwrap
+=OBB.FIXEDINCOME.GOVERNMENT.TREASURY_RATES(required, [optional])
+```
+
+---
+
+## Parameters
+
+| Name | Type | Description | Optional |
+| ---- | ---- | ----------- | -------- |
+| provider | string | Options: fmp | true |
+| start_date | string | Start date of the data, in YYYY-MM-DD format. | true |
+| end_date | string | End date of the data, in YYYY-MM-DD format. | true |
+
+## Data
+
+| Name | Description |
+| ---- | ----------- |
+| date | The date of the data.  |
+| month_1 | 1 month treasury rate.  |
+| month_2 | 2 month treasury rate.  |
+| month_3 | 3 month treasury rate.  |
+| month_6 | 6 month treasury rate.  |
+| year_1 | 1 year treasury rate.  |
+| year_2 | 2 year treasury rate.  |
+| year_3 | 3 year treasury rate.  |
+| year_5 | 5 year treasury rate.  |
+| year_7 | 7 year treasury rate.  |
+| year_10 | 10 year treasury rate.  |
+| year_20 | 20 year treasury rate.  |
+| year_30 | 30 year treasury rate.  |

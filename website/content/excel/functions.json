@@ -15,12 +15,6 @@
                     "description": "Field to get data for, e.g. 'ebitda'.",
                     "name": "field",
                     "type": "string"
-                },
-                {
-                    "description": "Time period of the data to return, can be 'annual' or 'quarter', defaults to 'annual'.",
-                    "name": "period",
-                    "optional": true,
-                    "type": "string"
                 }
             ],
             "result": {
@@ -56,8 +50,8 @@
                     "type": "string"
                 },
                 {
-                    "description": "Time period of the data to return, can be 'annual' or 'quarter', defaults to 'annual'.",
-                    "name": "period",
+                    "description": "The frequency of the data, can be 'yearly' or 'quarterly', defaults to 'yearly'.",
+                    "name": "frequency",
                     "optional": true,
                     "type": "string"
                 }
@@ -611,7 +605,7 @@
             "name": "EQUITY.CALENDAR.DIVIDEND",
             "parameters": [
                 {
-                    "description": "Options: fmp",
+                    "description": "Options: fmp, intrinio",
                     "name": "provider",
                     "optional": true,
                     "type": "string"
@@ -627,6 +621,18 @@
                     "name": "end_date",
                     "optional": true,
                     "type": "string"
+                },
+                {
+                    "description": "Symbol to get data for. (provider: intrinio)",
+                    "name": "symbol",
+                    "optional": true,
+                    "type": "string"
+                },
+                {
+                    "description": "The number of data entries to return. (provider: intrinio)",
+                    "name": "page_size",
+                    "optional": true,
+                    "type": "number"
                 }
             ],
             "result": {
@@ -797,7 +803,7 @@
                     "type": "string"
                 },
                 {
-                    "description": "Fuzzy filter by form type. E.g. 10-K, 10, 8, 6-K, etc.",
+                    "description": "Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types.",
                     "name": "form_type",
                     "optional": true,
                     "type": "string"
@@ -810,9 +816,9 @@
                 },
                 {
                     "description": "Flag for whether or not the filing is done. (provider: fmp)",
-                    "name": "is_done",
+                    "name": "isDone",
                     "optional": true,
-                    "type": "string"
+                    "type": "boolean"
                 }
             ],
             "result": {
@@ -1246,7 +1252,7 @@
             "name": "EQUITY.FUNDAMENTAL.FILINGS",
             "parameters": [
                 {
-                    "description": "Options: fmp, sec",
+                    "description": "Options: fmp, intrinio, sec",
                     "name": "provider",
                     "optional": true,
                     "type": "string"
@@ -1258,22 +1264,34 @@
                     "type": "string"
                 },
                 {
+                    "description": "Type of the SEC filing form. (provider: sec)",
+                    "name": "form_type",
+                    "optional": true,
+                    "type": "string"
+                },
+                {
                     "description": "The number of data entries to return.",
                     "name": "limit",
                     "optional": true,
                     "type": "number"
                 },
                 {
-                    "description": "Type of the SEC filing form. (provider: fmp, sec)",
-                    "name": "type",
+                    "description": "Start date of the data, in YYYY-MM-DD format. (provider: intrinio)",
+                    "name": "start_date",
                     "optional": true,
                     "type": "string"
                 },
                 {
-                    "description": "Page number of the results. (provider: fmp)",
-                    "name": "page",
+                    "description": "End date of the data, in YYYY-MM-DD format. (provider: intrinio)",
+                    "name": "end_date",
                     "optional": true,
-                    "type": "number"
+                    "type": "string"
+                },
+                {
+                    "description": "Return filings that have been read by Intrinio's Thea NLP. (provider: intrinio)",
+                    "name": "thea_enabled",
+                    "optional": true,
+                    "type": "boolean"
                 },
                 {
                     "description": "Lookup filings by Central Index Key (CIK) instead of by symbol. (provider: sec)",
@@ -1293,10 +1311,10 @@
             }
         },
         {
-            "description": "Fetch the value of financial attributes for a selected company and fiscal period.",
+            "description": "Fetch the historical values of a data tag from Intrinio.",
             "helpUrl": "https://docs.openbb.co/excel",
-            "id": "EQUITY.FUNDAMENTAL.FINANCIAL_ATTRIBUTES",
-            "name": "EQUITY.FUNDAMENTAL.FINANCIAL_ATTRIBUTES",
+            "id": "EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES",
+            "name": "EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES",
             "parameters": [
                 {
                     "description": "Symbol to get data for.",
@@ -1304,31 +1322,13 @@
                     "type": "string"
                 },
                 {
-                    "description": "None",
+                    "description": "Intrinio data tag ID or code.",
                     "name": "tag",
                     "type": "string"
                 },
                 {
                     "description": "Options: intrinio",
                     "name": "provider",
-                    "optional": true,
-                    "type": "string"
-                },
-                {
-                    "description": "Time period of the data to return.",
-                    "name": "period",
-                    "optional": true,
-                    "type": "string"
-                },
-                {
-                    "description": "The number of data entries to return.",
-                    "name": "limit",
-                    "optional": true,
-                    "type": "number"
-                },
-                {
-                    "description": "Filter by type, when applicable.",
-                    "name": "type",
                     "optional": true,
                     "type": "string"
                 },
@@ -1341,6 +1341,24 @@
                 {
                     "description": "End date of the data, in YYYY-MM-DD format.",
                     "name": "end_date",
+                    "optional": true,
+                    "type": "string"
+                },
+                {
+                    "description": "The frequency of the data.",
+                    "name": "frequency",
+                    "optional": true,
+                    "type": "string"
+                },
+                {
+                    "description": "The number of data entries to return.",
+                    "name": "limit",
+                    "optional": true,
+                    "type": "number"
+                },
+                {
+                    "description": "Filter by type, when applicable.",
+                    "name": "type",
                     "optional": true,
                     "type": "string"
                 },
@@ -1558,6 +1576,33 @@
             }
         },
         {
+            "description": "Fetch the latest value of a data tag from Intrinio.",
+            "helpUrl": "https://docs.openbb.co/excel",
+            "id": "EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES",
+            "name": "EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES",
+            "parameters": [
+                {
+                    "description": "Symbol to get data for.",
+                    "name": "symbol",
+                    "type": "string"
+                },
+                {
+                    "description": "Intrinio data tag ID or code.",
+                    "name": "tag",
+                    "type": "string"
+                },
+                {
+                    "description": "Options: intrinio",
+                    "name": "provider",
+                    "optional": true,
+                    "type": "string"
+                }
+            ],
+            "result": {
+                "dimensionality": "matrix"
+            }
+        },
+        {
             "description": "Key Executives. Key executives for a given company.",
             "helpUrl": "https://docs.openbb.co/excel",
             "id": "EQUITY.FUNDAMENTAL.MANAGEMENT",
@@ -1613,7 +1658,7 @@
                     "type": "string"
                 },
                 {
-                    "description": "Options: fmp",
+                    "description": "Options: fmp, intrinio",
                     "name": "provider",
                     "optional": true,
                     "type": "string"
@@ -1800,10 +1845,10 @@
             }
         },
         {
-            "description": "Search financial attributes for financial statements.",
+            "description": "Search Intrinio data tags.",
             "helpUrl": "https://docs.openbb.co/excel",
-            "id": "EQUITY.FUNDAMENTAL.SEARCH_FINANCIAL_ATTRIBUTES",
-            "name": "EQUITY.FUNDAMENTAL.SEARCH_FINANCIAL_ATTRIBUTES",
+            "id": "EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES",
+            "name": "EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES",
             "parameters": [
                 {
                     "description": "Query to search for.",
@@ -1912,22 +1957,46 @@
                     "type": "string"
                 },
                 {
-                    "description": "Options: fmp",
+                    "description": "Options: fmp, intrinio",
                     "name": "provider",
                     "optional": true,
                     "type": "string"
-                },
-                {
-                    "description": "Type of the transaction.",
-                    "name": "transaction_type",
-                    "optional": true,
-                    "type": "any"
                 },
                 {
                     "description": "The number of data entries to return.",
                     "name": "limit",
                     "optional": true,
                     "type": "number"
+                },
+                {
+                    "description": "Type of the transaction. (provider: fmp)",
+                    "name": "transactionType",
+                    "optional": true,
+                    "type": "any"
+                },
+                {
+                    "description": "Start date of the data, in YYYY-MM-DD format. (provider: intrinio)",
+                    "name": "start_date",
+                    "optional": true,
+                    "type": "string"
+                },
+                {
+                    "description": "End date of the data, in YYYY-MM-DD format. (provider: intrinio)",
+                    "name": "end_date",
+                    "optional": true,
+                    "type": "string"
+                },
+                {
+                    "description": "Type of ownership. (provider: intrinio)",
+                    "name": "ownership_type",
+                    "optional": true,
+                    "type": "string"
+                },
+                {
+                    "description": "Field to sort by. (provider: intrinio)",
+                    "name": "sort_by",
+                    "optional": true,
+                    "type": "string"
                 }
             ],
             "result": {
@@ -1946,22 +2015,28 @@
                     "type": "string"
                 },
                 {
-                    "description": "Options: fmp",
+                    "description": "Options: fmp, intrinio",
                     "name": "provider",
                     "optional": true,
                     "type": "string"
                 },
                 {
-                    "description": "Include current quarter data.",
+                    "description": "Include current quarter data. (provider: fmp)",
                     "name": "include_current_quarter",
                     "optional": true,
                     "type": "boolean"
                 },
                 {
-                    "description": "A specific date to get data for.",
+                    "description": "A specific date to get data for. (provider: fmp)",
                     "name": "date",
                     "optional": true,
                     "type": "string"
+                },
+                {
+                    "description": "The number of data entries to return. (provider: intrinio)",
+                    "name": "page_size",
+                    "optional": true,
+                    "type": "number"
                 }
             ],
             "result": {
@@ -2014,7 +2089,7 @@
                     "type": "string"
                 },
                 {
-                    "description": "Options: fmp",
+                    "description": "Options: fmp, intrinio",
                     "name": "provider",
                     "optional": true,
                     "type": "string"
@@ -2206,6 +2281,28 @@
                 {
                     "description": "Source of the data. (provider: intrinio)",
                     "name": "source",
+                    "optional": true,
+                    "type": "string"
+                }
+            ],
+            "result": {
+                "dimensionality": "matrix"
+            }
+        },
+        {
+            "description": "Equity Info. Get general price and performance metrics of a stock.",
+            "helpUrl": "https://docs.openbb.co/excel",
+            "id": "EQUITY.PROFILE",
+            "name": "EQUITY.PROFILE",
+            "parameters": [
+                {
+                    "description": "Symbol to get data for.",
+                    "name": "symbol",
+                    "type": "string"
+                },
+                {
+                    "description": "Options: intrinio",
+                    "name": "provider",
                     "optional": true,
                     "type": "string"
                 }
@@ -2682,10 +2779,9 @@
                 },
                 {
                     "description": "The yield curve type.",
-                    "dimensionality": "matrix",
                     "name": "yield_curve",
                     "optional": true,
-                    "type": "any"
+                    "type": "string"
                 }
             ],
             "result": {
@@ -3458,7 +3554,7 @@
                     "type": "string"
                 },
                 {
-                    "description": "Options: fmp, polygon",
+                    "description": "Options: fmp, intrinio, polygon",
                     "name": "provider",
                     "optional": true,
                     "type": "string"
@@ -3488,22 +3584,34 @@
                     "type": "string"
                 },
                 {
-                    "description": "Timespan of the data. (provider: polygon)",
-                    "name": "timespan",
+                    "description": "Index tag. (provider: intrinio)",
+                    "name": "tag",
                     "optional": true,
                     "type": "string"
                 },
                 {
-                    "description": "Sort order of the data. (provider: polygon)",
+                    "description": "Index type. (provider: intrinio)",
+                    "name": "type",
+                    "optional": true,
+                    "type": "string"
+                },
+                {
+                    "description": "Sort order. (provider: intrinio);\nSort order of the data. (provider: polygon)",
                     "name": "sort",
                     "optional": true,
                     "type": "string"
                 },
                 {
-                    "description": "The number of data entries to return. (provider: polygon)",
+                    "description": "The number of data entries to return. (provider: intrinio, polygon)",
                     "name": "limit",
                     "optional": true,
                     "type": "number"
+                },
+                {
+                    "description": "Timespan of the data. (provider: polygon)",
+                    "name": "timespan",
+                    "optional": true,
+                    "type": "string"
                 },
                 {
                     "description": "Whether the data is adjusted. (provider: polygon)",
@@ -3781,53 +3889,6 @@
                     "name": "provider",
                     "optional": true,
                     "type": "string"
-                }
-            ],
-            "result": {
-                "dimensionality": "matrix"
-            }
-        },
-        {
-            "description": "Look up filings to the SEC by ticker symbol or CIK.",
-            "helpUrl": "https://docs.openbb.co/excel",
-            "id": "REGULATORS.SEC.FILINGS",
-            "name": "REGULATORS.SEC.FILINGS",
-            "parameters": [
-                {
-                    "description": "Options: sec",
-                    "name": "provider",
-                    "optional": true,
-                    "type": "string"
-                },
-                {
-                    "description": "Symbol to get data for.",
-                    "name": "symbol",
-                    "optional": true,
-                    "type": "string"
-                },
-                {
-                    "description": "The number of data entries to return.",
-                    "name": "limit",
-                    "optional": true,
-                    "type": "number"
-                },
-                {
-                    "description": "Lookup filings by Central Index Key (CIK) instead of by symbol. (provider: sec)",
-                    "name": "cik",
-                    "optional": true,
-                    "type": "any"
-                },
-                {
-                    "description": "Type of the SEC filing form. (provider: sec)",
-                    "name": "type",
-                    "optional": true,
-                    "type": "string"
-                },
-                {
-                    "description": "Whether or not to use cache.  If True, cache will store for one day. (provider: sec)",
-                    "name": "use_cache",
-                    "optional": true,
-                    "type": "boolean"
                 }
             ],
             "result": {

@@ -1,0 +1,51 @@
+<!-- markdownlint-disable MD012 MD031 MD033 -->
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Get the complete options chain for a ticker.
+
+```excel wordwrap
+=OBB.DERIVATIVES.OPTIONS.CHAINS(required, [optional])
+```
+
+---
+
+## Parameters
+
+| Name | Type | Description | Optional |
+| ---- | ---- | ----------- | -------- |
+| symbol | string | Symbol to get data for. | false |
+| provider | string | Options: intrinio | true |
+| date | string | Date for which the options chains are returned. (provider: intrinio) | true |
+
+## Data
+
+| Name | Description |
+| ---- | ----------- |
+| contract_symbol | Contract symbol for the option.  |
+| symbol | Symbol representing the entity requested in the data. Here its the underlying symbol for the option.  |
+| expiration | Expiration date of the contract.  |
+| strike | Strike price of the contract.  |
+| option_type | Call or Put.  |
+| eod_date | Date for which the options chains are returned.  |
+| close | The close price.  |
+| close_bid | The closing bid price for the option that day.  |
+| close_ask | The closing ask price for the option that day.  |
+| volume | The trading volume.  |
+| open | The open price.  |
+| open_bid | The opening bid price for the option that day.  |
+| open_ask | The opening ask price for the option that day.  |
+| open_interest | Open interest on the contract.  |
+| high | The high price.  |
+| low | The low price.  |
+| mark | The mid-price between the latest bid-ask spread.  |
+| ask_high | The highest ask price for the option that day.  |
+| ask_low | The lowest ask price for the option that day.  |
+| bid_high | The highest bid price for the option that day.  |
+| bid_low | The lowest bid price for the option that day.  |
+| implied_volatility | Implied volatility of the option.  |
+| delta | Delta of the option.  |
+| gamma | Gamma of the option.  |
+| theta | Theta of the option.  |
+| vega | Vega of the option.  |
