@@ -235,6 +235,28 @@ class ROUTER_equity_fundamental(Container):
             Link to the statement. (provider: fmp)
         final_link : Optional[str]
             Link to the final statement. (provider: fmp)
+        note_receivable : Optional[float]
+            Notes and lease receivable. (provider: intrinio)
+        net_ppe : Optional[float]
+            Plant, property, and equipment, net. (provider: intrinio)
+        total_noncurrent_assets : Optional[float]
+            Total noncurrent assets. (provider: intrinio)
+        current_deferred_revenue : Optional[float]
+            Current deferred revenue. (provider: intrinio)
+        other_noncurrent_liabilities : Optional[float]
+            Other noncurrent operating liabilities. (provider: intrinio)
+        total_noncurrent_liabilities : Optional[float]
+            Total noncurrent liabilities. (provider: intrinio)
+        commitments_and_contingencies : Optional[float]
+            Commitments and contingencies. (provider: intrinio)
+        aoci : Optional[float]
+            Accumulated other comprehensive income / (loss). (provider: intrinio)
+        total_common_equity : Optional[float]
+            Total common equity. (provider: intrinio)
+        total_equity_and_noncontrolling_interests : Optional[float]
+            Total equity & noncontrolling interests. (provider: intrinio)
+        total_liabilities_and_equity : Optional[float]
+            Total liabilities & shareholders' equity. (provider: intrinio)
 
         Example
         -------
@@ -580,6 +602,20 @@ class ROUTER_equity_fundamental(Container):
             Link to the statement. (provider: fmp)
         final_link : Optional[str]
             Link to the final statement. (provider: fmp)
+        net_income_continuing : Optional[float]
+            Net income from continuing operations. (provider: intrinio)
+        net_cash_from_continuing_operating_activities : Optional[float]
+            Net cash from continuing operating activities. (provider: intrinio)
+        net_cash_from_continuing_investing_activities : Optional[float]
+            Net cash from continuing investing activities. (provider: intrinio)
+        net_cash_from_continuing_financing_activities : Optional[float]
+            Net cash from continuing financing activities. (provider: intrinio)
+        cash_interest_paid : Optional[float]
+            Cash paid for interest. (provider: intrinio)
+        cash_income_taxes_paid : Optional[float]
+            Cash paid for income taxes. (provider: intrinio)
+        issuance_of_common_equity : Optional[float]
+            Issuance of common equity. (provider: intrinio)
 
         Example
         -------
@@ -1453,6 +1489,20 @@ class ROUTER_equity_fundamental(Container):
             Accepted date. (provider: fmp)
         calendar_year : Optional[int]
             Calendar year. (provider: fmp)
+        operating_revenue : Optional[float]
+            Operating revenue. (provider: intrinio)
+        operating_cost_of_revenue : Optional[float]
+            Operating cost of revenue. (provider: intrinio)
+        net_income_continuing : Optional[float]
+            Net income from continuing operations. (provider: intrinio)
+        net_income_to_common : Optional[float]
+            Net income to common shareholders. (provider: intrinio)
+        cash_dividends_per_share : Optional[float]
+            Cash dividends per share. (provider: intrinio)
+        other_income : Optional[float]
+            Other income. (provider: intrinio)
+        weighted_ave_basic_diluted_shares_os : Optional[float]
+            Weighted average basic and diluted shares outstanding. (provider: intrinio)
         income_loss_from_continuing_operations_before_tax : Optional[float]
             Income/Loss From Continuing Operations After Tax (provider: polygon)
         income_loss_from_continuing_operations_after_tax : Optional[float]
