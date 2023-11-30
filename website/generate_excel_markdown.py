@@ -256,7 +256,7 @@ class Editor:
                 for f in folders:
                     content += get_card(
                         title=f.stem,
-                        description=", ".join([c.stem for c in f.glob("*md")]),
+                        description=", ".join([s.stem for s in f.rglob("*")]),
                         url=filter_path(f.parts.index(label.lower()), f),
                         command=False,
                     )
