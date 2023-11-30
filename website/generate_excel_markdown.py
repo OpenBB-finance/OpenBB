@@ -232,9 +232,9 @@ class Editor:
         def get_card(title: str, description: str, url: str, command: bool):
             description = shorten(description, width=100, placeholder="...")
             card = "<ReferenceCard\n"
-            card += f"    title=\"{title}\"\n"
-            card += f"    description=\"{description}\"\n"
-            card += f"    url=\"{url}\"\n"
+            card += f'    title="{title}"\n'
+            card += f'    description="{description}"\n'
+            card += f'    url="{url}"\n'
             if command:
                 card += "    command\n"
             card += "/>"
@@ -245,7 +245,6 @@ class Editor:
 
             def filter_path(ref: int, md: Path) -> str:
                 return "/".join([*md.parts[ref:-1], md.stem])
-
 
             content = f"# {label}\n\n"
             content += "import ReferenceCard from '@site/src/components/General/NewReferenceCard';\n\n"
@@ -271,7 +270,9 @@ class Editor:
                 for md in md_files:
                     cmd = "/" + filter_path(md.parts.index(self.output) + 1, md)
                     description = (
-                        self.cmd_lib.get_info(cmd).get("description", "").replace("\n", " ")
+                        self.cmd_lib.get_info(cmd)
+                        .get("description", "")
+                        .replace("\n", " ")
                     )
                     content += get_card(
                         title=md.stem,
