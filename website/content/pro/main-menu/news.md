@@ -20,8 +20,8 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
-  youtubeLink="https://www.youtube.com/embed/f2w3YufZHYU?si=SvT_Wo4bIa8EbZlH"
-  videoLegend="Short introduction to Terminal Pro News"
+  youtubeLink="https://www.youtube.com/embed/0H0Mi-w8DPc?si=gJUkxTyXTx5Xc8Ko"
+  videoLegend="Short introduction to News"
 />
 
 Welcome to the News section of OpenBB Terminal Pro. This is your hub for staying updated with the latest financial news and market trends.
