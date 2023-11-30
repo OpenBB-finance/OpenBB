@@ -103,6 +103,8 @@ class ROUTER_news(Container):
 
         CompanyNews
         -----------
+        symbols : str
+             Here it is a separated list of symbols.
         date : datetime
             The date of the data. Here it is the date of the news.
         title : str
@@ -133,8 +135,6 @@ class ROUTER_news(Container):
             Tags associated with the news. (provider: benzinga, tiingo)
         updated : Optional[datetime]
             Updated date of the news. (provider: benzinga)
-        symbol : Optional[str]
-            Ticker of the fetched news. (provider: fmp)
         site : Optional[str]
             Name of the news source. (provider: fmp, tiingo)
         amp_url : Optional[str]
@@ -145,10 +145,6 @@ class ROUTER_news(Container):
             Keywords in the article (provider: polygon)
         publisher : Optional[openbb_polygon.models.company_news.PolygonPublisher]
             Publisher of the article. (provider: polygon)
-        tickers : Optional[List[str]]
-            Tickers covered in the article. (provider: polygon)
-        symbols : Optional[str]
-            Ticker tagged in the fetched news. (provider: tiingo)
         article_id : Optional[int]
             Unique ID of the news article. (provider: tiingo)
         crawl_date : Optional[datetime]
