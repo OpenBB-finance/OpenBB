@@ -20,8 +20,7 @@ The OpenBB Platform has been created and is currently maintained by the OpenBB t
 
 Developing and maintaining a full-blown investment research infrastructure from the ground up takes a lot of time and effort. However, it does not have to be this way. By taking advantage of OpenBB Platform with its out-of-the-box data connectors and library of extensions, you can focus on designing and building your financial reports and applications.
 
-<img width="769" alt="sdk" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/f8ddb59a-b3b5-436c-80cb-2b97e246a8d9" />
-
+![Platform Docs pic](https://github.com/OpenBB-finance/OpenBBTerminal/assets/85772166/74520441-5e95-4ba6-9d16-6a2d5c966cf9)
 
 ## What is the OpenBB Platform?
 
