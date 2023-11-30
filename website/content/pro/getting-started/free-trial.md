@@ -16,7 +16,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Free Trial | OpenBB Terminal Pro Docs" />
+<HeadTitle title="Getting Started | OpenBB Terminal Pro Docs" />
 
 There are 3 main ways to get started:
 
