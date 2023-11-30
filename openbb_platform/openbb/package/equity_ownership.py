@@ -33,7 +33,7 @@ class ROUTER_equity_ownership(Container):
         limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 100,
+        ] = 500,
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
@@ -49,7 +49,7 @@ class ROUTER_equity_ownership(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        transaction_type : Optional[Union[List[Literal['A-Award', 'C-Conversion', 'D-Return', 'E-ExpireShort', 'F-InKind', 'G-Gift', 'H-ExpireLong', 'I-Discretionary', 'J-Other', 'L-Small', 'M-Exempt', 'O-OutOfTheMoney', 'P-Purchase', 'S-Sale', 'U-Tender', 'W-Will', 'X-InTheMoney', 'Z-Trust']], str]]
+        transaction_type : Literal[None, 'award', 'conversion', 'return', 'expire_short', 'in_kind', 'gift', 'expire_long', 'discretionary', 'other', 'small', 'exempt', 'otm', 'purchase', 'sale', 'tender', 'will', 'itm', 'trust']
             Type of the transaction. (provider: fmp)
         start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format. (provider: intrinio)
@@ -138,7 +138,7 @@ class ROUTER_equity_ownership(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.ownership.insider_trading(symbol="AAPL", limit=100)
+        >>> obb.equity.ownership.insider_trading(symbol="AAPL", limit=500)
         """  # noqa: E501
 
         inputs = filter_inputs(

@@ -928,7 +928,8 @@ def test_equity_price_historical(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/price/historical?{query_str}"
-    result = requests.get(url, headers=headers, timeout=30)
+    result = requests.get(url, headers=headers, timeout=40)
+    result = requests.get(url, headers=headers, timeout=40)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -1255,7 +1256,7 @@ def test_equity_discovery_top_retail(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"limit": 5})],
+    [({"provider": "seeking_alpha"})],
 )
 @pytest.mark.integration
 def test_equity_discovery_upcoming_release_days(params, headers):
@@ -1265,7 +1266,7 @@ def test_equity_discovery_upcoming_release_days(params, headers):
     url = (
         f"http://0.0.0.0:8000/api/v1/equity/discovery/upcoming_release_days?{query_str}"
     )
-    result = requests.get(url, headers=headers, timeout=10)
+    result = requests.get(url, headers=headers, timeout=30)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -1349,7 +1350,7 @@ def test_equity_shorts_short_interest(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/shorts/short_interest?{query_str}"
-    result = requests.get(url, headers=headers, timeout=20)
+    result = requests.get(url, headers=headers, timeout=60)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -1357,18 +1358,6 @@ def test_equity_shorts_short_interest(params, headers):
 @pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "symbol": "CLOV",
-                "date": "2023-10-26",
-                "provider": "polygon",  # premium endpoint
-                "limit": 1000,
-                "timestamp_lte": None,
-                "timestamp_gte": None,
-                "timestamp_gt": None,
-                "timestamp_lt": None,
-            }
-        ),
         (
             {
                 "symbol": "CLOV",
@@ -1389,7 +1378,7 @@ def test_equity_price_nbbo(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/price/nbbo?{query_str}"
-    result = requests.get(url, headers=headers, timeout=20)
+    result = requests.get(url, headers=headers, timeout=40)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 

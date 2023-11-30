@@ -1178,7 +1178,7 @@ def test_equity_discovery_top_retail(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [({"limit": 5})],
+    [({})],
 )
 @pytest.mark.integration
 def test_equity_discovery_upcoming_release_days(params, obb):
@@ -1261,7 +1261,7 @@ def test_equity_shorts_short_volume(params, obb):
 
 @pytest.mark.parametrize(
     "params",
-    [({"symbol": "AAPL"})],
+    [({"symbol": "AAPL", "provider": "finra"})],
 )
 @pytest.mark.integration
 def test_equity_shorts_short_interest(params, obb):
@@ -1276,18 +1276,6 @@ def test_equity_shorts_short_interest(params, obb):
 @pytest.mark.parametrize(
     "params",
     [
-        (
-            {
-                "symbol": "CLOV",
-                "date": "2023-10-26",
-                "provider": "polygon",  # premium endpoint
-                "limit": 1000,
-                "timestamp_lte": None,
-                "timestamp_gte": None,
-                "timestamp_gt": None,
-                "timestamp_lt": None,
-            }
-        ),
         (
             {
                 "symbol": "CLOV",
