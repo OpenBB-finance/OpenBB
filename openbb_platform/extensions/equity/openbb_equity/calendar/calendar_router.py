@@ -38,7 +38,7 @@ async def dividend(
 
 
 @router.command(model="CalendarSplits")
-async def split(
+async def splits(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,

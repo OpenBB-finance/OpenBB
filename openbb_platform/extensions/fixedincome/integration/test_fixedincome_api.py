@@ -351,7 +351,7 @@ def test_fixedincome_corporate_spot_rates(params, headers):
 
 @pytest.mark.parametrize(
     "params",
-    [({"date": "2023-01-01", "yield_curve": ["spot"]})],
+    [({"date": "2023-01-01", "yield_curve": "spot"})],
 )
 @pytest.mark.integration
 def test_fixedincome_corporate_hqm(params, headers):
