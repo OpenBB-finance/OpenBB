@@ -35,7 +35,7 @@ class IntrinioFinancialRatiosQueryParams(FinancialRatiosQueryParams):
 
     @field_validator("symbol", mode="after", check_fields=False)
     @classmethod
-    def handle_symbol(cls, v) -> dict:
+    def handle_symbol(cls, v) -> str:
         """Handle symbols with a dash and replace it with a dot for Intrinio."""
         return v.replace("-", ".")
 
