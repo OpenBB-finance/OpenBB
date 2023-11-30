@@ -135,7 +135,7 @@ class Account:
         return None
 
     @_log_account_command  # type: ignore
-    def save(self) -> UserSettings:
+    def save(self, verbosity: bool = False) -> Optional[UserSettings]:
         """Save user settings.
 
         Returns
@@ -151,10 +151,13 @@ class Account:
         else:
             hs = HubService(hub_session)
             hs.push(self._base_app._command_runner.user_settings)
-        return self._base_app._command_runner.user_settings
+
+        if verbosity:
+            return self._base_app._command_runner.user_settings
+        return None
 
     @_log_account_command  # type: ignore
-    def refresh(self) -> UserSettings:
+    def refresh(self, verbosity: bool = False) -> Optional[UserSettings]:
         """Refresh user settings.
 
         Returns
@@ -173,10 +176,13 @@ class Account:
             updated: UserSettings = UserService.update_default(incoming)
             updated.id = self._base_app._command_runner.user_settings.id
             self._base_app._command_runner.user_settings = updated
-        return self._base_app._command_runner.user_settings
+
+        if verbosity:
+            return self._base_app._command_runner.user_settings
+        return None
 
     @_log_account_command  # type: ignore
-    def logout(self) -> UserSettings:
+    def logout(self, verbosity: bool = False) -> Optional[UserSettings]:
         """Logout from hub.
 
         Returns
@@ -198,4 +204,7 @@ class Account:
         self._base_app._command_runner.user_settings = (
             UserService.read_default_user_settings()
         )
-        return self._base_app._command_runner.user_settings
+
+        if verbosity:
+            return self._base_app._command_runner.user_settings
+        return None
