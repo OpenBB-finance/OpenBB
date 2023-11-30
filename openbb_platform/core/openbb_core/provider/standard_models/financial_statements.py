@@ -330,6 +330,9 @@ class CashFlowStatementData(Data):
     depreciation_expense: Optional[float] = Field(
         default=None, description="Depreciation Expense."
     )
+    amortization_expense: Optional[float] = Field(
+        default=None, description="Amortization Expense."
+    )
     share_based_compensation: Optional[float] = Field(
         default=None, description="Share-based compensation."
     )
@@ -389,7 +392,6 @@ class CashFlowStatementData(Data):
     net_cash_from_investing_activities: Optional[float] = Field(
         default=None, description="Net Cash from Investing Activities"
     )
-
     payment_of_dividends: Optional[float] = Field(
         default=None, description="Payment of Dividends"
     )
@@ -441,7 +443,6 @@ class CashFlowStatementData(Data):
     net_change_in_cash_and_equivalents: Optional[float] = Field(
         default=None, description="Net Change in Cash and Equivalents"
     )
-
     cash_income_taxes_paid: Optional[float] = Field(
         default=None, description="Cash Income Taxes Paid"
     )
