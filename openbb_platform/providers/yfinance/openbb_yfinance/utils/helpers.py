@@ -86,15 +86,13 @@ def yf_download(
     period: str = "max",
     prepost: bool = False,
     actions: bool = False,
-    auto_adjust: bool = False,
-    back_adjust: bool = False,
     progress: bool = False,
     ignore_tz: bool = True,
     keepna: bool = False,
     repair: bool = False,
     rounding: bool = False,
     group_by: Literal["symbol", "column"] = "column",
-    keep_adjusted: bool = False,
+    adjusted: bool = False,
     **kwargs: Any,
 ) -> pd.DataFrame:
     """Get yFinance OHLC data for any ticker and interval available."""
@@ -114,6 +112,9 @@ def yf_download(
         period = "5d"
         _start_date = None
 
+    if adjusted is False:
+        kwargs = dict(auto_adjust=False, back_adjust=False)
+
     data = yf.download(
         tickers=symbol,
         start=_start_date,
@@ -121,8 +122,6 @@ def yf_download(
         interval=interval,
         period=period,
         prepost=prepost,
-        auto_adjust=auto_adjust,
-        back_adjust=back_adjust,
         actions=actions,
         progress=progress,
         ignore_tz=ignore_tz,
@@ -130,6 +129,7 @@ def yf_download(
         repair=repair,
         rounding=rounding,
         group_by=group_by,
+        **kwargs,
     )
     if not data.empty:
         data = data.reset_index()
@@ -165,9 +165,9 @@ def yf_download(
         if interval not in ["1m", "2m", "5m", "15m", "30m", "90m", "60m", "1h"]:
             data["date"] = data["date"].dt.tz_localize(None).dt.strftime("%Y-%m-%d")
 
-        if keep_adjusted is False:
+        if adjusted is False:
             data = data.drop(columns=["Adj Close"])
 
-        data.columns = data.columns.str.lower().to_list()
+        data.columns = data.columns.str.lower().str.replace(" ", "_").to_list()
 
     return data

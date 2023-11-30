@@ -1,13 +1,13 @@
-"""Intrinio Dividend Calendar Model."""
+"""Intrinio Historical Dividends Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.calendar_dividend import (
-    CalendarDividendData,
-    CalendarDividendQueryParams,
+from openbb_core.provider.standard_models.historical_dividends import (
+    HistoricalDividendsData,
+    HistoricalDividendsQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import get_querystring
@@ -15,13 +15,12 @@ from openbb_intrinio.utils.helpers import get_data_many
 from pydantic import Field
 
 
-class IntrinioCalendarDividendQueryParams(CalendarDividendQueryParams):
-    """Intrinio Dividend Calendar Query.
+class IntrinioHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
+    """Intrinio Historical Dividends Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_security_stock_price_adjustments_v2
     """
 
-    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     limit: Optional[int] = Field(
         default=100,
         description=QUERY_DESCRIPTIONS.get("limit", ""),
@@ -29,12 +28,8 @@ class IntrinioCalendarDividendQueryParams(CalendarDividendQueryParams):
     )
 
 
-class IntrinioCalendarDividendData(CalendarDividendData):
-    """Intrinio Dividend Calendar Data."""
-
-    __alias_dict__ = {
-        "amount": "dividend",
-    }
+class IntrinioHistoricalDividendsData(HistoricalDividendsData):
+    """Intrinio Historical Dividends Data."""
 
     factor: float = Field(
         description=(
@@ -50,16 +45,18 @@ class IntrinioCalendarDividendData(CalendarDividendData):
     )
 
 
-class IntrinioCalendarDividendFetcher(
+class IntrinioHistoricalDividendsFetcher(
     Fetcher[
-        IntrinioCalendarDividendQueryParams,
-        List[IntrinioCalendarDividendData],
+        IntrinioHistoricalDividendsQueryParams,
+        List[IntrinioHistoricalDividendsData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioCalendarDividendQueryParams:
+    def transform_query(
+        params: Dict[str, Any]
+    ) -> IntrinioHistoricalDividendsQueryParams:
         """Transform the query params."""
         transformed_params = params
 
@@ -69,11 +66,11 @@ class IntrinioCalendarDividendFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return IntrinioCalendarDividendQueryParams(**transformed_params)
+        return IntrinioHistoricalDividendsQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: IntrinioCalendarDividendQueryParams,
+        query: IntrinioHistoricalDividendsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -88,12 +85,12 @@ class IntrinioCalendarDividendFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioCalendarDividendQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[IntrinioCalendarDividendData]:
+        query: IntrinioHistoricalDividendsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[IntrinioHistoricalDividendsData]:
         """Return the transformed data."""
         transformed_data: List[Dict] = [
             {"symbol": query.symbol, **item} for item in data
         ]
         return [
-            IntrinioCalendarDividendData.model_validate(d) for d in transformed_data
+            IntrinioHistoricalDividendsData.model_validate(d) for d in transformed_data
         ]

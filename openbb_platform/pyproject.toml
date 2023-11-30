@@ -13,7 +13,6 @@ openbb-core = "^1.0.0b2"
 openbb-benzinga = "^1.0.0b2"
 openbb-fmp = "^1.0.0b2"
 openbb-fred = "^1.0.0b2"
-openbb-government-us = "^1.0.0b2"
 openbb-intrinio = "^1.0.0b2"
 openbb-oecd = "^1.0.0b2"
 openbb-polygon = "^1.0.0b2"
@@ -38,6 +37,7 @@ openbb-biztoc = { version = "^1.0.0b2", optional = true }
 openbb-cboe = { version = "^1.0.0b2", optional = true }
 openbb-ecb = { version = "^1.0.0b2", optional = true }
 openbb-finra = { version = "^1.0.0b2", optional = true }
+openbb-government-us = { version = "^1.0.0b2", optional = true }
 openbb-nasdaq = { version = "^1.0.0b2", optional = true }
 openbb-seeking-alpha = { version = "^1.0.0b2", optional = true }
 openbb-stockgrid = { version = "^1.0.0b2", optional = true }
@@ -56,12 +56,16 @@ cboe = ["openbb-cboe"]
 charting = ["openbb-charting"]
 ecb = ["openbb-ecb"]
 econometrics = ["openbb-econometrics"]
+finra = ["openbb-finra"]
+government = ["openbb-government-us"]
 nasdaq = ["openbb-nasdaq"]
 quantitative = ["openbb-quantitative"]
 seeking_alpha = ["openbb-seeking-alpha"]
 stockgrid = ["openbb-stockgrid"]
 technical = ["openbb-technical"]
+wsj = ["openbb-wsj"]
 yfinance = ["openbb-yfinance"]
+
 
 all = [
     "openbb-alpha-vantage",
@@ -70,6 +74,7 @@ all = [
     "openbb-charting",
     "openbb-ecb",
     "openbb-econometrics",
+    "openbb-government-us",
     "openbb-nasdaq",
     "openbb-quantitative",
     "openbb-seeking-alpha",
