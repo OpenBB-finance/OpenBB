@@ -1,5 +1,5 @@
 ---
-title: Installation
+title: Overview
 sidebar_position: 1
 description: Learn how to use OpenBB Bot in Discord and Telegram. Understand the requirements
   for individual and server uses, and explore additional features by linking your

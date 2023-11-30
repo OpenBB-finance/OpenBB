@@ -32,8 +32,14 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
+<<<<<<<< HEAD:website/content/terminal/menus/economy.md
 <HeadTitle title="Economy - Menus | OpenBB Terminal Docs" />
 
+========
+<HeadTitle title="Economy - Data Available | OpenBB Terminal Docs" />
+
+
+>>>>>>>> main:website/content/terminal/data-available/economy.md
 The `/economy` menu provides methods for querying macroeconomic data sets from sources like FRED, OECD, and EconDB.  To get the most out of this menu, sign up for a free API key from the [Federal Reserve of St. Louis](https://fred.stlouisfed.org/), and enter it into the OpenBB Terminal from the [`/keys` menu](/terminal/usage/data/api-keys).
 
 ## The Economy Menu

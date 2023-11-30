@@ -1,6 +1,11 @@
 ---
+<<<<<<<< HEAD:website/content/sdk/data-available/portfolio/index.md
 title: Portfolio
 sidebar_position: 0
+========
+title: Introduction
+sidebar_position: 1
+>>>>>>>> main:website/content/sdk/data-available/portfolio/introduction.md
 description: Docusaurus page focuses on the usage of the OpenBB Terminal Portfolio
   module, detailing its features and examples of use like portfolio performance benchmarking,
   risk metrics calculation or maximum drawdown calculation.
@@ -14,7 +19,11 @@ keywords:
 - portfolio transactions
 ---
 
+<<<<<<<< HEAD:website/content/sdk/data-available/portfolio/index.md
 The [Portfolio menu](/terminal/reference/portfolio/load), from the OpenBB Terminal, is wrapped into a Python SDK layer, enabling users to programmatically work with the data in a flexible environment, fully customizable for the needs of any user. This guide will introduce the functions within the main Portfolio module, and walk through examples demonstrating how to work with a portfolio file and object.
+========
+The [Portfolio menu](/terminal/data-available/portfolio), from the OpenBB Terminal, is wrapped into a Python SDK layer, enabling users to programmatically work with the data in a flexible environment, fully customizable for the needs of any user. This guide will introduce the functions within the main Portfolio module, and walk through examples demonstrating how to work with a portfolio file and object.
+>>>>>>>> main:website/content/sdk/data-available/portfolio/introduction.md
 
 ## How to Use
 
