@@ -1,3 +1,36 @@
+---
+title: price_performance
+description: Learn about price performance returns over different periods and how
+  to retrieve data for a given symbol. Find out how to analyze the time series data,
+  view the provider information, and access additional metadata and warnings.
+keywords: 
+- price performance
+- return
+- periods
+- symbol
+- data
+- time series
+- chart
+- provider
+- metadata
+- warnings
+- one-day return
+- week to date return
+- one-week return
+- month to date return
+- one-month return
+- quarter to date return
+- three-month return
+- six-month return
+- year to date return
+- one-year return
+- three-year return
+- five-year return
+- ten-year return
+- max return
+- ticker symbol
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Price performance as a return, over different periods.

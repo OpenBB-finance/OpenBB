@@ -1,3 +1,12 @@
+---
+title: treasury_auctions
+description: Government Treasury Auctions
+keywords: 
+- fixedincome
+- government
+- treasury_auctions
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Government Treasury Auctions.

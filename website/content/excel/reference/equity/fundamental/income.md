@@ -1,3 +1,48 @@
+---
+title: income
+description: Get income statement and financial performance data for a company. Parameters
+  include symbol, period, limit, provider, and more. Data includes revenue, gross
+  profit, operating expenses, net income, and more.
+keywords: 
+- income statement
+- financial performance
+- get income data
+- period
+- limit
+- provider
+- symbol
+- cik
+- filing date
+- period of report date
+- include sources
+- order
+- sort
+- revenue
+- cost of revenue
+- gross profit
+- cost and expenses
+- research and development expenses
+- general and administrative expenses
+- selling and marketing expenses
+- other expenses
+- operating expenses
+- depreciation and amortization
+- ebitda
+- operating income
+- interest income
+- interest expense
+- income before tax
+- income tax expense
+- net income
+- eps
+- weighted average shares outstanding
+- link
+- reported currency
+- filling date
+- accepted date
+- calendar year
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Income Statement. Report on a company's financial performance.

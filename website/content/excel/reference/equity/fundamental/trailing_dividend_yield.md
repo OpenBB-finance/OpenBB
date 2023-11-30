@@ -1,3 +1,12 @@
+---
+title: trailing_dividend_yield
+description: Trailing 1yr dividend yield
+keywords: 
+- equity
+- fundamental
+- trailing_dividend_yield
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Trailing 1yr dividend yield.

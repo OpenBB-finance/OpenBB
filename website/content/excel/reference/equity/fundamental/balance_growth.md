@@ -1,3 +1,54 @@
+---
+title: balance_growth
+description: Learn about balance sheet statement growth, equity data for a company,
+  parameters like symbol, limit, and provider, and explore the returned results, warnings,
+  charts, and metadata. Retrieve detailed data on various balance sheet growth metrics
+  like cash and cash equivalents, short-term investments, inventory, total assets,
+  total liabilities, and more.
+keywords: 
+- balance sheet statement growth
+- company balance sheet growth
+- equity data
+- symbol
+- limit parameter
+- provider parameter
+- results
+- balance sheet growth
+- warnings
+- chart
+- metadata
+- data
+- cash and cash equivalents
+- short-term investments
+- net receivables
+- inventory
+- current assets
+- property, plant, and equipment
+- goodwill
+- intangible assets
+- long-term investments
+- tax assets
+- other non-current assets
+- total non-current assets
+- other assets
+- total assets
+- accounts payable
+- short-term debt
+- total current liabilities
+- long-term debt
+- non-current deferred revenue
+- non-current deferred tax liabilities
+- total non-current liabilities
+- common stock
+- retained earnings
+- accumulated other comprehensive income/loss
+- total stockholders' equity
+- total liabilities and stockholders' equity
+- total investments
+- total debt
+- net debt
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Balance Sheet Statement Growth. Information about the growth of the company balance sheet.

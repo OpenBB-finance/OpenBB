@@ -1,3 +1,51 @@
+---
+title: cash_growth
+description: Learn about Cash Flow Statement Growth and how to retrieve cash growth
+  data using the Python function obb.equity.fundamental.cash_growth(). This page provides
+  details on the function's parameters and the data it returns, including information
+  on net income, depreciation and amortization, working capital, investments, financing
+  activities, and more.
+keywords: 
+- Cash Flow Statement Growth
+- company cash flow
+- cash growth
+- Python
+- function
+- parameters
+- symbol
+- limit
+- provider
+- data
+- returns
+- net income
+- depreciation and amortization
+- deferred income tax
+- stock-based compensation
+- working capital
+- accounts receivables
+- inventory
+- accounts payables
+- other non-cash items
+- net cash provided by operating activities
+- investments in property, plant, and equipment
+- net acquisitions
+- purchases of investments
+- sales maturities of investments
+- net cash used for investing activities
+- debt repayment
+- common stock issued
+- common stock repurchased
+- dividends paid
+- net cash used/provided by financing activities
+- foreign exchange changes on cash
+- net change in cash
+- cash at end of period
+- cash at beginning of period
+- operating cash flow
+- capital expenditure
+- free cash flow
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Cash Flow Statement Growth. Information about the growth of the company cash flow statement.

@@ -1,3 +1,24 @@
+---
+title: revenue_per_segment
+description: Learn how to get revenue data for a specific business line using the
+  equity fundamental revenue per segment function.
+keywords: 
+- Revenue Business Line
+- business line revenue data
+- equity fundamental revenue per segment
+- symbol
+- period
+- structure
+- provider
+- results
+- RevenueBusinessLine
+- chart
+- metadata
+- data
+- date
+- business line
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Revenue Business Line. Business line revenue data.

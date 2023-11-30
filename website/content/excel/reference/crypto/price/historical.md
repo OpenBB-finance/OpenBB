@@ -1,3 +1,30 @@
+---
+title: historical
+description: Learn how to use the `obb.equity.price.historical` function to load historical
+  price data for a specific stock ticker. Find out about the available parameters
+  and providers, as well as the structure of the returned data and the columns it
+  contains.
+keywords: 
+- equity historical price
+- load stock data
+- specific ticker
+- python function
+- equity data parameters
+- alpha vantage provider
+- fmp provider
+- intrinio provider
+- polygon provider
+- yfinance provider
+- equity historical data returns
+- equity data columns
+- alpha vantage data columns
+- cboe data columns
+- fmp data columns
+- intrinio data columns
+- polygon data columns
+- yfinance data columns
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Cryptocurrency Historical Price. Cryptocurrency historical price data.

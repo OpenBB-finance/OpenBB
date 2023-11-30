@@ -1,3 +1,27 @@
+---
+title: search
+description: The documentation page provides information on how to perform a cryptocurrency
+  search, including the search query and provider parameters, as well as the resulting
+  crypto search data such as symbol, name, currency, and exchange information.
+keywords: 
+- cryptocurrency search
+- available cryptocurrency pairs
+- python obb crypto search
+- search query parameter
+- provider parameter
+- crypto search results
+- crypto search provider
+- crypto search warnings
+- crypto search chart
+- crypto search metadata
+- crypto data
+- symbol
+- crypto name
+- crypto currency
+- crypto exchange
+- crypto exchange name
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Cryptocurrency Search. Search available cryptocurrency pairs.

@@ -1,3 +1,26 @@
+---
+title: price_target
+description: Get price target data for an equity symbol. Retrieve information such
+  as publication date, analyst details, price target, and more. Supports multiple
+  symbols and customizable providers.
+keywords: 
+- price target data
+- equity estimates
+- symbol
+- provider
+- grade
+- published date
+- news URL
+- news title
+- analyst name
+- analyst company
+- price target
+- adjusted price target
+- price when posted
+- news publisher
+- news base URL
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Price Target. Price target data.

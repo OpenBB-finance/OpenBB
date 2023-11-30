@@ -1,3 +1,26 @@
+---
+title: search
+description: Learn how to search for ETFs with parameters like query, provider, exchange
+  code, and more. Retrieve key details about ETFs, including market cap, industry,
+  sector, beta, current price, annual dividend, trading volume, exchange, and country.
+  Find actively trading ETFs and their symbol representation.
+keywords: 
+- search for ETFs
+- ETF search query
+- ETF provider
+- ETF exchange code
+- ETF trading volume
+- ETF market cap
+- ETF sector
+- ETF industry
+- ETF beta
+- ETF current price
+- ETF annual dividend
+- ETF exchange
+- ETF country
+- actively trading ETF
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Search for ETFs.  An empty query returns the full list of ETFs from the provider.

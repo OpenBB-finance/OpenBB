@@ -1,3 +1,57 @@
+---
+title: ipo
+description: Access the Upcoming and Historical IPO Calendars and retrieve IPO information
+  using Python.
+keywords: 
+- Upcoming IPO Calendar
+- Historical IPO Calendar
+- Python function
+- equity.calendar.ipo
+- symbol
+- start_date
+- end_date
+- limit
+- provider
+- intrinio
+- nasdaq
+- status
+- min_value
+- max_value
+- OBBject
+- results
+- CalendarIpo
+- warnings
+- Chart
+- Metadata
+- data
+- ipo_date
+- status
+- exchange
+- offer_amount
+- share_price
+- share_price_lowest
+- share_price_highest
+- share_count
+- share_count_lowest
+- share_count_highest
+- announcement_url
+- sec_report_url
+- open_price
+- close_price
+- volume
+- day_change
+- week_change
+- month_change
+- id
+- company
+- security
+- name
+- expected_price_date
+- filed_date
+- withdraw_date
+- deal_status
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Upcoming and Historical IPO Calendar.

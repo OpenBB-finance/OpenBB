@@ -1,3 +1,28 @@
+---
+title: sic_search
+description: Learn how to perform a fuzzy search for industry titles, reporting office,
+  and SIC codes using Python. Explore the parameters, returns, and data associated
+  with the `obb.regulators.sec.sic_search` function.
+keywords: 
+- fuzzy search
+- industry titles
+- reporting office
+- SIC codes
+- Python
+- search query
+- provider
+- cache
+- results
+- warnings
+- chart
+- metadata
+- data
+- sector industrial code
+- industry title
+- reporting office
+- Corporate Finance Office
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Fuzzy search for Industry Titles, Reporting Office, and SIC Codes.

@@ -1,3 +1,21 @@
+---
+title: transcript
+description: Learn how to retrieve earnings call transcripts for a given company using
+  Python obb.equity.fundamental.transcript. Understand the data parameters, returns,
+  symbol, year, quarter, and metadata associated with the transcripts.
+keywords: 
+- earnings call transcript
+- python obb.equity.fundamental.transcript
+- data parameters
+- returns
+- symbols
+- year
+- quar
+- content
+- metadata
+- provider
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Earnings Call Transcript. Earnings call transcript for a given company.

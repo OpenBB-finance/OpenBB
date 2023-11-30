@@ -1,3 +1,37 @@
+---
+title: insider_trading
+description: Learn how to use the stock insider trading Python function to get information
+  about insider trading, including parameter details, return types, and data descriptions.
+keywords: 
+- stock insider trading
+- equity ownership
+- Python function
+- parameter details
+- data description
+- symbol
+- transaction type
+- limit
+- provider
+- returns
+- results
+- chart
+- metadata
+- data
+- filing date
+- transaction date
+- reporting CIK
+- securities owned
+- company CIK
+- reporting name
+- type of owner
+- acquisition or disposition
+- form type
+- securities transacted
+- price
+- security name
+- link
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Insider Trading. Information about insider trading.

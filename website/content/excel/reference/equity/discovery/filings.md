@@ -1,3 +1,12 @@
+---
+title: filings
+description: Get the most-recent filings submitted to the SEC
+keywords: 
+- equity
+- discovery
+- filings
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Get the most-recent filings submitted to the SEC.

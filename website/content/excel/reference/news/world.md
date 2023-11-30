@@ -1,3 +1,64 @@
+---
+title: world
+description: Learn how to retrieve global news data using the obb.news.world API.
+  This documentation covers the parameters, returns, and data structures used in the
+  API, including details on how to set the limit and provider, and how to filter the
+  news by date, author, channels, and more. Explore the different data fields such
+  as date, title, images, text, and URL, and understand the structure of the returned
+  results, warnings, chart, and metadata.
+keywords: 
+- Global News
+- global news data
+- obb.news.world
+- parameters
+- limit
+- provider
+- default
+- benzinga
+- biztoc
+- fmp
+- intrinio
+- display
+- date
+- start_date
+- end_date
+- updated_since
+- published_since
+- sort
+- order
+- isin
+- cusip
+- channels
+- topics
+- authors
+- content_types
+- returns
+- results
+- provider
+- warnings
+- chart
+- metadata
+- data
+- date
+- title
+- images
+- text
+- url
+- id
+- author
+- teaser
+- stocks
+- tags
+- updated
+- favicon
+- score
+- site
+- company
+- datetime
+- list
+- dict
+---
+
 <!-- markdownlint-disable MD041 -->
 
 World News. Global news data.

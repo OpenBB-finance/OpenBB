@@ -1,3 +1,21 @@
+---
+title: share_statistics
+description: Learn how to retrieve and analyze share statistics for a given company
+  using the obb.equity.ownership.share_statistics API endpoint. This documentation
+  provides details on the parameters, return values, and data structure.
+keywords: 
+- share statistics
+- company statistics
+- equity ownership
+- symbol
+- provider
+- data
+- free float
+- float shares
+- outstanding shares
+- source
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Share Statistics. Share statistics for a given company.

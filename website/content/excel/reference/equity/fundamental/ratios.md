@@ -1,3 +1,28 @@
+---
+title: ratios
+description: Learn about financial ratios for a given company over time. Explore various
+  equity ratios, such as current ratio, quick ratio, and cash conversion cycle. Understand
+  key profitability metrics like return on equity and profit margin. Analyze debt
+  ratios, inventory turnover, and operating and free cash flows. Evaluate the price
+  to earnings ratio and dividend yield.
+keywords: 
+- financial ratios
+- company ratios
+- ratios over time
+- equity ratios
+- current ratio
+- quick ratio
+- cash conversion cycle
+- return on equity
+- profit margin
+- debt ratio
+- inventory turnover
+- operating cash flow
+- free cash flow
+- price to earnings ratio
+- dividend yield
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Extensive set of ratios over time. Financial ratios for a given company.

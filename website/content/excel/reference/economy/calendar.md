@@ -1,3 +1,43 @@
+---
+title: calendar
+description: The Economic Calendar provides information on economic events and data.
+  Use the OBB Python function `obb.economy.calendar()` to retrieve economic calendar
+  data. The function accepts parameters such as start date, end date, provider, country,
+  importance, and group. It returns a list of economic calendar data, including the
+  date, event, reference, source, actual value, previous value, consensus value, and
+  forecast value. The data can be filtered by provider such as FMP, Nasdaq, or Trading
+  Economics.
+keywords: 
+- economic calendar
+- python obb.economy.calendar
+- parameters
+- start date
+- end date
+- provider
+- country
+- importance
+- group
+- returns
+- data
+- date
+- event
+- reference
+- source
+- source url
+- actual
+- previous
+- consensus
+- forecast
+- url
+- currency
+- unit
+- change
+- change percent
+- updated at
+- created at
+- description
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Economic Calendar.

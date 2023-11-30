@@ -1,3 +1,32 @@
+---
+title: unusual
+description: Learn how to get the complete options chain for a ticker with the equity
+  options unusual API. Explore the available parameters such as symbol and provider.
+  Retrieve valuable data like the underlying symbol, contract symbol, trade type,
+  sentiment, total value, total size, average price, ask/bid prices at execution,
+  underlying price at execution, and timestamp.
+keywords: 
+- complete options chain
+- ticker options
+- equity options unusual
+- symbol
+- provider
+- intrinio
+- source
+- data
+- underlying symbol
+- contract symbol
+- trade type
+- sentiment
+- total value
+- total size
+- average price
+- ask at execution
+- bid at execution
+- underlying price at execution
+- timestamp
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Get the complete options chain for a ticker.

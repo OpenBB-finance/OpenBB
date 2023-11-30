@@ -1,3 +1,33 @@
+---
+title: earnings
+description: Learn how to retrieve upcoming and historical earnings calendar data
+  using the OBB.equity.calendar.earnings Python function. The function allows you
+  to specify symbols, limit the number of data entries, and choose a data provider.
+  The returned data includes EPS, revenue, and other important details for the specified
+  symbols and dates.
+keywords: 
+- earnings calendar
+- upcoming earnings
+- historical earnings
+- Python function
+- earnings data retrieval
+- symbol
+- limit
+- provider
+- data entries
+- chart
+- metadata
+- data
+- EPS
+- revenue
+- estimated EPS
+- estimated revenue
+- date
+- time
+- updated from date
+- fiscal date ending
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Upcoming and Historical earnings calendar.

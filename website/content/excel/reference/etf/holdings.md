@@ -1,3 +1,46 @@
+---
+title: holdings
+description: Learn how to get the holdings data for an individual ETF using the `obb.etf.holdings`
+  method. Understand the parameters like symbol, provider, date, and CIK. Explore
+  the returns, results, warnings, chart, and metadata. Dive into the data fields like
+  symbol, name, LEI, title, CUSIP, ISIN, balance, units, currency, value, weight,
+  payoff profile, asset category, issuer category, country, and more.
+keywords: 
+- ETF holdings
+- individual ETF holdings
+- holdings data for ETF
+- symbol
+- provider
+- date
+- CIK
+- returns
+- results
+- warnings
+- chart
+- metadata
+- data
+- name
+- LEI
+- title
+- CUSIP
+- ISIN
+- balance
+- units
+- currency
+- value
+- weight
+- payoff profile
+- asset category
+- issuer category
+- country
+- is restricted
+- fair value level
+- is cash collateral
+- is non-cash collateral
+- is loan by fund
+- acceptance datetime
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Get the holdings for an individual ETF.

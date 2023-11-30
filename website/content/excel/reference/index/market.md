@@ -1,3 +1,47 @@
+---
+title: market
+description: Learn how to retrieve historical market indices data using various data
+  providers and query parameters. Understand the available parameters and return values,
+  such as symbol, start date, end date, provider, interval, timeseries, timespan,
+  sort order, limit, adjusted, multiplier, chart, metadata, date, open price, high
+  price, low price, close price, volume, calls volume, puts volume, options volume,
+  adjusted close price, unadjusted volume, change, change percent, label, change over
+  time, and transactions.
+keywords: 
+- Historical Market Indices
+- market data
+- symbol
+- start date
+- end date
+- data provider
+- query
+- interval
+- timeseries
+- timespan
+- sort order
+- limit
+- adjusted
+- multiplier
+- chart
+- metadata
+- date
+- open price
+- high price
+- low price
+- close price
+- volume
+- calls volume
+- puts volume
+- options volume
+- adjusted close price
+- unadjusted volume
+- change
+- change percent
+- label
+- change over time
+- transactions
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Historical Market Indices.

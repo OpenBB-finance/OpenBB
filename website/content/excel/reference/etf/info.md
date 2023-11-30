@@ -1,3 +1,32 @@
+---
+title: info
+description: Get an overview of ETF information using the `obb.etf.info` function.
+  Learn about the available parameters, returns, and data fields like name, inception
+  date, asset class, assets under management, average trading volume, CUSIP, description,
+  domicile, expense ratio, ISIN, net asset value, website link, and holdings count.
+keywords: 
+- ETF Information Overview
+- obb.etf.info
+- parameters
+- symbol
+- provider
+- returns
+- data
+- name
+- inception date
+- asset class
+- assets under management
+- average trading volume
+- CUSIP
+- description
+- domicile
+- expense ratio
+- ISIN
+- net asset value
+- website link
+- holdings count
+---
+
 <!-- markdownlint-disable MD041 -->
 
 ETF Information Overview.

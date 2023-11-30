@@ -1,3 +1,29 @@
+---
+title: market_snapshots
+description: Get a current, complete market snapshot with the obb.equity.market_snapshots
+  Python method. Retrieve equity data such as stock information, financial data, market
+  analysis, and trading volume. Explore details like stock performance, price change,
+  moving averages, 52-week high and low, market cap, earnings per share, price to
+  earnings ratio, and stock exchange.
+keywords: 
+- market snapshot
+- equity data
+- market data
+- stock information
+- financial data
+- market analysis
+- trading volume
+- stock performance
+- price change
+- moving averages
+- 52-week high
+- 52-week low
+- market cap
+- earnings per share
+- price to earnings ratio
+- stock exchange
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Get a current, complete, market snapshot.

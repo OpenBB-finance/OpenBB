@@ -1,3 +1,12 @@
+---
+title: treasury_rates
+description: Government Treasury Rates
+keywords: 
+- fixedincome
+- government
+- treasury_rates
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Government Treasury Rates.

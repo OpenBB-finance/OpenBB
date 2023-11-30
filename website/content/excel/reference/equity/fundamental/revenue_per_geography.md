@@ -1,3 +1,32 @@
+---
+title: revenue_per_geography
+description: Learn about the revenue per geography data with the geographic revenue
+  data Python function in this documentation page. Understand the symbol, period,
+  structure, and provider parameters. Explore the returns, results, metadata, and
+  the data structure including the date, geographic segment, and revenue by region
+  (Americas, Europe, Greater China, Japan, Rest of Asia Pacific).
+keywords: 
+- geographic revenue data
+- revenue per geography
+- Python function
+- documentation page
+- symbol parameter
+- period parameter
+- structure parameter
+- provider parameter
+- returns
+- results
+- metadata
+- data
+- date
+- geographic segment
+- Americas
+- Europe
+- Greater China
+- Japan
+- Rest of Asia Pacific
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Revenue Geographic. Geographic revenue data.

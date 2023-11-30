@@ -1,3 +1,12 @@
+---
+title: nominal
+description: Nominal GDP Data
+keywords: 
+- economy
+- gdp
+- nominal
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Nominal GDP Data.

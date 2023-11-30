@@ -1,3 +1,36 @@
+---
+title: performance
+description: Learn how to calculate the price performance return for a symbol over
+  different time periods using the OBB.equity.price.performance function. Retrieve
+  data such as one-day return, week to date return, one-week return, month to date
+  return, and more. Understand the parameters, returns, and data structure of the
+  function.
+keywords: 
+- price performance
+- return
+- symbol
+- data
+- provider
+- chart
+- metadata
+- one-day return
+- week to date return
+- one-week return
+- month to date return
+- one-month return
+- quarter to date return
+- three-month return
+- six-month return
+- year to date return
+- one-year return
+- three-year return
+- five-year return
+- ten-year return
+- max return
+- time series
+- ticker symbol
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Price performance as a return, over different periods.

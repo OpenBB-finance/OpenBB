@@ -1,3 +1,53 @@
+---
+title: overview
+description: Learn about the company overview and get essential information, including
+  symbol, price, beta, volume average, market capitalization, last dividend, industry,
+  website, CEO, sector, country, and more.
+keywords: 
+- company overview
+- overview symbol
+- equity fundamental overview
+- parameters
+- returns
+- data
+- symbol
+- price
+- beta
+- vol_avg
+- mkt_cap
+- last_div
+- range
+- changes
+- company_name
+- currency
+- cik
+- isin
+- cusip
+- exchange
+- exchange_short_name
+- industry
+- website
+- description
+- ceo
+- sector
+- country
+- full_time_employees
+- phone
+- address
+- city
+- state
+- zip
+- dcf_diff
+- dcf
+- image
+- ipo_date
+- default_image
+- is_etf
+- is_actively_trading
+- is_adr
+- is_fund
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Company Overview. General information about a company.

@@ -1,3 +1,25 @@
+---
+title: consensus
+description: Learn how to access and use the Price Target Consensus functionality
+  in your application. Explore the available parameters and understand the returned
+  data structure.
+keywords: 
+- Price target consensus data
+- equity estimates consensus
+- symbol parameter
+- provider parameter
+- results attribute
+- provider attribute
+- warnings attribute
+- chart attribute
+- metadata attribute
+- data table
+- target_high column
+- target_low column
+- target_consensus column
+- target_median column
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Price Target Consensus. Price target consensus data.

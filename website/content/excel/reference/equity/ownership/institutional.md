@@ -1,3 +1,63 @@
+---
+title: institutional
+description: Learn about institutional ownership data, and how to use the OBB.equity.ownership.institutional
+  function in Python to access the data. Explore the symbol, include_current_quarter,
+  date, and provider parameters. Understand the meaning and usage of the results,
+  provider, warnings, chart, and metadata properties. Additionally, get detailed descriptions
+  of the various data fields such as symbol, cik, date, investors_holding, number_of_13f_shares,
+  total_invested, ownership_percent, new_positions, closed_positions, total_calls,
+  total_puts, and put_call_ratio.
+keywords: 
+- institutional ownership data
+- python OBB.equity.ownership.institutional function
+- symbol parameter
+- include_current_quarter parameter
+- date parameter
+- provider parameter
+- results property
+- provider property
+- warnings property
+- chart property
+- metadata property
+- data description
+- symbol data
+- cik data
+- date data
+- investors_holding data
+- last_investors_holding data
+- investors_holding_change data
+- number_of_13f_shares data
+- last_number_of_13f_shares data
+- number_of_13f_shares_change data
+- total_invested data
+- last_total_invested data
+- total_invested_change data
+- ownership_percent data
+- last_ownership_percent data
+- ownership_percent_change data
+- new_positions data
+- last_new_positions data
+- new_positions_change data
+- increased_positions data
+- last_increased_positions data
+- increased_positions_change data
+- closed_positions data
+- last_closed_positions data
+- closed_positions_change data
+- reduced_positions data
+- last_reduced_positions data
+- reduced_positions_change data
+- total_calls data
+- last_total_calls data
+- total_calls_change data
+- total_puts data
+- last_total_puts data
+- total_puts_change data
+- put_call_ratio data
+- last_put_call_ratio data
+- put_call_ratio_change data
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Institutional Ownership. Institutional ownership data.

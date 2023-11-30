@@ -9,6 +9,7 @@ from openbb_core.app.static.package_builder import PathHandler
 WEBSITE_PATH = Path(__file__).parent.absolute()
 CONTENT_PATH = WEBSITE_PATH / "content"
 XL_FUNCS_PATH = CONTENT_PATH / "excel" / "functions.json"
+SEO_METADATA = WEBSITE_PATH / "metadata" / "platform_v4_seo_metadata.json"
 
 
 class CommandLib(PathHandler):
@@ -22,23 +23,30 @@ class CommandLib(PathHandler):
     def __init__(self):
         self.pi = ProviderInterface()
         self.route_map = self.build_route_map()
-        self.update_route_map()
         self.xl_funcs = self.read_xl_funcs()
+        self.seo_metadata = self.read_seo_metadata()
 
-    def update_route_map(self):
-        """Update the route map with the manual map."""
+        self.update()
+
+    def update(self):
+        """Update with manual map."""
         for key, value in self.MANUAL_MAP.items():
             self.route_map[key] = self.route_map[value]
+
+    def read_seo_metadata(self) -> dict:
+        """Get the SEO metadata."""
+        with open(SEO_METADATA) as f:
+            metadata = json.load(f)
+        return {"/" + k.replace(".", "/").lower(): v for k, v in metadata.items()}
 
     def read_xl_funcs(self) -> dict:
         """Get a list of all the commands in the docs."""
         with open(XL_FUNCS_PATH) as f:
             funcs = json.load(f)
-        xl_funcs = {
+        return {
             "/" + func["name"].replace(".", "/").lower(): func
             for func in funcs["functions"]
         }
-        return xl_funcs
 
     def get_func(self, cmd: str) -> str:
         """Get the func of the command."""
@@ -141,15 +149,19 @@ class Editor:
         cmd_info = self.cmd_lib.get_info(cmd)
 
         def get_header() -> str:
-            # title = cmd_info["name"]
-            # header = "---\n"
-            # header += f"title: {title}\n"
-            # header += "description: test\n"
-            # header += "keywords: \n"
-            # header += "- abc\n"
-            # header += "- def\n"
-            # header += "---\n\n"
             header = ""
+            metadata = self.cmd_lib.seo_metadata.get(cmd, {})
+            if metadata:
+                title = metadata["title"]
+                description = metadata["description"]
+                keywords = metadata["keywords"]
+                header = "---\n"
+                header += f"title: {title}\n"
+                header += f"description: {description}\n"
+                header += "keywords: \n"
+                for kw in keywords:
+                    header += f"- {kw}\n"
+                header += "---\n\n"
             return header
 
         def get_tab() -> str:

@@ -1,3 +1,40 @@
+---
+title: major_holders
+description: Get detailed information about equity ownership and stock ownership,
+  including investment data, security data, market value data, shares data, performance
+  data, and ownership data. Use the equity ownership API to retrieve equity ownership
+  details, and explore various stock ownership parameters and returns. Access company
+  ownership data, investor data, filing data, industry data, and more.
+keywords: 
+- equity ownership
+- company ownership
+- equity ownership API
+- equity ownership data
+- equity ownership parameters
+- equity ownership returns
+- equity ownership data fields
+- stock ownership
+- stock ownership data
+- stock ownership API
+- stock ownership parameters
+- stock ownership returns
+- stock ownership data fields
+- investment data
+- security data
+- market value data
+- shares data
+- performance data
+- ownership data
+- equity ownership details
+- stock ownership details
+- equity ownership information
+- stock ownership information
+- company ownership data
+- investor data
+- filing data
+- industry data
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Equity Ownership. Information about the company ownership.

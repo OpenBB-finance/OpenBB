@@ -1,3 +1,42 @@
+---
+title: nbbo
+description: Learn how to load the National Best Bid and Offer (NBBO) for a specific
+  equity using the OBB.equity.price.nbbo API. Explore the parameters and data returned
+  by the query, including ask price, bid price, ask size, bid size, exchange details,
+  timestamps, and more.
+keywords: 
+- Equity Quote
+- National Best Bid and Offer
+- specific equity
+- symbol
+- provider
+- polygon
+- query
+- limit
+- date
+- timestamp
+- OBBject
+- results
+- EquityNBBO
+- warnings
+- Chart
+- Metadata
+- ask_exchange
+- ask
+- ask_size
+- bid_size
+- bid
+- bid_exchange
+- tape
+- conditions
+- indicators
+- sequence_num
+- participant_timestamp
+- sip_timestamp
+- trf_timestamp
+- data
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Equity NBBO. Load National Best Bid and Offer for a specific equity.

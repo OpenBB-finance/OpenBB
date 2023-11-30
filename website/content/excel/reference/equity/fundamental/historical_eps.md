@@ -1,3 +1,12 @@
+---
+title: historical_eps
+description: Historical earnings-per-share for a given company
+keywords: 
+- equity
+- fundamental
+- historical_eps
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Historical earnings-per-share for a given company.

@@ -1,3 +1,12 @@
+---
+title: ameribor
+description: Ameribor
+keywords: 
+- fixedincome
+- rate
+- ameribor
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Ameribor.  Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the American Financial Exchange (AFX).

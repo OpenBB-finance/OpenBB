@@ -1,3 +1,28 @@
+---
+title: employee_count
+description: Learn how to retrieve historical employee count data using the Python
+  API. Understand the parameters, returns, and data structure for the OBB.equity.fundamental.employee_count
+  method.
+keywords: 
+- historical employees
+- employee count
+- Python API
+- data retrieval
+- symbol
+- provider
+- warnings
+- chart object
+- metadata
+- data
+- CIK
+- acceptance time
+- period of report
+- company name
+- form type
+- filing date
+- source URL
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Historical Employees. Historical number of employees.

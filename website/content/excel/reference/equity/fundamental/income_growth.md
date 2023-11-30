@@ -1,3 +1,49 @@
+---
+title: income_growth
+description: Explore the growth of a company's income statement with the Python function
+  obb.equity.fundamental.income_growth. Retrieve data for symbols, specify the limit,
+  period, and provider, and get detailed information on various aspects of the income
+  statement growth.
+keywords: 
+- income statement growth
+- company income statement
+- python obb.equity.fundamental.income_growth
+- symbol
+- limit
+- period
+- provider
+- data entries
+- time period
+- provider name
+- warnings
+- chart object
+- metadata
+- symbol data
+- date
+- growth revenue
+- cost of goods sold
+- gross profit
+- gross profit ratio
+- research and development expenses
+- general and administrative expenses
+- selling and marketing expenses
+- operating expenses
+- total costs and expenses
+- interest expenses
+- depreciation and amortization expenses
+- ebitda
+- ebitda ratio
+- operating income
+- operating income ratio
+- total other income expenses net
+- income before tax
+- income tax expenses
+- net income
+- eps
+- eps diluted
+- weighted average shares outstanding
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Income Statement Growth. Information about the growth of the company income statement.

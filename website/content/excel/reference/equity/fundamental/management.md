@@ -1,3 +1,22 @@
+---
+title: management
+description: Learn about key executives for a company and how to retrieve their data
+  using the `obb.equity.fundamental.management` function. Get details such as designation,
+  name, pay, currency, gender, birth year, and title since.
+keywords: 
+- key executives
+- company executives
+- symbol
+- data
+- designation
+- name
+- pay
+- currency
+- gender
+- birth year
+- title since
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Key Executives. Key executives for a given company.

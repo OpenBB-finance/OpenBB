@@ -1,3 +1,52 @@
+---
+title: profile
+description: Get general price and performance metrics of a stock with the Equity
+  Information API. Retrieve data such as the symbol, name, price, open price, high
+  price, low price, close price, change in price, change percent, previous close,
+  type, exchange ID, bid, ask, volume, implied volatility, realized volatility, last
+  trade timestamp, annual high, and annual low.
+keywords: 
+- equity info
+- price and performance metrics
+- stock data
+- equity profile
+- symbol
+- provider
+- data
+- parameters
+- returns
+- cboe
+- EquityInfo
+- warnings
+- chart
+- metadata
+- Data
+- name
+- price
+- open price
+- high price
+- low price
+- close price
+- change percent
+- previous close
+- type
+- exchange ID
+- bid
+- ask
+- volume
+- implied volatility
+- realized volatility
+- last trade timestamp
+- annual high
+- annual low
+- iv30
+- hv30
+- iv60
+- hv60
+- iv90
+- hv90
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Equity Info. Get general price and performance metrics of a stock.

@@ -1,3 +1,11 @@
+---
+title: screener
+description: Equity Screen
+keywords: 
+- equity
+- screener
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Equity Screen. Screen for companies meeting various criteria.

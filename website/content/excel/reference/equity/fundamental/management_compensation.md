@@ -1,3 +1,32 @@
+---
+title: management_compensation
+description: Learn how to retrieve executive compensation data for a company using
+  the equity management compensation function in Python. Understand the parameters,
+  return values, and available data fields such as symbol, salary, bonus, stock award,
+  and more.
+keywords: 
+- executive compensation
+- company executive compensation
+- equity management compensation
+- symbol parameter
+- provider parameter
+- return values
+- data
+- symbol
+- cik
+- filing date
+- accepted date
+- name and position
+- year of compensation
+- salary
+- bonus
+- stock award
+- incentive plan compensation
+- all other compensation
+- total compensation
+- URL
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Get Executive Compensation. Information about the executive compensation for a given company.

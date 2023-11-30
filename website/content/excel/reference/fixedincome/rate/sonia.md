@@ -1,3 +1,12 @@
+---
+title: sonia
+description: Sterling Overnight Index Average
+keywords: 
+- fixedincome
+- rate
+- sonia
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Sterling Overnight Index Average.  SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual transactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other financial institutions and other institutional investors.

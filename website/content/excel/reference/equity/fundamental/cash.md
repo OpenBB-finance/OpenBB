@@ -1,3 +1,54 @@
+---
+title: cash
+description: Learn how to use the Cash Flow Statement API endpoint to retrieve information
+  about cash flow statements. Understand the parameters and return values of the API,
+  and explore the available data fields for cash flow statements.
+keywords: 
+- Cash Flow Statement
+- cash flow statement parameters
+- cash flow statement returns
+- cash flow statement data
+- python obb.equity.fundamental.cash
+- symbol
+- period
+- limit
+- provider
+- cik
+- filing date
+- period of report date
+- include sources
+- order
+- sort
+- net income
+- depreciation and amortization
+- stock based compensation
+- deferred income tax
+- other non-cash items
+- changes in operating assets and liabilities
+- accounts receivables
+- inventory
+- vendor non-trade receivables
+- other current and non-current assets
+- accounts payables
+- deferred revenue
+- other current and non-current liabilities
+- net cash flow from operating activities
+- purchases of marketable securities
+- sales from maturities of investments
+- investments in property plant and equipment
+- payments from acquisitions
+- other investing activities
+- net cash flow from investing activities
+- taxes paid on net share settlement
+- dividends paid
+- common stock repurchased
+- debt proceeds
+- debt repayment
+- other financing activities
+- net cash flow from financing activities
+- net change in cash
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Cash Flow Statement. Information about the cash flow statement.

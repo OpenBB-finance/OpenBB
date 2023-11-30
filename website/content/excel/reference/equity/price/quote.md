@@ -1,3 +1,66 @@
+---
+title: quote
+description: Learn how to load stock data for a specific ticker with the Equity Quote
+  function. Discover the various parameters and data returned, including day low,
+  day high, date, symbol, name, price, volume, and more.
+keywords: 
+- equity quote
+- stock data
+- ticker
+- parameters
+- symbol
+- provider
+- returns
+- data
+- day low
+- day high
+- date
+- fmp
+- intrinio
+- source
+- results
+- warnings
+- chart
+- metadata
+- price
+- changes percentage
+- change
+- year high
+- year low
+- market cap
+- price avg50
+- price avg200
+- volume
+- avg volume
+- exchange
+- open
+- previous close
+- eps
+- pe
+- earnings announcement
+- shares outstanding
+- last price
+- last time
+- last size
+- bid price
+- bid size
+- ask price
+- ask size
+- close price
+- high price
+- low price
+- exchange volume
+- market volume
+- updated on
+- listing venue
+- sales conditions
+- quote conditions
+- market center code
+- is darkpool
+- messages
+- security
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Equity Quote. Load stock data for a specific ticker.

@@ -1,3 +1,12 @@
+---
+title: forecast
+description: Forecasted GDP Data
+keywords: 
+- economy
+- gdp
+- forecast
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Forecasted GDP Data.

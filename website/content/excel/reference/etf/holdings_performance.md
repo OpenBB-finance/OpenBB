@@ -1,3 +1,23 @@
+---
+title: holdings_performance
+description: Get the ETF holdings performance using the `obb.etf.holdings_performance`
+  function in Python. This function returns a variety of performance metrics for ETF
+  holdings, including one-day return, week-to-date return, one-week return, month-to-date
+  return, and more. Analyze and chart the performance of ETF holdings with this comprehensive
+  function.
+keywords: 
+- ETF holdings performance
+- etf holdings performance python
+- etf holdings performance function
+- etf performance data
+- etf returns
+- etf performance metrics
+- etf performance analysis
+- etf performance statistics
+- etf performance calculation
+- etf performance chart
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Get the ETF holdings performance.

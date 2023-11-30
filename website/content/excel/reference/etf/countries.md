@@ -1,3 +1,20 @@
+---
+title: countries
+description: Learn about ETF country weighting and how to retrieve country exposure
+  data using obb.etf.countries API endpoint.
+keywords: 
+- ETF country weighting
+- obb.etf.countries
+- symbol
+- provider
+- etf
+- data
+- results
+- chart
+- metadata
+- country exposure
+---
+
 <!-- markdownlint-disable MD041 -->
 
 ETF Country weighting.

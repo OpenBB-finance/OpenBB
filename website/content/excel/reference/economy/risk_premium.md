@@ -1,3 +1,28 @@
+---
+title: risk_premium
+description: Learn about Historical Market Risk Premium and the obb.economy.risk_premium
+  function. Explore the parameters, returns, and data available, including results,
+  warnings, chart, metadata, country, continent, total equity risk premium, and country
+  risk premium.
+keywords: 
+- Historical Market Risk Premium
+- obb.economy.risk_premium
+- parameters
+- provider
+- returns
+- OBBject
+- results
+- RiskPremium
+- warnings
+- chart
+- metadata
+- data
+- country
+- continent
+- total equity risk premium
+- country risk premium
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Historical Market Risk Premium.

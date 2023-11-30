@@ -1,3 +1,25 @@
+---
+title: constituents
+description: Learn how to fetch constituents of an index using the OBB library in
+  Python. Get detailed information such as symbol, name, sector, sub-sector, headquarters,
+  date of first addition, CIK, and founding year of the constituent companies in the
+  index.
+keywords: 
+- index constituents
+- fetch constituents
+- index constituents parameters
+- index constituents returns
+- index constituents data
+- index constituents symbol
+- index constituents name
+- index constituents sector
+- index constituents sub-sector
+- index constituents headquarters
+- index constituents date first added
+- index constituents cik
+- index constituents founding year
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Index Constituents. Constituents of an index.

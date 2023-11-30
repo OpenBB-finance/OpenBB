@@ -1,3 +1,71 @@
+---
+title: multiples
+description: Learn how to calculate equity valuation multiples for a stock ticker
+  using the OBB Python function. Discover the available parameters and the data returned,
+  including revenue per share, net income per share, market capitalization, price-to-earnings
+  ratio, and more. Improve your investment analysis with this powerful tool.
+keywords: 
+- equity valuation multiples
+- stock ticker valuation
+- python function
+- parameters
+- returns
+- data
+- revenue per share
+- net income per share
+- operating cash flow per share
+- free cash flow per share
+- cash per share
+- book value per share
+- tangible book value per share
+- shareholders equity per share
+- market capitalization
+- price-to-earnings ratio
+- price-to-sales ratio
+- price-to-operating cash flow ratio
+- price-to-free cash flow ratio
+- price-to-book ratio
+- price-to-tangible book ratio
+- enterprise value-to-sales ratio
+- enterprise value-to-EBITDA ratio
+- earnings yield
+- free cash flow yield
+- debt-to-equity ratio
+- debt-to-assets ratio
+- net debt-to-EBITDA ratio
+- current ratio
+- interest coverage
+- income quality
+- dividend yield
+- payout ratio
+- sales general and administrative expenses-to-revenue ratio
+- research and development expenses-to-revenue ratio
+- intangibles-to-total assets ratio
+- capital expenditures-to-operating cash flow ratio
+- capital expenditures-to-revenue ratio
+- capital expenditures-to-depreciation ratio
+- stock-based compensation-to-revenue ratio
+- graham number
+- return on invested capital
+- return on tangible assets
+- graham net-net working capital
+- working capital
+- tangible asset value
+- net current asset value
+- invested capital
+- average receivables
+- average payables
+- average inventory
+- days sales outstanding
+- days payables outstanding
+- days of inventory on hand
+- receivables turnover
+- payables turnover
+- inventory turnover
+- return on equity
+- capital expenditures per share
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Equity Valuation Multiples. Valuation multiples for a stock ticker.

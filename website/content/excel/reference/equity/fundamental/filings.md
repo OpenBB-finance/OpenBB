@@ -1,3 +1,39 @@
+---
+title: filings
+description: Learn how to retrieve company filings data such as date, type of document,
+  and link. Understand the available parameters to filter the data, including symbol,
+  limit, provider, type, and page. Explore the different fields in the data, such
+  as ticker symbol, accepted date, and final link.
+keywords: 
+- company filings
+- data entries
+- symbol
+- limit
+- provider
+- type
+- page
+- cik
+- date
+- link
+- ticker symbol
+- accepted date
+- final link
+- report date
+- act
+- items
+- primary doc description
+- primary doc
+- accession number
+- file number
+- film number
+- is inline xbrl
+- is xbrl
+- size
+- complete submission url
+- filing detail url
+- xml
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Company Filings. Company filings data.

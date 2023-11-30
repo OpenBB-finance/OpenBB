@@ -1,3 +1,38 @@
+---
+title: company
+description: Get company news for one or more companies using various providers. This
+  API allows you to retrieve news articles along with metadata such as date, title,
+  image, text, and URL. The available providers include Benzinga, FMP, Intrinio, Polygon,
+  Ultima, and Yfinance.
+keywords: 
+- company news
+- news for companies
+- news API
+- API parameters
+- benzinga provider
+- fmp provider
+- polygon provider
+- intrinio provider
+- ultima provider
+- yfinance provider
+- data entries
+- metadata
+- company news results
+- company news warnings
+- company news chart
+- data date
+- data title
+- data image
+- data text
+- data URL
+- benzinga data
+- fmp data
+- intrinio data
+- polygon data
+- ultima data
+- yfinance data
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Company News. Get news for one or more companies.

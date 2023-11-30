@@ -1,3 +1,18 @@
+---
+title: balance
+description: Learn how to use the balance sheet function in Python to retrieve financial
+  statement data. This documentation provides details about the function parameters,
+  return values, and available data types.
+keywords: 
+- balance sheet statement
+- balance sheet function
+- python function
+- financial statement function
+- balance sheet data parameters
+- balance sheet data returns
+- balance sheet data types
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Balance Sheet. Balance sheet statement.

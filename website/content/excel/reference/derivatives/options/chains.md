@@ -1,3 +1,41 @@
+---
+title: chains
+description: Learn how to get the complete options chain for a ticker using the OBB.equity.options.chains
+  function. Explore the available parameters like symbol and provider, and understand
+  the data returned, including contract symbol, expiration, strike price, and more.
+keywords: 
+- options chain
+- ticker
+- complete options chain
+- symbol
+- provider
+- data
+- contract symbol
+- expiration
+- strike price
+- option type
+- eod date
+- trading volume
+- open price
+- open interest
+- high price
+- low price
+- implied volatility
+- delta
+- gamma
+- theta
+- vega
+- bid size
+- ask size
+- theoretical value
+- last trade price
+- prev close
+- change percent
+- rho
+- last trade timestamp
+- dte
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Get the complete options chain for a ticker.

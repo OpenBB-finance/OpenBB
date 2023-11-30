@@ -1,3 +1,79 @@
+---
+title: metrics
+description: Learn about key metrics for a given company using the `obb.equity.fundamental.metrics`
+  Python function. This API endpoint provides data such as revenue per share, net
+  income per share, market capitalization, price-to-earnings ratio, and more. Explore
+  the available parameters and returned data to analyze financial performance. Full
+  documentation and usage examples available.
+keywords: 
+- key metrics
+- python function
+- documentation
+- API
+- parameters
+- returns
+- data
+- symbol
+- period
+- limit
+- provider
+- with_ttm
+- revenue per share
+- net income per share
+- operating cash flow per share
+- free cash flow per share
+- cash per share
+- book value per share
+- tangible book value per share
+- shareholders equity per share
+- interest debt per share
+- market capitalization
+- enterprise value
+- price-to-earnings ratio
+- price-to-sales ratio
+- price-to-operating cash flow ratio
+- price-to-free cash flow ratio
+- price-to-book ratio
+- price-to-tangible book ratio
+- earnings yield
+- free cash flow yield
+- debt-to-equity ratio
+- debt-to-assets ratio
+- net debt-to-EBITDA ratio
+- current ratio
+- interest coverage
+- income quality
+- dividend yield
+- payout ratio
+- sales general and administrative expenses-to-revenue ratio
+- research and development expenses-to-revenue ratio
+- intangibles-to-total assets ratio
+- capital expenditures-to-operating cash flow ratio
+- capital expenditures-to-revenue ratio
+- capital expenditures-to-depreciation ratio
+- stock-based compensation-to-revenue ratio
+- Graham number
+- return on invested capital
+- return on tangible assets
+- Graham net-net working capital
+- working capital
+- tangible asset value
+- net current asset value
+- invested capital
+- average receivables
+- average payables
+- average inventory
+- days sales outstanding
+- days payables outstanding
+- days of inventory on hand
+- receivables turnover
+- payables turnover
+- inventory turnover
+- return on equity
+- capital expenditures per share
+- calendar year
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Key Metrics. Key metrics for a given company.

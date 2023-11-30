@@ -1,3 +1,47 @@
+---
+title: search
+description: Learn how to search for available currency pairs using the `obb.currency.search`
+  function, and retrieve a list of results, including provider name, warnings, chart,
+  and metadata. Explore the various parameters such as provider, symbol, date, search
+  terms, active tickers, order data, sort field, and limit. Dive into the details
+  of the returned data, including name, symbol, currency, stock exchange, exchange
+  short name, code, base currency, quote currency, market, locale, currency symbol,
+  currency name, base currency symbol, base currency name, last updated timestamp
+  in UTC, and delisted timestamp in UTC.
+keywords: 
+- currency search
+- available currency pairs
+- obb.currency.search
+- provider
+- symbol
+- date
+- search terms
+- active tickers
+- order data
+- sort field
+- limit
+- results
+- warnings
+- chart
+- metadata
+- name
+- symbol
+- currency
+- stock exchange
+- exchange short name
+- code
+- base currency
+- quote currency
+- market
+- locale
+- currency symbol
+- currency name
+- base currency symbol
+- base currency name
+- last updated utc
+- delisted utc
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Currency Search. Search available currency pairs.
