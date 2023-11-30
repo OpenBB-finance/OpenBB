@@ -97,7 +97,7 @@ class Account:
         password: Optional[str] = None,
         pat: Optional[str] = None,
         remember_me: bool = False,
-        verbosity: bool = False,
+        return_settings: bool = False,
     ) -> Optional[UserSettings]:
         """Login to hub.
 
@@ -111,6 +111,8 @@ class Account:
             Personal access token, by default None
         remember_me : bool, optional
             Remember me, by default False
+        return_settings : bool, optional
+            Return user settings, by default False
 
         Returns
         -------
@@ -130,13 +132,18 @@ class Account:
 
                 json.dump(hs.session.model_dump(mode="json"), f, indent=4)
 
-        if verbosity:
+        if return_settings:
             return self._base_app._command_runner.user_settings
         return None
 
     @_log_account_command  # type: ignore
-    def save(self) -> UserSettings:
+    def save(self, return_settings: bool = False) -> Optional[UserSettings]:
         """Save user settings.
+
+        Parameters
+        ----------
+        return_settings : bool, optional
+            Return user settings, by default False
 
         Returns
         -------
@@ -151,11 +158,19 @@ class Account:
         else:
             hs = HubService(hub_session)
             hs.push(self._base_app._command_runner.user_settings)
-        return self._base_app._command_runner.user_settings
+
+        if return_settings:
+            return self._base_app._command_runner.user_settings
+        return None
 
     @_log_account_command  # type: ignore
-    def refresh(self) -> UserSettings:
+    def refresh(self, return_settings: bool = False) -> Optional[UserSettings]:
         """Refresh user settings.
+
+        Parameters
+        ----------
+        return_settings : bool, optional
+            Return user settings, by default False
 
         Returns
         -------
@@ -173,11 +188,19 @@ class Account:
             updated: UserSettings = UserService.update_default(incoming)
             updated.id = self._base_app._command_runner.user_settings.id
             self._base_app._command_runner.user_settings = updated
-        return self._base_app._command_runner.user_settings
+
+        if return_settings:
+            return self._base_app._command_runner.user_settings
+        return None
 
     @_log_account_command  # type: ignore
-    def logout(self) -> UserSettings:
+    def logout(self, return_settings: bool = False) -> Optional[UserSettings]:
         """Logout from hub.
+
+        Parameters
+        ----------
+        return_settings : bool, optional
+            Return user settings, by default False
 
         Returns
         -------
@@ -198,4 +221,7 @@ class Account:
         self._base_app._command_runner.user_settings = (
             UserService.read_default_user_settings()
         )
-        return self._base_app._command_runner.user_settings
+
+        if return_settings:
+            return self._base_app._command_runner.user_settings
+        return None
