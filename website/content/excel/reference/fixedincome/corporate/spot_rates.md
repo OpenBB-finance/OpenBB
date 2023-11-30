@@ -1,14 +1,6 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
+<!-- markdownlint-disable MD041 -->
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-Spot Rates.
-
-The spot rates for any maturity is the yield on a bond that provides a single payment at that maturity.
-This is a zero coupon bond.
-Because each spot rate pertains to a single cashflow, it is the relevant interest rate
-concept for discounting a pension liability at the same maturity.
+Spot Rates.  The spot rates for any maturity is the yield on a bond that provides a single payment at that maturity. This is a zero coupon bond. Because each spot rate pertains to a single cashflow, it is the relevant interest rate concept for discounting a pension liability at the same maturity.
 
 ```excel wordwrap
 =OBB.FIXEDINCOME.CORPORATE.SPOT_RATES(required, [optional])

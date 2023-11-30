@@ -1,14 +1,6 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
+<!-- markdownlint-disable MD041 -->
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-Treasury Constant Maturity.
-
-Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.
-Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
-Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
-yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
+Treasury Constant Maturity.  Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity. Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S. Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
 
 ```excel wordwrap
 =OBB.FIXEDINCOME.SPREADS.TMC(required, [optional])

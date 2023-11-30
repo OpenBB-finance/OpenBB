@@ -1,14 +1,6 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
+<!-- markdownlint-disable MD041 -->
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-Fed Funds Rate Projections.
-
-The projections for the federal funds rate are the value of the midpoint of the
-projected appropriate target range for the federal funds rate or the projected
-appropriate target level for the federal funds rate at the end of the specified
-calendar year or over the longer run.
+Fed Funds Rate Projections.  The projections for the federal funds rate are the value of the midpoint of the projected appropriate target range for the federal funds rate or the projected appropriate target level for the federal funds rate at the end of the specified calendar year or over the longer run.
 
 ```excel wordwrap
 =OBB.FIXEDINCOME.RATE.EFFR_FORECAST(required, [optional])

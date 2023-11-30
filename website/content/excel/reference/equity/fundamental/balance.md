@@ -1,7 +1,4 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+<!-- markdownlint-disable MD041 -->
 
 Balance Sheet. Balance sheet statement.
 
@@ -95,3 +92,14 @@ Balance Sheet. Balance sheet statement.
 | net_debt | Net Debt (provider: fmp) |
 | link | Link to the statement. (provider: fmp) |
 | final_link | Link to the final statement. (provider: fmp) |
+| note_receivable | Notes and lease receivable. (provider: intrinio) |
+| net_ppe | Plant, property, and equipment, net. (provider: intrinio) |
+| total_noncurrent_assets | Total noncurrent assets. (provider: intrinio) |
+| current_deferred_revenue | Current deferred revenue. (provider: intrinio) |
+| other_noncurrent_liabilities | Other noncurrent operating liabilities. (provider: intrinio) |
+| total_noncurrent_liabilities | Total noncurrent liabilities. (provider: intrinio) |
+| commitments_and_contingencies | Commitments and contingencies. (provider: intrinio) |
+| aoci | Accumulated other comprehensive income / (loss). (provider: intrinio) |
+| total_common_equity | Total common equity. (provider: intrinio) |
+| total_equity_and_noncontrolling_interests | Total equity & noncontrolling interests. (provider: intrinio) |
+| total_liabilities_and_equity | Total liabilities & shareholders' equity. (provider: intrinio) |

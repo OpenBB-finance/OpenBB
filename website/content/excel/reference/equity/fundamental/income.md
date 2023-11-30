@@ -1,7 +1,4 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+<!-- markdownlint-disable MD041 -->
 
 Income Statement. Report on a company's financial performance.
 
@@ -77,6 +74,13 @@ Income Statement. Report on a company's financial performance.
 | fillingDate | Filling date. (provider: fmp) |
 | accepted_date | Accepted date. (provider: fmp) |
 | calendar_year | Calendar year. (provider: fmp) |
+| operating_revenue | Operating revenue. (provider: intrinio) |
+| operating_cost_of_revenue | Operating cost of revenue. (provider: intrinio) |
+| net_income_continuing | Net income from continuing operations. (provider: intrinio) |
+| net_income_to_common | Net income to common shareholders. (provider: intrinio) |
+| cash_dividends_per_share | Cash dividends per share. (provider: intrinio) |
+| other_income | Other income. (provider: intrinio) |
+| weighted_ave_basic_diluted_shares_os | Weighted average basic and diluted shares outstanding. (provider: intrinio) |
 | income_loss_from_continuing_operations_before_tax | Income/Loss From Continuing Operations After Tax (provider: polygon) |
 | income_loss_from_continuing_operations_after_tax | Income (loss) from continuing operations after tax (provider: polygon) |
 | benefits_costs_expenses | Benefits, costs and expenses (provider: polygon) |

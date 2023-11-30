@@ -1,7 +1,4 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+<!-- markdownlint-disable MD041 -->
 
 Get reported Fail-to-deliver (FTD) data.
 
@@ -17,11 +14,8 @@ Get reported Fail-to-deliver (FTD) data.
 | ---- | ---- | ----------- | -------- |
 | symbol | string | Symbol to get data for. | false |
 | provider | string | Options: sec | true |
-| limit | number | Limit the number of reports to parse, from most recent.
-Approximately 24 reports per year, going back to 2009.
-(provider: sec) | true |
-| skip_reports | number | Skip N number of reports from current. A value of 1 will skip the most recent report.
-(provider: sec) | true |
+| limit | number | Limit the number of reports to parse, from most recent. Approximately 24 reports per year, going back to 2009. (provider: sec) | true |
+| skip_reports | number | Skip N number of reports from current. A value of 1 will skip the most recent report. (provider: sec) | true |
 
 ## Data
 

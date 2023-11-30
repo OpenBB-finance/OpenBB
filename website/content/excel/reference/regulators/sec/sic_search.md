@@ -1,7 +1,4 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+<!-- markdownlint-disable MD041 -->
 
 Fuzzy search for Industry Titles, Reporting Office, and SIC Codes.
 

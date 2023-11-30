@@ -1,7 +1,4 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+<!-- markdownlint-disable MD041 -->
 
 Cash Flow Statement. Information about the cash flow statement.
 
@@ -85,3 +82,10 @@ Cash Flow Statement. Information about the cash flow statement.
 | free_cash_flow | Free cash flow. (provider: fmp) |
 | link | Link to the statement. (provider: fmp) |
 | final_link | Link to the final statement. (provider: fmp) |
+| net_income_continuing | Net income from continuing operations. (provider: intrinio) |
+| net_cash_from_continuing_operating_activities | Net cash from continuing operating activities. (provider: intrinio) |
+| net_cash_from_continuing_investing_activities | Net cash from continuing investing activities. (provider: intrinio) |
+| net_cash_from_continuing_financing_activities | Net cash from continuing financing activities. (provider: intrinio) |
+| cash_interest_paid | Cash paid for interest. (provider: intrinio) |
+| cash_income_taxes_paid | Cash paid for income taxes. (provider: intrinio) |
+| issuance_of_common_equity | Issuance of common equity. (provider: intrinio) |

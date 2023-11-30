@@ -1,13 +1,6 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
+<!-- markdownlint-disable MD041 -->
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-Sterling Overnight Index Average.
-
-SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual
-transactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other
-financial institutions and other institutional investors.
+Sterling Overnight Index Average.  SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual transactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other financial institutions and other institutional investors.
 
 ```excel wordwrap
 =OBB.FIXEDINCOME.RATE.SONIA(required, [optional])

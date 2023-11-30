@@ -55,7 +55,7 @@ class CommandLib(PathHandler):
         for p in cmd_info["parameters"]:
             parameters[p["name"]] = {
                 "type": p["type"],
-                "description": p["description"],
+                "description": p["description"].replace("\n", " "),
                 "optional": str(p.get("optional", False)).lower(),
             }
 
@@ -81,7 +81,7 @@ class CommandLib(PathHandler):
         name = self.get_func(cmd)
         if not name:
             return {}
-        description = self.xl_funcs[cmd].get("description", "")
+        description = self.xl_funcs[cmd].get("description", "").replace("\n", " ")
         signature_ = "=OBB." + self.xl_funcs[cmd].get("name", "")
         signature_ += "(required, [optional])"
         if model_name := self.get_model(cmd):
@@ -142,9 +142,9 @@ class Editor:
             return header
 
         def get_tab() -> str:
-            tab = "<!-- markdownlint-disable MD012 MD031 MD033 -->\n\n"
-            tab += "import Tabs from '@theme/Tabs';\n"
-            tab += "import TabItem from '@theme/TabItem';\n\n"
+            tab = "<!-- markdownlint-disable MD041 -->\n\n"
+            # tab += "import Tabs from '@theme/Tabs';\n"
+            # tab += "import TabItem from '@theme/TabItem';\n\n"
             return tab
 
         def get_description() -> str:

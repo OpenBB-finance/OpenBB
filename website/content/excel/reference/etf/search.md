@@ -1,11 +1,6 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
+<!-- markdownlint-disable MD041 -->
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-Search for ETFs.
-
-An empty query returns the full list of ETFs from the provider.
+Search for ETFs.  An empty query returns the full list of ETFs from the provider.
 
 ```excel wordwrap
 =OBB.ETF.SEARCH(required, [optional])

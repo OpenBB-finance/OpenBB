@@ -1,16 +1,6 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
+<!-- markdownlint-disable MD041 -->
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-European Central Bank Interest Rates.
-
-The Governing Council of the ECB sets the key interest rates for the euro area:
-
-- The interest rate on the main refinancing operations (MRO), which provide
-the bulk of liquidity to the banking system.
-- The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem.
-- The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.
+European Central Bank Interest Rates.  The Governing Council of the ECB sets the key interest rates for the euro area:  - The interest rate on the main refinancing operations (MRO), which provide the bulk of liquidity to the banking system. - The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem. - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.
 
 ```excel wordwrap
 =OBB.FIXEDINCOME.RATE.ECB(required, [optional])

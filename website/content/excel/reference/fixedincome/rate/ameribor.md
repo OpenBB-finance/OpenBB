@@ -1,13 +1,6 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
+<!-- markdownlint-disable MD041 -->
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-Ameribor.
-
-Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
-short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the
-American Financial Exchange (AFX).
+Ameribor.  Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the American Financial Exchange (AFX).
 
 ```excel wordwrap
 =OBB.FIXEDINCOME.RATE.AMERIBOR(required, [optional])

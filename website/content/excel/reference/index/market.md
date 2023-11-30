@@ -1,7 +1,4 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+<!-- markdownlint-disable MD041 -->
 
 Historical Market Indices.
 
@@ -23,8 +20,7 @@ Historical Market Indices.
 | interval | string | Data granularity. (provider: fmp) | true |
 | tag | string | Index tag. (provider: intrinio) | true |
 | type | string | Index type. (provider: intrinio) | true |
-| sort | string | Sort order. (provider: intrinio);
-Sort order of the data. (provider: polygon) | true |
+| sort | string | Sort order. (provider: intrinio); Sort order of the data. (provider: polygon) | true |
 | limit | number | The number of data entries to return. (provider: intrinio, polygon) | true |
 | timespan | string | Timespan of the data. (provider: polygon) | true |
 | adjusted | boolean | Whether the data is adjusted. (provider: polygon) | true |
@@ -46,5 +42,4 @@ Sort order of the data. (provider: polygon) | true |
 | change_percent | Change % in the price of the symbol. (provider: fmp) |
 | label | Human readable format of the date. (provider: fmp) |
 | change_over_time | Change % in the price of the symbol over a period of time. (provider: fmp) |
-| value | Index value. (provider: intrinio) |
 | transactions | Number of transactions for the symbol in the time period. (provider: polygon) |

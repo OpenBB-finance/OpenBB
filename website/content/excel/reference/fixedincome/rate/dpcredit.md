@@ -1,14 +1,6 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
+<!-- markdownlint-disable MD041 -->
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-Discount Window Primary Credit Rate.
-
-A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money.
-The rates central banks charge are set to stabilize the economy.
-In the United States, the Federal Reserve System's Board of Governors set the bank rate,
-also known as the discount rate.
+Discount Window Primary Credit Rate.  A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
 
 ```excel wordwrap
 =OBB.FIXEDINCOME.RATE.DPCREDIT(required, [optional])

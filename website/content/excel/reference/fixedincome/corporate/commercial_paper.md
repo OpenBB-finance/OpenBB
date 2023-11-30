@@ -1,14 +1,6 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
+<!-- markdownlint-disable MD041 -->
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-Commercial Paper.
-
-Commercial paper (CP) consists of short-term, promissory notes issued primarily by corporations.
-Maturities range up to 270 days but average about 30 days.
-Many companies use CP to raise cash needed for current transactions,
-and many find it to be a lower-cost alternative to bank loans.
+Commercial Paper.  Commercial paper (CP) consists of short-term, promissory notes issued primarily by corporations. Maturities range up to 270 days but average about 30 days. Many companies use CP to raise cash needed for current transactions, and many find it to be a lower-cost alternative to bank loans.
 
 ```excel wordwrap
 =OBB.FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER(required, [optional])

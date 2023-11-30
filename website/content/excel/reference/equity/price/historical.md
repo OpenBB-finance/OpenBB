@@ -1,7 +1,4 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+<!-- markdownlint-disable MD041 -->
 
 Equity Historical price. Load stock data for a specific ticker.
 
@@ -20,8 +17,7 @@ Equity Historical price. Load stock data for a specific ticker.
 | interval | string | Time interval of the data to return. | true |
 | start_date | string | Start date of the data, in YYYY-MM-DD format. | true |
 | end_date | string | End date of the data, in YYYY-MM-DD format. | true |
-| limit | number | Number of days to look back (Only for interval 1d). (provider: fmp);
-The number of data entries to return. (provider: polygon) | true |
+| limit | number | Number of days to look back (Only for interval 1d). (provider: fmp); The number of data entries to return. (provider: polygon) | true |
 | start_time | string | Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio) | true |
 | end_time | string | Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'. (provider: intrinio) | true |
 | timezone | string | Timezone of the data, in the IANA format (Continent/City). (provider: intrinio) | true |

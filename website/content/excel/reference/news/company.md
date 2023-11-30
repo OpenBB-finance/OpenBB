@@ -1,7 +1,4 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+<!-- markdownlint-disable MD041 -->
 
 Company News. Get news for one or more companies.
 
@@ -25,8 +22,7 @@ Company News. Get news for one or more companies.
 | updated_since | number | Number of seconds since the news was updated. (provider: benzinga) | true |
 | published_since | number | Number of seconds since the news was published. (provider: benzinga) | true |
 | sort | string | Key to sort the news by. (provider: benzinga) | true |
-| order | string | Order to sort the news by. (provider: benzinga);
-Sort order of the articles. (provider: polygon) | true |
+| order | string | Order to sort the news by. (provider: benzinga); Sort order of the articles. (provider: polygon) | true |
 | isin | string | The ISIN of the news to retrieve. (provider: benzinga) | true |
 | cusip | string | The CUSIP of the news to retrieve. (provider: benzinga) | true |
 | channels | string | Channels of the news to retrieve. (provider: benzinga) | true |

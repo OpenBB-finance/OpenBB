@@ -1,12 +1,6 @@
-<!-- markdownlint-disable MD012 MD031 MD033 -->
+<!-- markdownlint-disable MD041 -->
 
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
-
-Secured Overnight Financing Rate.
-
-The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
-borrowing cash overnight collateralizing by Treasury securities.
+Secured Overnight Financing Rate.  The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of borrowing cash overnight collateralizing by Treasury securities.
 
 ```excel wordwrap
 =OBB.FIXEDINCOME.SOFR(required, [optional])
