@@ -24,11 +24,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<<<<<<<< HEAD:website/content/terminal/menus/futures.md
 <HeadTitle title="Futures - Menus | OpenBB Terminal Docs" />
-========
-<HeadTitle title="Futures - Data Available | OpenBB Terminal Docs" />
->>>>>>>> main:website/content/terminal/data-available/futures.md
 
 The Futures menu provides historical prices and the current term structure for an asset. This menu is accessible from the Main menu by typing `futures` and pressing the `enter` key - or with the absolute path:
 

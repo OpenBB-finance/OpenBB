@@ -20,12 +20,8 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<<<<<<<< HEAD:website/content/terminal/menus/stocks/screener.md
 <HeadTitle title="Stock Screener - Stocks - Menus | OpenBB Terminal Docs" />
 
-========
-<HeadTitle title="Stock Screener - Stocks - Data Available | OpenBB Terminal Docs" />
->>>>>>>> main:website/content/terminal/data-available/stocks/screener.md
 The Stock Screener is a diverse tool for discovering comapanies.  It is a great jumping point for narrowing the universe of stocks at the beginning of a research workflow.  Get to the screener from the `Stocks` menu by typing `scr`, and then pressing `enter`.  There are six categories of statistics to sort the defined criteria by.
 
 - Overview
@@ -252,11 +248,7 @@ Open presets in any simple text editor, add the desired parameters, save the fil
 
 ### CA
 
-<<<<<<<< HEAD:website/content/terminal/menus/stocks/screener.md
 The tickers from the results of the last screen are stored in memory and can be taken into the [Comparison Analysis menu](/terminal/menus/stocks/comparison) to undergo further scrutiny.
-========
-The tickers from the results of the last screen are stored in memory and can be taken into the [Comparison Analysis menu](/terminal/data-available/stocks/comparison) to undergo further scrutiny.
->>>>>>>> main:website/content/terminal/data-available/stocks/screener.md
 
 ![Screener Results](https://user-images.githubusercontent.com/85772166/229921889-3ce97436-a768-4a74-b312-e6070459e2a9.png)
 

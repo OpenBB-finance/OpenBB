@@ -1,10 +1,6 @@
 ---
 title: Stocks
-<<<<<<<< HEAD:website/content/sdk/data-available/stocks/index.md
 sidebar_position: 0
-========
-sidebar_position: 1
->>>>>>>> main:website/content/sdk/data-available/stocks/introduction.md
 description: This documentation page describes all the modules that are within the stocks menu of OpenBB.
 keywords:
 - stocks

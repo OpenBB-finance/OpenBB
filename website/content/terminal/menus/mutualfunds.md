@@ -19,26 +19,17 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<<<<<<<< HEAD:website/content/terminal/menus/mutualfunds.md
 <HeadTitle title="Mutual Funds - Menus | OpenBB Terminal Docs" />
 
 The Mutual Funds menu provides a global view of the mutual funds universe.  
-========
-<HeadTitle title="Mutual Funds - Data Available | OpenBB Terminal Docs" />
-
->>>>>>>> main:website/content/terminal/data-available/mutualfunds.md
 
 ## Usage
 
-<<<<<<<< HEAD:website/content/terminal/menus/mutualfunds.md
 Enter the menu by typing, `funds`, from the main menu. Or, use the absolute path:
 
 ```console
 /funds
 ```
-========
-## Menu
->>>>>>>> main:website/content/terminal/data-available/mutualfunds.md
 
 Commands in the Mutual Funds menu are grouped according to the workflow.
 
