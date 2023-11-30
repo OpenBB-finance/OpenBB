@@ -28,7 +28,8 @@ def headers():
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
-                "limit": 12,
+                "limit": 2,
+                "use_cache": False,
             }
         ),
         (
@@ -159,7 +160,8 @@ def test_equity_calendar_earnings(params, headers):
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
-                "limit": 12,
+                "limit": 2,
+                "use_cache": False,
             }
         ),
         (
@@ -321,7 +323,8 @@ def test_equity_estimates_historical(params, headers):
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
-                "limit": 12,
+                "limit": 2,
+                "use_cache": False,
             }
         ),
         (

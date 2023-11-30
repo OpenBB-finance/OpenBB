@@ -26,7 +26,8 @@ def obb(pytestconfig):
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
-                "limit": 12,
+                "limit": 2,
+                "use_cache": False,
             }
         ),
         (
@@ -144,7 +145,8 @@ def test_equity_calendar_earnings(params, obb):
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
-                "limit": 12,
+                "limit": 2,
+                "use_cache": False,
             }
         ),
         (
@@ -296,7 +298,8 @@ def test_equity_estimates_historical(params, obb):
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
-                "limit": 12,
+                "limit": 2,
+                "use_cache": False,
             }
         ),
         (
