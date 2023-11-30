@@ -32,8 +32,6 @@ To continue using the product after the trial period you can reach out to sales@
 
 As an early adopter, your feedback is invaluable. The OpenBB team may reach out to understand your experience and gather insights for improvement.
 
-Note: For your security, you'll need to set up 2-Factor authentication when you log in.
-
 ## Personalized Onboarding
 
 Upon your first login, we'll ask a few questions about your investment interests, background, and workflow.
