@@ -3,7 +3,7 @@ name: Deploy to PyPI
 on:
   push:
     branches:
-      - release-v3/*
+      - release/v3/*
 
   workflow_dispatch:
 

@@ -35,7 +35,7 @@ jobs:
     - name: Check branch name for develop PRs
       if: ${{ steps.branch-name-check.outputs.target-branch == 'develop' }}
       run: |
-        if [[ "${{ steps.branch-name-check.outputs.source-branch }}" =~ ^(main|feature/.*|docs/.*|hotfix/.*|release|release(?:-v[0-9]+)?/[0-9]+\.[0-9]+\.[0-9]+(?:rc[0-9]+)?)$  ]]; then
+        if [[ "${{ steps.branch-name-check.outputs.source-branch }}" =~ ^(main|feature/.*|docs/.*|hotfix/.*|release/[0-9]+\.[0-9]+\.[0-9]+(rc[0-9]+)?)$ ]]; then
           echo "Branch name is valid"
         else
           echo "Invalid branch name. Branches must follow the GitFlow naming convention to be allowed to merge into the develop branch."
@@ -45,7 +45,7 @@ jobs:
     - name: Check branch name for main PRs
       if: ${{ steps.branch-name-check.outputs.target-branch == 'main' }}
       run: |
-        if [[ "${{ steps.branch-name-check.outputs.source-branch }}" =~ ^(hotfix/.*|release(?:-v[0-9]+)?/[0-9]+\.[0-9]+\.[0-9]+(?:rc[0-9]+)?)$ ]]; then
+        if [[ "${{ steps.branch-name-check.outputs.source-branch }}" =~ ^(hotfix/.*|release/[0-9]+\.[0-9]+\.[0-9]+(rc[0-9]+)?)$ ]]; then
           echo "PR is from a hotfix or release branch and targets the main branch"
         else
           echo "PR is not from a hotfix or release branch. Pull requests must be from a hotfix or release branch and target the main branch"
