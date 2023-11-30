@@ -1,4 +1,5 @@
 import traceback
+import warnings
 from typing import Dict, Optional, Set, Tuple
 
 from importlib_metadata import entry_points
@@ -12,8 +13,10 @@ from pydantic import (
 from pydantic.functional_serializers import PlainSerializer
 from typing_extensions import Annotated
 
+from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.extension import Extension
 from openbb_core.app.provider_interface import ProviderInterface
+from openbb_core.env import Env
 
 
 class LoadingError(Exception):
@@ -64,8 +67,14 @@ class CredentialsLoader:
                     for c in entry.credentials:
                         self.credentials["obbject"].add(c)
             except Exception as e:
-                traceback.print_exception(type(e), e, e.__traceback__)
-                raise LoadingError(f"Invalid extension '{entry_point.name}'") from e
+                msg = f"Error loading extension: {entry_point.name}\n"
+                if Env().DEBUG_MODE:
+                    traceback.print_exception(type(e), e, e.__traceback__)
+                    raise LoadingError(msg + f"\033[91m{e}\033[0m") from e
+                warnings.warn(
+                    message=msg,
+                    category=OpenBBWarning,
+                )
 
     def from_providers(self) -> None:
         """Load credentials from providers"""

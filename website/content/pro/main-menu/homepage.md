@@ -21,8 +21,8 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
-  youtubeLink="https://www.youtube.com/embed/pzOey1zafnA?si=eo4vCDwSSMA2BOqK"
-  videoLegend="Short introduction to Terminal Pro Homepage"
+  youtubeLink="https://www.youtube.com/embed/gjXuHdtDobU?si=FR1UpHsrIvaZ1pJr"
+  videoLegend="Short introduction to Homepage"
 />
 
 Welcome to the homepage of OpenBB Terminal Pro, your one-stop hub for all things related to the terminal.

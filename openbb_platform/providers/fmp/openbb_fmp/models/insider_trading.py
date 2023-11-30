@@ -8,7 +8,9 @@ from openbb_core.provider.standard_models.insider_trading import (
     InsiderTradingQueryParams,
 )
 from openbb_core.provider.utils.helpers import get_querystring
+from openbb_fmp.utils.definitions import TRANSACTION_TYPES, TRANSACTION_TYPES_DICT
 from openbb_fmp.utils.helpers import get_data_many
+from pydantic import Field
 
 
 class FMPInsiderTradingQueryParams(InsiderTradingQueryParams):
@@ -17,17 +19,27 @@ class FMPInsiderTradingQueryParams(InsiderTradingQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Insider-Trading
     """
 
-    __alias_dict__ = {"transaction_type": "transactionType"}
+    transaction_type: TRANSACTION_TYPES = Field(
+        default=None,
+        description="Type of the transaction.",
+        alias="transactionType",
+    )
 
 
 class FMPInsiderTradingData(InsiderTradingData):
     """FMP Insider Trading Data."""
 
     __alias_dict__ = {
+        "owner_cik": "reportingCik",
+        "owner_name": "reportingName",
+        "owner_title": "typeOfOwner",
+        "security_type": "securityName",
+        "transaction_price": "price",
         "acquisition_or_disposition": "acquistionOrDisposition",
-        "last_number_of_13f_shares": "lastNumberOf13FShares",
-        "securities_owned": "securitiesOwned",
+        "filing_url": "link",
     }
+
+    form_type: str = Field(description="Form type of the insider trading.")
 
 
 class FMPInsiderTradingFetcher(
@@ -51,7 +63,11 @@ class FMPInsiderTradingFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-
+        query.transaction_type = (
+            TRANSACTION_TYPES_DICT[query.transaction_type]
+            if query.transaction_type
+            else None
+        )
         base_url = "https://financialmodelingprep.com/api/v4/insider-trading"
         query_str = get_querystring(query.model_dump(by_alias=True), ["page"])
 

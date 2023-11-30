@@ -34,12 +34,27 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
-        "filter_headers": [("User-Agent", None)],
+        "filter_headers": [
+            ("User-Agent", None),
+            ("Cookie", "MOCK_COOKIE"),
+        ],
         "filter_query_parameters": [
             ("period1", "MOCK_PERIOD_1"),
             ("period2", "MOCK_PERIOD_2"),
+            ("crumb", "MOCK_CRUMB"),
         ],
     }
+
+
+@pytest.mark.record_http
+def test_y_finance_equity_historical_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "AAPL",
+    }
+
+    fetcher = YFinanceEquityHistoricalFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
 
 
 @pytest.mark.record_http
@@ -82,20 +97,6 @@ def test_y_finance_market_indices_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_y_finance_equity_historical_fetcher(credentials=test_credentials):
-    params = {
-        "symbol": "AAPL",
-        "start_date": date(2023, 1, 1),
-        "end_date": date(2023, 1, 10),
-        "interval": "1d",
-    }
-
-    fetcher = YFinanceEquityHistoricalFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
 def test_y_finance_futures_historical_fetcher(credentials=test_credentials):
     params = {
         "symbol": "ES",
@@ -109,13 +110,8 @@ def test_y_finance_futures_historical_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-@pytest.mark.skip(reason="Blows up on download errors for specific dates.")
 def test_y_finance_futures_curve_fetcher(credentials=test_credentials):
-    params = {
-        "symbol": "ES",
-        "start_date": date(2023, 1, 1),
-        "end_date": date(2023, 1, 10),
-    }
+    params = {"symbol": "ES"}
 
     fetcher = YFinanceFuturesCurveFetcher()
     result = fetcher.test(params, credentials)
@@ -166,7 +162,6 @@ def test_y_finance_available_fetcher(credentials=test_credentials):
     assert result is None
 
 
-@pytest.mark.skip(reason="Fails on the CI because of yfinance cache.")
 @pytest.mark.record_http
 def test_y_finance_etf_historical_fetcher(credentials=test_credentials):
     params = {

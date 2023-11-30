@@ -3,7 +3,7 @@
 import json
 from datetime import date as dateType
 from io import StringIO
-from typing import Any, Dict, List, Literal, Optional, TypeVar, Union
+from typing import Any, Dict, List, Optional, TypeVar, Union
 
 import requests
 from openbb_core.provider import helpers
@@ -199,68 +199,6 @@ def most_recent_quarter(base: dateType = dateType.today()) -> dateType:
     if base.month < 10:
         return dateType(base.year, 6, 30)
     return dateType(base.year, 9, 30)
-
-
-MARKETS = Literal[
-    "AMEX",
-    "AMS",
-    "ASE",
-    "ASX",
-    "ATH",
-    "BME",
-    "BRU",
-    "BUD",
-    "BUE",
-    "CAI",
-    "CNQ",
-    "CPH",
-    "DFM",
-    "DOH",
-    "DUS",
-    "ETF",
-    "EURONEXT",
-    "HEL",
-    "HKSE",
-    "ICE",
-    "IOB",
-    "IST",
-    "JKT",
-    "JNB",
-    "JPX",
-    "KLS",
-    "KOE",
-    "KSC",
-    "KUW",
-    "LSE",
-    "MEX",
-    "MIL",
-    "NASDAQ",
-    "NEO",
-    "NSE",
-    "NYSE",
-    "NZE",
-    "OSL",
-    "OTC",
-    "PNK",
-    "PRA",
-    "RIS",
-    "SAO",
-    "SAU",
-    "SES",
-    "SET",
-    "SGO",
-    "SHH",
-    "SHZ",
-    "SIX",
-    "STO",
-    "TAI",
-    "TLV",
-    "TSX",
-    "TWO",
-    "VIE",
-    "WSE",
-    "XETRA",
-]
 
 
 def get_interval(value: str) -> str:

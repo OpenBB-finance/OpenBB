@@ -117,6 +117,18 @@ def test_index_constituents(params, obb):
                 "end_date": "2023-06-06",
             }
         ),
+        (
+            {
+                "provider": "intrinio",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "symbol": "$DJI",
+                "tag": "level",
+                "sort": "desc",
+                "limit": 100,
+                "type": None,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -243,28 +255,6 @@ def test_index_snapshots(params, obb):
 @pytest.mark.integration
 def test_index_sp500_multiples(params, obb):
     result = obb.index.sp500_multiples(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "symbol": "$GDP",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "limit": 100,
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_index_fred(params, obb):
-    result = obb.index.fred(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

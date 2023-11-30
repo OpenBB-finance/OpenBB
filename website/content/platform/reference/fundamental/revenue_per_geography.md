@@ -89,11 +89,11 @@ OBBject
 | ---- | ---- | ----------- |
 | date | date | The date of the data. |
 | geographic_segment | Dict[str, int] | Day level data containing the revenue of the geographic segment. |
-| americas | int | Revenue from the the American segment. |
-| europe | int | Revenue from the the European segment. |
-| greater_china | int | Revenue from the the Greater China segment. |
-| japan | int | Revenue from the the Japan segment. |
-| rest_of_asia_pacific | int | Revenue from the the Rest of Asia Pacific segment. |
+| americas | int | Revenue from the American segment. |
+| europe | int | Revenue from the European segment. |
+| greater_china | int | Revenue from the Greater China segment. |
+| japan | int | Revenue from the Japan segment. |
+| rest_of_asia_pacific | int | Revenue from the Rest of Asia Pacific segment. |
 </TabItem>
 
 </Tabs>
