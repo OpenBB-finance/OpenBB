@@ -110,7 +110,7 @@ class IntrinioCashFlowStatementFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         statement_code = "cash_flow_statement"
         if query.period in ["quarter", "annual"]:
-            period_type = "FY" if query.period == "annual" else "Q"
+            period_type = "FY" if query.period == "annual" else "QTR"
         if query.period in ["ttm", "ytd"]:
             period_type = query.period.upper()
 
