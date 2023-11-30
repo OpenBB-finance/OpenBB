@@ -69,7 +69,7 @@ def publish(dry_run: bool = False, core: bool = False, extensions: bool = False)
         for path in PLATFORM_PATH.rglob(f"{sub_path}/**/pyproject.toml"):
             try:
                 # Update dependencies
-                if is_extension:
+                if is_extension and "devtools" not in str(path):
                     update_extension_dependencies(path)
                 # Bump version
                 bump_version(path)
