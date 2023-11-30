@@ -97,7 +97,7 @@ class Account:
         password: Optional[str] = None,
         pat: Optional[str] = None,
         remember_me: bool = False,
-        verbosity: bool = False,
+        return_settings: bool = False,
     ) -> Optional[UserSettings]:
         """Login to hub.
 
@@ -130,12 +130,12 @@ class Account:
 
                 json.dump(hs.session.model_dump(mode="json"), f, indent=4)
 
-        if verbosity:
+        if return_settings:
             return self._base_app._command_runner.user_settings
         return None
 
     @_log_account_command  # type: ignore
-    def save(self, verbosity: bool = False) -> Optional[UserSettings]:
+    def save(self, return_settings: bool = False) -> Optional[UserSettings]:
         """Save user settings.
 
         Returns
@@ -152,12 +152,12 @@ class Account:
             hs = HubService(hub_session)
             hs.push(self._base_app._command_runner.user_settings)
 
-        if verbosity:
+        if return_settings:
             return self._base_app._command_runner.user_settings
         return None
 
     @_log_account_command  # type: ignore
-    def refresh(self, verbosity: bool = False) -> Optional[UserSettings]:
+    def refresh(self, return_settings: bool = False) -> Optional[UserSettings]:
         """Refresh user settings.
 
         Returns
@@ -177,12 +177,12 @@ class Account:
             updated.id = self._base_app._command_runner.user_settings.id
             self._base_app._command_runner.user_settings = updated
 
-        if verbosity:
+        if return_settings:
             return self._base_app._command_runner.user_settings
         return None
 
     @_log_account_command  # type: ignore
-    def logout(self, verbosity: bool = False) -> Optional[UserSettings]:
+    def logout(self, return_settings: bool = False) -> Optional[UserSettings]:
         """Logout from hub.
 
         Returns
@@ -205,6 +205,6 @@ class Account:
             UserService.read_default_user_settings()
         )
 
-        if verbosity:
+        if return_settings:
             return self._base_app._command_runner.user_settings
         return None
