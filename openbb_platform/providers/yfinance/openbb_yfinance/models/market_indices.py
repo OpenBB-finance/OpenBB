@@ -67,18 +67,27 @@ class YFinanceMarketIndicesFetcher(
         **kwargs: Any,
     ) -> List[dict]:
         """Return the raw data from the Yahoo Finance endpoint."""
-        symbol = query.symbol.lower()
-        indices = pd.DataFrame(INDICES).transpose().reset_index()
-        indices.columns = ["code", "name", "symbol"]
+        tickers = (
+            query.symbol.lower().split(",") if "," in query.symbol else [query.symbol]
+        )
+        new_tickers = []
+        for ticker in tickers:
+            _ticker = ""
+            indices = pd.DataFrame(INDICES).transpose().reset_index()
+            indices.columns = ["code", "name", "symbol"]
 
-        if symbol in indices["code"].to_list():
-            symbol = indices[indices["code"] == symbol]["symbol"].values[0]
+            if ticker in indices["code"].to_list():
+                _ticker = indices[indices["code"] == ticker]["symbol"].values[0]
 
-        if symbol.title() in indices["name"].to_list():
-            symbol = indices[indices["name"] == symbol.title()]["symbol"].values[0]
+            if ticker.title() in indices["name"].to_list():
+                _ticker = indices[indices["name"] == ticker.title()]["symbol"].values[0]
+            if "^" + ticker.upper() in indices["symbol"].to_list():
+                _ticker = "^" + ticker.upper()
 
-        if "^" + symbol.upper() in indices["symbol"].to_list():
-            symbol = "^" + symbol.upper()
+            if _ticker != "":
+                new_tickers.append(_ticker)
+
+        symbol = ",".join(new_tickers)
 
         data = yf_download(
             symbol=symbol,
