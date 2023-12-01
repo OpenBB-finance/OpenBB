@@ -132,15 +132,17 @@ class Editor:
         self,
         directory: Path,
         interface: Literal["excel"],
-        output: Literal["reference"],
+        main_folder: str,
+        cmds_folder: str,
         cmd_lib: CommandLib,
     ) -> None:
         """Initialize the editor."""
         self.directory = directory
         self.interface = interface
-        self.output = output
+        self.main_folder = main_folder
+        self.cmds_folder = cmds_folder
 
-        self.target_dir = directory / interface / output
+        self.target_dir = directory / interface / main_folder
         self.cmd_lib = cmd_lib
 
     @staticmethod
@@ -240,7 +242,7 @@ class Editor:
             card += "/>"
             return card
 
-        def get_index(path: Path, label: str) -> str:
+        def get_index(path: Path, folder: str) -> str:
             """Generate the index.mdx file."""
 
             OPEN_UL = "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>\n"
@@ -249,7 +251,7 @@ class Editor:
             def filter_path(ref: int, md: Path) -> str:
                 return "/".join([*md.parts[ref:-1], md.stem])
 
-            content = f"# {label}\n\n"
+            content = f"# {folder}\n\n"
             content += "import ReferenceCard from '@site/src/components/General/NewReferenceCard';\n\n"
 
             folders = [f for f in path.glob("*") if f.is_dir()]
@@ -260,7 +262,7 @@ class Editor:
                     content += get_card(
                         title=f.stem,
                         description=", ".join([s.stem for s in f.rglob("*")]),
-                        url=filter_path(f.parts.index(label.lower()), f),
+                        url=filter_path(f.parts.index(folder), f),
                         command=False,
                     )
                 content += CLOSE_UL
@@ -270,7 +272,7 @@ class Editor:
                 content += "### Commands\n"
                 content += OPEN_UL
                 for md in md_files:
-                    cmd = "/" + filter_path(md.parts.index(self.output) + 1, md)
+                    cmd = "/" + filter_path(md.parts.index(self.main_folder) + 1, md)
                     description = (
                         self.cmd_lib.get_info(cmd)
                         .get("description", "")
@@ -279,17 +281,26 @@ class Editor:
                     content += get_card(
                         title=md.stem,
                         description=description,
-                        url=filter_path(md.parts.index(label.lower()), md),
+                        url=filter_path(md.parts.index(folder), md),
                         command=True,
                     )
                 content += CLOSE_UL
             return content
 
-        def write_mdx_and_category(path: Path, label: str, position: int):
-            Editor.write(path=path / "index.mdx", content=get_index(path, label))
+        def format_label(text: str):
+            if text == self.main_folder:
+                return self.main_folder.title()
+            if text == self.cmds_folder:
+                return self.cmds_folder.upper()
+            return text.lower()
+
+        def write_mdx_and_category(path: Path, folder: str, position: int):
+            Editor.write(path=path / "index.mdx", content=get_index(path, folder))
             Editor.write(
                 path=path / "_category_.json",
-                content=json.dumps({"label": label, "position": position}, indent=2),
+                content=json.dumps(
+                    {"label": format_label(folder), "position": position}, indent=2
+                ),
             )
 
         def recursive(path: Path):
@@ -300,7 +311,7 @@ class Editor:
                     recursive(p)
                     position += 1
 
-        write_mdx_and_category(self.target_dir, self.output.title(), 5)
+        write_mdx_and_category(self.target_dir, self.main_folder, 5)
         recursive(self.target_dir)
 
     def generate(self):
@@ -310,6 +321,8 @@ class Editor:
         for cmd in self.cmd_lib.xl_funcs:
             if self.cmd_lib.get_func(cmd):
                 folder = "/".join(cmd.split("/")[1:-1])
+                if folder:
+                    folder = self.cmds_folder + "/" + folder
                 filename = cmd.split("/")[-1] + ".md"
                 filepath = self.target_dir / folder / filename
                 filepath.parent.mkdir(parents=True, exist_ok=True)
@@ -323,7 +336,8 @@ if __name__ == "__main__":
     editor = Editor(
         directory=CONTENT_PATH,
         interface="excel",
-        output="reference",
+        main_folder="reference",
+        cmds_folder="api",
         cmd_lib=CommandLib(),
     )
     editor.generate()
