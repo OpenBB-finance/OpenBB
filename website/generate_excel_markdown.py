@@ -255,6 +255,29 @@ class Editor:
             content = f"# {folder}\n\n"
             content += CARD
 
+            ### Main folder
+            if folder == self.main_folder:
+                md_files = list(path.glob("*"))
+                if md_files:
+                    content += OPEN_UL
+                    for md in md_files:
+                        p = self.cmds_folder if self.cmds_folder in md.parts else folder
+                        cmd = "/" + filter_path(md.parts.index(p) + 1, md)
+                        description = (
+                            self.cmd_lib.get_info(cmd)
+                            .get("description", "")
+                            .replace("\n", " ")
+                        )
+                        content += get_card(
+                            title=md.stem,
+                            description=description,
+                            url=filter_path(md.parts.index(folder), md),
+                            command=True,
+                        )
+                    content += CLOSE_UL
+                return content
+
+            ### Menus
             folders = [f for f in path.glob("*") if f.is_dir()]
             if folders:
                 content += "### Menus\n"
@@ -268,6 +291,7 @@ class Editor:
                     )
                 content += CLOSE_UL
 
+            ### Commands
             md_files = list(path.glob("*md"))
             if md_files:
                 content += "### Commands\n"
