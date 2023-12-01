@@ -137,16 +137,21 @@ async def async_requests(
     urls = urls if isinstance(urls, list) else [urls]
 
     try:
-        results = await asyncio.gather(
+        results = []
+
+        for result in await asyncio.gather(
             *[async_request(url, session=session, **kwargs) for url in urls],
             return_exceptions=True,
-        )
+        ):
+            if isinstance(result, Exception) or not result:
+                continue
 
-        for i, result in enumerate(results):
-            if isinstance(result, Exception):
-                results[i] = None
+            results.extend(  # type: ignore
+                result if isinstance(result, list) else [result]
+            )
 
-        return [item for sublist in results for item in sublist or [] if item]
+        return results
+
     finally:
         await session.close()
 
