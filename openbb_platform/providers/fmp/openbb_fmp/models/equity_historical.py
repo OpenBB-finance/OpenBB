@@ -97,6 +97,13 @@ class FMPEquityHistoricalFetcher(
         base_url = "https://financialmodelingprep.com/api/v3"
         query_str = get_querystring(query.model_dump(), ["symbol", "interval"])
 
+        def get_url_params(symbol: str) -> str:
+            url_params = f"{symbol}?{query_str}&apikey={api_key}"
+            url = f"{base_url}/historical-chart/{interval}/{url_params}"
+            if interval == "1day":
+                url = f"{base_url}/historical-price-full/{url_params}"
+            return url
+
         # if there are more than 20 symbols, we need to increase the timeout
         if len(query.symbol.split(",")) > 20:
             kwargs.update({"preferences": {"request_timeout": 30}})
@@ -114,10 +121,7 @@ class FMPEquityHistoricalFetcher(
 
             return data
 
-        urls = [
-            f"{base_url}/historical-chart/{interval}/{symbol}?{query_str}&apikey={api_key}"
-            for symbol in query.symbol.split(",")
-        ]
+        urls = [get_url_params(symbol) for symbol in query.symbol.split(",")]
 
         return await async_requests(urls, callback, **kwargs)
 

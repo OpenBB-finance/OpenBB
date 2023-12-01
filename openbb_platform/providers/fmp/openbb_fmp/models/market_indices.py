@@ -95,6 +95,9 @@ class FMPMarketIndicesFetcher(
         url_params = f"{query.symbol}?{query_str}&apikey={api_key}"
         url = f"{base_url}/historical-chart/{query.interval}/{url_params}"
 
+        if query.interval == "1day":
+            url = f"{base_url}/historical-chart/1day/{query.symbol}?apikey={api_key}"
+
         return await get_data_many(url, "historical", **kwargs)
 
     @staticmethod

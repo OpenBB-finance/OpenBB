@@ -96,6 +96,9 @@ class FMPCryptoHistoricalFetcher(
         url_params = f"{query.symbol}?{query_str}&apikey={api_key}"
         url = f"{base_url}/historical-chart/{query.interval}/{url_params}"
 
+        if query.interval == "1day":
+            url = f"{base_url}/historical-price-full/crypto/{url_params}"
+
         return await get_data_many(url, "historical", **kwargs)
 
     @staticmethod
