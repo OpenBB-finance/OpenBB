@@ -18,6 +18,7 @@ The command below provides access to the core functionalities behind the OpenBB 
 
 ```bash
 pip install openbb
+pip install openbb
 ```
 
 To install extensions that expand the core functionalities specify the extension name or use `all` to install all.
@@ -27,7 +28,7 @@ To install extensions that expand the core functionalities specify the extension
 pip install openbb[charting]
 
 # Install all available extensions
-pip install openbb[all]
+pip install openbb[all] --pre
 ``````
 
 > Note: These instruction are specific to v4. For installation instructions and documentation for v3 go to our [website](https://docs.openbb.co/sdk).
