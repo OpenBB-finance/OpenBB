@@ -1,6 +1,6 @@
 ---
 title: Dependency Management
-sidebar_position: 2
+sidebar_position: 3
 description: Dealing with dependencies when developing with the OpenBB Platform. Learn
   how to add new dependencies to the OpenBB Platform and how to add new dependencies
   to your custom extension.
@@ -17,8 +17,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## High-Level Overview
 
-- **Provider**: The base package with no dependencies on other `openbb` packages.
-- **Core**: Depends on the Provider and serves as the main infrastructural package.
+- **Core**: Serves as the main infrastructural package.
 - **Extensions**: Utility packages that leverage Core's infrastructure. Each extension is its own package.
 - **Providers**: Utility packages extending functionality to different providers, where each provider is its own package.
 
@@ -41,7 +40,7 @@ Ensure you're in a fresh conda environment before adjusting dependencies.
 
 ## Core and Extensions
 
-### Installation
+### Dev Installation
 
 For development setup, use the provided script to install all extensions and their dependencies:
 
