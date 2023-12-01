@@ -50,7 +50,7 @@ pip install openbb-yfinance
 Alternatively, you can install all extensions at once.    
 ```bash
 pip install openbb[all] 
-``````
+```
 
 > Note: These instruction are specific to v4. For installation instructions and documentation for v3 go to our [website](https://docs.openbb.co/sdk).
 
