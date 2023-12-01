@@ -63,7 +63,7 @@ class YFinanceCryptoHistoricalFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return YFinanceCryptoHistoricalQueryParams(**params)
+        return YFinanceCryptoHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
@@ -72,12 +72,21 @@ class YFinanceCryptoHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Yahoo Finance endpoint."""
-        if "-" not in query.symbol:
-            position = len(query.symbol) - 3
-            query.symbol = query.symbol[:position] + "-" + query.symbol[position:]
+
+        tickers = query.symbol.split(",") if "," in query.symbol else [query.symbol]
+        new_tickers = []
+        for ticker in tickers:
+            if "-" not in ticker:
+                position = len(ticker) - 3
+                new_ticker = ticker[:position] + "-" + ticker[position:]
+            if "-" in ticker:
+                new_ticker = ticker
+            new_tickers.append(new_ticker)
+
+        symbols = ",".join(new_tickers)
 
         data = yf_download(
-            query.symbol,
+            symbols,
             start=query.start_date,
             end=query.end_date,
             interval=query.interval,

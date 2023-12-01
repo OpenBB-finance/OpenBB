@@ -132,7 +132,7 @@ def yf_download(
         **kwargs,
     )
 
-    tickers = symbol.split(",") if "," in symbol else symbol
+    tickers = symbol.split(",") if "," in symbol else [symbol]
     if len(tickers) > 1:
         _data = pd.DataFrame()
         for ticker in tickers:

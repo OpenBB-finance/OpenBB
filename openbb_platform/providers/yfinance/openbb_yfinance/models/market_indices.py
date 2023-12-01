@@ -58,18 +58,12 @@ class YFinanceMarketIndicesFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return YFinanceMarketIndicesQueryParams(**params)
-
-    @staticmethod
-    def extract_data(
-        query: YFinanceMarketIndicesQueryParams,
-        credentials: Optional[Dict[str, str]],
-        **kwargs: Any,
-    ) -> List[dict]:
-        """Return the raw data from the Yahoo Finance endpoint."""
         tickers = (
-            query.symbol.lower().split(",") if "," in query.symbol else [query.symbol]
+            params.get("symbol").lower().split(",")
+            if "," in params["symbol"]
+            else [params.get("symbol")]
         )
+
         new_tickers = []
         for ticker in tickers:
             _ticker = ""
@@ -83,14 +77,24 @@ class YFinanceMarketIndicesFetcher(
                 _ticker = indices[indices["name"] == ticker.title()]["symbol"].values[0]
             if "^" + ticker.upper() in indices["symbol"].to_list():
                 _ticker = "^" + ticker.upper()
-
+            if ticker.upper() in indices["symbol"].to_list():
+                _ticker = ticker.upper()
             if _ticker != "":
                 new_tickers.append(_ticker)
+        transformed_params["symbol"] = ",".join(new_tickers)
 
-        symbol = ",".join(new_tickers)
+        return YFinanceMarketIndicesQueryParams(**params)
+
+    @staticmethod
+    def extract_data(
+        query: YFinanceMarketIndicesQueryParams,
+        credentials: Optional[Dict[str, str]],
+        **kwargs: Any,
+    ) -> List[dict]:
+        """Return the raw data from the Yahoo Finance endpoint."""
 
         data = yf_download(
-            symbol=symbol,
+            symbol=query.symbol,
             start_date=query.start_date,
             end_date=query.end_date,
             interval=query.interval,
