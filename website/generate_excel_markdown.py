@@ -232,6 +232,7 @@ class Editor:
         """Write the group of index.mdx and _category_.json to create a sidebar."""
 
         def get_card(title: str, description: str, url: str, command: bool):
+            """Generate a card."""
             description = shorten(description, width=100, placeholder="...")
             card = "<ReferenceCard\n"
             card += f'    title="{title}"\n'
@@ -242,75 +243,73 @@ class Editor:
             card += "/>"
             return card
 
-        def get_index(path: Path, folder: str) -> str:
-            """Generate the index.mdx file."""
+        def filter_path(ref: int, md: Path) -> str:
+            return "/".join([*md.parts[ref:-1], md.stem])
 
-            CARD = "import ReferenceCard from '@site/src/components/General/NewReferenceCard';\n\n"
+        def get_cards(
+            folder: str, files: list, command: bool, section: str = ""
+        ) -> str:
+            """Generate the cards for a section."""
             OPEN_UL = "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>\n"
             CLOSE_UL = "\n</ul>\n\n"
 
-            def filter_path(ref: int, md: Path) -> str:
-                return "/".join([*md.parts[ref:-1], md.stem])
-
-            content = f"# {folder}\n\n"
-            content += CARD
-
-            ### Main folder
-            if folder == self.main_folder:
-                md_files = list(path.glob("*"))
-                if md_files:
-                    content += OPEN_UL
-                    for md in md_files:
-                        p = self.cmds_folder if self.cmds_folder in md.parts else folder
-                        cmd = "/" + filter_path(md.parts.index(p) + 1, md)
+            if files:
+                content = section
+                content += OPEN_UL
+                for file in files:
+                    if command:
+                        p = (
+                            self.cmds_folder
+                            if self.cmds_folder in file.parts
+                            else folder
+                        )
+                        cmd = "/" + filter_path(file.parts.index(p) + 1, file)
                         description = (
                             self.cmd_lib.get_info(cmd)
                             .get("description", "")
                             .replace("\n", " ")
                         )
-                        content += get_card(
-                            title=md.stem,
-                            description=description,
-                            url=filter_path(md.parts.index(folder), md),
-                            command=True,
-                        )
-                    content += CLOSE_UL
+                    else:
+                        description = ", ".join([s.stem for s in file.rglob("*")])
+                    content += get_card(
+                        title=file.stem,
+                        description=description,
+                        url=filter_path(file.parts.index(folder), file),
+                        command=command,
+                    )
+                content += CLOSE_UL
+                return content
+            return ""
+
+        def get_index(path: Path, folder: str) -> str:
+            """Generate the index.mdx file."""
+
+            CARD = "import ReferenceCard from '@site/src/components/General/NewReferenceCard';\n\n"
+            content = f"# {folder}\n\n"
+            content += CARD
+
+            ### Main folder
+            if folder == self.main_folder:
+                content += get_cards(
+                    folder=folder, files=list(path.glob("*")), command=True
+                )
                 return content
 
             ### Menus
-            folders = [f for f in path.glob("*") if f.is_dir()]
-            if folders:
-                content += "### Menus\n"
-                content += OPEN_UL
-                for f in folders:
-                    content += get_card(
-                        title=f.stem,
-                        description=", ".join([s.stem for s in f.rglob("*")]),
-                        url=filter_path(f.parts.index(folder), f),
-                        command=False,
-                    )
-                content += CLOSE_UL
+            content += get_cards(
+                folder=folder,
+                files=[f for f in path.glob("*") if f.is_dir()],
+                command=False,
+                section="### Menus\n",
+            )
 
             ### Commands
-            md_files = list(path.glob("*md"))
-            if md_files:
-                content += "### Commands\n"
-                content += OPEN_UL
-                for md in md_files:
-                    p = self.cmds_folder if self.cmds_folder in md.parts else folder
-                    cmd = "/" + filter_path(md.parts.index(p) + 1, md)
-                    description = (
-                        self.cmd_lib.get_info(cmd)
-                        .get("description", "")
-                        .replace("\n", " ")
-                    )
-                    content += get_card(
-                        title=md.stem,
-                        description=description,
-                        url=filter_path(md.parts.index(folder), md),
-                        command=True,
-                    )
-                content += CLOSE_UL
+            content += get_cards(
+                folder=folder,
+                files=list(path.glob("*md")),
+                command=True,
+                section="### Commands\n",
+            )
             return content
 
         def format_label(text: str):
