@@ -20,7 +20,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 There are 3 main ways to get started:
 
-1. Join the waitlist at https://my.openbb.co/app/pro/early-access
+1. Join the wait list at <https://my.openbb.co/app/pro/early-access>
 
 2. Get invited by a colleague who already has access
 
@@ -28,11 +28,9 @@ There are 3 main ways to get started:
 
 The free trial of **OpenBB Terminal Pro** grants you full access to all features and data for a period of 2 weeks.
 
-To continue using the product after the trial period you can reach out to sales@openbb.finance to extend your trial and discuss pricing options.
+To continue using the product after the trial period you can reach out to <sales@openbb.finance> to extend your trial and discuss pricing options.
 
 As an early adopter, your feedback is invaluable. The OpenBB team may reach out to understand your experience and gather insights for improvement.
-
-Note: For your security, you'll need to set up 2-Factor authentication when you log in.
 
 ## Personalized Onboarding
 
