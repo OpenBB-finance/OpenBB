@@ -60,7 +60,7 @@ def test_y_finance_equity_historical_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_crypto_historical_fetcher(credentials=test_credentials):
     params = {
-        "symbol": "BTC-USD",
+        "symbol": "BTCUSD",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 1, 10),
     }
@@ -86,7 +86,7 @@ def test_y_finance_currency_historical_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_market_indices_fetcher(credentials=test_credentials):
     params = {
-        "symbol": "SPY",
+        "symbol": "sp500",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 1, 10),
     }
