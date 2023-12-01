@@ -29,7 +29,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Basic Syntax - Usage | OpenBB Platform Docs" />
 
-The structure of command syntax is standardized across common fields.  This ensures that a `date` is always a `date` and the format remains consistent throughout.  Standardized parameters include, but are not limited to:
+The structure of command syntax is standardized across common fields. This ensures that a `date` is always a `date` and the format remains consistent throughout. Standardized parameters include, but are not limited to:
 
 - [provider](#provider)
 - [symbol](#symbol)
@@ -60,6 +60,8 @@ Examples below assume that the Python interface has been imported in the current
 from openbb import obb
 ```
 
+or
+
 ```python
 uvicorn openbb_core.api.rest_api:app
 ```
@@ -68,7 +70,7 @@ uvicorn openbb_core.api.rest_api:app
 
 ## Provider
 
-The `provider` parameter is the way to select the specific source of the data from the endpoint.  If a [preference for the default provider](/platform/usage#user-settings) has not been defined, the default will be the first, alphabetically, installed provider. Provider values are entered in lower-case, with an underscore for multiple words - for example:
+The `provider` parameter is the way to select the specific source of the data from the endpoint. If a [preference for the default provider](/platform/usage#user-settings) has not been defined, the default will be the first, alphabetically, installed provider. Provider values are entered in lower-case, with an underscore for multiple words - for example:
 
 ```python
 historical_prices = obb.equity.price.historical("aapl", provider="alpha_vantage")
@@ -84,7 +86,7 @@ Refer to, [Data Providers](/platform/extensions/data_extensions), for instructio
 
 ## Symbol
 
-Symbols are not case-sensitive, and where the function allows, can be entered as a `string`, `List[str]`, or a comma-separated `string`.  The exact format of the symbol may vary between providers - for example, share classes, exchange suffixes, and global composities.  An example of this difference is shown below:
+Symbols are not case-sensitive, and where the function allows, can be entered as a `string`, `List[str]`, or a comma-separated `string`. The exact format of the symbol may vary between providers - for example, share classes, exchange suffixes, and global composites. An example of this difference is shown below:
 
 ```python
 obb.equity.price.historical("brk.b", provider="polygon")
@@ -94,9 +96,9 @@ obb.equity.price.historical("brk.b", provider="polygon")
 obb.equity.price.historical("brk-b", provider="fmp")
 ```
 
-While some providers handle the different formats on their end, others do not.  This is something to consider when no results are returned from one source.
+While some providers handle the different formats on their end, others do not. This is something to consider when no results are returned from one source.
 
-With providers supporting market data from multiple jurisdictions, the most common method for requesting data outside of US-listings is to append a suffix to the ticker symbol (e.g., `RELIANCE.NS`).  Formats may be unique to a provider, so it is best to review the source's documentation for an overview of their specific conventions.  [This page](https://help.yahoo.com/kb/SLN2310.html) on Yahoo describes how they format symbols, which many others follow to some degree.
+With providers supporting market data from multiple jurisdictions, the most common method for requesting data outside of US-listings is to append a suffix to the ticker symbol (e.g., `RELIANCE.NS`). Formats may be unique to a provider, so it is best to review the source's documentation for an overview of their specific conventions. [This page](https://help.yahoo.com/kb/SLN2310.html) on Yahoo describes how they format symbols, which many others follow to some degree.
 
 ### One Symbol
 
@@ -154,7 +156,7 @@ response.json()
 
 ## Dates
 
-Dates are entered everywhere as a string, formatted as, "YYYY-MM-DD".  If the function has only the `date` parameter, the data will be a snapshot instead of a time series.
+Dates are entered everywhere as a string, formatted as, "YYYY-MM-DD". If the function has only the `date` parameter, the data will be a snapshot instead of a time series.
 
 ```python
 historical_prices = obb.equity.price.historical(symbol="qqq", start_date="2023-01-10", end_date="2023-01-31", provider="fmp")
@@ -178,7 +180,7 @@ response.json()
 
 ## Limit
 
-Where, optional, `limit` parameters are supplied, they are likely to have sensible default states that return N results starting from the most recent entry or the `start_date`.  Enter these values as an integer.
+Where, optional, `limit` parameters are supplied, they are likely to have sensible default states that return N results starting from the most recent entry or the `start_date`. Enter these values as an integer.
 
 ```python
 income = obb.equity.fa.income("AAPL", period="quarter", provider="fmp", limit=4)
@@ -186,7 +188,7 @@ income = obb.equity.fa.income("AAPL", period="quarter", provider="fmp", limit=4)
 
 ## **kwargs
 
-All endpoints accept additional keyword arguments, but non-existent parameters will be ignored.  Invalid parameters are communicated via the `warnings` field in the command response.  Parameters can be stored as a dictionary and fed to the command as `**kwargs`.  If a provider, or function, has an undocumented parameter it can still be accessed by supplying the additional kwargs.
+All endpoints accept additional keyword arguments, but non-existent parameters will be ignored. Invalid parameters are communicated via the `warnings` field in the command response. Parameters can be stored as a dictionary and fed to the command as `**kwargs`. If a provider, or function, has an undocumented parameter it can still be accessed by supplying the additional kwargs.
 
 ```python
 kwargs = {"symbol":"msft","start_date":"2023-01-01","provider":"polygon"}
@@ -277,4 +279,4 @@ pd.DataFrame.from_records(ta_results)
 
 All functions, parameters, and responses are detailed under the [Reference pages](/platform/reference).  The data models for each provider source are described within the [Data Models](/platform/data_models) pages.
 
-These pages are a quick way to cross-reference differences between providers.  The same information is provided in a function's signature and docstring.
+These pages are a quick way to cross-reference differences between providers. The same information is provided in a function's signature and docstring.
