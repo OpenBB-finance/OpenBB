@@ -11,7 +11,7 @@
 <a href="https://codespaces.new/OpenBB-finance/OpenBBTerminal">
   <img src="https://github.com/codespaces/badge.svg" height="20" />
 </a>
-<a target="_blank" href="https://colab.research.google.com/github/OpenBB-finance/OpenBBTerminal/blob/docs/google-colab-notebook/examples/googleColab.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/OpenBB-finance/OpenBBTerminal/blob/develop/examples/googleColab.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
