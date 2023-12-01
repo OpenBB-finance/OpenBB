@@ -245,6 +245,7 @@ class Editor:
         def get_index(path: Path, folder: str) -> str:
             """Generate the index.mdx file."""
 
+            CARD = "import ReferenceCard from '@site/src/components/General/NewReferenceCard';\n\n"
             OPEN_UL = "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>\n"
             CLOSE_UL = "\n</ul>\n\n"
 
@@ -252,7 +253,7 @@ class Editor:
                 return "/".join([*md.parts[ref:-1], md.stem])
 
             content = f"# {folder}\n\n"
-            content += "import ReferenceCard from '@site/src/components/General/NewReferenceCard';\n\n"
+            content += CARD
 
             folders = [f for f in path.glob("*") if f.is_dir()]
             if folders:
