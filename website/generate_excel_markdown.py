@@ -272,7 +272,8 @@ class Editor:
                 content += "### Commands\n"
                 content += OPEN_UL
                 for md in md_files:
-                    cmd = "/" + filter_path(md.parts.index(self.main_folder) + 1, md)
+                    p = self.cmds_folder if self.cmds_folder in md.parts else folder
+                    cmd = "/" + filter_path(md.parts.index(p) + 1, md)
                     description = (
                         self.cmd_lib.get_info(cmd)
                         .get("description", "")
