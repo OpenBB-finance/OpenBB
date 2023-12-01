@@ -226,7 +226,7 @@ class Editor:
         content += get_signature()
         content += get_parameters()
         content += get_data()
-        self.write(path, content)
+        Editor.write(path, content)
 
     def generate_sidebar(self):
         """Write the group of index.mdx and _category_.json to create a sidebar."""
