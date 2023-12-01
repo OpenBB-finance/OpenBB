@@ -10,7 +10,7 @@ from openbb_core.app.static.package_builder import PathHandler
 WEBSITE_PATH = Path(__file__).parent.absolute()
 CONTENT_PATH = WEBSITE_PATH / "content"
 XL_FUNCS_PATH = CONTENT_PATH / "excel" / "functions.json"
-SEO_METADATA = WEBSITE_PATH / "metadata" / "platform_v4_seo_metadata.json"
+SEO_METADATA_PATH = WEBSITE_PATH / "metadata" / "platform_v4_seo_metadata.json"
 
 
 class CommandLib(PathHandler):
@@ -44,7 +44,7 @@ class CommandLib(PathHandler):
 
     def read_seo_metadata(self) -> dict:
         """Get the SEO metadata."""
-        with open(SEO_METADATA) as f:
+        with open(SEO_METADATA_PATH) as f:
             metadata = json.load(f)
         return {"/" + k.replace(".", "/").lower(): v for k, v in metadata.items()}
 
