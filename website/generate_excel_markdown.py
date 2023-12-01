@@ -231,6 +231,10 @@ class Editor:
     def generate_sidebar(self):
         """Write the group of index.mdx and _category_.json to create a sidebar."""
 
+        CARD = "import ReferenceCard from '@site/src/components/General/NewReferenceCard';\n\n"
+        OPEN_UL = "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>\n"
+        CLOSE_UL = "\n</ul>\n\n"
+
         def get_card(title: str, description: str, url: str, command: bool):
             """Generate a card."""
             description = shorten(description, width=100, placeholder="...")
@@ -250,8 +254,6 @@ class Editor:
             folder: str, files: list, command: bool, section: str = ""
         ) -> str:
             """Generate the cards for a section."""
-            OPEN_UL = "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>\n"
-            CLOSE_UL = "\n</ul>\n\n"
 
             if files:
                 content = section
@@ -284,7 +286,6 @@ class Editor:
         def get_index(path: Path, folder: str) -> str:
             """Generate the index.mdx file."""
 
-            CARD = "import ReferenceCard from '@site/src/components/General/NewReferenceCard';\n\n"
             content = f"# {folder}\n\n"
             content += CARD
 
