@@ -340,7 +340,7 @@ class Editor:
         write_mdx_and_category(self.target_dir, self.main_folder, 5)
         recursive(self.target_dir)
 
-    def generate(self):
+    def go(self):
         """Generate the website reference."""
 
         self.delete(self.target_dir)
@@ -359,11 +359,10 @@ class Editor:
 
 
 if __name__ == "__main__":
-    editor = Editor(
+    Editor(
         directory=CONTENT_PATH,
         interface="excel",
         main_folder="reference",
         cmds_folder="api",
         cmd_lib=CommandLib(),
-    )
-    editor.generate()
+    ).go()
