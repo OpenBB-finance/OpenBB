@@ -1,19 +1,13 @@
 ---
 title: Installation
 sidebar_position: 1
-description: This page presents the general system requirements, supported environments,
-  installation procedures, and setup for running the OpenBB Platform. It discusses
-  the prerequisites including Python version, operating system requirements, Docker
-  usage, and the process of building the platform from source.
+description: This page presents the general requirements and the steps to install the OpenBB Excel Add-in. The OpenBB Excel Add-in is available on Windows, Mac, and Excel on the web. It can be installed by an administrator or by individual users.
 keywords:
-- microsoft excel
+- Microsoft Excel
+- Add-in
 ---
 
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-<HeadTitle title="Installation | OpenBB Excel Add-in Docs" />
-
-## General System Requirements
+## Requirements
 
 The OpenBB Excel Add-in is a Microsoft Excel Add-in that is available on:
 
@@ -25,7 +19,7 @@ The OpenBB Excel Add-in is a Microsoft Excel Add-in that is available on:
 
 The OpenBB Excel Add-in is available on the Microsoft AppSource. It can be installed by an administrator or by individual users.
 
-### User
+### Individual user
 
 1. Open Microsoft Excel.
 2. Click the **Insert** tab.
@@ -34,7 +28,6 @@ The OpenBB Excel Add-in is available on the Microsoft AppSource. It can be insta
 5. Click **Add**.
 
 > **Note:** If you are using Excel on the web replace steps 2-3 with **Home** > **Add-ins** > **More add-ins**.
-
 
 ### Administrator
 

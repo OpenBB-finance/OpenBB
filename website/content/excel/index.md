@@ -37,16 +37,6 @@ Data standardization is at the core of OpenBB for Excel, offering you a consiste
 
 ---
 
-- **Datasets**
-
-  - Real-time feeds from IEX
-  - Delayed SIPs feed
-  - 15+ years of standardized & as-reported financial statement data
-  - Near real-time Economic calendar with global coverage
-  - Analyst Consensus and Estimates
-  - +300,000 global government and corporate bonds
-  - Comprehensive technical indicators
-
 - **Features**
 
   - Access to the same datasets available in Terminal Pro
