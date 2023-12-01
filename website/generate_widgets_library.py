@@ -20,13 +20,13 @@ def main() -> bool:
         if widget_info.get("disabled", False):
             continue
 
-        category_1 = widget_info.get("category_1")  # this is a mandatory field
+        category_1 = widget_info.get("category")  # this is a mandatory field
         if category_1:
             # Initialize dict for category_1 within category_root
             if category_1 not in new_all_widgets:
                 new_all_widgets[category_1] = {}
 
-            category_2 = widget_info.get("category_2")  # OPTIONAL field
+            category_2 = widget_info.get("sub_category")  # OPTIONAL field
             if category_2:
                 if category_2 not in new_all_widgets[category_1]:
                     new_all_widgets[category_1][category_2] = []
