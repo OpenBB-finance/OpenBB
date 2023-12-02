@@ -116,7 +116,7 @@ def get_defi_vaults(
     sortby: str = "apy",
 ) -> pd.DataFrame:
     """Get DeFi Vaults Information. DeFi Vaults are pools of funds with an assigned strategy which main goal is to
-    maximize returns of its crypto assets. [Source: https://coindix.com/]
+    maximize returns of its crypto assets. [Source: https://nanoly.com/]
 
     Parameters
     ----------
@@ -145,7 +145,7 @@ def get_defi_vaults(
     headers = {"User-Agent": get_user_agent()}
     params = _prepare_params(chain=chain, protocol=protocol, kind=kind)
     response = request(
-        "https://apiv2.coindix.com/search", headers=headers, params=params, verify=False
+        "https://api.nanoly.com/search", headers=headers, params=params, verify=False
     )
     if not 200 <= response.status_code < 300:
         raise Exception(f"Coindix api exception: {response.text}")

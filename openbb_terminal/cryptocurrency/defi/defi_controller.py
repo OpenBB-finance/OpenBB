@@ -548,7 +548,7 @@ class DefiController(BaseController):
             prog="vaults",
             description="""
                 Display Top DeFi Vaults.
-                [Source: https://coindix.com/]
+                [Source: https://nanoly.com/]
             """,
         )
         parser.add_argument(
