@@ -2,13 +2,13 @@
 
 from datetime import (
     date as dateType,
+    datetime,
     timedelta,
 )
 from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
 import requests
-import requests_cache
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.company_filings import (
     CompanyFilingsData,
@@ -16,12 +16,8 @@ from openbb_core.provider.standard_models.company_filings import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_sec.utils.definitions import FORM_TYPES, HEADERS
-from openbb_sec.utils.helpers import symbol_map
+from openbb_sec.utils.helpers import sec_session_company_filings, symbol_map
 from pydantic import Field, field_validator
-
-sec_session_company_filings = requests_cache.CachedSession(
-    "OpenBB_SEC_COMPANY_FILINGS", expire_after=timedelta(days=1), use_cache_dir=True
-)
 
 
 class SecCompanyFilingsQueryParams(CompanyFilingsQueryParams):

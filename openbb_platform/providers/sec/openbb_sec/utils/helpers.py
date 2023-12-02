@@ -23,6 +23,11 @@ sec_session_ftd = requests_cache.CachedSession(f"{cache_dir}/http/sec_ftd")
 
 sec_session_etf = requests_cache.CachedSession(f"{cache_dir}/http/sec_etf")
 
+sec_session_company_filings = requests_cache.CachedSession(
+    f"{cache_dir}/http/sec_company_filings",
+    expire_after=timedelta(days=1)
+)
+
 
 def get_all_companies(use_cache: bool = True) -> pd.DataFrame:
     """Gets all company names, tickers, and CIK numbers registered with the SEC.
