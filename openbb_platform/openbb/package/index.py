@@ -16,7 +16,6 @@ class ROUTER_index(Container):
     """/index
     available
     constituents
-    fred
     market
     """
 
@@ -158,100 +157,6 @@ class ROUTER_index(Container):
         )
 
     @validate
-    def fred(
-        self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        limit: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 100,
-        provider: Optional[Literal["intrinio"]] = None,
-        **kwargs
-    ) -> OBBject[List[Data]]:
-        """Historical Fred Indices. Close values for selected Fred indices.
-
-        Parameters
-        ----------
-        symbol : str
-            Symbol to get data for.
-        start_date : Optional[datetime.date]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
-            End date of the data, in YYYY-MM-DD format.
-        limit : Optional[int]
-            The number of data entries to return.
-        provider : Optional[Literal['intrinio']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'intrinio' if there is
-            no default.
-        next_page : Optional[str]
-            Token to get the next page of data from a previous API call. (provider: intrinio)
-        all_pages : Optional[bool]
-            Returns all pages of data from the API call at once. (provider: intrinio)
-        sleep : Optional[float]
-            Time to sleep between requests to avoid rate limiting. (provider: intrinio)
-
-        Returns
-        -------
-        OBBject
-            results : List[FredIndices]
-                Serializable results.
-            provider : Optional[Literal['intrinio']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        FredIndices
-        -----------
-        date : date
-            The date of the data.
-        value : Optional[float]
-            Value of the index.
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.index.fred(symbol="SPX", limit=100)
-        """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "start_date": start_date,
-                "end_date": end_date,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
-        return self._run(
-            "/index/fred",
-            **inputs,
-        )
-
-    @validate
     def market(
         self,
         symbol: Annotated[
@@ -347,8 +252,6 @@ class ROUTER_index(Container):
             Human readable format of the date. (provider: fmp)
         change_over_time : Optional[float]
             Change % in the price of the symbol over a period of time. (provider: fmp)
-        value : Optional[float]
-            Index value. (provider: intrinio)
         transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
 
