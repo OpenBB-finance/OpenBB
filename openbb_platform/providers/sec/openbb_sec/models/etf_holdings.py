@@ -14,7 +14,7 @@ from openbb_core.provider.standard_models.etf_holdings import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_sec.utils.helpers import HEADERS, get_nport_candidates, sec_session_etf
-from pydantic import Field
+from pydantic import Field, model_validator
 
 _warn = warnings.warn
 
@@ -167,14 +167,87 @@ class SecEtfHoldingsData(EtfHoldingsData):
     delta: Optional[Union[str, float]] = Field(
         description="The delta of the option.", default=None
     )
-    unrealized_gain: Optional[float] = Field(
-        description="The unrealized gain or loss on the derivative.", default=None
+    rate_type_rec: Optional[str] = Field(
+        description="The type of rate for reveivable portion of the swap.", default=None
     )
-    notional_amount: Optional[float] = Field(
-        description="The notional amount of the derivative.", default=None
+    receive_currency: Optional[str] = Field(
+        description="The receive currency of the swap.", default=None
     )
-    notional_currency: Optional[str] = Field(
-        description="The currency of the derivative's notional amount.", default=None
+    upfront_receive: Optional[float] = Field(
+        description="The upfront amount received of the swap.", default=None
+    )
+    floating_rate_index_rec: Optional[str] = Field(
+        description="The floating rate index for reveivable portion of the swap.",
+        default=None,
+    )
+    floating_rate_spread_rec: Optional[float] = Field(
+        description="The floating rate spread for reveivable portion of the swap.",
+        default=None,
+    )
+    rate_tenor_rec: Optional[str] = Field(
+        description="The rate tenor for reveivable portion of the swap.", default=None
+    )
+    rate_tenor_unit_rec: Optional[Union[str, int]] = Field(
+        description="The rate tenor unit for reveivable portion of the swap.",
+        default=None,
+    )
+    reset_date_rec: Optional[str] = Field(
+        description="The reset date for reveivable portion of the swap.", default=None
+    )
+    reset_date_unit_rec: Optional[Union[str, int]] = Field(
+        description="The reset date unit for reveivable portion of the swap.",
+        default=None,
+    )
+    rate_type_pmnt: Optional[str] = Field(
+        description="The type of rate for payment portion of the swap.", default=None
+    )
+    payment_currency: Optional[str] = Field(
+        description="The payment currency of the swap.", default=None
+    )
+    upfront_payment: Optional[float] = Field(
+        description="The upfront amount received of the swap.", default=None
+    )
+    floating_rate_index_pmnt: Optional[str] = Field(
+        description="The floating rate index for payment portion of the swap.",
+        default=None,
+    )
+    floating_rate_spread_pmnt: Optional[float] = Field(
+        description="The floating rate spread for payment portion of the swap.",
+        default=None,
+    )
+    rate_tenor_pmnt: Optional[str] = Field(
+        description="The rate tenor for payment portion of the swap.", default=None
+    )
+    rate_tenor_unit_pmnt: Optional[Union[str, int]] = Field(
+        description="The rate tenor unit for payment portion of the swap.", default=None
+    )
+    reset_date_pmnt: Optional[str] = Field(
+        description="The reset date for payment portion of the swap.", default=None
+    )
+    reset_date_unit_pmnt: Optional[Union[str, int]] = Field(
+        description="The reset date unit for payment portion of the swap.", default=None
+    )
+    repo_type: Optional[str] = Field(description="The type of repo.", default=None)
+    is_cleared: Optional[str] = Field(
+        description="If the repo is cleared.", default=None
+    )
+    is_tri_party: Optional[str] = Field(
+        description="If the repo is tri party.", default=None
+    )
+    principal_amount: Optional[float] = Field(
+        description="The principal amount of the repo.", default=None
+    )
+    principal_currency: Optional[str] = Field(
+        description="The currency of the principal amount.", default=None
+    )
+    collateral_type: Optional[str] = Field(
+        description="The collateral type of the repo.", default=None
+    )
+    collateral_amount: Optional[float] = Field(
+        description="The collateral amount of the repo.", default=None
+    )
+    collateral_currency: Optional[str] = Field(
+        description="The currency of the collateral amount.", default=None
     )
     exchange_currency: Optional[str] = Field(
         description="The currency of the exchange rate.", default=None
@@ -198,6 +271,21 @@ class SecEtfHoldingsData(EtfHoldingsData):
         description="The amount of currency bought in a Forward Derivative.",
         default=None,
     )
+    notional_amount: Optional[float] = Field(
+        description="The notional amount of the derivative.", default=None
+    )
+    notional_currency: Optional[str] = Field(
+        description="The currency of the derivative's notional amount.", default=None
+    )
+    unrealized_gain: Optional[float] = Field(
+        description="The unrealized gain or loss on the derivative.", default=None
+    )
+
+    @model_validator(mode="before")
+    @classmethod
+    def replace_zero(cls, values):  # pylint: disable=no-self-argument
+        """Check for zero values and replace with None."""
+        return {k: None if v == 0 else v for k, v in values.items()}
 
 
 class SecEtfHoldingsFetcher(
@@ -259,7 +347,7 @@ class SecEtfHoldingsFetcher(
         return response
 
     @staticmethod
-    def transform_data(  # noqa: PLR0912
+    def transform_data(
         query: SecEtfHoldingsQueryParams,
         data: Dict,
         **kwargs: Any,
@@ -283,6 +371,7 @@ class SecEtfHoldingsFetcher(
             for i in df.index:
                 if "isin" in df.iloc[i]["identifiers"]:
                     df.loc[i, "isin"] = df.iloc[i]["identifiers"]["isin"].get("@value")
+
                 if (
                     "other" in df.iloc[i]["identifiers"]
                     and "@value" in df.iloc[i]["identifiers"]["other"]
@@ -290,292 +379,300 @@ class SecEtfHoldingsFetcher(
                     df.loc[i, "other_id"] = df.iloc[i]["identifiers"]["other"].get(
                         "@value"
                     )
+
                 if "securityLending" in df.iloc[i]:
-                    if "loanByFundCondition" in df.iloc[i]["securityLending"]:
-                        df.loc[i, "isLoanByFund"] = df.iloc[i]["securityLending"][
-                            "loanByFundCondition"
-                        ].get("@isLoanByFund")
-                        df.loc[i, "loanVal"] = df.iloc[i]["securityLending"][
-                            "loanByFundCondition"
-                        ].get("@loanVal")
-                    if "isCashCollateral" in df.iloc[i]["securityLending"]:
-                        df.loc[i, "isCashCollateral"] = df.iloc[i][
-                            "securityLending"
-                        ].get("isCashCollateral")
-                    if "isNonCashCollateral" in df.iloc[i]["securityLending"]:
-                        df.loc[i, "isNonCashCollateral"] = df.iloc[i][
-                            "securityLending"
-                        ].get("isNonCashCollateral")
+                    security_lending = df.iloc[i]["securityLending"]
+                    if "loanByFundCondition" in security_lending:
+                        loan_by_fund_condition = security_lending["loanByFundCondition"]
+                        df.loc[i, "isLoanByFund"] = loan_by_fund_condition.get(
+                            "@isLoanByFund"
+                        )
+                        df.loc[i, "loanVal"] = loan_by_fund_condition.get("@loanVal")
+                    if "isCashCollateral" in security_lending:
+                        df.loc[i, "isCashCollateral"] = security_lending.get(
+                            "isCashCollateral"
+                        )
+                    if "isNonCashCollateral" in security_lending:
+                        df.loc[i, "isNonCashCollateral"] = security_lending.get(
+                            "isNonCashCollateral"
+                        )
+
                 if "debtSec" in df.iloc[i] and isinstance(df.loc[i]["debtSec"], dict):
-                    df.loc[i, "maturity_date"] = df.iloc[i]["debtSec"].get("maturityDt")
-                    df.loc[i, "coupon_kind"] = df.iloc[i]["debtSec"].get("couponKind")
-                    df.loc[i, "annualized_return"] = df.iloc[i]["debtSec"].get(
-                        "annualizedRt"
-                    )
-                    df.loc[i, "is_default"] = df.iloc[i]["debtSec"].get("isDefault")
-                    df.loc[i, "in_arrears"] = df.iloc[i]["debtSec"].get(
-                        "areIntrstPmntsInArrs"
-                    )
-                    df.loc[i, "is_paid_kind"] = df.iloc[i]["debtSec"].get("isPaidKind")
+                    debt_sec = df.iloc[i]["debtSec"]
+                    df.loc[i, "maturity_date"] = debt_sec.get("maturityDt")
+                    df.loc[i, "coupon_kind"] = debt_sec.get("couponKind")
+                    df.loc[i, "annualized_return"] = debt_sec.get("annualizedRt")
+                    df.loc[i, "is_default"] = debt_sec.get("isDefault")
+                    df.loc[i, "in_arrears"] = debt_sec.get("areIntrstPmntsInArrs")
+                    df.loc[i, "is_paid_kind"] = debt_sec.get("isPaidKind")
+
                 if "issuerConditional" in df.iloc[i] and isinstance(
                     df.iloc[i]["issuerConditional"], dict
                 ):
                     df.loc[i, "issuer_conditional"] = df.iloc[i][
                         "issuerConditional"
                     ].get("@desc")
+
                 if "assetConditional" in df.iloc[i] and isinstance(
                     df.iloc[i]["assetConditional"], dict
                 ):
                     df.loc[i, "asset_conditional"] = df.iloc[i]["assetConditional"].get(
                         "@desc"
                     )
+
                 if "derivativeInfo" in df.iloc[i] and isinstance(
                     df.iloc[i]["derivativeInfo"], dict
                 ):
-                    if "optionSwaptionWarrantDeriv" in df.iloc[i]["derivativeInfo"]:
-                        df.loc[i, "derivative_category"] = df.iloc[i]["derivativeInfo"][
+                    derivative_info = df.iloc[i]["derivativeInfo"]
+
+                    if "optionSwaptionWarrantDeriv" in derivative_info:
+                        option_swaption_warrant_deriv = derivative_info[
                             "optionSwaptionWarrantDeriv"
-                        ].get("@derivCat")
-                        df.loc[i, "counterparty"] = df.iloc[i]["derivativeInfo"][
-                            "optionSwaptionWarrantDeriv"
-                        ]["counterparties"].get("counterpartyName")
-                        if (
-                            "otherRefInst"
-                            in df.iloc[i]["derivativeInfo"][
-                                "optionSwaptionWarrantDeriv"
-                            ]["descRefInstrmnt"]
-                        ):
-                            df.loc[i, "underlying_name"] = df.iloc[i]["derivativeInfo"][
-                                "optionSwaptionWarrantDeriv"
-                            ]["descRefInstrmnt"]["otherRefInst"].get("issueTitle")
-                        if (
-                            "nestedDerivInfo"
-                            in df.iloc[i]["derivativeInfo"][
-                                "optionSwaptionWarrantDeriv"
-                            ]["descRefInstrmnt"]
-                        ):
-                            df.loc[i, "underlying_name"] = df.iloc[i]["derivativeInfo"][
-                                "optionSwaptionWarrantDeriv"
-                            ]["descRefInstrmnt"]["nestedDerivInfo"]["fwdDeriv"][
-                                "derivAddlInfo"
-                            ].get(
-                                "title"
-                            )
-                        df.loc[i, "option_type"] = df.iloc[i]["derivativeInfo"][
-                            "optionSwaptionWarrantDeriv"
-                        ].get("putOrCall")
-                        df.loc[i, "derivative_payoff"] = df.iloc[i]["derivativeInfo"][
-                            "optionSwaptionWarrantDeriv"
-                        ].get("writtenOrPur")
-                        df.loc[i, "expiry_date"] = df.iloc[i]["derivativeInfo"][
-                            "optionSwaptionWarrantDeriv"
-                        ].get("expDt")
-                        df.loc[i, "exercise_price"] = df.iloc[i]["derivativeInfo"][
-                            "optionSwaptionWarrantDeriv"
-                        ].get("exercisePrice")
-                        df.loc[i, "exercise_currency"] = df.iloc[i]["derivativeInfo"][
-                            "optionSwaptionWarrantDeriv"
-                        ].get("exercisePriceCurCd")
-                        df.loc[i, "shares_per_contract"] = df.iloc[i]["derivativeInfo"][
-                            "optionSwaptionWarrantDeriv"
-                        ].get("shareNo")
-                        df.loc[i, "delta"] = df.iloc[i]["derivativeInfo"][
-                            "optionSwaptionWarrantDeriv"
-                        ].get("delta")
-                        df.loc[i, "unrealized_gain"] = df.iloc[i]["derivativeInfo"][
-                            "optionSwaptionWarrantDeriv"
-                        ].get("unrealizedAppr")
-                    if "futrDeriv" in df.iloc[i]["derivativeInfo"]:
-                        df.loc[i, "derivative_category"] = df.iloc[i]["derivativeInfo"][
-                            "futrDeriv"
-                        ].get("@derivCat")
-                        df.loc[i, "counterparty"] = df.iloc[i]["derivativeInfo"][
-                            "futrDeriv"
-                        ]["counterparties"].get("counterpartyName")
-                        if (
-                            "indexBasketInfo"
-                            in df.iloc[i]["derivativeInfo"]["futrDeriv"][
-                                "descRefInstrmnt"
-                            ]
-                        ):
-                            df.loc[i, "underlying_name"] = df.iloc[i]["derivativeInfo"][
-                                "futrDeriv"
-                            ]["descRefInstrmnt"]["indexBasketInfo"].get("indexName")
-                        df.loc[i, "derivative_payoff"] = df.iloc[i]["derivativeInfo"][
-                            "futrDeriv"
-                        ].get("payOffProf")
-                        df.loc[i, "expiry_date"] = df.iloc[i]["derivativeInfo"][
-                            "futrDeriv"
-                        ].get("expDt") or df.iloc[i]["derivativeInfo"]["futrDeriv"].get(
-                            "expDate"
-                        )
-                        df.loc[i, "notional_amount"] = df.iloc[i]["derivativeInfo"][
-                            "futrDeriv"
-                        ].get("notionalAmt")
-                        df.loc[i, "notional_currency"] = df.iloc[i]["derivativeInfo"][
-                            "futrDeriv"
-                        ].get("curCd")
-                        df.loc[i, "unrealized_gain"] = df.iloc[i]["derivativeInfo"][
-                            "futrDeriv"
-                        ].get("unrealizedAppr")
-                    if "fwdDeriv" in df.iloc[i]["derivativeInfo"]:
-                        df.loc[i, "derivative_category"] = df.iloc[i]["derivativeInfo"][
-                            "fwdDeriv"
-                        ].get("@derivCat")
-                        df.loc[i, "counterparty"] = df.iloc[i]["derivativeInfo"][
-                            "fwdDeriv"
-                        ]["counterparties"].get("counterpartyName")
-                        df.loc[i, "currency_sold"] = df.iloc[i]["derivativeInfo"][
-                            "fwdDeriv"
-                        ].get("curSold")
-                        df.loc[i, "currency_amount_sold"] = df.iloc[i][
-                            "derivativeInfo"
-                        ]["fwdDeriv"].get("amtCurSold")
-                        df.loc[i, "currency_bought"] = df.iloc[i]["derivativeInfo"][
-                            "fwdDeriv"
-                        ].get("curPur")
-                        df.loc[i, "currency_amount_bought"] = df.iloc[i][
-                            "derivativeInfo"
-                        ]["fwdDeriv"].get("amtCurPur")
-                        df.loc[i, "expiry_date"] = df.iloc[i]["derivativeInfo"][
-                            "fwdDeriv"
-                        ].get("settlementDt")
-                        df.loc[i, "unrealized_gain"] = df.iloc[i]["derivativeInfo"][
-                            "fwdDeriv"
-                        ].get("unrealizedAppr")
-                    if "swapDeriv" in df.iloc[i]["derivativeInfo"]:
-                        df.loc[i, "derivative_category"] = df.iloc[i]["derivativeInfo"][
-                            "swapDeriv"
-                        ].get("@derivCat")
-                        df.loc[i, "counterparty"] = df.iloc[i]["derivativeInfo"][
-                            "swapDeriv"
-                        ]["counterparties"].get("counterpartyName")
+                        ]
+                        df.loc[
+                            i, "derivative_category"
+                        ] = option_swaption_warrant_deriv.get("@derivCat")
+                        df.loc[i, "counterparty"] = option_swaption_warrant_deriv[
+                            "counterparties"
+                        ].get("counterpartyName")
+                        df.loc[i, "lei"] = option_swaption_warrant_deriv[
+                            "counterparties"
+                        ].get("counterpartyLei")
                         df.loc[i, "underlying_name"] = (
-                            df.iloc[i]["derivativeInfo"]["swapDeriv"][
+                            option_swaption_warrant_deriv["descRefInstrmnt"]
+                            .get("otherRefInst", {})
+                            .get("issueTitle")
+                        )
+                        df.loc[i, "underlying_name"] = option_swaption_warrant_deriv[
+                            "descRefInstrmnt"
+                        ].get("nestedDerivInfo", {}).get("fwdDeriv", {}).get(
+                            "derivAddlInfo", {}
+                        ).get(
+                            "title"
+                        ) or option_swaption_warrant_deriv[
+                            "descRefInstrmnt"
+                        ].get(
+                            "otherRefInst", {}
+                        ).get(
+                            "issueTitle"
+                        )
+                        df.loc[i, "option_type"] = option_swaption_warrant_deriv.get(
+                            "putOrCall"
+                        )
+                        df.loc[
+                            i, "derivative_payoff"
+                        ] = option_swaption_warrant_deriv.get("writtenOrPur")
+                        df.loc[i, "expiry_date"] = option_swaption_warrant_deriv.get(
+                            "expDt"
+                        )
+                        df.loc[i, "exercise_price"] = option_swaption_warrant_deriv.get(
+                            "exercisePrice"
+                        )
+                        df.loc[
+                            i, "exercise_currency"
+                        ] = option_swaption_warrant_deriv.get("exercisePriceCurCd")
+                        df.loc[
+                            i, "shares_per_contract"
+                        ] = option_swaption_warrant_deriv.get("shareNo")
+                        if option_swaption_warrant_deriv.get("delta") != "XXXX":
+                            df.loc[i, "delta"] = option_swaption_warrant_deriv.get(
+                                "delta"
+                            )
+                        df.loc[i, "unrealized_gain"] = float(
+                            option_swaption_warrant_deriv.get("unrealizedAppr")
+                        )
+
+                    if "futrDeriv" in derivative_info:
+                        futr_deriv = derivative_info["futrDeriv"]
+                        df.loc[i, "derivative_category"] = futr_deriv.get("@derivCat")
+                        df.loc[i, "counterparty"] = futr_deriv["counterparties"].get(
+                            "counterpartyName"
+                        )
+                        df.loc[i, "lei"] = futr_deriv["counterparties"].get(
+                            "counterpartyLei"
+                        )
+                        df.loc[i, "underlying_name"] = (
+                            futr_deriv["descRefInstrmnt"]
+                            .get("indexBasketInfo", {})
+                            .get("indexName")
+                        )
+                        df.loc[i, "other_id"] = (
+                            futr_deriv["descRefInstrmnt"]
+                            .get("indexBasketInfo", {})
+                            .get("indexIdentifier")
+                        )
+                        df.loc[i, "derivative_payoff"] = futr_deriv.get("payOffProf")
+                        df.loc[i, "expiry_date"] = futr_deriv.get(
+                            "expDt"
+                        ) or futr_deriv.get("expDate")
+                        df.loc[i, "notional_amount"] = float(
+                            futr_deriv.get("notionalAmt")
+                        )
+                        df.loc[i, "notional_currency"] = futr_deriv.get("curCd")
+                        df.loc[i, "unrealized_gain"] = float(
+                            futr_deriv.get("unrealizedAppr")
+                        )
+
+                    if "fwdDeriv" in derivative_info:
+                        fwd_deriv = derivative_info["fwdDeriv"]
+                        df.loc[i, "derivative_category"] = fwd_deriv.get("@derivCat")
+                        df.loc[i, "counterparty"] = fwd_deriv["counterparties"].get(
+                            "counterpartyName"
+                        )
+                        df.loc[i, "currency_sold"] = fwd_deriv.get("curSold")
+                        df.loc[i, "currency_amount_sold"] = float(
+                            fwd_deriv.get("amtCurSold")
+                        )
+                        df.loc[i, "currency_bought"] = fwd_deriv.get("curPur")
+                        df.loc[i, "currency_amount_bought"] = float(
+                            fwd_deriv.get("amtCurPur")
+                        )
+                        df.loc[i, "expiry_date"] = fwd_deriv.get("settlementDt")
+                        df.loc[i, "unrealized_gain"] = float(
+                            fwd_deriv.get("unrealizedAppr")
+                        )
+
+                    if "swapDeriv" in df.iloc[i]["derivativeInfo"]:
+                        swap_deriv = df.iloc[i]["derivativeInfo"]["swapDeriv"]
+                        df.loc[i, "derivative_category"] = swap_deriv.get("@derivCat")
+                        df.loc[i, "counterparty"] = swap_deriv["counterparties"].get(
+                            "counterpartyName"
+                        )
+                        df.loc[i, "lei"] = swap_deriv["counterparties"].get(
+                            "counterpartyLei"
+                        )
+                        if "otherRefInst" in swap_deriv["descRefInstrmnt"]:
+                            df.loc[i, "underlying_name"] = swap_deriv[
                                 "descRefInstrmnt"
                             ]["otherRefInst"].get("issueTitle")
-                            if "otherRefInst"
-                            in df.iloc[i]["derivativeInfo"]["swapDeriv"][
+                        if "indexBasketInfo" in swap_deriv["descRefInstrmnt"]:
+                            df.loc[i, "underlying_name"] = swap_deriv[
                                 "descRefInstrmnt"
-                            ]
-                            else None
-                        )
+                            ]["indexBasketInfo"].get("indexName")
+                            df.loc[i, "other_id"] = swap_deriv["descRefInstrmnt"][
+                                "indexBasketInfo"
+                            ].get("indexIdentifier")
                         df.loc[i, "swap_description"] = (
-                            df.iloc[i]["derivativeInfo"]["swapDeriv"][
-                                "otherRecDesc"
-                            ].get("#text")
-                            if "otherRecDesc"
-                            in df.iloc[i]["derivativeInfo"]["swapDeriv"][
-                                "descRefInstrmnt"
-                            ]
+                            swap_deriv["otherRecDesc"].get("#text")
+                            if "otherRecDesc" in swap_deriv["descRefInstrmnt"]
                             else None
                         )
-                        df.loc[i, "rate_type"] = df.iloc[i]["derivativeInfo"][
-                            "swapDeriv"
-                        ]["floatingPmntDesc"].get("@fixedOrFloating")
-                        df.loc[i, "floating_rate_index"] = df.iloc[i]["derivativeInfo"][
-                            "swapDeriv"
-                        ]["floatingPmntDesc"].get("@floatingRtIndex")
-                        df.loc[i, "floating_rate_spread"] = df.iloc[i][
-                            "derivativeInfo"
-                        ]["swapDeriv"]["floatingPmntDesc"].get("@floatingRtSpread")
-                        df.loc[i, "payment_amount"] = df.iloc[i]["derivativeInfo"][
-                            "swapDeriv"
-                        ]["floatingPmntDesc"].get("@pmntAmt")
-                        if "rtResetTenors" in df.loc[i]["derivativeInfo"]["swapDeriv"]:
-                            df.loc[i, "rate_tenor"] = df.iloc[i]["derivativeInfo"][
-                                "swapDeriv"
-                            ]["rtResetTenors"]["rtResetTenor"].get("@rateTenor")
-                            df.loc[i, "rate_tenor_unit"] = df.iloc[i]["derivativeInfo"][
-                                "swapDeriv"
-                            ]["rtResetTenors"]["rtResetTenor"].get("@rateTenorUnit")
-                            df.loc[i, "reset_date"] = df.iloc[i]["derivativeInfo"][
-                                "swapDeriv"
-                            ]["rtResetTenors"]["rtResetTenor"].get("@resetDt")
-                            df.loc[i, "reset_date_unit"] = df.iloc[i]["derivativeInfo"][
-                                "swapDeriv"
-                            ]["rtResetTenors"]["rtResetTenor"].get("@resetDtUnit")
-                        df.loc[i, "expiry_date"] = df.iloc[i]["derivativeInfo"][
-                            "swapDeriv"
-                        ].get("terminationDt")
-                        df.loc[i, "upfront_payment"] = df.iloc[i]["derivativeInfo"][
-                            "swapDeriv"
-                        ].get("upfrontPmnt")
-                        df.loc[i, "payment_currency"] = df.iloc[i]["derivativeInfo"][
-                            "swapDeriv"
-                        ].get("pmntCurCd")
-                        df.loc[i, "upfront_receipt"] = df.iloc[i]["derivativeInfo"][
-                            "swapDeriv"
-                        ].get("upfrontRcpt")
-                        df.loc[i, "receipt_currency"] = df.iloc[i]["derivativeInfo"][
-                            "swapDeriv"
-                        ].get("rcptCurCd")
-                        df.loc[i, "notional_amount"] = df.iloc[i]["derivativeInfo"][
-                            "swapDeriv"
-                        ].get("notionalAmt")
-                        df.loc[i, "notional_currency"] = df.iloc[i]["derivativeInfo"][
-                            "swapDeriv"
-                        ].get("curCd")
-                        df.loc[i, "unrealized_gain"] = df.iloc[i]["derivativeInfo"][
-                            "swapDeriv"
-                        ].get("unrealizedAppr")
+                        df.loc[i, "rate_type_rec"] = swap_deriv["floatingRecDesc"].get(
+                            "@fixedOrFloating"
+                        )
+                        df.loc[i, "floating_rate_index_rec"] = swap_deriv[
+                            "floatingRecDesc"
+                        ].get("@floatingRtIndex")
+                        df.loc[i, "floating_rate_spread_rec"] = float(
+                            swap_deriv["floatingRecDesc"].get("@floatingRtSpread")
+                        )
+                        df.loc[i, "payment_amount_rec"] = float(
+                            swap_deriv["floatingRecDesc"].get("@pmntAmt")
+                        )
+                        df.loc[i, "rate_tenor_rec"] = swap_deriv["floatingRecDesc"][
+                            "rtResetTenors"
+                        ]["rtResetTenor"].get("@rateTenor")
+                        df.loc[i, "rate_tenor_unit_rec"] = swap_deriv[
+                            "floatingRecDesc"
+                        ]["rtResetTenors"]["rtResetTenor"].get("@rateTenorUnit")
+                        df.loc[i, "reset_date_rec"] = swap_deriv["floatingRecDesc"][
+                            "rtResetTenors"
+                        ]["rtResetTenor"].get("@resetDt")
+                        df.loc[i, "reset_date_unit_rec"] = swap_deriv[
+                            "floatingRecDesc"
+                        ]["rtResetTenors"]["rtResetTenor"].get("@resetDtUnit")
+                        df.loc[i, "rate_type_pmnt"] = swap_deriv[
+                            "floatingPmntDesc"
+                        ].get("@fixedOrFloating")
+                        df.loc[i, "floating_rate_index_pmnt"] = swap_deriv[
+                            "floatingPmntDesc"
+                        ].get("@floatingRtIndex")
+                        df.loc[i, "floating_rate_spread_pmnt"] = float(
+                            swap_deriv["floatingPmntDesc"].get("@floatingRtSpread")
+                        )
+                        df.loc[i, "payment_amount_pmnt"] = float(
+                            swap_deriv["floatingPmntDesc"].get("@pmntAmt")
+                        )
+                        df.loc[i, "rate_tenor_pmnt"] = swap_deriv["floatingPmntDesc"][
+                            "rtResetTenors"
+                        ]["rtResetTenor"].get("@rateTenor")
+                        df.loc[i, "rate_tenor_unit_pmnt"] = swap_deriv[
+                            "floatingPmntDesc"
+                        ]["rtResetTenors"]["rtResetTenor"].get("@rateTenorUnit")
+                        df.loc[i, "reset_date_pmnt"] = swap_deriv["floatingPmntDesc"][
+                            "rtResetTenors"
+                        ]["rtResetTenor"].get("@resetDt")
+                        df.loc[i, "reset_date_unit_rec"] = swap_deriv[
+                            "floatingPmntDesc"
+                        ]["rtResetTenors"]["rtResetTenor"].get("@resetDtUnit")
+                        df.loc[i, "expiry_date"] = swap_deriv.get("terminationDt")
+                        df.loc[i, "upfront_payment"] = float(
+                            swap_deriv.get("upfrontPmnt")
+                        )
+                        df.loc[i, "payment_currency"] = swap_deriv.get("pmntCurCd")
+                        df.loc[i, "upfront_receive"] = float(
+                            swap_deriv.get("upfrontRcpt")
+                        )
+                        df.loc[i, "receive_currency"] = swap_deriv.get("rcptCurCd")
+                        df.loc[i, "notional_amount"] = float(
+                            swap_deriv.get("notionalAmt")
+                        )
+                        df.loc[i, "notional_currency"] = swap_deriv.get("curCd")
+                        df.loc[i, "unrealized_gain"] = float(
+                            swap_deriv.get("unrealizedAppr")
+                        )
+
                 if "repurchaseAgrmt" in df.iloc[i] and isinstance(
                     df.iloc[i]["repurchaseAgrmt"], dict
                 ):
-                    df.loc[i, "repo_type"] = df.iloc[i]["repurchaseAgrmt"].get(
-                        "transCat"
-                    )
-                    if "clearedCentCparty" in df.iloc[i][
-                        "repurchaseAgrmt"
-                    ] and isinstance(
-                        df.iloc[i]["repurchaseAgrmt"]["clearedCentCparty"], dict
+                    repurchase_agrmt = df.iloc[i]["repurchaseAgrmt"]
+                    df.loc[i, "repo_type"] = repurchase_agrmt.get("transCat")
+
+                    if "clearedCentCparty" in repurchase_agrmt and isinstance(
+                        repurchase_agrmt["clearedCentCparty"], dict
                     ):
-                        df.loc[i, "is_cleared"] = df.iloc[i]["repurchaseAgrmt"][
-                            "clearedCentCparty"
-                        ].get("@isCleared")
-                        df.loc[i, "counterparty"] = df.iloc[i]["repurchaseAgrmt"][
-                            "clearedCentCparty"
-                        ].get("@centralCounterparty")
-                    df.loc[i, "is_tri_party"] = df.iloc[i]["repurchaseAgrmt"].get(
-                        "isTriParty"
-                    )
-                    df.loc[i, "annualized_return"] = df.iloc[i]["repurchaseAgrmt"].get(
+                        cleared_cent_cparty = repurchase_agrmt["clearedCentCparty"]
+                        df.loc[i, "is_cleared"] = cleared_cent_cparty.get("@isCleared")
+                        df.loc[i, "counterparty"] = cleared_cent_cparty.get(
+                            "@centralCounterparty"
+                        )
+                    df.loc[i, "is_tri_party"] = repurchase_agrmt.get("isTriParty")
+                    df.loc[i, "annualized_return"] = repurchase_agrmt.get(
                         "repurchaseRt"
                     )
-                    df.loc[i, "maturity_date"] = df.iloc[i]["repurchaseAgrmt"].get(
-                        "maturityDt"
-                    )
+                    df.loc[i, "maturity_date"] = repurchase_agrmt.get("maturityDt")
+
                     if (
-                        "repurchaseCollaterals" in df.iloc[i]["repurchaseAgrmt"]
+                        "repurchaseCollaterals" in repurchase_agrmt
                         and "repurchaseCollateral"
-                        in df.iloc[i]["repurchaseAgrmt"]["repurchaseCollaterals"]
+                        in repurchase_agrmt["repurchaseCollaterals"]
                     ):
-                        df.loc[i, "principal_amount"] = df.iloc[i]["repurchaseAgrmt"][
+                        repurchase_collateral = repurchase_agrmt[
                             "repurchaseCollaterals"
-                        ]["repurchaseCollateral"].get("principalAmt")
-                        df.loc[i, "principal_currency"] = df.iloc[i]["repurchaseAgrmt"][
-                            "repurchaseCollaterals"
-                        ]["repurchaseCollateral"].get("@principalCd")
-                        df.loc[i, "collateral_amount"] = df.iloc[i]["repurchaseAgrmt"][
-                            "repurchaseCollaterals"
-                        ]["repurchaseCollateral"].get("collateralVal")
-                        df.loc[i, "collateral_currency"] = df.iloc[i][
-                            "repurchaseAgrmt"
-                        ]["repurchaseCollaterals"]["repurchaseCollateral"].get(
+                        ]["repurchaseCollateral"]
+                        df.loc[i, "principal_amount"] = float(
+                            repurchase_collateral.get("principalAmt")
+                        )
+                        df.loc[i, "principal_currency"] = repurchase_collateral.get(
+                            "@principalCd"
+                        )
+                        df.loc[i, "collateral_amount"] = float(
+                            repurchase_collateral.get("collateralVal")
+                        )
+                        df.loc[i, "collateral_currency"] = repurchase_collateral.get(
                             "@collateralCd"
                         )
-                        df.loc[i, "collateral_type"] = df.iloc[i]["repurchaseAgrmt"][
-                            "repurchaseCollaterals"
-                        ]["repurchaseCollateral"].get("@invstCat")
+                        df.loc[i, "collateral_type"] = repurchase_collateral.get(
+                            "@invstCat"
+                        )
+
                 if "currencyConditional" in df.iloc[i] and isinstance(
                     df.iloc[i]["currencyConditional"], dict
                 ):
-                    df.loc[i, "exchange_currency"] = df.iloc[i][
-                        "currencyConditional"
-                    ].get("@curCd")
-                    df.loc[i, "exchange_rate"] = df.iloc[i]["currencyConditional"].get(
-                        "@exchangeRt"
-                    )
+                    currency_conditional = df.iloc[i]["currencyConditional"]
+                    df.loc[i, "exchange_currency"] = currency_conditional.get("@curCd")
+                    df.loc[i, "exchange_rate"] = currency_conditional.get("@exchangeRt")
+
             # Drop the flattened columns
             to_drop = [
                 "identifiers",
@@ -591,6 +688,7 @@ class SecEtfHoldingsFetcher(
                 if col in df.columns:
                     df = df.drop(col, axis=1)
 
+            df["pctVal"] = df["pctVal"].astype(float)
             results = (
                 df.fillna("N/A")
                 .replace("N/A", None)

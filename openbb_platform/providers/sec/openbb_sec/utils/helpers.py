@@ -14,10 +14,10 @@ from openbb_sec.utils.definitions import HEADERS, QUARTERS, SEC_HEADERS, TAXONOM
 cache_dir = get_user_cache_directory()
 
 sec_session_companies = requests_cache.CachedSession(
-    f"{cache_dir}/http/sec_companies", expire_after=timedelta(days=7)
+    f"{cache_dir}/http/sec_companies", expire_after=timedelta(days=2)
 )
 sec_session_frames = requests_cache.CachedSession(
-    f"{cache_dir}/http/sec_frames", expire_after=timedelta(days=5)
+    f"{cache_dir}/http/sec_frames", expire_after=timedelta(days=2)
 )
 sec_session_ftd = requests_cache.CachedSession(f"{cache_dir}/http/sec_ftd")
 
@@ -371,7 +371,7 @@ def get_nport_candidates(symbol: str, use_cache: bool = True) -> List[Dict]:
 
     url = f"https://efts.sec.gov/LATEST/search-index?q={series_id}&dateRange=all&forms=NPORT-P"
 
-    def request_data():
+    def request_data(url: str = url, use_cache: bool = use_cache):
         r = (
             sec_session_companies.get(url, timeout=5, headers=HEADERS)
             if use_cache is True
@@ -379,7 +379,7 @@ def get_nport_candidates(symbol: str, use_cache: bool = True) -> List[Dict]:
         )
         return r
 
-    r = request_data()
+    r = request_data(url, use_cache=use_cache)
 
     if r.status_code != 200:
         if r.status_code == 500:
