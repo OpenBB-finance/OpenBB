@@ -29,7 +29,7 @@ The add-in provides 2 types of custom functions:
     ```
 
 3. **Library**
-    - `OBB.[MENU].[SUB_MENU].[COMMAND]` - Provides direct access to the OpenBB API.
+    - `OBB.[MENU].[SUB_MENU].[COMMAND]` - Provides direct access to the OpenBB library.
 
     Examples:
 
