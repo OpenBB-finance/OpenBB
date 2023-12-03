@@ -69,12 +69,6 @@ Currency Search. Search available currency pairs.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

@@ -41,12 +41,6 @@ Get reported Fail-to-deliver (FTD) data.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

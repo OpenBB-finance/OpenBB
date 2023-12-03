@@ -82,12 +82,6 @@ Institutional Ownership. Institutional ownership data.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

@@ -64,12 +64,6 @@ Equity NBBO. Load National Best Bid and Offer for a specific equity.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

@@ -45,12 +45,6 @@ Get a current, complete, market snapshot.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

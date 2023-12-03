@@ -29,12 +29,6 @@ Interest on Reserve Balances.  Get Interest Rate on Reserve Balances data A bank
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

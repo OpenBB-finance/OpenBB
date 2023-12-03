@@ -19,12 +19,6 @@ Get latest data point by providing symbol and field tag.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

@@ -236,8 +236,8 @@ class Editor:
         content += "---\n\n"
         content += get_parameters()
         content += "---\n\n"
-        content += get_return_type()
-        content += "---\n\n"
+        # content += get_return_type()
+        # content += "---\n\n"
         content += get_return_data()
         Editor.write(path, content)
 
@@ -327,12 +327,9 @@ class Editor:
             return content
 
         def format_label(text: str):
-            if text == self.main_folder:
+            if text == self.main_folder or text == self.cmds_folder:
                 return self.main_folder.title()
-            if text == self.cmds_folder:
-                return self.cmds_folder.upper()
             return text.lower()
-            # return text.upper()
 
         def write_mdx_and_category(path: Path, folder: str, position: int):
             Editor.write(path=path / "index.mdx", content=get_index(path, folder))

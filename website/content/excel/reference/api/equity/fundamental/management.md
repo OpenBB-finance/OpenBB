@@ -38,12 +38,6 @@ Key Executives. Key executives for a given company.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

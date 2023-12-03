@@ -43,12 +43,6 @@ Get the holdings filing date for an individual ETF.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

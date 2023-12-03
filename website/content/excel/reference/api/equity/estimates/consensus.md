@@ -41,12 +41,6 @@ Price Target Consensus. Price target consensus data.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

@@ -64,12 +64,6 @@ Get the holdings for an individual ETF.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

@@ -86,12 +86,6 @@ Cash Flow Statement. Information about the cash flow statement.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

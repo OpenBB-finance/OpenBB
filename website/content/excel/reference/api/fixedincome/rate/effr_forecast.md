@@ -28,12 +28,6 @@ Fed Funds Rate Projections.  The projections for the federal funds rate are the 
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

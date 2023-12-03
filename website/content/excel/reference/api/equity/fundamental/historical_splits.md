@@ -43,12 +43,6 @@ Historical Splits. Historical splits data.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

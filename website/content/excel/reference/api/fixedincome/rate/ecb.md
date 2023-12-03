@@ -41,12 +41,6 @@ European Central Bank Interest Rates.  The Governing Council of the ECB sets the
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

@@ -32,12 +32,6 @@ Get the most-recent filings submitted to the SEC.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

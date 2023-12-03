@@ -52,12 +52,6 @@ Upcoming and Historical Dividend Calendar.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

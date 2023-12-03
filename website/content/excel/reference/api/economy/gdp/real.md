@@ -47,12 +47,6 @@ Real GDP Data.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

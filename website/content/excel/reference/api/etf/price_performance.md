@@ -52,12 +52,6 @@ Price performance as a return, over different periods.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

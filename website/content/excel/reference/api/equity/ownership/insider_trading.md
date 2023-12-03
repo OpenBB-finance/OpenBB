@@ -59,12 +59,6 @@ Insider Trading. Information about insider trading.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

@@ -30,12 +30,6 @@ Sterling Overnight Index Average.  SONIA (Sterling Overnight Index Average) is a
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

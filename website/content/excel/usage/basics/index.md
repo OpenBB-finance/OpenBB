@@ -8,13 +8,45 @@ keywords:
 - Basics
 ---
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Est ante in nibh mauris cursus. Turpis cursus in hac habitasse platea dictumst quisque sagittis. Dictumst quisque sagittis purus sit amet volutpat:
+The add-in provides 2 types of custom functions:
 
-- Urna id volutpat lacus
-- Non consectetur a erat name at lectus urna duis
-- Faucibus turpis in eu mi
-- Amet massa vitae tortor condimentum
+1. **Last value**
+    - `OBB.LAST` - Returns the last value of a given symbol/field combination.
 
-## Urna id
+    Example:
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet.
+    ```excel
+    =OBB.LAST("AAPL","EBITDA")
+    ```
+
+2. **Historical data**
+    - `OBB.HIST` - Returns the historical values of a range.
+
+    Example:
+
+    ```excel
+    =OBB.HIST("AAPL","EBITDA","2020-01-01","2020-12-31")
+    ```
+
+3. **Library**
+    - `OBB.[MENU].[SUB_MENU].[COMMAND]` - Provides direct access to the OpenBB API.
+
+    Examples:
+
+    1. Getting balance sheet data for a stock:
+
+        ```excel
+        =OBB.EQUITY.FUNDAMENTAL.BALANCE("AAPL")
+        ```
+
+    2. Getting the earnings calendar:
+
+        ```excel
+        =OBB.EQUITY.CALENDAR.EARNINGS()
+        ```
+
+    3. Getting the latest news for a stock:
+
+        ```excel
+        =OBB.NEWS.COMPANY("AAPL")
+        ```

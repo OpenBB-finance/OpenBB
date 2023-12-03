@@ -40,12 +40,6 @@ Get the ticker symbol corresponding to a company's CIK.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

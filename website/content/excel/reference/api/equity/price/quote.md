@@ -83,12 +83,6 @@ Equity Quote. Load stock data for a specific ticker.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

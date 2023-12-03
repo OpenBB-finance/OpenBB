@@ -50,12 +50,6 @@ Balance Sheet. Balance sheet statement.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

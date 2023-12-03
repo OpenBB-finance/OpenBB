@@ -49,12 +49,6 @@ Consumer Price Index (CPI) Data.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

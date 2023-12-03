@@ -45,12 +45,6 @@ Historical Dividends. Historical dividends data for a given company.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

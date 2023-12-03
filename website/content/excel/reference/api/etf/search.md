@@ -44,12 +44,6 @@ Search for ETFs.  An empty query returns the full list of ETFs from the provider
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

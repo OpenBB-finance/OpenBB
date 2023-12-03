@@ -67,12 +67,6 @@ Income Statement Growth. Information about the growth of the company income stat
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

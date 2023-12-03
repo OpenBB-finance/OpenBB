@@ -42,12 +42,6 @@ Revenue Business Line. Business line revenue data.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

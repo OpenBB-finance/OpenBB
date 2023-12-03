@@ -40,12 +40,6 @@ Get lists of SEC XML schema files by year.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

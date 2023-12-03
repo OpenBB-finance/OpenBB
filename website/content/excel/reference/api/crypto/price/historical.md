@@ -56,12 +56,6 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

@@ -39,12 +39,6 @@ Get the CIK number corresponding to a ticker symbol.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

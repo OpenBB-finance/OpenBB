@@ -68,12 +68,6 @@ Cash Flow Statement Growth. Information about the growth of the company cash flo
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

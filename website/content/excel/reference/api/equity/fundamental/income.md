@@ -80,12 +80,6 @@ Income Statement. Report on a company's financial performance.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

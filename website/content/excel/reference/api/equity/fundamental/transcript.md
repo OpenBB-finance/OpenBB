@@ -38,12 +38,6 @@ Earnings Call Transcript. Earnings call transcript for a given company.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

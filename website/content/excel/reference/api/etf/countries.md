@@ -36,12 +36,6 @@ ETF Country weighting.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

@@ -47,12 +47,6 @@ Extensive set of ratios over time. Financial ratios for a given company.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

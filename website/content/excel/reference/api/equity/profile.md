@@ -68,12 +68,6 @@ Equity Info. Get general price and performance metrics of a stock.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

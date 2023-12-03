@@ -20,12 +20,6 @@ Search Intrinio data tags.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

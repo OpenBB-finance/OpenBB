@@ -78,12 +78,6 @@ Historical Analyst Estimates. Analyst stock recommendations.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

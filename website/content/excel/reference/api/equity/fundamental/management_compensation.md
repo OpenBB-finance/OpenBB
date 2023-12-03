@@ -48,12 +48,6 @@ Get Executive Compensation. Information about the executive compensation for a g
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

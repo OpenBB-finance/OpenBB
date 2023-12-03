@@ -88,12 +88,6 @@ Equity Valuation Multiples. Valuation multiples for a stock ticker.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

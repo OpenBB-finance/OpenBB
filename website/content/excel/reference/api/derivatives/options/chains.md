@@ -58,12 +58,6 @@ Get the complete options chain for a ticker.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

@@ -37,12 +37,6 @@ Share Statistics. Share statistics for a given company.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

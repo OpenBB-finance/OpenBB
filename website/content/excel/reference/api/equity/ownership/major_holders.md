@@ -58,12 +58,6 @@ Equity Ownership. Information about the company ownership.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

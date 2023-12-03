@@ -73,12 +73,6 @@ Equity Search. Search for a company or stock ticker.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

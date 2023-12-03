@@ -22,12 +22,6 @@ Get historical data by providing symbol and field tag.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

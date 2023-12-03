@@ -42,12 +42,6 @@ US Yield Curve. Get United States yield curve.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

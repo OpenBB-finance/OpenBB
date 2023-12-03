@@ -45,12 +45,6 @@ Look up institutions regulated by the SEC.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

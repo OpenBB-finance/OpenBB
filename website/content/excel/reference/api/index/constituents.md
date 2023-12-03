@@ -41,12 +41,6 @@ Index Constituents. Constituents of an index.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

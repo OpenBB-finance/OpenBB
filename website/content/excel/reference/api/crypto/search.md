@@ -43,12 +43,6 @@ Cryptocurrency Search. Search available cryptocurrency pairs.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

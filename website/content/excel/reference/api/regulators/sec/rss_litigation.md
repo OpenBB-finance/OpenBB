@@ -43,12 +43,6 @@ The RSS feed provides links to litigation releases concerning civil lawsuits bro
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

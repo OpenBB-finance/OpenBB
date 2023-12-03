@@ -43,12 +43,6 @@ ETF Sector weighting.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

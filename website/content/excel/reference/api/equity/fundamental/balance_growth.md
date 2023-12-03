@@ -71,12 +71,6 @@ Balance Sheet Statement Growth. Information about the growth of the company bala
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

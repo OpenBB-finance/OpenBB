@@ -95,12 +95,6 @@ World News. Global news data.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

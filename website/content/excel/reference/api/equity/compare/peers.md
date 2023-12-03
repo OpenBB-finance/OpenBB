@@ -45,12 +45,6 @@ Equity Peers. Company peers.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

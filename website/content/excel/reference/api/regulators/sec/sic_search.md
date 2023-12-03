@@ -45,12 +45,6 @@ Fuzzy search for Industry Titles, Reporting Office, and SIC Codes.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

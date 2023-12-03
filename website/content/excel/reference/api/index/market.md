@@ -74,12 +74,6 @@ Historical Market Indices.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

@@ -72,12 +72,6 @@ Company News. Get news for one or more companies.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

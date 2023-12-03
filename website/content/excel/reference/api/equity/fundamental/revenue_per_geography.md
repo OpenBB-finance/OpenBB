@@ -50,12 +50,6 @@ Revenue Geographic. Geographic revenue data.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

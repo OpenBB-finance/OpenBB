@@ -62,12 +62,6 @@ ICE BofA US Corporate Bond Indices.  The ICE BofA US Corporate Index tracks the 
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

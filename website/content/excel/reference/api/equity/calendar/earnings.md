@@ -50,12 +50,6 @@ Upcoming and Historical earnings calendar.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

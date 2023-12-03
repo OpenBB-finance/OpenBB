@@ -31,12 +31,6 @@ Moody Corporate Bond Index.  Moody's Aaa and Baa are investment bonds that acts 
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

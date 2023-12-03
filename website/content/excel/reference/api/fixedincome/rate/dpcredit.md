@@ -30,12 +30,6 @@ Discount Window Primary Credit Rate.  A bank rate is the interest rate a nation'
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

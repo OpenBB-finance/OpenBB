@@ -33,12 +33,6 @@ Government Treasury Auctions.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

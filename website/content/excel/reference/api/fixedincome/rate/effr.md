@@ -30,12 +30,6 @@ Fed Funds Rate.  Get Effective Federal Funds Rate data. A bank rate is the inter
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

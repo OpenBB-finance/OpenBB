@@ -63,12 +63,6 @@ Economic Calendar.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

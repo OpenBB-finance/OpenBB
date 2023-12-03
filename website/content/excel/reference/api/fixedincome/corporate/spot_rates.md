@@ -49,12 +49,6 @@ Spot Rates.  The spot rates for any maturity is the yield on a bond that provide
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

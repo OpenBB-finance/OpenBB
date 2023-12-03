@@ -44,12 +44,6 @@ Historical Employees. Historical number of employees.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

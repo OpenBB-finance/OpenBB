@@ -26,12 +26,6 @@ Available Indices. Available indices for a given provider.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

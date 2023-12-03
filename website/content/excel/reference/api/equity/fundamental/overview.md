@@ -69,12 +69,6 @@ Company Overview. General information about a company.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

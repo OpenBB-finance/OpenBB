@@ -43,12 +43,6 @@ Historical Market Risk Premium.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

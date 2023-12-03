@@ -29,12 +29,6 @@ Historical earnings-per-share for a given company.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

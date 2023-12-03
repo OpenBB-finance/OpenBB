@@ -30,12 +30,6 @@ Euro Short-Term Rate.  The euro short-term rate (€STR) reflects the wholesale 
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

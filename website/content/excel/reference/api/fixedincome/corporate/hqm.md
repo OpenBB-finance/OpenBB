@@ -40,12 +40,6 @@ High Quality Market Corporate Bond.  The HQM yield curve represents the high qua
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

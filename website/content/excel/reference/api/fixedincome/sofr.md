@@ -48,12 +48,6 @@ Secured Overnight Financing Rate.  The Secured Overnight Financing Rate (SOFR) i
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

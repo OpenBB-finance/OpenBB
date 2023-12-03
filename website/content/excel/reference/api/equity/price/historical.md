@@ -56,12 +56,6 @@ Equity Historical price. Load stock data for a specific ticker.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

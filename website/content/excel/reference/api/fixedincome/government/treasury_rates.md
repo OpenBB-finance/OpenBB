@@ -29,12 +29,6 @@ Government Treasury Rates.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

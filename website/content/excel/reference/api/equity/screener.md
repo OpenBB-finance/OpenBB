@@ -43,12 +43,6 @@ Equity Screen. Screen for companies meeting various criteria.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

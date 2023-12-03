@@ -39,12 +39,6 @@ Get the ETF holdings performance.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

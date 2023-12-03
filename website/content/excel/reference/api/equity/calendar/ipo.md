@@ -79,12 +79,6 @@ Upcoming and Historical IPO Calendar.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

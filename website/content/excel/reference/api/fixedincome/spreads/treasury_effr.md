@@ -49,12 +49,6 @@ Select Treasury Bill.  Get Selected Treasury Bill Minus Federal Funds Rate. Cons
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

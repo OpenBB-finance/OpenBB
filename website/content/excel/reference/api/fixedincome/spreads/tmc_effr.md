@@ -49,12 +49,6 @@ Select Treasury Constant Maturity.  Get data for Selected Treasury Constant Matu
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

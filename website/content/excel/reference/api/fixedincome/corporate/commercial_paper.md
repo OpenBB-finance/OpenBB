@@ -50,12 +50,6 @@ Commercial Paper.  Commercial paper (CP) consists of short-term, promissory note
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

@@ -48,12 +48,6 @@ ETF Information Overview.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

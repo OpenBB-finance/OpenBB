@@ -54,12 +54,6 @@ Currency Historical Price. Currency historical data.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

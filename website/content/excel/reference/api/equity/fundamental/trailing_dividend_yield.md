@@ -28,12 +28,6 @@ Trailing 1yr dividend yield.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

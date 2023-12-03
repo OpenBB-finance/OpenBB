@@ -20,12 +20,6 @@ Fetch the latest value of a data tag from Intrinio.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

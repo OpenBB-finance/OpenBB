@@ -30,12 +30,6 @@ Ameribor.  Ameribor (short for the American interbank offered rate) is a benchma
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |

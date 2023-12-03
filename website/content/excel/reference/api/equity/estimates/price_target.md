@@ -43,12 +43,6 @@ Price Target. Price target data.
 
 ---
 
-## Return Type
-
-* matrix
-
----
-
 ## Return Data
 
 | Name | Description |
