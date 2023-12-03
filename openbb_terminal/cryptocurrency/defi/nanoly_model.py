@@ -1,4 +1,4 @@
-"""Coindix model"""
+"""nanoly model"""
 __docformat__ = "numpy"
 
 import logging
@@ -86,7 +86,7 @@ VAULT_KINDS = [
 
 @log_start_end(log=logger)
 def _prepare_params(**kwargs) -> dict:
-    """Helper method, which handles preparation of parameters for requests to coindix api.
+    """Helper method, which handles preparation of parameters for requests to nanoly api.
 
     Parameters
     ----------
@@ -148,7 +148,7 @@ def get_defi_vaults(
         "https://api.nanoly.com/search", headers=headers, params=params, verify=False
     )
     if not 200 <= response.status_code < 300:
-        raise Exception(f"Coindix api exception: {response.text}")
+        raise Exception(f"nanoly api exception: {response.text}")
 
     try:
         data = response.json()["data"]

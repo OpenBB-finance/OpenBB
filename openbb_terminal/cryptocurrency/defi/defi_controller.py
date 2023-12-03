@@ -9,8 +9,8 @@ from typing import List, Optional
 
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.defi import (
-    coindix_model,
-    coindix_view,
+    nanoly_model,
+    nanoly_view,
     cryptosaurio_view,
     llama_model,
     llama_view,
@@ -558,7 +558,7 @@ class DefiController(BaseController):
             type=str,
             help="Blockchain name e.g. ethereum, terra",
             default=None,
-            choices=coindix_model.CHAINS,
+            choices=nanoly_model.CHAINS,
             required=False,
         )
         parser.add_argument(
@@ -568,7 +568,7 @@ class DefiController(BaseController):
             type=str,
             help="DeFi protocol name e.g. aave, uniswap",
             default=None,
-            choices=coindix_model.PROTOCOLS,
+            choices=nanoly_model.PROTOCOLS,
             required=False,
         )
         parser.add_argument(
@@ -578,7 +578,7 @@ class DefiController(BaseController):
             type=str,
             help="Kind/type of vault e.g. lp, single, noimploss, stable",
             default=None,
-            choices=coindix_model.VAULT_KINDS,
+            choices=nanoly_model.VAULT_KINDS,
             required=False,
         )
         parser.add_argument(
@@ -598,7 +598,7 @@ class DefiController(BaseController):
             type=str,
             help="Sort by given column. Default: timestamp",
             default="apy",
-            choices=coindix_model.VAULTS_FILTERS,
+            choices=nanoly_model.VAULTS_FILTERS,
         )
         parser.add_argument(
             "-r",
@@ -625,7 +625,7 @@ class DefiController(BaseController):
         )
 
         if ns_parser:
-            coindix_view.display_defi_vaults(
+            nanoly_view.display_defi_vaults(
                 chain=ns_parser.chain,
                 kind=ns_parser.kind,
                 protocol=ns_parser.protocol,
