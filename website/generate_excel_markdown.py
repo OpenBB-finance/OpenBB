@@ -264,7 +264,10 @@ class Editor:
             return "/".join([*md.parts[ref:-1], md.stem])
 
         def get_cards(
-            folder: str, files: list, command: bool, section: str = ""
+            folder: str,
+            files: list,
+            command: bool,
+            section: str = "",
         ) -> str:
             """Generate the cards for a section."""
 
@@ -272,6 +275,8 @@ class Editor:
                 content = section
                 content += OPEN_UL
                 for file in files:
+                    t = file.stem
+                    title = t if t != self.cmds_folder else t.title()
                     if command:
                         p = (
                             self.cmds_folder
@@ -287,7 +292,7 @@ class Editor:
                     else:
                         description = ", ".join([s.stem for s in file.rglob("*")])
                     content += get_card(
-                        title=file.stem,
+                        title=title,
                         description=description,
                         url=filter_path(file.parts.index(folder), file),
                         command=command,
@@ -304,9 +309,20 @@ class Editor:
 
             ### Main folder
             if folder == self.main_folder:
-                content += get_cards(
-                    folder=folder, files=list(path.glob("*")), command=True
+                files = list(path.glob("*"))
+                # Put the cmds_folder folder at the end
+                index = next(
+                    (
+                        i
+                        for i, path in enumerate(files)
+                        if path.stem == self.cmds_folder
+                    ),
+                    None,
                 )
+                if index is not None:
+                    cmd_folder = files.pop(index)
+                    files.append(cmd_folder)
+                content += get_cards(folder=folder, files=files, command=True)
                 return content
 
             ### Menus
