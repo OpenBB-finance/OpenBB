@@ -273,7 +273,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         (
             "call_vaults",
             [],
-            "coindix_view.display_defi_vaults",
+            "nanoly_view.display_defi_vaults",
             [],
             dict(),
         ),
