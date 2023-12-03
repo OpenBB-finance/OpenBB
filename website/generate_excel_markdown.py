@@ -376,6 +376,6 @@ if __name__ == "__main__":
         directory=CONTENT_PATH,
         interface="excel",
         main_folder="reference",
-        cmds_folder="api",
+        cmds_folder="library",
         cmd_lib=CommandLib(),
     ).go()
