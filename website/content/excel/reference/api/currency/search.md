@@ -46,6 +46,8 @@ keywords:
 
 Currency Search. Search available currency pairs.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.CURRENCY.SEARCH(required, [optional])
 ```
@@ -65,7 +67,15 @@ Currency Search. Search available currency pairs.
 | sort | Text | Sort field used for ordering. (provider: polygon) | True |
 | limit | Number | The number of data entries to return. (provider: polygon) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

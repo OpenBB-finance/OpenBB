@@ -62,6 +62,8 @@ keywords:
 
 Institutional Ownership. Institutional ownership data.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.OWNERSHIP.INSTITUTIONAL(required, [optional])
 ```
@@ -78,7 +80,15 @@ Institutional Ownership. Institutional ownership data.
 | date | Text | A specific date to get data for. (provider: fmp) | True |
 | page_size | Number | The number of data entries to return. (provider: intrinio) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

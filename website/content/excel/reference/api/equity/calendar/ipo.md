@@ -56,6 +56,8 @@ keywords:
 
 Upcoming and Historical IPO Calendar.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.CALENDAR.IPO(required, [optional])
 ```
@@ -75,7 +77,15 @@ Upcoming and Historical IPO Calendar.
 | offer_amount_greater_than | Number | Return IPOs with an offer dollar amount greater than the given amount. (provider: intrinio) | True |
 | offer_amount_less_than | Number | Return IPOs with an offer dollar amount less than the given amount. (provider: intrinio) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

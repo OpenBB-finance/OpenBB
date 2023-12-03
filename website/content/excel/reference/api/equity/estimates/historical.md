@@ -59,6 +59,8 @@ keywords:
 
 Historical Analyst Estimates. Analyst stock recommendations.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.ESTIMATES.HISTORICAL(required, [optional])
 ```
@@ -74,7 +76,15 @@ Historical Analyst Estimates. Analyst stock recommendations.
 | period | Text | Time period of the data to return. | True |
 | limit | Number | The number of data entries to return. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

@@ -11,6 +11,8 @@ keywords:
 
 Ameribor.  Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the American Financial Exchange (AFX).
 
+## Syntax
+
 ```excel wordwrap
 =OBB.FIXEDINCOME.RATE.AMERIBOR(required, [optional])
 ```
@@ -26,7 +28,15 @@ Ameribor.  Ameribor (short for the American interbank offered rate) is a benchma
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
 | parameter | Text | Period of AMERIBOR rate. (provider: fred) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

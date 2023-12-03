@@ -36,6 +36,8 @@ keywords:
 
 Insider Trading. Information about insider trading.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.OWNERSHIP.INSIDER_TRADING(required, [optional])
 ```
@@ -55,7 +57,15 @@ Insider Trading. Information about insider trading.
 | ownership_type | Text | Type of ownership. (provider: intrinio) | True |
 | sort_by | Text | Field to sort by. (provider: intrinio) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

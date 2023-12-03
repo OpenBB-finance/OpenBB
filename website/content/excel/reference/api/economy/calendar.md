@@ -42,6 +42,8 @@ keywords:
 
 Economic Calendar.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.ECONOMY.CALENDAR(required, [optional])
 ```
@@ -59,7 +61,15 @@ Economic Calendar.
 | importance | Text | Importance of the event. (provider: tradingeconomics) | True |
 | group | Text | Grouping of events (provider: tradingeconomics) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

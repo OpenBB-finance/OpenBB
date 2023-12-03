@@ -31,6 +31,8 @@ keywords:
 
 Get the complete options chain for a ticker.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.DERIVATIVES.OPTIONS.UNUSUAL(required, [optional])
 ```
@@ -45,7 +47,15 @@ Get the complete options chain for a ticker.
 | symbol | Text | Symbol to get data for. (the underlying symbol) | True |
 | source | Text | The source of the data. Either realtime or delayed. (provider: intrinio) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

@@ -70,6 +70,8 @@ keywords:
 
 Equity Valuation Multiples. Valuation multiples for a stock ticker.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.MULTIPLES(required, [optional])
 ```
@@ -84,7 +86,15 @@ Equity Valuation Multiples. Valuation multiples for a stock ticker.
 | provider | Text | Options: fmp | True |
 | limit | Number | The number of data entries to return. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

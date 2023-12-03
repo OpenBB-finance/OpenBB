@@ -27,6 +27,8 @@ keywords:
 
 Historical Market Risk Premium.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.ECONOMY.RISK_PREMIUM(required, [optional])
 ```
@@ -39,7 +41,15 @@ Historical Market Risk Premium.
 | ---- | ---- | ----------- | -------- |
 | provider | Text | Options: fmp | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

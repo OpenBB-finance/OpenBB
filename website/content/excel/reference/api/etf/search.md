@@ -25,6 +25,8 @@ keywords:
 
 Search for ETFs.  An empty query returns the full list of ETFs from the provider.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.ETF.SEARCH(required, [optional])
 ```
@@ -40,7 +42,15 @@ Search for ETFs.  An empty query returns the full list of ETFs from the provider
 | exchange | Text | The exchange code the ETF trades on. (provider: fmp) | True |
 | is_active | Boolean | Whether the ETF is actively trading. (provider: fmp) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

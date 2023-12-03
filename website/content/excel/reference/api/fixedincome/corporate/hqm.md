@@ -22,6 +22,8 @@ keywords:
 
 High Quality Market Corporate Bond.  The HQM yield curve represents the high quality corporate bond market, i.e., corporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms. These terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve that is the market-weighted average (MWA) quality of high quality bonds.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.FIXEDINCOME.CORPORATE.HQM(required, [optional])
 ```
@@ -36,7 +38,15 @@ High Quality Market Corporate Bond.  The HQM yield curve represents the high qua
 | date | Text | A specific date to get data for. | True |
 | yield_curve | Text | The yield curve type. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

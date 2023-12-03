@@ -20,6 +20,8 @@ keywords:
 
 Share Statistics. Share statistics for a given company.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.OWNERSHIP.SHARE_STATISTICS(required, [optional])
 ```
@@ -33,7 +35,15 @@ Share Statistics. Share statistics for a given company.
 | symbol | Text | Symbol to get data for. | False |
 | provider | Text | Options: fmp, intrinio | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

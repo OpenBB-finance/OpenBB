@@ -40,6 +40,8 @@ keywords:
 
 Get the complete options chain for a ticker.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.DERIVATIVES.OPTIONS.CHAINS(required, [optional])
 ```
@@ -54,7 +56,15 @@ Get the complete options chain for a ticker.
 | provider | Text | Options: intrinio | True |
 | date | Text | Date for which the options chains are returned. (provider: intrinio) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

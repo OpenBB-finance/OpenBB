@@ -23,6 +23,8 @@ keywords:
 
 Get the ticker symbol corresponding to a company's CIK.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.REGULATORS.SEC.SYMBOL_MAP(required, [optional])
 ```
@@ -36,7 +38,15 @@ Get the ticker symbol corresponding to a company's CIK.
 | provider | Text | Options: sec | True |
 | query | Text | Search query. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

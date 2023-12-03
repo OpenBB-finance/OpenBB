@@ -29,6 +29,8 @@ keywords:
 
 Equity Historical price. Load stock data for a specific ticker.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.PRICE.HISTORICAL(required, [optional])
 ```
@@ -52,7 +54,15 @@ Equity Historical price. Load stock data for a specific ticker.
 | sort | Text | Sort order of the data. (provider: polygon) | True |
 | adjusted | Boolean | Output time series is adjusted by historical split and dividend events. (provider: polygon) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

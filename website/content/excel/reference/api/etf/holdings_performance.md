@@ -22,6 +22,8 @@ keywords:
 
 Get the ETF holdings performance.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.ETF.HOLDINGS_PERFORMANCE(required, [optional])
 ```
@@ -35,7 +37,15 @@ Get the ETF holdings performance.
 | symbol | Text | Symbol to get data for. | False |
 | provider | Text | Options: fmp | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

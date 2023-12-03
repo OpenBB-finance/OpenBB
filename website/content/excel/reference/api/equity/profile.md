@@ -51,6 +51,8 @@ keywords:
 
 Equity Info. Get general price and performance metrics of a stock.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.PROFILE(required, [optional])
 ```
@@ -64,7 +66,15 @@ Equity Info. Get general price and performance metrics of a stock.
 | symbol | Text | Symbol to get data for. | False |
 | provider | Text | Options: intrinio | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

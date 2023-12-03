@@ -2,6 +2,8 @@
 
 Search Intrinio data tags.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES(required, [optional])
 ```
@@ -16,7 +18,15 @@ Search Intrinio data tags.
 | provider | Text | Options: intrinio | True |
 | limit | Number | The number of data entries to return. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

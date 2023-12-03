@@ -27,6 +27,8 @@ keywords:
 
 Extensive set of ratios over time. Financial ratios for a given company.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.RATIOS(required, [optional])
 ```
@@ -43,7 +45,15 @@ Extensive set of ratios over time. Financial ratios for a given company.
 | limit | Number | The number of data entries to return. | True |
 | with_ttm | Boolean | Include trailing twelve months (TTM) data. (provider: fmp) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

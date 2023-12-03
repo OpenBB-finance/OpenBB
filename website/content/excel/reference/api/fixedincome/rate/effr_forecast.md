@@ -11,6 +11,8 @@ keywords:
 
 Fed Funds Rate Projections.  The projections for the federal funds rate are the value of the midpoint of the projected appropriate target range for the federal funds rate or the projected appropriate target level for the federal funds rate at the end of the specified calendar year or over the longer run.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.FIXEDINCOME.RATE.EFFR_FORECAST(required, [optional])
 ```
@@ -24,7 +26,15 @@ Fed Funds Rate Projections.  The projections for the federal funds rate are the 
 | provider | Text | Options: fred | True |
 | long_run | Boolean | Flag to show long run projections (provider: fred) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

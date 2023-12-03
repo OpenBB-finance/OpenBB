@@ -26,6 +26,8 @@ keywords:
 
 ETF Sector weighting.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.ETF.SECTORS(required, [optional])
 ```
@@ -39,7 +41,15 @@ ETF Sector weighting.
 | symbol | Text | Symbol to get data for. (ETF) | False |
 | provider | Text | Options: fmp | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

@@ -27,6 +27,8 @@ keywords:
 
 Look up institutions regulated by the SEC.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.REGULATORS.SEC.INSTITUTIONS_SEARCH(required, [optional])
 ```
@@ -41,7 +43,15 @@ Look up institutions regulated by the SEC.
 | query | Text | Search query. | True |
 | use_cache | Boolean | Whether or not to use cache. If True, cache will store for seven days. (provider: sec) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

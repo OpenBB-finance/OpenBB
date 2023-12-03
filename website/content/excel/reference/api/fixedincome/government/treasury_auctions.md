@@ -11,6 +11,8 @@ keywords:
 
 Government Treasury Auctions.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.FIXEDINCOME.GOVERNMENT.TREASURY_AUCTIONS(required, [optional])
 ```
@@ -29,7 +31,15 @@ Government Treasury Auctions.
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. The default is 90 days ago. | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. The default is today. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

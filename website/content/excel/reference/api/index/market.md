@@ -46,6 +46,8 @@ keywords:
 
 Historical Market Indices.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.INDEX.MARKET(required, [optional])
 ```
@@ -70,7 +72,15 @@ Historical Market Indices.
 | adjusted | Boolean | Whether the data is adjusted. (provider: polygon) | True |
 | multiplier | Number | Multiplier of the timespan. (provider: polygon) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

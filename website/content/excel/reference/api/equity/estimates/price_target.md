@@ -25,6 +25,8 @@ keywords:
 
 Price Target. Price target data.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.ESTIMATES.PRICE_TARGET(required, [optional])
 ```
@@ -39,7 +41,15 @@ Price Target. Price target data.
 | provider | Text | Options: fmp | True |
 | with_grade | Boolean | Include upgrades and downgrades in the response. (provider: fmp) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

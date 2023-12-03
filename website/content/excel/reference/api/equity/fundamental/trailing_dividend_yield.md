@@ -11,6 +11,8 @@ keywords:
 
 Trailing 1yr dividend yield.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD(required, [optional])
 ```
@@ -24,7 +26,15 @@ Trailing 1yr dividend yield.
 | provider | Text | Options: tiingo | True |
 | symbol | Text | Symbol to get data for. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

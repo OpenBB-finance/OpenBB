@@ -26,6 +26,8 @@ keywords:
 
 Historical Splits. Historical splits data.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS(required, [optional])
 ```
@@ -39,7 +41,15 @@ Historical Splits. Historical splits data.
 | symbol | Text | Symbol to get data for. | False |
 | provider | Text | Options: fmp | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

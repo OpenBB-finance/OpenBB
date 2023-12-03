@@ -10,6 +10,8 @@ keywords:
 
 Equity Screen. Screen for companies meeting various criteria.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.SCREENER(required, [optional])
 ```
@@ -39,7 +41,15 @@ Equity Screen. Screen for companies meeting various criteria.
 | exchange | Text | Filter by exchange. (provider: fmp) | True |
 | limit | Number | Limit the number of results to return. (provider: fmp) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

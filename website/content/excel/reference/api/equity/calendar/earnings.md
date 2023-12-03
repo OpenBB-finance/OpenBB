@@ -32,6 +32,8 @@ keywords:
 
 Upcoming and Historical earnings calendar.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.CALENDAR.EARNINGS(required, [optional])
 ```
@@ -46,7 +48,15 @@ Upcoming and Historical earnings calendar.
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

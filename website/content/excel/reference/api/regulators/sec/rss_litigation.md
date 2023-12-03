@@ -27,6 +27,8 @@ keywords:
 
 The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.REGULATORS.SEC.RSS_LITIGATION(required, [optional])
 ```
@@ -39,7 +41,15 @@ The RSS feed provides links to litigation releases concerning civil lawsuits bro
 | ---- | ---- | ----------- | -------- |
 | provider | Text | Options: sec | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

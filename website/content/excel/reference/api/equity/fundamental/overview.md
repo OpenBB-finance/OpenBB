@@ -52,6 +52,8 @@ keywords:
 
 Company Overview. General information about a company.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.OVERVIEW(required, [optional])
 ```
@@ -65,7 +67,15 @@ Company Overview. General information about a company.
 | symbol | Text | Symbol to get data for. | False |
 | provider | Text | Options: fmp | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

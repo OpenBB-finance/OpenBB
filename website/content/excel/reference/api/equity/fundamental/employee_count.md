@@ -27,6 +27,8 @@ keywords:
 
 Historical Employees. Historical number of employees.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT(required, [optional])
 ```
@@ -40,7 +42,15 @@ Historical Employees. Historical number of employees.
 | symbol | Text | Symbol to get data for. | False |
 | provider | Text | Options: fmp | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

@@ -2,6 +2,8 @@
 
 Fetch the latest value of a data tag from Intrinio.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES(required, [optional])
 ```
@@ -16,7 +18,15 @@ Fetch the latest value of a data tag from Intrinio.
 | tag | Text | Intrinio data tag ID or code. | False |
 | provider | Text | Options: intrinio | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

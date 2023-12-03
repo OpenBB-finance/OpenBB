@@ -24,6 +24,8 @@ keywords:
 
 Price Target Consensus. Price target consensus data.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.ESTIMATES.CONSENSUS(required, [optional])
 ```
@@ -37,7 +39,15 @@ Price Target Consensus. Price target consensus data.
 | symbol | Text | Symbol to get data for. | False |
 | provider | Text | Options: fmp | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

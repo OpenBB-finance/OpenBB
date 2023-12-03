@@ -2,6 +2,8 @@
 
 Get historical data by providing symbol and field tag.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.HIST(required, [optional])
 ```
@@ -18,7 +20,15 @@ Get historical data by providing symbol and field tag.
 | end_date | Text | End date of the data, in YYYY-MM-DD format, defaults to today. | True |
 | frequency | Text | The frequency of the data, can be 'yearly' or 'quarterly', defaults to 'yearly'. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

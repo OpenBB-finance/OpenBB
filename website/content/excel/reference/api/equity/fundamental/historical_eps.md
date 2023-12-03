@@ -11,6 +11,8 @@ keywords:
 
 Historical earnings-per-share for a given company.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS(required, [optional])
 ```
@@ -25,7 +27,15 @@ Historical earnings-per-share for a given company.
 | provider | Text | Options: fmp | True |
 | limit | Number | The number of data entries to return. (provider: fmp) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

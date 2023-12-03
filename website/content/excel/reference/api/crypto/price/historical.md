@@ -29,6 +29,8 @@ keywords:
 
 Cryptocurrency Historical Price. Cryptocurrency historical price data.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.CRYPTO.PRICE.HISTORICAL(required, [optional])
 ```
@@ -52,7 +54,15 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 | adjusted | Boolean | Whether the data is adjusted. (provider: polygon) | True |
 | exchanges | Any | To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX'] (provider: tiingo) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

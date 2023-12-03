@@ -11,6 +11,8 @@ keywords:
 
 Government Treasury Rates.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.FIXEDINCOME.GOVERNMENT.TREASURY_RATES(required, [optional])
 ```
@@ -25,7 +27,15 @@ Government Treasury Rates.
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

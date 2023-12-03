@@ -19,6 +19,8 @@ keywords:
 
 ETF Country weighting.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.ETF.COUNTRIES(required, [optional])
 ```
@@ -32,7 +34,15 @@ ETF Country weighting.
 | symbol | Text | Symbol to get data for. (ETF) | False |
 | provider | Text | Options: fmp | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

@@ -28,6 +28,8 @@ keywords:
 
 Historical Dividends. Historical dividends data for a given company.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.DIVIDENDS(required, [optional])
 ```
@@ -41,7 +43,15 @@ Historical Dividends. Historical dividends data for a given company.
 | symbol | Text | Symbol to get data for. | False |
 | provider | Text | Options: fmp | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

@@ -27,6 +27,8 @@ keywords:
 
 Consumer Price Index (CPI) Data.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.ECONOMY.CPI(required, [optional])
 ```
@@ -45,7 +47,15 @@ Consumer Price Index (CPI) Data.
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

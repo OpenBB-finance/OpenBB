@@ -17,6 +17,8 @@ keywords:
 
 Balance Sheet. Balance sheet statement.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.BALANCE(required, [optional])
 ```
@@ -46,7 +48,15 @@ Balance Sheet. Balance sheet statement.
 | order | Text | Order of the financial statement. (provider: polygon) | True |
 | sort | Text | Sort of the financial statement. (provider: polygon) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

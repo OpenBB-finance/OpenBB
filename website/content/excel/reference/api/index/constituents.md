@@ -24,6 +24,8 @@ keywords:
 
 Index Constituents. Constituents of an index.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.INDEX.CONSTITUENTS(required, [optional])
 ```
@@ -37,7 +39,15 @@ Index Constituents. Constituents of an index.
 | provider | Text | Options: fmp | True |
 | index | Text | Index for which we want to fetch the constituents. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

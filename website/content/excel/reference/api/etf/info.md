@@ -31,6 +31,8 @@ keywords:
 
 ETF Information Overview.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.ETF.INFO(required, [optional])
 ```
@@ -44,7 +46,15 @@ ETF Information Overview.
 | symbol | Text | Symbol to get data for. (ETF) | False |
 | provider | Text | Options: fmp | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

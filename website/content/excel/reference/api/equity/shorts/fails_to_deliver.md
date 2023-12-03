@@ -22,6 +22,8 @@ keywords:
 
 Get reported Fail-to-deliver (FTD) data.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.SHORTS.FAILS_TO_DELIVER(required, [optional])
 ```
@@ -37,7 +39,15 @@ Get reported Fail-to-deliver (FTD) data.
 | limit | Number | Limit the number of reports to parse, from most recent. Approximately 24 reports per year, going back to 2009. (provider: sec) | True |
 | skip_reports | Number | Skip N number of reports from current. A value of 1 will skip the most recent report. (provider: sec) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

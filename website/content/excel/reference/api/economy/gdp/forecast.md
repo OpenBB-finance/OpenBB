@@ -11,6 +11,8 @@ keywords:
 
 Forecasted GDP Data.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.ECONOMY.GDP.FORECAST(required, [optional])
 ```
@@ -28,7 +30,15 @@ Forecasted GDP Data.
 | type | Text | Type of GDP to get forecast of. Either nominal or real. | True |
 | country | Text | Country to get GDP for. (provider: oecd) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

@@ -35,6 +35,8 @@ keywords:
 
 Price performance as a return, over different periods.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.PRICE.PERFORMANCE(required, [optional])
 ```
@@ -48,7 +50,15 @@ Price performance as a return, over different periods.
 | symbol | Text | Symbol to get data for. | False |
 | provider | Text | Options: fmp | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

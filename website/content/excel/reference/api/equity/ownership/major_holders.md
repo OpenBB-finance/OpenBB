@@ -39,6 +39,8 @@ keywords:
 
 Equity Ownership. Information about the company ownership.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.OWNERSHIP.MAJOR_HOLDERS(required, [optional])
 ```
@@ -54,7 +56,15 @@ Equity Ownership. Information about the company ownership.
 | date | Text | A specific date to get data for. | True |
 | page | Number | Page number of the data to fetch. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

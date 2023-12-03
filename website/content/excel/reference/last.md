@@ -2,6 +2,8 @@
 
 Get latest data point by providing symbol and field tag.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.LAST(required, [optional])
 ```
@@ -15,7 +17,15 @@ Get latest data point by providing symbol and field tag.
 | symbol | Text | Symbol to get data for, e.g. 'AAPL'. | False |
 | field | Text | Field to get data for, e.g. 'ebitda'. | False |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

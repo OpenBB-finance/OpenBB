@@ -47,6 +47,8 @@ keywords:
 
 Income Statement. Report on a company's financial performance.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.INCOME(required, [optional])
 ```
@@ -76,7 +78,15 @@ Income Statement. Report on a company's financial performance.
 | order | Text | Order of the financial statement. (provider: polygon) | True |
 | sort | Text | Sort of the financial statement. (provider: polygon) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

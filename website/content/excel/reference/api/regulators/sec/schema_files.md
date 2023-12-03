@@ -22,6 +22,8 @@ keywords:
 
 Get lists of SEC XML schema files by year.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.REGULATORS.SEC.SCHEMA_FILES(required, [optional])
 ```
@@ -36,7 +38,15 @@ Get lists of SEC XML schema files by year.
 | query | Text | Search query. | True |
 | url | Text | Enter an optional URL path to fetch the next level. (provider: sec) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

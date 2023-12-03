@@ -29,6 +29,8 @@ keywords:
 
 Secured Overnight Financing Rate.  The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of borrowing cash overnight collateralizing by Treasury securities.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.FIXEDINCOME.SOFR(required, [optional])
 ```
@@ -44,7 +46,15 @@ Secured Overnight Financing Rate.  The Secured Overnight Financing Rate (SOFR) i
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
 | period | Text | Period of SOFR rate. (provider: fred) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

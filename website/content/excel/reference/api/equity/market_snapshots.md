@@ -28,6 +28,8 @@ keywords:
 
 Get a current, complete, market snapshot.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.MARKET_SNAPSHOTS(required, [optional])
 ```
@@ -41,7 +43,15 @@ Get a current, complete, market snapshot.
 | provider | Text | Options: fmp, polygon | True |
 | market | Text | The market to fetch data for. (provider: fmp) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

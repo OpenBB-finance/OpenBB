@@ -20,6 +20,8 @@ keywords:
 
 Earnings Call Transcript. Earnings call transcript for a given company.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT(required, [optional])
 ```
@@ -34,7 +36,15 @@ Earnings Call Transcript. Earnings call transcript for a given company.
 | year | Number | Year of the earnings call transcript. | False |
 | provider | Text | Options: fmp | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

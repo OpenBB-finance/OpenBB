@@ -11,6 +11,8 @@ keywords:
 
 Nominal GDP Data.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.ECONOMY.GDP.NOMINAL(required, [optional])
 ```
@@ -27,7 +29,15 @@ Nominal GDP Data.
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
 | country | Text | Country to get GDP for. (provider: oecd) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

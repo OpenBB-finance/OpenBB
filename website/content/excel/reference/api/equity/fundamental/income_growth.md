@@ -48,6 +48,8 @@ keywords:
 
 Income Statement Growth. Information about the growth of the company income statement.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.INCOME_GROWTH(required, [optional])
 ```
@@ -63,7 +65,15 @@ Income Statement Growth. Information about the growth of the company income stat
 | limit | Number | The number of data entries to return. | True |
 | period | Text | Time period of the data to return. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

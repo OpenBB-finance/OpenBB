@@ -10,6 +10,8 @@ keywords:
 
 Available Indices. Available indices for a given provider.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.INDEX.AVAILABLE(required, [optional])
 ```
@@ -22,7 +24,15 @@ Available Indices. Available indices for a given provider.
 | ---- | ---- | ----------- | -------- |
 | provider | Text | Options: fmp | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

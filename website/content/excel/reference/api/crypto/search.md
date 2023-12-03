@@ -26,6 +26,8 @@ keywords:
 
 Cryptocurrency Search. Search available cryptocurrency pairs.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.CRYPTO.SEARCH(required, [optional])
 ```
@@ -39,7 +41,15 @@ Cryptocurrency Search. Search available cryptocurrency pairs.
 | provider | Text | Options: fmp | True |
 | query | Text | Search query. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

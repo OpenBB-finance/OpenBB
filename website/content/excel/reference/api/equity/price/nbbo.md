@@ -41,6 +41,8 @@ keywords:
 
 Equity NBBO. Load National Best Bid and Offer for a specific equity.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.PRICE.NBBO(required, [optional])
 ```
@@ -60,7 +62,15 @@ Equity NBBO. Load National Best Bid and Offer for a specific equity.
 | timestamp_lte | Text | Query by datetime, less than or equal to. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string, YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour. (provider: polygon) | True |
 | timestamp_gte | Text | Query by datetime, greater than or equal to. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string, YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour. (provider: polygon) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

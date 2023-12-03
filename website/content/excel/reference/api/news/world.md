@@ -63,6 +63,8 @@ keywords:
 
 World News. Global news data.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.NEWS.WORLD(required, [optional])
 ```
@@ -91,7 +93,15 @@ World News. Global news data.
 | content_types | Text | Content types of the news to retrieve. (provider: benzinga) | True |
 | source | Text | A comma-separated list of the domains requested. (provider: tiingo) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

@@ -32,6 +32,8 @@ keywords:
 
 Upcoming and Historical Dividend Calendar.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.CALENDAR.DIVIDEND(required, [optional])
 ```
@@ -48,7 +50,15 @@ Upcoming and Historical Dividend Calendar.
 | symbol | Text | Symbol to get data for. (provider: intrinio) | True |
 | page_size | Number | The number of data entries to return. (provider: intrinio) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

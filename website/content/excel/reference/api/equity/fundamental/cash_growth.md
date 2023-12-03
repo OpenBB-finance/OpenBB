@@ -50,6 +50,8 @@ keywords:
 
 Cash Flow Statement Growth. Information about the growth of the company cash flow statement.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.CASH_GROWTH(required, [optional])
 ```
@@ -64,7 +66,15 @@ Cash Flow Statement Growth. Information about the growth of the company cash flo
 | provider | Text | Options: fmp | True |
 | limit | Number | The number of data entries to return. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

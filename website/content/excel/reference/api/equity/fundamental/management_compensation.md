@@ -31,6 +31,8 @@ keywords:
 
 Get Executive Compensation. Information about the executive compensation for a given company.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION(required, [optional])
 ```
@@ -44,7 +46,15 @@ Get Executive Compensation. Information about the executive compensation for a g
 | symbol | Text | Symbol to get data for. | False |
 | provider | Text | Options: fmp | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

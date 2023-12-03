@@ -38,6 +38,8 @@ keywords:
 
 Company Filings. Company filings data.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.FILINGS(required, [optional])
 ```
@@ -58,7 +60,15 @@ Company Filings. Company filings data.
 | cik | Any | Lookup filings by Central Index Key (CIK) instead of by symbol. (provider: sec) | True |
 | use_cache | Boolean | Whether or not to use cache.  If True, cache will store for one day. (provider: sec) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

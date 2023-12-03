@@ -27,6 +27,8 @@ keywords:
 
 Fuzzy search for Industry Titles, Reporting Office, and SIC Codes.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.REGULATORS.SEC.SIC_SEARCH(required, [optional])
 ```
@@ -41,7 +43,15 @@ Fuzzy search for Industry Titles, Reporting Office, and SIC Codes.
 | query | Text | Search query. | True |
 | use_cache | Boolean | Whether to use the cache or not. The full list will be cached for seven days if True. (provider: sec) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

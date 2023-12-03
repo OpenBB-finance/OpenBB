@@ -37,6 +37,8 @@ keywords:
 
 Company News. Get news for one or more companies.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.NEWS.COMPANY(required, [optional])
 ```
@@ -68,7 +70,15 @@ Company News. Get news for one or more companies.
 | published_utc | Text | Date query to fetch articles. Supports operators <, <=, >, >= (provider: polygon) | True |
 | source | Text | A comma-separated list of the domains requested. (provider: tiingo) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

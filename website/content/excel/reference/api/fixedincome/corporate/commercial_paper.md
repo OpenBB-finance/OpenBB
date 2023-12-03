@@ -29,6 +29,8 @@ keywords:
 
 Commercial Paper.  Commercial paper (CP) consists of short-term, promissory notes issued primarily by corporations. Maturities range up to 270 days but average about 30 days. Many companies use CP to raise cash needed for current transactions, and many find it to be a lower-cost alternative to bank loans.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER(required, [optional])
 ```
@@ -46,7 +48,15 @@ Commercial Paper.  Commercial paper (CP) consists of short-term, promissory note
 | category | Text | The category. | True |
 | grade | Text | The grade. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

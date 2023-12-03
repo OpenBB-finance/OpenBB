@@ -11,6 +11,8 @@ keywords:
 
 Get the most-recent filings submitted to the SEC.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.DISCOVERY.FILINGS(required, [optional])
 ```
@@ -28,7 +30,15 @@ Get the most-recent filings submitted to the SEC.
 | limit | Number | The number of data entries to return. | True |
 | isDone | Boolean | Flag for whether or not the filing is done. (provider: fmp) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

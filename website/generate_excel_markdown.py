@@ -113,13 +113,16 @@ class CommandLib(PathHandler):
         if not name:
             return {}
         description = self.xl_funcs[cmd].get("description", "").replace("\n", " ")
-        signature_ = "=OBB." + self.xl_funcs[cmd].get("name", "")
-        signature_ += "(required, [optional])"
+        signature_ = (
+            "=OBB." + self.xl_funcs[cmd].get("name", "") + "(required, [optional])"
+        )
+        return_ = self.xl_funcs[cmd].get("result", {}).get("dimensionality", "")
         if model_name := self.get_model(cmd):
             return {
                 "name": name,
                 "description": description,
                 "signature": signature_,
+                "return": return_,
                 "model_name": model_name,
             }
         return {}
@@ -189,13 +192,13 @@ class Editor:
             description += "\n\n"
             return description
 
-        def get_signature() -> str:
-            func_def = cmd_info["signature"]
-            signature_ = f"```{self.interface} wordwrap\n"
-            signature_ += f"{func_def}\n"
-            signature_ += "```\n\n"
-            signature_ += "---\n\n"
-            return signature_
+        def get_sintax() -> str:
+            sig = cmd_info["signature"]
+            syntax = "## Syntax\n\n"
+            syntax += f"```{self.interface} wordwrap\n"
+            syntax += f"{sig}\n"
+            syntax += "```\n\n"
+            return syntax
 
         def get_parameters() -> str:
             parameters = "## Parameters\n\n"
@@ -210,8 +213,14 @@ class Editor:
             parameters += "\n"
             return parameters
 
-        def get_data() -> str:
-            data = "## Data\n\n"
+        def get_return_type() -> str:
+            ret = cmd_info["return"]
+            return_ = "## Return Type\n\n"
+            return_ += f"* {ret}\n\n"
+            return return_
+
+        def get_return_data() -> str:
+            data = "## Return Data\n\n"
             data += "| Name | Description |\n"
             data += "| ---- | ----------- |\n"
             for field_name, field_info in self.cmd_lib.get_data(cmd).items():
@@ -223,9 +232,13 @@ class Editor:
         content = get_header()
         content += get_tab()
         content += get_description()
-        content += get_signature()
+        content += get_sintax()
+        content += "---\n\n"
         content += get_parameters()
-        content += get_data()
+        content += "---\n\n"
+        content += get_return_type()
+        content += "---\n\n"
+        content += get_return_data()
         Editor.write(path, content)
 
     def generate_sidebar(self):
@@ -319,6 +332,7 @@ class Editor:
             if text == self.cmds_folder:
                 return self.cmds_folder.upper()
             return text.lower()
+            # return text.upper()
 
         def write_mdx_and_category(path: Path, folder: str, position: int):
             Editor.write(path=path / "index.mdx", content=get_index(path, folder))

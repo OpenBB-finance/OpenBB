@@ -11,6 +11,8 @@ keywords:
 
 Moody Corporate Bond Index.  Moody's Aaa and Baa are investment bonds that acts as an index of the performance of all bonds given an Aaa or Baa rating by Moody's Investors Service respectively. These corporate bonds often are used in macroeconomics as an alternative to the federal ten-year Treasury Bill as an indicator of the interest rate.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.FIXEDINCOME.CORPORATE.MOODY(required, [optional])
 ```
@@ -27,7 +29,15 @@ Moody Corporate Bond Index.  Moody's Aaa and Baa are investment bonds that acts 
 | index_type | Text | The type of series. | True |
 | spread | Text | The type of spread. (provider: fred) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

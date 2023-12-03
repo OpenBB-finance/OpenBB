@@ -31,6 +31,8 @@ keywords:
 
 Revenue Geographic. Geographic revenue data.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY(required, [optional])
 ```
@@ -46,7 +48,15 @@ Revenue Geographic. Geographic revenue data.
 | period | Text | Time period of the data to return. | True |
 | structure | Text | Structure of the returned data. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

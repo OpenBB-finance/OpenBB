@@ -22,6 +22,8 @@ keywords:
 
 European Central Bank Interest Rates.  The Governing Council of the ECB sets the key interest rates for the euro area:  - The interest rate on the main refinancing operations (MRO), which provide the bulk of liquidity to the banking system. - The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem. - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.FIXEDINCOME.RATE.ECB(required, [optional])
 ```
@@ -37,7 +39,15 @@ European Central Bank Interest Rates.  The Governing Council of the ECB sets the
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
 | interest_rate_type | Text | The type of interest rate. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

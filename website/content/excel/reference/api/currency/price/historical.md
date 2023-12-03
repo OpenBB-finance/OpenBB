@@ -29,6 +29,8 @@ keywords:
 
 Currency Historical Price. Currency historical data.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.CURRENCY.PRICE.HISTORICAL(required, [optional])
 ```
@@ -50,7 +52,15 @@ Currency Historical Price. Currency historical data.
 | limit | Number | The number of data entries to return. (provider: polygon) | True |
 | adjusted | Boolean | Whether the data is adjusted. (provider: polygon) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

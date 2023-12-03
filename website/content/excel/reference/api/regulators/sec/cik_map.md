@@ -22,6 +22,8 @@ keywords:
 
 Get the CIK number corresponding to a ticker symbol.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.REGULATORS.SEC.CIK_MAP(required, [optional])
 ```
@@ -35,7 +37,15 @@ Get the CIK number corresponding to a ticker symbol.
 | symbol | Text | Symbol to get data for. | False |
 | provider | Text | Options: sec | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

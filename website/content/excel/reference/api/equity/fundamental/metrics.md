@@ -78,6 +78,8 @@ keywords:
 
 Key Metrics. Key metrics for a given company.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.METRICS(required, [optional])
 ```
@@ -94,7 +96,15 @@ Key Metrics. Key metrics for a given company.
 | limit | Number | The number of data entries to return. | True |
 | with_ttm | Boolean | Include trailing twelve months (TTM) data. (provider: fmp) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

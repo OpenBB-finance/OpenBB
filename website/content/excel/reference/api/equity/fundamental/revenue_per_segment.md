@@ -23,6 +23,8 @@ keywords:
 
 Revenue Business Line. Business line revenue data.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT(required, [optional])
 ```
@@ -38,7 +40,15 @@ Revenue Business Line. Business line revenue data.
 | period | Text | Time period of the data to return. | True |
 | structure | Text | Structure of the returned data. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

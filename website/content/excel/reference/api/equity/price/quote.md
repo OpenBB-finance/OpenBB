@@ -65,6 +65,8 @@ keywords:
 
 Equity Quote. Load stock data for a specific ticker.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.PRICE.QUOTE(required, [optional])
 ```
@@ -79,7 +81,15 @@ Equity Quote. Load stock data for a specific ticker.
 | provider | Text | Options: fmp, intrinio | True |
 | source | Text | Source of the data. (provider: intrinio) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

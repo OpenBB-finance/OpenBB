@@ -53,6 +53,8 @@ keywords:
 
 Cash Flow Statement. Information about the cash flow statement.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.CASH(required, [optional])
 ```
@@ -82,7 +84,15 @@ Cash Flow Statement. Information about the cash flow statement.
 | order | Text | Order of the financial statement. (provider: polygon) | True |
 | sort | Text | Sort of the financial statement. (provider: polygon) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

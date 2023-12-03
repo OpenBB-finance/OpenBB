@@ -28,6 +28,8 @@ keywords:
 
 Equity Peers. Company peers.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.COMPARE.PEERS(required, [optional])
 ```
@@ -41,7 +43,15 @@ Equity Peers. Company peers.
 | symbol | Text | Symbol to get data for. | False |
 | provider | Text | Options: fmp | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

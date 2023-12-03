@@ -53,6 +53,8 @@ keywords:
 
 Equity Search. Search for a company or stock ticker.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.SEARCH(required, [optional])
 ```
@@ -69,7 +71,15 @@ Equity Search. Search for a company or stock ticker.
 | is_fund | Boolean | Whether to direct the search to the list of mutual funds and ETFs. (provider: sec) | True |
 | use_cache | Boolean | Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

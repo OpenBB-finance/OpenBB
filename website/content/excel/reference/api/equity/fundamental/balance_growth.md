@@ -53,6 +53,8 @@ keywords:
 
 Balance Sheet Statement Growth. Information about the growth of the company balance sheet.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.BALANCE_GROWTH(required, [optional])
 ```
@@ -67,7 +69,15 @@ Balance Sheet Statement Growth. Information about the growth of the company bala
 | provider | Text | Options: fmp | True |
 | limit | Number | The number of data entries to return. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

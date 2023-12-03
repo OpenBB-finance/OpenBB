@@ -2,6 +2,8 @@
 
 Fetch the historical values of a data tag from Intrinio.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES(required, [optional])
 ```
@@ -22,7 +24,15 @@ Fetch the historical values of a data tag from Intrinio.
 | type | Text | Filter by type, when applicable. | True |
 | sort | Text | Sort order. | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |

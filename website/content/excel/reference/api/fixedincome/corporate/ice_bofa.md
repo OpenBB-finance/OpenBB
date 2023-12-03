@@ -39,6 +39,8 @@ keywords:
 
 ICE BofA US Corporate Bond Indices.  The ICE BofA US Corporate Index tracks the performance of US dollar denominated investment grade corporate debt publicly issued in the US domestic market. Qualifying securities must have an investment grade rating (based on an average of Moody’s, S&P and Fitch), at least 18 months to final maturity at the time of issuance, at least one year remaining term to final maturity as of the rebalance date, a fixed coupon schedule and a minimum amount outstanding of $250 million. The ICE BofA US Corporate Index is a component of the US Corporate Master Index.
 
+## Syntax
+
 ```excel wordwrap
 =OBB.FIXEDINCOME.CORPORATE.ICE_BOFA(required, [optional])
 ```
@@ -58,7 +60,15 @@ ICE BofA US Corporate Bond Indices.  The ICE BofA US Corporate Index tracks the 
 | grade | Text | The type of grade. (provider: fred) | True |
 | options | Boolean | Whether to include options in the results. (provider: fred) | True |
 
-## Data
+---
+
+## Return Type
+
+* matrix
+
+---
+
+## Return Data
 
 | Name | Description |
 | ---- | ----------- |
