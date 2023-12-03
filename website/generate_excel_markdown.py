@@ -213,11 +213,11 @@ class Editor:
             parameters += "\n"
             return parameters
 
-        def get_return_type() -> str:
-            ret = cmd_info["return"]
-            return_ = "## Return Type\n\n"
-            return_ += f"* {ret}\n\n"
-            return return_
+        # def get_return_type() -> str:
+        #     ret = cmd_info["return"]
+        #     return_ = "## Return Type\n\n"
+        #     return_ += f"* {ret}\n\n"
+        #     return return_
 
         def get_return_data() -> str:
             data = "## Return Data\n\n"
@@ -327,8 +327,10 @@ class Editor:
             return content
 
         def format_label(text: str):
-            if text == self.main_folder or text == self.cmds_folder:
+            if text == self.main_folder:
                 return self.main_folder.title()
+            if text == self.cmds_folder:
+                return self.cmds_folder.title()
             return text.lower()
 
         def write_mdx_and_category(path: Path, folder: str, position: int):
