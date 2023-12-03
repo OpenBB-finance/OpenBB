@@ -14,22 +14,30 @@ The add-in provides 3 types of custom functions:
 
     - `OBB.LAST`
 
-    Example:
+    Examples:
 
     ```excel
     =OBB.LAST("AAPL","EBITDA")
     ```
 
+    ```excel
+    =OBB.LAST("AAPL","CEO")
+    ```
+
 ---
 
-2. **Historical data**: returns the historical values of a range
+2. **Historical data**: returns the historical values of a given symbol/field combination
 
     - `OBB.HIST`
 
-    Example:
+    Examples:
 
     ```excel
-    =OBB.HIST("AAPL","EBITDA","2020-01-01","2020-12-31")
+    =OBB.HIST("AAPL","EBITDA")
+    ```
+
+    ```excel
+    =OBB.HIST("AAPL","ROE","2020-01-01","2020-12-31")
     ```
 
 ---
