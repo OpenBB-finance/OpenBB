@@ -8,10 +8,11 @@ keywords:
 - Basics
 ---
 
-The add-in provides 2 types of custom functions:
+The add-in provides 3 types of custom functions:
 
-1. **Last value**
-    - `OBB.LAST` - Returns the last value of a given symbol/field combination.
+1. **Last value**: returns the last value of a given symbol/field combination
+
+    - `OBB.LAST`
 
     Example:
 
@@ -19,8 +20,11 @@ The add-in provides 2 types of custom functions:
     =OBB.LAST("AAPL","EBITDA")
     ```
 
-2. **Historical data**
-    - `OBB.HIST` - Returns the historical values of a range.
+---
+
+2. **Historical data**: returns the historical values of a range
+
+    - `OBB.HIST`
 
     Example:
 
@@ -28,8 +32,10 @@ The add-in provides 2 types of custom functions:
     =OBB.HIST("AAPL","EBITDA","2020-01-01","2020-12-31")
     ```
 
-3. **Library**
-    - `OBB.[MENU].[SUB_MENU].[COMMAND]` - Provides direct access to the OpenBB library.
+---
+
+3. **Library**: direct access to the OpenBB library
+    - `OBB.[MENU].[SUB_MENU].[COMMAND]`
 
     Examples:
 
