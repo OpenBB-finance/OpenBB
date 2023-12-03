@@ -1,12 +1,18 @@
 ---
-title: Pipeline of commands
+title: The Pipeline of Commands
 sidebar_position: 1
-description: This page provides a detailed understanding of how to use OpenBB Terminal.
-  The tutorial video and walkthrough guides to help users automate their investment
-  research process by using single commands and command sequences to manipulate and
-  study data, especially GME's dark pool data. Concepts like pipelines of commands,
-  loading stocks, and use of indicators like MACD and EMA are explained.
+description: This page provides a detailed explanation of the OpenBB Terminal command pipeline.
+  The tutorial video and walkthrough guides users in automating their investment
+  research process by using single commands, and sequences of commands,
+  to manipulate and study data.
 keywords:
+- Hub
+- Routine
+- Community Routines
+- Terminal
+- Architecture
+- EXE
+- Script
 - Single command
 - Pipeline of commands
 - Command sequence
@@ -22,7 +28,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Pipeline of commands - Routines - Usage | OpenBB Terminal Docs" />
+<HeadTitle title="The Pipeline of Commands - Routines - Usage | OpenBB Terminal Docs" />
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
@@ -31,44 +37,44 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
     videoLegend="Short video on pipeline of commands"
 />
 
-## Single command
+## Single Command
 
-If you understand well the terminal architecture, you understand that commands and menus are organized in the form of a tree.
+If you have a good understanding of the Terminal's architecture, you will recognize that commands and menus are organized in the form of a tree.
 
 ![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/a5f10833-9693-4b39-9491-b431919db828)
 
-This means that if your intention is to explore GME's dark pool data, you simply need to navigate to the `stocks` section within the OpenBB Terminal and then proceed to the `dps` subsection (which stands for "dark pool and short" data). Upon reaching this point, the terminal will present you with several available commands that you could execute to retrieve the desired data.
+If the intention is to explore an equity, enter at base of the menu (`/stocks/`), then browse or navigate towards the point of interest - for example, Dark Pools (`/stocks/dps`).
 
-While all the information is in one place, having to type one command at a type is far from optimal.
+While all the information is in one place, having to type one command at a time is far from optimal.
 
 ![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/41737800-7c60-48ad-a43d-814016d81762)
 
-## Pipeline of commands
+## Pipeline of Commands
 
-One of the main objectives of the OpenBB Terminal was the capability to be able to automate user's investment research workflow. Thus we needed to go further than just allowing to run 1 command at a time.
+One of the main objectives of the OpenBB Terminal was the ability to automate a user's investment research workflow - not just a single command, but the complete process.  This is where the pipeline of commands comes in,  running a sequence of commands.
 
-This is where the concept of a pipeline of commands comes in. So users can run a sequence of commands. For instance, the example above could be achieved by simply running
+The example above can be recreated by running:
 
 ```console
-(🦋) / $ stocks/load GME/dps/psi
+/stocks/load GME/dps/psi
 ```
 
-Achieving the following:
+Which looks like:
 
 ![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/c21c5452-5a67-4384-851c-d2801b60f8cd)
 
-A different example could be:
+Another example is:
 
 ```console
-(🦋) / $ stocks/load GME/dps/psi/../fa/pt/income/../ins/stats
+/stocks/load GME/dps/psi/../fa/pt/income/../ins/stats
 ```
 
 ![image](https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/61db4010-bdc2-4851-9e47-79fb4425b816)
 
-### Step-by-step explanation
+### Step-by-Step Explanation
 
 ```console
-(🦋) / $ stocks/load amzn/ta/macd/ema -l 50,200/../dps/psi
+/stocks/load amzn/ta/macd/ema -l 50,200/../dps/psi
 ```
 
 This will do the following:

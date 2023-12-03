@@ -1,0 +1,61 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/key-executives/AAPL?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA83US2/aQBAA4Ht+xciH9oKs8IbcEkijPCgo0ORQ9bBdj2HFehaN10msqv+9awgS
+        EWsUIJVysGTvru35NI+fJwB/3AUQWGU1BmcQjJGUYXhQEmHEmKoIyYKJYYRmoRG+wD1aoXRQWb1I
+        Ilm+N0hD6KPiiBFg+PWCFdL6zELk7kjztNptd+qvazJjRpL5aLkX/Bj316enSBFysRhjIlxUr+s5
+        Cr4wTG6n2m21KxuBjxXJIopqq92qNTrNTstt/q14eL2ZwhguX1BmVj0hDOPYSdmx+opRWsNbMA5h
+        ohJjZzn0Q+gZM3/rqrYatWa3vg+snFX1sSjTejfomyJBUgm9AfJm0qe7y6QAGAhMLatjc1ZOqx9G
+        Gy6QhVU0XdN8hBuMY8YcLkN4VForkaRbkE693v4QSGNfiDcTFbhCKuopoxT1Ml8y9HXVrbAzZEUI
+        dyGcRz5as3ba2YO2q68+BlcMjE88J97hWY+DQtIzvDBFERqCcyldxop69NVhb8YqBbg1FJm3quKX
+        e5BKQBtfeTdo1UYTlDMy2kzznX3k7l38rodSQ58LcE2x4WSVhDKBq62B4BxchSW/86PiL62pQwSe
+        mrqmJzdv3f096iUqdSNgwijSjHMf7Lsb8E42Ei/2yNT8D9p2+z8a1tGzeyxSMseyjrlinALcmPRZ
+        iflRrANRJ7/+AY68vX4HCQAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 16 Oct 2023 12:21:58 GMT
+      ETag:
+      - W/"907-UQ8xzk1F9UpGsOU+gSEsLaJs/nw"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,0 +1,946 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.benzinga.com/api/v2/news?displayOutput=full&page=0&pageSize=20&sort=created%3Adesc&token=MOCK_TOKEN
+  response:
+    body:
+      string: "[{\"id\":34923089,\"author\":\"Henry Khederian\",\"created\":\"Tue,
+        26 Sep 2023 15:04:20 -0400\",\"updated\":\"Tue, 26 Sep 2023 15:04:20 -0400\",\"title\":\"What's
+        Going On With PDD Holdings Stock?\",\"teaser\":\"PDD Holdings Inc - ADR (NASDAQ:
+        PDD) shares are trading lower by 2.6% to $94.16 Tuesday afternoon.\",\"body\":\"<p><strong>PDD
+        Holdings Inc - ADR</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/PDD#NASDAQ\\\">PDD</a>)
+        shares are trading lower by 2.6% to $94.16 Tuesday afternoon. Shares of several
+        Chinese stocks are trading lower this week amid concerns over the country&#39;s
+        property sector following reports suggesting <a href=\\\"https://www.benzinga.com/markets/penny-stocks/23/09/34869281/china-property-market-woes-spark-fears-of-2008-style-global-recession-led-by-china-slump\\\">China
+        Evergrande</a> said it&#39;s unable to issue new debt due to an ongoing investigation
+        into its Hengda Real Estate subsidiary.</p>\\r\\n\\r\\n<p><strong>Why It Matters</strong></p>\\r\\n\\r\\n<p>If
+        there are concerns about a potential economic slowdown in China due to issues
+        in the property sector, consumer spending may decrease. PDD Holdings relies
+        on consumer spending for its e-commerce platform, and a reduction in consumer
+        confidence and spending can negatively impact its revenue and growth prospects.</p>\\r\\n\\r\\n<p>A
+        downturn in the property sector could also lead to disruptions in supply chains
+        and logistics, which may affect Pinduoduo&#39;s ability to source and deliver
+        products efficiently. Supply chain disruptions can increase costs and lead
+        to operational challenges for the company.</p>\\r\\n\\r\\n<p><strong>What&#39;s
+        Going On?</strong></p>\\r\\n\\r\\n<p>Evergrande, the beleaguered Chinese property
+        developer, said Friday that it was cancelling a creditor meeting scheduled
+        early this week.&nbsp;It said that&nbsp;&ldquo;sales had not been as expected&rdquo;.</p>\\r\\n\\r\\n<p>The
+        announcement is the latest in a series of scandals to hit the Chinese financial
+        behemoth. Mid-September, the domestic regulator&nbsp;<a href=\\\"https://asia.nikkei.com/Business/Markets/China-debt-crunch/Evergrande-s-life-insurance-arm-taken-over-by-new-state-owned-vehicle\\\"
+        target=\\\"_blank\\\">approved</a>&nbsp;a 50% sale of its insurance business
+        China Evergrande Life into a special purpose vehicle owned by the Chinese
+        state to free up cash.</p>\\r\\n\\r\\n<p>Then last week,&nbsp;staff in the
+        company&rsquo;s wealth management division&nbsp;were detained by Shenzhen
+        police...<em><a href=\\\"https://www.benzinga.com/markets/penny-stocks/23/09/34869281/china-property-market-woes-spark-fears-of-2008-style-global-recession-led-by-china-slump\\\">Read
+        More</a></em></p>\\r\\n\\r\\n<p>According to data from&nbsp;<a href=\\\"https://benzinga.grsm.io/register174\\\">Benzinga
+        Pro</a>, PDD Holdings has a 52-week high of $106.38 and a 52-week low of $38.80.</p>\\r\\n\",\"url\":\"https://www.benzinga.com/news/23/09/34923089/whats-going-on-with-pdd-holdings-stock\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/analysis-4937349.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/analysis-4937349.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/analysis-4937349.jpg\"}],\"channels\":[{\"name\":\"News\"}],\"stocks\":[{\"name\":\"PDD\"}],\"tags\":[{\"name\":\"why
+        it's moving\"}]},{\"id\":34923603,\"author\":\"Benzinga Insights\",\"created\":\"Tue,
+        26 Sep 2023 15:01:36 -0400\",\"updated\":\"Tue, 26 Sep 2023 15:01:37 -0400\",\"title\":\"Mastercard
+        Unusual Options Activity\",\"teaser\":\" \",\"body\":\"<p>A whale with a lot
+        of money to spend has taken a noticeably bearish stance on <strong>Mastercard</strong>.</p>\\n<p>Looking
+        at options history for Mastercard (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MA#NYSE\\\">MA</a>)
+        we detected 40 strange trades.</p>\\n<p>If we consider the specifics of each
+        trade, it is accurate to state that 45% of the investors opened trades with
+        bullish expectations and 55% with bearish.</p>\\n<p>From the overall spotted
+        trades, 30 are puts, for a total amount of $1,521,493 and 10, calls, for a
+        total amount of $1,215,296.</p>\\n<h3>What's The Price Target?</h3>\\n<p>Taking
+        into account the Volume and Open Interest on these contracts, it appears that
+        whales have been targeting a price range from $370.0 to $480.0 for Mastercard
+        over the last 3 months. </p>\\n<h3>Volume &amp; Open Interest Development</h3>\\n<p>In
+        terms of liquidity and interest, the mean open interest for Mastercard options
+        trades today is 556.93 with a total volume of 3,529.00.</p>\\n<p>In the following
+        chart, we are able to follow the development of volume and open interest of
+        call and put options for Mastercard's big money trades within a strike price
+        range of $370.0 to $480.0 over the last 30 days.</p>\\n<h3>Mastercard Option
+        Volume And Open Interest Over Last 30 Days</h3>\\n<p><img src=\\\"https://www.benzinga.com/files/images/story/2023/1695754893_0.png\\\"
+        alt=\\\"Options Call Chart\\\" /></p>\\n\\n<h3>Biggest Options Spotted:</h3>\\n<p><table>\\n<thead>\\n<tr>\\n<th><strong>Symbol</strong></th>\\n<th><strong>PUT/CALL</strong></th>\\n<th><strong>Trade
+        Type</strong></th>\\n<th><strong>Sentiment</strong></th>\\n<th><strong>Exp.
+        Date</strong></th>\\n<th><strong>Strike Price</strong></th>\\n<th><strong>Total
+        Trade Price</strong></th>\\n<th><strong>Open Interest</strong></th>\\n<th
+        align=\\\"right\\\"><strong>Volume</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td>MA</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>01/17/25</td>\\n<td>$400.00</td>\\n<td>$547.5K</td>\\n<td>422</td>\\n<td
+        align=\\\"right\\\">102</td>\\n</tr>\\n<tr>\\n<td>MA</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>01/19/24</td>\\n<td>$410.00</td>\\n<td>$289.0K</td>\\n<td>3.8K</td>\\n<td
+        align=\\\"right\\\">226</td>\\n</tr>\\n<tr>\\n<td>MA</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>01/17/25</td>\\n<td>$480.00</td>\\n<td>$120.4K</td>\\n<td>11</td>\\n<td
+        align=\\\"right\\\">49</td>\\n</tr>\\n<tr>\\n<td>MA</td>\\n<td>PUT</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>01/17/25</td>\\n<td>$480.00</td>\\n<td>$103.4K</td>\\n<td>11</td>\\n<td
+        align=\\\"right\\\">85</td>\\n</tr>\\n<tr>\\n<td>MA</td>\\n<td>PUT</td>\\n<td>TRADE</td>\\n<td>BULLISH</td>\\n<td>01/17/25</td>\\n<td>$480.00</td>\\n<td>$95.0K</td>\\n<td>11</td>\\n<td
+        align=\\\"right\\\">24</td>\\n</tr>\\n</tbody>\\n</table></p>\\n<h3>Where
+        Is Mastercard Standing Right Now?</h3>\\n<ul>\\n<li>With a volume of 1,501,965,
+        the price of MA is down -1.67% at $395.76. </li>\\n<li>RSI indicators hint
+        that the underlying stock may be oversold.</li>\\n<li>Next earnings are expected
+        to be released in 30 days.</li>\\n</ul>\\n<h3>What The Experts Say On Mastercard:</h3>\\n<ul>\\n<li>Jefferies
+        has decided to maintain their Buy rating on Mastercard, which currently sits
+        at a price target of $475. </li>\\n<li>Truist Securities has decided to maintain
+        their Buy rating on Mastercard, which currently sits at a price target of
+        $475. </li>\\n<li>Mizuho downgraded its action to Buy with a price target
+        of $435</li>\\n</ul>\\n<p>Options are a riskier asset compared to just trading
+        the stock, but they have higher profit potential. Serious options traders
+        manage this risk by educating themselves daily, scaling in and out of trades,
+        following more than one indicator, and following the markets closely.</p>\\n<p>If
+        you want to stay updated on the latest options trades for Mastercard, <a href=\\\"https://benzinga.grsm.io/register174\\\">Benzinga
+        Pro</a> gives you real-time options trades alerts.</p>\",\"url\":\"https://www.benzinga.com/markets/options/23/09/34923603/mastercard-unusual-options-activity\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/movers_image_1.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/movers_image_1.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/movers_image_1.jpeg\"}],\"channels\":[{\"name\":\"Options\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"MA\"}],\"tags\":[{\"name\":\"BZI-UOA\"}]},{\"id\":34917839,\"author\":\"Adam
+        Eckert\",\"created\":\"Tue, 26 Sep 2023 15:01:06 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 15:01:06 -0400\",\"title\":\"People's Net Worth Is Up Since COVID-19:
+        Here's Who Made The Most\",\"teaser\":\"A lot of people&#39;s net worth has
+        continued to climb since the COVID-19 pandemic,\_largely driven by stock market
+        gains and an increase in property values.\",\"body\":\"<p>A lot of people&#39;s
+        net worth has continued to climb since the COVID-19 pandemic,&nbsp;largely
+        driven by stock market gains and an increase in property values. <strong>That
+        may be why the rich <a href=\\\"https://www.benzinga.com/personal-finance/financial-advisors/23/07/33099045/the-richest-people-in-the-world-are-getting-richer-by-doing-this-you-can-do-i\\\">grew
+        their net worth the most</a>.</strong></p>\\r\\n\\r\\n<p><strong>What To Know:</strong>&nbsp;On
+        Tuesday, KPMG chief economist <strong>Diane Swonk</strong> shared a <a href=\\\"https://twitter.com/DianeSwonk/status/1706663509331718197\\\">chart</a>&nbsp;on
+        X&nbsp;showing&nbsp;household net worth grew across all incomes from the fourth
+        quarter of 2019 to the second quarter of this year.&nbsp;</p>\\r\\n\\r\\n<p>After
+        adjusting for inflation, the top 1% saw the highest&nbsp;net worth increase
+        of 22%. The net worth of those in the&nbsp;80th to 99th percentile jumped
+        by 12% to 13%, the 60th percentile increased by 9%, the 40th percentile increased
+        by 5% and earners in the 20th percentile saw their net worth climb by 9%.&nbsp;</p>\\r\\n\\r\\n<p><a
+        href=\\\"https://www.federalreserve.gov/releases/z1/\\\">Data</a> from the
+        Federal Reserve&nbsp;released earlier this month showed household wealth hit
+        record highs of $154.28 trillion last quarter, fueled by&nbsp;a stock market
+        rally and rebounding property values. That may help explain why those in the
+        top income percentiles are seeing the biggest increase in net worth.&nbsp;</p>\\r\\n\\r\\n<p>Households
+        have now fully regained the losses driven by declining real estate values
+        and&nbsp;a bear market in 2022 brought on by <a href=\\\"https://www.benzinga.com/economics/macro-economic-events/23/06/32861662/powell-hits-the-brakes-after-10-straight-interest-rate-increases-but-fed-signals-\\\">rising
+        interest rates</a> in response to high inflation.&nbsp;</p>\\r\\n\\r\\n<p><em>Related
+        Link:&nbsp;<a href=\\\"https://www.benzinga.com/federal-reserve/23/09/34761643/fed-meeting-preview-will-rates-hold-steady-despite-inflation-concerns\\\">Fed
+        Decision Looms: Will Steady Rates Prevail Despite Inflation Pressures?</a></em></p>\\r\\n\\r\\n<p>After
+        falling more than 18% in 2022, the<strong>&nbsp;SPDR S&amp;P 500 ETF Trust</strong>
+        (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SPY#NYSE\\\">SPY</a>)
+        was&nbsp;up more than 12% since the start of the year. But markets have trended
+        lower in recent months. The SPY is down more than 3.5% over the last month
+        and was down 1.18% at last check Tuesday, according to&nbsp;<a href=\\\"https://benzinga.grsm.io/gxjhpowx7zks\\\">Benzinga
+        Pro</a>.</p>\\r\\n\\r\\n<p>In 2020, markets tumbled, but quickly recovered
+        and finished the year up about 18%. In 2021, the SPY surged more than 28%.&nbsp;</p>\\r\\n\\r\\n<p><em>Photo:
+        Shutterstock</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/news/23/09/34917839/peoples-net-worth-is-up-since-covid-19-heres-who-made-the-most\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/money.man_.shutterstock_283343006.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/money.man_.shutterstock_283343006.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/money.man_.shutterstock_283343006.jpg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Economics\"},{\"name\":\"Personal
+        Finance\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"SPY\"}],\"tags\":[{\"name\":\"Diane
+        Swonk\"},{\"name\":\"KPMG\"},{\"name\":\"net worth\"}]},{\"id\":34923584,\"author\":\"Benzinga
+        Insights\",\"created\":\"Tue, 26 Sep 2023 15:00:28 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 15:00:29 -0400\",\"title\":\"Analyst Expectations for AVITA Medical's
+        Future\",\"teaser\":\" \",\"body\":\"<p>AVITA Medical (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/RCEL#NASDAQ\\\">RCEL</a>) has observed
+        the following analyst ratings within the last quarter: </p>\\n<table>\\n<thead>\\n<tr>\\n<th></th>\\n<th
+        align=\\\"right\\\"><strong>Bullish</strong></th>\\n<th align=\\\"right\\\"><strong>Somewhat
+        Bullish</strong></th>\\n<th align=\\\"right\\\"><strong>Indifferent</strong></th>\\n<th
+        align=\\\"right\\\"><strong>Somewhat Bearish</strong></th>\\n<th align=\\\"right\\\"><strong>Bearish</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td><strong>Total
+        Ratings</strong></td>\\n<td align=\\\"right\\\">2</td>\\n<td align=\\\"right\\\">3</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>Last
+        30D</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">1</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>1M
+        Ago</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>2M
+        Ago</strong></td>\\n<td align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">2</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>3M
+        Ago</strong></td>\\n<td align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n</tbody>\\n</table>\\n\\n<p>According
+        to 5 analyst offering 12-month price targets in the last 3 months, AVITA Medical
+        has an average price target of $28.4 with a high of $40.00 and a low of $23.00.
+        </p>\\n<p>Below is a summary of how these 5 analysts rated AVITA Medical over
+        the past 3 months. The greater the number of bullish ratings, the more positive
+        analysts are on the stock and the greater the number of bearish ratings, the
+        more negative analysts are on the stock</p>\\n<p><img src=\\\"https://www.benzinga.com/files/images/story/2023/1695754825_0.png\\\"
+        alt=\\\"price target chart\\\" /></p>\\n\\n<p>This average price target has
+        increased by 28.1% over the past month.</p>\\n<p><a href=\\\"https://www.benzinga.com/quote/RCEL/analyst-ratings?utm_source=Benzinga
+        Insights\\\"><strong>Stay up to date on AVITA Medical analyst ratings.</strong></a></p>\\n<p>If
+        you are interested in following small-cap stock news and performance <a href=\\\"https://www.benzinga.com/news/small-cap\\\">you
+        can start by tracking it here</a>.</p>\\n<h1>How Are Analyst Ratings Determined?</h1>\\n<p>Benzinga
+        tracks 150 analyst firms and reports on their stock expectations. Analysts
+        typically arrive at their conclusions by predicting how much money a company
+        will make in the future, usually the upcoming five years, and how risky or
+        predictable that company's revenue streams are.</p>\\n<p>Analysts attend company
+        conference calls and meetings, research company financial statements, and
+        communicate with insiders to publish their ratings on stocks. Analysts typically
+        rate each stock once per quarter or whenever the company has a major update.</p>\\n<p>Some
+        analysts will also offer forecasts for metrics like growth estimates, earnings,
+        and revenue to provide further guidance on stocks. Investors who use analyst
+        ratings should note that this specialized advice comes from humans and may
+        be subject to error.</p>\\n<p>This article was generated by Benzinga's automated
+        content engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34923584/analyst-expectations-for-avita-medicals-future\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_3.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_3.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_3.png\"}],\"channels\":[{\"name\":\"Analyst
+        Ratings\"}],\"stocks\":[{\"name\":\"RCEL\"}],\"tags\":[{\"name\":\"BZI-AAR\"}]},{\"id\":34923583,\"author\":\"Benzinga
+        Insights\",\"created\":\"Tue, 26 Sep 2023 15:00:20 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 15:00:21 -0400\",\"title\":\"Expert Ratings for O-I Glass\",\"teaser\":\"
+        \",\"body\":\"<p>Analysts have provided the following ratings for O-I Glass
+        (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/OI#NYSE\\\">OI</a>)
+        within the last quarter: </p>\\n<table>\\n<thead>\\n<tr>\\n<th></th>\\n<th
+        align=\\\"right\\\"><strong>Bullish</strong></th>\\n<th align=\\\"right\\\"><strong>Somewhat
+        Bullish</strong></th>\\n<th align=\\\"right\\\"><strong>Indifferent</strong></th>\\n<th
+        align=\\\"right\\\"><strong>Somewhat Bearish</strong></th>\\n<th align=\\\"right\\\"><strong>Bearish</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td><strong>Total
+        Ratings</strong></td>\\n<td align=\\\"right\\\">2</td>\\n<td align=\\\"right\\\">1</td>\\n<td
+        align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>Last
+        30D</strong></td>\\n<td align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>1M
+        Ago</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td
+        align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>2M
+        Ago</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">1</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>3M
+        Ago</strong></td>\\n<td align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n</tbody>\\n</table>\\n\\n<p>These
+        4 analysts have an average price target of $28.0 versus the current price
+        of O-I Glass at $17.025, implying  upside.</p>\\n<p>Below is a summary of
+        how these 4 analysts rated O-I Glass over the past 3 months. The greater the
+        number of bullish ratings, the more positive analysts are on the stock and
+        the greater the number of bearish ratings, the more negative analysts are
+        on the stock</p>\\n<p><img src=\\\"https://www.benzinga.com/files/images/story/2023/1695754817_0.png\\\"
+        alt=\\\"price target chart\\\" /></p>\\n\\n<p>This current average has decreased
+        by 2.34% from the previous average price target of $28.67. </p>\\n<p><a href=\\\"https://www.benzinga.com/quote/OI/analyst-ratings?utm_source=Benzinga
+        Insights\\\"><strong>Stay up to date on O-I Glass analyst ratings.</strong></a></p>\\n<h1>What
+        Are Analyst Ratings?</h1>\\n<p>Analysts work in banking and financial systems
+        and typically specialize in reporting for stocks or defined sectors. Analysts
+        may attend company conference calls and meetings, research company financial
+        statements, and communicate with insiders to publish \\\"analyst ratings\\\"
+        for stocks. Analysts typically rate each stock once per quarter.</p>\\n<p>Some
+        analysts publish their predictions for metrics such as growth estimates, earnings,
+        and revenue to provide additional guidance with their ratings. When using
+        analyst ratings, it is important to keep in mind that stock and sector analysts
+        are also human and are only offering their opinions to investors.</p>\\n<p>If
+        you want to keep track of which analysts are outperforming others, you can
+        view updated analyst ratings along withanalyst success scores in <a href=\\\"https://benzinga.grsm.io/register174\\\">Benzinga
+        Pro</a>.</p>\\n<p>This article was generated by Benzinga's automated content
+        engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34923583/expert-ratings-for-o-i-glass\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_0.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_0.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_0.jpeg\"}],\"channels\":[{\"name\":\"Analyst
+        Ratings\"}],\"stocks\":[{\"name\":\"OI\"}],\"tags\":[{\"name\":\"BZI-AAR\"}]},{\"id\":34916272,\"author\":\"Murtuza
+        Merchant\",\"created\":\"Tue, 26 Sep 2023 14:49:19 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 14:49:19 -0400\",\"title\":\"Chase's Crypto-Related Transactions
+        Ban In UK: A Sign Of The Times \u2014 Or A Sign Of Weakness?\",\"teaser\":\"JP
+        Morgan Chase &amp; Co (NYSE: JPM), the prominent banking institution, decided
+        to halt cryptocurrency-related transactions for its U.K. clientele starting\_Oct.
+        16, according to\_a recent communication to its users.\",\"body\":\"<p><strong>JP
+        Morgan Chase &amp; Co</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/JPM#NYSE\\\">JPM</a>),
+        the prominent banking institution, decided to halt cryptocurrency-related
+        transactions for its U.K. clientele starting&nbsp;Oct. 16, according to&nbsp;a
+        recent communication to its users.</p>\\r\\n\\r\\n<p>The bank stated, &quot;If
+        we think you&#39;re making a payment related to crypto assets, we&#39;ll decline
+        it,&quot; suggesting&nbsp;patrons keen on crypto investments might need to
+        explore other banking alternatives, Coindesk <a href=\\\"https://www.coindesk.com/policy/2023/09/26/chase-uk-to-block-crypto-payments-citing-fraud-scams/?utm_medium=social&amp;utm_source=onecryptofeed&amp;utm_campaign=headlines\\\">reported</a>.</p>\\r\\n\\r\\n<p>This
+        move by Chase comes ahead of the much-anticipated Benzinga&#39;s <a href=\\\"https://www.benzinga.com/events/digital-assets/?UTM_source=article\\\">Future
+        of Digital Assets</a> conference on Nov. 14, where such industry shifts are
+        likely to be discussed.</p>\\r\\n\\r\\n<p>Many U.K. banks have already been
+        traditionally wary of cryptocurrency transactions, often restricting or outright
+        blocking access for their customers.</p>\\r\\n\\r\\n<p>This cautious stance
+        has been so prevalent that the Financial Conduct Authority (FCA), the U.K.&#39;s
+        financial regulatory body,&nbsp;had to mediate dialogues between banks and
+        cryptocurrency entities due to the banking sector&#39;s hesitancy in serving
+        the crypto industry.</p>\\r\\n\\r\\n<p><em>Also Read:&nbsp;<a href=\\\"https://www.benzinga.com/markets/cryptocurrency/23/09/34905989/fhenix-secures-7m-funding-aims-to-bolster-privacy-on-public-blockchains\\\">Fhenix
+        Secures $7M Funding, Aims To Bolster Privacy On Public Blockchains</a></em></p>\\r\\n\\r\\n<p>Chase&#39;s
+        decision, as detailed in the communication reviewed by CoinDesk, stemmed&nbsp;from
+        concerns over rising fraudulent activities linked to cryptocurrencies.</p>\\r\\n\\r\\n<p>The
+        bank expressed that malefactors are increasingly exploiting digital assets
+        to defraud individuals of substantial amounts.</p>\\r\\n\\r\\n<p>Echoing the
+        sentiments of other U.K. banks that have implemented similar restrictions,
+        a Chase U.K. representative mentioned, &ldquo;We&rsquo;re committed to helping
+        keep our customers&rsquo; money safe and secure. We&rsquo;ve seen an increase
+        in the number of crypto scams targeting U.K. consumers, so we have taken the
+        decision to prevent the purchase of crypto assets on a Chase debit card or
+        by transferring money to a crypto site from a Chase account.&rdquo;</p>\\r\\n\\r\\n<p><em>Read
+        Next:&nbsp;<a href=\\\"https://www.benzinga.com/markets/cryptocurrency/23/09/34900667/taiwan-regulators-unveil-guiding-principles-to-regulate-digital-assets-crypto\\\">Taiwan
+        Regulators Unveil &#39;Guiding Principles&#39; To Regulate Digital Assets,
+        Crypto</a></em></p>\\r\\n\\r\\n<p><em>Meet and engage with transformative&nbsp;</em><em><a
+        href=\\\"https://www.benzinga.com/go/crypto-conference-article-link\\\" rel=\\\"noopener
+        noreferrer\\\" target=\\\"_blank\\\">Digital Asset and Crypto</a></em><em>&nbsp;business
+        leaders and investors at Benzinga&#39;s exclusive event:&nbsp;</em><em><a
+        href=\\\"https://www.benzinga.com/go/crypto-conference-article-link\\\" rel=\\\"noopener
+        noreferrer\\\" target=\\\"_blank\\\">Future of Digital Assets</a></em><em>.
+        Tickets are flying:&nbsp;</em><em><a href=\\\"https://www.benzinga.com/go/crypto-conference-article-link\\\"
+        rel=\\\"noopener noreferrer\\\" target=\\\"_blank\\\">Get yours</a></em><em>!&nbsp;</em></p>\\r\\n\\r\\n<p><em>Photo:
+        Shutterstock</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/markets/cryptocurrency/23/09/34916272/chases-crypto-related-transactions-ban-in-uk-a-sign-of-the-times-or-a-sign-of-weakness\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/banned.untitled_desigshutterstock..png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/banned.untitled_desigshutterstock..png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/banned.untitled_desigshutterstock..png\"}],\"channels\":[{\"name\":\"Cryptocurrency\"},{\"name\":\"News\"},{\"name\":\"Global\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"JPM\"}],\"tags\":[{\"name\":\"crypto
+        assets\"},{\"name\":\"Crypto industry\"},{\"name\":\"Crypto Scams\"},{\"name\":\"cryptocurrency
+        transactions\"},{\"name\":\"debit card\"},{\"name\":\"Financial Conduct Authority\"},{\"name\":\"U.K.\"},{\"name\":\"UK\"}]},{\"id\":34923076,\"author\":\"Benzinga
+        Insights\",\"created\":\"Tue, 26 Sep 2023 14:46:15 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 14:46:16 -0400\",\"title\":\"This Is What Whales Are Betting On
+        Home Depot\",\"teaser\":\" \",\"body\":\"<p>A whale with a lot of money to
+        spend has taken a noticeably bearish stance on <strong>Home Depot</strong>.</p>\\n<p>Looking
+        at options history for Home Depot (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/HD#NYSE\\\">HD</a>)
+        we detected 22 strange trades.</p>\\n<p>If we consider the specifics of each
+        trade, it is accurate to state that 36% of the investors opened trades with
+        bullish expectations and 63% with bearish.</p>\\n<p>From the overall spotted
+        trades, 11 are puts, for a total amount of $518,319 and 11, calls, for a total
+        amount of $545,972.</p>\\n<h3>What's The Price Target?</h3>\\n<p>Taking into
+        account the Volume and Open Interest on these contracts, it appears that whales
+        have been targeting a price range from $290.0 to $375.0 for Home Depot over
+        the last 3 months. </p>\\n<h3>Volume &amp; Open Interest Development</h3>\\n<p>In
+        terms of liquidity and interest, the mean open interest for Home Depot options
+        trades today is 959.57 with a total volume of 2,099.00.</p>\\n<p>In the following
+        chart, we are able to follow the development of volume and open interest of
+        call and put options for Home Depot's big money trades within a strike price
+        range of $290.0 to $375.0 over the last 30 days.</p>\\n<h3>Home Depot Option
+        Volume And Open Interest Over Last 30 Days</h3>\\n<p><img src=\\\"https://www.benzinga.com/files/images/story/2023/1695753971_0.png\\\"
+        alt=\\\"Options Call Chart\\\" /></p>\\n\\n<h3>Biggest Options Spotted:</h3>\\n<p><table>\\n<thead>\\n<tr>\\n<th><strong>Symbol</strong></th>\\n<th><strong>PUT/CALL</strong></th>\\n<th><strong>Trade
+        Type</strong></th>\\n<th><strong>Sentiment</strong></th>\\n<th><strong>Exp.
+        Date</strong></th>\\n<th><strong>Strike Price</strong></th>\\n<th><strong>Total
+        Trade Price</strong></th>\\n<th><strong>Open Interest</strong></th>\\n<th
+        align=\\\"right\\\"><strong>Volume</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td>HD</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>10/20/23</td>\\n<td>$315.00</td>\\n<td>$110.5K</td>\\n<td>1.4K</td>\\n<td
+        align=\\\"right\\\">480</td>\\n</tr>\\n<tr>\\n<td>HD</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>01/19/24</td>\\n<td>$315.00</td>\\n<td>$105.0K</td>\\n<td>915</td>\\n<td
+        align=\\\"right\\\">53</td>\\n</tr>\\n<tr>\\n<td>HD</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>03/15/24</td>\\n<td>$320.00</td>\\n<td>$63.4K</td>\\n<td>245</td>\\n<td
+        align=\\\"right\\\">105</td>\\n</tr>\\n<tr>\\n<td>HD</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>03/15/24</td>\\n<td>$320.00</td>\\n<td>$63.3K</td>\\n<td>245</td>\\n<td
+        align=\\\"right\\\">155</td>\\n</tr>\\n<tr>\\n<td>HD</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>03/15/24</td>\\n<td>$320.00</td>\\n<td>$63.3K</td>\\n<td>245</td>\\n<td
+        align=\\\"right\\\">156</td>\\n</tr>\\n</tbody>\\n</table></p>\\n<h3>Where
+        Is Home Depot Standing Right Now?</h3>\\n<ul>\\n<li>With a volume of 1,456,296,
+        the price of HD is down -1.5% at $301.89. </li>\\n<li>RSI indicators hint
+        that the underlying stock may be oversold.</li>\\n<li>Next earnings are expected
+        to be released in 49 days.</li>\\n</ul>\\n<h3>What The Experts Say On Home
+        Depot:</h3>\\n<ul>\\n<li>Evercore ISI Group has decided to maintain their
+        Outperform rating on Home Depot, which currently sits at a price target of
+        $370. </li>\\n<li>Stifel downgraded its action to Hold with a price target
+        of $350</li>\\n<li>HSBC downgraded its action to Hold with a price target
+        of $365</li>\\n</ul>\\n<p>Options are a riskier asset compared to just trading
+        the stock, but they have higher profit potential. Serious options traders
+        manage this risk by educating themselves daily, scaling in and out of trades,
+        following more than one indicator, and following the markets closely.</p>\\n<p>If
+        you want to stay updated on the latest options trades for Home Depot, <a href=\\\"https://benzinga.grsm.io/register174\\\">Benzinga
+        Pro</a> gives you real-time options trades alerts.</p>\",\"url\":\"https://www.benzinga.com/markets/options/23/09/34923076/this-is-what-whales-are-betting-on-home-depot\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/movers_image_18.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/movers_image_18.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/movers_image_18.jpeg\"}],\"channels\":[{\"name\":\"Options\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"HD\"}],\"tags\":[{\"name\":\"BZI-UOA\"}]},{\"id\":34919396,\"author\":\"Shivani
+        Kumaresan\",\"created\":\"Tue, 26 Sep 2023 14:38:48 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 14:38:48 -0400\",\"title\":\"Holiday Hiring In A Pinch? Dick's
+        Sporting Goods Aims To Hire Less Seasonal Help Than Last Year\",\"teaser\":\"Dick&#39;s
+        Sporting Goods Inc\_(NYSE: DKS) disclosed its intentions to onboard 8,600
+        seasonal teammates across the nation in\_\",\"body\":\"<p><strong>Dick&#39;s
+        Sporting Goods Inc</strong>&nbsp;(NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/DKS#NYSE\\\">DKS</a>)
+        disclosed its intentions to onboard 8,600 seasonal teammates across the nation
+        in&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/pressreleases/23/09/n34904539/dicks-sporting-goods-plans-to-hire-8-600-seasonal-teammates-for-holiday-shopping-season\\\"
+        style=\\\"background-image:initial; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\">anticipation of the upcoming holiday season.</a></p>\\r\\n\\r\\n<p>Last
+        year, the athletic-wear chain had marked a target of hiring&nbsp;<a class=\\\"editor-rtfLink\\\"
+        href=\\\"https://investors.dicks.com/news/news-details/2022/DICKS-Sporting-Goods-to-Begin-Holiday-Hiring-with-National-Signing-Day-on-September-28/default.aspx\\\"
+        style=\\\"background-image:initial; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\">9,000</a>&nbsp;interim staff for the festive rush.</p>\\r\\n\\r\\n<p>The
+        reveal from Dick&#39;s follows similar conservative seasonal employment goals
+        recently unveiled by giants like&nbsp;<strong>Target Corporation</strong>&nbsp;(NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/TGT#NYSE\\\">TGT</a>)
+        and&nbsp;<strong>Macy&#39;s Inc</strong>&nbsp;(NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/M#NYSE\\\">M</a>), according to a
+        report from Reuters.</p>\\r\\n\\r\\n<p>The report quoted a study conducted
+        by Challenger, Gray &amp; Christmas that indicated a trend, noting retail
+        outlets in the U.S. are expected to hire the lowest number of seasonal workers
+        since 2008.</p>\\r\\n\\r\\n<p>Rising labor costs seem to be the primary reason
+        for this trend.</p>\\r\\n\\r\\n<p>The report also cited a recent analysis
+        by Deloitte, which highlights that the U.S. might witness the most sluggish
+        growth in holiday sales in half a decade due to escalating inflation rates,
+        leading households to tighten their budgetary belts.</p>\\r\\n\\r\\n<p>However,&nbsp;<strong>Amazon.Com,
+        Inc.</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>)
+        is on a different tangent altogether, with plans to amplify its hires by a
+        whopping 67% compared to its figures from the last two years.</p>\\r\\n\\r\\n<p><strong><em>Also
+        Read</em></strong><em>:&nbsp;</em><a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/news/23/09/34767824/amazons-holiday-hiring-spree-signals-strong-consumer-demand-expects-strong-q4-growth-bofa-analyst\\\"
+        style=\\\"background-image:initial; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\"><em>Amazon&#39;s Holiday Hiring Spree Signals Strong
+        Consumer Demand, Expects Strong Q4 Growth: BofA Analyst</em></a></p>\\r\\n\\r\\n<p>The
+        report further noted that brands like Dick&#39;s Sporting Goods,&nbsp;<strong>Nike,
+        Inc.</strong>(NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NKE#NYSE\\\">NKE</a>),
+        and&nbsp;<strong>Foot Locker, Inc.</strong>&nbsp;(NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/FL#NYSE\\\">FL</a>) have found themselves
+        grappling with diminished wholesale demand.</p>\\r\\n\\r\\n<p><strong>Price
+        Action</strong>: DKS shares are trading lower by 0.62% at $106.75 on the last
+        check Tuesday.</p>\\r\\n\\r\\n<p><em>This content was partially produced with
+        the help of AI tools and was reviewed and published by Benzinga editors.</em></p>\\r\\n
+        \",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34919396/holiday-hiring-in-a-pinch-dicks-sporting-goods-aims-to-hire-less-seasonal-help-than-last-year\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/dks_1.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/dks_1.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/dks_1.png\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Small
+        Cap\"},{\"name\":\"Markets\"},{\"name\":\"Media\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"AMZN\"},{\"name\":\"DKS\"},{\"name\":\"FL\"},{\"name\":\"M\"},{\"name\":\"NKE\"},{\"name\":\"TGT\"}],\"tags\":[{\"name\":\"AI
+        Generated\"},{\"name\":\"Briefs\"},{\"name\":\"Consumer Discretionary\"},{\"name\":\"Department
+        Stores\"}]},{\"id\":34912218,\"author\":\"Lekha Gupta\",\"created\":\"Tue,
+        26 Sep 2023 14:34:53 -0400\",\"updated\":\"Tue, 26 Sep 2023 14:35:39 -0400\",\"title\":\"Blink
+        Charging And Parkopedia Collaborate, Adding 4,000 Locations To Platform\",\"teaser\":\"Blink
+        Charging Co\_(NASDAQ: BLNK) disclosed an agreement with Parkopedia to offer
+        increased accessibility\_\",\"body\":\"<p><strong>Blink Charging Co</strong>&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/BLNK#NASDAQ\\\">BLNK</a>)
+        disclosed an agreement with Parkopedia to offer increased accessibility&nbsp;<a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/pressreleases/23/09/g34903735/blink-charging-teams-up-with-parkopedia-to-provide-ev-drivers-greater-accessibility-to-electric-ve\\\"
+        style=\\\"background-image:none; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\">to electric vehicle charging to drivers</a>.</p>\\r\\n\\r\\n<p>As
+        per the deal, BLNK will integrate more than 4,000 EV charging locations in
+        the Parkopedia platform in North America.&nbsp;</p>\\r\\n\\r\\n<p>This strategic
+        integration will grant the platform access to around 12,000 public EV chargers,
+        which include 129 DC fast chargers.</p>\\r\\n\\r\\n<p>&quot;Our collaboration
+        with Parkopedia creates a streamlined experience for EV drivers to conveniently
+        locate Blink EV charging stations across North America. The combination of
+        Parkopedia&#39;s excellence in serving drivers through convenience in parking
+        accessibility and Blink&#39;s extensive range of public EV chargers gives
+        EV drivers confidence in finding a reliable charging experience wherever they
+        are. This initiative builds upon our strategy of making it easy for EV drivers
+        to locate Blink chargers through a variety of platforms.&quot; said <strong>Jim
+        Nemec</strong>, chief revenue officer for Blink Charging.&nbsp;</p>\\r\\n\\r\\n<p>Last
+        month, BLNK reported a Q2 EPS loss of $0.44, which beat the analyst consensus
+        estimate of an EPS loss of $0.49, a decline of 7.32% Y/Y, and sales of $32.84
+        million, which&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/news/23/08/33645117/blink-charging-q2-earnings-strongest-quarter-in-history-raises-guidance\\\"
+        style=\\\"background-image:none; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\">beat the analyst of $23.76 million</a>.</p>\\r\\n\\r\\n<p>The
+        company raised its FY23 revenue target to $110 and $120 million, targeting
+        a positive adjusted <a href=\\\"https://www.benzinga.com/calendars/guidance\\\">EBITDA
+        run rate by December 2024</a>.</p>\\r\\n\\r\\n<p><em>Also Read:&nbsp;</em><a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/markets/equities/23/08/34027538/electrifying-partnership-blink-charging-becomes-the-ev-charging-supplier-for-tennessee-valley-au\\\"
+        style=\\\"background-image:none; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\"><em>Electrifying Partnership - Blink Charging Becomes
+        The EV Charging Supplier For Tennessee Valley Authority</em></a></p>\\r\\n\\r\\n<p><strong>Price
+        Action</strong>: BLNK shares were trading 0.85% higher at $2.98&nbsp;on the
+        last check Tuesday.&nbsp;</p>\\r\\n\\r\\n<p><em>Photo: Shutterstock</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34912218/blink-charging-and-parkopedia-collaborate-adding-4-000-locations-to-platform\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/blink_shutter.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/blink_shutter.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/blink_shutter.jpg\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Penny
+        Stocks\"},{\"name\":\"Contracts\"},{\"name\":\"Small Cap\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"BLNK\"}],\"tags\":[{\"name\":\"Briefs\"}]},{\"id\":34919603,\"author\":\"Lara
+        Goldstein\",\"created\":\"Tue, 26 Sep 2023 14:31:38 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 14:31:38 -0400\",\"title\":\"Depression Relief: Possible Therapy
+        Boost With DMT & SSRIs, Per Small Pharma Clinical Results\",\"teaser\":\"New
+        findings on safety, tolerability and efficacy from a clinical study assessing
+        the interaction of psychedelics and traditional pharma for the treatment of
+        major depressive disorder (MDD) are out.\",\"body\":\"<p>New findings on safety,
+        tolerability and efficacy from a clinical study assessing the interaction
+        of psychedelics and traditional pharma for the treatment of major depressive
+        disorder (MDD) are out.</p>\\r\\n\\r\\n<p>They correspond to U.K.&rsquo;s
+        short-acting psychedelic therapies developer <strong>Small Pharma</strong>&rsquo;s
+        (OTCQB:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/DMTTF#OTCQB\\\">DMTTF</a>)
+        open-label Phase 1b study assessing the joint work of its &ldquo;native&rdquo;
+        DMT compound, SPL026&nbsp;and selective serotonin reuptake inhibitors (SSRIs.)</p>\\r\\n\\r\\n<p>The
+        trial studied the safety, tolerability, pharmacokinetics and pharmacodynamics
+        (PK/PD) and exploratory efficacy of one 27.5 mg IV infusion of SPL026, both
+        alone and in combination with SSRIs in 17 patients paired with support therapy,
+        as follows:</p>\\r\\n\\r\\n<ul>\\r\\n\\t<li>\\r\\n\\t<p>The test cohort had
+        12 patients on a stable -and insufficient- SSRIs treatment course, while the
+        control cohort had 5 patients not using any pharmacological treatment for
+        their depression symptoms.&nbsp;Patients were recruited with moderate to severe
+        MDD.</p>\\r\\n\\t</li>\\r\\n\\t<li>\\r\\n\\t<p>SPL026 was well-tolerated by
+        all 17 patients, with no apparent differences between both cohorts and&nbsp;no
+        drug-related serious adverse events&nbsp;reported.</p>\\r\\n\\t</li>\\r\\n</ul>\\r\\n\\r\\n<ul>\\r\\n\\t<li>\\r\\n\\t<p>A
+        total of 11 mild or moderate drug-related adverse events (AEs) were reported
+        in both groups (8 in the SSRI cohort, 3 in the&nbsp;non-SSRI group) the&nbsp;majority
+        of them resolved during the dosing visit.</p>\\r\\n\\t</li>\\r\\n\\t<li>\\r\\n\\t<p>Results
+        reaffirmed SPL026&rsquo;s efficacy (shown in a prior <a href=\\\"https://www.benzinga.com/markets/cannabis/23/01/30573674/small-pharma-incs-psychedelics-for-major-depression-trial-results-and-q1-earnings\\\">Phase
+        2a study</a>) in the non-SSRI cohort, yet the treatment showed &ldquo;marked,&rdquo;
+        greater antidepressant effects in the SSRI cohort, suggesting a &ldquo;potentially
+        enhanced efficacy effect&rdquo; when administered jointly with SSRIs.</p>\\r\\n\\t</li>\\r\\n</ul>\\r\\n\\r\\n<p>While
+        the prior Phase 1/2a trial assessed the safety and efficacy profile of SPL026
+        paired with support therapy alone, the&nbsp;fact of not requesting MDD patients
+        to drop their SSRIs would expectedly enable broader patient recruitment for
+        future, large-scale SPL026 studies, accelerate its clinical development, and
+        facilitate patient access&nbsp;earlier within their therapeutic journey, if
+        approved.</p>\\r\\n\\r\\n<p>CMO<strong> Dr. Carol Routledge</strong> said
+        that while the team was &ldquo;very pleased&rdquo; to find patients may not
+        need to&nbsp;withdraw&nbsp;from their SSRIs, they were not expecting to see
+        &ldquo;such a marked difference in efficacy&rdquo; when administering SPL026
+        in combination with SSRIs compared to SPL026 alone.&nbsp;</p>\\r\\n\\r\\n<p>&ldquo;The
+        potentially enhanced efficacy effect of a DMT-based treatment when administered
+        with SSRIs could lead to greater therapeutic benefit for patients, and a compelling
+        argument for positioning it earlier in the treatment pathway. This was a small
+        study, but the findings are both interesting and encouraging and warrant further
+        exploration,&rdquo; Routledge explained.</p>\\r\\n\\r\\n<p><strong>CEO George
+        Tziras</strong> added that these safety and tolerability results &ldquo;further
+        support&rdquo; Small Pharma&rsquo;s DMT programs&rsquo; patient access strategy,
+        and further stated the team looks forward to exploring these findings &ldquo;as
+        part of the <a href=\\\"https://www.benzinga.com/markets/cannabis/23/08/34074153/cybins-acquisition-of-small-pharma-will-elevate-dmt-therapeutics-for-depression-and-anxiety\\\">integrated
+        DMT program with Cybin</a>&nbsp;(NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/CYBN#NYSE\\\">CYBN</a>),
+        subject to completion of the proposed arrangement transaction.&rdquo;</p>\\r\\n\\r\\n<p><em>Into
+        cannabis markets? Our biannual <a href=\\\"https://www.benzinga.com/go/cannabis-conference-article-link\\\">Cannabis
+        Capital Conference</a> is up this week! Whether to close your deals or just
+        get acquainted with the sector&rsquo;s best, you&rsquo;re still on time to
+        come join us this Sept. 27-28 in Chicago for our 17th edition! Tickets <a
+        href=\\\"https://www.benzinga.com/go/cannabis-conference-article-link\\\">HERE</a>.</em></p>\\r\\n\\r\\n<p><em>Photo:
+        Benzinga edit with photo by&nbsp;Bacsica, aiyoshi597, Gisele Yashar and Gorodenkoff
+        on Shutterstock.</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/markets/cannabis/23/09/34919603/depression-relief-possible-therapy-boost-with-dmt-ssris-per-small-pharma-clinical-results\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/advanced_technology_clinic_dmt_psilocybin_mdma_bacsica_aiyoshi597_gisele_yashar_and_gorodenkoff_on_shutterstock.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/advanced_technology_clinic_dmt_psilocybin_mdma_bacsica_aiyoshi597_gisele_yashar_and_gorodenkoff_on_shutterstock.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/advanced_technology_clinic_dmt_psilocybin_mdma_bacsica_aiyoshi597_gisele_yashar_and_gorodenkoff_on_shutterstock.jpg\"}],\"channels\":[{\"name\":\"Cannabis\"},{\"name\":\"News\"},{\"name\":\"Penny
+        Stocks\"},{\"name\":\"Psychedelics\"},{\"name\":\"Management\"},{\"name\":\"Global\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"CYBN\"},{\"name\":\"DMTTF\"}],\"tags\":[{\"name\":\"DMT
+        Clinical Trial\"},{\"name\":\"Drug Interactions\"},{\"name\":\"major depressive
+        disorder\"},{\"name\":\"Psychedelic-Assisted Therapies\"}]},{\"id\":34922721,\"author\":\"Benzinga
+        Insights\",\"created\":\"Tue, 26 Sep 2023 14:31:06 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 14:31:06 -0400\",\"title\":\"Looking At Visa's Recent Unusual
+        Options Activity\",\"teaser\":\" \",\"body\":\"<p>Someone with a lot of money
+        to spend has taken a bearish stance on <strong>Visa</strong> (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/V#NYSE\\\">V</a>).</p>\\n<p>And retail
+        traders should know.</p>\\n<p>We noticed this today when the big position
+        showed up on publicly available options history that we track here at Benzinga.</p>\\n<p>Whether
+        this is an institution or just a wealthy individual, we don't know. But when
+        something this big happens with V, it often means somebody knows something
+        is about to happen.</p>\\n<p>So how do we know what this whale just did? </p>\\n<p>Today,
+        <a href=\\\"https://pro.benzinga.com/?utm_source=insights\\\">Benzinga</a>'s
+        options scanner spotted 11 uncommon options trades for Visa.</p>\\n<p>This
+        isn't normal.</p>\\n<p>The overall sentiment of these big-money traders is
+        split between 27% bullish and 72%, bearish.</p>\\n<p>Out of all of the special
+        options we uncovered, 4 are puts, for a total amount of $304,918, and 7 are
+        calls, for a total amount of $318,312.</p>\\n<h3>What's The Price Target?</h3>\\n<p>Taking
+        into account the Volume and Open Interest on these contracts, it appears that
+        whales have been targeting a price range from $130.0 to $260.0 for Visa over
+        the last 3 months. </p>\\n<h3>Volume &amp; Open Interest Development</h3>\\n<p>Looking
+        at the volume and open interest is an insightful way to conduct due diligence
+        on a stock.</p>\\n<p>This data can help you track the liquidity and interest
+        for Visa's options for a given strike price.</p>\\n<p>Below, we can observe
+        the evolution of the volume and open interest of calls and puts, respectively,
+        for all of Visa's whale activity within a strike price range from $130.0 to
+        $260.0 in the last 30 days. </p>\\n<h3>Visa Option Volume And Open Interest
+        Over Last 30 Days</h3>\\n<p><img src=\\\"https://www.benzinga.com/files/images/story/2023/1695753062_0.png\\\"
+        alt=\\\"Options Call Chart\\\" /></p>\\n\\n<h3>Biggest Options Spotted:</h3>\\n<p><table>\\n<thead>\\n<tr>\\n<th><strong>Symbol</strong></th>\\n<th><strong>PUT/CALL</strong></th>\\n<th><strong>Trade
+        Type</strong></th>\\n<th><strong>Sentiment</strong></th>\\n<th><strong>Exp.
+        Date</strong></th>\\n<th><strong>Strike Price</strong></th>\\n<th><strong>Total
+        Trade Price</strong></th>\\n<th><strong>Open Interest</strong></th>\\n<th
+        align=\\\"right\\\"><strong>Volume</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td>V</td>\\n<td>PUT</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>10/13/23</td>\\n<td>$245.00</td>\\n<td>$101.5K</td>\\n<td>124</td>\\n<td
+        align=\\\"right\\\">72</td>\\n</tr>\\n<tr>\\n<td>V</td>\\n<td>PUT</td>\\n<td>TRADE</td>\\n<td>BULLISH</td>\\n<td>10/20/23</td>\\n<td>$225.00</td>\\n<td>$88.8K</td>\\n<td>1.3K</td>\\n<td
+        align=\\\"right\\\">478</td>\\n</tr>\\n<tr>\\n<td>V</td>\\n<td>PUT</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>11/17/23</td>\\n<td>$250.00</td>\\n<td>$73.7K</td>\\n<td>292</td>\\n<td
+        align=\\\"right\\\">36</td>\\n</tr>\\n<tr>\\n<td>V</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>10/20/23</td>\\n<td>$235.00</td>\\n<td>$70.0K</td>\\n<td>944</td>\\n<td
+        align=\\\"right\\\">358</td>\\n</tr>\\n<tr>\\n<td>V</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>06/21/24</td>\\n<td>$250.00</td>\\n<td>$56.6K</td>\\n<td>2.7K</td>\\n<td
+        align=\\\"right\\\">58</td>\\n</tr>\\n</tbody>\\n</table></p>\\n<h3>Where
+        Is Visa Standing Right Now?</h3>\\n<ul>\\n<li>With a volume of 3,317,808,
+        the price of V is down -1.44% at $229.99. </li>\\n<li>RSI indicators hint
+        that the underlying stock may be oversold.</li>\\n<li>Next earnings are expected
+        to be released in 28 days.</li>\\n</ul>\\n<h3>What The Experts Say On Visa:</h3>\\n<ul>\\n<li>Wedbush
+        downgraded its action to Outperform with a price target of $270</li>\\n<li>Mizuho
+        downgraded its action to Neutral with a price target of $255</li>\\n<li>Baird
+        downgraded its action to Outperform with a price target of $284</li>\\n</ul>\\n<p>Options
+        are a riskier asset compared to just trading the stock, but they have higher
+        profit potential. Serious options traders manage this risk by educating themselves
+        daily, scaling in and out of trades, following more than one indicator, and
+        following the markets closely.</p>\\n<p>If you want to stay updated on the
+        latest options trades for Visa, <a href=\\\"https://benzinga.grsm.io/register174\\\">Benzinga
+        Pro</a> gives you real-time options trades alerts.</p>\",\"url\":\"https://www.benzinga.com/markets/options/23/09/34922721/looking-at-visas-recent-unusual-options-activity\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/movers_image_18.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/movers_image_18.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/movers_image_18.jpeg\"}],\"channels\":[{\"name\":\"Options\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"V\"}],\"tags\":[{\"name\":\"BZI-UOA\"}]},{\"id\":34922718,\"author\":\"Benzinga
+        Insights\",\"created\":\"Tue, 26 Sep 2023 14:30:59 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 14:31:00 -0400\",\"title\":\"Check Out What Whales Are Doing With
+        Boeing\",\"teaser\":\" \",\"body\":\"<p>Someone with a lot of money to spend
+        has taken a bearish stance on <strong>Boeing</strong> (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/BA#NYSE\\\">BA</a>).</p>\\n<p>And
+        retail traders should know.</p>\\n<p>We noticed this today when the big position
+        showed up on publicly available options history that we track here at Benzinga.</p>\\n<p>Whether
+        this is an institution or just a wealthy individual, we don't know. But when
+        something this big happens with BA, it often means somebody knows something
+        is about to happen.</p>\\n<p>So how do we know what this whale just did? </p>\\n<p>Today,
+        <a href=\\\"https://pro.benzinga.com/?utm_source=insights\\\">Benzinga</a>'s
+        options scanner spotted 22 uncommon options trades for Boeing.</p>\\n<p>This
+        isn't normal.</p>\\n<p>The overall sentiment of these big-money traders is
+        split between 31% bullish and 68%, bearish.</p>\\n<p>Out of all of the special
+        options we uncovered, 10 are puts, for a total amount of $970,061, and 12
+        are calls, for a total amount of $1,060,786.</p>\\n<h3>What's The Price Target?</h3>\\n<p>Taking
+        into account the Volume and Open Interest on these contracts, it appears that
+        whales have been targeting a price range from $150.0 to $280.0 for Boeing
+        over the last 3 months. </p>\\n<h3>Volume &amp; Open Interest Development</h3>\\n<p>Looking
+        at the volume and open interest is a powerful move while trading options.
+        This data can help you track the liquidity and interest for Boeing's options
+        for a given strike price. Below, we can observe the evolution of the volume
+        and open interest of calls and puts, respectively, for all of Boeing's whale
+        trades within a strike price range from $150.0 to $280.0 in the last 30 days.
+        </p>\\n<h3>Boeing Option Volume And Open Interest Over Last 30 Days</h3>\\n<p><img
+        src=\\\"https://www.benzinga.com/files/images/story/2023/1695753055_0.png\\\"
+        alt=\\\"Options Call Chart\\\" /></p>\\n\\n<h3>Biggest Options Spotted:</h3>\\n<p><table>\\n<thead>\\n<tr>\\n<th><strong>Symbol</strong></th>\\n<th><strong>PUT/CALL</strong></th>\\n<th><strong>Trade
+        Type</strong></th>\\n<th><strong>Sentiment</strong></th>\\n<th><strong>Exp.
+        Date</strong></th>\\n<th><strong>Strike Price</strong></th>\\n<th><strong>Total
+        Trade Price</strong></th>\\n<th><strong>Open Interest</strong></th>\\n<th
+        align=\\\"right\\\"><strong>Volume</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td>BA</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>11/17/23</td>\\n<td>$200.00</td>\\n<td>$292.3K</td>\\n<td>1.3K</td>\\n<td
+        align=\\\"right\\\">335</td>\\n</tr>\\n<tr>\\n<td>BA</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>06/21/24</td>\\n<td>$170.00</td>\\n<td>$227.5K</td>\\n<td>701</td>\\n<td
+        align=\\\"right\\\">250</td>\\n</tr>\\n<tr>\\n<td>BA</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>06/21/24</td>\\n<td>$170.00</td>\\n<td>$225.0K</td>\\n<td>701</td>\\n<td
+        align=\\\"right\\\">250</td>\\n</tr>\\n<tr>\\n<td>BA</td>\\n<td>CALL</td>\\n<td>TRADE</td>\\n<td>BULLISH</td>\\n<td>01/17/25</td>\\n<td>$170.00</td>\\n<td>$209.6K</td>\\n<td>321</td>\\n<td
+        align=\\\"right\\\">40</td>\\n</tr>\\n<tr>\\n<td>BA</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>11/17/23</td>\\n<td>$200.00</td>\\n<td>$147.0K</td>\\n<td>1.3K</td>\\n<td
+        align=\\\"right\\\">494</td>\\n</tr>\\n</tbody>\\n</table></p>\\n<h3>Where
+        Is Boeing Standing Right Now?</h3>\\n<ul>\\n<li>With a volume of 1,974,811,
+        the price of BA is down -1.43% at $195.94. </li>\\n<li>RSI indicators hint
+        that the underlying stock may be oversold.</li>\\n<li>Next earnings are expected
+        to be released in 29 days.</li>\\n</ul>\\n<h3>What The Experts Say On Boeing:</h3>\\n<ul>\\n<li>Citigroup
+        has decided to maintain their Buy rating on Boeing, which currently sits at
+        a price target of $285. </li>\\n<li>Susquehanna downgraded its action to Positive
+        with a price target of $270</li>\\n<li>Susquehanna downgraded its action to
+        Positive with a price target of $270</li>\\n<li>TD Cowen has decided to maintain
+        their Outperform rating on Boeing, which currently sits at a price target
+        of $260. </li>\\n</ul>\\n<p>Options are a riskier asset compared to just trading
+        the stock, but they have higher profit potential. Serious options traders
+        manage this risk by educating themselves daily, scaling in and out of trades,
+        following more than one indicator, and following the markets closely.</p>\\n<p>If
+        you want to stay updated on the latest options trades for Boeing, <a href=\\\"https://benzinga.grsm.io/register174\\\">Benzinga
+        Pro</a> gives you real-time options trades alerts.</p>\",\"url\":\"https://www.benzinga.com/markets/options/23/09/34922718/check-out-what-whales-are-doing-with-boeing\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/movers_image_1.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/movers_image_1.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/movers_image_1.jpeg\"}],\"channels\":[{\"name\":\"Options\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"BA\"}],\"tags\":[{\"name\":\"BZI-UOA\"}]},{\"id\":34910361,\"author\":\"Nabaparna
+        Bhattacharya\",\"created\":\"Tue, 26 Sep 2023 14:23:33 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 14:24:23 -0400\",\"title\":\"Qantas Airways Chairman Under Fire
+        Over Morale, Union Demands Resignation\",\"teaser\":\"Qantas Airways Ltd.&#39;s\_(OTC:
+        QABSY) Chairman Richard Goyder\_is facing calls for his resignation from a
+        pilots union over\_downbeat company morale.\",\"body\":\"<p><strong>Qantas
+        Airways Ltd.&#39;s&nbsp;</strong>(OTC:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/QABSY#OTC\\\">QABSY</a>)
+        Chairman <strong>Richard Goyder</strong>&nbsp;is facing calls for his resignation
+        from a pilots union over&nbsp;downbeat company morale.</p>\\r\\n\\r\\n<p>The
+        Australian and International Pilots Association (AIPA), which represents most
+        of Qantas&#39;&nbsp;roughly 3,000 pilots, wrote to the&nbsp;<a class=\\\"editor-rtfLink\\\"
+        href=\\\"https://www.benzinga.com/news/23/05/32150992/qantas-airways-names-its-first-female-ceo\\\"
+        style=\\\"background-image:initial; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\">airline&#39;s new CEO, Vanessa Hudson</a>, demanding
+        that Goyder resign, according to a Reuters report.</p>\\r\\n\\r\\n<p>&quot;We
+        have totally lost confidence in Goyder and his board,&quot; AIPA President
+        Captain <strong>Tony Lucas</strong> said in a statement to Reuters.</p>\\r\\n\\r\\n<p>The
+        company was recently in the headlines after reports emerged that former CEO
+        <strong>Alan Joyce</strong> saw a significant increase in his pay, rising
+        by 872% in FY23, as he cashed in long-term incentives upon retiring. In the
+        previous year, his total pay was A$2.3 million.</p>\\r\\n\\r\\n<p><strong><em>Related:</em></strong><em>&nbsp;</em><a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/markets/equities/23/09/34757006/qantas-ex-ceo-takes-900-salary-hike-but-faces-bonus-reduction-due-to-scandal-report\\\"
+        style=\\\"background-image:initial; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\"><em>Qantas&#39; Ex-CEO Takes 900% Salary Hike But Faces
+        Bonus Reduction Due To Scandal: Report</em></a></p>\\r\\n\\r\\n<p>Goyder,
+        who has served as the airline&#39;s chairman since 2018, will not stand for
+        re-election at the upcoming annual meeting scheduled for November, the report
+        added.</p>\\r\\n\\r\\n<p>On Monday, the company reportedly said it wants to
+        allocate additional funds for addressing &quot;customer pain points&quot;
+        beyond its initial plans, according to Reuters. However, it cautioned that
+        the escalating fuel costs might necessitate fare increases, even as prices
+        are already high, the report added.</p>\\r\\n\\r\\n<p><strong>Price Action:</strong>&nbsp;Shares
+        of QABSY were down 1.22% to $16.40 on Tuesday.&nbsp;</p>\\r\\n\\r\\n<p><em>Also
+        Read:&nbsp;</em><a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/markets/equities/23/06/32711095/qantas-sees-airfares-moderating-as-capacity-returns-to-pre-covid-levels-report\\\"
+        style=\\\"background-image:initial; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\"><em>Qantas Sees Airfares Moderating As Capacity Returns
+        To Pre-COVID Levels: Report</em></a></p>\\r\\n\\r\\n<p><em>Photo: Shutterstock</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34910361/qantas-airways-chairman-under-fire-over-morale-union-demands-resignation\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/qantas_shutter.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/qantas_shutter.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/qantas_shutter.jpg\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"QABSY\"}],\"tags\":[{\"name\":\"Briefs\"}]},{\"id\":34919573,\"author\":\"Nicol\xE1s
+        Jose Rodriguez\",\"created\":\"Tue, 26 Sep 2023 14:18:47 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 14:18:48 -0400\",\"title\":\"Legal Battles In Cannabis: UFCW Wins
+        In Massachusetts, Alleged Misconduct In Arkansas, SEC Suit\",\"teaser\":\"Labor
+        Judge Orders Massachusetts Dispensary To Negotiate With Union Despite Election
+        Loss\\n\\nA federal judge ruled in favor of the United Food and Commercial
+        Workers Union (UFCW) in Massachusetts, ordering cannabis retailer I.N.S.A.
+        Inc. to negotiate with the union despite the UFCW losing an election last
+        year.\",\"body\":\"<h3>Labor Judge Orders Massachusetts Dispensary To Negotiate
+        With Union Despite Election Loss</h3>\\r\\n\\r\\n<p>A federal judge ruled
+        in favor of the United Food and Commercial Workers Union (UFCW) in Massachusetts,
+        ordering cannabis retailer I.N.S.A. Inc. to negotiate with the union despite
+        the <a href=\\\"https://www.benzinga.com/topic/ufcw\\\">UFCW</a> losing an
+        election last year.</p>\\r\\n\\r\\n<p>The judge cites the illegal firing of
+        pro-union workers as the reason for the decision, applying a new pro-union
+        standard from the National Labor Relations Board (NLRB).</p>\\r\\n\\r\\n<p>This
+        precedent allows unions to represent workers despite election losses in cases
+        of employer unfair labor practices. The ruling may face appeals, potentially
+        reaching the U.S. Supreme Court, <a href=\\\"https://www.greenmarketreport.com/labor-judge-rules-dispensary-must-bargain-with-union-despite-election-loss/\\\">reported</a>
+        John Schroyer for Green Market Report.</p>\\r\\n\\r\\n<p><em>Join us at the
+        17th <a href=\\\"http://\\\">Benzinga Cannabis Capital Conference</a> in Chicago
+        on September 27-28, where you can explore the latest in cannabis regulations,
+        compliance, and investment opportunities &ndash; don&#39;t miss your chance,
+        <a href=\\\"http://\\\">secure your spot today</a>!</em></p>\\r\\n\\r\\n<h3>Lawsuit
+        Accuses Arkansas Law Firm of Medical Marijuana Misconduct</h3>\\r\\n\\r\\n<p>The
+        lawsuit alleges misconduct by <a href=\\\"https://www.benzinga.com/topic/arkansas-cannabis\\\">Arkansas</a>
+        law firm Steel, Wright, Gray in securing medical marijuana dispensary licenses
+        in 2019. Local owners claim they had little control over their dispensaries,
+        with out-of-state companies reaping profits, <a href=\\\"http://https://arkansasadvocate.com/2023/09/21/lawsuit-accuses-arkansas-law-firm-of-misconduct-in-early-days-of-medical-marijuana/\\\">reported</a>
+        local media.</p>\\r\\n\\r\\n<h3>SEC Sues Former Tree of Knowledge CEO Over
+        Fraudulent PPE Pivot</h3>\\r\\n\\r\\n<p>The SEC filed a lawsuit against Michael
+        Caridi, former CEO of Tree of Knowledge (OTC:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/TOKI#OTC\\\">TOKI</a>)
+        (OTCEM: TOKIF), over fraudulent activities related to the personal protective
+        equipment (PPE) supply chain during the COVID-19 pandemic.</p>\\r\\n\\r\\n<p>Caridi&#39;s
+        company reached a settlement after defrauding a Canadian hospital of $13 million
+        for N95 masks never delivered, Bloomberg Law <a href=\\\"https://news.bloomberglaw.com/litigation/cbd-sellers-pivot-to-n-95-masks-draws-sec-suit-against-ex-ceo\\\">reported</a>.</p>\\r\\n\\r\\n<p>According
+        to the lawsuit, Caridi diverted funds to himself and associates, leading to
+        massive liability for TOK Entities&nbsp;and issued false press releases that
+        caused stock price spikes.</p>\\r\\n\\r\\n<p>The SEC seeks a ban from penny
+        stock trading, fines, and the repayment of ill-gotten gains from the hospital
+        deal.</p>\\r\\n\\r\\n<p><em>The&nbsp;<a href=\\\"\\\">Benzinga Cannabis Capital
+        Conference</a>&nbsp;is happening this week in&nbsp;Chicago September 27-28.&nbsp;<a
+        href=\\\"\\\">Get your tickets today</a>&nbsp;before prices increase and secure
+        a spot at the epicenter of cannabis investment and branding.</em></p>\\r\\n\\r\\n<p><em>Photo
+        by&nbsp;<a href=\\\"https://unsplash.com/@jaimespaniol?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText\\\">Jaime
+        Spaniol</a>&nbsp;on&nbsp;<a href=\\\"https://unsplash.com/photos/-L0N74GWsq8?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText\\\">Unsplash</a>.&nbsp;</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/markets/cannabis/23/09/34919573/legal-battles-in-cannabis-ufcw-wins-in-massachusetts-alleged-misconduct-in-arkansas-sec-suit\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/jaime-spaniol--l0n74gwsq8-unsplash_1.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/jaime-spaniol--l0n74gwsq8-unsplash_1.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/jaime-spaniol--l0n74gwsq8-unsplash_1.jpg\"}],\"channels\":[{\"name\":\"Cannabis\"},{\"name\":\"Government\"},{\"name\":\"News\"},{\"name\":\"Penny
+        Stocks\"},{\"name\":\"Regulations\"},{\"name\":\"Legal\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"TOKI\"}],\"tags\":[{\"name\":\"Arkansas
+        cannabis\"},{\"name\":\"Cannabis Unions\"},{\"name\":\"I.N.S.A. Inc.\"},{\"name\":\"Massachussetts
+        Cannabis\"},{\"name\":\"National Labor Relations Board\"},{\"name\":\"S.E.C.
+        securities exchange commission\"},{\"name\":\"Steel Wright And Gray\"},{\"name\":\"Tree
+        of Knowledge\"},{\"name\":\"U.S. Securities and Exchange Commission\"},{\"name\":\"UFCW\"}]},{\"id\":34917805,\"author\":\"Anusuya
+        Lahiri\",\"created\":\"Tue, 26 Sep 2023 14:14:00 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 14:14:53 -0400\",\"title\":\"FTC And States Take On Amazon In
+        Antitrust Battle: What's Going On? (UPDATE)\",\"teaser\":\"Editor&#39;s note:
+        This story has been updated to reflect the nature of the lawsuit against Amazon
+        and its intent.\_\",\"body\":\"<p><em><strong>Editor&#39;s note:</strong>
+        This story has been updated to reflect the nature of the lawsuit against Amazon
+        and its intent.&nbsp;</em></p>\\r\\n\\r\\n<p><strong>Amazon.com, Inc</strong>&nbsp;(NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMZN#NYSE\\\">AMZN</a>)
+        stock is trading lower Tuesday as the Federal Trade Commission and 17 states
+        filed suit against the company,&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/government/23/09/34265296/whats-going-on-with-amazon-com-stock-today\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">accusing it of exploiting</a>&nbsp;monopolistic&nbsp;power
+        against rivals.&nbsp;</p>\\r\\n\\r\\n<p>Amazon&#39;s tactics prevent rivals
+        from growing and emerging by stifling competition on price, product selection
+        and quality, according to the complaint filed in Seattle federal court.&nbsp;</p>\\r\\n\\r\\n<p>The
+        complaint alleges that Amazon&#39;s schemes affect billions of dollars in
+        retail sales, impacting businesses and&nbsp;<a class=\\\"editor-rtfLink\\\"
+        href=\\\"https://www.ftc.gov/news-events/news/press-releases/2023/09/ftc-sues-amazon-illegally-maintaining-monopoly-power\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">consumers</a>.</p>\\r\\n\\r\\n<p>FTC Chair <strong>Lina
+        M. Khan</strong> states that Amazon exploits its monopoly power, enriching
+        itself at the expense of American families and businesses.&nbsp;</p>\\r\\n\\r\\n<p>The
+        lawsuit aims to hold Amazon accountable and restore fair competition, according
+        to the FTC.&nbsp;</p>\\r\\n\\r\\n<p><strong>John Newman</strong>, deputy director
+        of the FTC&#39;s Bureau of Competition, said Amazon&#39;s monopolistic behavior
+        results in higher consumer prices and high fees for online sellers.&nbsp;</p>\\r\\n\\r\\n<p>The
+        complaint focuses on what the FTC said is Amazon&#39;s anticompetitive conduct
+        in the online superstore and marketplace services markets.</p>\\r\\n\\r\\n<p>The
+        suit claims that Amazon employs tactics like anti-discounting measures and
+        conditioning sellers&#39; &quot;Prime&quot; eligibility on costly fulfillment
+        services, limiting competitors&#39; ability to compete effectively.</p>\\r\\n\\r\\n<p>Amazon&#39;s
+        exclusionary practices, including replacing organic search results with paid
+        ads and biasing search results toward its products, make it impossible for
+        competitors to gain traction, according to the lawsuit.&nbsp;</p>\\r\\n\\r\\n<p>The
+        company charges substantial fees, forcing sellers to pay close to 50% of their
+        revenues to Amazon, leading to increased consumer prices, the lawsuit said.&nbsp;</p>\\r\\n\\r\\n<p>The
+        FTC and state partners seek a permanent injunction to stop what they say is
+        Amazon&#39;s unlawful conduct and restore competition in the market.</p>\\r\\n\\r\\n<p>Between
+        being paid for its logistics program, advertising, and other services, &quot;Amazon
+        now takes one of every $2 that a seller makes,&quot; Khan said, <a href=\\\"http://www.wsj.com/us-news/law/ftc-sues-amazon-alleging-illegal-online-marketplace-monopoly-6bd9af23\\\">according</a>
+        to the Wall Street Journal.&nbsp;</p>\\r\\n\\r\\n<p><strong>David Zapolsky</strong>,
+        Amazon&#39;s Senior Vice President of Global Public Policy and General Counsel,
+        said the FTC is straying from its consumer and competition protection mission.&nbsp;</p>\\r\\n\\r\\n<p>He
+        argued that the practices challenged by the FTC have encouraged competition
+        and innovation in the retail industry.&nbsp;</p>\\r\\n\\r\\n<p>Zapolsky warned
+        that if the FTC prevailed, it could result in fewer product choices, higher
+        prices, slower deliveries&nbsp;and limited options for small&nbsp;<a class=\\\"editor-rtfLink\\\"
+        href=\\\"https://www.aboutamazon.com/news/company-news/amazon-response-to-ftc-antitrust-lawsuit\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">businesses</a>.</p>\\r\\n\\r\\n<p>According to recent
+        media reports, the case will focus on several aspects of the Amazon marketplace
+        and may suggest structural remedies that could result in a company breakup.&nbsp;</p>\\r\\n\\r\\n<p>However,&nbsp;<strong>Wedbush&nbsp;</strong>found
+        the possibility of a&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/news/23/09/34620099/will-ftc-lawsuit-end-up-breaking-amazon-analyst-says-unlikely\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">split as unlikely</a>. The FTC faces a challenging road
+        ahead, given the benefits Amazon brings to consumer welfare through competitive
+        pricing, selection, and industry-leading delivery services, according to the
+        analyst firm.&nbsp;</p>\\r\\n\\r\\n<p><strong>Price Action:</strong>&nbsp;AMZN
+        shares traded lower by 2.99% at $127.35 on the last check Tuesday.</p>\\r\\n\\r\\n<p><strong><em>Disclaimer:</em></strong><em>&nbsp;This
+        content was partially produced with the help of AI tools and was reviewed
+        and published by Benzinga editors.</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/news/23/09/34917805/ftc-and-states-take-on-amazon-in-antitrust-battle-1\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/amazon_prime_rewards_card_32861518627.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/amazon_prime_rewards_card_32861518627.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/amazon_prime_rewards_card_32861518627.jpg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AMZN\"}],\"tags\":[{\"name\":\"AI
+        Generated\"},{\"name\":\"Briefs\"}]},{\"id\":34920989,\"author\":\"Joana Scopel\",\"created\":\"Tue,
+        26 Sep 2023 14:11:12 -0400\",\"updated\":\"Tue, 26 Sep 2023 14:11:12 -0400\",\"title\":\"Urban-Gro
+        Secures $11M Hospitality & Recreation Contract In Southeast U.S.\",\"teaser\":\"Urban-Gro,
+        Inc. (NASDAQ: UGRO), a comprehensive professional services consulting firm\_announced
+        its latest contract win within the hospitality and recreation sector in the
+        Southeastern U.S.\",\"body\":\"<p><strong>Urban-Gro, Inc.</strong> (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/UGRO#NASDAQ\\\">UGRO</a>),
+        a comprehensive professional services consulting firm&nbsp;announced its latest
+        contract win within the hospitality and recreation sector in the Southeastern
+        U.S.</p>\\r\\n\\r\\n<p>The contract, valued at over <strong>$11 million</strong>,
+        encompasses a range of services, including architecture, design, engineering&nbsp;and
+        construction management.</p>\\r\\n\\r\\n<p>&ldquo;Our diversification playbook
+        continues to drive strong growth,&rdquo; said chairman and CEO of Urban-Gro
+        <strong>Bradley Nattrass</strong>, who will be participating at the <a href=\\\"https://www.benzinga.com/go/cannabis-conference-article-link\\\"
+        target=\\\"_blank\\\"><strong>Benzinga Cannabis Capital Conference</strong></a>
+        in <strong>Chicago</strong> on a panel on the topic of &#39;Beyond Buds: How
+        and Why Ancillary Companies are Diversifying&#39;. Mark your calendar for
+        <strong>September 27-28</strong></p>\\r\\n\\r\\n<p><em>See Also:</em> <em><a
+        href=\\\"https://www.benzinga.com/markets/cannabis/23/09/34537387/ancillary-cannabis-business-ramps-up-market-presence-with-3m-in-marijuana-contracts\\\">Ancillary
+        Cannabis Business Ramps Up Market Presence With $3M In Marijuana Contracts</a></em></p>\\r\\n\\r\\n<p>Moreover,
+        the project &ldquo;will be predominantly realized over the next six quarters,&rdquo;
+        <a href=\\\"https://www.globenewswire.com/news-release/2023/09/26/2749481/0/en/urban-gro-Inc-Awarded-Contract-for-More-Than-11-Million-of-Design-Build-Services-with-Existing-Client-in-the-Hospitality-Recreation-Sector.html\\\">per</a>
+        a press release.</p>\\r\\n\\r\\n<p>&quot;Having successfully executed and
+        delivered on two smaller contracts with the client earlier this year, to now
+        earning the responsibility of delivering complete turnkey design-build services,
+        further demonstrates that our strategy is working as intended,&rdquo; concluded
+        Nattrass who will also <a href=\\\"https://www.benzinga.com/pressreleases/23/09/g34861776/urban-gro-inc-announces-upcoming-fall-2023-conference-participation\\\">be
+        available</a> for one-on-one investor meetings at the <a href=\\\"http://www.benzinga.com/go/cannabis-conference-article-link\\\">Benzinga
+        Conference</a>.</p>\\r\\n\\r\\n<p><img alt=\\\"cccchicago_0.jpg\\\" src=\\\"https://www.benzinga.com/files/u1084344/cccchicago_0.jpg\\\"
+        style=\\\"height:359px; width:683px\\\" /></p>\\r\\n\\r\\n<p><a href=\\\"https://www.benzinga.com/events/cannabis-conference/company/urban-gro/\\\">UGRO</a>
+        is a fully integrated architectural, engineering&nbsp;and cultivation systems
+        company for commercial <a href=\\\"https://www.benzinga.com/cannabis\\\">cannabis</a>
+        and food-focused indoor Controlled Environment Agriculture (CEA) facilities.</p>\\r\\n\\r\\n<h3>Price
+        Action</h3>\\r\\n\\r\\n<p>UGRO shares <a href=\\\"https://www.benzinga.com/quote/UGRO/analyst-ratings\\\">traded</a>
+        6.54% up at $1.385 per share at the time of writing on Tuesday afternoon.</p>\\r\\n\\r\\n<p>Interested
+        in learning about&nbsp;<a href=\\\"https://www.benzinga.com/money/marijuana-stocks\\\"
+        target=\\\"_blank\\\">how to invest in cannabis stocks</a>, consider joining
+        us at the 17th edition of the&nbsp;<a href=\\\"https://www.benzinga.com/go/cannabis-conference-article-link\\\"
+        target=\\\"_blank\\\"><strong>Benzinga Cannabis Capital Conference</strong></a>&nbsp;in&nbsp;<strong>Chicago
+        on Sept 27-28</strong>.&nbsp;<a href=\\\"http://www.benzinga.com/go/cannabis-conference-article-link\\\"
+        target=\\\"_blank\\\">Get your tickets today</a>&nbsp;before prices increase
+        and secure a spot at the epicenter of cannabis investment and branding.</p>\\r\\n\\r\\n<p><em>Read
+        Next:</em> <em><a href=\\\"https://www.benzinga.com/markets/cannabis/23/08/34149329/cashing-in-on-cannabis-urban-gro-secures-over-2m-in-deal-with-xs-financial-whats-next\\\">Cashing
+        In On Cannabis: Urban-gro Secures Over $2M In Deal With XS Financial, What&#39;s
+        Next?</a></em></p>\\r\\n\\r\\n<p><em>Image by <a href=\\\"https://www.benzinga.com/author/el-planteo\\\">El
+        Planteo</a></em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/markets/cannabis/23/09/34920989/urban-gro-secures-11m-hospitality-recreation-contract-in-southeast-u-s\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/mercadocannabis.jpg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/mercadocannabis.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/mercadocannabis.jpg\"}],\"channels\":[{\"name\":\"Cannabis\"},{\"name\":\"News\"},{\"name\":\"Penny
+        Stocks\"},{\"name\":\"Financing\"},{\"name\":\"Events\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"UGRO\"}],\"tags\":[{\"name\":\"Bradley
+        Nattrass\"},{\"name\":\"Cannabis Capital Conference\"},{\"name\":\"CCC\"},{\"name\":\"CCC
+        Chicago\"},{\"name\":\"Controlled Environment Agriculture\"},{\"name\":\"Inc.\"},{\"name\":\"urban-gro\"}]},{\"id\":34915565,\"author\":\"Lekha
+        Gupta\",\"created\":\"Tue, 26 Sep 2023 14:11:00 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 14:11:01 -0400\",\"title\":\"Boosting Digital Fortresses: Broadcom
+        & Google Cloud Partner To Boost Cybersecurity With AI\",\"teaser\":\"Broadcom
+        Inc&#39;s (NASDAQ: AVGO) division Symantec announced a collaboration with\_Alphabet
+        Inc.\_(NASDAQ: GOOGL) (NASDAQ: GOOG) Google C\",\"body\":\"<p><strong>Broadcom
+        Inc</strong>&#39;s (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AVGO#NASDAQ\\\">AVGO</a>)
+        division Symantec announced a collaboration with&nbsp;<strong>Alphabet Inc.</strong>&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOGL#NASDAQ\\\">GOOGL</a>)
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOG#NASDAQ\\\">GOOG</a>)
+        Google Cloud to boost&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/pressreleases/23/09/g34906060/broadcom-partners-with-google-cloud-to-strengthen-gen-ai-powered-cybersecurity\\\"
+        style=\\\"background-image:initial; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\">generative AI-powered cybersecurity</a>.</p>\\r\\n\\r\\n<p>As
+        per the deal, Google Cloud will integrate generative AI into the Symantec
+        Security platform in a phased rollout manner to offer customers a strong technical
+        edge to detect and eradicate cyber-attacks. This will result in increased
+        security and higher SOC productivity.</p>\\r\\n\\r\\n<p>AVGO has been a partner
+        of Google Cloud for several years, which has helped accelerate its growth
+        strategy.&nbsp;</p>\\r\\n\\r\\n<p><strong><em>Related</em></strong><em>:&nbsp;</em><a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/news/23/09/34787271/googles-power-move-broadcom-ditched-in-favor-of-marvell-amid-ai-chip-wars\\\"
+        style=\\\"background-image:initial; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\"><em>Google&#39;s Power Move: Broadcom Ditched in Favor
+        of Marvell Amid AI Chip Wars</em></a></p>\\r\\n\\r\\n<p>&quot;Symantec has
+        a long history of designing, implementing, and fine-tuning artificial intelligence
+        and machine learning for critical security use cases and helping our customers
+        drive value out of AI. Our partnership with Google Cloud is part of that continuing
+        journey to put the most innovative security solutions possible into user hands.
+        Our engineers have simplified the process in ways that will enable customers
+        to be much more productive and effective. This is just the beginning of a
+        great collaboration that will help to kickstart the benefits of AI throughout
+        the broader security ecosystem,&quot; said Adam Bromwich, CTO and Head of
+        Engineering, Symantec Enterprise Division.</p>\\r\\n\\r\\n<p><strong><em>Also
+        Read</em></strong><em>:&nbsp;</em><a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/news/23/09/34829001/despite-speculation-of-googles-shift-analyst-sees-strong-ties-and-momentum-in-broadcoms-decade-long\\\"
+        style=\\\"background-image:initial; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\"><em>Despite Speculation of Google&#39;s Shift, Analyst
+        Sees Strong Ties and Momentum in Broadcom&#39;s Decade-Long Partnership</em></a></p>\\r\\n\\r\\n<p><strong>Price
+        Action</strong>: AVGO shares are trading lower by 1.97% at $817.44 on the
+        last check Tuesday.</p>\\r\\n \",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34915565/boosting-digital-fortresses-broadcom-google-cloud-partner-to-boost-cybersecurity-with-ai\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/avgo.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/avgo.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/avgo.png\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"Large
+        Cap\"},{\"name\":\"News\"},{\"name\":\"Contracts\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"AVGO\"},{\"name\":\"GOOG\"},{\"name\":\"GOOGL\"}],\"tags\":[{\"name\":\"Briefs\"}]},{\"id\":34911177,\"author\":\"Shivani
+        Kumaresan\",\"created\":\"Tue, 26 Sep 2023 14:02:31 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 14:02:32 -0400\",\"title\":\"From Vintage Vibes To Modern Street:
+        Lee Unveils '80s-Inspired Collection With China's ROARINGWILD\",\"teaser\":\"Kontoor
+        Brands Inc\_(NYSE: KTB) owned denim brand Lee has unveiled its unisex apparel
+        collection in partnership with ROARINGWILD, the\_\",\"body\":\"<p><strong>Kontoor
+        Brands Inc&nbsp;</strong>(NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/KTB#NYSE\\\">KTB</a>)
+        owned denim brand Lee has unveiled its unisex apparel collection in partnership
+        with ROARINGWILD, the&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/pressreleases/23/09/b34901988/lee-launches-its-first-unisex-apparel-collaboration-with-global-streetwear-brand-roaringwild\\\"
+        style=\\\"background-image:initial; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\">China-based brand known for their streetwear.</a></p>\\r\\n\\r\\n<p>The
+        partnership creates a global unisex capsule showcasing the link between music
+        and culture through streetwear.&nbsp;</p>\\r\\n\\r\\n<p>&quot;This collection
+        is a big step for Lee as it is our first fully unisex collection and one that&#39;s
+        available globally,&quot; said Brigid Stevens, global vice president of marketing,
+        Lee.</p>\\r\\n\\r\\n<p><strong><em>Also Read</em></strong><em>:&nbsp;</em><a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/markets/equities/23/09/34305997/weaving-modernity-with-tradition-staud-and-wrangler-bring-out-new-collection\\\"
+        style=\\\"background-image:initial; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\"><em>Weaving Modernity With Tradition - STAUD And Wrangler
+        Bring Out New Collection</em></a></p>\\r\\n\\r\\n<p>The collection&#39;s essence
+        is deeply rooted in the vibrant &#39;80s, with the capsule featuring graphic
+        tees, denim jackets, and jeans in oversized fits.</p>\\r\\n\\r\\n<p>Noteworthy
+        pieces include the Oversized Rider Jacket and the Wide Leg Jean, a piece that
+        combines a global design perspective with a side-leg zipper.</p>\\r\\n\\r\\n<p>The
+        range is priced between $80 and $230, available in sizes XS through XL. Customers
+        can shop the collection across Lee&#39;s digital platforms and physical outlets
+        in the U.S. and Europe.</p>\\r\\n\\r\\n<p>Additionally, the collection is
+        featured in ROARINGWILD outlets and its online presence in China and other
+        selected regions.</p>\\r\\n\\r\\n<p><strong>Price Action</strong>: KTB shares
+        are trading higher by 1.23% at $42.21 on the last check Tuesday.</p>\\r\\n\\r\\n<p><em>This
+        content was partially produced with the help of AI tools and was reviewed
+        and published by Benzinga editors.</em></p>\\r\\n \",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34911177/from-vintage-vibes-to-modern-street-lee-unveils-80s-inspired-collection-with-chinas-roaringwild\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/ktb.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/ktb.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/ktb.png\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"KTB\"}],\"tags\":[{\"name\":\"AI
+        Generated\"},{\"name\":\"Briefs\"}]},{\"id\":34921760,\"author\":\"Benzinga
+        Insights\",\"created\":\"Tue, 26 Sep 2023 14:00:50 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 14:00:51 -0400\",\"title\":\"The Latest Analyst Ratings for Clarivate\",\"teaser\":\"
+        \",\"body\":\"<p>Clarivate (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/CLVT#NYSE\\\">CLVT</a>)
+        has observed the following analyst ratings within the last quarter: </p>\\n<table>\\n<thead>\\n<tr>\\n<th></th>\\n<th
+        align=\\\"right\\\"><strong>Bullish</strong></th>\\n<th align=\\\"right\\\"><strong>Somewhat
+        Bullish</strong></th>\\n<th align=\\\"right\\\"><strong>Indifferent</strong></th>\\n<th
+        align=\\\"right\\\"><strong>Somewhat Bearish</strong></th>\\n<th align=\\\"right\\\"><strong>Bearish</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td><strong>Total
+        Ratings</strong></td>\\n<td align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">3</td>\\n<td
+        align=\\\"right\\\">5</td>\\n<td align=\\\"right\\\">2</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>Last
+        30D</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td
+        align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>1M
+        Ago</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>2M
+        Ago</strong></td>\\n<td align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">2</td>\\n<td
+        align=\\\"right\\\">4</td>\\n<td align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>3M
+        Ago</strong></td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">1</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n</tbody>\\n</table>\\n\\n<p>According
+        to 11 analyst offering 12-month price targets in the last 3 months, Clarivate
+        has an average price target of $8.68 with a high of $12.00 and a low of $6.00.
+        </p>\\n<p>Below is a summary of how these 11 analysts rated Clarivate over
+        the past 3 months. The greater the number of bullish ratings, the more positive
+        analysts are on the stock and the greater the number of bearish ratings, the
+        more negative analysts are on the stock</p>\\n<p><img src=\\\"https://www.benzinga.com/files/images/story/2023/1695751247_0.png\\\"
+        alt=\\\"price target chart\\\" /></p>\\n\\n<p>This current average has decreased
+        by 22.36% from the previous average price target of $11.18. </p>\\n<p><a href=\\\"https://www.benzinga.com/quote/CLVT/analyst-ratings?utm_source=Benzinga
+        Insights\\\"><strong>Stay up to date on Clarivate analyst ratings.</strong></a></p>\\n<h1>What
+        Are Analyst Ratings?</h1>\\n<p>Analysts are specialists within banking and
+        financial systems that typically report for specific stocks or within defined
+        sectors. These people research company financial statements, sit in conference
+        calls and meetings, and speak with relevant insiders to determine what are
+        known as analyst ratings for stocks. Typically, analysts will rate each stock
+        once a quarter. </p>\\n<p>Some analysts publish their predictions for metrics
+        such as growth estimates, earnings, and revenue to provide additional guidance
+        with their ratings. When using analyst ratings, it is important to keep in
+        mind that stock and sector analysts are also human and are only offering their
+        opinions to investors.</p>\\n<p>This article was generated by Benzinga's automated
+        content engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34921760/the-latest-analyst-ratings-for-clarivate\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_1.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_1.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_1.jpeg\"}],\"channels\":[{\"name\":\"Analyst
+        Ratings\"}],\"stocks\":[{\"name\":\"CLVT\"}],\"tags\":[{\"name\":\"BZI-AAR\"}]},{\"id\":34921757,\"author\":\"Benzinga
+        Insights\",\"created\":\"Tue, 26 Sep 2023 14:00:31 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 14:00:31 -0400\",\"title\":\"Expert Ratings for Genmab\",\"teaser\":\"
+        \",\"body\":\"<p>Genmab (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GMAB#NASDAQ\\\">GMAB</a>)
+        has observed the following analyst ratings within the last quarter: </p>\\n<table>\\n<thead>\\n<tr>\\n<th></th>\\n<th
+        align=\\\"right\\\"><strong>Bullish</strong></th>\\n<th align=\\\"right\\\"><strong>Somewhat
+        Bullish</strong></th>\\n<th align=\\\"right\\\"><strong>Indifferent</strong></th>\\n<th
+        align=\\\"right\\\"><strong>Somewhat Bearish</strong></th>\\n<th align=\\\"right\\\"><strong>Bearish</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td><strong>Total
+        Ratings</strong></td>\\n<td align=\\\"right\\\">8</td>\\n<td align=\\\"right\\\">0</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">5</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>Last
+        30D</strong></td>\\n<td align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>1M
+        Ago</strong></td>\\n<td align=\\\"right\\\">2</td>\\n<td align=\\\"right\\\">0</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>2M
+        Ago</strong></td>\\n<td align=\\\"right\\\">4</td>\\n<td align=\\\"right\\\">0</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">3</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n<tr>\\n<td><strong>3M
+        Ago</strong></td>\\n<td align=\\\"right\\\">1</td>\\n<td align=\\\"right\\\">0</td>\\n<td
+        align=\\\"right\\\">0</td>\\n<td align=\\\"right\\\">2</td>\\n<td align=\\\"right\\\">0</td>\\n</tr>\\n</tbody>\\n</table>\\n\\n<p>According
+        to 13 analyst offering 12-month price targets in the last 3 months, Genmab
+        has an average price target of $44.23 with a high of $54.00 and a low of $33.00.
+        </p>\\n<p>Below is a summary of how these 13 analysts rated Genmab over the
+        past 3 months. The greater the number of bullish ratings, the more positive
+        analysts are on the stock and the greater the number of bearish ratings, the
+        more negative analysts are on the stock</p>\\n<p><img src=\\\"https://www.benzinga.com/files/images/story/2023/1695751228_0.png\\\"
+        alt=\\\"price target chart\\\" /></p>\\n\\n<p>This current average has increased
+        by 34.03% from the previous average price target of $33.00. </p>\\n<p><a href=\\\"https://www.benzinga.com/quote/GMAB/analyst-ratings?utm_source=Benzinga
+        Insights\\\"><strong>Stay up to date on Genmab analyst ratings.</strong></a></p>\\n<h1>How
+        Are Analyst Ratings Determined?</h1>\\n<p>Benzinga tracks 150 analyst firms
+        and reports on their stock expectations. Analysts typically arrive at their
+        conclusions by predicting how much money a company will make in the future,
+        usually the upcoming five years, and how risky or predictable that company's
+        revenue streams are.</p>\\n<p>Analysts attend company conference calls and
+        meetings, research company financial statements, and communicate with insiders
+        to publish their ratings on stocks. Analysts typically rate each stock once
+        per quarter or whenever the company has a major update.</p>\\n<p>Some analysts
+        also offer predictions for helpful metrics such as earnings, revenue, and
+        growth estimates to provide further guidance as to what to do with certain
+        tickers. It is important to keep in mind that while stock and sector analysts
+        are specialists, they are also human and can only forecast their beliefs to
+        traders.</p>\\n<p>This article was generated by Benzinga's automated content
+        engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/analyst-ratings/23/09/34921757/expert-ratings-for-genmab\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/analyst_ratings_image_0.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/analyst_ratings_image_0.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/analyst_ratings_image_0.png\"}],\"channels\":[{\"name\":\"Analyst
+        Ratings\"}],\"stocks\":[{\"name\":\"GMAB\"}],\"tags\":[{\"name\":\"BZI-AAR\"}]}]\n"
+    headers:
+      Cache-Control:
+      - max-age=3, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 26 Sep 2023 19:06:27 GMT
+      ETag:
+      - Ad_qMZ8R2oY2FIw8KqnTuD0be6cMGbEqRGrqTLEaLAo=
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding
+      Via:
+      - kong/2.8.3, 1.1 5888333a47f4bcb4270f45fea45f08bc.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - ns7pUh-G2tFcPJmWDK8PoG6AqogGH9xcNUe3-6cuo5nxdLdH-5Y_Zw==
+      X-Amz-Cf-Pop:
+      - MIA3-P4
+      X-Bz-Request-Id:
+      - 192.168.240.19-8000-38-51085582-1-1695755186.987
+      X-Cache:
+      - Miss from cloudfront
+      X-Kong-Proxy-Latency:
+      - '0'
+      X-Kong-Upstream-Latency:
+      - '47'
+      X-Powered-By:
+      - Pentium
+    status:
+      code: 200
+      message: OK
+version: 1

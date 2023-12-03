@@ -1,0 +1,1 @@
+""" Test the ECB provider."""

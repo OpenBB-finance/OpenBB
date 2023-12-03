@@ -1,0 +1,86 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/historical-price-full/stock_dividend/AAPL?apikey=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 16 Oct 2023 12:22:26 GMT
+      ETag:
+      - W/"4896-yJ4bMA7DSahU2MI5LExxGjg1guM"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -12,7 +12,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="forecast.atr - Reference | OpenBB SDK Docs" />
 
-Calculate the Average True Range of a variable based on a a specific stock ticker.
+Calculate the Average True Range of a variable based on a specific stock ticker.
 
 Source Code: [[link](https://github.com/OpenBB-finance/OpenBBTerminal/tree/main/openbb_terminal/forecast/forecast_model.py#L349)]
 

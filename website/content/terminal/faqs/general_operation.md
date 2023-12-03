@@ -118,7 +118,7 @@ rnn -d SPY
 
 <details><summary>How do I find stocks from India, or another country?</summary>
 
-Use the `search` command from the `/stocks` menu.  Refer to the menu's introduction guide [here](/terminal/data-available/stocks#search).
+Use the `search` command from the `/stocks` menu.  Refer to the menu's introduction guide [here](/terminal/menus/stocks#search).
 
 As an example, try this:
 

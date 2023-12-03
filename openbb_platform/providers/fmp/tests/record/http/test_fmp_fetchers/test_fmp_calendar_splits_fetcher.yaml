@@ -1,0 +1,60 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/stock_split_calendar?apikey=MOCK_API_KEY&from=2023-01-01&to=2023-01-10
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA8XWQW+bMBQH8Hs/Bco5tYwNNOxmCAMagpntVs2mHaiaw6QmkdL2UFX97k235fYs
+        8yKTHrjwLj89//2Xf10EwdvhC4LJQ/+8nnwLJowyfknDyzCcTP9NHvv79ePn6LrfvvT71yAMpwHj
+        x/HT6+Z+93dO0/iKUrL4cRxtXzbrff+82x+mIeH//z6st7vNn+3x/+Hn+9SrQ9aZgg2wgPonKNlI
+        sixABD3jHn563QO1E6j9KDjR4msVNL2ipFogEIkDQVMrgqb2VUR+V3GCQtXl8vtwAhuBIEwFX4yz
+        LSGvxEqSDAxEBDOiERhlpevhi4hHEOSiRYTBfRSJXZDAgrm4RYSBM/8CsTI3wwXuC4EXtHem+1pB
+        nc01GIQENiQjGHTXdIVRkrQakjA4kv4dSiyFNkXRWCDxuSB6oVpyDZbUiYbYbohhgynaO5/RxAtE
+        k5nhAndF4QV1N2+HC5wNhQeI21wOB4yxghlDPqBm/g2yKzHH4NxCZBdEsCCrMr3yeB3xAl3kNypX
+        xdzSTdG5IKZrC8TLgdMRjkM0Bnw+paclEg+QWVMO30EY+xfUS00EoqDd3YA3lPD7jc1shDGyMIs4
+        rqDc/cDtCG7ph1oqhMCZB7ygEk0zXOBOA15AwzRKKVmA9UQJgyGfjovfH7xDk1OOEgAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 27 Nov 2023 22:40:14 GMT
+      ETag:
+      - W/"128e-i6V1tJsMiMJArWeuLfW2lUv6618"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

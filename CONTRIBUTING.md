@@ -13,7 +13,8 @@ Use your best judgment, and feel free to propose changes to this document in a p
     - [Data sources](#data-sources)
     - [View](#view)
     - [Controller](#controller)
-    - [Add SDK endpoint](#add-sdk-endpoint)
+    - [Add SDK endpoint (V3)](#add-sdk-endpoint-v3)
+    - [Add OpenBB Platform endpoint (V4)](#add-openbb-platform-endpoint-v4)
     - [Add Unit Tests](#add-unit-tests)
     - [Open a Pull Request](#open-a-pull-request)
     - [Review Process](#review-process)
@@ -452,7 +453,7 @@ The **import only occurs inside this menu call**, this is so that the loading ti
 
 In addition, note the `self.load_class` which allows to not create a new `FundamentalAnalysisController` instance but re-load the previous created one. Unless the arguments `self.ticker`, `self.start` or `self.stock` have changed since. The `self.queue` list of commands is passed around as it contains the commands that the terminal must perform.
 
-### Add SDK endpoint
+### Add SDK endpoint (V3)
 
 In order to add a command to the SDK, follow these steps:
 
@@ -507,6 +508,10 @@ In order to add a command to the SDK, follow these steps:
     ```bash
     python generate_sdk.py sort
     ```
+
+### Add OpenBB Platform endpoint (V4)
+
+Refer to the documentation [here](openbb_platform\CONTRIBUTING.md).
 
 ### Add Unit Tests
 

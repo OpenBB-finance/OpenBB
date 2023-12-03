@@ -21,6 +21,13 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Single Widget | OpenBB Terminal Pro Docs" />
 
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
+
+<TutorialVideo
+  youtubeLink="https://www.youtube.com/embed/gX63rYzqpL0?si=74No_7LgG2gYwnDg"
+  videoLegend="Short introduction to adding a single widget"
+/>
+
 The single widget is the most straightforward method to integrate your custom data into OpenBB Terminal Pro. Simply paste your API endpoint into the data connectors tab, and voila! Your data is fetched and displayed in a user-friendly table format.
 
 To use this feature, input your API endpoint and any necessary connection information. The widget will then dynamically load and present your data within the Terminal Pro interface.

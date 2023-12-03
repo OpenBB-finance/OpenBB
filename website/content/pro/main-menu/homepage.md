@@ -18,9 +18,16 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Homepage | OpenBB Terminal Pro Docs" />
 
-<img width="1792" alt="273495206-3e6e9b81-41fd-499a-b026-defe7baab5d7" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/9be1e003-5aec-41b8-a400-b897646fd907"/>
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
+
+<TutorialVideo
+  youtubeLink="https://www.youtube.com/embed/gjXuHdtDobU?si=FR1UpHsrIvaZ1pJr"
+  videoLegend="Short introduction to Homepage"
+/>
 
 Welcome to the homepage of OpenBB Terminal Pro, your one-stop hub for all things related to the terminal.
+
+<img className="pro-border-gradient" width="800" alt="Homepage" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/ca38ae12-d721-4957-afe7-724c4c03fa23" />
 
 Here's what you can find:
 

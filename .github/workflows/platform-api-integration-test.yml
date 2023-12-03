@@ -50,26 +50,8 @@ jobs:
         run: |
           python -m venv runner_env
           source runner_env/bin/activate
-          pip install pytest poetry\
-            ./openbb_platform \
-            ./openbb_platform/providers/alpha_vantage \
-            ./openbb_platform/providers/cboe \
-            ./openbb_platform/providers/quandl \
-            ./openbb_platform/providers/fmp \
-            ./openbb_platform/providers/yfinance \
-            ./openbb_platform/providers/intrinio \
-            ./openbb_platform/extensions/futures \
-            ./openbb_platform/extensions/qa \
-            ./openbb_platform/extensions/ta \
-            ./openbb_platform/extensions/econometrics
-            pip uninstall -y openbb_core
-            pip uninstall -y openbb_provider
-            cd openbb_platform/platform/core
-            pip install -U .
-            cd ../provider/
-            pip install -U .
-            cd ../../../
-            pip install -U pydantic
+          pip install poetry toml
+          python openbb_platform/dev_install.py -e all
 
       - name: Populate System Setting Files
         run: |
@@ -83,23 +65,27 @@ jobs:
           touch ~/.openbb_platform/user_settings.json
           echo '{
             "credentials": {
-              "benzinga_api_key": ${{ secrets.BENZINGA_API_KEY }},
+              "benzinga_api_key": "${{ secrets.BENZINGA_API_KEY }}",
               "fmp_api_key": "${{ secrets.FMP_API_KEY }}",
               "polygon_api_key": "${{ secrets.POLYGON_API_KEY }}",
               "alpha_vantage_api_key": "${{ secrets.ALPHA_VANTAGE_API_KEY }}",
               "fred_api_key": "${{ secrets.FRED_API_KEY }}",
-              "intrinio_api_key": "${{ secrets.INTRINIO_API_KEY }}"
+              "intrinio_api_key": "${{ secrets.INTRINIO_API_KEY }}",
+              "tradingeconomics_api_key": "${{ secrets.TRADINGECONOMICS_API_KEY }}",
+              "quandl_api_key": "${{ secrets.QUANDL_API_KEY }}",
+              "biztoc_api_key": "${{ secrets.BIZTOC_API_KEY }}",
+              "nasdaq_api_key": "${{ secrets.NASDAQ_API_KEY }}",
+              "tiingo_token": "${{ secrets.TIINGO_TOKEN }}"
             }
           }' > ~/.openbb_platform/user_settings.json
 
       - name: Launch the Uvicorn Process
         run: |
           source runner_env/bin/activate
-          pip list
           uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
 
-      - name: Wait for 10 seconds
-        run: sleep 10
+      - name: Wait for 42 seconds
+        run: sleep 42
 
       - name: Run API Integration Tests
         run: |

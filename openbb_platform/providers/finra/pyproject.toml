@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "openbb-finra"
+version = "1.0.0"
+description = "FINRA extension for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_finra" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openbb-core = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+finra = "openbb_finra:finra_provider"

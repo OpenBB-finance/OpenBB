@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "openbb-biztoc"
+version = "1.0.0"
+description = ""
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_biztoc" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openbb-core = "^1.0.0"
+requests-cache = "^1.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+biztoc = "openbb_biztoc:biztoc_provider"

@@ -1,0 +1,102 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/ES=F?crumb=MOCK_CRUMB&interval=1d&range=1d
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"ES=F","exchangeName":"CME","instrumentType":"FUTURE","firstTradeDate":969249600,"regularMarketTime":1701128295,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":4563.5,"chartPreviousClose":4561.0,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1701061200,"end":1701061200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1701061200,"end":1701147540,"gmtoffset":-18000},"post":{"timezone":"EST","start":1701147540,"end":1701147540,"gmtoffset":-18000}},"dataGranularity":"1d","range":"1d","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1701128295],"indicators":{"quote":[{"high":[4563.5],"close":[4563.5],"low":[4561.5],"open":[4561.5],"volume":[3660]}],"adjclose":[{"adjclose":[4563.5]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '882'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Mon, 27 Nov 2023 23:48:17 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-baseline-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '3'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
+    uri: https://query2.finance.yahoo.com/v8/finance/chart/ES=F?crumb=MOCK_CRUMB&events=div%2Csplits%2CcapitalGains&includePrePost=False&interval=1d&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2
+  response:
+    body:
+      string: '{"chart":{"result":[{"meta":{"currency":"USD","symbol":"ES=F","exchangeName":"CME","instrumentType":"FUTURE","firstTradeDate":969249600,"regularMarketTime":1701128295,"gmtoffset":-18000,"timezone":"EST","exchangeTimezoneName":"America/New_York","regularMarketPrice":4563.5,"chartPreviousClose":3846.0,"priceHint":2,"currentTradingPeriod":{"pre":{"timezone":"EST","start":1701061200,"end":1701061200,"gmtoffset":-18000},"regular":{"timezone":"EST","start":1701061200,"end":1701147540,"gmtoffset":-18000},"post":{"timezone":"EST","start":1701147540,"end":1701147540,"gmtoffset":-18000}},"dataGranularity":"1d","range":"","validRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]},"timestamp":[1672722000,1672808400,1672894800,1672981200,1673240400,1673326800],"indicators":{"quote":[{"high":[3906.75,3896.25,3885.5,3928.75,3973.25,3943.75],"close":[3846.0,3874.5,3829.0,3915.5,3913.75,3940.75],"low":[3814.5,3836.5,3822.5,3819.0,3909.75,3891.5],"open":[3895.0,3842.75,3871.0,3833.0,3918.5,3914.5],"volume":[1782473,1912155,1679973,2026154,1697887,1520955]}],"adjclose":[{"adjclose":[3846.0,3874.5,3829.0,3915.5,3913.75,3940.75]}]}}],"error":null}}'
+    headers:
+      Age:
+      - '1'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - public, max-age=10, stale-while-revalidate=20
+      content-length:
+      - '1164'
+      content-type:
+      - application/json;charset=utf-8
+      date:
+      - Mon, 27 Nov 2023 23:48:17 GMT
+      server:
+      - ATS
+      vary:
+      - Origin,Accept-Encoding
+      x-envoy-decorator-operation:
+      - finance-chart-api--mtls-baseline-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '4'
+    status:
+      code: 200
+      message: OK
+version: 1

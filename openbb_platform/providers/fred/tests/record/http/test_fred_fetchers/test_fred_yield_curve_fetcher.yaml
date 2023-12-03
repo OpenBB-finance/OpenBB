@@ -1,0 +1,565 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-08-20&series_id=DGS1MO
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jWw1DW0VNJByKbmpaDL5ScVpxaVJZZk
+        5uehabbQNTJQ0lFCVgDRb2lpaalraKRrbKiko1Sal1lSrGSllJOZB1JcWlJQWhJfUlmQqmRlqKOU
+        lpmTCuUpZRXng5UUpaQWxSdVKlmhGJ2SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRlZKCj
+        lJ+WVpxaomRloKOUk5mbWaJkZWgAAiiuLFayiqYkRMAugYWgha4RyJdliTmlqUpWSqZ6pqZKtTrU
+        NN5ISUcJyXgTKhtvTFvjTVCNp3bgmKIab0blwLGgrfGgvEe7qDUG5U4k46kc9uDcjWS8ETXD3lLX
+        AC1bGVLZeOSEqUdls9FSJbWdboaaKqkd8Oa0NR4tT1HZ9YZoyYbaxqOVxtQ2Hq00NqZuwjRETvSm
+        eqbUdj1mugcsthYAuUjI9HwIAAA=
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '362'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 19 Sep 2023 16:40:04 GMT
+      Expires:
+      - Tue, 19 Sep 2023 16:41:04 GMT
+      Last-Modified:
+      - Mon, 18 Sep 2023 20:21:08 GMT
+      Set-Cookie:
+      - ak_bmsc=5AF98162ED37417468551A1CC35D5C0C~000000000000000000000000000000~YAAQFk4SAsE8spSKAQAAKC1QrhXDpVS/MLspOaiCk/RAJfApdA4f0Y9uppZ0GfcZS/Zw3IMQIcn7GBsNEK0Yo030ARgAvUTqEy+9/EOA6yRfXPuWajJy/XQhUYWnsESQATXU7j3teHUpuP3OZtyjNQZgm/Eyo/9JiKG8/g9P3uU2SWbxyS9HX7b87e3kTk2001eeWXRfdNgL6Gifc6ujbJgbwQEktiOs4Wxm4h5NjbL9EzmBqHPpH3Ndboweq4fjWX1S8TKB1zUgwaZWeAbAwTfCM/Jb+vfO2pGPuk2hrSidsNi05sD6e4VP6yZJiRIo2VuM918KnKs6XF411Oaiko8ORqJ67mM3ypV/XUN/cD+lWTko7n7or5VcluGj3suQ;
+        Domain=.stlouisfed.org; Path=/; Expires=Tue, 19 Sep 2023 18:40:04 GMT; Max-Age=7200;
+        HttpOnly
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '120'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-08-20&series_id=DGS3MO
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jWw1DW0VNJByKbmpaDL5ScVpxaVJZZk
+        5uehabbQNTJQ0lFCVgDRb2lpaalraKRrbKiko1Sal1lSrGSllJOZB1JcWlJQWhJfUlmQqmRlqKOU
+        lpmTCuUpZRXng5UUpaQWxSdVKlmhGJ2SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRlZKCj
+        lJ+WVpxaomRloKOUk5mbWaJkZWgAAiiuLFayiqYkRMAugYWgha4RyJdliTmlqUpWSqZ6puZKtTrU
+        NN5ISUeJhsYb09Z4E1TjLagcOKYoxpsZUtl4CxTjTantelDeQ4paM+q63hiUO2loPFq6p6rrLXUN
+        0Iw3pmbgWOoaICdMPSqbjZoqTU2pbLwZaqqktvHmqMZTO+DR8hSVXW+IlmyobTxaaUzlRG+IVhpT
+        2/XIid5Uj9oJ0xAt3QNmplQbWwsAEm6WQ3wIAAA=
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '371'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 19 Sep 2023 16:40:05 GMT
+      Expires:
+      - Tue, 19 Sep 2023 16:41:04 GMT
+      Last-Modified:
+      - Mon, 18 Sep 2023 20:21:06 GMT
+      Set-Cookie:
+      - ak_bmsc=698BEC301B9F5162F733F1EFADF57B09~000000000000000000000000000000~YAAQFk4SAoc9spSKAQAAkC5QrhWmH6lCgB7bMTW+r9Zo0p2it5vvB9XYQOgLHTj0KA/Iy9eQFRQh2M3HqNd4GyfNRVyKlbp0CxX+1ll2yjbq1dYjFc5j5oP3q7/n7W4JIzLYxRcGPryyDy9fg40Ha28LrQzVQXhdjgzzdr8tfwGToXX8HmxhKUtes9j5OvbpY3qZDXK4LkF5VTNiCNVLCjUYicsT+CudenwvuBVi5xv6DCGc7Dv/ip8ARqL9ourO1rbvD8vmNB8DAVP8Gj2T/nw1HeXVsgIKTVR2ZwS7bKwrPkBHS1vW9lvffvLn+v45hz3DbsCIwcods7IR+It0u8vtXGOwBEZWjrnUawwdMX/5ki85h+LmRQMyVeaqigH7;
+        Domain=.stlouisfed.org; Path=/; Expires=Tue, 19 Sep 2023 18:40:04 GMT; Max-Age=7199;
+        HttpOnly
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '119'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-08-20&series_id=DGS6MO
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jWw1DW0VNJByKbmpaDL5ScVpxaVJZZk
+        5uehabbQNTJQ0lFCVgDRb2lpaalraKRrbKiko1Sal1lSrGSllJOZB1JcWlJQWhJfUlmQqmRlqKOU
+        lpmTCuUpZRXng5UUpaQWxSdVKlmhGJ2SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRlZKCj
+        lJ+WVpxaomRloKOUk5mbWaJkZWgAAiiuLFayiqYkRMAugYWgha4RyJdliTmlqUpWSqZ6phZKtTrU
+        NN5ISUcJyXhzKhtvjGq8KZWNN0E13pLKxpuiGG9mSGXjLVCMNzWjsvGgvIcUtUbUNd4YlDuRjKdy
+        4IBzN8J4E6qme0tdA9RsZULVdG+pa4CcMPWoGfCWugaoqdKUqgFvqWtghpoqqZpsLHUNzFGNN6By
+        4KDmKROqlgiWuoaoyYbaYW+IVhobUzdwDNFKYyqnHEPkRG+qZ0rlqDVETfegqAUsthYAdh2FyXwI
+        AAA=
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '401'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 19 Sep 2023 16:40:05 GMT
+      Expires:
+      - Tue, 19 Sep 2023 16:41:05 GMT
+      Last-Modified:
+      - Mon, 18 Sep 2023 20:21:06 GMT
+      Set-Cookie:
+      - ak_bmsc=748189A9A4590787FE23BEBB0323D45B~000000000000000000000000000000~YAAQFk4SAhw/spSKAQAA2DBQrhWGrwhZiM3vFeZTPELM2FpOEfw6e5qYoIGVdQtDMX9B32SuH893laHZUi2fyyXan4Sbh47v7gSJI9mKHD6mHZJks8y/Q2L4j3iG7NgZ/0DvbCCsF7JPQ9LQ5/CA1FzTYc9+1LZykM2Jao+PvurHeKrJt4z04Y+9djTwSMjrkgirYpLB0yERfYhJwCr7FHNZHGgam96mfxx/7UL8SmZ1iSJ1Aw/To61yMJ0k9YQqIqNV0dFLNlwyWjkAFNj2lGJprP83cNEhzQ8TS5adT+ZG9coukNm2gx9tGJ4gSTOK8+72Tk8P/8Xc64ZbbKN/V0U1WwpIKqJtPShVIoGW487WhwxU6I0EUR0tDG9lldbU;
+        Domain=.stlouisfed.org; Path=/; Expires=Tue, 19 Sep 2023 18:40:05 GMT; Max-Age=7200;
+        HttpOnly
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '118'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-08-20&series_id=DGS1
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jWw1DW0VNJByKbmpaDL5ScVpxaVJZZk
+        5uehabbQNTJQ0lFCVgDRb2lpaalraKRrbKiko1Sal1lSrGSllJOZB1JcWlJQWhJfUlmQqmRlqKOU
+        lpmTCuUpZRXng5UUpaQWxSdVKlmhGJ2SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRlZKCj
+        lJ+WVpxaomRloKOUk5mbWaJkZWgAAiiuLFayiqYkRMAugYWgha4RyJdliTmlqUpWSqZ6xuZKtTrU
+        NN5ISUcJyXhLKhtvjGq8KZWNN0E1ntquN0Ux3sSEyq63oK3xoLyHFLVUTjnGoNyJZDyVwx6cu5GM
+        p6rrLXUN0LKVGTWj1lLXADlh6lHZbLRUaURl481omCotdQ3MUY03oLLr0fIUlQPHEDXZmFDZ9Yao
+        pbEJtV2PWhpT3XjkRG+qR3Xj0dI9YMZKtbG1ABtMOd18CAAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '378'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 19 Sep 2023 16:40:05 GMT
+      Expires:
+      - Tue, 19 Sep 2023 16:41:05 GMT
+      Last-Modified:
+      - Mon, 18 Sep 2023 20:21:09 GMT
+      Set-Cookie:
+      - ak_bmsc=B7A0148F5FAAD448002FE7E89BD86478~000000000000000000000000000000~YAAQFk4SAjVAspSKAQAAITJQrhW8NDLj1O4TorsU6P/Qb1DYyp/y5OBaM137tvKl9S36g1LtuuprJ86qBEVzph/212UM6MTiNbqMNS9eVh0GVIF4+gsW/BjpNSDmPBMgixVlQr9apS6J4DScheuqz05XX6xe7nhZq86KIf+G2a4OeSE0EaQm8LgQL6As83j9FyH6YrpZ0azoLV0jNmVqPigpCrY3THNNvPinBbf/YNTEoZd+rZyjWpll9s/TAxlPmvoGytA5VNJLkyycqTRo7KI0sJDT4v8AXkPp3qkJmFPx1IScXyPXHm5wo+2F9y5E9QQ96VlS9bzb26sOsBk4U/VN2v2IbeRwrsed/EdSAyjJ7OUNI7rMRSm/FDR80Yc=;
+        Domain=.stlouisfed.org; Path=/; Expires=Tue, 19 Sep 2023 18:40:05 GMT; Max-Age=7200;
+        HttpOnly
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '117'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-08-20&series_id=DGS2
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jWw1DW0VNJByKbmpaDL5ScVpxaVJZZk
+        5uehabbQNTJQ0lFCVgDRb2lpaalraKRrbKiko1Sal1lSrGSllJOZB1JcWlJQWhJfUlmQqmRlqKOU
+        lpmTCuUpZRXng5UUpaQWxSdVKlmhGJ2SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRlZKCj
+        lJ+WVpxaomRloKOUk5mbWaJkZWgAAiiuLFayiqYkRMAugYWgha4RyJdliTmlqUpWSiZ6luZKtTrU
+        NN5ISUcJZrypnoERlY03RjLeRM/SlMrGm6Aab0Fl402RjDfVMzCmsvEWSMab6FlS2/WgvAeLWhM9
+        CyqnHGNQ7kQYb2lA3cAB526E8RZUTTmWugao2Yq6gWOpa4CcMPWoGTKWugbIqdJEz9KEysabIaVK
+        Uz0DQyobb45kPA1cT8s8ZalriJpsqFsag2o11MChaolgqWuIVhqbUTdqDZETvameAVVLBEtdQ+R0
+        D6mqAIutBQDrmsH4fAgAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '415'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 19 Sep 2023 16:40:06 GMT
+      Expires:
+      - Tue, 19 Sep 2023 16:41:06 GMT
+      Last-Modified:
+      - Mon, 18 Sep 2023 20:21:07 GMT
+      Set-Cookie:
+      - ak_bmsc=3783623BC29D28F498F24D9261E0E277~000000000000000000000000000000~YAAQFk4SAhdBspSKAQAAXjNQrhUy12tslPBV649Z41al9M3i2Wffw+tlfkyO6x//Gu3v7gX47RkC1OrCV3s6nDkB337q9Y7gCBK4F3CGaiH8uScKbMfDzllNjbaUuai5Kz4EzbWKg4j6gzLWId8wrGyKDFOdSELCftJSze8a+8jL822CqXu/khlplcDRCyFkPYDTtV0FxC8YHSDIae6oLJ2LWkdQeo4RROaYrcP7jaRPb9br+Rx8kOwJwIAno2pUooc80JvBXb4VkVTGvBEYR1WJj8N3YdvGjb7gb4nelTcbF+duEFejq1YsAkEIchgQrON64LMV70cx1mcKouHTmHEiTtoDpLZTATEDk8EfsbpxjeUFf+4w6/uXAyGV/5Zc;
+        Domain=.stlouisfed.org; Path=/; Expires=Tue, 19 Sep 2023 18:40:06 GMT; Max-Age=7200;
+        HttpOnly
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '116'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-08-20&series_id=DGS3
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jWw1DW0VNJByKbmpaDL5ScVpxaVJZZk
+        5uehabbQNTJQ0lFCVgDRb2lpaalraKRrbKiko1Sal1lSrGSllJOZB1JcWlJQWhJfUlmQqmRlqKOU
+        lpmTCuUpZRXng5UUpaQWxSdVKlmhGJ2SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRlZKCj
+        lJ+WVpxaomRloKOUk5mbWaJkZWgAAiiuLFayiqYkRMAugYWgha4RyJdliTmlqUpWSiZ65gZKtTrU
+        NN5ISUcJyXhTKhtvjGK8mQmVjTdBNd6SysabohhvbkRl4y1QjDejtutBeQ8RtaZm1HW9MSh3Ihlv
+        TmXjUdO9KVVTjqWuAZrxVHW9pa4BcsLUo2bIWOoaoKZKM6pmWUtdAzOUVGluTGXXm6MYb0bVVGmp
+        a4CWpyyo63pD1GRD3fIMVKvRNHAMaVkaW+oaIid6Ez0zaoc9aroHlcaAxdYCANKD6l18CAAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '396'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 19 Sep 2023 16:40:06 GMT
+      Expires:
+      - Tue, 19 Sep 2023 16:41:06 GMT
+      Last-Modified:
+      - Mon, 18 Sep 2023 20:20:06 GMT
+      Set-Cookie:
+      - ak_bmsc=48E042565A254B8DF84B3E10DD1BE3CE~000000000000000000000000000000~YAAQFk4SAtBBspSKAQAAljRQrhUgHfnyuLUw/8nuyZCgF6w5jW+liQkT3BKB5o2Sk5pZ+ufVA/f/FI9Pn0qneUdtWKxdlJLiOQD7B8hMAIgiTgTvOkFu22yr6Zn9w7PDCGHWoME4RefQ1p9QpWB/sHLIn5G6H9FEryhD6XHJZsWWwt3HY8iToj2gW3ibIUrAGjHCi4yWu3EcoF6itVFhvLtBegPaeRld5FQCT/O/DTNkomFbF+IBhIj7LBmaqJtXPIyqhBlkw3Yh4TTOV2QyHZhMXqulbvyvz54fiUWogPiTsvGeJyIdBbA3E6gtBklI8c+CjgnBRVk8b+5tvxpdEbkb6ZxPatQw+n4CCXmbRGleRtU/p7ESRbVBgHRDro6c;
+        Domain=.stlouisfed.org; Path=/; Expires=Tue, 19 Sep 2023 18:40:06 GMT; Max-Age=7200;
+        HttpOnly
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '115'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-08-20&series_id=DGS5
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jWw1DW0VNJByKbmpaDL5ScVpxaVJZZk
+        5uehabbQNTJQ0lFCVgDRb2lpaalraKRrbKiko1Sal1lSrGSllJOZB1JcWlJQWhJfUlmQqmRlqKOU
+        lpmTCuUpZRXng5UUpaQWxSdVKlmhGJ2SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRlZKCj
+        lJ+WVpxaomRloKOUk5mbWaJkZWgAAiiuLFayiqYkRMAugYWgha4RyJdliTmlqUpWSiZ6JmZKtTrU
+        NN5ISUcJyXhLKhtvjGK8MbVdb4JqPLVdb4pivIkJlQPHAsV4YwsqGw/Ke4ioNaJy2BuDcieS8ebU
+        dT04dyMZb0xN4y11DVCzlRFVU46lrgFywtSjstNRU6UxVQPeUtfADCVVUjfRW+oamKMYT91Eb6lr
+        gJanqByvhqjJxsSAulFriFYaG1LZeLTSmNqBg5zoTfRMjKjsetR0D5iJqVJtbC0AIP1v3HwIAAA=
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '398'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 19 Sep 2023 16:40:06 GMT
+      Expires:
+      - Tue, 19 Sep 2023 16:41:06 GMT
+      Last-Modified:
+      - Mon, 18 Sep 2023 20:20:04 GMT
+      Set-Cookie:
+      - ak_bmsc=5397815F72323B77A43B2E6173369680~000000000000000000000000000000~YAAQFk4SAplCspSKAQAA3zVQrhUoCFMHJLhqSHYhr8alwqiDGvudgv+Q41EWa7RfLcAtRJuxfX9rJR/2gZRp7jocgOxQ+hUrI4CEo+fAh4U13PwTjvZbimeKOYmVwsUCQELT5f2jtoE5ZgxOzAKoAW4+rjSjX7qR9aYWj0k7Udp69cTYbpHDkz6ifzHQ4bX1RZ/GL7NLE0JJZ0Wt7wMeqAWeWvcoPBOG4dSOaPbyou9DqGeJGLln2WMZ1ezMkCoaNtUfKWsvsyDARcq4C9VLItMoe/2HcEQS55sHH9sgQbL24V/usacEIDKRCtmH2bBUZ5drMOtzUq3IXH1yqkr0PbapXf8mafVAQ5djA/J5uMHecyMjkWPxicp7mlZ/+Mme;
+        Domain=.stlouisfed.org; Path=/; Expires=Tue, 19 Sep 2023 18:40:06 GMT; Max-Age=7200;
+        HttpOnly
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '114'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-08-20&series_id=DGS7
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jWw1DW0VNJByKbmpaDL5ScVpxaVJZZk
+        5uehabbQNTJQ0lFCVgDRb2lpaalraKRrbKiko1Sal1lSrGSllJOZB1JcWlJQWhJfUlmQqmRlqKOU
+        lpmTCuUpZRXng5UUpaQWxSdVKlmhGJ2SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRlZKCj
+        lJ+WVpxaomRloKOUk5mbWaJkZWgAAiiuLFayiqYkRMAugYWgha4RyJdliTmlqUpWSiZ6JkZKtTrU
+        NN5ISUcJyXgTKhtvjGK8sQGVjTdBNZ7arjdFNd6cyq63QDWe2lELynuIqDUypK7rjUG5E8l4Krse
+        nLsRxhtaUtP1lroGqNnKiKpRa6lrgJww9ajsdLRUaUpl481QUyW1A94c1Xhqux4tT1HZeEPUZGNM
+        5WRjiFoaG5tRN2oN0UpjqhaXlrqGyIneRM/YgsquR033gJkYKtXG1gIAL7lrAHwIAAA=
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '392'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 19 Sep 2023 16:40:07 GMT
+      Expires:
+      - Tue, 19 Sep 2023 16:41:07 GMT
+      Last-Modified:
+      - Mon, 18 Sep 2023 20:20:03 GMT
+      Set-Cookie:
+      - ak_bmsc=F85766DD6CA11848CBB2091F84740F2A~000000000000000000000000000000~YAAQFk4SAj1EspSKAQAAgDhQrhV7yHK3IFP5xKIOkjcB3lqlUWQDkMzH3PcwuPc09HRoTI20n450hxpUG0KZTIPpaXV1RZvMVnZKuM0tIgZ401J7oNeZ69tEbBbjiN4w5WsimCCxj7C2//U/gHzvHcNPAb2SGG+uGsgKx2LrQMc2yBXAPj4kF/FQvhlfNQg4H6UfV9k5D9iIWB9qBUocb3kqSFBFxPWsdgXAmXTSfeGsLbzd47xGsXUHCEiRpgaVtApxMIyTLKoa+1WnkGSmFt8IkkD5JA/et20pGNUXBeYQvExrvHuztrJbJwUDt94h7LkQ9sDBq6rJIX8UXHuuiInMdVyLp2fZ1b7FZKuVbadicbrQ20+7lL0nzbo6YBs=;
+        Domain=.stlouisfed.org; Path=/; Expires=Tue, 19 Sep 2023 18:40:06 GMT; Max-Age=7199;
+        HttpOnly
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '113'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-08-20&series_id=DGS10
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jWw1DW0VNJByKbmpaDL5ScVpxaVJZZk
+        5uehabbQNTJQ0lFCVgDRb2lpaalraKRrbKiko1Sal1lSrGSllJOZB1JcWlJQWhJfUlmQqmRlqKOU
+        lpmTCuUpZRXng5UUpaQWxSdVKlmhGJ2SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRlZKCj
+        lJ+WVpxaomRloKOUk5mbWaJkZWgAAiiuLFayiqYkRMAugYWgha4RyJdliTmlqUpWSiZ6xiZKtTrU
+        NN5ISUeJhsYboxhvaEll15ugGG9kTGXjTVGNN6Wy8RaoxhtQ2XhQ3kNEraERdY03BuVOGhqPmu4N
+        qJpyLHUNUI03tKBm4FjqGiAnTD0qm42WKs2pbLwZSqo0pmqqtNQ1MEcx3ojarkfLU2bUDRxD1GRj
+        ROVUaYhaGlM7cAxRS2MjqpZnlrqGyIneRI/qgYOa7gEzNlaqja0FAPUuCHx8CAAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '390'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 19 Sep 2023 16:40:07 GMT
+      Expires:
+      - Tue, 19 Sep 2023 16:41:07 GMT
+      Last-Modified:
+      - Mon, 18 Sep 2023 20:20:07 GMT
+      Set-Cookie:
+      - ak_bmsc=2F91DF5916E3F930546318568C0E3752~000000000000000000000000000000~YAAQFk4SAt9EspSKAQAArzlQrhVsdcpiDu9LGyOt5yjc8UK0ea+5j+BHeW1TbI6qRRgHNSz16MpmBgLr5cCfetl1zoKV+4PWnfUSC5jMvM1RBkBEiSRt21fLNdU38+Hyv7biYkbgY/NzDsKYJvJjK0CHQ6lw0huvZhDxv/jZDs8mpGGd3rp0QLli5XKPNhrE5YTNUY1idcOWPutbmo+RCqgYVrw7W+e5pMT8sgrGsggiAYiGv7CLrUDI9PYuE9aHNrZVbBItF6Ugv5d4SBfh9yDrrfPT2E1yLtTjPV2st6NTqx9TNCXO8etkf55x/ZKjoU2XGOuc3krsp5DTnp5rcuVda6PqkcmqXC90iK2bHDiuI/s4zeMO0/lUJlHti9v+;
+        Domain=.stlouisfed.org; Path=/; Expires=Tue, 19 Sep 2023 18:40:07 GMT; Max-Age=7200;
+        HttpOnly
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '112'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-08-20&series_id=DGS20
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jWw1DW0VNJByKbmpaDL5ScVpxaVJZZk
+        5uehabbQNTJQ0lFCVgDRb2lpaalraKRrbKiko1Sal1lSrGSllJOZB1JcWlJQWhJfUlmQqmRlqKOU
+        lpmTCuUpZRXng5UUpaQWxSdVKlmhGJ2SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRlZKCj
+        lJ+WVpxaomRloKOUk5mbWaJkZWgAAiiuLFayiqYkRMAugYWgha4RyJdliTmlqUpWSiZ6ZiZKtTrU
+        NN5ISUcJyXhDKhtvjGK8iRmVjTdBNd6SysabohhvakBl4y1QjDexoLLxoLyHiFoTI+oabwzKnTQ0
+        HjXdG1M1ai11DVCNp27YW+oaICdMPWoGvKWuAVqqpGqestQ1MENJlabUNt4c1XhTKgcOap4ypWqi
+        t9Q1RE021A4cQ9TS2JSqhb2lriFqaUz1wEFO9CZ6pubUjVpDtHQPmKVSbWwtAPA+Qap8CAAA
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '396'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 19 Sep 2023 16:40:08 GMT
+      Expires:
+      - Tue, 19 Sep 2023 16:41:08 GMT
+      Last-Modified:
+      - Mon, 18 Sep 2023 20:20:06 GMT
+      Set-Cookie:
+      - ak_bmsc=ABF0C097E90F475E1353A590C98AC99A~000000000000000000000000000000~YAAQFk4SAoNFspSKAQAACjtQrhWEgLx5NrMyZxemRZ1DH1eLNSlgQIRrllpWMPuBoI1tSz6aEADkKwjQF4RSLqkE85f4QD8hG41jjfYSZzi4XlmEms6njq83So9uV4mGD8L1+UUDZw7mxi9iy6aVlAARSOyBOwyApc5/RM3lOX9PUwLjp+y21OqYtD5lCgDOkkty8BjuaiaIgv16ht/+Y6FLuBTBus5e8LfyEA/o+FPsvEwWMlAevLBWIXbXvt0/Kx3DImdnG0kYF8Guus8rIybavnFxbZb63/wwxouFvAFCU2lbxODYvNJOc3cTrb0kjTocUnPjFbZ1VnNSt7I4/343hcdhxdvnkncWacxuweq5nBsS6YVUvfb/vVzce88=;
+        Domain=.stlouisfed.org; Path=/; Expires=Tue, 19 Sep 2023 18:40:07 GMT; Max-Age=7199;
+        HttpOnly
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '111'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-08-20&series_id=DGS30
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jWw1DW0VNJByKbmpaDL5ScVpxaVJZZk
+        5uehabbQNTJQ0lFCVgDRb2lpaalraKRrbKiko1Sal1lSrGSllJOZB1JcWlJQWhJfUlmQqmRlqKOU
+        lpmTCuUpZRXng5UUpaQWxSdVKlmhGJ2SWJKqpKNUnF9UEp8PUqJkpZRYnKyko5ScX5pXomRlZKCj
+        lJ+WVpxaomRloKOUk5mbWaJkZWgAAiiuLFayiqYkRMAugYWgha4RyJdliTmlqUpWSiZ6JqZKtTrU
+        NN5ISUcJyXgjKhtvjGK8kTmVjTdBMd7YgMrGm9LWeAsU440sqex6UN5DRK2RMXWNNwblThoaj5ru
+        jagatZa6BmjGUzXsLXUNkBOmHjUD3lLXAC1VWlDZeDOUVGlM1SxrqWtgjmq8GZVdj5qnjKma6C11
+        DVGTDbUDxxC1NDamamFvqWuIWhobm1A37A2RE72JnjGV85QharoHzMRIqTa2FgBFy6TPfAgAAA==
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '397'
+      Content-Type:
+      - application/json; charset=UTF-8
+      Date:
+      - Tue, 19 Sep 2023 16:40:08 GMT
+      Expires:
+      - Tue, 19 Sep 2023 16:41:08 GMT
+      Last-Modified:
+      - Mon, 18 Sep 2023 20:20:05 GMT
+      Set-Cookie:
+      - ak_bmsc=54D0106E22BB00D959678BCDF1AE84C6~000000000000000000000000000000~YAAQFk4SAilGspSKAQAAZDxQrhWZaHjXKYzDy5GtPF53Iw589F6uWp6IjTuT1G9fGq3pMPWFCSbIcGD5vAljq5n7yXo0IRR1/gj5SczUuqdyF+y8N7K698gn9KNZ6UxWXHDJlneDmAwlzFZL5zoxrX4zCATJoz3t4dohhJ22EfyL9YaHLbzwKyCfey7z8r1f64zS5EeTUC1rcvYCj2vfcXE4FT0hvHmYnUh3iMKyyxZQyq/vB5yPuV+7Foe5UdveKpRcf7vrBHyi7/UfcikDytQAOPOoWv/Rw2Wb6Mua72a24AE5euyBycR+IJlPnJn3AvllJfOyHdenL0M+GiqhFaHyR+BLVmubGXjoMfWg0WEn3Vte1GvEA/WhGq2jsR7r;
+        Domain=.stlouisfed.org; Path=/; Expires=Tue, 19 Sep 2023 18:40:08 GMT; Max-Age=7200;
+        HttpOnly
+      Vary:
+      - Accept-Encoding
+      x-rate-limit-limit:
+      - '120'
+      x-rate-limit-remaining:
+      - '110'
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,0 +1,88 @@
+[tool.poetry]
+name = "openbb"
+version = "4.0.1"
+description = "OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb" }]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.12"
+openbb-core = "^1.0.1"
+
+openbb-benzinga = "^1.0.0"
+openbb-fmp = "^1.0.0"
+openbb-fred = "^1.0.0"
+openbb-intrinio = "^1.0.0"
+openbb-oecd = "^1.0.0"
+openbb-polygon = "^1.0.0"
+openbb-sec = "^1.0.0"
+openbb-tiingo = "^1.0.0"
+openbb-tradingeconomics = "^1.0.0"
+
+openbb-crypto = "^1.0.0"
+openbb-currency = "^1.0.0"
+openbb-derivatives = "^1.0.0"
+openbb-economy = "^1.0.0"
+openbb-equity = "^1.0.0"
+openbb-etf = "^1.0.0"
+openbb-fixedincome = "^1.0.0"
+openbb-index = "^1.0.0"
+openbb-news = "^1.0.0"
+openbb-regulators = "^1.0.0"
+
+# Community dependencies
+openbb-alpha-vantage = { version = "^1.0.0", optional = true }
+openbb-biztoc = { version = "^1.0.0", optional = true }
+openbb-cboe = { version = "^1.0.0", optional = true }
+openbb-ecb = { version = "^1.0.0", optional = true }
+openbb-finra = { version = "^1.0.0", optional = true }
+openbb-government-us = { version = "^1.0.0", optional = true }
+openbb-nasdaq = { version = "^1.0.0", optional = true }
+openbb-seeking-alpha = { version = "^1.0.0", optional = true }
+openbb-stockgrid = { version = "^1.0.0", optional = true }
+openbb-wsj = { version = "^1.0.0", optional = true }
+openbb-yfinance = { version = "^1.0.0", optional = true }
+
+openbb-charting = { version = "^1.0.0", optional = true }
+openbb-econometrics = { version = "^1.0.0", optional = true }
+openbb-quantitative = { version = "^1.0.0", optional = true }
+openbb-technical = { version = "^1.0.0", optional = true }
+
+[tool.poetry.extras]
+alpha_vantage = ["openbb-alpha-vantage"]
+biztoc = ["openbb-biztoc"]
+cboe = ["openbb-cboe"]
+charting = ["openbb-charting"]
+ecb = ["openbb-ecb"]
+econometrics = ["openbb-econometrics"]
+finra = ["openbb-finra"]
+government = ["openbb-government-us"]
+nasdaq = ["openbb-nasdaq"]
+quantitative = ["openbb-quantitative"]
+seeking_alpha = ["openbb-seeking-alpha"]
+stockgrid = ["openbb-stockgrid"]
+technical = ["openbb-technical"]
+wsj = ["openbb-wsj"]
+yfinance = ["openbb-yfinance"]
+
+
+all = [
+    "openbb-alpha-vantage",
+    "openbb-biztoc",
+    "openbb-cboe",
+    "openbb-charting",
+    "openbb-ecb",
+    "openbb-econometrics",
+    "openbb-government-us",
+    "openbb-nasdaq",
+    "openbb-quantitative",
+    "openbb-seeking-alpha",
+    "openbb-stockgrid",
+    "openbb-technical",
+    "openbb-yfinance",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

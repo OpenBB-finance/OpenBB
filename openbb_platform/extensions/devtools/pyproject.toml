@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "openbb-devtools"
+version = "1.0.0"
+description = "Tools for OpenBB Platform Developers"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_devtools" }]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.12"               # scipy forces <4.0 explicitly
+ruff = "^0.1.5"
+pylint = "^3.0.2"
+mypy = "^1.6.1"
+pydocstyle = "^6.3.0"
+black = "^23.11.0"
+bandit = "^1.7.5"
+pre-commit = "^3.5.0"
+tox = "^4.11.3"
+pytest = "^7.4.3"
+pytest-cov = "^4.1.0"
+ipykernel = "^6.26.0"
+types-python-dateutil = "^2.8.19.14"
+types-toml = "^0.10.8.7"
+poetry = "^1.7.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

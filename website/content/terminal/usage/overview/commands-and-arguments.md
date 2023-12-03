@@ -89,8 +89,7 @@ The `about` command opens the browser to the OpenBB documentation pages for the 
 (🦋) / $ about stocks
 ```
 
-The command above will open a browser to [Introduction to the Stocks menu](/terminal/data-available/stocks).
-
+The command above will open a browser to [Introduction to the Stocks menu](/terminal/menus/stocks).
 
 ### Support
 
@@ -143,7 +142,7 @@ Tips for submitting a support request:
 - Let us know any contextual information that will help us replicate and accurately identify the problem.
 :::
 
-### Cls
+### CLS
 
 The `cls` command clears the entire terminal screen.
 

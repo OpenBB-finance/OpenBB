@@ -5,8 +5,8 @@ import pytest
 try:
     from openbb_terminal.core.sdk.trailmap import get_signature_parameters
     from website import (
-        generate_sdk_markdown as gen_sdk,
-        generate_terminal_markdown as gen_term,
+        generate_sdk_v3_markdown as gen_sdk,
+        generate_terminal_v3_markdown as gen_term,
     )
 except ImportError:
     pytest.skip(allow_module_level=True)
@@ -67,6 +67,7 @@ class MockTrailMap:
         self.func_attrs["model"] = MockFuncAttrs()
         self.model = mock_func
         self.class_attr = "mock"
+        self.location_path = []
 
 
 EXPECTED_OUTPUT = """Stuff here or stuff there, it doesn't matter, it's everywhere.

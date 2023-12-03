@@ -1,0 +1,50 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v4/stock_peers?apikey=MOCK_API_KEY&symbol=AAPL
+  response:
+    body:
+      string: "[\n  {\n    \"symbol\": \"AAPL\",\n    \"peersList\": [\n      \"LPL\",\n
+        \     \"SNEJF\",\n      \"PCRFY\",\n      \"SONO\",\n      \"VZIO\",\n      \"MICS\",\n
+        \     \"WLDSW\",\n      \"KOSS\",\n      \"GPRO\",\n      \"SONY\",\n      \"UEIC\",\n
+        \     \"HEAR\",\n      \"VUZI\",\n      \"WLDS\"\n    ]\n  }\n]"
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '255'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 16 Oct 2023 12:22:33 GMT
+      ETag:
+      - W/"ff-HJTrlTghkVRaOX8gByhhLvxuWfA"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

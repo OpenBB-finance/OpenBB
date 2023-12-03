@@ -23,8 +23,6 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Installation and Updates - Faqs | OpenBB SDK Docs" />
 
-## Installation and Updates
-
 <details><summary>"Microsoft Visual C++ 14.0 or greater is required"</summary>
 
 Download and install [C++ Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/), restart the machine, then try again.
@@ -63,7 +61,7 @@ poetry install -E all
 The nightly build can be installed with:
 
 ```console
-pip install openbb-nightly[all]
+pip install openbb-terminal-nightly[all]
 ```
 
 **Note**: This version may not be stable and should not be used in a production setting.
