@@ -29,6 +29,7 @@ ruff = "^0.1.6"
 pytest = "^7.0.0"
 pytest-subtests = "^0.11.0"
 pytest-recorder = "^0.2.4"
+pytest-asyncio = "^0.23.2"
 
 [build-system]
 requires = ["poetry-core"]
