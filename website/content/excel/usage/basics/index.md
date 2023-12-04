@@ -1,7 +1,7 @@
 ---
 title: Basics
 sidebar_position: 1
-description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+description: This page provides an overview of the basics of the OpenBB add-in for Microsoft Excel. It covers the basic usage of the add-in and the available functions.
 keywords:
 - Microsoft Excel
 - Add-in
@@ -10,7 +10,9 @@ keywords:
 - Functions
 ---
 
-The add-in provides 3 types of custom functions:
+> To access the following features you need to sign-in first with your OpenBB Pro account.
+
+The add-in provides 3 types of custom functions all starting with `OBB.`.
 
 1. **Last value**: returns the last value of a given symbol/field combination
 

@@ -1,10 +1,7 @@
 ---
 title: Formula Builder
 sidebar_position: 3
-description: Get upcoming and historical dividend data with the OBB.equity.calendar.dividend
-  method. This method allows you to retrieve dividend information such as dates, amounts,
-  and provider details. It also provides warnings, charts, and metadata for further
-  analysis.
+description: The formula builder helps you to create formulas for the OpenBB add-in. It is available in the taskpane. Click on the 'fx' button in the toolbar to open the formula builder.
 keywords:
 - Microsoft Excel
 - Add-in
@@ -23,9 +20,11 @@ import TabItem from '@theme/TabItem';
 
 </TabItem>
 <TabItem value="mac" label="Mac">
-  
+
+Click on the 'fx' button in the toolbar to open the formula builder.
 <img width="888" alt="formula" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/79287829/15c3d5ea-597a-49f7-bcf9-e01ded44856b"/>
 
+The formula builder will be displayed in the taskpane.
 <img width="309" alt="taskpane" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/79287829/f7466125-236c-4661-a480-a31bbb8c9fe9"/>
 
 </TabItem>
