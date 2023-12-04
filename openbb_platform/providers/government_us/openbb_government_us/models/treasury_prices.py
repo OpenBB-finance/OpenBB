@@ -1,7 +1,7 @@
 """US Government Treasury Prices"""
 import asyncio
 from datetime import datetime, timedelta
-from io import BytesIO
+from io import StringIO
 from typing import Any, Dict, List, Literal, Optional
 
 import requests
@@ -64,7 +64,7 @@ class GovernmentUSTreasuryPricesFetcher(
         query: GovernmentUSTreasuryPricesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> bytes:
+    ) -> str:
         """Extract the raw data from US Treasury website."""
 
         url = "https://treasurydirect.gov/GA-FI/FedInvest/securityPriceDetail"
@@ -87,7 +87,7 @@ class GovernmentUSTreasuryPricesFetcher(
             "&csv=CSV+FORMAT"
         )
 
-        def fetch_data() -> bytes:
+        def fetch_data() -> str:
             r = requests.post(url=url, headers=HEADERS, data=payload, timeout=5)
 
             if r.status_code != 200:
@@ -97,7 +97,7 @@ class GovernmentUSTreasuryPricesFetcher(
                 raise RuntimeError(
                     f"Expected ISO-8859-1 encoding but got: {r.encoding}"
                 )
-            return r.content
+            return r.content.decode("utf-8")
 
         loop = asyncio.get_running_loop()
         return await loop.run_in_executor(None, fetch_data)
@@ -105,13 +105,13 @@ class GovernmentUSTreasuryPricesFetcher(
     @staticmethod
     def transform_data(
         query: GovernmentUSTreasuryPricesQueryParams,
-        data: bytes,
+        data: str,
         **kwargs: Any,
     ) -> List[GovernmentUSTreasuryPricesData]:
         """Transform the data."""
 
         try:
-            results = read_csv(BytesIO(data), header=0)
+            results = read_csv(StringIO(data), header=0)
             columns = [
                 "cusip",
                 "security_type",
