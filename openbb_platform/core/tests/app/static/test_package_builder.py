@@ -38,25 +38,21 @@ def test_package_builder_init(package_builder):
     assert package_builder
 
 
-@pytest.mark.skip("Rebuilds the packages which takes some time.")
 def test_package_builder_build(package_builder):
     """Test package builder build."""
     package_builder.build()
 
 
-@pytest.mark.skip()
 def test_save_module_map(package_builder):
     """Test save module map."""
     package_builder.save_module_map()
 
 
-@pytest.mark.skip()
 def test_save_modules(package_builder):
     """Test save module."""
     package_builder.save_modules()
 
 
-@pytest.mark.skip()
 def test_save_package(package_builder):
     """Test save package."""
     package_builder.save_package()
@@ -67,10 +63,9 @@ def test_run_linters(package_builder):
     package_builder.run_linters()
 
 
-@pytest.mark.skip("We avoid writing to the package.")
 def test_write_to_package(package_builder):
     """Test save to package."""
-    package_builder.write_to_package()
+    package_builder.write_to_package(code="", name="test", extension="json")
 
 
 @pytest.fixture(scope="module")
