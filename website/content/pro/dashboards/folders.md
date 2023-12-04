@@ -19,6 +19,13 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Folders | OpenBB Terminal Pro Docs" />
 
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
+
+<TutorialVideo
+  youtubeLink="https://www.youtube.com/embed/sFvzgQULDos?si=fS1wm6YEQAb07vwe"
+  videoLegend="Short introduction to folders"
+/>
+
 On the sidebar, users have a plus icon where they are able to create a new dashboard or folder.
 
 <img className="pro-border-gradient" width="2181" alt="add dash" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/c8a88574-7ec4-4abd-8662-9e1f6cf376bc" />

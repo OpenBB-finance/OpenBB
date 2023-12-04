@@ -4,6 +4,7 @@ sidebar_position: 3
 description: Get in-depth documentation on Native Integrations provided by OpenBB
   Terminal Pro including API key connections to data providers and database/warehouse
   connections for an enhanced data analysis experience.
+draft: true
 keywords:
 - Native Integrations
 - API key
@@ -18,8 +19,9 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Native Integrations | OpenBB Terminal Pro Docs" />
 
-OpenBB Terminal Pro allows seamless integration with two types of third-party data providers.
+WORK IN PROGRESS.
 
+OpenBB Terminal Pro will allow seamless integration with two types of third-party data providers.
 ## API Key Connections
 
 To access certain data providers and their associated widgets, you'll need an API key obtained directly from the data provider. We provide step-by-step instructions for each use case to guide you through this process.

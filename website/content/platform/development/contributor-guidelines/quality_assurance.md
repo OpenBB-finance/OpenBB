@@ -101,3 +101,35 @@ pip install tuna
 python -X importtime openbb/__init__.py 2> import.log
 tuna import.log
 ```
+
+## Known caveats
+
+When using the OpenBB QA Framework it is important to be aware of the following caveats:
+
+- The tests are semi-automated and might require manual intervention. For example, adjusting out-of-top level imports or changing specific arguments for a given payload.
+
+- The integration tests are more complex and if your newly added provider integration is already covered by the
+integration tests from previous commands or providers, you will need to manually inject the payload for the new
+provider.
+
+- In the integration test parametrized payload, the first item is always the set of standard parameters. Every
+consecutive item is a set of parameters for a specific provider with the standard parameters included.
+
+- The integration tests require you to be explicit, by using all of the standard parameters and provider-specific
+parameters in the payload. If you want to exclude a parameter, you can use `None` as its value.
+
+- The integration tests require you to be explicit by specifying the `provider` parameter in provider-specific
+payloads.
+
+- When recording unit tests, you might run into issues with the cache that is tied to your specific provider and present
+on your local machine. You will know that this is the case if your tests pass locally, but fail on the CI. To fix this,
+you can delete the cache file from your local machine and re-record the tests.
+
+    > Note that the cache is likely located here:
+    > Windows: `C:\Users\user\AppData\Local\`
+    > Linux: `/home/user/.cache/`
+    > Mac: `/Users/user/Library/Caches`
+
+- Some providers (we are aware only of YFinance so far) do an additional request when used from the US region. As our CI
+is running from the US region, this might cause the tests to fail. A workaround for this is to use a VPN to record the
+tests from a different region.

@@ -10,7 +10,10 @@ PYPROJECT = PLATFORM_PATH / "pyproject.toml"
 
 SUB_PACKAGES = {}
 DEPENDENCIES: Dict[str, Any] = {}
-PLUGINS = {"openbb_core_extension": {}, "openbb_provider_extension": {}}
+PLUGINS: Dict[str, Dict] = {
+    "openbb_core_extension": {},
+    "openbb_provider_extension": {},
+}
 CMD = [sys.executable, "-m", "poetry", "build"]
 
 
@@ -44,7 +47,7 @@ def gather_metadata(sub_path: str):
 
 def build():
     """Build the Platform package."""
-    for sub_path in ["platform", "providers", "extensions"]:
+    for sub_path in ["core", "providers", "extensions"]:
         gather_metadata(sub_path)
 
     # need to pop these from the dependencies

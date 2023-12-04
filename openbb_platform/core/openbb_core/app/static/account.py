@@ -1,3 +1,4 @@
+"""Account service."""
 # pylint: disable=W0212:protected-access
 import json
 from functools import wraps
@@ -17,24 +18,31 @@ if TYPE_CHECKING:
 
 
 class Account:
-    """/account
-    login
-    logout
-    save
-    refresh"""
+    """The account service handles the following commands.
+
+    /account
+        login
+        logout
+        save
+        refresh
+    """
 
     SESSION_FILE = ".hub_session.json"
 
     def __init__(self, base_app: "BaseApp"):
+        """Initialize account service."""
         self._base_app = base_app
         self._openbb_directory = (
             base_app._command_runner.system_settings.openbb_directory
         )
 
     def __repr__(self) -> str:
+        """Human readable representation of the object."""
         return self.__doc__ or ""
 
     def _log_account_command(func):  # pylint: disable=E0213
+        """Log account command."""
+
         @wraps(func)
         def wrapped(self, *args, **kwargs):
             try:
@@ -82,14 +90,15 @@ class Account:
             hs.connect(email, password, pat)
         return hs
 
-    @_log_account_command
+    @_log_account_command  # type: ignore
     def login(
         self,
         email: Optional[str] = None,
         password: Optional[str] = None,
         pat: Optional[str] = None,
         remember_me: bool = False,
-    ) -> UserSettings:
+        return_settings: bool = False,
+    ) -> Optional[UserSettings]:
         """Login to hub.
 
         Parameters
@@ -102,6 +111,8 @@ class Account:
             Personal access token, by default None
         remember_me : bool, optional
             Remember me, by default False
+        return_settings : bool, optional
+            Return user settings, by default False
 
         Returns
         -------
@@ -121,11 +132,18 @@ class Account:
 
                 json.dump(hs.session.model_dump(mode="json"), f, indent=4)
 
-        return self._base_app._command_runner.user_settings
+        if return_settings:
+            return self._base_app._command_runner.user_settings
+        return None
 
-    @_log_account_command
-    def save(self) -> UserSettings:
+    @_log_account_command  # type: ignore
+    def save(self, return_settings: bool = False) -> Optional[UserSettings]:
         """Save user settings.
+
+        Parameters
+        ----------
+        return_settings : bool, optional
+            Return user settings, by default False
 
         Returns
         -------
@@ -140,11 +158,19 @@ class Account:
         else:
             hs = HubService(hub_session)
             hs.push(self._base_app._command_runner.user_settings)
-        return self._base_app._command_runner.user_settings
 
-    @_log_account_command
-    def refresh(self) -> UserSettings:
+        if return_settings:
+            return self._base_app._command_runner.user_settings
+        return None
+
+    @_log_account_command  # type: ignore
+    def refresh(self, return_settings: bool = False) -> Optional[UserSettings]:
         """Refresh user settings.
+
+        Parameters
+        ----------
+        return_settings : bool, optional
+            Return user settings, by default False
 
         Returns
         -------
@@ -162,11 +188,19 @@ class Account:
             updated: UserSettings = UserService.update_default(incoming)
             updated.id = self._base_app._command_runner.user_settings.id
             self._base_app._command_runner.user_settings = updated
-        return self._base_app._command_runner.user_settings
 
-    @_log_account_command
-    def logout(self) -> UserSettings:
+        if return_settings:
+            return self._base_app._command_runner.user_settings
+        return None
+
+    @_log_account_command  # type: ignore
+    def logout(self, return_settings: bool = False) -> Optional[UserSettings]:
         """Logout from hub.
+
+        Parameters
+        ----------
+        return_settings : bool, optional
+            Return user settings, by default False
 
         Returns
         -------
@@ -187,4 +221,7 @@ class Account:
         self._base_app._command_runner.user_settings = (
             UserService.read_default_user_settings()
         )
-        return self._base_app._command_runner.user_settings
+
+        if return_settings:
+            return self._base_app._command_runner.user_settings
+        return None
