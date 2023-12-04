@@ -50,12 +50,13 @@ def test_update_default():
     """Test update default user settings."""
 
     # Some settings
-    other_settings = UserSettings(credentials={"example": "example"})
+    defaults_test = {"routes": {"test": {"test": "test"}}}
+    other_settings = UserSettings(defaults=defaults_test)
 
     # Update the default settings
     updated_settings = UserService.update_default(other_settings)
 
-    assert "example" not in updated_settings.credentials.model_dump_json()
+    assert updated_settings.defaults.model_dump() == defaults_test
 
 
 def test_merge_dicts():
