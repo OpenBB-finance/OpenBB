@@ -1,11 +1,11 @@
 # Building Installers
-This guide serves to assist developers construct OpenBB Terminal installers on MacOs and Windows.
+This guide serves to assist developers construct OpenBB Terminal installers on macOS and Windows.
 
 ## Overview
-Building an installer  takes source code as input and produces deployable software as an output. For MacOS the output is a DMG while for windows it is an EXE. This process utilizes two major modules: Pyinstaller & Create-dmg. Windows additionally recruits the service of NSIS. There are two ways to build an installer: locally or through Github.
+Building an installer  takes source code as input and produces deployable software as an output. For MacOS the output is a DMG while for Windows it is an EXE. This process utilizes two major modules: Pyinstaller & Create-dmg. Windows additionally recruits the service of NSIS. There are two ways to build an installer: locally or through Github.
 
 ## Local
-In this section we detail the steps necessary to construct an installer locally on a windows machine and mac machine. These steps can be performed on either one of these operating systems so long as they have the OpenBBTerminal repository codebase. This process assumes you already have a working conda environment. Building locally usually takes anywhere from 10-20 minutes.
+In this section we detail the steps necessary to construct an installer locally on a Windows machine and Mac machine. These steps can be performed on either one of these operating systems so long as they have the OpenBBTerminal repository codebase. This process assumes you already have a working conda environment. Building locally usually takes anywhere from 10-20 minutes.
 
 ### MacOS Steps
 1. `brew install create-dmg`
