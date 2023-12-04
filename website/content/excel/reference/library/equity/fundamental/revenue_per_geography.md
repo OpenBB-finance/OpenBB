@@ -34,7 +34,7 @@ Revenue Geographic. Geographic revenue data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY(required;[optional])
 ```
 
 ---

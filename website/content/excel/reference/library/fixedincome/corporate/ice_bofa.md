@@ -42,7 +42,7 @@ ICE BofA US Corporate Bond Indices.  The ICE BofA US Corporate Index tracks the 
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.CORPORATE.ICE_BOFA(required; [optional])
+=OBB.FIXEDINCOME.CORPORATE.ICE_BOFA(required;[optional])
 ```
 
 ---

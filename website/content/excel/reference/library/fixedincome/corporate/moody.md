@@ -14,7 +14,7 @@ Moody Corporate Bond Index.  Moody's Aaa and Baa are investment bonds that acts 
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.CORPORATE.MOODY(required; [optional])
+=OBB.FIXEDINCOME.CORPORATE.MOODY(required;[optional])
 ```
 
 ---

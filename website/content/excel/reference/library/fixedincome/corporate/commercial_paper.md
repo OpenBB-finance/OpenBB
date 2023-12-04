@@ -32,7 +32,7 @@ Commercial Paper.  Commercial paper (CP) consists of short-term, promissory note
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER(required; [optional])
+=OBB.FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER(required;[optional])
 ```
 
 ---

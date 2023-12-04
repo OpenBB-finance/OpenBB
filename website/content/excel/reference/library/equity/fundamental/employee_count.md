@@ -30,7 +30,7 @@ Historical Employees. Historical number of employees.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT(required;[optional])
 ```
 
 ---

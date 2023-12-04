@@ -55,7 +55,7 @@ Company Overview. General information about a company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.OVERVIEW(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.OVERVIEW(required;[optional])
 ```
 
 ---

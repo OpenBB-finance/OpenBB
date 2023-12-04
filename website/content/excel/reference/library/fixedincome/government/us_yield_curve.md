@@ -27,7 +27,7 @@ US Yield Curve. Get United States yield curve.
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE(required; [optional])
+=OBB.FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE(required;[optional])
 ```
 
 ---

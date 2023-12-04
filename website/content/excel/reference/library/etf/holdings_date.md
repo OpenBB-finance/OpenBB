@@ -28,7 +28,7 @@ Get the holdings filing date for an individual ETF.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ETF.HOLDINGS_DATE(required; [optional])
+=OBB.ETF.HOLDINGS_DATE(required;[optional])
 ```
 
 ---

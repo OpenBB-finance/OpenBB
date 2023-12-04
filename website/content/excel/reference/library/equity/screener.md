@@ -13,7 +13,7 @@ Equity Screen. Screen for companies meeting various criteria.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.SCREENER(required; [optional])
+=OBB.EQUITY.SCREENER(required;[optional])
 ```
 
 ---

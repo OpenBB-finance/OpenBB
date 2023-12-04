@@ -14,7 +14,7 @@ Trailing 1yr dividend yield.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD(required;[optional])
 ```
 
 ---

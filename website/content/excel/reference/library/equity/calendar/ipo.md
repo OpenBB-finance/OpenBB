@@ -59,7 +59,7 @@ Upcoming and Historical IPO Calendar.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.CALENDAR.IPO(required; [optional])
+=OBB.EQUITY.CALENDAR.IPO(required;[optional])
 ```
 
 ---

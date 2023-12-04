@@ -23,7 +23,7 @@ Share Statistics. Share statistics for a given company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.OWNERSHIP.SHARE_STATISTICS(required; [optional])
+=OBB.EQUITY.OWNERSHIP.SHARE_STATISTICS(required;[optional])
 ```
 
 ---

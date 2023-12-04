@@ -5,7 +5,7 @@ Fetch the historical values of a data tag from Intrinio.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES(required;[optional])
 ```
 
 ---

@@ -35,7 +35,7 @@ Upcoming and Historical Dividend Calendar.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.CALENDAR.DIVIDEND(required; [optional])
+=OBB.EQUITY.CALENDAR.DIVIDEND(required;[optional])
 ```
 
 ---

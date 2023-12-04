@@ -32,7 +32,7 @@ Currency Historical Price. Currency historical data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.CURRENCY.PRICE.HISTORICAL(required; [optional])
+=OBB.CURRENCY.PRICE.HISTORICAL(required;[optional])
 ```
 
 ---

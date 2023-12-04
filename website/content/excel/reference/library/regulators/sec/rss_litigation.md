@@ -30,7 +30,7 @@ The RSS feed provides links to litigation releases concerning civil lawsuits bro
 ## Syntax
 
 ```excel wordwrap
-=OBB.REGULATORS.SEC.RSS_LITIGATION(required; [optional])
+=OBB.REGULATORS.SEC.RSS_LITIGATION(required;[optional])
 ```
 
 ---

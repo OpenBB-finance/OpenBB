@@ -53,7 +53,7 @@ Cash Flow Statement Growth. Information about the growth of the company cash flo
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.CASH_GROWTH(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.CASH_GROWTH(required;[optional])
 ```
 
 ---

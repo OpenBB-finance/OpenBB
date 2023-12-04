@@ -14,7 +14,7 @@ Government Treasury Auctions.
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.GOVERNMENT.TREASURY_AUCTIONS(required; [optional])
+=OBB.FIXEDINCOME.GOVERNMENT.TREASURY_AUCTIONS(required;[optional])
 ```
 
 ---

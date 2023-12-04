@@ -14,7 +14,7 @@ Euro Short-Term Rate.  The euro short-term rate (€STR) reflects the wholesale 
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.RATE.ESTR(required; [optional])
+=OBB.FIXEDINCOME.RATE.ESTR(required;[optional])
 ```
 
 ---

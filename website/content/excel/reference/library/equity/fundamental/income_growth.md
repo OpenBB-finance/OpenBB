@@ -51,7 +51,7 @@ Income Statement Growth. Information about the growth of the company income stat
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.INCOME_GROWTH(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.INCOME_GROWTH(required;[optional])
 ```
 
 ---

@@ -66,7 +66,7 @@ World News. Global news data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.NEWS.WORLD(required; [optional])
+=OBB.NEWS.WORLD(required;[optional])
 ```
 
 ---

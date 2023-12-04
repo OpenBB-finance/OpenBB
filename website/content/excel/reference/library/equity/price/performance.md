@@ -38,7 +38,7 @@ Price performance as a return, over different periods.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.PRICE.PERFORMANCE(required; [optional])
+=OBB.EQUITY.PRICE.PERFORMANCE(required;[optional])
 ```
 
 ---

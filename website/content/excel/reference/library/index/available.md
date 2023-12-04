@@ -13,7 +13,7 @@ Available Indices. Available indices for a given provider.
 ## Syntax
 
 ```excel wordwrap
-=OBB.INDEX.AVAILABLE(required; [optional])
+=OBB.INDEX.AVAILABLE(required;[optional])
 ```
 
 ---

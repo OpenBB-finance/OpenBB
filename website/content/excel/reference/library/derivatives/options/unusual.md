@@ -34,7 +34,7 @@ Get the complete options chain for a ticker.
 ## Syntax
 
 ```excel wordwrap
-=OBB.DERIVATIVES.OPTIONS.UNUSUAL(required; [optional])
+=OBB.DERIVATIVES.OPTIONS.UNUSUAL(required;[optional])
 ```
 
 ---

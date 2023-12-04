@@ -14,7 +14,7 @@ Government Treasury Rates.
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.GOVERNMENT.TREASURY_RATES(required; [optional])
+=OBB.FIXEDINCOME.GOVERNMENT.TREASURY_RATES(required;[optional])
 ```
 
 ---

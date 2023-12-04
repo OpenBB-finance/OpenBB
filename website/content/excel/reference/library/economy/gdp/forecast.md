@@ -14,7 +14,7 @@ Forecasted GDP Data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ECONOMY.GDP.FORECAST(required; [optional])
+=OBB.ECONOMY.GDP.FORECAST(required;[optional])
 ```
 
 ---

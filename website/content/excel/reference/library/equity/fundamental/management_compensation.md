@@ -34,7 +34,7 @@ Get Executive Compensation. Information about the executive compensation for a g
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION(required;[optional])
 ```
 
 ---

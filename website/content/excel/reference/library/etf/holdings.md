@@ -48,7 +48,7 @@ Get the holdings for an individual ETF.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ETF.HOLDINGS(required; [optional])
+=OBB.ETF.HOLDINGS(required;[optional])
 ```
 
 ---

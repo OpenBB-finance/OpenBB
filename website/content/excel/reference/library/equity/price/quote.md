@@ -68,7 +68,7 @@ Equity Quote. Load stock data for a specific ticker.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.PRICE.QUOTE(required; [optional])
+=OBB.EQUITY.PRICE.QUOTE(required;[optional])
 ```
 
 ---

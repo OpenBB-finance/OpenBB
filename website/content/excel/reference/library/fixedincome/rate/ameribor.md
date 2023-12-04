@@ -14,7 +14,7 @@ Ameribor.  Ameribor (short for the American interbank offered rate) is a benchma
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.RATE.AMERIBOR(required; [optional])
+=OBB.FIXEDINCOME.RATE.AMERIBOR(required;[optional])
 ```
 
 ---

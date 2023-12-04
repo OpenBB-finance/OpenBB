@@ -26,7 +26,7 @@ Revenue Business Line. Business line revenue data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT(required;[optional])
 ```
 
 ---
