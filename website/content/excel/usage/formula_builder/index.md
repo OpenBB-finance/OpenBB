@@ -1,8 +1,10 @@
 ---
 title: Formula Builder
 sidebar_position: 3
-description: This page explains how to leverage the formula builder to get more details
-about the available functions.
+description: Get upcoming and historical dividend data with the OBB.equity.calendar.dividend
+  method. This method allows you to retrieve dividend information such as dates, amounts,
+  and provider details. It also provides warnings, charts, and metadata for further
+  analysis.
 keywords:
 - Microsoft Excel
 - Add-in
@@ -11,6 +13,16 @@ keywords:
 
 You can use the formula builder to get more details about the available functions.
 
-<img width="480" alt="Screenshot 2023-12-04 at 11 51 42" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/79287829/b2fd35fd-fb41-48f4-a29b-ce2656f35831">
+<!-- markdownlint-disable MD033 -->
 
-<img width="365" alt="Screenshot 2023-12-04 at 11 50 50" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/79287829/9809f976-e896-4a4c-bedd-c3b1daaf5ff7">
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+<Tabs>
+<TabItem value="windows" label="Windows">
+
+</TabItem>
+<TabItem value="mac" label="Mac">
+
+</TabItem>
+</Tabs>
