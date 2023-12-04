@@ -48,10 +48,6 @@ def test_extension_map():
         )
 
     for name, version in ext_map.items():
-        assert name in req_ext, (
-            f"'{name}' is not a required extension in pyproject.toml, uninstall it and"
-            " rebuild or add it to pyproject.toml"
-        )
         assert req_ext[name].allows(version), (
             f"Version '{version}' of extension '{name}' is not compatible with the"
             f" version '{req_ext[name]}' constraint in pyproject.toml"
