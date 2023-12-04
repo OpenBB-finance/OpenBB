@@ -1,8 +1,10 @@
 import json
+import sys
 from pathlib import Path
 from textwrap import shorten
 from typing import Literal
 
+import requests
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.static.package_builder import PathHandler
 
@@ -11,6 +13,8 @@ WEBSITE_PATH = Path(__file__).parent.absolute()
 CONTENT_PATH = WEBSITE_PATH / "content"
 XL_FUNCS_PATH = CONTENT_PATH / "excel" / "functions.json"
 SEO_METADATA_PATH = WEBSITE_PATH / "metadata" / "platform_v4_seo_metadata.json"
+
+XL_FUNCS_URL = "https://openbb-excel-add-in.vercel.app/assets/functions.json"
 
 
 class CommandLib(PathHandler):
@@ -36,6 +40,12 @@ class CommandLib(PathHandler):
         self.seo_metadata = self.read_seo_metadata()
 
         self.update()
+
+    def fetch(self):
+        """Fetch the excel functions."""
+        r = requests.get(XL_FUNCS_URL, timeout=10)
+        with open(XL_FUNCS_PATH, "w") as f:
+            json.dump(r.json(), f, indent=2)
 
     def update(self):
         """Update with manual map."""
@@ -388,10 +398,13 @@ class Editor:
 
 
 if __name__ == "__main__":
+    cl = CommandLib()
+    if len(sys.argv) > 1 and sys.argv[1] == "--update":
+        cl.fetch()
     Editor(
         directory=CONTENT_PATH,
         interface="excel",
         main_folder="reference",
         cmds_folder="library",
-        cmd_lib=CommandLib(),
+        cmd_lib=cl,
     ).go()
