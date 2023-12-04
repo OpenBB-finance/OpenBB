@@ -78,9 +78,16 @@ class GovernmentUSTreasuryPricesFetcher(
             "Origin": "https://treasurydirect.gov",
             "User-Agent": get_random_agent(),
         }
-        payload = f"priceDateDay={query.date.day}&priceDateMonth={query.date.month}&priceDateYear={query.date.year}&fileType=csv&csv=CSV+FORMAT"  #  type:  ignore[union-attr]  #  pylint: disable=line-too-long  #  noqa E501
 
-        def fetch_data():
+        payload = (
+            f"priceDateDay={query.date.day}"  # type: ignore
+            f"&priceDateMonth={query.date.month}"  # type: ignore
+            f"&priceDateYear={query.date.year}"  # type: ignore
+            "&fileType=csv"
+            "&csv=CSV+FORMAT"
+        )
+
+        def fetch_data() -> bytes:
             r = requests.post(url=url, headers=HEADERS, data=payload, timeout=5)
 
             if r.status_code != 200:
