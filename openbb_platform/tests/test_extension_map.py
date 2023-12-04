@@ -2,7 +2,6 @@ import json
 from pathlib import Path
 from typing import Dict
 
-import pytest
 from poetry.core.constraints.version import Version, VersionConstraint, parse_constraint
 from poetry.core.pyproject.toml import PyProjectTOML
 
@@ -34,9 +33,6 @@ def load_req_ext(file: Path) -> Dict[str, VersionConstraint]:
     return req_ext
 
 
-@pytest.mark.skip(
-    reason="Need to figure out how to test static with different extension bundles"
-)
 def test_extension_map():
     """Ensure only required extensions are built and versions respect pyproject.toml"""
     this_dir = Path(__file__).parent
