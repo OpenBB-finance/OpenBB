@@ -9,7 +9,7 @@ keywords:
 
 ## Requirements
 
-The OpenBB Excel Add-in is a Microsoft Excel Add-in that is available on:
+The OpenBB Excel Add-in is available on:
 
 - Windows (Microsoft 365)
 - Mac (Microsoft 365)

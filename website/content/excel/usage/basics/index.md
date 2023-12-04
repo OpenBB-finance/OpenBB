@@ -16,13 +16,17 @@ The add-in provides 3 types of custom functions:
 
     Examples:
 
-    ```excel
-    =OBB.LAST("AAPL","EBITDA")
-    ```
+    1. Getting the last price of a stock:
 
-    ```excel
-    =OBB.LAST("AAPL","CEO")
-    ```
+        ```excel
+        =OBB.LAST("AAPL";"CLOSE_PRICE")
+        ```
+
+    2. Getting the industry group of a stock:
+
+        ```excel
+        =OBB.LAST("AAPL";"INDUSTRY_GROUP")
+        ```
 
 ---
 
@@ -32,13 +36,21 @@ The add-in provides 3 types of custom functions:
 
     Examples:
 
-    ```excel
-    =OBB.HIST("AAPL","EBITDA")
-    ```
+    1. Getting the historical EBITDA:
 
-    ```excel
-    =OBB.HIST("AAPL","ROE","2020-01-01","2020-12-31")
-    ```
+        ```excel
+        =OBB.HIST("AAPL";"EBITDA")
+        ```
+
+    2. Getting the historical Return on Equity (ROE) for a given period:
+
+        ```excel
+        =OBB.HIST("AAPL";"ROE";"2020-01-01";"2020-12-31")
+        ```
+
+    :::tip
+    Dates can be specified in text format (YYYY-MM-DD) or as Excel dates from a cell or `DATE(YYYY;MM;DD)`.
+    :::
 
 ---
 
@@ -53,14 +65,18 @@ The add-in provides 3 types of custom functions:
         =OBB.EQUITY.FUNDAMENTAL.BALANCE("AAPL")
         ```
 
-    2. Getting the earnings calendar:
-
-        ```excel
-        =OBB.EQUITY.CALENDAR.EARNINGS()
-        ```
-
-    3. Getting the latest news for a stock:
+    2. Getting the latest news for a stock:
 
         ```excel
         =OBB.NEWS.COMPANY("AAPL")
         ```
+
+    3. Getting the earnings calendar:
+
+        ```excel
+        =OBB.EQUITY.CALENDAR.IPO(;;"2023-11-20")
+        ```
+
+    :::tip
+    If you want to skip a parameter just use semi-colon without any value. In example 3. we are skip the first parameter (provider) and the second parameter (symbol).
+    :::
