@@ -1,5 +1,5 @@
 from inspect import Parameter
-from typing import Dict
+from typing import Dict, List
 from unittest.mock import patch
 
 import pytest
@@ -288,6 +288,7 @@ def test_command_runner_run(_):
         assert runner.run("mock/route")
 
 
+@pytest.mark.asyncio
 @patch("openbb_core.app.command_runner.CommandMap.get_command")
 @patch("openbb_core.app.command_runner.StaticCommandRunner._execute_func")
 async def test_static_command_runner_run(
@@ -295,7 +296,7 @@ async def test_static_command_runner_run(
 ):
     """Test static command runner run."""
 
-    def other_mock_func(a: int, b: int, c: int, d: int) -> None:
+    def other_mock_func(a: int, b: int, c: int, d: int) -> List[int]:
         return [a, b, c, d]
 
     class MockOBBject:
@@ -315,6 +316,7 @@ async def test_static_command_runner_run(
     assert result.extra.get("metadata") is not None
 
 
+@pytest.mark.asyncio
 @patch("openbb_core.app.command_runner.LoggingService")
 @patch("openbb_core.app.command_runner.ParametersBuilder.build")
 @patch("openbb_core.app.command_runner.StaticCommandRunner._command")
@@ -385,6 +387,7 @@ def test_static_command_runner_chart(mock_charting_service_chart, execution_cont
     assert mock_obbject.chart == {"mock": "chart"}
 
 
+@pytest.mark.asyncio
 async def test_static_command_runner_command():
     """Test command."""
 
