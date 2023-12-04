@@ -20,6 +20,7 @@ openbb-sec = "^1.0.0"
 openbb-tiingo = "^1.0.0"
 openbb-tradingeconomics = "^1.0.0"
 
+openbb-commodity = "^1.0.0"
 openbb-crypto = "^1.0.0"
 openbb-currency = "^1.0.0"
 openbb-derivatives = "^1.0.0"
