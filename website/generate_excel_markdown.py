@@ -41,7 +41,8 @@ class CommandLib(PathHandler):
 
         self.update()
 
-    def fetch(self):
+    @staticmethod
+    def fetch():
         """Fetch the excel functions."""
         r = requests.get(XL_FUNCS_URL, timeout=10)
         with open(XL_FUNCS_PATH, "w") as f:
@@ -398,13 +399,12 @@ class Editor:
 
 
 if __name__ == "__main__":
-    cl = CommandLib()
     if len(sys.argv) > 1 and sys.argv[1] == "--update":
-        cl.fetch()
+        CommandLib.fetch()
     Editor(
         directory=CONTENT_PATH,
         interface="excel",
         main_folder="reference",
         cmds_folder="library",
-        cmd_lib=cl,
+        cmd_lib=CommandLib(),
     ).go()

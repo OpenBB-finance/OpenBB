@@ -41,7 +41,8 @@ Historical Dividends. Historical dividends data for a given company.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | symbol | Text | Symbol to get data for. | False |
-| provider | Text | Options: fmp | True |
+| provider | Text | Options: fmp, intrinio | True |
+| page_size | Number | The number of data entries to return. (provider: intrinio) | True |
 
 ---
 
