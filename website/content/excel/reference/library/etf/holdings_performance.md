@@ -25,7 +25,7 @@ Get the ETF holdings performance.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ETF.HOLDINGS_PERFORMANCE(required, [optional])
+=OBB.ETF.HOLDINGS_PERFORMANCE(required; [optional])
 ```
 
 ---

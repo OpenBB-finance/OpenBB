@@ -49,7 +49,7 @@ Currency Search. Search available currency pairs.
 ## Syntax
 
 ```excel wordwrap
-=OBB.CURRENCY.SEARCH(required, [optional])
+=OBB.CURRENCY.SEARCH(required; [optional])
 ```
 
 ---

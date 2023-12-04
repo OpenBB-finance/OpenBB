@@ -50,7 +50,7 @@ Income Statement. Report on a company's financial performance.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.INCOME(required, [optional])
+=OBB.EQUITY.FUNDAMENTAL.INCOME(required; [optional])
 ```
 
 ---

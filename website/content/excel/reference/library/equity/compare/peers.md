@@ -31,7 +31,7 @@ Equity Peers. Company peers.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.COMPARE.PEERS(required, [optional])
+=OBB.EQUITY.COMPARE.PEERS(required; [optional])
 ```
 
 ---

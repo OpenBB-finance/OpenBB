@@ -28,7 +28,7 @@ Search for ETFs.  An empty query returns the full list of ETFs from the provider
 ## Syntax
 
 ```excel wordwrap
-=OBB.ETF.SEARCH(required, [optional])
+=OBB.ETF.SEARCH(required; [optional])
 ```
 
 ---

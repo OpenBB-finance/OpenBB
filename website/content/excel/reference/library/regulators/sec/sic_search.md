@@ -30,7 +30,7 @@ Fuzzy search for Industry Titles, Reporting Office, and SIC Codes.
 ## Syntax
 
 ```excel wordwrap
-=OBB.REGULATORS.SEC.SIC_SEARCH(required, [optional])
+=OBB.REGULATORS.SEC.SIC_SEARCH(required; [optional])
 ```
 
 ---

@@ -124,7 +124,7 @@ class CommandLib(PathHandler):
             return {}
         description = self.xl_funcs[cmd].get("description", "").replace("\n", " ")
         signature_ = (
-            "=OBB." + self.xl_funcs[cmd].get("name", "") + "(required, [optional])"
+            "=OBB." + self.xl_funcs[cmd].get("name", "") + "(required; [optional])"
         )
         return_ = self.xl_funcs[cmd].get("result", {}).get("dimensionality", "")
         if model_name := self.get_model(cmd):

@@ -30,7 +30,7 @@ Historical Market Risk Premium.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ECONOMY.RISK_PREMIUM(required, [optional])
+=OBB.ECONOMY.RISK_PREMIUM(required; [optional])
 ```
 
 ---

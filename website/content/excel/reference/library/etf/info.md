@@ -34,7 +34,7 @@ ETF Information Overview.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ETF.INFO(required, [optional])
+=OBB.ETF.INFO(required; [optional])
 ```
 
 ---

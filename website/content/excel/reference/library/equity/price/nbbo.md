@@ -44,7 +44,7 @@ Equity NBBO. Load National Best Bid and Offer for a specific equity.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.PRICE.NBBO(required, [optional])
+=OBB.EQUITY.PRICE.NBBO(required; [optional])
 ```
 
 ---

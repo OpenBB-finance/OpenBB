@@ -20,7 +20,7 @@ Balance Sheet. Balance sheet statement.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.BALANCE(required, [optional])
+=OBB.EQUITY.FUNDAMENTAL.BALANCE(required; [optional])
 ```
 
 ---

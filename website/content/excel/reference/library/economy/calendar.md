@@ -45,7 +45,7 @@ Economic Calendar.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ECONOMY.CALENDAR(required, [optional])
+=OBB.ECONOMY.CALENDAR(required; [optional])
 ```
 
 ---

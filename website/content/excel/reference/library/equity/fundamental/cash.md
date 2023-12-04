@@ -56,7 +56,7 @@ Cash Flow Statement. Information about the cash flow statement.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.CASH(required, [optional])
+=OBB.EQUITY.FUNDAMENTAL.CASH(required; [optional])
 ```
 
 ---

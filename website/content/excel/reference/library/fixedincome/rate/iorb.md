@@ -14,7 +14,7 @@ Interest on Reserve Balances.  Get Interest Rate on Reserve Balances data A bank
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.RATE.IORB(required, [optional])
+=OBB.FIXEDINCOME.RATE.IORB(required; [optional])
 ```
 
 ---

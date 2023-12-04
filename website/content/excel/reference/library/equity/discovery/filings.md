@@ -14,7 +14,7 @@ Get the most-recent filings submitted to the SEC.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.DISCOVERY.FILINGS(required, [optional])
+=OBB.EQUITY.DISCOVERY.FILINGS(required; [optional])
 ```
 
 ---

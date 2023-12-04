@@ -25,7 +25,7 @@ Get the CIK number corresponding to a ticker symbol.
 ## Syntax
 
 ```excel wordwrap
-=OBB.REGULATORS.SEC.CIK_MAP(required, [optional])
+=OBB.REGULATORS.SEC.CIK_MAP(required; [optional])
 ```
 
 ---

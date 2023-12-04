@@ -30,7 +30,7 @@ Consumer Price Index (CPI) Data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ECONOMY.CPI(required, [optional])
+=OBB.ECONOMY.CPI(required; [optional])
 ```
 
 ---

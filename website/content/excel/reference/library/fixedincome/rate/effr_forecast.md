@@ -14,7 +14,7 @@ Fed Funds Rate Projections.  The projections for the federal funds rate are the 
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.RATE.EFFR_FORECAST(required, [optional])
+=OBB.FIXEDINCOME.RATE.EFFR_FORECAST(required; [optional])
 ```
 
 ---

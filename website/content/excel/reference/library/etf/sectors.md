@@ -29,7 +29,7 @@ ETF Sector weighting.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ETF.SECTORS(required, [optional])
+=OBB.ETF.SECTORS(required; [optional])
 ```
 
 ---

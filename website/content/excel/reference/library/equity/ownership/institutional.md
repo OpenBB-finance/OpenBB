@@ -65,7 +65,7 @@ Institutional Ownership. Institutional ownership data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.OWNERSHIP.INSTITUTIONAL(required, [optional])
+=OBB.EQUITY.OWNERSHIP.INSTITUTIONAL(required; [optional])
 ```
 
 ---

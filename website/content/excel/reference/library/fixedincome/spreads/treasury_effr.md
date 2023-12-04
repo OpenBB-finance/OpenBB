@@ -33,7 +33,7 @@ Select Treasury Bill.  Get Selected Treasury Bill Minus Federal Funds Rate. Cons
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.SPREADS.TREASURY_EFFR(required, [optional])
+=OBB.FIXEDINCOME.SPREADS.TREASURY_EFFR(required; [optional])
 ```
 
 ---

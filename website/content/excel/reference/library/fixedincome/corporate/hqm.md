@@ -25,7 +25,7 @@ High Quality Market Corporate Bond.  The HQM yield curve represents the high qua
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.CORPORATE.HQM(required, [optional])
+=OBB.FIXEDINCOME.CORPORATE.HQM(required; [optional])
 ```
 
 ---

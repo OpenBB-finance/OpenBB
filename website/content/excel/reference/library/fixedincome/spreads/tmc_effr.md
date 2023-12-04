@@ -33,7 +33,7 @@ Select Treasury Constant Maturity.  Get data for Selected Treasury Constant Matu
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.SPREADS.TMC_EFFR(required, [optional])
+=OBB.FIXEDINCOME.SPREADS.TMC_EFFR(required; [optional])
 ```
 
 ---

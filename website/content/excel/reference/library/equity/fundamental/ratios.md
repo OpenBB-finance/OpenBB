@@ -30,7 +30,7 @@ Extensive set of ratios over time. Financial ratios for a given company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.RATIOS(required, [optional])
+=OBB.EQUITY.FUNDAMENTAL.RATIOS(required; [optional])
 ```
 
 ---

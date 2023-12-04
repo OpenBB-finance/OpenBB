@@ -22,7 +22,7 @@ ETF Country weighting.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ETF.COUNTRIES(required, [optional])
+=OBB.ETF.COUNTRIES(required; [optional])
 ```
 
 ---

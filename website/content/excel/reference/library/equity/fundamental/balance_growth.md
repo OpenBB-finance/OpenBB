@@ -56,7 +56,7 @@ Balance Sheet Statement Growth. Information about the growth of the company bala
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.BALANCE_GROWTH(required, [optional])
+=OBB.EQUITY.FUNDAMENTAL.BALANCE_GROWTH(required; [optional])
 ```
 
 ---

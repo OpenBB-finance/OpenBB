@@ -62,7 +62,7 @@ Historical Analyst Estimates. Analyst stock recommendations.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.ESTIMATES.HISTORICAL(required, [optional])
+=OBB.EQUITY.ESTIMATES.HISTORICAL(required; [optional])
 ```
 
 ---

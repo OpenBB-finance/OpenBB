@@ -14,7 +14,7 @@ Sterling Overnight Index Average.  SONIA (Sterling Overnight Index Average) is a
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.RATE.SONIA(required, [optional])
+=OBB.FIXEDINCOME.RATE.SONIA(required; [optional])
 ```
 
 ---

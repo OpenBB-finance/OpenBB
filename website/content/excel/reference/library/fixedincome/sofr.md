@@ -32,7 +32,7 @@ Secured Overnight Financing Rate.  The Secured Overnight Financing Rate (SOFR) i
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.SOFR(required, [optional])
+=OBB.FIXEDINCOME.SOFR(required; [optional])
 ```
 
 ---

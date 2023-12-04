@@ -38,7 +38,7 @@ Price performance as a return, over different periods.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ETF.PRICE_PERFORMANCE(required, [optional])
+=OBB.ETF.PRICE_PERFORMANCE(required; [optional])
 ```
 
 ---

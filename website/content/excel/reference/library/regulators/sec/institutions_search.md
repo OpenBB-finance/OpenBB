@@ -30,7 +30,7 @@ Look up institutions regulated by the SEC.
 ## Syntax
 
 ```excel wordwrap
-=OBB.REGULATORS.SEC.INSTITUTIONS_SEARCH(required, [optional])
+=OBB.REGULATORS.SEC.INSTITUTIONS_SEARCH(required; [optional])
 ```
 
 ---

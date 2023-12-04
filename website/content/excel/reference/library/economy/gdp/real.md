@@ -30,7 +30,7 @@ Real GDP Data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ECONOMY.GDP.REAL(required, [optional])
+=OBB.ECONOMY.GDP.REAL(required; [optional])
 ```
 
 ---

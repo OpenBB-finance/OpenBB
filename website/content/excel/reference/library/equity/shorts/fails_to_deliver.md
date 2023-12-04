@@ -25,7 +25,7 @@ Get reported Fail-to-deliver (FTD) data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.SHORTS.FAILS_TO_DELIVER(required, [optional])
+=OBB.EQUITY.SHORTS.FAILS_TO_DELIVER(required; [optional])
 ```
 
 ---

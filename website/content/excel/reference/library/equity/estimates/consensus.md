@@ -27,7 +27,7 @@ Price Target Consensus. Price target consensus data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.ESTIMATES.CONSENSUS(required, [optional])
+=OBB.EQUITY.ESTIMATES.CONSENSUS(required; [optional])
 ```
 
 ---

@@ -40,7 +40,7 @@ Company News. Get news for one or more companies.
 ## Syntax
 
 ```excel wordwrap
-=OBB.NEWS.COMPANY(required, [optional])
+=OBB.NEWS.COMPANY(required; [optional])
 ```
 
 ---
