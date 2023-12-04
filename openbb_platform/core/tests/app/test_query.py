@@ -120,6 +120,7 @@ def query_instance():
     )
 
 
+@pytest.mark.asyncio
 async def test_execute_method_fake_credentials(query_instance: Query, mock_registry):
     """Test execute method without setting credentials."""
     mock_fetch_result = MockBaseModel()
