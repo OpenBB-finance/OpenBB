@@ -4,6 +4,15 @@ This folder is a collection of example notebooks that demonstrate some of the wa
 
 ## Table of Contents
 
+### googleColab
+
+This notebook installs the OpenBB Platform in a Google Colab environment with examples for:
+
+- Logging into OpenBB Hub
+- Setting the output preference
+- Fetching options and company fundamentals data
+- Creating bar chart visualizations
+
 ### findSymbols
 
 This notebook provides an introduction to discovering, finding, and searching ticker symbols.
@@ -29,7 +38,6 @@ This set of examples introduces financial statements in the OpenBB Platform and 
 - What to expect with data from different sources
 - Financial attributes
 - Ratios and other metrics
-
 
 ### copperToGoldRatio
 
