@@ -31,9 +31,10 @@ export default function DocSidebarItem({ item, ...props }) {
   const { isIFrame } = useIFrameContext();
   const { pathname } = useLocation();
   const isPro = pathname.startsWith("/pro");
+  const isExcel = pathname.startsWith("/excel");
 
   // Check if the item is the OpenBB Terminal Pro section
-  if (item.customProps?.hiddenByDefault && !isPro) {
+  if (item.customProps?.hiddenByDefault && !isPro && !isExcel) {
     return null;
   }
 
@@ -45,9 +46,9 @@ export default function DocSidebarItem({ item, ...props }) {
     }
   }
 
-  if (isPro && !checkIfAnyChildIsPro(item)) {
+  if ((isPro || isExcel) && !checkIfAnyChildIsPro(item)) {
     return null;
-  } else if (!isPro && item.href?.startsWith("/pro")) {
+  } else if ((!isPro && item.href?.startsWith("/pro")) || (!isExcel && item.href?.startsWith("/excel"))) {
     return null;
   }
 
@@ -68,7 +69,7 @@ function checkIfAnyChildIsPro(item) {
   }
 
   if (item.type === "link") {
-    return item.href?.startsWith("/pro");
+    return item.href?.startsWith("/pro") || item.href?.startsWith("/excel");
   }
 
   if (item.type === "category") {
