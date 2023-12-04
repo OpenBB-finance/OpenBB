@@ -870,7 +870,7 @@ To create a PR to the OpenBB Platform, you'll need to fork the repository and cr
    `git add openbb_platform/platform/core/openbb_core/app/constants.py`.
    Note: **DON'T** add any files with personal information.
 4. Write a concise commit message under 50 characters, e.g. `git commit -m "meaningful commit message"`. If your PR
-   solves an issue raised by a user, you may specify such issue by adding #ISSUE_NUMBER to the commit message, so that
+   solves an issue raised by a user, you may specify such an issue by adding #ISSUE_NUMBER to the commit message, so that
    these get linked. Note: If you installed pre-commit hooks and one of the formatters re-formats your code, you'll need
    to go back to step 3 to add these.
 
