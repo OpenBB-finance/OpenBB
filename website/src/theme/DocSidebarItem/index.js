@@ -48,7 +48,7 @@ export default function DocSidebarItem({ item, ...props }) {
 
   if ((isPro || isExcel) && !checkIfAnyChildIsProExcel(item)) {
     return null;
-  } else if ((!isPro && item.href?.startsWith("/pro")) || (!isExcel && item.href?.startsWith("/excel"))) {
+  } else if ((!isPro && !isExcel) && item.href?.startsWith("/pro") && item.href?.startsWith("/excel")) {
     return null;
   }
 
@@ -63,7 +63,6 @@ export default function DocSidebarItem({ item, ...props }) {
   }
 }
 
-// TODO: Pass /pro, /excel as args
 function checkIfAnyChildIsProExcel(item) {
   if (item.items) {
     return item.items.some((childItem) => checkIfAnyChildIsProExcel(childItem));
