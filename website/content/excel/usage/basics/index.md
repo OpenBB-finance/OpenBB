@@ -28,8 +28,6 @@ The add-in provides 3 types of custom functions:
         =OBB.LAST("AAPL";"INDUSTRY_GROUP")
         ```
 
----
-
 2. **Historical data**: returns the historical values of a given symbol/field combination
 
     - `OBB.HIST`
@@ -51,8 +49,6 @@ The add-in provides 3 types of custom functions:
     :::tip
     Dates can be specified in text format (YYYY-MM-DD) or as Excel dates from a cell or `DATE(YYYY;MM;DD)`.
     :::
-
----
 
 3. **Library**: direct access to the OpenBB library
     - `OBB.[MENU].[SUB_MENU].[COMMAND]`
