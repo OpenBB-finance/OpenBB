@@ -25,7 +25,7 @@ class USTreasuryPricesQueryParams(QueryParams):
 
 
 class USTreasuryPricesData(Data):
-    """US Treasuries Prices Data."""
+    """US Treasury Prices Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     cusip: str = Field(description="CUSIP of the security.")
