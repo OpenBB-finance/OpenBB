@@ -6,6 +6,8 @@ keywords:
 - Microsoft Excel
 - Add-in
 - Basics
+- Examples
+- Functions
 ---
 
 The add-in provides 3 types of custom functions:

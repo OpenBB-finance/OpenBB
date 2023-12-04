@@ -6,6 +6,7 @@ keywords:
 - Microsoft Excel
 - Add-in
 - Templates
+- Examples
 ---
 
 - Equity Profile
