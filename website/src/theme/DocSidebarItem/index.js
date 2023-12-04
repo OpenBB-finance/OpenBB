@@ -46,7 +46,7 @@ export default function DocSidebarItem({ item, ...props }) {
     }
   }
 
-  if ((isPro || isExcel) && !checkIfAnyChildIsPro(item)) {
+  if ((isPro || isExcel) && !checkIfAnyChildIsProExcel(item)) {
     return null;
   } else if ((!isPro && item.href?.startsWith("/pro")) || (!isExcel && item.href?.startsWith("/excel"))) {
     return null;
@@ -63,9 +63,10 @@ export default function DocSidebarItem({ item, ...props }) {
   }
 }
 
-function checkIfAnyChildIsPro(item) {
+// TODO: Pass /pro, /excel as args
+function checkIfAnyChildIsProExcel(item) {
   if (item.items) {
-    return item.items.some((childItem) => checkIfAnyChildIsPro(childItem));
+    return item.items.some((childItem) => checkIfAnyChildIsProExcel(childItem));
   }
 
   if (item.type === "link") {
@@ -73,7 +74,7 @@ function checkIfAnyChildIsPro(item) {
   }
 
   if (item.type === "category") {
-    return item.items.some((childItem) => checkIfAnyChildIsPro(childItem));
+    return item.items.some((childItem) => checkIfAnyChildIsProExcel(childItem));
   }
 
   return false;
