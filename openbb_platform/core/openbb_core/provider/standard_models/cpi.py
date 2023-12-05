@@ -80,8 +80,10 @@ class ConsumerPriceIndexQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("units", "")
         + """
     Options:
-    - `growth_previous`: percent growth from the previous period. If monthly data, this is month-over-month, etc
-    - `growth_same`: percent growth from the same period in the previous year.  if looking at monthly data, this would be year-over-year, etc.
+    - `growth_previous`: percent growth from the previous period.
+      If monthly data, this is month-over-month, etc
+    - `growth_same`: percent growth from the same period in the previous year.
+      if looking at monthly data, this would be year-over-year, etc.
     - `index_2015`: rescaled index value, such that the value in 2015 is 100.""",
     )
     frequency: CPI_FREQUENCY = Field(
