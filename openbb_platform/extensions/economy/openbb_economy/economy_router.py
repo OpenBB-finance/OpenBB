@@ -36,7 +36,7 @@ async def cpi(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Consumer Price Index (CPI) Data."""
+    """Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate of change (inflation)."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -70,7 +70,7 @@ async def fred_search(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """
-    Search for FRED series or economic releases by ID or fuzzy query.
+    Search for FRED series or economic releases by ID or string.
     This does not return the observation values, only the metadata.
     Use this function to find series IDs for `fred_series()`.
     """
