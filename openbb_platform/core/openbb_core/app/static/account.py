@@ -1,4 +1,4 @@
-"""Account service."""
+"""Account."""
 # pylint: disable=W0212:protected-access
 import json
 from functools import wraps
@@ -18,13 +18,11 @@ if TYPE_CHECKING:
 
 
 class Account:
-    """The account service handles the following commands.
-
-    /account
-        login
-        logout
-        save
-        refresh
+    """/account
+    login
+    logout
+    save
+    refresh
     """
 
     SESSION_FILE = ".hub_session.json"
