@@ -1370,3 +1370,39 @@ def test_equity_fundamental_statements_notes_tags(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "intrinio",
+                "tag": "placeholder",
+                "content_format": "text",
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_equity_fundamental_statements_notes(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    tags_params = {
+        "provider": "intrinio",
+        "symbol": "AAPL",
+        "start_date": "2022-01-01",
+        "end_date": "2023-01-01",
+        "period": "quarter",
+    }
+    tag = (
+        obb.equity.fundamental.statements_notes_tags(**tags_params)
+        .results[0]
+        .intrinio_id
+    )
+    params["tag"] = tag
+
+    result = obb.equity.fundamental.statements_notes(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.model_dump()["results"]) > 0

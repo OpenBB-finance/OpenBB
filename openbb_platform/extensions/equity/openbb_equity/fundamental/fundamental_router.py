@@ -288,3 +288,14 @@ async def statements_notes_tags(
 ) -> OBBject[BaseModel]:
     """Get the XBRL tag names associated with a company's financial statements notes."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(model="FinancialStatementsNotes")
+async def statements_notes(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Get the accompanying notes for a specific tag from a company's financial statements."""
+    return await OBBject.from_query(Query(**locals()))

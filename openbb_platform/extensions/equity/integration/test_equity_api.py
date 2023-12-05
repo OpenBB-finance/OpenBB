@@ -1465,3 +1465,43 @@ def test_equity_fundamental_statements_notes_tags(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "intrinio",
+                "tag": "placeholder",
+                "content_format": "text",
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_equity_fundamental_statements_notes(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    tags_params = {
+        "provider": "intrinio",
+        "symbol": "AAPL",
+        "start_date": "2022-01-01",
+        "end_date": "2023-01-01",
+        "period": "quarter",
+    }
+
+    tags_query_str = get_querystring(tags_params, [])
+    tags_url = f"http://0.0.0.0:8000/api/v1/equity/fundamental/statements_notes_tags?{tags_query_str}"
+    tag = requests.get(tags_url, headers=headers, timeout=10).json()["results"][0][
+        "intrinio_id"
+    ]
+    params["tag"] = tag
+    query_str = get_querystring(params, [])
+    url = (
+        tags_url
+    ) = f"http://0.0.0.0:8000/api/v1/equity/fundamental/statements_notes?{query_str}"
+
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200

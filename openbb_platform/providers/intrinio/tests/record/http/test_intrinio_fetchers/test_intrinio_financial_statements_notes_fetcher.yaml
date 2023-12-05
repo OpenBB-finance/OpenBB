@@ -1,0 +1,89 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/filings/notes?api_key=MOCK_API_KEY&company=AAPL&page_size=1000&period_ended_end_date=2023-05-31&period_ended_start_date=2023-01-01&report_type=10-Q
+  response:
+    body:
+      string: !!binary |
+        H4sIAM+Kb2UAA8xY23LiOBD9F54nVUAgk+QNA2GzENsLZKmZrS1KWI1RrAtIsoFJ5d+35QECnuV5
+        RBWUsaB1Tvfpi/xeWzLOZDqXyoKpPf7zXmO09ljbLeS8GclQfq99wS+azy1J8f4YEiUT/AuxTMlo
+        Ga1B46VMY62WzI6UMU9aiQmkAqQ1U9VV0ijOKLFAp7CzAVdJhjZ/blt7fK8lLEPDdXzdNuuNh1tc
+        1LBW2s7tfg241Kjf/IU3cSem6BwknTtruNCsN29v6q2beuNk8HKpjau1j48vZ6Qe6NfO18ElqUmy
+        AppziJYH3ONyfzT3LJdKi5JrsD8s+sCipR/Ch1aFRQV7j5mEK5Nr8AGxJG3aDi8Rv0qNctIU6KtE
+        WVHm/Ex4nOtkRQxEC87S0vfGLy5B0F63x5dcukoIZkvRdyRF1bsQAKYKeAZeiFk4i68lQF+sudoD
+        TEAXLIHJimgIMBbISKxBmjIcHY4cDgXAFYRUsh9A4xJeVxlMew94km1P9NQ1nqGSBRisSWP81CzB
+        q4lFwK+SYQATywpm91Oy4F7E7LsWG3H3i+A+AyLpMXABSMBCHHMivQjD/e4lfCkqYXCeXilOQZv+
+        JkdPh9h9/EqTrdyJHfk1x0EnDEsUwV26xKyeuNpOciGI9kctw8UgHFTU0oOF9cvBtAECKg5+xjYg
+        YEp2fkENt9ld1qxCtaCxdmDqRXYF+gjdEw2Mg/G3ceMSMo5oaNzuXW1wuF3qrX2ZaG6zVqfVuVau
+        n7FaS6v0vptr7RD74mc+HIWjxSXsDj1OMk9MEunqxdkc6Ze03+SduKtfc/sTYfpvwnP4A2hajsPY
+        LPNyyJlYtFxe4c+ONHEEKHnKBFBfn7eVKR0yOkwN3kQvy4qwyK6x7+EeBQIu4Iz3szwxPyd+YHhy
+        mA/sdjQbZuE1dthyS412hMrLKEa5NZbgFI5HhxPzIzHjTczWg37YH1aLsRvmyvh0OTGGLRnQYO+m
+        cE0SmxP+QmyucdDooXVvqAzuo2H0cEnlpKAXIK5IOFIxHqCT/c9PH3BvFlEYXU0bNxa5t2svBeGH
+        E9FkhWimoMVZrLwJxJ+9TbgJKoH4rN2n5PerdqtxvI15Zc5jhqSphvR0PMPGmfsj+ajzVrxV+uUB
+        o3tudMzYGbOrbm4sjlTaB9j9IA7HVw+TfaIlWjHY/o4HZpag5nuM5+6xly/Oj0M+avGqzE1SNm60
+        /xuhfcvIZlHRhXMj9qVOkrgO5Z4xelYHZ/Rew+x/Qcd4NsCKcTydT1gqsSklbvC+pMPgtx3T//34
+        DwAA//8DAFDeshH+FQAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 05 Dec 2023 20:40:47 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/filings/notes/xbn_2OnNnZ?api_key=MOCK_API_KEY&content_format=text
+  response:
+    body:
+      string: !!binary |
+        H4sIANCKb2UAA3ySTW/bMAyG/wph7JAAMmBJjj9664rttC5bk9MuhmcziVBZNCRhS1H0v49y26EZ
+        tvnCVyT1kKb4mJkxu8rO312ntu6z+5YJPnjbxf7I/jscyA3Gmj4actvDdkbP0h2/eDqY+IlC+Ohp
+        2uFxQhfDnm7IBbJm7COOezzH95aGe2YyJnIGI6/BX0CBDhBPCDc0zb17CBCeYUCvtcC4gSaESC+J
+        bkQXcIS3xWAX2SxdJOJLo5wAB/LLvXjyiDn0boRgzvnEHZ2A0wyNAZCZI1zP3liQAlSh9JJ52/vh
+        BKpaXApMgD4RraWfAVbGwWSsTWXWV7BPBeA2cQN8WIA7c750XFb4g/7f4O5fY3kHuhZl0yTRCCU3
+        LBolmlYnUYumVnCHARdc+qcRf6CleaHheU6zhBUjNvUaVpXQTbJyI2RVJaFE1eo1bHmGHgbyM3F9
+        fL0ZBDiMnCZqqVO6aMqWrRY63WJbS7WGPcXe/q131QgtU++qFW3dsqhKoXXJopairGpengPviuN1
+        fMwGc88rVPCnVSFbzUGP3FDs4sOMHJJF/pWdz8/a8at2aTs4kEaaF2VeyN/Ay9CGo9nT0y8AAAD/
+        /wMArRb82xEDAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 05 Dec 2023 20:40:48 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

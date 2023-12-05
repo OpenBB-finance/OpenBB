@@ -37,5 +37,5 @@ class FinancialStatementsNotesTagsData(Data):
     filing_date: dateType = Field(description="The date of the filing")
     cik: Optional[str] = Field(default=None, description=DATA_DESCRIPTIONS.get("cik"))
     xbrl_tag: Optional[str] = Field(
-        default=None, description="The XBRL tab for the note."
+        default=None, description="The XBRL tag for the note."
     )

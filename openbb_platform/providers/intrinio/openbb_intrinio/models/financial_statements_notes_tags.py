@@ -21,7 +21,7 @@ from pydantic import Field
 class IntrinioFinancialStatementsNotesTagsQueryParams(
     FinancialStatementsNotesTagsQueryParams
 ):
-    """Intrinio Financial Attributes Query."""
+    """Intrinio Financial Statements Notes Tags Query."""
 
     __alias_dict__ = {"limit": "page_size"}
 
@@ -31,7 +31,7 @@ class IntrinioFinancialStatementsNotesTagsQueryParams(
 
 
 class IntrinioFinancialStatementsNotesTagsData(FinancialStatementsNotesTagsData):
-    """Intrinio Financial Attributes Data."""
+    """Intrinio Financial Statements Notes Tags Data."""
 
 
 class IntrinioFinancialStatementsNotesTagsFetcher(

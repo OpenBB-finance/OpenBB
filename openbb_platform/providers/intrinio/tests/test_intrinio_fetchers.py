@@ -12,6 +12,9 @@ from openbb_intrinio.models.currency_pairs import IntrinioCurrencyPairsFetcher
 from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
 from openbb_intrinio.models.equity_info import IntrinioEquityInfoFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
+from openbb_intrinio.models.financial_statements_notes import (
+    IntrinioFinancialStatementsNotesFetcher,
+)
 from openbb_intrinio.models.financial_statements_notes_tags import (
     IntrinioFinancialStatementsNotesTagsFetcher,
 )
@@ -311,9 +314,27 @@ def test_intrinio_share_statistics_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_intrinio_financial_statements_notes_tags(credentials=test_credentials):
+def test_intrinio_financial_statements_notes_tags_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL", "period": "quarter", "start_date": date(2023, 1, 1)}
 
     fetcher = IntrinioFinancialStatementsNotesTagsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_financial_statements_notes_fetcher(credentials=test_credentials):
+    tags_fetcher = IntrinioFinancialStatementsNotesTagsFetcher()
+    tags_params = tags_fetcher.transform_query(
+        {
+            "symbol": "AAPL",
+            "period": "quarter",
+            "start_date": date(2023, 1, 1),
+            "end_date": date(2023, 5, 31),
+        }
+    )
+    tag = tags_fetcher.extract_data(tags_params, credentials)[0]["id"]
+    params = {"tag": tag, "content_format": "text"}
+    fetcher = IntrinioFinancialStatementsNotesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
