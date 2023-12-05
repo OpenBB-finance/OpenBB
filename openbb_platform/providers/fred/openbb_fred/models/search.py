@@ -1,4 +1,4 @@
-"""FRED Releases Search Model."""
+"""FRED Search Model."""
 
 from typing import Any, Dict, List, Literal, Optional, Union
 

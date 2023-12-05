@@ -42,7 +42,7 @@ VERSION=__VERSION__
 PRODUCT=__PRODUCT__
 
 echo "Application uninstalling process started"
-# remove link to shorcut file
+# remove link to shortcut file
 find "/usr/local/bin/" -name "__PRODUCT__-__VERSION__" | xargs rm
 if [ $? -eq 0 ]
 then
