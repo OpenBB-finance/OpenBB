@@ -70,7 +70,7 @@ async def fred_search(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """
-    Search for FRED series or economic releases by ID or query.
+    Search for FRED series or economic releases by ID or string.
     This does not return the observation values, only the metadata.
     Use this function to find series IDs for `fred_series()`.
     """
