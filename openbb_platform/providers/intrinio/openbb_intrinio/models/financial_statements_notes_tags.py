@@ -10,7 +10,6 @@ from openbb_core.provider.standard_models.financial_statements_notes_tags import
     FinancialStatementsNotesTagsQueryParams,
 )
 from openbb_core.provider.utils.descriptions import (
-    DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
 from openbb_intrinio.utils.helpers import get_data_many
@@ -21,7 +20,11 @@ from pydantic import Field
 class IntrinioFinancialStatementsNotesTagsQueryParams(
     FinancialStatementsNotesTagsQueryParams
 ):
-    """Intrinio Financial Statements Notes Tags Query."""
+    """
+    Intrinio Financial Statements Notes Tags Query.
+
+    Source: https://docs.intrinio.com/documentation/web_api/get_all_notes_v2
+    """
 
     __alias_dict__ = {"limit": "page_size"}
 

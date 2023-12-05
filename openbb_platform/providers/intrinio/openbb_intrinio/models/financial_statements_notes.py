@@ -1,6 +1,6 @@
 """Intrinio Financial Statements Notes Model."""
 
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.financial_statements_notes import (
@@ -12,7 +12,11 @@ from pydantic import Field
 
 
 class IntrinioFinancialStatementsNotesQueryParams(FinancialStatementsNotesQueryParams):
-    """Intrinio Financial Statements Notes Query."""
+    """
+    Intrinio Financial Statements Notes Query.
+
+    Source: https://docs.intrinio.com/documentation/web_api/get_note_v2
+    """
 
     content_format: Literal["text", "html"] = Field(
         default="text", description="Format of the content, either text or html."
