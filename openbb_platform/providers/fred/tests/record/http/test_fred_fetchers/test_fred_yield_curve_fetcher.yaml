@@ -5,21 +5,21 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-05&series_id=DGS1MO
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-01&series_id=DGS1MO
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwVdJByKbmpaDL5ScVpxaVJZZk
-        5uehaTaEaEZWANFvaWlpCTLb2FBJR6k0L7OkWMlKKSczT0lHKb+0pKC0JL6ksiBVycpQRyktMycV
-        ylPKKs4HKylKSS2KT6pUslJCNjolsSRVSUepOL+oJD4fpETJSimxOFlJRyk5vzSvRMnKyEBHKT8t
-        rTi1RMnKQEcpJzM3s0TJytAABHSQjSpWsoqmJETALoGFoKGugZmSjlJZYk5pqpKVkqmeqbFSrQ41
-        jTenrfEWqMYbUdn1lqjGUzlwDA1oa7wxbY03QTWeymFvCMraSAmT2sbTNt0boqV7KrveiLYpxwhU
-        9NEu7I2MUFOOCXVzrRFyutejstloid6UysajJRtqhwxacUnl8syItsWlMVqiN6Nm2BvpGqAlesBM
-        lWpjawHf/8CefAgAAA==
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwUdJByKbmpaDL5ScVpxaVJZZk
+        5uehaTbUNTBU0lFCVgDRb2lpaQky2xgkXZqXWVKsZKWUk5kHUlxaUlBaEl9SWZCqZGWoo5SWmZMK
+        5SllFeeDlRSlpBbFJ1UqWaEYnZJYkqqko1ScX1QSnw9SomSllFicrKSjlJxfmleiZGVkrKOUn5ZW
+        nFqiZGWgo5STmZtZomRlaAACKK4sVrKKpiREwC6BhSA0EMoSc0pTlayUTPVMzZRqdahpvJGSjhKS
+        8UZUNt4Y1XhjKhtvRlvjzWlrvAWq8dQOe0tU46kc9oYGtDWetinHEFQw0S7dG5qiBg6Vo9aQtune
+        EC3dU9n1RrRNOUageoF2UWuEVmKaULdIM0JO93pUNhst0ZtS2Xi0ZEPtkEErLqlcnhnRtrg0Rkv0
+        VK3HjSBtJaRED5ipUm1sLQAe/vlZmQkAAA==
     headers:
       Accept-Ranges:
       - bytes
@@ -28,13 +28,13 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '355'
+      - '367'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 05 Dec 2023 14:28:32 GMT
+      - Tue, 05 Dec 2023 03:10:51 GMT
       Expires:
-      - Tue, 05 Dec 2023 14:29:32 GMT
+      - Tue, 05 Dec 2023 03:11:51 GMT
       Last-Modified:
       - Mon, 04 Dec 2023 21:25:11 GMT
       Vary:
@@ -52,21 +52,21 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-05&series_id=DGS3MO
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-01&series_id=DGS3MO
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwVdJByKbmpaDL5ScVpxaVJZZk
-        5uehaTaEaEZWANFvaWlpCTLb2FBJR6k0L7OkWMlKKSczT0lHKb+0pKC0JL6ksiBVycpQRyktMycV
-        ylPKKs4HKylKSS2KT6pUslJCNjolsSRVSUepOL+oJD4fpETJSimxOFlJRyk5vzSvRMnKyEBHKT8t
-        rTi1RMnKQEcpJzM3s0TJytAABHSQjSpWsoqmJETALoGFoKGugZmSjlJZYk5pqpKVkqmeqZlSrQ41
-        jTdHNd6UysZboBpvQmXjLWlqvKEBqvHG1HW9oTGq8VQOe0MTVOONqOx6UNZGSpjUDhy0dG9IZdej
-        pXsD6hpvhJZyqJzujUBFH+3C3sgINeVQ2/XI6V6PygGPluip7XTUZGNiSWXXoxaXJuZUNh61uDSh
-        coFjjJroqWu8ka4BaqIHzMRYqTa2FgB1U7wxfAgAAA==
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwUdJByKbmpaDL5ScVpxaVJZZk
+        5uehaTbUNTBU0lFCVgDRb2lpaQky2xgkXZqXWVKsZKWUk5kHUlxaUlBaEl9SWZCqZGWoo5SWmZMK
+        5SllFeeDlRSlpBbFJ1UqWaEYnZJYkqqko1ScX1QSnw9SomSllFicrKSjlJxfmleiZGVkrKOUn5ZW
+        nFqiZGWgo5STmZtZomRlaAACKK4sVrKKpiREwC6BhSA0EMoSc0pTlayUTPVMzZVqdahpvJGSjhKS
+        8SZUNt4Y1XhjKhtvhmq8GZWNN0c13pTKxlugGk/tsLekqfGGBqjGUzlqDdFSDpXD3hBUMCGleyPq
+        Rq2hKW0DBy3dG1LZ9Wjp3oC6xhuhpRwqp3sjUL2AFLVUTphGtC0xjZDTvR6VAx4t0VM74FGTjYkl
+        lV2PWlyaULkmNEItLk2oXOAYoyZ66hpvBGkrIRI9YCbGSrWxtQC0CN1xmQkAAA==
     headers:
       Accept-Ranges:
       - bytes
@@ -75,13 +75,13 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '373'
+      - '388'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 05 Dec 2023 14:28:32 GMT
+      - Tue, 05 Dec 2023 03:10:51 GMT
       Expires:
-      - Tue, 05 Dec 2023 14:29:32 GMT
+      - Tue, 05 Dec 2023 03:11:51 GMT
       Last-Modified:
       - Mon, 04 Dec 2023 21:25:11 GMT
       Vary:
@@ -99,21 +99,21 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-05&series_id=DGS6MO
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-01&series_id=DGS6MO
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwVdJByKbmpaDL5ScVpxaVJZZk
-        5uehaTaEaEZWANFvaWlpCTLb2FBJR6k0L7OkWMlKKSczT0lHKb+0pKC0JL6ksiBVycpQRyktMycV
-        ylPKKs4HKylKSS2KT6pUslJCNjolsSRVSUepOL+oJD4fpETJSimxOFlJRyk5vzSvRMnKyEBHKT8t
-        rTi1RMnKQEcpJzM3s0TJytAABHSQjSpWsoqmJETALoGFoKGugZmSjlJZYk5pqpKVkqmeiblSrQ41
-        jTenrfEWqMabUdn1ljQ13tCAtsYboxpvQd3AMTRBNd6QysaDsjZSwqS28ajp3pjagYOa7o0tqRs4
-        Rmgpx5jKxoOKPqSwN6Ky8UaoKYfaxiOnez0qOx0t0ZtS2XjUZGNCbePRiktqBzxqcUntPGWMmuip
-        a7yRrgFqogfM2FipNrYWAGumkfJ8CAAA
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwUdJByKbmpaDL5ScVpxaVJZZk
+        5uehaTbUNTBU0lFCVgDRb2lpaQky2xgkXZqXWVKsZKWUk5kHUlxaUlBaEl9SWZCqZGWoo5SWmZMK
+        5SllFeeDlRSlpBbFJ1UqWaEYnZJYkqqko1ScX1QSnw9SomSllFicrKSjlJxfmleiZGVkrKOUn5ZW
+        nFqiZGWgo5STmZtZomRlaAACKK4sVrKKpiREwC6BhSA0EMoSc0pTlayUTPVMDZVqdahpvJGSjhKS
+        8QZUNt4YxXgTUyobb4ZqvDmVjTenrfEWqMabUdn1ljQ13tCAtsajpRwL6gaOIahgQqR7EypnK0NT
+        1MChtvGo6d6Y2oGDmu6NLakb9kZoKceYysaD6gWkqDWisvGoJaYJtY1HTvd6VHY6WqKncmlshJps
+        qF3YG6EVl9QOeNTiktp5yhg10VPXeCNIWwmR6AEzNlaqja0FAOALbrOZCQAA
     headers:
       Accept-Ranges:
       - bytes
@@ -122,13 +122,13 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '366'
+      - '387'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 05 Dec 2023 14:28:32 GMT
+      - Tue, 05 Dec 2023 03:10:52 GMT
       Expires:
-      - Tue, 05 Dec 2023 14:29:32 GMT
+      - Tue, 05 Dec 2023 03:11:52 GMT
       Last-Modified:
       - Mon, 04 Dec 2023 21:25:13 GMT
       Vary:
@@ -146,21 +146,21 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-05&series_id=DGS1
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-01&series_id=DGS1
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwVdJByKbmpaDL5ScVpxaVJZZk
-        5uehaTaEaEZWANFvaWlpCTLb2FBJR6k0L7OkWMlKKSczT0lHKb+0pKC0JL6ksiBVycpQRyktMycV
-        ylPKKs4HKylKSS2KT6pUslJCNjolsSRVSUepOL+oJD4fpETJSimxOFlJRyk5vzSvRMnKyEBHKT8t
-        rTi1RMnKQEcpJzM3s0TJytAABHSQjSpWsoqmJETALoGFoKGugZmSjlJZYk5pqpKVkqmesbFSrQ41
-        jTenrfEWqMabUNn1lqjGW1LXeEMDVOMtqGy8Marx5lQ23gTFeCMqh70hKGsjEqYRtV2Pmu6NqJzu
-        DVHTPbUDxwg15RiZUjdqjUBFH1LYUzlqjYxQU44ZlV2PnO71qGw2WqKncqo0onGyQS0ujQypHDio
-        xaWhEXWNN0ZN9IZUTTZGugaoiR4wA1Ol2thaAHJ97kR8CAAA
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwUdJByKbmpaDL5ScVpxaVJZZk
+        5uehaTbUNTBU0lFCVgDRb2lpaQky2xgkXZqXWVKsZKWUk5kHUlxaUlBaEl9SWZCqZGWoo5SWmZMK
+        5SllFeeDlRSlpBbFJ1UqWaEYnZJYkqqko1ScX1QSnw9SomSllFicrKSjlJxfmleiZGVkrKOUn5ZW
+        nFqiZGWgo5STmZtZomRlaAACKK4sVrKKpiREwC6BhSA0EMoSc0pTlayUTPWMzZVqdahpvJGSjhKS
+        8RZUNt4YxXgjSyobb4ZivLExlY03p63xFqjGm1DZ9ZaoxlM57A0NUI2ncsoxRE051E73hqCCCZHu
+        jagc9oamKIFjROVca4ia7o2onO4NUdM9tQPHCDXlGJlSN90bgeoF2kWtEWqJaWRGZdcjp3s9KpuN
+        luipnCqNaJxsUItLI0MqBw5qcWloRF3jjVETvSFVk40RpK2ESPSAGZgq1cbWAgBLxXhImQkAAA==
     headers:
       Accept-Ranges:
       - bytes
@@ -169,13 +169,13 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '378'
+      - '397'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 05 Dec 2023 14:28:33 GMT
+      - Tue, 05 Dec 2023 03:10:52 GMT
       Expires:
-      - Tue, 05 Dec 2023 14:29:33 GMT
+      - Tue, 05 Dec 2023 03:11:52 GMT
       Last-Modified:
       - Mon, 04 Dec 2023 21:25:08 GMT
       Vary:
@@ -193,21 +193,22 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-05&series_id=DGS2
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-01&series_id=DGS2
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwVdJByKbmpaDL5ScVpxaVJZZk
-        5uehaTaEaEZWANFvaWlpCTLb2FBJR6k0L7OkWMlKKSczT0lHKb+0pKC0JL6ksiBVycpQRyktMycV
-        ylPKKs4HKylKSS2KT6pUslJCNjolsSRVSUepOL+oJD4fpETJSimxOFlJRyk5vzSvRMnKyEBHKT8t
-        rTi1RMnKQEcpJzM3s0TJytAABHSQjSpWsoqmJETALoGFoKGugZmSjlJZYk5pqpKVkomepbFSrQ41
-        jTdHNd6QysZboBpPbddbIhlvqmdAZeMNDVCNN6Fu4BgaoxpvRGXjTZCMN9GzMKCy8aCsjZQwqW08
-        arq3oHbUoqZ7CwvqBo4Rcsox0bOwpLLxoKIPEfYWZlQ23gg15VDb9cjpXo/KTkdN9JZUzlNGaMmG
-        yiWCEWpxaU7lRG+EXFya6JlR2fXGqImeuq430jVATfSAmZop1cbWAgBd8tfrfAgAAA==
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwUdJByKbmpaDL5ScVpxaVJZZk
+        5uehaTbUNTBU0lFCVgDRb2lpaQky2xgkXZqXWVKsZKWUk5kHUlxaUlBaEl9SWZCqZGWoo5SWmZMK
+        5SllFeeDlRSlpBbFJ1UqWaEYnZJYkqqko1ScX1QSnw9SomSllFicrKSjlJxfmleiZGVkrKOUn5ZW
+        nFqiZGWgo5STmZtZomRlaAACKK4sVrKKpiREwC6BhSA0EMoSc0pTlayUTPQsTZVqdahpvJGSjhKS
+        8RZUNt4YxXgLYyobb4ZivCW1jTdHNd6Qyq63QDWe2q63RDLeVM+AysYbGqAab0LdwDFETjmmegZG
+        VDYeVDAh0r2FAZWNN0UKHBM9S2obj5ruqZ2tDFHTvQWVCwUj5JRjomdhSd2wNwLVC0hRa0Zl41FL
+        TKq7Hjnd61HZ6aiJ3pLKecoILdlQuUQwQi0uzalcnhkhF5cmemZUdr0xaqKnruuNIG0lRKIHzNRM
+        qTa2FgB+jkLhmQkAAA==
     headers:
       Accept-Ranges:
       - bytes
@@ -216,13 +217,13 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '391'
+      - '412'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 05 Dec 2023 14:28:33 GMT
+      - Tue, 05 Dec 2023 03:10:53 GMT
       Expires:
-      - Tue, 05 Dec 2023 14:29:33 GMT
+      - Tue, 05 Dec 2023 03:11:52 GMT
       Last-Modified:
       - Mon, 04 Dec 2023 21:25:08 GMT
       Vary:
@@ -240,21 +241,22 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-05&series_id=DGS3
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-01&series_id=DGS3
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwVdJByKbmpaDL5ScVpxaVJZZk
-        5uehaTaEaEZWANFvaWlpCTLb2FBJR6k0L7OkWMlKKSczT0lHKb+0pKC0JL6ksiBVycpQRyktMycV
-        ylPKKs4HKylKSS2KT6pUslJCNjolsSRVSUepOL+oJD4fpETJSimxOFlJRyk5vzSvRMnKyEBHKT8t
-        rTi1RMnKQEcpJzM3s0TJytAABHSQjSpWsoqmJETALoGFoKGugZmSjlJZYk5pqpKVkomeuZFSrQ41
-        jTdHMd7MhMrGW6Aab0pl4y1RjDc3p67xhgYoxlsYUNl4Y9oab4JivKkZlV0PytqIhGlmQWXjUdO9
-        qSWVjadtujdCTTlmVM61RqCiDynsqZwwjYxQUg7VXY+c7vWoG69GqInejMolghFasqF2wKMWlyZU
-        TvRGqMWlCZVdb4ya6E2oWiIY6RqgJnrAjA2VamNrAQjvSHd8CAAA
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwUdJByKbmpaDL5ScVpxaVJZZk
+        5uehaTbUNTBU0lFCVgDRb2lpaQky2xgkXZqXWVKsZKWUk5kHUlxaUlBaEl9SWZCqZGWoo5SWmZMK
+        5SllFeeDlRSlpBbFJ1UqWaEYnZJYkqqko1ScX1QSnw9SomSllFicrKSjlJxfmleiZGVkrKOUn5ZW
+        nFqiZGWgo5STmZtZomRlaAACKK4sVrKKpiREwC6BhSA0EMoSc0pTlayUTPTMzZRqdahpvJGSjhKS
+        8RZUNt4YxXgzIyobb4ZivDm1jTdHMd7MhMqut0A13pTKxluiGG9uTl3jDQ1QjLcwoLLxqCmH6saD
+        CiZEujelcrYyNEUJHDMqZytD1HRvaknlsKdtujdCTTnULhSMQPUCImrNqJwwjVBLTKq7Hjnd61E3
+        Xo1QE70ZlUsEI7RkQ+2ARy0uTaic6I1Qi0sTKrveGDXRm1C1RDCCtJUQiR4wY0Ol2thaAJfSLqCZ
+        CQAA
     headers:
       Accept-Ranges:
       - bytes
@@ -263,13 +265,13 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '381'
+      - '402'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 05 Dec 2023 14:28:34 GMT
+      - Tue, 05 Dec 2023 03:10:53 GMT
       Expires:
-      - Tue, 05 Dec 2023 14:29:33 GMT
+      - Tue, 05 Dec 2023 03:11:53 GMT
       Last-Modified:
       - Mon, 04 Dec 2023 21:25:12 GMT
       Vary:
@@ -287,21 +289,22 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-05&series_id=DGS5
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-01&series_id=DGS5
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwVdJByKbmpaDL5ScVpxaVJZZk
-        5uehaTaEaEZWANFvaWlpCTLb2FBJR6k0L7OkWMlKKSczT0lHKb+0pKC0JL6ksiBVycpQRyktMycV
-        ylPKKs4HKylKSS2KT6pUslJCNjolsSRVSUepOL+oJD4fpETJSimxOFlJRyk5vzSvRMnKyEBHKT8t
-        rTi1RMnKQEcpJzM3s0TJytAABHSQjSpWsoqmJETALoGFoKGugZmSjlJZYk5pqpKVkomemYFSrQ41
-        jTdHMd7UmMrGW6Aab0hl4y1RjDczpa7xhga0Nd4Y1XgzKrveBMV4EyMqGw/K2oiEaUpt41HTvQmV
-        E6Yharo3oXLKMUJNOSYm1A17I1DRhwh7EypnKyMj1JRDbdcjp3s9KocMWqK3pLLxqMnG2ILKxqMW
-        l0bUdj1qcWlE5SxrjJrojamaKo10DVATPWCGJkq1sbUAVDgDUHwIAAA=
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwUdJByKbmpaDL5ScVpxaVJZZk
+        5uehaTbUNTBU0lFCVgDRb2lpaQky2xgkXZqXWVKsZKWUk5kHUlxaUlBaEl9SWZCqZGWoo5SWmZMK
+        5SllFeeDlRSlpBbFJ1UqWaEYnZJYkqqko1ScX1QSnw9SomSllFicrKSjlJxfmleiZGVkrKOUn5ZW
+        nFqiZGWgo5STmZtZomRlaAACKK4sVrKKpiREwC6BhSA0EMoSc0pTlayUTPTMzJVqdahpvJGSjhKS
+        8aZUNt4YxXgTSyobb4ZivJkBlY03RzHe1JjKxlugGm9IZeMtUYw3o3LUGhrQ1njUlGNmRt3AMQQV
+        TIh0b2JEZeNNUQLHlNrGo6Z7EyonTEPUdG9C5ZRjhJpyTEyoG/ZGoHoBKWqpnK2MUEtMqrseOd3r
+        UTlk0BI9lUtjI9RkY2xBZdejFpdG1HY9anFpROUsa4ya6I2pmiqNIG0lRKIHzNBEqTa2FgA1XaKn
+        mQkAAA==
     headers:
       Accept-Ranges:
       - bytes
@@ -310,13 +313,13 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '383'
+      - '403'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 05 Dec 2023 14:28:34 GMT
+      - Tue, 05 Dec 2023 03:10:53 GMT
       Expires:
-      - Tue, 05 Dec 2023 14:29:34 GMT
+      - Tue, 05 Dec 2023 03:11:53 GMT
       Last-Modified:
       - Mon, 04 Dec 2023 21:25:09 GMT
       Vary:
@@ -334,21 +337,22 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-05&series_id=DGS7
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-01&series_id=DGS7
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwVdJByKbmpaDL5ScVpxaVJZZk
-        5uehaTaEaEZWANFvaWlpCTLb2FBJR6k0L7OkWMlKKSczT0lHKb+0pKC0JL6ksiBVycpQRyktMycV
-        ylPKKs4HKylKSS2KT6pUslJCNjolsSRVSUepOL+oJD4fpETJSimxOFlJRyk5vzSvRMnKyEBHKT8t
-        rTi1RMnKQEcpJzM3s0TJytAABHSQjSpWsoqmJETALoGFoKGugZmSjlJZYk5pqpKVkomemZlSrQ41
-        jTdHMd7UgsrGW6Aab0Jl4y1RjDejsusNDWhrvDGq8ZbUDRxDExTjTUypbDwoayMSpimVE6Yharo3
-        Maey61HTPbWNN0JNOSZUDhwjUNGHCHsTKmcrIyPUlENt1yOnez3qxqsRaqI3NaSy8WjJxpjKxqMW
-        l8bUDnjU4tKIysWlMWqiN6aq8Ua6BqiJHjAjI6Xa2FoAPAZ3aHwIAAA=
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwUdJByKbmpaDL5ScVpxaVJZZk
+        5uehaTbUNTBU0lFCVgDRb2lpaQky2xgkXZqXWVKsZKWUk5kHUlxaUlBaEl9SWZCqZGWoo5SWmZMK
+        5SllFeeDlRSlpBbFJ1UqWaEYnZJYkqqko1ScX1QSnw9SomSllFicrKSjlJxfmleiZGVkrKOUn5ZW
+        nFqiZGWgo5STmZtZomRlaAACKK4sVrKKpiREwC6BhSA0EMoSc0pTlayUTPTMTZVqdahpvJGSjhLC
+        eDMLKhtvjGK8KbVdb4ZivJkZlV1vjmK8KbUDxwLVeBMqu94SxXhqR62hAW2NR005ZpbUDRxDUMGE
+        SPcmVE6YhqYogWNK5YRpiJruTcypHDio6Z7axhuhphwTKgeOEaheQIpaKmcrI9QSk+quR073etSN
+        VyPURG9qSGXj0ZKNMZWNRy0ujamdbFCLSyMqF/bGqInemKrGG0HaSohED5iRkVJtbC0APhDYiZkJ
+        AAA=
     headers:
       Accept-Ranges:
       - bytes
@@ -357,13 +361,13 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '383'
+      - '401'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 05 Dec 2023 14:28:34 GMT
+      - Tue, 05 Dec 2023 03:10:54 GMT
       Expires:
-      - Tue, 05 Dec 2023 14:29:34 GMT
+      - Tue, 05 Dec 2023 03:11:54 GMT
       Last-Modified:
       - Mon, 04 Dec 2023 21:25:13 GMT
       Vary:
@@ -381,21 +385,22 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-05&series_id=DGS10
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-01&series_id=DGS10
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwVdJByKbmpaDL5ScVpxaVJZZk
-        5uehaTaEaEZWANFvaWlpCTLb2FBJR6k0L7OkWMlKKSczT0lHKb+0pKC0JL6ksiBVycpQRyktMycV
-        ylPKKs4HKylKSS2KT6pUslJCNjolsSRVSUepOL+oJD4fpETJSimxOFlJRyk5vzSvRMnKyEBHKT8t
-        rTi1RMnKQEcpJzM3s0TJytAABHSQjSpWsoqmJETALoGFoKGugZmSjlJZYk5pqpKVkomemblSrQ41
-        jTdHMd7UgsrGW6AYb2JJZeMtUYw3M6Ku8YYGqMYbUtl4Y1TjjalsvAmK8SYmVDYelLURCdOU2q5H
-        TfcmplR2PWq6p3bgGKGmHBMqJ0wjUNGHCHsTKidMIyPUlENt1yOnez3qxqsRWqKncnFphJpsjKlc
-        nhmhFpfGVM6yRqjFpRGVA8cYNdEbU9V4I10D1EQPmJGRUm1sLQAGzxSrfAgAAA==
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwUdJByKbmpaDL5ScVpxaVJZZk
+        5uehaTbUNTBU0lFCVgDRb2lpaQky2xgkXZqXWVKsZKWUk5kHUlxaUlBaEl9SWZCqZGWoo5SWmZMK
+        5SllFeeDlRSlpBbFJ1UqWaEYnZJYkqqko1ScX1QSnw9SomSllFicrKSjlJxfmleiZGVkrKOUn5ZW
+        nFqiZGWgo5STmZtZomRlaAACKK4sVrKKpiREwC6BhSA0EMoSc0pTlayUTPTMzZVqdahpvJGSjhLC
+        eDNqG2+MYrwptY03QzGe6q43RzHe1ILKYW+BYryJJZWNt0Qx3syIusYbGqAab0hl41FTjpkxlY0H
+        FUyIdG9iQmXjTVECx5TarkdN9yamVHY9arqnduAYoaYcEyonTCNQvYAUtVROmEaoJSbVXY+c7vWo
+        G69GaImeyqWxEWqyMaZyeWaEWlwaUznLGqEWl0ZUDhxj1ERvTFXjjSBtJUSiB8zISKk2thYA1Axf
+        yJkJAAA=
     headers:
       Accept-Ranges:
       - bytes
@@ -404,13 +409,13 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '388'
+      - '404'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 05 Dec 2023 14:28:35 GMT
+      - Tue, 05 Dec 2023 03:10:54 GMT
       Expires:
-      - Tue, 05 Dec 2023 14:29:35 GMT
+      - Tue, 05 Dec 2023 03:11:54 GMT
       Last-Modified:
       - Mon, 04 Dec 2023 21:25:03 GMT
       Vary:
@@ -428,21 +433,22 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-05&series_id=DGS20
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-01&series_id=DGS20
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwVdJByKbmpaDL5ScVpxaVJZZk
-        5uehaTaEaEZWANFvaWlpCTLb2FBJR6k0L7OkWMlKKSczT0lHKb+0pKC0JL6ksiBVycpQRyktMycV
-        ylPKKs4HKylKSS2KT6pUslJCNjolsSRVSUepOL+oJD4fpETJSimxOFlJRyk5vzSvRMnKyEBHKT8t
-        rTi1RMnKQEcpJzM3s0TJytAABHSQjSpWsoqmJETALoGFoKGugZmSjlJZYk5pqpKVkqmegYFSrQ41
-        jTdHMt5Ez9KQysZboBhvYURl4y1RjLc0p67xhgaoxhtT2XhjVONNqWy8CYrxFlROOYagrA1LmCZ6
-        FtQOe+R0b6JH7ZRjiJruqR04Rqgpx9yEulFrBCr6EGFvTuWUY2SEknLMqZzujZDTvR6VQwY10Ztb
-        Utl41GRjTuXyzAi1uDSncpY1Qi0uzajsemO0RE9V4410DVATPWCmFkq1sbUA6VY8HXwIAAA=
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwUdJByKbmpaDL5ScVpxaVJZZk
+        5uehaTbUNTBU0lFCVgDRb2lpaQky2xgkXZqXWVKsZKWUk5kHUlxaUlBaEl9SWZCqZGWoo5SWmZMK
+        5SllFeeDlRSlpBbFJ1UqWaEYnZJYkqqko1ScX1QSnw9SomSllFicrKSjlJxfmleiZGVkrKOUn5ZW
+        nFqiZGWgo5STmZtZomRlaAACKK4sVrKKpiREwC6BhSA0EMoSc0pTlayUTPUMjZVqdahpvJGSjhLM
+        eBM9S0sqG2+Majy1XW+GZLypnoEBlV1vjmS8iZ6lIZWNt0Ax3sKIysZbohhvaU5d4w0NUI2nctQa
+        oqUcUyq7HlQwIdK9BZVTjqEpSuBYUDvskdO9iR61U44harqnduAYoaYccxPqRq0RqF5ARK05lVOO
+        EWqJaU7ldG+EnO71qBwyqInenMqFvRFqsjGncnlmhFpcmlM5yxqhFpdmVHa9MVqip6rxRpC2EiLR
+        A2ZqoVQbWwsAzlWoT5kJAAA=
     headers:
       Accept-Ranges:
       - bytes
@@ -451,13 +457,13 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '395'
+      - '416'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 05 Dec 2023 14:28:35 GMT
+      - Tue, 05 Dec 2023 03:10:54 GMT
       Expires:
-      - Tue, 05 Dec 2023 14:29:35 GMT
+      - Tue, 05 Dec 2023 03:11:54 GMT
       Last-Modified:
       - Mon, 04 Dec 2023 21:25:10 GMT
       Vary:
@@ -475,21 +481,22 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate
+      - gzip, deflate, br
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-05&series_id=DGS30
+    uri: https://api.stlouisfed.org/fred/series/observations?api_key=MOCK_API_KEY&file_type=json&observation_start=2023-11-01&series_id=DGS30
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwVdJByKbmpaDL5ScVpxaVJZZk
-        5uehaTaEaEZWANFvaWlpCTLb2FBJR6k0L7OkWMlKKSczT0lHKb+0pKC0JL6ksiBVycpQRyktMycV
-        ylPKKs4HKylKSS2KT6pUslJCNjolsSRVSUepOL+oJD4fpETJSimxOFlJRyk5vzSvRMnKyEBHKT8t
-        rTi1RMnKQEcpJzM3s0TJytAABHSQjSpWsoqmJETALoGFoKGugZmSjlJZYk5pqpKVkomehYlSrQ41
-        jTdHMd7clMrGW6AYb0Zt11uiGG9uTl3XGxqgGm9MZeONUY2nctgbmqAYb2ZIZdeDsjYiYZpZUNl4
-        1HRvRu2wR033ppbUdb0RasoxpXLCNAIVfYiwp7rxRigpx5TKCdMIOd3rUTng0RK9AZWNR0s2VE6V
-        RqjFpakRlV2PWlyaULk0NkZL9FQ13kjXADXRA2ZioFQbWwsAvtVM/3wIAAA=
+        H4sIAAAAAAAEA6pWKkpNzCnJzE2NLy5JLCpRslIyMjAy1jU00jUwUdJByKbmpaDL5ScVpxaVJZZk
+        5uehaTbUNTBU0lFCVgDRb2lpaQky2xgkXZqXWVKsZKWUk5kHUlxaUlBaEl9SWZCqZGWoo5SWmZMK
+        5SllFeeDlRSlpBbFJ1UqWaEYnZJYkqqko1ScX1QSnw9SomSllFicrKSjlJxfmleiZGVkrKOUn5ZW
+        nFqiZGWgo5STmZtZomRlaAACKK4sVrKKpiREwC6BhSA0EMoSc0pTlayUTPQszZRqdahpvJGSjhLC
+        eAsjKhtvjGK8uTmVjTdDMd7ChMrGm6MYb25KZeMtUIw3o7brLVGMp3bYGxqgGm9M3cAxREs5VA57
+        Q1DBhEj3ZoZUdr0pSuCYWVDZeNR0b0btsEdN96aW1HW9EWrKMaVyoWAEqhcQUUt141FLTFMqJ0wj
+        5HSvR+WAR0v0BlQ2Hi3ZUDlVGqEWl6ZUrqqMUItLEyqXxsZoiZ6qxhtB2kqIRA+YiYFSbWwtAEDV
+        COKZCQAA
     headers:
       Accept-Ranges:
       - bytes
@@ -498,13 +505,13 @@ interactions:
       Content-Encoding:
       - gzip
       Content-Length:
-      - '386'
+      - '405'
       Content-Type:
       - application/json; charset=UTF-8
       Date:
-      - Tue, 05 Dec 2023 14:28:36 GMT
+      - Tue, 05 Dec 2023 03:10:55 GMT
       Expires:
-      - Tue, 05 Dec 2023 14:29:35 GMT
+      - Tue, 05 Dec 2023 03:11:55 GMT
       Last-Modified:
       - Mon, 04 Dec 2023 21:25:10 GMT
       Vary:
