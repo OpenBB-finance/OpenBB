@@ -59,7 +59,7 @@ def test_fredcpi_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_fred_yield_curve_fetcher(credentials=test_credentials):
     """Test FREDYieldCurveFetcher."""
-    params = {}
+    params = {"date": datetime.date(2023, 12, 1)}
 
     fetcher = FREDYieldCurveFetcher()
     result = fetcher.test(params, credentials)
