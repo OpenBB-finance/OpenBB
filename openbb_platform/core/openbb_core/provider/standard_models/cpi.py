@@ -84,7 +84,7 @@ class ConsumerPriceIndexQueryParams(QueryParams):
       If monthly data, this is month-over-month, etc
     - `growth_same`: Percent growth from the same period in the previous year.
       If looking at monthly data, this would be year-over-year, etc.
-    - `index_2015`: rescaled index value, such that the value in 2015 is 100.""",
+    - `index_2015`: Rescaled index value, such that the value in 2015 is 100.""",
     )
     frequency: CPI_FREQUENCY = Field(
         default="monthly",
