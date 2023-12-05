@@ -314,6 +314,6 @@ def test_intrinio_share_statistics_fetcher(credentials=test_credentials):
 def test_intrinio_financial_statements_notes_tags(credentials=test_credentials):
     params = {"symbol": "AAPL", "period": "quarter", "start_date": date(2023, 1, 1)}
 
-    fetcher = IntrinioShareStatisticsFetcher()
+    fetcher = IntrinioFinancialStatementsNotesTagsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
