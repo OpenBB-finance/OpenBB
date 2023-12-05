@@ -36,7 +36,7 @@ async def cpi(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Consumer Price Index (CPI) Data."""
+    """Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate of change (inflation)."""
     return await OBBject.from_query(Query(**locals()))
 
 
