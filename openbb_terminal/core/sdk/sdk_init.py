@@ -91,12 +91,12 @@ from openbb_terminal.cryptocurrency import (
 
 # Cryptocurrency Defi
 from openbb_terminal.cryptocurrency.defi import (
-    coindix_model as crypto_defi_coindix_model,
-    coindix_view as crypto_defi_coindix_view,
     cryptosaurio_model as crypto_defi_cryptosaurio_model,
     cryptosaurio_view as crypto_defi_cryptosaurio_view,
     llama_model as crypto_defi_llama_model,
     llama_view as crypto_defi_llama_view,
+    nanoly_model as crypto_defi_nanoly_model,
+    nanoly_view as crypto_defi_nanoly_view,
     smartstake_model as crypto_defi_smartstake_model,
     smartstake_view as crypto_defi_smartstake_view,
     substack_model as crypto_defi_substack_model,

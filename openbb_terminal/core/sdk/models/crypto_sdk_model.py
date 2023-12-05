@@ -291,8 +291,8 @@ class CryptoDeFi(Category):
         self.stvl_chart = lib.crypto_defi_llama_view.display_defi_tvl
         self.validators = lib.crypto_defi_terramoney_fcd_model.get_validators
         self.validators_chart = lib.crypto_defi_terramoney_fcd_view.display_validators
-        self.vaults = lib.crypto_defi_coindix_model.get_defi_vaults
-        self.vaults_chart = lib.crypto_defi_coindix_view.display_defi_vaults
+        self.vaults = lib.crypto_defi_nanoly_model.get_defi_vaults
+        self.vaults_chart = lib.crypto_defi_nanoly_view.display_defi_vaults
 
 
 class CryptoDiscovery(Category):
