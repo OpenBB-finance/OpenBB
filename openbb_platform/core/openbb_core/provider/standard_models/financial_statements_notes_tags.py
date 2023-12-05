@@ -1,4 +1,4 @@
-"""Financial Attributes Standard Model."""
+"""Financial Statements Notes Tags Standard Model."""
 
 from datetime import date as dateType
 from typing import Literal, Optional
@@ -13,19 +13,12 @@ from openbb_core.provider.utils.descriptions import (
 )
 
 
-class FinancialAttributesQueryParams(QueryParams):
-    """Financial Attributes Query."""
+class FinancialStatementsNotesTagsQueryParams(QueryParams):
+    """Financial Statements Notes Tags Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol"))
-    tag: str = Field(description=QUERY_DESCRIPTIONS.get("tag"))
     period: Optional[Literal["annual", "quarter"]] = Field(
         default="annual", description=QUERY_DESCRIPTIONS.get("period")
-    )
-    limit: Optional[int] = Field(
-        default=1000, description=QUERY_DESCRIPTIONS.get("limit")
-    )
-    type: Optional[str] = Field(
-        default=None, description="Filter by type, when applicable."
     )
     start_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
@@ -33,13 +26,16 @@ class FinancialAttributesQueryParams(QueryParams):
     end_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("end_date")
     )
-    sort: Optional[Literal["asc", "desc"]] = Field(
-        default="desc", description="Sort order."
+
+
+class FinancialStatementsNotesTagsData(Data):
+    """Financial Statements Notes Tags Data."""
+
+    period_ending: Optional[dateType] = Field(
+        default=None, description="The date of the period ending the report."
     )
-
-
-class FinancialAttributesData(Data):
-    """Financial Attributes Data."""
-
-    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
-    value: Optional[float] = Field(default=None, description="The value of the data.")
+    filing_date: dateType = Field(description="The date of the filing")
+    cik: Optional[str] = Field(default=None, description=DATA_DESCRIPTIONS.get("cik"))
+    xbrl_tag: Optional[str] = Field(
+        default=None, description="The XBRL tab for the note."
+    )

@@ -12,6 +12,9 @@ from openbb_intrinio.models.currency_pairs import IntrinioCurrencyPairsFetcher
 from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
 from openbb_intrinio.models.equity_info import IntrinioEquityInfoFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
+from openbb_intrinio.models.financial_statements_notes_tags import (
+    IntrinioFinancialStatementsNotesTagsFetcher,
+)
 from openbb_intrinio.models.fred_series import IntrinioFredSeriesFetcher
 from openbb_intrinio.models.historical_attributes import (
     IntrinioHistoricalAttributesFetcher,
@@ -301,6 +304,15 @@ def test_intrinio_key_metrics_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_intrinio_share_statistics_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
+
+    fetcher = IntrinioShareStatisticsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_financial_statements_notes_tags(credentials=test_credentials):
+    params = {"symbol": "AAPL", "period": "quarter", "start_date": date(2023, 1, 1)}
 
     fetcher = IntrinioShareStatisticsFetcher()
     result = fetcher.test(params, credentials)
