@@ -959,6 +959,7 @@ def test_equity_fundamental_latest_attributes(params, obb):
     [
         ({"query": "AAPL", "is_symbol": True, "provider": "cboe"}),
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
+        ({"query": "gold", "provider": "intrinio", "active": True, "limit": 100}),
     ],
 )
 @pytest.mark.integration
