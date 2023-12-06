@@ -30,7 +30,8 @@ class YFinanceEtfHistoricalData(EtfHistoricalData):
         "adj_close": "adj close",
     }
 
-    adj_close: float = Field(
+    adj_close: Optional[float] = Field(
+        default=None,
         description="The adjusted closing price of the ETF.",
     )
 

@@ -117,6 +117,10 @@ class PolygonEquityHistoricalFetcher(
 
         data: List = []
 
+        # if there are more than 20 symbols, we need to increase the timeout
+        if len(query.symbol.split(",")) > 20:
+            kwargs.update({"preferences": {"request_timeout": 30}})
+
         def multiple_symbols(
             symbol: str, data: List[PolygonEquityHistoricalData]
         ) -> None:

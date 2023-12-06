@@ -6,7 +6,7 @@ from typing import List, Optional, Set, Union
 
 from pydantic import Field, field_validator
 
-from openbb_core.provider.abstract.data import Data, StrictInt
+from openbb_core.provider.abstract.data import Data, ForceInt
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
@@ -20,6 +20,7 @@ class CompanyOverviewQueryParams(QueryParams):
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -36,10 +37,10 @@ class CompanyOverviewData(Data):
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     price: Optional[float] = Field(default=None, description="Price of the company.")
     beta: Optional[float] = Field(default=None, description="Beta of the company.")
-    vol_avg: Optional[StrictInt] = Field(
+    vol_avg: Optional[ForceInt] = Field(
         default=None, description="Volume average of the company."
     )
-    mkt_cap: Optional[StrictInt] = Field(
+    mkt_cap: Optional[ForceInt] = Field(
         default=None, description="Market capitalization of the company."
     )
     last_div: Optional[float] = Field(
@@ -55,7 +56,9 @@ class CompanyOverviewData(Data):
     currency: Optional[str] = Field(
         default=None, description="Currency of the company."
     )
-    cik: Optional[str] = Field(default=None, description="CIK of the company.")
+    cik: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("cik", "")
+    )
     isin: Optional[str] = Field(default=None, description="ISIN of the company.")
     cusip: Optional[str] = Field(default=None, description="CUSIP of the company.")
     exchange: Optional[str] = Field(
@@ -99,6 +102,7 @@ class CompanyOverviewData(Data):
     is_fund: bool = Field(description="If the company is a fund.")
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

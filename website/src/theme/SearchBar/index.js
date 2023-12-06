@@ -1,27 +1,26 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
 import { DocSearchButton, useDocSearchKeyboardEvents } from "@docsearch/react";
+import BrowserOnly from "@docusaurus/BrowserOnly";
 import Head from "@docusaurus/Head";
 import Link from "@docusaurus/Link";
+import Translate from "@docusaurus/Translate";
 import { useHistory } from "@docusaurus/router";
 import { isRegexpStringMatch } from "@docusaurus/theme-common";
-import { useSearchPage } from "@docusaurus/theme-common/internal";
 import {
   useAlgoliaContextualFacetFilters,
   useSearchResultUrlProcessor,
 } from "@docusaurus/theme-search-algolia/client";
-import Translate from "@docusaurus/Translate";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import { createPortal } from "react-dom";
 import translations from "@theme/SearchTranslations";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useIFrameContext } from "../Root";
 let DocSearchModal = null;
 function Hit({ hit, children }) {
   return <Link to={hit.url}>{children}</Link>;
 }
 function ResultsFooter({ state, onClose }) {
-  const { generateSearchPageLink } = useSearchPage();
   return (
-    <Link to={generateSearchPageLink(state.query)} onClick={onClose}>
+    <Link to={`/search?q=${state.query}`} onClick={onClose}>
       <Translate
         id="theme.SearchBar.seeAll"
         values={{ count: state.context.nbHits }}
@@ -157,7 +156,8 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
         translations={translations.button}
       />
 
-      {isOpen &&
+      <BrowserOnly>
+      {() => isOpen &&
         DocSearchModal &&
         searchContainer.current &&
         createPortal(
@@ -179,6 +179,7 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
           />,
           searchContainer.current
         )}
+        </BrowserOnly>
     </>
   );
 }

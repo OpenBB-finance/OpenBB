@@ -11,7 +11,7 @@ from openbb_core.provider.standard_models.balance_sheet import (
     BalanceSheetQueryParams,
 )
 from openbb_intrinio.utils.helpers import get_data_one
-from pydantic import alias_generators
+from pydantic import Field
 
 
 class IntrinioBalanceSheetQueryParams(BalanceSheetQueryParams):
@@ -26,18 +26,74 @@ class IntrinioBalanceSheetData(BalanceSheetData):
     """Intrinio Balance Sheet Data."""
 
     __alias_dict__ = {
-        "cash_and_cash_equivalents_at_carrying_value": "cash_and_equivalents",
-        "marketable_securities_current": "short_term_investments",
-        "accounts_receivable_net_current": "note_and_lease_receivable",
-        "inventory": "inventory_net",
-        "total_non_current_assets": "total_noncurrent_assets",
-        "tax_payables": "other_taxes_payables",
-        "deferred_revenue": "current_deferred_revenue",
-        "deferred_revenue_non_current": "noncurrent_deferred_revenue",
-        "deferred_tax_liabilities_non_current": "noncurrent_deferred_and_payable_income_tax_liabilities",
-        "other_liabilities": "other_long_term_liabilities",
-        "accumulated_other_comprehensive_income_loss": "accumulated_other_comprehensive_income_loss",
+        "cash_and_cash_equivalents": "cashandequivalents",
+        "short_term_investments": "shortterminvestments",
+        "accounts_receivable": "accountsreceivable",
+        "net_inventory": "netinventory",
+        "other_current_assets": "othercurrentassets",
+        "total_current_assets": "totalcurrentassets",
+        "long_term_investments": "longterminvestments",
+        "other_noncurrent_assets": "othernoncurrentassets",
+        "total_assets": "totalassets",
+        "short_term_debt": "shorttermdebt",
+        "accounts_payable": "accountspayable",
+        "other_current_liabilities": "othercurrentliabilities",
+        "total_current_liabilities": "totalcurrentliabilities",
+        "long_term_debt": "longtermdebt",
+        "total_liabilities": "totalliabilities",
+        "common_stock": "commonequity",
+        "retained_earnings": "retainedearnings",
+        "total_equity": "totalequity",
     }
+    note_receivable: Optional[float] = Field(
+        default=None, alias="notereceivable", description="Notes and lease receivable."
+    )
+    net_ppe: Optional[float] = Field(
+        default=None, alias="netppe", description="Plant, property, and equipment, net."
+    )
+    total_noncurrent_assets: Optional[float] = Field(
+        default=None,
+        alias="totalnoncurrentassets",
+        description="Total noncurrent assets.",
+    )
+    current_deferred_revenue: Optional[float] = Field(
+        default=None,
+        alias="currentdeferredrevenue",
+        description="Current deferred revenue.",
+    )
+    other_noncurrent_liabilities: Optional[float] = Field(
+        default=None,
+        alias="othernoncurrentliabilities",
+        description="Other noncurrent operating liabilities.",
+    )
+    total_noncurrent_liabilities: Optional[float] = Field(
+        default=None,
+        alias="totalnoncurrentliabilities",
+        description="Total noncurrent liabilities.",
+    )
+    commitments_and_contingencies: Optional[float] = Field(
+        default=None,
+        alias="commitmentsandcontingencies",
+        description="Commitments and contingencies.",
+    )
+    aoci: Optional[float] = Field(
+        default=None,
+        alias="aoci",
+        description="Accumulated other comprehensive income / (loss).",
+    )
+    total_common_equity: Optional[float] = Field(
+        default=None, alias="totalcommonequity", description="Total common equity."
+    )
+    total_equity_and_noncontrolling_interests: Optional[float] = Field(
+        default=None,
+        alias="totalequityandnoncontrollinginterests",
+        description="Total equity & noncontrolling interests.",
+    )
+    total_liabilities_and_equity: Optional[float] = Field(
+        default=None,
+        alias="totalliabilitiesandequity",
+        description="Total liabilities & shareholders' equity.",
+    )
 
 
 class IntrinioBalanceSheetFetcher(
@@ -114,7 +170,7 @@ class IntrinioBalanceSheetFetcher(
             sub_dict: Dict[str, Any] = {}
 
             for sub_item in item["financials"]:
-                field_name = alias_generators.to_snake(sub_item["data_tag"]["name"])
+                field_name = sub_item["data_tag"]["tag"]
                 sub_dict[field_name] = float(sub_item["value"])
 
             sub_dict["date"] = item["date"]

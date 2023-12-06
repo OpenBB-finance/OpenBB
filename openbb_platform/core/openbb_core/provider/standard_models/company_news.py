@@ -36,6 +36,11 @@ class CompanyNewsQueryParams(QueryParams):
 class CompanyNewsData(Data):
     """Company News Data."""
 
+    symbols: str = Field(
+        min_length=1,
+        description=DATA_DESCRIPTIONS.get("symbols", "")
+        + " Here it is a separated list of symbols.",
+    )
     date: datetime = Field(
         description=DATA_DESCRIPTIONS.get("date", "")
         + " Here it is the date of the news."

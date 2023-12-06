@@ -26,25 +26,11 @@ class IncomeStatementQueryParams(QueryParams):
         default=5, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
-    # pylint: disable=inconsistent-return-statements
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            if v.isdigit() or v.isalpha():
-                return v.upper()
-            raise ValueError(f"Invalid symbol: {v}. Must be either a ticker or CIK.")
-        if isinstance(v, List):
-            symbols = []
-            for symbol in v:
-                if symbol.isdigit() or symbol.isalpha():
-                    symbols.append(symbol.upper())
-                else:
-                    raise ValueError(
-                        f"Invalid symbol: {symbol}. Must be either a ticker or CIK."
-                    )
-            return ",".join(symbols)
+        return v.split(",")[0].upper() if "," in v else v.upper()
 
 
 class IncomeStatementData(Data):
@@ -60,7 +46,10 @@ class IncomeStatementData(Data):
     period: Optional[str] = Field(
         default=None, description="Period of the income statement."
     )
-    cik: Optional[str] = Field(default=None, description="Central Index Key.")
+    cik: Optional[str] = Field(
+        default=None,
+        description=DATA_DESCRIPTIONS.get("cik", ""),
+    )
 
     revenue: Optional[StrictFloat] = Field(default=None, description="Revenue.")
     cost_of_revenue: Optional[StrictFloat] = Field(

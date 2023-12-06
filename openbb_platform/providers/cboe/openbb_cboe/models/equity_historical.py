@@ -27,9 +27,8 @@ class CboeEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     Source: https://www.cboe.com/
     """
 
-    interval: Optional[Literal["1m", "1d"]] = Field(
-        default="1d",
-        description=QUERY_DESCRIPTIONS.get("interval", ""),
+    interval: Literal["1m", "1d"] = Field(
+        default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
     )
 
 

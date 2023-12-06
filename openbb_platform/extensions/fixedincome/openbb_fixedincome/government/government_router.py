@@ -16,18 +16,18 @@ router = Router(prefix="/government")
 
 
 @router.command(model="USYieldCurve")
-def us_yield_curve(
+async def us_yield_curve(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:  # type: ignore
     """US Yield Curve. Get United States yield curve."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="EUYieldCurve")
-def eu_yield_curve(
+async def eu_yield_curve(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -53,26 +53,26 @@ def eu_yield_curve(
     have the same near-term expected return (as the nominally riskless short-term bond) because the return-seeking
     activity of risk-neutral traders removes all expected return differentials across bonds.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="TreasuryRates")
-def treasury_rates(
+async def treasury_rates(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Government Treasury Rates."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="TreasuryAuctions")
-def treasury_auctions(
+async def treasury_auctions(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Government Treasury Auctions."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))

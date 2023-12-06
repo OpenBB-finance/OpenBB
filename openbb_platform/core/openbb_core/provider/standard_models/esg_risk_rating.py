@@ -19,6 +19,7 @@ class ESGRiskRatingQueryParams(QueryParams):
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -30,7 +31,7 @@ class ESGRiskRatingData(Data):
     """ESG Risk Rating Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    cik: str = Field(description="CIK of the company.")
+    cik: str = Field(description=DATA_DESCRIPTIONS.get("cik", ""))
     company_name: str = Field(description="Company name of the company.")
     industry: str = Field(description="Industry of the company.")
     year: int = Field(description="Year of the ESG risk rating.")
@@ -40,6 +41,7 @@ class ESGRiskRatingData(Data):
     industry_rank: str = Field(description="Industry rank of the company.")
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

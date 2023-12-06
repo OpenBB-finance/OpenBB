@@ -120,10 +120,11 @@ def query_instance():
     )
 
 
-def test_execute_method_fake_credentials(query_instance, mock_registry):
+@pytest.mark.asyncio
+async def test_execute_method_fake_credentials(query_instance: Query, mock_registry):
     """Test execute method without setting credentials."""
     mock_fetch_result = MockBaseModel()
     mock_registry.fetch.return_value = mock_fetch_result
 
     with pytest.raises(Exception):
-        query_instance.execute()
+        await query_instance.execute()

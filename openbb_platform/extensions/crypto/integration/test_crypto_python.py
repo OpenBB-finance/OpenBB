@@ -85,7 +85,7 @@ def test_crypto_search(params, obb):
                 "provider": "polygon",
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
+                "end_date": "2023-06-06",
             }
         ),
         (
@@ -115,7 +115,7 @@ def test_crypto_search(params, obb):
                 "exchanges": ["POLONIEX", "GDAX"],
                 "symbol": "BTCUSD",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-01-02",
             }
         ),
     ],

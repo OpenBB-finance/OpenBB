@@ -3281,7 +3281,7 @@
   },
   "regulators.cftc.cot_search": {
     "title": "cot_search",
-    "description": "Learn about curated Commitment of Traders Reports series information\n  and how to perform a fuzzy search for specific data. Find details on the parameters,\n  data returned, and available CFTC codes.",
+    "description": "Learn about curated Commitment of Traders Reports series information\n  and how to perform a search for specific data. Find details on the parameters,\n  data returned, and available CFTC codes.",
     "keywords": [
       "Commitment of Traders Reports",
       "curated COT Reports series",
@@ -3413,9 +3413,9 @@
   },
   "regulators.sec.sic_search": {
     "title": "sic_search",
-    "description": "Learn how to perform a fuzzy search for industry titles, reporting office,\n  and SIC codes using Python. Explore the parameters, returns, and data associated\n  with the `obb.regulators.sec.sic_search` function.",
+    "description": "Learn how to perform a search for industry titles, reporting office,\n  and SIC codes using Python. Explore the parameters, returns, and data associated\n  with the `obb.regulators.sec.sic_search` function.",
     "keywords": [
-      "fuzzy search",
+      "search",
       "industry titles",
       "reporting office",
       "SIC codes",

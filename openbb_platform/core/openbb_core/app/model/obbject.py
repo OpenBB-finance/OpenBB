@@ -22,11 +22,12 @@ from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.provider_interface import ProviderInterface
+from openbb_core.app.query import Query
 from openbb_core.app.utils import basemodel_to_df
 
 if TYPE_CHECKING:
     try:
-        from polars import DataFrame as PolarsDataFrame
+        from polars import DataFrame as PolarsDataFrame  # type: ignore
     except ImportError:
         PolarsDataFrame = None
 
@@ -184,7 +185,7 @@ class OBBject(Tagged, Generic[T]):
     def to_polars(self) -> "PolarsDataFrame":
         """Convert results field to polars dataframe."""
         try:
-            from polars import from_pandas  # pylint: disable=import-outside-toplevel
+            from polars import from_pandas  # type: ignore # pylint: disable=import-outside-toplevel
         except ImportError as exc:
             raise ImportError(
                 "Please install polars: `pip install polars pyarrow`  to use this method."
@@ -271,3 +272,20 @@ class OBBject(Tagged, Generic[T]):
                 "Please compute the chart first by using the `chart=True` argument."
             )
         self.chart.fig.show()
+
+    @classmethod
+    async def from_query(cls, query: Query) -> "OBBject":
+        """Create OBBject from query.
+
+        Parameters
+        ----------
+        query : Query
+            Initialized query object.
+
+        Returns
+        -------
+        OBBject[ResultsType]
+            OBBject with results.
+        """
+
+        return cls(results=await query.execute())

@@ -16,7 +16,7 @@ router = Router(prefix="/corporate")
 
 
 @router.command(model="ICEBofA")
-def ice_bofa(
+async def ice_bofa(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -30,11 +30,11 @@ def ice_bofa(
     remaining term to final maturity as of the rebalance date, a fixed coupon schedule and a minimum amount
     outstanding of $250 million. The ICE BofA US Corporate Index is a component of the US Corporate Master Index.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="MoodyCorporateBondIndex")
-def moody(
+async def moody(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -47,11 +47,11 @@ def moody(
     These corporate bonds often are used in macroeconomics as an alternative to the federal ten-year
     Treasury Bill as an indicator of the interest rate.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="HighQualityMarketCorporateBond")
-def hqm(
+async def hqm(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -64,11 +64,11 @@ def hqm(
     These terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve
     that is the market-weighted average (MWA) quality of high quality bonds.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="SpotRate")
-def spot_rates(
+async def spot_rates(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -81,11 +81,11 @@ def spot_rates(
     Because each spot rate pertains to a single cashflow, it is the relevant interest rate
     concept for discounting a pension liability at the same maturity.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="CommercialPaper")
-def commercial_paper(
+async def commercial_paper(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -98,4 +98,4 @@ def commercial_paper(
     Many companies use CP to raise cash needed for current transactions,
     and many find it to be a lower-cost alternative to bank loans.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))

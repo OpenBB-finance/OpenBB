@@ -27,9 +27,8 @@ class FMPCompanyNewsQueryParams(CompanyNewsQueryParams):
 class FMPCompanyNewsData(CompanyNewsData):
     """FMP Company News Data."""
 
-    __alias_dict__ = {"date": "publishedDate"}
+    __alias_dict__ = {"symbols": "symbol", "date": "publishedDate"}
 
-    symbol: str = Field(description="Ticker of the fetched news.")
     image: Optional[Union[List[str], str]] = Field(
         default=None, description="URL to the image of the news source."
     )

@@ -26,7 +26,7 @@ export default function NavbarLogo() {
 
   return (
     <div className={clsx("items-center ml-2", innerWidth < 380 ? "hidden" : "flex")}>
-      <Link to={`/${type}`}>
+      <Link to={`/`}>
         {getLogo(type)}
       </Link>
     </div>

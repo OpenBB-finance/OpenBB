@@ -23,7 +23,8 @@ To publish your extension to PyPI, you'll need to have a PyPI account and a PyPI
 ### Setup
 
 Create an account and get an API token from <https://pypi.org/manage/account/token/>
-Store the token with
+
+Store the token with:
 
 ```bash
 poetry config pypi-token.pypi pypi-YYYYYYYY
@@ -31,7 +32,7 @@ poetry config pypi-token.pypi pypi-YYYYYYYY
 
 ### Release
 
-`cd` into the directory where your extension `pyproject.toml` lives and make sure that the `pyproject.toml` specifies the version tag you want to release and run.
+`cd` into the directory where your extension `pyproject.toml` lives and make sure that the `pyproject.toml` specifies the version tag you want to release and run:
 
 ```bash
 poetry build
@@ -39,7 +40,7 @@ poetry build
 
 This will create a `/dist` folder in the directory, which will contain the `.whl` and `tar.gz` files matching the version to release.
 
-If you want to test your package locally you can do it with
+If you want to test your package locally you can do it with:
 
 ```bash
 pip install dist/openbb_[FILE_NAME].whl

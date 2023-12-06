@@ -1,7 +1,10 @@
 """API integration tests for the derivatives extension."""
 
+import base64
+
 import pytest
 import requests
+from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
 # pylint: disable=too-many-lines,redefined-outer-name
@@ -9,7 +12,11 @@ from openbb_core.provider.utils.helpers import get_querystring
 
 @pytest.fixture(scope="session")
 def headers():
-    return {}
+    userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
+    userpass_bytes = userpass.encode("ascii")
+    base64_bytes = base64.b64encode(userpass_bytes)
+
+    return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 
 
 @pytest.mark.parametrize(

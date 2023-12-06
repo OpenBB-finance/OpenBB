@@ -7,7 +7,7 @@ from datetime import (
 )
 from typing import Literal, Optional
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -37,14 +37,26 @@ class USTreasuryAuctionsQueryParams(QueryParams):
         alias="pagenum",
     )
     start_date: Optional[dateType] = Field(
-        default=(datetime.now() - timedelta(days=90)).strftime("%Y-%m-%d"),
+        default=None,
         description=QUERY_DESCRIPTIONS.get("start_date", "")
         + " The default is 90 days ago.",
     )
     end_date: Optional[dateType] = Field(
-        default=datetime.now().strftime("%Y-%m-%d"),
+        default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", "") + " The default is today.",
     )
+
+    @model_validator(mode="before")
+    @classmethod
+    def validate_dates(cls, values) -> dict:
+        """Validate the query parameters."""
+        if values.get("start_date") is None:
+            values["start_date"] = (datetime.now() - timedelta(days=90)).strftime(
+                "%Y-%m-%d"
+            )
+        if values.get("end_date") is None:
+            values["end_date"] = datetime.now().strftime("%Y-%m-%d")
+        return values
 
 
 class USTreasuryAuctionsData(Data):

@@ -16,7 +16,7 @@ router = Router(prefix="/darkpool")
 
 
 @router.command(model="OTCAggregate")
-def otc(
+async def otc(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -27,4 +27,4 @@ def otc(
     ATS and non-ATS trading data for each ATS/firm
     with trade reporting obligations under FINRA rules.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))

@@ -151,7 +151,7 @@ def build_api_wrapper(
     func.__annotations__ = new_annotations_map
 
     @wraps(wrapped=func)
-    def wrapper(*args: Tuple[Any], **kwargs: Dict[str, Any]):
+    async def wrapper(*args: Tuple[Any], **kwargs: Dict[str, Any]):
         user_settings: UserSettings = UserSettings.model_validate(
             kwargs.pop(
                 "__authenticated_user_settings",
@@ -159,7 +159,7 @@ def build_api_wrapper(
             )
         )
         execute = partial(command_runner.run, path, user_settings)
-        output: OBBject = execute(*args, **kwargs)
+        output: OBBject = await execute(*args, **kwargs)
 
         output = validate_output(output)
         return output

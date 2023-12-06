@@ -31,13 +31,11 @@ class TiingoCompanyNewsData(CompanyNewsData):
     """Tiingo Company News data."""
 
     __alias_dict__ = {
+        "symbols": "tickers",
         "date": "publishedDate",
         "text": "description",
     }
 
-    symbols: str = Field(
-        description="Ticker tagged in the fetched news.", alias="tickers"
-    )
     article_id: int = Field(description="Unique ID of the news article.", alias="id")
     site: str = Field(description="Name of the news source.", alias="source")
     tags: str = Field(description="Tags associated with the news article.")

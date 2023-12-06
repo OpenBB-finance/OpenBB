@@ -2,12 +2,21 @@
 # ruff: noqa: S101
 # pylint: disable=E1101
 
-from typing import Any, Dict, Generic, Optional, TypeVar, get_args, get_origin
+from typing import (
+    Any,
+    Dict,
+    Generic,
+    Optional,
+    TypeVar,
+    get_args,
+    get_origin,
+)
 
 from pandas import DataFrame
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
+from openbb_core.provider.utils.helpers import maybe_coroutine, run_async
 
 Q = TypeVar("Q", bound=QueryParams)
 D = TypeVar("D", bound=Data)
@@ -48,7 +57,7 @@ class Fetcher(Generic[Q, R]):
         raise NotImplementedError
 
     @classmethod
-    def fetch_data(
+    async def fetch_data(
         cls,
         params: Dict[str, Any],
         credentials: Optional[Dict[str, str]] = None,
@@ -56,7 +65,9 @@ class Fetcher(Generic[Q, R]):
     ) -> R:
         """Fetch data from a provider."""
         query = cls.transform_query(params=params)
-        data = cls.extract_data(query=query, credentials=credentials, **kwargs)
+        data = await maybe_coroutine(
+            cls.extract_data, query=query, credentials=credentials, **kwargs
+        )
         return cls.transform_data(query=query, data=data, **kwargs)
 
     @classproperty
@@ -108,7 +119,9 @@ class Fetcher(Generic[Q, R]):
             If any of the tests fail.
         """
         query = cls.transform_query(params=params)
-        data = cls.extract_data(query=query, credentials=credentials, **kwargs)
+        data = run_async(
+            cls.extract_data, query=query, credentials=credentials, **kwargs
+        )
         transformed_data = cls.transform_data(query=query, data=data, **kwargs)
 
         # Class Assertions
@@ -148,15 +161,27 @@ class Fetcher(Generic[Q, R]):
 
         is_list = isinstance(transformed_data, list)
         if is_list:
+            return_type_args = cls.return_type.__args__[0]
+            return_type_is_dict = (
+                hasattr(return_type_args, "__origin__")
+                and return_type_args.__origin__ is dict
+            )
+            if return_type_is_dict:
+                return_type_fields = return_type_args.__args__[1].__args__[0].__fields__
+                return_type = return_type_args.__args__[1].__args__[0]
+            else:
+                return_type_fields = return_type_args.__fields__
+                return_type = return_type_args
+
             assert len(transformed_data) > 0  # type: ignore
             assert all(
                 field in transformed_data[0].__dict__  # type: ignore
-                for field in cls.return_type.__args__[0].__fields__
+                for field in return_type_fields
             )
             assert issubclass(type(transformed_data[0]), cls.data_type)  # type: ignore
             assert issubclass(
                 type(transformed_data[0]),  # type: ignore
-                cls.return_type.__args__[0],
+                return_type,
             )
         else:
             assert all(

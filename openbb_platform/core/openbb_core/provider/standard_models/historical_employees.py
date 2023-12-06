@@ -19,6 +19,7 @@ class HistoricalEmployeesQueryParams(QueryParams):
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -30,9 +31,7 @@ class HistoricalEmployeesData(Data):
     """Historical Employees Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    cik: int = Field(
-        description="CIK of the company to retrieve the historical employees of."
-    )
+    cik: int = Field(description=DATA_DESCRIPTIONS.get("cik", ""))
     acceptance_time: datetime = Field(
         description="Time of acceptance of the company employee."
     )
@@ -68,6 +67,7 @@ class HistoricalEmployeesData(Data):
         return datetime.strptime(v, "%Y-%m-%d")
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

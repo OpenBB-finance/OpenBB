@@ -1,3 +1,5 @@
+"""Unit tests for FMP provider modules."""
+
 from datetime import date
 
 import pytest
@@ -6,7 +8,7 @@ from openbb_fmp.models.analyst_estimates import FMPAnalystEstimatesFetcher
 from openbb_fmp.models.available_indices import FMPAvailableIndicesFetcher
 from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
 from openbb_fmp.models.balance_sheet_growth import FMPBalanceSheetGrowthFetcher
-from openbb_fmp.models.calendar_dividend import FMPDividendCalendarFetcher
+from openbb_fmp.models.calendar_dividend import FMPCalendarDividendFetcher
 from openbb_fmp.models.calendar_earnings import FMPCalendarEarningsFetcher
 from openbb_fmp.models.calendar_splits import FMPCalendarSplitsFetcher
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
@@ -18,7 +20,7 @@ from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.crypto_search import FMPCryptoSearchFetcher
 from openbb_fmp.models.currency_historical import FMPCurrencyHistoricalFetcher
 from openbb_fmp.models.currency_pairs import FMPCurrencyPairsFetcher
-from openbb_fmp.models.discovery_filings import FMPFilingsFetcher
+from openbb_fmp.models.discovery_filings import FMPDiscoveryFilingsFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
 from openbb_fmp.models.equity_historical import FMPEquityHistoricalFetcher
@@ -80,7 +82,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_fmp_company_filings_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL", "limit": 100}
+    params = {"symbol": "AAPL", "form_type": "10-K", "limit": 100}
 
     fetcher = FMPCompanyFilingsFetcher()
     result = fetcher.test(params, credentials)
@@ -450,7 +452,7 @@ def test_fmp_index_constituents_fetcher(credentials=test_credentials):
 def test_fmp_calendar_dividend_fetcher(credentials=test_credentials):
     params = {"start_date": date(2023, 11, 6), "end_date": date(2023, 11, 10)}
 
-    fetcher = FMPDividendCalendarFetcher()
+    fetcher = FMPCalendarDividendFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -573,16 +575,16 @@ def test_fmp_etf_holdings_performance_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_fmp_filings_fetcher(credentials=test_credentials):
+def test_fmp_discovery_filings_fetcher(credentials=test_credentials):
     params = {
-        "form_type": "8-K",
-        "limit": 10,
         "start_date": None,
         "end_date": None,
+        "form_type": "8-K",
+        "limit": 100,
         "is_done": None,
     }
 
-    fetcher = FMPFilingsFetcher()
+    fetcher = FMPDiscoveryFilingsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

@@ -7,9 +7,9 @@ from datetime import (
 from typing import List, Optional, Set, Union
 
 from dateutil import parser
-from pydantic import Field, StrictFloat, StrictInt, field_validator
+from pydantic import Field, StrictFloat, field_validator
 
-from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data, ForceInt
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
@@ -29,6 +29,7 @@ class MarketIndicesQueryParams(QueryParams):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -40,11 +41,19 @@ class MarketIndicesData(Data):
     """Market Indices Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    open: StrictFloat = Field(description=DATA_DESCRIPTIONS.get("open", ""))
-    high: StrictFloat = Field(description=DATA_DESCRIPTIONS.get("high", ""))
-    low: StrictFloat = Field(description=DATA_DESCRIPTIONS.get("low", ""))
-    close: StrictFloat = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: Optional[StrictInt] = Field(
+    open: Optional[StrictFloat] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("open", "")
+    )
+    high: Optional[StrictFloat] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("high", "")
+    )
+    low: Optional[StrictFloat] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("low", "")
+    )
+    close: Optional[StrictFloat] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("close", "")
+    )
+    volume: Optional[ForceInt] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )
 

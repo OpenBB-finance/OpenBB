@@ -1,0 +1,48 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/data_tags/search?api_key=MOCK_API_KEY&page_size=1000&query=ebit
+  response:
+    body:
+      string: !!binary |
+        H4sIALG6U2UAA9SYa0/bMBSG/0qUT6AxAVVB0G9liSagKxcxSDtNlZOcGrPETm2nlyD++5xek7Qd
+        mdQm7Uf7xI4f+/Vr+7zrEmGh136968TVa3Gp08Qt3rT0I50iH1SdiTglFAvNhi7joF1TCRyE1BB1
+        tSc0BKEdmFfXT4eqiWqvWoBNpCoIiST4QGXHYW7ck4M8J/SQJIyKVFyOgjjeJRRRhyBPBQPEVUSv
+        0dDz1KfQC4E6MCt3kSMZn5Vs5KFEcNqbD5ITR3UVUjWcmh4KV/84SoBWoj59jMoAJdQNhRpdUaQv
+        o1NjkCRVFNrD8YP2nbOBfE3x9FgPz2rLBpsPZAoWAHdUlwhDmu82OjOGVgF8m1VoXrxn66VJ8QLP
+        AFtqkmkxplGf07mqWrKY0UU7sHiCeX3VZrTg63oMyTSagSt1b7R1tM2uWy4yho1eP6vJFXrcNzFW
+        ossf51kv2ShXSSbSxPeDRkKKDUbx1yfgvrZGlJ7cxx2ndHlHi8UsYfepxWw0cEalPxDHhKZU6s+q
+        yl67gLMukcgmHpGjz8VqRKy95C4b5dvsov0nnonrdxcZkzHqq2zGRftmoCau3rS3zlaaibYGlQRc
+        E+Q6X6Gwl/6ppNm6wUURlmCdJyP7/sJa0uea67SL9vHBwPEJui2KsRybca27qrtsMyvOCBft6Smh
+        3kWc4m0jlnvQX1qoBUmlxkmJgBMB2jPyQpjZjnZgPh9nshP9ifPsAHRfDXX8swWwH3qSBF72dYGv
+        2EXxuJuVcW5aO+oFS3kLRTjPPJnDAKiAlJYlI9MwDHdgaR3WBx7L9l9nSjXib0b20bht0M0uai5O
+        5Ui3NEfu9GiSTzxSN4eAgxpjDDHOM9Z9xiWJJhUHE0c7zHjZDqz6pynHXmTWz3MkV4ufiYKzzE3r
+        /M9bVvoNEEL7hgJz+Oku8NSnDgpguI/7/mV0+tjOPsPLgC/BC2yrHVQTiZZ1R5m6scwOs5TA+zv0
+        Msp9oj1GPkvlXYqELukUV6Z/c5Jg/klBmR242j0Hn4S+0OpCgJxDhtN4MA27624t03F1xCuA7MzD
+        edF1yaTqIf73eLrmc3B6tpgB/YuemAB9NpZpt+kRrPS634pb7c9OEO+H8Qx+/AUAAP//AwBIw/g6
+        VhwAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 14 Nov 2023 18:21:37 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

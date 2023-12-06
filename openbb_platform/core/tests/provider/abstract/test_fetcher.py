@@ -2,6 +2,7 @@
 
 from typing import Any, Dict, List, Optional
 
+import pytest
 from openbb_core.provider.abstract.fetcher import Data, Fetcher, QueryParams
 
 # Step 1: Create a dummy subclass of Fetcher
@@ -36,12 +37,13 @@ class MockFetcher(Fetcher[MockQueryParams, List[MockData]]):
         return [MockData(**item) for item in data]
 
 
-def test_fetcher_methods():
+@pytest.mark.asyncio
+async def test_fetcher_methods():
     """Test the Fetcher abstract methods using a mock Fetcher subclass."""
     params = {"param1": "value1"}
     mock_fetcher = MockFetcher()
 
-    fetched_data = mock_fetcher.fetch_data(params=params)
+    fetched_data = await mock_fetcher.fetch_data(params=params)
     assert isinstance(fetched_data, list)
     assert isinstance(fetched_data[0], MockData)
     assert fetched_data[0].model_dump() == {"mock_key": "mock_value"}

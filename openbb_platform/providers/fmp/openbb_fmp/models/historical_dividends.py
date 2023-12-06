@@ -1,5 +1,6 @@
 """FMP Historical Dividends Model."""
 
+from datetime import date as dateType
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -8,6 +9,7 @@ from openbb_core.provider.standard_models.historical_dividends import (
     HistoricalDividendsQueryParams,
 )
 from openbb_fmp.utils.helpers import create_url, get_data_many
+from pydantic import Field, field_validator
 
 
 class FMPHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
@@ -19,6 +21,37 @@ class FMPHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
 
 class FMPHistoricalDividendsData(HistoricalDividendsData):
     """FMP Historical Dividends Data."""
+
+    label: str = Field(description="Label of the historical dividends.")
+    adj_dividend: float = Field(
+        description="Adjusted dividend of the historical dividends."
+    )
+    record_date: Optional[dateType] = Field(
+        default=None,
+        description="Record date of the historical dividends.",
+    )
+    payment_date: Optional[dateType] = Field(
+        default=None,
+        description="Payment date of the historical dividends.",
+    )
+    declaration_date: Optional[dateType] = Field(
+        default=None,
+        description="Declaration date of the historical dividends.",
+    )
+
+    @field_validator(
+        "declaration_date",
+        "record_date",
+        "payment_date",
+        mode="before",
+        check_fields=False,
+    )
+    @classmethod
+    def date_validate(cls, v: str):  # pylint: disable=E0213
+        """Validate dates."""
+        if not isinstance(v, str):
+            return v
+        return dateType.fromisoformat(v) if v else None
 
 
 class FMPHistoricalDividendsFetcher(

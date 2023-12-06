@@ -23,6 +23,7 @@ class ExecutiveCompensationQueryParams(QueryParams):
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -35,7 +36,8 @@ class ExecutiveCompensationData(Data):
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
     cik: Optional[str] = Field(
-        default=None, description="Central Index Key (CIK) of the company."
+        default=None,
+        description=DATA_DESCRIPTIONS.get("cik", ""),
     )
     filing_date: dateType = Field(description="Date of the filing.")
     accepted_date: datetime = Field(description="Date the filing was accepted.")
@@ -54,6 +56,7 @@ class ExecutiveCompensationData(Data):
     url: str = Field(description="URL of the filing data.")
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

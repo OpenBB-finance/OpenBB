@@ -16,7 +16,7 @@ router = Router(prefix="/rate")
 
 
 @router.command(model="AMERIBOR")
-def ameribor(
+async def ameribor(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -28,11 +28,11 @@ def ameribor(
     short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the
     American Financial Exchange (AFX).
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="SONIA")
-def sonia(
+async def sonia(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -44,11 +44,11 @@ def sonia(
     transactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other
     financial institutions and other institutional investors.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="IORB")
-def iorb(
+async def iorb(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -60,11 +60,11 @@ def iorb(
     domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
     United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="FEDFUNDS")
-def effr(
+async def effr(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -76,11 +76,11 @@ def effr(
     domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
     United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="PROJECTIONS")
-def effr_forecast(
+async def effr_forecast(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -93,11 +93,11 @@ def effr_forecast(
     appropriate target level for the federal funds rate at the end of the specified
     calendar year or over the longer run.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="ESTR")
-def estr(
+async def estr(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -110,11 +110,11 @@ def estr(
     the previous TARGET2 business day (the reporting date “T”) with a maturity date of T+1 which are deemed to have been
     executed at arm’s length and thus reflect market rates in an unbiased way.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="EuropeanCentralBankInterestRates")
-def ecb(
+async def ecb(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -129,11 +129,11 @@ def ecb(
     - The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem.
     - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="DiscountWindowPrimaryCreditRate")
-def dpcredit(
+async def dpcredit(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -146,4 +146,4 @@ def dpcredit(
     In the United States, the Federal Reserve System's Board of Governors set the bank rate,
     also known as the discount rate.
     """
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))

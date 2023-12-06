@@ -2,8 +2,13 @@
 
 from typing import Dict
 
-from pydantic import BaseModel, ConfigDict, alias_generators, model_validator
-from pydantic.functional_validators import BeforeValidator
+from pydantic import (
+    BaseModel,
+    BeforeValidator,
+    ConfigDict,
+    alias_generators,
+    model_validator,
+)
 from typing_extensions import Annotated
 
 
@@ -15,7 +20,7 @@ def check_int(v: int) -> int:
         raise TypeError("value must be an int") from exc
 
 
-StrictInt = Annotated[int, BeforeValidator(check_int)]
+ForceInt = Annotated[int, BeforeValidator(check_int)]
 
 
 class Data(BaseModel):
@@ -32,9 +37,9 @@ class Data(BaseModel):
 
     Key Features:
     - Dynamic field support: Can dynamically handle fields that are not pre-defined in the model,
-      allowing for great flexibility in dealing with different data shapes.
+        allowing for great flexibility in dealing with different data shapes.
     - Alias handling: Utilizes an aliasing mechanism to maintain compatibility with different naming
-      conventions across various data formats.
+        conventions across various data formats.
 
     Usage:
     The `Data` class can be instantiated with keyword arguments corresponding to the fields of the

@@ -17,20 +17,41 @@ The OpenBB Platform provides a convenient way to access raw financial data from 
 The command below provides access to the core functionalities behind the OpenBB Platform.
 
 ```bash
-pip install openbb --pre
+pip install openbb
 ```
+
+This will install the following data providers:
+
+| Extension Name | Description | Installation Command | Minimum Subscription Type Required |
+|----------------|-------------|----------------------|------------------------------------|
+| openbb-benzinga | [Benzinga](https://www.benzinga.com/apis/en-ca/) data connector | pip install openbb-benzinga | Paid |
+| openbb-biztoc | [Biztoc](https://api.biztoc.com/#biztoc-default) News data connector | pip install openbb-biztoc | Free |
+| openbb-ecb | [ECB](https://data.ecb.europa.eu/) data connector | pip install openbb-ecb | None |
+| openbb-finra | [FINRA](https://www.finra.org/finra-data) data connector | pip install openbb-finra | None / Free |
+| openbb-fmp | [FMP](https://site.financialmodelingprep.com/developer/) data connector | pip install openbb-fmp | Free |
+| openbb-fred | [FRED](https://fred.stlouisfed.org/) data connector | pip install openbb-fred | Free |
+| openbb-intrinio | [Intrinio](https://intrinio.com/pricing) data connector | pip install openbb-intrinio | Paid |
+| openbb-oecd | [OECD](https://data.oecd.org/) data connector | pip install openbb-oecd | Free |
+| openbb-polygon | [Polygon](https://polygon.io/) data connector | pip install openbb-polygon | Free |
+| openbb-sec | [SEC](https://www.sec.gov/edgar/sec-api-documentation) data connector | pip install openbb-sec | None |
+| openbb-tiingo | [Tiingo](https://www.tiingo.com/about/pricing) data connector | pip install openbb-tiingo | Free |
+| openbb-tradingeconomics | [TradingEconomics](https://tradingeconomics.com/api) data connector | pip install openbb-tradingeconomics | Paid |
+| openbb-ultima | [Ultima Insights](https://ultimainsights.ai/openbb) data connector | pip install openbb-ultima | Paid |
+
 
 To install extensions that expand the core functionalities specify the extension name or use `all` to install all.
 
 ```bash
-# Install single extension, e.g. openbb-charting
-pip install openbb[charting] --pre
+# Install a single extension, e.g. openbb-charting and yahoo finance
+pip install openbb[charting]
+pip install openbb-yfinance
+```
 
-# Install all available extensions
-pip install openbb[all] --pre
-``````
+Alternatively, you can install all extensions at once.    
+```bash
+pip install openbb[all] 
+```
 
-> The `--pre` flag is required to install the latest alpha version.
 > Note: These instruction are specific to v4. For installation instructions and documentation for v3 go to our [website](https://docs.openbb.co/sdk).
 
 ## Python
@@ -104,7 +125,7 @@ Populate this file with the following template and replace the values with your 
 The OpenBB Platform comes with a ready to use REST API built with FastAPI. Start the application using this command:
 
 ```bash
-uvicorn openbb_platform.platform.core.openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
+uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 Check `openbb-core` [README](https://pypi.org/project/openbb-core/) for additional info.

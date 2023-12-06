@@ -93,7 +93,7 @@ def test_check_reserved_param(command_validator):
 def test_check_parameters(command_validator):
     """Test check_parameters."""
 
-    def func():
+    async def func():
         pass
 
     assert command_validator.check_parameters(func) is None
@@ -105,7 +105,7 @@ def test_check_return_error(command_validator):
     """Test check_return fail."""
     with pytest.raises(TypeError):
 
-        def func():
+        async def func():
             pass
 
         command_validator.check_return(func)
@@ -114,7 +114,7 @@ def test_check_return_error(command_validator):
 def test_check_return(command_validator):
     """Test check_return."""
 
-    def valid_function() -> OBBject[Optional[List[int]]]:
+    async def valid_function() -> OBBject[Optional[List[int]]]:
         return OBBject(results=[1, 2, 3])
 
     assert command_validator.check_return(valid_function) is None
@@ -123,7 +123,7 @@ def test_check_return(command_validator):
 def test_check(command_validator):
     """Test check."""
 
-    def valid_function() -> OBBject[Optional[List[int]]]:
+    async def valid_function() -> OBBject[Optional[List[int]]]:
         return OBBject(results=[1, 2, 3])
 
     assert command_validator.check(valid_function) is None
@@ -144,7 +144,7 @@ def test_command(router):
     """Test command."""
 
     @router.command
-    def valid_function() -> OBBject[Optional[List[int]]]:
+    async def valid_function() -> OBBject[Optional[List[int]]]:
         return OBBject(results=[1, 2, 3])
 
     assert valid_function
@@ -186,7 +186,7 @@ def test_signature_inspector_init(signature_inspector):
 def test_complete_signature(signature_inspector):
     """Test complete_signature."""
 
-    def sample_function(
+    async def sample_function(
         cc: CommandContext,
         provider_choices: ProviderChoices,
         standard_params: StandardParams,
@@ -202,7 +202,7 @@ def test_complete_signature(signature_inspector):
 def test_complete_signature_error(signature_inspector):
     """Test complete_signature."""
 
-    def valid_function() -> OBBject[Optional[List[int]]]:
+    async def valid_function() -> OBBject[Optional[List[int]]]:
         return OBBject(results=[1, 2, 3])
 
     assert (
@@ -213,7 +213,7 @@ def test_complete_signature_error(signature_inspector):
 def test_validate_signature(signature_inspector):
     """Test validate_signature."""
 
-    def sample_function(  # type: ignore
+    async def sample_function(  # type: ignore
         cc: CommandContext,
         provider_choices: ProviderChoices,
         standard_params: StandardParams,
@@ -237,7 +237,7 @@ def test_validate_signature(signature_inspector):
 def test_inject_dependency(signature_inspector):
     """Test inject_dependency."""
 
-    def sample_function(  # type: ignore
+    async def sample_function(  # type: ignore
         cc: CommandContext,
         provider_choices: ProviderChoices,
         standard_params: StandardParams,
@@ -251,7 +251,7 @@ def test_inject_dependency(signature_inspector):
 def test_get_description(signature_inspector):
     """Test get_description."""
 
-    def some_function():
+    async def some_function():
         """Mock function."""
 
     assert signature_inspector.get_description(some_function) == some_function.__doc__
@@ -260,7 +260,7 @@ def test_get_description(signature_inspector):
 def test_get_description_no_doc(signature_inspector):
     """Test get_description."""
 
-    def some_function():
+    async def some_function():
         pass
 
     assert not signature_inspector.get_description(some_function)

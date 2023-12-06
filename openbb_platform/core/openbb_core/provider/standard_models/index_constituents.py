@@ -40,7 +40,7 @@ class IndexConstituentsData(Data):
         default=None, description="Date the constituent company was added to the index."
     )
     cik: int = Field(
-        description="Central Index Key of the constituent company in the index."
+        description=DATA_DESCRIPTIONS.get("cik", ""),
     )
     founded: Optional[Union[date, str]] = Field(
         default=None,
@@ -48,6 +48,7 @@ class IndexConstituentsData(Data):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

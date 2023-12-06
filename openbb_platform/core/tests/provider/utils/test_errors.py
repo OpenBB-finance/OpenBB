@@ -1,12 +1,13 @@
 """Test custom errors."""
 
 import pytest
-from openbb_core.provider.utils.errors import EmptyDataError, ProviderError
+from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.provider.utils.errors import EmptyDataError
 
 
 def function_that_raises_provider_error():
-    """Raise a ProviderError."""
-    raise ProviderError("An error occurred in the provider.")
+    """Raise a OpenBBError."""
+    raise OpenBBError("An error occurred in the provider.")
 
 
 def function_that_raises_empty_data_error():
@@ -15,8 +16,8 @@ def function_that_raises_empty_data_error():
 
 
 def test_provider_error_is_raised():
-    """Test if the ProviderError is raised."""
-    with pytest.raises(ProviderError) as exc_info:
+    """Test if the OpenBBError is raised."""
+    with pytest.raises(OpenBBError) as exc_info:
         function_that_raises_provider_error()
     assert str(exc_info.value) == "An error occurred in the provider."
 

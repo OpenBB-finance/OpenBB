@@ -130,10 +130,11 @@ def get_test_params(
                     "QueryParams"
                 ]["fields"]
             )
-            if test_params:
-                test_params["provider"] = provider
-                test_params.update(standard_params)
-                test_params_list.append(test_params)
+
+            # We add provider even if `test_params` is empty to test the provider itself
+            test_params["provider"] = provider
+            test_params.update(standard_params)
+            test_params_list.append(test_params)
 
     return test_params_list
 

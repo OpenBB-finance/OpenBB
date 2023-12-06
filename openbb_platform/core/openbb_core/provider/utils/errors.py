@@ -1,8 +1,4 @@
-""" Custom exceptions for the provider. """
-
-
-class ProviderError(Exception):
-    """Exception raised for errors in the provider."""
+"""Custom exceptions for the provider."""
 
 
 class EmptyDataError(Exception):

@@ -18,7 +18,7 @@ pip install openbb-charting
 
 ## PyWry dependency on Linux
 
-The PyWry dependency handles display of interactive charts and tables in a separate window. It is installed automatically with the OpenBB Charting extension.
+The PyWry dependency handles the display of interactive charts and tables in a separate window. It is installed automatically with the OpenBB Charting extension.
 
 When using Linux distributions, the PyWry dependency requires certain dependencies to be installed first.
 
@@ -35,7 +35,7 @@ When using Linux distributions, the PyWry dependency requires certain dependenci
 
 To use the extension, run any of the OpenBB Platform endpoints with the `chart` argument set to `True`.
 
-Here's an example how it would look like in a python interface:
+Here's an example of how it would look like in a python interface:
 
 ```python
 from openbb import obb

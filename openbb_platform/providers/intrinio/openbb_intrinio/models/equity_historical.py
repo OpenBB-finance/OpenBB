@@ -39,7 +39,7 @@ class IntrinioEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         default="UTC",
         description="Timezone of the data, in the IANA format (Continent/City).",
     )
-    source: Optional[Literal["realtime", "delayed", "nasdaq_basic"]] = Field(
+    source: Literal["realtime", "delayed", "nasdaq_basic"] = Field(
         default="realtime", description="The source of the data."
     )
     _interval_size: Literal["1m", "5m", "10m", "15m", "30m", "60m", "1h"] = PrivateAttr(

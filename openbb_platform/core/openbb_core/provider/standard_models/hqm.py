@@ -2,7 +2,7 @@
 from datetime import (
     date as dateType,
 )
-from typing import List, Literal, Optional
+from typing import Literal, Optional
 
 from pydantic import Field
 
@@ -21,8 +21,8 @@ class HighQualityMarketCorporateBondQueryParams(QueryParams):
         default=None,
         description=QUERY_DESCRIPTIONS.get("date", ""),
     )
-    yield_curve: List[Literal["spot", "par"]] = Field(
-        default=["spot"],
+    yield_curve: Literal["spot", "par"] = Field(
+        default="spot",
         description="The yield curve type.",
     )
 

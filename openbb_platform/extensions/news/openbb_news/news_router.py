@@ -16,22 +16,33 @@ router = Router(prefix="")
 
 
 @router.command(model="WorldNews")
-def world(
+async def world(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """World News. Global news data."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="CompanyNews")
-def company(
+async def company(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Company News. Get news for one or more companies."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(model="SectorNews")
+async def sector(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Sector News. Get news for one or more sectors."""
+    return await OBBject.from_query(Query(**locals()))

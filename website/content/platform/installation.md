@@ -40,7 +40,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 ## General System Requirements
 
-Most systems capable of running Python 3.8-3.11 will be compatible with the OpenBB Platform.  A modern processor (five years or less), running an up-to-date operating system, with at least 4GB of RAM, is recommended.  Maintaining the system with current patches ensures maximum compatibility.  At a minimum, Windows and macOS should be:
+Most systems capable of running Python 3.8-3.11 will be compatible with the OpenBB Platform. A modern processor (five years or less), running an up-to-date operating system, with at least 4GB of RAM, is recommended. Maintaining the system with current patches ensures maximum compatibility. At a minimum, Windows and macOS should be:
 
 - Windows 10
 - Mac OS Big Sur
@@ -49,7 +49,7 @@ Linux users should run the command line update for the package manager, prior to
 
 ## Supported Environments
 
-The OpenBB Platform is installed within a Python virtual environment.  It is compatible with versions of Python between 3.8 and 3.11, inclusively.  The method for creating the environment will be a matter of user preference, from the command line - [Conda](https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html), [venv](https://docs.python.org/3/library/venv.html),  [Docker](https://hub.docker.com/), etc. - or in a code editor and IDE - [VS Code](https://code.visualstudio.com/docs/languages/python), [PyCharm](https://www.jetbrains.com/pycharm/), [Jupyter](https://jupyter.org/).
+The OpenBB Platform is installed within a Python virtual environment. It is compatible with versions of Python between 3.8 and 3.11, inclusively. The method for creating the environment will be a matter of user preference, from the command line - [Conda](https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html), [venv](https://docs.python.org/3/library/venv.html), [Docker](https://hub.docker.com/), etc. - or in a code editor and IDE - [VS Code](https://code.visualstudio.com/docs/languages/python), [PyCharm](https://www.jetbrains.com/pycharm/), [Jupyter](https://jupyter.org/).
 
 [Docker](/platform/installation#docker) builds the environment during the installation process, skip ahead to the specific section [below](/platform/installation#docker).
 
@@ -63,51 +63,81 @@ With the container created, and activated, begin the installation process.
 
 Before installation, update the package manager so that `pip` is current, then create the environment with the desired version of Python and install the following packages:
 
-:::note
-Installing packages directly to the system Python or `base` environment is not recommended.  Create a new environment.
-:::
-
 ```console
 pip install poetry toml
 ```
+
+:::note
+Installing packages directly to the system Python or `base` environment is not recommended.  Create a new environment first (can be any name, using openbb here for example).
+
+```bash
+conda create -n openbb python=3.11
+conda activate openbb
+```
+
+:::
 
 ### PyPI
 
 Install from PyPI with:
 
 ```console
-pip install openbb --pre
+pip install openbb
 ```
 
-To install all of the extensions and providers:
+This will install the core OpenBB Platform, along with officially supported extensions and providers.
+
+To install all extensions and providers (both officially supported and community maintained ones):
 
 ```console
-pip install openbb[all] --pre
+pip install openbb[all]
 ```
-
-:::note
-While still under active development, the `pre` flag is required to install the core OpenBB Platform latest version.
-:::
 
 To install a single extension:
 
 ```console
-pip install openbb[charting] --pre
+pip install openbb[charting]
 ```
 
 ```console
-pip install openbb[ta] --pre
+pip install openbb[ta]
 ```
 
-Import the package with:
+Or import a single provider:
+
+```console
+pip install openbb-yfinance
+```
+
+From your python interpreter, import the OpenBB Platform:
 
 ```console
 from openbb import obb
 ```
 
+:::warning
+This import statement is required due to the statefulness of the obb package.  There is currently no support for imports such as
+
+```console
+from openbb.obb.equity import *
+```
+
+:::
+
+When the package is imported, any installed extensions will be discovered, imported and available for use.
+
+:::note
+Currently if you wish to have the bare-bones openbb package with no extensions or providers, you can install with:
+
+```console
+pip install openbb --no-deps
+```
+
+:::
+
 ### Docker
 
-OpenBB supplies a `.dockerfile` on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal).
+OpenBB provides a `.dockerfile` on [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal).
 
 Run the following command from the repo root to build the image:
 
@@ -161,7 +191,7 @@ To install all extensions and providers, run: `python dev_install.py -e`
 
 ## Post-Installation
 
-With a fresh installation, and upon installing or uninstalling extensions, the Python interface needs to be built.  This is done automatically, but can be manually triggered if required.  Start a Python session and then `import openbb`:
+With a fresh installation, and upon installing or uninstalling extensions, the Python interface needs to be built.  This is done automatically, but can be manually triggered if required. Start a Python session and then `import openbb`:
 
 ```console
 python
@@ -190,9 +220,23 @@ Start the REST API with:
 uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
+## Hub Synchronization
+
+Once you have installed the OpenBB Platform with the desired providers and extensions, you can synchronize with the [OpenBB Hub](my.openbb.co). The main benefit of this is that you can use your single login to access your saved credentials and preferences from any instance. To login, you can use the `login` method, either using your email and password:
+
+```python
+obb.account.login(email='my_email_here', password='my_password_here')
+```
+
+Or using your personal access token:
+
+```python
+obb.account.login(pat='my_pat_here')
+```
+
 ## Documentation
 
-The documentation and packages are kept in the `/website` folder, at the base of the repository.  Navigate there to install the dependencies and start the development server.
+The documentation and packages are kept in the `/website` folder, at the base of the repository. Navigate there to install the dependencies and start the development server.
 
 #### Node.js
 

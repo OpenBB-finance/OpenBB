@@ -16,33 +16,33 @@ router = Router(prefix="/shorts")
 
 
 @router.command(model="EquityFTD")
-def fails_to_deliver(
+async def fails_to_deliver(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Get reported Fail-to-deliver (FTD) data."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="ShortVolume")
-def short_volume(
+async def short_volume(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Get reported Fail-to-deliver (FTD) data."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="EquityShortInterest")
-def short_interest(
+async def short_interest(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Get reported Short Volume and Days to Cover data."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
