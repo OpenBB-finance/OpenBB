@@ -10,7 +10,7 @@ from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import amake_requests, get_querystring
 from pydantic import Field, field_validator
 
 
