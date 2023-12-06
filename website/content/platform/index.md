@@ -43,4 +43,4 @@ When you install the Platform (openbb), we provide a default set of extensions t
 
 ---
 
-Want to contribute? Check out our [CONTRIBUTING GUIDELINES](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/CONTRIBUTING.md).
+Want to contribute? Check out our [Development section](/platform/development).

@@ -29,25 +29,11 @@ class BalanceSheetQueryParams(QueryParams):
         default=5, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
 
-    # pylint: disable=inconsistent-return-statements
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            if v.isdigit() or v.isalpha():
-                return v.upper()
-            raise ValueError(f"Invalid symbol: {v}. Must be either a ticker or CIK.")
-        if isinstance(v, List):
-            symbols = []
-            for symbol in v:
-                if symbol.isdigit() or symbol.isalpha():
-                    symbols.append(symbol.upper())
-                else:
-                    raise ValueError(
-                        f"Invalid symbol: {symbol}. Must be either a ticker or CIK."
-                    )
-            return ",".join(symbols)
+        return v.split(",")[0].upper() if "," in v else v.upper()
 
 
 class BalanceSheetData(Data):

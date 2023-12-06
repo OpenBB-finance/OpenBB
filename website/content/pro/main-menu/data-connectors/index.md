@@ -39,11 +39,11 @@ We offer three distinct methods for importing your data into the platform.
 
 ## Single Widget
 
-This method allows users to import an API endpoint that is directly rendered into a table format. While customization is limited, it provides a quick and easy way to visualize your data. More information can be found [here](/pro/single-widget).
+This method allows users to import an API endpoint that is directly rendered into a table format. While customization is limited, it provides a quick and easy way to visualize your data. More information can be found [here](/pro/main-menu/data-connectors/single-widget).
 
 ## Integrate your own backend
 
-For those who prefer a more hands-on approach, you can create your own backend. You can either leverage OpenBB's cookie-cutter or build a language-agnostic API. More information can be found [here](/pro/integrate-your-own-backend).
+For those who prefer a more hands-on approach, you can create your own backend. You can either leverage OpenBB's cookie-cutter or build a language-agnostic API. More information can be found [here](/pro/main-menu/data-connectors/integrate-your-own-backend).
 
 ## Native Integrations
 
