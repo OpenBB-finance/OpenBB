@@ -316,11 +316,11 @@ def test_intrinio_share_statistics_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_intrinio_financial_statements_notes_tags_fetcher(credentials=test_credentials):
     params = {
-            "symbol": "AAPL",
-            "period": "quarter",
-            "start_date": date(2023, 1, 1),
-            "end_date": date(2023, 5, 31),
-        }
+        "symbol": "AAPL",
+        "period": "quarter",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 5, 31),
+    }
 
     fetcher = IntrinioFinancialStatementsNotesTagsFetcher()
     result = fetcher.test(params, credentials)
