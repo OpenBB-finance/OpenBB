@@ -42,7 +42,7 @@ This will install the following data providers:
 To install extensions that expand the core functionalities specify the extension name or use `all` to install all.
 
 ```bash
-# Install single extension, e.g. openbb-charting and yahoo finance
+# Install a single extension, e.g. openbb-charting and yahoo finance
 pip install openbb[charting]
 pip install openbb-yfinance
 ```

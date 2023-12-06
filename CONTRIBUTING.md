@@ -135,7 +135,7 @@ def get_price_targets(cls, symbol: str) -> pd.DataFrame:
     url = f"https://financialmodelingprep.com/api/v4/price-target?symbol={symbol}&apikey={current_user.credentials.API_KEY_FINANCIALMODELINGPREP}"
     response = request(url)
 
-    # Check if response is valid
+    # Check if the response is valid
     if response.status_code != 200 or "Error Message" in response.json():
         message = f"Error, Status Code: {response.status_code}."
         message = (
@@ -345,7 +345,7 @@ Now that we have the model and views, it is time to add to the controller.
    - Call the function contained in a `_view.py` file with the arguments parsed by argparse.
 
 Note that the function self.parse_known_args_and_warn() has some additional options we can add.  If the function is showing a chart, but we want the option to show raw data, we can add the `raw=True` keyword and the resulting namespace will have the `raw` attribute.
-Same with limit, we can pass limit=10 to add the `-l` flag with default=10.  Here we also specify the export, and whether it is data only, plots only or anything.  This function also adds the `source` attribute to the namespace.  In our example, this is important because we added an additional source.
+Same with limit, we can pass limit=10 to add the `-l` flag with default=10.  Here we also specify the export, and whether it is data only, plots only or anything else.  This function also adds the `source` attribute to the namespace.  In our example, this is important because we added an additional source.
 
 Our new function will be:
 
@@ -511,7 +511,7 @@ In order to add a command to the SDK, follow these steps:
 
 ### Add OpenBB Platform endpoint (V4)
 
-Refer to the documentation [here](openbb_platform\CONTRIBUTING.md).
+Refer to the documentation [here](https://docs.openbb.co/platform/development).
 
 ### Add Unit Tests
 
@@ -519,7 +519,7 @@ This is a vital part of the contribution process. We have a set of unit tests th
 
 Unit tests minimize errors in code and quickly find errors when they do arise. Integration tests are standard usage examples, which are also used to identify errors.
 
-A thorough introduction on the usage of unit tests and integration tests in OpenBBTerminal can be found on the following page respectively:
+A thorough introduction on the usage of unit tests and integration tests in OpenBBTerminal can be found on the following page:
 
 [Unit Test README](tests/README.md)
 
@@ -578,7 +578,7 @@ CLI :computer: → `_controller.py` :robot: →&nbsp;`_view.py` :art: &nbsp;&nbs
 | **File&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;**           | **Role**       | **Description**                                        |
 | :------------------------- | :------------- | :----------------------------------------------------- |
 | **_controller.py** :robot: | The router/input validator | The controller file should hold the least amount of logic possible. Its role is to be a stupid (no logic) router and redirect the command correctly while checking the input with argparser.   |
-| **_view.py** :art:         | The artist     | The view file should only output or visualise the data it gets from the `_model` file! The `_view` can limit the data coming from the `_model`, otherwise the data object should be identical in the `_view` and the `_model` files. |
+| **_view.py** :art:         | The artist     | The view file should only output or visualize the data it gets from the `_model` file! The `_view` can limit the data coming from the `_model`, otherwise the data object should be identical in the `_view` and the `_model` files. |
 | **_model.py** 🧠           |The brain       | The model file is where everything fun happens. The data is gathered (external APIs), processed and returned here.                                                                |
 | **sdk.py** 🏭              |The SDK Factory | The SDK file is where the callable functions are created for the SDK. There is only one SDK file in the openbb_terminal folder.                                                                                |
 
