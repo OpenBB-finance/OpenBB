@@ -40,3 +40,15 @@ def test_econometrics_granger():
 @pytest.mark.integration
 def test_econometrics_unitroot():
     ...
+
+
+@pytest.mark.skip(reason="econometrics is a python only extensions so far")
+@pytest.mark.integration
+def test_econometrics_variance_inflation_factor():
+    ...
+
+
+@pytest.mark.skip(reason="econometrics is a python only extensions so far")
+@pytest.mark.integration
+def test_econometrics_garch():
+    ...
