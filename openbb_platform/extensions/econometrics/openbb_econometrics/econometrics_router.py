@@ -21,6 +21,7 @@ from openbb_core.app.utils import (
     get_target_column,
     get_target_columns,
     df_to_basemodel,
+    list_to_basemodel,
 )
 from openbb_core.provider.abstract.data import Data
 from pydantic import PositiveInt
@@ -578,4 +579,84 @@ def variance_inflation_factor(
         index=df.columns[1:],
     )
     results = {"results": df_to_basemodel(vif_values)}
+    return OBBject(results=results)
+
+
+@router.command(methods=["POST"], include_in_schema=False)
+def garch(
+    data: List[Data],
+    y_column: str,
+    p: int = 1,
+    o: int = 0,
+    q: int = 1,
+    mean: str = "constant",
+    horizon: int = 100,
+) -> OBBject[GARCModel]:
+    r"""Calculates volatility forecasts based on GARCH.
+
+    GARCH (Generalized autoregressive conditional heteroskedasticity) is stochastic model for time series,
+    which is for instance used to model volatility clusters, stock return and inflation. It is a
+    generalisation of the ARCH models.
+
+    $ GARCH(p, q)  = (1 - \alpha - \beta) \sigma_l + \sum_{i=1}^q \alpha u_{t-i}^2 + \sum_{i=1}^p \beta \sigma_{t-i}^2
+    $ [1]
+
+    The GARCH-model assumes that the variance estimate consists of 3 components:
+    - $ \sigma_l $; the long term component, which is unrelated to the current market conditions
+    - $ u_t $; the innovation/discovery through current market price changes
+    - $ \sigma_t $; the last estimate
+
+    GARCH can be understood as a model, which allows to optimize these 3 variance components to the time series.
+    This is done assigning weights to variance components: $ (1 - \alpha - \beta) $ for $ \sigma_l $, $ \alpha $ for
+    $ u_t $ and $ \beta $ for $ \sigma_t $. [2]
+
+    The weights can be estimated by iterating over different values of $ (1 - \alpha - \beta) \sigma_l $ which we
+    will call $ \omega $, $ \alpha $ and $ \beta $, while maximizing: $ \sum_{i} -ln(v_i) - (u_i ^ 2) / v_i $.
+    With the constraints:
+    - $ \alpha > 0 $
+    - $ \beta > 0 $
+    - $ \alpha + \beta < 1 $
+    Note that there is no restriction on $ \omega $.
+
+    Another method used for estimation is "variance targeting", where one first sets $ \omega $
+    equal to the variance of the time series. This method nearly as effective as the previously mentioned and
+    is less computationally effective.
+
+    One can measure the fit of the time series to the GARCH method by using the Ljung-Box statistic. [3]
+
+    See the sources below for reference and for greater detail.
+
+    Sources:
+    [1] Generalized Autoregressive Conditional Heteroskedasticity, by Tim Bollerslev
+    [2] Finance Compact Plus Band 1, by Yvonne Seler Zimmerman and Heinz Zimmerman; ISBN: 978-3-907291-31-1
+    [3] Options, Futures & other Derivates, by John C. Hull; ISBN: 0-13-022444-8
+
+    Parameters
+    ----------
+    data: List[Data]
+        The time series (often returns) to estimate volatility from. Note that the input should be a
+    p: int
+        Lag order of the symmetric innovation
+    o: int
+        Lag order of the asymmetric innovation
+    q: int
+        Lag order of lagged volatility or equivalent
+    mean: str
+        The name of the mean model
+    horizon: int
+        The horizon of the forecast
+    """
+    # Convert to pandas dataframe
+    df = basemodel_to_df(data)
+    y = get_target_column(df, target=y_column).dropna()
+
+    model = arch_model(y, vol="GARCH", p=p, o=o, q=q, mean=mean)
+    model_fit = model.fit(disp="off")
+    pred = model_fit.forecast(horizon=horizon, reindex=False)
+
+    results = GARCModel(
+        prediction=df_to_basemodel(pd.Series(np.sqrt(pred.variance.values[-1, :]))),
+        forecast_model=model_fit,
+    )
+
     return OBBject(results=results)

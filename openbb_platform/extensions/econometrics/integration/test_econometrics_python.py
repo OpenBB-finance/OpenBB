@@ -402,3 +402,22 @@ def test_econometrics_variance_inflation_factor(params, data_type, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params, data_type",
+    [
+        ({"data": "", "y_column": "close"}, "equity"),
+        ({"data": "", "y_column": "close"}, "crypto"),
+    ],
+)
+@pytest.mark.integration
+def test_econometrics_garch(params, data_type, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    params["data"] = get_data(data_type)
+
+    output = obb.econometrics.garch(**params)
+    assert output
+    assert isinstance(output, OBBject)
+    assert any(output.results.model_dump().values())

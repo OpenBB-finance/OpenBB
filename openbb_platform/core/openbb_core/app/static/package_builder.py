@@ -288,6 +288,9 @@ class ImportDefinition:
         if path.startswith("/quantitative"):
             code += "\nfrom openbb_quantitative.models import "
             code += "(CAPMModel,NormalityModel,OmegaModel,SummaryModel,UnitRootModel)"
+        if path.startswith("/econometrics"):
+            code += "\nfrom openbb_econometrics.models import "
+            code += "(GARCModel)"
 
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
