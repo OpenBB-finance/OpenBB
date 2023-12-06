@@ -50,9 +50,7 @@ class GovernmentUSTreasuryPricesFetcher(
                 else params["date"]
             )
         if _date.weekday() > 4:
-            _date = (
-                _date - timedelta(days=_date.weekday() - 4)
-            )
+            _date = _date - timedelta(days=_date.weekday() - 4)
         params["date"] = _date
 
         return GovernmentUSTreasuryPricesQueryParams(**params)
