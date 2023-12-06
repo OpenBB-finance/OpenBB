@@ -9,36 +9,28 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api-v2.intrinio.com/filings/notes?api_key=MOCK_API_KEY&company=AAPL&page_size=1000&period_ended_end_date=2023-12-05&period_ended_start_date=2023-01-01&report_type=10-Q
+    uri: https://api-v2.intrinio.com/filings/notes?api_key=MOCK_API_KEY&company=AAPL&page_size=1000&period_ended_end_date=2023-05-31&period_ended_start_date=2023-01-01&report_type=10-Q
   response:
     body:
       string: !!binary |
-        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
-        Hi8AAA==
+        H4sIAADIb2UAA8xY23LiOBD9F54nVUAgk+QNA2GzENsLZKmZrS1KWI1RrAtIsoFJ5d+35QECnuV5
+        RBWUsaB1Tvfpi/xeWzLOZDqXyoKpPf7zXmO09ljbLeS8GclQfq99wS+azy1J8f4YEiUT/AuxTMlo
+        Ga1B46VMY62WzI6UMU9aiQmkAqQ1U9VV0ijOKLFAp7CzAVdJhjZ/blt7fK8lLEPDdXzdNuuNh1tc
+        1LBW2s7tfg241Kjf/IU3cSem6BwknTtruNCsN29v6q2beuNk8HKpjau1j48vZ6Qe6NfO18ElqUmy
+        AppziJYH3ONyfzT3LJdKi5JrsD8s+sCipR/Ch1aFRQV7j5mEK5Nr8AGxJG3aDi8Rv0qNctIU6KtE
+        WVHm/Ex4nOtkRQxEC87S0vfGLy5B0F63x5dcukoIZkvRdyRF1bsQAKYKeAZeiFk4i68lQF+sudoD
+        TEAXLIHJimgIMBbISKxBmjIcHY4cDgXAFYRUsh9A4xJeVxlMew94km1P9NQ1nqGSBRisSWP81CzB
+        q4lFwK+SYQATywpm91Oy4F7E7LsWG3H3i+A+AyLpMXABSMBCHHMivQjD/e4lfCkqYXCeXilOQZv+
+        JkdPh9h9/EqTrdyJHfk1x0EnDEsUwV26xKyeuNpOciGI9kctw8UgHFTU0oOF9cvBtAECKg5+xjYg
+        YEp2fkENt9ld1qxCtaCxdmDqRXYF+gjdEw2Mg/G3ceMSMo5oaNzuXW1wuF3qrX2ZaG6zVqfVuVau
+        n7FaS6v0vptr7RD74mc+HIWjxSXsDj1OMk9MEunqxdkc6Ze03+SduKtfc/sTYfpvwnP4A2hajsPY
+        LPNyyJlYtFxe4c+ONHEEKHnKBFBfn7eVKR0yOkwN3kQvy4qwyK6x7+EeBQIu4Iz3szwxPyd+YHhy
+        mA/sdjQbZuE1dthyS412hMrLKEa5NZbgFI5HhxPzIzHjTczWg37YH1aLsRvmyvh0OTGGLRnQYO+m
+        cE0SmxP+QmyucdDooXVvqAzuo2H0cEnlpKAXIK5IOFIxHqCT/c9PH3BvFlEYXU0bNxa5t2svBeGH
+        E9FkhWimoMVZrLwJxJ+9TbgJKoH4rN2n5PerdqtxvI15Zc5jhqSphvR0PMPGmfsj+ajzVrxV+uUB
+        o3tudMzYGbOrbm4sjlTaB9j9IA7HVw+TfaIlWjHY/o4HZpag5nuM5+6xly/Oj0M+avGqzE1SNm60
+        /xuhfcvIZlHRhXMj9qVOkrgO5Z4xelYHZ/Rew+x/Qcd4NsCKcTydT1gqsSklbvC+pMPgtx3T//34
+        DwAA//8DAFDeshH+FQAA
     headers:
       Connection:
       - keep-alive
@@ -47,7 +39,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 05 Dec 2023 20:40:47 GMT
+      - Wed, 06 Dec 2023 01:01:52 GMT
       Transfer-Encoding:
       - chunked
       Vary:
