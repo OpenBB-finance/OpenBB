@@ -74,7 +74,7 @@ class IntrinioEquitySearchFetcher(
         """Return the raw data from the Intrinio endpoint."""
 
         api_key = credentials.get("intrinio_api_key") if credentials else ""
-        query_str = get_querystring(query.model_dump(by_alias=True), [])
+        query_str = get_querystring(query.model_dump(by_alias=True), ["is_symbol"])
         base_url = "https://api-v2.intrinio.com/companies/search?"
         url = f"{base_url}{query_str}&api_key={api_key}"
         data = get_data_one(url, **kwargs)
