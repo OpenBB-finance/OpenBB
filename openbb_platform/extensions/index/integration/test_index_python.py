@@ -258,25 +258,3 @@ def test_index_sp500_multiples(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "symbol": "$GDP",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "limit": 100,
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_index_fred(params, obb):
-    result = obb.index.fred(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0

@@ -20,6 +20,13 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Grouping | OpenBB Terminal Pro Docs" />
 
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
+
+<TutorialVideo
+  youtubeLink="https://www.youtube.com/embed/cOH8qjOBWTI?si=I_NLm7UP4vgNBjo4"
+  videoLegend="Short introduction to grouping"
+/>
+
 The grouping mechanism is extremely powerful as it allows widgets to be grouped together through one of their parameters based on the category they belong to.
 
 For instance, for the equity category, widgets can be connected through their ticker / symbol. Examples are: AAPL to simbolize Apple, TSLA for Tesla and so on.
@@ -34,6 +41,7 @@ This means that if a user changes the ticker on any of these widgets, the remain
 
 Also note that the grouping is visible on the sidebar, immediately under the dashboard naming.
 
+A trick that you can use to group up widgets together faster is using the SHIFT while clicking on each widget, once creating a group in one of them - the grouping will replicate throughout selected widgets.
 
 ### Watchlist and grouping
 

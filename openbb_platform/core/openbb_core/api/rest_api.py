@@ -61,7 +61,7 @@ async def startup():
     banner = rf"""
 
                    ███╗
-  █████████████████╔══█████████████████╗       OpenBB Platform {system.version}
+  █████████████████╔══█████████████████╗       OpenBB Platform v{system.version}
   ███╔══════════███║  ███╔══════════███║
   █████████████████║  █████████████████║       Authentication: {auth}
   ╚═════════════███║  ███╔═════════════╝
@@ -71,7 +71,7 @@ async def startup():
      ╚═════════════╝  ╚═════════════╝
 Investment research for everyone, anywhere.
 
-       https://my.openbb.co/app/sdk
+    https://my.openbb.co/app/platform
 
 """
     logger.info(banner)

@@ -4,10 +4,10 @@
 from unittest.mock import MagicMock, patch
 
 import pytest
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.abstract.provider import Provider
 from openbb_core.provider.query_executor import QueryExecutor
-from openbb_core.provider.utils.errors import ProviderError
 from pydantic import SecretStr
 
 
@@ -34,7 +34,7 @@ def test_get_provider_success(mock_query_executor):
 
 def test_get_provider_failure(mock_query_executor):
     """Test if the method fails properly when the provider does not exist."""
-    with pytest.raises(ProviderError, match="Provider 'nonexistent' not found"):
+    with pytest.raises(OpenBBError, match="Provider 'nonexistent' not found"):
         mock_query_executor.get_provider("nonexistent")
 
 
@@ -48,7 +48,7 @@ def test_get_fetcher_success(mock_query_executor):
 def test_get_fetcher_failure(mock_query_executor):
     """Test if the method fails properly when the fetcher does not exist."""
     provider = mock_query_executor.get_provider("test_provider")
-    with pytest.raises(ProviderError, match="Fetcher not found"):
+    with pytest.raises(OpenBBError, match="Fetcher not found"):
         mock_query_executor.get_fetcher(provider, "nonexistent_fetcher")
 
 
@@ -74,7 +74,20 @@ def test_filter_credentials_missing_require(mock_query_executor):
     provider.credentials = ["test_provider_api_key"]
     credentials = {"other_api_key": SecretStr("12345")}
 
-    with pytest.raises(ProviderError, match="Missing credential"):
+    with pytest.raises(OpenBBError, match="Missing credential"):
+        mock_query_executor.filter_credentials(credentials, provider, True)
+
+
+def test_filter_credentials_empty_require(mock_query_executor):
+    """Test if the proper error is raised when a credential is missing."""
+    provider = mock_query_executor.get_provider("test_provider")
+    provider.credentials = ["test_provider_api_key"]
+    credentials = {
+        "test_provider_api_key": SecretStr(""),
+        "other_api_key": SecretStr("12345"),
+    }
+
+    with pytest.raises(OpenBBError, match="Missing credential"):
         mock_query_executor.filter_credentials(credentials, provider, True)
 
 
@@ -91,6 +104,7 @@ def test_filter_credentials_missing_dont_require(mock_query_executor):
     assert filtered_credentials == {}
 
 
+@pytest.mark.asyncio
 async def test_execute_success(mock_query_executor: QueryExecutor):
     """Test if the method can execute a query successfully."""
     mock_result = {"data": "test_data"}
@@ -98,9 +112,7 @@ async def test_execute_success(mock_query_executor: QueryExecutor):
     params = {"param1": "value1"}
     credentials = {"api_key": SecretStr("12345")}
 
-    async with patch.object(
-        Fetcher, "fetch_data", return_value=mock_result
-    ) as mock_fetch:
+    with patch.object(Fetcher, "fetch_data", return_value=mock_result) as mock_fetch:
         result = await mock_query_executor.execute(
             "test_provider", "test_fetcher", params, credentials
         )

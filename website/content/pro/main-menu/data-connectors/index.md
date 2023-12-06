@@ -24,8 +24,8 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
-  youtubeLink="https://www.youtube.com/embed/-5BDrrf4j00?si=84EuiKBgW1e-AEdB"
-  videoLegend="Short introduction to Terminal Pro Data Connectors"
+  youtubeLink="https://www.youtube.com/embed/os5U2elFj10?si=tp4E_jyD13FTDN3B"
+  videoLegend="Short introduction to Data Connectors"
 />
 
 OpenBB Terminal Pro's Data Connectors are designed to empower teams by allowing them to integrate their own private datasets. This feature enhances the platform's capabilities by providing a seamless experience alongside the data that matters most to you.
@@ -37,16 +37,16 @@ OpenBB Terminal Pro's Data Connectors are designed to empower teams by allowing 
 
 We offer three distinct methods for importing your data into the platform.
 
-## No code
+## Single Widget
 
-This method allows users to import an API endpoint that is directly rendered into a table format. While customization is limited, it provides a quick and easy way to visualize your data. More information can be found here (add link)
+This method allows users to import an API endpoint that is directly rendered into a table format. While customization is limited, it provides a quick and easy way to visualize your data. More information can be found [here](/pro/main-menu/data-connectors/single-widget).
 
-## Advanced
+## Integrate your own backend
 
-For those who prefer a more hands-on approach, you can create your own backend. You can either leverage OpenBB's cookie-cutter or build a language-agnostic API. More information can be found here (add link)
+For those who prefer a more hands-on approach, you can create your own backend. You can either leverage OpenBB's cookie-cutter or build a language-agnostic API. More information can be found [here](/pro/main-menu/data-connectors/integrate-your-own-backend).
 
-## Third-party
+## Native Integrations
 
-OpenBB has established partnerships with several companies to streamline the process of importing external data. This includes data providers that require an API key, or integration with a data warehouse or database. More information can be found here (add link)
+OpenBB has established partnerships with several companies to streamline the process of importing external data. This includes data providers that require an API key, or integration with a data warehouse or database. This is work in progress.
 
 For further assistance in creating your Backend API or adding a single widget endpoint, please contact us at support@openbb.finance

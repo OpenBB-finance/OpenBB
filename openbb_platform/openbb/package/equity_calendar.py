@@ -17,7 +17,7 @@ class ROUTER_equity_calendar(Container):
     dividend
     earnings
     ipo
-    split
+    splits
     """
 
     def __repr__(self) -> str:
@@ -74,6 +74,8 @@ class ROUTER_equity_calendar(Container):
             The date of the data. (Ex-Dividend)
         symbol : str
             Symbol representing the entity requested in the data.
+        amount : Optional[float]
+            Dividend amount, per-share.
         name : Optional[str]
             Name of the entity.
         record_date : Optional[date]
@@ -82,8 +84,6 @@ class ROUTER_equity_calendar(Container):
             The payment date of the dividend.
         declaration_date : Optional[date]
             Declaration date of the dividend.
-        amount : Optional[float]
-            Dividend amount, per-share.
         adjusted_amount : Optional[float]
             The adjusted-dividend amount. (provider: fmp)
         label : Optional[str]
@@ -373,7 +373,7 @@ class ROUTER_equity_calendar(Container):
         )
 
     @validate
-    def split(
+    def splits(
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -433,7 +433,7 @@ class ROUTER_equity_calendar(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.calendar.split()
+        >>> obb.equity.calendar.splits()
         """  # noqa: E501
 
         inputs = filter_inputs(
@@ -448,6 +448,6 @@ class ROUTER_equity_calendar(Container):
         )
 
         return self._run(
-            "/equity/calendar/split",
+            "/equity/calendar/splits",
             **inputs,
         )

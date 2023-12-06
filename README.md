@@ -11,6 +11,9 @@
 <a href="https://codespaces.new/OpenBB-finance/OpenBBTerminal">
   <img src="https://github.com/codespaces/badge.svg" height="20" />
 </a>
+<a target="_blank" href="https://colab.research.google.com/github/OpenBB-finance/OpenBBTerminal/blob/develop/examples/googleColab.ipynb">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
 
 The first financial terminal that is free and fully open source. With over 600 commands, the terminal has access to equity, options, crypto, forex, macro economy, fixed income, alternative datasets, and more.
 

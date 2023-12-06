@@ -27,9 +27,16 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Main Menu | OpenBB Terminal Pro Docs" />
 
-<img className="pro-border-gradient" width="800" alt="Main Menu" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/2b3df52f-83a8-442e-8021-85caa795b68f" />
+import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
+
+<TutorialVideo
+  youtubeLink="https://www.youtube.com/embed/BVfjZInFc60?si=ez46auhSLWz9PH1C"
+  videoLegend="Short introduction to main menu"
+/>
 
 The main menu is your gateway to the powerful features of the OpenBB Terminal Pro. It comprises four key sections:
+
+<img className="pro-border-gradient" width="800" alt="Main Menu" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/2b3df52f-83a8-442e-8021-85caa795b68f" />
 
 * **Homepage**: This is your OpenBB homepage, where you'll find the latest updates and insights from the OpenBB team. This includes announcements, roadmap, events and others.
 

@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/securities/AAPL/prices/adjustments?api_key=MOCK_API_KEY&end_date=2023-06-06&limit=100&start_date=2023-01-01
+  response:
+    body:
+      string: !!binary |
+        H4sIABJIZmUAA5RRW2vCMBT+KyPPKklr7OVN2ZDB5i7icIwRQhpjtE1Lkg6r+N934gbDvu3xfNdz
+        khNyvhZ71lgtJOPFrnW+ksY7lH+cUMG9RDmKcBQPMR2SCA3QhgtfW5TjUZalE5ImmOKYZgkZoEJ/
+        6UKaIpDR+G9morVWGtFB1mp5CyGuKbVnlntdo5yM8HnQK4uGBPfLxgmlOE3IhJC4Vxb/q+wTMAky
+        7UF0QhoyAsC42lm1A4eoq4abjl0YGNhiPZkfn0LW5bXkQWy5UfJH4A6K1cdHm3UgMLwKV0ybppQ3
+        90Zc0ooA3b0sw9DfzmuxlzZYps8Pv921016yKyZfBfdGKw3AbDbHGM+yd7qOriw9fv36Pg5Lb7mV
+        TJTcuSsFWdJF+paCAr6/4rZjpXZeG4Vyb1t5hmvkwbOGK9jftGV5/gYAAP//AwCKhFgOLwIAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 28 Nov 2023 20:05:38 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1
