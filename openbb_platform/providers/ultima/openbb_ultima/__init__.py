@@ -1,6 +1,7 @@
 """Ultima provider module."""
 from openbb_core.provider.abstract.provider import Provider
 from openbb_ultima.models.company_news import UltimaCompanyNewsFetcher
+from openbb_ultima.models.sector_news import UltimaSectorNewsFetcher
 
 ultima_provider = Provider(
     name="ultima",
@@ -9,5 +10,6 @@ ultima_provider = Provider(
     credentials=["api_key"],
     fetcher_dict={
         "CompanyNews": UltimaCompanyNewsFetcher,
+        "SectorNews": UltimaSectorNewsFetcher,
     },
 )
