@@ -61,7 +61,7 @@ async def startup():
     banner = rf"""
 
                    ███╗
-  █████████████████╔══█████████████████╗       OpenBB Platform {system.version}
+  █████████████████╔══█████████████████╗       OpenBB Platform v{system.version}
   ███╔══════════███║  ███╔══════════███║
   █████████████████║  █████████████████║       Authentication: {auth}
   ╚═════════════███║  ███╔═════════════╝
