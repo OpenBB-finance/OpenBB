@@ -2,6 +2,7 @@ import base64
 
 import pytest
 import requests
+from extensions.tests.conftest import parametrize
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
@@ -18,7 +19,7 @@ def headers():
 # pylint: disable=redefined-outer-name
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"index": "dowjones", "provider": "fmp"})],
 )
@@ -33,7 +34,7 @@ def test_index_constituents(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -148,7 +149,7 @@ def test_index_market(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -190,7 +191,7 @@ def test_index_european(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"symbol": "BUKBUS", "provider": "cboe"})],
 )
@@ -205,7 +206,7 @@ def test_index_european_constituents(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"europe": True, "provider": "cboe"}),
@@ -224,7 +225,7 @@ def test_index_available(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"query": "D", "is_symbol": True, "provider": "cboe"}),
@@ -242,7 +243,7 @@ def test_index_search(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"provider": "cboe", "region": "US"})],
 )
@@ -257,7 +258,7 @@ def test_index_snapshots(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
