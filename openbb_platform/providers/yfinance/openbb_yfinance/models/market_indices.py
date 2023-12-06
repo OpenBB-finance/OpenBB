@@ -72,7 +72,7 @@ class YFinanceMarketIndicesFetcher(
             if ticker.title() in indices["name"].values:
                 _ticker = indices[indices["name"] == ticker.title()]["symbol"].values[0]
 
-            if "^" + ticker.upper() in indices["symbol"].to_list():
+            if "^" + ticker.upper() in indices["symbol"].values:
                 _ticker = "^" + ticker.upper()
 
             if ticker.upper() in indices["symbol"].values:
