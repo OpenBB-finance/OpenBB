@@ -13,7 +13,7 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
-    async_requests,
+    amake_requests,
     get_querystring,
 )
 from pydantic import Field, PrivateAttr, model_validator
@@ -219,7 +219,7 @@ class IntrinioEquityHistoricalFetcher(
 
         url = f"{base_url}&{query_str}&api_key={api_key}"
 
-        return await async_requests([url], callback, **kwargs)
+        return await amake_requests([url], callback, **kwargs)
 
     # pylint: disable=unused-argument
     @staticmethod

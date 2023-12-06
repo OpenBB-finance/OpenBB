@@ -14,7 +14,7 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
-    async_requests,
+    amake_requests,
     get_querystring,
 )
 from pydantic import Field
@@ -174,7 +174,7 @@ class FredSeriesFetcher(
                 }
             }
 
-        results = await async_requests(urls, callback, timeout=5, **kwargs)
+        results = await amake_requests(urls, callback, timeout=5, **kwargs)
 
         metadata, data = {}, {}
         for item in results:

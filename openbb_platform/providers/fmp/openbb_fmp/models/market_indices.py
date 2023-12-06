@@ -84,7 +84,7 @@ class FMPMarketIndicesFetcher(
         return FMPMarketIndicesQueryParams.model_validate(transformed_params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: FMPMarketIndicesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

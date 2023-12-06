@@ -10,7 +10,7 @@ from openbb_core.provider.standard_models.share_statistics import (
 )
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
-    async_requests,
+    amake_requests,
 )
 from pydantic import Field
 
@@ -80,7 +80,7 @@ class IntrinioShareStatisticsFetcher(
             """Return the response."""
             return {response.url.parts[-2]: await response.json()}
 
-        for result in await async_requests(urls, callback, **kwargs):
+        for result in await amake_requests(urls, callback, **kwargs):
             data.update(result)
 
         return [data]

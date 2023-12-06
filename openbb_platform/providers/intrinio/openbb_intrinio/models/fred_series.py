@@ -13,7 +13,7 @@ from openbb_core.provider.standard_models.fred_series import (
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
-    async_requests,
+    amake_requests,
     get_querystring,
 )
 from pydantic import Field
@@ -104,7 +104,7 @@ class IntrinioFredSeriesFetcher(
 
             return all_data
 
-        return await async_requests([url], callback, **kwargs)
+        return await amake_requests([url], callback, **kwargs)
 
     @staticmethod
     def transform_data(

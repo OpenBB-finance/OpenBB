@@ -15,7 +15,7 @@ from openbb_core.provider.standard_models.options_chains import (
 )
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
-    async_requests,
+    amake_requests,
 )
 from openbb_intrinio.utils.helpers import get_data_many, get_weekday
 from pydantic import Field, field_validator
@@ -101,11 +101,11 @@ class IntrinioOptionsChainsFetcher(
             return response_data.get("chain", [])
 
         date = get_weekday(query.date)
-        results = await async_requests(await get_urls(date), callback, **kwargs)
+        results = await amake_requests(await get_urls(date), callback, **kwargs)
 
         if not results:
             urls = await get_urls(get_weekday(date - timedelta(days=1)))
-            results = await async_requests(urls, callback, **kwargs)
+            results = await amake_requests(urls, callback, **kwargs)
 
         return results
 

@@ -11,7 +11,7 @@ from openbb_core.provider.standard_models.company_news import (
 )
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
-    async_requests,
+    amake_requests,
     get_querystring,
 )
 from pydantic import Field, field_validator
@@ -87,7 +87,7 @@ class IntrinioCompanyNewsFetcher(
             for symbol in [s.strip() for s in query.symbols.split(",")]
         ]
 
-        return await async_requests(urls, callback, **kwargs)
+        return await amake_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(

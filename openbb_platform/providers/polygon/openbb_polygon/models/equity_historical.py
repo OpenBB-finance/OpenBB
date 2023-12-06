@@ -13,7 +13,7 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
-    async_requests,
+    amake_requests,
 )
 from pydantic import (
     Field,
@@ -151,7 +151,7 @@ class PolygonEquityHistoricalFetcher(
 
             return results
 
-        return await async_requests(urls, callback, **kwargs)
+        return await amake_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(

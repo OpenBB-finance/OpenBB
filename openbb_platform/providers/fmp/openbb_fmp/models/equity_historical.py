@@ -11,7 +11,7 @@ from openbb_core.provider.standard_models.equity_historical import (
 )
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
-    async_requests,
+    amake_requests,
     get_querystring,
 )
 from openbb_fmp.utils.helpers import get_interval
@@ -123,7 +123,7 @@ class FMPEquityHistoricalFetcher(
 
         urls = [get_url_params(symbol) for symbol in query.symbol.split(",")]
 
-        return await async_requests(urls, callback, **kwargs)
+        return await amake_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(

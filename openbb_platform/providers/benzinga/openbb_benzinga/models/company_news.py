@@ -10,7 +10,7 @@ from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import async_requests, get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
 from pydantic import Field, field_validator
 
 
@@ -168,7 +168,7 @@ class BenzingaCompanyNewsFetcher(
             for page in range(pages)
         ]
 
-        data = await async_requests(urls, **kwargs)
+        data = await amake_requests(urls, **kwargs)
 
         return data[: query.limit]
 

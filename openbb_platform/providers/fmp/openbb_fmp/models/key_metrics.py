@@ -16,7 +16,7 @@ from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
-    async_requests,
+    amake_requests,
 )
 from pydantic import Field
 
@@ -249,7 +249,7 @@ class FMPKeyMetricsFetcher(
             for symbol in query.symbol.split(",")
         ]
 
-        return await async_requests(urls, response_callback=response_callback, **kwargs)
+        return await amake_requests(urls, response_callback=response_callback, **kwargs)
 
     @staticmethod
     def transform_data(

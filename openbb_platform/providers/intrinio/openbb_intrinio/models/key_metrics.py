@@ -9,7 +9,7 @@ from openbb_core.provider.standard_models.key_metrics import (
 )
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
-    async_requests,
+    amake_requests,
 )
 from pydantic import Field
 
@@ -82,7 +82,7 @@ class IntrinioKeyMetricsFetcher(
             return {response.url.parts[-1]: await response.json()}
 
         data: Dict = {"symbol": query.symbol}
-        for result in await async_requests(urls, callback, **kwargs):
+        for result in await amake_requests(urls, callback, **kwargs):
             data.update(result)
 
         return data

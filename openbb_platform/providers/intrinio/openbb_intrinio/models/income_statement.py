@@ -11,7 +11,7 @@ from openbb_core.provider.standard_models.income_statement import (
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
-    async_requests,
+    amake_requests,
 )
 from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import Field
@@ -163,7 +163,7 @@ class IntrinioIncomeStatementFetcher(
             for period in fiscal_periods
         ]
 
-        return await async_requests(urls, callback, **kwargs)
+        return await amake_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(

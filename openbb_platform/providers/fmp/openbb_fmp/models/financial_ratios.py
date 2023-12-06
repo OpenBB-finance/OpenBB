@@ -11,7 +11,7 @@ from openbb_core.provider.standard_models.financial_ratios import (
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
-    async_requests,
+    amake_requests,
 )
 from pydantic import Field
 
@@ -93,7 +93,7 @@ class FMPFinancialRatiosFetcher(
             for symbol in query.symbol.split(",")
         ]
 
-        return await async_requests(urls, response_callback=response_callback, **kwargs)
+        return await amake_requests(urls, response_callback=response_callback, **kwargs)
 
     @staticmethod
     def transform_data(

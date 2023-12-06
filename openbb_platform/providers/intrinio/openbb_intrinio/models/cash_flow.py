@@ -8,7 +8,7 @@ from openbb_core.provider.standard_models.cash_flow import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
-from openbb_core.provider.utils.helpers import ClientResponse, async_requests
+from openbb_core.provider.utils.helpers import ClientResponse, amake_requests
 from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import Field
 
@@ -147,7 +147,7 @@ class IntrinioCashFlowStatementFetcher(
             for period in fiscal_periods
         ]
 
-        return await async_requests(urls, callback, **kwargs)
+        return await amake_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(

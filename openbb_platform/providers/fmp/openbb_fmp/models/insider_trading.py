@@ -8,7 +8,7 @@ from openbb_core.provider.standard_models.insider_trading import (
     InsiderTradingData,
     InsiderTradingQueryParams,
 )
-from openbb_core.provider.utils.helpers import async_requests, get_querystring
+from openbb_core.provider.utils.helpers import amake_requests, get_querystring
 from openbb_fmp.utils.definitions import TRANSACTION_TYPES, TRANSACTION_TYPES_DICT
 from pydantic import Field, model_validator
 
@@ -84,7 +84,7 @@ class FMPInsiderTradingFetcher(
             for page in range(pages)
         ]
 
-        return await async_requests(urls, raise_for_status=True, **kwargs)
+        return await amake_requests(urls, raise_for_status=True, **kwargs)
 
     @staticmethod
     def transform_data(
