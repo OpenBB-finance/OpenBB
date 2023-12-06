@@ -20,7 +20,7 @@ def headers():
 
 @parametrize(
     "params",
-    [({"start_date": "2023-01-01", "end_date": "2023-06-06"})],
+    [({"start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "fmp"})],
 )
 @pytest.mark.integration
 def test_fixedincome_government_treasury_rates(params, headers):
@@ -37,7 +37,7 @@ def test_fixedincome_government_treasury_rates(params, headers):
 
 @parametrize(
     "params",
-    [({"date": "2023-01-01", "inflation_adjusted": True})],
+    [({"date": "2023-01-01", "inflation_adjusted": True, "provider": "fred"})],
 )
 @pytest.mark.integration
 def test_fixedincome_government_us_yield_curve(params, headers):
@@ -309,6 +309,7 @@ def test_fixedincome_corporate_moody(params, headers):
                 "maturity": "30d",
                 "category": "financial",
                 "grade": "aa",
+                "provider": "fred",
             }
         )
     ],
@@ -335,6 +336,7 @@ def test_fixedincome_corporate_commercial_paper(params, headers):
                 "end_date": "2023-06-06",
                 "maturity": [10.0],
                 "category": ["spot_rate"],
+                "provider": "fred",
             }
         )
     ],
@@ -382,7 +384,16 @@ def test_fixedincome_spreads_tmc(params, headers):
 
 @parametrize(
     "params",
-    [({"start_date": "2023-01-01", "end_date": "2023-06-06", "maturity": "10y"})],
+    [
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "maturity": "10y",
+                "provider": "fred",
+            }
+        )
+    ],
 )
 @pytest.mark.integration
 def test_fixedincome_spreads_tmc_effr(params, headers):
@@ -397,7 +408,16 @@ def test_fixedincome_spreads_tmc_effr(params, headers):
 
 @parametrize(
     "params",
-    [({"start_date": "2023-01-01", "end_date": "2023-06-06", "maturity": "3m"})],
+    [
+        (
+            {
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "maturity": "3m",
+                "provider": "fred",
+            }
+        )
+    ],
 )
 @pytest.mark.integration
 def test_fixedincome_spreads_treasury_effr(params, headers):

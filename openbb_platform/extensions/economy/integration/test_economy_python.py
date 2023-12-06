@@ -78,7 +78,7 @@ def test_economy_cpi(params, obb):
 @parametrize(
     "params",
     [
-        ({}),
+        ({"provider": "fmp"}),
     ],
 )
 @pytest.mark.integration

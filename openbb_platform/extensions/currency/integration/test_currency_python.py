@@ -150,7 +150,7 @@ def test_currency_price_historical(params, obb):
 
 @parametrize(
     "params",
-    [({})],
+    [({"provider": "ecb"})],
 )
 @pytest.mark.integration
 def test_currency_reference_rates(params, obb):

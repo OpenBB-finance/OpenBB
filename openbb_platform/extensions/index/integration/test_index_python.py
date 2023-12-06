@@ -181,7 +181,7 @@ def test_index_european(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "BUKBUS"}),
+        ({"symbol": "BUKBUS", "provider": "cboe"}),
     ],
 )
 @pytest.mark.integration
