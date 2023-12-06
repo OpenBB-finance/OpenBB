@@ -30,7 +30,9 @@ class KeyExecutivesData(Data):
     pay: Optional[ForceInt] = Field(
         default=None, description="Pay of the key executive."
     )
-    currency_pay: str = Field(description="Currency of the pay.")
+    currency_pay: Optional[str] = Field(
+        default=None, description="Currency of the pay."
+    )
     gender: Optional[str] = Field(
         default=None, description="Gender of the key executive."
     )

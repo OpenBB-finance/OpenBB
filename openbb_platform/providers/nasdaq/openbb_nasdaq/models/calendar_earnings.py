@@ -33,7 +33,7 @@ class NasdaqCalendarEarningsData(CalendarEarningsData):
         "eps_previous": "lastYearEPS",
         "eps_consensus": "epsForecast",
     }
-    actual_eps: Optional[float] = Field(
+    eps_actual: Optional[float] = Field(
         default=None,
         description="The actual earnings per share (USD) announced.",
         alias="eps",
@@ -96,7 +96,7 @@ class NasdaqCalendarEarningsData(CalendarEarningsData):
         "eps_previous",
         "eps_consensus",
         "num_estimates",
-        "actual_eps",
+        "eps_actual",
         mode="before",
         check_fields=False,
     )

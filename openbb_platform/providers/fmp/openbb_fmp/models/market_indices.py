@@ -28,6 +28,9 @@ class FMPMarketIndicesQueryParams(MarketIndicesQueryParams):
     interval: Literal[
         "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
     ] = Field(default="1day", description="Data granularity.")
+    sort: Literal["asc", "desc"] = Field(
+        default="desc", description="Sort the data in ascending or descending order."
+    )
 
 
 class FMPMarketIndicesData(MarketIndicesData):
@@ -78,7 +81,7 @@ class FMPMarketIndicesFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return FMPMarketIndicesQueryParams(**transformed_params)
+        return FMPMarketIndicesQueryParams.model_validate(transformed_params)
 
     @staticmethod
     async def extract_data_async(
@@ -90,7 +93,7 @@ class FMPMarketIndicesFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        query_str = get_querystring(query.model_dump(), ["symbol", "interval"])
+        query_str = get_querystring(query.model_dump(), ["symbol", "interval", "sort"])
 
         url_params = f"{query.symbol}?{query_str}&apikey={api_key}"
         url = f"{base_url}/historical-chart/{query.interval}/{url_params}"
@@ -102,4 +105,7 @@ class FMPMarketIndicesFetcher(
         query: FMPMarketIndicesQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPMarketIndicesData]:
         """Return the transformed data."""
+        if query.sort == "asc":
+            data = sorted(data, key=lambda x: x["date"], reverse=True)
+
         return [FMPMarketIndicesData.model_validate(d) for d in data]

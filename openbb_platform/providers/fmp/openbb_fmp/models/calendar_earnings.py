@@ -37,12 +37,12 @@ class FMPCalendarEarningsData(CalendarEarningsData):
         "eps_consensus": "epsEstimated",
     }
 
-    actual_eps: Optional[float] = Field(
+    eps_actual: Optional[float] = Field(
         default=None,
         description="The actual earnings per share announced.",
         alias="eps",
     )
-    actual_revenue: Optional[float] = Field(
+    revenue_actual: Optional[float] = Field(
         default=None,
         description="The actual reported revenue.",
         alias="revenue",

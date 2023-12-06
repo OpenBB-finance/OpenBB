@@ -31,17 +31,14 @@ class FMPHistoricalEpsQueryParams(HistoricalEpsQueryParams):
 class FMPHistoricalEpsData(HistoricalEpsData):
     """FMP Historical EPS Data."""
 
-    actual_eps: Optional[float] = Field(
-        default=None,
-        description="The actual earnings per share announced.",
-        alias="eps",
-    )
+    __alias_dict__ = {"eps_actual": "eps"}
+
     revenue_estimated: Optional[float] = Field(
         default=None,
         description="Estimated consensus revenue for the reporting period.",
         alias="revenueEstimated",
     )
-    actual_revenue: Optional[float] = Field(
+    revenue_actual: Optional[float] = Field(
         default=None,
         description="The actual reported revenue.",
         alias="revenue",
