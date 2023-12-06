@@ -290,7 +290,7 @@ def write_charting_extension_integration_tests():
             test_file=test_file,
             params_list=[{"chart": "True"}],
             full_command=func.replace("_", "."),
-            test_name=f"chart_{func}",
+            test_name=f"chart_{func}",  # TODO: fix the name of the charting library
             extra=extra,
         )
 
