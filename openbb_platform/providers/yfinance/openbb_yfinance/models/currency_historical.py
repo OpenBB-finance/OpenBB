@@ -51,7 +51,9 @@ class YFinanceCurrencyHistoricalFetcher(
 
         transformed_params = params
         symbols = params["symbol"].split(",")
-        new_symbols = [f"{s.upper()}=X" if "=X" not in s.upper() else s.upper() for s in symbols]
+        new_symbols = [
+            f"{s.upper()}=X" if "=X" not in s.upper() else s.upper() for s in symbols
+        ]
         transformed_params["symbol"] = ",".join(new_symbols)
 
         now = datetime.now().date()
