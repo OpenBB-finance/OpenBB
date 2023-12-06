@@ -1,6 +1,7 @@
 """Test utils."""
 import pytest
-from integration.utils.helpers import check_docstring_examples
+
+from extensions.tests.utils.helpers import check_docstring_examples
 
 
 @pytest.mark.integration
