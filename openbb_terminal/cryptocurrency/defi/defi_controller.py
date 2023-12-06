@@ -9,11 +9,11 @@ from typing import List, Optional
 
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.defi import (
-    nanoly_model,
-    nanoly_view,
     cryptosaurio_view,
     llama_model,
     llama_view,
+    nanoly_model,
+    nanoly_view,
     smartstake_view,
     substack_view,
     terramoney_fcd_model,
