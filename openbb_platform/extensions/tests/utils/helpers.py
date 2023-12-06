@@ -85,10 +85,10 @@ def list_openbb_extensions() -> Tuple[Set[str], Set[str]]:
     core_extensions = set()
     provider_extensions = set()
 
-    for entry_point in entry_points().select(group="openbb_core_extension"):
+    for entry_point in entry_points()["openbb_core_extension"]:
         core_extensions.add(f"{entry_point.name}")
 
-    for entry_point in entry_points().select(group="openbb_provider_extension"):
+    for entry_point in entry_points()["openbb_provider_extension"]:
         provider_extensions.add(f"{entry_point.name}")
 
     return core_extensions, provider_extensions
