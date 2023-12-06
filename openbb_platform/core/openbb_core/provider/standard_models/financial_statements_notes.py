@@ -17,7 +17,7 @@ class FinancialStatementsNotesQueryParams(QueryParams):
 
     tag: str = Field(
         description="The data tag for the note."
-        + " Use `financial_statements_notes_tags()` to get a list of tags."
+        + " Use `statements_notes_tags()` to get a list of tags."
         + " For Intrinio, use the associated 'intrinio_id'."
     )
 
