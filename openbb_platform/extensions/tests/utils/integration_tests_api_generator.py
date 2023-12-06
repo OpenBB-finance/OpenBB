@@ -34,6 +34,7 @@ import pytest
 import requests
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
+from extensions.tests.conftest import parametrize
 
 
 @pytest.fixture(scope="session")
@@ -78,7 +79,7 @@ def write_test_w_template(
     """
 
     template = f"""
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [{params_str}],
 )
@@ -140,7 +141,7 @@ def write_commands_integration_tests(
                 [{k: "" for k in get_post_flat_params(hints)}]
                 if http_method == "post"
                 else get_test_params(
-                    model_name=cm_models[route],
+                    model_name=cm_models[route],  # type: ignore
                     provider_interface_map=provider_interface_map,
                 )
             )
