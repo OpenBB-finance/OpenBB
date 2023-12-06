@@ -53,7 +53,7 @@ def get_querystring(items: dict, exclude: List[str]) -> str:
     return f"{querystring}" if querystring else ""
 
 
-async def async_request(
+async def amake_request(
     url: str,
     method: Literal["GET", "POST"] = "GET",
     timeout: int = 10,
@@ -104,7 +104,7 @@ async def async_request(
             await session.close()
 
 
-async def async_requests(
+async def amake_requests(
     urls: Union[str, List[str]],
     response_callback: Optional[
         Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]]
@@ -140,7 +140,7 @@ async def async_requests(
         results = []
 
         for result in await asyncio.gather(
-            *[async_request(url, session=session, **kwargs) for url in urls],
+            *[amake_request(url, session=session, **kwargs) for url in urls],
             return_exceptions=True,
         ):
             if isinstance(result, Exception) or not result:

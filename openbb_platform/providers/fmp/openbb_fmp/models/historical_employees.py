@@ -35,7 +35,7 @@ class FMPHistoricalEmployeesFetcher(
         return FMPHistoricalEmployeesQueryParams(**params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: FMPHistoricalEmployeesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

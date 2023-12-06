@@ -51,7 +51,7 @@ class FMPEarningsCallTranscriptFetcher(
         return FMPEarningsCallTranscriptQueryParams(**params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: FMPEarningsCallTranscriptQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

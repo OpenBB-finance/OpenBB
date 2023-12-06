@@ -43,7 +43,7 @@ class FMPRevenueBusinessLineFetcher(
         return FMPRevenueBusinessLineQueryParams(**params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: FMPRevenueBusinessLineQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

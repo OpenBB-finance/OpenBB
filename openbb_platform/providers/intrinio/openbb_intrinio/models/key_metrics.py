@@ -55,7 +55,7 @@ class IntrinioKeyMetricsFetcher(
         return IntrinioKeyMetricsQueryParams(**params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: IntrinioKeyMetricsQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

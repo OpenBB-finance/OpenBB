@@ -47,9 +47,7 @@ class Fetcher(Generic[Q, R]):
         raise NotImplementedError
 
     @staticmethod
-    async def extract_data_async(
-        query: Q, credentials: Optional[Dict[str, str]]
-    ) -> Any:
+    async def aextract_data(query: Q, credentials: Optional[Dict[str, str]]) -> Any:
         """Asynchronously extract the data from the provider."""
 
     @staticmethod
@@ -65,12 +63,12 @@ class Fetcher(Generic[Q, R]):
         """Initialize the subclass."""
         super().__init_subclass__(**kwargs)
 
-        if cls.extract_data_async != Fetcher.extract_data_async:
-            cls.extract_data = cls.extract_data_async
+        if cls.aextract_data != Fetcher.aextract_data:
+            cls.extract_data = cls.aextract_data
         elif cls.extract_data == Fetcher.extract_data:
             raise NotImplementedError(
-                "Fetcher subclass must implement either extract_data or extract_data_async"
-                " method. If both are implemented, extract_data_async will be used as the"
+                "Fetcher subclass must implement either extract_data or aextract_data"
+                " method. If both are implemented, aextract_data will be used as the"
                 " default."
             )
 

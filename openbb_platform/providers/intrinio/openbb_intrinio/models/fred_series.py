@@ -66,7 +66,7 @@ class IntrinioFredSeriesFetcher(
         return IntrinioFredSeriesQueryParams(**transformed_params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: IntrinioFredSeriesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

@@ -54,7 +54,7 @@ class FMPPriceTargetFetcher(
         return FMPPriceTargetQueryParams(**params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: FMPPriceTargetQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

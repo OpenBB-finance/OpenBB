@@ -102,7 +102,7 @@ class FMPEquityValuationMultiplesFetcher(
         return FMPEquityValuationMultiplesQueryParams(**params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: FMPEquityValuationMultiplesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

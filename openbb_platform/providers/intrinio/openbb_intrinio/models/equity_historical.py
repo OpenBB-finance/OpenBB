@@ -181,7 +181,7 @@ class IntrinioEquityHistoricalFetcher(
 
     # pylint: disable=protected-access
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: IntrinioEquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

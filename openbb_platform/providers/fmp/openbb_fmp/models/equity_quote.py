@@ -108,7 +108,7 @@ class FMPEquityQuoteFetcher(
         return FMPEquityQuoteQueryParams(**params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: FMPEquityQuoteQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

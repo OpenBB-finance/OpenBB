@@ -73,7 +73,7 @@ class IntrinioOptionsChainsFetcher(
         return IntrinioOptionsChainsQueryParams(**transform_params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: IntrinioOptionsChainsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

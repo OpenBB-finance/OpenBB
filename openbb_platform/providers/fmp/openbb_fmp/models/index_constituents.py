@@ -61,7 +61,7 @@ class FMPIndexConstituentsFetcher(
         return FMPIndexConstituentsQueryParams(**params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: FMPIndexConstituentsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

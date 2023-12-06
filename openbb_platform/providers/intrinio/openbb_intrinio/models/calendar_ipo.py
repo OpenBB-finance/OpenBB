@@ -165,7 +165,7 @@ class IntrinioCalendarIpoFetcher(
         return IntrinioCalendarIpoQueryParams(**params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: IntrinioCalendarIpoQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

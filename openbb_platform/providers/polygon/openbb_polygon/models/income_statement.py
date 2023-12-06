@@ -145,7 +145,7 @@ class PolygonIncomeStatementFetcher(
         return PolygonIncomeStatementQueryParams(**params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: PolygonIncomeStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

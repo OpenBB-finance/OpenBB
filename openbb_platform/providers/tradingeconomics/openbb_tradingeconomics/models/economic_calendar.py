@@ -9,7 +9,7 @@ from openbb_core.provider.standard_models.economic_calendar import (
     EconomicCalendarData,
     EconomicCalendarQueryParams,
 )
-from openbb_core.provider.utils.helpers import ClientResponse, async_request
+from openbb_core.provider.utils.helpers import ClientResponse, amake_request
 from openbb_tradingeconomics.utils import url_generator
 from openbb_tradingeconomics.utils.countries import country_list
 from pandas import to_datetime
@@ -108,7 +108,7 @@ class TEEconomicCalendarFetcher(
         return TEEconomicCalendarQueryParams(**params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: TEEconomicCalendarQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -140,7 +140,7 @@ class TEEconomicCalendarFetcher(
                 raise RuntimeError(f"Error in TE request -> {await response.text()}")
             return await response.json()
 
-        return await async_request(url, response_callback=callback, **kwargs)
+        return await amake_request(url, response_callback=callback, **kwargs)
 
     @staticmethod
     def transform_data(

@@ -154,7 +154,7 @@ class PolygonEquityNBBOFetcher(
         return PolygonEquityNBBOQueryParams(**params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: PolygonEquityNBBOQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

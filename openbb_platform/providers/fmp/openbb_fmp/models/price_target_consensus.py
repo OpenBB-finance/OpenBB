@@ -35,7 +35,7 @@ class FMPPriceTargetConsensusFetcher(
         return FMPPriceTargetConsensusQueryParams(**params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: FMPPriceTargetConsensusQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

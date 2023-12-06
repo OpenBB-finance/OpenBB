@@ -109,7 +109,7 @@ class IntrinioBalanceSheetFetcher(
         return IntrinioBalanceSheetQueryParams(**params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: IntrinioBalanceSheetQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

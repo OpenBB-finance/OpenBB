@@ -43,7 +43,7 @@ class FMPEtfHoldingsDateFetcher(
         return FMPEtfHoldingsDateQueryParams(**params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: FMPEtfHoldingsDateQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,

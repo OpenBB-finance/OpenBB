@@ -51,7 +51,7 @@ class FMPEquityOwnershipFetcher(
         return FMPEquityOwnershipQueryParams(**params)
 
     @staticmethod
-    async def extract_data_async(
+    async def aextract_data(
         query: FMPEquityOwnershipQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
