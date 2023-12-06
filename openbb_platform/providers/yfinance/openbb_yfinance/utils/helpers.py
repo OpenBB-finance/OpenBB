@@ -10,6 +10,7 @@ from typing import Any, Literal, Optional, Union
 import pandas as pd
 import yfinance as yf
 from dateutil.relativedelta import relativedelta
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.references import MONTHS
 
 
@@ -115,24 +116,27 @@ def yf_download(
     if adjusted is False:
         kwargs = dict(auto_adjust=False, back_adjust=False)
 
-    data = yf.download(
-        tickers=symbol,
-        start=_start_date,
-        end=None,
-        interval=interval,
-        period=period,
-        prepost=prepost,
-        actions=actions,
-        progress=progress,
-        ignore_tz=ignore_tz,
-        keepna=keepna,
-        repair=repair,
-        rounding=rounding,
-        group_by=group_by,
-        **kwargs,
-    )
+    try:
+        data = yf.download(
+            tickers=symbol,
+            start=_start_date,
+            end=None,
+            interval=interval,
+            period=period,
+            prepost=prepost,
+            actions=actions,
+            progress=progress,
+            ignore_tz=ignore_tz,
+            keepna=keepna,
+            repair=repair,
+            rounding=rounding,
+            group_by=group_by,
+            **kwargs,
+        )
+    except ValueError:
+        raise EmptyDataError()
 
-    tickers = symbol.split(",") if "," in symbol else [symbol]
+    tickers = symbol.split(",")
     if len(tickers) > 1:
         _data = pd.DataFrame()
         for ticker in tickers:

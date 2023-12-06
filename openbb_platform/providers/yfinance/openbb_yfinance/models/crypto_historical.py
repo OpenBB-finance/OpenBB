@@ -73,12 +73,11 @@ class YFinanceCryptoHistoricalFetcher(
     ) -> List[Dict]:
         """Return the raw data from the Yahoo Finance endpoint."""
 
-        tickers = query.symbol.split(",") if "," in query.symbol else [query.symbol]
+        tickers = query.symbol.split(",")
         new_tickers = []
         for ticker in tickers:
             if "-" not in ticker:
-                position = len(ticker) - 3
-                new_ticker = ticker[:position] + "-" + ticker[position:]
+                new_ticker = ticker[:-3] + "-" + ticker[-3:]
             if "-" in ticker:
                 new_ticker = ticker
             new_tickers.append(new_ticker)
@@ -108,12 +107,9 @@ class YFinanceCryptoHistoricalFetcher(
                 data.set_index("date", inplace=True)
                 data.index = to_datetime(data.index)
 
-            start_date_dt = datetime.combine(query.start_date, datetime.min.time())
-            end_date_dt = datetime.combine(query.end_date, datetime.min.time())
-
             data = data[
-                (data.index >= start_date_dt + timedelta(days=days))
-                & (data.index <= end_date_dt)
+                (data.index >= to_datetime(query.start_date))
+                & (data.index <= to_datetime(query.end_date + timedelta(days=days)))
             ]
 
         data.reset_index(inplace=True)
