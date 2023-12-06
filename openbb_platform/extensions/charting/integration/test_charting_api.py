@@ -3,6 +3,7 @@ import json
 
 import pytest
 import requests
+from extensions.tests.conftest import parametrize
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
@@ -43,7 +44,7 @@ def get_equity_data():
     return data["stocks_data"]
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -74,7 +75,7 @@ def test_chart_equity_price_historical(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"symbol": "AAPL", "limit": 100, "chart": True})],
 )
@@ -97,7 +98,7 @@ def test_chart_equity_fundamental_multiples(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -132,7 +133,7 @@ def test_chart_technical_adx(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"data": "", "index": "date", "length": "30", "scalar": "110", "chart": True})],
 )
@@ -156,7 +157,7 @@ def test_chart_technical_aroon(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -191,7 +192,7 @@ def test_chart_technical_ema(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -226,7 +227,7 @@ def test_chart_technical_hma(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -262,7 +263,7 @@ def test_chart_technical_macd(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -298,7 +299,7 @@ def test_chart_technical_rsi(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -333,7 +334,7 @@ def test_chart_technical_sma(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -368,7 +369,7 @@ def test_chart_technical_wma(params, headers):
     assert list(chart.keys()) == ["content", "format"]
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (

@@ -2,6 +2,7 @@
 from datetime import time
 
 import pytest
+from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 
 # pylint: disable=too-many-lines,redefined-outer-name
@@ -17,7 +18,7 @@ def obb(pytestconfig):
         return openbb.obb
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL", "period": "annual", "limit": 12}),
@@ -77,7 +78,7 @@ def test_equity_fundamental_balance(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL", "limit": 10}),
@@ -91,7 +92,7 @@ def test_equity_fundamental_balance_growth(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"start_date": "2023-11-05", "end_date": "2023-11-10", "provider": "fmp"}),
@@ -106,7 +107,7 @@ def test_equity_calendar_dividend(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"start_date": "2023-11-05", "end_date": "2023-11-10", "provider": "fmp"}),
@@ -120,7 +121,7 @@ def test_equity_calendar_splits(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"start_date": "2023-11-09", "end_date": "2023-11-10", "provider": "fmp"}),
@@ -135,7 +136,7 @@ def test_equity_calendar_earnings(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL", "period": "annual", "limit": 12}),
@@ -195,7 +196,7 @@ def test_equity_fundamental_cash(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL", "limit": 10}),
@@ -209,7 +210,7 @@ def test_equity_fundamental_cash_growth(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL"}),
@@ -223,7 +224,7 @@ def test_equity_fundamental_management_compensation(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL"}),
@@ -237,7 +238,7 @@ def test_equity_fundamental_historical_splits(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL"}),
@@ -259,7 +260,7 @@ def test_equity_fundamental_dividends(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL"}),
@@ -273,7 +274,7 @@ def test_equity_fundamental_employee_count(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL", "period": "annual", "limit": 30}),
@@ -287,7 +288,7 @@ def test_equity_estimates_historical(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL", "period": "annual", "limit": 12}),
@@ -347,7 +348,7 @@ def test_equity_fundamental_income(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"symbol": "AAPL", "limit": 10, "period": "annual"})],
 )
@@ -359,7 +360,7 @@ def test_equity_fundamental_income_growth(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -397,7 +398,7 @@ def test_equity_ownership_insider_trading(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -425,7 +426,7 @@ def test_equity_ownership_institutional(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -456,7 +457,7 @@ def test_equity_calendar_ipo(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL", "period": "annual", "limit": 100}),
@@ -483,7 +484,7 @@ def test_equity_fundamental_metrics(params, obb):
         assert result.results is not None
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL"}),
@@ -497,7 +498,7 @@ def test_equity_fundamental_management(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL"}),
@@ -511,7 +512,7 @@ def test_equity_fundamental_overview(params, obb):
     assert result.results is not None
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL", "date": "2023-01-01", "page": 1}),
@@ -525,7 +526,7 @@ def test_equity_ownership_major_holders(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL"}),
@@ -539,7 +540,7 @@ def test_equity_estimates_price_target(params, obb):
     assert result.results is not None
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"symbol": "AAPL"})],
 )
@@ -551,7 +552,7 @@ def test_equity_estimates_consensus(params, obb):
     assert result.results is not None
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL", "period": "annual", "limit": 12}),
@@ -565,7 +566,7 @@ def test_equity_fundamental_ratios(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL", "period": "annual", "structure": "flat"}),
@@ -579,7 +580,7 @@ def test_equity_fundamental_revenue_per_geography(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL", "period": "annual", "structure": "flat"}),
@@ -593,7 +594,7 @@ def test_equity_fundamental_revenue_per_segment(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL", "form_type": "1", "limit": 100, "provider": "fmp"}),
@@ -638,7 +639,7 @@ def test_equity_fundamental_filings(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL"}),
@@ -654,7 +655,7 @@ def test_equity_ownership_share_statistics(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL", "year": 2023}),
@@ -668,7 +669,7 @@ def test_equity_fundamental_transcript(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL"}),
@@ -682,7 +683,7 @@ def test_equity_compare_peers(params, obb):
     assert result.results is not None
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -864,7 +865,7 @@ def test_equity_price_historical(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL", "provider": "fmp"}),
@@ -878,7 +879,7 @@ def test_equity_fundamental_multiples(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"query": "ebit", "limit": 100, "provider": "intrinio"}),
@@ -892,7 +893,7 @@ def test_equity_fundamental_search_attributes(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -918,7 +919,7 @@ def test_equity_fundamental_historical_attributes(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -954,7 +955,7 @@ def test_equity_fundamental_latest_attributes(params, obb):
         assert result.results is not None
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"query": "AAPL", "is_symbol": True, "provider": "cboe"}),
@@ -969,7 +970,7 @@ def test_equity_search(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -1004,7 +1005,7 @@ def test_equity_screener(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL"}),
@@ -1020,7 +1021,7 @@ def test_equity_price_quote(params, obb):
     assert result.results is not None
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL", "provider": "cboe"}),
@@ -1038,7 +1039,7 @@ def test_equity_profile(params, obb):
         assert result.results is not None
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"sort": "desc"})],
 )
@@ -1052,7 +1053,7 @@ def test_equity_discovery_gainers(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"sort": "desc"})],
 )
@@ -1066,7 +1067,7 @@ def test_equity_discovery_losers(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"sort": "desc"})],
 )
@@ -1080,7 +1081,7 @@ def test_equity_discovery_active(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"symbol": "AAPL"})],
 )
@@ -1094,7 +1095,7 @@ def test_equity_price_performance(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"sort": "desc"})],
 )
@@ -1108,7 +1109,7 @@ def test_equity_discovery_undervalued_large_caps(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"sort": "desc"})],
 )
@@ -1122,7 +1123,7 @@ def test_equity_discovery_undervalued_growth(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"sort": "desc"})],
 )
@@ -1136,7 +1137,7 @@ def test_equity_discovery_aggressive_small_caps(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"sort": "desc"})],
 )
@@ -1150,7 +1151,7 @@ def test_equity_discovery_growth_tech(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"limit": 10})],
 )
@@ -1164,7 +1165,7 @@ def test_equity_discovery_top_retail(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({})],
 )
@@ -1178,7 +1179,7 @@ def test_equity_discovery_upcoming_release_days(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -1216,7 +1217,7 @@ def test_equity_discovery_filings(params, obb):
         assert result.results is not None
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL"}),
@@ -1233,7 +1234,7 @@ def test_equity_shorts_fails_to_deliver(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"symbol": "AAPL"})],
 )
@@ -1247,7 +1248,7 @@ def test_equity_shorts_short_volume(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"symbol": "AAPL", "provider": "finra"})],
 )
@@ -1261,7 +1262,7 @@ def test_equity_shorts_short_interest(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -1286,7 +1287,7 @@ def test_equity_price_nbbo(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL"}),
@@ -1303,7 +1304,7 @@ def test_equity_darkpool_otc(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"provider": "fmp", "market": "EURONEXT"}),
@@ -1318,7 +1319,7 @@ def test_equity_market_snapshots(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL", "limit": 5, "provider": "fmp"}),
@@ -1334,7 +1335,7 @@ def test_equity_fundamental_historical_eps(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"provider": "tiingo", "symbol": "AAPL"})],
 )

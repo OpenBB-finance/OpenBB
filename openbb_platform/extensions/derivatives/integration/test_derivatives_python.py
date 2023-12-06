@@ -1,6 +1,7 @@
 """Python interface integration tests for the derivatives extension."""
 
 import pytest
+from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 
 # pylint: disable=too-many-lines,redefined-outer-name
@@ -16,7 +17,7 @@ def obb(pytestconfig):
         return openbb.obb
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL"}),
@@ -32,7 +33,7 @@ def test_derivatives_options_chains(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL"}),
@@ -48,7 +49,7 @@ def test_derivatives_options_unusual(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -83,7 +84,7 @@ def test_derivatives_futures_historical(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "VX", "date": "2023-01-25", "provider": "cboe"}),

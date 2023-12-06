@@ -3,6 +3,7 @@ import random
 from typing import Literal
 
 import pytest
+from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 from openbb_econometrics.utils import mock_multi_index_data
 
@@ -58,7 +59,7 @@ def get_data(menu: Literal["equity", "crypto"]):
     return funcs[menu]()
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         ({"data": ""}, "equity"),
@@ -77,7 +78,7 @@ def test_econometrics_correlation_matrix(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -102,7 +103,7 @@ def test_econometrics_ols_regression(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -126,7 +127,7 @@ def test_econometrics_ols_regression_summary(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -150,7 +151,7 @@ def test_econometrics_autocorrelation(params, data_type, obb):
     assert isinstance(result, OBBject)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -184,7 +185,7 @@ def test_econometrics_residual_autocorrelation(params, data_type, obb):
     assert isinstance(result, OBBject)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -215,7 +216,7 @@ def test_econometrics_cointegration(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -250,7 +251,7 @@ def test_econometrics_causality(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         ({"data": "", "column": "close", "regression": "c"}, "equity"),
@@ -271,7 +272,7 @@ def test_econometrics_unit_root(params, data_type, obb):
     assert isinstance(result, OBBject)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         {"data": "", "y_column": "income", "x_columns": ["age"]},
@@ -290,7 +291,7 @@ def test_econometrics_panel_random_effects(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         {"data": "", "y_column": "income", "x_columns": ["age"]},
@@ -309,7 +310,7 @@ def test_econometrics_panel_between(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         {"data": "", "y_column": "income", "x_columns": ["age"]},
@@ -328,7 +329,7 @@ def test_econometrics_panel_pooled(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         {"data": "", "y_column": "income", "x_columns": ["age"]},
@@ -347,7 +348,7 @@ def test_econometrics_panel_fixed(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         {"data": "", "y_column": "income", "x_columns": ["age"]},
@@ -366,7 +367,7 @@ def test_econometrics_panel_first_difference(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         {"data": "", "y_column": "income", "x_columns": ["age"]},

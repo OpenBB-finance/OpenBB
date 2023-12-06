@@ -1,6 +1,7 @@
 """Test currency extension."""
 
 import pytest
+from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 
 # pylint: disable=redefined-outer-name
@@ -17,7 +18,7 @@ def obb(pytestconfig):
         return openbb.obb
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -52,7 +53,7 @@ def test_currency_search(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -147,7 +148,7 @@ def test_currency_price_historical(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({})],
 )

@@ -3,6 +3,7 @@ import random
 from typing import Literal
 
 import pytest
+from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 
 
@@ -57,7 +58,7 @@ def get_data(menu: Literal["equity", "crypto"]):
     return funcs[menu]()
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         ({"data": "", "target": "close"}, "equity"),
@@ -74,7 +75,7 @@ def test_quantitative_normality(params, data_type, obb):
     assert isinstance(result, OBBject)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         ({"data": "", "target": "close"}, "equity"),
@@ -91,7 +92,7 @@ def test_quantitative_capm(params, data_type, obb):
     assert isinstance(result, OBBject)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -124,7 +125,7 @@ def test_quantitative_omega_ratio(params, data_type, obb):
     assert isinstance(result, OBBject)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         ({"data": "", "target": "close", "window": "5"}, "equity"),
@@ -142,7 +143,7 @@ def test_quantitative_kurtosis(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -175,7 +176,7 @@ def test_quantitative_unitroot_test(params, data_type, obb):
     assert isinstance(result, OBBject)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         ({"data": "", "target": "close", "rfr": "", "window": ""}, "equity"),
@@ -192,7 +193,7 @@ def test_quantitative_sharpe_ratio(params, data_type, obb):
     assert isinstance(result, OBBject)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -227,7 +228,7 @@ def test_quantitative_sortino_ratio(params, data_type, obb):
     assert isinstance(result, OBBject)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         ({"data": "", "target": "close", "window": "220"}, "equity"),
@@ -244,7 +245,7 @@ def test_quantitative_skewness(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         (
@@ -278,7 +279,7 @@ def test_quantitative_quantile(params, data_type, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params, data_type",
     [
         ({"data": "", "target": "close"}, "equity"),

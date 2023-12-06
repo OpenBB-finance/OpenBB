@@ -2,6 +2,7 @@ import base64
 
 import pytest
 import requests
+from extensions.tests.conftest import parametrize
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
@@ -18,7 +19,7 @@ def headers():
 # pylint: disable=redefined-outer-name
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -57,7 +58,7 @@ def test_economy_calendar(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -95,7 +96,7 @@ def test_economy_cpi(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"provider": "fmp"})],
 )
@@ -110,7 +111,7 @@ def test_economy_risk_premium(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -145,7 +146,7 @@ def test_economy_gdp_forecast(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -178,7 +179,7 @@ def test_economy_gdp_nominal(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -211,7 +212,7 @@ def test_economy_gdp_real(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -251,7 +252,7 @@ def test_economy_balance_of_payments(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -309,7 +310,7 @@ def test_economy_fred_search(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
