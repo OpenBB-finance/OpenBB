@@ -25,8 +25,14 @@ class ROUTER_equity_ownership(Container):
     @validate
     def insider_trading(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
-        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return.")] = 500,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        limit: Annotated[
+            int,
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 500,
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
@@ -135,8 +141,13 @@ class ROUTER_equity_ownership(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "limit": limit, },
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                "limit": limit,
+            },
             extra_params=kwargs,
         )
 
@@ -148,7 +159,10 @@ class ROUTER_equity_ownership(Container):
     @validate
     def institutional(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
@@ -283,8 +297,12 @@ class ROUTER_equity_ownership(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
             extra_params=kwargs,
         )
 
@@ -296,9 +314,18 @@ class ROUTER_equity_ownership(Container):
     @validate
     def major_holders(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
-        date: Annotated[Optional[datetime.date], OpenBBCustomParameter(description="A specific date to get data for.")] = None,
-        page: Annotated[Optional[int], OpenBBCustomParameter(description="Page number of the data to fetch.")] = 0,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        date: Annotated[
+            Optional[datetime.date],
+            OpenBBCustomParameter(description="A specific date to get data for."),
+        ] = None,
+        page: Annotated[
+            Optional[int],
+            OpenBBCustomParameter(description="Page number of the data to fetch."),
+        ] = 0,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -419,8 +446,14 @@ class ROUTER_equity_ownership(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "date": date, "page": page, },
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                "date": date,
+                "page": page,
+            },
             extra_params=kwargs,
         )
 
@@ -432,7 +465,10 @@ class ROUTER_equity_ownership(Container):
     @validate
     def share_statistics(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
@@ -487,8 +523,12 @@ class ROUTER_equity_ownership(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
             extra_params=kwargs,
         )
 

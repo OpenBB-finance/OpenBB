@@ -21,7 +21,10 @@ class ROUTER_equity_shorts(Container):
     @validate
     def fails_to_deliver(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
@@ -81,8 +84,12 @@ class ROUTER_equity_shorts(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
             extra_params=kwargs,
         )
 

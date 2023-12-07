@@ -26,7 +26,10 @@ class ROUTER_regulators_sec(Container):
     @validate
     def cik_map(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
@@ -67,8 +70,12 @@ class ROUTER_regulators_sec(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
             extra_params=kwargs,
         )
 
@@ -125,8 +132,12 @@ class ROUTER_regulators_sec(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"query": query, },
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "query": query,
+            },
             extra_params=kwargs,
         )
 
@@ -137,9 +148,7 @@ class ROUTER_regulators_sec(Container):
 
     @validate
     def rss_litigation(
-        self,
-        provider: Optional[Literal["sec"]] = None,
-        **kwargs
+        self, provider: Optional[Literal["sec"]] = None, **kwargs
     ) -> OBBject:
         """The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.
 
@@ -184,7 +193,9 @@ class ROUTER_regulators_sec(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={"provider": provider, },
+            provider_choices={
+                "provider": provider,
+            },
             standard_params={},
             extra_params=kwargs,
         )
@@ -240,8 +251,12 @@ class ROUTER_regulators_sec(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"query": query, },
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "query": query,
+            },
             extra_params=kwargs,
         )
 
@@ -300,8 +315,12 @@ class ROUTER_regulators_sec(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"query": query, },
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "query": query,
+            },
             extra_params=kwargs,
         )
 
@@ -354,8 +373,12 @@ class ROUTER_regulators_sec(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"query": query, },
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "query": query,
+            },
             extra_params=kwargs,
         )
 

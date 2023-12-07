@@ -22,7 +22,10 @@ class ROUTER_derivatives_options(Container):
     @validate
     def chains(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
     ) -> OBBject:
@@ -115,8 +118,12 @@ class ROUTER_derivatives_options(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
             extra_params=kwargs,
         )
 
@@ -128,7 +135,12 @@ class ROUTER_derivatives_options(Container):
     @validate
     def unusual(
         self,
-        symbol: Annotated[Union[str, None, List[str]], OpenBBCustomParameter(description="Symbol to get data for. (the underlying symbol)")] = None,
+        symbol: Annotated[
+            Union[str, None, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. (the underlying symbol)"
+            ),
+        ] = None,
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
     ) -> OBBject:
@@ -191,8 +203,12 @@ class ROUTER_derivatives_options(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
+            provider_choices={
+                "provider": provider,
+            },
+            standard_params={
+                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+            },
             extra_params=kwargs,
         )
 
