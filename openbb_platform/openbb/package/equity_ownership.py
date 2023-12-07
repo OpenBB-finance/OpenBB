@@ -6,9 +6,8 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -26,17 +25,11 @@ class ROUTER_equity_ownership(Container):
     @validate
     def insider_trading(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 500,
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return.")] = 500,
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Insider Trading. Information about insider trading.
 
         Parameters
@@ -142,13 +135,8 @@ class ROUTER_equity_ownership(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "limit": limit,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "limit": limit, },
             extra_params=kwargs,
         )
 
@@ -160,13 +148,10 @@ class ROUTER_equity_ownership(Container):
     @validate
     def institutional(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Institutional Ownership. Institutional ownership data.
 
         Parameters
@@ -298,12 +283,8 @@ class ROUTER_equity_ownership(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
             extra_params=kwargs,
         )
 
@@ -315,21 +296,12 @@ class ROUTER_equity_ownership(Container):
     @validate
     def major_holders(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        date: Annotated[
-            Optional[datetime.date],
-            OpenBBCustomParameter(description="A specific date to get data for."),
-        ] = None,
-        page: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="Page number of the data to fetch."),
-        ] = 0,
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        date: Annotated[Optional[datetime.date], OpenBBCustomParameter(description="A specific date to get data for.")] = None,
+        page: Annotated[Optional[int], OpenBBCustomParameter(description="Page number of the data to fetch.")] = 0,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Equity Ownership. Information about the company ownership.
 
         Parameters
@@ -447,14 +419,8 @@ class ROUTER_equity_ownership(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "date": date,
-                "page": page,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "date": date, "page": page, },
             extra_params=kwargs,
         )
 
@@ -466,13 +432,10 @@ class ROUTER_equity_ownership(Container):
     @validate
     def share_statistics(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Share Statistics. Share statistics for a given company.
 
         Parameters
@@ -524,12 +487,8 @@ class ROUTER_equity_ownership(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
             extra_params=kwargs,
         )
 

@@ -1,14 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -25,31 +24,18 @@ class ROUTER_fixedincome_spreads(Container):
     @validate
     def tmc(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        maturity: Annotated[
-            Optional[Literal["3m", "2y"]],
-            OpenBBCustomParameter(description="The maturity"),
-        ] = "3m",
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        maturity: Annotated[Optional[Literal["3m", "2y"]], OpenBBCustomParameter(description="The maturity")] = "3m",
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Treasury Constant Maturity.
 
-            Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.
-            Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
-            Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
-            yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
+    Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.
+    Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
+    Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
+    yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
 
 
         Parameters
@@ -93,14 +79,8 @@ class ROUTER_fixedincome_spreads(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-                "maturity": maturity,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"start_date": start_date, "end_date": end_date, "maturity": maturity, },
             extra_params=kwargs,
         )
 
@@ -112,31 +92,18 @@ class ROUTER_fixedincome_spreads(Container):
     @validate
     def tmc_effr(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        maturity: Annotated[
-            Optional[Literal["10y", "5y", "1y", "6m", "3m"]],
-            OpenBBCustomParameter(description="The maturity"),
-        ] = "10y",
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        maturity: Annotated[Optional[Literal["10y", "5y", "1y", "6m", "3m"]], OpenBBCustomParameter(description="The maturity")] = "10y",
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Select Treasury Constant Maturity.
 
-            Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate
-            Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
-            Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
-            yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
+    Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate
+    Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
+    Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
+    yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
 
 
         Parameters
@@ -180,14 +147,8 @@ class ROUTER_fixedincome_spreads(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-                "maturity": maturity,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"start_date": start_date, "end_date": end_date, "maturity": maturity, },
             extra_params=kwargs,
         )
 
@@ -199,32 +160,19 @@ class ROUTER_fixedincome_spreads(Container):
     @validate
     def treasury_effr(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        maturity: Annotated[
-            Optional[Literal["3m", "6m"]],
-            OpenBBCustomParameter(description="The maturity"),
-        ] = "3m",
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        maturity: Annotated[Optional[Literal["3m", "6m"]], OpenBBCustomParameter(description="The maturity")] = "3m",
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Select Treasury Bill.
 
-            Get Selected Treasury Bill Minus Federal Funds Rate.
-            Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of
-            auctioned U.S. Treasuries.
-            The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
-            yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
+    Get Selected Treasury Bill Minus Federal Funds Rate.
+    Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of
+    auctioned U.S. Treasuries.
+    The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
+    yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
 
 
         Parameters
@@ -268,14 +216,8 @@ class ROUTER_fixedincome_spreads(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-                "maturity": maturity,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"start_date": start_date, "end_date": end_date, "maturity": maturity, },
             extra_params=kwargs,
         )
 

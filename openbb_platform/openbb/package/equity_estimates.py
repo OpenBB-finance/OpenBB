@@ -5,9 +5,8 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -24,13 +23,10 @@ class ROUTER_equity_estimates(Container):
     @validate
     def consensus(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[Data]:
+    ) -> OBBject:
         """Price Target Consensus. Price target consensus data.
 
         Parameters
@@ -76,12 +72,8 @@ class ROUTER_equity_estimates(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
             extra_params=kwargs,
         )
 
@@ -93,21 +85,12 @@ class ROUTER_equity_estimates(Container):
     @validate
     def historical(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        period: Annotated[
-            Literal["quarter", "annual"],
-            OpenBBCustomParameter(description="Time period of the data to return."),
-        ] = "annual",
-        limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 30,
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        period: Annotated[Literal["quarter", "annual"], OpenBBCustomParameter(description="Time period of the data to return.")] = "annual",
+        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return.")] = 30,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Historical Analyst Estimates. Analyst stock recommendations.
 
         Parameters
@@ -191,14 +174,8 @@ class ROUTER_equity_estimates(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "period": period,
-                "limit": limit,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "period": period, "limit": limit, },
             extra_params=kwargs,
         )
 
@@ -210,13 +187,10 @@ class ROUTER_equity_estimates(Container):
     @validate
     def price_target(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Price Target. Price target data.
 
         Parameters
@@ -282,12 +256,8 @@ class ROUTER_equity_estimates(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
             extra_params=kwargs,
         )
 

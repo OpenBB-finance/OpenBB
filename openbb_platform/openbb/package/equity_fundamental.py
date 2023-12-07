@@ -7,9 +7,8 @@ from annotated_types import Ge
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -47,21 +46,12 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def balance(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        period: Annotated[
-            Optional[Literal["annual", "quarter"]],
-            OpenBBCustomParameter(description="Time period of the data to return."),
-        ] = "annual",
-        limit: Annotated[
-            Optional[Annotated[int, Ge(ge=0)]],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 5,
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        period: Annotated[Optional[Literal["annual", "quarter"]], OpenBBCustomParameter(description="Time period of the data to return.")] = "annual",
+        limit: Annotated[Optional[Annotated[int, Ge(ge=0)]], OpenBBCustomParameter(description="The number of data entries to return.")] = 5,
         provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Balance Sheet. Balance sheet statement.
 
         Parameters
@@ -265,14 +255,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "period": period,
-                "limit": limit,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "period": period, "limit": limit, },
             extra_params=kwargs,
         )
 
@@ -284,17 +268,11 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def balance_growth(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 10,
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return.")] = 10,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Balance Sheet Statement Growth. Information about the growth of the company balance sheet.
 
         Parameters
@@ -416,13 +394,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "limit": limit,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "limit": limit, },
             extra_params=kwargs,
         )
 
@@ -434,21 +407,12 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def cash(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        period: Annotated[
-            Optional[Literal["annual", "quarter"]],
-            OpenBBCustomParameter(description="Time period of the data to return."),
-        ] = "annual",
-        limit: Annotated[
-            Optional[Annotated[int, Ge(ge=0)]],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 5,
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        period: Annotated[Optional[Literal["annual", "quarter"]], OpenBBCustomParameter(description="Time period of the data to return.")] = "annual",
+        limit: Annotated[Optional[Annotated[int, Ge(ge=0)]], OpenBBCustomParameter(description="The number of data entries to return.")] = 5,
         provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Cash Flow Statement. Information about the cash flow statement.
 
         Parameters
@@ -624,14 +588,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "period": period,
-                "limit": limit,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "period": period, "limit": limit, },
             extra_params=kwargs,
         )
 
@@ -643,17 +601,11 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def cash_growth(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 10,
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return.")] = 10,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Cash Flow Statement Growth. Information about the growth of the company cash flow statement.
 
         Parameters
@@ -757,13 +709,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "limit": limit,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "limit": limit, },
             extra_params=kwargs,
         )
 
@@ -775,13 +722,10 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def dividends(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Historical Dividends. Historical dividends data for a given company.
 
         Parameters
@@ -839,12 +783,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
             extra_params=kwargs,
         )
 
@@ -856,13 +796,10 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def employee_count(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Historical Employees. Historical number of employees.
 
         Parameters
@@ -916,12 +853,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
             extra_params=kwargs,
         )
 
@@ -933,23 +866,12 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def filings(
         self,
-        symbol: Annotated[
-            Union[str, None, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ] = None,
-        form_type: Annotated[
-            Optional[str],
-            OpenBBCustomParameter(
-                description="Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types."
-            ),
-        ] = None,
-        limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 100,
+        symbol: Annotated[Union[str, None, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")] = None,
+        form_type: Annotated[Optional[str], OpenBBCustomParameter(description="Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types.")] = None,
+        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return.")] = 100,
         provider: Optional[Literal["fmp", "intrinio", "sec"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Company Filings. Company filings data.
 
         Parameters
@@ -1043,8 +965,8 @@ class ROUTER_equity_fundamental(Container):
             The size of the filing. (provider: sec)
         complete_submission_url : Optional[str]
             The URL to the complete filing submission. (provider: sec)
-        xml : Optional[str]
-            The URL to the primary XML document. (provider: sec)
+        filing_detail_url : Optional[str]
+            The URL to the filing details. (provider: sec)
 
         Example
         -------
@@ -1053,14 +975,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "form_type": form_type,
-                "limit": limit,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "form_type": form_type, "limit": limit, },
             extra_params=kwargs,
         )
 
@@ -1072,44 +988,17 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def historical_attributes(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        tag: Annotated[
-            str, OpenBBCustomParameter(description="Intrinio data tag ID or code.")
-        ],
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        frequency: Annotated[
-            Optional[Literal["daily", "weekly", "monthly", "quarterly", "yearly"]],
-            OpenBBCustomParameter(description="The frequency of the data."),
-        ] = "yearly",
-        limit: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 1000,
-        type: Annotated[
-            Optional[str],
-            OpenBBCustomParameter(description="Filter by type, when applicable."),
-        ] = None,
-        sort: Annotated[
-            Optional[Literal["asc", "desc"]],
-            OpenBBCustomParameter(description="Sort order."),
-        ] = "desc",
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        tag: Annotated[str, OpenBBCustomParameter(description="Intrinio data tag ID or code.")],
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        frequency: Annotated[Optional[Literal["daily", "weekly", "monthly", "quarterly", "yearly"]], OpenBBCustomParameter(description="The frequency of the data.")] = "yearly",
+        limit: Annotated[Optional[int], OpenBBCustomParameter(description="The number of data entries to return.")] = 1000,
+        type: Annotated[Optional[str], OpenBBCustomParameter(description="Filter by type, when applicable.")] = None,
+        sort: Annotated[Optional[Literal["asc", "desc"]], OpenBBCustomParameter(description="Sort order.")] = "desc",
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Fetch the historical values of a data tag from Intrinio.
 
         Parameters
@@ -1163,19 +1052,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "tag": tag,
-                "start_date": start_date,
-                "end_date": end_date,
-                "frequency": frequency,
-                "limit": limit,
-                "type": type,
-                "sort": sort,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "tag": tag, "start_date": start_date, "end_date": end_date, "frequency": frequency, "limit": limit, "type": type, "sort": sort, },
             extra_params=kwargs,
         )
 
@@ -1187,13 +1065,10 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def historical_eps(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Historical earnings-per-share for a given company.
 
         Parameters
@@ -1253,12 +1128,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
             extra_params=kwargs,
         )
 
@@ -1270,13 +1141,10 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def historical_splits(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Historical Splits. Historical splits data.
 
         Parameters
@@ -1320,12 +1188,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
             extra_params=kwargs,
         )
 
@@ -1337,21 +1201,12 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def income(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        period: Annotated[
-            Optional[Literal["annual", "quarter"]],
-            OpenBBCustomParameter(description="Time period of the data to return."),
-        ] = "annual",
-        limit: Annotated[
-            Optional[Annotated[int, Ge(ge=0)]],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 5,
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        period: Annotated[Optional[Literal["annual", "quarter"]], OpenBBCustomParameter(description="Time period of the data to return.")] = "annual",
+        limit: Annotated[Optional[Annotated[int, Ge(ge=0)]], OpenBBCustomParameter(description="The number of data entries to return.")] = 5,
         provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Income Statement. Report on a company's financial performance.
 
         Parameters
@@ -1529,14 +1384,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "period": period,
-                "limit": limit,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "period": period, "limit": limit, },
             extra_params=kwargs,
         )
 
@@ -1548,21 +1397,12 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def income_growth(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 10,
-        period: Annotated[
-            Literal["quarter", "annual"],
-            OpenBBCustomParameter(description="Time period of the data to return."),
-        ] = "annual",
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return.")] = 10,
+        period: Annotated[Literal["quarter", "annual"], OpenBBCustomParameter(description="Time period of the data to return.")] = "annual",
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Income Statement Growth. Information about the growth of the company income statement.
 
         Parameters
@@ -1660,14 +1500,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "limit": limit,
-                "period": period,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "limit": limit, "period": period, },
             extra_params=kwargs,
         )
 
@@ -1679,16 +1513,11 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def latest_attributes(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        tag: Annotated[
-            str, OpenBBCustomParameter(description="Intrinio data tag ID or code.")
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        tag: Annotated[str, OpenBBCustomParameter(description="Intrinio data tag ID or code.")],
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
-    ) -> OBBject[Data]:
+    ) -> OBBject:
         """Fetch the latest value of a data tag from Intrinio.
 
         Parameters
@@ -1728,13 +1557,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "tag": tag,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "tag": tag, },
             extra_params=kwargs,
         )
 
@@ -1746,13 +1570,10 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def management(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Key Executives. Key executives for a given company.
 
         Parameters
@@ -1802,12 +1623,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
             extra_params=kwargs,
         )
 
@@ -1819,13 +1636,10 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def management_compensation(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Get Executive Compensation. Information about the executive compensation for a given company.
 
         Parameters
@@ -1887,12 +1701,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
             extra_params=kwargs,
         )
 
@@ -1904,21 +1714,12 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def metrics(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        period: Annotated[
-            Optional[Literal["annual", "quarter"]],
-            OpenBBCustomParameter(description="Time period of the data to return."),
-        ] = "annual",
-        limit: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 100,
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        period: Annotated[Optional[Literal["annual", "quarter"]], OpenBBCustomParameter(description="Time period of the data to return.")] = "annual",
+        limit: Annotated[Optional[int], OpenBBCustomParameter(description="The number of data entries to return.")] = 100,
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
-    ) -> OBBject[Union[List[Data], Data]]:
+    ) -> OBBject:
         """Key Metrics. Key metrics for a given company.
 
         Parameters
@@ -2090,14 +1891,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "period": period,
-                "limit": limit,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "period": period, "limit": limit, },
             extra_params=kwargs,
         )
 
@@ -2109,13 +1904,10 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def multiples(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Equity Valuation Multiples. Valuation multiples for a stock ticker.
 
         Parameters
@@ -2273,12 +2065,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
             extra_params=kwargs,
         )
 
@@ -2290,13 +2078,10 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def overview(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[Data]:
+    ) -> OBBject:
         """Company Overview. General information about a company.
 
         Parameters
@@ -2404,12 +2189,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
             extra_params=kwargs,
         )
 
@@ -2421,21 +2202,12 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def ratios(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        period: Annotated[
-            Literal["quarter", "annual"],
-            OpenBBCustomParameter(description="Time period of the data to return."),
-        ] = "annual",
-        limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 12,
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        period: Annotated[Literal["quarter", "annual"], OpenBBCustomParameter(description="Time period of the data to return.")] = "annual",
+        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return.")] = 12,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Extensive set of ratios over time. Financial ratios for a given company.
 
         Parameters
@@ -2595,14 +2367,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "period": period,
-                "limit": limit,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "period": period, "limit": limit, },
             extra_params=kwargs,
         )
 
@@ -2614,21 +2380,12 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def revenue_per_geography(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        period: Annotated[
-            Literal["quarter", "annual"],
-            OpenBBCustomParameter(description="Time period of the data to return."),
-        ] = "annual",
-        structure: Annotated[
-            Literal["hierarchical", "flat"],
-            OpenBBCustomParameter(description="Structure of the returned data."),
-        ] = "flat",
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        period: Annotated[Literal["quarter", "annual"], OpenBBCustomParameter(description="Time period of the data to return.")] = "annual",
+        structure: Annotated[Literal["hierarchical", "flat"], OpenBBCustomParameter(description="Structure of the returned data.")] = "flat",
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Revenue Geographic. Geographic revenue data.
 
         Parameters
@@ -2682,14 +2439,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "period": period,
-                "structure": structure,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "period": period, "structure": structure, },
             extra_params=kwargs,
         )
 
@@ -2701,21 +2452,12 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def revenue_per_segment(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        period: Annotated[
-            Literal["quarter", "annual"],
-            OpenBBCustomParameter(description="Time period of the data to return."),
-        ] = "annual",
-        structure: Annotated[
-            Literal["hierarchical", "flat"],
-            OpenBBCustomParameter(description="Structure of the returned data."),
-        ] = "flat",
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        period: Annotated[Literal["quarter", "annual"], OpenBBCustomParameter(description="Time period of the data to return.")] = "annual",
+        structure: Annotated[Literal["hierarchical", "flat"], OpenBBCustomParameter(description="Structure of the returned data.")] = "flat",
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Revenue Business Line. Business line revenue data.
 
         Parameters
@@ -2759,14 +2501,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "period": period,
-                "structure": structure,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "period": period, "structure": structure, },
             extra_params=kwargs,
         )
 
@@ -2778,16 +2514,11 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def search_attributes(
         self,
-        query: Annotated[
-            str, OpenBBCustomParameter(description="Query to search for.")
-        ],
-        limit: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 1000,
+        query: Annotated[str, OpenBBCustomParameter(description="Query to search for.")],
+        limit: Annotated[Optional[int], OpenBBCustomParameter(description="The number of data entries to return.")] = 1000,
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Search Intrinio data tags.
 
         Parameters
@@ -2847,13 +2578,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "query": query,
-                "limit": limit,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"query": query, "limit": limit, },
             extra_params=kwargs,
         )
 
@@ -2865,13 +2591,10 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def trailing_dividend_yield(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ] = None,
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")] = None,
         provider: Optional[Literal["tiingo"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Trailing 1yr dividend yield.
 
         Parameters
@@ -2911,12 +2634,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
             extra_params=kwargs,
         )
 
@@ -2928,17 +2647,11 @@ class ROUTER_equity_fundamental(Container):
     @validate
     def transcript(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        year: Annotated[
-            int,
-            OpenBBCustomParameter(description="Year of the earnings call transcript."),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        year: Annotated[int, OpenBBCustomParameter(description="Year of the earnings call transcript.")],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Earnings Call Transcript. Earnings call transcript for a given company.
 
         Parameters
@@ -2986,13 +2699,8 @@ class ROUTER_equity_fundamental(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "year": year,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "year": year, },
             extra_params=kwargs,
         )
 

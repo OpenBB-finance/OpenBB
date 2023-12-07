@@ -1,14 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -25,51 +24,38 @@ class ROUTER_fixedincome(Container):
         return self.__doc__ or ""
 
     @property
-    def corporate(self):  # route = "/fixedincome/corporate"
+    def corporate(self):
+        # pylint: disable=import-outside-toplevel
         from . import fixedincome_corporate
 
-        return fixedincome_corporate.ROUTER_fixedincome_corporate(
-            command_runner=self._command_runner
-        )
+        return fixedincome_corporate.ROUTER_fixedincome_corporate(command_runner=self._command_runner)
 
     @property
-    def government(self):  # route = "/fixedincome/government"
+    def government(self):
+        # pylint: disable=import-outside-toplevel
         from . import fixedincome_government
 
-        return fixedincome_government.ROUTER_fixedincome_government(
-            command_runner=self._command_runner
-        )
+        return fixedincome_government.ROUTER_fixedincome_government(command_runner=self._command_runner)
 
     @property
-    def rate(self):  # route = "/fixedincome/rate"
+    def rate(self):
+        # pylint: disable=import-outside-toplevel
         from . import fixedincome_rate
 
-        return fixedincome_rate.ROUTER_fixedincome_rate(
-            command_runner=self._command_runner
-        )
+        return fixedincome_rate.ROUTER_fixedincome_rate(command_runner=self._command_runner)
 
     @validate
     def sofr(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Secured Overnight Financing Rate.
 
-            The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
-            borrowing cash overnight collateralizing by Treasury securities.
+    The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
+    borrowing cash overnight collateralizing by Treasury securities.
 
 
         Parameters
@@ -113,13 +99,8 @@ class ROUTER_fixedincome(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"start_date": start_date, "end_date": end_date, },
             extra_params=kwargs,
         )
 
@@ -129,9 +110,8 @@ class ROUTER_fixedincome(Container):
         )
 
     @property
-    def spreads(self):  # route = "/fixedincome/spreads"
+    def spreads(self):
+        # pylint: disable=import-outside-toplevel
         from . import fixedincome_spreads
 
-        return fixedincome_spreads.ROUTER_fixedincome_spreads(
-            command_runner=self._command_runner
-        )
+        return fixedincome_spreads.ROUTER_fixedincome_spreads(command_runner=self._command_runner)

@@ -5,9 +5,8 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -27,13 +26,10 @@ class ROUTER_regulators_sec(Container):
     @validate
     def cik_map(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["sec"]] = None,
         **kwargs
-    ) -> OBBject[Data]:
+    ) -> OBBject:
         """Get the CIK number corresponding to a ticker symbol.
 
         Parameters
@@ -71,12 +67,8 @@ class ROUTER_regulators_sec(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
             extra_params=kwargs,
         )
 
@@ -91,7 +83,7 @@ class ROUTER_regulators_sec(Container):
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
         provider: Optional[Literal["sec"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Look up institutions regulated by the SEC.
 
         Parameters
@@ -133,12 +125,8 @@ class ROUTER_regulators_sec(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "query": query,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"query": query, },
             extra_params=kwargs,
         )
 
@@ -149,8 +137,10 @@ class ROUTER_regulators_sec(Container):
 
     @validate
     def rss_litigation(
-        self, provider: Optional[Literal["sec"]] = None, **kwargs
-    ) -> OBBject[List[Data]]:
+        self,
+        provider: Optional[Literal["sec"]] = None,
+        **kwargs
+    ) -> OBBject:
         """The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.
 
         Parameters
@@ -194,9 +184,7 @@ class ROUTER_regulators_sec(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
+            provider_choices={"provider": provider, },
             standard_params={},
             extra_params=kwargs,
         )
@@ -212,7 +200,7 @@ class ROUTER_regulators_sec(Container):
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
         provider: Optional[Literal["sec"]] = None,
         **kwargs
-    ) -> OBBject[Data]:
+    ) -> OBBject:
         """Get lists of SEC XML schema files by year.
 
         Parameters
@@ -252,12 +240,8 @@ class ROUTER_regulators_sec(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "query": query,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"query": query, },
             extra_params=kwargs,
         )
 
@@ -272,8 +256,8 @@ class ROUTER_regulators_sec(Container):
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
         provider: Optional[Literal["sec"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
-        """Fuzzy search for Industry Titles, Reporting Office, and SIC Codes.
+    ) -> OBBject:
+        """Search for Industry Titles, Reporting Office, and SIC Codes.
 
         Parameters
         ----------
@@ -316,12 +300,8 @@ class ROUTER_regulators_sec(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "query": query,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"query": query, },
             extra_params=kwargs,
         )
 
@@ -336,7 +316,7 @@ class ROUTER_regulators_sec(Container):
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
         provider: Optional[Literal["sec"]] = None,
         **kwargs
-    ) -> OBBject[Data]:
+    ) -> OBBject:
         """Get the ticker symbol corresponding to a company's CIK.
 
         Parameters
@@ -374,12 +354,8 @@ class ROUTER_regulators_sec(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "query": query,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"query": query, },
             extra_params=kwargs,
         )
 

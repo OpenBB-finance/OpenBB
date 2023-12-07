@@ -1,14 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -30,26 +29,16 @@ class ROUTER_fixedincome_rate(Container):
     @validate
     def ameribor(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Ameribor.
 
-            Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
-            short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the
-            American Financial Exchange (AFX).
+    Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
+    short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the
+    American Financial Exchange (AFX).
 
 
         Parameters
@@ -93,13 +82,8 @@ class ROUTER_fixedincome_rate(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"start_date": start_date, "end_date": end_date, },
             extra_params=kwargs,
         )
 
@@ -111,27 +95,17 @@ class ROUTER_fixedincome_rate(Container):
     @validate
     def dpcredit(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Discount Window Primary Credit Rate.
 
-            A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money.
-            The rates central banks charge are set to stabilize the economy.
-            In the United States, the Federal Reserve System's Board of Governors set the bank rate,
-            also known as the discount rate.
+    A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money.
+    The rates central banks charge are set to stabilize the economy.
+    In the United States, the Federal Reserve System's Board of Governors set the bank rate,
+    also known as the discount rate.
 
 
         Parameters
@@ -175,13 +149,8 @@ class ROUTER_fixedincome_rate(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"start_date": start_date, "end_date": end_date, },
             extra_params=kwargs,
         )
 
@@ -193,33 +162,20 @@ class ROUTER_fixedincome_rate(Container):
     @validate
     def ecb(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        interest_rate_type: Annotated[
-            Literal["deposit", "lending", "refinancing"],
-            OpenBBCustomParameter(description="The type of interest rate."),
-        ] = "lending",
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        interest_rate_type: Annotated[Literal["deposit", "lending", "refinancing"], OpenBBCustomParameter(description="The type of interest rate.")] = "lending",
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """European Central Bank Interest Rates.
 
-            The Governing Council of the ECB sets the key interest rates for the euro area:
+    The Governing Council of the ECB sets the key interest rates for the euro area:
 
-            - The interest rate on the main refinancing operations (MRO), which provide
-            the bulk of liquidity to the banking system.
-            - The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem.
-            - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.
+    - The interest rate on the main refinancing operations (MRO), which provide
+    the bulk of liquidity to the banking system.
+    - The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem.
+    - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.
 
 
         Parameters
@@ -263,14 +219,8 @@ class ROUTER_fixedincome_rate(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-                "interest_rate_type": interest_rate_type,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"start_date": start_date, "end_date": end_date, "interest_rate_type": interest_rate_type, },
             extra_params=kwargs,
         )
 
@@ -282,26 +232,16 @@ class ROUTER_fixedincome_rate(Container):
     @validate
     def effr(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Fed Funds Rate.
 
-            Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
-            domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
-            United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
+    Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
+    domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
+    United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
 
 
         Parameters
@@ -345,13 +285,8 @@ class ROUTER_fixedincome_rate(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"start_date": start_date, "end_date": end_date, },
             extra_params=kwargs,
         )
 
@@ -362,14 +297,16 @@ class ROUTER_fixedincome_rate(Container):
 
     @validate
     def effr_forecast(
-        self, provider: Optional[Literal["fred"]] = None, **kwargs
-    ) -> OBBject[List[Data]]:
+        self,
+        provider: Optional[Literal["fred"]] = None,
+        **kwargs
+    ) -> OBBject:
         """Fed Funds Rate Projections.
 
-            The projections for the federal funds rate are the value of the midpoint of the
-            projected appropriate target range for the federal funds rate or the projected
-            appropriate target level for the federal funds rate at the end of the specified
-            calendar year or over the longer run.
+    The projections for the federal funds rate are the value of the midpoint of the
+    projected appropriate target range for the federal funds rate or the projected
+    appropriate target level for the federal funds rate at the end of the specified
+    calendar year or over the longer run.
 
 
         Parameters
@@ -421,9 +358,7 @@ class ROUTER_fixedincome_rate(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
+            provider_choices={"provider": provider, },
             standard_params={},
             extra_params=kwargs,
         )
@@ -436,27 +371,17 @@ class ROUTER_fixedincome_rate(Container):
     @validate
     def estr(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Euro Short-Term Rate.
 
-            The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in
-            the euro area. The €STR is published on each TARGET2 business day based on transactions conducted and settled on
-            the previous TARGET2 business day (the reporting date “T”) with a maturity date of T+1 which are deemed to have been
-            executed at arm’s length and thus reflect market rates in an unbiased way.
+    The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in
+    the euro area. The €STR is published on each TARGET2 business day based on transactions conducted and settled on
+    the previous TARGET2 business day (the reporting date “T”) with a maturity date of T+1 which are deemed to have been
+    executed at arm’s length and thus reflect market rates in an unbiased way.
 
 
         Parameters
@@ -500,13 +425,8 @@ class ROUTER_fixedincome_rate(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"start_date": start_date, "end_date": end_date, },
             extra_params=kwargs,
         )
 
@@ -518,26 +438,16 @@ class ROUTER_fixedincome_rate(Container):
     @validate
     def iorb(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Interest on Reserve Balances.
 
-            Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its
-            domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
-            United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
+    Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its
+    domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the
+    United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
 
 
         Parameters
@@ -579,13 +489,8 @@ class ROUTER_fixedincome_rate(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"start_date": start_date, "end_date": end_date, },
             extra_params=kwargs,
         )
 
@@ -597,26 +502,16 @@ class ROUTER_fixedincome_rate(Container):
     @validate
     def sonia(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Sterling Overnight Index Average.
 
-            SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual
-            transactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other
-            financial institutions and other institutional investors.
+    SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual
+    transactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other
+    financial institutions and other institutional investors.
 
 
         Parameters
@@ -660,13 +555,8 @@ class ROUTER_fixedincome_rate(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"start_date": start_date, "end_date": end_date, },
             extra_params=kwargs,
         )
 

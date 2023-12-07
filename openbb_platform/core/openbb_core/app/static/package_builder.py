@@ -313,7 +313,7 @@ class ImportDefinition:
     def build(cls, path: str) -> str:
         """Build the import definition."""
         hint_type_list = cls.get_path_hint_type_list(path=path)
-        code = "\nfrom openbb_core.app.static.container import Container"
+        code = "from openbb_core.app.static.container import Container"
         code += "\nfrom openbb_core.app.model.obbject import OBBject"
         code += (
             "\nfrom openbb_core.app.model.custom_parameter import OpenBBCustomParameter"
@@ -362,7 +362,7 @@ class ClassDefinition:
     def build(path: str, ext_map: Optional[Dict[str, List[str]]] = None) -> str:
         """Build the class definition."""
         class_name = PathHandler.build_module_class(path=path)
-        code = f"\nclass {class_name}(Container):\n"
+        code = f"class {class_name}(Container):\n"
 
         route_map = PathHandler.build_route_map()
         path_list = PathHandler.build_path_list(route_map=route_map)

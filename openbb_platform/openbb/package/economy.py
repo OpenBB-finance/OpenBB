@@ -6,9 +6,8 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -28,21 +27,11 @@ class ROUTER_economy(Container):
     @validate
     def calendar(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["fmp", "tradingeconomics"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Economic Calendar.
 
         Parameters
@@ -122,13 +111,8 @@ class ROUTER_economy(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"start_date": start_date, "end_date": end_date, },
             extra_params=kwargs,
         )
 
@@ -140,96 +124,16 @@ class ROUTER_economy(Container):
     @validate
     def cpi(
         self,
-        countries: Annotated[
-            List[
-                Literal[
-                    "australia",
-                    "austria",
-                    "belgium",
-                    "brazil",
-                    "bulgaria",
-                    "canada",
-                    "chile",
-                    "china",
-                    "croatia",
-                    "cyprus",
-                    "czech_republic",
-                    "denmark",
-                    "estonia",
-                    "euro_area",
-                    "finland",
-                    "france",
-                    "germany",
-                    "greece",
-                    "hungary",
-                    "iceland",
-                    "india",
-                    "indonesia",
-                    "ireland",
-                    "israel",
-                    "italy",
-                    "japan",
-                    "korea",
-                    "latvia",
-                    "lithuania",
-                    "luxembourg",
-                    "malta",
-                    "mexico",
-                    "netherlands",
-                    "new_zealand",
-                    "norway",
-                    "poland",
-                    "portugal",
-                    "romania",
-                    "russian_federation",
-                    "slovak_republic",
-                    "slovakia",
-                    "slovenia",
-                    "south_africa",
-                    "spain",
-                    "sweden",
-                    "switzerland",
-                    "turkey",
-                    "united_kingdom",
-                    "united_states",
-                ]
-            ],
-            OpenBBCustomParameter(description="The country or countries to get data."),
-        ],
-        units: Annotated[
-            Literal["growth_previous", "growth_same", "index_2015"],
-            OpenBBCustomParameter(
-                description="The unit of measurement for the data.\n    Options:\n    - `growth_previous`: growth from the previous period\n    - `growth_same`: growth from the same period in the previous year\n    - `index_2015`: index with base year 2015."
-            ),
-        ] = "growth_same",
-        frequency: Annotated[
-            Literal["monthly", "quarter", "annual"],
-            OpenBBCustomParameter(
-                description="The frequency of the data.\n    Options: `monthly`, `quarter`, and `annual`."
-            ),
-        ] = "monthly",
-        harmonized: Annotated[
-            bool,
-            OpenBBCustomParameter(
-                description="Whether you wish to obtain harmonized data."
-            ),
-        ] = False,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        countries: Annotated[List[Literal["australia", "austria", "belgium", "brazil", "bulgaria", "canada", "chile", "china", "croatia", "cyprus", "czech_republic", "denmark", "estonia", "euro_area", "finland", "france", "germany", "greece", "hungary", "iceland", "india", "indonesia", "ireland", "israel", "italy", "japan", "korea", "latvia", "lithuania", "luxembourg", "malta", "mexico", "netherlands", "new_zealand", "norway", "poland", "portugal", "romania", "russian_federation", "slovak_republic", "slovakia", "slovenia", "south_africa", "spain", "sweden", "switzerland", "turkey", "united_kingdom", "united_states"]], OpenBBCustomParameter(description="The country or countries to get data.")],
+        units: Annotated[Literal["growth_previous", "growth_same", "index_2015"], OpenBBCustomParameter(description="The unit of measurement for the data.\n    Options:\n    - `growth_previous`: Percent growth from the previous period.\n      If monthly data, this is month-over-month, etc\n    - `growth_same`: Percent growth from the same period in the previous year.\n      If looking at monthly data, this would be year-over-year, etc.\n    - `index_2015`: Rescaled index value, such that the value in 2015 is 100.")] = "growth_same",
+        frequency: Annotated[Literal["monthly", "quarter", "annual"], OpenBBCustomParameter(description="The frequency of the data.\n    Options: `monthly`, `quarter`, and `annual`.")] = "monthly",
+        harmonized: Annotated[bool, OpenBBCustomParameter(description="Whether you wish to obtain harmonized data.")] = False,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
-        """Consumer Price Index (CPI) Data.
+    ) -> OBBject:
+        """Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate of change (inflation).
 
         Parameters
         ----------
@@ -238,9 +142,11 @@ class ROUTER_economy(Container):
         units : Literal['growth_previous', 'growth_same', 'index_2015']
             The unit of measurement for the data.
             Options:
-            - `growth_previous`: growth from the previous period
-            - `growth_same`: growth from the same period in the previous year
-            - `index_2015`: index with base year 2015.
+            - `growth_previous`: Percent growth from the previous period.
+              If monthly data, this is month-over-month, etc
+            - `growth_same`: Percent growth from the same period in the previous year.
+              If looking at monthly data, this would be year-over-year, etc.
+            - `index_2015`: Rescaled index value, such that the value in 2015 is 100.
         frequency : Literal['monthly', 'quarter', 'annual']
             The frequency of the data.
             Options: `monthly`, `quarter`, and `annual`.
@@ -281,17 +187,8 @@ class ROUTER_economy(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "countries": countries,
-                "units": units,
-                "frequency": frequency,
-                "harmonized": harmonized,
-                "start_date": start_date,
-                "end_date": end_date,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"countries": countries, "units": units, "frequency": frequency, "harmonized": harmonized, "start_date": start_date, "end_date": end_date, },
             extra_params=kwargs,
         )
 
@@ -303,16 +200,14 @@ class ROUTER_economy(Container):
     @validate
     def fred_search(
         self,
-        query: Annotated[
-            Optional[str], OpenBBCustomParameter(description="The search word(s).")
-        ] = None,
+        query: Annotated[Optional[str], OpenBBCustomParameter(description="The search word(s).")] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """
-            Search for FRED series or economic releases by ID or fuzzy query.
-            This does not return the observation values, only the metadata.
-            Use this function to find series IDs for `fred_series()`.
+    Search for FRED series or economic releases by ID or string.
+    This does not return the observation values, only the metadata.
+    Use this function to find series IDs for `fred_series()`.
 
 
         Parameters
@@ -400,12 +295,8 @@ class ROUTER_economy(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "query": query,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"query": query, },
             extra_params=kwargs,
         )
 
@@ -417,29 +308,13 @@ class ROUTER_economy(Container):
     @validate
     def fred_series(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        limit: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 100000,
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        limit: Annotated[Optional[int], OpenBBCustomParameter(description="The number of data entries to return.")] = 100000,
         provider: Optional[Literal["fred", "intrinio"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Get data by series ID from FRED.
 
         Parameters
@@ -529,15 +404,8 @@ class ROUTER_economy(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "start_date": start_date,
-                "end_date": end_date,
-                "limit": limit,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "start_date": start_date, "end_date": end_date, "limit": limit, },
             extra_params=kwargs,
         )
 
@@ -547,15 +415,18 @@ class ROUTER_economy(Container):
         )
 
     @property
-    def gdp(self):  # route = "/economy/gdp"
+    def gdp(self):
+        # pylint: disable=import-outside-toplevel
         from . import economy_gdp
 
         return economy_gdp.ROUTER_economy_gdp(command_runner=self._command_runner)
 
     @validate
     def risk_premium(
-        self, provider: Optional[Literal["fmp"]] = None, **kwargs
-    ) -> OBBject[List[Data]]:
+        self,
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
+    ) -> OBBject:
         """Historical Market Risk Premium.
 
         Parameters
@@ -597,9 +468,7 @@ class ROUTER_economy(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
+            provider_choices={"provider": provider, },
             standard_params={},
             extra_params=kwargs,
         )

@@ -6,9 +6,8 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -24,8 +23,10 @@ class ROUTER_index(Container):
 
     @validate
     def available(
-        self, provider: Optional[Literal["fmp"]] = None, **kwargs
-    ) -> OBBject[List[Data]]:
+        self,
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
+    ) -> OBBject:
         """Available Indices. Available indices for a given provider.
 
         Parameters
@@ -67,9 +68,7 @@ class ROUTER_index(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
+            provider_choices={"provider": provider, },
             standard_params={},
             extra_params=kwargs,
         )
@@ -82,15 +81,10 @@ class ROUTER_index(Container):
     @validate
     def constituents(
         self,
-        index: Annotated[
-            Literal["nasdaq", "sp500", "dowjones"],
-            OpenBBCustomParameter(
-                description="Index for which we want to fetch the constituents."
-            ),
-        ] = "dowjones",
+        index: Annotated[Literal["nasdaq", "sp500", "dowjones"], OpenBBCustomParameter(description="Index for which we want to fetch the constituents.")] = "dowjones",
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Index Constituents. Constituents of an index.
 
         Parameters
@@ -142,12 +136,8 @@ class ROUTER_index(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "index": index,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"index": index, },
             extra_params=kwargs,
         )
 
@@ -159,25 +149,12 @@ class ROUTER_index(Container):
     @validate
     def market(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Historical Market Indices.
 
         Parameters
@@ -262,14 +239,8 @@ class ROUTER_index(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "start_date": start_date,
-                "end_date": end_date,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "start_date": start_date, "end_date": end_date, },
             extra_params=kwargs,
         )
 

@@ -1,14 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional
+from typing import Literal, Optional
 
 from annotated_types import Ge
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -24,21 +23,11 @@ class ROUTER_news(Container):
     @validate
     def company(
         self,
-        symbols: Annotated[
-            str,
-            OpenBBCustomParameter(
-                description=" Here it is a separated list of symbols."
-            ),
-        ],
-        limit: Annotated[
-            Optional[Annotated[int, Ge(ge=0)]],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 20,
-        provider: Optional[
-            Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo"]
-        ] = None,
+        symbols: Annotated[str, OpenBBCustomParameter(description=" Here it is a separated list of symbols.")],
+        limit: Annotated[Optional[Annotated[int, Ge(ge=0)]], OpenBBCustomParameter(description="The number of data entries to return.")] = 20,
+        provider: Optional[Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Company News. Get news for one or more companies.
 
         Parameters
@@ -157,13 +146,8 @@ class ROUTER_news(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbols": symbols,
-                "limit": limit,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbols": symbols, "limit": limit, },
             extra_params=kwargs,
         )
 
@@ -175,15 +159,10 @@ class ROUTER_news(Container):
     @validate
     def world(
         self,
-        limit: Annotated[
-            int,
-            OpenBBCustomParameter(
-                description="The number of data entries to return. Here its the no. of articles to return."
-            ),
-        ] = 20,
+        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return. Here its the no. of articles to return.")] = 20,
         provider: Optional[Literal["benzinga", "fmp", "intrinio", "tiingo"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """World News. Global news data.
 
         Parameters
@@ -285,12 +264,8 @@ class ROUTER_news(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "limit": limit,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"limit": limit, },
             extra_params=kwargs,
         )
 

@@ -13,7 +13,8 @@ class ROUTER_regulators(Container):
         return self.__doc__ or ""
 
     @property
-    def sec(self):  # route = "/regulators/sec"
+    def sec(self):
+        # pylint: disable=import-outside-toplevel
         from . import regulators_sec
 
         return regulators_sec.ROUTER_regulators_sec(command_runner=self._command_runner)
