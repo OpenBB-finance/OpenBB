@@ -19,7 +19,7 @@ from openbb_core.app.router import CommandMap
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
 
-TEST_TEMPLATE = """\n\n@pytest.mark.parametrize(
+TEST_TEMPLATE = """\n\n@parametrize(
     "params",
     [
         {params}
@@ -61,6 +61,7 @@ def create_integration_test_files(extensions: List[PosixPath]) -> None:
                     f'''"""Test {extension_name} extension."""
 import pytest
 from openbb_core.app.model.obbject import OBBject
+from extensions.tests.conftest import parametrize
 
 
 @pytest.fixture(scope="session")
@@ -254,13 +255,13 @@ def add_test_commands_to_file(  # pylint: disable=W0102
         if extension_name in extensions_data_processing:
             write_test_data_processing(
                 test_file=test_file,
-                commands_map=commands_map,
+                commands_map=commands_map,  # type: ignore
                 extension_name=extension_name,
             )
         else:
             write_test(
                 test_file=test_file,
-                commands_model=commands_model,
+                commands_model=commands_model,  # type: ignore
                 extension_name=extension_name,
                 provider_interface_map=provider_interface_map,
             )
@@ -290,7 +291,7 @@ def write_charting_extension_integration_tests():
             test_file=test_file,
             params_list=[{"chart": "True"}],
             full_command=func.replace("_", "."),
-            test_name=f"chart_{func}",
+            test_name=f"chart_{func}",  # TODO: fix the name of the charting library
             extra=extra,
         )
 
