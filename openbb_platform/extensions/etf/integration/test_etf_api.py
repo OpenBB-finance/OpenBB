@@ -140,6 +140,22 @@ def test_etf_holdings_date(params, headers):
                 "provider": "fmp",
             }
         ),
+        (
+            {
+                "symbol": "TQQQ",
+                "date": None,
+                "provider": "sec",
+                "use_cache": False,
+            }
+        ),
+        (
+            {
+                "symbol": "QQQ",
+                "date": "2021-06-30",
+                "provider": "sec",
+                "use_cache": False,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -231,8 +247,8 @@ def test_etf_discovery_active(params, headers):
 @parametrize(
     "params",
     [
-        ({"symbol": "qqq", "provider": "fmp"}),
-        ({"symbol": "spy", "provider": "fmp"}),
+        ({"symbol": "SPY", "provider": "fmp"}),
+        ({"symbol": "QQQ", "provider": "fmp"}),
     ],
 )
 @pytest.mark.integration
