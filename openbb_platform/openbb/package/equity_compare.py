@@ -21,10 +21,7 @@ class ROUTER_equity_compare(Container):
     @validate
     def peers(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -65,12 +62,8 @@ class ROUTER_equity_compare(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
             extra_params=kwargs,
         )
 

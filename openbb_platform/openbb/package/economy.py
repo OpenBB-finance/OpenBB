@@ -27,18 +27,8 @@ class ROUTER_economy(Container):
     @validate
     def calendar(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["fmp", "tradingeconomics"]] = None,
         **kwargs
     ) -> OBBject:
@@ -121,13 +111,8 @@ class ROUTER_economy(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"start_date": start_date, "end_date": end_date, },
             extra_params=kwargs,
         )
 
@@ -139,92 +124,12 @@ class ROUTER_economy(Container):
     @validate
     def cpi(
         self,
-        countries: Annotated[
-            List[
-                Literal[
-                    "australia",
-                    "austria",
-                    "belgium",
-                    "brazil",
-                    "bulgaria",
-                    "canada",
-                    "chile",
-                    "china",
-                    "croatia",
-                    "cyprus",
-                    "czech_republic",
-                    "denmark",
-                    "estonia",
-                    "euro_area",
-                    "finland",
-                    "france",
-                    "germany",
-                    "greece",
-                    "hungary",
-                    "iceland",
-                    "india",
-                    "indonesia",
-                    "ireland",
-                    "israel",
-                    "italy",
-                    "japan",
-                    "korea",
-                    "latvia",
-                    "lithuania",
-                    "luxembourg",
-                    "malta",
-                    "mexico",
-                    "netherlands",
-                    "new_zealand",
-                    "norway",
-                    "poland",
-                    "portugal",
-                    "romania",
-                    "russian_federation",
-                    "slovak_republic",
-                    "slovakia",
-                    "slovenia",
-                    "south_africa",
-                    "spain",
-                    "sweden",
-                    "switzerland",
-                    "turkey",
-                    "united_kingdom",
-                    "united_states",
-                ]
-            ],
-            OpenBBCustomParameter(description="The country or countries to get data."),
-        ],
-        units: Annotated[
-            Literal["growth_previous", "growth_same", "index_2015"],
-            OpenBBCustomParameter(
-                description="The unit of measurement for the data.\n    Options:\n    - `growth_previous`: Percent growth from the previous period.\n      If monthly data, this is month-over-month, etc\n    - `growth_same`: Percent growth from the same period in the previous year.\n      If looking at monthly data, this would be year-over-year, etc.\n    - `index_2015`: Rescaled index value, such that the value in 2015 is 100."
-            ),
-        ] = "growth_same",
-        frequency: Annotated[
-            Literal["monthly", "quarter", "annual"],
-            OpenBBCustomParameter(
-                description="The frequency of the data.\n    Options: `monthly`, `quarter`, and `annual`."
-            ),
-        ] = "monthly",
-        harmonized: Annotated[
-            bool,
-            OpenBBCustomParameter(
-                description="Whether you wish to obtain harmonized data."
-            ),
-        ] = False,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        countries: Annotated[List[Literal["australia", "austria", "belgium", "brazil", "bulgaria", "canada", "chile", "china", "croatia", "cyprus", "czech_republic", "denmark", "estonia", "euro_area", "finland", "france", "germany", "greece", "hungary", "iceland", "india", "indonesia", "ireland", "israel", "italy", "japan", "korea", "latvia", "lithuania", "luxembourg", "malta", "mexico", "netherlands", "new_zealand", "norway", "poland", "portugal", "romania", "russian_federation", "slovak_republic", "slovakia", "slovenia", "south_africa", "spain", "sweden", "switzerland", "turkey", "united_kingdom", "united_states"]], OpenBBCustomParameter(description="The country or countries to get data.")],
+        units: Annotated[Literal["growth_previous", "growth_same", "index_2015"], OpenBBCustomParameter(description="The unit of measurement for the data.\n    Options:\n    - `growth_previous`: Percent growth from the previous period.\n      If monthly data, this is month-over-month, etc\n    - `growth_same`: Percent growth from the same period in the previous year.\n      If looking at monthly data, this would be year-over-year, etc.\n    - `index_2015`: Rescaled index value, such that the value in 2015 is 100.")] = "growth_same",
+        frequency: Annotated[Literal["monthly", "quarter", "annual"], OpenBBCustomParameter(description="The frequency of the data.\n    Options: `monthly`, `quarter`, and `annual`.")] = "monthly",
+        harmonized: Annotated[bool, OpenBBCustomParameter(description="Whether you wish to obtain harmonized data.")] = False,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject:
@@ -282,17 +187,8 @@ class ROUTER_economy(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "countries": countries,
-                "units": units,
-                "frequency": frequency,
-                "harmonized": harmonized,
-                "start_date": start_date,
-                "end_date": end_date,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"countries": countries, "units": units, "frequency": frequency, "harmonized": harmonized, "start_date": start_date, "end_date": end_date, },
             extra_params=kwargs,
         )
 
@@ -304,109 +200,103 @@ class ROUTER_economy(Container):
     @validate
     def fred_search(
         self,
-        query: Annotated[
-            Optional[str], OpenBBCustomParameter(description="The search word(s).")
-        ] = None,
+        query: Annotated[Optional[str], OpenBBCustomParameter(description="The search word(s).")] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject:
         """
-        Search for FRED series or economic releases by ID or string.
-        This does not return the observation values, only the metadata.
-        Use this function to find series IDs for `fred_series()`.
+    Search for FRED series or economic releases by ID or string.
+    This does not return the observation values, only the metadata.
+    Use this function to find series IDs for `fred_series()`.
 
 
-            Parameters
-            ----------
-            query : Optional[str]
-                The search word(s).
+        Parameters
+        ----------
+        query : Optional[str]
+            The search word(s).
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+        is_release : Optional[bool]
+            Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True. (provider: fred)
+        release_id : Optional[Union[str, int]]
+            A specific release ID to target. (provider: fred)
+        limit : Optional[int]
+            The number of data entries to return. (1-1000) (provider: fred)
+        offset : Optional[Annotated[int, Ge(ge=0)]]
+            Offset the results in conjunction with limit. (provider: fred)
+        filter_variable : Literal[None, 'frequency', 'units', 'seasonal_adjustment']
+            Filter by an attribute. (provider: fred)
+        filter_value : Optional[str]
+            String value to filter the variable by.  Used in conjunction with filter_variable. (provider: fred)
+        tag_names : Optional[str]
+            A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' (provider: fred)
+        exclude_tag_names : Optional[str]
+            A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[FredSearch]
+                Serializable results.
             provider : Optional[Literal['fred']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fred' if there is
-                no default.
-            is_release : Optional[bool]
-                Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True. (provider: fred)
-            release_id : Optional[Union[str, int]]
-                A specific release ID to target. (provider: fred)
-            limit : Optional[int]
-                The number of data entries to return. (1-1000) (provider: fred)
-            offset : Optional[Annotated[int, Ge(ge=0)]]
-                Offset the results in conjunction with limit. (provider: fred)
-            filter_variable : Literal[None, 'frequency', 'units', 'seasonal_adjustment']
-                Filter by an attribute. (provider: fred)
-            filter_value : Optional[str]
-                String value to filter the variable by.  Used in conjunction with filter_variable. (provider: fred)
-            tag_names : Optional[str]
-                A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' (provider: fred)
-            exclude_tag_names : Optional[str]
-                A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. (provider: fred)
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[FredSearch]
-                    Serializable results.
-                provider : Optional[Literal['fred']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra: Dict[str, Any]
-                    Extra info.
+        FredSearch
+        ----------
+        release_id : Optional[Union[str, int]]
+            The release ID for queries.
+        series_id : Optional[str]
+            The series ID for the item in the release.
+        name : Optional[str]
+            The name of the release.
+        title : Optional[str]
+            The title of the series.
+        observation_start : Optional[date]
+            The date of the first observation in the series.
+        observation_end : Optional[date]
+            The date of the last observation in the series.
+        frequency : Optional[str]
+            The frequency of the data.
+        frequency_short : Optional[str]
+            Short form of the data frequency.
+        units : Optional[str]
+            The units of the data.
+        units_short : Optional[str]
+            Short form of the data units.
+        seasonal_adjustment : Optional[str]
+            The seasonal adjustment of the data.
+        seasonal_adjustment_short : Optional[str]
+            Short form of the data seasonal adjustment.
+        last_updated : Optional[datetime]
+            The datetime of the last update to the data.
+        notes : Optional[str]
+            Description of the release.
+        press_release : Optional[bool]
+            If the release is a press release.
+        url : Optional[str]
+            URL to the release.
+        popularity : Optional[int]
+            Popularity of the series (provider: fred)
+        group_popularity : Optional[int]
+            Group popularity of the release (provider: fred)
 
-            FredSearch
-            ----------
-            release_id : Optional[Union[str, int]]
-                The release ID for queries.
-            series_id : Optional[str]
-                The series ID for the item in the release.
-            name : Optional[str]
-                The name of the release.
-            title : Optional[str]
-                The title of the series.
-            observation_start : Optional[date]
-                The date of the first observation in the series.
-            observation_end : Optional[date]
-                The date of the last observation in the series.
-            frequency : Optional[str]
-                The frequency of the data.
-            frequency_short : Optional[str]
-                Short form of the data frequency.
-            units : Optional[str]
-                The units of the data.
-            units_short : Optional[str]
-                Short form of the data units.
-            seasonal_adjustment : Optional[str]
-                The seasonal adjustment of the data.
-            seasonal_adjustment_short : Optional[str]
-                Short form of the data seasonal adjustment.
-            last_updated : Optional[datetime]
-                The datetime of the last update to the data.
-            notes : Optional[str]
-                Description of the release.
-            press_release : Optional[bool]
-                If the release is a press release.
-            url : Optional[str]
-                URL to the release.
-            popularity : Optional[int]
-                Popularity of the series (provider: fred)
-            group_popularity : Optional[int]
-                Group popularity of the release (provider: fred)
-
-            Example
-            -------
-            >>> from openbb import obb
-            >>> obb.economy.fred_search()
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.economy.fred_search()
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "query": query,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"query": query, },
             extra_params=kwargs,
         )
 
@@ -418,26 +308,10 @@ class ROUTER_economy(Container):
     @validate
     def fred_series(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        limit: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 100000,
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        limit: Annotated[Optional[int], OpenBBCustomParameter(description="The number of data entries to return.")] = 100000,
         provider: Optional[Literal["fred", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
@@ -530,15 +404,8 @@ class ROUTER_economy(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "start_date": start_date,
-                "end_date": end_date,
-                "limit": limit,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "start_date": start_date, "end_date": end_date, "limit": limit, },
             extra_params=kwargs,
         )
 
@@ -556,7 +423,9 @@ class ROUTER_economy(Container):
 
     @validate
     def risk_premium(
-        self, provider: Optional[Literal["fmp"]] = None, **kwargs
+        self,
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
     ) -> OBBject:
         """Historical Market Risk Premium.
 
@@ -599,9 +468,7 @@ class ROUTER_economy(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
+            provider_choices={"provider": provider, },
             standard_params={},
             extra_params=kwargs,
         )

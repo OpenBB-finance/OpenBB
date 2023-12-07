@@ -34,9 +34,7 @@ class ROUTER_equity(Container):
         # pylint: disable=import-outside-toplevel
         from . import equity_calendar
 
-        return equity_calendar.ROUTER_equity_calendar(
-            command_runner=self._command_runner
-        )
+        return equity_calendar.ROUTER_equity_calendar(command_runner=self._command_runner)
 
     @property
     def compare(self):
@@ -50,31 +48,27 @@ class ROUTER_equity(Container):
         # pylint: disable=import-outside-toplevel
         from . import equity_discovery
 
-        return equity_discovery.ROUTER_equity_discovery(
-            command_runner=self._command_runner
-        )
+        return equity_discovery.ROUTER_equity_discovery(command_runner=self._command_runner)
 
     @property
     def estimates(self):
         # pylint: disable=import-outside-toplevel
         from . import equity_estimates
 
-        return equity_estimates.ROUTER_equity_estimates(
-            command_runner=self._command_runner
-        )
+        return equity_estimates.ROUTER_equity_estimates(command_runner=self._command_runner)
 
     @property
     def fundamental(self):
         # pylint: disable=import-outside-toplevel
         from . import equity_fundamental
 
-        return equity_fundamental.ROUTER_equity_fundamental(
-            command_runner=self._command_runner
-        )
+        return equity_fundamental.ROUTER_equity_fundamental(command_runner=self._command_runner)
 
     @validate
     def market_snapshots(
-        self, provider: Optional[Literal["fmp", "polygon"]] = None, **kwargs
+        self,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
+        **kwargs
     ) -> OBBject:
         """Get a current, complete, market snapshot.
 
@@ -191,9 +185,7 @@ class ROUTER_equity(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
+            provider_choices={"provider": provider, },
             standard_params={},
             extra_params=kwargs,
         )
@@ -208,9 +200,7 @@ class ROUTER_equity(Container):
         # pylint: disable=import-outside-toplevel
         from . import equity_ownership
 
-        return equity_ownership.ROUTER_equity_ownership(
-            command_runner=self._command_runner
-        )
+        return equity_ownership.ROUTER_equity_ownership(command_runner=self._command_runner)
 
     @property
     def price(self):
@@ -222,10 +212,7 @@ class ROUTER_equity(Container):
     @validate
     def profile(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
     ) -> OBBject:
@@ -340,12 +327,8 @@ class ROUTER_equity(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
             extra_params=kwargs,
         )
 
@@ -355,7 +338,11 @@ class ROUTER_equity(Container):
         )
 
     @validate
-    def screener(self, provider: Optional[Literal["fmp"]] = None, **kwargs) -> OBBject:
+    def screener(
+        self,
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
+    ) -> OBBject:
         """Equity Screen. Screen for companies meeting various criteria.
 
         Parameters
@@ -451,9 +438,7 @@ class ROUTER_equity(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
+            provider_choices={"provider": provider, },
             standard_params={},
             extra_params=kwargs,
         )
@@ -467,10 +452,7 @@ class ROUTER_equity(Container):
     def search(
         self,
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
-        is_symbol: Annotated[
-            bool,
-            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
-        ] = False,
+        is_symbol: Annotated[bool, OpenBBCustomParameter(description="Whether to search by ticker symbol.")] = False,
         provider: Optional[Literal["intrinio", "sec"]] = None,
         **kwargs
     ) -> OBBject:
@@ -530,13 +512,8 @@ class ROUTER_equity(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "query": query,
-                "is_symbol": is_symbol,
-            },
+            provider_choices={"provider": provider, },
+            standard_params={"query": query, "is_symbol": is_symbol, },
             extra_params=kwargs,
         )
 

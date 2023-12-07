@@ -26,7 +26,9 @@ class ROUTER_currency(Container):
 
     @validate
     def search(
-        self, provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None, **kwargs
+        self,
+        provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
+        **kwargs
     ) -> OBBject:
         """Currency Search. Search available currency pairs.
 
@@ -107,9 +109,7 @@ class ROUTER_currency(Container):
         """  # noqa: E501
 
         inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
+            provider_choices={"provider": provider, },
             standard_params={},
             extra_params=kwargs,
         )

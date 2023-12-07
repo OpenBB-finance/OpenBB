@@ -40,7 +40,7 @@ Extensions:
     - sec@1.0.0
     - tiingo@1.0.0
     - tradingeconomics@1.0.0    """
-    # fmt: on
+# fmt: on
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
