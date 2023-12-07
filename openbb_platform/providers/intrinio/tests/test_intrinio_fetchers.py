@@ -12,6 +12,7 @@ from openbb_intrinio.models.currency_pairs import IntrinioCurrencyPairsFetcher
 from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
 from openbb_intrinio.models.equity_info import IntrinioEquityInfoFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
+from openbb_intrinio.models.equity_search import IntrinioEquitySearchFetcher
 from openbb_intrinio.models.fred_series import IntrinioFredSeriesFetcher
 from openbb_intrinio.models.historical_attributes import (
     IntrinioHistoricalAttributesFetcher,
@@ -303,5 +304,14 @@ def test_intrinio_share_statistics_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = IntrinioShareStatisticsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_equity_search_fetcher(credentials=test_credentials):
+    params = {"query": "gold", "limit": 100}
+
+    fetcher = IntrinioEquitySearchFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
