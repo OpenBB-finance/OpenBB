@@ -10,6 +10,7 @@ from openbb_intrinio.models.currency_pairs import IntrinioCurrencyPairsFetcher
 from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFetcher
 from openbb_intrinio.models.equity_info import IntrinioEquityInfoFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
+from openbb_intrinio.models.equity_search import IntrinioEquitySearchFetcher
 from openbb_intrinio.models.financial_statements_notes import (
     IntrinioFinancialStatementsNotesFetcher,
 )
@@ -55,6 +56,7 @@ intrinio_provider = Provider(
         "EquityHistorical": IntrinioEquityHistoricalFetcher,
         "EquityInfo": IntrinioEquityInfoFetcher,
         "EquityQuote": IntrinioEquityQuoteFetcher,
+        "EquitySearch": IntrinioEquitySearchFetcher,
         "FinancialStatementsNotes": IntrinioFinancialStatementsNotesFetcher,
         "FinancialStatementsNotesTags": IntrinioFinancialStatementsNotesTagsFetcher,
         "FredSeries": IntrinioFredSeriesFetcher,
