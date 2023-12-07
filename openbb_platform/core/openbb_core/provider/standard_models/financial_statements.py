@@ -327,6 +327,12 @@ class CashFlowStatementData(Data):
     net_income: Optional[float] = Field(
         default=None, description="Consolidated Net Income."
     )
+    provision_for_loan_losses: Optional[float] = Field(
+        default=None, description="Provision for Loan Losses"
+    )
+    provision_for_credit_losses: Optional[float] = Field(
+        default=None, description="Provision for credit losses"
+    )
     depreciation_expense: Optional[float] = Field(
         default=None, description="Depreciation Expense."
     )
@@ -374,9 +380,6 @@ class CashFlowStatementData(Data):
     loans_held_for_sale: Optional[float] = Field(
         default=None, description="Loans Held for Sale (Net)"
     )
-    provision_for_loan_losses: Optional[float] = Field(
-        default=None, description="Provision for Loan Losses"
-    )
     purchase_of_property_plant_and_equipment: Optional[float] = Field(
         default=None, description="Purchase of Property, Plant, and Equipment"
     )
@@ -419,6 +422,12 @@ class CashFlowStatementData(Data):
     cash_interest_received: Optional[float] = Field(
         default=None, description="Cash Interest Received"
     )
+    net_change_in_deposits: Optional[float] = Field(
+        default=None, description="Net Change in Deposits"
+    )
+    net_increase_in_fed_funds_sold: Optional[float] = Field(
+        default=None, description="Net Increase in Fed Funds Sold"
+    )
     net_cash_from_continuing_financing_activities: Optional[float] = Field(
         default=None, description="Net Cash from Continuing Financing Activities"
     )
@@ -427,12 +436,6 @@ class CashFlowStatementData(Data):
     )
     net_cash_from_financing_activities: Optional[float] = Field(
         default=None, description="Net Cash from Financing Activities"
-    )
-    net_increase_in_fed_funds_sold: Optional[float] = Field(
-        default=None, description="Net Increase in Fed Funds Sold"
-    )
-    net_change_in_deposits: Optional[float] = Field(
-        default=None, description="Net Change in Deposits"
     )
     effect_of_exchange_rate_changes: Optional[float] = Field(
         default=None, description="Effect of Exchange Rate Changes"
@@ -632,9 +635,6 @@ class IncomeStatementData(Data):
     )
     other_special_charges: Optional[float] = Field(
         default=None, description="Other special charges"
-    )
-    provision_for_credit_losses: Optional[float] = Field(
-        default=None, description="Provision for credit losses"
     )
     other_cost_of_revenue: Optional[float] = Field(
         default=None, description="Other cost of revenue"
