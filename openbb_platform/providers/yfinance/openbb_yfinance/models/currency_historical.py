@@ -48,12 +48,14 @@ class YFinanceCurrencyHistoricalFetcher(
         params: Dict[str, Any]
     ) -> YFinanceCurrencyHistoricalQueryParams:
         """Transform the query."""
+
         transformed_params = params
-        transformed_params["symbol"] = (
-            f"{transformed_params['symbol'].upper()}=X"
-            if "=X" not in transformed_params["symbol"].upper()
-            else transformed_params["symbol"].upper()
-        )
+        symbols = params["symbol"].split(",")
+        new_symbols = [
+            f"{s.upper()}=X" if "=X" not in s.upper() else s.upper() for s in symbols
+        ]
+        transformed_params["symbol"] = ",".join(new_symbols)
+
         now = datetime.now().date()
 
         if params.get("start_date") is None:
@@ -94,12 +96,9 @@ class YFinanceCurrencyHistoricalFetcher(
                 data.set_index("date", inplace=True)
                 data.index = to_datetime(data.index)
 
-            start_date_dt = datetime.combine(query.start_date, datetime.min.time())
-            end_date_dt = datetime.combine(query.end_date, datetime.min.time())
-
             data = data[
-                (data.index >= start_date_dt + timedelta(days=days))
-                & (data.index <= end_date_dt)
+                (data.index >= to_datetime(query.start_date))
+                & (data.index <= to_datetime(query.end_date + timedelta(days=days)))
             ]
 
         data.reset_index(inplace=True)
