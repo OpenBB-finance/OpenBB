@@ -2,7 +2,7 @@ import json
 import sys
 from pathlib import Path
 from textwrap import shorten
-from typing import Literal
+from typing import Any, Dict, List, Literal
 
 import requests
 from openbb_core.app.provider_interface import ProviderInterface
@@ -59,7 +59,7 @@ class CommandLib(PathHandler):
             metadata = json.load(f)
         return {"/" + k.replace(".", "/").lower(): v for k, v in metadata.items()}
 
-    def read_xl_funcs(self) -> dict:
+    def read_xl_funcs(self) -> Dict[str, dict]:
         """Get a list of all the commands in the docs."""
         with open(XL_FUNCS_PATH) as f:
             funcs = json.load(f)
@@ -118,7 +118,7 @@ class CommandLib(PathHandler):
 
         return {}
 
-    def get_info(self, cmd: str) -> dict:
+    def get_info(self, cmd: str) -> Dict[str, Any]:
         """Get the info for a command."""
         name = self.get_func(cmd)
         if not name:
@@ -276,7 +276,7 @@ class Editor:
 
         def get_cards(
             folder: str,
-            files: list,
+            files: List[Path],
             command: bool,
             section: str = "",
         ) -> str:
