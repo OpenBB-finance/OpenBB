@@ -1,5 +1,6 @@
 """Test etf extension."""
 import pytest
+from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 
 
@@ -16,7 +17,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 # pylint: disable=redefined-outer-name
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"query": None, "provider": "fmp"}),
@@ -32,7 +33,7 @@ def test_etf_search(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -63,7 +64,7 @@ def test_etf_historical(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "IOO", "provider": "fmp"}),
@@ -80,7 +81,7 @@ def test_etf_info(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "IOO", "provider": "fmp"}),
@@ -97,7 +98,7 @@ def test_etf_sectors(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "QQQ", "cik": None, "provider": "fmp"}),
@@ -113,7 +114,7 @@ def test_etf_holdings_date(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -126,10 +127,26 @@ def test_etf_holdings_date(params, obb):
         ),
         (
             {
-                "symbol": "VOO",
-                "date": "2023-03-31",
+                "symbol": "SILJ",
+                "date": "2019-12-31",
                 "cik": None,
                 "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "symbol": "TQQQ",
+                "date": None,
+                "provider": "sec",
+                "use_cache": False,
+            }
+        ),
+        (
+            {
+                "symbol": "QQQ",
+                "date": "2021-06-30",
+                "provider": "sec",
+                "use_cache": False,
             }
         ),
     ],
@@ -144,7 +161,7 @@ def test_etf_holdings(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "fmp"})],
 )
@@ -158,7 +175,7 @@ def test_etf_price_performance(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"symbol": "IOO"})],
 )
@@ -172,7 +189,7 @@ def test_etf_countries(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"sort": "desc", "limit": 10})],
 )
@@ -186,7 +203,7 @@ def test_etf_discovery_gainers(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"sort": "desc", "limit": 10})],
 )
@@ -200,7 +217,7 @@ def test_etf_discovery_losers(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"sort": "desc", "limit": 10})],
 )
@@ -214,11 +231,11 @@ def test_etf_discovery_active(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
-        ({"symbol": "qqq", "provider": "fmp"}),
-        ({"symbol": "spy", "provider": "fmp"}),
+        ({"symbol": "SPY", "provider": "fmp"}),
+        ({"symbol": "QQQ", "provider": "fmp"}),
     ],
 )
 @pytest.mark.integration
@@ -231,7 +248,7 @@ def test_etf_holdings_performance(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"sort": "desc", "limit": 10})],
 )
@@ -245,7 +262,7 @@ def test_etf_discovery_gainers2(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"sort": "desc", "limit": 10})],
 )
@@ -259,7 +276,7 @@ def test_etf_discovery_losers2(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"sort": "desc", "limit": 10})],
 )
