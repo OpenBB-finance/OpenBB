@@ -1,0 +1,52 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/companies/search?active=True&api_key=MOCK_API_KEY&page_size=100&query=gold
+  response:
+    body:
+      string: !!binary |
+        H4sIAHb8b2UAA4yWW3PiOBCF/wrF8+yWkGxZnjdfQAFsY2wuhq2tKQMujyfEJlwSYGr++4rNZlCL
+        YnHewOFT6/ic7v7ZXFYvm7Qssl3z618/m8Wq+fXy1bfF+bW/yJtfmvti+Zxtxbd84Lnic5m+ZOKT
+        bUVR1+k3Lt82nEEUikfrrBBP0EDr20OnN08YHve5Y08MIh4ui+fLQ/Fn6JSZWvPXF+m4c3vS3pzk
+        47rWOLkeV/zBUINX61XDqbabPz8PKw/rtYRuMZ2YFCvoV1tfAHQw4V7nyg4mV/I9MEUGQ4YC9rNX
+        dgZgLikUZO8f3G65/C2OrpkEIZ0jHjhPIXqinkmBOOxyGIUH5RkbTMENxrE1vp40jh9eACFsIJMo
+        3NkPGiQytz/irqRMHz9WRme3kifT43oGlBlFUSKBR0F06xyVrBG9ZZpKyS7N3gA59i0ukePqJa1h
+        FEPAEYLs08LdWkCOiTV2JPakeKvFxgRpqld6Ln8HcfKTmF/RfnY87D7Y4/gemOg6NRTwibylQyhI
+        xOeSHvt0W6NmTWSH6Gpwtu4rsF00a8dXdFTssjporDGqxP20Cn60gdRekMiv0SvKw/Gx+RBjwoCQ
+        vc2RHwF2xOXOFVWndH2TzJu8MF1XBcmPxqYPm1TgWFLVgpc2BmUdVXRDw0Q199GfPYPKff4kG9Av
+        ymVVQxWMGFZqT7jHpsAnPaGKxO6lYgzUKJwyitTk5JrnUuBueySZ28b5o5I1bJpEsXYeDtfQJBPZ
+        2ZNit09vxfivxeKp0xl5/YndZa7G4PxhhGDVkC36boAbjGweyh2r7duDa8+6Kw+59EPlIgkNCQW+
+        iXkgT6C4yEvJk//TWTBuKZXnk0UJtbd494q21ulLtbs3iEbuIDHIjM+StqmbskqtliGypRpUa//A
+        MFoTT45tlL1ldS5ChY2Ymi7khS7cOKaxnC5evWe7/Qfc26/uRwszTKg6q8vFM1wCOtyBw7pTHcrV
+        43QxDYny1S7sDUHtHz/6jG36vqvK34XfFQVjis2bSbqlILbeIJBbgleJlrB9rLhmYKq+zrM/9dtA
+        ccfmcwnupIttrdeJTGYoy8WZBXYFfWnJS8sF+iI6Tpwuv+8a4ffTrlh+ntUede5GAIlhoqq/iRYa
+        sCXvdOFJjU6RrVc7Wf6mLnoOQqSfdO3ecObYtmtgJQLYUBvFucLTEkbAHXfkCFhu97KQXTqFGA93
+        NWu1CKZInbhROAQudSNpcokP/2JvLzFHIeFRFGDic6I14TAQa5S6EvvTlQnezZi7XekS47LIHwxI
+        U6MaUTeotauvQf3WnMviWPNR27Eer35ipSS6GuFeSG1oqJgPZPguLfe1Zq9Y0FTpczzL2qB0zwe7
+        sHd4Kco66x81CSaK4PmQtxcwxmEf7DuHTfpch65jsVuqsvdDLwXKxP6gA5bistpWdeiEtZjoEn+L
+        n2bH/bdNmmcf//XrHwAAAP//AwB3pkhmKg4AAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 06 Dec 2023 04:45:42 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1
