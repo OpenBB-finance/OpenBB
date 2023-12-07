@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.income_statement_growth import (
+from openbb_core.provider.standard_models.income_statement_growth import (
 IncomeStatementGrowthData,
 IncomeStatementGrowthQueryParams,
 )
@@ -81,4 +81,3 @@ IncomeStatementGrowthQueryParams,
 </TabItem>
 
 </Tabs>
-

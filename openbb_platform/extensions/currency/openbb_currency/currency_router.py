@@ -18,22 +18,22 @@ router.include_router(price_router)
 
 # pylint: disable=unused-argument
 @router.command(model="CurrencyPairs")
-def search(
+async def search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Currency Search. Search available currency pairs."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="CurrencyReferenceRates")
-def reference_rates(
+async def reference_rates(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Current, official, currency reference rates."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))

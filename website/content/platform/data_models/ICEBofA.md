@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.ice_bofa import (
+from openbb_core.provider.standard_models.ice_bofa import (
 ICEBofAData,
 ICEBofAQueryParams,
 )
@@ -68,4 +68,3 @@ ICEBofAQueryParams,
 </TabItem>
 
 </Tabs>
-

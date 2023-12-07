@@ -8,7 +8,7 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.decorators import validate
 from openbb_core.app.static.filters import filter_inputs
-from openbb_provider.abstract.data import Data
+from openbb_core.provider.abstract.data import Data
 from typing_extensions import Annotated
 
 
@@ -16,7 +16,6 @@ class ROUTER_index(Container):
     """/index
     available
     constituents
-    fred
     market
     """
 
@@ -132,7 +131,7 @@ class ROUTER_index(Container):
         date_first_added : Optional[Union[str, date]]
             Date the constituent company was added to the index.
         cik : int
-            Central Index Key of the constituent company in the index.
+            Central Index Key (CIK) for the requested entity.
         founded : Optional[Union[str, date]]
             Founding year of the constituent company in the index.
 
@@ -158,98 +157,6 @@ class ROUTER_index(Container):
         )
 
     @validate
-    def fred(
-        self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        limit: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 100,
-        provider: Optional[Literal["intrinio"]] = None,
-        **kwargs
-    ) -> OBBject[List[Data]]:
-        """Historical Fred Indices. Close values for selected Fred indices.
-
-        Parameters
-        ----------
-        symbol : str
-            Symbol to get data for.
-        start_date : Optional[datetime.date]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
-            End date of the data, in YYYY-MM-DD format.
-        limit : Optional[int]
-            The number of data entries to return.
-        provider : Optional[Literal['intrinio']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'intrinio' if there is
-            no default.
-        next_page : Optional[str]
-            Token to get the next page of data from a previous API call. (provider: intrinio)
-        all_pages : Optional[bool]
-            Returns all pages of data from the API call at once. (provider: intrinio)
-
-        Returns
-        -------
-        OBBject
-            results : List[FredIndices]
-                Serializable results.
-            provider : Optional[Literal['intrinio']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        FredIndices
-        -----------
-        date : date
-            The date of the data.
-        value : Optional[Annotated[float, Gt(gt=0)]]
-            Value of the index.
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.index.fred(symbol="SPX", limit=100)
-        """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "start_date": start_date,
-                "end_date": end_date,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
-        return self._run(
-            "/index/fred",
-            **inputs,
-        )
-
-    @validate
     def market(
         self,
         symbol: Annotated[
@@ -268,7 +175,7 @@ class ROUTER_index(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
         **kwargs
     ) -> OBBject[List[Data]]:
         """Historical Market Indices.
@@ -281,7 +188,7 @@ class ROUTER_index(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'polygon']]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -289,12 +196,17 @@ class ROUTER_index(Container):
             Number of days to look back. (provider: fmp)
         interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
             Data granularity. (provider: fmp)
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            Timespan of the data. (provider: polygon)
+        tag : Optional[str]
+            Index tag. (provider: intrinio)
+        type : Optional[str]
+            Index type. (provider: intrinio)
         sort : Literal['asc', 'desc']
+            Sort order. (provider: intrinio);
             Sort order of the data. (provider: polygon)
         limit : int
-            The number of data entries to return. (provider: polygon)
+            The number of data entries to return. (provider: intrinio, polygon)
+        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
+            Timespan of the data. (provider: polygon)
         adjusted : bool
             Whether the data is adjusted. (provider: polygon)
         multiplier : int
@@ -305,7 +217,7 @@ class ROUTER_index(Container):
         OBBject
             results : List[MarketIndices]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -318,15 +230,15 @@ class ROUTER_index(Container):
         -------------
         date : datetime
             The date of the data.
-        open : float
+        open : Optional[Annotated[float, Strict(strict=True)]]
             The open price.
-        high : float
+        high : Optional[Annotated[float, Strict(strict=True)]]
             The high price.
-        low : float
+        low : Optional[Annotated[float, Strict(strict=True)]]
             The low price.
-        close : float
+        close : Optional[Annotated[float, Strict(strict=True)]]
             The close price.
-        volume : Optional[Annotated[int, Strict(strict=True)]]
+        volume : Optional[int]
             The trading volume.
         adj_close : Optional[float]
             Adjusted Close Price of the symbol. (provider: fmp)

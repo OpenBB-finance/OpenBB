@@ -4,8 +4,8 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 import requests
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.short_volume import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.short_volume import (
     ShortVolumeData,
     ShortVolumeQueryParams,
 )

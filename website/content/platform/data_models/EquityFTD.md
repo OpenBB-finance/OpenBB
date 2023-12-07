@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models. import (
+from openbb_core.provider.standard_models. import (
 EquityFTDData,
 EquityFTDQueryParams,
 )
@@ -44,11 +44,11 @@ EquityFTDQueryParams,
 | ---- | ---- | ----------- | ------- | -------- |
 | symbol | Union[str, List[str]] | Symbol to get data for. |  | False |
 | provider | Literal['sec'] | The provider to use for the query, by default None. If None, the provider specified in defaults is selected or 'sec' if there is no default. | sec | True |
-| limit | int | 
+| limit | int |
         Limit the number of reports to parse, from most recent.
         Approximately 24 reports per year, going back to 2009.
          | 24 | True |
-| skip_reports | int | 
+| skip_reports | int |
         Skip N number of reports from current. A value of 1 will skip the most recent report.
          | 0 | True |
 </TabItem>
@@ -71,4 +71,3 @@ EquityFTDQueryParams,
 </TabItem>
 
 </Tabs>
-

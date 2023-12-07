@@ -6,12 +6,12 @@ from datetime import (
 )
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_fmp.utils.helpers import get_data_many
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.income_statement import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
+from openbb_fmp.utils.helpers import get_data_many
 from pydantic import Field, model_validator
 
 PeriodType = Literal["annual", "quarter"]
@@ -121,6 +121,12 @@ class FMPIncomeStatementData(IncomeStatementData):
     final_link: Optional[str] = Field(
         default=None, description="Final link to the income statement."
     )
+
+    @model_validator(mode="before")
+    @classmethod
+    def replace_zero(cls, values):  # pylint: disable=no-self-argument
+        """Check for zero values and replace with None."""
+        return {k: None if v == 0 else v for k, v in values.items()}
 
 
 class FMPIncomeStatementFetcher(

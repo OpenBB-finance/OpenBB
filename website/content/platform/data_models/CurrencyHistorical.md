@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.currency_historical import (
+from openbb_core.provider.standard_models.currency_historical import (
 CurrencyHistoricalData,
 CurrencyHistoricalQueryParams,
 )
@@ -130,4 +130,3 @@ CurrencyHistoricalQueryParams,
 </TabItem>
 
 </Tabs>
-

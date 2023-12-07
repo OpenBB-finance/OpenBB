@@ -4,15 +4,15 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.hqm import (
+    HighQualityMarketCorporateBondData,
+    HighQualityMarketCorporateBondQueryParams,
+)
 from openbb_fred.utils.fred_base import Fred
 from openbb_fred.utils.fred_helpers import (
     YIELD_CURVE_SERIES_CORPORATE_PAR,
     YIELD_CURVE_SERIES_CORPORATE_SPOT,
-)
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.hqm import (
-    HighQualityMarketCorporateBondData,
-    HighQualityMarketCorporateBondQueryParams,
 )
 from pydantic import field_validator
 
@@ -46,8 +46,6 @@ class FREDHighQualityMarketCorporateBondFetcher(
 ):
     """Transform the query, extract and transform the data from the FRED endpoints."""
 
-    data_type = FREDHighQualityMarketCorporateBondData
-
     @staticmethod
     def transform_query(
         params: Dict[str, Any]
@@ -77,24 +75,23 @@ class FREDHighQualityMarketCorporateBondFetcher(
             else today - timedelta(days=50)
         )
 
-        for type_ in query.yield_curve:
-            if type_ == "spot":
-                fred_series = YIELD_CURVE_SERIES_CORPORATE_SPOT
-            elif type_ == "par":
-                fred_series = YIELD_CURVE_SERIES_CORPORATE_PAR
-            else:
-                raise ValueError("Invalid yield curve type.")
+        if query.yield_curve == "spot":
+            fred_series = YIELD_CURVE_SERIES_CORPORATE_SPOT
+        elif query.yield_curve == "par":
+            fred_series = YIELD_CURVE_SERIES_CORPORATE_PAR
+        else:
+            raise ValueError("Invalid yield curve type.")
 
-            for maturity, id_ in fred_series.items():
-                d = fred.get_series(
-                    series_id=id_,
-                    start_date=start_date,
-                    **kwargs,
-                )
-                for item in d:
-                    item["maturity"] = maturity
-                    item["yield_curve"] = type_
-                data.extend(d)
+        for maturity, id_ in fred_series.items():
+            d = fred.get_series(
+                series_id=id_,
+                start_date=start_date,
+                **kwargs,
+            )
+            for item in d:
+                item["maturity"] = maturity
+                item["yield_curve"] = query.yield_curve
+            data.extend(d)
 
         return data
 

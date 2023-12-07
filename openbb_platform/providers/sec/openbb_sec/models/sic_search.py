@@ -4,10 +4,10 @@ from typing import Any, Dict, List, Optional
 
 import pandas as pd
 import requests
-from openbb_provider.abstract.data import Data
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.cot_search import CotSearchQueryParams
-from openbb_sec.utils.helpers import sec_session_companies
+from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.cot_search import CotSearchQueryParams
+from openbb_sec.utils.helpers import SEC_HEADERS, sec_session_companies
 from pydantic import Field
 
 
@@ -63,9 +63,9 @@ class SecSicSearchFetcher(
             "division-of-corporation-finance-standard-industrial-classification-sic-code-list"
         )
         r = (
-            sec_session_companies.get(url, timeout=5)
+            sec_session_companies.get(url, timeout=5, headers=SEC_HEADERS)
             if query.use_cache is True
-            else requests.get(url, timeout=5)
+            else requests.get(url, timeout=5, headers=SEC_HEADERS)
         )
 
         if r.status_code == 200:

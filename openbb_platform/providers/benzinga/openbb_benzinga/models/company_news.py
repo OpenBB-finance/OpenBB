@@ -6,12 +6,12 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_benzinga.utils.helpers import get_data
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.company_news import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
 from pydantic import Field, field_validator
 
 
@@ -53,14 +53,10 @@ class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
         description="Number of seconds since the news was published.",
     )
 
-    sort: Optional[
-        Literal[
-            "id",
-            "created",
-            "updated",
-        ]
-    ] = Field(default="created", description="Key to sort the news by.")
-    order: Optional[Literal["asc", "desc"]] = Field(
+    sort: Literal["id", "created", "updated"] = Field(
+        default="created", description="Key to sort the news by."
+    )
+    order: Literal["asc", "desc"] = Field(
         default="desc", description="Order to sort the news by."
     )
     isin: Optional[str] = Field(
@@ -86,7 +82,12 @@ class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
 class BenzingaCompanyNewsData(CompanyNewsData):
     """Benzinga Company News Data."""
 
-    __alias_dict__ = {"date": "created", "text": "body", "images": "image"}
+    __alias_dict__ = {
+        "symbols": "stocks",
+        "date": "created",
+        "text": "body",
+        "images": "image",
+    }
 
     id: str = Field(description="ID of the news.")
     author: Optional[str] = Field(default=None, description="Author of the news.")
@@ -109,6 +110,12 @@ class BenzingaCompanyNewsData(CompanyNewsData):
     updated: Optional[datetime] = Field(
         default=None, description="Updated date of the news."
     )
+
+    @field_validator("symbols", mode="before", check_fields=False)
+    @classmethod
+    def symbols_string(cls, v):
+        """Symbols string validator."""
+        return ",".join([item["name"] for item in v])
 
     @field_validator("date", "updated", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213

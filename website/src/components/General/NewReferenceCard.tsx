@@ -10,26 +10,34 @@ export default function NewReferenceCard({
   url,
   description,
   command,
-  chevron = true,
 }: {
   title: string;
   url: string;
   description: string;
   command: string;
-  chevron?: boolean;
 }) {
   // TODO: Waiting for mockup of how to display the command vs menu item
   const something = command ? "" : "";
   const { pathname } = useLocation();
   const cleanedPath = pathname.replace(/\/v\d+/, "");
+  const chevron =
+    !cleanedPath.includes("/reference") &&
+    !cleanedPath.includes("/widgets-library/") &&
+    !cleanedPath.includes("/data_models");
+
   return (
     <Link
       className={clsx(
         "rounded border-2 hover:!text-black dark:hover:!text-white !no-underline p-6 cursor-pointer relative overflow-hidden hover:-translate-y-2 transform transition-all duration-300 ease-in-out font-bold shadow-md",
         {
-          "hover:bg-[#669DCB] border-[#669DCB] dark:hover:bg-[#004A87] dark:border-[#004A87]": cleanedPath.startsWith("/terminal") || cleanedPath.startsWith("/pro"),
-          "hover:bg-[#b186bb] border-[#b186bb] dark:hover:bg-[#3a204f] dark:border-[#3a204f]": cleanedPath.startsWith("/bot"),
-          "hover:bg-[#F5B166] border-[#F5B166] dark:hover:bg-[#511d11] dark:border-[#511d11]": cleanedPath.startsWith("/sdk") || cleanedPath.startsWith("/platform"),
+          "hover:bg-[#669DCB] border-[#669DCB] dark:hover:bg-[#004A87] dark:border-[#004A87]":
+            cleanedPath.startsWith("/terminal") ||
+            cleanedPath.startsWith("/pro"),
+          "hover:bg-[#b186bb] border-[#b186bb] dark:hover:bg-[#3a204f] dark:border-[#3a204f]":
+            cleanedPath.startsWith("/bot"),
+          "hover:bg-[#F5B166] border-[#F5B166] dark:hover:bg-[#511d11] dark:border-[#511d11]":
+            cleanedPath.startsWith("/sdk") ||
+            cleanedPath.startsWith("/platform"),
           header_docs:
             !cleanedPath.startsWith("/terminal") &&
             !cleanedPath.startsWith("/pro") &&
@@ -49,7 +57,9 @@ export default function NewReferenceCard({
         {chevron && <ChevronRightIcon className="ml-auto mr-4" />}
       </div>
       {description ? (
-        <p className="text-grey-900 dark:text-grey-200 text-xs font-medium mt-2 mb-0">{description}</p>
+        <p className="text-grey-900 dark:text-grey-200 text-xs font-medium mt-2 mb-0">
+          {description}
+        </p>
       ) : null}
     </Link>
   );

@@ -2,12 +2,13 @@
 
 from typing import Any, Dict, List, Optional, Union
 
-from openbb_fmp.utils.helpers import MARKETS, get_data
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.market_snapshots import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.market_snapshots import (
     MarketSnapshotsData,
     MarketSnapshotsQueryParams,
 )
+from openbb_fmp.utils.definitions import MARKETS
+from openbb_fmp.utils.helpers import get_data
 from pydantic import Field
 
 

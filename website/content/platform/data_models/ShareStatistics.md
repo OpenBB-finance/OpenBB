@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.share_statistics import (
+from openbb_core.provider.standard_models.share_statistics import (
 ShareStatisticsData,
 ShareStatisticsQueryParams,
 )
@@ -56,4 +56,3 @@ ShareStatisticsQueryParams,
 </TabItem>
 
 </Tabs>
-

@@ -1,18 +1,26 @@
 """API integration tests for the derivatives extension."""
 
+import base64
+
 import pytest
 import requests
-from openbb_provider.utils.helpers import get_querystring
+from extensions.tests.conftest import parametrize
+from openbb_core.env import Env
+from openbb_core.provider.utils.helpers import get_querystring
 
 # pylint: disable=too-many-lines,redefined-outer-name
 
 
 @pytest.fixture(scope="session")
 def headers():
-    return {}
+    userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
+    userpass_bytes = userpass.encode("ascii")
+    base64_bytes = base64.b64encode(userpass_bytes)
+
+    return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"provider": "intrinio", "symbol": "AAPL", "date": "2023-01-25"}),
@@ -30,7 +38,7 @@ def test_derivatives_options_chains(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL"}),
@@ -49,7 +57,7 @@ def test_derivatives_options_unusual(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -88,10 +96,10 @@ def test_derivatives_futures_historical(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
-        ({"provider": "cboe", "symbol": "VXM", "date": "2023-01-25"}),
+        ({"provider": "cboe", "symbol": "VX", "date": "2023-01-25"}),
         ({"provider": "yfinance", "symbol": "ES", "date": "2023-08-01"}),
     ],
 )

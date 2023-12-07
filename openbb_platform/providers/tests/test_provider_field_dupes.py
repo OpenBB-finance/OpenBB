@@ -7,10 +7,10 @@ import unittest
 from typing import Dict, List, Type
 
 import pytest
-from openbb_provider import standard_models
-from openbb_provider.abstract.data import Data
-from openbb_provider.abstract.query_params import QueryParams
-from openbb_provider.registry import RegistryLoader
+from openbb_core.provider import standard_models
+from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.query_params import QueryParams
+from openbb_core.provider.registry import RegistryLoader
 
 
 def get_module(file_path: str, package_name: str):

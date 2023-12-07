@@ -6,14 +6,14 @@ from datetime import (
 )
 from typing import Any, Dict, List, Optional, Union
 
-from openbb_polygon.utils.helpers import get_data_one, map_tape
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.equity_nbbo import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.equity_nbbo import (
     EquityNBBOData,
     EquityNBBOQueryParams,
 )
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.helpers import get_querystring
+from openbb_polygon.utils.helpers import get_data_one, map_tape
 from pandas import to_datetime
 from pydantic import Field, field_validator
 

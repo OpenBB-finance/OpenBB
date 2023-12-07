@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.tmc import (
+from openbb_core.provider.standard_models.tmc import (
 TreasuryConstantMaturityData,
 TreasuryConstantMaturityQueryParams,
 )
@@ -54,4 +54,3 @@ TreasuryConstantMaturityQueryParams,
 </TabItem>
 
 </Tabs>
-

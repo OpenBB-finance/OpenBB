@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.income_statement import (
+from openbb_core.provider.standard_models.income_statement import (
 IncomeStatementData,
 IncomeStatementQueryParams,
 )
@@ -213,4 +213,3 @@ IncomeStatementQueryParams,
 </TabItem>
 
 </Tabs>
-

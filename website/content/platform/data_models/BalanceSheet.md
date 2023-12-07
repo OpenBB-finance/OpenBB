@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.balance_sheet import (
+from openbb_core.provider.standard_models.balance_sheet import (
 BalanceSheetData,
 BalanceSheetQueryParams,
 )
@@ -195,4 +195,3 @@ BalanceSheetQueryParams,
 </TabItem>
 
 </Tabs>
-

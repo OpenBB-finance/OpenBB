@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.etf_holdings_date import (
+from openbb_core.provider.standard_models.etf_holdings_date import (
 EtfHoldingsDateData,
 EtfHoldingsDateQueryParams,
 )
@@ -60,4 +60,3 @@ EtfHoldingsDateQueryParams,
 </TabItem>
 
 </Tabs>
-

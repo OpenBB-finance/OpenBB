@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.revenue_business_line import (
+from openbb_core.provider.standard_models.revenue_business_line import (
 RevenueBusinessLineData,
 RevenueBusinessLineQueryParams,
 )
@@ -54,4 +54,3 @@ RevenueBusinessLineQueryParams,
 </TabItem>
 
 </Tabs>
-

@@ -277,7 +277,7 @@ def check_missing_integration_tests(test_type: Literal["api", "python"]) -> List
         functions = get_module_functions(get_integration_tests(test_type="python"))
 
     tested_functions = [
-        function.replace("test_", "")
+        function.replace("test_", "", 1)
         for function in functions
         if function.startswith("test_")
     ]

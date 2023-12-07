@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.price_target_consensus import (
+from openbb_core.provider.standard_models.price_target_consensus import (
 PriceTargetConsensusData,
 PriceTargetConsensusQueryParams,
 )
@@ -55,4 +55,3 @@ PriceTargetConsensusQueryParams,
 </TabItem>
 
 </Tabs>
-

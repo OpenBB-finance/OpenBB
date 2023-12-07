@@ -78,7 +78,7 @@ def get_all_tags(api_key) -> Dict[str, List[str]]:
 
 def get_news(
     api_key: str,
-    filter: Literal[
+    filter_: Literal[
         "crypto", "hot", "latest", "main", "media", "source", "tag"
     ] = "latest",
     source: str = "bloomberg",
@@ -115,16 +115,16 @@ def get_news(
         "source": f"news/source/{source.lower()}",
         "tag": f"tag/{tag}",
     }
-    if filter == "source" and source.lower() not in sources:
+    if filter_ == "source" and source.lower() not in sources:
         raise ValueError(f"{source} not a valid source. Valid sources: {sources}")
 
-    if filter == "tag" and tag.lower().replace(" ", "") not in tags:
+    if filter_ == "tag" and tag.lower().replace(" ", "") not in tags:
         raise ValueError(f"{tag} not a valid tag. Valid tags: {tags}")
 
     url = (
         f"https://biztoc.p.rapidapi.com/search?q={term}"
         if term
-        else f"https://biztoc.p.rapidapi.com/{filter_dict[filter]}"
+        else f"https://biztoc.p.rapidapi.com/{filter_dict[filter_]}"
     )
     r = requests.get(url, headers=headers, timeout=5)
     if r.status_code != 200:

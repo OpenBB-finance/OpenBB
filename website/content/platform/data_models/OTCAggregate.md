@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.otc_aggregate import (
+from openbb_core.provider.standard_models.otc_aggregate import (
 OTCAggregateData,
 OTCAggregateQueryParams,
 )
@@ -64,4 +64,3 @@ OTCAggregateQueryParams,
 </TabItem>
 
 </Tabs>
-

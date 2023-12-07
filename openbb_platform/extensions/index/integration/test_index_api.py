@@ -2,8 +2,9 @@ import base64
 
 import pytest
 import requests
+from extensions.tests.conftest import parametrize
 from openbb_core.env import Env
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
 
 
 @pytest.fixture(scope="session")
@@ -18,7 +19,7 @@ def headers():
 # pylint: disable=redefined-outer-name
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"index": "dowjones", "provider": "fmp"})],
 )
@@ -33,7 +34,7 @@ def test_index_constituents(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -120,6 +121,18 @@ def test_index_constituents(params, headers):
                 "end_date": "2023-06-06",
             }
         ),
+        (
+            {
+                "provider": "intrinio",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "symbol": "$DJI",
+                "tag": "level",
+                "sort": "desc",
+                "limit": 100,
+                "type": None,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -133,7 +146,7 @@ def test_index_market(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -175,7 +188,7 @@ def test_index_european(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"symbol": "BUKBUS", "provider": "cboe"})],
 )
@@ -190,7 +203,7 @@ def test_index_european_constituents(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"europe": True, "provider": "cboe"}),
@@ -209,7 +222,7 @@ def test_index_available(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"query": "D", "is_symbol": True, "provider": "cboe"}),
@@ -227,7 +240,7 @@ def test_index_search(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"provider": "cboe", "region": "US"})],
 )
@@ -242,7 +255,7 @@ def test_index_snapshots(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -264,30 +277,5 @@ def test_index_sp500_multiples(params, headers):
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/index/sp500_multiples?{query_str}"
     result = requests.get(url, headers=headers, timeout=20)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "symbol": "$GDP",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "limit": 100,
-                "provider": "intrinio",
-            }
-        )
-    ],
-)
-@pytest.mark.integration
-def test_index_fred(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/fred?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

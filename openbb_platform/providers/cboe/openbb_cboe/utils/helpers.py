@@ -8,7 +8,7 @@ import pandas as pd
 import requests
 import requests_cache
 from openbb_core.app.utils import get_user_cache_directory
-from openbb_provider.utils.helpers import to_snake_case
+from openbb_core.provider.utils.helpers import to_snake_case
 
 cache_dir = get_user_cache_directory()
 cboe_session = requests_cache.CachedSession(

@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.sofr_rates import (
+from openbb_core.provider.standard_models.sofr_rates import (
 SOFRData,
 SOFRQueryParams,
 )
@@ -63,4 +63,3 @@ SOFRQueryParams,
 </TabItem>
 
 </Tabs>
-

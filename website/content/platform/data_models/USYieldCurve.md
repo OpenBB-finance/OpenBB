@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.us_yield_curve import (
+from openbb_core.provider.standard_models.us_yield_curve import (
 USYieldCurveData,
 USYieldCurveQueryParams,
 )
@@ -53,4 +53,3 @@ USYieldCurveQueryParams,
 </TabItem>
 
 </Tabs>
-

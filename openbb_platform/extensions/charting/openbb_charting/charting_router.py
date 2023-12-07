@@ -42,18 +42,6 @@ def equity_price_historical(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     return fig, content
 
 
-def equity_news(**kwargs) -> Tuple[OpenBBFigure, Dict[str, Any]]:
-    """Render equity news table."""
-    data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
-    standard_params = kwargs["standard_params"].__dict__
-    columnwidth = standard_params.get("columnwidth", None)
-
-    tbl_fig = OpenBBFigureTable(tabular_data=data, columnwidth=columnwidth)
-    content = tbl_fig.to_table().show(external=True).to_plotly_json()
-
-    return tbl_fig, content
-
-
 def _ta_ma(ma_type: str, **kwargs):
     """Plot moving average helper."""
     data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))

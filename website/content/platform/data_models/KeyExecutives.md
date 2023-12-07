@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.key_executives import (
+from openbb_core.provider.standard_models.key_executives import (
 KeyExecutivesData,
 KeyExecutivesQueryParams,
 )
@@ -57,4 +57,3 @@ KeyExecutivesQueryParams,
 </TabItem>
 
 </Tabs>
-

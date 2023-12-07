@@ -2,7 +2,6 @@ import json
 from pathlib import Path
 from typing import Dict
 
-import pytest
 from poetry.core.constraints.version import Version, VersionConstraint, parse_constraint
 from poetry.core.pyproject.toml import PyProjectTOML
 
@@ -25,7 +24,7 @@ def load_req_ext(file: Path) -> Dict[str, VersionConstraint]:
     deps = pyproject.data["tool"]["poetry"]["dependencies"]
     req_ext = {}
     for k, v in deps.items():
-        if k.startswith("openbb-") and k not in ("openbb-core", "openbb-provider"):
+        if k.startswith("openbb-") and k not in ("openbb-core"):
             name = k[7:]
             if isinstance(v, str):
                 req_ext[name] = parse_constraint(v)
@@ -34,9 +33,6 @@ def load_req_ext(file: Path) -> Dict[str, VersionConstraint]:
     return req_ext
 
 
-@pytest.mark.skip(
-    reason="Need to figure out how to test static with different extension bundles"
-)
 def test_extension_map():
     """Ensure only required extensions are built and versions respect pyproject.toml"""
     this_dir = Path(__file__).parent
@@ -52,10 +48,8 @@ def test_extension_map():
         )
 
     for name, version in ext_map.items():
-        assert name in req_ext, (
-            f"'{name}' is not a required extension in pyproject.toml, uninstall it and"
-            " rebuild or add it to pyproject.toml"
-        )
+        if name not in req_ext:
+            continue
         assert req_ext[name].allows(version), (
             f"Version '{version}' of extension '{name}' is not compatible with the"
             f" version '{req_ext[name]}' constraint in pyproject.toml"

@@ -11,8 +11,8 @@ from openbb_cboe.utils.helpers import (
     get_ticker_info,
     get_ticker_iv,
 )
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.equity_info import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.equity_info import (
     EquityInfoData,
     EquityInfoQueryParams,
 )

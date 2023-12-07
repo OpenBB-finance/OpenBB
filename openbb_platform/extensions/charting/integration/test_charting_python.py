@@ -1,6 +1,7 @@
 """Test charting extension."""
 
 import pytest
+from extensions.tests.conftest import parametrize
 from openbb_charting.core.openbb_figure import OpenBBFigure
 from openbb_core.app.model.obbject import OBBject
 
@@ -36,7 +37,7 @@ def get_equity_data():
     return data["stocks_data"]
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -59,7 +60,7 @@ def test_chart_equity_price_historical(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbol": "AAPL", "limit": 100, "chart": "True"}),
@@ -78,33 +79,7 @@ def test_chart_equity_fundamental_multiples(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "provider": "fmp",
-                "symbols": "AAPL",
-                "limit": 20,
-                "chart": "True",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_chart_equity_news(params, obb):
-    """Test chart equity news."""
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.equity.news(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-    assert result.chart.content
-    assert isinstance(result.chart.fig, OpenBBFigure)
-
-
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -134,7 +109,7 @@ def test_chart_technical_adx(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -163,7 +138,7 @@ def test_chart_technical_aroon(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -193,7 +168,7 @@ def test_chart_technical_ema(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -223,7 +198,7 @@ def test_chart_technical_hma(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -254,7 +229,7 @@ def test_chart_technical_macd(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -285,7 +260,7 @@ def test_chart_technical_rsi(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -315,7 +290,7 @@ def test_chart_technical_sma(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -345,7 +320,7 @@ def test_chart_technical_wma(params, obb):
     assert isinstance(result.chart.fig, OpenBBFigure)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (

@@ -12,8 +12,8 @@ website
 ├── content # Markdown files
 | ├── sdk # SDK markdown files
 | ├── bot # bot markdown files
+| ├── platform # platform markdown files
 | └── terminal # Terminal markdown files
-├── old_content # previous terminal documentation; required to get the examples for terminal reference
 ├── src # react stuff for website
 ├── static # Static files
 ├── generate_sdk_markdown.py # Script to generate markdown files for SDK

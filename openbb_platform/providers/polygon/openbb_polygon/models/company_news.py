@@ -3,13 +3,13 @@
 
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_polygon.utils.helpers import get_data_many, get_date_condition
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.company_news import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
+from openbb_polygon.utils.helpers import get_data_many, get_date_condition
 from pydantic import BaseModel, Field, field_validator
 
 
@@ -48,10 +48,17 @@ class PolygonCompanyNewsData(CompanyNewsData):
     """Polygon Company News Data."""
 
     __alias_dict__ = {
+        "symbols": "tickers",
         "url": "article_url",
         "text": "description",
         "date": "published_utc",
     }
+
+    @field_validator("symbols", mode="before", check_fields=False)
+    @classmethod
+    def symbols_string(cls, v):
+        """Symbols string validator."""
+        return ",".join(v)
 
     amp_url: Optional[str] = Field(default=None, description="AMP URL.")
     author: Optional[str] = Field(default=None, description="Author of the article.")
@@ -61,7 +68,6 @@ class PolygonCompanyNewsData(CompanyNewsData):
         default=None, description="Keywords in the article"
     )
     publisher: PolygonPublisher = Field(description="Publisher of the article.")
-    tickers: List[str] = Field(description="Tickers covered in the article.")
 
 
 class PolygonCompanyNewsFetcher(

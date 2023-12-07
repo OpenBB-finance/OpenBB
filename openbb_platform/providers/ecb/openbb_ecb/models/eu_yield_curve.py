@@ -4,12 +4,12 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_ecb.utils.ecb_helpers import get_series_data
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.eu_yield_curve import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.eu_yield_curve import (
     EUYieldCurveData,
     EUYieldCurveQueryParams,
 )
+from openbb_ecb.utils.ecb_helpers import get_series_data
 from pydantic import Field, field_validator
 
 

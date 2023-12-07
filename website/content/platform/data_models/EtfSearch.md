@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.etf_search import (
+from openbb_core.provider.standard_models.etf_search import (
 EtfSearchData,
 EtfSearchQueryParams,
 )
@@ -81,4 +81,3 @@ EtfSearchQueryParams,
 </TabItem>
 
 </Tabs>
-

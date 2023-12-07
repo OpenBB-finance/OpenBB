@@ -5,12 +5,12 @@ from datetime import datetime
 from itertools import repeat
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_fmp.utils.helpers import get_data_many, get_data_one
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.financial_ratios import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.financial_ratios import (
     FinancialRatiosData,
     FinancialRatiosQueryParams,
 )
+from openbb_fmp.utils.helpers import get_data_many, get_data_one
 from pydantic import Field
 
 PeriodType = Literal["annual", "quarter"]
@@ -33,8 +33,10 @@ class FMPFinancialRatiosData(FinancialRatiosData):
     __alias_dict__ = {
         "net_income_per_ebt": "netIncomePerEBT",
         "dividend_yield": "dividendYiel",
-        "dividend_yield_percentage": "dividendYielPercentage",
+        "dividend_yield_percentage": "dividendYieldPercentage",
         "dividend_per_share": "dividendPerShare",
+        "research_and_developement_to_revenue": "researchAndDevelopementToRevenue",
+        "debt_to_market_cap": "debtToMarketCap",
     }
 
 

@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.financial_ratios import (
+from openbb_core.provider.standard_models.financial_ratios import (
 FinancialRatiosData,
 FinancialRatiosQueryParams,
 )
@@ -120,4 +120,3 @@ FinancialRatiosQueryParams,
 </TabItem>
 
 </Tabs>
-

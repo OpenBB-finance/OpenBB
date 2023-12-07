@@ -4,14 +4,14 @@ from datetime import datetime, time
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
-from openbb_intrinio.utils.helpers import get_data_one
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.equity_historical import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
     EquityHistoricalQueryParams,
 )
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.helpers import get_querystring
+from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import Field, PrivateAttr, model_validator
 
 
@@ -39,7 +39,7 @@ class IntrinioEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         default="UTC",
         description="Timezone of the data, in the IANA format (Continent/City).",
     )
-    source: Optional[Literal["realtime", "delayed", "nasdaq_basic"]] = Field(
+    source: Literal["realtime", "delayed", "nasdaq_basic"] = Field(
         default="realtime", description="The source of the data."
     )
     _interval_size: Literal["1m", "5m", "10m", "15m", "30m", "60m", "1h"] = PrivateAttr(

@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.institutional_ownership import (
+from openbb_core.provider.standard_models.institutional_ownership import (
 InstitutionalOwnershipData,
 InstitutionalOwnershipQueryParams,
 )
@@ -88,4 +88,3 @@ InstitutionalOwnershipQueryParams,
 </TabItem>
 
 </Tabs>
-

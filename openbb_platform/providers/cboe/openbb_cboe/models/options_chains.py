@@ -9,12 +9,12 @@ from openbb_cboe.utils.helpers import (
     get_cboe_directory,
     get_cboe_index_directory,
 )
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.options_chains import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.options_chains import (
     OptionsChainsData,
     OptionsChainsQueryParams,
 )
-from openbb_provider.utils.helpers import make_request
+from openbb_core.provider.utils.helpers import make_request
 from pydantic import Field, field_validator
 
 

@@ -6,13 +6,13 @@ from itertools import repeat
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
-from openbb_polygon.utils.helpers import get_data
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.equity_historical import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
     EquityHistoricalQueryParams,
 )
-from openbb_provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_polygon.utils.helpers import get_data
 from pydantic import (
     Field,
     PositiveInt,
@@ -116,6 +116,10 @@ class PolygonEquityHistoricalFetcher(
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         data: List = []
+
+        # if there are more than 20 symbols, we need to increase the timeout
+        if len(query.symbol.split(",")) > 20:
+            kwargs.update({"preferences": {"request_timeout": 30}})
 
         def multiple_symbols(
             symbol: str, data: List[PolygonEquityHistoricalData]

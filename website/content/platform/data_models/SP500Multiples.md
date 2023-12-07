@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.sp500_multiples import (
+from openbb_core.provider.standard_models.sp500_multiples import (
 SP500MultiplesData,
 SP500MultiplesQueryParams,
 )
@@ -65,4 +65,3 @@ SP500MultiplesQueryParams,
 </TabItem>
 
 </Tabs>
-

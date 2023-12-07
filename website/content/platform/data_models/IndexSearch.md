@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.index_search import (
+from openbb_core.provider.standard_models.index_search import (
 IndexSearchData,
 IndexSearchQueryParams,
 )
@@ -82,4 +82,3 @@ IndexSearchQueryParams,
 </TabItem>
 
 </Tabs>
-

@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.historical_dividends import (
+from openbb_core.provider.standard_models.historical_dividends import (
 HistoricalDividendsData,
 HistoricalDividendsQueryParams,
 )
@@ -57,4 +57,3 @@ HistoricalDividendsQueryParams,
 </TabItem>
 
 </Tabs>
-

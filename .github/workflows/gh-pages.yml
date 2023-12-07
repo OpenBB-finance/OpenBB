@@ -6,8 +6,7 @@ on:
       - main
       - release/*
   pull_request:
-    pull_request:
-      types: [opened, synchronize, reopened]
+      types: [opened, synchronize, reopened, closed]
       branches:
         - develop
         - 'docs/*'

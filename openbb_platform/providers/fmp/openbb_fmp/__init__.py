@@ -1,9 +1,11 @@
-"""FMP Provider module."""
+"""FMP Provider Modules."""
+
+from openbb_core.provider.abstract.provider import Provider
 from openbb_fmp.models.analyst_estimates import FMPAnalystEstimatesFetcher
 from openbb_fmp.models.available_indices import FMPAvailableIndicesFetcher
 from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
 from openbb_fmp.models.balance_sheet_growth import FMPBalanceSheetGrowthFetcher
-from openbb_fmp.models.calendar_dividend import FMPDividendCalendarFetcher
+from openbb_fmp.models.calendar_dividend import FMPCalendarDividendFetcher
 from openbb_fmp.models.calendar_earnings import FMPCalendarEarningsFetcher
 from openbb_fmp.models.calendar_splits import FMPCalendarSplitsFetcher
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
@@ -15,7 +17,7 @@ from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.crypto_search import FMPCryptoSearchFetcher
 from openbb_fmp.models.currency_historical import FMPCurrencyHistoricalFetcher
 from openbb_fmp.models.currency_pairs import FMPCurrencyPairsFetcher
-from openbb_fmp.models.discovery_filings import FMPFilingsFetcher
+from openbb_fmp.models.discovery_filings import FMPDiscoveryFilingsFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
 from openbb_fmp.models.equity_historical import FMPEquityHistoricalFetcher
@@ -57,7 +59,6 @@ from openbb_fmp.models.risk_premium import FMPRiskPremiumFetcher
 from openbb_fmp.models.share_statistics import FMPShareStatisticsFetcher
 from openbb_fmp.models.treasury_rates import FMPTreasuryRatesFetcher
 from openbb_fmp.models.world_news import FMPWorldNewsFetcher
-from openbb_provider.abstract.provider import Provider
 
 fmp_provider = Provider(
     name="fmp",
@@ -70,7 +71,7 @@ fmp_provider = Provider(
         "AvailableIndices": FMPAvailableIndicesFetcher,
         "BalanceSheet": FMPBalanceSheetFetcher,
         "BalanceSheetGrowth": FMPBalanceSheetGrowthFetcher,
-        "CalendarDividend": FMPDividendCalendarFetcher,
+        "CalendarDividend": FMPCalendarDividendFetcher,
         "CalendarEarnings": FMPCalendarEarningsFetcher,
         "CalendarSplits": FMPCalendarSplitsFetcher,
         "CashFlowStatement": FMPCashFlowStatementFetcher,
@@ -82,7 +83,7 @@ fmp_provider = Provider(
         "CryptoSearch": FMPCryptoSearchFetcher,
         "CurrencyHistorical": FMPCurrencyHistoricalFetcher,
         "CurrencyPairs": FMPCurrencyPairsFetcher,
-        "DiscoveryFilings": FMPFilingsFetcher,
+        "DiscoveryFilings": FMPDiscoveryFilingsFetcher,
         "EarningsCallTranscript": FMPEarningsCallTranscriptFetcher,
         "EconomicCalendar": FMPEconomicCalendarFetcher,
         "EquityHistorical": FMPEquityHistoricalFetcher,

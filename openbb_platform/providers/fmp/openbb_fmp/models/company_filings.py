@@ -1,16 +1,15 @@
 """FMP Company Filings Model."""
 
-from datetime import datetime
-from typing import Any, Dict, List, Optional, Set, Union
+import math
+from typing import Any, Dict, List, Optional
 
-from openbb_fmp.utils.helpers import create_url, get_data_many
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.company_filings import (
-    SEC_FORM_TYPES,
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.company_filings import (
     CompanyFilingsData,
     CompanyFilingsQueryParams,
 )
-from pydantic import Field, field_validator
+from openbb_core.provider.utils.helpers import get_querystring
+from openbb_fmp.utils.helpers import get_data_many
 
 
 class FMPCompanyFilingsQueryParams(CompanyFilingsQueryParams):
@@ -19,30 +18,19 @@ class FMPCompanyFilingsQueryParams(CompanyFilingsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/sec-filings-api/
     """
 
-    type: Optional[SEC_FORM_TYPES] = Field(
-        default=None, description="Type of the SEC filing form."
-    )
-    page: Optional[int] = Field(default=0, description="Page number of the results.")
+    __alias_dict__ = {"form_type": "type"}
 
 
 class FMPCompanyFilingsData(CompanyFilingsData):
     """FMP Company Filings Data."""
 
     __alias_dict__ = {
-        "date": "fillingDate",
+        "filing_date": "fillingDate",
+        "accepted_date": "acceptedDate",
+        "report_type": "type",
+        "filing_url": "link",
+        "report_url": "finalLink",
     }
-
-    symbol: str = Field(description="The ticker symbol of the company.")
-    cik: str = Field(description="CIK of the SEC filing.")
-    accepted_date: datetime = Field(description="Accepted date of the SEC filing.")
-    final_link: str = Field(description="Final link of the SEC filing.")
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
 
 
 class FMPCompanyFilingsFetcher(
@@ -66,12 +54,20 @@ class FMPCompanyFilingsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
+        data: List[Dict] = []
 
-        url = create_url(
-            3, f"sec_filings/{query.symbol}", api_key, query, exclude=["symbol"]
-        )
+        base_url = "https://financialmodelingprep.com/api/v3/sec_filings"
+        query_str = get_querystring(query.model_dump(by_alias=True), ["symbol"])
 
-        return get_data_many(url, **kwargs)
+        # FMP only allows 1000 results per page
+        pages = math.ceil(query.limit / 1000)
+        for page in range(pages):
+            query_str += f"&page={page}"
+            url = f"{base_url}/{query.symbol}?{query_str}&apikey={api_key}"
+            response = get_data_many(url, **kwargs)
+            data.extend(response)
+
+        return data[: query.limit]
 
     @staticmethod
     def transform_data(

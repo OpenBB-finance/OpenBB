@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.company_overview import (
+from openbb_core.provider.standard_models.company_overview import (
 CompanyOverviewData,
 CompanyOverviewQueryParams,
 )
@@ -86,4 +86,3 @@ CompanyOverviewQueryParams,
 </TabItem>
 
 </Tabs>
-

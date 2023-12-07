@@ -3,7 +3,7 @@
 
 from typing import Any, Dict
 
-from openbb_provider import helpers
+from openbb_core.provider import helpers
 
 
 def get_data(url: str, **kwargs: Any) -> Dict:

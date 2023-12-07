@@ -2,14 +2,14 @@
 
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_intrinio.utils.helpers import get_data_one
-from openbb_intrinio.utils.references import IntrinioCompany, IntrinioSecurity
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.calendar_ipo import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.calendar_ipo import (
     CalendarIpoData,
     CalendarIpoQueryParams,
 )
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
+from openbb_intrinio.utils.helpers import get_data_one
+from openbb_intrinio.utils.references import IntrinioCompany, IntrinioSecurity
 from pydantic import Field
 
 

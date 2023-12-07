@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.crypto_search import (
+from openbb_core.provider.standard_models.crypto_search import (
 CryptoSearchData,
 CryptoSearchQueryParams,
 )
@@ -63,4 +63,3 @@ CryptoSearchQueryParams,
 </TabItem>
 
 </Tabs>
-

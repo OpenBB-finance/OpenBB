@@ -6,9 +6,9 @@ from typing import Any, Dict, List, Optional
 import pandas as pd
 import requests
 import xmltodict
-from openbb_provider.abstract.data import Data
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.abstract.query_params import QueryParams
+from openbb_core.provider.abstract.data import Data
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_sec.utils.definitions import SEC_HEADERS
 from pydantic import Field
 

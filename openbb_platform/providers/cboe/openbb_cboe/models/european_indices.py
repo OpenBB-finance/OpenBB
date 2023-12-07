@@ -6,12 +6,12 @@ from typing import Any, Dict, List, Literal, Optional
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 from openbb_cboe.utils.helpers import Europe
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.european_indices import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.european_indices import (
     EuropeanIndicesData,
     EuropeanIndicesQueryParams,
 )
-from openbb_provider.utils.helpers import make_request
+from openbb_core.provider.utils.helpers import make_request
 from pydantic import Field, field_validator
 
 
@@ -21,10 +21,7 @@ class CboeEuropeanIndicesQueryParams(EuropeanIndicesQueryParams):
     Source: https://www.cboe.com/europe/indices/
     """
 
-    interval: Optional[Literal["1d", "1m"]] = Field(
-        description="Data granularity.",
-        default="1d",
-    )
+    interval: Literal["1d", "1m"] = Field(description="Data granularity.", default="1d")
 
 
 class CboeEuropeanIndicesData(EuropeanIndicesData):

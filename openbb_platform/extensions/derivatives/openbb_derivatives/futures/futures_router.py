@@ -16,22 +16,22 @@ router = Router(prefix="/futures")
 
 # pylint: disable=unused-argument
 @router.command(model="FuturesHistorical")
-def historical(
+async def historical(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Futures Historical Price. Futures historical data."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))
 
 
 @router.command(model="FuturesCurve")
-def curve(
+async def curve(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Futures Historical Price. Futures historical data."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))

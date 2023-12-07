@@ -1,5 +1,6 @@
 """Intrinio Helpers Module."""
 
+import asyncio
 import json
 from datetime import (
     date as dateType,
@@ -8,9 +9,11 @@ from datetime import (
 from io import StringIO
 from typing import Any, List, Optional, TypeVar, Union
 
+import aiohttp
 import requests
-from openbb_provider import helpers
-from openbb_provider.utils.errors import EmptyDataError
+from openbb_core.provider import helpers
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import async_make_request
 from pydantic import BaseModel
 from requests.exceptions import SSLError
 
@@ -60,7 +63,7 @@ def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     except SSLError:
         r = request(url)
     if r.status_code == 404:
-        raise RuntimeError("Intrinio endpoint doesn't exist")
+        raise RuntimeError("Intrinio endpoint doesn't exist.")
 
     data = r.json()
     if r.status_code != 200:
@@ -69,8 +72,8 @@ def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
         value = error or message
         raise RuntimeError(f"Error in Intrinio request -> {value}")
 
-    if "Error Message" in data:
-        raise RuntimeError("Intrinio Error Message -> " + data["Error Message"])
+    if isinstance(data, (str, float)):
+        data = {"value": data}
 
     if len(data) == 0:
         raise EmptyDataError()
@@ -123,3 +126,34 @@ def get_weekday(date: dateType) -> str:
     if date.weekday() in [5, 6]:
         return (date - timedelta(days=date.weekday() - 4)).strftime("%Y-%m-%d")
     return date.strftime("%Y-%m-%d")
+
+
+async def response_callback(response: aiohttp.ClientResponse) -> dict:
+    """Return the response."""
+    data: dict = await response.json()
+
+    if message := data.get("error", None) or data.get("message", None):
+        raise RuntimeError(f"Error in Intrinio request -> {message}")
+
+    if error := data.get("Error Message", None):
+        raise RuntimeError(f"Intrinio Error Message -> {error}")
+
+    return data
+
+
+async def async_get_data_one(
+    url: str, limit: int = 1, sleep: float = 1, **kwargs: Any
+) -> dict:
+    if limit > 100:
+        await asyncio.sleep(sleep)
+
+    try:
+        data: dict = await async_make_request(
+            url, response_callback=response_callback, **kwargs
+        )
+    except Exception as e:
+        if "limit" not in str(e):
+            raise e
+        return await async_get_data_one(url, limit, sleep, **kwargs)
+
+    return data

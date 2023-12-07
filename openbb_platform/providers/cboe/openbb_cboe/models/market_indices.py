@@ -9,12 +9,12 @@ from openbb_cboe.utils.helpers import (
     get_cboe_index_directory,
     get_ticker_info,
 )
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.market_indices import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.market_indices import (
     MarketIndicesData,
     MarketIndicesQueryParams,
 )
-from openbb_provider.utils.helpers import make_request
+from openbb_core.provider.utils.helpers import make_request
 from pydantic import Field
 
 
@@ -24,7 +24,7 @@ class CboeMarketIndicesQueryParams(MarketIndicesQueryParams):
     Source: https://www.cboe.com/
     """
 
-    interval: Optional[Literal["1d", "1m"]] = Field(
+    interval: Literal["1d", "1m"] = Field(
         description="Use interval, 1m, for intraday prices during the most recent trading period.",
         default="1d",
     )

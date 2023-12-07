@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.key_metrics import (
+from openbb_core.provider.standard_models.key_metrics import (
 KeyMetricsData,
 KeyMetricsQueryParams,
 )
@@ -190,4 +190,3 @@ KeyMetricsQueryParams,
 </TabItem>
 
 </Tabs>
-

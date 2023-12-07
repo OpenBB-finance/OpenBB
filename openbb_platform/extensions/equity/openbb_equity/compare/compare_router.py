@@ -16,11 +16,11 @@ router = Router(prefix="/compare")
 
 
 @router.command(model="EquityPeers")
-def peers(
+async def peers(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Equity Peers. Company peers."""
-    return OBBject(results=Query(**locals()).execute())
+    return await OBBject.from_query(Query(**locals()))

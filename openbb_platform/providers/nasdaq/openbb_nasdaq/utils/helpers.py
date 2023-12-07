@@ -7,8 +7,8 @@ from io import StringIO
 from typing import Any, List, Optional, TypeVar, Union
 
 import requests
-from openbb_provider import helpers
-from openbb_provider.utils.errors import EmptyDataError
+from openbb_core.provider import helpers
+from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import BaseModel
 from random_user_agent.user_agent import UserAgent
 from requests.exceptions import SSLError

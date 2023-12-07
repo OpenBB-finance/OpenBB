@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.stock_insider_trading import (
+from openbb_core.provider.standard_models.stock_insider_trading import (
 StockInsiderTradingData,
 StockInsiderTradingQueryParams,
 )
@@ -67,4 +67,3 @@ StockInsiderTradingQueryParams,
 </TabItem>
 
 </Tabs>
-

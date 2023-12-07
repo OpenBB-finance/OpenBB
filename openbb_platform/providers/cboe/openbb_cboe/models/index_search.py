@@ -5,8 +5,8 @@ from typing import Any, Dict, List, Optional
 
 import pandas as pd
 from openbb_cboe.utils.helpers import Europe, get_cboe_index_directory
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.index_search import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.index_search import (
     IndexSearchData,
     IndexSearchQueryParams,
 )

@@ -1,7 +1,7 @@
 ---
 title: Finding Symbols
 sidebar_position: 3
-description: This page provides comprehensive information about finding stocks in the 
+description: This page provides comprehensive information about finding stocks in the
   with the OpenBB Platform.  Search companies from different sources, and filter results.
   This guide is intended to introduce some methods for searching, screening, and discovery.
 keywords:
@@ -34,7 +34,7 @@ The examples on this page will assume that the OpenBB Platform has been installe
 from openbb import obb
 ```
 
-If the installation is fresh, or an extension was just installed, the Python interface will need to be rebuilt.  It will only take a few moments to complete.
+If the installation is fresh, or an extension was just installed, the Python interface will need to be rebuilt. It will only take a few moments to complete.
 :::
 
 The simplest way to find a ticker for a company is with a simple fuzzy query.
@@ -82,7 +82,7 @@ This endpoint can be used to map a ticker symbol to a CIK number.
 
 ### Find an Institution
 
-Some reporting companies, like invesment trusts and insurance companies, do not have a ticker symbol directly associated with them.  Filers in the US will have a CIK number, used to retrieve documents from the SEC.
+Some reporting companies, like investment trusts and insurance companies, do not have a ticker symbol directly associated with them. Filers in the US will have a CIK number, used to retrieve documents from the SEC.
 
 ```python
 obb.regulators.sec.institutions_search("Berkshire Hathaway").to_df()
@@ -150,7 +150,7 @@ obb.equity.fundamental.filings("AAPL", type="4", provider="sec").to_df().iloc[-1
 
 ## Screen Markets
 
-Screeners provide a targeted search, a tool for comparison and discovery.  Find stocks from around the world with the screener endpoint, and the `openbb-fmp` provider.
+Screeners provide a targeted search, a tool for comparison and discovery. Find stocks from around the world with the screener endpoint, and the `openbb-fmp` provider.
 
 ### Find Stocks From India
 
@@ -227,7 +227,7 @@ results.iloc[0]
 
 ### Search by Exchange
 
-Some countries, like America, have multiple exchanges.  Narrow the search by combining two or more parameters.  The example below finds the companies listed on the American Stock Exchange (AMEX) that are domiciled in China.
+Some countries, like America, have multiple exchanges. Narrow the search by combining two or more parameters. The example below finds the companies listed on the American Stock Exchange (AMEX) that are domiciled in China.
 
 ```python
 obb.equity.screener(exchange="amex", country="CN").to_df()
@@ -242,7 +242,7 @@ obb.equity.screener(exchange="amex", country="CN").to_df()
 
 ### Filter by Metric
 
-Applying some filters refines and targets the search.  The example below finds listing on the NYSE domiciled in the USA, with a market cap between $100-300 billion, and exhibiting a beta value of less than 0.5
+Applying some filters refines and targets the search. The example below finds listing on the NYSE domiciled in the USA, with a market cap between $100-300 billion, and exhibiting a beta value of less than 0.5
 
 ```python
 obb.equity.screener(
@@ -297,7 +297,7 @@ indices[indices["name"].str.contains("ASX 200")]
 | S&P/ASX 200 Utilities Sector Index (AUD)              | au_utilities      | ^AXUJ    |
 
 :::tip
-With the `openbb-yfinance` extension, index time series can be  loaded using the ticker symbol or short code.  Non-American indices have a code beginning with the two-letter country code.
+With the `openbb-yfinance` extension, index time series can be loaded using the ticker symbol or short code.  Non-American indices have a code beginning with the two-letter country code.
 
 ```python
 (
@@ -312,4 +312,4 @@ With the `openbb-yfinance` extension, index time series can be  loaded using the
 
 :::
 
-The examples above show demonstrate the most basic ways to find ticker symbols with the OpenBB Platform.  Create your own custom scripts for discovery by combining these with other methods.
+The examples above show demonstrate the most basic ways to find ticker symbols with the OpenBB Platform. Create your own custom scripts for discovery by combining these with other methods.

@@ -2,12 +2,12 @@
 
 from typing import Any, Dict, List, Optional, Union
 
-from openbb_fmp.utils.helpers import get_data_many
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.company_news import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
+from openbb_fmp.utils.helpers import get_data_many
 from pydantic import Field
 
 
@@ -27,9 +27,8 @@ class FMPCompanyNewsQueryParams(CompanyNewsQueryParams):
 class FMPCompanyNewsData(CompanyNewsData):
     """FMP Company News Data."""
 
-    __alias_dict__ = {"date": "publishedDate"}
+    __alias_dict__ = {"symbols": "symbol", "date": "publishedDate"}
 
-    symbol: str = Field(description="Ticker of the fetched news.")
     image: Optional[Union[List[str], str]] = Field(
         default=None, description="URL to the image of the news source."
     )

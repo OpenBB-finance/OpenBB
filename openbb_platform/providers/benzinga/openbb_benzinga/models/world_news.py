@@ -5,12 +5,12 @@ import math
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.world_news import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
-from openbb_provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
 from pydantic import Field, field_validator
 
 from ..utils.helpers import get_data
@@ -52,14 +52,10 @@ class BenzingaWorldNewsQueryParams(WorldNewsQueryParams):
         default=None,
         description="Number of seconds since the news was published.",
     )
-    sort: Optional[
-        Literal[
-            "id",
-            "created",
-            "updated",
-        ]
-    ] = Field(default="created", description="Key to sort the news by.")
-    order: Optional[Literal["asc", "desc"]] = Field(
+    sort: Literal["id", "created", "updated"] = Field(
+        default="created", description="Key to sort the news by."
+    )
+    order: Literal["asc", "desc"] = Field(
         default="desc", description="Order to sort the news by."
     )
     isin: Optional[str] = Field(

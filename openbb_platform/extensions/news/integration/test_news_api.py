@@ -1,35 +1,42 @@
+import base64
+
 import pytest
 import requests
-from openbb_provider.utils.helpers import get_querystring
+from extensions.tests.conftest import parametrize
+from openbb_core.env import Env
+from openbb_core.provider.utils.helpers import get_querystring
 
 
 @pytest.fixture(scope="session")
 def headers():
-    return {}
+    userpass = f"{Env().API_USERNAME}:{Env().API_PASSWORD}"
+    userpass_bytes = userpass.encode("ascii")
+    base64_bytes = base64.b64encode(userpass_bytes)
+
+    return {"Authorization": f"Basic {base64_bytes.decode('ascii')}"}
 
 
 # pylint: disable=redefined-outer-name
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
-        ({"limit": 20, "provider": "benzinga"}),
         (
             {
                 "display": "full",
-                "date": "2023-01-01",
+                "date": None,
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "updated_since": 1,
-                "published_since": 1,
+                "updated_since": None,
+                "published_since": None,
                 "sort": "created",
                 "order": "desc",
-                "isin": "US0378331005",
-                "cusip": "037833100",
+                "isin": None,
+                "cusip": None,
                 "channels": "General",
-                "topics": "AAPL",
-                "authors": "Benzinga Insights",
+                "topics": "earnings",
+                "authors": None,
                 "content_types": "headline",
                 "provider": "benzinga",
                 "limit": 20,
@@ -76,7 +83,7 @@ def test_news_world(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbols": "AAPL", "limit": 20, "provider": "benzinga"}),
@@ -134,12 +141,6 @@ def test_news_world(params, headers):
         ),
         (
             {
-                "provider": "ultima",
-                "symbols": "AAPL,MSFT",
-            }
-        ),
-        (
-            {
                 "provider": "tiingo",
                 "symbols": "AAPL,MSFT",
                 "limit": 20,
@@ -154,6 +155,19 @@ def test_news_company(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/news/company?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.skip(reason="No providers implement this yet.")
+@pytest.mark.parametrize("params", [])
+@pytest.mark.integration
+def test_news_sector(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/news/sector?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

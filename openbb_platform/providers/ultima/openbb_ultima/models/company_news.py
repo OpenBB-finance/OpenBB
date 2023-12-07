@@ -4,8 +4,8 @@
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
-from openbb_provider.abstract.fetcher import Fetcher
-from openbb_provider.standard_models.company_news import (
+from openbb_core.provider.abstract.fetcher import Fetcher
+from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
@@ -27,11 +27,15 @@ class UltimaCompanyNewsQueryParams(CompanyNewsQueryParams):
 class UltimaCompanyNewsData(CompanyNewsData):
     """Ultima Company News Data."""
 
-    __alias_dict__ = {"date": "publishedDate", "text": "summary", "title": "headline"}
+    __alias_dict__ = {
+        "symbols": "ticker",
+        "date": "publishedDate",
+        "text": "summary",
+        "title": "headline",
+    }
 
     publisher: str = Field(description="Publisher of the news.")
-    ticker: str = Field(description="Ticker associated with the news.")
-    riskCategory: str = Field(description="Risk category of the news.")
+    risk_category: str = Field(description="Risk category of the news.")
 
 
 class UltimaCompanyNewsFetcher(
@@ -80,12 +84,13 @@ class UltimaCompanyNewsFetcher(
             for key in ["8k_filings", "articles", "industry_summary"]:
                 for item in ele[key]:
                     # manual assignment required for Pydantic to work
-                    item["ticker"] = ele["ticker"]
+                    item["symbols"] = ele["ticker"]
                     item["date"] = datetime.strptime(
                         item["publishedDate"], "%Y-%m-%d %H:%M:%S"
                     )
                     item["title"] = item["headline"]
                     item["url"] = item["url"]
                     item["publisher"] = item["publisher"]
+                    item["risk_category"] = item["riskCategory"]
                     results.append(UltimaCompanyNewsData.model_validate(item))
         return results

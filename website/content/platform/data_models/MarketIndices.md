@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.market_indices import (
+from openbb_core.provider.standard_models.market_indices import (
 MarketIndicesData,
 MarketIndicesQueryParams,
 )
@@ -156,4 +156,3 @@ MarketIndicesQueryParams,
 </TabItem>
 
 </Tabs>
-

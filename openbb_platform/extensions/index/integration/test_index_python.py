@@ -1,6 +1,7 @@
 """Test economy extension."""
 
 import pytest
+from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 
 
@@ -17,7 +18,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 # pylint: disable=redefined-outer-name
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"index": "dowjones"}),
@@ -31,7 +32,7 @@ def test_index_constituents(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -117,6 +118,18 @@ def test_index_constituents(params, obb):
                 "end_date": "2023-06-06",
             }
         ),
+        (
+            {
+                "provider": "intrinio",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "symbol": "$DJI",
+                "tag": "level",
+                "sort": "desc",
+                "limit": 100,
+                "type": None,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -127,7 +140,7 @@ def test_index_market(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -165,10 +178,10 @@ def test_index_european(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
-        ({"symbol": "BUKBUS"}),
+        ({"symbol": "BUKBUS", "provider": "cboe"}),
     ],
 )
 @pytest.mark.integration
@@ -179,7 +192,7 @@ def test_index_european_constituents(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({}),
@@ -196,7 +209,7 @@ def test_index_available(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"query": "D", "is_symbol": True}),
@@ -211,7 +224,7 @@ def test_index_search(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"region": "US"}),
@@ -225,7 +238,7 @@ def test_index_snapshots(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -243,28 +256,6 @@ def test_index_snapshots(params, obb):
 @pytest.mark.integration
 def test_index_sp500_multiples(params, obb):
     result = obb.index.sp500_multiples(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
-    assert len(result.results) > 0
-
-
-@pytest.mark.parametrize(
-    "params",
-    [
-        (
-            {
-                "symbol": "$GDP",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "limit": 100,
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_index_fred(params, obb):
-    result = obb.index.fred(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

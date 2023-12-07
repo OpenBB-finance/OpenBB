@@ -21,7 +21,7 @@ import TabItem from '@theme/TabItem';
 ### Import Statement
 
 ```python
-from openbb_provider.standard_models.earnings_call_transcript import (
+from openbb_core.provider.standard_models.earnings_call_transcript import (
 EarningsCallTranscriptData,
 EarningsCallTranscriptQueryParams,
 )
@@ -56,4 +56,3 @@ EarningsCallTranscriptQueryParams,
 </TabItem>
 
 </Tabs>
-

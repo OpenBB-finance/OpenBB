@@ -1,9 +1,9 @@
 ---
 title: Market Calendars
-sidebar_position: 4
-description: This page provides details on the market calendars available in the OpenBB 
+sidebar_position: 5
+description: This page provides details on the market calendars available in the OpenBB
   Platform.  Equity and economic calendars keep investors abreast of market activity and events.
-  This guide provides examples for using the variety of calendars, and differences between sources. 
+  This guide provides examples for using the variety of calendars, and differences between sources.
 keywords:
 - stocks
 - companies
@@ -33,7 +33,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Market Calendars - Usage | OpenBB Platform Docs" />
 
-Market calendars are an essential part of any analyst's daily rituals.  Economic events and corporate actions provide near-term trading opportunities (or reasons to get out of the way) as expectations meet reality.  The OpenBB Platform has a variety of calendars.
+Market calendars are an essential part of any analyst's daily rituals. Economic events and corporate actions provide near-term trading opportunities (or reasons to get out of the way) as expectations meet reality. The OpenBB Platform has a variety of calendars.
 
 - Economic
 - Earnings
@@ -48,6 +48,7 @@ Examples on this page will assume that the OpenBB Platform is installed, the Pyt
 
 ```python
 from openbb import obb
+import pandas as pd
 ```
 
 :::
@@ -57,12 +58,12 @@ from openbb import obb
 The economic calendar aggregates global central bank and macroeconomic releases, it is located within the `obb.economy` module.
 
 :::tip
-Do not rely on the economic calendar for real-time updates.  Times posted are scheduled by publishers and are estimates which do not reflect the actual time data is released to the public.
+Do not rely on the economic calendar for real-time updates. Times posted are scheduled by publishers and are estimates which do not reflect the actual time data is released to the public.
 :::
 
 ### Timezone Considerations
 
-There are subtle differences between providers, the main consideration will be the timestamp.  FMP and TradingEconomics both return the calendar as UTC-0, while Nasdaq posts events in US/Eastern time.  Of the three, only TradingEconomics provides a TZ-aware timestamp.  The differences can be reconciled with a few lines of code.
+There are subtle differences between providers, the main consideration will be the timestamp. FMP and TradingEconomics both return the calendar as UTC-0, while Nasdaq posts events in US/Eastern time. Of the three, only TradingEconomics provides a TZ-aware timestamp. The differences can be reconciled with a few lines of code.
 
 To identify the issue, let's look at one event.  First, from FMP:
 
@@ -112,9 +113,9 @@ For these reasons, among others, it is important for users to know and understan
 
 ### Filtering by Event
 
-The providers do not have a pre-request filter for a specific event.  TradingEconomics does have categories, like 'government', but that does not focus it on any particular release.  To find something like PMI reports, search for it post-request.
+The providers do not have a pre-request filter for a specific event. TradingEconomics does have categories, like 'government', but that does not focus it on any particular release. To find something like PMI reports, search for it post-request.
 
-FMP allows queries to this endpoint to be a maximum width of three months.  To get the year-to-date events, requests will need to loop.  The code below will do that, filter the results for ISM Manufacturing New Orders, and display the table of hits.
+FMP allows queries to this endpoint to be a maximum width of three months. To get the year-to-date events, requests will need to loop. The code below will do that, filter the results for ISM Manufacturing New Orders, and display the table of hits.
 
 ### ISM New Orders
 
@@ -152,7 +153,7 @@ events[events["event"].str.contains("ISM Manufacturing New Orders")]
 
 ## Earnings Calendar
 
-The earnings calendar works in a similar way.  For companies outside of the US, try the `openbb-fmp` provider.
+The earnings calendar works in a similar way. For companies outside of the US, try the `openbb-fmp` provider.
 
 ```python
 calendar = (
@@ -164,7 +165,7 @@ calendar = (
 )
 ```
 
-This returned 1,234 results, but let's filter it down to those companies with analysts estimates, and display the top ten by EPS conensus.
+This returned 1,234 results, but let's filter it down to those companies with analysts estimates, and display the top ten by EPS consensus.
 
 ```python
 (
@@ -194,7 +195,7 @@ EPS values are reported in the currency of the exchange listing price, direct co
 
 ## Dividend Calendar
 
-The dividend calendar uses start/end dates that reflect the ex-dividend date - the date when it begins trading without dividend rights.  Aside from the notable dates, the information returned tells you only the amount paid.  Calculating the yield requires more data.
+The dividend calendar uses start/end dates that reflect the ex-dividend date - the date when it begins trading without dividend rights. Aside from the notable dates, the information returned tells you only the amount paid. Calculating the yield requires more data.
 
 :::note
 
@@ -207,7 +208,7 @@ The dividend calendar uses start/end dates that reflect the ex-dividend date - t
 
 ### Calculate Dividend Yield
 
-The ten highest-payments going ex-div between November 20-24 are shown below.  With T+2 settlement, a purchase needs to occur two days prior to the record date for payment eligibility.  The dividend yield is the current payment annualized as a percent of the asset's price.
+The ten highest-payments going ex-div between November 20-24 are shown below. With T+2 settlement, a purchase needs to occur two days prior to the record date for payment eligibility. The dividend yield is the current payment annualized as a percent of the asset's price.
 
 ```python
 dividends = (
@@ -256,7 +257,7 @@ dividends["yield"] = (
 
 ## IPO Calendar
 
-The IPO calendar shows events based on their status - `["upcoming", "priced", "withdrawn"]` - and Intrinio provides a filter for the min/max dollar amount offerred.
+The IPO calendar shows events based on their status - `["upcoming", "priced", "withdrawn"]` - and Intrinio provides a filter for the min/max dollar amount offered.
 
 :::note
 The data from both Intrinio and Nasdaq is US-only, both relying on the SEC for filing information.
@@ -266,7 +267,7 @@ Use the `status` parameter to find announcements in different stages of the cycl
 
 ### Upcoming
 
-The initial public offerings that are confirmed to be coming to market are categorized as 'upcoming'.  The number of companies going public at any given time will depend on market cycles.
+The initial public offerings that are confirmed to be coming to market are categorized as 'upcoming'. The number of companies going public at any given time will depend on market cycles.
 
 ```python
 obb.equity.calendar.ipo(provider="nasdaq", status="upcoming").to_df()
@@ -292,7 +293,7 @@ obb.equity.calendar.ipo(provider="nasdaq", status="withdrawn").to_df().tail(3)
 
 ### SPO
 
-SPOs, secondary pubic offerings, are shares being sold by investors after an IPO.  The money does not go to the company, but directly to the investor selling shares into the market.  The `openbb-nasdaq` provider has an additional boolean parameter, `is_spo`.  By default, year-to-date data is returned.
+SPOs, secondary pubic offerings, are shares being sold by investors after an IPO. The money does not go to the company, but directly to the investor selling shares into the market. The `openbb-nasdaq` provider has an additional boolean parameter, `is_spo`. By default, year-to-date data is returned.
 
 ```python
 obb.equity.calendar.ipo(provider="nasdaq", is_spo=True).to_df().tail(1)
