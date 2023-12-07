@@ -76,3 +76,14 @@ async def treasury_auctions(
 ) -> OBBject[BaseModel]:
     """Government Treasury Auctions."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(model="TreasuryPrices")
+async def treasury_prices(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Government Treasury Prices by date."""
+    return await OBBject.from_query(Query(**locals()))
