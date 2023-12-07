@@ -130,8 +130,8 @@ export default function DocSidebarItemCategory({
     const isProPage = location.pathname.startsWith("/pro");
     const isExcelPage = location.pathname.startsWith("/excel");
 
-    // Hide the OpenBB Terminal Pro section if we're not on a /pro page
-    if (item.customProps?.hiddenByDefault && !isProPage && !isExcelPage) {
+    // Hide the OpenBB Terminal Pro section if we're not on a /pro or /excel page
+    if (item.customProps?.hiddenByDefault && !(isProPage || isExcelPage)) {
       return null;
     }
 
