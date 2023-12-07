@@ -21,6 +21,7 @@ from openbb_core.app.utils import (
     get_target_column,
     get_target_columns,
     df_to_basemodel,
+    dict_to_basemodel,
 )
 from openbb_core.provider.abstract.data import Data
 from pydantic import PositiveInt
@@ -567,13 +568,13 @@ def variance_inflation_factor(
     # Add a constant
     df = add_constant(dataset if columns is None else dataset[columns])
 
-    # Remove date and string type because VIF doesn't work for this type
+    # Remove date and string type because VIF doesn't work for these types
     df = df.select_dtypes(exclude=["object", "datetime", "timedelta"])
 
     # Calculate the VIF values
-    vif_values = pd.DataFrame(
-        {"VIF Values": [vif(df.values, i) for i in range(df.shape[1])][1:]},
-        index=df.columns[1:],
-    )
-    results = {"results": df_to_basemodel(vif_values)}
+    vif_values = {}
+    for i in range(len(df.columns))[1:]:
+        vif_values[f"{df.columns[i]}"] = vif(df.values, i)
+
+    results = df_to_basemodel(pd.DataFrame(vif_values, index=[0]))
     return OBBject(results=results)
