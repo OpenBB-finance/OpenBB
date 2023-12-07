@@ -143,7 +143,12 @@ async def amake_requests(
             *[amake_request(url, session=session, **kwargs) for url in urls],
             return_exceptions=True,
         ):
-            if isinstance(result, Exception) or not result:
+            is_exception = isinstance(result, Exception)
+
+            if is_exception and kwargs.get("raise_for_status", False):
+                raise result
+
+            if is_exception or not result:
                 continue
 
             results.extend(  # type: ignore

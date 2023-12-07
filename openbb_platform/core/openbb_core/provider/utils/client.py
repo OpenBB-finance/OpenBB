@@ -5,14 +5,15 @@ import random
 import re
 import warnings
 import zlib
-from typing import Any, Dict, Union
+from typing import Any, Dict, Type, Union
 
 import aiohttp
+from multidict import CIMultiDict, CIMultiDictProxy, MultiDict
 
 FILTER_QUERY_REGEX = r".*key.*|.*token.*|.*auth.*|(c$)"
 
 
-def obfuscate(params: dict) -> dict:
+def obfuscate(params: Union[CIMultiDict[str], MultiDict[str]]) -> Dict[str, Any]:
     """Obfuscate sensitive information."""
     return {
         param: "********" if re.match(FILTER_QUERY_REGEX, param, re.IGNORECASE) else val
@@ -48,7 +49,7 @@ class ClientResponse(aiohttp.ClientResponse):
     ) -> aiohttp.RequestInfo:
         """Remove sensitive information from request info."""
         query = obfuscate(request_info.url.query.copy())
-        headers = obfuscate(request_info.headers.copy())
+        headers = CIMultiDictProxy(CIMultiDict(obfuscate(request_info.headers.copy())))
         url = request_info.url.with_query(query)
 
         return aiohttp.RequestInfo(url, request_info.method, headers, url)
@@ -59,7 +60,7 @@ class ClientResponse(aiohttp.ClientResponse):
 
 
 class ClientSession(aiohttp.ClientSession):
-    _response_class: ClientResponse
+    _response_class: Type[ClientResponse]
     _session: "ClientSession"
 
     def __init__(self, *args, **kwargs):
@@ -77,11 +78,11 @@ class ClientSession(aiohttp.ClientSession):
         if not self.closed:
             asyncio.create_task(self.close())
 
-    async def get(self, url: str, **kwargs) -> ClientResponse:
+    async def get(self, url: str, **kwargs) -> ClientResponse:  # type: ignore
         """Send GET request."""
         return await self.request("GET", url, **kwargs)
 
-    async def post(self, url: str, **kwargs) -> ClientResponse:
+    async def post(self, url: str, **kwargs) -> ClientResponse:  # type: ignore
         """Send POST request."""
         return await self.request("POST", url, **kwargs)
 
@@ -100,7 +101,7 @@ class ClientSession(aiohttp.ClientSession):
 
         return data
 
-    async def request(
+    async def request(  # type: ignore
         self, *args, raise_for_status: bool = False, **kwargs
     ) -> ClientResponse:
         """Send request."""
@@ -126,8 +127,6 @@ class ClientSession(aiohttp.ClientSession):
         if encoding in ("gzip", "deflate") and not self.auto_decompress:
             response_body = await response.read()
             wbits = 16 + zlib.MAX_WBITS if encoding == "gzip" else -zlib.MAX_WBITS
-            response._body = zlib.decompress(
-                response_body, wbits
-            )  # pylint: disable=protected-access
+            response._body = zlib.decompress(response_body, wbits)
 
-        return response
+        return response  # type: ignore
