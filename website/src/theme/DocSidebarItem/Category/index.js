@@ -135,6 +135,11 @@ export default function DocSidebarItemCategory({
       return null;
     }
 
+    // Temporary, remove to show Excel tab
+    if (item.customProps?.onlyDirectAccess && !isExcelPage) {
+      return null;
+    }
+
   return (
     <li
       className={clsx(
