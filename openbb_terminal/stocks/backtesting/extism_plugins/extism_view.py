@@ -21,7 +21,7 @@ from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.backtesting.extism_plugins import extism_model
 
 import extism
-from extism import Plugin, Function, ValType, host_fn, set_log_file
+from extism import Plugin, host_fn, set_log_file
 
 
 logger = logging.getLogger(__name__)

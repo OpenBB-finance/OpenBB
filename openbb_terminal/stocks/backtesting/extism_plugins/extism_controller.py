@@ -3,14 +3,14 @@ __docformat__ = "numpy"
 
 import argparse
 import logging
-from typing import List, Optional
+from typing import List, Optional, Annotated
 
 import matplotlib as mpl
 import pandas as pd
 import pandas_ta as ta
 
 import extism
-from extism import Plugin, Function, ValType, host_fn, set_log_file
+from extism import Plugin, host_fn, Json
 
 import json
 
@@ -41,11 +41,8 @@ logger = logging.getLogger(__name__)
 mpl.use(default_backend)
 
 def ema(data, params):
-    #print(data)
     length = params['periods']
-    print(length)
     ema = ta.ema(data, length)
-    #print(ema)
     return ema
 
 def get_frame(req):
@@ -64,19 +61,11 @@ def make_response(ema_result):
     return json_response
 
 def handle_request(req):
-    # print(req['name'])
-    # print(req['prices'])
-    # print(req['params'])
-
     df = get_frame(req)
-    print(df)
-
     params = json.loads(req['params'])
-    print(params)
 
     if req['name'] == 'ema':
         ema_result = ema(df['prices'], params)
-        #print(ema_result)
         json_response = make_response(ema_result)
         return json_response
 
@@ -84,38 +73,27 @@ def handle_request(req):
         rsi_result = rsi(df['prices'], params)
         json_response = make_response(rsi_result)
         return json_response
-
     
     return nil
 
-@host_fn
-def get_ta(plugin, input_, output, a_string):
-    console.print("Host Function called: get_ta")
-    req = json.loads(plugin.input_string(input_[0]))
-    rep = handle_request(req)
-    console.print(rep)
-    plugin.return_string(output[0], rep)
+# setup our Host Function for the plugin to request various technical indicators
+@host_fn()
+def get_ta(input: Annotated[dict, Json]) -> str:
+    req = input
+    rep = handle_request(input)
+    return rep
 
-hostfuncs = [
-    Function(
-        "get_ta",
-        [ValType.I64],
-        [ValType.I64],
-        get_ta,
-        None
-    ),
-]
-
+# configure strategy backed by an Extism plugin loaded from a URL
 plugin_manifests = {
-    "ema": { "wasm": [{"url": "https://modsurfer.dylibso.workers.dev/api/v1/module/4738fbe83e5a1d2ce3842759722165d79870886e01a9371715807002cb711446.wasm"}]},
+    "ema": { "wasm": [{"url": "https://cdn.modsurfer.dylibso.com/api/v1/module/e5bad87f199010c70e7644654c4bb6ce0fa37b66f03343b1bf0d1fddbb05e12e.wasm"}]},
 }
 
+# a little plugin registry
 plugins = {}
 
-# instantiate plugins
+# instantiate plugins and load them in the registry
 for name,manifest in plugin_manifests.items():
-    plugins[name] = Plugin(manifest, functions=hostfuncs)
-    #console.print(plugins[name])
+    plugins[name] = Plugin(manifest)
 
 
 def no_data_message():

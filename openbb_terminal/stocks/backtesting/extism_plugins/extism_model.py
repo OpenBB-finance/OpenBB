@@ -10,7 +10,8 @@ import pandas_ta as ta
 import yfinance as yf
 
 import extism
-from extism import Plugin, Function, ValType, host_fn, set_log_file
+from extism import Plugin, host_fn, set_log_file
+
 import datetime
 
 import json
@@ -120,39 +121,25 @@ def run_strategy(plugin, name: str, symbol: str, data: pd.DataFrame, **kwargs) -
     prices = pd.DataFrame(data[close_col])
     prices.columns = [symbol]
 
-    #console.print(prices)
-
+     # build up the request to the plugin
     json_string = prices.to_json()
     req = json.loads(json_string)
-
-    #console.print(symbol)
-    #console.print(req)
-
     req['prices'] = req.pop(symbol)
-    #console.print(req)
-
     req.update({"params": kwargs})
-    #print(req)
     req = json.dumps(req) 
-    #console.print(req)
 
-    console.print("Calling Extism plugin")
+    # call the plugin
     rep = plugin.call("call", req)
-    #console.print(response)
 
+    # parse the response from the plugin
     signal = json.loads(rep)
     signal = pd.DataFrame(signal)
     signal.index = pd.to_datetime(pd.to_numeric(signal.index), unit='ms').date
     signal.rename(columns={'signal': symbol}, inplace=True)
-
-    console.print(signal)
-    console.print(prices)
-
     merged_data = bt.merge(signal, prices)
     merged_data.columns = ["signal", "price"]
 
-    console.print(merged_data)
-
+    # run the response from the plugin through the backtester
     warnings.simplefilter(action="ignore", category=FutureWarning)
     bt_strategy = bt.Strategy(
         "Strategy", [bt.algos.WeighTarget(signal), bt.algos.Rebalance()]
