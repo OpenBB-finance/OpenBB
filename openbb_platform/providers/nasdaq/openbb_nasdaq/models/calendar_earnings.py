@@ -74,12 +74,16 @@ class NasdaqCalendarEarningsData(CalendarEarningsData):
         mode="before",
         check_fields=False,
     )
+    @classmethod
     def validate_period_ending(cls, v: str):
+        """Validate the date if available meets the %Y-%m convention."""
         v = v.replace("N/A", "")
         return datetime.strptime(v, "%b/%Y").strftime("%Y-%m") if v else None
 
     @field_validator("previous_report_date", mode="before", check_fields=False)
+    @classmethod
     def validate_previous_report_date(cls, v: str):
+        """Validate the date is a date object if available."""
         v = v.replace("N/A", "")
         return datetime.strptime(v, "%m/%d/%Y").date() if v else None
 
@@ -88,7 +92,9 @@ class NasdaqCalendarEarningsData(CalendarEarningsData):
         mode="before",
         check_fields=False,
     )
+    @classmethod
     def validate_reporting_time(cls, v: str):
+        """Validate the time if available does not contain prefixes."""
         return v.replace("time-", "") if v else None
 
     @field_validator(
@@ -100,7 +106,9 @@ class NasdaqCalendarEarningsData(CalendarEarningsData):
         mode="before",
         check_fields=False,
     )
+    @classmethod
     def validate_numbers(cls, v: str):
+        """Validate the numbers are floats."""
         v = (
             v.replace("N/A", "")
             .replace("$", "")
@@ -115,7 +123,9 @@ class NasdaqCalendarEarningsData(CalendarEarningsData):
         mode="before",
         check_fields=False,
     )
+    @classmethod
     def validate_surprise_percent(cls, v: str):
+        """Validate the percent are normalized floats."""
         v = v.replace("N/A", "")
         return float(v) * 0.01 if v else None
 
@@ -144,8 +154,8 @@ class NasdaqCalendarEarningsFetcher(
 
     @staticmethod
     def extract_data(
-        query: NasdaqCalendarEarningsQueryParams,
-        credentials: Optional[Dict[str, str]],  # pylint: disable=unused-argument
+        query: NasdaqCalendarEarningsQueryParams,  # pylint: disable=unused-argument
+        credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Nasdaq endpoint."""
