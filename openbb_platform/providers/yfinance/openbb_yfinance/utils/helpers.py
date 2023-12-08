@@ -52,7 +52,7 @@ def get_futures_curve(symbol: str, date: Optional[dateType]) -> pd.DataFrame:
         future_symbol = (
             f"{symbol}{MONTHS[future.month]}{str(future.year)[-2:]}.{exchange}"
         )
-        data = yf.download(future_symbol, progress=False, ignore_tz=True)
+        data = yf.download(future_symbol, progress=False, ignore_tz=True, threads=False)
 
         if data.empty:
             empty_count += 1
@@ -131,6 +131,7 @@ def yf_download(
             repair=repair,
             rounding=rounding,
             group_by=group_by,
+            threads=False,
             **kwargs,
         )
     except ValueError:
@@ -149,7 +150,6 @@ def yf_download(
             _data = pd.concat([_data, temp])
         _data = _data.set_index(["date", "symbol"]).sort_index()
         data = _data
-
     if not data.empty:
         data = data.reset_index()
         data = data.rename(columns={"Date": "date", "Datetime": "date"})
