@@ -43,6 +43,7 @@ def test_index_constituents(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "provider": "fmp",
+                "sort": "desc",
             }
         ),
         (
@@ -71,6 +72,7 @@ def test_index_constituents(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "timeseries": 1,
+                "sort": "desc",
             }
         ),
         (
@@ -81,6 +83,7 @@ def test_index_constituents(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "timeseries": 1,
+                "sort": "desc",
             }
         ),
         (

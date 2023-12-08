@@ -84,7 +84,7 @@ class PolygonCompanyNewsFetcher(
         return PolygonCompanyNewsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: PolygonCompanyNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -113,7 +113,7 @@ class PolygonCompanyNewsFetcher(
 
         url = f"{base_url}?{query_str}&apiKey={api_key}"
 
-        return get_data_many(url, "results", **kwargs)
+        return await get_data_many(url, "results", **kwargs)
 
     @staticmethod
     def transform_data(

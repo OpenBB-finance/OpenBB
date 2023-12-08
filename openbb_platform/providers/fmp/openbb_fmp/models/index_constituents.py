@@ -61,7 +61,7 @@ class FMPIndexConstituentsFetcher(
         return FMPIndexConstituentsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPIndexConstituentsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -72,7 +72,7 @@ class FMPIndexConstituentsFetcher(
         base_url = "https://financialmodelingprep.com/api/v3"
         url = f"{base_url}/{query.index}_constituent/?apikey={api_key}"
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
