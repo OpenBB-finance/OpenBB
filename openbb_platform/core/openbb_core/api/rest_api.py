@@ -26,7 +26,7 @@ async def lifespan(_: FastAPI):
     banner = rf"""
 
                    ███╗
-  █████████████████╔══█████████████████╗       OpenBB Platform {system.version}
+  █████████████████╔══█████████████████╗       OpenBB Platform v{system.version}
   ███╔══════════███║  ███╔══════════███║
   █████████████████║  █████████████████║       Authentication: {auth}
   ╚═════════════███║  ███╔═════════════╝
