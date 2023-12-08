@@ -13,7 +13,7 @@ from openbb_intrinio.utils.helpers import (
     get_data_one,
     intrinio_fundamentals_session,
 )
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 
 
 class IntrinioCashFlowStatementQueryParams(CashFlowStatementQueryParams):
@@ -219,6 +219,12 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
     cash_interest_paid: Optional[float] = Field(
         default=None, description="Cash Interest Paid"
     )
+
+    @model_validator(mode="before")
+    @classmethod
+    def replace_zero(cls, values):  # pylint: disable=no-self-argument
+        """Check for zero values and replace with None."""
+        return {k: None if v == 0 else v for k, v in values.items()}
 
 
 class IntrinioCashFlowStatementFetcher(
