@@ -107,6 +107,6 @@ def get_news(
     df["published"] = pd.to_datetime(df["published"])
     df = df.sort_values(by=[sort], ascending=False)
     df = df[["published", "title", "link"]]
-    df.columns = ["Date", "Description", "URL"]
+    df.columns = ["Date", "Description - proof of comma splicing fix", "URL"]
     df = df[:limit]
     return df
