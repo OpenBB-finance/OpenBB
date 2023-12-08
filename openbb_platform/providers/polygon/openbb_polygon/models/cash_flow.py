@@ -21,9 +21,7 @@ class PolygonCashFlowStatementQueryParams(CashFlowStatementQueryParams):
 
     __alias_dict__ = {"symbol": "ticker", "period": "timeframe"}
 
-    period: Literal["annual", "quarter"] = Field(
-        default="annual"
-    )
+    period: Literal["annual", "quarter"] = Field(default="annual")
 
     filing_date: Optional[dateType] = Field(
         default=None, description="Filing date of the financial statement."
@@ -98,11 +96,9 @@ class PolygonCashFlowStatementData(CashFlowStatementData):
     net_cash_flow_continuing: Optional[int] = Field(
         description="Net cash flow continuing.", default=None
     )
-    net_cash_flow: Optional[int] = Field(
-        description="Net cash flow.", default=None
-    )
+    net_cash_flow: Optional[int] = Field(description="Net cash flow.", default=None)
 
- 
+
 class PolygonCashFlowStatementFetcher(
     Fetcher[
         PolygonCashFlowStatementQueryParams,
