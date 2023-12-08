@@ -40,4 +40,4 @@ class CashFlowStatementData(Data):
     """Cash Flow Statement Data."""
 
     period_ending: dateType = Field(description="The end date of the reporting period.")
-    fiscal_period: str = Field(description="The fiscal period of the repor.")
+    fiscal_period: Optional[str] = Field(description="The fiscal period of the report.", default=None)
