@@ -155,7 +155,6 @@ def test_equity_calendar_earnings(params, headers):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "period": "annual", "limit": 12, "provider": "fmp"}),
         (
             {
                 "provider": "intrinio",
@@ -192,7 +191,6 @@ def test_equity_calendar_earnings(params, headers):
                 "period": "annual",
                 "limit": 12,
                 "provider": "fmp",
-                "cik": "0000320193",
             }
         ),
         (
