@@ -1,14 +1,18 @@
 """Coverage module."""
+from openbb_core.api.router.helpers.coverage_helpers import get_route_schema_map
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 
 
 class Coverage:
-    """/coverage
+    """Coverage class.
 
-    providers
-    commands
-    command_model
+    /coverage
+
+        providers
+        commands
+        command_model
+        command_schemas
     """
 
     def __init__(self):
@@ -39,3 +43,8 @@ class Coverage:
             ]
             for command in self._command_map.commands_model  # pylint: disable=C0206
         }
+
+    @property
+    def command_schemas(self):
+        """Return route schema."""
+        return get_route_schema_map(self._command_map.commands_model)

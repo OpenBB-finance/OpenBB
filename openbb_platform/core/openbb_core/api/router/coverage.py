@@ -1,6 +1,7 @@
 """Coverage API router."""
 from fastapi import APIRouter, Depends
 from openbb_core.api.dependency.coverage import get_command_map, get_provider_interface
+from openbb_core.api.router.helpers.coverage_helpers import get_route_schema_map
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 from typing_extensions import Annotated
@@ -34,3 +35,12 @@ async def get_command_coverage(
 ):
     """Get command coverage."""
     return command_map.command_coverage
+
+
+@router.get("/command_schemas")
+async def get_command_schemas(
+    command_map: Annotated[CommandMap, Depends(get_command_map)],
+):
+    """Get route schema."""
+    command_model_map = command_map.commands_model
+    return get_route_schema_map(command_model_map)  # type: ignore
