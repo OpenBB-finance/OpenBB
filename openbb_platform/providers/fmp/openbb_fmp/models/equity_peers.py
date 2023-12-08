@@ -35,7 +35,7 @@ class FMPEquityPeersFetcher(
         return FMPEquityPeersQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPEquityPeersQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -44,7 +44,7 @@ class FMPEquityPeersFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
         url = create_url(4, "stock_peers", api_key, query)
 
-        return get_data_one(url, **kwargs)
+        return await get_data_one(url, **kwargs)
 
     @staticmethod
     def transform_data(
