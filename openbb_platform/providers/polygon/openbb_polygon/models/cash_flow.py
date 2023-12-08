@@ -78,11 +78,19 @@ class PolygonCashFlowStatementData(CashFlowStatementData):
     net_cash_flow_from_operating_activities_continuing: Optional[int] = Field(
         description="Net cash flow from operating activities continuing.", default=None
     )
+    net_cash_flow_from_operating_activities_discontinued: Optional[int] = Field(
+        description="Net cash flow from operating activities discontinued.",
+        default=None,
+    )
     net_cash_flow_from_operating_activities: Optional[int] = Field(
         description="Net cash flow from operating activities.", default=None
     )
     net_cash_flow_from_investing_activities_continuing: Optional[int] = Field(
         description="Net cash flow from investing activities continuing.", default=None
+    )
+    net_cash_flow_from_investing_activities_discontinued: Optional[int] = Field(
+        description="Net cash flow from investing activities discontinued.",
+        default=None,
     )
     net_cash_flow_from_investing_activities: Optional[int] = Field(
         description="Net cash flow from investing activities.", default=None
@@ -90,11 +98,21 @@ class PolygonCashFlowStatementData(CashFlowStatementData):
     net_cash_flow_from_financing_activities_continuing: Optional[int] = Field(
         description="Net cash flow from financing activities continuing.", default=None
     )
+    net_cash_flow_from_financing_activities_discontinued: Optional[int] = Field(
+        description="Net cash flow from financing activities discontinued.",
+        default=None,
+    )
     net_cash_flow_from_financing_activities: Optional[int] = Field(
         description="Net cash flow from financing activities.", default=None
     )
     net_cash_flow_continuing: Optional[int] = Field(
         description="Net cash flow continuing.", default=None
+    )
+    net_cash_flow_discontinued: Optional[int] = Field(
+        description="Net cash flow discontinued.", default=None
+    )
+    exchange_gains_losses: Optional[int] = Field(
+        description="Exchange gains losses.", default=None
     )
     net_cash_flow: Optional[int] = Field(description="Net cash flow.", default=None)
 

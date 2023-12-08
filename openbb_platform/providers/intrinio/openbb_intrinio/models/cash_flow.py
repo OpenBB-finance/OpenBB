@@ -8,10 +8,7 @@ from openbb_core.provider.standard_models.cash_flow import (
     CashFlowStatementQueryParams,
 )
 from openbb_core.provider.utils.helpers import ClientResponse, amake_requests
-from openbb_intrinio.utils.helpers import (
-    get_data_one,
-    intrinio_fundamentals_session,
-)
+from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import Field, field_validator, model_validator
 
 
@@ -23,10 +20,6 @@ class IntrinioCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     """
 
     period: Literal["annual", "quarter", "ttm", "ytd"] = Field(default="annual")
-    use_cache: Optional[bool] = Field(
-        default=True,
-        description="If true, use cached data. Cache expires after one day.",
-    )
 
     @field_validator("symbol", mode="after", check_fields=False)
     @classmethod
@@ -256,9 +249,7 @@ class IntrinioCashFlowStatementFetcher(
 
         base_url = "https://api-v2.intrinio.com"
         fundamentals_data: Dict = {}
-        data: List[Dict] = []
 
-        fundamentals_url_params = f"statement_code={statement_code}&type={period_type}"
         fundamentals_url = (
             f"{base_url}/companies/{query.symbol}/fundamentals?"
             f"statement_code={statement_code}&type={period_type}&api_key={api_key}"
@@ -277,8 +268,9 @@ class IntrinioCashFlowStatementFetcher(
             """Return the response."""
             statement_data = await response.json()
             return {
-                "date": statement_data["fundamental"]["end_date"],
-                "period": statement_data["fundamental"]["fiscal_period"],
+                "period_ending": statement_data["fundamental"]["end_date"],
+                "fiscal_period": statement_data["fundamental"]["fiscal_period"],
+                "fiscal_year": statement_data["fundamental"]["fiscal_year"],
                 "financials": statement_data["standardized_financials"],
             }
 

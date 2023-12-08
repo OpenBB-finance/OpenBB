@@ -1,9 +1,11 @@
 """FMP Balance Sheet Model."""
 
-
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.balance_sheet import (
     BalanceSheetData,
@@ -21,75 +23,81 @@ class FMPBalanceSheetQueryParams(BalanceSheetQueryParams):
     """
 
     period: Optional[Literal["annual", "quarter"]] = Field(
-        default="quarter",
+        default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
     )
-    cik: Optional[str] = Field(
-        default=None,
-        description="Central Index Key (CIK) of the company.",
-    )
-
-    @model_validator(mode="before")
-    @classmethod
-    def check_symbol_or_cik(cls, values):  # pylint: disable=no-self-argument
-        """Check if symbol or cik is provided."""
-        if values.get("symbol") is None and values.get("cik") is None:
-            raise ValueError("symbol or cik must be provided")
-        return values
 
 
 class FMPBalanceSheetData(BalanceSheetData):
     """FMP Balance Sheet Data."""
 
     __alias_dict__ = {
-        "currency": "reportedCurrency",
-        "current_assets": "totalCurrentAssets",
-        "non_current_assets": "totalNonCurrentAssets",
-        "assets": "totalAssets",
-        "current_liabilities": "totalCurrentLiabilities",
-        "non_current_liabilities": "totalNonCurrentLiabilities",
-        "liabilities": "totalLiabilities",
-        "other_stockholder_equity": "othertotalStockholdersEquity",
+        "period_ending": "date",
+        "fiscal_period": "period",
+        "fiscal_year": "calendarYear",
         "filing_date": "fillingDate",
+        "accepted_date": "acceptedDate",
+        "currency": "reportedCurrency",
+        "cash_and_cash_equivalents": "cashAndCashEquivalents",
+        "short_term_investments": "shortTermInvestments",
+        "cash_and_short_term_investments": "cashAndShortTermInvestments",
+        "net_receivables": "netReceivables",
+        "inventory": "inventory",
+        "other_current_assets": "otherCurrentAssets",
+        "current_assets": "totalCurrentAssets",
+        "property_plant_equipment_net": "propertyPlantEquipmentNet",
+        "goodwill": "goodwill",
+        "intangible_assets": "intangibleAssets",
+        "goodwill_and_intangible_assets": "goodwillAndIntangibleAssets",
+        "long_term_investments": "longTermInvestments",
+        "tax_assets": "taxAssets",
+        "other_non_current_assets": "otherNonCurrentAssets",
+        "non_current_assets": "totalNonCurrentAssets",
+        "other_assets": "otherAssets",
+        "total_assets": "totalAssets",
+        "account_payables": "accountPayables",
+        "short_term_debt": "shortTermDebt",
+        "tax_payables": "taxPayables",
+        "deferred_revenue": "deferredRevenue",
+        "other_current_liabilities": "otherCurrentLiabilities",
+        "current_liabilities": "totalCurrentLiabilities",
+        "long_term_debt": "longTermDebt",
+        "deferred_revenue_non_current": "deferredRevenueNonCurrent",
+        "deferred_tax_liabilities_non_current": "deferredTaxLiabilitiesNonCurrent",
+        "other_non_current_liabilities": "otherNonCurrentLiabilities",
+        "non_current_liabilities": "totalNonCurrentLiabilities",
+        "other_liabilities": "otherLiabilities",
+        "capital_lease_obligations": "capitalLeaseObligations",
+        "liabilities": "totalLiabilities",
+        "preferred_stock": "preferredStock",
+        "common_stock": "commonStock",
+        "retained_earnings": "retainedEarnings",
+        "accumulated_other_comprehensive_income_loss": "accumulatedOtherComprehensiveIncomeLoss",
+        "other_stock_holders_equity": "otherStockholdersEquity",
+        "other_total_stock_holders_equity": "othertotalStockholdersEquity",
+        "total_stock_holders_equity": "totalStockholdersEquity",
+        "total_equity": "totalEquity",
+        "total_liabilities_and_stock_holders_equity": "totalLiabilitiesAndStockholdersEquity",
+        "minority_interest": "minorityInterest",
+        "total_liabilities_and_total_equity": "totalLiabilitiesAndTotalEquity",
+        "total_investments": "totalInvestments",
+        "total_debt": "totalDebt",
+        "net_debt": "netDebt",
+        "link": "link",
+        "final_link": "finalLink",
     }
 
-    # Leftovers below
-    calendar_year: Optional[ForceInt] = Field(default=None, description="Calendar Year")
-
-    cash_and_short_term_investments: Optional[ForceInt] = Field(
-        default=None, description="Cash and Short Term Investments"
+    fiscal_year: Optional[int] = Field(
+        default=None,
+        description="The fiscal year of the fiscal period.",
     )
-    goodwill_and_intangible_assets: Optional[ForceInt] = Field(
-        default=None, description="Goodwill and Intangible Assets"
+    filing_date: Optional[dateType] = Field(
+        default=None,
+        description="The date when the filing was made.",
     )
-    deferred_revenue_non_current: Optional[ForceInt] = Field(
-        default=None, description="Deferred Revenue Non Current"
-    )
-    total_investments: Optional[ForceInt] = Field(
-        default=None, description="Total Investments"
-    )
-
-    capital_lease_obligations: Optional[ForceInt] = Field(
-        default=None, description="Capital Lease Obligations"
-    )
-    deferred_tax_liabilities_non_current: Optional[ForceInt] = Field(
-        default=None, description="Deferred Tax Liabilities Non Current"
-    )
-    capital_lease_obligations: Optional[ForceInt] = Field(
-        default=None, description="Capital lease obligations"
-    )
-    total_investments: Optional[ForceInt] = Field(
-        default=None, description="Total investments"
-    )
-    total_debt: Optional[ForceInt] = Field(default=None, description="Total debt")
-    net_debt: Optional[ForceInt] = Field(default=None, description="Net debt")
-
-    total_debt: Optional[ForceInt] = Field(default=None, description="Total Debt")
-    net_debt: Optional[ForceInt] = Field(default=None, description="Net Debt")
-
-    link: Optional[str] = Field(default=None, description="Link to the statement.")
-    final_link: Optional[str] = Field(
-        default=None, description="Link to the final statement."
+    accepted_date: Optional[datetime] = Field(
+        default=None,
+        description="The date and time when the filing was accepted.",
     )
 
     @model_validator(mode="before")
@@ -132,4 +140,7 @@ class FMPBalanceSheetFetcher(
         query: FMPBalanceSheetQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPBalanceSheetData]:
         """Return the transformed data."""
+        results = data
+        [result.pop("symbol", None) for result in results]
+        [result.pop("cik", None) for result in results]
         return [FMPBalanceSheetData.model_validate(d) for d in data]
