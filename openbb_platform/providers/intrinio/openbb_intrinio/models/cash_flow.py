@@ -5,9 +5,9 @@ from itertools import repeat
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.financial_statements import (
+from openbb_core.provider.standard_models.cash_flow import (
     CashFlowStatementData,
-    FinancialStatementsQueryParams,
+    CashFlowStatementQueryParams,
 )
 from openbb_intrinio.utils.helpers import (
     get_data_one,
@@ -16,7 +16,7 @@ from openbb_intrinio.utils.helpers import (
 from pydantic import Field, field_validator
 
 
-class IntrinioCashFlowStatementQueryParams(FinancialStatementsQueryParams):
+class IntrinioCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     """Intrinio Cash Flow Statement Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_company_fundamentals_v2
@@ -86,13 +86,7 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
         "free_cash_flow": "freecashflow",
     }
 
-    free_cash_flow: Optional[float] = Field(default=None, description="Free Cash Flow")
-
-    @field_validator("free_cash_flow", mode="after", check_fields=False)
-    @classmethod
-    def coerse_values(cls, v) -> dict:
-        """This coerces free cash flow values to conform with the rest of the data."""
-        return float(round(v))
+    fiscal_year: int = Field(description="The fiscal year of the fiscal period.")
 
 
 class IntrinioCashFlowStatementFetcher(
@@ -123,10 +117,6 @@ class IntrinioCashFlowStatementFetcher(
         if query.period in ["ttm", "ytd"]:
             period_type = query.period.upper()
 
-        data_tags = [
-            "freecashflow",
-        ]
-
         base_url = "https://api-v2.intrinio.com"
         fundamentals_data: Dict = {}
         data: List[Dict] = []
@@ -151,7 +141,6 @@ class IntrinioCashFlowStatementFetcher(
 
         def get_financial_statement_data(period: str, data: List[Dict]) -> None:
             statement_data: Dict = {}
-            calculations_data: List = []
             intrinio_id = f"{query.symbol}-{statement_code}-{period}"
             statement_url = f"{base_url}/fundamentals/{intrinio_id}/standardized_financials?api_key={api_key}"
             statement_data = (
@@ -160,22 +149,12 @@ class IntrinioCashFlowStatementFetcher(
                 else intrinio_fundamentals_session.get(statement_url, timeout=5).json()
             )
 
-            calculations_intrinio_id = f"{query.symbol}-calculations-{period}"
-            calculations_url = f"{base_url}/fundamentals/{calculations_intrinio_id}/standardized_financials?api_key={api_key}"  # noqa E501
-            calculations_data = get_data_one(calculations_url, **kwargs)
-            calculations_data = [
-                item
-                for item in calculations_data.get("standardized_financials", [])
-                if item["data_tag"]["tag"] in data_tags
-            ]
-
             data.append(
                 {
                     "period_ending": statement_data["fundamental"]["end_date"],
                     "fiscal_year": statement_data["fundamental"]["fiscal_year"],
                     "fiscal_period": statement_data["fundamental"]["fiscal_period"],
-                    "financials": statement_data["standardized_financials"]
-                    + calculations_data,
+                    "financials": statement_data["standardized_financials"],
                 }
             )
 

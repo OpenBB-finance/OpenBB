@@ -7,7 +7,6 @@ from datetime import (
 )
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.cash_flow import (
     CashFlowStatementData,
@@ -28,76 +27,55 @@ class FMPCashFlowStatementQueryParams(CashFlowStatementQueryParams):
         default="quarter",
         description=QUERY_DESCRIPTIONS.get("period", ""),
     )
-    cik: Optional[str] = Field(
-        default=None, description="Central Index Key (CIK) of the company."
-    )
-
-    @model_validator(mode="before")
-    @classmethod
-    def check_symbol_or_cik(cls, values):  # pylint: disable=no-self-argument
-        """Validate that either a symbol or CIK is provided."""
-        if values.get("symbol") is None and values.get("cik") is None:
-            raise ValueError("symbol or cik must be provided")
-        return values
 
 
 class FMPCashFlowStatementData(CashFlowStatementData):
     """FMP Cash Flow Statement Data."""
 
     __alias_dict__ = {
+        "period_ending": "date",
+        "fiscal_period": "period",
+        "fiscal_year": "calendarYear",
+        "filing_date": "fillingDate",
+        "accepted_date": "acceptedDate",
         "reported_currency": "reportedCurrency",
-        "net_cash_used_for_investing_activities": "netCashUsedForInvestingActivites",
-        "other_financing_activities": "otherFinancingActivites",
+        "net_income": "netIncome",
+        "depreciation_and_amortization": "depreciationAndAmortization",
+        "deferred_income_tax": "deferredIncomeTax",
+        "stock_based_compensation": "stockBasedCompensation",
+        "change_in_working_capital": "changeInWorkingCapital",
+        "accounts_receivables": "accountsReceivables",
+        "inventory": "inventory",
+        "accounts_payables": "accountsPayables",
+        "other_working_capital": "otherWorkingCapital",
+        "other_non_cash_items": "otherNonCashItems",
         "net_cash_flow_from_operating_activities": "netCashProvidedByOperatingActivities",
+        "investments_in_property_plant_and_equipment": "investmentsInPropertyPlantAndEquipment",
+        "acquisitions_net": "acquisitionsNet",
         "purchases_of_marketable_securities": "purchasesOfInvestments",
         "sales_from_maturities_of_investments": "salesMaturitiesOfInvestments",
-        "payments_from_acquisitions": "acquisitionsNet",
-        "net_cash_flow_from_investing_activities": "netCashUsedForInvestingActivites",
-        "net_cash_flow_from_financing_activities": "netCashUsedProvidedByFinancingActivities",
         "other_investing_activities": "otherInvestingActivites",
+        "net_cash_flow_from_investing_activities": "netCashUsedForInvestingActivites",
+        "debt_repayment": "debtRepayment",
+        "common_stock_issued": "commonStockIssued",
+        "common_stock_repurchased": "commonStockRepurchased",
+        "dividends_paid": "dividendsPaid",
+        "other_financing_activities": "otherFinancingActivites",
+        "net_cash_flow_from_financing_activities": "netCashUsedProvidedByFinancingActivities",
+        "effect_of_exchange_rate_changes_on_cash": "effectOfForexChangesOnCash",
+        "net_change_in_cash": "netChangeInCash",
+        "cash_at_beginning_of_period": "cashAtBeginningOfPeriod",
+        "cash_at_end_of_period": "cashAtEndOfPeriod",
+        "operating_cash_flow": "operatingCashFlow",
+        "capital_expenditure": "capitalExpenditure",
+        "free_cash_flow": "freeCashFlow",
+        "link": "link",
+        "final_link": "finalLink",
     }
 
-    reported_currency: str = Field(description="Reported currency in the statement.")
-    filling_date: dateType = Field(description="Filling date.")
-    accepted_date: datetime = Field(description="Accepted date.")
-    calendar_year: Optional[ForceInt] = Field(
-        default=None, description="Calendar year."
-    )
-
-    change_in_working_capital: Optional[ForceInt] = Field(
-        default=None, description="Change in working capital."
-    )
-    other_working_capital: Optional[ForceInt] = Field(
-        default=None, description="Other working capital."
-    )
-    common_stock_issued: Optional[ForceInt] = Field(
-        default=None, description="Common stock issued."
-    )
-    effect_of_forex_changes_on_cash: Optional[ForceInt] = Field(
-        default=None, description="Effect of forex changes on cash."
-    )
-
-    cash_at_beginning_of_period: Optional[ForceInt] = Field(
-        default=None, description="Cash at beginning of period."
-    )
-    cash_at_end_of_period: Optional[ForceInt] = Field(
-        default=None,
-        description="Cash, cash equivalents, and restricted cash at end of period",
-    )
-    operating_cash_flow: Optional[ForceInt] = Field(
-        default=None, description="Operating cash flow."
-    )
-    capital_expenditure: Optional[ForceInt] = Field(
-        default=None, description="Capital expenditure."
-    )
-    free_cash_flow: Optional[ForceInt] = Field(
-        default=None, description="Free cash flow."
-    )
-
-    link: Optional[str] = Field(default=None, description="Link to the statement.")
-    final_link: Optional[str] = Field(
-        default=None, description="Link to the final statement."
-    )
+    fiscal_year: int = Field(description="The fiscal year of the fiscal period.")
+    filing_date: dateType = Field(description="The date of the filing.")
+    accepted_date: datetime = Field(description="The date the filing was accepted.")
 
     @model_validator(mode="before")
     @classmethod
@@ -139,4 +117,7 @@ class FMPCashFlowStatementFetcher(
         query: FMPCashFlowStatementQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPCashFlowStatementData]:
         """Return the transformed data."""
-        return [FMPCashFlowStatementData.model_validate(d) for d in data]
+        results = data
+        [result.pop("symbol", None) for result in results]
+        [result.pop("cik", None) for result in results]
+        return [FMPCashFlowStatementData.model_validate(d) for d in results]
