@@ -32,7 +32,8 @@ export default function NewReferenceCard({
         {
           "hover:bg-[#669DCB] border-[#669DCB] dark:hover:bg-[#004A87] dark:border-[#004A87]":
             cleanedPath.startsWith("/terminal") ||
-            cleanedPath.startsWith("/pro"),
+            cleanedPath.startsWith("/pro") ||
+            cleanedPath.startsWith("/excel"),
           "hover:bg-[#b186bb] border-[#b186bb] dark:hover:bg-[#3a204f] dark:border-[#3a204f]":
             cleanedPath.startsWith("/bot"),
           "hover:bg-[#F5B166] border-[#F5B166] dark:hover:bg-[#511d11] dark:border-[#511d11]":
@@ -41,6 +42,7 @@ export default function NewReferenceCard({
           header_docs:
             !cleanedPath.startsWith("/terminal") &&
             !cleanedPath.startsWith("/pro") &&
+            !cleanedPath.startsWith("/excel") &&
             !cleanedPath.startsWith("/sdk") &&
             !cleanedPath.startsWith("/platform") &&
             !cleanedPath.startsWith("/bot"),
