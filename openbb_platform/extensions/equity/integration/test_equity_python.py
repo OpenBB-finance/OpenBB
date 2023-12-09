@@ -28,7 +28,6 @@ def obb(pytestconfig):
                 "symbol": "AAPL",
                 "period": "annual",
                 "limit": 2,
-                "use_cache": False,
             }
         ),
         (
@@ -58,7 +57,6 @@ def obb(pytestconfig):
                 "period": "annual",
                 "limit": 12,
                 "provider": "fmp",
-                "cik": "0000320193",
             }
         ),
         (
@@ -146,7 +144,6 @@ def test_equity_calendar_earnings(params, obb):
                 "symbol": "AAPL",
                 "period": "annual",
                 "limit": 2,
-                "use_cache": False,
             }
         ),
         (
@@ -298,7 +295,6 @@ def test_equity_estimates_historical(params, obb):
                 "symbol": "AAPL",
                 "period": "annual",
                 "limit": 2,
-                "use_cache": False,
             }
         ),
         (
@@ -328,7 +324,6 @@ def test_equity_estimates_historical(params, obb):
                 "symbol": "AAPL",
                 "limit": 12,
                 "period": "annual",
-                "cik": "0000320193",
             }
         ),
         (

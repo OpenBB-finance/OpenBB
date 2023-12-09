@@ -9,8 +9,6 @@ from datetime import (
 from io import StringIO
 from typing import Any, Dict, List, Optional, TypeVar, Union
 
-import requests_cache
-from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
@@ -20,11 +18,6 @@ from openbb_core.provider.utils.helpers import (
 from pydantic import BaseModel
 
 T = TypeVar("T", bound=BaseModel)
-
-cache_dir = get_user_cache_directory()
-intrinio_fundamentals_session = requests_cache.CachedSession(
-    f"{cache_dir}/http/intrinio_fundamentals", expire_after=timedelta(days=1)
-)
 
 
 class BasicResponse:
