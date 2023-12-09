@@ -355,7 +355,6 @@ class IntrinioIncomeStatementData(IncomeStatementData):
     )
 
 
-
 class IntrinioIncomeStatementFetcher(
     Fetcher[
         IntrinioIncomeStatementQueryParams,
