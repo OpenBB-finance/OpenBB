@@ -1,7 +1,5 @@
 """Intrinio Financial Ratios Model."""
 
-from concurrent.futures import ThreadPoolExecutor
-from itertools import repeat
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -10,10 +8,8 @@ from openbb_core.provider.standard_models.financial_ratios import (
     FinancialRatiosQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_intrinio.utils.helpers import (
-    get_data_one,
-    intrinio_fundamentals_session,
-)
+from openbb_core.provider.utils.helpers import ClientResponse, amake_requests
+from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import Field, field_validator
 
 
@@ -27,10 +23,6 @@ class IntrinioFinancialRatiosQueryParams(FinancialRatiosQueryParams):
     period: Literal["annual", "quarter", "ttm", "ytd"] = Field(
         default="annual",
         description=QUERY_DESCRIPTIONS.get("period", ""),
-    )
-    use_cache: Optional[bool] = Field(
-        default=True,
-        description="If true, use cached data. Cache expires after one day.",
     )
 
     @field_validator("symbol", mode="after", check_fields=False)
@@ -148,7 +140,7 @@ class IntrinioFinancialRatiosFetcher(
         return IntrinioFinancialRatiosQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def aextract_data(
         query: IntrinioFinancialRatiosQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -163,7 +155,6 @@ class IntrinioFinancialRatiosFetcher(
             period_type = query.period.upper()
 
         fundamentals_data: Dict = {}
-        data: List[Dict] = []
 
         base_url = "https://api-v2.intrinio.com"
         fundamentals_url_params = f"statement_code={statement_code}&type={period_type}"
@@ -172,38 +163,28 @@ class IntrinioFinancialRatiosFetcher(
             f"{fundamentals_url_params}&api_key={api_key}"
         )
 
-        fundamentals_data_request = (
-            get_data_one(fundamentals_url, **kwargs)
-            if query.use_cache is False
-            else intrinio_fundamentals_session.get(fundamentals_url, timeout=5).json()
+        fundamentals_data = (await get_data_one(fundamentals_url, **kwargs)).get(
+            "fundamentals", []
         )
-        fundamentals_data = fundamentals_data_request.get("fundamentals", [])
         ids = [item["id"] for item in fundamentals_data]
         ids = ids[: query.limit]
 
-        def get_financial_statement_data(id: str, data: List[Dict]) -> None:
-            statement_data: Dict = {}
+        async def callback(response: ClientResponse, _: Any) -> Dict:
+            """Return the response."""
+            statement_data = await response.json()
+            return {
+                "period_ending": statement_data["fundamental"]["end_date"],
+                "fiscal_year": statement_data["fundamental"]["fiscal_year"],
+                "fiscal_period": statement_data["fundamental"]["fiscal_period"],
+                "calculations": statement_data["standardized_financials"],
+            }
 
-            statement_url = f"https://api-v2.intrinio.com/fundamentals/{id}/standardized_financials?api_key={api_key}"
-            statement_data = (
-                get_data_one(statement_url, **kwargs)
-                if query.use_cache is False
-                else intrinio_fundamentals_session.get(statement_url, timeout=5).json()
-            )
+        urls = [
+            f"https://api-v2.intrinio.com/fundamentals/{id}/standardized_financials?api_key={api_key}"
+            for id in ids
+        ]
 
-            data.append(
-                {
-                    "period_ending": statement_data["fundamental"]["end_date"],
-                    "fiscal_year": statement_data["fundamental"]["fiscal_year"],
-                    "fiscal_period": statement_data["fundamental"]["fiscal_period"],
-                    "calculations": statement_data["standardized_financials"],
-                }
-            )
-
-        with ThreadPoolExecutor() as executor:
-            executor.map(get_financial_statement_data, ids, repeat(data))
-
-        return sorted(data, key=lambda x: x["period_ending"], reverse=True)
+        return await amake_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(

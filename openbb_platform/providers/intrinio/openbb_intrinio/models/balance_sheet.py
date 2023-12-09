@@ -20,10 +20,6 @@ class IntrinioBalanceSheetQueryParams(BalanceSheetQueryParams):
     """
 
     period: Literal["annual", "quarter"] = Field(default="annual")
-    use_cache: Optional[bool] = Field(
-        default=True,
-        description="If true, use cached data. Cache expires after one day.",
-    )
 
     @field_validator("period", mode="after", check_fields=False)
     @classmethod
