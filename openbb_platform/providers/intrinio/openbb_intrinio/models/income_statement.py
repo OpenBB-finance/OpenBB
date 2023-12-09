@@ -12,7 +12,7 @@ from openbb_core.provider.utils.helpers import (
     ClientSession,
     amake_requests,
 )
-from openbb_intrinio.utils.helpers import get_data_one, intrinio_fundamentals_session
+from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import Field, field_validator
 
 
@@ -24,10 +24,6 @@ class IntrinioIncomeStatementQueryParams(FinancialStatementsQueryParams):
     """
 
     period: Literal["annual", "quarter", "ttm", "ytd"] = Field(default="annual")
-    use_cache: Optional[bool] = Field(
-        default=True,
-        description="If true, use cached data. Cache expires after one day.",
-    )
 
     @field_validator("symbol", mode="after", check_fields=False)
     @classmethod
@@ -73,6 +69,7 @@ class IntrinioIncomeStatementData(IncomeStatementData):
         "net_occupancy_and_equipment_expense": "netoccupancyequipmentexpense",
         "net_realized_and_unrealized_capital_gains_on_investments": "netrealizedcapitalgains",
         "non_operating_income": "nonoperatingincome",
+        "operating_revenue": "operatingrevenue",
         "operating_cost_of_revenue": "operatingcostofrevenue",
         "other_adjustments_to_consolidated_net_income": "otheradjustmentstoconsolidatednetincome",
         "other_adjustments_to_net_income_attributable_to_common_shareholders": "otheradjustmentstonetincometocommon",
@@ -156,7 +153,6 @@ class IntrinioIncomeStatementFetcher(
         ]
 
         fundamentals_data: Dict = {}
-        data: List[Dict] = []
 
         base_url = "https://api-v2.intrinio.com"
 
@@ -190,8 +186,9 @@ class IntrinioIncomeStatementFetcher(
             ]
 
             return {
-                "date": statement_data["fundamental"]["end_date"],
-                "period": statement_data["fundamental"]["fiscal_period"],
+                "period_ending": statement_data["fundamental"]["end_date"],
+                "fiscal_period": statement_data["fundamental"]["fiscal_period"],
+                "fiscal_year": statement_data["fundamental"]["fiscal_year"],
                 "financials": statement_data["standardized_financials"]
                 + calculations_data,
             }
@@ -215,16 +212,12 @@ class IntrinioIncomeStatementFetcher(
             sub_dict: Dict[str, Any] = {}
 
             for sub_item in item["financials"]:
-                if sub_item["data_tag"]["tag"] not in [
-                    "operatingrevenue",
-                    "operatingcostofrevenue",
-                ]:
-                    field_name = sub_item["data_tag"]["tag"]
-                    sub_dict[field_name] = (
-                        float(sub_item["value"])
-                        if sub_item["value"] and sub_item["value"] != 0
-                        else None
-                    )
+                field_name = sub_item["data_tag"]["tag"]
+                sub_dict[field_name] = (
+                    float(sub_item["value"])
+                    if sub_item["value"] and sub_item["value"] != 0
+                    else None
+                )
 
             sub_dict["period_ending"] = item["period_ending"]
             sub_dict["fiscal_year"] = item["fiscal_year"]

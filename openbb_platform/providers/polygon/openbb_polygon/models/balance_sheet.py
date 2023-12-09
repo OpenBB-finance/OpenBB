@@ -10,7 +10,7 @@ from openbb_core.provider.standard_models.balance_sheet import (
 )
 from openbb_core.provider.utils.helpers import get_querystring
 from openbb_polygon.utils.helpers import get_data_many
-from pydantic import Field, field_validator
+from pydantic import Field
 
 
 class PolygonBalanceSheetQueryParams(BalanceSheetQueryParams):

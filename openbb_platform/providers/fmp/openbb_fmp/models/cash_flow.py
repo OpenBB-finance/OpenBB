@@ -12,7 +12,6 @@ from openbb_core.provider.standard_models.cash_flow import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from pydantic import Field, model_validator
 
@@ -23,10 +22,7 @@ class FMPCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Cash-Flow-Statement
     """
 
-    period: Optional[Literal["annual", "quarter"]] = Field(
-        default="quarter",
-        description=QUERY_DESCRIPTIONS.get("period", ""),
-    )
+    period: Optional[Literal["annual", "quarter"]] = Field(default="quarter")
 
 
 class FMPCashFlowStatementData(CashFlowStatementData):
