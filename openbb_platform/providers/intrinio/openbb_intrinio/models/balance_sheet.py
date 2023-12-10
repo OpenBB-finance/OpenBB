@@ -181,6 +181,9 @@ class IntrinioBalanceSheetData(BalanceSheetData):
     loans_and_leases_net_of_allowance: Optional[int] = Field(
         description="Loans and leases net of allowance.", default=None
     )
+    accrued_investment_income: Optional[int] = Field(
+        description="Accrued investment income.", default=None
+    )
     other_current_non_operating_assets: Optional[int] = Field(
         description="Other current non-operating assets.", default=None
     )
@@ -193,12 +196,6 @@ class IntrinioBalanceSheetData(BalanceSheetData):
     total_current_assets: Optional[int] = Field(
         description="Total current assets.", default=None
     )
-    long_term_investments: Optional[int] = Field(
-        description="Long term investments.", default=None
-    )
-    accrued_investment_income: Optional[int] = Field(
-        description="Accrued investment income.", default=None
-    )
     plant_property_equipment_gross: Optional[int] = Field(
         description="Plant property equipment gross.", default=None
     )
@@ -210,6 +207,9 @@ class IntrinioBalanceSheetData(BalanceSheetData):
     )
     plant_property_equipment_net: Optional[int] = Field(
         description="Net plant property equipment.", default=None
+    )
+    long_term_investments: Optional[int] = Field(
+        description="Long term investments.", default=None
     )
     mortgage_servicing_rights: Optional[int] = Field(
         description="Mortgage servicing rights.", default=None
@@ -243,28 +243,34 @@ class IntrinioBalanceSheetData(BalanceSheetData):
     other_non_current_non_operating_assets: Optional[int] = Field(
         description="Other noncurrent non-operating assets.", default=None
     )
-    non_interest_bearing_deposits: Optional[int] = Field(
-        description="Non interest bearing deposits.", default=None
-    )
     interest_bearing_deposits: Optional[int] = Field(
         description="Interest bearing deposits.", default=None
     )
     total_non_current_assets: Optional[int] = Field(
         description="Total noncurrent assets.", default=None
     )
+    total_assets: Optional[int] = Field(description="Total assets.", default=None)
+    non_interest_bearing_deposits: Optional[int] = Field(
+        description="Non interest bearing deposits.", default=None
+    )
     federal_funds_purchased_and_securities_sold: Optional[int] = Field(
         description="Federal funds purchased and securities sold.", default=None
     )
-    total_assets: Optional[int] = Field(description="Total assets.", default=None)
     bankers_acceptance_outstanding: Optional[int] = Field(
         description="Bankers acceptance outstanding.", default=None
     )
     short_term_debt: Optional[int] = Field(description="Short term debt.", default=None)
-    accrued_interest_payable: Optional[int] = Field(
-        description="Accrued interest payable.", default=None
-    )
     accounts_payable: Optional[int] = Field(
         description="Accounts payable.", default=None
+    )
+    current_deferred_revenue: Optional[int] = Field(
+        description="Current deferred revenue.", default=None
+    )
+    current_deferred_payable_income_tax_liabilities: Optional[int] = Field(
+        description="Current deferred payable income tax liabilities.", default=None
+    )
+    accrued_interest_payable: Optional[int] = Field(
+        description="Accrued interest payable.", default=None
     )
     accrued_expenses: Optional[int] = Field(
         description="Accrued expenses.", default=None
@@ -284,9 +290,6 @@ class IntrinioBalanceSheetData(BalanceSheetData):
     future_policy_benefits: Optional[int] = Field(
         description="Future policy benefits.", default=None
     )
-    current_deferred_payable_income_tax_liabilities: Optional[int] = Field(
-        description="Current deferred payable income tax liabilities.", default=None
-    )
     current_employee_benefit_liabilities: Optional[int] = Field(
         description="Current employee benefit liabilities.", default=None
     )
@@ -302,12 +305,6 @@ class IntrinioBalanceSheetData(BalanceSheetData):
     other_current_liabilities: Optional[int] = Field(
         description="Other current liabilities.", default=None
     )
-    current_deferred_revenue: Optional[int] = Field(
-        description="Current deferred revenue.", default=None
-    )
-    participating_policy_holder_equity: Optional[int] = Field(
-        description="Participating policy holder equity.", default=None
-    )
     other_current_non_operating_liabilities: Optional[int] = Field(
         description="Other current non-operating liabilities.", default=None
     )
@@ -317,10 +314,10 @@ class IntrinioBalanceSheetData(BalanceSheetData):
     total_current_liabilities: Optional[int] = Field(
         description="Total current liabilities.", default=None
     )
+    long_term_debt: Optional[int] = Field(description="Long term debt.", default=None)
     other_long_term_liabilities: Optional[int] = Field(
         description="Other long term liabilities.", default=None
     )
-    long_term_debt: Optional[int] = Field(description="Long term debt.", default=None)
     non_current_deferred_revenue: Optional[int] = Field(
         description="Non-current deferred revenue.", default=None
     )
@@ -356,12 +353,15 @@ class IntrinioBalanceSheetData(BalanceSheetData):
     )
     preferred_stock: Optional[int] = Field(description="Preferred stock.", default=None)
     common_stock: Optional[int] = Field(description="Common stock.", default=None)
-    treasury_stock: Optional[int] = Field(description="Treasury stock.", default=None)
     retained_earnings: Optional[int] = Field(
         description="Retained earnings.", default=None
     )
+    treasury_stock: Optional[int] = Field(description="Treasury stock.", default=None)
     accumulated_other_comprehensive_income: Optional[int] = Field(
         description="Accumulated other comprehensive income.", default=None
+    )
+    participating_policy_holder_equity: Optional[int] = Field(
+        description="Participating policy holder equity.", default=None
     )
     other_equity_adjustments: Optional[int] = Field(
         description="Other equity adjustments.", default=None
