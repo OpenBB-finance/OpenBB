@@ -236,7 +236,7 @@ export async function downloadData(
   const csvData = [headers, ...rows];
 
   if (type === "csv") {
-    const csvContent = csvData.map((e) => e.join(",")).join("\n");
+    const csvContent  = csvData.map((e) => e.map((field) => `"${field.toString().replace(/"/g, '""')}"`).join(",")).join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const filename = `${window.title}.csv`;
 
