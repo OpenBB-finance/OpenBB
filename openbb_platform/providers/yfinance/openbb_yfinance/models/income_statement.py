@@ -2,14 +2,16 @@
 
 import json
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
-from pydantic import field_validator
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import to_snake_case
+from pydantic import Field, field_validator
 from yfinance import Ticker
 
 
@@ -19,12 +21,13 @@ class YFinanceIncomeStatementQueryParams(IncomeStatementQueryParams):
     Source: https://finance.yahoo.com/
     """
 
+    period: Optional[Literal["annual", "quarter"]] = Field(default="annual")
+
 
 class YFinanceIncomeStatementData(IncomeStatementData):
     """Yahoo Finance Income Statement Data."""
 
-    # TODO: Standardize the fields
-    @field_validator("date", mode="before", check_fields=False)
+    @field_validator("period_ending", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         if isinstance(v, str):
             return datetime.strptime(v, "%Y-%m-%d %H:%M:%S").date()
@@ -53,11 +56,13 @@ class YFinanceIncomeStatementFetcher(
         data = Ticker(query.symbol).get_income_stmt(
             as_dict=False, pretty=False, freq=period
         )
-        data = data.convert_dtypes().fillna(0).to_dict()
-        data = [{"date": str(key), **value} for key, value in data.items()]
-        # To match standardization
-        for d in data:
-            d["Symbol"] = query.symbol
+        if data is None:
+            raise EmptyDataError()
+        data.index = [to_snake_case(i) for i in data.index]
+        data = data.reset_index().sort_index(ascending=False).set_index("index")
+        data = data.convert_dtypes().fillna(0).replace(0, None).to_dict()
+        data = [{"period_ending": str(key), **value} for key, value in data.items()]
+
         data = json.loads(json.dumps(data))
 
         return data

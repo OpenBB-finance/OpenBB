@@ -10,8 +10,8 @@ from openbb_core.provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import to_snake_case
 from pydantic import Field, field_validator
 from yfinance import Ticker
 
@@ -22,18 +22,13 @@ class YFinanceBalanceSheetQueryParams(BalanceSheetQueryParams):
     Source: https://finance.yahoo.com/
     """
 
-    period: Optional[Literal["annual", "quarter"]] = Field(
-        default="quarter",
-        description=QUERY_DESCRIPTIONS.get("period", ""),
-    )
+    period: Optional[Literal["annual", "quarter"]] = Field(default="annual")
 
 
 class YFinanceBalanceSheetData(BalanceSheetData):
     """Yahoo Finance Balance Sheet Data."""
 
-    # TODO: Standardize the fields
-
-    @field_validator("date", mode="before", check_fields=False)
+    @field_validator("period_ending", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return datetime object from string."""
@@ -66,13 +61,11 @@ class YFinanceBalanceSheetFetcher(
         )
         if data is None:
             raise EmptyDataError()
+        data.index = [to_snake_case(i) for i in data.index]
+        data = data.reset_index().sort_index(ascending=False).set_index("index")
+        data = data.convert_dtypes().fillna(0).replace(0, None).to_dict()
+        data = [{"period_ending": str(key), **value} for key, value in data.items()]
 
-        data = data.convert_dtypes().fillna(0).to_dict()
-
-        data = [{"date": str(key), **value} for key, value in data.items()]
-        # To match standardization
-        for d in data:
-            d["Symbol"] = query.symbol
         data = json.loads(json.dumps(data))
 
         return data

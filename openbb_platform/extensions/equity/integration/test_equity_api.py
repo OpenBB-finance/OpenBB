@@ -598,7 +598,6 @@ def test_equity_estimates_consensus(params, headers):
                 "period": "annual",
                 "limit": 12,
                 "provider": "intrinio",
-                "use_cache": False,
             }
         ),
     ],
