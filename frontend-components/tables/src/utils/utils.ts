@@ -6,7 +6,7 @@ export function formatNumberNoMagnitude(value: number | string) {
   if (typeof value === "string") {
     const suffix = value.replace(/[^a-zA-Z]/g, "").trim();
     const magnitude = ["", "K", "M", "B", "T"].indexOf(
-      suffix.replace(/\s/g, ""),
+      suffix.replace(/\s/g, "")
     );
     value =
       Number(value.replace(/[^0-9.]/g, "").trim()) *
@@ -24,7 +24,7 @@ export function formatNumberMagnitude(value: number | string, column?: string) {
   if (value % 1 !== 0) {
     const decimalPlaces = Math.max(
       2,
-      value.toString().split(".")[1]?.length || 0,
+      value.toString().split(".")[1]?.length || 0
     );
     const toFixed = Math.min(4, decimalPlaces);
     if (value < 5) {
@@ -61,20 +61,20 @@ export function formatNumber(value: number) {
 
 export function includesDateNames(column: string) {
   return ["date", "day", "time", "timestamp", "year"].some((dateName) =>
-    column?.toLowerCase().includes(dateName),
+    column?.toLowerCase().includes(dateName)
   );
 }
 
 export function includesPriceNames(column: string) {
   return ["price", "open", "close"].some((priceName) =>
-    column?.toLowerCase().includes(priceName),
+    column?.toLowerCase().includes(priceName)
   );
 }
 
 function loadingOverlay(message?: string, is_close?: boolean) {
   const loading = window.document.getElementById("loading") as HTMLElement;
   const loading_text = window.document.getElementById(
-    "loading_text",
+    "loading_text"
   ) as HTMLElement;
   return new Promise((resolve) => {
     if (is_close) {
@@ -113,7 +113,7 @@ export const fuzzyFilter = (
   row: any,
   columnId: string,
   value: string,
-  addMeta: any,
+  addMeta: any
 ): any => {
   const itemRank = rankItem(row.getValue(columnId), value);
   addMeta(itemRank);
@@ -199,7 +199,7 @@ const getNewFileHandle = ({
 export const saveToFile = (
   blob: Blob,
   fileName: string,
-  fileHandle?: FileSystemFileHandle,
+  fileHandle?: FileSystemFileHandle
 ) => {
   try {
     if (fileHandle === null) {
@@ -227,16 +227,25 @@ export async function downloadData(
   type: "csv" | "xlsx",
   columns: any,
   data: any,
-  downloadFinished: (changed: boolean) => void,
+  downloadFinished: (changed: boolean) => void
 ) {
   const headers = columns;
   const rows = data.map((row: any) =>
-    headers.map((column: any) => row[column]),
+    headers.map((column: any) => row[column])
   );
   const csvData = [headers, ...rows];
 
   if (type === "csv") {
-    const csvContent  = csvData.map((e) => e.map((field) => `"${field.toString().replace(/"/g, '""')}"`).join(",")).join("\n");
+    // const csvContent  = csvData.map((e) => e.map((field) => `"${field.toString().replace(/"/g, '""')}"`).join(",")).join("\n");
+    const csvContent = csvData
+      .map((e, index) =>
+        [
+          `"${index}"`,
+          ...e.map((field) => `"${field.toString().replace(/"/g, '""')}"`),
+        ].join(",")
+      )
+      .join("\n");
+
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const filename = `${window.title}.csv`;
 
@@ -287,7 +296,7 @@ export async function downloadData(
 
 export async function downloadImage(
   id: string,
-  downloadFinished: (change: boolean) => void,
+  downloadFinished: (change: boolean) => void
 ) {
   const table = document.getElementById(id);
   const filename = `${window.title}.png`;

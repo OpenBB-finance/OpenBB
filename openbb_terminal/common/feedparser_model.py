@@ -104,9 +104,12 @@ def get_news(
             return pd.DataFrame()
     else:
         df = pd.DataFrame(data.entries, columns=["title", "link", "published"])
+    
     df["published"] = pd.to_datetime(df["published"])
     df = df.sort_values(by=[sort], ascending=False)
     df = df[["published", "title", "link"]]
     df.columns = ["Date", "Description", "URL"]
     df = df[:limit]
+
+    df.reset_index(inplace=True)
     return df
