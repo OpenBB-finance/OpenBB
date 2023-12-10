@@ -31,9 +31,10 @@ export default function DocSidebarItem({ item, ...props }) {
   const { isIFrame } = useIFrameContext();
   const { pathname } = useLocation();
   const isPro = pathname.startsWith("/pro");
+  const isExcel = pathname.startsWith("/excel");
 
   // Check if the item is the OpenBB Terminal Pro section
-  if (item.customProps?.hiddenByDefault && !isPro) {
+  if (item.customProps?.hiddenByDefault && !(isPro || isExcel)) {
     return null;
   }
 
@@ -45,9 +46,9 @@ export default function DocSidebarItem({ item, ...props }) {
     }
   }
 
-  if (isPro && !checkIfAnyChildIsPro(item)) {
+  if ((isPro || isExcel) && !checkIfAnyChildIsProExcel(item)) {
     return null;
-  } else if (!isPro && item.href?.startsWith("/pro")) {
+  } else if (!(isPro || isExcel) && item.href?.startsWith("/pro") && item.href?.startsWith("/excel")) {
     return null;
   }
 
@@ -62,17 +63,17 @@ export default function DocSidebarItem({ item, ...props }) {
   }
 }
 
-function checkIfAnyChildIsPro(item) {
+function checkIfAnyChildIsProExcel(item) {
   if (item.items) {
-    return item.items.some((childItem) => checkIfAnyChildIsPro(childItem));
+    return item.items.some((childItem) => checkIfAnyChildIsProExcel(childItem));
   }
 
   if (item.type === "link") {
-    return item.href?.startsWith("/pro");
+    return item.href?.startsWith("/pro") || item.href?.startsWith("/excel");
   }
 
   if (item.type === "category") {
-    return item.items.some((childItem) => checkIfAnyChildIsPro(childItem));
+    return item.items.some((childItem) => checkIfAnyChildIsProExcel(childItem));
   }
 
   return false;

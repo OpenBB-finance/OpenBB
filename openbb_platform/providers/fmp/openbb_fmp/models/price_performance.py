@@ -50,7 +50,7 @@ class FMPPricePerformanceFetcher(
         return FMPPricePerformanceQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPPricePerformanceQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -64,7 +64,7 @@ class FMPPricePerformanceFetcher(
             api_key=api_key,
             exclude=["symbol"],
         )
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

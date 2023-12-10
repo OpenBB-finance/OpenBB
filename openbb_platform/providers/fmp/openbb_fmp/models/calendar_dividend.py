@@ -22,6 +22,8 @@ class FMPCalendarDividendQueryParams(CalendarDividendQueryParams):
     The maximum time interval between the start and end date can be 3 months.
     """
 
+    __alias_dict__ = {"start_date": "from", "end_date": "to"}
+
 
 class FMPCalendarDividendData(CalendarDividendData):
     """FMP Dividend Calendar Data."""
@@ -78,7 +80,7 @@ class FMPCalendarDividendFetcher(
         return FMPCalendarDividendQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPCalendarDividendQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -88,10 +90,9 @@ class FMPCalendarDividendFetcher(
 
         base_url = "https://financialmodelingprep.com/api/v3"
         query_str = get_querystring(query.model_dump(), [])
-        query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}/stock_dividend_calendar?{query_str}&apikey={api_key}"
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

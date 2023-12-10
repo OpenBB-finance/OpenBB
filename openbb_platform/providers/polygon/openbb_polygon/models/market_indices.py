@@ -77,7 +77,7 @@ class PolygonMarketIndicesFetcher(
         return PolygonMarketIndicesQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: PolygonMarketIndicesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -91,7 +91,7 @@ class PolygonMarketIndicesFetcher(
             f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
             f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
-        data = get_data_many(request_url, "results", **kwargs)
+        data = await get_data_many(request_url, "results", **kwargs)
 
         for d in data:
             d["t"] = datetime.fromtimestamp(d["t"] / 1000)

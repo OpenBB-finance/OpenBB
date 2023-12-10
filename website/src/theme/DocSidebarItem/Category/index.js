@@ -84,6 +84,7 @@ export default function DocSidebarItemCategory({
     "OpenBB Platform": "/platform",
     "OpenBB Bot": "/bot",
     "OpenBB Terminal Pro": "/pro",
+    "OpenBB Excel Add-in": "/excel",
   };
   const newHref = labelToHrefMap[label] || href;
   const {
@@ -125,13 +126,19 @@ export default function DocSidebarItemCategory({
   const dontShowLink =
     isIFrame && ["OpenBB Terminal", "OpenBB SDK", "OpenBB Bot"].includes(label);
 
-  const location = useLocation();
-  const isProPage = location.pathname.startsWith("/pro");
+    const location = useLocation();
+    const isProPage = location.pathname.startsWith("/pro");
+    const isExcelPage = location.pathname.startsWith("/excel");
 
-  // Hide the OpenBB Terminal Pro section if we're not on a /pro page
-  if (item.customProps?.hiddenByDefault && !isProPage) {
-    return null;
-  }
+    // Hide the OpenBB Terminal Pro section if we're not on a /pro or /excel page
+    if (item.customProps?.hiddenByDefault && !(isProPage || isExcelPage)) {
+      return null;
+    }
+
+    // Temporary, remove to show Excel tab
+    if (item.customProps?.onlyDirectAccess && !isExcelPage) {
+      return null;
+    }
 
   return (
     <li

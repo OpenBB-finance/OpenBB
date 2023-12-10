@@ -82,7 +82,7 @@ class IntrinioCompanyFilingsFetcher(
         return IntrinioCompanyFilingsQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: IntrinioCompanyFilingsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -93,7 +93,7 @@ class IntrinioCompanyFilingsFetcher(
         base_url = "https://api-v2.intrinio.com/companies"
         query_str = get_querystring(query.model_dump(by_alias=True), ["symbol"])
         url = f"{base_url}/{query.symbol}/filings?{query_str}&api_key={api_key}"
-        return get_data_many(url, "filings", **kwargs)
+        return await get_data_many(url, "filings", **kwargs)
 
     @staticmethod
     def transform_data(

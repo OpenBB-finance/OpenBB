@@ -1,6 +1,6 @@
 """Intrinio Institutional Ownership Model."""
 
-from concurrent.futures import ThreadPoolExecutor
+import asyncio
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -75,7 +75,7 @@ class IntrinioInstitutionalOwnershipFetcher(
         return IntrinioInstitutionalOwnershipQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: IntrinioInstitutionalOwnershipQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -90,19 +90,28 @@ class IntrinioInstitutionalOwnershipFetcher(
             f"{base_url}/securities/{query.symbol}/institutional_ownership?"
             f"{query_str}&api_key={api_key}"
         )
-        data = get_data_many(url, "ownership", **kwargs)
 
-        def get_owner_name(item: Dict) -> Dict:
+        async def get_owner_name(item: Dict) -> Dict:
             cik = item["owner_cik"]
             cik_url = f"{base_url}/owners/{cik}?api_key={api_key}"
-            cik_data = get_data_one(cik_url, **kwargs)
+            cik_data = await get_data_one(cik_url, **kwargs)
             owner_name = cik_data["owner_name"]
             item["symbol"] = query.symbol
             item["owner_name"] = owner_name
             return item
 
-        with ThreadPoolExecutor() as executor:
-            data = list(executor.map(get_owner_name, data))
+        results = await asyncio.gather(
+            *[
+                get_owner_name(item)
+                for item in await get_data_many(url, "ownership", **kwargs)
+            ],
+            return_exceptions=True,
+        )
+
+        for item in results:
+            if isinstance(item, Exception):
+                continue
+            data.append(item)
 
         return data
 

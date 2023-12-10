@@ -50,7 +50,7 @@ class FMPIncomeStatementGrowthFetcher(
         return FMPIncomeStatementGrowthQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPIncomeStatementGrowthQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -62,7 +62,7 @@ class FMPIncomeStatementGrowthFetcher(
             3, f"income-statement-growth/{query.symbol}", api_key, query, ["symbol"]
         )
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
