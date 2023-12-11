@@ -8,7 +8,7 @@ from openbb_core.provider.standard_models.revenue_geographic import (
     RevenueGeographicData,
     RevenueGeographicQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data
+from openbb_fmp.utils.helpers import create_url, get_data_many
 from pydantic import field_validator
 
 
@@ -43,7 +43,7 @@ class FMPRevenueGeographicFetcher(
         return FMPRevenueGeographicQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPRevenueGeographicQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -52,12 +52,8 @@ class FMPRevenueGeographicFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         url = create_url(4, "revenue-geographic-segmentation", api_key, query)
-        data = get_data(url, **kwargs)
 
-        if isinstance(data, Dict):
-            raise ValueError("Expected list of Dicts, got Dict")
-
-        return data
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

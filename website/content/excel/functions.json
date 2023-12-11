@@ -1,0 +1,4134 @@
+{
+  "functions": [
+    {
+      "description": "Get latest data point by providing symbol and field tag.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/last",
+      "id": "LAST",
+      "name": "LAST",
+      "parameters": [
+        {
+          "description": "Symbol to get data for, e.g. 'AAPL'.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Field to get data for, e.g. 'ebitda'.",
+          "name": "field",
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get historical data by providing symbol and field tag.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/hist",
+      "id": "HIST",
+      "name": "HIST",
+      "parameters": [
+        {
+          "description": "Symbol to get data for, e.g. 'AAPL'.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Field to get data for, e.g. 'ebitda'.",
+          "name": "field",
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format, defaults to 5 years ago.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format, defaults to today.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The frequency of the data, can be 'yearly' or 'quarterly', defaults to 'yearly'.",
+          "name": "frequency",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Cryptocurrency Historical Price. Cryptocurrency historical price data.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/historical",
+      "id": "CRYPTO.PRICE.HISTORICAL",
+      "name": "CRYPTO.PRICE.HISTORICAL",
+      "parameters": [
+        {
+          "description": "Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, polygon, tiingo",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Number of days to look back. (provider: fmp)",
+          "name": "timeseries",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Data granularity. (provider: fmp, tiingo)",
+          "name": "interval",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Multiplier of the timespan. (provider: polygon)",
+          "name": "multiplier",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Timespan of the data. (provider: polygon)",
+          "name": "timespan",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Sort order of the data. (provider: polygon)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. (provider: polygon)",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Whether the data is adjusted. (provider: polygon)",
+          "name": "adjusted",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX'] (provider: tiingo)",
+          "dimensionality": "matrix",
+          "name": "exchanges",
+          "optional": true,
+          "type": "any"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Cryptocurrency Search. Search available cryptocurrency pairs.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/search",
+      "id": "CRYPTO.SEARCH",
+      "name": "CRYPTO.SEARCH",
+      "parameters": [
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Search query.",
+          "name": "query",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Currency Historical Price. Currency historical data.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/historical",
+      "id": "CURRENCY.PRICE.HISTORICAL",
+      "name": "CURRENCY.PRICE.HISTORICAL",
+      "parameters": [
+        {
+          "description": "Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, polygon, tiingo",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Data granularity. (provider: fmp, tiingo)",
+          "name": "interval",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Multiplier of the timespan. (provider: polygon)",
+          "name": "multiplier",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Timespan of the data. (provider: polygon)",
+          "name": "timespan",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Sort order of the data. (provider: polygon)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. (provider: polygon)",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Whether the data is adjusted. (provider: polygon)",
+          "name": "adjusted",
+          "optional": true,
+          "type": "boolean"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Currency Search. Search available currency pairs.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/search",
+      "id": "CURRENCY.SEARCH",
+      "name": "CURRENCY.SEARCH",
+      "parameters": [
+        {
+          "description": "Options: fmp, intrinio, polygon",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Symbol of the pair to search. (provider: polygon)",
+          "name": "symbol",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "A specific date to get data for. (provider: polygon)",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Search for terms within the ticker and/or company name. (provider: polygon)",
+          "name": "search",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Specify if the tickers returned should be actively traded on the queried date. (provider: polygon)",
+          "name": "active",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "Order data by ascending or descending. (provider: polygon)",
+          "name": "order",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Sort field used for ordering. (provider: polygon)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. (provider: polygon)",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get the complete options chain for a ticker.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/chains",
+      "id": "DERIVATIVES.OPTIONS.CHAINS",
+      "name": "DERIVATIVES.OPTIONS.CHAINS",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: intrinio",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Date for which the options chains are returned. (provider: intrinio)",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get the complete options chain for a ticker.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/unusual",
+      "id": "DERIVATIVES.OPTIONS.UNUSUAL",
+      "name": "DERIVATIVES.OPTIONS.UNUSUAL",
+      "parameters": [
+        {
+          "description": "Options: intrinio",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Symbol to get data for. (the underlying symbol)",
+          "name": "symbol",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The source of the data. Either realtime or delayed. (provider: intrinio)",
+          "name": "source",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Economic Calendar.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/calendar",
+      "id": "ECONOMY.CALENDAR",
+      "name": "ECONOMY.CALENDAR",
+      "parameters": [
+        {
+          "description": "Options: fmp, tradingeconomics",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Country of the event (provider: tradingeconomics)",
+          "name": "country",
+          "optional": true,
+          "type": "any"
+        },
+        {
+          "description": "Importance of the event. (provider: tradingeconomics)",
+          "name": "importance",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Grouping of events (provider: tradingeconomics)",
+          "name": "group",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Consumer Price Index (CPI) Data.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/cpi",
+      "id": "ECONOMY.CPI",
+      "name": "ECONOMY.CPI",
+      "parameters": [
+        {
+          "description": "The country or countries to get data.",
+          "dimensionality": "matrix",
+          "name": "countries",
+          "type": "any"
+        },
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The unit of measurement for the data.\nOptions:\n- `growth_previous`: growth from the previous period\n- `growth_same`: growth from the same period in the previous year\n- `index_2015`: index with base year 2015.",
+          "name": "units",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The frequency of the data.\nOptions: `monthly`, `quarter`, and `annual`.",
+          "name": "frequency",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Whether you wish to obtain harmonized data.",
+          "name": "harmonized",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Search for FRED series or economic releases by ID or fuzzy query.\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/fred_search",
+      "id": "ECONOMY.FRED_SEARCH",
+      "name": "ECONOMY.FRED_SEARCH",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The search word(s).",
+          "name": "query",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True. (provider: fred)",
+          "name": "is_release",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "A specific release ID to target. (provider: fred)",
+          "name": "release_id",
+          "optional": true,
+          "type": "any"
+        },
+        {
+          "description": "The number of data entries to return. (1-1000) (provider: fred)",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Offset the results in conjunction with limit. (provider: fred)",
+          "name": "offset",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Filter by an attribute. (provider: fred)",
+          "name": "filter_variable",
+          "optional": true,
+          "type": "any"
+        },
+        {
+          "description": "String value to filter the variable by.  Used in conjunction with filter_variable. (provider: fred)",
+          "name": "filter_value",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' (provider: fred)",
+          "name": "tag_names",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. (provider: fred)",
+          "name": "exclude_tag_names",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get data by series ID from FRED.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/fred_series",
+      "id": "ECONOMY.FRED_SERIES",
+      "name": "ECONOMY.FRED_SERIES",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, intrinio",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Frequency aggregation to convert high frequency data to lower frequency.\nNone = No change\na = Annual\nq = Quarterly\nm = Monthly\nw = Weekly\nd = Daily\nwef = Weekly, Ending Friday\nweth = Weekly, Ending Thursday\nwew = Weekly, Ending Wednesday\nwetu = Weekly, Ending Tuesday\nwem = Weekly, Ending Monday\nwesu = Weekly, Ending Sunday\nwesa = Weekly, Ending Saturday\nbwew = Biweekly, Ending Wednesday\nbwem = Biweekly, Ending Monday\n(provider: fred)",
+          "name": "frequency",
+          "optional": true,
+          "type": "any"
+        },
+        {
+          "description": "A key that indicates the aggregation method used for frequency aggregation.\nThis parameter has no affect if the frequency parameter is not set.\navg = Average\nsum = Sum\neop = End of Period\n(provider: fred)",
+          "name": "aggregation_method",
+          "optional": true,
+          "type": "any"
+        },
+        {
+          "description": "Transformation type\nNone = No transformation\nchg = Change\nch1 = Change from Year Ago\npch = Percent Change\npc1 = Percent Change from Year Ago\npca = Compounded Annual Rate of Change\ncch = Continuously Compounded Rate of Change\ncca = Continuously Compounded Annual Rate of Change\nlog = Natural Log\n(provider: fred)",
+          "name": "transform",
+          "optional": true,
+          "type": "any"
+        },
+        {
+          "description": "Returns all pages of data from the API call at once. (provider: intrinio)",
+          "name": "all_pages",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "Time to sleep between requests to avoid rate limiting. (provider: intrinio)",
+          "name": "sleep",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Forecasted GDP Data.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/forecast",
+      "id": "ECONOMY.GDP.FORECAST",
+      "name": "ECONOMY.GDP.FORECAST",
+      "parameters": [
+        {
+          "description": "Options: oecd",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Time period of the data to return. Units for nominal GDP period. Either quarter or annual.",
+          "name": "period",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Type of GDP to get forecast of. Either nominal or real.",
+          "name": "type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Country to get GDP for. (provider: oecd)",
+          "name": "country",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Nominal GDP Data.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/nominal",
+      "id": "ECONOMY.GDP.NOMINAL",
+      "name": "ECONOMY.GDP.NOMINAL",
+      "parameters": [
+        {
+          "description": "Options: oecd",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The unit of measurement for the data. Units to get nominal GDP in. Either usd or usd_cap indicating per capita.",
+          "name": "units",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Country to get GDP for. (provider: oecd)",
+          "name": "country",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Real GDP Data.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/real",
+      "id": "ECONOMY.GDP.REAL",
+      "name": "ECONOMY.GDP.REAL",
+      "parameters": [
+        {
+          "description": "Options: oecd",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The unit of measurement for the data. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)",
+          "name": "units",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Country to get GDP for. (provider: oecd)",
+          "name": "country",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Historical Market Risk Premium.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/risk_premium",
+      "id": "ECONOMY.RISK_PREMIUM",
+      "name": "ECONOMY.RISK_PREMIUM",
+      "parameters": [
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Upcoming and Historical Dividend Calendar.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/dividend",
+      "id": "EQUITY.CALENDAR.DIVIDEND",
+      "name": "EQUITY.CALENDAR.DIVIDEND",
+      "parameters": [
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Upcoming and Historical earnings calendar.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/earnings",
+      "id": "EQUITY.CALENDAR.EARNINGS",
+      "name": "EQUITY.CALENDAR.EARNINGS",
+      "parameters": [
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Upcoming and Historical IPO Calendar.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/ipo",
+      "id": "EQUITY.CALENDAR.IPO",
+      "name": "EQUITY.CALENDAR.IPO",
+      "parameters": [
+        {
+          "description": "Options: intrinio",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Status of the IPO. [upcoming, priced, or withdrawn] (provider: intrinio)",
+          "name": "status",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Return IPOs with an offer dollar amount greater than the given amount. (provider: intrinio)",
+          "name": "offer_amount_greater_than",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Return IPOs with an offer dollar amount less than the given amount. (provider: intrinio)",
+          "name": "offer_amount_less_than",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Calendar Splits. Show Stock Split Calendar.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/splits",
+      "id": "EQUITY.CALENDAR.SPLITS",
+      "name": "EQUITY.CALENDAR.SPLITS",
+      "parameters": [
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Equity Peers. Company peers.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/peers",
+      "id": "EQUITY.COMPARE.PEERS",
+      "name": "EQUITY.COMPARE.PEERS",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get the most-recent filings submitted to the SEC.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/filings",
+      "id": "EQUITY.DISCOVERY.FILINGS",
+      "name": "EQUITY.DISCOVERY.FILINGS",
+      "parameters": [
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types.",
+          "name": "form_type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Flag for whether or not the filing is done. (provider: fmp)",
+          "name": "isDone",
+          "optional": true,
+          "type": "boolean"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Price Target Consensus. Price target consensus data.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/consensus",
+      "id": "EQUITY.ESTIMATES.CONSENSUS",
+      "name": "EQUITY.ESTIMATES.CONSENSUS",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Historical Analyst Estimates. Analyst stock recommendations.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/historical",
+      "id": "EQUITY.ESTIMATES.HISTORICAL",
+      "name": "EQUITY.ESTIMATES.HISTORICAL",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Time period of the data to return.",
+          "name": "period",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Price Target. Price target data.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/price_target",
+      "id": "EQUITY.ESTIMATES.PRICE_TARGET",
+      "name": "EQUITY.ESTIMATES.PRICE_TARGET",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Include upgrades and downgrades in the response. (provider: fmp)",
+          "name": "with_grade",
+          "optional": true,
+          "type": "boolean"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Balance Sheet. Balance sheet statement.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/balance",
+      "id": "EQUITY.FUNDAMENTAL.BALANCE",
+      "name": "EQUITY.FUNDAMENTAL.BALANCE",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, intrinio, polygon",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Time period of the data to return.",
+          "name": "period",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Central Index Key (CIK) of the company. (provider: fmp)",
+          "name": "cik",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filing date of the financial statement. (provider: polygon)",
+          "name": "filing_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filing date less than the given date. (provider: polygon)",
+          "name": "filing_date_lt",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filing date less than or equal to the given date. (provider: polygon)",
+          "name": "filing_date_lte",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filing date greater than the given date. (provider: polygon)",
+          "name": "filing_date_gt",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filing date greater than or equal to the given date. (provider: polygon)",
+          "name": "filing_date_gte",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of report date of the financial statement. (provider: polygon)",
+          "name": "period_of_report_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of report date less than the given date. (provider: polygon)",
+          "name": "period_of_report_date_lt",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of report date less than or equal to the given date. (provider: polygon)",
+          "name": "period_of_report_date_lte",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of report date greater than the given date. (provider: polygon)",
+          "name": "period_of_report_date_gt",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of report date greater than or equal to the given date. (provider: polygon)",
+          "name": "period_of_report_date_gte",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Whether to include the sources of the financial statement. (provider: polygon)",
+          "name": "include_sources",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "Order of the financial statement. (provider: polygon)",
+          "name": "order",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Sort of the financial statement. (provider: polygon)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Balance Sheet Statement Growth. Information about the growth of the company balance sheet.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/balance_growth",
+      "id": "EQUITY.FUNDAMENTAL.BALANCE_GROWTH",
+      "name": "EQUITY.FUNDAMENTAL.BALANCE_GROWTH",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Cash Flow Statement. Information about the cash flow statement.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/cash",
+      "id": "EQUITY.FUNDAMENTAL.CASH",
+      "name": "EQUITY.FUNDAMENTAL.CASH",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, intrinio, polygon",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Time period of the data to return.",
+          "name": "period",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Central Index Key (CIK) of the company. (provider: fmp)",
+          "name": "cik",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filing date of the financial statement. (provider: polygon)",
+          "name": "filing_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filing date less than the given date. (provider: polygon)",
+          "name": "filing_date_lt",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filing date less than or equal to the given date. (provider: polygon)",
+          "name": "filing_date_lte",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filing date greater than the given date. (provider: polygon)",
+          "name": "filing_date_gt",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filing date greater than or equal to the given date. (provider: polygon)",
+          "name": "filing_date_gte",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of report date of the financial statement. (provider: polygon)",
+          "name": "period_of_report_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of report date less than the given date. (provider: polygon)",
+          "name": "period_of_report_date_lt",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of report date less than or equal to the given date. (provider: polygon)",
+          "name": "period_of_report_date_lte",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of report date greater than the given date. (provider: polygon)",
+          "name": "period_of_report_date_gt",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of report date greater than or equal to the given date. (provider: polygon)",
+          "name": "period_of_report_date_gte",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Whether to include the sources of the financial statement. (provider: polygon)",
+          "name": "include_sources",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "Order of the financial statement. (provider: polygon)",
+          "name": "order",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Sort of the financial statement. (provider: polygon)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Cash Flow Statement Growth. Information about the growth of the company cash flow statement.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/cash_growth",
+      "id": "EQUITY.FUNDAMENTAL.CASH_GROWTH",
+      "name": "EQUITY.FUNDAMENTAL.CASH_GROWTH",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Historical Dividends. Historical dividends data for a given company.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/dividends",
+      "id": "EQUITY.FUNDAMENTAL.DIVIDENDS",
+      "name": "EQUITY.FUNDAMENTAL.DIVIDENDS",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, intrinio",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. (provider: intrinio)",
+          "name": "page_size",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Historical Employees. Historical number of employees.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/employee_count",
+      "id": "EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT",
+      "name": "EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Company Filings. Company filings data.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/filings",
+      "id": "EQUITY.FUNDAMENTAL.FILINGS",
+      "name": "EQUITY.FUNDAMENTAL.FILINGS",
+      "parameters": [
+        {
+          "description": "Options: fmp, intrinio, sec",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Type of the SEC filing form. (provider: sec)",
+          "name": "form_type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format. (provider: intrinio)",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format. (provider: intrinio)",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Return filings that have been read by Intrinio's Thea NLP. (provider: intrinio)",
+          "name": "thea_enabled",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "Lookup filings by Central Index Key (CIK) instead of by symbol. (provider: sec)",
+          "name": "cik",
+          "optional": true,
+          "type": "any"
+        },
+        {
+          "description": "Whether or not to use cache.  If True, cache will store for one day. (provider: sec)",
+          "name": "use_cache",
+          "optional": true,
+          "type": "boolean"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Fetch the historical values of a data tag from Intrinio.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/historical_attributes",
+      "id": "EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES",
+      "name": "EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Intrinio data tag ID or code.",
+          "name": "tag",
+          "type": "string"
+        },
+        {
+          "description": "Options: intrinio",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The frequency of the data.",
+          "name": "frequency",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Filter by type, when applicable.",
+          "name": "type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Sort order.",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Historical earnings-per-share for a given company.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/historical_eps",
+      "id": "EQUITY.FUNDAMENTAL.HISTORICAL_EPS",
+      "name": "EQUITY.FUNDAMENTAL.HISTORICAL_EPS",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. (provider: fmp)",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Historical Splits. Historical splits data.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/historical_splits",
+      "id": "EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS",
+      "name": "EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Income Statement. Report on a company's financial performance.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/income",
+      "id": "EQUITY.FUNDAMENTAL.INCOME",
+      "name": "EQUITY.FUNDAMENTAL.INCOME",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, intrinio, polygon",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Time period of the data to return.",
+          "name": "period",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "The CIK of the company if no symbol is provided. (provider: fmp)",
+          "name": "cik",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filing date of the financial statement. (provider: polygon)",
+          "name": "filing_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filing date less than the given date. (provider: polygon)",
+          "name": "filing_date_lt",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filing date less than or equal to the given date. (provider: polygon)",
+          "name": "filing_date_lte",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filing date greater than the given date. (provider: polygon)",
+          "name": "filing_date_gt",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filing date greater than or equal to the given date. (provider: polygon)",
+          "name": "filing_date_gte",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of report date of the financial statement. (provider: polygon)",
+          "name": "period_of_report_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of report date less than the given date. (provider: polygon)",
+          "name": "period_of_report_date_lt",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of report date less than or equal to the given date. (provider: polygon)",
+          "name": "period_of_report_date_lte",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of report date greater than the given date. (provider: polygon)",
+          "name": "period_of_report_date_gt",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of report date greater than or equal to the given date. (provider: polygon)",
+          "name": "period_of_report_date_gte",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Whether to include the sources of the financial statement. (provider: polygon)",
+          "name": "include_sources",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "Order of the financial statement. (provider: polygon)",
+          "name": "order",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Sort of the financial statement. (provider: polygon)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Income Statement Growth. Information about the growth of the company income statement.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/income_growth",
+      "id": "EQUITY.FUNDAMENTAL.INCOME_GROWTH",
+      "name": "EQUITY.FUNDAMENTAL.INCOME_GROWTH",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Time period of the data to return.",
+          "name": "period",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Fetch the latest value of a data tag from Intrinio.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/latest_attributes",
+      "id": "EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES",
+      "name": "EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Intrinio data tag ID or code.",
+          "name": "tag",
+          "type": "string"
+        },
+        {
+          "description": "Options: intrinio",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Key Executives. Key executives for a given company.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/management",
+      "id": "EQUITY.FUNDAMENTAL.MANAGEMENT",
+      "name": "EQUITY.FUNDAMENTAL.MANAGEMENT",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get Executive Compensation. Information about the executive compensation for a given company.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/management_compensation",
+      "id": "EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION",
+      "name": "EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Key Metrics. Key metrics for a given company.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/metrics",
+      "id": "EQUITY.FUNDAMENTAL.METRICS",
+      "name": "EQUITY.FUNDAMENTAL.METRICS",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, intrinio",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Time period of the data to return.",
+          "name": "period",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Include trailing twelve months (TTM) data. (provider: fmp)",
+          "name": "with_ttm",
+          "optional": true,
+          "type": "boolean"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Equity Valuation Multiples. Valuation multiples for a stock ticker.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/multiples",
+      "id": "EQUITY.FUNDAMENTAL.MULTIPLES",
+      "name": "EQUITY.FUNDAMENTAL.MULTIPLES",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Company Overview. General information about a company.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/overview",
+      "id": "EQUITY.FUNDAMENTAL.OVERVIEW",
+      "name": "EQUITY.FUNDAMENTAL.OVERVIEW",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Extensive set of ratios over time. Financial ratios for a given company.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/ratios",
+      "id": "EQUITY.FUNDAMENTAL.RATIOS",
+      "name": "EQUITY.FUNDAMENTAL.RATIOS",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Time period of the data to return.",
+          "name": "period",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Include trailing twelve months (TTM) data. (provider: fmp)",
+          "name": "with_ttm",
+          "optional": true,
+          "type": "boolean"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Revenue Geographic. Geographic revenue data.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/revenue_per_geography",
+      "id": "EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY",
+      "name": "EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Time period of the data to return.",
+          "name": "period",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Structure of the returned data.",
+          "name": "structure",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Revenue Business Line. Business line revenue data.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/revenue_per_segment",
+      "id": "EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT",
+      "name": "EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Time period of the data to return.",
+          "name": "period",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Structure of the returned data.",
+          "name": "structure",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Search Intrinio data tags.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/search_attributes",
+      "id": "EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES",
+      "name": "EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES",
+      "parameters": [
+        {
+          "description": "Query to search for.",
+          "name": "query",
+          "type": "string"
+        },
+        {
+          "description": "Options: intrinio",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Trailing 1yr dividend yield.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/trailing_dividend_yield",
+      "id": "EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD",
+      "name": "EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD",
+      "parameters": [
+        {
+          "description": "Options: tiingo",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Earnings Call Transcript. Earnings call transcript for a given company.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/transcript",
+      "id": "EQUITY.FUNDAMENTAL.TRANSCRIPT",
+      "name": "EQUITY.FUNDAMENTAL.TRANSCRIPT",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Year of the earnings call transcript.",
+          "name": "year",
+          "type": "number"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get a current, complete, market snapshot.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/market_snapshots",
+      "id": "EQUITY.MARKET_SNAPSHOTS",
+      "name": "EQUITY.MARKET_SNAPSHOTS",
+      "parameters": [
+        {
+          "description": "Options: fmp, polygon",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The market to fetch data for. (provider: fmp)",
+          "name": "market",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Insider Trading. Information about insider trading.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/insider_trading",
+      "id": "EQUITY.OWNERSHIP.INSIDER_TRADING",
+      "name": "EQUITY.OWNERSHIP.INSIDER_TRADING",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, intrinio",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Type of the transaction. (provider: fmp)",
+          "name": "transactionType",
+          "optional": true,
+          "type": "any"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format. (provider: intrinio)",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format. (provider: intrinio)",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Type of ownership. (provider: intrinio)",
+          "name": "ownership_type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Field to sort by. (provider: intrinio)",
+          "name": "sort_by",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Institutional Ownership. Institutional ownership data.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/institutional",
+      "id": "EQUITY.OWNERSHIP.INSTITUTIONAL",
+      "name": "EQUITY.OWNERSHIP.INSTITUTIONAL",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, intrinio",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Include current quarter data. (provider: fmp)",
+          "name": "include_current_quarter",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "A specific date to get data for. (provider: fmp)",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. (provider: intrinio)",
+          "name": "page_size",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Equity Ownership. Information about the company ownership.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/major_holders",
+      "id": "EQUITY.OWNERSHIP.MAJOR_HOLDERS",
+      "name": "EQUITY.OWNERSHIP.MAJOR_HOLDERS",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "A specific date to get data for.",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Page number of the data to fetch.",
+          "name": "page",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Share Statistics. Share statistics for a given company.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/share_statistics",
+      "id": "EQUITY.OWNERSHIP.SHARE_STATISTICS",
+      "name": "EQUITY.OWNERSHIP.SHARE_STATISTICS",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, intrinio",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Equity Historical price. Load stock data for a specific ticker.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/historical",
+      "id": "EQUITY.PRICE.HISTORICAL",
+      "name": "EQUITY.PRICE.HISTORICAL",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, intrinio, polygon, tiingo",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Time interval of the data to return.",
+          "name": "interval",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Number of days to look back (Only for interval 1d). (provider: fmp);\nThe number of data entries to return. (provider: polygon)",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)",
+          "name": "start_time",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'. (provider: intrinio)",
+          "name": "end_time",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Timezone of the data, in the IANA format (Continent/City). (provider: intrinio)",
+          "name": "timezone",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The source of the data. (provider: intrinio)",
+          "name": "source",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Sort order of the data. (provider: polygon)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Output time series is adjusted by historical split and dividend events. (provider: polygon)",
+          "name": "adjusted",
+          "optional": true,
+          "type": "boolean"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Equity NBBO. Load National Best Bid and Offer for a specific equity.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/nbbo",
+      "id": "EQUITY.PRICE.NBBO",
+      "name": "EQUITY.PRICE.NBBO",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: polygon",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. Up to ten million records will be returned. Pagination occurs in groups of 50,000. Remaining limit values will always return 50,000 more records unless it is the last page. High volume tickers will require multiple max requests for a single day's NBBO records. Expect stocks, like SPY, to approach 1GB in size, per day, as a raw CSV. Splitting large requests into chunks is recommended for full-day requests of high-volume symbols. (provider: polygon)",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "A specific date to get data for. Use bracketed the timestamp parameters to specify exact time ranges. (provider: polygon)",
+          "name": "timestamp",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Query by datetime, less than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,\nYYYY-MM-DDTH:M:S.000000000-04:00\". Include all nanoseconds and the 'T' between the day and hour.\n(provider: polygon)",
+          "name": "timestamp_lt",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Query by datetime, greater than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,\nYYYY-MM-DDTH:M:S.000000000-04:00\". Include all nanoseconds and the 'T' between the day and hour.\n(provider: polygon)",
+          "name": "timestamp_gt",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Query by datetime, less than or equal to.\nEither a date with the format YYYY-MM-DD or a TZ-aware timestamp string,\nYYYY-MM-DDTH:M:S.000000000-04:00\". Include all nanoseconds and the 'T' between the day and hour.\n(provider: polygon)",
+          "name": "timestamp_lte",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Query by datetime, greater than or equal to.\nEither a date with the format YYYY-MM-DD or a TZ-aware timestamp string,\nYYYY-MM-DDTH:M:S.000000000-04:00\". Include all nanoseconds and the 'T' between the day and hour.\n(provider: polygon)",
+          "name": "timestamp_gte",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Price performance as a return, over different periods.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/performance",
+      "id": "EQUITY.PRICE.PERFORMANCE",
+      "name": "EQUITY.PRICE.PERFORMANCE",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Equity Quote. Load stock data for a specific ticker.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/quote",
+      "id": "EQUITY.PRICE.QUOTE",
+      "name": "EQUITY.PRICE.QUOTE",
+      "parameters": [
+        {
+          "description": "Symbol to get data for. In this case, the comma separated list of symbols.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, intrinio",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Source of the data. (provider: intrinio)",
+          "name": "source",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Equity Info. Get general price and performance metrics of a stock.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/profile",
+      "id": "EQUITY.PROFILE",
+      "name": "EQUITY.PROFILE",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: intrinio",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Equity Screen. Screen for companies meeting various criteria.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/screener",
+      "id": "EQUITY.SCREENER",
+      "name": "EQUITY.SCREENER",
+      "parameters": [
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filter by market cap greater than this value. (provider: fmp)",
+          "name": "mktcap_min",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Filter by market cap less than this value. (provider: fmp)",
+          "name": "mktcap_max",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Filter by price greater than this value. (provider: fmp)",
+          "name": "price_min",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Filter by price less than this value. (provider: fmp)",
+          "name": "price_max",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Filter by a beta greater than this value. (provider: fmp)",
+          "name": "beta_min",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Filter by a beta less than this value. (provider: fmp)",
+          "name": "beta_max",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Filter by volume greater than this value. (provider: fmp)",
+          "name": "volume_min",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Filter by volume less than this value. (provider: fmp)",
+          "name": "volume_max",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Filter by dividend amount greater than this value. (provider: fmp)",
+          "name": "dividend_min",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Filter by dividend amount less than this value. (provider: fmp)",
+          "name": "dividend_max",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "If true, returns only ETFs. (provider: fmp)",
+          "name": "is_etf",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "If false, returns only inactive tickers. (provider: fmp)",
+          "name": "is_active",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "Filter by sector. (provider: fmp)",
+          "name": "sector",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filter by industry. (provider: fmp)",
+          "name": "industry",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filter by country, as a two-letter country code. (provider: fmp)",
+          "name": "country",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Filter by exchange. (provider: fmp)",
+          "name": "exchange",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Limit the number of results to return. (provider: fmp)",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Equity Search. Search for a company or stock ticker.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/search",
+      "id": "EQUITY.SEARCH",
+      "name": "EQUITY.SEARCH",
+      "parameters": [
+        {
+          "description": "Options: sec",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Search query.",
+          "name": "query",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Whether to search by ticker symbol.",
+          "name": "is_symbol",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "Whether to direct the search to the list of mutual funds and ETFs. (provider: sec)",
+          "name": "is_fund",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec)",
+          "name": "use_cache",
+          "optional": true,
+          "type": "boolean"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get reported Fail-to-deliver (FTD) data.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/fails_to_deliver",
+      "id": "EQUITY.SHORTS.FAILS_TO_DELIVER",
+      "name": "EQUITY.SHORTS.FAILS_TO_DELIVER",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: sec",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Limit the number of reports to parse, from most recent.\nApproximately 24 reports per year, going back to 2009.\n(provider: sec)",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Skip N number of reports from current. A value of 1 will skip the most recent report.\n(provider: sec)",
+          "name": "skip_reports",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "ETF Country weighting.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/countries",
+      "id": "ETF.COUNTRIES",
+      "name": "ETF.COUNTRIES",
+      "parameters": [
+        {
+          "description": "Symbol to get data for. (ETF)",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get the holdings for an individual ETF.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/holdings",
+      "id": "ETF.HOLDINGS",
+      "name": "ETF.HOLDINGS",
+      "parameters": [
+        {
+          "description": "Symbol to get data for. (ETF)",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "A specific date to get data for. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp)",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The CIK of the filing entity. Overrides symbol. (provider: fmp)",
+          "name": "cik",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get the holdings filing date for an individual ETF.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/holdings_date",
+      "id": "ETF.HOLDINGS_DATE",
+      "name": "ETF.HOLDINGS_DATE",
+      "parameters": [
+        {
+          "description": "Symbol to get data for. (ETF)",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The CIK of the filing entity. Overrides symbol. (provider: fmp)",
+          "name": "cik",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get the ETF holdings performance.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/holdings_performance",
+      "id": "ETF.HOLDINGS_PERFORMANCE",
+      "name": "ETF.HOLDINGS_PERFORMANCE",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "ETF Information Overview.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/info",
+      "id": "ETF.INFO",
+      "name": "ETF.INFO",
+      "parameters": [
+        {
+          "description": "Symbol to get data for. (ETF)",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Price performance as a return, over different periods.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/price_performance",
+      "id": "ETF.PRICE_PERFORMANCE",
+      "name": "ETF.PRICE_PERFORMANCE",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Search for ETFs.\n\nAn empty query returns the full list of ETFs from the provider.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/search",
+      "id": "ETF.SEARCH",
+      "name": "ETF.SEARCH",
+      "parameters": [
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Search query.",
+          "name": "query",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The exchange code the ETF trades on. (provider: fmp)",
+          "name": "exchange",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Whether the ETF is actively trading. (provider: fmp)",
+          "name": "is_active",
+          "optional": true,
+          "type": "boolean"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "ETF Sector weighting.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/sectors",
+      "id": "ETF.SECTORS",
+      "name": "ETF.SECTORS",
+      "parameters": [
+        {
+          "description": "Symbol to get data for. (ETF)",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Commercial Paper.\n\nCommercial paper (CP) consists of short-term, promissory notes issued primarily by corporations.\nMaturities range up to 270 days but average about 30 days.\nMany companies use CP to raise cash needed for current transactions,\nand many find it to be a lower-cost alternative to bank loans.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/commercial_paper",
+      "id": "FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER",
+      "name": "FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The maturity.",
+          "name": "maturity",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The category.",
+          "name": "category",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The grade.",
+          "name": "grade",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "High Quality Market Corporate Bond.\n\nThe HQM yield curve represents the high quality corporate bond market, i.e.,\ncorporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms.\nThese terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve\nthat is the market-weighted average (MWA) quality of high quality bonds.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/hqm",
+      "id": "FIXEDINCOME.CORPORATE.HQM",
+      "name": "FIXEDINCOME.CORPORATE.HQM",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "A specific date to get data for.",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The yield curve type.",
+          "name": "yield_curve",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "ICE BofA US Corporate Bond Indices.\n\nThe ICE BofA US Corporate Index tracks the performance of US dollar denominated investment grade corporate debt\npublicly issued in the US domestic market. Qualifying securities must have an investment grade rating (based on an\naverage of Moody\u2019s, S&P and Fitch), at least 18 months to final maturity at the time of issuance, at least one year\nremaining term to final maturity as of the rebalance date, a fixed coupon schedule and a minimum amount\noutstanding of $250 million. The ICE BofA US Corporate Index is a component of the US Corporate Master Index.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/ice_bofa",
+      "id": "FIXEDINCOME.CORPORATE.ICE_BOFA",
+      "name": "FIXEDINCOME.CORPORATE.ICE_BOFA",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The type of series.",
+          "name": "index_type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The type of category. (provider: fred)",
+          "name": "category",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The type of area. (provider: fred)",
+          "name": "area",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The type of grade. (provider: fred)",
+          "name": "grade",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Whether to include options in the results. (provider: fred)",
+          "name": "options",
+          "optional": true,
+          "type": "boolean"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Moody Corporate Bond Index.\n\nMoody's Aaa and Baa are investment bonds that acts as an index of\nthe performance of all bonds given an Aaa or Baa rating by Moody's Investors Service respectively.\nThese corporate bonds often are used in macroeconomics as an alternative to the federal ten-year\nTreasury Bill as an indicator of the interest rate.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/moody",
+      "id": "FIXEDINCOME.CORPORATE.MOODY",
+      "name": "FIXEDINCOME.CORPORATE.MOODY",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The type of series.",
+          "name": "index_type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The type of spread. (provider: fred)",
+          "name": "spread",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Spot Rates.\n\nThe spot rates for any maturity is the yield on a bond that provides a single payment at that maturity.\nThis is a zero coupon bond.\nBecause each spot rate pertains to a single cashflow, it is the relevant interest rate\nconcept for discounting a pension liability at the same maturity.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/spot_rates",
+      "id": "FIXEDINCOME.CORPORATE.SPOT_RATES",
+      "name": "FIXEDINCOME.CORPORATE.SPOT_RATES",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The maturities in years.",
+          "dimensionality": "matrix",
+          "name": "maturity",
+          "optional": true,
+          "type": "any"
+        },
+        {
+          "description": "The category.",
+          "dimensionality": "matrix",
+          "name": "category",
+          "optional": true,
+          "type": "any"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Government Treasury Auctions.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/treasury_auctions",
+      "id": "FIXEDINCOME.GOVERNMENT.TREASURY_AUCTIONS",
+      "name": "FIXEDINCOME.GOVERNMENT.TREASURY_AUCTIONS",
+      "parameters": [
+        {
+          "description": "Options: government_us",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Used to only return securities of a particular type.",
+          "name": "type",
+          "optional": true,
+          "type": "any"
+        },
+        {
+          "description": "Filter securities by CUSIP.",
+          "name": "cusip",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Maximum number of results to return; you must also include pagenum when using pagesize.",
+          "name": "pagesize",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "The first page number to display results for; used in combination with page size.",
+          "name": "pagenum",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format. The default is 90 days ago.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format. The default is today.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Government Treasury Rates.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/treasury_rates",
+      "id": "FIXEDINCOME.GOVERNMENT.TREASURY_RATES",
+      "name": "FIXEDINCOME.GOVERNMENT.TREASURY_RATES",
+      "parameters": [
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "US Yield Curve. Get United States yield curve.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/us_yield_curve",
+      "id": "FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE",
+      "name": "FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "A specific date to get data for. Defaults to the most recent FRED entry.",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Get inflation adjusted rates.",
+          "name": "inflation_adjusted",
+          "optional": true,
+          "type": "boolean"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Ameribor.\n\nAmeribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of\nshort-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the\nAmerican Financial Exchange (AFX).",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/ameribor",
+      "id": "FIXEDINCOME.RATE.AMERIBOR",
+      "name": "FIXEDINCOME.RATE.AMERIBOR",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of AMERIBOR rate. (provider: fred)",
+          "name": "parameter",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Discount Window Primary Credit Rate.\n\nA bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money.\nThe rates central banks charge are set to stabilize the economy.\nIn the United States, the Federal Reserve System's Board of Governors set the bank rate,\nalso known as the discount rate.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/dpcredit",
+      "id": "FIXEDINCOME.RATE.DPCREDIT",
+      "name": "FIXEDINCOME.RATE.DPCREDIT",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "FRED series ID of DWPCR data. (provider: fred)",
+          "name": "parameter",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "European Central Bank Interest Rates.\n\nThe Governing Council of the ECB sets the key interest rates for the euro area:\n\n- The interest rate on the main refinancing operations (MRO), which provide\nthe bulk of liquidity to the banking system.\n- The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem.\n- The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/ecb",
+      "id": "FIXEDINCOME.RATE.ECB",
+      "name": "FIXEDINCOME.RATE.ECB",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The type of interest rate.",
+          "name": "interest_rate_type",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Fed Funds Rate.\n\nGet Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its\ndomestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the\nUnited States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/effr",
+      "id": "FIXEDINCOME.RATE.EFFR",
+      "name": "FIXEDINCOME.RATE.EFFR",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of FED rate. (provider: fred)",
+          "name": "parameter",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Fed Funds Rate Projections.\n\nThe projections for the federal funds rate are the value of the midpoint of the\nprojected appropriate target range for the federal funds rate or the projected\nappropriate target level for the federal funds rate at the end of the specified\ncalendar year or over the longer run.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/effr_forecast",
+      "id": "FIXEDINCOME.RATE.EFFR_FORECAST",
+      "name": "FIXEDINCOME.RATE.EFFR_FORECAST",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Flag to show long run projections (provider: fred)",
+          "name": "long_run",
+          "optional": true,
+          "type": "boolean"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Euro Short-Term Rate.\n\nThe euro short-term rate (\u20acSTR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in\nthe euro area. The \u20acSTR is published on each TARGET2 business day based on transactions conducted and settled on\nthe previous TARGET2 business day (the reporting date \u201cT\u201d) with a maturity date of T+1 which are deemed to have been\nexecuted at arm\u2019s length and thus reflect market rates in an unbiased way.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/estr",
+      "id": "FIXEDINCOME.RATE.ESTR",
+      "name": "FIXEDINCOME.RATE.ESTR",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of ESTR rate. (provider: fred)",
+          "name": "parameter",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Interest on Reserve Balances.\n\nGet Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its\ndomestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the\nUnited States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/iorb",
+      "id": "FIXEDINCOME.RATE.IORB",
+      "name": "FIXEDINCOME.RATE.IORB",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Sterling Overnight Index Average.\n\nSONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual\ntransactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other\nfinancial institutions and other institutional investors.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/sonia",
+      "id": "FIXEDINCOME.RATE.SONIA",
+      "name": "FIXEDINCOME.RATE.SONIA",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of SONIA rate. (provider: fred)",
+          "name": "parameter",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Secured Overnight Financing Rate.\n\nThe Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of\nborrowing cash overnight collateralizing by Treasury securities.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/sofr",
+      "id": "FIXEDINCOME.SOFR",
+      "name": "FIXEDINCOME.SOFR",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Period of SOFR rate. (provider: fred)",
+          "name": "period",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Treasury Constant Maturity.\n\nGet data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.\nConstant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.\nTreasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury\nyield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/tmc",
+      "id": "FIXEDINCOME.SPREADS.TMC",
+      "name": "FIXEDINCOME.SPREADS.TMC",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The maturity",
+          "name": "maturity",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Select Treasury Constant Maturity.\n\nGet data for Selected Treasury Constant Maturity Minus Federal Funds Rate\nConstant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.\nTreasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury\nyield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/tmc_effr",
+      "id": "FIXEDINCOME.SPREADS.TMC_EFFR",
+      "name": "FIXEDINCOME.SPREADS.TMC_EFFR",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The maturity",
+          "name": "maturity",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Select Treasury Bill.\n\nGet Selected Treasury Bill Minus Federal Funds Rate.\nConstant maturity is the theoretical value of a U.S. Treasury that is based on recent values of\nauctioned U.S. Treasuries.\nThe value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury\nyield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/treasury_effr",
+      "id": "FIXEDINCOME.SPREADS.TREASURY_EFFR",
+      "name": "FIXEDINCOME.SPREADS.TREASURY_EFFR",
+      "parameters": [
+        {
+          "description": "Options: fred",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The maturity",
+          "name": "maturity",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Available Indices. Available indices for a given provider.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/available",
+      "id": "INDEX.AVAILABLE",
+      "name": "INDEX.AVAILABLE",
+      "parameters": [
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Index Constituents. Constituents of an index.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/constituents",
+      "id": "INDEX.CONSTITUENTS",
+      "name": "INDEX.CONSTITUENTS",
+      "parameters": [
+        {
+          "description": "Options: fmp",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Index for which we want to fetch the constituents.",
+          "name": "index",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Historical Market Indices.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/market",
+      "id": "INDEX.MARKET",
+      "name": "INDEX.MARKET",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, intrinio, polygon",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Number of days to look back. (provider: fmp)",
+          "name": "timeseries",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Data granularity. (provider: fmp)",
+          "name": "interval",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Index tag. (provider: intrinio)",
+          "name": "tag",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Index type. (provider: intrinio)",
+          "name": "type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Sort order. (provider: intrinio);\nSort order of the data. (provider: polygon)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. (provider: intrinio, polygon)",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Timespan of the data. (provider: polygon)",
+          "name": "timespan",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Whether the data is adjusted. (provider: polygon)",
+          "name": "adjusted",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "Multiplier of the timespan. (provider: polygon)",
+          "name": "multiplier",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Company News. Get news for one or more companies.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/company",
+      "id": "NEWS.COMPANY",
+      "name": "NEWS.COMPANY",
+      "parameters": [
+        {
+          "description": "Here it is a separated list of symbols.",
+          "name": "symbols",
+          "type": "string"
+        },
+        {
+          "description": "Options: benzinga, fmp, intrinio, polygon, tiingo",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)",
+          "name": "display",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Date of the news to retrieve. (provider: benzinga)",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the news to retrieve. (provider: benzinga)",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the news to retrieve. (provider: benzinga)",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Number of seconds since the news was updated. (provider: benzinga)",
+          "name": "updated_since",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Number of seconds since the news was published. (provider: benzinga)",
+          "name": "published_since",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Key to sort the news by. (provider: benzinga)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Order to sort the news by. (provider: benzinga);\nSort order of the articles. (provider: polygon)",
+          "name": "order",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The ISIN of the news to retrieve. (provider: benzinga)",
+          "name": "isin",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The CUSIP of the news to retrieve. (provider: benzinga)",
+          "name": "cusip",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Channels of the news to retrieve. (provider: benzinga)",
+          "name": "channels",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Topics of the news to retrieve. (provider: benzinga)",
+          "name": "topics",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Authors of the news to retrieve. (provider: benzinga)",
+          "name": "authors",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Content types of the news to retrieve. (provider: benzinga)",
+          "name": "content_types",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Page number of the results. Use in combination with limit. (provider: fmp)",
+          "name": "page",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Date query to fetch articles. Supports operators <, <=, >, >= (provider: polygon)",
+          "name": "published_utc",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "A comma-separated list of the domains requested. (provider: tiingo)",
+          "name": "source",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "World News. Global news data.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/world",
+      "id": "NEWS.WORLD",
+      "name": "NEWS.WORLD",
+      "parameters": [
+        {
+          "description": "Options: benzinga, fmp, intrinio, tiingo",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. Here its the no. of articles to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)",
+          "name": "display",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Date of the news to retrieve. (provider: benzinga)",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the news to retrieve. (provider: benzinga)",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the news to retrieve. (provider: benzinga)",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Number of seconds since the news was updated. (provider: benzinga)",
+          "name": "updated_since",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Number of seconds since the news was published. (provider: benzinga)",
+          "name": "published_since",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Key to sort the news by. (provider: benzinga)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Order to sort the news by. (provider: benzinga)",
+          "name": "order",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The ISIN of the news to retrieve. (provider: benzinga)",
+          "name": "isin",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The CUSIP of the news to retrieve. (provider: benzinga)",
+          "name": "cusip",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Channels of the news to retrieve. (provider: benzinga)",
+          "name": "channels",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Topics of the news to retrieve. (provider: benzinga)",
+          "name": "topics",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Authors of the news to retrieve. (provider: benzinga)",
+          "name": "authors",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Content types of the news to retrieve. (provider: benzinga)",
+          "name": "content_types",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "A comma-separated list of the domains requested. (provider: tiingo)",
+          "name": "source",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get the CIK number corresponding to a ticker symbol.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/cik_map",
+      "id": "REGULATORS.SEC.CIK_MAP",
+      "name": "REGULATORS.SEC.CIK_MAP",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: sec",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Look up institutions regulated by the SEC.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/institutions_search",
+      "id": "REGULATORS.SEC.INSTITUTIONS_SEARCH",
+      "name": "REGULATORS.SEC.INSTITUTIONS_SEARCH",
+      "parameters": [
+        {
+          "description": "Options: sec",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Search query.",
+          "name": "query",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Whether or not to use cache. If True, cache will store for seven days. (provider: sec)",
+          "name": "use_cache",
+          "optional": true,
+          "type": "boolean"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/rss_litigation",
+      "id": "REGULATORS.SEC.RSS_LITIGATION",
+      "name": "REGULATORS.SEC.RSS_LITIGATION",
+      "parameters": [
+        {
+          "description": "Options: sec",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get lists of SEC XML schema files by year.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/schema_files",
+      "id": "REGULATORS.SEC.SCHEMA_FILES",
+      "name": "REGULATORS.SEC.SCHEMA_FILES",
+      "parameters": [
+        {
+          "description": "Options: sec",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Search query.",
+          "name": "query",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Enter an optional URL path to fetch the next level. (provider: sec)",
+          "name": "url",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Fuzzy search for Industry Titles, Reporting Office, and SIC Codes.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/sic_search",
+      "id": "REGULATORS.SEC.SIC_SEARCH",
+      "name": "REGULATORS.SEC.SIC_SEARCH",
+      "parameters": [
+        {
+          "description": "Options: sec",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Search query.",
+          "name": "query",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Whether to use the cache or not. The full list will be cached for seven days if True. (provider: sec)",
+          "name": "use_cache",
+          "optional": true,
+          "type": "boolean"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get the ticker symbol corresponding to a company's CIK.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/symbol_map",
+      "id": "REGULATORS.SEC.SYMBOL_MAP",
+      "name": "REGULATORS.SEC.SYMBOL_MAP",
+      "parameters": [
+        {
+          "description": "Options: sec",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Search query.",
+          "name": "query",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get fred indices from the OpenBB SDK API.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/fred",
+      "id": "SEARCH.FRED",
+      "name": "SEARCH.FRED",
+      "parameters": [
+        {
+          "name": "q",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Get supported tickers from the OpenBB SDK API.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/symbols",
+      "id": "SEARCH.SYMBOLS",
+      "name": "SEARCH.SYMBOLS",
+      "parameters": [
+        {
+          "name": "q",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "name": "type",
+          "optional": true,
+          "type": "any"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    }
+  ]
+}

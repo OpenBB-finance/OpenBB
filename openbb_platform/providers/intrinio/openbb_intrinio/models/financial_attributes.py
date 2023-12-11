@@ -48,8 +48,8 @@ class IntrinioFinancialAttributesFetcher(
         return IntrinioFinancialAttributesQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
-        query: IntrinioFinancialAttributesQueryParams,
+    async def aextract_data(
+        query: IntrinioFinancialAttributesQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -64,7 +64,7 @@ class IntrinioFinancialAttributesFetcher(
 
         url = f"{base_url}/historical_data/{query.symbol}/{query.tag}?{query_str}&api_key={api_key}"
         # data = get_data_one(url).get("historical_data", [])
-        data = get_data_many(url, "historical_data")
+        data = await get_data_many(url, "historical_data")
 
         return data
 

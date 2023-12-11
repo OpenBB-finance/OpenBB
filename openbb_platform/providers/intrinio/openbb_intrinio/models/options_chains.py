@@ -1,12 +1,10 @@
 """Intrinio Options Chains Model."""
 
-from concurrent.futures import ThreadPoolExecutor
 from datetime import (
     date as dateType,
     datetime,
     timedelta,
 )
-from itertools import repeat
 from typing import Any, Dict, List, Optional
 
 from dateutil import parser
@@ -14,6 +12,10 @@ from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.options_chains import (
     OptionsChainsData,
     OptionsChainsQueryParams,
+)
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    amake_requests,
 )
 from openbb_intrinio.utils.helpers import get_data_many, get_weekday
 from pydantic import Field, field_validator
@@ -47,6 +49,7 @@ class IntrinioOptionsChainsData(OptionsChainsData):
         # only pass it to the parser if it is not a datetime object
         if isinstance(v, str):
             return parser.parse(v)
+        return v
 
 
 class IntrinioOptionsChainsFetcher(
@@ -70,7 +73,7 @@ class IntrinioOptionsChainsFetcher(
         return IntrinioOptionsChainsQueryParams(**transform_params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: IntrinioOptionsChainsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -78,39 +81,33 @@ class IntrinioOptionsChainsFetcher(
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
-        data: List = []
         base_url = "https://api-v2.intrinio.com/options"
 
-        def get_options_chains(
-            expiration: str, data: List[IntrinioOptionsChainsData]
-        ) -> None:
-            """Return the data for the given expiration."""
-            url = (
-                f"{base_url}/chain/{query.symbol}/{expiration}/eod?"
-                f"date={query.date}&api_key={api_key}"
-            )
-            response = get_data_many(url, "chain", **kwargs)
-            data.extend(response)
-
-        def get_data(date: str) -> None:
-            """Fetch data for a given date using ThreadPoolExecutor."""
+        async def get_urls(date: str) -> List[str]:
+            """Return the urls for the given date."""
             url = (
                 f"{base_url}/expirations/{query.symbol}/eod?"
                 f"after={date}&api_key={api_key}"
             )
-            expirations = get_data_many(url, "expirations", **kwargs)
+            expiration = await get_data_many(url, "expirations", **kwargs)
+            return [
+                f"{base_url}/chain/{query.symbol}/{expiration}/eod?date={query.date}&api_key={api_key}"
+                for expiration in expiration
+            ]
 
-            with ThreadPoolExecutor() as executor:
-                executor.map(get_options_chains, expirations, repeat(data))
+        async def callback(response: ClientResponse, _: Any) -> list:
+            """Return the response."""
+            response_data = await response.json()
+            return response_data.get("chain", [])
 
         date = get_weekday(query.date)
-        get_data(date)
+        results = await amake_requests(await get_urls(date), callback, **kwargs)
 
-        if not data:
-            date = get_weekday(query.date - timedelta(days=1))
-            get_data(date)
+        if not results:
+            urls = await get_urls(get_weekday(date - timedelta(days=1)))
+            results = await amake_requests(urls, callback, **kwargs)
 
-        return data
+        return results
 
     @staticmethod
     def transform_data(

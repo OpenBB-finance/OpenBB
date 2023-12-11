@@ -1,6 +1,5 @@
 """Intrinio Equity Quote Model."""
 
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -9,7 +8,10 @@ from openbb_core.provider.standard_models.equity_quote import (
     EquityQuoteData,
     EquityQuoteQueryParams,
 )
-from openbb_intrinio.utils.helpers import get_data_one
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    amake_requests,
+)
 from openbb_intrinio.utils.references import SOURCES
 from pydantic import Field, field_validator
 
@@ -115,26 +117,32 @@ class IntrinioEquityQuoteFetcher(
         return IntrinioEquityQuoteQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: IntrinioEquityQuoteQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
-        results: List[Dict] = []
 
-        def get_data(symbol):
-            base_url = "https://api-v2.intrinio.com"
-            url = f"{base_url}/securities/{symbol}/prices/realtime?source={query.source}&api_key={api_key}"
-            data = get_data_one(url, **kwargs)
-            data["symbol"] = symbol
-            results.append(data)
+        base_url = "https://api-v2.intrinio.com"
 
-        with ThreadPoolExecutor() as executor:
-            executor.map(get_data, [s.strip() for s in query.symbol.split(",")])
+        async def callback(response: ClientResponse, _: Any) -> dict:
+            """Return the response."""
+            if response.status != 200:
+                return {}
 
-        return results
+            response_data = await response.json()
+            response_data["symbol"] = response.url.parts[-2]
+
+            return response_data
+
+        urls = [
+            f"{base_url}/securities/{s.strip()}/prices/realtime?source={query.source}&api_key={api_key}"
+            for s in query.symbol.split(",")
+        ]
+
+        return await amake_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(

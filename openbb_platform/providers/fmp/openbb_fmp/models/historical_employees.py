@@ -35,7 +35,7 @@ class FMPHistoricalEmployeesFetcher(
         return FMPHistoricalEmployeesQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPHistoricalEmployeesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -45,7 +45,7 @@ class FMPHistoricalEmployeesFetcher(
 
         url = create_url(4, "historical/employee_count", api_key, query)
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(
