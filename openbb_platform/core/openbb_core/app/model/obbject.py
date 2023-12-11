@@ -139,8 +139,6 @@ class OBBject(Tagged, Generic[T]):
         if isinstance(self.results, pd.DataFrame):
             return self.results
 
-        index = index or "date"
-
         try:
             res = self.results
             df = None
@@ -154,7 +152,7 @@ class OBBject(Tagged, Generic[T]):
                 for k, v in r.items():
                     # Dict[str, List[BaseModel]]
                     if is_list_of_basemodel(v):
-                        dict_of_df[k] = basemodel_to_df(v, index)
+                        dict_of_df[k] = basemodel_to_df(v, index or "date")
                         sort_columns = False
                     # Dict[str, Any]
                     else:
@@ -165,14 +163,14 @@ class OBBject(Tagged, Generic[T]):
             # List[BaseModel]
             elif is_list_of_basemodel(res):
                 dt: Union[List[Data], Data] = res  # type: ignore
-                df = basemodel_to_df(dt, index)
+                df = basemodel_to_df(dt, index or "date")
                 sort_columns = False
             # List[List | str | int | float] | Dict[str, Dict | List | BaseModel]
             else:
                 try:
                     df = pd.DataFrame(res)
                     # Set index, if any
-                    if index in df.columns:
+                    if index and index in df.columns:
                         df.set_index(index, inplace=True)
 
                 except ValueError:
