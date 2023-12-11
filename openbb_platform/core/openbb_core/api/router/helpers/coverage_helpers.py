@@ -1,6 +1,6 @@
 """Coverage API router helper functions."""
 from inspect import _empty, signature
-from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple, Type
+from typing import TYPE_CHECKING, Any, Callable, Dict, Optional, Tuple, Type
 
 from openbb_core.app.provider_interface import ProviderInterface
 from pydantic import BaseModel, Field, create_model
@@ -11,8 +11,12 @@ if TYPE_CHECKING:
 provider_interface = ProviderInterface()
 
 
-def get_route_callable(app: "BaseApp", route: str):
+def get_route_callable(app: "BaseApp", route: str) -> Callable:
     """Get the callable for a route."""
+    # TODO: Add return typing Optional[Callable] to this function. First need to
+    # figure how to do that starting from "BaseApp" and account for the possibility
+    # of a route not existing. Then remove the type: ignore from the function.
+
     split_route = route.replace(".", "/").split("/")[1:]
 
     return_callable = app
@@ -20,7 +24,7 @@ def get_route_callable(app: "BaseApp", route: str):
     for route_path in split_route:
         return_callable = getattr(return_callable, route_path)
 
-    return return_callable
+    return return_callable  # type: ignore
 
 
 def signature_to_fields(app: "BaseApp", route: str) -> Dict[str, Tuple[Any, Field]]:  # type: ignore
