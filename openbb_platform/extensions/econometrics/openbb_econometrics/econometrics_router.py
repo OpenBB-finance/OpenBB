@@ -18,20 +18,17 @@ from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
     basemodel_to_df,
+    df_to_basemodel,
     get_target_column,
     get_target_columns,
-    df_to_basemodel,
-    dict_to_basemodel,
 )
 from openbb_core.provider.abstract.data import Data
 from pydantic import PositiveInt
-
-
-from statsmodels.tools.tools import add_constant
 from statsmodels.stats.diagnostic import acorr_breusch_godfrey  # type: ignore
-from statsmodels.stats.stattools import durbin_watson  # type: ignore
-from statsmodels.tsa.stattools import adfuller, grangercausalitytests  # type: ignore
 from statsmodels.stats.outliers_influence import variance_inflation_factor as vif
+from statsmodels.stats.stattools import durbin_watson  # type: ignore
+from statsmodels.tools.tools import add_constant
+from statsmodels.tsa.stattools import adfuller, grangercausalitytests  # type: ignore
 
 from openbb_econometrics.utils import get_engle_granger_two_step_cointegration_test
 
