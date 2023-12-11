@@ -83,10 +83,6 @@ class FMPBalanceSheetData(BalanceSheetData):
         "final_link": "finalLink",
     }
 
-    fiscal_year: Optional[int] = Field(
-        default=None,
-        description="The fiscal year of the fiscal period.",
-    )
     filing_date: Optional[dateType] = Field(
         default=None,
         description="The date when the filing was made.",

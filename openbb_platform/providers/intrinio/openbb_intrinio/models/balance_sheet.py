@@ -129,9 +129,6 @@ class IntrinioBalanceSheetData(BalanceSheetData):
         "total_liabilities_shareholders_equity": "totalliabilitiesandequity",
     }
 
-    fiscal_year: Optional[int] = Field(
-        description="Fiscal year of the report.", default=None
-    )
     cash_and_equivalents: Optional[int] = Field(
         description="Cash and cash equivalents.", default=None
     )

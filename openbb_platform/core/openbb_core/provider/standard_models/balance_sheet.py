@@ -45,3 +45,6 @@ class BalanceSheetData(Data):
     fiscal_period: Optional[str] = Field(
         description="The fiscal period of the report.", default=None
     )
+    fiscal_year: Optional[int] = Field(
+        description="The fiscal year of the fiscal period.", default=None
+    )

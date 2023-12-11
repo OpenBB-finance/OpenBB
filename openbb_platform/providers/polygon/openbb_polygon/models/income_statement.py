@@ -1,6 +1,5 @@
 """Polygon Income Statement Model."""
 
-import warnings
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional
 
@@ -9,14 +8,9 @@ from openbb_core.provider.standard_models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
-from openbb_core.provider.utils.descriptions import (
-    QUERY_DESCRIPTIONS,
-)
 from openbb_core.provider.utils.helpers import get_querystring
 from openbb_polygon.utils.helpers import get_data_many
-from pydantic import Field, field_validator, model_validator
-
-_warn = warnings.warn
+from pydantic import Field, model_validator
 
 
 class PolygonIncomeStatementQueryParams(IncomeStatementQueryParams):
@@ -75,16 +69,6 @@ class PolygonIncomeStatementQueryParams(IncomeStatementQueryParams):
     sort: Optional[Literal["filing_date", "period_of_report_date"]] = Field(
         default=None, description="Sort of the financial statement."
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def upper_symbol(cls, v: str):
-        """Convert symbol to uppercase."""
-        if "," in v:
-            _warn(
-                f"{QUERY_DESCRIPTIONS.get('symbol_list_warning', '')} {v.split(',')[0].upper()}"
-            )
-        return v.split(",")[0].upper() if "," in v else v.upper()
 
 
 class PolygonIncomeStatementData(IncomeStatementData):

@@ -66,7 +66,6 @@ class FMPIncomeStatementData(IncomeStatementData):
         "final_link": "finalLink",
     }
 
-    fiscal_year: int = Field(description="The fiscal year of the fiscal period.")
     filing_date: dateType = Field(description="The date of the filing.")
     accepted_date: datetime = Field(description="The date the filing was accepted.")
     reported_currency: str = Field(

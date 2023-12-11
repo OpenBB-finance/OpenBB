@@ -77,12 +77,6 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
         "sale_of_property_plant_and_equipment": "saleofplantpropertyandequipment",
     }
 
-    fiscal_year: Optional[int] = Field(
-        description="Fiscal year of the report.", default=None
-    )
-    fiscal_period: Optional[str] = Field(
-        description="Fiscal period of the report.", default=None
-    )
     net_income: Optional[float] = Field(
         default=None, description="Consolidated Net Income."
     )

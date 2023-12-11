@@ -22,7 +22,7 @@ class FMPCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Cash-Flow-Statement
     """
 
-    period: Optional[Literal["annual", "quarter"]] = Field(default="quarter")
+    period: Optional[Literal["annual", "quarter"]] = Field(default="annual")
 
 
 class FMPCashFlowStatementData(CashFlowStatementData):
