@@ -1378,6 +1378,7 @@ def test_equity_fundamental_trailing_dividend_yield(params, obb):
                 "statement_type": "income",
                 "period": "quarter",
                 "limit": 5,
+                "fiscal_year": None,
                 "provider": "intrinio",
             }
         ),
@@ -1387,6 +1388,7 @@ def test_equity_fundamental_trailing_dividend_yield(params, obb):
                 "statement_type": "cash",
                 "period": "annual",
                 "limit": 1,
+                "fiscal_year": 2015,
                 "provider": "intrinio",
             }
         ),
@@ -1395,6 +1397,7 @@ def test_equity_fundamental_trailing_dividend_yield(params, obb):
                 "symbol": "AAPL",
                 "statement_type": "balance",
                 "period": "annual",
+                "fiscal_year": None,
                 "limit": 10,
                 "provider": "intrinio",
             }

@@ -36,6 +36,10 @@ class IntrinioReportedFinancialsQueryParams(ReportedFinancialsQueryParams):
         description="Cash flow statements are reported as YTD, Q4 is the same as FY.",
     )
     period: Literal["annual", "quarter", "ttm", "ytd"] = Field(default="annual")
+    fiscal_year: Optional[int] = Field(
+        default=None,
+        description="The specific fiscal year.  Reports do not go beyond 2007.",
+    )
 
 
 class IntrinioReportedFinancialsData(ReportedFinancialsData):
@@ -73,7 +77,10 @@ class IntrinioReportedFinancialsFetcher(
         statement_code = STATEMENT_DICT[query.statement_type]
         period_type = "FY" if query.period == "annual" else "Q"
 
-        ids_url = f"https://api-v2.intrinio.com/companies/{query.symbol}/fundamentals?reported_only=true&statement_code={statement_code}&page_size=10000&api_key={api_key}"
+        ids_url = f"https://api-v2.intrinio.com/companies/{query.symbol}/fundamentals?reported_only=true&statement_code={statement_code}"
+        if query.fiscal_year is not None:
+            ids_url = ids_url + f"&fiscal_year={query.fiscal_year}"
+        ids_url = f"&page_size=10000&api_key={api_key}"
 
         fundamentals_ids = await get_data_one(ids_url, **kwargs)
         filings = DataFrame(fundamentals_ids["fundamentals"])
