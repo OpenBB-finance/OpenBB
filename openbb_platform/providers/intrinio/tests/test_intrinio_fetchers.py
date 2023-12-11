@@ -31,6 +31,7 @@ from openbb_intrinio.models.latest_attributes import IntrinioLatestAttributesFet
 from openbb_intrinio.models.market_indices import IntrinioMarketIndicesFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
+from openbb_intrinio.models.reported_financials import IntrinioReportedFinancialsFetcher
 from openbb_intrinio.models.search_attributes import (
     IntrinioSearchAttributesFetcher,
 )
@@ -323,5 +324,19 @@ def test_intrinio_financial_ratios_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL", "period": "annual", "limit": 2, "use_cache": False}
 
     fetcher = IntrinioFinancialRatiosFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_reported_financials_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "AAPL",
+        "statement_type": "cash",
+        "period": "quarter",
+        "limit": 1,
+    }
+
+    fetcher = IntrinioReportedFinancialsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
