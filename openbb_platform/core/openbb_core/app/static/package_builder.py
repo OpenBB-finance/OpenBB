@@ -164,6 +164,7 @@ class PackageBuilder:
         self.console.log("\nRunning linters...")
         linters = Linters(self.directory / "package", self.verbose)
         linters.ruff()
+        linters.black()
 
     def _write(self, code: str, name: str, extension="py") -> None:
         """Write the module to the package."""
