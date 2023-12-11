@@ -1,9 +1,12 @@
 """Coverage module."""
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from openbb_core.api.router.helpers.coverage_helpers import get_route_schema_map
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
+
+if TYPE_CHECKING:
+    from openbb_core.app.static.app_factory import BaseApp
 
 
 class Coverage:
@@ -17,8 +20,9 @@ class Coverage:
         command_schemas
     """
 
-    def __init__(self):
+    def __init__(self, app: "BaseApp"):
         """Initialize coverage."""
+        self._app = app
         self._command_map = CommandMap(coverage_sep=".")
         self._provider_interface = ProviderInterface()
 
@@ -49,5 +53,5 @@ class Coverage:
     def command_schemas(self, filter_by_provider: Optional[str] = None):
         """Return route schema for a command."""
         return get_route_schema_map(
-            self._command_map.commands_model, filter_by_provider
+            self._app, self._command_map.commands_model, filter_by_provider
         )

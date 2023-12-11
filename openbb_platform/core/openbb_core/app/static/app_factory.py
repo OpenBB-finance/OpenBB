@@ -26,7 +26,7 @@ class BaseApp:
     def __init__(self, command_runner: CommandRunner):
         self._command_runner = command_runner
         self._account = Account(self)
-        self._coverage = Coverage()
+        self._coverage = Coverage(self)
 
     @property
     def account(self) -> Account:

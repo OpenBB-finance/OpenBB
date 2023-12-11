@@ -1,19 +1,21 @@
 """Coverage API router helper functions."""
 from inspect import _empty, signature
-from typing import Any, Dict, Optional, Tuple, Type
+from typing import TYPE_CHECKING, Any, Dict, Optional, Tuple, Type
 
 from openbb_core.app.provider_interface import ProviderInterface
 from pydantic import BaseModel, Field, create_model
 
+if TYPE_CHECKING:
+    from openbb_core.app.static.app_factory import BaseApp
+
 provider_interface = ProviderInterface()
 
 
-def get_route_callable(route: str):
+def get_route_callable(app: "BaseApp", route: str):
     """Get the callable for a route."""
     split_route = route.replace(".", "/").split("/")[1:]
-    from openbb import obb  # pylint: disable=import-outside-toplevel
 
-    return_callable = obb
+    return_callable = app
 
     for route_path in split_route:
         return_callable = getattr(return_callable, route_path)
@@ -21,9 +23,9 @@ def get_route_callable(route: str):
     return return_callable
 
 
-def signature_to_fields(route: str) -> Dict[str, Tuple[Any, Field]]:  # type: ignore
+def signature_to_fields(app: "BaseApp", route: str) -> Dict[str, Tuple[Any, Field]]:  # type: ignore
     """Convert a command signature to pydantic fields."""
-    return_callable = get_route_callable(route)
+    return_callable = get_route_callable(app, route)
     sig = signature(return_callable)
 
     fields = {}
@@ -88,6 +90,7 @@ def create_combined_model(
 
 
 def get_route_schema_map(
+    app: "BaseApp",
     command_model_map: Dict[str, str],
     filter_by_provider: Optional[str] = None,
 ) -> Dict[str, Dict[str, Any]]:
@@ -96,12 +99,12 @@ def get_route_schema_map(
     for route, model in command_model_map.items():
         input_model = create_combined_model(
             route,
-            signature_to_fields(route),
+            signature_to_fields(app, route),
             dataclass_to_fields(model),
             filter_by_provider=filter_by_provider,
         )
         output_model = provider_interface.return_schema[model]
-        return_callable = get_route_callable(route)
+        return_callable = get_route_callable(app, route)
 
         route_schema_map[route] = {
             "input": input_model,
