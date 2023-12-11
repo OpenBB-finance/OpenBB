@@ -387,14 +387,14 @@ def test_econometrics_panel_fmac(params, obb):
 
 
 @pytest.mark.parametrize(
-    "params, data_type",
+    "params",
     [
-        ({"data": ""}, "equity"),
-        ({"data": ""}, "crypto"),
+        ({"data": "", "columns": ["income", "age"]}),
+        ({"data": "", "columns": ["education"]}),
     ],
 )
 @pytest.mark.integration
-def test_econometrics_variance_inflation_factor(params, data_type, obb):
+def test_econometrics_variance_inflation_factor(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     params["data"] = mock_multi_index_data()
