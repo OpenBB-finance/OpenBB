@@ -1,6 +1,6 @@
 """Intrinio Reported Financials Model."""
 
-
+import warnings
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -16,6 +16,8 @@ from openbb_core.provider.utils.helpers import (
 from openbb_intrinio.utils.helpers import get_data_one
 from pandas import DataFrame
 from pydantic import Field
+
+_warn = warnings.warn
 
 STATEMENT_DICT = {
     "balance": "balance_sheet_statement",
@@ -76,10 +78,12 @@ class IntrinioReportedFinancialsFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         statement_code = STATEMENT_DICT[query.statement_type]
         period_type = "FY" if query.period == "annual" else "Q"
-
+        ids = []
         ids_url = f"https://api-v2.intrinio.com/companies/{query.symbol}/fundamentals?reported_only=true&statement_code={statement_code}"
         if query.fiscal_year is not None:
-            ids_url = ids_url + f"&fiscal_year={query.fiscal_year}"
+            fiscal_year = 2008 if query.fiscal_year < 2008 else query.fiscal_year
+            _warn("Financials data is only available from 2008 and later.")
+            ids_url = ids_url + f"&fiscal_year={fiscal_year}"
         ids_url = ids_url + f"&page_size=10000&api_key={api_key}"
 
         fundamentals_ids = await get_data_one(ids_url, **kwargs)
@@ -91,7 +95,10 @@ class IntrinioReportedFinancialsFetcher(
             filings = filings[filings["statement_code"].str.contains(_statement)]
             if query.period == "annual":
                 filings = filings[filings["fiscal_period"].str.contains(_period)]
-        ids = filings.iloc[: query.limit]["id"].to_list()
+            ids = filings.iloc[: query.limit]["id"].to_list()
+
+        if ids == []:
+            raise RuntimeError("No reports found.")
 
         async def callback(response: ClientResponse, _: Any) -> Dict:
             """Return the response."""
