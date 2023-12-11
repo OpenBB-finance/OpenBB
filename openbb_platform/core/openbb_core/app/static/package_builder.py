@@ -662,7 +662,7 @@ class MethodDefinition:
         return code
 
     @staticmethod
-    def build_command_method_implementation(path: str, func: Callable):
+    def build_command_method_body(path: str, func: Callable):
         """Build the command method implementation."""
         sig = signature(func)
         parameter_map = dict(sig.parameters)
@@ -729,7 +729,7 @@ class MethodDefinition:
             func=func, formatted_params=formatted_params, model_name=model_name
         )
 
-        code += cls.build_command_method_implementation(path=path, func=func)
+        code += cls.build_command_method_body(path=path, func=func)
 
         return code
 
