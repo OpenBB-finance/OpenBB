@@ -1,5 +1,6 @@
 """Intrinio FRED Series Model."""
 
+import asyncio
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -9,8 +10,12 @@ from openbb_core.provider.standard_models.fred_series import (
     SeriesData,
     SeriesQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
-from openbb_intrinio.utils.helpers import async_get_data_one
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    ClientSession,
+    amake_requests,
+    get_querystring,
+)
 from pydantic import Field
 
 
@@ -61,7 +66,7 @@ class IntrinioFredSeriesFetcher(
         return IntrinioFredSeriesQueryParams(**transformed_params)
 
     @staticmethod
-    async def extract_data(
+    async def aextract_data(
         query: IntrinioFredSeriesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -79,31 +84,27 @@ class IntrinioFredSeriesFetcher(
             f"?{query_str}&api_key={api_key}"
         )
 
-        data = await async_get_data_one(url, query.limit, query.sleep, **kwargs)
+        async def callback(response: ClientResponse, session: ClientSession) -> dict:
+            """Return the response."""
+            init_response = await response.json()
 
-        if query.all_pages:
-            all_data: list = data.get("historical_data", [])
-            next_page = data.get("next_page", None)
+            all_data: list = init_response.get("historical_data", [])
 
-            while next_page:
-                query_str = get_querystring(
-                    query.model_dump(), ["symbol", "next_page", "all_pages", "sleep"]
-                )
+            if query.all_pages:
+                next_page = init_response.get("next_page", None)
+                while next_page:
+                    if query.limit > 100:
+                        await asyncio.sleep(query.sleep)
 
-                url = (
-                    f"{base_url}/indices/economic/${query.symbol.replace('$', '')}/historical_data/level"
-                    f"?{query_str}&next_page={next_page}&api_key={api_key}"
-                )
+                    url = response.url.update_query(next_page=next_page).human_repr()
+                    response_data = await session.get_json(url)
 
-                data = await async_get_data_one(url, query.limit, query.sleep, **kwargs)
-
-                all_data.extend(data.get("historical_data", []))
-
-                next_page = data.get("next_page", None)
+                    all_data.extend(response_data.get("historical_data", []))
+                    next_page = response_data.get("next_page", None)
 
             return all_data
 
-        return data.get("historical_data", [])
+        return await amake_requests([url], callback, **kwargs)
 
     @staticmethod
     def transform_data(

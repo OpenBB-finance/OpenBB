@@ -43,23 +43,23 @@ class IntrinioSearchAttributesFetcher(
         return IntrinioSearchAttributesQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: IntrinioSearchAttributesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
-        data: List[Dict] = []
 
         base_url = "https://api-v2.intrinio.com"
         query_str = get_querystring(query.model_dump(by_alias=True), [])
 
         url = f"{base_url}/data_tags/search?{query_str}&api_key={api_key}"
-        data = get_data_one(url).get("tags", [])
+        data = await get_data_one(url, **kwargs)
+
         # Intrinio doesn't return the correct number of results when using the limit parameter
         # Temporary fix until they fix it
-        data = data[: query.limit]
+        data = data.get("tags", [])[: query.limit]
 
         return data
 

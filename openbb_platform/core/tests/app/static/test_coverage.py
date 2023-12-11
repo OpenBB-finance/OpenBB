@@ -2,13 +2,21 @@
 # pylint: disable=redefined-outer-name
 
 import pytest
+from openbb_core.app.command_runner import CommandRunner
+from openbb_core.app.static.app_factory import BaseApp
 from openbb_core.app.static.coverage import Coverage
 
 
 @pytest.fixture(scope="module")
-def coverage():
+def app():
+    """Return a BaseApp instance."""
+    return BaseApp(command_runner=CommandRunner())
+
+
+@pytest.fixture(scope="module")
+def coverage(app):
     """Return coverage."""
-    return Coverage()
+    return Coverage(app)  # Pass the BaseApp instance to Coverage
 
 
 def test_coverage_init(coverage):

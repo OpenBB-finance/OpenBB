@@ -120,7 +120,7 @@ class FMPEtfHoldingsFetcher(
         return FMPEtfHoldingsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPEtfHoldingsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -132,7 +132,7 @@ class FMPEtfHoldingsFetcher(
             version=4, endpoint="etf-holdings", api_key=api_key, query=query
         )
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

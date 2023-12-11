@@ -1,5 +1,6 @@
 """REST API for the OpenBB Platform."""
 import logging
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,6 +17,31 @@ from openbb_core.env import Env
 logger = logging.getLogger("uvicorn.error")
 
 system = SystemService().system_settings
+
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    """Startup event."""
+    auth = "ENABLED" if Env().API_AUTH else "DISABLED"
+    banner = rf"""
+
+                   ███╗
+  █████████████████╔══█████████████████╗       OpenBB Platform v{system.version}
+  ███╔══════════███║  ███╔══════════███║
+  █████████████████║  █████████████████║       Authentication: {auth}
+  ╚═════════════███║  ███╔═════════════╝
+     ██████████████║  ██████████████╗
+     ███╔═══════███║  ███╔═══════███║
+     ██████████████║  ██████████████║
+     ╚═════════════╝  ╚═════════════╝
+Investment research for everyone, anywhere.
+
+    https://my.openbb.co/app/platform
+
+"""
+    logger.info(banner)
+    yield
+
 
 app = FastAPI(
     title=system.api_settings.title,
@@ -38,7 +64,9 @@ app = FastAPI(
         }
         for s in system.api_settings.servers
     ],
+    lifespan=lifespan,
 )
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=system.api_settings.cors.allow_origins,
@@ -52,29 +80,6 @@ AppLoader.from_routers(
     else [router_commands],
     prefix=system.api_settings.prefix,
 )
-
-
-@app.on_event("startup")
-async def startup():
-    """Startup event."""
-    auth = "ENABLED" if Env().API_AUTH else "DISABLED"
-    banner = rf"""
-
-                   ███╗
-  █████████████████╔══█████████████████╗       OpenBB Platform v{system.version}
-  ███╔══════════███║  ███╔══════════███║
-  █████████████████║  █████████████████║       Authentication: {auth}
-  ╚═════════════███║  ███╔═════════════╝
-     ██████████████║  ██████████████╗
-     ███╔═══════███║  ███╔═══════███║
-     ██████████████║  ██████████████║
-     ╚═════════════╝  ╚═════════════╝
-Investment research for everyone, anywhere.
-
-    https://my.openbb.co/app/platform
-
-"""
-    logger.info(banner)
 
 
 @app.exception_handler(Exception)
