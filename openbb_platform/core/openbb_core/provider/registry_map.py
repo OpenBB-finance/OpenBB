@@ -142,6 +142,7 @@ class RegistryMap:
             "alias_dict": alias_dict,
         }
 
+        # We ignore fields that are already in the standard model
         for name, field in all_fields.items():
             if name not in standard_info["fields"]:
                 extra_info["fields"][name] = field
