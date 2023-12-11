@@ -171,6 +171,10 @@ class OBBject(Tagged, Generic[T]):
             else:
                 try:
                     df = pd.DataFrame(res)
+                    # Set index, if any
+                    if index in df.columns:
+                        df.set_index(index, inplace=True)
+
                 except ValueError:
                     if isinstance(res, dict):
                         df = pd.DataFrame([res])
