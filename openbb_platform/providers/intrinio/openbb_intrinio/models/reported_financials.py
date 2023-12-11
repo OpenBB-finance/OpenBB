@@ -80,7 +80,7 @@ class IntrinioReportedFinancialsFetcher(
         ids_url = f"https://api-v2.intrinio.com/companies/{query.symbol}/fundamentals?reported_only=true&statement_code={statement_code}"
         if query.fiscal_year is not None:
             ids_url = ids_url + f"&fiscal_year={query.fiscal_year}"
-        ids_url = f"&page_size=10000&api_key={api_key}"
+        ids_url = ids_url + f"&page_size=10000&api_key={api_key}"
 
         fundamentals_ids = await get_data_one(ids_url, **kwargs)
         filings = DataFrame(fundamentals_ids["fundamentals"])
