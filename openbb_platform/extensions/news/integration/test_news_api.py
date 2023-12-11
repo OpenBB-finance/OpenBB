@@ -147,6 +147,12 @@ def test_news_world(params, headers):
                 "source": "bloomberg.com",
             }
         ),
+        (
+            {
+                "provider": "ultima",
+                "sectors": "Real Estate",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -160,8 +166,17 @@ def test_news_company(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.skip(reason="No providers implement this yet.")
-@pytest.mark.parametrize("params", [])
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "ultima",
+                "sectors": "Real Estate",
+            }
+        ),
+    ],
+)
 @pytest.mark.integration
 def test_news_sector(params, headers):
     params = {p: v for p, v in params.items() if v}
