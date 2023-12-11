@@ -69,7 +69,7 @@ class IntrinioHistoricalDividendsFetcher(
         return IntrinioHistoricalDividendsQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: IntrinioHistoricalDividendsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -81,7 +81,7 @@ class IntrinioHistoricalDividendsFetcher(
         query_str = get_querystring(query.model_dump(), ["symbol"])
         url = f"{base_url}/{query.symbol}/prices/adjustments?{query_str}&api_key={api_key}"
 
-        return get_data_many(url, "stock_price_adjustments", **kwargs)
+        return await get_data_many(url, "stock_price_adjustments", **kwargs)
 
     @staticmethod
     def transform_data(

@@ -1,7 +1,5 @@
 """FMP Equity Valuation Multiples Model."""
 
-from concurrent.futures import ThreadPoolExecutor
-from itertools import repeat
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -9,7 +7,8 @@ from openbb_core.provider.standard_models.equity_valuation_multiples import (
     EquityValuationMultiplesData,
     EquityValuationMultiplesQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
+from openbb_core.provider.utils.helpers import ClientResponse, amake_requests
+from openbb_fmp.utils.helpers import create_url
 
 
 class FMPEquityValuationMultiplesQueryParams(EquityValuationMultiplesQueryParams):
@@ -103,28 +102,27 @@ class FMPEquityValuationMultiplesFetcher(
         return FMPEquityValuationMultiplesQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPEquityValuationMultiplesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-
-        data: List[Dict] = []
-
-        def multiple_symbols(symbol: str, data: List[Dict]) -> None:
-            url = create_url(
+        urls = [
+            create_url(
                 3, f"key-metrics-ttm/{symbol}", api_key, query, exclude=["symbol"]
             )
-            response = get_data_many(url, **kwargs)
-            response[0]["symbol"] = symbol
-            return data.extend(response)
+            for symbol in query.symbol.split(",")
+        ]
 
-        with ThreadPoolExecutor() as executor:
-            executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
+        async def callback(response: ClientResponse, _: Any) -> List[Dict]:
+            data = await response.json()
+            symbol = response.url.parts[-1]
 
-        return data
+            return [{**d, "symbol": symbol} for d in data]
+
+        return await amake_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(

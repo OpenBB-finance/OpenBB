@@ -36,7 +36,7 @@ class FMPAnalystEstimatesFetcher(
         return FMPAnalystEstimatesQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPAnalystEstimatesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -48,7 +48,7 @@ class FMPAnalystEstimatesFetcher(
             3, f"analyst-estimates/{query.symbol}", api_key, query, ["symbol"]
         )
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

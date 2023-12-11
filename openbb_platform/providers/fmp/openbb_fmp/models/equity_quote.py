@@ -9,7 +9,8 @@ from openbb_core.provider.standard_models.equity_quote import (
     EquityQuoteData,
     EquityQuoteQueryParams,
 )
-from openbb_fmp.utils.helpers import get_data_many, get_querystring
+from openbb_core.provider.utils.helpers import amake_requests
+from openbb_fmp.utils.helpers import get_querystring
 from pydantic import Field, field_validator
 
 
@@ -107,7 +108,7 @@ class FMPEquityQuoteFetcher(
         return FMPEquityQuoteQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPEquityQuoteQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -117,9 +118,18 @@ class FMPEquityQuoteFetcher(
 
         base_url = "https://financialmodelingprep.com/api/v3"
         query_str = get_querystring(query.model_dump(), ["symbol"])
-        url = f"{base_url}/quote/{query.symbol}?{query_str}&apikey={api_key}"
 
-        return get_data_many(url, **kwargs)
+        symbols = query.symbol.split(",")
+        symbols_split = [
+            ",".join(symbols[i : i + 10]) for i in range(0, len(symbols), 10)
+        ]
+
+        urls = [
+            f"{base_url}/quote/{symbol}?{query_str}&apikey={api_key}"
+            for symbol in symbols_split
+        ]
+
+        return await amake_requests(urls, **kwargs)
 
     @staticmethod
     def transform_data(

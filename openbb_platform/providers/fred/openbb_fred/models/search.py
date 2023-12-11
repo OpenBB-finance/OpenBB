@@ -9,7 +9,10 @@ from openbb_core.provider.standard_models.fred_search import (
     SearchQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import async_make_request, get_querystring
+from openbb_core.provider.utils.helpers import (
+    amake_request,
+    get_querystring,
+)
 from pydantic import Field, NonNegativeInt
 
 
@@ -88,7 +91,7 @@ class FredSearchFetcher(
         return transformed_params
 
     @staticmethod
-    async def extract_data(
+    async def aextract_data(
         query: FredSearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -100,7 +103,7 @@ class FredSearchFetcher(
         if query.is_release is True:
             url = f"https://api.stlouisfed.org/fred/releases?api_key={api_key}&file_type=json"
 
-            response = await async_make_request(url, timeout=5, **kwargs)
+            response = await amake_request(url, timeout=5, **kwargs)
 
             return response.get("releases")  #  type: ignore[return-value, union-attr]
 
@@ -119,7 +122,7 @@ class FredSearchFetcher(
         querystring = get_querystring(query.model_dump(), exclude).replace(" ", "+")
 
         url = url + querystring + f"&file_type=json&api_key={api_key}"
-        response = await async_make_request(url, timeout=5, **kwargs)
+        response = await amake_request(url, timeout=5, **kwargs)
 
         return response.get("seriess")  #  type: ignore[return-value, union-attr]
 
@@ -131,8 +134,9 @@ class FredSearchFetcher(
 
         df = pd.DataFrame()
         if data is not None:
-            [d.pop("realtime_start") for d in data]
-            [d.pop("realtime_end") for d in data]
+            for d in data:
+                d.pop("realtime_start", None)
+                d.pop("realtime_end", None)
             df = (
                 pd.DataFrame.from_records(data)
                 .fillna("N/A")
