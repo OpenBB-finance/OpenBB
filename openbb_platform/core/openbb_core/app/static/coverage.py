@@ -1,5 +1,5 @@
 """Coverage module."""
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from openbb_core.api.router.helpers.coverage_helpers import get_route_schema_map
 from openbb_core.app.provider_interface import ProviderInterface
@@ -31,23 +31,23 @@ class Coverage:
         return self.__doc__ or ""
 
     @property
-    def providers(self):
+    def providers(self) -> Dict[str, List[str]]:
         """Return providers coverage."""
         return self._command_map.provider_coverage
 
     @property
-    def commands(self):
+    def commands(self) -> Dict[str, List[str]]:
         """Return commands coverage."""
         return self._command_map.command_coverage
 
     @property
-    def command_model(self):
+    def command_model(self) -> Dict[str, Dict[str, Dict[str, Dict[str, Any]]]]:
         """Return command to model mapping."""
         return {
             command: self._provider_interface.map[
                 self._command_map.commands_model[command]
             ]
-            for command in self._command_map.commands_model  # pylint: disable=C0206
+            for command in self._command_map.commands_model
         }
 
     def command_schemas(self, filter_by_provider: Optional[str] = None):
