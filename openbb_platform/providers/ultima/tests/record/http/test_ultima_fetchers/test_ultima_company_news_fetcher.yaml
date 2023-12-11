@@ -14,99 +14,96 @@ interactions:
     uri: https://api.ultimainsights.ai/v1/getOpenBBProInsights/AAPL,MSFT
   response:
     body:
-      string: "[\n  {\n    \"8k_filings\": [],\n    \"articles\": [\n      {\n        \"headline\":
-        \"LG launches 118-inch ... Reportedly, batteries based on the new design will
-        be offered with the company&#39;s products that will launch in 2025 or later.\",\n
-        \       \"publishedDate\": \"2023-11-07 13:01:41\",\n        \"publisher\":
-        \"SamMobile\",\n        \"riskCategory\": \"Competition News\",\n        \"summary\":
-        \"Apple is developing a new battery design expected to offer better performance
-        and launch in 2025 or later.\",\n        \"url\": \"https://www.sammobile.com/new/apple-developing-new-battery-design-2025-products/\"\n
-        \     },\n      {\n        \"headline\": \"(Bloomberg) -- Meta Platforms Inc.,
-        Apple Inc., Alphabet Inc. and other companies that offer digital wallets and
-        payment apps would fall under US&nbsp;...\",\n        \"publishedDate\": \"2023-11-08
-        01:16:45\",\n        \"publisher\": \"Yahoo Finance\",\n        \"riskCategory\":
-        \"Financial News\",\n        \"summary\": \"Apple, along with other companies
-        offering digital wallets and payment apps, could fall under US Consumer Financial
-        Protection Bureau supervision under a newly proposed rule. The rule aims to
-        treat nonbanks more like traditional financial institutions and would require
-        companies handling more than 5 million transactions per year to be regulated.
-        This could impact Apple Pay and Google Pay, as the CFPB would be able to monitor
-        their compliance with federal money-transfer laws.\",\n        \"url\": \"https://finance.yahoo.com/news/meta-apple-risk-increased-regulation-184702439.html\"\n
-        \     }\n    ],\n    \"critical_factors\": {},\n    \"earnings_summary\":
-        {},\n    \"industry_summary\": [],\n    \"metadata\": {\n      \"has_industry_summary\":
-        false,\n      \"is_day_after_earnings\": false,\n      \"is_day_before_or_of_earnings\":
+      string: "[\n  {\n    \"8k_filings\": [],\n    \"articles\": [],\n    \"critical_factors\":
+        {},\n    \"earnings_summary\": {},\n    \"industry_summary\": [],\n    \"metadata\":
+        {\n      \"is_day_after_earnings\": false,\n      \"is_day_before_or_of_earnings\":
         false,\n      \"n_8k_articles_with_summaries\": 0,\n      \"n_articles_with_summaries\":
-        2,\n      \"n_pr_articles_with_summaries\": 0\n    },\n    \"pr_articles\":
-        [],\n    \"ticker\": \"AAPL\"\n  },\n  {\n    \"8k_filings\": [],\n    \"articles\":
-        [\n      {\n        \"headline\": \"In 2021, Microsoft acquired AI company
-        Nuance Communications, a leading software technology corporation specializing
-        in speech recognition and&nbsp;...\",\n        \"publishedDate\": \"2023-11-07
-        10:03:30\",\n        \"publisher\": \"Gamerant\",\n        \"riskCategory\":
-        \"Competition News\",\n        \"summary\": \"Microsoft partners with Inworld
-        AI to empower game developers with AI-driven features for Xbox.\",\n        \"url\":
-        \"https://gamerant.com/microsoft-inworld-ai-partnership-for-xbox/\"\n      },\n
-        \     {\n        \"headline\": \"\\u201cWe are looking forward to partnering
-        with Microsoft Azure and G7 CR Technologies \\u2013 A Noventiq Company to
-        bring our fraud protection capabilities.\",\n        \"publishedDate\": \"2023-11-07
-        20:06:49\",\n        \"publisher\": \"The Financial Express\",\n        \"riskCategory\":
-        \"Legal News\",\n        \"summary\": \"Namaste Credit partners with Microsoft
-        Azure to enhance fraud detection capabilities and offer real-time data analysis
-        to banking and financial institutions.\",\n        \"url\": \"https://www.financialexpress.com/business/digital-transformation-namaste-credit-enters-into-a-collaboration-with-microsoft-azure-over-fraud-detection-solutions-3299994/\"\n
+        0,\n      \"n_pr_articles_with_summaries\": 0,\n      \"symbol_type\": \"Company\"\n
+        \   },\n    \"pr_articles\": [],\n    \"ticker\": \"AAPL\"\n  },\n  {\n    \"8k_filings\":
+        [],\n    \"articles\": [\n      {\n        \"headline\": \"With global regulators
+        examining Microsoft Corp. ... The unorthodox structure was concocted because
+        OpenAI is a capped for-profit company housed inside&nbsp;...\",\n        \"publishedDate\":
+        \"2023-12-09 03:57:12\",\n        \"publisher\": \"Bloomberg\",\n        \"riskCategory\":
+        \"Competition News\",\n        \"summary\": \"Microsoft's $13 billion investment
+        in OpenAI is under scrutiny by global regulators. Microsoft argues that it
+        doesn't control OpenAI as it doesn't own a traditional stake. Regulators are
+        examining whether the collaboration threatens competition and violates antitrust
+        laws. Microsoft faces intense competition and government regulations, which
+        may reduce its attractiveness and revenue.\",\n        \"url\": \"https://www.bloomberg.com/news/articles/2023-12-08/microsoft-s-answer-to-openai-inquiry-it-doesn-t-own-a-stake\"\n
+        \     },\n      {\n        \"headline\": \"The US Federal Trade Commission&#39;s
+        antitrust case against Amazon.com Inc ... The US Federal Trade Commission
+        is examining the nature of Microsoft Corp.\",\n        \"publishedDate\":
+        \"2023-12-09 16:02:34\",\n        \"publisher\": \"Bloomberg\",\n        \"riskCategory\":
+        \"Competition News\",\n        \"summary\": \"Amazon's antitrust case challenges
+        the agency's assertion that it causes prices to go up on competing websites,
+        which may impact Microsoft's revenue.\",\n        \"url\": \"https://www.bloomberg.com/news/articles/2023-12-08/amazon-seeks-dismissal-of-ftc-antitrust-lawsuit\"\n
+        \     },\n      {\n        \"headline\": \"Former Microsoft Product Leader
+        to Help Launch VERSES AI Developer Platform ... Amazon and the Amazon logo
+        are trademarks of Amazon.com, Inc. or its&nbsp;...\",\n        \"publishedDate\":
+        \"2023-12-09 04:09:29\",\n        \"publisher\": \"The Tech Outlook\",\n        \"riskCategory\":
+        \"Competition News\",\n        \"summary\": \"VERSES AI Inc. welcomes Peter
+        Provost, former Microsoft product leader, as VP of Product, Developer Platforms.
+        Provost will lead the strategic development and enhancement of VERSES' Intelligence-as-a-Service
+        platform, leveraging his experience in product engineering and deep understanding
+        of the developer community.\",\n        \"url\": \"https://www.thetechoutlook.com/press-release/former-microsoft-product-leader-to-help-launch-verses-ai-developer-platform/\"\n
         \     }\n    ],\n    \"critical_factors\": {},\n    \"earnings_summary\":
-        {},\n    \"industry_summary\": [\n      {\n        \"headline\": \"Microsoft
-        AI Partnership\",\n        \"publishedDate\": \"2023-11-07 10:03:30\",\n        \"publisher\":
-        \"Gamerant\",\n        \"riskCategory\": \"Competition News\",\n        \"summary\":
-        \"Microsoft partners with Inworld AI to empower game developers with AI-driven
-        features for Xbox, aiming to make game development easier and push the boundaries
-        of gaming.\",\n        \"url\": \"https://gamerant.com/microsoft-inworld-ai-partnership-for-xbox/\"\n
-        \     },\n      {\n        \"headline\": \"Namaste Credit Collaboration\",\n
-        \       \"publishedDate\": \"2023-11-07 20:06:49\",\n        \"publisher\":
-        \"The Financial Express\",\n        \"riskCategory\": \"Legal News\",\n        \"summary\":
-        \"Namaste Credit partners with Microsoft Azure to introduce fraud detection
-        capabilities for banking, financial institutions, and the fintech industry.\",\n
-        \       \"url\": \"https://www.financialexpress.com/business/digital-transformation-namaste-credit-enters-into-a-collaboration-with-microsoft-azure-over-fraud-detection-solutions-3299994/\"\n
-        \     },\n      {\n        \"headline\": \"Microsoft Ignite Security\",\n
-        \       \"publishedDate\": \"2023-11-07 21:19:41\",\n        \"publisher\":
-        \"Microsoft\",\n        \"riskCategory\": \"Cybersecurity News\",\n        \"summary\":
-        \"Microsoft Ignite will feature sessions on security strategies and practical
-        applications, with a focus on leveraging AI and Microsoft Security solutions
-        to strengthen threat defense. The event will also include networking opportunities
-        and product announcements.\",\n        \"url\": \"https://www.microsoft.com/en-us/security/blog/2023/11/07/digital-security-sessions-at-microsoft-ignite-to-prepare-you-for-the-era-of-ai/\"\n
-        \     },\n      {\n        \"headline\": \"Palo Alto Talon Acquisition\",\n
-        \       \"publishedDate\": \"2023-11-07 21:56:49\",\n        \"publisher\":
-        \"CFO Dive\",\n        \"riskCategory\": \"Cybersecurity News\",\n        \"summary\":
-        \"Palo Alto Networks is acquiring Israeli startup Talon Cyber Security for
-        $625 million, following its recent acquisition of cloud security startup Dig
-        Security. The acquisitions aim to enhance Palo Alto Networks' PrismaSASE service
-        and strengthen its presence in the Israeli cybersecurity ecosystem.\",\n        \"url\":
-        \"https://www.cfodive.com/news/palo-alto-networks-agrees-buy-talon-cyber-security-merger-acquisition-ramp-up/698951/\"\n
-        \     },\n      {\n        \"headline\": \"Microsoft Azure Kubernetes Service\",\n
-        \       \"publishedDate\": \"2023-11-07 14:14:56\",\n        \"publisher\":
-        \"SiliconANGLE\",\n        \"riskCategory\": \"Competition News\",\n        \"summary\":
-        \"Microsoft Corp. announced updates to its Azure Kubernetes Service (AKS)
-        at the KubeCon + CloudNativeCon NA event. The updates focus on efficiency,
-        scalability, networking, security, and observability. AKS now offers kube-reserved
-        resource optimization, artifact streaming support, Istio-based service mesh
-        add-on, Kubernetes event-driven autoscaling, Azure Container Storage, image
-        integrity feature, dual-stack support, application routing add-on, Azure Backup,
-        Azure Monitor for Prometheus, and Azure Monitor OpenTelemetry-based distributions.\",\n
-        \       \"url\": \"https://siliconangle.com/2023/11/07/microsoft-adds-ton-new-features-azure-kubernetes-service-making-efficient-scalable-secure/\"\n
-        \     }\n    ],\n    \"metadata\": {\n      \"has_industry_summary\": true,\n
-        \     \"is_day_after_earnings\": false,\n      \"is_day_before_or_of_earnings\":
-        false,\n      \"n_8k_articles_with_summaries\": 0,\n      \"n_articles_with_summaries\":
-        3,\n      \"n_pr_articles_with_summaries\": 0\n    },\n    \"pr_articles\":
-        [],\n    \"ticker\": \"MSFT\"\n  }\n]\n"
+        {},\n    \"industry_summary\": [],\n    \"metadata\": {\n      \"is_day_after_earnings\":
+        false,\n      \"is_day_before_or_of_earnings\": false,\n      \"n_8k_articles_with_summaries\":
+        0,\n      \"n_articles_with_summaries\": 3,\n      \"n_pr_articles_with_summaries\":
+        0,\n      \"symbol_type\": \"Company\"\n    },\n    \"pr_articles\": [],\n
+        \   \"ticker\": \"MSFT\"\n  },\n  {\n    \"8k_filings\": [],\n    \"articles\":
+        [],\n    \"critical_factors\": {},\n    \"earnings_summary\": {},\n    \"industry_summary\":
+        [\n      {\n        \"headline\": \"Microsoft\\\\'s OpenAI Inquiry\",\n        \"publishedDate\":
+        \"2023-12-09 03:57:12\",\n        \"publisher\": \"Bloomberg\",\n        \"riskCategory\":
+        \"Financial News\",\n        \"summary\": \"Microsoft's $13 billion investment
+        in OpenAI is being examined by global regulators for potential antitrust violations.
+        Microsoft argues that it doesn't control OpenAI due to an unusual investment
+        arrangement. Regulators in the UK and the US are gathering information to
+        determine if the collaboration threatens competition. Microsoft faces potential
+        regulatory headaches in Europe as well. The partnership raises competition
+        concerns if Microsoft reduces its own AI research or restricts OpenAI from
+        partnering with rivals.\",\n        \"url\": \"https://www.bloomberg.com/news/articles/2023-12-08/microsoft-s-answer-to-openai-inquiry-it-doesn-t-own-a-stake\"\n
+        \     },\n      {\n        \"headline\": \"Amazon FTC Antitrust Lawsuit\",\n
+        \       \"publishedDate\": \"2023-12-09 16:02:34\",\n        \"publisher\":
+        \"Bloomberg\",\n        \"riskCategory\": \"Legal News\",\n        \"summary\":
+        \"Amazon seeks dismissal of FTC antitrust lawsuit, arguing that the agency's
+        case lacks evidence of harm to consumers and fails to prove that Amazon's
+        practices raise prices on competing websites.\",\n        \"url\": \"https://www.bloomberg.com/news/articles/2023-12-08/amazon-seeks-dismissal-of-ftc-antitrust-lawsuit\"\n
+        \     },\n      {\n        \"headline\": \"Former Microsoft Product Leader\",\n
+        \       \"publishedDate\": \"2023-12-09 04:09:29\",\n        \"publisher\":
+        \"The Tech Outlook\",\n        \"riskCategory\": \"Competition News\",\n        \"summary\":
+        \"VERSES AI Inc. welcomes Peter Provost as VP of Product, Developer Platforms.
+        Provost brings 18 years of experience from Microsoft and will lead the strategic
+        development of VERSES' Intelligence-as-a-Service platform.\",\n        \"url\":
+        \"https://www.thetechoutlook.com/press-release/former-microsoft-product-leader-to-help-launch-verses-ai-developer-platform/\"\n
+        \     },\n      {\n        \"headline\": \"Microsoft\\\\'s Partnership Controversy\",\n
+        \       \"publishedDate\": \"2023-12-09 12:23:13\",\n        \"publisher\":
+        \"Digital Information World\",\n        \"riskCategory\": \"Competition News\",\n
+        \       \"summary\": \"Microsoft's partnership with a major tech company is
+        causing controversy in the Software\\u2014Infrastructure industry.\",\n        \"url\":
+        \"https://www.digitalinformationworld.com/2023/12/microsofts-much-debated-partnership.html\"\n
+        \     },\n      {\n        \"headline\": \"EU AI Act\",\n        \"publishedDate\":
+        \"2023-12-09 18:06:52\",\n        \"publisher\": \"WIRED\",\n        \"riskCategory\":
+        \"Regulatory News\",\n        \"summary\": \"The European Union has agreed
+        on the AI Act, a comprehensive set of rules for artificial intelligence. The
+        act includes bans on biometric systems, transparency requirements for AI models,
+        and fines for non-compliance.\",\n        \"url\": \"https://www.wired.com/story/eu-ai-act/\"\n
+        \     }\n    ],\n    \"metadata\": {\n      \"is_day_after_earnings\": false,\n
+        \     \"is_day_before_or_of_earnings\": false,\n      \"n_8k_articles_with_summaries\":
+        0,\n      \"n_articles_with_summaries\": 5,\n      \"n_pr_articles_with_summaries\":
+        0,\n      \"symbol_type\": \"Industry\"\n    },\n    \"pr_articles\": [],\n
+        \   \"ticker\": \"Software\\u2014Infrastructure\"\n  }\n]\n"
     headers:
       Access-Control-Allow-Origin:
       - '*'
       Connection:
       - keep-alive
       Content-Length:
-      - '6802'
+      - '6540'
       Content-Type:
       - application/json
       Date:
-      - Wed, 08 Nov 2023 13:59:33 GMT
+      - Mon, 11 Dec 2023 12:13:48 GMT
       Server:
       - nginx/1.18.0 (Ubuntu)
     status:
