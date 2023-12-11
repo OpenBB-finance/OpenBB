@@ -48,7 +48,7 @@ class FMPCryptoSearchFetcher(
         return FMPCryptoSearchQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPCryptoSearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -62,7 +62,7 @@ class FMPCryptoSearchFetcher(
             api_key=api_key,
         )
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

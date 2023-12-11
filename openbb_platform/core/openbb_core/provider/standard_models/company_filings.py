@@ -66,7 +66,7 @@ class CompanyFilingsData(Data):
             return v.upper()
         return ",".join([symbol.upper() for symbol in list(v)]) if v else None
 
-    @field_validator("date", mode="before", check_fields=False)
+    @field_validator("date", "filing_date", mode="before", check_fields=False)
     @classmethod
     def convert_date(cls, v: str):
         """Convert date to date type."""

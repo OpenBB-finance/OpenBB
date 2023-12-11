@@ -121,7 +121,7 @@ class IntrinioInsiderTradingFetcher(
         return IntrinioInsiderTradingQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: IntrinioInsiderTradingQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -133,7 +133,7 @@ class IntrinioInsiderTradingFetcher(
         query_str = get_querystring(query.model_dump(by_alias=True), ["symbol"])
         url = f"{base_url}/{query.symbol}/insider_transaction_filings?{query_str}&api_key={api_key}"
 
-        return get_data_many(url, "transaction_filings", **kwargs)
+        return await get_data_many(url, "transaction_filings", **kwargs)
 
     @staticmethod
     def transform_data(

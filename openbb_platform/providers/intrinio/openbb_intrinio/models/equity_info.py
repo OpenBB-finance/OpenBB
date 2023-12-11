@@ -45,7 +45,7 @@ class IntrinioEquityInfoFetcher(
         return IntrinioEquityInfoQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: IntrinioEquityInfoQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -54,7 +54,8 @@ class IntrinioEquityInfoFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         base_url = "https://api-v2.intrinio.com"
         url = f"{base_url}/companies/{query.symbol}?api_key={api_key}"
-        return get_data_one(url, **kwargs)
+
+        return await get_data_one(url, **kwargs)
 
     @staticmethod
     def transform_data(

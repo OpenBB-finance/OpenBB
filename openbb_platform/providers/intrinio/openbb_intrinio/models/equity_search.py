@@ -66,7 +66,7 @@ class IntrinioEquitySearchFetcher(
         return IntrinioEquitySearchQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: IntrinioEquitySearchQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -77,7 +77,7 @@ class IntrinioEquitySearchFetcher(
         query_str = get_querystring(query.model_dump(by_alias=True), ["is_symbol"])
         base_url = "https://api-v2.intrinio.com/companies/search?"
         url = f"{base_url}{query_str}&api_key={api_key}"
-        data = get_data_one(url, **kwargs)
+        data = await get_data_one(url, **kwargs)
         return data
 
     @staticmethod
