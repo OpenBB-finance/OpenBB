@@ -37,7 +37,7 @@ class IntrinioReportedFinancialsQueryParams(ReportedFinancialsQueryParams):
         default="income",
         description="Cash flow statements are reported as YTD, Q4 is the same as FY.",
     )
-    period: Literal["annual", "quarter", "ttm", "ytd"] = Field(default="annual")
+    period: Literal["annual", "quarter"] = Field(default="annual")
     fiscal_year: Optional[int] = Field(
         default=None,
         description="The specific fiscal year.  Reports do not go beyond 2007.",
