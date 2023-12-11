@@ -2,6 +2,7 @@ import base64
 
 import pytest
 import requests
+from extensions.tests.conftest import parametrize
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
@@ -18,7 +19,7 @@ def headers():
 # pylint: disable=redefined-outer-name
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -82,7 +83,7 @@ def test_news_world(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"symbols": "AAPL", "limit": 20, "provider": "benzinga"}),
@@ -146,6 +147,12 @@ def test_news_world(params, headers):
                 "source": "bloomberg.com",
             }
         ),
+        (
+            {
+                "provider": "ultima",
+                "sectors": "Real Estate",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -154,6 +161,28 @@ def test_news_company(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/news/company?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "ultima",
+                "sectors": "Real Estate",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_news_sector(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/news/sector?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

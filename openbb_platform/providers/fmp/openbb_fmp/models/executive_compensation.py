@@ -49,7 +49,7 @@ class FMPExecutiveCompensationFetcher(
         return FMPExecutiveCompensationQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPExecutiveCompensationQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -59,7 +59,7 @@ class FMPExecutiveCompensationFetcher(
 
         url = create_url(4, "governance/executive_compensation", api_key, query)
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

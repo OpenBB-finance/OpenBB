@@ -1,6 +1,7 @@
 """Test crypto extension."""
 
 import pytest
+from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 
 # pylint: disable=redefined-outer-name
@@ -15,7 +16,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
         return openbb.obb
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         ({"query": "asd"}),
@@ -32,7 +33,7 @@ def test_crypto_search(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (

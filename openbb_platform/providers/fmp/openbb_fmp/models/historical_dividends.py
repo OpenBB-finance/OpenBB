@@ -68,7 +68,7 @@ class FMPHistoricalDividendsFetcher(
         return FMPHistoricalDividendsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPHistoricalDividendsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -79,7 +79,7 @@ class FMPHistoricalDividendsFetcher(
         url = create_url(
             3, f"historical-price-full/stock_dividend/{query.symbol}", api_key
         )
-        return get_data_many(url, "historical", **kwargs)
+        return await get_data_many(url, "historical", **kwargs)
 
     @staticmethod
     def transform_data(

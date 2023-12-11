@@ -1,11 +1,9 @@
 """FMP Key Metrics Model."""
 
-from concurrent.futures import ThreadPoolExecutor
 from datetime import (
     date as dateType,
     datetime,
 )
-from itertools import repeat
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.data import ForceInt
@@ -15,7 +13,11 @@ from openbb_core.provider.standard_models.key_metrics import (
     KeyMetricsQueryParams,
 )
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
-from openbb_fmp.utils.helpers import get_data_many, get_data_one
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    ClientSession,
+    amake_requests,
+)
 from pydantic import Field
 
 
@@ -210,7 +212,7 @@ class FMPKeyMetricsFetcher(
         return FMPKeyMetricsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPKeyMetricsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -219,33 +221,35 @@ class FMPKeyMetricsFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
         base_url = "https://financialmodelingprep.com/api/v3"
 
-        data: List[Dict] = []
-
-        def multiple_symbols(symbol: str, data: List[Dict]) -> None:
-            url = (
-                f"{base_url}/key-metrics/{symbol}?"
-                f"period={query.period}&limit={query.limit}&apikey={api_key}"
-            )
+        async def response_callback(
+            response: ClientResponse, session: ClientSession
+        ) -> List[Dict]:
+            results = await response.json()
+            symbol = response.url.parts[-1]
 
             # TTM data
             ttm_url = f"{base_url}/key-metrics-ttm/{symbol}?&apikey={api_key}"
-            if query.with_ttm and (metrics_ttm := get_data_one(ttm_url, **kwargs)):
-                data.append(
+            if query.with_ttm and (metrics_ttm := await session.get_one(ttm_url)):
+                results.insert(
+                    0,
                     {
                         "symbol": symbol,
                         "period": "TTM",
                         "date": datetime.now().strftime("%Y-%m-%d"),
                         "calendar_year": datetime.now().year,
                         **{k.replace("TTM", ""): v for k, v in metrics_ttm.items()},
-                    }
+                    },
                 )
 
-            return data.extend(get_data_many(url, **kwargs))
+            return results
 
-        with ThreadPoolExecutor() as executor:
-            executor.map(multiple_symbols, query.symbol.split(","), repeat(data))
+        urls = [
+            f"{base_url}/key-metrics/{symbol}?"
+            f"period={query.period}&limit={query.limit}&apikey={api_key}"
+            for symbol in query.symbol.split(",")
+        ]
 
-        return data
+        return await amake_requests(urls, response_callback=response_callback, **kwargs)
 
     @staticmethod
     def transform_data(

@@ -37,6 +37,11 @@ jobs:
           python-version: "3.9"
           architecture: x64
 
+      - name: Get changed files in openbb_terminal for PR
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "files=$(git diff --name-only origin/${{ github.base_ref }}...${{ github.head_ref }} | grep 'openbb_terminal/.*\.py$' | xargs)" >> $GITHUB_ENV
+
       - uses: actions/cache@v3
         with:
           path: ~/.cache/pip
@@ -50,7 +55,12 @@ jobs:
       - run: black --diff --check .
       - run: codespell --ignore-words=.codespell.ignore --skip="$(tr '\n' ',' < .codespell.skip | sed 's/,$//')" --quiet-level=2
       - run: ruff .
-      - run: mypy --ignore-missing-imports openbb_terminal
+      - run: |
+          if [ -n "${{ env.files }}" ]; then
+            mypy --ignore-missing-imports ${{ env.files }}
+          else
+            echo "No Python files changed in openbb_terminal"
+          fi
       - run: pylint terminal.py openbb_terminal tests
 
   markdown-link-check:

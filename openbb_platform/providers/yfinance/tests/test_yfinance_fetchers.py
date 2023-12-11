@@ -47,12 +47,14 @@ def vcr_config():
 
 
 @pytest.mark.record_http
-def test_y_finance_equity_historical_fetcher(credentials=test_credentials):
+def test_y_finance_market_indices_fetcher(credentials=test_credentials):
     params = {
-        "symbol": "AAPL",
+        "symbol": "^GSPC",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
     }
 
-    fetcher = YFinanceEquityHistoricalFetcher()
+    fetcher = YFinanceMarketIndicesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -60,12 +62,23 @@ def test_y_finance_equity_historical_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_crypto_historical_fetcher(credentials=test_credentials):
     params = {
-        "symbol": "BTC-USD",
+        "symbol": "BTCUSD",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 1, 10),
     }
 
     fetcher = YFinanceCryptoHistoricalFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_y_finance_equity_historical_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "AAPL",
+    }
+
+    fetcher = YFinanceEquityHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -79,19 +92,6 @@ def test_y_finance_currency_historical_fetcher(credentials=test_credentials):
     }
 
     fetcher = YFinanceCurrencyHistoricalFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-def test_y_finance_market_indices_fetcher(credentials=test_credentials):
-    params = {
-        "symbol": "SPY",
-        "start_date": date(2023, 1, 1),
-        "end_date": date(2023, 1, 10),
-    }
-
-    fetcher = YFinanceMarketIndicesFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

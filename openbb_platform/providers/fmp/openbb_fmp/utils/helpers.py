@@ -5,15 +5,14 @@ from datetime import date as dateType
 from io import StringIO
 from typing import Any, Dict, List, Optional, TypeVar, Union
 
-import requests
-from openbb_core.provider import helpers
+from openbb_core.provider.utils.client import ClientSession
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
-    async_make_request,
+    ClientResponse,
+    amake_request,
     get_querystring,
 )
 from pydantic import BaseModel
-from requests.exceptions import SSLError
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -55,27 +54,28 @@ def request(url: str) -> BasicResponse:
     return BasicResponse(response)
 
 
-def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
-    """Get data from FMP endpoint."""
-    try:
-        r: Union[requests.Response, BasicResponse] = helpers.make_request(url, **kwargs)
-    except SSLError:
-        r = request(url)
-    if r.status_code == 404:
-        raise RuntimeError("FMP endpoint doesn't exist")
+async def response_callback(
+    response: ClientResponse, _: ClientSession
+) -> Union[dict, List[dict]]:
+    """Callback for make_request."""
 
-    data = r.json()
-    if r.status_code != 200:
-        message = data.get("message", "unknown error")
+    data = await response.json()
+    if response.status != 200:
+        message = data.get("message", None) or data.get("error", "unknown error")
         raise RuntimeError(f"Error in FMP request -> {message}")
 
     if "Error Message" in data:
-        raise RuntimeError("FMP Error Message -> " + data["Error Message"])
+        raise RuntimeError(f"FMP Error Message -> {data['Error Message']}")
 
     if len(data) == 0:
         raise EmptyDataError()
 
     return data
+
+
+async def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
+    """Get data from FMP endpoint."""
+    return await amake_request(url, response_callback=response_callback, **kwargs)
 
 
 def create_url(
@@ -113,7 +113,7 @@ def create_url(
     return f"{base_url}{endpoint}?{query_string}&apikey={api_key}"
 
 
-async def async_get_data_many(
+async def get_data_many(
     url: str, sub_dict: Optional[str] = None, **kwargs: Any
 ) -> List[dict]:
     """Get data from FMP endpoint and convert to list of schemas.
@@ -130,7 +130,7 @@ async def async_get_data_many(
     List[dict]
         Dictionary of data.
     """
-    data = await async_make_request(url, **kwargs)
+    data = await get_data(url, **kwargs)
 
     if sub_dict and isinstance(data, dict):
         data = data.get(sub_dict, [])
@@ -142,37 +142,9 @@ async def async_get_data_many(
     return data
 
 
-def get_data_many(
-    url: str, sub_dict: Optional[str] = None, **kwargs: Any
-) -> List[dict]:
-    """Get data from FMP endpoint and convert to list of schemas.
-
-    Parameters
-    ----------
-    url: str
-        The URL to get the data from.
-    sub_dict: Optional[str]
-        The sub-dictionary to use.
-
-    Returns
-    -------
-    List[dict]
-        Dictionary of data.
-    """
-    data = get_data(url, **kwargs)
-    if sub_dict and isinstance(data, dict):
-        data = data.get(sub_dict, [])
-    if isinstance(data, dict):
-        raise ValueError("Expected list of dicts, got dict")
-    if len(data) == 0:
-        raise EmptyDataError()
-
-    return data
-
-
-def get_data_one(url: str, **kwargs: Any) -> dict:
+async def get_data_one(url: str, **kwargs: Any) -> dict:
     """Get data from FMP endpoint and convert to schema."""
-    data = get_data(url, **kwargs)
+    data = await get_data(url, **kwargs)
     if isinstance(data, list):
         if len(data) == 0:
             raise ValueError("Expected dict, got empty list")
