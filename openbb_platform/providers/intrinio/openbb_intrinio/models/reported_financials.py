@@ -30,7 +30,7 @@ class IntrinioReportedFinancialsQueryParams(ReportedFinancialsQueryParams):
     """Intrinio Reported Financials Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_company_fundamentals_v2
-    Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
+    Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_reported_financials_v2
     """
 
     statement_type: Literal["balance", "income", "cash"] = Field(
