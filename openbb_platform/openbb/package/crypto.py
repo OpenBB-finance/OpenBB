@@ -29,7 +29,9 @@ class ROUTER_crypto(Container):
     @validate
     def search(
         self,
-        query: Annotated[Optional[str], OpenBBCustomParameter(description="Search query.")] = "",
+        query: Annotated[
+            Optional[str], OpenBBCustomParameter(description="Search query.")
+        ] = "",
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -77,13 +79,15 @@ class ROUTER_crypto(Container):
         >>> obb.crypto.search()
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"query": query, },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/crypto/search",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "query": query,
+                },
+                extra_params=kwargs,
+            )
         )

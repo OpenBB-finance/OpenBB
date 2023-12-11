@@ -23,8 +23,18 @@ class ROUTER_fixedincome_government(Container):
     @validate
     def treasury_rates(
         self,
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -90,22 +100,33 @@ class ROUTER_fixedincome_government(Container):
         >>> obb.fixedincome.government.treasury_rates()
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"start_date": start_date, "end_date": end_date, },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/fixedincome/government/treasury_rates",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
     def us_yield_curve(
         self,
-        date: Annotated[Optional[datetime.date], OpenBBCustomParameter(description="A specific date to get data for. Defaults to the most recent FRED entry.")] = None,
-        inflation_adjusted: Annotated[Optional[bool], OpenBBCustomParameter(description="Get inflation adjusted rates.")] = False,
+        date: Annotated[
+            Optional[datetime.date],
+            OpenBBCustomParameter(
+                description="A specific date to get data for. Defaults to the most recent FRED entry."
+            ),
+        ] = None,
+        inflation_adjusted: Annotated[
+            Optional[bool],
+            OpenBBCustomParameter(description="Get inflation adjusted rates."),
+        ] = False,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject:
@@ -149,13 +170,16 @@ class ROUTER_fixedincome_government(Container):
         >>> obb.fixedincome.government.us_yield_curve()
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"date": date, "inflation_adjusted": inflation_adjusted, },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/fixedincome/government/us_yield_curve",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "date": date,
+                    "inflation_adjusted": inflation_adjusted,
+                },
+                extra_params=kwargs,
+            )
         )

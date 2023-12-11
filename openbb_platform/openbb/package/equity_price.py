@@ -25,10 +25,26 @@ class ROUTER_equity_price(Container):
     @validate
     def historical(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
-        interval: Annotated[Optional[str], OpenBBCustomParameter(description="Time interval of the data to return.")] = "1d",
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        interval: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(description="Time interval of the data to return."),
+        ] = "1d",
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "tiingo"]] = None,
         **kwargs
     ) -> OBBject:
@@ -145,21 +161,29 @@ class ROUTER_equity_price(Container):
         >>> obb.equity.price.historical(symbol="AAPL", interval="1d")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, "interval": interval, "start_date": start_date, "end_date": end_date, },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/price/historical",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "interval": interval,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
     def nbbo(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
         provider: Optional[Literal["polygon"]] = None,
         **kwargs
     ) -> OBBject:
@@ -266,21 +290,26 @@ class ROUTER_equity_price(Container):
         >>> obb.equity.price.nbbo(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/price/nbbo",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
     def performance(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for.")],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -348,21 +377,28 @@ class ROUTER_equity_price(Container):
         >>> obb.equity.price.performance(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/price/performance",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
     def quote(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for. In this case, the comma separated list of symbols.")],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. In this case, the comma separated list of symbols."
+            ),
+        ],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
@@ -490,13 +526,15 @@ class ROUTER_equity_price(Container):
         >>> obb.equity.price.quote(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"symbol": ",".join(symbol) if isinstance(symbol, list) else symbol, },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/price/quote",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )

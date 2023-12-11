@@ -406,7 +406,7 @@ class ClassDefinition:
                     ]
                 )
             doc += '    """\n'
-            doc += "# fmt: on\n"
+            doc += "    # fmt: on\n"
         else:
             doc += '    """\n'
 
@@ -679,30 +679,29 @@ class MethodDefinition:
                 default=False,
             )
 
-        code = "        inputs = filter_inputs(\n"
+        code = "        return self._run(\n"
+        code += f"""            "{path}",\n"""
+        code += "            **filter_inputs(\n"
         for name, param in parameter_map.items():
             if name == "extra_params":
-                code += f"            {name}=kwargs,\n"
+                code += f"                {name}=kwargs,\n"
             elif MethodDefinition.is_annotated_dc(param.annotation):
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 value = {k: k for k in fields}
-                code += f"            {name}={{"
+                code += f"                {name}={{\n"
                 for k, v in value.items():
                     if k == "symbol":
-                        code += f'"{k}": ",".join(symbol) if isinstance(symbol, list) else symbol, '
+                        code += f'                    "{k}": ",".join(symbol) if isinstance(symbol, list) else symbol, \n'
                         continue
-                    code += f'"{k}": {v}, '
-                code += "},\n"
+                    code += f'                    "{k}": {v},\n'
+                code += "                },\n"
             else:
-                code += f"            {name}={name},\n"
+                code += f"                {name}={name},\n"
 
         if MethodDefinition.is_data_processing_function(path):
-            code += "            data_processing=True,\n"
+            code += "                data_processing=True,\n"
 
-        code += "        )\n\n"
-        code += "        return self._run(\n"
-        code += f"""            "{path}",\n"""
-        code += "            **inputs,\n"
+        code += "            )\n"
         code += "        )\n"
 
         return code

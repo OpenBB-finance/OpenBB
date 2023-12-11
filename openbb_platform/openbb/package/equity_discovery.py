@@ -22,10 +22,28 @@ class ROUTER_equity_discovery(Container):
     @validate
     def filings(
         self,
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
-        form_type: Annotated[Optional[str], OpenBBCustomParameter(description="Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types.")] = None,
-        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return.")] = 100,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        form_type: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(
+                description="Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types."
+            ),
+        ] = None,
+        limit: Annotated[
+            int,
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 100,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -83,13 +101,18 @@ class ROUTER_equity_discovery(Container):
         >>> obb.equity.discovery.filings(limit=100)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"start_date": start_date, "end_date": end_date, "form_type": form_type, "limit": limit, },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/discovery/filings",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                    "form_type": form_type,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
         )

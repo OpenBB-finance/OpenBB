@@ -17,4 +17,6 @@ class ROUTER_derivatives(Container):
         # pylint: disable=import-outside-toplevel
         from . import derivatives_options
 
-        return derivatives_options.ROUTER_derivatives_options(command_runner=self._command_runner)
+        return derivatives_options.ROUTER_derivatives_options(
+            command_runner=self._command_runner
+        )

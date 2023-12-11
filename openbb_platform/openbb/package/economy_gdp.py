@@ -24,10 +24,30 @@ class ROUTER_economy_gdp(Container):
     @validate
     def forecast(
         self,
-        period: Annotated[Literal["quarter", "annual"], OpenBBCustomParameter(description="Time period of the data to return. Units for nominal GDP period. Either quarter or annual.")] = "annual",
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
-        type: Annotated[Literal["nominal", "real"], OpenBBCustomParameter(description="Type of GDP to get forecast of. Either nominal or real.")] = "real",
+        period: Annotated[
+            Literal["quarter", "annual"],
+            OpenBBCustomParameter(
+                description="Time period of the data to return. Units for nominal GDP period. Either quarter or annual."
+            ),
+        ] = "annual",
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        type: Annotated[
+            Literal["nominal", "real"],
+            OpenBBCustomParameter(
+                description="Type of GDP to get forecast of. Either nominal or real."
+            ),
+        ] = "real",
         provider: Optional[Literal["oecd"]] = None,
         **kwargs
     ) -> OBBject:
@@ -77,23 +97,43 @@ class ROUTER_economy_gdp(Container):
         >>> obb.economy.gdp.forecast(period="annual", type="real")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"period": period, "start_date": start_date, "end_date": end_date, "type": type, },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/economy/gdp/forecast",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "period": period,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                    "type": type,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
     def nominal(
         self,
-        units: Annotated[Literal["usd", "usd_cap"], OpenBBCustomParameter(description="The unit of measurement for the data. Units to get nominal GDP in. Either usd or usd_cap indicating per capita.")] = "usd",
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        units: Annotated[
+            Literal["usd", "usd_cap"],
+            OpenBBCustomParameter(
+                description="The unit of measurement for the data. Units to get nominal GDP in. Either usd or usd_cap indicating per capita."
+            ),
+        ] = "usd",
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         provider: Optional[Literal["oecd"]] = None,
         **kwargs
     ) -> OBBject:
@@ -141,23 +181,42 @@ class ROUTER_economy_gdp(Container):
         >>> obb.economy.gdp.nominal(units="usd")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"units": units, "start_date": start_date, "end_date": end_date, },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/economy/gdp/nominal",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "units": units,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
     def real(
         self,
-        units: Annotated[Literal["idx", "qoq", "yoy"], OpenBBCustomParameter(description="The unit of measurement for the data. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)")] = "yoy",
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        units: Annotated[
+            Literal["idx", "qoq", "yoy"],
+            OpenBBCustomParameter(
+                description="The unit of measurement for the data. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)"
+            ),
+        ] = "yoy",
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         provider: Optional[Literal["oecd"]] = None,
         **kwargs
     ) -> OBBject:
@@ -205,13 +264,17 @@ class ROUTER_economy_gdp(Container):
         >>> obb.economy.gdp.real(units="yoy")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={"provider": provider, },
-            standard_params={"units": units, "start_date": start_date, "end_date": end_date, },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/economy/gdp/real",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "units": units,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
         )
