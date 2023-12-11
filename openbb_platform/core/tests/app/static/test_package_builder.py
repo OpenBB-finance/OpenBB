@@ -1,5 +1,5 @@
 """Test the package_builder.py file."""
-# pylint: disable=redefined-outer-name
+# pylint: disable=redefined-outer-name, protected-access
 
 from dataclasses import dataclass
 from inspect import _empty
@@ -45,27 +45,27 @@ def test_package_builder_build(package_builder):
 
 def test_save_module_map(package_builder):
     """Test save module map."""
-    package_builder.save_module_map()
+    package_builder._save_module_map()
 
 
 def test_save_modules(package_builder):
     """Test save module."""
-    package_builder.save_modules()
+    package_builder._save_modules()
 
 
 def test_save_package(package_builder):
     """Test save package."""
-    package_builder.save_package()
+    package_builder._save_package()
 
 
 def test_run_linters(package_builder):
     """Test run linters."""
-    package_builder.run_linters()
+    package_builder._run_linters()
 
 
-def test_write_to_package(package_builder):
+def test_write(package_builder):
     """Test save to package."""
-    package_builder.write_to_package(code="", name="test", extension="json")
+    package_builder._write(code="", name="test", extension="json")
 
 
 @pytest.fixture(scope="module")
@@ -237,7 +237,9 @@ def test_build_func_params(method_definition):
         ),
     }
 
-    expected_output = "param1: None, param2: int, param3: pandas.DataFrame"
+    expected_output = (
+        "param1: None,\n        param2: int,\n        param3: pandas.DataFrame"
+    )
     output = method_definition.build_func_params(param_map)
 
     assert output == expected_output
@@ -289,8 +291,8 @@ def test_build_command_method_doc(method_definition):
     assert isinstance(output, str)
 
 
-def test_build_command_method_implementation(method_definition):
-    """Test build command method implementation."""
+def test_build_command_method_body(method_definition):
+    """Test build command method body."""
 
     def some_func():
         """Do some func doc."""
@@ -300,7 +302,7 @@ def test_build_command_method_implementation(method_definition):
         "openbb_core.app.static.package_builder.MethodDefinition.is_data_processing_function",
         **{"return_value": False},
     ):
-        output = method_definition.build_command_method_implementation(
+        output = method_definition.build_command_method_body(
             path="openbb_core.app.static.container.Container", func=some_func
         )
 
