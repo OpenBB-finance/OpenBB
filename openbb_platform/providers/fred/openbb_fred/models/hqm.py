@@ -14,7 +14,7 @@ from openbb_fred.utils.fred_helpers import (
     YIELD_CURVE_SERIES_CORPORATE_PAR,
     YIELD_CURVE_SERIES_CORPORATE_SPOT,
 )
-from pydantic import field_validator
+from pydantic import Field, field_validator
 
 
 class FREDHighQualityMarketCorporateBondQueryParams(
@@ -27,6 +27,8 @@ class FREDHighQualityMarketCorporateBondData(HighQualityMarketCorporateBondData)
     """FRED High Quality Market Corporate Bond Data."""
 
     __alias_dict__ = {"rate": "value"}
+
+    series_id: str = Field(description="FRED series id.")
 
     @field_validator("rate", mode="before", check_fields=False)
     @classmethod
@@ -88,10 +90,15 @@ class FREDHighQualityMarketCorporateBondFetcher(
                 start_date=start_date,
                 **kwargs,
             )
-            for item in d:
-                item["maturity"] = maturity
-                item["yield_curve"] = query.yield_curve
-            data.extend(d)
+            for observation in d:
+                series_data = {
+                    "series_id": id_,
+                    "maturity": maturity,
+                    "yield_curve": query.yield_curve,
+                    "date": observation["date"],
+                    "value": observation["value"],
+                }
+                data.append(series_data)
 
         return data
 

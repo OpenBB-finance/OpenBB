@@ -1,7 +1,7 @@
 """Provider registry map."""
 
-import os
 from inspect import getfile, isclass
+from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Tuple, Union, get_origin
 
 from pydantic import BaseModel
@@ -12,6 +12,9 @@ from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.registry import Registry, RegistryLoader
 
 MapType = Dict[str, Dict[str, Dict[str, Dict[str, Any]]]]
+
+STANDARD_MODELS_FOLDER = Path(__file__).parent / "standard_models"
+SKIP = {"object", "Representation", "BaseModel", "QueryParams", "Data"}
 
 
 class RegistryMap:
@@ -95,7 +98,7 @@ class RegistryMap:
                 if union_return_map.get(model_name, None) is None and get_origin(
                     return_type
                 ) != get_origin(in_return_map):
-                    union_return_map[model_name] = Union[in_return_map, return_type]
+                    union_return_map[model_name] = Union[in_return_map, return_type]  # type: ignore
 
                 return_map[model_name] = return_type
 
@@ -111,40 +114,35 @@ class RegistryMap:
     @staticmethod
     def extract_info(fetcher: Fetcher, type_: Literal["query_params", "data"]) -> tuple:
         """Extract info (fields and docstring) from fetcher query params or data."""
-        super_model: BaseModel = getattr(fetcher, f"{type_}_type")
-        RegistryMap.validate_model(super_model, type_)
-
-        skip_classes = {"object", "Representation", "BaseModel", "QueryParams", "Data"}
-        inheritance_list: List[BaseModel] = [
-            model for model in super_model.__mro__ if model.__name__ not in skip_classes
-        ]
-
+        model: BaseModel = RegistryMap._get_model(fetcher, type_)
         all_fields = {}
         alias_dict: Dict[str, List[str]] = {}
         standard_info: Dict[str, Any] = {"fields": {}, "docstring": None}
-        found_standard = False
+        found_top_level = False
 
-        for model in inheritance_list:
-            model_file_dir = os.path.dirname(getfile(model))
-            model_name = os.path.basename(model_file_dir)
-
-            if (model_name == "standard_models") or found_standard:
-                if not found_standard:
-                    standard_info["docstring"] = model.__doc__
-                found_standard = True
-                standard_info["fields"].update(model.model_fields)
+        for c in RegistryMap._class_hierarchy(model):
+            if c.__name__ in SKIP:
+                continue
+            if (Path(getfile(c)).parent == STANDARD_MODELS_FOLDER) or found_top_level:
+                if not found_top_level:
+                    # We might update the standard_info more than once to account for
+                    # nested standard models, but we only want to update the docstring
+                    # once with the __doc__ of the top-level standard model.
+                    standard_info["docstring"] = c.__doc__
+                    found_top_level = True
+                standard_info["fields"].update(c.model_fields)
             else:
-                all_fields.update(model.model_fields)
-                if hasattr(model, "__alias_dict__"):
-                    for name, alias in getattr(model, "__alias_dict__").items():
-                        alias_dict.setdefault(name, []).append(alias)
+                all_fields.update(c.model_fields)
+                for name, alias in getattr(c, "__alias_dict__", {}).items():
+                    alias_dict.setdefault(name, []).append(alias)
 
-        extra_info = {
+        extra_info: Dict[str, Any] = {
             "fields": {},
-            "docstring": super_model.__doc__,
+            "docstring": model.__doc__,
             "alias_dict": alias_dict,
         }
 
+        # We ignore fields that are already in the standard model
         for name, field in all_fields.items():
             if name not in standard_info["fields"]:
                 extra_info["fields"][name] = field
@@ -157,7 +155,16 @@ class RegistryMap:
         return getattr(fetcher, "return_type", None)
 
     @staticmethod
-    def validate_model(model: Any, type_: Literal["query_params", "data"]):
+    def _get_model(
+        fetcher: Fetcher, type_: Literal["query_params", "data"]
+    ) -> BaseModel:
+        """Get model from fetcher."""
+        model = getattr(fetcher, f"{type_}_type")
+        RegistryMap._validate(model, type_)
+        return model
+
+    @staticmethod
+    def _validate(model: Any, type_: Literal["query_params", "data"]) -> None:
         """Validate model."""
         parent_model = QueryParams if type_ == "query_params" else Data
         if not isclass(model) or not issubclass(model, parent_model):
@@ -167,3 +174,8 @@ class RegistryMap:
                 "If you are returning a nested type, try specifying"
                 f" `{type_}_type = <'your_{type_}_type'>` in the fetcher."
             )
+
+    @staticmethod
+    def _class_hierarchy(class_) -> tuple:
+        """Return the class hierarchy starting with the class itself until `object`."""
+        return getattr(class_, "__mro__", ())
