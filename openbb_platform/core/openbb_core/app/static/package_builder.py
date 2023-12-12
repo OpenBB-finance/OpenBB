@@ -67,7 +67,7 @@ class PackageBuilder:
         self.verbose = verbose
         self.console = Console(verbose)
 
-    def auto_build(self):
+    def auto_build(self) -> None:
         """Trigger build if there are differences between built and installed extensions."""
         if Env().AUTO_BUILD:
             add, remove = PackageBuilder._diff(self.directory / "package")
