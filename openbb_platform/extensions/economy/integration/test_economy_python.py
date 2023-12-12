@@ -309,8 +309,15 @@ def test_economy_fred_series(params, obb):
 @parametrize(
     "params",
     [
-        ({'start_date': '2023-01-01', 'end_date': '2023-06-06', 'adjusted': True}),
-({'provider': 'federal_reserve', 'start_date': '2023-01-01', 'end_date': '2023-06-06', 'adjusted': True})
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "adjusted": True}),
+        (
+            {
+                "provider": "federal_reserve",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "adjusted": True,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -321,4 +328,3 @@ def test_economy_money_measures(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
-    
