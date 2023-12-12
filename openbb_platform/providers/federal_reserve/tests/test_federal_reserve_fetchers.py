@@ -2,14 +2,13 @@ from datetime import date
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_federal_reserve.models.fed_rates import FederalReserveFEDFetcher
 from openbb_federal_reserve.models.money_measures import (
     FederalReserveMoneyMeasuresFetcher,
 )
 from openbb_federal_reserve.models.treasury_rates import (
     FederalReserveTreasuryRatesFetcher,
 )
-from openbb_federal_reserve.models.fed_rates import FederalReserveFEDFetcher
-
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
