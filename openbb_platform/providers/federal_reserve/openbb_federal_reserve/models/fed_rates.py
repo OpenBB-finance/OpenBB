@@ -39,9 +39,7 @@ class FederalReserveFEDFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FederalReserveFEDQueryParams:
-
         transformed_params = params
-
         now = datetime.now().date()
         if params.get("start_date") is None:
             transformed_params["start_date"] = now - timedelta(days=10 * 365)
