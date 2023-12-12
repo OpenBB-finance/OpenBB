@@ -1,6 +1,7 @@
 """Government US provider module."""
 
 from openbb_core.provider.abstract.provider import Provider
+from openbb_federal_reserve.models.fed_rates import FederalReserveFEDFetcher
 from openbb_federal_reserve.models.money_measures import (
     FederalReserveMoneyMeasuresFetcher,
 )
@@ -15,5 +16,6 @@ federal_reserve_provider = Provider(
     fetcher_dict={
         "TreasuryRates": FederalReserveTreasuryRatesFetcher,
         "MoneyMeasures": FederalReserveMoneyMeasuresFetcher,
+        "FEDFUNDS": FederalReserveFEDFetcher,
     },
 )
