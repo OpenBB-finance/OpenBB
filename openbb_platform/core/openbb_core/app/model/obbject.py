@@ -22,7 +22,6 @@ from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
-from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.query import Query
 from openbb_core.app.utils import basemodel_to_df
 from openbb_core.provider.abstract.data import Data
@@ -34,7 +33,6 @@ if TYPE_CHECKING:
         PolarsDataFrame = None
 
 T = TypeVar("T")
-PROVIDERS = Literal[tuple(ProviderInterface().available_providers)]  # type: ignore
 
 
 class OBBject(Tagged, Generic[T]):
@@ -44,7 +42,7 @@ class OBBject(Tagged, Generic[T]):
         default=None,
         description="Serializable results.",
     )
-    provider: Optional[PROVIDERS] = Field(  # type: ignore
+    provider: Optional[str] = Field(  # type: ignore
         default=None,
         description="Provider name.",
     )
