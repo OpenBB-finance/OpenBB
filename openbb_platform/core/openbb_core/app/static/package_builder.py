@@ -67,6 +67,22 @@ class PackageBuilder:
         self.verbose = verbose
         self.console = Console(verbose)
 
+    def auto_build(self):
+        """Trigger build if there are differences between built and installed extensions."""
+        if Env().AUTO_BUILD:
+            add, remove = PackageBuilder._diff(self.directory / "package")
+            if add:
+                a = ", ".join(add)
+                print(f"Extensions to add: {a}")  # noqa: T201
+
+            if remove:
+                r = ", ".join(remove)
+                print(f"Extensions to remove: {r}")  # noqa: T201
+
+            if add or remove:
+                print("\nBuilding...")  # noqa: T201
+                self.build()
+
     def build(
         self,
         modules: Optional[Union[str, List[str]]] = None,
@@ -219,22 +235,6 @@ class PackageBuilder:
             remove = remove.union(built - installed)
 
         return add, remove
-
-    def auto_build(self):
-        """Trigger build if there are differences between built and installed extensions."""
-        if Env().AUTO_BUILD:
-            add, remove = PackageBuilder._diff(self.directory / "package")
-            if add:
-                a = ", ".join(add)
-                print(f"Extensions to add: {a}")  # noqa: T201
-
-            if remove:
-                r = ", ".join(remove)
-                print(f"Extensions to remove: {r}")  # noqa: T201
-
-            if add or remove:
-                print("\nBuilding...")  # noqa: T201
-                self.build()
 
 
 class ModuleBuilder:
