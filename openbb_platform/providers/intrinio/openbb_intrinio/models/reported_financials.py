@@ -40,7 +40,7 @@ class IntrinioReportedFinancialsQueryParams(ReportedFinancialsQueryParams):
     period: Literal["annual", "quarter"] = Field(default="annual")
     fiscal_year: Optional[int] = Field(
         default=None,
-        description="The specific fiscal year.  Reports do not go beyond 2007.",
+        description="The specific fiscal year.  Reports do not go beyond 2008.",
     )
 
 
@@ -81,9 +81,10 @@ class IntrinioReportedFinancialsFetcher(
         ids = []
         ids_url = f"https://api-v2.intrinio.com/companies/{query.symbol}/fundamentals?reported_only=true&statement_code={statement_code}"
         if query.fiscal_year is not None:
-            fiscal_year = 2008 if query.fiscal_year < 2008 else query.fiscal_year
-            _warn("Financials data is only available from 2008 and later.")
-            ids_url = ids_url + f"&fiscal_year={fiscal_year}"
+            if query.fiscal_year < 2008:
+                _warn("Financials data is only available from 2008 and later.")
+                query.fiscal_year = 2008
+            ids_url = ids_url + f"&fiscal_year={query.fiscal_year}"
         ids_url = ids_url + f"&page_size=10000&api_key={api_key}"
 
         fundamentals_ids = await get_data_one(ids_url, **kwargs)

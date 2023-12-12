@@ -1,5 +1,6 @@
 """Intrinio Income Statement Model."""
 
+import warnings
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -15,6 +16,8 @@ from openbb_core.provider.utils.helpers import (
 from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import Field, field_validator
 
+_warn = warnings.warn
+
 
 class IntrinioIncomeStatementQueryParams(IncomeStatementQueryParams):
     """Intrinio Income Statement Query.
@@ -24,6 +27,10 @@ class IntrinioIncomeStatementQueryParams(IncomeStatementQueryParams):
     """
 
     period: Literal["annual", "quarter", "ttm", "ytd"] = Field(default="annual")
+    fiscal_year: Optional[int] = Field(
+        default=None,
+        description="The specific fiscal year.  Reports do not go beyond 2008.",
+    )
 
     @field_validator("symbol", mode="after", check_fields=False)
     @classmethod
@@ -395,8 +402,14 @@ class IntrinioIncomeStatementFetcher(
 
         fundamentals_url = (
             f"{base_url}/companies/{query.symbol}/fundamentals?"
-            f"statement_code={statement_code}&type={period_type}&api_key={api_key}"
+            f"statement_code={statement_code}&type={period_type}"
         )
+        if query.fiscal_year is not None:
+            if query.fiscal_year < 2008:
+                _warn("Financials data is only available from 2008 and later.")
+                query.fiscal_year = 2008
+            fundamentals_url = fundamentals_url + f"&fiscal_year={query.fiscal_year}"
+        fundamentals_url = fundamentals_url + f"&api_key={api_key}"
         fundamentals_data = (await get_data_one(fundamentals_url, **kwargs)).get(
             "fundamentals", []
         )

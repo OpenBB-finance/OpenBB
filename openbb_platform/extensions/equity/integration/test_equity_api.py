@@ -29,6 +29,7 @@ def headers():
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
+                "fiscal_year": None,
                 "limit": 2,
             }
         ),
@@ -157,8 +158,9 @@ def test_equity_calendar_earnings(params, headers):
             {
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "period": "annual",
-                "limit": 2,
+                "period": "ttm",
+                "fiscal_year": 2015,
+                "limit": 4,
             }
         ),
         (
@@ -318,8 +320,9 @@ def test_equity_estimates_historical(params, headers):
             {
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "period": "annual",
-                "limit": 2,
+                "period": "ytd",
+                "fiscal_year": 2020,
+                "limit": 4,
             }
         ),
         (
@@ -595,8 +598,9 @@ def test_equity_estimates_consensus(params, headers):
         (
             {
                 "symbol": "AAPL",
-                "period": "annual",
-                "limit": 12,
+                "period": "ttm",
+                "fiscal_year": 2019,
+                "limit": 4,
                 "provider": "intrinio",
             }
         ),

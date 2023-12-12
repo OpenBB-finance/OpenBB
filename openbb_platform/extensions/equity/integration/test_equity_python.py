@@ -26,7 +26,8 @@ def obb(pytestconfig):
             {
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "period": "annual",
+                "period": "ttm",
+                "fiscal_year": 2014,
                 "limit": 2,
             }
         ),
@@ -143,6 +144,7 @@ def test_equity_calendar_earnings(params, obb):
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
+                "fiscal_year": None,
                 "limit": 2,
             }
         ),
@@ -293,8 +295,9 @@ def test_equity_estimates_historical(params, obb):
             {
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "period": "annual",
-                "limit": 2,
+                "period": "quarter",
+                "fiscal_year": 2020,
+                "limit": 4,
             }
         ),
         (
@@ -555,7 +558,8 @@ def test_equity_estimates_consensus(params, obb):
         (
             {
                 "symbol": "AAPL",
-                "period": "annual",
+                "period": "ttm",
+                "fiscal_year": None,
                 "limit": 12,
                 "provider": "intrinio",
             }
