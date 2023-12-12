@@ -32,7 +32,7 @@ class TreasuryRatesData(Data):
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     month_1: float = Field(description="1 month treasury rate.")
-    month_2: float = Field(description="2 month treasury rate.")
+    month_2: Optional[float] = Field(description="2 month treasury rate.", default=None)
     month_3: float = Field(description="3 month treasury rate.")
     month_6: float = Field(description="6 month treasury rate.")
     year_1: float = Field(description="1 year treasury rate.")
