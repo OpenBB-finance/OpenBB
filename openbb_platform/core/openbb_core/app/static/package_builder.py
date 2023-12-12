@@ -220,17 +220,10 @@ class PackageBuilder:
 
         return add, remove
 
-    @staticmethod
-    def auto_build(directory: Path):
-        """Trigger build if there are differences between built and installed extensions.
-
-        Parameters
-        ----------
-        directory: Path
-            The path of directory where package lives
-        """
+    def auto_build(self):
+        """Trigger build if there are differences between built and installed extensions."""
         if Env().AUTO_BUILD:
-            add, remove = PackageBuilder._diff(Path(directory, "package"))
+            add, remove = PackageBuilder._diff(self.directory / "package")
             if add:
                 a = ", ".join(add)
                 print(f"Extensions to add: {a}")  # noqa: T201
@@ -241,7 +234,7 @@ class PackageBuilder:
 
             if add or remove:
                 print("\nBuilding...")  # noqa: T201
-                PackageBuilder(directory).build()
+                self.build()
 
 
 class ModuleBuilder:

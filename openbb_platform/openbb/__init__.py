@@ -34,7 +34,7 @@ def build(
     _PackageBuilder(_this_dir, lint, verbose).build(modules)
 
 
-_PackageBuilder.auto_build(directory=_this_dir)
+_PackageBuilder(_this_dir).auto_build()
 
 try:
     # pylint: disable=import-outside-toplevel

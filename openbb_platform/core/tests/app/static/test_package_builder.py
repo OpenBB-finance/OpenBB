@@ -629,7 +629,7 @@ def test_auto_build(package_builder, tmp_package_dir, add, remove, openbb_auto_b
     ) as mock_build, patch.object(Env, "AUTO_BUILD", openbb_auto_build):
         mock_package_diff.return_value = add, remove
 
-        package_builder.auto_build(tmp_package_dir)
+        package_builder.auto_build()
 
     if openbb_auto_build:
         mock_package_diff.assert_called_once_with(Path(tmp_package_dir, "package"))
