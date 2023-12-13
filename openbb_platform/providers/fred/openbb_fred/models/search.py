@@ -2,7 +2,6 @@
 
 from typing import Any, Dict, List, Literal, Optional, Union
 
-import pandas as pd
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.fred_search import (
     SearchData,
@@ -97,7 +96,6 @@ class FredSearchFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data."""
-
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         if query.is_release is True:
@@ -131,27 +129,10 @@ class FredSearchFetcher(
         query: FredSearchQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FredSearchData]:
         """Transform data."""
+        for observation in data:
+            id_column_name = "release_id" if query.is_release is True else "series_id"
+            observation[id_column_name] = observation.pop("id")
+            observation.pop("realtime_start", None)
+            observation.pop("realtime_end", None)
 
-        df = pd.DataFrame()
-        if data is not None:
-            for d in data:
-                d.pop("realtime_start", None)
-                d.pop("realtime_end", None)
-            df = (
-                pd.DataFrame.from_records(data)
-                .fillna("N/A")
-                .replace("N/A", None)
-                .rename(
-                    columns={"id": "release_id"}
-                    if query.is_release is True
-                    else {"id": "series_id"}
-                )
-            )
-            target = "name" if query.is_release is True else "title"
-            if query.query is not None:
-                df = df[
-                    df[target].str.contains(query.query, case=False)
-                    | df["notes"].str.contains(query.query, case=False)
-                ]
-
-        return [FredSearchData.model_validate(d) for d in df.to_dict("records")]
+        return [FredSearchData.model_validate(d) for d in data]

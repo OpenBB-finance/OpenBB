@@ -1,14 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -43,70 +42,68 @@ class ROUTER_fixedincome_spreads(Container):
         ] = "3m",
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Treasury Constant Maturity.
 
-            Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.
-            Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
-            Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
-            yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
+        Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.
+        Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
+        Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
+        yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
 
 
-        Parameters
-        ----------
-        start_date : Optional[datetime.date]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
-            End date of the data, in YYYY-MM-DD format.
-        maturity : Optional[Literal['3m', '2y']]
-            The maturity
-        provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
-
-        Returns
-        -------
-        OBBject
-            results : List[TreasuryConstantMaturity]
-                Serializable results.
+            Parameters
+            ----------
+            start_date : Optional[datetime.date]
+                Start date of the data, in YYYY-MM-DD format.
+            end_date : Optional[datetime.date]
+                End date of the data, in YYYY-MM-DD format.
+            maturity : Optional[Literal['3m', '2y']]
+                The maturity
             provider : Optional[Literal['fred']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
+                The provider to use for the query, by default None.
+                If None, the provider specified in defaults is selected or 'fred' if there is
+                no default.
 
-        TreasuryConstantMaturity
-        ------------------------
-        date : date
-            The date of the data.
-        rate : Optional[float]
-            TreasuryConstantMaturity Rate.
+            Returns
+            -------
+            OBBject
+                results : List[TreasuryConstantMaturity]
+                    Serializable results.
+                provider : Optional[Literal['fred']]
+                    Provider name.
+                warnings : Optional[List[Warning_]]
+                    List of warnings.
+                chart : Optional[Chart]
+                    Chart object.
+                extra: Dict[str, Any]
+                    Extra info.
 
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.fixedincome.spreads.tmc(maturity="3m")
+            TreasuryConstantMaturity
+            ------------------------
+            date : date
+                The date of the data.
+            rate : Optional[float]
+                TreasuryConstantMaturity Rate.
+
+            Example
+            -------
+            >>> from openbb import obb
+            >>> obb.fixedincome.spreads.tmc(maturity="3m")
         """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-                "maturity": maturity,
-            },
-            extra_params=kwargs,
-        )
 
         return self._run(
             "/fixedincome/spreads/tmc",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                    "maturity": maturity,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -130,70 +127,68 @@ class ROUTER_fixedincome_spreads(Container):
         ] = "10y",
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Select Treasury Constant Maturity.
 
-            Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate
-            Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
-            Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
-            yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
+        Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate
+        Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.
+        Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
+        yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
 
 
-        Parameters
-        ----------
-        start_date : Optional[datetime.date]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
-            End date of the data, in YYYY-MM-DD format.
-        maturity : Optional[Literal['10y', '5y', '1y', '6m', '3m']]
-            The maturity
-        provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
-
-        Returns
-        -------
-        OBBject
-            results : List[SelectedTreasuryConstantMaturity]
-                Serializable results.
+            Parameters
+            ----------
+            start_date : Optional[datetime.date]
+                Start date of the data, in YYYY-MM-DD format.
+            end_date : Optional[datetime.date]
+                End date of the data, in YYYY-MM-DD format.
+            maturity : Optional[Literal['10y', '5y', '1y', '6m', '3m']]
+                The maturity
             provider : Optional[Literal['fred']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
+                The provider to use for the query, by default None.
+                If None, the provider specified in defaults is selected or 'fred' if there is
+                no default.
 
-        SelectedTreasuryConstantMaturity
-        --------------------------------
-        date : date
-            The date of the data.
-        rate : Optional[float]
-            Selected Treasury Constant Maturity Rate.
+            Returns
+            -------
+            OBBject
+                results : List[SelectedTreasuryConstantMaturity]
+                    Serializable results.
+                provider : Optional[Literal['fred']]
+                    Provider name.
+                warnings : Optional[List[Warning_]]
+                    List of warnings.
+                chart : Optional[Chart]
+                    Chart object.
+                extra: Dict[str, Any]
+                    Extra info.
 
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.fixedincome.spreads.tmc_effr(maturity="10y")
+            SelectedTreasuryConstantMaturity
+            --------------------------------
+            date : date
+                The date of the data.
+            rate : Optional[float]
+                Selected Treasury Constant Maturity Rate.
+
+            Example
+            -------
+            >>> from openbb import obb
+            >>> obb.fixedincome.spreads.tmc_effr(maturity="10y")
         """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-                "maturity": maturity,
-            },
-            extra_params=kwargs,
-        )
 
         return self._run(
             "/fixedincome/spreads/tmc_effr",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                    "maturity": maturity,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -217,69 +212,67 @@ class ROUTER_fixedincome_spreads(Container):
         ] = "3m",
         provider: Optional[Literal["fred"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Select Treasury Bill.
 
-            Get Selected Treasury Bill Minus Federal Funds Rate.
-            Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of
-            auctioned U.S. Treasuries.
-            The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
-            yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
+        Get Selected Treasury Bill Minus Federal Funds Rate.
+        Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of
+        auctioned U.S. Treasuries.
+        The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury
+        yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
 
 
-        Parameters
-        ----------
-        start_date : Optional[datetime.date]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
-            End date of the data, in YYYY-MM-DD format.
-        maturity : Optional[Literal['3m', '6m']]
-            The maturity
-        provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
-
-        Returns
-        -------
-        OBBject
-            results : List[SelectedTreasuryBill]
-                Serializable results.
+            Parameters
+            ----------
+            start_date : Optional[datetime.date]
+                Start date of the data, in YYYY-MM-DD format.
+            end_date : Optional[datetime.date]
+                End date of the data, in YYYY-MM-DD format.
+            maturity : Optional[Literal['3m', '6m']]
+                The maturity
             provider : Optional[Literal['fred']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
+                The provider to use for the query, by default None.
+                If None, the provider specified in defaults is selected or 'fred' if there is
+                no default.
 
-        SelectedTreasuryBill
-        --------------------
-        date : date
-            The date of the data.
-        rate : Optional[float]
-            SelectedTreasuryBill Rate.
+            Returns
+            -------
+            OBBject
+                results : List[SelectedTreasuryBill]
+                    Serializable results.
+                provider : Optional[Literal['fred']]
+                    Provider name.
+                warnings : Optional[List[Warning_]]
+                    List of warnings.
+                chart : Optional[Chart]
+                    Chart object.
+                extra: Dict[str, Any]
+                    Extra info.
 
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.fixedincome.spreads.treasury_effr(maturity="3m")
+            SelectedTreasuryBill
+            --------------------
+            date : date
+                The date of the data.
+            rate : Optional[float]
+                SelectedTreasuryBill Rate.
+
+            Example
+            -------
+            >>> from openbb import obb
+            >>> obb.fixedincome.spreads.treasury_effr(maturity="3m")
         """  # noqa: E501
-
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-                "maturity": maturity,
-            },
-            extra_params=kwargs,
-        )
 
         return self._run(
             "/fixedincome/spreads/treasury_effr",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                    "maturity": maturity,
+                },
+                extra_params=kwargs,
+            )
         )
