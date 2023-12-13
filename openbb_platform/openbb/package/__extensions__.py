@@ -62,6 +62,7 @@ Extensions:
     - wsj@1.0.0
     - yfinance@1.0.0    """
     # fmt: on
+
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
@@ -78,13 +79,15 @@ Extensions:
         return crypto.ROUTER_crypto(command_runner=self._command_runner)
 
     @property
-    def currency(self):  # route = "/currency"
+    def currency(self):
+        # pylint: disable=import-outside-toplevel
         from . import currency
 
         return currency.ROUTER_currency(command_runner=self._command_runner)
 
     @property
-    def derivatives(self):  # route = "/derivatives"
+    def derivatives(self):
+        # pylint: disable=import-outside-toplevel
         from . import derivatives
 
         return derivatives.ROUTER_derivatives(command_runner=self._command_runner)
@@ -102,31 +105,36 @@ Extensions:
         return economy.ROUTER_economy(command_runner=self._command_runner)
 
     @property
-    def equity(self):  # route = "/equity"
+    def equity(self):
+        # pylint: disable=import-outside-toplevel
         from . import equity
 
         return equity.ROUTER_equity(command_runner=self._command_runner)
 
     @property
-    def etf(self):  # route = "/etf"
+    def etf(self):
+        # pylint: disable=import-outside-toplevel
         from . import etf
 
         return etf.ROUTER_etf(command_runner=self._command_runner)
 
     @property
-    def fixedincome(self):  # route = "/fixedincome"
+    def fixedincome(self):
+        # pylint: disable=import-outside-toplevel
         from . import fixedincome
 
         return fixedincome.ROUTER_fixedincome(command_runner=self._command_runner)
 
     @property
-    def index(self):  # route = "/index"
+    def index(self):
+        # pylint: disable=import-outside-toplevel
         from . import index
 
         return index.ROUTER_index(command_runner=self._command_runner)
 
     @property
-    def news(self):  # route = "/news"
+    def news(self):
+        # pylint: disable=import-outside-toplevel
         from . import news
 
         return news.ROUTER_news(command_runner=self._command_runner)

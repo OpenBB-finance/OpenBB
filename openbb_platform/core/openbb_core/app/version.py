@@ -16,7 +16,12 @@ def get_package_version(package: str):
     except pkg_resources.DistributionNotFound:
         package += "-nightly"
         is_nightly = True
-        version = pkg_resources.get_distribution(package).version
+        try:
+            version = pkg_resources.get_distribution(package).version
+        except pkg_resources.DistributionNotFound:
+            package = "openbb-core"
+            version = pkg_resources.get_distribution(package).version
+            version += "core"
 
     if is_git_repo(Path(__file__).parent.resolve()) and not is_nightly:
         version += "dev"
@@ -42,4 +47,7 @@ def is_git_repo(path: Path):
         return False
 
 
-VERSION = get_package_version(PACKAGE)
+try:
+    VERSION = get_package_version(PACKAGE)
+except pkg_resources.DistributionNotFound:
+    VERSION = "unknown"

@@ -3,10 +3,9 @@
 import builtins
 import inspect
 import shutil
-import subprocess
 import sys
 from inspect import Parameter, _empty, isclass, signature
-from json import dumps
+from json import dumps, load
 from pathlib import Path
 from typing import (
     Any,
@@ -16,6 +15,8 @@ from typing import (
     Literal,
     Optional,
     OrderedDict,
+    Set,
+    Tuple,
     Type,
     TypeVar,
     Union,
@@ -36,6 +37,8 @@ from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap, RouterLoader
+from openbb_core.app.static.utils.console import Console
+from openbb_core.app.static.utils.linters import Linters
 from openbb_core.env import Env
 from openbb_core.provider.abstract.data import Data
 
@@ -52,19 +55,6 @@ DataProcessingSupportedTypes = TypeVar(
 )
 
 
-class Console:
-    """Console to be used by builder and linters."""
-
-    def __init__(self, verbose: bool):
-        """Initialize the console."""
-        self.verbose = verbose
-
-    def log(self, message: str, **kwargs):
-        """Console log method."""
-        if self.verbose or Env().DEBUG_MODE:
-            print(message, **kwargs)  # noqa: T201
-
-
 class PackageBuilder:
     """Build the extension package for the Platform."""
 
@@ -77,7 +67,38 @@ class PackageBuilder:
         self.verbose = verbose
         self.console = Console(verbose)
 
-    def clean_package(self, modules: Optional[Union[str, List[str]]] = None) -> None:
+    def auto_build(self) -> None:
+        """Trigger build if there are differences between built and installed extensions."""
+        if Env().AUTO_BUILD:
+            add, remove = PackageBuilder._diff(self.directory / "package")
+            if add:
+                a = ", ".join(add)
+                print(f"Extensions to add: {a}")  # noqa: T201
+
+            if remove:
+                r = ", ".join(remove)
+                print(f"Extensions to remove: {r}")  # noqa: T201
+
+            if add or remove:
+                print("\nBuilding...")  # noqa: T201
+                self.build()
+
+    def build(
+        self,
+        modules: Optional[Union[str, List[str]]] = None,
+    ) -> None:
+        """Build the extensions for the Platform."""
+        self.console.log("\nBuilding extensions package...\n")
+        self._clean_package(modules)
+        ext_map = self._get_extension_map()
+        self._save_extension_map(ext_map)
+        self._save_module_map()
+        self._save_modules(modules, ext_map)
+        self._save_package()
+        if self.lint:
+            self._run_linters()
+
+    def _clean_package(self, modules: Optional[Union[str, List[str]]] = None) -> None:
         """Delete the package folder or modules before building."""
         if modules:
             for module in modules:
@@ -87,22 +108,7 @@ class PackageBuilder:
         else:
             shutil.rmtree(self.directory / "package", ignore_errors=True)
 
-    def build(
-        self,
-        modules: Optional[Union[str, List[str]]] = None,
-    ) -> None:
-        """Build the extensions for the Platform."""
-        self.console.log("\nBuilding extensions package...\n")
-        self.clean_package(modules)
-        ext_map = self.get_extension_map()
-        self.save_extension_map(ext_map)
-        self.save_module_map()
-        self.save_modules(modules, ext_map)
-        self.save_package()
-        if self.lint:
-            self.run_linters()
-
-    def get_extension_map(self) -> Dict[str, List[str]]:
+    def _get_extension_map(self) -> Dict[str, List[str]]:
         """Get map of extensions available at build time."""
         groups = ("openbb_core_extension", "openbb_provider_extension")
         ext_map = {
@@ -116,13 +122,13 @@ class PackageBuilder:
         }
         return ext_map
 
-    def save_extension_map(self, ext_map: Dict[str, List[str]]) -> None:
+    def _save_extension_map(self, ext_map: Dict[str, List[str]]) -> None:
         """Save the map of extensions available at build time."""
         code = dumps(obj=dict(sorted(ext_map.items())), indent=4)
         self.console.log("Writing extension map...")
-        self.write_to_package(code=code, name="extension_map", extension="json")
+        self._write(code=code, name="extension_map", extension="json")
 
-    def save_module_map(self):
+    def _save_module_map(self):
         """Save the module map."""
         route_map = PathHandler.build_route_map()
         path_list = PathHandler.build_path_list(route_map=route_map)
@@ -131,9 +137,9 @@ class PackageBuilder:
         }
         code = dumps(obj=dict(sorted(module_map.items())), indent=4)
         self.console.log("\nWriting module map...")
-        self.write_to_package(code=code, name="module_map", extension="json")
+        self._write(code=code, name="module_map", extension="json")
 
-    def save_modules(
+    def _save_modules(
         self,
         modules: Optional[Union[str, List[str]]] = None,
         ext_map: Optional[Dict[str, List[str]]] = None,
@@ -161,22 +167,22 @@ class PackageBuilder:
                 )
                 module_name = PathHandler.build_module_name(path=path)
                 self.console.log(f"({path})", end=" " * (MAX_LEN - len(path)))
-                self.write_to_package(code=module_code, name=module_name)
+                self._write(code=module_code, name=module_name)
 
-    def save_package(self):
+    def _save_package(self):
         """Save the package."""
         self.console.log("\nWriting package __init__...")
         code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
-        self.write_to_package(code=code, name="__init__")
+        self._write(code=code, name="__init__")
 
-    def run_linters(self):
+    def _run_linters(self):
         """Run the linters."""
         self.console.log("\nRunning linters...")
         linters = Linters(self.directory / "package", self.verbose)
         linters.ruff()
         linters.black()
 
-    def write_to_package(self, code: str, name: str, extension="py") -> None:
+    def _write(self, code: str, name: str, extension="py") -> None:
         """Write the module to the package."""
         package_folder = self.directory / "package"
         package_path = package_folder / f"{name}.{extension}"
@@ -187,6 +193,49 @@ class PackageBuilder:
         with package_path.open("w", encoding="utf-8", newline="\n") as file:
             file.write(code.replace("typing.", ""))
 
+    @staticmethod
+    def _read_extension_map(package: Path) -> dict:
+        """Get extension map from package folder."""
+        ext_map_file = Path(package, "extension_map.json")
+        try:
+            with open(ext_map_file) as fp:
+                ext_map = load(fp)
+        except Exception:
+            ext_map = {}
+
+        return ext_map
+
+    @staticmethod
+    def _diff(package: Path) -> Tuple[Set[str], Set[str]]:
+        """Check differences between built and installed extensions.
+
+        Parameters
+        ----------
+        package: Path
+            The path to the package
+
+        Returns
+        -------
+        Tuple[Set[str], Set[str]]
+            First element: set of installed extensions that are not in the package.
+            Second element: set of extensions in the package that are not installed.
+        """
+        ext_map = PackageBuilder._read_extension_map(package)
+
+        add: Set[str] = set()
+        remove: Set[str] = set()
+        groups = ("openbb_core_extension", "openbb_provider_extension")
+        for g in groups:
+            built = set(ext_map.get(g, {}))
+            installed = set(
+                f"{e.name}@{getattr(e.dist, 'version', '')}"
+                for e in entry_points(group=g)
+            )
+            add = add.union(installed - built)
+            remove = remove.union(built - installed)
+
+        return add, remove
+
 
 class ModuleBuilder:
     """Build the module for the Platform."""
@@ -194,7 +243,7 @@ class ModuleBuilder:
     @staticmethod
     def build(path: str, ext_map: Optional[Dict[str, List[str]]] = None) -> str:
         """Build the module."""
-        code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n"
+        code = "### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###\n\n"
         code += ImportDefinition.build(path=path)
         code += ClassDefinition.build(path, ext_map)
 
@@ -258,7 +307,7 @@ class ImportDefinition:
     def build(cls, path: str) -> str:
         """Build the import definition."""
         hint_type_list = cls.get_path_hint_type_list(path=path)
-        code = "\nfrom openbb_core.app.static.container import Container"
+        code = "from openbb_core.app.static.container import Container"
         code += "\nfrom openbb_core.app.model.obbject import OBBject"
         code += (
             "\nfrom openbb_core.app.model.custom_parameter import OpenBBCustomParameter"
@@ -282,8 +331,8 @@ class ImportDefinition:
         else:
             code += "\nfrom typing_extensions import Annotated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
-        code += "\nfrom openbb_core.app.static.decorators import validate\n"
-        code += "\nfrom openbb_core.app.static.filters import filter_inputs\n"
+        code += "\nfrom openbb_core.app.static.utils.decorators import validate\n"
+        code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
         code += "\nfrom openbb_core.provider.abstract.data import Data"
         if path.startswith("/quantitative"):
             code += "\nfrom openbb_quantitative.models import "
@@ -307,7 +356,7 @@ class ClassDefinition:
     def build(path: str, ext_map: Optional[Dict[str, List[str]]] = None) -> str:
         """Build the class definition."""
         class_name = PathHandler.build_module_class(path=path)
-        code = f"\nclass {class_name}(Container):\n"
+        code = f"class {class_name}(Container):\n"
 
         route_map = PathHandler.build_route_map()
         path_list = PathHandler.build_path_list(route_map=route_map)
@@ -320,10 +369,10 @@ class ClassDefinition:
 
         doc = f'    """{path}\n' if path else '    # fmt: off\n    """\nRouters:\n'
         methods = ""
-        for child_path in child_path_list:
-            route = PathHandler.get_route(path=child_path, route_map=route_map)
+        for c in child_path_list:
+            route = PathHandler.get_route(path=c, route_map=route_map)
             if route:
-                doc += f"{route.name}\n"
+                doc += f"    {route.name}\n"
                 methods += MethodDefinition.build_command_method(
                     path=route.path,
                     func=route.endpoint,
@@ -332,9 +381,9 @@ class ClassDefinition:
                     else None,
                 )  # type: ignore
             else:
-                doc += "/" if path else "    /"
-                doc += child_path.split("/")[-1] + "\n"
-                methods += MethodDefinition.build_class_loader_method(path=child_path)
+                doc += "    /" if path else "    /"
+                doc += c.split("/")[-1] + "\n"
+                methods += MethodDefinition.build_class_loader_method(path=c)
 
         if not path:
             if ext_map:
@@ -351,301 +400,16 @@ class ClassDefinition:
                     ]
                 )
             doc += '    """\n'
-            doc += "# fmt: on\n"
+            doc += "    # fmt: on\n"
         else:
             doc += '    """\n'
 
-        code += doc
+        code += doc + "\n"
         code += "    def __repr__(self) -> str:\n"
         code += '        return self.__doc__ or ""\n'
         code += methods
 
         return code
-
-
-class DocstringGenerator:
-    """Dynamically generate docstrings for the commands."""
-
-    provider_interface = ProviderInterface()
-
-    @staticmethod
-    def get_OBBject_description(results_type: str, providers: Optional[str]) -> str:
-        """Get the command output description."""
-        available_providers = providers or "Optional[PROVIDERS]"
-
-        obbject_description = (
-            "OBBject\n"
-            f"    results : {results_type}\n"
-            "        Serializable results.\n"
-            f"    provider : {available_providers}\n"
-            "        Provider name.\n"
-            "    warnings : Optional[List[Warning_]]\n"
-            "        List of warnings.\n"
-            "    chart : Optional[Chart]\n"
-            "        Chart object.\n"
-            "    extra: Dict[str, Any]\n"
-            "        Extra info.\n"
-        )
-        obbject_description = obbject_description.replace("NoneType", "None")
-
-        return obbject_description
-
-    @staticmethod
-    def get_model_standard_params(param_fields: Dict[str, FieldInfo]) -> Dict[str, Any]:
-        """Get the test params for the fetcher based on the required standard params."""
-        test_params: Dict[str, Any] = {}
-        for field_name, field in param_fields.items():
-            if field.default and field.default is not PydanticUndefined:
-                test_params[field_name] = field.default
-            elif field.default and field.default is PydanticUndefined:
-                example_dict = {
-                    "symbol": "AAPL",
-                    "symbols": "AAPL,MSFT",
-                    "start_date": "2023-01-01",
-                    "end_date": "2023-06-06",
-                    "country": "Portugal",
-                    "date": "2023-01-01",
-                    "countries": ["portugal", "spain"],
-                }
-                if field_name in example_dict:
-                    test_params[field_name] = example_dict[field_name]
-                elif field.annotation == str:
-                    test_params[field_name] = "TEST_STRING"
-                elif field.annotation == int:
-                    test_params[field_name] = 1
-                elif field.annotation == float:
-                    test_params[field_name] = 1.0
-                elif field.annotation == bool:
-                    test_params[field_name] = True
-                elif get_origin(field.annotation) is Literal:  # type: ignore
-                    option = field.annotation.__args__[0]  # type: ignore
-                    if isinstance(option, str):
-                        test_params[field_name] = f'"{option}"'
-                    else:
-                        test_params[field_name] = option
-
-        return test_params
-
-    @staticmethod
-    def get_full_command_name(route: str) -> str:
-        """Get the full command name."""
-        cmd_parts = route.split("/")
-        del cmd_parts[0]
-
-        menu = cmd_parts[0]
-        command = cmd_parts[-1]
-        sub_menus = cmd_parts[1:-1]
-
-        sub_menu_str_cmd = f".{'.'.join(sub_menus)}" if sub_menus else ""
-
-        full_command = f"{menu}{sub_menu_str_cmd}.{command}"
-
-        return full_command
-
-    @classmethod
-    def generate_example(
-        cls,
-        model_name: str,
-        standard_params: Dict[str, FieldInfo],
-    ) -> str:
-        """Generate the example for the command."""
-        # find the model router here
-        cm = CommandMap()
-        commands_model = cm.commands_model
-        route = [k for k, v in commands_model.items() if v == model_name]
-
-        if not route:
-            return ""
-
-        full_command_name = cls.get_full_command_name(route=route[0])
-        example_params = cls.get_model_standard_params(param_fields=standard_params)
-
-        # Edge cases (might find more)
-        if "crypto" in route[0] and "symbol" in example_params:
-            example_params["symbol"] = "BTCUSD"
-        elif "currency" in route[0] and "symbol" in example_params:
-            example_params["symbol"] = "EURUSD"
-        elif (
-            "index" in route[0]
-            and "european" not in route[0]
-            and "symbol" in example_params
-        ):
-            example_params["symbol"] = "SPX"
-        elif (
-            "index" in route[0]
-            and "european" in route[0]
-            and "symbol" in example_params
-        ):
-            example_params["symbol"] = "BUKBUS"
-        elif (
-            "futures" in route[0] and "curve" in route[0] and "symbol" in example_params
-        ):
-            example_params["symbol"] = "VX"
-        elif "futures" in route[0] and "symbol" in example_params:
-            example_params["symbol"] = "ES"
-
-        example = "\nExample\n-------\n"
-        example += ">>> from openbb import obb\n"
-        example += f">>> obb.{full_command_name}("
-        for param_name, param_value in example_params.items():
-            if isinstance(param_value, str):
-                param_value = f'"{param_value}"'  # noqa: PLW2901
-            example += f"{param_name}={param_value}, "
-        if example_params:
-            example = example[:-2] + ")\n\n"
-        else:
-            example += ")\n\n"
-
-        return example
-
-    @classmethod
-    def generate_model_docstring(
-        cls,
-        model_name: str,
-        summary: str,
-        explicit_params: dict,
-        params: dict,
-        returns: Dict[str, FieldInfo],
-        results_type: str,
-    ) -> str:
-        """Create the docstring for model."""
-
-        def format_type(type_: str, char_limit: Optional[int] = None) -> str:
-            """Format type in docstrings."""
-            type_str = str(type_)
-            type_str = type_str.replace("NoneType", "None")
-            if char_limit:
-                type_str = type_str[:char_limit] + (
-                    "..." if len(str(type_str)) > char_limit else ""
-                )
-            return type_str
-
-        standard_dict = params["standard"].__dataclass_fields__
-        extra_dict = params["extra"].__dataclass_fields__
-
-        obb_query_fields: Dict[str, FieldInfo] = cls.provider_interface.map[model_name][
-            "openbb"
-        ]["QueryParams"]["fields"]
-
-        example_docstring = cls.generate_example(
-            model_name=model_name, standard_params=obb_query_fields
-        )
-
-        docstring = summary
-        docstring += "\n"
-        docstring += "\nParameters\n----------\n"
-
-        # Explicit parameters
-        for param_name, param in explicit_params.items():
-            if param_name in standard_dict:
-                # pylint: disable=W0212
-                p_type = obb_query_fields[param_name].annotation
-                type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
-                description = obb_query_fields[param_name].description
-            elif param_name == "provider":
-                # pylint: disable=W0212
-                type_ = param._annotation
-                default = param._annotation.__args__[0].__args__[0]
-                description = f"""The provider to use for the query, by default None.
-    If None, the provider specified in defaults is selected or '{default}' if there is
-    no default."""
-            elif param_name == "chart":
-                type_ = "bool"
-                description = "Whether to create a chart or not, by default False."
-            else:
-                type_ = ""
-                description = ""
-
-            type_str = format_type(type_, char_limit=79)  # type: ignore
-            docstring += f"{param_name} : {type_str}\n"
-            docstring += f"    {description}\n"
-
-        # Kwargs
-        for param_name, param in extra_dict.items():
-            p_type = param.type
-            type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
-
-            if "NoneType" in str(type_):
-                type_ = f"Optional[{type_}]".replace(", NoneType", "")
-
-            docstring += f"{param_name} : {type_}\n"
-            docstring += f"    {param.default.description}\n"
-
-        # Returns
-        docstring += "\nReturns\n-------\n"
-        provider_param = explicit_params.get("provider", None)
-        available_providers = getattr(provider_param, "_annotation", None)
-
-        docstring += cls.get_OBBject_description(results_type, available_providers)
-
-        # Schema
-        underline = "-" * len(model_name)
-        docstring += f"\n{model_name}\n{underline}\n"
-
-        for name, field in returns.items():
-            try:
-                _type = field.annotation
-                is_optional = not field.is_required()
-                if "BeforeValidator" in str(_type):
-                    _type = "Optional[int]" if is_optional else "int"  # type: ignore
-
-                field_type = (
-                    str(_type)
-                    .replace("<class '", "")
-                    .replace("'>", "")
-                    .replace("typing.", "")
-                    .replace("pydantic.types.", "")
-                    .replace("datetime.datetime", "datetime")
-                    .replace("datetime.date", "date")
-                    .replace("NoneType", "None")
-                    .replace(", None", "")
-                )
-                field_type = (
-                    f"Optional[{field_type}]"
-                    if is_optional and "Optional" not in str(_type)
-                    else field_type
-                )
-            except TypeError:
-                # Fallback to the annotation if the repr fails
-                field_type = field.annotation  # type: ignore
-
-            docstring += f"{field.alias or name} : {field_type}\n"
-            docstring += f"    {field.description}\n"
-
-        docstring += example_docstring
-        return docstring
-
-    @classmethod
-    def generate(
-        cls,
-        func: Callable,
-        formatted_params: OrderedDict[str, Parameter],
-        model_name: Optional[str] = None,
-    ) -> Optional[str]:
-        """Generate the docstring for the function."""
-        doc = func.__doc__
-        if model_name:
-            params = cls.provider_interface.params.get(model_name, None)
-            return_schema = cls.provider_interface.return_schema.get(model_name, None)
-            if params and return_schema:
-                explicit_dict = dict(formatted_params)
-                explicit_dict.pop("extra_params", None)
-
-                returns = return_schema.model_fields
-                results_type = func.__annotations__.get("return", model_name)
-                if hasattr(results_type, "results_type_repr"):
-                    results_type = results_type.results_type_repr()
-
-                return cls.generate_model_docstring(
-                    model_name=model_name,
-                    summary=func.__doc__ or "",
-                    explicit_params=explicit_dict,
-                    params=params,
-                    returns=returns,
-                    results_type=results_type,
-                )
-            return doc
-        return doc
 
 
 class MethodDefinition:
@@ -659,8 +423,9 @@ class MethodDefinition:
         function_name = path.rsplit("/", maxsplit=1)[-1].strip("/")
 
         code = "\n    @property\n"
-        code += f'    def {function_name}(self):  # route = "{path}"\n'
-        code += f"        from . import {module_name}\n"
+        code += f"    def {function_name}(self):\n"
+        code += "        # pylint: disable=import-outside-toplevel\n"
+        code += f"        from . import {module_name}\n\n"
         code += f"        return {module_name}.{class_name}(command_runner=self._command_runner)\n"
 
         return code
@@ -824,7 +589,9 @@ class MethodDefinition:
     @staticmethod
     def build_func_params(formatted_params: OrderedDict[str, Parameter]) -> str:
         """Stringify function params."""
-        func_params = ", ".join(str(param) for param in formatted_params.values())
+        func_params = ",\n        ".join(
+            str(param) for param in formatted_params.values()
+        )
         func_params = func_params.replace("NoneType", "None")
         func_params = func_params.replace(
             "pandas.core.frame.DataFrame", "pandas.DataFrame"
@@ -836,20 +603,14 @@ class MethodDefinition:
         return func_params
 
     @staticmethod
-    def build_func_returns(return_type: type, model_name: Optional[str] = None) -> str:
+    def build_func_returns(return_type: type) -> str:
         """Build the function returns."""
         if return_type == _empty:
             func_returns = "None"
         elif return_type.__module__ == "builtins":
             func_returns = return_type.__name__
         else:
-            item_type = get_args(get_type_hints(return_type)["results"])[0]
-            if item_type.__module__ == "builtins":
-                func_returns = f"OBBject[{item_type.__name__}]"
-            else:
-                func_returns = return_type.__qualname__
-                if model_name:
-                    func_returns = func_returns.replace(model_name, "Data")
+            func_returns = "OBBject"
 
         return func_returns
 
@@ -865,7 +626,7 @@ class MethodDefinition:
             od=formatted_params, model_name=model_name
         )  # this modified `od` in place
         func_params = MethodDefinition.build_func_params(formatted_params)
-        func_returns = MethodDefinition.build_func_returns(return_type, model_name)
+        func_returns = MethodDefinition.build_func_returns(return_type)
 
         args = (
             "(config=dict(arbitrary_types_allowed=True))"
@@ -873,7 +634,8 @@ class MethodDefinition:
             else ""
         )
         code = f"\n    @validate{args}"
-        code += f"\n    def {func_name}(self, {func_params}) -> {func_returns}:\n"
+        code += f"\n    def {func_name}("
+        code += f"\n        self,\n        {func_params}\n    ) -> {func_returns}:\n"
 
         return code
 
@@ -889,12 +651,12 @@ class MethodDefinition:
             doc = DocstringGenerator.generate(
                 func=func, formatted_params=formatted_params, model_name=model_name
             )
-        code = f'        """{doc}"""  # noqa: E501\n\n' if doc else ""
+        code = f'        """{doc}        """  # noqa: E501\n\n' if doc else ""
 
         return code
 
     @staticmethod
-    def build_command_method_implementation(path: str, func: Callable):
+    def build_command_method_body(path: str, func: Callable):
         """Build the command method implementation."""
         sig = signature(func)
         parameter_map = dict(sig.parameters)
@@ -911,32 +673,30 @@ class MethodDefinition:
                 default=False,
             )
 
-        code = "        inputs = filter_inputs(\n"
+        code = "        return self._run(\n"
+        code += f"""            "{path}",\n"""
+        code += "            **filter_inputs(\n"
         for name, param in parameter_map.items():
             if name == "extra_params":
-                code += f"            {name}=kwargs,\n"
+                code += f"                {name}=kwargs,\n"
             elif MethodDefinition.is_annotated_dc(param.annotation):
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 value = {k: k for k in fields}
-                code += f"            {name}={{"
+                code += f"                {name}={{\n"
                 for k, v in value.items():
                     if k == "symbol":
-                        code += f'"{k}": ",".join(symbol) if isinstance(symbol, list) else symbol, '
+                        code += f'                    "{k}": ",".join(symbol) if isinstance(symbol, list) else symbol, \n'
                         continue
-                    code += f'"{k}": {v}, '
-                code += "},\n"
+                    code += f'                    "{k}": {v},\n'
+                code += "                },\n"
             else:
-                code += f"            {name}={name},\n"
+                code += f"                {name}={name},\n"
 
         if MethodDefinition.is_data_processing_function(path):
-            code += "            data_processing=True,\n"
+            code += "                data_processing=True,\n"
 
-        code += "        )\n\n"
-        code += "        return self._run(\n"
-        code += f"""            "{path}",\n"""
-        code += "            **inputs,\n"
+        code += "            )\n"
         code += "        )\n"
-        code += "\n"
 
         return code
 
@@ -962,9 +722,306 @@ class MethodDefinition:
             func=func, formatted_params=formatted_params, model_name=model_name
         )
 
-        code += cls.build_command_method_implementation(path=path, func=func)
+        code += cls.build_command_method_body(path=path, func=func)
 
         return code
+
+
+class DocstringGenerator:
+    """Dynamically generate docstrings for the commands."""
+
+    provider_interface = ProviderInterface()
+
+    @staticmethod
+    def get_OBBject_description(results_type: str, providers: Optional[str]) -> str:
+        """Get the command output description."""
+        available_providers = providers or "Optional[str]"
+
+        obbject_description = (
+            "        OBBject\n"
+            f"            results : {results_type}\n"
+            "                Serializable results.\n"
+            f"            provider : {available_providers}\n"
+            "                Provider name.\n"
+            "            warnings : Optional[List[Warning_]]\n"
+            "                List of warnings.\n"
+            "            chart : Optional[Chart]\n"
+            "                Chart object.\n"
+            "            extra: Dict[str, Any]\n"
+            "                Extra info.\n"
+        )
+        obbject_description = obbject_description.replace("NoneType", "None")
+
+        return obbject_description
+
+    @staticmethod
+    def get_model_standard_params(param_fields: Dict[str, FieldInfo]) -> Dict[str, Any]:
+        """Get the test params for the fetcher based on the required standard params."""
+        test_params: Dict[str, Any] = {}
+        for field_name, field in param_fields.items():
+            if field.default and field.default is not PydanticUndefined:
+                test_params[field_name] = field.default
+            elif field.default and field.default is PydanticUndefined:
+                example_dict = {
+                    "symbol": "AAPL",
+                    "symbols": "AAPL,MSFT",
+                    "start_date": "2023-01-01",
+                    "end_date": "2023-06-06",
+                    "country": "Portugal",
+                    "date": "2023-01-01",
+                    "countries": ["portugal", "spain"],
+                }
+                if field_name in example_dict:
+                    test_params[field_name] = example_dict[field_name]
+                elif field.annotation == str:
+                    test_params[field_name] = "TEST_STRING"
+                elif field.annotation == int:
+                    test_params[field_name] = 1
+                elif field.annotation == float:
+                    test_params[field_name] = 1.0
+                elif field.annotation == bool:
+                    test_params[field_name] = True
+                elif get_origin(field.annotation) is Literal:  # type: ignore
+                    option = field.annotation.__args__[0]  # type: ignore
+                    if isinstance(option, str):
+                        test_params[field_name] = f'"{option}"'
+                    else:
+                        test_params[field_name] = option
+
+        return test_params
+
+    @staticmethod
+    def get_full_command_name(route: str) -> str:
+        """Get the full command name."""
+        cmd_parts = route.split("/")
+        del cmd_parts[0]
+
+        menu = cmd_parts[0]
+        command = cmd_parts[-1]
+        sub_menus = cmd_parts[1:-1]
+
+        sub_menu_str_cmd = f".{'.'.join(sub_menus)}" if sub_menus else ""
+
+        full_command = f"{menu}{sub_menu_str_cmd}.{command}"
+
+        return full_command
+
+    @classmethod
+    def generate_example(
+        cls,
+        model_name: str,
+        standard_params: Dict[str, FieldInfo],
+    ) -> str:
+        """Generate the example for the command."""
+        # find the model router here
+        cm = CommandMap()
+        commands_model = cm.commands_model
+        route = [k for k, v in commands_model.items() if v == model_name]
+
+        if not route:
+            return ""
+
+        full_command_name = cls.get_full_command_name(route=route[0])
+        example_params = cls.get_model_standard_params(param_fields=standard_params)
+
+        # Edge cases (might find more)
+        if "crypto" in route[0] and "symbol" in example_params:
+            example_params["symbol"] = "BTCUSD"
+        elif "currency" in route[0] and "symbol" in example_params:
+            example_params["symbol"] = "EURUSD"
+        elif (
+            "index" in route[0]
+            and "european" not in route[0]
+            and "symbol" in example_params
+        ):
+            example_params["symbol"] = "SPX"
+        elif (
+            "index" in route[0]
+            and "european" in route[0]
+            and "symbol" in example_params
+        ):
+            example_params["symbol"] = "BUKBUS"
+        elif (
+            "futures" in route[0] and "curve" in route[0] and "symbol" in example_params
+        ):
+            example_params["symbol"] = "VX"
+        elif "futures" in route[0] and "symbol" in example_params:
+            example_params["symbol"] = "ES"
+
+        example = "\n        Example\n        -------\n"
+        example += "        >>> from openbb import obb\n"
+        example += f"        >>> obb.{full_command_name}("
+        for param_name, param_value in example_params.items():
+            if isinstance(param_value, str):
+                param_value = f'"{param_value}"'  # noqa: PLW2901
+            example += f"{param_name}={param_value}, "
+        if example_params:
+            example = example[:-2] + ")\n"
+        else:
+            example += ")\n"
+
+        return example
+
+    @classmethod
+    def generate_model_docstring(
+        cls,
+        model_name: str,
+        summary: str,
+        explicit_params: dict,
+        params: dict,
+        returns: Dict[str, FieldInfo],
+        results_type: str,
+    ) -> str:
+        """Create the docstring for model."""
+
+        def format_type(type_: str, char_limit: Optional[int] = None) -> str:
+            """Format type in docstrings."""
+            type_str = str(type_)
+            type_str = type_str.replace("NoneType", "None")
+            if char_limit:
+                type_str = type_str[:char_limit] + (
+                    "..." if len(str(type_str)) > char_limit else ""
+                )
+            return type_str
+
+        def format_description(description: str) -> str:
+            """Format description in docstrings."""
+            description = description.replace("\n", "\n        ")
+            return description
+
+        standard_dict = params["standard"].__dataclass_fields__
+        extra_dict = params["extra"].__dataclass_fields__
+
+        obb_query_fields: Dict[str, FieldInfo] = cls.provider_interface.map[model_name][
+            "openbb"
+        ]["QueryParams"]["fields"]
+
+        example_docstring = cls.generate_example(
+            model_name=model_name, standard_params=obb_query_fields
+        )
+
+        docstring = summary
+        docstring += "\n\n"
+        docstring += "        Parameters\n"
+        docstring += "        ----------\n"
+
+        # Explicit parameters
+        for param_name, param in explicit_params.items():
+            if param_name in standard_dict:
+                # pylint: disable=W0212
+                p_type = obb_query_fields[param_name].annotation
+                type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
+                description = getattr(obb_query_fields[param_name], "description", "")
+            elif param_name == "provider":
+                # pylint: disable=W0212
+                type_ = param._annotation
+                default = param._annotation.__args__[0].__args__[0]
+                description = f"""The provider to use for the query, by default None.
+    If None, the provider specified in defaults is selected or '{default}' if there is
+    no default."""
+            elif param_name == "chart":
+                type_ = "bool"
+                description = "Whether to create a chart or not, by default False."
+            else:
+                type_ = ""
+                description = ""
+
+            type_str = format_type(type_, char_limit=79)  # type: ignore
+            docstring += f"        {param_name} : {type_str}\n"
+            docstring += f"            {format_description(description)}\n"
+
+        # Kwargs
+        for param_name, param in extra_dict.items():
+            p_type = param.type
+            type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
+
+            if "NoneType" in str(type_):
+                type_ = f"Optional[{type_}]".replace(", NoneType", "")
+
+            description = getattr(param.default, "description", "")
+
+            docstring += f"        {param_name} : {type_}\n"
+            docstring += f"            {format_description(description)}\n"
+
+        # Returns
+        docstring += "\n"
+        docstring += "        Returns\n"
+        docstring += "        -------\n"
+        provider_param = explicit_params.get("provider", None)
+        available_providers = getattr(provider_param, "_annotation", None)
+
+        docstring += cls.get_OBBject_description(results_type, available_providers)
+
+        # Schema
+        underline = "-" * len(model_name)
+        docstring += f"\n        {model_name}\n        {underline}\n"
+
+        for name, field in returns.items():
+            try:
+                _type = field.annotation
+                is_optional = not field.is_required()
+                if "BeforeValidator" in str(_type):
+                    _type = "Optional[int]" if is_optional else "int"  # type: ignore
+
+                field_type = (
+                    str(_type)
+                    .replace("<class '", "")
+                    .replace("'>", "")
+                    .replace("typing.", "")
+                    .replace("pydantic.types.", "")
+                    .replace("datetime.datetime", "datetime")
+                    .replace("datetime.date", "date")
+                    .replace("NoneType", "None")
+                    .replace(", None", "")
+                )
+                field_type = (
+                    f"Optional[{field_type}]"
+                    if is_optional and "Optional" not in str(_type)
+                    else field_type
+                )
+            except TypeError:
+                # Fallback to the annotation if the repr fails
+                field_type = field.annotation  # type: ignore
+
+            description = getattr(field, "description", "")
+
+            docstring += f"        {field.alias or name} : {field_type}\n"
+            docstring += f"            {format_description(description)}\n"
+
+        docstring += example_docstring
+        return docstring
+
+    @classmethod
+    def generate(
+        cls,
+        func: Callable,
+        formatted_params: OrderedDict[str, Parameter],
+        model_name: Optional[str] = None,
+    ) -> Optional[str]:
+        """Generate the docstring for the function."""
+        doc = func.__doc__
+        if model_name:
+            params = cls.provider_interface.params.get(model_name, None)
+            return_schema = cls.provider_interface.return_schema.get(model_name, None)
+            if params and return_schema:
+                explicit_dict = dict(formatted_params)
+                explicit_dict.pop("extra_params", None)
+
+                returns = return_schema.model_fields
+                results_type = func.__annotations__.get("return", model_name)
+                if hasattr(results_type, "results_type_repr"):
+                    results_type = results_type.results_type_repr()
+
+                return cls.generate_model_docstring(
+                    model_name=model_name,
+                    summary=func.__doc__ or "",
+                    explicit_params=explicit_dict,
+                    params=params,
+                    returns=returns,
+                    results_type=results_type,
+                )
+            return doc
+        return doc
 
 
 class PathHandler:
@@ -1032,50 +1089,3 @@ class PathHandler:
         if not path:
             return "Extensions"
         return f"ROUTER_{cls.clean_path(path=path)}"
-
-
-class Linters:
-    """Run the linters for the Platform."""
-
-    def __init__(self, directory: Path, verbose: bool = False) -> None:
-        """Initialize the linters."""
-        self.directory = directory
-        self.verbose = verbose
-        self.console = Console(verbose)
-
-    def print_separator(self, symbol: str, length: int = 160):
-        """Print a separator."""
-        self.console.log(symbol * length)
-
-    def run(
-        self,
-        linter: Literal["black", "ruff"],
-        flags: Optional[List[str]] = None,
-    ):
-        """Run linter with flags."""
-        if shutil.which(linter):
-            self.console.log(f"\n* {linter}")
-            self.print_separator("^")
-
-            command = [linter] + list(self.directory.glob("*.py"))
-            if flags:
-                command.extend(flags)  # type: ignore
-            subprocess.run(command, check=False)  # noqa: S603
-
-            self.print_separator("-")
-        else:
-            self.console.log(f"\n* {linter} not found")
-
-    def black(self):
-        """Run black."""
-        flags = []
-        if not self.verbose and not Env().DEBUG_MODE:
-            flags.append("--quiet")
-        self.run(linter="black", flags=flags)
-
-    def ruff(self):
-        """Run ruff."""
-        flags = ["--fix"]
-        if not self.verbose and not Env().DEBUG_MODE:
-            flags.append("--silent")
-        self.run(linter="ruff", flags=flags)

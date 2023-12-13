@@ -1,23 +1,25 @@
 """Test the package_builder.py file."""
-# pylint: disable=redefined-outer-name
+# pylint: disable=redefined-outer-name, protected-access
 
 from dataclasses import dataclass
 from inspect import _empty
-from unittest.mock import patch
+from pathlib import Path
+from unittest.mock import PropertyMock, mock_open, patch
 
 import pandas
 import pytest
+from importlib_metadata import EntryPoint, EntryPoints
 from openbb_core.app.static.package_builder import (
     ClassDefinition,
     DocstringGenerator,
     ImportDefinition,
-    Linters,
     MethodDefinition,
     ModuleBuilder,
     PackageBuilder,
     Parameter,
     PathHandler,
 )
+from openbb_core.env import Env
 from pydantic import Field
 from typing_extensions import Annotated
 
@@ -45,27 +47,27 @@ def test_package_builder_build(package_builder):
 
 def test_save_module_map(package_builder):
     """Test save module map."""
-    package_builder.save_module_map()
+    package_builder._save_module_map()
 
 
 def test_save_modules(package_builder):
     """Test save module."""
-    package_builder.save_modules()
+    package_builder._save_modules()
 
 
 def test_save_package(package_builder):
     """Test save package."""
-    package_builder.save_package()
+    package_builder._save_package()
 
 
 def test_run_linters(package_builder):
     """Test run linters."""
-    package_builder.run_linters()
+    package_builder._run_linters()
 
 
-def test_write_to_package(package_builder):
+def test_write(package_builder):
     """Test save to package."""
-    package_builder.write_to_package(code="", name="test", extension="json")
+    package_builder._write(code="", name="test", extension="json")
 
 
 @pytest.fixture(scope="module")
@@ -237,7 +239,9 @@ def test_build_func_params(method_definition):
         ),
     }
 
-    expected_output = "param1: None, param2: int, param3: pandas.DataFrame"
+    expected_output = (
+        "param1: None,\n        param2: int,\n        param3: pandas.DataFrame"
+    )
     output = method_definition.build_func_params(param_map)
 
     assert output == expected_output
@@ -289,8 +293,8 @@ def test_build_command_method_doc(method_definition):
     assert isinstance(output, str)
 
 
-def test_build_command_method_implementation(method_definition):
-    """Test build command method implementation."""
+def test_build_command_method_body(method_definition):
+    """Test build command method body."""
 
     def some_func():
         """Do some func doc."""
@@ -300,7 +304,7 @@ def test_build_command_method_implementation(method_definition):
         "openbb_core.app.static.package_builder.MethodDefinition.is_data_processing_function",
         **{"return_value": False},
     ):
-        output = method_definition.build_command_method_implementation(
+        output = method_definition.build_command_method_body(
             path="openbb_core.app.static.container.Container", func=some_func
         )
 
@@ -440,37 +444,6 @@ def test_build_module_class(path_handler):
 
 
 @pytest.fixture(scope="module")
-def linters(tmp_package_dir):
-    """Return linters."""
-    return Linters(tmp_package_dir)
-
-
-def test_linters_init(linters):
-    """Test linters init."""
-    assert linters
-
-
-def test_print_separator(linters):
-    """Test print separator."""
-    linters.print_separator(symbol="AAPL")
-
-
-def test_run(linters):
-    """Test run."""
-    linters.run(linter="ruff")
-
-
-def test_ruff(linters):
-    """Test ruff."""
-    linters.ruff()
-
-
-def test_black(linters):
-    """Test black."""
-    linters.black()
-
-
-@pytest.fixture(scope="module")
 def docstring_generator():
     """Return package builder."""
     return DocstringGenerator()
@@ -539,3 +512,129 @@ def test_generate(docstring_generator):
     assert doc
     assert "Parameters" in doc
     assert "Returns" in doc
+
+
+def test_read_extension_map(package_builder, tmp_package_dir):
+    """Test read extension map."""
+
+    PATH = "openbb_core.app.static.package_builder."
+    open_mock = mock_open()
+    with patch(PATH + "open", open_mock), patch(PATH + "load") as mock_load:
+        package_builder._read_extension_map(tmp_package_dir)
+        open_mock.assert_called_once_with(Path(tmp_package_dir, "extension_map.json"))
+        mock_load.assert_called_once()
+
+
+@pytest.mark.parametrize(
+    "ext_built, ext_installed, ext_inst_version, expected_add, expected_remove",
+    [
+        (
+            {
+                "openbb_core_extension": [
+                    "ext_1@0.0.0",
+                    "ext_2@0.0.0",
+                ],
+                "openbb_provider_extension": [
+                    "prov_1@0.0.0",
+                    "prov_2@1.1.1",
+                ],
+            },
+            EntryPoints(
+                (
+                    EntryPoint(
+                        name="ext_2", value="...", group="openbb_core_extension"
+                    ),
+                    EntryPoint(
+                        name="prov_2", value="...", group="openbb_provider_extension"
+                    ),
+                )
+            ),
+            "0.0.0",
+            {"prov_2@0.0.0"},
+            {"ext_1@0.0.0", "prov_1@0.0.0", "prov_2@1.1.1"},
+        ),
+        (
+            {
+                "openbb_core_extension": ["ext_1@9.9.9"],
+                "openbb_provider_extension": ["prov_2@0.0.0"],
+            },
+            EntryPoints(
+                (
+                    EntryPoint(
+                        name="ext_2", value="...", group="openbb_core_extension"
+                    ),
+                    EntryPoint(
+                        name="prov_1", value="...", group="openbb_provider_extension"
+                    ),
+                )
+            ),
+            "5.5.5",
+            {"ext_2@5.5.5", "prov_1@5.5.5"},
+            {"ext_1@9.9.9", "prov_2@0.0.0"},
+        ),
+    ],
+)
+def test_package_diff(
+    package_builder,
+    tmp_package_dir,
+    ext_built,
+    ext_installed,
+    ext_inst_version,
+    expected_add,
+    expected_remove,
+):
+    """Test package differences."""
+
+    def mock_entry_points(group):
+        return ext_installed.select(**{"group": group})
+
+    PATH = "openbb_core.app.static.package_builder."
+    with patch.object(
+        PackageBuilder, "_read_extension_map"
+    ) as mock_read_extension_map, patch(
+        PATH + "entry_points", mock_entry_points
+    ), patch.object(
+        EntryPoint, "dist", new_callable=PropertyMock
+    ) as mock_obj:
+
+        class MockPathDistribution:
+            version = ext_inst_version
+
+        mock_obj.return_value = MockPathDistribution()
+        mock_read_extension_map.return_value = ext_built
+
+        add, remove = package_builder._diff(tmp_package_dir)
+
+        # We add whatever is not built, but is installed
+        assert add == expected_add
+        # We remove whatever is built, but is not installed
+        assert remove == expected_remove
+
+
+@pytest.mark.parametrize(
+    "add, remove, openbb_auto_build",
+    [
+        (set(), set(), True),
+        ({"this"}, set(), True),
+        (set(), {"that"}, True),
+        ({"this"}, {"that"}, True),
+        ({"this"}, {"that"}, False),
+    ],
+)
+def test_auto_build(package_builder, tmp_package_dir, add, remove, openbb_auto_build):
+    """Test auto build."""
+
+    with patch.object(PackageBuilder, "_diff") as mock_package_diff, patch.object(
+        PackageBuilder, "build"
+    ) as mock_build, patch.object(Env, "AUTO_BUILD", openbb_auto_build):
+        mock_package_diff.return_value = add, remove
+
+        package_builder.auto_build()
+
+    if openbb_auto_build:
+        mock_package_diff.assert_called_once_with(Path(tmp_package_dir, "package"))
+        if add or remove:
+            mock_build.assert_called_once()
+    else:
+        mock_package_diff.assert_not_called()
+        mock_build.assert_not_called()
