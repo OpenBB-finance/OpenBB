@@ -1,14 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -47,7 +46,7 @@ class ROUTER_equity_discovery(Container):
         ] = 100,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Get the most-recent filings submitted to the SEC.
 
         Parameters
@@ -102,20 +101,18 @@ class ROUTER_equity_discovery(Container):
         >>> obb.equity.discovery.filings(limit=100)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "start_date": start_date,
-                "end_date": end_date,
-                "form_type": form_type,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/discovery/filings",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                    "form_type": form_type,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
         )
