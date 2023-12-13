@@ -735,7 +735,7 @@ class DocstringGenerator:
     @staticmethod
     def get_OBBject_description(results_type: str, providers: Optional[str]) -> str:
         """Get the command output description."""
-        available_providers = providers or "Optional[PROVIDERS]"
+        available_providers = providers or "Optional[str]"
 
         obbject_description = (
             "        OBBject\n"
