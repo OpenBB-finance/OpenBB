@@ -13,7 +13,8 @@ class ROUTER_derivatives(Container):
         return self.__doc__ or ""
 
     @property
-    def options(self):  # route = "/derivatives/options"
+    def options(self):
+        # pylint: disable=import-outside-toplevel
         from . import derivatives_options
 
         return derivatives_options.ROUTER_derivatives_options(

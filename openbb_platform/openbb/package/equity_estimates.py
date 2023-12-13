@@ -5,9 +5,8 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -30,7 +29,7 @@ class ROUTER_equity_estimates(Container):
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[Data]:
+    ) -> OBBject:
         """Price Target Consensus. Price target consensus data.
 
         Parameters
@@ -75,19 +74,17 @@ class ROUTER_equity_estimates(Container):
         >>> obb.equity.estimates.consensus(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/estimates/consensus",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -107,7 +104,7 @@ class ROUTER_equity_estimates(Container):
         ] = 30,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Historical Analyst Estimates. Analyst stock recommendations.
 
         Parameters
@@ -190,21 +187,19 @@ class ROUTER_equity_estimates(Container):
         >>> obb.equity.estimates.historical(symbol="AAPL", period="annual", limit=30)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "period": period,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/estimates/historical",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "period": period,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -216,7 +211,7 @@ class ROUTER_equity_estimates(Container):
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Price Target. Price target data.
 
         Parameters
@@ -281,17 +276,15 @@ class ROUTER_equity_estimates(Container):
         >>> obb.equity.estimates.price_target(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/estimates/price_target",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
