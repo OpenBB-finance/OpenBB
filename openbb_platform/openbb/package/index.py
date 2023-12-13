@@ -6,9 +6,8 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -23,9 +22,7 @@ class ROUTER_index(Container):
         return self.__doc__ or ""
 
     @validate
-    def available(
-        self, provider: Optional[Literal["fmp"]] = None, **kwargs
-    ) -> OBBject[List[Data]]:
+    def available(self, provider: Optional[Literal["fmp"]] = None, **kwargs) -> OBBject:
         """Available Indices. Available indices for a given provider.
 
         Parameters
@@ -66,17 +63,15 @@ class ROUTER_index(Container):
         >>> obb.index.available()
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={},
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/index/available",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={},
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -90,7 +85,7 @@ class ROUTER_index(Container):
         ] = "dowjones",
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Index Constituents. Constituents of an index.
 
         Parameters
@@ -141,19 +136,17 @@ class ROUTER_index(Container):
         >>> obb.index.constituents(index="dowjones")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "index": index,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/index/constituents",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "index": index,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -177,7 +170,7 @@ class ROUTER_index(Container):
         ] = None,
         provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Historical Market Indices.
 
         Parameters
@@ -261,19 +254,17 @@ class ROUTER_index(Container):
         >>> obb.index.market(symbol="SPX")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "start_date": start_date,
-                "end_date": end_date,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/index/market",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
         )
