@@ -8,8 +8,10 @@ interactions:
       - gzip, deflate, br
       Connection:
       - keep-alive
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:83.0) Gecko/20100101 Firefox/83.0
     method: GET
-    uri: https://www.federalreserve.gov/datadownload/Output.aspx?filetype=csv&label=include&layout=seriescolumn&rel=H6&series=798e2796917702a5f8423426ba7e6b42&type=package
+    uri: https://www.federalreserve.gov/datadownload/Output.aspx?rel=H6&series=798e2796917702a5f8423426ba7e6b42&lastobs=&from=&to=&filetype=csv&label=include&layout=seriescolumn&type=package
   response:
     body:
       string: "\"Series Description\",\"M1; Not seasonally adjusted\",\"M2; Not seasonally
@@ -41,7 +43,7 @@ interactions:
       CF-Cache-Status:
       - EXPIRED
       CF-RAY:
-      - 834975800a2859b0-IAD
+      - 8351cd9bdce081e8-IAD
       Cache-Control:
       - private
       Connection:
@@ -51,16 +53,16 @@ interactions:
       Content-Type:
       - text/csv
       Date:
-      - Tue, 12 Dec 2023 22:38:40 GMT
+      - Wed, 13 Dec 2023 22:56:55 GMT
       Last-Modified:
-      - Tue, 12 Dec 2023 22:38:14 GMT
+      - Wed, 13 Dec 2023 22:56:12 GMT
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=.2A4daKhbvwa_zsEy6NLoGETmy90jwZGaCFcT6NjGGQ-1702420720-1-AfyqVTr/gtqQ0iFse/Me+uWcmBRu7WOffvttU4ctV9jxe5+AdAWXNruEi9Eezmvlq9zARXUL9S/eYTLA18JL5DI=;
-        path=/; expires=Tue, 12-Dec-23 23:08:40 GMT; domain=.federalreserve.gov; HttpOnly;
+      - __cf_bm=EtAtw610o2cdVwvZiiCGY9em8eFaPLJZ6Kvop9tAE78-1702508215-1-AUi3kEVwfEaIcAwBqvgM4SFWYaTOxdRm6FrHytuNR0naKKJh/z/2lW8Lh2lxpCsyRSQtJwHyNeOxo9AeXOezzO8=;
+        path=/; expires=Wed, 13-Dec-23 23:26:55 GMT; domain=.federalreserve.gov; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=G1A.Bias1INjEbxNnoCY1GYDEAylbzl9gAxzqzuntTo-1702420720707-0-604800000;
+      - _cfuvid=_6_Wm.ng4UlMPUB_xCAD049Le6vvDsml_KrHFurZDPM-1702508215723-0-604800000;
         path=/; domain=.federalreserve.gov; HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload

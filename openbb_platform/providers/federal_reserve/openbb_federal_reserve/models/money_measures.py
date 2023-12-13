@@ -12,16 +12,15 @@ from openbb_core.provider.standard_models.money_measures import (
     MoneyMeasuresQueryParams,
 )
 from openbb_core.provider.utils.helpers import make_request
-from pydantic import field_validator
 
 titles = {
     "M1": "M1",
     "M2": "M2",
-    "MCU": "Currency",
-    "MDD": "DemandDeposits",
-    "MMFGB": "RetailMoneyMarketFunds",
-    "MDL": "OtherLiquidDeposits",
-    "MDTS": "SmallDenominationTimeDeposits",
+    "MCU": "currency",
+    "MDD": "demand_deposits",
+    "MMFGB": "retail_money_market_funds",
+    "MDL": "other_liquid_deposits",
+    "MDTS": "small_denomination_time_deposits",
 }
 
 
@@ -31,12 +30,6 @@ class FederalReserveMoneyMeasuresQueryParams(MoneyMeasuresQueryParams):
 
 class FederalReserveMoneyMeasuresData(MoneyMeasuresData):
     """FederalReserve Money Measures Data."""
-
-    @field_validator("date", mode="before", check_fields=False)
-    @classmethod
-    def date_validate(cls, v):  # pylint: disable=E0213
-        """Return the date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m")
 
 
 class FederalReserveMoneyMeasuresFetcher(

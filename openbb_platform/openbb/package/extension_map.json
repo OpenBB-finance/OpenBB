@@ -13,6 +13,7 @@
     ],
     "openbb_provider_extension": [
         "benzinga@1.0.0",
+        "federal-reserve@1.0.0",
         "fmp@1.0.0",
         "fred@1.0.0",
         "intrinio@1.0.0",

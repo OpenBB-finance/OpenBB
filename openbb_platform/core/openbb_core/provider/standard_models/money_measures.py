@@ -36,14 +36,14 @@ class MoneyMeasuresData(Data):
     month: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     M1: float = Field(description="Value of the M1 money supply in billions.")
     M2: float = Field(description="Value of the M2 money supply in billions.")
-    Currency: float = Field(description="Value of currency in circulation in billions.")
-    DemandDeposits: float = Field(description="Value of demand deposits in billions.")
-    RetailMoneyMarketFunds: float = Field(
+    currency: float = Field(description="Value of currency in circulation in billions.")
+    demand_deposits: float = Field(description="Value of demand deposits in billions.")
+    retail_money_market_funds: float = Field(
         description="Value of retail money market funds in billions."
     )
-    OtherLiquidDeposits: float = Field(
+    other_liquid_deposits: float = Field(
         description="Value of other liquid deposits in billions."
     )
-    SmallDenominationTimeDeposits: float = Field(
+    small_denomination_time_deposits: float = Field(
         description="Value of small denomination time deposits in billions."
     )
