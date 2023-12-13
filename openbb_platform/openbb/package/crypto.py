@@ -1,13 +1,12 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional
+from typing import Literal, Optional
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -21,7 +20,8 @@ class ROUTER_crypto(Container):
         return self.__doc__ or ""
 
     @property
-    def price(self):  # route = "/crypto/price"
+    def price(self):
+        # pylint: disable=import-outside-toplevel
         from . import crypto_price
 
         return crypto_price.ROUTER_crypto_price(command_runner=self._command_runner)
@@ -34,7 +34,7 @@ class ROUTER_crypto(Container):
         ] = "",
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Cryptocurrency Search. Search available cryptocurrency pairs.
 
         Parameters
@@ -79,17 +79,15 @@ class ROUTER_crypto(Container):
         >>> obb.crypto.search()
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "query": query,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/crypto/search",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "query": query,
+                },
+                extra_params=kwargs,
+            )
         )

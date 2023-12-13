@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=no-member, too-many-branches, too-many-arguments
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=consider-using-dict-items
-
+# pylint: disable=too-many-lines
 import logging
 import os
 from copy import deepcopy
