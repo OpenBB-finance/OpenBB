@@ -58,10 +58,11 @@ jobs:
       - run: |
           if [ -n "${{ env.files }}" ]; then
             mypy --ignore-missing-imports ${{ env.files }}
+            pylint terminal.py openbb_terminal tests 
           else
             echo "No Python files changed in openbb_terminal"
           fi
-      - run: pylint terminal.py openbb_terminal tests
+      - run: pylint openbb_platform
 
   markdown-link-check:
     name: Markdown Linting
