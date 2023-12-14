@@ -43,7 +43,7 @@ By default, authorization is not required to initialize and use the core service
 
 Data provider credentials and user preferences can be securely stored on the OpenBB Hub and accessed in Python using a revokable Personal Access Token (PAT). Login to the [Hub](https://my.openbb.co/) to manage this method of remote authorization.
 
-The OpenBB Hub is a convenient solution for accessing data in temporary Python environments, like Google Colab. Login with:
+The OpenBB Hub is a convenient solution for accessing data in temporary Python environments, like Google Colab ([example notebook](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/examples/googleColab.ipynb)). Login with:
 
 ```python
 from openbb import obb

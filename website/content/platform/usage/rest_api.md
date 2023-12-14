@@ -1,6 +1,6 @@
 ---
 title: REST API
-sidebar_position: 7
+sidebar_position: 1
 description: Learn how to configure and deploy the OpenBB Platform's REST API using FastAPI, including detailed guidelines on API documentation, authorization, CORS settings, and server configurations.
 keywords:
 - OpenBB Platform
