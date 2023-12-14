@@ -5,7 +5,6 @@ from io import BytesIO
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
-from numpy import nan
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.money_measures import (
     MoneyMeasuresData,
@@ -76,7 +75,7 @@ class FederalReserveMoneyMeasuresFetcher(
         ]
         df = df[columns_to_get]
         df.columns = ["month"] + list(titles.values())
-        df = df.replace("ND", nan)
+        df = df.replace("ND", None)
         df["month"] = pd.to_datetime(df["month"])
         df = df[
             (pd.to_datetime(df.month) >= pd.to_datetime(query.start_date))

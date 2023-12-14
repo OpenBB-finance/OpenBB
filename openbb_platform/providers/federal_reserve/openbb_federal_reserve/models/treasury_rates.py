@@ -5,7 +5,6 @@ from io import BytesIO
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
-from numpy import nan
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.treasury_rates import (
     TreasuryRatesData,
@@ -81,7 +80,7 @@ class FederalReserveTreasuryRatesFetcher(
         r = make_request(url, **kwargs)
         df = pd.read_csv(BytesIO(r.content), header=5, index_col=None, parse_dates=True)
         df.columns = ["date"] + maturities
-        df = df.replace("ND", nan)
+        df = df.replace("ND", None)
         df = df[
             (pd.to_datetime(df.date) >= pd.to_datetime(query.start_date))
             & (pd.to_datetime(df.date) <= pd.to_datetime(query.end_date))
