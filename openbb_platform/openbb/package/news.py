@@ -1,14 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional
+from typing import Literal, Optional
 
 from annotated_types import Ge
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -38,7 +37,7 @@ class ROUTER_news(Container):
             Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo"]
         ] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Company News. Get news for one or more companies.
 
         Parameters
@@ -156,20 +155,18 @@ class ROUTER_news(Container):
         >>> obb.news.company(symbols="AAPL,MSFT", limit=20)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbols": symbols,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/news/company",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbols": symbols,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -183,7 +180,7 @@ class ROUTER_news(Container):
         ] = 20,
         provider: Optional[Literal["benzinga", "fmp", "intrinio", "tiingo"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """World News. Global news data.
 
         Parameters
@@ -284,17 +281,15 @@ class ROUTER_news(Container):
         >>> obb.news.world(limit=20)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/news/world",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
         )
