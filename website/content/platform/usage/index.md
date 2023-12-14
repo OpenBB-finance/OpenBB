@@ -27,7 +27,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Overview - Usage | OpenBB Platform Docs" />
 
-At its base, the OpenBB Platform supplies core architecture and services for connecting data providers and extensions, consumable as a Python client and Fast API. The extension framework provides interoperability between as many, or few, services required.  Optional extras are not included with the base installation, and these include:
+At its base, the OpenBB Platform supplies core architecture and services for connecting data providers and extensions, consumable through the Python client or the Fast API. The extension framework provides interoperability between as many, or few, services required.  Optional extras are not included with the base installation, and these include:
 
 - Charting libraries and views
 - Data cleaning
@@ -37,17 +37,15 @@ At its base, the OpenBB Platform supplies core architecture and services for con
 
 ## Authorization
 
-By default, authorization is not required to initialize and use the core services. Most data providers, however,  require an API key to access their data. They can be stored locally, or securely on the OpenBB Hub for convenient remote access. Refer to our Developer Guidelines for best practices within a production environment.
+By default, authorization is not required to initialize and use the core services. Most data providers, however, require an API key to access their data. The API keys can be stored locally, or securely on the OpenBB Hub for convenient remote access. Refer to our Developer Guidelines for best practices within a production environment.
 
 ### OpenBB Hub
 
-Data provider credentials and user preferences can be securely stored on the OpenBB Hub and accessed via a revokable Personal Access Token (PAT). Login to the [Hub](https://my.openbb.co/) to manage this method of remote authorization.
+Data provider credentials and user preferences can be securely stored on the OpenBB Hub and accessed in Python using a revokable Personal Access Token (PAT). Login to the [Hub](https://my.openbb.co/) to manage this method of remote authorization.
 
-#### Python Client
+The OpenBB Hub is a convenient solution for accessing data in temporary Python environments, like Google Colab. Login with:
 
-The OpenBB Hub is a convenient solution for accessing data in temporary environments, like Google Colab. Login using the Python client with:
-
-```jupyterpython
+```python
 from openbb import obb
 
 # Login with personal access token
@@ -59,7 +57,7 @@ obb.account.login(email="my_email", password="my_password", remember_me=True)
 # Change a credential
 obb.user.credentials.polygon_api_key = "my_api_key"
 
-# Save account changes
+# Save account changes to the Hub
 obb.account.save()
 
 # Refresh account with latest changes
@@ -92,7 +90,7 @@ Credentials and user preferences  are stored locally, `~/.openbb_platform/`, as 
 To set keys from the Python client for the current session only, access the Credentials class:
 
 ```python
-obb.user.credentials.intrinio_api_key = "REPLACE_WITH_KEY"
+obb.user.credentials.intrinio_api_key = "my_api_key"
 ```
 
 ## Environment Variables
