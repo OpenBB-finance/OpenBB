@@ -57,15 +57,11 @@ For those new to Python, [this article](https://www.infoworld.com/article/330665
 
 See [this guide](https://code.visualstudio.com/docs/python/environments) for creating a Python environment in VS Code.
 
-With the container created, and activated, begin the installation process.
+With the environment created, and activated, begin the installation process.
 
 ## Installation
 
-Before installation, update the package manager so that `pip` is current, then create the environment with the desired version of Python and install the following packages:
-
-```console
-pip install poetry toml
-```
+Before installation, update the package manager so that `pip` is current, then create the environment with the desired version of Python.
 
 :::note
 Installing packages directly to the system Python or `base` environment is not recommended.  Create a new environment first (can be any name, using openbb here for example).
@@ -103,10 +99,10 @@ pip install openbb[charting]
 pip install openbb[ta]
 ```
 
-Or import a single provider:
+Or install a single provider:
 
 ```console
-pip install openbb-yfinance
+pip install openbb[yfinance]
 ```
 
 From your python interpreter, import the OpenBB Platform:
@@ -130,7 +126,7 @@ When the package is imported, any installed extensions will be discovered, impor
 Currently if you wish to have the bare-bones openbb package with no extensions or providers, you can install with:
 
 ```console
-pip install openbb --no-deps
+pip install openbb-core && pip install openbb --no-deps
 ```
 
 :::
@@ -196,7 +192,7 @@ With a fresh installation, and upon installing or uninstalling extensions, the P
 ```console
 python
 
-import openbb
+from openbb import obb
 
 exit()
 ```
@@ -220,6 +216,8 @@ Start the REST API with:
 uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload
 ```
 
+See more information about using the REST API in the [usage section](/platform/usage/rest_api)
+
 ## Hub Synchronization
 
 Once you have installed the OpenBB Platform with the desired providers and extensions, you can synchronize with the [OpenBB Hub](my.openbb.co). The main benefit of this is that you can use your single login to access your saved credentials and preferences from any instance. To login, you can use the `login` method, either using your email and password:
@@ -238,7 +236,7 @@ obb.account.login(pat='my_pat_here')
 
 The documentation and packages are kept in the `/website` folder, at the base of the repository. Navigate there to install the dependencies and start the development server.
 
-#### Node.js
+### Node.js
 
 - [Node.js](https://nodejs.org/en/) >= 16.13.0
   To check if Node.js installed, run this command:
