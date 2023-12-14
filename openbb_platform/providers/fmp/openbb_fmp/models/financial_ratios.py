@@ -189,7 +189,6 @@ class FMPFinancialRatiosData(FinancialRatiosData):
         default=None, description="Price fair value."
     )
 
-
     @model_validator(mode="before")
     @classmethod
     def replace_zero(cls, values):  # pylint: disable=no-self-argument
@@ -238,13 +237,13 @@ class FMPFinancialRatiosFetcher(
         query: FMPFinancialRatiosQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPFinancialRatiosData]:
         """Return the transformed data."""
-        results = [{to_snake_case(k).replace("ttm", ""): v for k, v in item.items()} for item in data]
+        results = [
+            {to_snake_case(k).replace("ttm", ""): v for k, v in item.items()}
+            for item in data
+        ]
         if query.period == "ttm":
             results[0].update(
-                {
-                    "period": "TTM",
-                    "date": datetime.now().date().strftime("%Y-%m-%d")
-                }
+                {"period": "TTM", "date": datetime.now().date().strftime("%Y-%m-%d")}
             )
         for item in results:
             item.pop("symbol", None)
