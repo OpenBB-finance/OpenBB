@@ -19,7 +19,6 @@ openbb-core = { path = "./core", develop = true }
 openbb-benzinga = { path = "./providers/benzinga", develop = true }
 openbb-fmp = { path = "./providers/fmp", develop = true }
 openbb-fred = { path = "./providers/fred", develop = true }
-openbb-government-us = { path = "./providers/government_us", develop = true }
 openbb-intrinio = { path = "./providers/intrinio", develop = true }
 openbb-oecd = { path = "./providers/oecd", develop = true }
 openbb-polygon = { path = "./providers/polygon", develop = true }
@@ -44,6 +43,8 @@ openbb-biztoc = { path = "./providers/biztoc", optional = true, develop = true }
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
 openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
 openbb-finra = { path = "./providers/finra", optional = true, develop = true }
+openbb-government-us = { path = "./providers/government_us", optional = true, develop = true }
+
 openbb-nasdaq = { path = "./providers/nasdaq", optional = true, develop = true }
 openbb-seeking-alpha = { path = "./providers/seeking_alpha", optional = true, develop = true }
 openbb-stockgrid = { path = "./providers/stockgrid" ,optional = true,  develop = true }
