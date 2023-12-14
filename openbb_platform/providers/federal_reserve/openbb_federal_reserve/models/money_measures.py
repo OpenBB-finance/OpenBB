@@ -82,7 +82,7 @@ class FederalReserveMoneyMeasuresFetcher(
             & (pd.to_datetime(df.month) <= pd.to_datetime(query.end_date))
         ].set_index("month")
         # Needs the date to not be in the columns
-        df = df.applymap(lambda x: float(x) if x != "-" else x)
+        df = df.applymap(lambda x: float(x) if x != "-" and x is not None else x)
         df = df.reset_index(drop=False)
 
         return df.to_dict(orient="records")

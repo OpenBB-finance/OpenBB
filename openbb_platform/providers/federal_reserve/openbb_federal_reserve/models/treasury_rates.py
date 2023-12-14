@@ -85,7 +85,9 @@ class FederalReserveTreasuryRatesFetcher(
             (pd.to_datetime(df.date) >= pd.to_datetime(query.start_date))
             & (pd.to_datetime(df.date) <= pd.to_datetime(query.end_date))
         ]
-        df[maturities] = df[maturities].applymap(lambda x: float(x) if x != "-" else x)
+        df[maturities] = df[maturities].applymap(
+            lambda x: float(x) if x != "-" and x is not None else x
+        )
         df = df.reset_index(drop=True)
 
         return df.to_dict(orient="records")

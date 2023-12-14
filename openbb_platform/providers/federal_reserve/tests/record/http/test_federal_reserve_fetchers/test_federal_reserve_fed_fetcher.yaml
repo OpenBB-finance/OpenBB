@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:82.1) Gecko/20100101 Firefox/82.1
+      - Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.10; rv:83.0) Gecko/20100101 Firefox/83.0
     method: GET
     uri: https://www.federalreserve.gov/datadownload/Output.aspx?rel=H15&series=c5025f4bbbed155a6f17c587772ed69e&lastobs=&from=01/01/1938&to=12/31/3023&filetype=csv&label=include&layout=seriescolumn
   response:
@@ -20,7 +20,7 @@ interactions:
       CF-Cache-Status:
       - EXPIRED
       CF-RAY:
-      - 8351cd9d0ff7596e-IAD
+      - 83577ac19b3105c6-IAD
       Cache-Control:
       - private
       Connection:
@@ -30,16 +30,16 @@ interactions:
       Content-Type:
       - text/csv
       Date:
-      - Wed, 13 Dec 2023 22:56:55 GMT
+      - Thu, 14 Dec 2023 15:28:56 GMT
       Last-Modified:
-      - Wed, 13 Dec 2023 22:56:12 GMT
+      - Thu, 14 Dec 2023 15:28:03 GMT
       Server:
       - cloudflare
       Set-Cookie:
-      - __cf_bm=y7VatbplL7ur_9Y3vNSg.PChwbeyL6o4GsxJ0Qm0nyk-1702508215-1-AXTVfBnHHw3CPnuFQ/hV+S3mROYwLQ956itx/cPex5XdhOxm0qC3z8cZY4d3yhYgL+K1rFRkBKxwowWIJbnMVcU=;
-        path=/; expires=Wed, 13-Dec-23 23:26:55 GMT; domain=.federalreserve.gov; HttpOnly;
+      - __cf_bm=krMF8BKFAUX7rCmvln_VR18dIFcrOq.EAeYT0967wZQ-1702567736-1-AdOt+tJnIQf6Qi/uIEIRl7A+WxbfSc7kb2Wvq6UDNs8dKYX/eP+Ye5S5VSxjl/CTSbw+yqeE8vyaF6Y3+cVTJFw=;
+        path=/; expires=Thu, 14-Dec-23 15:58:56 GMT; domain=.federalreserve.gov; HttpOnly;
         Secure; SameSite=None
-      - _cfuvid=qju3SqRzjfP14_uIdhUwk5CPtrYs6aFGFRwgwFeWivI-1702508215920-0-604800000;
+      - _cfuvid=6ieUb7IwQmQA.HIfyHDxG8N13RSVHuK4ka34gGhr5J4-1702567736649-0-604800000;
         path=/; domain=.federalreserve.gov; HttpOnly; Secure; SameSite=None
       Strict-Transport-Security:
       - max-age=31536000; includeSubDomains; preload
