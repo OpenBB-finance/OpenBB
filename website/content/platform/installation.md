@@ -175,6 +175,12 @@ Then, `cd` into the directory:
 cd openbb_platform
 ```
 
+Install required packages
+
+```console
+pip install poetry toml
+```
+
 Finally, run the developer installation script:
 
 ```console
