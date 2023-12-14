@@ -73,6 +73,5 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 | change_percent | Change % in the price of the symbol. (provider: fmp) |
 | label | Human readable format of the date. (provider: fmp) |
 | change_over_time | Change % in the price of the symbol over a period of time. (provider: fmp) |
-| transactions | Number of transactions for the symbol in the time period. (provider: polygon);
-    Number of trades. (provider: tiingo) |
+| transactions | Number of transactions for the symbol in the time period. (provider: polygon);     Number of trades. (provider: tiingo) |
 | volume_notional | The last size done for the asset on the specific date in the quote currency. The volume of the asset on the specific date in the quote currency. (provider: tiingo) |

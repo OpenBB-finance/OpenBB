@@ -68,9 +68,7 @@ Equity Historical price. Load stock data for a specific ticker.
 | volume | The trading volume.  |
 | vwap | Volume Weighted Average Price over the period.  |
 | label | Human readable format of the date. (provider: fmp) |
-| adj_close | Adjusted Close Price of the symbol. (provider: fmp);
-    Adjusted closing price during the period. (provider: intrinio);
-    Adjusted closing price during the period. (provider: tiingo) |
+| adj_close | Adjusted Close Price of the symbol. (provider: fmp);     Adjusted closing price during the period. (provider: intrinio);     Adjusted closing price during the period. (provider: tiingo) |
 | unadjusted_volume | Unadjusted volume of the symbol. (provider: fmp) |
 | change | Change in the price of the symbol from the previous day. (provider: fmp, intrinio) |
 | change_percent | Change % in the price of the symbol. (provider: fmp) |

@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD041 -->
 
-Get latest data point by providing symbol and field tag.
+Get latest data point by providing stock symbol and tag.
 
 ## Syntax
 
@@ -15,7 +15,7 @@ Get latest data point by providing symbol and field tag.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | symbol | Text | Symbol to get data for, e.g. 'AAPL'. | False |
-| field | Text | Field to get data for, e.g. 'ebitda'. | False |
+| tag | Text | Field tag to get data for, e.g. 'EBITDA'. See options at: https://data.intrinio.com/data-tags. | False |
 
 ---
 
