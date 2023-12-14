@@ -124,23 +124,16 @@ def check_router_model_functions_signature() -> List[str]:
                 os.path.join(*router_name.split(".")) + ".py",
                 function.__name__,
             )
-            args = list(function.__code__.co_varnames)
-            if args != expected_args and decorator not in decorator_filer:
-                missing_args.append(
-                    f"{function.__name__} in {router_name} doesn't have the expected args: {expected_args}"
-                )
-            try:
-                if (
-                    expected_return_type
-                    not in function.__annotations__["return"].__name__
-                    and decorator not in decorator_filer
-                ):
+            if decorator:
+                args = list(function.__code__.co_varnames)
+                if args != expected_args and decorator not in decorator_filer:
+                    missing_args.append(
+                        f"{function.__name__} in {router_name} doesn't have the expected args: {expected_args}"
+                    )
+                if expected_return_type not in str(function.__annotations__["return"]):
                     missing_return_type.append(
                         f"{function.__name__} in {router_name}"
                         f"doesn't have the expected return type: {expected_return_type}"
                     )
-            except KeyError:
-                # We are not interested in this type of functions
-                pass
 
     return missing_args + missing_return_type
