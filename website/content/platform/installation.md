@@ -49,9 +49,9 @@ Linux users should run the command line update for the package manager, prior to
 
 ## Supported Environments
 
-The OpenBB Platform is installed within a Python virtual environment. It is compatible with versions of Python between 3.8 and 3.11, inclusively. The method for creating the environment will be a matter of user preference, from the command line - [Conda](https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html), [venv](https://docs.python.org/3/library/venv.html), [Docker](https://hub.docker.com/), etc. - or in a code editor and IDE - [VS Code](https://code.visualstudio.com/docs/languages/python), [PyCharm](https://www.jetbrains.com/pycharm/), [Jupyter](https://jupyter.org/).
+The OpenBB Platform is installed within a Python virtual environment. It is compatible with versions of Python between 3.8 and 3.11, inclusively. The method for creating the environment will be a matter of user preference, from the command line - [Conda](https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html), [venv](https://docs.python.org/3/library/venv.html), etc. - or in a code editor and IDE - [VS Code](https://code.visualstudio.com/docs/languages/python), [PyCharm](https://www.jetbrains.com/pycharm/), [Jupyter](https://jupyter.org/).
 
-[Docker](/platform/installation#docker) builds the environment during the installation process, skip ahead to the specific section [below](/platform/installation#docker).
+If you're interested in using the [Docker](/platform/installation#docker) container, skip ahead to the specific section [below](/platform/installation#docker).
 
 For those new to Python, [this article](https://www.infoworld.com/article/3306656/python-virtualenv-and-venv-dos-and-donts.html) shares some tips on getting started and why environments are important.
 
