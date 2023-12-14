@@ -1,7 +1,7 @@
 {
   "functions": [
     {
-      "description": "Get latest data point by providing stock symbol and tag.",
+      "description": "Get latest data point by providing stock symbol and tag. See tag options at: https://data.intrinio.com/data-tags.",
       "helpUrl": "https://docs.openbb.co/excel/reference/last",
       "id": "LAST",
       "name": "LAST",
@@ -22,7 +22,7 @@
       }
     },
     {
-      "description": "Get historical data by providing stock symbol and field tag.",
+      "description": "Get historical data by providing stock symbol and field tag. See tag options at: https://data.intrinio.com/data-tags.",
       "helpUrl": "https://docs.openbb.co/excel/reference/hist",
       "id": "HIST",
       "name": "HIST",

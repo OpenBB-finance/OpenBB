@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD041 -->
 
-Get latest data point by providing stock symbol and tag.
+Get latest data point by providing stock symbol and tag. See tag options at: https://data.intrinio.com/data-tags.
 
 ## Syntax
 

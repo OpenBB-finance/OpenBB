@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD041 -->
 
-Get historical data by providing stock symbol and field tag.
+Get historical data by providing stock symbol and field tag. See tag options at: https://data.intrinio.com/data-tags.
 
 ## Syntax
 
