@@ -5,7 +5,7 @@ Get latest data point by providing stock symbol and tag.
 ## Syntax
 
 ```excel wordwrap
-=OBB.LAST(required;[optional])
+=OBB.LAST(required; [optional])
 ```
 
 ---
