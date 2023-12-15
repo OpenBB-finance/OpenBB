@@ -141,7 +141,8 @@ class IntrinioIncomeStatementData(IncomeStatementData):
         default=None, description="Gross margin ratio."
     )
     provision_for_credit_losses: Optional[float] = Field(
-        default=None, description="Provision for credit losses",
+        default=None,
+        description="Provision for credit losses",
     )
     research_and_development_expense: Optional[float] = Field(
         default=None, description="Research and development expense"
