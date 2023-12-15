@@ -39,7 +39,7 @@ class IntrinioCompanyNewsData(CompanyNewsData):
         "text": "summary",
     }
 
-    id: str = Field(description="Intrinio ID for the article.")
+    id: str = Field(description="Article ID.")
 
     @field_validator("publication_date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213

@@ -25,7 +25,7 @@ class FMPWorldNewsData(WorldNewsData):
 
     __alias_dict__ = {"date": "publishedDate", "images": "image"}
 
-    site: str = Field(description="Site of the news.")
+    site: str = Field(description="News source.")
 
     @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213

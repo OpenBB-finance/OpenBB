@@ -86,3 +86,14 @@ async def fred_series(
 ) -> OBBject[BaseModel]:
     """Get data by series ID from FRED."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(model="MoneyMeasures")
+async def money_measures(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Money Measures."""
+    return await OBBject.from_query(Query(**locals()))
