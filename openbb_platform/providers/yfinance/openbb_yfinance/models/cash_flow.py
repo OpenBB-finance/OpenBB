@@ -27,6 +27,14 @@ class YFinanceCashFlowStatementQueryParams(CashFlowStatementQueryParams):
 class YFinanceCashFlowStatementData(CashFlowStatementData):
     """Yahoo Finance Cash Flow Statement Data."""
 
+    __alias_dict__ = {
+        "investments_in_property_plant_and_equipment": "purchase_of_ppe",
+        "issuance_of_common_equity": "common_stock_issuance",
+        "repurchase_of_common_equity": "common_stock_payments",
+        "cash_dividends_paid": "payment_of_dividends",
+        "net_change_in_cash_and_equivalents": "changes_in_cash",
+    }
+
     @field_validator("period_ending", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213

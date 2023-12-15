@@ -46,7 +46,7 @@ class IntrinioBalanceSheetData(BalanceSheetData):
     """Intrinio Balance Sheet Data."""
 
     __alias_dict__ = {
-        "cash_and_equivalents": "cashandequivalents",
+        "cash_and_cash_equivalents": "cashandequivalents",
         "restricted_cash": "restrictedcash",
         "short_term_investments": "shortterminvestments",
         "federal_funds_sold": "fedfundssold",
@@ -136,7 +136,7 @@ class IntrinioBalanceSheetData(BalanceSheetData):
         "total_liabilities_shareholders_equity": "totalliabilitiesandequity",
     }
 
-    cash_and_equivalents: Optional[int] = Field(
+    cash_and_cash_equivalents: Optional[int] = Field(
         description="Cash and cash equivalents.", default=None
     )
     cash_and_due_from_banks: Optional[int] = Field(

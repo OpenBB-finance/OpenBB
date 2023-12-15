@@ -28,6 +28,17 @@ class YFinanceBalanceSheetQueryParams(BalanceSheetQueryParams):
 class YFinanceBalanceSheetData(BalanceSheetData):
     """Yahoo Finance Balance Sheet Data."""
 
+    __alias_dict__ = {
+        "short_term_investments": "other_short_term_investments",
+        "net_receivables": "receivables",
+        "inventories": "inventory",
+        "total_current_assets": "current_assets",
+        "plant_property_equipment_gross": "gross_ppe",
+        "plant_property_equipment_net": "net_ppe",
+        "total_common_equity": "stockholders_equity",
+        "total_equity_non_controlling_interests": "total_equity_gross_minority_interest",
+    }
+
     @field_validator("period_ending", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213

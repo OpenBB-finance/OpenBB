@@ -27,6 +27,17 @@ class YFinanceIncomeStatementQueryParams(IncomeStatementQueryParams):
 class YFinanceIncomeStatementData(IncomeStatementData):
     """Yahoo Finance Income Statement Data."""
 
+    __alias_dict__ = {
+        "selling_general_and_admin_expense": "selling_general_and_administration",
+        "research_and_development_expense": "research_and_development",
+        "total_pre_tax_income": "pretax_income",
+        "net_income_attributable_to_common_shareholders": "net_income_common_stockholders",
+        "weighted_average_basic_shares_outstanding": "basic_average_shares",
+        "weighted_average_diluted_shares_outstanding": "diluted_average_shares",
+        "basic_earnings_per_share": "basic_eps",
+        "diluted_earnings_per_share": "diluted_eps",
+    }
+
     @field_validator("period_ending", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
         if isinstance(v, str):
