@@ -1,4 +1,4 @@
-"""Government US provider module."""
+"""Federal Reserve provider module."""
 
 from openbb_core.provider.abstract.provider import Provider
 from openbb_federal_reserve.models.fed_rates import FederalReserveFEDFetcher
