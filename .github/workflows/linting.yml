@@ -32,10 +32,10 @@ jobs:
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # actions/checkout v3.0.2
         with:
           ref: ${{ github.head_ref }}
-          fetch-depth: 0
+          fetch-depth: 20
 
       - name: Fetch base branch
-        run: git fetch --no-tags --depth=1 origin ${{ github.base_ref }}
+        run: git fetch --no-tags --depth=20 origin ${{ github.base_ref }}
 
       - name: Setup Python 3.9
         uses: actions/setup-python@v4
