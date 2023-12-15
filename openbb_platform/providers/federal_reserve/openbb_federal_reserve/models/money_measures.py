@@ -92,4 +92,11 @@ class FederalReserveMoneyMeasuresFetcher(
         query: FederalReserveMoneyMeasuresQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FederalReserveMoneyMeasuresData]:
         """Return the transformed data."""
-        return [FederalReserveMoneyMeasuresData.model_validate(d) for d in data]
+        fed_data = []
+        for d in data:
+            for k, v in d.items():
+                if pd.isna(v) and not isinstance(v, str):
+                    d[k] = None
+            fed_data.append(FederalReserveMoneyMeasuresData.model_validate(d))
+
+        return fed_data

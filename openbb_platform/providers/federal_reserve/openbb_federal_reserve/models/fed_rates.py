@@ -76,4 +76,5 @@ class FederalReserveFEDFetcher(
         query: FederalReserveFEDQueryParams, data: dict, **kwargs: Any
     ) -> List[Dict[str, List[FederalReserveFEDData]]]:
         """Transform data."""
+
         return [FederalReserveFEDData.model_validate(d) for d in data]

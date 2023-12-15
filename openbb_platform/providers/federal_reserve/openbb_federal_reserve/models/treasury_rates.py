@@ -97,4 +97,10 @@ class FederalReserveTreasuryRatesFetcher(
         query: FederalReserveTreasuryRatesQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FederalReserveTreasuryRatesData]:
         """Return the transformed data."""
-        return [FederalReserveTreasuryRatesData.model_validate(d) for d in data]
+        treasury_data = []
+        for d in data:
+            for k, v in d.items():
+                if pd.isna(v) and not isinstance(v, str):
+                    d[k] = None
+            treasury_data.append(FederalReserveTreasuryRatesData.model_validate(d))
+        return treasury_data
