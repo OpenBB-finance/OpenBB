@@ -7,7 +7,7 @@ This extension integrates the [Federal Reserve](https://www.federalreserve.gov/d
 To install the extension:
 
 ```bash
-pip install openbb-federal_reserve
+pip install openbb-federal-reserve
 ```
 
 For development please check [Contribution Guidelines](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/CONTRIBUTING.md).
