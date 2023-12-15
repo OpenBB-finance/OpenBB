@@ -19,11 +19,11 @@ from typing import (
 )
 
 from fastapi import APIRouter, Depends
-from importlib_metadata import entry_points
 from pydantic import BaseModel
 from pydantic.v1.validators import find_validators
 from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
+from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
@@ -599,14 +599,15 @@ class RouterLoader:
     def from_extensions() -> Router:
         """Load routes from extensions."""
         router = Router()
+        el = ExtensionLoader()
+        entry_points_: Dict[str, Any] = el.core_objects
 
-        for entry_point in sorted(entry_points(group="openbb_core_extension")):
+        for name, entry in entry_points_.items():
             try:
-                entry = entry_point.load()
                 if isinstance(entry, Router):
-                    router.include_router(router=entry, prefix=f"/{entry_point.name}")
+                    router.include_router(router=entry, prefix=f"/{name}")
             except Exception as e:
-                msg = f"Error loading extension: {entry_point.name}\n"
+                msg = f"Error loading extension: {name}\n"
                 if Env().DEBUG_MODE:
                     traceback.print_exception(type(e), e, e.__traceback__)
                     raise LoadingError(msg + f"\033[91m{e}\033[0m") from e
