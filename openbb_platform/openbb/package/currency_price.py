@@ -101,7 +101,7 @@ class ROUTER_currency_price(Container):
         vwap : Optional[Annotated[float, Gt(gt=0)]]
             Volume Weighted Average Price over the period.
         adj_close : Optional[float]
-            Adjusted Close Price of the symbol. (provider: fmp)
+            The adjusted close price. (provider: fmp)
         unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]

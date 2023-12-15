@@ -105,7 +105,7 @@ class ROUTER_crypto_price(Container):
         vwap : Optional[Annotated[float, Gt(gt=0)]]
             Volume Weighted Average Price over the period.
         adj_close : Optional[float]
-            Adjusted Close Price of the symbol. (provider: fmp)
+            The adjusted close price. (provider: fmp)
         unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
@@ -117,8 +117,7 @@ class ROUTER_crypto_price(Container):
         change_over_time : Optional[float]
             Change % in the price of the symbol over a period of time. (provider: fmp)
         transactions : Optional[Union[Annotated[int, Gt(gt=0)], int]]
-            Number of transactions for the symbol in the time period. (provider: polygon);
-            Number of trades. (provider: tiingo)
+            Number of transactions for the symbol in the time period. (provider: polygon, tiingo)
         volume_notional : Optional[float]
             The last size done for the asset on the specific date in the quote currency. The volume of the asset on the specific date in the quote currency. (provider: tiingo)
 

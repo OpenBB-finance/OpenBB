@@ -189,13 +189,14 @@ class ROUTER_index(Container):
             Number of days to look back. (provider: fmp)
         interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
             Data granularity. (provider: fmp)
+        sort : Literal['asc', 'desc']
+            Sort the data in ascending or descending order. (provider: fmp);
+            Sort order. (provider: intrinio);
+            Sort order of the data. (provider: polygon)
         tag : Optional[str]
             Index tag. (provider: intrinio)
         type : Optional[str]
             Index type. (provider: intrinio)
-        sort : Literal['asc', 'desc']
-            Sort order. (provider: intrinio);
-            Sort order of the data. (provider: polygon)
         limit : int
             The number of data entries to return. (provider: intrinio, polygon)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
@@ -234,7 +235,7 @@ class ROUTER_index(Container):
         volume : Optional[int]
             The trading volume.
         adj_close : Optional[float]
-            Adjusted Close Price of the symbol. (provider: fmp)
+            The adjusted close price. (provider: fmp)
         unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]

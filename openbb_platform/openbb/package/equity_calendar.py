@@ -165,9 +165,9 @@ class ROUTER_equity_calendar(Container):
             The earnings-per-share from the same previously reported period.
         eps_consensus : Optional[float]
             The analyst conesus earnings-per-share estimate.
-        actual_eps : Optional[float]
+        eps_actual : Optional[float]
             The actual earnings per share announced. (provider: fmp)
-        actual_revenue : Optional[float]
+        revenue_actual : Optional[float]
             The actual reported revenue. (provider: fmp)
         revenue_consensus : Optional[float]
             The revenue forecast consensus. (provider: fmp)

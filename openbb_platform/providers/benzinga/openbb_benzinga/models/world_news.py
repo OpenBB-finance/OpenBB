@@ -81,7 +81,7 @@ class BenzingaWorldNewsData(WorldNewsData):
 
     __alias_dict__ = {"date": "created", "text": "body", "images": "image"}
 
-    id: str = Field(description="ID of the news.")
+    id: str = Field(description="Article ID.")
     author: Optional[str] = Field(default=None, description="Author of the news.")
     teaser: Optional[str] = Field(description="Teaser of the news.", default=None)
     channels: Optional[str] = Field(
