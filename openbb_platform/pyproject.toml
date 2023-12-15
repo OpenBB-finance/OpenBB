@@ -11,6 +11,7 @@ python = ">=3.8,<3.12"
 openbb-core = "^1.0.1"
 
 openbb-benzinga = "^1.0.0"
+openbb-federal-reserve = "^1.0.0"
 openbb-fmp = "^1.0.0"
 openbb-fred = "^1.0.0"
 openbb-intrinio = "^1.0.0"
@@ -74,6 +75,7 @@ all = [
     "openbb-charting",
     "openbb-ecb",
     "openbb-econometrics",
+    "openbb-federal-reserve",
     "openbb-government-us",
     "openbb-nasdaq",
     "openbb-quantitative",
