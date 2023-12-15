@@ -93,7 +93,7 @@ class ROUTER_equity_ownership(Container):
             Transaction type of the insider trading.
         acquisition_or_disposition : Optional[str]
             Acquisition or disposition of the insider trading.
-        security_type : str
+        security_type : Optional[str]
             Security type of the insider trading.
         securities_owned : Optional[float]
             Number of securities owned in the insider trading.
