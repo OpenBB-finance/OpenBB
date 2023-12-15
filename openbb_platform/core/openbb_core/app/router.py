@@ -1,3 +1,4 @@
+"""OpenBB Router."""
 import traceback
 import warnings
 from functools import lru_cache, partial
@@ -437,15 +438,10 @@ class CommandMap:
     ) -> None:
         self._router = router or RouterLoader.from_extensions()
         self._map = self.get_command_map(router=self._router)
-        self._provider_coverage = self.get_provider_coverage(
-            router=self._router, sep=coverage_sep
-        )
-        self._command_coverage = self.get_command_coverage(
-            router=self._router, sep=coverage_sep
-        )
-        self._commands_model = self.get_commands_model(
-            router=self._router, sep=coverage_sep
-        )
+        self._provider_coverage: Dict[str, List[str]] = {}
+        self._command_coverage: Dict[str, List[str]] = {}
+        self._commands_model: Dict[str, str] = {}
+        self._coverage_sep = coverage_sep
 
     @property
     def map(self) -> Dict[str, Callable]:
@@ -453,14 +449,26 @@ class CommandMap:
 
     @property
     def provider_coverage(self) -> Dict[str, List[str]]:
+        if not self._provider_coverage:
+            self._provider_coverage = self.get_provider_coverage(
+                router=self._router, sep=self._coverage_sep
+            )
         return self._provider_coverage
 
     @property
     def command_coverage(self) -> Dict[str, List[str]]:
+        if not self._command_coverage:
+            self._command_coverage = self.get_command_coverage(
+                router=self._router, sep=self._coverage_sep
+            )
         return self._command_coverage
 
     @property
     def commands_model(self) -> Dict[str, str]:
+        if not self._commands_model:
+            self._commands_model = self.get_commands_model(
+                router=self._router, sep=self._coverage_sep
+            )
         return self._commands_model
 
     @staticmethod
