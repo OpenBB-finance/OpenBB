@@ -247,4 +247,5 @@ class FMPFinancialRatiosFetcher(
             )
         for item in results:
             item.pop("symbol", None)
+            item.pop("dividend_yiel_percentage", None)
         return [FMPFinancialRatiosData.model_validate(d) for d in results]
