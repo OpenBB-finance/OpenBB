@@ -346,15 +346,16 @@ class SignatureInspector:
         """Inject full return model into the function.
         Also updates __name__ and __doc__ for API schemas."""
         ReturnModel = inner_type
-        if get_origin(outer_type) == list:
+        outer_type_origin = get_origin(outer_type)
+
+        if outer_type_origin == list:
             ReturnModel = List[inner_type]  # type: ignore
-        elif get_origin(outer_type) == Union:
+        elif outer_type_origin == Union:
             ReturnModel = Union[List[inner_type], inner_type]  # type: ignore
 
         return_type = OBBject[ReturnModel]  # type: ignore
         return_type.__name__ = f"OBBject[{inner_type.__name__}]"
         return_type.__doc__ = f"OBBject with results of type '{inner_type.__name__}'."
-        return_type.model_rebuild(force=True)
 
         func.__annotations__["return"] = return_type
         return func
@@ -366,12 +367,14 @@ class SignatureInspector:
         is_list = False
 
         results_type = get_type_hints(return_type)["results"]
+        results_type_args = get_args(results_type)
         if not isinstance(results_type, type(None)):
-            results_type = get_args(results_type)[0]
+            results_type = results_type_args[0]
 
         is_list = get_origin(results_type) == list
-        args = get_args(results_type)
-        inner_type = args[0] if is_list and args else results_type
+        inner_type = (
+            results_type_args[0] if is_list and results_type_args else results_type
+        )
         inner_type_name = getattr(inner_type, "__name__", inner_type)
 
         func.__annotations__["return"].__doc__ = "OBBject"
