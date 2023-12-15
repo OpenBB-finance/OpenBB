@@ -43,7 +43,9 @@ class TiingoCryptoHistoricalData(CryptoHistoricalData):
     """Tiingo Crypto Historical Price Data."""
 
     transactions: Optional[int] = Field(
-        default=None, description="Number of trades.", alias="tradesDone"
+        default=None,
+        description="Number of transactions for the symbol in the time period.",
+        alias="tradesDone",
     )
 
     volume_notional: Optional[float] = Field(

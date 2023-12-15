@@ -113,7 +113,7 @@ class ROUTER_equity_price(Container):
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         adj_close : Optional[float]
-            Adjusted Close Price of the symbol. (provider: fmp);
+            The adjusted close price. (provider: fmp);
             Adjusted closing price during the period. (provider: intrinio);
             Adjusted closing price during the period. (provider: tiingo)
         unadjusted_volume : Optional[float]

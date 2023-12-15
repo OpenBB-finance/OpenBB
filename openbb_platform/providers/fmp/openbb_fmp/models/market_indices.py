@@ -9,6 +9,7 @@ from openbb_core.provider.standard_models.market_indices import (
     MarketIndicesData,
     MarketIndicesQueryParams,
 )
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import get_querystring
 from openbb_fmp.utils.helpers import get_data_many
 from pydantic import Field, NonNegativeInt
@@ -37,7 +38,7 @@ class FMPMarketIndicesData(MarketIndicesData):
     """FMP Market Indices Data."""
 
     adj_close: Optional[float] = Field(
-        description="Adjusted Close Price of the symbol.",
+        description=DATA_DESCRIPTIONS.get("adj_close", ""),
         default=None,
     )
     unadjusted_volume: Optional[float] = Field(
