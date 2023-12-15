@@ -1,13 +1,18 @@
 """Extension Loader."""
 
 from enum import Enum
+from functools import lru_cache
 from typing import Any, Dict
 
 from importlib_metadata import EntryPoints, entry_points
 
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.extension import Extension
+
+# from openbb_core.app.router import Router
 from openbb_core.provider.abstract.provider import Provider
+
+# GroupType = TypeVar("GroupType", Router, Provider, Extension)
 
 
 class OpenBBGroups(Enum):
@@ -34,15 +39,9 @@ class ExtensionLoader(metaclass=SingletonMeta):
         self._provider_entry_points = self._sorted_entry_points(
             group=OpenBBGroups.provider.value
         )
-        self._obbject_objects = self._load_entry_points(
-            self._obbject_entry_points, OpenBBGroups.obbject
-        )
-        self._core_objects = self._load_entry_points(
-            self._core_entry_points, OpenBBGroups.core
-        )
-        self._provider_objects = self._load_entry_points(
-            self._provider_entry_points, OpenBBGroups.provider
-        )
+        self._obbject_objects: Dict[str, Extension] = {}
+        self._core_objects: Dict[str, Any] = {}
+        self._provider_objects: Dict[str, Provider] = {}
 
     @property
     def obbject_entry_points(self) -> EntryPoints:
@@ -60,18 +59,30 @@ class ExtensionLoader(metaclass=SingletonMeta):
         return self._provider_entry_points
 
     @property
+    @lru_cache
     def obbject_objects(self) -> Dict[str, Extension]:
         """Return a dict of obbject extension objects."""
+        self._obbject_objects = self._load_entry_points(
+            self._obbject_entry_points, OpenBBGroups.obbject
+        )
         return self._obbject_objects
 
     @property
+    @lru_cache
     def core_objects(self) -> Dict[str, Any]:
         """Return a dict of core extension objects."""
+        self._core_objects = self._load_entry_points(
+            self._core_entry_points, OpenBBGroups.core
+        )
         return self._core_objects
 
     @property
+    @lru_cache
     def provider_objects(self) -> Dict[str, Provider]:
         """Return a dict of provider extension objects."""
+        self._provider_objects = self._load_entry_points(
+            self._provider_entry_points, OpenBBGroups.provider
+        )
         return self._provider_objects
 
     def _sorted_entry_points(self, group: str) -> EntryPoints:
@@ -98,6 +109,9 @@ class ExtensionLoader(metaclass=SingletonMeta):
         def load_core(eps: EntryPoints) -> Dict[str, Any]:
             """Return a dictionary of core objects."""
             # TODO : this should filter out using the `Router` class, which causes a circular import error
+            # return {
+            #     ep.name: entry for ep in eps if isinstance((entry := ep.load()), Router)
+            # }
             return {ep.name: ep.load() for ep in eps}
 
         def load_provider(eps: EntryPoints) -> Dict[str, Provider]:
