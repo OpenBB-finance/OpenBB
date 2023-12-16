@@ -1,7 +1,9 @@
-"""OECD Produced Price Index Model."""
+"""OECD Producer Price Index Model."""
 
-from typing import Any, Dict, List, Optional, Literal, Union
+import re
 from datetime import date, timedelta
+from typing import Any, Dict, List, Literal, Optional, Union
+
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.ppi import (
     ProducerPriceIndexData,
@@ -9,7 +11,6 @@ from openbb_core.provider.standard_models.ppi import (
 )
 from openbb_oecd.utils import constants, helpers
 from pydantic import Field, field_validator
-import re
 
 countries = tuple(constants.COUNTRY_TO_CODE_PPI.keys())
 CountriesLiteral = Literal[countries]  # type: ignore

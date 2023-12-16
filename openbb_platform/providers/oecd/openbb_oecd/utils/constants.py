@@ -130,6 +130,40 @@ ppi_list = [
 COUNTRY_TO_CODE_PPI = {k: v for k, v in COUNTRY_TO_CODE_GDP.items() if v in ppi_list}
 CODE_TO_COUNTRY_PPI = {v: k for k, v in COUNTRY_TO_CODE_PPI.items()}
 
+cci_list = [
+    "netherlands",
+    "switzerland",
+    "france",
+    "poland",
+    "czech_republic",
+    "sweden",
+    "united_kingdom",
+    "united_states",
+    "hungary",
+    "portugal",
+    "denmark",
+    "spain",
+    "luxembourg",
+    "greece",
+    "slovak_republic",
+    "belgium",
+    "finland",
+    "austria",
+    "italy",
+    "ireland",
+    "slovenia",
+    "germany",
+    "estonia",
+    "latvia",
+    "lithuania",
+    "colombia",
+    "chile",
+    "costa_rica",
+]
+COUNTRY_TO_CODE_CCI = {k: v for k, v in COUNTRY_TO_CODE_GDP.items() if k in cci_list}
+CODE_TO_COUNTRY_CCI = {v: k for k, v in COUNTRY_TO_CODE_CCI.items()}
+
+
 COUNTRY_TO_CODE_RGDP = {
     "G20": "G-20",
     "G7": "G-7",

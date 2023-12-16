@@ -119,3 +119,14 @@ async def ppi(
 ) -> OBBject[BaseModel]:
     """Producer Price Index.  Values are reported with the index such that PPI was 100 in the year 2015."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(model="ConsumerConfidenceIndex")
+async def cci(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Customer Confidence Index."""
+    return await OBBject.from_query(Query(**locals()))

@@ -1,9 +1,10 @@
 """OECD Unemployment Model."""
 
 
+import re
 from datetime import date, timedelta
 from typing import Any, Dict, List, Literal, Optional, Union
-import re
+
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.unemployment import (
     UnemploymentData,
