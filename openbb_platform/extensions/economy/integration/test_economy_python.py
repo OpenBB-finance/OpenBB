@@ -328,3 +328,101 @@ def test_economy_money_measures(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        ({"period": "monthly", "start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "country": "united_states",
+                "provider": "oecd",
+                "period": "monthly",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_unemployment(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.unemployment(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "period": "monthly"}),
+        (
+            {
+                "country": "united_states",
+                "provider": "oecd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "period": "monthly",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_producer_price_index(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.producer_price_index(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "country": "united_states",
+                "provider": "oecd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_consumer_confidence_index(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.consumer_confidence_index(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "country": "united_states",
+                "provider": "oecd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_composite_leading_indicator(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.composite_leading_indicator(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
