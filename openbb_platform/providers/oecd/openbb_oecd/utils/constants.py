@@ -163,6 +163,9 @@ cci_list = [
 COUNTRY_TO_CODE_CCI = {k: v for k, v in COUNTRY_TO_CODE_GDP.items() if k in cci_list}
 CODE_TO_COUNTRY_CCI = {v: k for k, v in COUNTRY_TO_CODE_CCI.items()}
 
+cli_list = ["united_kingdom", "spain", "italy", "france", "united_states", "germany"]
+COUNTRY_TO_CODE_CLI = {k: v for k, v in COUNTRY_TO_CODE_GDP.items() if k in cli_list}
+CODE_TO_COUNTRY_CLI = {v: k for k, v in COUNTRY_TO_CODE_CLI.items()}
 
 COUNTRY_TO_CODE_RGDP = {
     "G20": "G-20",

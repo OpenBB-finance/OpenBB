@@ -111,7 +111,7 @@ async def unemployment(
 
 
 @router.command(model="ProducerPriceIndex")
-async def ppi(
+async def producer_price_index(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -122,11 +122,22 @@ async def ppi(
 
 
 @router.command(model="ConsumerConfidenceIndex")
-async def cci(
+async def consumer_confidence_index(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Customer Confidence Index."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(model="CompositeLeadingIndicator")
+async def composite_leading_indicator(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Composite Leading Indicator."""
     return await OBBject.from_query(Query(**locals()))

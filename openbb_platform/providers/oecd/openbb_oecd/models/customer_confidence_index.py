@@ -4,7 +4,7 @@ from datetime import date, timedelta
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.customer_confiendece_index import (
+from openbb_core.provider.standard_models.customer_confidence_index import (
     ConsumerConfidenceIndexData,
     ConsumerConfidenceIndexQueryParams,
 )

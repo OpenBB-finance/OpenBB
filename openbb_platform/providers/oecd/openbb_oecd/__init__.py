@@ -1,6 +1,9 @@
 """OECD provider module."""
 from openbb_core.provider.abstract.provider import Provider
-from openbb_oecd.models.customer_confiendece_index import (
+from openbb_oecd.models.composite_leading_indicator import (
+    OECDCompositeLeadingIndicatorFetcher,
+)
+from openbb_oecd.models.customer_confidence_index import (
     OECDConsumerConfidenceIndexFetcher,
 )
 from openbb_oecd.models.gdp_forecast import OECDGdpForecastFetcher
@@ -20,5 +23,6 @@ oecd_provider = Provider(
         "Unemployment": OECDUnemploymentFetcher,
         "ProducerPriceIndex": OECDProducerPriceIndexFetcher,
         "ConsumerConfidenceIndex": OECDConsumerConfidenceIndexFetcher,
+        "CompositeLeadingIndicator": OECDCompositeLeadingIndicatorFetcher,
     },
 )
