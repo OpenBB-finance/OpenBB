@@ -1,8 +1,10 @@
-"""FRED provider module."""
+"""OECD provider module."""
 from openbb_core.provider.abstract.provider import Provider
 from openbb_oecd.models.gdp_forecast import OECDGdpForecastFetcher
 from openbb_oecd.models.gdp_nominal import OECDGdpNominalFetcher
 from openbb_oecd.models.gdp_real import OECDGdpRealFetcher
+from openbb_oecd.models.unemployment import OECDUnemploymentFetcher
+from openbb_oecd.models.ppi import OECDProducerPriceIndexFetcher
 
 oecd_provider = Provider(
     name="oecd",
@@ -12,5 +14,7 @@ oecd_provider = Provider(
         "GdpNominal": OECDGdpNominalFetcher,
         "GdpReal": OECDGdpRealFetcher,
         "GdpForecast": OECDGdpForecastFetcher,
+        "Unemployment": OECDUnemploymentFetcher,
+        "ProducerPriceIndex": OECDProducerPriceIndexFetcher,
     },
 )

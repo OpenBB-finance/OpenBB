@@ -97,3 +97,25 @@ async def money_measures(
 ) -> OBBject[BaseModel]:
     """Money Measures."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(model="Unemployment")
+async def unemployment(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Unemployment rates (reported as a percent, 10 = 10%)."""
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(model="ProducerPriceIndex")
+async def ppi(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Producer Price Index.  Values are reported with the index such that PPI was 100 in the year 2015."""
+    return await OBBject.from_query(Query(**locals()))

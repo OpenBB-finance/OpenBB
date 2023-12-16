@@ -46,3 +46,17 @@ def fetch_data(url: str, csv_kwargs: Optional[Dict] = None, **kwargs: Any) -> Da
     # or a delimiter.
     data = read_csv(StringIO(response.text), **csv_kwargs)
     return data
+
+
+def fetch_and_decode(
+    url: str, decode_kwargs: Optional[Dict] = None, **kwargs: Any
+) -> DataFrame:
+    """Create a session and fetch data from the OECD API."""
+    session = get_legacy_session()
+    response = helpers.make_request(url, session=session, **kwargs)
+    if decode_kwargs is None:
+        decode_kwargs = {}
+    # Pass any additional arguments to read_csv.  This will likely need to be skiplines
+    # or a delimiter.
+    data = response.content.decode(**decode_kwargs)
+    return read_csv(StringIO(data))
