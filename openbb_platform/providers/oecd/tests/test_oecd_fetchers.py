@@ -56,14 +56,14 @@ def test_oecd_forecast_gdp_fetcher(credentials=test_credentials):
     assert result is None
 
 
-from openbb_oecd.models.unemployment import OECDUnemploymentFetcher
-from openbb_oecd.models.ppi import OECDProducerPriceIndexFetcher
-from openbb_oecd.models.customer_confidence_index import (
-    OECDConsumerConfidenceIndexFetcher,
-)
 from openbb_oecd.models.composite_leading_indicator import (
     OECDCompositeLeadingIndicatorFetcher,
 )
+from openbb_oecd.models.customer_confidence_index import (
+    OECDConsumerConfidenceIndexFetcher,
+)
+from openbb_oecd.models.ppi import OECDProducerPriceIndexFetcher
+from openbb_oecd.models.unemployment import OECDUnemploymentFetcher
 
 
 @pytest.mark.record_http
