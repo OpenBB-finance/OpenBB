@@ -23,8 +23,10 @@ class ProducerPriceIndexQueryParams(QueryParams):
     )
     period: Literal["annual", "quarterly", "monthly"] = Field(
         default="monthly",
-        description=QUERY_DESCRIPTIONS.get("units", "")
-        + " Can be annual, quarterly or monthly.",
+        description=(
+            QUERY_DESCRIPTIONS.get("period", "")
+            + " Can be annual, quarterly or monthly."
+        ),
     )
 
 

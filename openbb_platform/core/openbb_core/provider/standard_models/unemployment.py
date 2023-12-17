@@ -1,4 +1,4 @@
-"""Real Unemployment Model."""
+"""Unemployment Model."""
 from datetime import date as dateType
 from typing import Literal, Optional
 
@@ -17,7 +17,7 @@ class UnemploymentQueryParams(QueryParams):
 
     period: Literal["annual", "quarterly", "monthly"] = Field(
         default="monthly",
-        description=QUERY_DESCRIPTIONS.get("units", "")
+        description=QUERY_DESCRIPTIONS.get("period", "")
         + " Can be annual, quarterly or monthly.",
     )
     start_date: Optional[dateType] = Field(
