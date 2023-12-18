@@ -22,7 +22,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
     "params",
     [
         ({"index": "dowjones", "provider": "fmp"}),
-        ({"symbol": "BUKBUS", "provider": "cboe"}),
+        ({"index": "BUKBUS", "provider": "cboe"}),
     ],
 )
 @pytest.mark.integration
