@@ -1,11 +1,9 @@
 """Cboe Market Indices Model."""
 
-import contextlib
 import warnings
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
-import pandas as pd
 from openbb_cboe.utils.helpers import (
     TICKER_EXCEPTIONS,
     get_index_directory,

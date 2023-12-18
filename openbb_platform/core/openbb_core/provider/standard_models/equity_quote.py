@@ -1,7 +1,6 @@
 """Equity Quote Standard Model."""
 
-from datetime import datetime
-from typing import List, Optional, Set, Union
+from typing import List, Set, Union
 
 from pydantic import Field, field_validator
 
