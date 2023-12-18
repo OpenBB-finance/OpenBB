@@ -14,7 +14,7 @@ CONTENT_PATH = WEBSITE_PATH / "content"
 XL_FUNCS_PATH = CONTENT_PATH / "excel" / "functions.json"
 SEO_METADATA_PATH = WEBSITE_PATH / "metadata" / "platform_v4_seo_metadata.json"
 
-XL_FUNCS_URL = "https://openbb-excel-add-in.vercel.app/assets/functions.json"
+XL_FUNCS_URL = "https://excel.openbb.co/assets/functions.json"
 
 
 class CommandLib(PathHandler):
@@ -112,7 +112,7 @@ class CommandLib(PathHandler):
             data = {}
             for name, info in schema.items():
                 data[name] = {
-                    "description": info.get("description", ""),
+                    "description": info.get("description", "").replace("\n", " "),
                 }
             return data
 
@@ -125,7 +125,7 @@ class CommandLib(PathHandler):
             return {}
         description = self.xl_funcs[cmd].get("description", "").replace("\n", " ")
         signature_ = (
-            "=OBB." + self.xl_funcs[cmd].get("name", "") + "(required;[optional])"
+            "=OBB." + self.xl_funcs[cmd].get("name", "") + "(required; [optional])"
         )
         return_ = self.xl_funcs[cmd].get("result", {}).get("dimensionality", "")
         if model_name := self.get_model(cmd):
