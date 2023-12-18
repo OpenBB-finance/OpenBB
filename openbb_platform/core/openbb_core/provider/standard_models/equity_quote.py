@@ -33,14 +33,4 @@ class EquityQuoteQueryParams(QueryParams):
 class EquityQuoteData(Data):
     """Equity Quote Data."""
 
-    day_low: Optional[float] = Field(
-        default=None,
-        description="Lowest price of the stock in the current trading day.",
-    )
-    day_high: Optional[float] = Field(
-        default=None,
-        description="Highest price of the stock in the current trading day.",
-    )
-    date: Optional[datetime] = Field(
-        description=DATA_DESCRIPTIONS.get("date", ""), default=None
-    )
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))

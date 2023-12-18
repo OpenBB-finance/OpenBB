@@ -21,7 +21,10 @@ def headers():
 
 @parametrize(
     "params",
-    [({"index": "dowjones", "provider": "fmp"})],
+    [
+        ({"index": "dowjones", "provider": "fmp"}),
+        ({"symbol": "BUKBUS", "provider": "cboe", "use_cache": False}),
+    ],
 )
 @pytest.mark.integration
 def test_index_constituents(params, headers):
@@ -53,6 +56,7 @@ def test_index_constituents(params, headers):
                 "symbol": "AAVE100",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "use_cache": False,
             }
         ),
         (
@@ -62,6 +66,7 @@ def test_index_constituents(params, headers):
                 "symbol": "AAVE100",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "use_cache": False,
             }
         ),
         (
@@ -152,64 +157,7 @@ def test_index_market(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {
-                "symbol": "BUKBUS",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "provider": "cboe",
-            }
-        ),
-        (
-            {
-                "interval": "1m",
-                "provider": "cboe",
-                "symbol": "BUKBUS",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-        (
-            {
-                "interval": "1d",
-                "provider": "cboe",
-                "symbol": "BUKBUS",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_index_european(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/european?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@parametrize(
-    "params",
-    [({"symbol": "BUKBUS", "provider": "cboe"})],
-)
-@pytest.mark.integration
-def test_index_european_constituents(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/index/european_constituents?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@parametrize(
-    "params",
-    [
-        ({"europe": True, "provider": "cboe"}),
+        ({"provider": "cboe", "use_cache": False}),
         ({"provider": "fmp"}),
         ({"provider": "yfinance"}),
     ],
@@ -228,8 +176,7 @@ def test_index_available(params, headers):
 @parametrize(
     "params",
     [
-        ({"query": "D", "is_symbol": True, "provider": "cboe"}),
-        ({"europe": True, "provider": "cboe", "query": "A", "is_symbol": False}),
+        ({"query": "D", "is_symbol": True, "provider": "cboe", "use_cache": False}),
     ],
 )
 @pytest.mark.integration
@@ -245,7 +192,7 @@ def test_index_search(params, headers):
 
 @parametrize(
     "params",
-    [({"provider": "cboe", "region": "US"})],
+    [({"provider": "cboe", "region": "us"})],
 )
 @pytest.mark.integration
 def test_index_snapshots(params, headers):

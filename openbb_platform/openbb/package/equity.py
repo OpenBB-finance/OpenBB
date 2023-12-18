@@ -14,6 +14,7 @@ class ROUTER_equity(Container):
     """/equity
     /calendar
     /compare
+    /darkpool
     /discovery
     /estimates
     /fundamental
@@ -44,6 +45,15 @@ class ROUTER_equity(Container):
         from . import equity_compare
 
         return equity_compare.ROUTER_equity_compare(command_runner=self._command_runner)
+
+    @property
+    def darkpool(self):
+        # pylint: disable=import-outside-toplevel
+        from . import equity_darkpool
+
+        return equity_darkpool.ROUTER_equity_darkpool(
+            command_runner=self._command_runner
+        )
 
     @property
     def discovery(self):
@@ -224,7 +234,7 @@ class ROUTER_equity(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["intrinio"]] = None,
+        provider: Optional[Literal["intrinio", "tmx"]] = None,
         **kwargs
     ) -> OBBject:
         """Equity Info. Get general price and performance metrics of a stock.
@@ -233,7 +243,7 @@ class ROUTER_equity(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['intrinio']]
+        provider : Optional[Literal['intrinio', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'intrinio' if there is
             no default.
@@ -241,9 +251,9 @@ class ROUTER_equity(Container):
         Returns
         -------
         OBBject
-            results : EquityInfo
+            results : Union[List[EquityInfo], EquityInfo]
                 Serializable results.
-            provider : Optional[Literal['intrinio']]
+            provider : Optional[Literal['intrinio', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -330,6 +340,80 @@ class ROUTER_equity(Container):
             Intrinio ID for the company. (provider: intrinio)
         thea_enabled : Optional[bool]
             Whether the company has been enabled for Thea. (provider: intrinio)
+        vwap : Optional[float]
+
+        volume : Optional[int]
+
+        ma_21 : Optional[float]
+            Twenty-one day moving average. (provider: tmx)
+        ma_50 : Optional[float]
+            Fifty day moving average. (provider: tmx)
+        ma_200 : Optional[float]
+            Two-hundred day moving average. (provider: tmx)
+        one_year_high : Optional[float]
+            Fifty-two week high. (provider: tmx)
+        one_year_low : Optional[float]
+            Fifty-two week low. (provider: tmx)
+        volume_avg_10d : Optional[int]
+            Ten day average volume. (provider: tmx)
+        volume_avg_30d : Optional[int]
+            Thirty day average volume. (provider: tmx)
+        volume_avg_50d : Optional[int]
+            Fifty day average volume. (provider: tmx)
+        market_cap : Optional[int]
+            Market capitalization. (provider: tmx)
+        market_cap_all_classes : Optional[int]
+            Market capitalization of all share classes. (provider: tmx)
+        div_amount : Optional[float]
+            The most recent dividend amount. (provider: tmx)
+        div_currency : Optional[str]
+            The currency the dividend is paid in. (provider: tmx)
+        div_yield : Optional[float]
+            The dividend yield. (provider: tmx)
+        div_freq : Optional[str]
+            The frequency of dividend payments. (provider: tmx)
+        div_ex_date : Optional[Union[str, date]]
+            The ex-dividend date. (provider: tmx)
+        div_pay_date : Optional[Union[str, date]]
+            The next dividend ayment date. (provider: tmx)
+        div_growth_3y : Optional[Union[str, float]]
+            The three year dividend growth. (provider: tmx)
+        div_growth_5y : Optional[Union[str, float]]
+            The five year dividend growth. (provider: tmx)
+        shares_outstanding : Optional[int]
+            The number of listed shares outstanding. (provider: tmx)
+        shares_escrow : Optional[int]
+            The number of shares held in escrow. (provider: tmx)
+        shares_total : Optional[int]
+            The total number of shares outstanding from all classes. (provider: tmx)
+        pe : Optional[Union[str, float]]
+            The price to earnings ratio. (provider: tmx)
+        eps : Optional[Union[str, float]]
+            The earnings per share. (provider: tmx)
+        debt_to_equity : Optional[Union[str, float]]
+            The debt to equity ratio. (provider: tmx)
+        price_to_book : Optional[Union[str, float]]
+            The price to book ratio. (provider: tmx)
+        price_to_cf : Optional[Union[str, float]]
+            The price to cash flow ratio. (provider: tmx)
+        roe : Optional[Union[str, float]]
+            The return on equity. (provider: tmx)
+        roa : Optional[Union[str, float]]
+            The return on assets. (provider: tmx)
+        beta : Optional[Union[str, float]]
+            The beta relative to the TSX Composite. (provider: tmx)
+        alpha : Optional[Union[str, float]]
+            The alpha relative to the TSX Composite. (provider: tmx)
+        issue_type : Optional[str]
+            The issuance type of the asset. (provider: tmx)
+        exchange_name : Optional[str]
+            The exchange name of the listing. (provider: tmx)
+        exchange_short_name : Optional[str]
+            The exchange short name. (provider: tmx)
+        data_type : Optional[str]
+            The type of asset class data. (provider: tmx)
+        email : Optional[str]
+            The email of the company. (provider: tmx)
 
         Example
         -------
@@ -465,7 +549,7 @@ class ROUTER_equity(Container):
             bool,
             OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ] = False,
-        provider: Optional[Literal["intrinio", "sec"]] = None,
+        provider: Optional[Literal["cboe", "intrinio", "nasdaq", "sec", "tmx"]] = None,
         **kwargs
     ) -> OBBject:
         """Equity Search. Search for a company or stock ticker.
@@ -476,25 +560,30 @@ class ROUTER_equity(Container):
             Search query.
         is_symbol : bool
             Whether to search by ticker symbol.
-        provider : Optional[Literal['intrinio', 'sec']]
+        provider : Optional[Literal['cboe', 'intrinio', 'nasdaq', 'sec', 'tmx']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'intrinio' if there is
+            If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
+        use_cache : Optional[bool]
+            When True, the company directory of optionable tickers will be cached for 24 hours. Set as False to bypass. (provider: cboe);
+            If True, caches the symbol directory for one day. (provider: nasdaq);
+            Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec);
+            Whether to use a cached request. The list of companies is cached for two days. (provider: tmx)
         active : Optional[bool]
             When true, return companies that are actively traded (having stock prices within the past 14 days). When false, return companies that are not actively traded or never have been traded. (provider: intrinio)
         limit : Optional[int]
             The number of data entries to return. (provider: intrinio)
+        is_etf : Optional[bool]
+            If True, returns ETFs. (provider: nasdaq)
         is_fund : bool
             Whether to direct the search to the list of mutual funds and ETFs. (provider: sec)
-        use_cache : bool
-            Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec)
 
         Returns
         -------
         OBBject
             results : List[EquitySearch]
                 Serializable results.
-            provider : Optional[Literal['intrinio', 'sec']]
+            provider : Optional[Literal['cboe', 'intrinio', 'nasdaq', 'sec', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -509,6 +598,10 @@ class ROUTER_equity(Container):
             Symbol representing the entity requested in the data.
         name : str
             Name of the company.
+        dpm_name : Optional[str]
+            Name of the primary market maker. (provider: cboe)
+        post_station : Optional[str]
+            Post and station location on the CBOE trading floor. (provider: cboe)
         cik : Optional[str]
             ;
             Central Index Key (provider: sec)
@@ -516,6 +609,26 @@ class ROUTER_equity(Container):
             The Legal Entity Identifier (LEI) of the company. (provider: intrinio)
         intrinio_id : Optional[str]
             The Intrinio ID of the company. (provider: intrinio)
+        nasdaq_traded : Optional[str]
+            Is Nasdaq traded? (provider: nasdaq)
+        exchange : Optional[str]
+            Primary Exchange (provider: nasdaq)
+        market_category : Optional[str]
+            Market Category (provider: nasdaq)
+        etf : Optional[str]
+            Is ETF? (provider: nasdaq)
+        round_lot_size : Optional[float]
+            Round Lot Size (provider: nasdaq)
+        test_issue : Optional[str]
+            Is test Issue? (provider: nasdaq)
+        financial_status : Optional[str]
+            Financial Status (provider: nasdaq)
+        cqs_symbol : Optional[str]
+            CQS Symbol (provider: nasdaq)
+        nasdaq_symbol : Optional[str]
+            NASDAQ Symbol (provider: nasdaq)
+        next_shares : Optional[str]
+            Is NextShares? (provider: nasdaq)
 
         Example
         -------

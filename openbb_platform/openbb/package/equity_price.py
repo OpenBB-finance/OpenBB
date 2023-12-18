@@ -45,7 +45,18 @@ class ROUTER_equity_price(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "intrinio", "polygon", "tiingo"]] = None,
+        chart: bool = False,
+        provider: Optional[
+            Literal[
+                "alpha_vantage",
+                "cboe",
+                "fmp",
+                "intrinio",
+                "polygon",
+                "tiingo",
+                "yfinance",
+            ]
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Equity Historical price. Load stock data for a specific ticker.
@@ -60,10 +71,23 @@ class ROUTER_equity_price(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo']]
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'pol...
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
+            If None, the provider specified in defaults is selected or 'alpha_vantage' if there is
             no default.
+        adjusted : Optional[bool]
+            Output time series is adjusted by historical split and dividend events. (provider: alpha_vantage, polygon);
+            Adjust all OHLC data automatically. (provider: yfinance)
+        extended_hours : Optional[bool]
+            Extended trading hours during pre-market and after-hours.Only available for intraday data. (provider: alpha_vantage)
+        month : Optional[str]
+            Query a specific month in history (in YYYY-MM format). (provider: alpha_vantage)
+        output_size : Optional[Literal['compact', 'full']]
+            Compact returns only the latest 100 data points in the intraday time series; full returns trailing 30 days of the most recent intraday data if the month parameter is not specified, or the full intraday data for aspecific month in history if the month parameter is specified. (provider: alpha_vantage)
+        use_cache : bool
+            When True, the company directories will be cached for 24 hours and are used to validate symbols. The results of the function are not cached. Set as False to bypass. (provider: cboe)
         limit : Optional[Union[Annotated[int, Ge(ge=0)], int]]
             Number of days to look back (Only for interval 1d). (provider: fmp);
             The number of data entries to return. (provider: polygon)
@@ -77,15 +101,19 @@ class ROUTER_equity_price(Container):
             The source of the data. (provider: intrinio)
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
-        adjusted : bool
-            Output time series is adjusted by historical split and dividend events. (provider: polygon)
+        prepost : bool
+            Include Pre and Post market data. (provider: yfinance)
+        include : bool
+            Include Dividends and Stock Splits in results. (provider: yfinance)
+        ignore_tz : bool
+            When combining from different timezones, ignore that part of datetime. (provider: yfinance)
 
         Returns
         -------
         OBBject
             results : List[EquityHistorical]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo']]
+            provider : Optional[Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -96,7 +124,7 @@ class ROUTER_equity_price(Container):
 
         EquityHistorical
         ----------------
-        date : datetime
+        date : Union[date, datetime]
             The date of the data.
         open : float
             The open price.
@@ -108,14 +136,24 @@ class ROUTER_equity_price(Container):
             The close price.
         volume : Union[float, int]
             The trading volume.
-        vwap : Optional[Annotated[float, Gt(gt=0)]]
+        vwap : Optional[float]
             Volume Weighted Average Price over the period.
-        label : Optional[str]
-            Human readable format of the date. (provider: fmp)
-        adj_close : Optional[float]
-            The adjusted close price. (provider: fmp);
+        adj_close : Optional[Union[Annotated[float, Gt(gt=0)], float]]
+            The adjusted close price. (provider: alpha_vantage, fmp);
             Adjusted closing price during the period. (provider: intrinio);
             Adjusted closing price during the period. (provider: tiingo)
+        dividend_amount : Optional[Annotated[float, Ge(ge=0)]]
+            Dividend amount paid for the corresponding date. (provider: alpha_vantage)
+        split_coefficient : Optional[Annotated[float, Ge(ge=0)]]
+            Split coefficient for the corresponding date. (provider: alpha_vantage)
+        calls_volume : Optional[int]
+            Number of calls traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
+        puts_volume : Optional[int]
+            Number of puts traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
+        total_options_volume : Optional[int]
+            Total number of options traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
+        label : Optional[str]
+            Human readable format of the date. (provider: fmp)
         unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
@@ -174,6 +212,7 @@ class ROUTER_equity_price(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                chart=chart,
             )
         )
 
@@ -399,7 +438,7 @@ class ROUTER_equity_price(Container):
                 description="Symbol to get data for. In this case, the comma separated list of symbols."
             ),
         ],
-        provider: Optional[Literal["fmp", "intrinio"]] = None,
+        provider: Optional[Literal["cboe", "fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
         """Equity Quote. Load stock data for a specific ticker.
@@ -408,10 +447,12 @@ class ROUTER_equity_price(Container):
         ----------
         symbol : str
             Symbol to get data for. In this case, the comma separated list of symbols.
-        provider : Optional[Literal['fmp', 'intrinio']]
+        provider : Optional[Literal['cboe', 'fmp', 'intrinio']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
+            If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
+        use_cache : bool
+            When True, the company directories will be cached for 24 hours and are used to validate symbols. The results of the function are not cached. Set as False to bypass. (provider: cboe)
         source : Literal['iex', 'bats', 'bats_delayed', 'utp_delayed', 'cta_a_delayed', 'cta_b_delayed', 'intrinio_mx', 'intrinio_mx_plus', 'delayed_sip']
             Source of the data. (provider: intrinio)
 
@@ -420,7 +461,7 @@ class ROUTER_equity_price(Container):
         OBBject
             results : List[EquityQuote]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[Literal['cboe', 'fmp', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -431,16 +472,83 @@ class ROUTER_equity_price(Container):
 
         EquityQuote
         -----------
-        day_low : Optional[float]
-            Lowest price of the stock in the current trading day.
-        day_high : Optional[float]
-            Highest price of the stock in the current trading day.
-        date : Optional[datetime]
-            The date of the data.
-        symbol : Optional[str]
-            Symbol of the company. (provider: fmp)
+        symbol : str
+            Symbol representing the entity requested in the data.
+        type : Optional[str]
+            Type of asset. (provider: cboe)
         name : Optional[str]
-            Name of the company. (provider: fmp)
+            Name of the company or asset. (provider: cboe, fmp)
+        bid : Optional[float]
+            Current bid price. (provider: cboe);
+            Price of the top bid order. (provider: intrinio)
+        bid_size : Optional[Union[float, int]]
+            Bid lot size. (provider: cboe);
+            Size of the top bid order. (provider: intrinio)
+        ask : Optional[float]
+            Current ask price. (provider: cboe);
+            Price of the top ask order. (provider: intrinio)
+        ask_size : Optional[Union[float, int]]
+            Ask lot size. (provider: cboe);
+            Size of the top ask order. (provider: intrinio)
+        last_price : Optional[float]
+            Price of the last trade. (provider: cboe, intrinio)
+        tick : Optional[str]
+            Whether the last sale was an up or down tick. (provider: cboe)
+        last_time : Optional[datetime]
+            Time of the last trade. (provider: cboe);
+            Date and Time when the last trade occurred. (provider: intrinio)
+        open : Optional[float]
+            Opening price. (provider: cboe);
+            Opening price of the equity in the current trading day. (provider: fmp);
+            Open price for the trading day. (provider: intrinio)
+        high : Optional[float]
+            High price. (provider: cboe);
+            High price for the trading day. (provider: intrinio)
+        low : Optional[float]
+            Low price. (provider: cboe);
+            Low price for the trading day. (provider: intrinio)
+        close : Optional[float]
+            Closing price. (provider: cboe);
+            Closing price for the trading day (IEX source only). (provider: intrinio)
+        prev_close : Optional[float]
+            Previous closing price. (provider: cboe)
+        price_change : Optional[float]
+            Change in price. (provider: cboe)
+        price_change_percent : Optional[float]
+            Change in price as a normalized percentage value. (provider: cboe)
+        price_annual_high : Optional[float]
+            The annual high price of the stock. (provider: cboe)
+        price_annual_low : Optional[float]
+            The annual low price of the stock. (provider: cboe)
+        volume : Optional[int]
+            Stock volume for the current trading day. (provider: cboe);
+            Volume of the equity in the current trading day. (provider: fmp)
+        iv30 : Optional[float]
+            The 30-day implied volatility of the stock. (provider: cboe)
+        iv30_change : Optional[float]
+            Change in 30-day implied volatility of the stock. (provider: cboe)
+        iv30_change_percent : Optional[float]
+            Change in 30-day implied volatility of the stock as a normalized percentage value. (provider: cboe)
+        iv30_annual_high : Optional[float]
+            The 1-year high of implied volatility. (provider: cboe)
+        hv30_annual_high : Optional[float]
+            The 1-year high of realized volatility. (provider: cboe)
+        iv30_annual_low : Optional[float]
+            The 1-year low of implied volatility. (provider: cboe)
+        hv30_annual_low : Optional[float]
+            The 1-year low of realized volatility. (provider: cboe)
+        iv60_annual_high : Optional[float]
+            The 60-day high of implied volatility. (provider: cboe)
+        hv60_annual_high : Optional[float]
+            The 60-day high of realized volatility. (provider: cboe)
+        iv60_annual_low : Optional[float]
+            The 60-day low of implied volatility. (provider: cboe)
+        hv60_annual_low : Optional[float]
+            The 60-day low of realized volatility. (provider: cboe)
+        iv90_annual_high : Optional[float]
+            The 90-day high of implied volatility. (provider: cboe)
+        hv90_annual_high : Optional[float]
+            The 90-day high of realized volatility. (provider: cboe)
         price : Optional[float]
             Current trading price of the equity. (provider: fmp)
         changes_percentage : Optional[float]
@@ -457,14 +565,10 @@ class ROUTER_equity_price(Container):
             50 days average price of the equity. (provider: fmp)
         price_avg200 : Optional[float]
             200 days average price of the equity. (provider: fmp)
-        volume : Optional[int]
-            Volume of the equity in the current trading day. (provider: fmp)
         avg_volume : Optional[int]
             Average volume of the equity in the last 10 trading days. (provider: fmp)
         exchange : Optional[str]
             Exchange the equity is traded on. (provider: fmp)
-        open : Optional[float]
-            Opening price of the equity in the current trading day. (provider: fmp)
         previous_close : Optional[float]
             Previous closing price of the equity. (provider: fmp)
         eps : Optional[float]
@@ -475,36 +579,16 @@ class ROUTER_equity_price(Container):
             Earnings announcement date of the equity. (provider: fmp)
         shares_outstanding : Optional[int]
             Number of shares outstanding of the equity. (provider: fmp)
-        last_price : Optional[float]
-            Price of the last trade. (provider: intrinio)
-        last_time : Optional[datetime]
-            Date and Time when the last trade occurred. (provider: intrinio)
         last_size : Optional[int]
             Size of the last trade. (provider: intrinio)
-        bid_price : Optional[float]
-            Price of the top bid order. (provider: intrinio)
-        bid_size : Optional[int]
-            Size of the top bid order. (provider: intrinio)
-        ask_price : Optional[float]
-            Price of the top ask order. (provider: intrinio)
-        ask_size : Optional[int]
-            Size of the top ask order. (provider: intrinio)
-        open_price : Optional[float]
-            Open price for the trading day. (provider: intrinio)
-        close_price : Optional[float]
-            Closing price for the trading day (IEX source only). (provider: intrinio)
-        high_price : Optional[float]
-            High Price for the trading day. (provider: intrinio)
-        low_price : Optional[float]
-            Low Price for the trading day. (provider: intrinio)
         exchange_volume : Optional[int]
             Number of shares exchanged during the trading day on the exchange. (provider: intrinio)
         market_volume : Optional[int]
             Number of shares exchanged during the trading day for the whole market. (provider: intrinio)
-        updated_on : Optional[datetime]
-            Date and Time when the data was last updated. (provider: intrinio)
         source : Optional[str]
             Source of the data. (provider: intrinio)
+        is_darkpool : Optional[bool]
+            Whether or not the current trade is from a darkpool. (provider: intrinio)
         listing_venue : Optional[str]
             Listing venue where the trade took place (SIP source only). (provider: intrinio)
         sales_conditions : Optional[str]
@@ -513,12 +597,12 @@ class ROUTER_equity_price(Container):
             Indicates any quote condition modifiers associated with the trade. (provider: intrinio)
         market_center_code : Optional[str]
             Market center character code. (provider: intrinio)
-        is_darkpool : Optional[bool]
-            Whether or not the current trade is from a darkpool. (provider: intrinio)
         messages : Optional[List[str]]
-            Messages associated with the endpoint. (provider: intrinio)
+            Messages associated with the current quote. (provider: intrinio)
+        updated_on : Optional[datetime]
+            Date and Time when the data was last updated. (provider: intrinio)
         security : Optional[Dict[str, Any]]
-            Security details related to the quote. (provider: intrinio)
+            Reference and Intrinio codes for the security. (provider: intrinio)
 
         Example
         -------

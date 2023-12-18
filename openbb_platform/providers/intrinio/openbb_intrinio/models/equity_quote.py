@@ -32,29 +32,29 @@ class IntrinioEquityQuoteData(EquityQuoteData):
     """Intrinio Equity Quote Data."""
 
     __alias_dict__ = {
-        "day_low": "low_price",
-        "day_high": "high_price",
+        "open": "open_price",
+        "close": "close_price",
+        "low": "low_price",
+        "high": "high_price",
         "date": "last_time",
+        "bid": "bid_price",
+        "ask": "ask_price",
     }
 
-    last_price: float = Field(description="Price of the last trade.")
-    last_time: datetime = Field(
-        description="Date and Time when the last trade occurred.", alias="date"
-    )
-    last_size: Optional[int] = Field(description="Size of the last trade.")
-    bid_price: float = Field(description="Price of the top bid order.")
+    bid: float = Field(description="Price of the top bid order.")
     bid_size: int = Field(description="Size of the top bid order.")
-    ask_price: float = Field(description="Price of the top ask order.")
+    ask: float = Field(description="Price of the top ask order.")
     ask_size: int = Field(description="Size of the top ask order.")
-    open_price: float = Field(description="Open price for the trading day.")
-    close_price: Optional[float] = Field(
+    last_price: float = Field(description="Price of the last trade.")
+    last_size: Optional[int] = Field(description="Size of the last trade.")
+    last_time: datetime = Field(
+        description="Date and Time when the last trade occurred."
+    )
+    open: float = Field(description="Open price for the trading day.")
+    high: float = Field(description="High price for the trading day.")
+    low: float = Field(description="Low price for the trading day.")
+    close: Optional[float] = Field(
         default=None, description="Closing price for the trading day (IEX source only)."
-    )
-    high_price: float = Field(
-        description="High Price for the trading day.", alias="day_high"
-    )
-    low_price: float = Field(
-        description="Low Price for the trading day.", alias="day_low"
     )
     exchange_volume: Optional[int] = Field(
         default=None,
@@ -64,10 +64,10 @@ class IntrinioEquityQuoteData(EquityQuoteData):
         default=None,
         description="Number of shares exchanged during the trading day for the whole market.",
     )
-    updated_on: datetime = Field(
-        description="Date and Time when the data was last updated."
-    )
     source: str = Field(description="Source of the data.")
+    is_darkpool: Optional[bool] = Field(
+        default=None, description="Whether or not the current trade is from a darkpool."
+    )
     listing_venue: Optional[str] = Field(
         default=None,
         description="Listing venue where the trade took place (SIP source only).",
@@ -83,14 +83,14 @@ class IntrinioEquityQuoteData(EquityQuoteData):
     market_center_code: Optional[str] = Field(
         default=None, description="Market center character code."
     )
-    is_darkpool: Optional[bool] = Field(
-        default=None, description="Whether or not the current trade is from a darkpool."
-    )
     messages: Optional[List[str]] = Field(
-        default=None, description="Messages associated with the endpoint."
+        default=None, description="Messages associated with the current quote."
+    )
+    updated_on: datetime = Field(
+        description="Date and Time when the data was last updated."
     )
     security: Optional[Dict[str, Any]] = Field(
-        default=None, description="Security details related to the quote."
+        default=None, description="Reference and Intrinio codes for the security."
     )
 
     @field_validator("last_time", "updated_on", mode="before", check_fields=False)

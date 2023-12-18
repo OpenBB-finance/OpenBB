@@ -26,17 +26,6 @@ async def market(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EuropeanIndices")
-async def european(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Historical European Indices."""
-    return await OBBject.from_query(Query(**locals()))
-
-
 @router.command(model="IndexConstituents")
 async def constituents(
     cc: CommandContext,
@@ -45,17 +34,6 @@ async def constituents(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Index Constituents. Constituents of an index."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(model="EuropeanIndexConstituents")
-async def european_constituents(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """European Index Constituents. Constituents of select european indices."""
     return await OBBject.from_query(Query(**locals()))
 
 
