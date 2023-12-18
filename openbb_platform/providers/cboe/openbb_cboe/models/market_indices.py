@@ -159,7 +159,6 @@ class CboeMarketIndicesFetcher(
         query: CboeMarketIndicesQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[CboeMarketIndicesData]:
         """Transform the data to the standard format."""
-        """Transform the data to the standard format."""
         if not data:
             raise EmptyDataError()
         results = DataFrame()

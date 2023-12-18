@@ -64,7 +64,7 @@ class CboeOptionsChainsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the Cboe endpoint"""
 
-        symbol = query.symbol.upper().replace("^", "").split(",")[0]
+        symbol = query.symbol.replace("^", "").split(",")[0]
         INDEXES = await get_index_directory(use_cache=query.use_cache)
         SYMBOLS = await get_company_directory(use_cache=query.use_cache)
         INDEXES = INDEXES.set_index("index_symbol")
