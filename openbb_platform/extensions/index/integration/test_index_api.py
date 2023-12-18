@@ -23,7 +23,7 @@ def headers():
     "params",
     [
         ({"index": "dowjones", "provider": "fmp"}),
-        ({"symbol": "BUKBUS", "provider": "cboe", "use_cache": False}),
+        ({"symbol": "BUKBUS", "provider": "cboe"}),
     ],
 )
 @pytest.mark.integration

@@ -86,7 +86,7 @@ def test_derivatives_futures_historical(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "VX", "provider": "cboe"}),
+        ({"symbol": "VX", "provider": "cboe", "date": None}),
         ({"provider": "yfinance", "symbol": "ES", "date": "2023-08-01"}),
     ],
 )
