@@ -1,4 +1,5 @@
 """Cboe Options Chains Model."""
+# pylint: disable=invalid-name, unused-argument
 
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -27,7 +28,8 @@ class CboeOptionsChainsQueryParams(OptionsChainsQueryParams):
 
     use_cache: bool = Field(
         default=True,
-        description="When True, the company directories will be cached for 24 hours and are used to validate symbols."
+        description="When True, the company directories will be cached for"
+        + "24 hours and are used to validate symbols."
         + " The results of the function are not cached. Set as False to bypass.",
     )
 

@@ -1,4 +1,5 @@
 """Cboe Helpers"""
+# pylint: disable=expression-not-assigned, unused-argument
 
 from datetime import date as dateType
 from io import BytesIO, StringIO
@@ -13,7 +14,7 @@ from pandas import DataFrame, read_csv
 
 TICKER_EXCEPTIONS = ["NDX", "RUT"]
 
-CONSTITUENTS_EU = Literal[
+CONSTITUENTS_EU = Literal[  # pylint: disable=invalid-name
     "BAT20P",
     "BBE20P",
     "BCH20P",
@@ -79,15 +80,17 @@ backend = SQLiteBackend(f"{cache_dir}/http/cboe_directories", expire_after=3600 
 
 
 async def response_callback(response: ClientResponse, _: Any):
+    """Callback for HTTP Client Response."""
     content_type = response.headers.get("Content-Type", "")
     if "application/json" in content_type:
         return await response.json()
-    elif "text" in content_type:
+    if "text" in content_type:
         return await response.text()
     return await response.read()
 
 
 async def get_cboe_data(url, use_cache: bool = True, **kwargs) -> Any:
+    """Generic Cboe HTTP request."""
     if use_cache is True:
         async with CachedSession(cache=backend) as cached_session:
             try:
@@ -117,9 +120,9 @@ async def get_company_directory(use_cache: bool = True, **kwargs) -> DataFrame:
 
     response = BytesIO(results)
 
-    CBOE_DIRECTORY = read_csv(response)
+    directory = read_csv(response)
 
-    CBOE_DIRECTORY = CBOE_DIRECTORY.rename(
+    directory = directory.rename(
         columns={
             " Stock Symbol": "symbol",
             " DPM Name": "dpm_name",
@@ -128,7 +131,7 @@ async def get_company_directory(use_cache: bool = True, **kwargs) -> DataFrame:
         }
     ).set_index("symbol")
 
-    return CBOE_DIRECTORY.astype(str)
+    return directory.astype(str)
 
 
 async def get_index_directory(use_cache: bool = True, **kwargs) -> DataFrame:
@@ -199,10 +202,15 @@ async def get_settlement_prices(
     """
     url = ""
     if settlement_date is not None:
-        url = f"https://www.cboe.com/us/futures/market_statistics/settlement/csv?dt={settlement_date}"
+        url = (
+            "https://www.cboe.com/us/futures/market_statistics"
+            + f"/settlement/csv?dt={settlement_date}"
+        )
         if options is True:
-            url = f"https://www.cboe.com/us/futures/market_statistics/settlement/csv?options=t&dt={settlement_date}"
-
+            url = (
+                "https://www.cboe.com/us/futures/market_statistics/"
+                + f"settlement/csv?options=t&dt={settlement_date}"
+            )
     if settlement_date is None:
         url = "https://www.cboe.com/us/futures/market_statistics/settlement/csv"
         if options is True:
@@ -212,7 +220,10 @@ async def get_settlement_prices(
         url = "https://www.cboe.com/us/futures/market_statistics/final_settlement_prices/csv/"
 
     if archives is True:
-        url = "https://cdn.cboe.com/resources/futures/archive/volume-and-price/CFE_FinalSettlement_Archive.csv"
+        url = (
+            "https://cdn.cboe.com/resources/futures/archive"
+            + "/volume-and-price/CFE_FinalSettlement_Archive.csv"
+        )
 
     response = await get_cboe_data(url, use_cache=False, **kwargs)
 

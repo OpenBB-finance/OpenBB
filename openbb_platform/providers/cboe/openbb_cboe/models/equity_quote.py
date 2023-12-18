@@ -1,5 +1,5 @@
 """Cboe Equity Info Model."""
-
+# pylint: disable=invalid-name,too-many-locals, expression-not-assigned
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -27,7 +27,8 @@ class CboeEquityQuoteQueryParams(EquityQuoteQueryParams):
 
     use_cache: bool = Field(
         default=True,
-        description="When True, the company directories will be cached for 24 hours and are used to validate symbols."
+        description="When True, the company directories will be cached for"
+        + " 24 hours and are used to validate symbols."
         + " The results of the function are not cached. Set as False to bypass.",
     )
 
@@ -90,7 +91,8 @@ class CboeEquityQuoteData(EquityQuoteData):
     )
     iv30_change_percent: Optional[float] = Field(
         default=None,
-        description="Change in 30-day implied volatility of the stock as a normalized percentage value.",
+        description="Change in 30-day implied volatility of the"
+        + " stock as a normalized percentage value.",
     )
     iv30_annual_high: Optional[float] = Field(
         default=None, description="The 1-year high of implied volatility."
@@ -169,7 +171,10 @@ class CboeEquityQuoteFetcher(
             if symbol in EU_INDEXES.index:
                 eu_name = EU_INDEXES.at[symbol, "name"]
                 _symbol = EU_INDEXES[EU_INDEXES["name"].str.contains(eu_name)].index[0]
-                url = f"https://cdn.cboe.com/api/global/european_indices/index_quotes/{_symbol.replace('^', '')}.json"
+                url = (
+                    "https://cdn.cboe.com/api/global/european_indices/"
+                    + f"index_quotes/{_symbol.replace('^', '')}.json"
+                )
             urls.append(url)
         # Now make the requests.
         responses = await amake_requests(urls)

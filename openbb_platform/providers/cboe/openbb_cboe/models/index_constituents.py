@@ -1,5 +1,5 @@
 """Cboe  Index Constituents Model."""
-
+# pylint: disable=unused-argument
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -106,7 +106,10 @@ class CboeIndexConstituentsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the Cboe endpoint."""
 
-        url = f"https://cdn.cboe.com/api/global/european_indices/constituent_quotes/{query.index}.json"
+        url = (
+            "https://cdn.cboe.com/api/global/european_indices"
+            f"/constituent_quotes/{query.index}.json"
+        )
         data = await amake_request(url)
         return data.get("data")
 
