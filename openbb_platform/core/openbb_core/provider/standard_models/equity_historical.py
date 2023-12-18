@@ -55,7 +55,7 @@ class EquityHistoricalData(Data):
     low: float = Field(description=DATA_DESCRIPTIONS.get("low", ""))
     close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
     volume: Optional[Union[float, int]] = Field(
-        defalt=None, description=DATA_DESCRIPTIONS.get("volume", "")
+        default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )
     vwap: Optional[float] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("vwap", "")
