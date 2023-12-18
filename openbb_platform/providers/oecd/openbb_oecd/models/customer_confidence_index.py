@@ -19,7 +19,7 @@ class OECDConsumerConfidenceIndexQueryParams(ConsumerConfidenceIndexQueryParams)
     """OECD Consumer Confidence Index Query."""
 
     country: CountriesLiteral = Field(
-        description="Country to get PPI for.", default="united_states"
+        description="Country to get CCI for.", default="united_states"
     )
 
 
