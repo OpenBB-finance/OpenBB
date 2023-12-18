@@ -36,7 +36,6 @@ class IntrinioEquityQuoteData(EquityQuoteData):
         "close": "close_price",
         "low": "low_price",
         "high": "high_price",
-        "date": "last_time",
         "bid": "bid_price",
         "ask": "ask_price",
     }
@@ -47,8 +46,8 @@ class IntrinioEquityQuoteData(EquityQuoteData):
     ask_size: int = Field(description="Size of the top ask order.")
     last_price: float = Field(description="Price of the last trade.")
     last_size: Optional[int] = Field(description="Size of the last trade.")
-    last_time: datetime = Field(
-        description="Date and Time when the last trade occurred."
+    last_time: Optional[datetime] = Field(
+        default=None, description="Date and Time when the last trade occurred."
     )
     open: float = Field(description="Open price for the trading day.")
     high: float = Field(description="High price for the trading day.")
@@ -133,7 +132,7 @@ class IntrinioEquityQuoteFetcher(
                 return {}
 
             response_data = await response.json()
-            response_data["symbol"] = response.url.parts[-2]
+            response_data["symbol"] = response_data["security"]["ticker"]
 
             return response_data
 
