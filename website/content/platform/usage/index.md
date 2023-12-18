@@ -27,7 +27,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Overview - Usage | OpenBB Platform Docs" />
 
-At its base, the OpenBB Platform supplies core architecture and services for connecting data providers and extensions, consumable as a Python client and Fast API. The extension framework provides interoperability between as many, or few, services required.  Optional extras are not included with the base installation, and these include:
+At its base, the OpenBB Platform supplies core architecture and services for connecting data providers and extensions, consumable through the Python client or the Fast API. The extension framework provides interoperability between as many, or few, services required.  Optional extras are not included with the base installation, and these include:
 
 - Charting libraries and views
 - Data cleaning
@@ -37,29 +37,27 @@ At its base, the OpenBB Platform supplies core architecture and services for con
 
 ## Authorization
 
-By default, authorization is not required to initialize and use the core services. Most data providers, however,  require an API key to access their data. They can be stored locally, or securely on the OpenBB Hub for convenient remote access. Refer to our Developer Guidelines for best practices within a production environment.
+By default, authorization is not required to initialize and use the core services. Most data providers, however, require an API key to access their data. The API keys can be stored locally, or securely on the OpenBB Hub for convenient remote access. Refer to our Developer Guidelines for best practices within a production environment.
 
 ### OpenBB Hub
 
-Data provider credentials and user preferences can be securely stored on the OpenBB Hub and accessed via a revokable Personal Access Token (PAT). Login to the [Hub](https://my.openbb.co/) to manage this method of remote authorization.
+Data provider credentials and user preferences can be securely stored on the OpenBB Hub and accessed in Python using a revokable Personal Access Token (PAT). Login to the [Hub](https://my.openbb.co/) to manage this method of remote authorization.
 
-#### Python Client
+The OpenBB Hub is a convenient solution for accessing data in temporary Python environments, like Google Colab ([example notebook](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/examples/googleColab.ipynb)). Login with:
 
-The OpenBB Hub is a convenient solution for accessing data in temporary environments, like Google Colab. Login using the Python client with:
-
-```jupyterpython
+```python
 from openbb import obb
 
 # Login with personal access token
-obb.account.login(pat="your_pat", remember_me=True)
+obb.account.login(pat="my_pat", remember_me=True)
 
-# Login with email and password
-obb.account.login(email="your_email", password="your_password", remember_me=True)
+# Alternatively, login with email and password
+obb.account.login(email="my_email", password="my_password", remember_me=True)
 
 # Change a credential
-obb.user.credentials.polygon_api_key = "new_key"
+obb.user.credentials.polygon_api_key = "my_api_key"
 
-# Save account changes
+# Save account changes to the Hub
 obb.account.save()
 
 # Refresh account with latest changes
@@ -71,45 +69,6 @@ obb.account.logout()
 
 Set `remember_me` as `False` to discard all credentials at the end of the session.
 
-### Fast API
-
-Activate the Python environment and then start the server from a Terminal command line with:
-
-```console
-uvicorn openbb_core.api.rest_api:app
-```
-
-To use the Fast API documentation page, navigate to [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).  By default, no authorization is required.  Basic authorization can be enabled with environment variables. In the home folder, along with `user_settings.json`, create a new file, `.env`, if it does not yet exist.
-
-```.env
-OPENBB_API_AUTH="True"
-OPENBB_API_USERNAME="some_user"
-OPENBB_API_PASSWORD="some_pass"
-```
-
-The application will expect a header that contains username and password in the form of `Basic <username:password>`, where "username:password" is encoded in Base64. Pass this in every request to the API inside the headers "Authorization" field.
-
-```python
-import base64
-import requests
-
-msg = "some_user:some_pass"
-msg_bytes = msg.encode('ascii')
-base64_bytes = base64.b64encode(msg_bytes)
-base64_msg = base64_bytes.decode('ascii')
-
-
-symbol="SPY"
-url = f"http://127.0.0.1:8000/api/v1/equity/price/quote?provider=intrinio&symbol={symbol}&source=intrinio_mx"
-headers = {"accept": "application/json", "Authorization": f"Basic {base64_msg}"}
-
-response = requests.get(url=url, headers=headers)
-
-response.json()
-```
-
-Refer to the Developer Guidelines for custom authorization procedures.
-
 ### Local Environment
 
 Credentials and user preferences  are stored locally, `~/.openbb_platform/`, as a JSON file, `user_settings.json`.  It is read upon initializing the Python client, or when the Fast API is authorized. If the file does not exist, create it with any text editor. The schema below can be copy/pasted if required, providers not listed here are added using the same format:
@@ -117,13 +76,13 @@ Credentials and user preferences  are stored locally, `~/.openbb_platform/`, as 
 ```json
 {
   "credentials": {
-    "fmp_api_key": "REPLACE",
-    "polygon_api_key": "REPLACE",
-    "benzinga_api_key": "REPLACE",
-    "fred_api_key": "REPLACE",
-    "nasdaq_api_key": "REPLACE",
-    "intrinio_api_key": "REPLACE",
-    "alpha_vantage_api_key": "REPLACE",
+    "fmp_api_key": "REPLACE_ME",
+    "polygon_api_key": "REPLACE_ME",
+    "benzinga_api_key": "REPLACE_ME",
+    "fred_api_key": "REPLACE_ME",
+    "nasdaq_api_key": "REPLACE_ME",
+    "intrinio_api_key": "REPLACE_ME",
+    "alpha_vantage_api_key": "REPLACE_ME",
     }
 }
 ```
@@ -131,7 +90,7 @@ Credentials and user preferences  are stored locally, `~/.openbb_platform/`, as 
 To set keys from the Python client for the current session only, access the Credentials class:
 
 ```python
-obb.user.credentials.intrinio_api_key = "REPLACE_WITH_KEY"
+obb.user.credentials.intrinio_api_key = "my_api_key"
 ```
 
 ## Environment Variables

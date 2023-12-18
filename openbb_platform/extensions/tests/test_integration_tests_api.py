@@ -1,17 +1,20 @@
 """Test the integration tests."""
+from typing import Literal
+
 from openbb_core.app.charting_service import ChartingService
 
 from extensions.tests.utils.integration_tests_testers import (
     check_missing_integration_test_params,
     check_missing_integration_test_providers,
     check_missing_integration_tests,
+    check_outdated_integration_tests,
     check_wrong_integration_test_params,
     get_integration_tests,
     get_module_functions,
 )
 
 
-def run_test(test_type: str, check_function) -> None:
+def run_test(test_type: Literal["api", "python"], check_function) -> None:
     """Run tests helper function."""
     integration_tests = get_integration_tests(test_type=test_type)
     functions = get_module_functions(integration_tests)
@@ -58,3 +61,9 @@ def test_missing_api_integration_tests() -> None:
     """Check if there are missing tests."""
     missing = check_missing_integration_tests(test_type="api")
     assert not missing, "\n".join(missing)
+
+
+def test_outdated_api_integration_tests() -> None:
+    """Check if there are outdated tests."""
+    outdated = check_outdated_integration_tests(test_type="api")
+    assert not outdated, "\n".join(outdated)

@@ -71,38 +71,36 @@ ETFs are categorized into different buckets. Use the code block below as a way t
 ​
 
 ```python
-etf_list = pd.DataFrame.from_dict(openbb.etf.etf_by_category('')).transpose()
+etf_list = pd.DataFrame.from_dict(openbb.etf.etf_by_category(''))
 categories = list(etf_list['category'].drop_duplicates())
 categories = pd.DataFrame(categories[1::], columns = ['Type'])
 
 categories.head(6)
 ```
 
-|     | Type                      |
-| --: | :------------------------ |
-|   0 | Pacific/Asia ex-Japan Stk |
-|   1 | Large Value               |
-|   2 | Equity Energy             |
-|   3 | Foreign Large Blend       |
-|   4 | Large Blend               |
-|   5 | Multisector Bond          |
+| Type             |
+|:-----------------:|
+| Financials       |
+| Emerging Markets |
+| Industrials      |
+| Factors          |
+| Utilities        |
+| Bonds            |
 
 ​Replacing the empty category in the syntax above will return the ETFs within that category:
 ​
 
 ```python
-etf_category = pd.DataFrame.from_dict(openbb.etf.etf_by_category('Foreign Large Blend')).transpose()
-etf_category = etf_category.sort_values(by=['total_assets'], ascending = False)
-
+etf_category = pd.DataFrame.from_dict(openbb.etf.etf_by_category('Emerging Markets'))
 etf_category.head(2)
 ```
 
-|      | short_name                      | long_name                                                | currency | summary                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | category            | family   | exchange | market    | total_assets |
-| :--- | :------------------------------ | :------------------------------------------------------- | :------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------ | :------- | :------- | :-------- | -----------: |
-| VXUS | Vanguard Total International St | Vanguard Total International Stock Index Fund ETF Shares | USD      | The investment seeks to track the performance of a benchmark index that measures the investment return of stocks issued by companies located in developed and emerging markets, excluding the United States.                                                                                                                                                                                                                                                                                                                                                                      | Foreign Large Blend | Vanguard | NGM      | us_market | 379067924480 |
-|      |                                 |                                                          |          | The fund employs an indexing investment approach designed to track the performance of the FTSE Global All Cap ex US Index, a float-adjusted market-capitalization-weighted index designed to measure equity market performance of companies located in developed and emerging markets, excluding the United States. It invests all, or substantially all, of its assets in the common stocks included in its target index.                                                                                                                                                        |                     |          |          |           |              |
-| VEA  | Vanguard FTSE Developed Markets | Vanguard FTSE Developed Markets Index Fund ETF Shares    | USD      | The investment seeks to track the performance of the FTSE Developed All Cap ex US Index.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | Foreign Large Blend | Vanguard | PCX      | us_market | 150540566528 |
-|      |                                 |                                                          |          | The fund employs an indexing investment approach designed to track the performance of the FTSE Developed All Cap ex US Index, a market-capitalization-weighted index that is made up of approximately 3865 common stocks of large-, mid-, and small-cap companies located in Canada and the major markets of Europe and the Pacific region. The adviser attempts to replicate the target index by investing all, or substantially all, of its assets in the stocks that make up the index, holding each stock in approximately the same proportion as its weighting in the index. |                     |          |          |           |              |
+| symbol   | name                                          | currency   | summary                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | category_group   | category         | family                     | exchange   | market    |
+|:---------|:----------------------------------------------|:-----------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----------------|:-----------------|:---------------------------|:-----------|:----------|
+| AAXJ     | iShares MSCI All Country Asia ex Japan ETF    | USD        | The investment seeks to track the investment results of the MSCI AC Asia ex Japan Index.                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Equities         | Emerging Markets | BlackRock Asset Management | NMS        | us_market |
+|          |                                               |            |  The fund will invest at least 90% of its assets in the component securities of the index and in investments that have economic characteristics that are substantially identical to the component securities of the index. The index is a free float-adjusted market capitalization index designed to measure equity market performance of securities from the following 11 developed and emerging market countries or regions: China, Hong Kong, India, Indonesia, Malaysia, Pakistan, the Philippines, Singapore, South Korea, Taiwan and Thailand. |                  |                  |                            |            |           |
+| JHEM     | John Hancock Multifactor Emerging Markets ETF | USD        | The investment seeks to provide investment results that closely correspond, before fees and expenses, to the performance of the John Hancock Dimensional Emerging Markets Index (the index).                                                                                                                                                                                                                                                                                                                                                          | Equities         | Emerging Markets | John Hancock               | PCX        | us_market |
+|          |                                               |            |  The fund normally invests at least 80% of its net assets (plus any borrowings for investment purposes) in securities included in the index, in depositary receipts representing securities included in the index, and in underlying stocks in respect of depositary receipts included in the index. The index is designed to comprise a subset of securities associated with emerging markets, which may include frontier markets (emerging markets in an earlier stage of development).                                                             |                  |                  |                            |            |           |
 
 ​
 ### ETF Tickers
@@ -115,21 +113,21 @@ symbols = etf_category.index.to_list()
 
 ### Performance Metrics
 
-This list of tickers can then be used for comparison analysis, or portfolio optimization. For example, comparing the performance metrics of the Foreign Large Blend category:
+This list of tickers can then be used for comparison analysis, or portfolio optimization. For example, comparing the performance metrics of the Emerging Market category:
 
 ```python
 performance = openbb.stocks.ca.screener(similar = symbols, data_type = 'performance')
-performance = performance.sort_values(by=['Perf Quart'])
+performance = performance.sort_values(by=['3M'], ascending=False)
 performance.head(5)
 ```
 
-|    | Ticker   |   Perf Week |   Perf Month |   Perf Quart |   Perf Half |   Perf Year |   Perf YTD |   Volatility W |   Volatility M | Recom   |   Avg Volume |   Rel Volume |   Price |   Change |   Volume |
-|---:|:---------|------------:|-------------:|-------------:|------------:|------------:|-----------:|---------------:|---------------:|:--------|-------------:|-------------:|--------:|---------:|---------:|
-| 22 | IFV      |      0.0057 |       0.0531 |      -0.0873 |     -0.122  |     -0.2817 |    -0.2657 |         0.0188 |         0.0194 |         |        26410 |         1.44 |   16.78 |  -0.0158 |    13090 |
-| 20 | IDLV     |      0.0326 |       0.0814 |      -0.0836 |     -0.1162 |     -0.1756 |    -0.1758 |         0.0113 |         0.0121 |         |       152070 |         0.57 |   26.39 |   0.003  |    29698 |
-| 18 | HDMV     |      0.0456 |       0.0873 |      -0.0728 |     -0.1071 |     -0.1709 |    -0.1683 |         0.0087 |         0.0081 |         |         4330 |         1.35 |   26.44 |   0.0006 |     2011 |
-|  7 | DEEF     |      0.0457 |       0.1061 |      -0.0612 |     -0.0997 |     -0.2099 |    -0.2071 |         0.0067 |         0.0122 |         |         8350 |         0.08 |   25    |  -0.0031 |      244 |
-| 38 | RODM     |      0.0424 |       0.1106 |      -0.0428 |     -0.1012 |     -0.2015 |    -0.1827 |         0.0141 |         0.0139 |         |       345640 |         1.05 |   24.64 |   0.0011 |   125217 |
+| Ticker   |     1W |      1M |     3M |     6M |      1Y |     YTD |   1W Volatility |   1M Volatility | Recom   |   Avg Volume |   Rel Volume |   Price |   Change |           Volume |
+|:---------|-------:|--------:|-------:|-------:|--------:|--------:|----------------:|----------------:|:--------|-------------:|-------------:|--------:|---------:|-----------------:|
+| CHB      | 0.0301 | -0.015  | 0.1123 | 0.0086 | -0.132  | -0.1277 |          0.0105 |          0.0048 |         |  1130        |         0.04 |    8.22 |   0.0123 |     21           |
+| INCO     | 0.0193 |  0.0716 | 0.1092 | 0.1543 |  0.2706 |  0.3171 |          0.0066 |          0.0049 |         | 17810        |         1.62 |   59.77 |   0.0073 |  14060           |
+| GLIN     | 0.0251 |  0.0733 | 0.1083 | 0.221  |  0.2704 |  0.3319 |          0.0105 |          0.0079 |         | 20360        |         0.89 |   43.5  |   0.0133 |   8833           |
+| ILF      | 0.0497 |  0.0631 | 0.1032 | 0.062  |  0.3082 |  0.2768 |          0.0141 |          0.0135 |         |     1.18e+06 |         2.16 |   29.23 |   0.0215 |      1237337 |
+| SMIN     | 0.0174 |  0.0573 | 0.0914 | 0.2128 |  0.2848 |  0.3447 |          0.0078 |          0.0074 |         | 99980        |         5.61 |   69.6  |   0.0053 | 272774           |
 
 ### Holdings
 
@@ -147,31 +145,6 @@ holdings.head(5)
 |  2 | HD       | The Home Depot, Inc.            | 6.03%      |  5985297 |
 |  3 | AMGN     | Amgen Inc.                      | 5.61%      |  5985297 |
 |  4 | MCD      | McDonald's Corporation          | 5.35%      |  5985297 |
-
-### ETF Screener
-
-The ETF screener is also accessible through the SDK. Variables for the screener are set in preset files. The path to their location will depend on the type of installation and operating system; it will be similar to:
-
-- For a pip/PyPi installation: `~/path_to/miniconda3/envs/obb/Lib/site-packages/openbb_terminal/etf/screener/presets/etf_config.ini`
-- For a Git Clone & Conda installation: `~/path_to/cloned_folder/OpenBBTerminal/openbb_terminal/etf/screener/presets/etf_config.ini`
-- For a the EXE/DMG installer bundles: `~/path_to_installation/OpenBB Terminal/.OpenBB/openbb_terminal/etf/screener/etf_config.ini`
-
-This file can be copied to the user data folder, `~/OpenBBUserData/presets/etf/screener/`, along with any other user-generated screener presets.
-
-```python
-results = openbb.etf.scr.screen(preset='etf_config.ini')
-results.head(5)
-```
-
-In this example, the configuration file is set to return results with a maximum Beta value of -2.
-
-|    | index   |   Assets |   NAV |   Expense |   PE | SharesOut   |    Div |   DivYield |         Volume |   Open |   PrevClose |   YrLow |   YrHigh |   Beta |   N_Hold |
-|---:|:--------|---------:|------:|----------:|-----:|:------------|-------:|-----------:|---------------:|-------:|------------:|--------:|---------:|-------:|---------:|
-|  0 | CLDS    |    14.15 | 28.3  |      0.99 |  N/A | 500,000     | N/A    |     N/A    | 7815           |  28.58 |       28.05 |   14.79 |    46.43 |  -2.12 |        6 |
-|  1 | CTEX    |     3.95 | 39.52 |      0.58 |  N/A | 100,000     | N/A    |     N/A    | 1161           |  39.56 |       39.48 |   24.48 |    51.3  |  -2.07 |       31 |
-|  2 | KLNE    |     5.7  | 22.81 |      1.29 |  N/A | 250,000     |   0.08 |       0.37 | 5580           |  21.55 |       21.7  |   12    |    31.38 |  -2.79 |        5 |
-|  3 | LABD    |    97.16 | 18.61 |      1    |  N/A | 5.22        | N/A    |     N/A    |    8.12293e+06 |  22.26 |       21.35 |   15.7  |    85.28 |  -2.67 |       17 |
-|  4 | MJIN    |     2.79 | 17.45 |      0.95 |  N/A | 160,000     |   0.88 |       4.45 |  282           |  19.81 |       19.07 |    7.87 |    26.73 |  -3.23 |        2 |
 
 ### Disc
 
