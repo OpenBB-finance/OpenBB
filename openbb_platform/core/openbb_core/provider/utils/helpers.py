@@ -247,4 +247,7 @@ def run_async(
         return cast(T, func(*args, **kwargs))
 
     with start_blocking_portal() as portal:
-        return portal.call(partial(func, *args, **kwargs))
+        try:
+            return portal.call(partial(func, *args, **kwargs))
+        finally:
+            portal.call(portal.stop)
