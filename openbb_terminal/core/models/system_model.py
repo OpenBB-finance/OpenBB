@@ -43,7 +43,7 @@ class SystemModel(BaseModel):
     LOGGING_VERBOSITY: int = 20
     LOGGING_SUB_APP: str = "terminal"
     LOGGING_SUPPRESS: bool = False
-    LOGGING_SEND_TO_S3: bool = True
+    LOGGING_SEND_TO_S3: bool = False
     LOG_COLLECT: bool = True
 
     # Personalization section
@@ -63,22 +63,22 @@ class SystemModel(BaseModel):
 
     @model_validator(mode="after")
     @classmethod
-    def add_additional_handlers(cls, values):
+    def add_additional_handlers(cls, values: "SystemModel") -> "SystemModel":
         if (
-            not any([values["TEST_MODE"], values["LOGGING_SUPPRESS"]])
-            and values["LOG_COLLECT"]
-            and "posthog" not in values["LOGGING_HANDLERS"]
+            not any([values.TEST_MODE, values.LOGGING_SUPPRESS])
+            and values.LOG_COLLECT
+            and "posthog" not in values.LOGGING_HANDLERS
         ):
-            values["LOGGING_HANDLERS"].append("posthog")
+            values.LOGGING_HANDLERS.append("posthog")
 
         return values
 
-    @model_validator(mode="after")
-    @classmethod
-    def validate_send_to_s3(cls, values):
-        if "posthog" in values["LOGGING_HANDLERS"] or values["LOG_COLLECT"] is False:
-            values["LOGGING_SEND_TO_S3"] = False
-        return values
+    # @model_validator(mode="after")
+    # @classmethod
+    # def validate_send_to_s3(cls, values: "SystemModel") -> "SystemModel":
+    #     if "posthog" in values.LOGGING_HANDLERS or values.LOG_COLLECT is False:
+    #         values.LOGGING_SEND_TO_S3 = False
+    #     return values
 
     @validator("LOGGING_HANDLERS", allow_reuse=True)
     @classmethod
