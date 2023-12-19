@@ -58,14 +58,17 @@ class YFinanceBalanceSheetFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceBalanceSheetQueryParams:
+        """Transform the query parameters."""
         return YFinanceBalanceSheetQueryParams(**params)
 
     @staticmethod
     def extract_data(
+        # pylint: disable=unused-argument
         query: YFinanceBalanceSheetQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
+        """Extract the data from the Yahoo Finance endpoints."""
         period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
         data = Ticker(query.symbol).get_balance_sheet(
             as_dict=False, pretty=False, freq=period
@@ -87,4 +90,5 @@ class YFinanceBalanceSheetFetcher(
         data: List[Dict],
         **kwargs: Any,
     ) -> List[YFinanceBalanceSheetData]:
+        """Transform the data."""
         return [YFinanceBalanceSheetData.model_validate(d) for d in data]

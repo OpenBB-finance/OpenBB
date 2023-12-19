@@ -40,6 +40,7 @@ class YFinanceIncomeStatementData(IncomeStatementData):
 
     @field_validator("period_ending", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
+        """Validate the date field."""
         if isinstance(v, str):
             return datetime.strptime(v, "%Y-%m-%d %H:%M:%S").date()
         return v
@@ -55,14 +56,17 @@ class YFinanceIncomeStatementFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceIncomeStatementQueryParams:
+        """Transform the query parameters."""
         return YFinanceIncomeStatementQueryParams(**params)
 
     @staticmethod
     def extract_data(
+        # pylint: disable=unused-argument
         query: YFinanceIncomeStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[YFinanceIncomeStatementData]:
+        """Extract the data from the Yahoo Finance endpoints."""
         period = "yearly" if query.period == "annual" else "quarterly"
         data = Ticker(query.symbol).get_income_stmt(
             as_dict=False, pretty=False, freq=period
@@ -84,4 +88,5 @@ class YFinanceIncomeStatementFetcher(
         data: List[Dict],
         **kwargs: Any,
     ) -> List[YFinanceIncomeStatementData]:
+        """Transform the data."""
         return [YFinanceIncomeStatementData.model_validate(d) for d in data]

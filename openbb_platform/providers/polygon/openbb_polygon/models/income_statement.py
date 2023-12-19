@@ -75,6 +75,7 @@ class PolygonIncomeStatementData(IncomeStatementData):
     """Polygon Income Statement Data."""
 
     __alias_dict__ = {
+        # pylint: disable=line-too-long
         "revenue": "revenues",
         "provisions_for_loan_lease_and_other_losses": "provision_for_loan_lease_and_other_losses",
         "income_tax_expense_benefit_current": "income_tax_expense_benefit_current",
@@ -96,13 +97,13 @@ class PolygonIncomeStatementData(IncomeStatementData):
         "non_interest_income": "noninterest_income",
         "non_interest_expense": "noninterest_expense",
         "income_after_tax": "income_loss_from_continuing_operations_after_tax",
-        "income_from_discontinued_operations_net_of_tax_on_disposal": "income_loss_from_discontinued_operations_net_of_tax_gain_loss_on_disposal",  # noqa: E501
+        "income_from_discontinued_operations_net_of_tax_on_disposal": "income_loss_from_discontinued_operations_net_of_tax_gain_loss_on_disposal",  # type: ignore # noqa: E501
         "income_from_discontinued_operations_net_of_tax": "income_loss_from_discontinued_operations_net_of_tax",
         "net_income_attributable_minority_interest": "net_income_loss_attributable_to_noncontrolling_interest",
         "net_income_attributable_to_parent": "net_income_loss_attributable_to_parent",
         "net_income_available_to_stock_holders": "net_income_loss_available_to_common_stockholders_basic",
         "participating_securities_earnings": "participating_securities_distributed_and_undistributed_earnings_loss_basic",
-        "undistributed_earnings_allocated_to_participating_securities": "undistributed_earnings_loss_allocated_to_participating_securities_basic",  # noqa: E501
+        "undistributed_earnings_allocated_to_participating_securities": "undistributed_earnings_loss_allocated_to_participating_securities_basic",  # type: ignore # noqa: E501
     }
 
     revenue: Optional[float] = Field(default=None, description="Total Revenue")
