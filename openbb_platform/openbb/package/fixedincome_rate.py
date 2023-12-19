@@ -287,7 +287,7 @@ class ROUTER_fixedincome_rate(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fred"]] = None,
+        provider: Optional[Literal["federal_reserve", "fred"]] = None,
         **kwargs
     ) -> OBBject:
         """Fed Funds Rate.
@@ -303,9 +303,9 @@ class ROUTER_fixedincome_rate(Container):
                 Start date of the data, in YYYY-MM-DD format.
             end_date : Optional[datetime.date]
                 End date of the data, in YYYY-MM-DD format.
-            provider : Optional[Literal['fred']]
+            provider : Optional[Literal['federal_reserve', 'fred']]
                 The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fred' if there is
+                If None, the provider specified in defaults is selected or 'federal_reserve' if there is
                 no default.
             parameter : Literal['monthly', 'daily', 'weekly', 'daily_excl_weekend', 'annual', 'biweekly', 'volume']
                 Period of FED rate. (provider: fred)
@@ -315,7 +315,7 @@ class ROUTER_fixedincome_rate(Container):
             OBBject
                 results : List[FEDFUNDS]
                     Serializable results.
-                provider : Optional[Literal['fred']]
+                provider : Optional[Literal['federal_reserve', 'fred']]
                     Provider name.
                 warnings : Optional[List[Warning_]]
                     List of warnings.
