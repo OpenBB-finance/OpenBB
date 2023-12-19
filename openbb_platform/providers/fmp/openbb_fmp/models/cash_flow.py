@@ -42,7 +42,7 @@ class FMPCashFlowStatementData(CashFlowStatementData):
         "change_in_working_capital": "changeInWorkingCapital",
         "changes_in_account_receivables": "accountsReceivables",
         "changes_in_inventory": "inventory",
-        "accounts_payables": "accountsPayables",
+        "change_in_account_payable": "accountsPayables",
         "changes_in_other_working_capital": "otherWorkingCapital",
         "changes_in_other_non_cash_items": "otherNonCashItems",
         "net_cash_from_operating_activities": "netCashProvidedByOperatingActivities",
