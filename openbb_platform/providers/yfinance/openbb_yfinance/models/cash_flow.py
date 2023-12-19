@@ -54,14 +54,17 @@ class YFinanceCashFlowStatementFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceCashFlowStatementQueryParams:
+        """Transform the query parameters."""
         return YFinanceCashFlowStatementQueryParams(**params)
 
     @staticmethod
     def extract_data(
+        # pylint: disable=unused-argument
         query: YFinanceCashFlowStatementQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[YFinanceCashFlowStatementData]:
+        """Extract the data from the Yahoo Finance endpoints."""
         period = "yearly" if query.period == "annual" else "quarterly"  # type: ignore
         data = Ticker(query.symbol).get_cash_flow(
             as_dict=False, pretty=False, freq=period
@@ -81,8 +84,10 @@ class YFinanceCashFlowStatementFetcher(
 
     @staticmethod
     def transform_data(
+        # pylint: disable=unused-argument
         query: YFinanceCashFlowStatementQueryParams,
         data: List[Dict],
         **kwargs: Any,
     ) -> List[YFinanceCashFlowStatementData]:
+        """Transform the data."""
         return [YFinanceCashFlowStatementData.model_validate(d) for d in data]
