@@ -39,8 +39,8 @@ def request(url: str) -> BasicResponse:
     """
     Request function for PyScript. Pass in Method and make sure to await.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     url: str
         URL to make request to
 
@@ -79,7 +79,7 @@ async def response_callback(
 
 
 async def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
-    """Get data from FMP endpoint."""
+    """Get data from Intrinio endpoint."""
     return await amake_request(url, response_callback=response_callback, **kwargs)
 
 
@@ -88,15 +88,15 @@ async def get_data_many(
 ) -> List[dict]:
     """Get data from Intrinio endpoint and convert to list of schemas.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     url: str
         The URL to get the data from.
     sub_dict: Optional[str]
         The sub-dictionary to use.
 
-    Returns:
-    --------
+    Returns
+    -------
     List[dict]
         Dictionary of data.
     """
@@ -133,6 +133,7 @@ def get_weekday(date: dateType) -> str:
 async def async_get_data_one(
     url: str, limit: int = 1, sleep: float = 1, **kwargs: Any
 ) -> Union[list, dict]:
+    """Get data from Intrinio endpoint and convert to schema."""
     if limit > 100:
         await asyncio.sleep(sleep)
 
