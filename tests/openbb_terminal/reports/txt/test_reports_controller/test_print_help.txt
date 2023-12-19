@@ -1,4 +1,3 @@
-Build and run your custom reports or try one of our templates:
 
 OpenBB reports:
     crypto      <symbol>
@@ -11,4 +10,5 @@ OpenBB reports:
 
 Custom reports:
     run                Run a Jupyter notebook from OpenBBUserData/reports/custom reports
+    exe                Execute a Jupyter notebook through a hyperlink using papermill
 

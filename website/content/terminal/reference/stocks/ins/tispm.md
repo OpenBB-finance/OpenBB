@@ -1,9 +1,30 @@
 ---
 title: tispm
-description: OpenBB Terminal Function
+description: Metadata for the 'tispm' page on a stock marketing website. This page
+  provides information about the top insider sales of the month, including trade date,
+  ticker, company name, insider name, title, trade type, price, quantity, owned, diff
+  own, and value. The data can be customized and limited, sourced from OpenInsider.
+keywords:
+- tispm
+- insider sales
+- stock marketing
+- trade date
+- company name
+- insider name
+- title
+- trade type
+- price
+- quantity
+- owned
+- diff own
+- value
+- data display
+- OpenInsider
 ---
 
-# tispm
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ins/tispm - Reference | OpenBB Terminal Docs" />
 
 Print top insider sales of the month. [Source: OpenInsider]
 

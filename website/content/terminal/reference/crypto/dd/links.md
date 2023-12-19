@@ -1,9 +1,17 @@
 ---
 title: links
-description: OpenBB Terminal Function
+description: The 'links' command is utilized to display an asset's links. This command
+  doesn't require any parameters and is beneficial for those handling asset information.
+keywords:
+- links
+- asset's links
+- parameters
+- asset information
 ---
 
-# links
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/links - Reference | OpenBB Terminal Docs" />
 
 Display asset's links [Source: https://messari.io]
 

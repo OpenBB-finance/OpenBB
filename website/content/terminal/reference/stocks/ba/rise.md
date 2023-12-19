@@ -1,9 +1,21 @@
 ---
 title: rise
-description: OpenBB Terminal Function
+description: The 'rise' is a command for printing top rising related queries of a
+  specific stock. It sources its data from Google and is customizable based on user
+  inputs, creating an efficient way of keeping track of specific stock metrics.
+keywords:
+- stocks
+- stock metrics
+- google sourced data
+- top rising queries
+- command line interface
+- stock command
+- query limit
 ---
 
-# rise
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ba/rise - Reference | OpenBB Terminal Docs" />
 
 Print top rising related queries with this stock's query. [Source: Google]
 

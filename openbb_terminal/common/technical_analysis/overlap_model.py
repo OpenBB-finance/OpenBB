@@ -55,7 +55,7 @@ def sma(data: pd.Series, length: int = 50, offset: int = 0) -> pd.DataFrame:
     Returns
     -------
     pd.DataFrame
-         Dataframe containing prices and SMA
+        Dataframe containing prices and SMA
     """
     if isinstance(data, pd.DataFrame):
         console.print("[red]Please send a series and not a DataFrame.[/red]\n")

@@ -1,9 +1,21 @@
 ---
 title: ftd
-description: OpenBB Terminal Function
+description: Documentation and usage guide for the 'ftd' function that prints the
+  latest fails-to-deliver data sourced from SEC. It allows users to specify date range,
+  volume of data and offers raw data print.
+keywords:
+- fails-to-deliver data
+- SEC source
+- ftd
+- datetime parameter
+- raw data
+- data print
+- data analysis
 ---
 
-# ftd
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/dps/ftd - Reference | OpenBB Terminal Docs" />
 
 Prints latest fails-to-deliver data. [Source: SEC]
 

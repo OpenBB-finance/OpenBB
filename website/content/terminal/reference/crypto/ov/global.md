@@ -1,9 +1,21 @@
 ---
 title: global
-description: OpenBB Terminal Function
+description: An overview of global statistics on the Crypto Market, providing essential
+  information such as active cryptocurrencies, ICOs data, and market cap changes.
+  Features a pie chart option for visualizing market cap distribution. Powered by
+  CoinGecko.
+keywords:
+- Global Cryptocurrency
+- Crypto Market Statistics
+- Cryptocurrency Analysis
+- ICOs Data
+- Pie Chart Market Cap
+- CoinGecko
 ---
 
-# global
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ov/global - Reference | OpenBB Terminal Docs" />
 
 Shows global statistics about Crypto Market
 

@@ -1,12 +1,28 @@
 ---
 title: candles
-description: OpenBB SDK Function
+description: The page provides detailed info on 'candles' functions within the OpenBB
+  forex category for Oanda. It covers methods to request candle chart data and display
+  the candle chart, along with their respective parameters and return types. Source
+  links for Python code are included.
+keywords:
+- candles
+- chart
+- Forex
+- granularity
+- data points
+- Oanda
+- currency pair
+- Source Code
+- matplotlib
+- additional charts
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex.oanda.candles - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# candles
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +55,6 @@ openbb.forex.oanda.candles(instrument: Optional[str] = None, granularity: str = 
 | Union[pd.DataFrame, bool] | Candle chart data or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +86,6 @@ openbb.forex.oanda.candles_chart(instrument: str = "", granularity: str = "D", c
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

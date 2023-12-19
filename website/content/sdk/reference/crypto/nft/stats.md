@@ -1,12 +1,25 @@
 ---
 title: stats
-description: OpenBB SDK Function
+description: This page consists of detailed guidelines on how to utilise stats and
+  stats_chart functions. It shows how one can leverage these functions to get NFT
+  collection stats and print tables showcasing these stats, respectively sourced from
+  opensea.io.
+keywords:
+- stats function
+- stats_chart function
+- NFT collection stats
+- OpenSea data
+- NFT data
+- slug
+- data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.nft.stats - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# stats
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +50,6 @@ openbb.crypto.nft.stats(slug: str)
 | pd.DataFrame | collection stats |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +78,6 @@ openbb.crypto.nft.stats_chart(slug: str, export: str)
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

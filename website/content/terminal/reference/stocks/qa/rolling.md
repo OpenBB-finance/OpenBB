@@ -1,9 +1,20 @@
 ---
 title: rolling
-description: OpenBB Terminal Function
+description: The document displays a brief overview about rolling mean and standard
+  deviation. It includes usage explanation, parameters description with special emphasis
+  on window length and an illustrative diagram.
+keywords:
+- Rolling mean
+- Standard deviation
+- Usage
+- Parameters
+- n_window
+- Window length
 ---
 
-# rolling
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/qa/rolling - Reference | OpenBB Terminal Docs" />
 
 Rolling mean and std deviation
 

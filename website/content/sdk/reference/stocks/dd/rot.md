@@ -1,12 +1,25 @@
 ---
 title: rot
-description: OpenBB SDK Function
+description: This webpage contains detailed methods and code snippets to retrieve
+  and visualize rating over time data for any stock ticker. It includes functioning
+  code in Python, and links to the source code in GitHub.
+keywords:
+- stock ratings
+- Finnhub api
+- data visualization
+- open source
+- stock market
+- financial markets
+- investment research
+- due diligence
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.dd.rot - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# rot
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +49,6 @@ openbb.stocks.dd.rot(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Get dataframe with ratings |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -70,8 +81,6 @@ openbb.stocks.dd.rot_chart(symbol: str, limit: int = 10, raw: bool = False, expo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

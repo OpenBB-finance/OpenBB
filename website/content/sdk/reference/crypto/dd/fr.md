@@ -1,12 +1,26 @@
 ---
 title: fr
-description: OpenBB SDK Function
+description: Our docusaurus page provides Python functions that return and display
+  crypto coin fundraising data. It deals with launch summary, sales rounds, treasury
+  accounts and metric value launch details. The page also showcases how to export
+  the data to different file formats.
+keywords:
+- Crypto coin fundraising data
+- Python functions
+- Launch Summary
+- Sales rounds
+- Treasury accounts
+- Metric value launch details
+- Export data
+- Docusaurus page
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.fr - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# fr
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +51,6 @@ openbb.crypto.dd.fr(symbol: str)
 | Tuple[str, pd.DataFrame, pd.DataFrame, pd.DataFrame] | Launch summary,<br/>Sales rounds,<br/>Treasury Accounts,<br/>Metric Value launch details |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +80,6 @@ openbb.crypto.dd.fr_chart(symbol: str, export: str = "", external_axes: Optional
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

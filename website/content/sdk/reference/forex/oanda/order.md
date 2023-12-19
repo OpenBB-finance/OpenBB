@@ -1,12 +1,27 @@
 ---
 title: order
-description: OpenBB SDK Function
+description: This page provides detailed documentation on how to create buy/sell trade
+  orders using OpenBB Terminal's 'forex.oanda' module. It includes source code, function
+  definitions, parameters, and return information to successfully place orders.
+keywords:
+- Forex
+- Oanda
+- Order
+- Buy Order
+- Sell Order
+- Account ID
+- Currency Pair
+- Price
+- Units
+- Order Chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex.oanda.order - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# order
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +55,6 @@ openbb.forex.oanda.order(price: int = 0, units: int = 0, instrument: Optional[st
 | Union[pd.DataFrame, bool] | Orders data or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +85,6 @@ openbb.forex.oanda.order_chart(accountID: str, instrument: str = "", price: int 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

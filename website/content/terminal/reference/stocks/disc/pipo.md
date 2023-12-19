@@ -1,9 +1,21 @@
 ---
 title: pipo
-description: OpenBB Terminal Function
+description: This documentation page provides details on how to use the 'pipo' function
+  to retrieve past IPOs dates; instructions for its usage, parameters and clear examples
+  are provided.
+keywords:
+- pipo
+- past IPOs dates
+- function usage
+- parameters instructions
+- examples
+- IPOs
+- dates
 ---
 
-# pipo
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/disc/pipo - Reference | OpenBB Terminal Docs" />
 
 Past IPOs dates. [Source: https://finnhub.io]
 

@@ -1,9 +1,22 @@
 ---
 title: indices
-description: OpenBB SDK Function
+description: This documentation page provides detailed information about how to use
+  the openbb.economy.indices() function to get the top US indices. The function returns
+  a DataFrame containing the name, price, net change, and percent change.
+keywords:
+- openbb.economy.indices()
+- US indices
+- Documentation
+- Name
+- Price
+- Net change
+- Percent change
+- Source code
 ---
 
-# indices
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.indices - Reference | OpenBB SDK Docs" />
 
 Get the top US indices
 
@@ -27,4 +40,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing name, price, net change and percent change |
 ---
-

@@ -1,12 +1,24 @@
 ---
 title: quantile
-description: OpenBB SDK Function
+description: This page provides documentation and source code for OpenBB's Quantile
+  function. It includes info about parameters, return types, and how to generate and
+  plot rolling quantile data using Python.
+keywords:
+- Docusaurus
+- Quantile
+- Source Code
+- Quantitative Analysis
+- Plotting Data
+- Rolling Quantile
+- Python DataFrame
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="qa.quantile - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# quantile
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +50,6 @@ openbb.qa.quantile(data: pd.DataFrame, window: int = 14, quantile_pct: float = 0
 | ---- | ----------- |
 | Tuple[pd.DataFrame, pd.DataFrame] | Dataframe of rolling median prices over window,<br/>Dataframe of rolling quantile prices over window |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -74,8 +84,6 @@ openbb.qa.quantile_chart(data: pd.DataFrame, target: str, symbol: str = "", wind
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

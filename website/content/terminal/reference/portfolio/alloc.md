@@ -1,9 +1,20 @@
 ---
 title: alloc
-description: OpenBB Terminal Function
+description: The page serves as a documentation for 'alloc' - a python function that
+  helps users understand their portfolio's allocation to different assets or sectors
+  compared to a benchmark. It includes detailed usage instructions, parameters, and
+  examples of how to use the function.
+keywords:
+- alloc
+- asset allocation
+- sector allocation
+- benchmark comparison
+- portfolio management
 ---
 
-# alloc
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/alloc - Reference | OpenBB Terminal Docs" />
 
 Show your allocation to each asset or sector compared to the benchmark.
 
@@ -56,7 +67,7 @@ Portfolio vs. Benchmark - Top 10 Assets Allocation
 
 2022 May 12, 06:23 (🦋) /portfolio/ $ alloc sectors
 
-      Portfolio vs. Benchmark - Top 4 Sectors Allocation       
+      Portfolio vs. Benchmark - Top 4 Sectors Allocation
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Sectors                ┃ Portfolio ┃ Benchmark ┃ Difference ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━┩
@@ -71,7 +82,7 @@ Portfolio vs. Benchmark - Top 10 Assets Allocation
 
 2022 May 12, 06:23 (🦋) /portfolio/ $ alloc countries
 
- Portfolio vs. Benchmark - Top 5 Countries Allocation 
+ Portfolio vs. Benchmark - Top 5 Countries Allocation
 ┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Countries     ┃ Portfolio ┃ Benchmark ┃ Difference ┃
 ┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━┩
@@ -88,7 +99,7 @@ Portfolio vs. Benchmark - Top 10 Assets Allocation
 
 2022 May 12, 06:23 (🦋) /portfolio/ $ alloc regions
 
-  Portfolio vs. Benchmark - Top 3 Regions Allocation  
+  Portfolio vs. Benchmark - Top 3 Regions Allocation
 ┏━━━━━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Regions       ┃ Portfolio ┃ Benchmark ┃ Difference ┃
 ┡━━━━━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━╇━━━━━━━━━━━━┩

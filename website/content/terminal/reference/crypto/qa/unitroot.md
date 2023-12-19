@@ -1,9 +1,21 @@
 ---
 title: unitroot
-description: OpenBB Terminal Function
+description: This page provides comprehensive instructions and usage examples for
+  the unitroot tool. Unitroot, used for unit root test and stationarity, offers multiple
+  regression methods including c, ct, ctt, and nc.
+keywords:
+- unitroot
+- unit root test
+- stationarity
+- ADF
+- KPSS
+- regression
+- programming
 ---
 
-# unitroot
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/qa/unitroot - Reference | OpenBB Terminal Docs" />
 
 Unit root test / stationarity (ADF, KPSS)
 

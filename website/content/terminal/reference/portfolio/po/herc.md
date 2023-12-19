@@ -1,9 +1,25 @@
 ---
 title: herc
-description: OpenBB Terminal Function
+description: The page contains details about using HERC (Hierarchical Equal Risk Contribution)
+  for building a portfolio. It covers its usage, parameters, and a clear step-by-step
+  example.
+keywords:
+- Hierarchical Equal Risk Contribution
+- Portfolio
+- HERC
+- Risk Measurement
+- SEO improvement
+- Financial trading
+- Financial portfolio
+- Risk management
+- Codependence
+- Covariance
+- Risk measure optimization
 ---
 
-# herc
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/po/herc - Reference | OpenBB Terminal Docs" />
 
 Builds a hierarchical equal risk contribution portfolio
 

@@ -9,6 +9,7 @@ import pandas as pd
 from requests.exceptions import HTTPError
 
 from openbb_terminal.helper_funcs import request
+from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.options.op_helpers import Options, PydanticOptions
 
 __docformat__ = "numpy"
@@ -143,14 +144,13 @@ def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, list[str]]:
     try:
         if symbol in TICKER_EXCEPTIONS:
             new_ticker = "^" + symbol
-        else:
-            if symbol not in INDEXES:
-                new_ticker = symbol
+        elif symbol not in INDEXES:
+            new_ticker = symbol
 
-            elif symbol in INDEXES:
-                new_ticker = "^" + symbol
+        elif symbol in INDEXES:
+            new_ticker = "^" + symbol
 
-                # Gets the data to return, and if none returns empty Tuple #
+            # Gets the data to return, and if none returns empty Tuple #
 
         symbol_info_url = (
             "https://www.cboe.com/education/tools/trade-optimizer/symbol-info/?symbol="
@@ -164,7 +164,7 @@ def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, list[str]]:
         if symbol_info_json.success is False:
             ticker_details = pd.DataFrame()
             ticker_expirations = []
-            print("No data found for the symbol: " f"{symbol}" "")
+            console.print("No data found for the symbol: " f"{symbol}" "")
         else:
             symbol_details = pd.Series(symbol_info_json["details"])
             symbol_details = pd.DataFrame(symbol_details).transpose()
@@ -266,7 +266,7 @@ def get_ticker_info(symbol: str) -> Tuple[pd.DataFrame, list[str]]:
                 ).rename(columns={f"{new_ticker}": f"{symbol}"})
 
     except HTTPError:
-        print("There was an error with the request'\n")
+        console.print("There was an error with the request'\n")
         ticker_details = pd.DataFrame()
         ticker_expirations = list()
         return ticker_details, ticker_expirations
@@ -298,27 +298,23 @@ def get_ticker_iv(symbol: str) -> pd.DataFrame:
         if symbol in TICKER_EXCEPTIONS:
             quotes_iv_url = (
                 "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/_"
-                f"{symbol}"
-                ".json"
+                f"{symbol}.json"
             )
-        else:
-            if symbol not in INDEXES:
-                quotes_iv_url = (
-                    "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/"
-                    f"{symbol}"
-                    ".json"
-                )
+        elif symbol not in INDEXES:
+            quotes_iv_url = (
+                "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/"
+                f"{symbol}.json"
+            )
 
-            elif symbol in INDEXES:
-                quotes_iv_url = (
-                    "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/_"
-                    f"{symbol}"
-                    ".json"
-                )
+        elif symbol in INDEXES:
+            quotes_iv_url = (
+                "https://cdn.cboe.com/api/global/delayed_quotes/historical_data/_"
+                f"{symbol}.json"
+            )
         h_iv = request(quotes_iv_url)
 
         if h_iv.status_code != 200:
-            print("No data found for the symbol: " f"{symbol}" "")
+            console.print("No data found for the symbol: " f"{symbol}" "")
             return pd.DataFrame()
 
         data = h_iv.json()
@@ -358,7 +354,7 @@ def get_ticker_iv(symbol: str) -> pd.DataFrame:
 
         ticker_iv = pd.DataFrame(h_data).transpose()
     except HTTPError:
-        print("There was an error with the request'\n")
+        console.print("There was an error with the request'\n")
 
     return pd.DataFrame(ticker_iv, columns=iv_order).transpose()
 
@@ -407,7 +403,7 @@ def get_quotes(symbol: str) -> pd.DataFrame:
 
         r = request(quotes_url)
         if r.status_code != 200:
-            print("No data found for the symbol: " f"{symbol}" "")
+            console.print("No data found for the symbol: " f"{symbol}" "")
             return pd.DataFrame()
 
         r_json = r.json()
@@ -475,7 +471,7 @@ def get_quotes(symbol: str) -> pd.DataFrame:
         quotes["changePercent"] = round(quotes["changePercent"], 2)
 
     except HTTPError:
-        print("There was an error with the request'\n")
+        console.print("There was an error with the request'\n")
         return pd.DataFrame()
 
     return quotes.reset_index()
@@ -535,7 +531,9 @@ def load_options(symbol: str, pydantic: bool = False) -> Options:
     OptionsChains.symbol = symbol
 
     if OptionsChains.symbol not in OptionsChains.SYMBOLS.index:
-        print("The symbol, " f"{symbol}" ", was not found in the CBOE directory.")
+        console.print(
+            "The symbol, " f"{symbol}" ", was not found in the CBOE directory."
+        )
         return OptionsChains
     info, _ = get_ticker_info(OptionsChains.symbol)
     if not info.empty:

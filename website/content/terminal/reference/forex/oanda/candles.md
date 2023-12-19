@@ -1,9 +1,26 @@
 ---
 title: candles
-description: OpenBB Terminal Function
+description: This page is a comprehensive guide on how to display candle data for
+  different technical analysis indicators like Bollinger Bands, Accumulation/Distribution
+  Indicator, Commodity Channel Index, Exponential Moving Average, On Balance Volume,
+  Relative Strength Index, Simple Moving Average, and Volume Weighted Average Price.
+keywords:
+- candle data
+- technical analysis
+- data visualization
+- Bollinger Bands
+- Accumulation/Distribution Indicator
+- Commodity Channel Index
+- Exponential Moving Average
+- On Balance Volume
+- Relative Strength Index
+- Simple Moving Average
+- Volume Weighted Average Price
 ---
 
-# candles
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex/oanda/candles - Reference | OpenBB Terminal Docs" />
 
 Display Candle Data
 

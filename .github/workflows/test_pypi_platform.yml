@@ -1,0 +1,68 @@
+name: Deploy the OpenBB Platform and the OpenBBTerminal to Test PyPI
+
+on:
+  push:
+    branches:
+      - feature/v4-pypi
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy-test-pypi:
+    name: Build and publish 📦 to TestPyPI
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+
+      - name: Install pypa/build
+        run: >-
+          python -m
+          pip install
+          build
+          --user
+
+      - name: OpenBBTerminal - Update version in pyproject.toml and Edit docs
+        run: |
+          sed -i 's/name = ".*"/name = "openbb-terminal-nightly"/' pyproject.toml
+          sed -i "3s/version = \"\(.*\)\"/version = \"\1.dev$(date +%Y%m%d%H%M)\"/" pyproject.toml
+          sed -i 's|pip install openbb-terminal|pip install openbb-terminal-nightly|g' ./website/pypi.md
+
+      - name: OpenBBTerminal - Build a binary wheel and a source tarball
+        run: >-
+          python -m
+          build
+          --sdist
+          --wheel
+          --outdir dist/
+          .
+
+      - name: OpenBBTerminal - Publish distribution 📦 to Test PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+          password: ${{ secrets.TEST_PYPI_API_TOKEN_OBB_TERMINAL_NIGHTLY }}
+          repository-url: https://test.pypi.org/legacy/
+
+      - name: OpenBB Platform - Update version in pyproject.toml and Edit docs
+        run: |
+          sed -i 's/name = ".*"/name = "openbb-nightly"/' openbb_platform/pyproject.toml
+          sed -i "3s/version = \"\(.*\)\"/version = \"\1.dev$(date +%Y%m%d%H%M)\"/" openbb_platform/pyproject.toml
+
+      - name: OpenBB Platform - Create the dinamically generated wheel
+        run: |
+          python -m pip install poetry toml
+          python build/pypi/openbb_platform/nightly.py
+
+      - name: OpenBB Platform - Publish distribution 📦 to Test PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: openbb_platform/dist/
+          password: ${{ secrets.TEST_PYPI_API_TOKEN_OBB_PLATFORM_NIGHTLY }}
+          repository-url: https://test.pypi.org/legacy/

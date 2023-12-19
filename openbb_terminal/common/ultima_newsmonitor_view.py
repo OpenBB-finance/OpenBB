@@ -76,7 +76,11 @@ def display_news(
                 console.print(row["URL"] + "\n")
             console.print("------------------------")
 
-    top_headlines = ultima_newsmonitor_model.get_top_headlines(term)["summary"]
+    top_headlines = ultima_newsmonitor_model.get_top_headlines(term)
+    if "summary" in top_headlines:
+        top_headlines = top_headlines["summary"]
+    else:
+        return
     if "Ultima Insights was unable to identify" in top_headlines:
         console.print(
             f"[red]Most Relevant Articles for {term} - {dt.datetime.now().strftime('%Y-%m-%d')}\n{top_headlines}[/red]"

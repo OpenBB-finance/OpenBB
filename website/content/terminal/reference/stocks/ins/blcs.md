@@ -1,9 +1,20 @@
 ---
 title: blcs
-description: OpenBB Terminal Function
+description: This page is about 'blcs', a tool that is used to print the latest CEO/CFO
+  sales 100k using data from OpenInsider. It displays insider data in a tabular format,
+  with options to limit data rows.
+keywords:
+- OpenInsider
+- blcs
+- CEO/CFO sales
+- Insider Data
+- Python tool
+- Stocks
 ---
 
-# blcs
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ins/blcs - Reference | OpenBB Terminal Docs" />
 
 Print latest CEO/CFO sales 100k. [Source: OpenInsider]
 

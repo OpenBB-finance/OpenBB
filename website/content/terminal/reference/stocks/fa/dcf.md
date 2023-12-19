@@ -1,9 +1,26 @@
 ---
 title: dcf
-description: OpenBB Terminal Function
+description: Discover the dcf command, a powerful and flexible tool that allows users
+  to predict and analyze the value of a company based on future cash flows and the
+  present value. This tool allows for customizable parameters, includes linear regression
+  estimates, discount factors, and multiple prediction models.
+keywords:
+- dcf
+- discounted cash flow
+- financial statements prediction
+- linear regression
+- Fama French
+- CAPM
+- cash flow analysis
+- present value
+- company value
+- stock analysis
+- financial tool
 ---
 
-# dcf
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/fa/dcf - Reference | OpenBB Terminal Docs" />
 
 A discounted cash flow statement looks to analyze the value of a company. To do this we need to predict the future cash flows and then determine how much those cash flows are worth to us today. We predict the future expected cash flows by predicting what the financial statements will look like in the future, and then using this to determine the cash the company will have in the future. This cash is paid to share holders. We use linear regression to predict the future financial statements. Once we have our predicted financial statements we need to determine how much the cash flows are worth today. This is done with a discount factor. Our DCF allows users to choose between Fama French and CAPM for the factor. This allows us to calculate the present value of the future cash flows. The present value of all of these cash payments is the companies' value. Dividing this value by the number of shares outstanding allows us to calculate the value of each share in a company.
 

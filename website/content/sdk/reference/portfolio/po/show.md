@@ -1,9 +1,23 @@
 ---
 title: show
-description: OpenBB SDK Function
+description: This documentation page talks about the 'show' function from OpenBB's
+  portfolio optimization module. It details how to display portfolio optimization
+  results using categories and portfolio engines.
+keywords:
+- portfolio optimization
+- portfolio engine
+- show function
+- investment categories
+- usage examples
+- weights
+- performance
+- get available categories
+- set categories dict
 ---
 
-# show
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.po.show - Reference | OpenBB SDK Docs" />
 
 Show portfolio optimization results
 
@@ -91,4 +105,3 @@ weights_df, category_df = openbb.portfolio.po.show(portfolio_engine=p, category=
 ```
 
 ---
-

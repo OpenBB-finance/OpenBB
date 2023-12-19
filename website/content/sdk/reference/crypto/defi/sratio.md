@@ -1,12 +1,24 @@
 ---
 title: sratio
-description: OpenBB SDK Function
+description: This page provides a detailed guide on how to use OpenBB finance's sratio
+  and sratio_chart functions. These functions retrieve and plot staking ratio history
+  from terra blockchain which can be useful for DeFi applications.
+keywords:
+- terra blockchain
+- staking ratio history
+- OpenBB finance
+- openbb crypto defi
+- sratio function
+- dataframe
+- matplotlib
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.defi.sratio - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# sratio
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +49,6 @@ openbb.crypto.defi.sratio(limit: int = 200)
 | pd.DataFrame | historical staking ratio |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +78,6 @@ openbb.crypto.defi.sratio_chart(limit: int = 90, export: str = "", external_axes
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,9 +1,24 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: Documentation on how to load and analyze crypto currency data using Python.
+  The page explains how to use different data sources such as Yahoo Finance, ccxt,
+  or cg, select exchanges and intervals, and query data by cryptocurrency symbols,
+  start and end dates.
+keywords:
+- crypto currency analysis
+- yahoo finance
+- ccxt
+- cg
+- exchange selection
+- data interval
+- load function
+- cryptocurrency symbol
+- quote currency
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ta/load - Reference | OpenBB Terminal Docs" />
 
 Load crypto currency to perform analysis on. Yahoo Finance is used as default source. Other sources can be used such as 'ccxt' or 'cg' with --source. If you select 'ccxt', you can then select any exchange with --exchange. You can also select a specific interval with --interval.
 

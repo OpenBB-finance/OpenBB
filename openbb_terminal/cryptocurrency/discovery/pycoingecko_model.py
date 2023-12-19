@@ -348,8 +348,8 @@ def get_trending_coins() -> pd.DataFrame:
     coins = data["coins"]
     df = pd.DataFrame(columns=["Symbol", "Name", "market_cap Cap Rank"])
     for i, coin in enumerate(coins):
-        coin = coin["item"]
-        df.loc[i] = [coin["id"], coin["name"], coin["market_cap_rank"]]
+        coin_data = coin["item"]
+        df.loc[i] = [coin_data["id"], coin_data["name"], coin_data["market_cap_rank"]]
     return df
 
 

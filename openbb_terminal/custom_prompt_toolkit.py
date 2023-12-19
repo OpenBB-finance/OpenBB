@@ -186,7 +186,7 @@ class NestedCompleter(Completer):
 
         return cls(options)
 
-    def get_completions(
+    def get_completions(  # noqa: PLR0912
         self, document: Document, complete_event: CompleteEvent
     ) -> Iterable[Completion]:
         # Split document.
@@ -195,9 +195,7 @@ class NestedCompleter(Completer):
         if " " in text:
             cmd = text.split(" ")[0]
         if "-" in text:
-            if text.rfind("--") == -1:
-                unprocessed_text = "-" + text.split("-")[-1]
-            elif text.rfind("-") - 1 > text.rfind("--"):
+            if text.rfind("--") == -1 or text.rfind("-") - 1 > text.rfind("--"):
                 unprocessed_text = "-" + text.split("-")[-1]
             else:
                 unprocessed_text = "--" + text.split("--")[-1]
@@ -268,11 +266,10 @@ class NestedCompleter(Completer):
 
             if "-" not in text:
                 completer = self.options.get(first_term)
+            elif cmd in self.options and self.options.get(cmd):
+                completer = self.options.get(cmd).options.get(first_term)  # type: ignore
             else:
-                if cmd in self.options and self.options.get(cmd):
-                    completer = self.options.get(cmd).options.get(first_term)  # type: ignore
-                else:
-                    completer = self.options.get(first_term)
+                completer = self.options.get(first_term)
 
             # If we have a sub completer, use this for the completions.
             if completer is not None:

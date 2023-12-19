@@ -1,10 +1,24 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: c
-description: OpenBB Telegram Command
+description: Command for retrieving a detailed candlestick chart for the specified
+  cryptocurrency coin. This includes an opening and closing price, as well as the
+  high and low within a definite time interval. Options to include support/resistant
+  lines and Fibonacci retracement levels are available.
+keywords:
+- Crypto Currency
+- Crypto Coin
+- Candlestick Chart
+- Crypto Exchange
+- Trading Parameters
+- Support Resistance Lines
+- Fibonacci Retracement Levels
+- Crypto Symbol
+- Crypto Trading Command
 ---
 
-# c
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="charts: c - Telegram Reference | OpenBB Bot Docs" />
 
 This command will retrieve a candlestick chart for the crypto coin provided. The interval provided must be a valid time interval (default 15 minutes). The chart will be displayed to the user and will contain information such as the opening and closing prices, the high and low, the volume, and any other relevant information.
 

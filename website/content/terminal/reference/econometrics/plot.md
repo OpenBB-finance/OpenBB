@@ -1,9 +1,21 @@
 ---
 title: plot
-description: OpenBB Terminal Function
+description: This page provides documentation for the 'plot' command used in Python
+  scripting. The command is intended for plotting data based on a specified column
+  from a dataset with usage examples and parameter explanations.
+keywords:
+- Python scripting
+- data plotting
+- command usage
+- dataset
+- econometrics
+- tutorial
+- SEO optimization
 ---
 
-# plot
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics /plot - Reference | OpenBB Terminal Docs" />
 
 Plot data based on the index
 
@@ -34,7 +46,7 @@ Successfully updated 'us_macro' index to be 'year'
 
 2022 Jun 01, 06:46 (🦋) /econometrics/ $ show us_macro
 
-                                               Dataset us_macro | Showing 10 of 203 rows                                               
+                                               Dataset us_macro | Showing 10 of 203 rows
 ┏━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━┳━━━━━━━━━┓
 ┃        ┃ quarter ┃ realgdp ┃ realcons ┃ realinv ┃ realgovt ┃ realdpi ┃ cpi   ┃ m1     ┃ tbilrate ┃ unemp ┃ pop    ┃ infl  ┃ realint ┃
 ┡━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━╇━━━━━━━━━┩

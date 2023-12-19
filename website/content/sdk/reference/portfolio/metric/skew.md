@@ -1,9 +1,22 @@
 ---
 title: skew
-description: OpenBB SDK Function
+description: Understand how to calculate portfolio and benchmark skewness with the
+  OpenBBTerminal. Explore source code examples demonstrating how to harness Python
+  for financial metric calculations.
+keywords:
+- portfolio skewness
+- benchmark skewness
+- OpenBB finance
+- financial metrics
+- portfolio metrics
+- Python financial analysis
+- skew function
+- OpenBBTerminal examples
 ---
 
-# skew
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.metric.skew - Reference | OpenBB SDK Docs" />
 
 Get skewness for portfolio and benchmark selected
 
@@ -37,4 +50,3 @@ output = openbb.portfolio.metric.skew(p)
 ```
 
 ---
-

@@ -1,17 +1,20 @@
 ---
-title: Discord
-sidebar_position: 1
-description: How to get started with OpenBB Bot
-keywords: [installation, install, install openbb bot, guide, how to, explanation, openbb bot, openbb, discord, telegram,slack]
+title: Discord bot
+sidebar_position: 2
+description: This page guides you on how to add a bot to your Discord server, through
+  steps of login, bot authorization, and adjusting bot permissions.
+keywords:
+- Add bot to Discord
+- Discord bot setup
+- Authorize Discord bot
+- Bot permissions
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Discord - Bot | OpenBB Docs" />
+<HeadTitle title="Setting up Discord bot - Installation | OpenBB Bot Docs" />
 
 import AddBotDialogDiscord from "@site/src/components/General/AddBotDiscord";
-
-## Discord - First Time Setup
 
 <AddBotDialogDiscord
 />

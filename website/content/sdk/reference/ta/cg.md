@@ -1,12 +1,25 @@
 ---
 title: cg
-description: OpenBB SDK Function
+description: Documentation for Center of Gravity Indicator function 'cg' and its graphical
+  representation 'cg_chart' in the OpenBB Terminal. Explanation of their source code,
+  parameters, and returns are covered.
+keywords:
+- Center of Gravity Indicator
+- Technical Analysis
+- Source Code
+- Parameters
+- Returns
+- Charts
+- pd.Series
+- matplotlib
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.cg - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# cg
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +50,6 @@ openbb.ta.cg(values: pd.Series, window: int)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of technical indicator |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -71,8 +82,6 @@ openbb.ta.cg_chart(data: pd.Series, window: int = 14, symbol: str = "", export: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

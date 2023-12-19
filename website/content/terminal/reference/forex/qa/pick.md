@@ -1,9 +1,19 @@
 ---
 title: pick
-description: OpenBB Terminal Function
+description: This page provides detailed information on how to use the 'pick' function
+  for changing the target variable for analysis. It includes usage instructions, the
+  various parameters used, and specific examples dealing primarily with stock analysis.
+keywords:
+- target variable change
+- usage of pick
+- parameters of pick
+- examples of pick
+- stock analysis
 ---
 
-# pick
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex/qa/pick - Reference | OpenBB Terminal Docs" />
 
 Change target variable
 

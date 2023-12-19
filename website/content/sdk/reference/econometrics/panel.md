@@ -1,12 +1,30 @@
 ---
 title: panel
-description: OpenBB SDK Function
+description: Tutorial on how to use OpenBB Terminal's econometric functions with focus
+  on running panel regression models. This includes choosing the type of regression,
+  setting entity and time effects, and interacting with the Python SDK. Provides examples
+  using the 'openbb.econometrics.panel' function, which allows selection of OLS or
+  pooled OLS models, and demonstrates how to read and interpret the model summary.
+  Also explains the 'openbb.econometrics.panel_chart' function, which visualizes regression
+  outcomes.
+keywords:
+- Docusaurus
+- Econometrics
+- Panel Regression
+- Fixed Effects
+- Python SDK
+- OLS Regression
+- Regression Model
+- Pooled OLS
+- Regression Chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics.panel - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# panel
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -84,8 +102,6 @@ union          0.1777     0.0172     10.344     0.0000      0.1441      0.2114
 ```
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -119,8 +135,6 @@ openbb.econometrics.panel_chart(Y: pd.DataFrame, X: pd.DataFrame, regression_typ
 | ---- | ----------- |
 | The dataset used, the dependent variable, the independent variable and |  |
 ---
-
-
 
 </TabItem>
 </Tabs>

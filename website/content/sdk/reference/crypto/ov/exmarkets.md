@@ -1,12 +1,22 @@
 ---
 title: exmarkets
-description: OpenBB SDK Function
+description: Documentation for the exmarkets API functions from OpenBBTerminal's Cryptocurrency
+  Overview tool. Lists markets by exchange ID and manages charts.
+keywords:
+- exmarkets
+- API
+- Cryptocurrency Overview Tool
+- Markets by Exchange ID
+- Cryptocurrency
+- CoinPaprika
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.exmarkets - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# exmarkets
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +50,6 @@ openbb.crypto.ov.exmarkets(exchange_id: str = "binance", symbols: str = "USD", s
 | pd.DataFrame | pair, base_currency_name, quote_currency_name, market_url,<br/>category, reported_volume_24h_share, trust_score, |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +82,6 @@ openbb.crypto.ov.exmarkets_chart(exchange: str = "binance", sortby: str = "pair"
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

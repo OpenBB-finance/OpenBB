@@ -1,9 +1,23 @@
 ---
 title: riskparity
-description: OpenBB Terminal Function
+description: This docusaurus page provides detailed information on how to build a
+  risk parity portfolio using the risk budgeting approach. The user can make use of
+  many available parameters and conditions to customize the portfolio and its conditions
+  as per their requirements.
+keywords:
+- risk parity portfolio
+- risk budgeting approach
+- portfolio optimization
+- portfolio parameters
+- risk measures
+- docusaurus documentation
+- financial data analysis
+- yfinance data
 ---
 
-# riskparity
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/po/riskparity - Reference | OpenBB Terminal Docs" />
 
 Build a risk parity portfolio based on risk budgeting approach
 

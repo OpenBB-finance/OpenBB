@@ -1,9 +1,20 @@
 ---
 title: clean
-description: OpenBB SDK Function
+description: The clean function in OpenBB's forecasting toolkit fills or drops NaN
+  values on a given dataset, improving data quality.
+keywords:
+- clean function OpenBB
+- forecasting toolkit
+- data cleaning
+- fill NaN values
+- drop NaN values
+- dataset
+- data quality improvement
 ---
 
-# clean
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.clean - Reference | OpenBB SDK Docs" />
 
 Clean up NaNs from the dataset
 
@@ -33,4 +44,3 @@ openbb.forecast.clean(dataset: pd.DataFrame, fill: Optional[str] = None, drop: O
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with cleaned up data |
 ---
-

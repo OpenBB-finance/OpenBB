@@ -1,9 +1,18 @@
 ---
 title: sto
-description: OpenBB Terminal Function
+description: Details on the usage, parameters, and examples of the 'sto' command in
+  adding the Stochastic Oscillator %K and %D. 'sto' can help users understand and
+  interpret the predictive model through stochastic oscillation analysis.
+keywords:
+- Stochastic Oscillator
+- sto command
+- Predictive Model Analysis
+- Technical Indicator
 ---
 
-# sto
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /sto - Reference | OpenBB Terminal Docs" />
 
 Add in Stochastic Oscillator %K and %D
 

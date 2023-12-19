@@ -1,9 +1,26 @@
 ---
 title: events
-description: OpenBB Terminal Function
+description: This is a docusaurus page dedicated to the events tool which displays
+  the most important events of cryptocurrency coins. It presents multiple functionalities
+  such as sorting and limiting the amount of events displayed, with additional features
+  like displaying urls for each event.
+keywords:
+- cryptocurrency
+- events
+- coins
+- limit
+- sort
+- ascending order
+- descending order
+- urls
+- docusaurus
+- crypto tool
+- crypto events
 ---
 
-# events
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/events - Reference | OpenBB Terminal Docs" />
 
 Show information about most important coins events. Most of coins doesn't have any events. You can display only top N number of events with --limit parameter. You can sort data by id, date , date_to, name, description, is_conference --sort parameter and also with --reverse flag to sort ascending. You can use additional flag --urls to see urls for each event Displays: date , date_to, name, description, is_conference, link, proof_image_link
 

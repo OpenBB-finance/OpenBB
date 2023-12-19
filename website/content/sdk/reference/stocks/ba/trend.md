@@ -1,12 +1,29 @@
 ---
 title: trend
-description: OpenBB SDK Function
+description: The page details functions related to behavioural analysis with OpenBB
+  Terminal, specifically focusing on trend analysis. The page explains how to generate
+  sentiment data on the most talked about stock tickers. Explained in detail with
+  source code and parameters.
+keywords:
+- sentiment data
+- tickers
+- trend
+- behavioural analysis
+- trend chart
+- API call
+- dataframe
+- hour
+- number
+- limit
+- export data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ba.trend - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# trend
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +56,6 @@ openbb.stocks.ba.trend(start_date: Optional[str] = None, hour: int = 0, number: 
 | pd.DataFrame | Dataframe of trending data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +87,6 @@ openbb.stocks.ba.trend_chart(start_date: Optional[str] = None, hour: int = 0, nu
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

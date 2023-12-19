@@ -1,9 +1,18 @@
 ---
 title: view
-description: OpenBB Terminal Function
+description: This page provides guidance on using view feature that offers preset
+  options under the presets folder. The categories include template.ini, high_IV.ini,
+  among others. Learn how to effectively use the view command in Python.
+keywords:
+- presets
+- usage
+- parameters
+- view
 ---
 
-# view
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/screen/view /options - Reference | OpenBB Terminal Docs" />
 
 View available presets under presets folder.
 

@@ -1,9 +1,24 @@
 ---
 title: whales
-description: OpenBB Terminal Function
+description: A page that provides information on the use of the 'whales' feature to
+  display significant cryptocurrency transactions. It explains parameters for customization
+  like minimum value, record limit, sort order, etc.
+keywords:
+- Crypto whales transactions
+- Cryptocurrency
+- Docusaurus
+- Crypto transaction tracking
+- Crypto address details
+- Sort crypto transactions
+- Crypto trade parameters
+- Display major crypto transactions
+- Sort by date, amount, blockchain
+- Limit number of crypto records
 ---
 
-# whales
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/onchain/whales - Reference | OpenBB Terminal Docs" />
 
 Display crypto whales transactions. [Source: https://docs.whale-alert.io/]
 

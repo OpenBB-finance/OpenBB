@@ -1,9 +1,30 @@
 ---
 title: maxret
-description: OpenBB Terminal Function
+description: The 'maxret' function is designed to maximize the return of a portfolio.
+  It allows users to set multiple parameters and constraints like target return and
+  risk, portfolio allocation, risk measure, and more. It supports various calculation
+  methods and can handle various types of data.
+keywords:
+- portfolio optimization
+- return maximization
+- risk management
+- financial data analysis
+- historical data
+- return calculation
+- covariance estimation
+- shrinkage method
+- risk-free rate
+- significance level
+- CVaR
+- EVaR
+- CDaR
+- MDD
+- Sharp ratio
 ---
 
-# maxret
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/po/maxret - Reference | OpenBB Terminal Docs" />
 
 Maximizes the portfolio's return
 

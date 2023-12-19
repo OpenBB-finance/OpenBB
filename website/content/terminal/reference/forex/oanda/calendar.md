@@ -1,9 +1,21 @@
 ---
 title: calendar
-description: OpenBB Terminal Function
+description: This is a documentation page for the calendar function. It details the
+  parameters and the usage of this function to manipulate and view calendar data.
+keywords:
+- Calendar Data
+- Usage
+- Parameters
+- Days
+- Search
+- Forward
+- Backward
+- Negative Numbers
 ---
 
-# calendar
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex/oanda/calendar - Reference | OpenBB Terminal Docs" />
 
 Show Calendar Data
 

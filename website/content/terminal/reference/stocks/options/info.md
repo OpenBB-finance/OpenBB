@@ -1,9 +1,27 @@
 ---
 title: info
-description: OpenBB Terminal Function
+description: This page provides information about a command 'info' that displays option
+  data. It includes details about usage, parameters, and examples of how to use the
+  command in a Python environment. The page is particularly useful for individuals
+  interested in stock options data.
+keywords:
+- Info command
+- Option data
+- Python environment
+- Stock options data
+- Command usage
+- Command parameters
+- Command examples
+- Implied volatility
+- Historical volatility
+- Put/Call Vol ratio
+- Today's volume
+- Open interest
 ---
 
-# info
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/options/info - Reference | OpenBB Terminal Docs" />
 
 Display option data [Source: Barchart.com]
 

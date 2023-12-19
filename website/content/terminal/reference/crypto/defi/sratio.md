@@ -1,9 +1,19 @@
 ---
 title: sratio
-description: OpenBB Terminal Function
+description: This page provides a guide on how to use sratio tool for displaying terra
+  blockchain staking ratio history. It includes parameters, usage and source link.
+keywords:
+- sratio
+- terra blockchain
+- staking ratio history
+- fcd.terra.dev
+- parameters
+- limit
 ---
 
-# sratio
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/defi/sratio - Reference | OpenBB Terminal Docs" />
 
 Displays terra blockchain staking ratio history. [Source: https://fcd.terra.dev/swagger]
 

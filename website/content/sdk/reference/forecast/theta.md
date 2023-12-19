@@ -1,12 +1,24 @@
 ---
 title: theta
-description: OpenBB SDK Function
+description: This page provides detailed information on how to use the 'Theta' model
+  and 'Theta' chart for financial forecasting with OpenBB. It explains various parameters
+  for accurate prediction and chart display, alongside respective source code examples.
+keywords:
+- Theta model
+- Theta chart
+- Forecasting
+- Financial prediction
+- Source code
+- Model parameters
+- Chart display
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.theta - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# theta
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -42,8 +54,6 @@ openbb.forecast.theta(data: Union[pd.Series, pd.DataFrame], target_column: str =
 | ---- | ----------- |
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, float, type[Theta]] | Adjusted Data series,<br/>Historical forecast by best theta,<br/>list of Predictions,<br/>Mean average precision error,<br/>Best Theta,<br/>Theta Model. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -86,8 +96,6 @@ openbb.forecast.theta_chart(data: Union[pd.DataFrame, pd.Series], target_column:
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

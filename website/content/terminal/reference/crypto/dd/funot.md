@@ -1,9 +1,27 @@
 ---
 title: funot
-description: OpenBB Terminal Function
+description: This page covers the 'funot' function, which displays fundamental metrics
+  such as market cap, revenue, and TVL (Total Value Locked) for a wide array of digital
+  asset projects, as sourced from Token Terminal.
+keywords:
+- funot
+- Token Terminal
+- digital asset metrics
+- cryptocurrency analysis
+- cryptocurrency projects
+- market cap
+- revenue
+- TVL
+- python function
+- Total Value Locked
+- cryptocurrency metrics
+- fundamental metrics
+- SEO for docusaurus
 ---
 
-# funot
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/funot - Reference | OpenBB Terminal Docs" />
 
 Display fundamental metric over time [Source: Token Terminal]
 

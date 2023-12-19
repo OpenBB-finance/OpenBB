@@ -1,9 +1,25 @@
 ---
 title: valuation
-description: OpenBB Terminal Function
+description: Marketing website page providing a tool to print valuation data of various
+  stocks based on a set of pre-defined filters, further offering various parametric
+  controls to refine and customize the output.
+keywords:
+- valuation tool
+- stock market
+- market filters
+- financial data
+- stock parameters
+- data sort
+- parameter limit
+- preset filters
+- Python commands
+- investment tool
+- stock analysis
 ---
 
-# valuation
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/screener/valuation - Reference | OpenBB Terminal Docs" />
 
 Prints valuation data of the companies that meet the pre-set filtering.
 

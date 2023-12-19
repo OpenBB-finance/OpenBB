@@ -1,9 +1,22 @@
 ---
 title: autoets
-description: OpenBB Terminal Function
+description: The page provides information on how to use the autoets function for
+  automatic Error, Trend, Seasonality (ETS) forecasting. It includes details on the
+  usage of this function, its parameters, and an example to illustrate its application.
+keywords:
+- autoets
+- ETS forecasting
+- automatic ETS
+- Error Trend Seasonality
+- forecast
+- parameters
+- prediction
+- seasonality
 ---
 
-# autoets
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /autoets - Reference | OpenBB Terminal Docs" />
 
 Perform Automatic ETS (Error, Trend, Seasonality) forecast: https://nixtla.github.io/statsforecast/examples/getting_started_with_auto_arima_and_ets.html
 

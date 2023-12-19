@@ -1,9 +1,21 @@
 ---
 title: balance
-description: OpenBB SDK Function
+description: This page provides a detailed view on the balance data obtained through
+  OpenBB Terminal's stocks comparison analysis. Python source code, parameters
+  for the function and return type are conventionally presented.
+keywords:
+- balance data
+- stocks comparison analysis
+- marketwatch model
+- tickers comparison
+- quarterly statements
+- data export
+- dataframe
 ---
 
-# balance
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ca.balance - Reference | OpenBB SDK Docs" />
 
 Get balance data. [Source: Marketwatch].
 
@@ -33,4 +45,3 @@ openbb.stocks.ca.balance(similar: List[str], timeframe: str = "2021", quarter: b
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of balance comparisons |
 ---
-

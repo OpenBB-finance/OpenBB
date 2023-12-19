@@ -1,9 +1,25 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: This page provides detailed instructions on how to load a stock ticker
+  to perform analysis, complete with usage examples and parameters. It also provides
+  information on loading Indian tickers and references to data sources.
+keywords:
+- load stock ticker
+- perform stock analysis
+- Indian stock ticker
+- stock analysis parameters
+- stock data usage
+- data source
+- intraday stock minutes
+- pre/after market hours
+- load custom file
+- monthly data
+- weekly data
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ta/load - Reference | OpenBB Terminal Docs" />
 
 Load stock ticker to perform analysis on. When the data source is syf', an Indian ticker can be loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.
 

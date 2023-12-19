@@ -1,9 +1,17 @@
 ---
 title: demark
-description: OpenBB Terminal Function
+description: Documentation for Demark Sequential Indicator, a technical indicator
+  in Python. Detailed usage and parameter information is available.
+keywords:
+- Demark Sequential Indicator
+- Technical Indicator
+- Parameters
+- Usage
 ---
 
-# demark
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf/ta/demark - Reference | OpenBB Terminal Docs" />
 
 Calculates the Demark sequential indicator.
 

@@ -1,12 +1,31 @@
 ---
 title: inv
-description: OpenBB SDK Function
+description: Our inv function provides an overview of coin investors. It provides
+  a comprehensive list of individual and organizational investors for a specific cryptocurrency.
+  Additionally, our inv chart function prints a table of these coin investors and
+  offers the option of exporting this data to various file formats.
+keywords:
+- coin investors
+- cryptocurrency
+- investors
+- docusaurus page SEO
+- functions
+- crypto symbols
+- data export
+- csv
+- json
+- xlsx
+- due diligence
+- messari model
+- messari view
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.inv - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# inv
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +56,6 @@ openbb.crypto.dd.inv(symbol: str)
 | Tuple[pd.DataFrame, pd.DataFrame] | Individuals,<br/>Organizations |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +84,6 @@ openbb.crypto.dd.inv_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

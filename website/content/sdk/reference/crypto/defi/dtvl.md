@@ -1,12 +1,31 @@
 ---
 title: dtvl
-description: OpenBB SDK Function
+description: This page of the documentation provides information about OpenBB's dtvl
+  model and view functions. The model function returns details about the historical
+  Total Value Locked (TVL) of a specified DeFi protocol, while the view function allows
+  for the plotting of TVL data across various decentralized applications (dApps).
+keywords:
+- dtvl model
+- dtvl view
+- DeFi protocol
+- historical TVL
+- decentralized applications
+- dApps
+- crypto
+- dataframe
+- matplotlib
+- export data
+- function parameters
+- digital assets
+- crypto analytics
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.defi.dtvl - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# dtvl
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +56,6 @@ openbb.crypto.defi.dtvl(protocol: str)
 | pd.DataFrame | Historical tvl |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +85,6 @@ openbb.crypto.defi.dtvl_chart(dapps: str = "", export: str = "", external_axes: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

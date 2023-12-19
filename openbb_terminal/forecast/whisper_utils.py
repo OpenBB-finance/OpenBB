@@ -58,11 +58,11 @@ def process_segment(segment: dict, line_length: int = 0):
 def write_vtt(transcript: Iterator[dict], file: TextIO, line_length: int = 0):
     print("WEBVTT\n", file=file)
     for segment in transcript:
-        segment = process_segment(segment, line_length=line_length)
+        clean_segment = process_segment(segment, line_length=line_length)
 
         print(
-            f"{format_timestamp(segment['start'])} --> {format_timestamp(segment['end'])}\n"
-            f"{segment['text'].strip().replace('-->', '->')}\n",
+            f"{format_timestamp(clean_segment['start'])} --> {format_timestamp(clean_segment['end'])}\n"
+            f"{clean_segment['text'].strip().replace('-->', '->')}\n",
             file=file,
             flush=True,
         )
@@ -70,13 +70,13 @@ def write_vtt(transcript: Iterator[dict], file: TextIO, line_length: int = 0):
 
 def write_srt(transcript: Iterator[dict], file: TextIO, line_length: int = 0):
     for i, segment in enumerate(transcript, start=1):
-        segment = process_segment(segment, line_length=line_length)
+        clean_segment = process_segment(segment, line_length=line_length)
 
         print(
             f"{i}\n"
-            f"{format_timestamp(segment['start'], always_include_hours=True, decimal_marker=',')} --> "
-            f"{format_timestamp(segment['end'], always_include_hours=True, decimal_marker=',')}\n"
-            f"{segment['text'].strip().replace('-->', '->')}\n",
+            f"{format_timestamp(clean_segment['start'], always_include_hours=True, decimal_marker=',')} --> "
+            f"{format_timestamp(clean_segment['end'], always_include_hours=True, decimal_marker=',')}\n"
+            f"{clean_segment['text'].strip().replace('-->', '->')}\n",
             file=file,
             flush=True,
         )

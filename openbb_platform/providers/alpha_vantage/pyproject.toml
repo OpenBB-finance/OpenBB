@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "openbb-alpha-vantage"
+version = "1.0.0"
+description = "Alpha Vantage extension for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_alpha_vantage" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openbb-core = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+alpha_vantage = "openbb_alpha_vantage:alpha_vantage_provider"

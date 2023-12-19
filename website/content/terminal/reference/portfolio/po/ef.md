@@ -1,9 +1,34 @@
 ---
 title: ef
-description: OpenBB Terminal Function
+description: Detailed instructions on using the 'ef' function in portfolio optimization.
+  This function plots random portfolios based on their risk and returns, providing
+  visualization of the efficient frontier. It includes parameters for risk measures,
+  nan filling methods, financial dataset periods, return calculations, and outlier
+  handling.
+keywords:
+- ef function
+- portfolio risk and return
+- efficient frontier
+- portfolio optimization
+- risk measures
+- random portfolios
+- CVaR
+- EVaR
+- Maximum Drawdown
+- Mean Absolute Deviation
+- nan_fill_method
+- financial dataset
+- yfinance data
+- risk-free rate
+- logarithmic returns
+- return frequency
+- outlier threshold
+- simulation parameters
 ---
 
-# ef
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/po/ef - Reference | OpenBB Terminal Docs" />
 
 This function plots random portfolios based on their risk and returns and shows the efficient frontier.
 

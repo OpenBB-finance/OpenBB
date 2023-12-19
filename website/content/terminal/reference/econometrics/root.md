@@ -1,9 +1,20 @@
 ---
 title: root
-description: OpenBB Terminal Function
+description: This page provides detailed info on running unit root tests on a column
+  of a dataset using various types of regression. The page includes usage, parameters,
+  and examples.
+keywords:
+- unit root tests
+- dataset
+- econometrics
+- ADF
+- KPSS
+- regression
 ---
 
-# root
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics /root - Reference | OpenBB Terminal Docs" />
 
 Show unit root tests of a column of a dataset
 

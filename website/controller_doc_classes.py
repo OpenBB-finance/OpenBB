@@ -1,5 +1,6 @@
 # pylint: disable=unused-argument
 import argparse
+import contextlib
 import inspect
 import sys
 from datetime import datetime, timedelta
@@ -12,10 +13,12 @@ from unittest.mock import patch
 
 import pandas as pd
 from pandas.tseries.holiday import USFederalHolidayCalendar
+from rich.console import Console, Theme
 
 import openbb_terminal
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.core.plots.backend import plots_backend
+from openbb_terminal.core.plots.plotly_helper import theme
 from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.session.current_user import get_current_user  # noqa: F401
 from openbb_terminal.decorators import disable_check_api
@@ -26,13 +29,13 @@ from openbb_terminal.helper_funcs import (
     set_command_location,
 )
 from openbb_terminal.parent_classes import BaseController
-from openbb_terminal.rich_config import console
 from openbb_terminal.sdk import openbb
 from openbb_terminal.stocks.comparison_analysis import finviz_compare_model
 
 set_system_variable("TEST_MODE", True)
 set_system_variable("LOG_COLLECT", False)
 disable_check_api()
+console = Console(theme=Theme(theme.console_style), highlight=False, soft_wrap=True)
 
 
 CRYPTO_DATA = openbb.crypto.load("BTC", to_symbol="usd", source="YahooFinance")
@@ -76,6 +79,7 @@ sub_folders_abbr = {
     "comparison_analysis": "ca",
     "dark_pool_shorts": "dps",
     "portfolio_optimization": "po",
+    "companieshouse": "companieshouse",
     "quantitative_analysis": "qa",
     "technical_analysis": "ta",
     "tradinghours": "th",
@@ -89,6 +93,7 @@ sub_names_full = {
     "alt": "Alternative",
     "ba": "Behavioural Analysis",
     "ca": "Comparison Analysis",
+    "companieshouse": "Companies House",
     "crypto": "Cryptocurrency",
     "dd": "Due Diligence",
     "defi": "DeFi",
@@ -274,11 +279,11 @@ class ControllerDoc:
         self.image_exportable: Dict[str, bool] = {}
         self.ignore = [
             "call_help",
+            "call_new",
             "call_exit",
             "call_clear",
             "call_cls",
             "call_quit",
-            "call_about",
             "call_reset",
             "call_support",
             "call_wiki",
@@ -370,11 +375,10 @@ class ControllerDoc:
 
                 if len(fullspec.args) > 2:
                     args.update({arg: ["1234"] for arg in fullspec.args[2:]})
-                with patch("openbb_terminal.rich_config.console.print"):
-                    try:
-                        _ = getattr(self.controller, command)(["--help"], **args)
-                    except (SystemExit, AttributeError):
-                        pass
+                with patch(
+                    "openbb_terminal.rich_config.console.print"
+                ), contextlib.suppress(SystemExit, AttributeError):
+                    _ = getattr(self.controller, command)(["--help"], **args)
 
         except Exception as e:
             print(e)
@@ -460,11 +464,14 @@ class LoadControllersDoc:
                 if (  # noqa: SIM102
                     name != "TerminalController" and "BaseController" not in name
                 ):  # noqa: SIM102
-                    if isclass(obj) and issubclass(obj, BaseController):
-                        if trailmap not in self.controller_docs:
-                            ctrl = ControllerDoc(obj, trailmap)  # type: ignore
-                            if ctrl.has_commands():
-                                self.controller_docs[trailmap] = ctrl
+                    if (
+                        isclass(obj)
+                        and issubclass(obj, BaseController)
+                        and trailmap not in self.controller_docs
+                    ):
+                        ctrl = ControllerDoc(obj, trailmap)  # type: ignore
+                        if ctrl.has_commands():
+                            self.controller_docs[trailmap] = ctrl
 
     def _get_modules(self) -> Dict[str, ModuleType]:
         """Gets all controllers modules"""

@@ -1,9 +1,24 @@
 ---
 title: rm
-description: OpenBB Terminal Function
+description: A documentation page for the 'rm' command showcasing how to display an
+  asset's roadmap sourced from Messari. It contains sections on how to use this command,
+  and parameters to modify data presentation.
+keywords:
+- rm
+- asset's roadmap
+- messari
+- usage
+- parameters
+- reverse
+- sorting data
+- raw data
+- ascending order
+- descending order
 ---
 
-# rm
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/rm - Reference | OpenBB Terminal Docs" />
 
 Display asset's roadmap [Source: https://messari.io]
 

@@ -12,7 +12,6 @@ from openbb_terminal.core.session.current_user import (
 )
 from openbb_terminal.futures import futures_controller
 
-
 # pylint: disable=E1101
 # pylint: disable=W0603
 # pylint: disable=E1111

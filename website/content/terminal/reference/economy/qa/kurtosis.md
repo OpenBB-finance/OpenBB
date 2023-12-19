@@ -1,9 +1,23 @@
 ---
 title: kurtosis
-description: OpenBB Terminal Function
+description: This page offers comprehensive information on kurtosis - a measure of
+  the 'tailedness' of a probability distribution of a real-valued random variable.
+  Learn about its different measures and how to estimate it from a sample. Try it
+  out with our Python usage guide.
+keywords:
+- kurtosis
+- probability distribution
+- real-valued random variable
+- shape of distribution
+- theoretical distribution
+- sample estimation
+- python usage guide
+- n_window parameter
 ---
 
-# kurtosis
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy/qa/kurtosis - Reference | OpenBB Terminal Docs" />
 
 Kurtosis is a measure of the "tailedness" of the probability distribution of a real-valued random variable. Like skewness, kurtosis describes the shape of a probability distribution and there are different ways of quantifying it for a theoretical distribution and corresponding ways of estimating it from a sample from a population. Different measures of kurtosis may have different interpretations.
 

@@ -1,9 +1,23 @@
 ---
 title: income
-description: OpenBB SDK Function
+description: This page is a detailed guide on how to use the 'income' function provided
+  by OpenBBTerminal. This function fetches income statements for a given stock symbol
+  from selected data sources like YahooFinance or AlphaVantage.
+keywords:
+- income statement
+- stock
+- symbol
+- source
+- YahooFinance
+- AlphaVantage
+- OpenBBTerminal income
+- Financial Analysis
+- fundamental analysis
 ---
 
-# income
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.fa.income - Reference | OpenBB SDK Docs" />
 
 Get income statement.
 
@@ -50,4 +64,3 @@ quarterly_income_statement = openbb.stocks.fa.income("AAPL", source="AlphaVantag
 ```
 
 ---
-

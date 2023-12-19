@@ -1,32 +1,32 @@
-import React from "react";
-import LetteringLogo from "@site/src/components/Icons/LetteringLogo";
-import { useLocation } from "@docusaurus/router";
 import Link from "@docusaurus/Link";
-import TerminalLetteringLogo from "@site/src/components/Icons/TerminalLetteringLogo";
-import SDKLetteringLogo from "@site/src/components/Icons/SDKLetteringLogo";
-import BotLetteringLogo from "@site/src/components/Icons/BotLetteringLogo";
+import { useLocation } from "@docusaurus/router";
+import LetteringDocsLogo from "@site/src/components/Icons/LetteringDocsLogo";
+import clsx from "clsx";
+import React from "react";
 
 function getLogo(type) {
-  /*
-  switch (type) {
-    case "terminal":
-      return <TerminalLetteringLogo />;
-    case "sdk":
-      return <SDKLetteringLogo />;
-    case "bot":
-      return <BotLetteringLogo />;
-    default:
-      return <LetteringLogo className="text-white" />;
-  }*/
-  return <LetteringLogo className="text-white" />;
+  return <LetteringDocsLogo />;
 }
 
 export default function NavbarLogo() {
   const { pathname } = useLocation();
   const type = pathname.length > 1 ? pathname.split("/")[1] : "home";
+  const [innerWidth, setInnerWidth] = React.useState(380);
+
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener("resize", () => {
+        setInnerWidth(window.innerWidth);
+
+      });
+    }
+  }
+  , []);
+
+
   return (
-    <div className="flex items-center gap-x-[56px]">
-      <Link to="/" className="mb-1 md:mb-0 md:ml-0">
+    <div className={clsx("items-center ml-2", innerWidth < 380 ? "hidden" : "flex")}>
+      <Link to={`/`}>
         {getLogo(type)}
       </Link>
     </div>

@@ -1,9 +1,23 @@
 ---
 title: adx
-description: OpenBB Terminal Function
+description: Discover the purpose and usage of the ADX (Average Directional Index),
+  a Welles Wilder style moving average of the Directional Movement Index. Learn to
+  interpret the ADX values to determine the strength of a trend.
+keywords:
+- ADX
+- Welles Wilder
+- Average Directional Index
+- Directional Movement Index
+- ADX interpretation
+- ADX parameters
+- ADX usage
+- Trend strength
+- Trend analysis
 ---
 
-# adx
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ta/adx - Reference | OpenBB Terminal Docs" />
 
 The ADX is a Welles Wilder style moving average of the Directional Movement Index (DX). The values range from 0 to 100, but rarely get above 60. To interpret the ADX, consider a high number to be a strong trend, and a low number, a weak trend.
 

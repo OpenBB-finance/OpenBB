@@ -1,12 +1,34 @@
 ---
 title: regr
-description: OpenBB SDK Function
+description: 'The page covers two main aspects of the OpenBB finance platform: Regression
+  Forecasting and Displaying Regression Forecasting. It provides source codes, defines
+  parameters and returns related to the regression model and data. Users can find
+  additional features like forecasting horizon, historical forecasting, and prediction
+  capabilities. The option of view-chart allows users to visualise the data forecast.'
+keywords:
+- Regression Forecasting
+- Source code
+- OpenBB finance
+- parameters
+- returns
+- charts
+- perform analysis
+- forecast horizon
+- historical forecasting
+- data series
+- Regression Model
+- mean average precision error
+- RNN model
+- Predictions
+- Adjusted Data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.regr - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# regr
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -43,8 +65,6 @@ openbb.forecast.regr(data: Union[pd.Series, pd.DataFrame], target_column: str = 
 | ---- | ----------- |
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], float, type[RegressionModel]] | Adjusted Data series,<br/>Historical forecast by best RNN model,<br/>list of Predictions,<br/>Mean average precision error,<br/>Best Regression Model. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -88,8 +108,6 @@ openbb.forecast.regr_chart(data: Union[pd.Series, pd.DataFrame], target_column: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

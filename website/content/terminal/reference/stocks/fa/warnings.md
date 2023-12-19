@@ -1,9 +1,24 @@
 ---
 title: warnings
-description: OpenBB Terminal Function
+description: This page provides warnings by Sean Seah regarding stock market values,
+  including consistent historical earnings per share, return on equity, return on
+  assets, and net income to long-term debt ratio. Insightful examples and customizable
+  parameters are available for financial analysis.
+keywords:
+- Sean Seah warnings
+- stock market indicators
+- financial analytics
+- historical earnings per share
+- return on equity
+- return on assets
+- net income to long-term debt ratio
+- financial analysis examples
+- customizable financial parameters
 ---
 
-# warnings
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/fa/warnings - Reference | OpenBB Terminal Docs" />
 
 Sean Seah warnings. Check: Consistent historical earnings per share; Consistently high return on equity; Consistently high return on assets; 5x Net Income  Long-Term Debt; and Interest coverage ratio more than 3. See https://www.drwealth.com/gone-fishing-with-buffett-by-sean-seah/comment-page-1/ [Source: Market Watch]
 

@@ -1,9 +1,22 @@
 ---
 title: acf
-description: OpenBB Terminal Function
+description: Documentation page about the ACF python function, an auto-correlation
+  and partial auto-correlation function for diff and diff diff stock data. It includes
+  code usage, parameters and a visual example.
+keywords:
+- auto-correlation
+- partial auto-correlation
+- acf
+- stock data
+- lags
+- acf function
+- diff
+- diff diff
 ---
 
-# acf
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy/qa/acf - Reference | OpenBB Terminal Docs" />
 
 Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff stock data
 

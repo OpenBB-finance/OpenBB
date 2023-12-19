@@ -1,10 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: oi
-description: OpenBB Telegram Command
+description: This documentation page provides an understanding about the oi command
+  which allows users to retrieve the Open Interest and Call/Put ratio for a given
+  stock. One can also specify an expiration date to get a more specific breakdown.
+keywords:
+- Open Interest
+- Call/Put ratio
+- Stock Ticker
+- Expiration Date
+- oi command
+- AMC
 ---
 
-# oi
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="options: oi - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the Open Interest and Call/Put ratio for a given stock. Optionally, the user can also specify an expiration date to get a more granular breakdown.
 

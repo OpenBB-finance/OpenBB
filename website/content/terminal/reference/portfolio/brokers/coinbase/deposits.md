@@ -1,9 +1,21 @@
 ---
 title: deposits
-description: OpenBB Terminal Function
+description: The deposits page is a comprehensive guide on displaying a list of deposits
+  for your account. It provides details on usage, parameters like deposit type, limit,
+  sortby, reverse, and their defaults.
+keywords:
+- deposits
+- account
+- internal_deposit
+- deposit
+- limit
+- sortby
+- reverse
 ---
 
-# deposits
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/coinbase/deposits /brokers - Reference | OpenBB Terminal Docs" />
 
 Display a list of deposits for your account.
 

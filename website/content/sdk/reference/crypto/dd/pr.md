@@ -1,12 +1,28 @@
 ---
 title: pr
-description: OpenBB SDK Function
+description: The documentation explains how to leverage APIs for calculating and comparing
+  potential returns of cryptocurrencies. It details requirements and parameters for
+  two functions - fetching data for potential returns calculation and function to
+  record these returns.
+keywords:
+- cryptocurrency
+- potential returns
+- coin comparison
+- fetch data
+- APIs usage
+- python functions
+- coin calculation
+- pr model
+- pr chart
+- CoinGecko source
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.pr - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# pr
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +56,6 @@ openbb.crypto.dd.pr(main_coin: str, to_symbol: Optional[str] = None, limit: Opti
 | pd.DataFrame | Potential returns data<br/>Columns: Coin, Current Price, Target Coin, Potential Price, Potential Market Cap ($), Change (%) |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +87,6 @@ openbb.crypto.dd.pr_chart(to_symbol: str, from_symbol: Optional[str] = None, lim
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

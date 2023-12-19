@@ -1,9 +1,24 @@
 ---
 title: news
-description: OpenBB Terminal Function
+description: This page provides usage details for a news aggregation code from CryptoPanic,
+  involving handy functions such as data filtering, sorting, region based displaying
+  and more. Learn how to get the crypto news you need quickly and efficiently.
+keywords:
+- cryptopanic
+- crypto news
+- news aggregation
+- data filtering
+- region based
+- sorted data
+- bullish news
+- bearish news
+- crypto media
+- cryptocurrency
 ---
 
-# news
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ov/news - Reference | OpenBB Terminal Docs" />
 
 Display recent news from CryptoPanic aggregator platform. [Source: https://cryptopanic.com/]
 

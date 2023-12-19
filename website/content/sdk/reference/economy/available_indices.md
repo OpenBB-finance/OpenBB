@@ -1,9 +1,18 @@
 ---
 title: available_indices
-description: OpenBB SDK Function
+description: A documentation page for the available_indices function in the OpenBBTerminal
+  module. This function returns the available indices without requiring parameters.
+keywords:
+- available_indices
+- indices
+- function
+- no parameters
+- dictionary
 ---
 
-# available_indices
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.available_indices - Reference | OpenBB SDK Docs" />
 
 Get available indices
 
@@ -27,4 +36,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | Dict[str, Dict[str, str]] | Dictionary with available indices and respective detail |
 ---
-

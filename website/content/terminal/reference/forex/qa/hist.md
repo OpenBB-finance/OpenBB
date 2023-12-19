@@ -1,9 +1,20 @@
 ---
 title: hist
-description: OpenBB Terminal Function
+description: This page is about the hist command, a tool that creates histograms with
+  density and rug. Here you will find usage, parameter information, and details on
+  how to use the n_bins parameter effectively.
+keywords:
+- hist
+- histogram
+- density
+- rug
+- bins
+- parameters
 ---
 
-# hist
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex/qa/hist - Reference | OpenBB Terminal Docs" />
 
 Histogram with density and rug
 

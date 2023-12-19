@@ -1,12 +1,26 @@
 ---
 title: ov
-description: OpenBB SDK Function
+description: This documentation page provides detailed information on the 'ov' models
+  used for retrieving historical cases and deaths-by-country data. It also explains
+  the parameters required to run these models, and returns in the form of a DataFrame.
+keywords:
+- docusaurus
+- ov model
+- historical data
+- cases
+- deaths
+- country-specific
+- dataframe
+- parameters
+- functions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="alt.covid.ov - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# ov
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +51,6 @@ openbb.alt.covid.ov(country: str, limit: int = 100)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of historical cases and deaths |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -71,8 +83,6 @@ openbb.alt.covid.ov_chart(country: str, raw: bool = False, limit: int = 10, expo
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

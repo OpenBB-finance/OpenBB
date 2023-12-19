@@ -1,12 +1,28 @@
 ---
 title: coins
-description: OpenBB SDK Function
+description: This page documents the functions for retrieving and displaying cryptocurrency
+  coin data using the OpenBB Terminal. The main categories explained are 'model' and
+  'view', each with descriptions of available parameters and returns.
+keywords:
+- docusaurus
+- metadata
+- cryptocurrency
+- CoinGecko
+- coins data
+- dataframe
+- model
+- view
+- sort data
+- export data
+- coins chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.disc.coins - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# coins
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +56,6 @@ openbb.crypto.disc.coins(limit: int = 250, category: str = "", sortby: str = "Sy
 | pd.DataFrame | N coins |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +87,6 @@ openbb.crypto.disc.coins_chart(category: str, limit: int = 250, sortby: str = "S
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

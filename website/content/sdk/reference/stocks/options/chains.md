@@ -1,9 +1,20 @@
 ---
 title: chains
-description: OpenBB SDK Function
+description: This page provides comprehensive instructions on how to get option chain
+  for a stock using openbb.stocks.options API. It provides examples including how
+  to retrieve data from 'Nasdaq' and fetch specific expiration dates.
+keywords:
+- stock options
+- option chain
+- openbb.stocks.options.api
+- Nasdaq
+- expiration dates
+- stock market API
 ---
 
-# chains
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.options.chains - Reference | OpenBB SDK Docs" />
 
 Get Option Chain For A Stock.  No greek data is returned
 
@@ -48,4 +59,3 @@ aapl_chain_date = openbb.stocks.options.chains("AAPL", expiration="2023-07-21", 
 ```
 
 ---
-

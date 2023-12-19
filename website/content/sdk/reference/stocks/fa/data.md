@@ -1,9 +1,21 @@
 ---
 title: data
-description: OpenBB SDK Function
+description: Detailed instruction on how to get fundamental data from finviz using
+  'openbb' Python package. It explains the usage of 'stocks.fa.data' function, its
+  parameters and return type along with an example.
+keywords:
+- fundamental data
+- finviz
+- stock ticker symbol
+- dataframe
+- openbb_terminal
+- sdk
+- IWV
 ---
 
-# data
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.fa.data - Reference | OpenBB SDK Docs" />
 
 Get fundamental data from finviz
 
@@ -39,4 +51,3 @@ openbb.stocks.fa.data("IWV")
 ```
 
 ---
-

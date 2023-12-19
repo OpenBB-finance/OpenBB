@@ -1,9 +1,22 @@
 ---
 title: rename
-description: OpenBB Terminal Function
+description: The 'rename' page in our documentation explains how to change the name
+  of columns in a dataset using a specific command. This includes detailed parameter
+  explanations and usage examples.
+keywords:
+- rename
+- dataset
+- parameters
+- examples
+- column renaming
+- usage
+- data manipulation
+- python commands
 ---
 
-# rename
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics /rename - Reference | OpenBB Terminal Docs" />
 
 The column you want to rename from a dataset.
 
@@ -35,7 +48,7 @@ rename [-d {}] -o OLDCOL -n NEWCOL
 
 2022 May 31, 04:58 (🦋) /econometrics/ $ show wp
 
-                                      Dataset wp | Showing 10 of 4360 rows                                       
+                                      Dataset wp | Showing 10 of 4360 rows
 ┏━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃   ┃ nr    ┃ date    ┃ black ┃ exper ┃ hisp ┃ hours   ┃ married ┃ educ  ┃ union ┃ lwage ┃ expersq ┃ occupation ┃
 ┡━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩

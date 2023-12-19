@@ -1,12 +1,26 @@
 ---
 title: team
-description: OpenBB SDK Function
+description: This page provides documentation on functions used to retrieve and visualize
+  information about the team behind a specific cryptocurrency. These functions provide
+  details on individuals and organizations involved in the coin selected, with options
+  for exporting the data.
+keywords:
+- cryptocurrency
+- team information
+- data visualization
+- OpenBB crypto
+- crypto team analysis
+- Python functions
+- export data
+- crypto due diligence
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.team - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# team
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +51,6 @@ openbb.crypto.dd.team(symbol: str)
 | Tuple[pd.DataFrame, pd.DataFrame] | Individuals,<br/>Organizations |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +79,6 @@ openbb.crypto.dd.team_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

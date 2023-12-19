@@ -1,9 +1,20 @@
 ---
 title: etf_by_name
-description: OpenBB SDK Function
+description: A detailed documentation page that explains how to get ETF symbol and
+  name based on a string to search. The page includes a link to the source code and
+  illustrates how the function 'etf_by_name' used in the StockAnalysis can be implemented
+  to fetch ETF names and their corresponding symbols. This function returns a data
+  frame with symbols and names.
+keywords:
+- ETF
+- Symbol
+- Name Search
+- StockAnalysis
 ---
 
-# etf_by_name
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf.etf_by_name - Reference | OpenBB SDK Docs" />
 
 Get an ETF symbol and name based on ETF string to search. [Source: StockAnalysis]
 
@@ -30,4 +41,3 @@ openbb.etf.etf_by_name(name_to_search: str)
 | ---- | ----------- |
 | pd.Dataframe | Dataframe with symbols and names |
 ---
-

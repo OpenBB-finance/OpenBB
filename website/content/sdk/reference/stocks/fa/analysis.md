@@ -1,9 +1,21 @@
 ---
 title: analysis
-description: OpenBB SDK Function
+description: Documentation on OpenBB Terminal's feature for SEC filings analysis using
+  machine learning. The page contains information on how to perform the analysis,
+  parameters required, and default values.
+keywords:
+- SEC filings analysis
+- Machine learning
+- Stocks
+- Fundamental analysis
+- Ticker symbol
+- Eclect.us
+- Source code
 ---
 
-# analysis
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.fa.analysis - Reference | OpenBB SDK Docs" />
 
 Save time reading SEC filings with the help of machine learning. [Source: https://eclect.us]
 
@@ -30,4 +42,3 @@ openbb.stocks.fa.analysis(symbol: str)
 | ---- | ----------- |
 | str | Analysis of filings text |
 ---
-

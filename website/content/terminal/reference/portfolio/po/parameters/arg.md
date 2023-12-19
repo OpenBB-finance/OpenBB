@@ -1,9 +1,19 @@
 ---
 title: arg
-description: OpenBB Terminal Function
+description: This page explains how to set different values for available arguments
+  using the 'arg' command in Python. It covers usage, parameters and available choices.
+keywords:
+- arg command
+- Python arguments
+- setting argument values
+- command-line arguments
+- parameters
+- choices
 ---
 
-# arg
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/parameters/arg /po - Reference | OpenBB Terminal Docs" />
 
 Set a different value for one of the available arguments.
 

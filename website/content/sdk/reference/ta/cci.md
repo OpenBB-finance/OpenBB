@@ -1,12 +1,25 @@
 ---
 title: cci
-description: OpenBB SDK Function
+description: This page provides information on the Commodity Channel Index (CCI) utility
+  as part of the OpenBB platform. It comprises details about the technical model,
+  related parameters, expected returns, and source code linked to Github. Also includes
+  instructions for plotting CCI Indicator.
+keywords:
+- CCI
+- Commodity channel index
+- technical indicator
+- dataframe
+- Source code
+- Parameters
+- Returns
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.cci - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# cci
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -41,8 +54,6 @@ openbb.ta.cci(data: pd.DataFrame, window: int = 14, scalar: float = 0.0015)
 | pd.DataFrame | Dataframe of technical indicator |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +86,6 @@ openbb.ta.cci_chart(data: pd.DataFrame, window: int = 14, scalar: float = 0.0015
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

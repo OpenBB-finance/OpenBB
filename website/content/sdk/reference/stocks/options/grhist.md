@@ -1,12 +1,29 @@
 ---
 title: grhist
-description: OpenBB SDK Function
+description: Learn about using the functions grhist, syncretism model, and syncretism
+  view in OpenBBTerminal to get historical greeks for options on stocks. These Python
+  functions are clearly explained and the source code is provided for in-depth understanding.
+  The page also delineates parameters and return values.
+keywords:
+- stocks
+- options
+- grhist
+- syncretism model
+- historical greeks
+- strike price
+- put option
+- OCC option symbol
+- grhist chart
+- Greek variable
+- export data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.options.grhist - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# grhist
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +57,6 @@ openbb.stocks.options.grhist(symbol: str, expiry: str, strike: Union[str, float]
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing historical greeks |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -79,8 +94,6 @@ openbb.stocks.options.grhist_chart(symbol: str, expiry: str, strike: Union[float
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

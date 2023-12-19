@@ -1,9 +1,25 @@
 ---
 title: stats
-description: OpenBB Terminal Function
+description: A guide to displaying statistics of an OpenSea NFT collection such as
+  market cap, floor price, volume, and sales using a slug parameter. This includes
+  an example using the Mutant Ape Yacht Club collection.
+keywords:
+- OpenSea
+- NFT
+- Collection
+- Stats
+- Market Cap
+- Floor Price
+- Average Price
+- Volume
+- Sales
+- Slug
+- Crypto
 ---
 
-# stats
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/nft/stats - Reference | OpenBB Terminal Docs" />
 
 Display stats about an opensea nft collection. e.g. alien-frens [Source: https://opensea.io]
 

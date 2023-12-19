@@ -1,12 +1,22 @@
 ---
 title: granger
-description: OpenBB SDK Function
+description: Documentation about Granger test functions to calculate and visualize
+  Econometrics models in OpenBB terminal. Covers usage, parameters and return types.
+keywords:
+- Granger test
+- Econometrics
+- OpenBB terminal
+- Source code
+- Function parameters
+- function return
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics.granger - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# granger
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +49,6 @@ openbb.econometrics.granger(dependent_series: pd.Series, independent_series: pd.
 | dict | Dictionary containing results of Granger test |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +80,6 @@ openbb.econometrics.granger_chart(dependent_series: pd.Series, independent_serie
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

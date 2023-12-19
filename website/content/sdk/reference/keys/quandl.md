@@ -1,9 +1,21 @@
 ---
 title: quandl
-description: OpenBB SDK Function
+description: This documentation page describes how to set the Quandl Key in OpenBB
+  finance using Python. It provides parameters, return types, and code examples.
+keywords:
+- Quandl Key
+- OpenBB finance
+- API key
+- Jupyter notebook
+- terminal environment variables
+- parameters
+- return types
+- code examples
 ---
 
-# quandl
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="keys.quandl - Reference | OpenBB SDK Docs" />
 
 Set Quandl key
 
@@ -41,4 +53,3 @@ openbb.keys.quandl(key="example_key")
 ```
 
 ---
-

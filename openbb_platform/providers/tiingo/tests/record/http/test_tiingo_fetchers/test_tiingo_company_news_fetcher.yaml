@@ -1,0 +1,152 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.tiingo.com/tiingo/news?limit=20&tickers=AAPL%2CMSFT&token=MOCK_TOKEN
+  response:
+    body:
+      string: "[{\"id\":59591345,\"publishedDate\":\"2023-11-16T08:31:31Z\",\"title\":\"I
+        walked 5,500 steps with the Google Pixel Watch 2 and Fitbit Charge 6 \u2014
+        here\u2019s which was more accurate\",\"url\":\"https://www.tomsguide.com/features/i-walked-5500-steps-with-the-google-pixel-watch-2-and-fitbit-charge-6-heres-which-was-more-accurate\",\"description\":\"Here\u2019s
+        which came out on top\",\"source\":\"tomsguide.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-16T08:34:32.287630Z\",\"tickers\":[\"aapl\",\"goog\",\"googl\"]},{\"id\":59591139,\"publishedDate\":\"2023-11-16T08:22:28.911292Z\",\"title\":\"Sprinklr
+        and infinit.cx Partner to Deliver AI-Powered Contact Center and Customer Experience
+        Solutions\",\"url\":\"http://www.businesswire.com/news/home/20231116087060/en/Sprinklr-and-infinit.cx-Partner-to-Deliver-AI-Powered-Contact-Center-and-Customer-Experience-Solutions\",\"description\":\"Sprinklr
+        (NYSE: CXM), the unified customer experience management (Unified-CXM) platform
+        for modern enterprises, today announced a partnership with Con\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-16T08:22:47.067660Z\",\"tickers\":[\"cxm\",\"dtegy\",\"msft\"]},{\"id\":59591138,\"publishedDate\":\"2023-11-16T08:22:28.901883Z\",\"title\":\"Sprinklr
+        und infinit.cx kooperieren bei KI-gesttztem Contact Center und Customer Experience-Lsungen\",\"url\":\"http://www.businesswire.com/news/home/20231116060376/de/\",\"description\":\"Sprinklr
+        (NYSE: CXM), die Plattform f\xFCr einheitliches Customer Experience Management
+        (Unified-CXM) f\xFCr moderne Unternehmen, gab heute eine Partnerscha\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-16T08:22:45.583804Z\",\"tickers\":[\"cxm\",\"dtegy\",\"msft\"]},{\"id\":59591365,\"publishedDate\":\"2023-11-16T08:19:00Z\",\"title\":\"Data
+        Center Networking Market Report Published: A Comprehensive Report on Market
+        Size, Growth Drivers, and Key Players\",\"url\":\"https://finance.yahoo.com/news/data-center-networking-market-report-081900779.html\",\"description\":\"The
+        global data center networking market is expected to touch US$ 48.3 billion
+        by 2030, with an annual growth rate of more than 11.5%Wilmington, Delaware,
+        Nov. 16, 2023 (GLOBE NEWSWIRE) -- Global Data Center Networking Market is
+        valued at US$ 22.6 billion in 2023 and is expected to grow at a significant
+        CAGR of over 11.5% over the forecast period of 2023-2030, according to the
+        published market report by RationalStat Market Definition, Market Scope, and
+        Report Overview The advent of digital techn\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Cagr\",\"Communication
+        Services\",\"Data Center\",\"Forecast Period\",\"Market Intelligence\",\"Market
+        Share\",\"Market Sizing\",\"Networking Market\",\"Stock\",\"Technology\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-16T08:36:32.393928Z\",\"tickers\":[\"anet\",\"cagr\",\"csco\",\"dell\",\"dvmt\",\"fjtsy\",\"intc\",\"iqnt\",\"jnpr\",\"msft\",\"orcl\",\"vmw\"]},{\"id\":59590759,\"publishedDate\":\"2023-11-16T08:04:55Z\",\"title\":\"J
+        Arnold Wealth Management Co Bolsters Portfolio with First Trust Consumer Staples
+        AlphaDEX ...\",\"url\":\"https://www.gurufocus.com/search?s=j-arnold-wealth-management-co-bolsters-portfolio-with-first-trust-consumer-staples-alphadex-fund-fxg-shares\",\"description\":\"Search
+        for Stocks, ETFs, Indices, Insiders, Investing Gurus and Futures on Gurufocus.com.\",\"source\":\"gurufocus.com\",\"tags\":[\"ETF\",\"Healthcare\",\"Investing
+        Guru Lookup\",\"Stock\",\"Stock Insider Lookup\",\"Stock Symbol Lookup\",\"Symbol
+        Lookup\",\"Technology\",\"Ticker Lookup\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-16T08:05:24.260582Z\",\"tickers\":[\"aapl\",\"fxg\",\"fxg\",\"ihi\",\"isrg\",\"voo\"]},{\"id\":59591215,\"publishedDate\":\"2023-11-16T08:04:55Z\",\"title\":\"J
+        Arnold Wealth Management Co Bolsters Portfolio with First Trust Consumer Staples
+        AlphaDEX ...\",\"url\":\"https://finance.yahoo.com/news/j-arnold-wealth-management-co-080455684.html\",\"description\":\"J
+        Arnold Wealth Management Co (Trades, Portfolio), a recognized investment firm,
+        has recently expanded its portfolio with a significant addition of shares
+        in the First Trust Consumer Staples AlphaDEX Fund (FXG).  On October 31, 2023,
+        the firm acquired 101,9722 shares of FXG, marking a notable trade action that
+        reflects a strategic investment move.  The transaction, which had a trade
+        impact of 0.22% on the firm's portfolio, was executed at a trade price of
+        $58.12.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Consumer Staples\",\"Healthcare\",\"Portfolio\",\"Stock\",\"Strategic
+        Investment\",\"Technology\",\"Trade Impact\",\"Trade Price\",\"Wealth Management\"],\"crawlDate\":\"2023-11-16T08:25:50.754245Z\",\"tickers\":[\"aapl\",\"isrg\"]},{\"id\":59590789,\"publishedDate\":\"2023-11-16T08:01:49Z\",\"title\":\"Black
+        Friday Apple deals \u2014 7 best sales to shop right now\",\"url\":\"https://www.tomsguide.com/deals/black-friday-apple-deals-7-best-sales-to-shop-right-now\",\"description\":\"Save
+        on iPhone 15, iPads, MacBooks and more\",\"source\":\"tomsguide.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-16T08:06:23.382809Z\",\"tickers\":[\"aapl\"]},{\"id\":59590788,\"publishedDate\":\"2023-11-16T08:01:24Z\",\"title\":\"How
+        to change keyboard shortcuts in Windows 11\",\"url\":\"https://www.tomsguide.com/how-to/how-to-change-keyboard-shortcuts-in-windows-11\",\"description\":\"Change
+        keyboard shortcuts in Windows if the default ones don't work for you\",\"source\":\"tomsguide.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-16T08:06:22.603414Z\",\"tickers\":[\"msft\"]},{\"id\":59590685,\"publishedDate\":\"2023-11-16T08:00:00Z\",\"title\":\"Sprinklr
+        and infinit.cx Partner to Deliver AI-Powered Contact Center and Customer Experience
+        Solutions\",\"url\":\"https://www.businesswire.com/news/home/20231116087060/en/Sprinklr-and-infinit.cx-Partner-to-Deliver-AI-Powered-Contact-Center-and-Customer-Experience-Solutions/?feedref=JjAwJuNHiystnCoBq_hl-d0q77hRjGWvCunvqSsMC5PkKuEqWGdtYcKRejd3o8qMqnKfqP6Z7nZVMLG-WqUNUuIFBOuQU34x9_qUrqnb9IFt3G9xeKEyIFKgj2nxZILuWb2_mZzaa2HVGkrPJ34F1Q%3D%3D\",\"description\":\"Sprinklr
+        (NYSE: CXM), the unified customer experience management (Unified-CXM) platform
+        for modern enterprises, today announced a partnership with Con\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-16T08:03:15.847532Z\",\"tickers\":[\"cxm\",\"dtegy\",\"msft\"]},{\"id\":59590686,\"publishedDate\":\"2023-11-16T08:00:00Z\",\"title\":\"Sprinklr
+        und infinit.cx kooperieren bei KI-gesttztem Contact Center und Customer Experience-Lsungen\",\"url\":\"https://www.businesswire.com/news/home/20231116060376/de/?feedref=JjAwJuNHiystnCoBq_hl-d0q77hRjGWvCunvqSsMC5PkKuEqWGdtYcKRejd3o8qMqnKfqP6Z7nZVMLG-WqUNUuIFBOuQU34x9_qUrqnb9IFt3G9xeKEyIFKgj2nxZILuWb2_mZzaa2HVGkrPJ34F1Q%3D%3D\",\"description\":\"Sprinklr
+        (NYSE: CXM), die Plattform f\xFCr einheitliches Customer Experience Management
+        (Unified-CXM) f\xFCr moderne Unternehmen, gab heute eine Partnerscha\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-16T08:03:19.469883Z\",\"tickers\":[\"cxm\",\"dtegy\",\"msft\"]},{\"id\":59590811,\"publishedDate\":\"2023-11-16T08:00:00Z\",\"title\":\"Uberall
+        Announces Enhanced Integration Experience with Apple Business Connect\",\"url\":\"http://www.hawaiinewsnow.com/prnewswire/2023/11/16/uberall-announces-enhanced-integration-experience-with-apple-business-connect/\",\"description\":\"Uberall
+        Announces Enhanced Integration Experience with Apple Business Connect\\nPublished:
+        Nov. 15, 2023 at 10:00 PM HST\\n|\\nUpdated: 7 minutes ago\\nNew capability
+        will empower multi-location businesses to manage their presence in the Apple
+        ecosystem dire\",\"source\":\"hawaiinewsnow.com\",\"tags\":[\"CryptoCurrency\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-16T08:08:30.008038Z\",\"tickers\":[\"aapl\"]},{\"id\":59590969,\"publishedDate\":\"2023-11-16T08:00:00Z\",\"title\":\"Virtual
+        Reality Headsets Market projected to surpass USD 61.6 Billion by 2030, growing
+        at a CAGR of 29.6% during the forecast period of 2023-2030 - professed by
+        MarketDigits in its recent study.\",\"url\":\"https://finance.yahoo.com/news/virtual-reality-headsets-market-projected-080000399.html\",\"description\":\"The
+        Global Virtual Reality Headsets Market was valued USD 7.8 Billion in 2022
+        and projected to reach USD 61.6 Billion by 2030, growing at a CAGR of 29.6%
+        during the forecast period of 2023-2030.Richmond, Nov. 16, 2023 (GLOBE NEWSWIRE)
+        -- According to a research report \\\"Virtual Reality Headsets Market, by
+        End-device (Low-end Device, Mid-range Device, High-end Device), Product Type
+        (Standalone, Smartphone-enabled, Standalone PC-connected), Application (Gaming,
+        Healthcare, Media & Entertainment, Ma\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Application\",\"Asia
+        Pacific\",\"Entertainment\",\"Media & Entertainment\",\"North America\",\"Stock\",\"Technology\",\"Virtual
+        Reality\",\"Virtual Reality Headsets\"],\"crawlDate\":\"2023-11-16T08:14:30.202071Z\",\"tickers\":[\"msft\"]},{\"id\":59590984,\"publishedDate\":\"2023-11-16T08:00:00Z\",\"title\":\"interop.io
+        and comitFS Form Strategic Partnership to Revolutionize Trader-Client Conversations\",\"url\":\"https://finance.yahoo.com/news/interop-io-comitfs-form-strategic-080000985.html\",\"description\":\"interop.io,
+        the leading interoperability provider for the finance industry, and comitFS,
+        the market leader in optimizing high touch voice conversations, today announced
+        their strategic partnership, marking a significant leap in the automation
+        of voice communication within capital markets.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Stock\",\"Strategic
+        Partnership\",\"Technology\",\"Voice Conversations\",\"Workflow Automation\"],\"crawlDate\":\"2023-11-16T08:14:52.193412Z\",\"tickers\":[\"csco\",\"msft\"]},{\"id\":59590994,\"publishedDate\":\"2023-11-16T08:00:00Z\",\"title\":\"interop.io
+        and comitFS Form Strategic Partnership to Revolutionize Trader-Client Conversations\",\"url\":\"https://finance.yahoo.com/news/interop-io-comitfs-form-strategic-080000483.html\",\"description\":\"interop.io,
+        the leading interoperability provider for the finance industry, and comitFS,
+        the market leader in optimizing high touch voice conversations, today announced
+        their strategic partnership, marking a significant leap in the automation
+        of voice communication within capital markets.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Stock\",\"Strategic
+        Partnership\",\"Technology\",\"Voice Conversations\",\"Workflow Automation\"],\"crawlDate\":\"2023-11-16T08:15:08.220216Z\",\"tickers\":[\"csco\",\"msft\"]},{\"id\":59590995,\"publishedDate\":\"2023-11-16T08:00:00Z\",\"title\":\"Sprinklr
+        und infinit.cx kooperieren bei KI-gesttztem Contact Center und Customer Experience-Lsungen\",\"url\":\"https://www.businesswire.com/news/home/20231116060376/de/?feedref=JjAwJuNHiystnCoBq_hl-fqXyBvmekC3Xq1G1wQ7hjMFbZM1ntlKeK-8bUzJqFSVSfe41V1BKA-b6v2ZVrSSNs-dUYKiDvY7XniNSqv88QcY1Ge_vf9QIMZ4alzIf_0HlyE0C4hZhHVlTvKnn0d0vQ%3D%3D\",\"description\":\"Sprinklr
+        (NYSE: CXM), die Plattform f\xFCr einheitliches Customer Experience Management
+        (Unified-CXM) f\xFCr moderne Unternehmen, gab heute eine Partnerscha\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-16T08:15:24.206362Z\",\"tickers\":[\"cxm\",\"dtegy\",\"msft\"]},{\"id\":59590997,\"publishedDate\":\"2023-11-16T08:00:00Z\",\"title\":\"Sprinklr
+        and infinit.cx Partner to Deliver AI-Powered Contact Center and Customer Experience
+        Solutions\",\"url\":\"https://www.businesswire.com/news/home/20231116087060/en/Sprinklr-and-infinit.cx-Partner-to-Deliver-AI-Powered-Contact-Center-and-Customer-Experience-Solutions/?feedref=JjAwJuNHiystnCoBq_hl-fqXyBvmekC3Xq1G1wQ7hjMFbZM1ntlKeK-8bUzJqFSVSfe41V1BKA-b6v2ZVrSSNs-dUYKiDvY7XniNSqv88QcY1Ge_vf9QIMZ4alzIf_0HlyE0C4hZhHVlTvKnn0d0vQ%3D%3D\",\"description\":\"Sprinklr
+        (NYSE: CXM), the unified customer experience management (Unified-CXM) platform
+        for modern enterprises, today announced a partnership with Con\",\"source\":\"businesswire.com\",\"tags\":[\"Stock\",\"Technology\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-16T08:15:25.737765Z\",\"tickers\":[\"cxm\",\"dtegy\",\"msft\"]},{\"id\":59591209,\"publishedDate\":\"2023-11-16T08:00:00Z\",\"title\":\"Sprinklr
+        and infinit.cx Partner to Deliver AI-Powered Contact Center and Customer Experience
+        Solutions\",\"url\":\"https://finance.yahoo.com/news/sprinklr-infinit-cx-partner-deliver-080000313.html\",\"description\":\"NEW
+        YORK, November 16, 2023--Sprinklr (NYSE: CXM), the unified customer experience
+        management (Unified-CXM) platform for modern enterprises, today announced
+        a partnership with Contact Center as a Service (CCaaS) and customer experience
+        specialists infinit.cx to help enterprises optimize Sprinklr Service and facilitate
+        a seamless, transformational migration to cloud-based customer service across
+        30+ digital channels. Through this partnership, enterprises can future-proof
+        their customer service, m\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Customer
+        Experience Management\",\"Customer Service\",\"Sprinklr\",\"Stock\",\"Technology\",\"Technology
+        Enterprises\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-16T08:25:40.107409Z\",\"tickers\":[\"cxm\",\"dtegy\",\"msft\"]},{\"id\":59590684,\"publishedDate\":\"2023-11-16T07:59:36Z\",\"title\":\"iPhone
+        15 Wireless Charging Is Now Broken In GM Cars After Issues With BMW\",\"url\":\"https://www.benzinga.com/news/23/11/35820909/iphone-15-wireless-charging-is-now-broken-in-gm-cars-after-issues-with-bmw\",\"description\":\"After
+        BMW, now GM car owners are reporting iPhone 15 wireless charging issues, while
+        some users have been told by Apple that it's a GM issue.\",\"source\":\"benzinga.com\",\"tags\":[\"Aapl\",\"Apple\",\"Appleverse\",\"Benzinga\",\"Bmwyy\",\"Consumer
+        Cyclical\",\"Consumer Tech\",\"General Motors\",\"Gm\",\"Iphone\",\"Iphone
+        15\",\"Mobility\",\"News\",\"Stock\",\"Tech\",\"Technology\",\"Tiingo Top\",\"Unknown
+        Sector\"],\"crawlDate\":\"2023-11-16T08:02:55.629506Z\",\"tickers\":[\"aapl\",\"bmwyy\",\"gm\",\"ne-ws\"]},{\"id\":59590693,\"publishedDate\":\"2023-11-16T07:47:00Z\",\"title\":\"Diginius
+        is thrilled to announce the official launch of the Shopify app, Diginius Shopping,
+        engineered to streamline Microsoft Shopping campaigns for Shopify store users\",\"url\":\"https://finance.yahoo.com/news/diginius-thrilled-announce-official-launch-074700630.html\",\"description\":\"Diginius
+        is thrilled to announce the official launch of the Shopify app, Diginius Shopping.
+        This innovative app aims to streamline Microsoft Shopping management for Shopify
+        store owners advertising on Bing.\",\"source\":\"finance.yahoo.com\",\"tags\":[\"Diginius
+        Shopping\",\"Microsoft\",\"Microsoft Advertising\",\"Shopify\",\"Shopping
+        App\",\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-16T08:03:26.584670Z\",\"tickers\":[\"msft\"]},{\"id\":59589990,\"publishedDate\":\"2023-11-16T07:34:05.673695Z\",\"title\":\"TikTok
+        joins Meta in appealing against EU gatekeeper status\",\"url\":\"http://www.streetinsider.com/Reuters/TikTok+joins+Meta+in+appealing+against+EU+gatekeeper+status/22421627.html\",\"description\":\"\\nBy
+        Supantha Mukherjee\\n              STOCKHOLM (Reuters) -     TikTok on Thursday
+        joined Meta in appealing against the \\\"gatekeeper\\\" status under the Digital
+        Markets Act (DMA), an EU law that brings in tougher rules for tech...\\n\",\"source\":\"streetinsider.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2023-11-16T07:34:06.714809Z\",\"tickers\":[\"goog\",\"googl\",\"msft\"]}]"
+    headers:
+      allow:
+      - GET, HEAD, OPTIONS
+      content-length:
+      - '14859'
+      content-type:
+      - application/json
+      date:
+      - Thu, 16 Nov 2023 08:39:36 GMT
+      server:
+      - nginx/1.18.0 (Ubuntu)
+      vary:
+      - Cookie, Origin
+      x-frame-options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,12 +1,22 @@
 ---
 title: adx
-description: OpenBB SDK Function
+description: This page provides extensive information about the ADX technical indicator,
+  including parameters, returns, and usage. It shares Python source codes for implementing
+  and visualising the ADX technical indicator on OHLC price data using OpenBBTerminal.
+keywords:
+- ADX technical indicator
+- Dataframe with OHLC price data
+- Technical Analysis
+- ADX chart
+- Plot ADX Indicator
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.adx - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# adx
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +49,6 @@ openbb.ta.adx(data: pd.DataFrame, window: int = 14, scalar: int = 100, drift: in
 | ---- | ----------- |
 | pd.DataFrame | DataFrame with adx indicator |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -75,8 +83,6 @@ openbb.ta.adx_chart(data: pd.DataFrame, window: int = 14, scalar: int = 100, dri
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

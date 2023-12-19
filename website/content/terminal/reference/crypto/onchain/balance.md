@@ -1,9 +1,23 @@
 ---
 title: balance
-description: OpenBB Terminal Function
+description: Metadata for the page discussing about the 'balance' function to display
+  information about tokens on given Ethereum blockchain balance. The page outlines
+  how to use this function, its parameters, and their possible values.
+keywords:
+- ethplorer
+- ethereum
+- balance
+- tokens
+- python script
+- blockchain balance
+- sortby function
+- ascending order
+- descending order
 ---
 
-# balance
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/onchain/balance - Reference | OpenBB Terminal Docs" />
 
 Display info about tokens on given ethereum blockchain balance. [Source: Ethplorer]
 

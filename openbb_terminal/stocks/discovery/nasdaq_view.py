@@ -37,10 +37,10 @@ def display_top_retail(
         return
 
     for date, df in retails.head(limit * 10).groupby("Date"):
-        df = df.drop(columns=["Date"])
-        df = df.reset_index(drop=True)
+        clean_df = df.drop(columns=["Date"])
+        clean_df = clean_df.reset_index(drop=True)
         print_rich_table(
-            df,
+            clean_df,
             headers=[x.title() for x in df.columns],
             show_index=False,
             title=f"[bold]{date} Top Retail:[/bold]",

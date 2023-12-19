@@ -1,12 +1,28 @@
 ---
 title: index
-description: OpenBB SDK Function
+description: This page provides documentation for the OpenBB Terminal SDK functions
+  for fetching and visualizing economic indices data from Yahoo Finance. It provides
+  Python code examples and explains parameters and returns in detail.
+keywords:
+- Docusaurus documentation
+- OpenBB Terminal SDK
+- Economy indices
+- Yahoo Finance data
+- Data visualization
+- Python code examples
+- Data intervals
+- Data start and end dates
+- Adjusted Close
+- Cumulative returns on index
+- Export data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.index - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# index
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -52,8 +68,6 @@ openbb.economy.index(["^GSPC", "sp400"])
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -90,8 +104,6 @@ openbb.economy.index_chart(indices: list, interval: str = "1d", start_date: int 
 | ---- | ----------- |
 | Plots the Series. |  |
 ---
-
-
 
 </TabItem>
 </Tabs>

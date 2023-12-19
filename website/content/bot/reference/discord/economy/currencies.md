@@ -1,10 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: currencies
-description: OpenBB Discord Command
+description: The /econ currencies command page where users learn how to retrieve an
+  overview of all available currencies including information such as name, price,
+  and changes.
+keywords:
+- currencies
+- command overview
+- currency name
+- currency price
+- /econ currencies
+- change
+- no parameters
 ---
 
-# currencies
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy: currencies - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve an overview of all available currencies. It will provide the user with information such as the currency name, price, and change.
 

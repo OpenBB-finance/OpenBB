@@ -1,9 +1,19 @@
 ---
 title: losers
-description: OpenBB Terminal Function
+description: This page explains the usage of the 'losers' command in stocks software/tool.
+  It allows the user to display up to 25 top market losers data from Yahoo Finance
+  with specific parameters and examples.
+keywords:
+- stocks
+- market losers
+- stock market
+- Yahoo Finance
+- stock tracking
 ---
 
-# losers
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/disc/losers - Reference | OpenBB Terminal Docs" />
 
 Print up to 25 top losers. [Source: Yahoo Finance]
 

@@ -1,9 +1,17 @@
 ---
 title: rename
-description: OpenBB SDK Function
+description: The rename function in openbb.forecast allows the renaming of a column
+  in a dataframe. Contains details on parameters, returns and a link to the source
+  code.
+keywords:
+- rename column
+- dataframe
+- openbb forecast
 ---
 
-# rename
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.rename - Reference | OpenBB SDK Docs" />
 
 Rename a column in a dataframe
 
@@ -32,4 +40,3 @@ openbb.forecast.rename(data: pd.DataFrame, old_column: str, new_column: str)
 | ---- | ----------- |
 | pd.DataFrame | The dataframe with the renamed column |
 ---
-

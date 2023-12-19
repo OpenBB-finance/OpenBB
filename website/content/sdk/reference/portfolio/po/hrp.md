@@ -1,9 +1,22 @@
 ---
 title: hrp
-description: OpenBB SDK Function
+description: This page provides information about the Hierarchical Risk Parity (HRP)
+  function in the openbb.portfolio.po module. This function allows for portfolio optimization
+  using HRP. Detailed parameter explanations, return values, and usage examples are
+  provided.
+keywords:
+- portfolio optimization
+- Hierarchical Risk Parity
+- openbb.portfolio.po
+- risk management
+- asset allocation
+- portfolio management
+- financial modeling
 ---
 
-# hrp
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.po.hrp - Reference | OpenBB SDK Docs" />
 
 Optimize with Hierarchical Risk Parity
 
@@ -81,4 +94,3 @@ weights, performance = openbb.portfolio.po.hrp(portfolio_engine=p)
 ```
 
 ---
-

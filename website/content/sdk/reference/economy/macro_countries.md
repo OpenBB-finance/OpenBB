@@ -1,9 +1,20 @@
 ---
 title: macro_countries
-description: OpenBB SDK Function
+description: Get a digest of the macro_countries function in OpenBB's economy module
+  that provides a dictionary of available countries with their respective currencies.
+  Includes details on function parameters and returns.
+keywords:
+- economy module
+- macro_countries function
+- country currency
+- dictionary
+- function parameters
+- function returns
 ---
 
-# macro_countries
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.macro_countries - Reference | OpenBB SDK Docs" />
 
 This function returns the available countries and respective currencies.
 
@@ -27,4 +38,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | Dict[str, str] | A dictionary with the available countries and respective currencies. |
 ---
-

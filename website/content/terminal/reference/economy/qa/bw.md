@@ -1,9 +1,20 @@
 ---
 title: bw
-description: OpenBB Terminal Function
+description: Box and Whisker Plot (bw) page instructs users on the usage of bw in
+  Python, explains the parameters, and offers a view of a bw plot. Promotes understanding
+  of data visualization.
+keywords:
+- Box and Whisker plot
+- bw
+- plot
+- data visualization
+- parameters
+- yearly plot
 ---
 
-# bw
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy/qa/bw - Reference | OpenBB Terminal Docs" />
 
 Box and Whisker plot
 

@@ -1,12 +1,27 @@
 ---
 title: mktcap
-description: OpenBB SDK Function
+description: This page provides documentation about the mktcap function of OpenBB-finance's
+  Yahoo Finance Module. It explains the operation and usage of the functions for
+  market cap modeling and charting over a certain period.
+keywords:
+- OpenBB-finance
+- Yahoo Finance
+- mktcap function
+- market cap model
+- market cap chart
+- Stock ticker symbol
+- Financial analysis
+- Fundamental analysis
+- Stock market data
+- Source code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.fa.mktcap - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# mktcap
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +53,6 @@ openbb.stocks.fa.mktcap(symbol: str, start_date: Optional[str] = None)
 | pd.DataFrame | Dataframe of estimated market cap over time |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +83,6 @@ openbb.stocks.fa.mktcap_chart(symbol: str, start_date: Optional[str] = None, exp
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

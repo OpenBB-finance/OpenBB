@@ -1,10 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: compfees
-description: OpenBB Telegram Command
+description: Learn how to retrieve the Protocol fees over time for your projects using
+  the compfees command. Understand its usage, parameters, and see examples.
+keywords:
+- compfees command
+- Protocol fees
+- btc
+- eth
+- usage
+- parameters
+- examples
 ---
 
-# compfees
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto: compfees - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows users to retrieve the Protocol fees over time for the given project.
 

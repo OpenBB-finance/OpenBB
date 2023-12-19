@@ -1,9 +1,24 @@
 ---
 title: decompose
-description: OpenBB Terminal Function
+description: 'Decompose time series guide and examples: additive and multiplicative
+  models. Includes usage, parameters, and example output for time series decomposition.'
+keywords:
+- Decompose
+- Time Series
+- Additive Time Series
+- Multiplicative Time Series
+- Level
+- CyclicTrend
+- Residual
+- Seasonality
+- Usage
+- Parameters
+- Example
 ---
 
-# decompose
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/qa/decompose - Reference | OpenBB Terminal Docs" />
 
 Decompose time series as: - Additive Time Series = Level + CyclicTrend + Residual + Seasonality - Multiplicative Time Series = Level * CyclicTrend * Residual * Seasonality
 

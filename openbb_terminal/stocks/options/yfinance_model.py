@@ -419,7 +419,7 @@ def load_options(symbol: str, pydantic: bool = False) -> Options:
 
     if not chains.empty and OptionsChains.last_price is None:
         OptionsChains.last_price = 0
-        print("No last price for " + OptionsChains.symbol)
+        console.print("No last price for " + OptionsChains.symbol)
 
     if not pydantic:
         return OptionsChains

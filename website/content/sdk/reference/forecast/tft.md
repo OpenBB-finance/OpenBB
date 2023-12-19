@@ -1,12 +1,28 @@
 ---
 title: tft
-description: OpenBB SDK Function
+description: This Docusaurus page provides in-depth information on the use of Temporal
+  Fusion Transformer for forecasting purposes, as implemented through OpenBB finance.
+  It includes details on the model's parameters, usage, and output, along with the
+  source code and chart visualization capabilities. The page is of high relevance
+  for developers, data analysts, and professionals dealing with predictive modeling
+  and data analysis tasks.
+keywords:
+- Temporal Fusion Transformer forecasting
+- OpenBB finance
+- Temporal Fusion Transformer chart
+- Machine Learning
+- Data analysis
+- Predictive modeling
+- Predictive analytics
+- Data modeling
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.tft - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# tft
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -54,8 +70,6 @@ openbb.forecast.tft(data: Union[pd.Series, pd.DataFrame], target_column: str = "
 | ---- | ----------- |
 |  | Adjusted Data series,<br/>List of historical fcast values,<br/>List of predicted fcast values,<br/>Optional[float] - precision,<br/>Fit Prob. TFT model object. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -109,8 +123,6 @@ openbb.forecast.tft_chart(data: Union[pd.Series, pd.DataFrame], target_column: s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

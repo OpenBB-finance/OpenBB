@@ -1,12 +1,24 @@
 ---
 title: spread
-description: OpenBB SDK Function
+description: 'The page provides information about two central functions of the OpenBBTerminal:
+  ''spread'' and ''spread_chart''. These Python functions are part of the quantitative
+  analysis, analyzing standard deviation, variance and create spread charts. The descriptions
+  include source code, parameters, and return values.'
+keywords:
+- Standard Deviation
+- Variance
+- Quantitative Analysis
+- Rolling model
+- Spread
+- Spread chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="qa.spread - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# spread
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +49,6 @@ openbb.qa.spread(data: pd.DataFrame, window: int = 14)
 | ---- | ----------- |
 | Tuple[pd.DataFrame, pd.DataFrame] | Dataframe of rolling standard deviation,<br/>Dataframe of rolling variance |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -73,8 +83,6 @@ openbb.qa.spread_chart(data: pd.DataFrame, target: str, symbol: str = "", window
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

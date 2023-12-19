@@ -1,9 +1,22 @@
 ---
 title: getdd
-description: OpenBB SDK Function
+description: This page explains the 'getdd' function. This function fetches due diligence
+  posts from a list of subreddits. The source code link, parameters including the
+  stock ticker, number of posts to fetch, and number of days back to fetch the posts,
+  along with the return type are described.
+keywords:
+- getdd function
+- stock ticker
+- subreddits
+- dataframe
+- due diligence posts
+- number of posts
+- number of days
 ---
 
-# getdd
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ba.getdd - Reference | OpenBB SDK Docs" />
 
 Gets due diligence posts from list of subreddits [Source: reddit].
 
@@ -33,4 +46,3 @@ openbb.stocks.ba.getdd(symbol: str, limit: int = 5, n_days: int = 3, show_all_fl
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of submissions |
 ---
-

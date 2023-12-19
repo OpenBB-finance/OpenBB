@@ -1,9 +1,22 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: This documentation page covers the function 'load', which is utilized
+  to load datasets from various sources. It provides in-depth details of its usage,
+  parameters and examples to guide users.
+keywords:
+- Load Function
+- Dataset
+- StatsModels
+- Data Loading
+- Documentation
+- Function Parameters
+- Econometrics
+- Examples
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics /load - Reference | OpenBB Terminal Docs" />
 
 Load dataset (from previous export, custom imports or StatsModels).
 

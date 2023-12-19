@@ -1,9 +1,22 @@
 ---
 title: clean
-description: OpenBB SDK Function
+description: This documentation details how to use OpenBBTerminal's 'clean' function
+  to clean up NaNs in a pandas DataFrame. It outlines the parameters, return values,
+  and available methods for filling and dropping NaN values.
+keywords:
+- econometrics
+- clean data
+- NaN handling
+- machine learning
+- dataset cleaning
+- fill method
+- drop method
+- data pre-processing
 ---
 
-# clean
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics.clean - Reference | OpenBB SDK Docs" />
 
 Clean up NaNs from the dataset
 
@@ -33,4 +46,3 @@ openbb.econometrics.clean(dataset: pd.DataFrame, fill: str = "", drop: str = "",
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with cleaned up data |
 ---
-

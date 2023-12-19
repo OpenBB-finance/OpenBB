@@ -1,9 +1,30 @@
 ---
 title: fp
-description: OpenBB Terminal Function
+description: This content provides a comprehensive guide on utilizing the 'fp' command
+  in retrieving the floor price of a specific NFT collection. Examples of collections
+  include Bored Ape Yacht Club, CryptoPunks, and Cool Cats.
+keywords:
+- NFT
+- floor price
+- collection
+- SLUG
+- fp
+- bored-ape-yacht-club
+- cryptopunks
+- meebits
+- veefriends
+- cool-cats
+- bored-ape-kennel-club
+- mekaverse
+- cryptoblots-art-blocks-curated
+- loot
+- uninterested-unicorns
+- doodles
 ---
 
-# fp
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/nft/fp - Reference | OpenBB Terminal Docs" />
 
 Display floor price of a certain NFT collection. [Source: https://nftpricefloor.com/]
 

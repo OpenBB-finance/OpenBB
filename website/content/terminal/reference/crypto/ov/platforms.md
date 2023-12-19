@@ -1,9 +1,27 @@
 ---
 title: platforms
-description: OpenBB Terminal Function
+description: This page lists out the platforms for smart contract including Ethereum,
+  Solana, Cosmos, Polkadot, Kusama. It helps users understand the command-line interfaces
+  to engage with these diverse smart contract platforms.
+keywords:
+- smart contract platforms
+- ethereum
+- solana
+- cosmos
+- polkadot
+- kusama
+- crypto platforms
+- blockchain technology
+- docusaurus SEO
+- keywords generation
+- content-related keywords
+- blockchain platforms
+- cryptocurrency SEO
 ---
 
-# platforms
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ov/platforms - Reference | OpenBB Terminal Docs" />
 
 List all smart contract platforms like ethereum, solana, cosmos, polkadot, kusama
 

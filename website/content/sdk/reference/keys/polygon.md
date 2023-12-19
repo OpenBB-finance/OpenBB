@@ -1,9 +1,20 @@
 ---
 title: polygon
-description: OpenBB SDK Function
+description: This documentation is about the 'polygon' function in the OpenBB Terminal
+  Python SDK. It details how the function accepts a polygon API key, and settings
+  to persist or show output.
+keywords:
+- OpenBB Terminal SDK
+- Polygon API key
+- openbb.keys.polygon function
+- Python SDK
+- API key management
+- Environment variables
 ---
 
-# polygon
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="keys.polygon - Reference | OpenBB SDK Docs" />
 
 Set Polygon key
 
@@ -41,4 +52,3 @@ openbb.keys.polygon(key="example_key")
 ```
 
 ---
-

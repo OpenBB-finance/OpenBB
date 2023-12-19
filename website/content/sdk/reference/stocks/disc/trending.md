@@ -1,9 +1,18 @@
 ---
 title: trending
-description: OpenBB SDK Function
+description: The Trending page provides a list of trending articles from OpenBB, it
+  allows customization of the quantity of articles displayed with a default value
+  set at 5.
+keywords:
+- Trending articles
+- Source code
+- Stocks discovery
+- Article limit customization
 ---
 
-# trending
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.disc.trending - Reference | OpenBB SDK Docs" />
 
 Returns a list of trending articles
 
@@ -30,4 +39,3 @@ openbb.stocks.disc.trending(limit: int = 5)
 | ---- | ----------- |
 | list | Trending articles list |
 ---
-

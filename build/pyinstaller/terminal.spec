@@ -1,5 +1,6 @@
 # -*- mode: python ; coding: utf-8 -*-  # noqa
 import os
+from shutil import which
 import subprocess
 import sys
 from pathlib import Path
@@ -27,11 +28,10 @@ venv_path = Path(sys.executable).parent.parent.resolve()
 # Check if we are running in a conda environment
 if is_darwin:
     pathex = os.path.join(os.path.dirname(os.__file__), "site-packages")
+elif "site-packages" in list(venv_path.iterdir()):
+    pathex = str(venv_path / "site-packages")
 else:
-    if "site-packages" in list(venv_path.iterdir()):
-        pathex = str(venv_path / "site-packages")
-    else:
-        pathex = str(venv_path / "lib" / "site-packages")
+    pathex = str(venv_path / "lib" / "site-packages")
 
 pathex = Path(pathex).resolve()
 
@@ -76,6 +76,7 @@ added_files = [
     (str(pathex / "llama_index/VERSION"), "llama_index"),
     (str(pathex / "tiktoken"), "tiktoken"),
     (str(pathex / "tiktoken_ext"), "tiktoken_ext"),
+    (which("pywry"), "."),
 ]
 
 if is_win:
@@ -112,7 +113,7 @@ hidden_imports = [
     "_sysconfigdata__darwin_darwin",
     "prophet",
     "debugpy",
-    "pywry.pywry",
+    "pywry",
     "scipy.sparse.linalg._isolve._iterative",
     "whisper",
     "transformers",
@@ -154,45 +155,6 @@ if is_win:
 if is_darwin:
     exe_icon = (str(repo_path / "images/openbb.icns"),)
 
-block_cipher = None
-# PyWry
-pywry_a = Analysis(
-    [str(pathex / "pywry/backend.py")],
-    pathex=[],
-    binaries=[],
-    datas=[],
-    hiddenimports=[],
-    hookspath=[],
-    hooksconfig={},
-    runtime_hooks=[],
-    excludes=[],
-    win_no_prefer_redirects=False,
-    win_private_assemblies=False,
-    cipher=block_cipher,
-    noarchive=False,
-)
-pywry_pyz = PYZ(pywry_a.pure, pywry_a.zipped_data, cipher=block_cipher)
-
-
-# PyWry EXE
-pywry_exe = EXE(
-    pywry_pyz,
-    pywry_a.scripts,
-    [],
-    exclude_binaries=True,
-    name="OpenBBPlotsBackend",
-    debug=False,
-    bootloader_ignore_signals=False,
-    strip=False,
-    upx=True,
-    upx_exclude=[],
-    console=True,
-    disable_windowed_traceback=False,
-    target_arch="x86_64",
-    codesign_identity=None,
-    entitlements_file=None,
-    icon=exe_icon,
-)
 
 exe_args = [
     pyz,
@@ -252,14 +214,9 @@ if is_darwin:
     exe_kwargs["argv_emulation"] = True
 
 exe = EXE(*exe_args, **exe_kwargs)
-pywry_collect_args = [
-    pywry_a.binaries,
-    pywry_a.zipfiles,
-    pywry_a.datas,
-]
 
 if build_type == "folder":
     coll = COLLECT(
-        *([exe] + collect_args + [pywry_exe] + pywry_collect_args),
+        *([exe] + collect_args),
         **collect_kwargs,
     )

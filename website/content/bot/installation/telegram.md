@@ -1,18 +1,23 @@
 ---
-title: Telegram
-sidebar_position: 1
-description: How to get started with OpenBB Bot
-keywords: [installation, install, install openbb bot, guide, how to, explanation, openbb bot, openbb, discord, telegram,]
+title: Telegram bot
+sidebar_position: 3
+description: Step-by-step guide to add the OpenBB Bot to a Telegram group. From starting
+  a chat with the bot to verifying its permissions, follow these steps to have your
+  bot ready in your group.
+keywords:
+- Add bot to Telegram
+- OpenBB Bot
+- telegram bot setup
+- telegram group
+- chatbot permission
 ---
-
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Telegram - Bot | OpenBB Docs" />
+<HeadTitle title="Setting up Telegram bot - Installation | OpenBB Bot Docs" />
+
 
 import AddBotDialogTelegram from "@site/src/components/General/AddBotTelegram";
-
-## Telegram Server - First Time Setup
 
 <AddBotDialogTelegram
 />

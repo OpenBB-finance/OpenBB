@@ -1,9 +1,21 @@
 ---
 title: web
-description: OpenBB Terminal Function
+description: This page offers information on how to find websites for a given Coin,
+  including homepages, forums, and announcement sites. It also provides a guide on
+  how to use the web command with no parameters.
+keywords:
+- crypto
+- coin
+- websites
+- homepages
+- forums
+- announcement sites
+- web command
 ---
 
-# web
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/web - Reference | OpenBB Terminal Docs" />
 
 Websites found for given Coin. You can find there urls to homepage, forum, announcement site and others.
 

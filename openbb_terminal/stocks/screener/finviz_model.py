@@ -109,18 +109,16 @@ def get_screener_data(
         Dataframe with loaded filtered stocks
     """
     df_screen = pd.DataFrame()
-    if data_type == "overview":
-        screen = overview.Overview()
-    elif data_type == "valuation":
-        screen = valuation.Valuation()
-    elif data_type == "financial":
-        screen = financial.Financial()
-    elif data_type == "ownership":
-        screen = ownership.Ownership()
-    elif data_type == "performance":
-        screen = performance.Performance()
-    elif data_type == "technical":
-        screen = technical.Technical()
+    screen_type = {
+        "overview": overview.Overview,
+        "valuation": valuation.Valuation,
+        "financial": financial.Financial,
+        "ownership": ownership.Ownership,
+        "performance": performance.Performance,
+        "technical": technical.Technical,
+    }
+    if data_type in screen_type:
+        screen = screen_type[data_type]()
     else:
         console.print("Invalid selected screener type")
         return pd.DataFrame()
@@ -183,11 +181,10 @@ def get_screener_data(
                     order=d_general["Order"], ascend=ascend
                 )
 
+        elif limit > 0:
+            df_screen = screen.screener_view(limit=limit, ascend=ascend)
         else:
-            if limit > 0:
-                df_screen = screen.screener_view(limit=limit, ascend=ascend)
-            else:
-                df_screen = screen.screener_view(ascend=ascend)
+            df_screen = screen.screener_view(ascend=ascend)
 
     df_screen.columns = [val.strip("\n") for val in df_screen.columns]
     if "Company" in df_screen.columns:

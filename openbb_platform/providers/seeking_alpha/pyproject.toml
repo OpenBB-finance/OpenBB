@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "openbb-seeking-alpha"
+version = "1.0.0"
+description = "Seeking Alpha extension for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_seeking_alpha" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openbb-core = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+seeking_alpha = "openbb_seeking_alpha:seeking_alpha_provider"

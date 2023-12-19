@@ -1,12 +1,29 @@
 ---
 title: hist
-description: OpenBB SDK Function
+description: This page provides detailed information on how to retrieve and display
+  information about balance historical transactions using OpenBB's crypto.onchain
+  functionality. Learn how to use On-chain model's parameters to sort and limit transactions
+  as required for Ethplorer, including the export of data.
+keywords:
+- OpenBB Crypto OnChain
+- Blockchain balance
+- Historical transactions
+- OnChain Model
+- OnChain View
+- Ethplorer
+- Balance historical transactions
+- Sort by timestamp
+- Sort in ascending order
+- export dataframe to file
+- Crypto
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.hist - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# hist
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +56,6 @@ openbb.crypto.onchain.hist(address: str, sortby: str = "timestamp", ascend: bool
 | pd.DataFrame | DataFrame with balance historical transactions (last 100) |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +87,6 @@ openbb.crypto.onchain.hist_chart(address: str, limit: int = 10, sortby: str = "t
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

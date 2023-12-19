@@ -1,36 +1,27 @@
 ---
 title: Installation and Updates
 sidebar_position: 1
-description: Installation and Updates to the OpenBB SDK.
+description: This page provides detailed instructions for the installation and updating
+  processes for software, addressing frequently encountered installation issues. These
+  instructions include resolving Microsoft Visual C++ 14.0 dependencies, benefits
+  of using Miniconda for package management, methods to update installations, and
+  solutions for other common installation errors.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb sdk,
-    pypi,
-    miniconda,
-    library,
-    C++,
-    library,
-    error
-  ]
+- Installation
+- Updates
+- Microsoft Visual C++ 14.0
+- Miniconda
+- pip install
+- PyPi Nightly
+- C++ Build Tools
+- Homebrew
+- bt wheel build failure
+- ARM/Linux Raspberry Pi machines
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Installation and Updates - SDK | OpenBB Docs" />
-
-## Installation and Updates
+<HeadTitle title="Installation and Updates - Faqs | OpenBB SDK Docs" />
 
 <details><summary>"Microsoft Visual C++ 14.0 or greater is required"</summary>
 
@@ -70,7 +61,7 @@ poetry install -E all
 The nightly build can be installed with:
 
 ```console
-pip install openbb-nightly[all]
+pip install openbb-terminal-nightly[all]
 ```
 
 **Note**: This version may not be stable and should not be used in a production setting.

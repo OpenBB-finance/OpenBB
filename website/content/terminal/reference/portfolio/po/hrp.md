@@ -1,9 +1,27 @@
 ---
 title: hrp
-description: OpenBB Terminal Function
+description: This technical documentation page provides comprehensive instructions
+  for using 'hrp', a Python command for creating a hierarchical risk parity portfolio.
+  It includes detailed information on usage, parameters, and examples for building
+  custom portfolios optimized for specific risk parameters. Tools like codependence
+  matrix, covariance matrix, CVaR, Tail Gini and hierarchical clustering methodologies
+  are explored in depth.
+keywords:
+- hrp
+- hierarchical risk parity portfolio
+- portfolio optimization
+- risk management
+- codependence matrix
+- covariance matrix
+- risk measure
+- CVaR
+- Tail Gini
+- hierarchical clustering
 ---
 
-# hrp
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/po/hrp - Reference | OpenBB Terminal Docs" />
 
 Builds a hierarchical risk parity portfolio
 

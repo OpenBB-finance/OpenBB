@@ -1,9 +1,19 @@
 ---
 title: profile
-description: OpenBB SDK Function
+description: This page provides information on retrieving the ticker profile from
+  FMP using the 'openbb.stocks.fa.profile' function in OpenBBTerminal. Python's pd.DataFrame
+  is utilized to organize the stock ticker data.
+keywords:
+- FMP
+- ticker profile
+- stock ticker symbol
+- openbb.stocks.fa.profile
+- fundamental analysis
 ---
 
-# profile
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.fa.profile - Reference | OpenBB SDK Docs" />
 
 Get ticker profile from FMP
 
@@ -30,4 +40,3 @@ openbb.stocks.fa.profile(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of ticker profile |
 ---
-

@@ -1,9 +1,22 @@
 ---
 title: mstl
-description: OpenBB Terminal Function
+description: A comprehensive guide for MSTL - Multiple Seasonalities and Trend using
+  Loess forecast analysis in Python. This page includes technical details to understand
+  the parameters for a more accurate prediction, including details on seasonalities
+  and trends. A practical example is provided for clarity.
+keywords:
+- MSTL forecast
+- Multiple Seasonalities and Trend
+- Predictive Modeling
+- Time Series Forecasting
+- Loess Forecast
+- Seasonality
+- Predictive Analytics Tools
 ---
 
-# mstl
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /mstl - Reference | OpenBB Terminal Docs" />
 
 Perform Multiple Seasonalities and Trend using Loess (MSTL) forecast: https://nixtla.github.io/statsforecast/examples/multipleseasonalities.html
 
@@ -42,10 +55,10 @@ mstl [--naive] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p SEASONAL_
 
 Cross Validation Time Series 1: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 115/115 [00:0100:00, 103.78it/s]
 Forecast: 100%|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:0000:00, 19.19it/s]
-MSTL obtains MAPE: 3.37% 
+MSTL obtains MAPE: 3.37%
 
 
-   Actual price: 138.38    
+   Actual price: 138.38
 ┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Datetime   ┃ Prediction ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩

@@ -1,12 +1,27 @@
 ---
 title: cps
-description: OpenBB SDK Function
+description: A docusaurus documentation page detailing the usage of the 'cps' and
+  'cps_chart' functions within the OpenBB marketing terminal. The functions pertain
+  to the analysis of companies per sector in a specific country and market cap
+keywords:
+- docusaurus
+- cps
+- cps_chart
+- OpenBB terminal
+- sector industry analysis
+- finance database
+- stock market
+- metadata
+- market cap analysis
+- company analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.sia.cps - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# cps
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +53,6 @@ openbb.stocks.sia.cps(country: str = "United States", mktcap: str = "Large", exc
 | ---- | ----------- |
 | dict | Dictionary of sectors and number of companies in a specific country |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -75,8 +88,6 @@ openbb.stocks.sia.cps_chart(country: str = "United States", mktcap: str = "Large
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

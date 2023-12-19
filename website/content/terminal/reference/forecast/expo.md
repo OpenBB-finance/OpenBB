@@ -1,9 +1,31 @@
 ---
 title: expo
-description: OpenBB Terminal Function
+description: This page provides a comprehensive guide to the expo usage for executing
+  a Probabilistic Exponential Smoothing forecast. Parameters and their usage are laid
+  out, along with examples for reference.
+keywords:
+- Probabilistic Exponential Smoothing
+- forecast
+- expo
+- trend
+- dampen
+- naive
+- target_column
+- n_days
+- seasonal_periods
+- start_window
+- s_end_date
+- s_start_date
+- residuals
+- forecast_only
+- export_pred_raw
+- parameters
+- usage examples
 ---
 
-# expo
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /expo - Reference | OpenBB Terminal Docs" />
 
 Perform Probabilistic Exponential Smoothing forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.exponential_smoothing.html
 

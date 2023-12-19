@@ -1,9 +1,25 @@
 ---
 title: normality
-description: OpenBB Terminal Function
+description: The page provides comprehensive instructions on how to use the 'normality'
+  function in stock market data analysis. It offers examples of how the function can
+  be used to calculate different statistics, including Kurtosis, Skewness, Jarque-Bera,
+  Shapiro-Wilk, and Kolmogorov-Smirnov, thereby assisting in deciding whether the
+  data has a Gaussian distribution.
+keywords:
+- normality tests
+- stock market
+- statistics
+- Kurtosis
+- Skewness
+- Jarque-Bera
+- Shapiro-Wilk
+- Kolmogorov-Smirnov
+- data analysis
 ---
 
-# normality
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/qa/normality - Reference | OpenBB Terminal Docs" />
 
 Normality tests
 

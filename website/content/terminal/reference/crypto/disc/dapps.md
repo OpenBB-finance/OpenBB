@@ -1,9 +1,28 @@
 ---
 title: dapps
-description: OpenBB Terminal Function
+description: A comprehensive guide to understanding and using 'dapps' command for
+  listing and sorting the top Decentralized Applications (DApps) from various categories
+  and protocols as per users' choice.
+keywords:
+- DApp
+- Decentralized Applications
+- Crypto
+- Blockchain
+- PancakeSwap
+- Splinterlands
+- Alien Worlds
+- Farmers World
+- AtomicAssets
+- Axie Infinity
+- Upland
+- OpenSea
+- Katana
+- Magic Eden
 ---
 
-# dapps
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/disc/dapps - Reference | OpenBB Terminal Docs" />
 
 Shows top decentralized applications [Source: https://dappradar.com/] Accepts --sort {Name,Category,Protocols,Daily Users,Daily Volume [$]} to sort by column
 

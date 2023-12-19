@@ -1,10 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: 8ball
-description: OpenBB Telegram Command
+description: Guidance on how to use 8ball command in the system to get an answer to
+  a specific question from the 8-ball.
+keywords:
+- 8ball
+- question
+- answer
+- user
+- usage
+- parameters
+- examples
+- choices
 ---
 
-# 8ball
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fun: 8ball - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to ask the 8-ball a question and receive an answer. The question must end in a question mark.
 

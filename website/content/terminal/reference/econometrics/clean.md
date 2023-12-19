@@ -1,9 +1,22 @@
 ---
 title: clean
-description: OpenBB Terminal Function
+description: This documentation page provides in-depth instructions on how to clean
+  a dataset by filling and dropping NaN values using different methods. It covers
+  the use of the function, parameters, choices, and detailed examples.
+keywords:
+- dataset cleaning
+- NaN values
+- data processing
+- Python functions
+- data analysis
+- SEO optimization
+- filling methods
+- dropping methods
 ---
 
-# clean
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics /clean - Reference | OpenBB Terminal Docs" />
 
 Clean a dataset by filling and dropping NaN values.
 

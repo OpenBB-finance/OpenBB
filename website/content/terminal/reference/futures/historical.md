@@ -1,9 +1,20 @@
 ---
 title: historical
-description: OpenBB Terminal Function
+description: This documentation page provides the user with instructions on how to
+  display futures historical data. Certain parameters like ticker data, start date,
+  and expiry date can be specified to customize the output according to individual
+  needs.
+keywords:
+- display futures historical
+- futures timeseries
+- Ticker data
+- historical data
+- future expiry date
 ---
 
-# historical
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="futures /historical - Reference | OpenBB Terminal Docs" />
 
 Display futures historical. [Source: YahooFinance]
 

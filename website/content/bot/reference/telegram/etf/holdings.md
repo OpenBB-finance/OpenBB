@@ -1,10 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: holdings
-description: OpenBB Telegram Command
+description: This page provides information about the command that returns the holdings
+  for an ETF sorted by percent of ETF. This command can be particularly useful for
+  anyone interested in ETF and programming with Python.
+keywords:
+- ETF
+- ETF Holdings
+- ETF Ticker
+- Holdings
+- Programming
+- Command
 ---
 
-# etf holdings
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf: holdings - Telegram Reference | OpenBB Bot Docs" />
 
 This command returns the holdings for an ETF sorted by percent of ETF.
 

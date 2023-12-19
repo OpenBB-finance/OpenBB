@@ -1,12 +1,21 @@
 ---
 title: view
-description: OpenBB SDK Function
+description: Technical analysis with OpenBB - Learn how to use finviz model and view
+  chart using stock ticker. Detailed examples, parameters, and source code included.
+keywords:
+- technical analysis
+- finviz model
+- view chart
+- stock ticker
+- matplotlib
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ta.view - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# view
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +46,6 @@ openbb.stocks.ta.view(symbol: str)
 | bytes | Image in byte format |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +74,6 @@ openbb.stocks.ta.view_chart(symbol: str, external_axes: Optional[List[matplotlib
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

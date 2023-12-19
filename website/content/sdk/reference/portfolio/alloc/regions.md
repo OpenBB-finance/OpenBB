@@ -1,9 +1,22 @@
 ---
 title: regions
-description: OpenBB SDK Function
+description: This page provides details about the 'regions' function of the OpenBB
+  finance platform. The said function displays the portfolio region allocation in
+  comparison to the benchmark. It includes a brief overview, parameters, return values,
+  and an example usage.
+keywords:
+- OpenBB finance platform
+- portfolio region allocation
+- benchmark comparison
+- portfolio management
+- portfolio allocation
+- parameters
+- example usage
 ---
 
-# regions
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.alloc.regions - Reference | OpenBB SDK Docs" />
 
 Display portfolio region allocation compared to the benchmark
 
@@ -43,4 +56,3 @@ output = openbb.portfolio.alloc.regions(p)
 ```
 
 ---
-

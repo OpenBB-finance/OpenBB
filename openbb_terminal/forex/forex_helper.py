@@ -134,7 +134,7 @@ def load(
     if source in ["YahooFinance", "AlphaVantage"]:
         interval_map = INTERVAL_MAPS[source]
 
-        if interval not in interval_map.keys() and resolution != "d":
+        if interval not in interval_map and resolution != "d":
             if verbose:
                 console.print(
                     f"Interval not supported by {FOREX_SOURCES[source]}."

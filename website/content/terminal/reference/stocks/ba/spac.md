@@ -1,9 +1,23 @@
 ---
 title: spac
-description: OpenBB Terminal Function
+description: This page provides a tool letting users pull SPAC announcements from
+  Reddit. It shows usage, parameters, examples, and notable references to companies
+  such as eToro and Citadel Advisors.
+keywords:
+- SPACs
+- Reddit
+- stocks
+- eToro
+- GME
+- FTCV
+- APEX Clearing
+- Peak 6
+- Citadel Advisors
 ---
 
-# spac
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ba/spac - Reference | OpenBB Terminal Docs" />
 
 Show other users SPACs announcement. [Source: Reddit]
 

@@ -1,9 +1,28 @@
 ---
 title: exmarkets
-description: OpenBB Terminal Function
+description: The page explains the usage of exmarkets command that generates a table
+  with exchange markets data with various parameters. It provides information on how
+  to limit, sort, and view this data in a user-friendly format.
+keywords:
+- exmarkets
+- exchange markets
+- cryptocurrency
+- sort data
+- limit data
+- command usage
+- parameter usage
+- exchange_id
+- trust score
+- base_currency_name
+- quote_currency_name
+- market_url
+- reported_volume_24h_share
+- category
 ---
 
-# exmarkets
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ov/exmarkets - Reference | OpenBB Terminal Docs" />
 
 Get all exchange markets found for given exchange You can display only N number of records with --limit parameter. You can sort data by pair, base_currency_name, quote_currency_name, market_url, category, reported_volume_24h_share, trust_score --sortby parameter and also with --reverse flag to sort ascending. You can use additional flag --urls to see urls for each market Displays: exchange_id, pair, base_currency_name, quote_currency_name, market_url, category, reported_volume_24h_share, trust_score,
 

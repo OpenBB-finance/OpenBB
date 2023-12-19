@@ -1,9 +1,25 @@
 ---
 title: index
-description: OpenBB Terminal Function
+description: This page provides detailed information on how to obtain indices data
+  and visualize it. The useful parameters and their respective descriptions are provided
+  to ensure efficient data manipulation. Actual examples that illustrate the usage
+  of the commands are included for better understanding.
+keywords:
+- Indices data
+- Data plot
+- Yahoo Finance
+- FinanceDatabase
+- Data intervals
+- Start date
+- End date
+- Data column
+- Data query
+- Compounded returns
 ---
 
-# index
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy /index - Reference | OpenBB Terminal Docs" />
 
 Obtain any set of indices and plot them together. With the -si argument the major indices are shown. By using the arguments (for example 'nasdaq' and 'sp500') you can collect data and plot the graphs together. [Source: Yahoo finance / FinanceDatabase]
 

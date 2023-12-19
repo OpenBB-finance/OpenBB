@@ -1,9 +1,20 @@
 ---
 title: stocks_data
-description: OpenBB SDK Function
+description: This page offers in-depth documentation on how to use the 'stocks_data'
+  function in the OpenBBTerminal's stock analysis tool, detailing parameters, returns
+  and source code.
+keywords:
+- stock data
+- finance key
+- financial statement
+- stock analysis
+- programming
+- code documentation
 ---
 
-# stocks_data
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.sia.stocks_data - Reference | OpenBB SDK Docs" />
 
 Get stocks data based on a list of stocks and the finance key. The function searches for the
 
@@ -34,4 +45,3 @@ openbb.stocks.sia.stocks_data(symbols: List[str] = None, finance_key: str = "ncf
 | ---- | ----------- |
 | dict | Dictionary of filtered stocks data separated by financial statement |
 ---
-

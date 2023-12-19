@@ -1,12 +1,27 @@
 ---
 title: psi_q
-description: OpenBB SDK Function
+description: The psi_q documentation page explains the usage of the psi_q function,
+  which plots the short interest of a stock. It contains the source code, code snippets,
+  parameters, and return types of the function.
+keywords:
+- psi_q
+- short interest
+- stock
+- plot
+- code
+- function
+- parameters
+- returns
+- NYSE
+- NASDAQ
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.dps.psi_q - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# psi_q
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +52,6 @@ openbb.stocks.dps.psi_q(symbol: str, nyse: bool = False)
 | ---- | ----------- |
 | pd.DataFrame | short interest volume data |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -72,8 +85,6 @@ openbb.stocks.dps.psi_q_chart(symbol: str, nyse: bool = False, limit: int = 10, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

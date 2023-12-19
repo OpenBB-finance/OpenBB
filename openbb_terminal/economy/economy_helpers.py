@@ -5,6 +5,7 @@ from typing import Dict
 
 import pandas as pd
 
+from openbb_terminal.economy import econdb_model, fred_view, yfinance_model
 from openbb_terminal.rich_config import console
 
 
@@ -100,3 +101,58 @@ def update_stored_datasets_string(datasets) -> str:
                     stored_datasets_string += ", " + col
 
     return stored_datasets_string
+
+
+def get_plot_macro(dataset, variable: str, units, data):
+    split = variable.split("_")
+    transform = ""
+    if len(split) == 3 and split[1] in econdb_model.TRANSFORM:
+        country, transform, parameter_abbreviation = split
+    elif len(split) == 4 and split[2] in econdb_model.TRANSFORM:
+        country = f"{split[0]} {split[1]}"
+        transform = split[2]
+        parameter_abbreviation = split[3]
+    elif len(split) == 2:
+        country, parameter_abbreviation = split
+    else:
+        country = f"{split[0]} {split[1]}"
+        parameter_abbreviation = split[2]
+
+    parameter = econdb_model.PARAMETERS[parameter_abbreviation]["name"]
+
+    units = units[country.replace(" ", "_")][parameter_abbreviation]
+    transformtype = f" ({econdb_model.TRANSFORM[transform]}) " if transform else " "
+    dataset[f"{country}{transformtype}[{parameter}, Units: {units}]"] = data[variable]
+    return dataset
+
+
+def get_yaxis_data(datasets, units, titles, ys):
+    dataset_yaxis = pd.DataFrame()
+    if not ys:
+        return dataset_yaxis
+    for variable in ys:
+        for key, data in datasets.items():
+            if variable in data.columns:
+                if key == "macro":
+                    dataset_yaxis = get_plot_macro(dataset_yaxis, variable, units, data)
+                elif key == "fred":
+                    compound_detail = titles[variable]
+                    detail = {
+                        "units": compound_detail.split("(")[-1].split(")")[0],
+                        "title": compound_detail.split("(")[0].strip(),
+                    }
+                    data_to_plot, title = fred_view.format_data_to_plot(
+                        data[variable], detail
+                    )
+                    dataset_yaxis[title] = data_to_plot
+                elif key == "index" and variable in yfinance_model.INDICES:
+                    dataset_yaxis[yfinance_model.INDICES[variable]["name"]] = data[
+                        variable
+                    ]
+                elif key == "treasury":
+                    parameter, maturity = variable.split("_")
+                    dataset_yaxis[f"{parameter} [{maturity}]"] = data[variable]
+                else:
+                    dataset_yaxis[variable] = data[variable]
+                break
+    return dataset_yaxis

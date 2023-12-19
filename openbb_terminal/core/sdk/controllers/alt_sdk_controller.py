@@ -11,6 +11,7 @@ class AltController(model.AltRoot):
         `covid`: Covid Module
         `oss`: Oss Module
         `realestate`: Realestate Module
+        `companieshouse`: CompaniesHouse Module
 
     Attributes:
         `hn`: Get top stories from HackerNews.\n
@@ -66,3 +67,19 @@ class AltController(model.AltRoot):
         """
 
         return model.AltRealestate()
+
+    @property
+    def companieshouse(self):
+        """Alternative CompaniesHouse Submodule
+
+        Attributes:
+            `get_search_results`: Search for companies by name\n
+            `get_company_info`: Get details of company by registration number\n
+            `get_officers`: Get company officers\n
+            `get_persons_with_significant_control`: Get people/organisations with significant control over company\n
+            `get_filings`: Get company filing details\n
+            `get_filing_document`: Get company filed document\n
+            `download_filing_document`: Download company filed document\n
+        """
+
+        return model.AltCompaniesHouse()

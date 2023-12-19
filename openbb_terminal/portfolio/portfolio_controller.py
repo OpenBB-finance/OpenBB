@@ -428,15 +428,14 @@ class PortfolioController(BaseController):
                 console.print(
                     "[red]Please first load transactions file using 'load'[/red]"
                 )
-            else:
-                if self.portfolio.set_benchmark(
-                    ns_parser.benchmark, ns_parser.full_shares
-                ):
-                    self.benchmark_name = statics.BENCHMARK_CHOICES.get(
-                        ns_parser.benchmark, ns_parser.benchmark
-                    )
-                    self.original_benchmark_ticker = ns_parser.benchmark
-                    self.recalculate_alloc = True
+            elif self.portfolio.set_benchmark(
+                ns_parser.benchmark, ns_parser.full_shares
+            ):
+                self.benchmark_name = statics.BENCHMARK_CHOICES.get(
+                    ns_parser.benchmark, ns_parser.benchmark
+                )
+                self.original_benchmark_ticker = ns_parser.benchmark
+                self.recalculate_alloc = True
 
     @log_start_end(log=logger)
     def call_alloc(self, other_args: List[str]):
@@ -561,7 +560,7 @@ class PortfolioController(BaseController):
                 self.portfolio_name, self.benchmark_name
             ):
                 if self.benchmark_name != "SPDR S&P 500 ETF Trust (SPY)":
-                    print(
+                    console.print(
                         "This feature uses S&P 500 as benchmark and will disregard selected benchmark if different."
                     )
                 # sector contribution

@@ -1,9 +1,14 @@
 ---
 title: ycrv
-description: OpenBB Terminal Function
+description: This documentation page explains how the user is able to use ycrv command to generate country yield curve, which shows the bond rates at different maturities.
+keywords:
+- bond rates
+- yield curve
 ---
 
-# ycrv
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy /ycrv - Reference | OpenBB Terminal Docs" />
 
 Generate country yield curve. The yield curve shows the bond rates at different maturities.
 

@@ -1,9 +1,20 @@
 ---
 title: wma
-description: OpenBB Terminal Function
+description: Learn how to use Weighted Moving Average (WMA) for better data analysis.
+  This page provides a guide on how to implement WMA, with more weight on recent data
+  and less on past data. It details the usage, parameters, defaults and offers a visual
+  representation for clearer understanding.
+keywords:
+- Weighted Moving Average
+- WMA
+- Simple Moving Average
+- n_length
+- n_offset
 ---
 
-# wma
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf/ta/wma - Reference | OpenBB Terminal Docs" />
 
 A Weighted Moving Average puts more weight on recent data and less on past data. This is done by multiplying each bar’s price by a weighting factor. Because of its unique calculation, WMA will follow prices more closely than a corresponding Simple Moving Average.
 

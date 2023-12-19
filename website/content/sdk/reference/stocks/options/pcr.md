@@ -1,12 +1,25 @@
 ---
 title: pcr
-description: OpenBB SDK Function
+description: Documentation for the 'pcr' function from the OpenBB Terminal platform.
+  Contains model and chart views to get and display the put call ratio of certain
+  stock options.
+keywords:
+- pcr function
+- put call ratio
+- stock options
+- AlphaQuery.com
+- Python code
+- function parameters
+- function return
+- docusaurus tabs
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.options.pcr - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# pcr
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -48,8 +61,6 @@ pcr_df = openbb.stocks.options.pcr("B")
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -81,8 +92,6 @@ openbb.stocks.options.pcr_chart(symbol: str, window: int = 30, start_date: str =
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,36 +1,26 @@
 ---
 title: Windows
 sidebar_position: 1
-description: This section provides you with the installation file as well as the guide to install the OpenBB Terminal via Windows (10 or greater).
+description: Learn how to install the OpenBB Terminal on Windows, understand its minimum
+  requirements, and follow the step-by-step instructions to ensure successful installation.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb terminal,
-    requirements,
-    windows 10
-  ]
+- OpenBB Terminal installation
+- Windows installation guide
+- Windows OpenBB Terminal
+- Download OpenBB Terminal
+- Install OpenBB Terminal
+- OpenBB Terminal requirements
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Windows - Terminal | OpenBB Docs" />
+<HeadTitle title="Windows - Installation | OpenBB Terminal Docs" />
 
 import InstallerButton from "@site/src/components/General/InstallerButton";
 
 This section provides you with the installation file as well as the guide to install the OpenBB Terminal via Windows (10 or greater).
 
-<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v3.2.1/Windows.OpenBB.Terminal.v3.2.1.exe" label="Windows Installer" />
+<InstallerButton type="windows" href="https://github.com/OpenBB-finance/OpenBBTerminal/releases/download/v3.2.4/Windows.OpenBB.Terminal.v3.2.4.exe" label="Windows Installer" />
 
 <details><summary>Minimum Requirements</summary>
 
@@ -49,7 +39,7 @@ Step by step instructions:
 3. Follow the prompts to complete the installation process
 4. Double-click on the application that appeared on your Desktop, you are now able to run the OpenBB Terminal
 
-<p align="center"><a target="_blank" href="https://openbb-web-assets.s3.amazonaws.com/docs/installation/icon.png"><img width="100" alt="run_the_terminal" src="https://openbb-web-assets.s3.amazonaws.com/docs/installation/icon.png"></img></a></p>
+<p align="center"><a><img width="100" alt="run_the_terminal" src="https://openbb-web-assets.s3.amazonaws.com/docs/installation/icon.png"></img></a></p>
 
 The first time this takes a bit longer to load, this can take up to a few minutes. If everything was successful you should see a screen like the one below:
 

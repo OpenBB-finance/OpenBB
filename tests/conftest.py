@@ -83,16 +83,11 @@ class Record:
 
     @property
     def record_changed(self) -> bool:
-        if self.__recorded is None:
-            changed = True
-        elif self.__strip and self.__recorded.strip() != self.__captured.strip():
-            changed = True
-        elif not self.__strip and self.__recorded != self.__captured:
-            changed = True
-        else:
-            changed = False
-
-        return changed
+        return (
+            self.__recorded is None
+            or (self.__strip and self.__recorded.strip() != self.__captured.strip())
+            or (not self.__strip and self.__recorded != self.__captured)
+        )
 
     @property
     def record_exists(self) -> bool:
@@ -360,7 +355,7 @@ def brotli_check():
 
 def disable_rich():
     def effect(df, *xargs, **kwargs):  # pylint: disable=unused-argument
-        print(df.to_string())
+        print(df.to_string())  # noqa: T201
 
     helper_funcs.print_rich_table = effect
 

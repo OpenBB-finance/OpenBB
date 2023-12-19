@@ -1,10 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: bigprints
-description: OpenBB Discord Command
+description: The documentation page explains the '/crypto bigprints coin:BTC-USD'
+  command which retrieves last 15 large cryptocurrency prints. Informative for trading
+  decisions.
+keywords:
+- Cryptocurrency
+- Crypto Trading
+- Trading decisions
+- Command documentation
+- Crypto bigprints
+- BTC-USD
+- Currency pair
+- Large crypto prints
 ---
 
-# bigprints
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto: bigprints - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the last 15 large prints for a given cryptocurrency pair. The command uses the format "/crypto bigprints coin:BTC-USD" where BTC-USD is the currency pair for which the user wants to retrieve the large prints. This command is useful for analyzing the recent large prints of a given currency pair, which can be used to inform trading decisions.
 

@@ -1,0 +1,10 @@
+Current Company: 
+
+    search             search for companies by name
+    load               retrieve basic company details by company registration number
+    officers           retrieve company officies
+    signifcontrol      retrieve those with significant control over the company
+    filings            retrieve list of documents filed with Companies House (Default 100)
+    filingdocument     download filed document
+    charges            registered charges against the company
+

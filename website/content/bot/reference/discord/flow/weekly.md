@@ -1,10 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: weekly
-description: OpenBB Discord Command
+description: The weekly page includes information on how to retrieve the top 20 flow
+  by Premium for a stock with an option contract expiring within the week using a
+  specific command.
+keywords:
+- weekly command
+- retrieve top flow
+- premium for stock
+- option contract expiry
+- stock ticker
 ---
 
-# weekly
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="flow: weekly - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the Top 20 flow by Premium for a stock with an option contact expiring that week.
 

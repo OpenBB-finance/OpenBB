@@ -1,9 +1,31 @@
 ---
 title: overview
-description: OpenBB Terminal Function
+description: The page provides a detailed overview of selected ETFs including information
+  on assets, NAV, expense ratio, PE ratio, outstanding shares, dividends, yield, trading
+  volume, opening and closing prices, 52-week highs and lows, beta coefficient and
+  the number of holdings.
+keywords:
+- ETF
+- overview
+- assets
+- NAV
+- Expense Ratio
+- PE Ratio
+- Shares Out
+- dividend
+- Dividend Yield
+- Volume
+- Open
+- Previous Close
+- 52-Week Low
+- 52-Week High
+- Beta
+- Holdings
 ---
 
-# overview
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf /overview - Reference | OpenBB Terminal Docs" />
 
 Get overview data for selected etf
 

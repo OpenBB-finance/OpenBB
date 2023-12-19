@@ -64,8 +64,8 @@ class SourcesController(BaseController):
         """
         cmd_filter = r"((set\s+--cmd\s+|set\s+-c\s+|set\s+|get\s+--cmd\s+|get\s+-c\s+|get\s+).*?("
         for cmd in get_current_user().sources.choices:
-            cmd = cmd.replace("/", r"\/")
-            cmd_filter += f"{cmd}|"
+            clean_cmd = cmd.replace("/", r"\/")
+            cmd_filter += f"{clean_cmd}|"
         cmd_filter += ")*)"
 
         commands = parse_and_split_input(an_input=an_input, custom_filters=[cmd_filter])

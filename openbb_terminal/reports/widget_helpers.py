@@ -12,6 +12,7 @@ from jinja2 import Template
 
 from openbb_terminal.core.config.paths import PACKAGE_DIRECTORY
 from openbb_terminal.core.plots.backend import PLOTLYJS_PATH
+from openbb_terminal.rich_config import console
 
 
 def price_card_stylesheet():
@@ -166,7 +167,7 @@ def kpi(thresholds: List[float], sentences: List[str], value: float) -> str:
         if value > thresholds[1]:
             return f'<p style="color:green">&#x2705; {sentences[2]}. {value} > {thresholds[1]} </p>'
         return f'<p style="color:orange">&#128993; {sentences[1]}. {thresholds[0]} < {value} < {thresholds[1]} </p>'
-    print("Error. KPI condition is not correctly set")
+    console.print("Error. KPI condition is not correctly set")
     return ""
 
 

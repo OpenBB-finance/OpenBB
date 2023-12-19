@@ -1,12 +1,22 @@
 ---
 title: info
-description: OpenBB SDK Function
+description: This documentation page provides information about the info and chart
+  models for options in OpenBB Terminal, explaining how to get ticker info and scrape
+  Barchart.com for options info.
+keywords:
+- OpenBB Terminal documentation
+- Stock options
+- Ticker info
+- Barchart.com scraping
+- Python utilities
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.options.info - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# info
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +47,6 @@ openbb.stocks.options.info(symbol: str)
 | float | The info for a given ticker |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +75,6 @@ openbb.stocks.options.info_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

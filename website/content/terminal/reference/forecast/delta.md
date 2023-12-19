@@ -1,9 +1,20 @@
 ---
 title: delta
-description: OpenBB Terminal Function
+description: Documentation related to Delta, a function that adds percentage change
+  to a selected dataset column. The page gives an overview of the function usage,
+  parameters and examples
+keywords:
+- Delta function
+- Dataset
+- Column specific change
+- Data analysis
+- Forecasting
+- Command line parameters
 ---
 
-# delta
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /delta - Reference | OpenBB Terminal Docs" />
 
 Add %Change (Delta) to dataset based on specific column.
 

@@ -1,0 +1,16 @@
+./tests
+.git
+*.css
+*.csv
+*.html
+*.ini
+*.ipynb
+*.js
+*.json
+*.lock
+*.scss
+*.txt
+*.yaml
+./build/pyinstaller
+./website/config.toml
+./**/node_modules

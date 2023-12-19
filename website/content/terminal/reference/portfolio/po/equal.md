@@ -1,9 +1,28 @@
 ---
 title: equal
-description: OpenBB Terminal Function
+description: The page provides information about an equally weighted portfolio optimization
+  command 'equal'. It lists and explains the parameters for usage like risk measure,
+  nan fill method, return frequency, and more. The page is useful for individuals
+  looking for information about portfolio optimization and the usage of specific financial
+  indicators.
+keywords:
+- docusaurus
+- equally weighted portfolio
+- portfolio optimization
+- risk measure
+- nan fill method
+- historic period
+- log returns
+- return frequency
+- risk-free rate
+- significance level
+- allocation
+- financial data analysis
 ---
 
-# equal
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/po/equal - Reference | OpenBB Terminal Docs" />
 
 Returns an equally weighted portfolio
 

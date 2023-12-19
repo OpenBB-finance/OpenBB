@@ -1,9 +1,18 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: This page provides information about the 'load' feature designed to retrieve
+  historical data. It details the usage and various parameters with their functions.
+keywords:
+- historical data
+- load function
+- fund search
+- date range
+- parameters
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="funds /load - Reference | OpenBB Terminal Docs" />
 
 Get historical data.
 

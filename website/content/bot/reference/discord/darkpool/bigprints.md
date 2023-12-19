@@ -1,10 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: bigprints
-description: OpenBB Discord Command
+description: Bigprints command provides a comprehensive view of the biggest dark pool
+  and block trades over a specified number of days, offering insights into the market
+  activity over that period.
+keywords:
+- bigprints
+- dark pool trades
+- block trades
+- /dp bigprints days
+- market activity
 ---
 
-# bigprints
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="darkpool: bigprints - Discord Reference | OpenBB Bot Docs" />
 
 This command will retrieve the largest combination of dark pool and block trades over a specified amount of days. It will provide a comprehensive view of the biggest dark pool and block trades over the specified number of days and give the user an idea of the market activity over that period.
 

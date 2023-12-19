@@ -1,9 +1,23 @@
 ---
 title: ema
-description: OpenBB Terminal Function
+description: Documentation for the 'ema' tool that allows the addition of an exponential
+  moving average to a dataset based on a specific column. Explains usage, parameters,
+  and gives practical examples.
+keywords:
+- ema
+- exponential moving average
+- dataset
+- column
+- target_column
+- period
+- usage
+- parameters
+- examples
 ---
 
-# ema
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /ema - Reference | OpenBB Terminal Docs" />
 
 Add exponential moving average to dataset based on specific column.
 

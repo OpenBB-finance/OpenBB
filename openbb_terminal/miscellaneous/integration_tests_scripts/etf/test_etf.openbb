@@ -2,6 +2,7 @@ etf
 load spy
 overview
 holdings
+holdings_perf --limit 3
 weights
 weights --raw
 candle

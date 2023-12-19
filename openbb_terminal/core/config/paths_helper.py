@@ -42,6 +42,7 @@ dirs_list = [
     current_user.preferences.USER_DATA_DIRECTORY / "styles",
     current_user.preferences.USER_DATA_DIRECTORY / "reports",
     current_user.preferences.USER_DATA_DIRECTORY / "reports" / "custom reports",
+    current_user.preferences.USER_DATA_DIRECTORY / "companies_house",
     current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY,
     current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY / "econometrics",
     current_user.preferences.USER_CUSTOM_IMPORTS_DIRECTORY / "stocks",

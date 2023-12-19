@@ -1,9 +1,18 @@
 ---
 title: update
-description: OpenBB Terminal Function
+description: The marketing website page 'update' is primarily focused on how to update
+  orders by their ID and price. Learn the usage and understand the parameters in detail.
+keywords:
+- Order update
+- docusaurus SEO
+- price updating
+- Order's id
+- docusaurus parameters
 ---
 
-# update
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/degiro/update /brokers - Reference | OpenBB Terminal Docs" />
 
 
 

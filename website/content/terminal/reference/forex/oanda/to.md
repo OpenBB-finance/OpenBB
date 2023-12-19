@@ -1,9 +1,22 @@
 ---
 title: to
-description: OpenBB Terminal Function
+description: The page provides details on how to select the 'to' currency symbol in
+  a forex pair. It covers usage, parameters including a comprehensive list of currency
+  codes.
+keywords:
+- Forex
+- Currency Exchange
+- To Currency Symbol
+- Forex Pair
+- Currency Codes
+- Finance
+- Trading
+- Foreign Exchange
 ---
 
-# to
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex/oanda/to - Reference | OpenBB Terminal Docs" />
 
 Select the "to" currency symbol in a forex pair
 

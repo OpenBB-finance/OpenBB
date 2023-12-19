@@ -1,9 +1,17 @@
 ---
 title: view
-description: OpenBB Terminal Function
+description: Learn how to view historical stocks price with trendlines using our platform.
+  No parameters, quick visualization and up-to-date information from Finviz.
+keywords:
+- view historical price
+- price trendlines
+- stock price visualization
+- Finviz
 ---
 
-# view
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ta/view - Reference | OpenBB Terminal Docs" />
 
 View historical price with trendlines. [Source: Finviz]
 

@@ -1,0 +1,95 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+      Origin:
+      - https://www.nasdaq.com
+      Referer:
+      - https://www.nasdaq.com/
+    method: GET
+    uri: https://api.nasdaq.com/api/calendar/dividends?date=2023-11-06
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAM1ZbW/aSBD+Kyt/ON1JhNiGkCbfeEtBwQ7CXNrqdIo29hZWsXfR2qZBEf+9Y4NT
+        TLN2O9GhkyJi76wXP8+8Dy9GQBNqXL8YPg2ZCKjKrml899W4NhwpGsSVa9JpENu0W0bDWDIaMBVn
+        m+JN9ChD2ObtLhqGL6MVFRuXRgyW838NI+BrHsDJD8PnhwFNMsnw+WywXyX5UsNY0U3ERFLsmO5u
+        C6livlRBIZzld4Xs9fzZTlqcDCIuAu7DavDQFSKl4cOr7NoYFzKyk5GD56gQMhU+O3yj7sHa7qu3
+        8F7yG1Dxz8sR8m4Ycgp7yYzFMlVwMaUqEcBbg0ya0ybpyyiSgvwteBITxVaKxXAsFwsy4RHPXqp4
+        gIxFwkCcxPBer4x3Z5Pp29Ra1rnZOd8r64hUkFntQlamNHvsshAdMWo2LyupNJvm25RZ5rm9P3Tb
+        +ImjiIYLGuUauOEC6OKghL5Uq1d6vET6T+TPwfCvEnanO0Fht1HYLTz2tha78pcKsDVAu34ZblnL
+        d/0Tatm6uKjB2rH1YDs6sL1NyAUjPdAwKLcGcu8LTrUWBrB5VYO31UEYdh8OiBOaA46XFHy3BnN/
+        fN87IWqrg7dorZKHyZIKAnGPiV3E4jKPXRWwh/MBDrWNQd2qRm01222EI9/0jmKXVDThgFYH+qZ3
+        e0pV1zo0wr4/hjSIEwkuPRZrSEx5QjzE3ktjcPg4JgO2ZqFc7TfkZxxy8bE7dnHh7RJFho22+4yP
+        t8kY9eY/LKDGz2HvKaP5O5K21t5HjIbJcsXoE5kquWIq4bXhbTrsIm3eRDl6jZ9XpLArPWweKA61
+        yB8AT6WLRcj2hZnITb5e9d54/H/y+wrdX+hJUDyhC5aDZFlRmzm9HvL8tKGuWu+4rJap+Nfi+tid
+        Y0o1+9zEobWxGoZw0tLDXYOGc5wjGbGa/D1270cnTOB2XQI3KxK4Nn7fMiHgKoH0XQn21sHFbpwx
+        12WqD4jQPaEC0jZVxNvECYtqAtbEm89OaM+td3iv1pwnNCb3bAGfXob9jd6yhPjew2Xni9Nq2NJG
+        K4dyAemJseTXew/H9XC9B7Io+Q9qEodCFSKIw8G8FaPRj9FJPmo5Hqgs+apEgHPSSYpp4lOz9UFH
+        gUvXXMYEmOAJj9gBA9PyqGlWMWp6e9LkOg6OnhaKnjp2MAMIV6pkyWicu8WT1hXcHq4bQc4e3uEK
+        2ojnpnmEH4I2F5ud+Zf0X4KLDHcos2/X5O6KPlRbj94pBW3oN3HQgXtMrbm/K1y0er6bzW5OCB3f
+        der17LGQ+Qn5BFshn8swzWq211AfUui9u8Tf4Y+P8X+ao1I7tu0268ZNdkXdpvVpb8lA6YGkSzLP
+        yACsqci+IyMCVK/VvjcaYtwcW9jUjhgxGc/jiqcx+exAmR4GEMprKnVvPEN2n1cozHbnHSNGrb97
+        6WOqHqnIJw9U6H5T+Rn9FNem4Ny9VdOZWdmA4rfNfQ53Txws+/emjXMHWdugatpqpdvNCj8vho3/
+        bhtGVsF8VTnuFyPioth2Zdtn5sWZbc9N8zr/g5eI6PNebltm+8zsnJkH8i0cB31sTBewQ6RhCNxA
+        g5vmP1+qvgxg2TbBGB+za6e8M9hNL5kqrW+33wGxc3k8Mh0AAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - https://www.nasdaq.com
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '1234'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 13 Nov 2023 17:25:06 GMT
+      Expires:
+      - Mon, 13 Nov 2023 17:25:06 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - ak_bmsc=F9346DE90366CFA821CDDB8CF0162A7E~000000000000000000000000000000~YAAQLKMAFwuMVKyLAQAAcym3yRU7r3mTEsKqBJHAXAMcG6X+FjNmg82Rw6X/jMrbQg5yIh9G2T7JAB7OLV4COOra9kZ78qROCOvQ1YPms6ihIOtmBtGO/iuvXUSmLzWR5VkkDEB3CvoBq3hoMcknafm0M539XH6qnQBVvrgj1SWTwUnf62SldCl2VjLeG4oplvaNd9zIdrqJ6Wyc4kgxE0lLdkPbF4GA0rH8ttjRTZb4cCULqXiOATBFTA7iQheQnAEfU+8sZl2vSYukCYU2pcG1dKDQY5rgYWbWdl92RqnN8AFwRyPJqNNQ7D7EeBRVVqnorFQA3n1i5OK9MREO1ai+XgXZyNKWmTk+LyVnNV4h7kwdOkcSzLLQg9gczcP3ui5nM/mMDsKwbV31gSSwuBTiafG49gM=;
+        Domain=.nasdaq.com; Path=/; Expires=Mon, 13 Nov 2023 19:25:05 GMT; Max-Age=7199;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '48'
+      - '51'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '23'
+      - '23'
+      cache-hit:
+      - '3002'
+      - '2002'
+      gid:
+      - '202'
+      lang:
+      - en
+      rid:
+      - 85725017-fee9-474a-af88-e4d1c512c988
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+version: 1

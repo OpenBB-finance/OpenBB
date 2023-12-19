@@ -33,7 +33,13 @@ new Crawler({
   ],
   initialIndexSettings: {
     openbbterminal: {
-      attributesForFaceting: ["type", "lang"],
+      attributesForFaceting: [
+        'type',
+        'lang',
+        'language',
+        'version',
+        'docusaurus_tag',
+      ],
       attributesToRetrieve: [
         "hierarchy",
         "content",

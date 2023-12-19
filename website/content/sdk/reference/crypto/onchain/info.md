@@ -1,12 +1,24 @@
 ---
 title: info
-description: OpenBB SDK Function
+description: This documentation page provides information and source code regarding
+  getting info about ERC20 tokens, and displaying it. Covered aspects include related
+  parameters and returns.
+keywords:
+- ERC20 token info
+- Ethplorer
+- parameters
+- returns
+- OpenBB finance
+- cryptocurrency
+- onchain
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.info - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# info
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +49,6 @@ openbb.crypto.onchain.info(address: Any)
 | pd.DataFrame | DataFrame with information about provided ERC20 token. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +78,6 @@ openbb.crypto.onchain.info_chart(address: str, social: bool = False, export: str
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,41 +1,32 @@
 ---
 title: Showcase
 sidebar_position: 6
-description: Showcasing apps created by users using the OpenBB SDK
-keywords: [Showcasing, showcase, OpenBB, openbb, sdk, api, pip, pypi,]
+description: A showcase of projects built using OpenBB SDK, providing you with examples
+  and real use cases of how our SDK has been used in different projects. Get in touch
+  with us to list your project.
+keywords:
+- OpenBB SDK
+- project showcase
+- software development kit
+- open source
+- Streamlit Dashboard
+- Kulbinderdio project
+- Economy
+- ETF
+- Stocks
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Showcase - SDK | OpenBB Docs" />
+<HeadTitle title="Showcase | OpenBB SDK Docs" />
 
 import ShowcaseItem from "@site/src/components/General/ShowcaseItem"
 
 This page contains a list of projects that use the OpenBB SDK.
 
-If you have a project that uses the OpenBB SDK, please feel free to add it [here](#).
+If you have a project that uses the OpenBB SDK, please contact us via [Discord](https://discord.com/invite/Up2QGbMKHY) or [hello@openbb.co](mailto:hello@openbb.co).
 
 ---
-
-<ShowcaseItem
-categories={['Crypto', 'NFTs']}
-title="Ai1Crypto"
-description="Ai1Crypto is a cryptocurrency dashboard that allows you get an overview of the current state of the cryptocurrency market."
-url="https://ai1crypto.vercel.app/">
-
-<iframe style={{height: 400}} className="w-full rounded"
-src="https://ai1crypto.vercel.app/" title="Ai1Crypto"></iframe>
-</ShowcaseItem>
-
-<ShowcaseItem
-categories={['Commodities', 'Economy', 'Crypto', 'Stocks']}
-title="DirtyDefi's Streamlit Dashboard"
-description="A dashboard built with information from OpenBB by Joseph B, also known as DirtyDefi."
-url="https://openbb.streamlit.app/">
-
-<iframe style={{height: 400}} className="w-full rounded"
-src="https://openbb.streamlit.app/?embedded=true" title="DirtyDefi's Streamlit Dashboard"></iframe>
-</ShowcaseItem>
 
 <ShowcaseItem
 categories={['Economy', 'ETF', 'Stocks']}

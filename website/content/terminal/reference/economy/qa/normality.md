@@ -1,9 +1,23 @@
 ---
 title: normality
-description: OpenBB Terminal Function
+description: This page on the marketing website provides details on the 'normality'
+  function including its usage, parameters, and examples. It is particularly centered
+  around running normality tests in Python.
+keywords:
+- Normality command
+- Normality Statistics
+- Kurtosis
+- Skewness
+- Jarque-Bera
+- Shapiro-Wilk
+- Kolmogorov-Smirnov
+- parameters
+- examples
 ---
 
-# normality
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy/qa/normality - Reference | OpenBB Terminal Docs" />
 
 Normality tests
 

@@ -1,12 +1,27 @@
 ---
 title: treasury
-description: OpenBB SDK Function
+description: The page provides comprehensive documentation and source code for fetching
+  and visualizing U.S. treasury rates data with different options for type of treasuries,
+  maturities, and data frequencies.
+keywords:
+- U.S. treasury rates
+- EconDB
+- data frequency
+- treasury maturities
+- economy.treasury
+- economy.treasury_chart
+- Data Visualization
+- Source Code
+- Parameters
+- Returns
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.treasury - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# treasury
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -50,8 +65,6 @@ openbb.economy.treasury()
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -87,8 +100,6 @@ openbb.economy.treasury_chart(instruments: list = None, maturities: list = None,
 | ---- | ----------- |
 | Plots the Treasury Series. |  |
 ---
-
-
 
 </TabItem>
 </Tabs>

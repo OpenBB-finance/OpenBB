@@ -1,12 +1,24 @@
 ---
 title: mkt
-description: OpenBB SDK Function
+description: An extensive guide and source code for working with cryptocurrency market
+  data from the CoinPaprika API using Python with OpenBB finance. It includes sections
+  on how to fetch all markets for a given cryptocurrency and print tables that display
+  market information.
+keywords:
+- CoinPaprika API
+- cryptocurrency market data
+- OpenBB finance
+- cryptocurrency
+- data fetching
+- market tables
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.mkt - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# mkt
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +51,6 @@ openbb.crypto.dd.mkt(symbol: str = "BTC", quotes: str = "USD", sortby: str = "pc
 | ---- | ----------- |
 | pd.DataFrame | All markets for given coin and currency |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -75,8 +85,6 @@ openbb.crypto.dd.mkt_chart(from_symbol: str = "BTC", to_symbol: str = "USD", lim
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

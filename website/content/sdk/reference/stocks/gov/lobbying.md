@@ -1,9 +1,23 @@
 ---
 title: lobbying
-description: OpenBB SDK Function
+description: This page provides details on corporate lobbying, including parameters
+  for symbol and limit, and returns a dataframe with corporate lobbying data. It includes
+  a link to the source code on GitHub.
+keywords:
+- Corporate lobbying details
+- Source code
+- openbb.stocks.gov.lobbying
+- Parameters
+- symbol
+- Ticker symbol
+- limit
+- Returns
+- corporate lobbying data
 ---
 
-# lobbying
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.gov.lobbying - Reference | OpenBB SDK Docs" />
 
 Corporate lobbying details
 
@@ -31,4 +45,3 @@ openbb.stocks.gov.lobbying(symbol: str, limit: int = 10)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with corporate lobbying data |
 ---
-

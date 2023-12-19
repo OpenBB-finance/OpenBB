@@ -164,7 +164,7 @@ def view_historical_greeks(
             f"{strike} {['Call','Put'][put]} and {expiry} Expiration"
         )
     if df.empty:
-        print(f"No data found for {chain_id}")
+        console.print(f"No data found for {chain_id}")
         return None
 
     df = df.rename(columns={"impliedVolatility": "iv", "close": "price"})

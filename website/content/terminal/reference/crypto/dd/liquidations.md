@@ -1,9 +1,19 @@
 ---
 title: liquidations
-description: OpenBB Terminal Function
+description: The Liquidations page provides detailed data about crypto asset liquidations.
+  It's an easy-to-use feature of the Coinglass API with no parameters required. Enhance
+  your understanding of cryptocurrency liquidations.
+keywords:
+- liquidations
+- crypto asset data
+- coinglass API
+- cryptocurrency
+- blockchain technology
 ---
 
-# liquidations
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/liquidations - Reference | OpenBB Terminal Docs" />
 
 Displays liquidations data for the loaded crypto asset [Source: https://coinglass.github.io/API-Reference/#liquidation-chart]
 

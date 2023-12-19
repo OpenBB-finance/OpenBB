@@ -1,12 +1,25 @@
 ---
 title: holders
-description: OpenBB SDK Function
+description: This documentation page provides insights on obtaining and displaying
+  the top token holder information using Ethplorer. It explains the crypto-onchain
+  methods used for data extraction and its process.
+keywords:
+- crypto onchain
+- Ethplorer
+- token holders
+- ERC20 tokens
+- data extraction
+- data frame
+- data processing
+- data visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.holders - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# holders
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +52,6 @@ openbb.crypto.onchain.holders(address: str, sortby: str = "balance", ascend: boo
 | pd.DataFrame | DataFrame with list of top token holders. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +83,6 @@ openbb.crypto.onchain.holders_chart(address: str, limit: int = 10, sortby: str =
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

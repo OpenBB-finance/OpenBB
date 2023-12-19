@@ -1,12 +1,28 @@
 ---
 title: exrates
-description: OpenBB SDK Function
+description: Explanation and source code of 'exrates', a feature from OpenBB-finance
+  which fetches a list of cryptocurrency, fiat, and commodity exchange rates from
+  the CoinGecko API. This page includes how to use the function, its parameters, and
+  its returns.
+keywords:
+- exrates
+- OpenBB-finance
+- CoinGecko API
+- cryptocurrency
+- exchange rates
+- crypto
+- fiats
+- commodity
+- parameters
+- returns
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.exrates - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# exrates
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +54,6 @@ openbb.crypto.ov.exrates(sortby: str = "Name", ascend: bool = False)
 | pd.DataFrame | Index, Name, Unit, Value, Type |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +84,6 @@ openbb.crypto.ov.exrates_chart(sortby: str = "Name", ascend: bool = False, limit
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

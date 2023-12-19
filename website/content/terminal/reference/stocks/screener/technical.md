@@ -1,9 +1,22 @@
 ---
 title: technical
-description: OpenBB Terminal Function
+description: This page provides a comprehensive guide to the 'technical' functionality
+  of our platform. It explains how to use presets to filter and print technical data
+  of companies, and describes the functions of different parameters.
+keywords:
+- technical data
+- stock filtering
+- stock analytics
+- financial tools
+- preset filters
+- stock parameters
+- data sorting
+- financial data analysis
 ---
 
-# technical
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/screener/technical - Reference | OpenBB Terminal Docs" />
 
 Prints technical data of the companies that meet the pre-set filtering.
 

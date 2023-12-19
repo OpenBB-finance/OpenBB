@@ -1,9 +1,22 @@
 ---
 title: holdv
-description: OpenBB Terminal Function
+description: The page provides detailed information on the usage, the required and
+  optional parameters of 'holdv' - a function used to display the holdings of assets.
+  It specifically features the 'unstack' parameter for summing all assets value over
+  time.
+keywords:
+- holdv
+- assets
+- unstack
+- value
+- time
+- usage
+- parameters
 ---
 
-# holdv
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/holdv - Reference | OpenBB Terminal Docs" />
 
 Display holdings of assets (absolute value)
 

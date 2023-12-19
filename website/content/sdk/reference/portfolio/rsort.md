@@ -1,12 +1,25 @@
 ---
 title: rsort
-description: OpenBB SDK Function
+description: This documentation page provides details about the rsort functions in
+  the OpenBB portfolio application. The rsort function calculates the rolling sortino
+  ratio for a portfolio and rsort_chart function displays this data graphically.
+keywords:
+- Portfolio Management
+- Rolling Sortino Ratio
+- Portfolio Analysis
+- Financial Data Visualization
+- Python Financial Libraries
+- Portfolio Optimization
+- Risk Analysis
+- Portfolio Risk Management
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.rsort - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# rsort
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -49,8 +62,6 @@ output = openbb.portfolio.rsort(p)
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -82,8 +93,6 @@ openbb.portfolio.rsort_chart(portfolio_engine: portfolio_engine.PortfolioEngine,
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

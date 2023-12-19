@@ -1,9 +1,22 @@
 ---
 title: rsi
-description: OpenBB Terminal Function
+description: Learn how to interpret and use the Relative Strength Index (RSI), an
+  overbought/oversold indicator that calculates a ratio of recent upward price movements
+  to the absolute price movement and helps indicate potential price reversals.
+keywords:
+- Relative Strength Index
+- RSI
+- RSI interpretation
+- overbought/oversold indicator
+- RSI divergence
+- price reversal
+- RSI parameters
+- RSI usage
 ---
 
-# rsi
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ta/rsi - Reference | OpenBB Terminal Docs" />
 
 The Relative Strength Index (RSI) calculates a ratio of the recent upward price movements to the absolute price movement. The RSI ranges from 0 to 100. The RSI is interpreted as an overbought/oversold indicator when the value is over 70/below 30. You can also look for divergence with price. If the price is making new highs/lows, and the RSI is not, it indicates a reversal.
 

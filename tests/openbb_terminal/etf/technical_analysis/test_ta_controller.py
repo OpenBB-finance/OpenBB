@@ -14,16 +14,14 @@ from openbb_terminal.core.session.current_user import (
 )
 from openbb_terminal.etf.technical_analysis import ta_controller
 
-# pylint: disable=E1101
-# pylint: disable=W0603
-# pylint: disable=E1111
+# pylint: disable=E1101,W0603,E1111
 
 EMPTY_DF = pd.DataFrame()
 MOCK_STOCK_DF = pd.read_csv(
     "tests/openbb_terminal/etf/technical_analysis/csv/test_ta_controller/stock_df.csv",
     index_col=0,
 )
-print(MOCK_STOCK_DF.columns)
+print(MOCK_STOCK_DF.columns)  # noqa: T201
 
 
 @pytest.mark.vcr(record_mode="none")

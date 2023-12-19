@@ -1,9 +1,22 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: This page documents how to load historical exchange rate data from Alpha
+  Advantage and YahooFinance. It provides code usage standards in Python and explains
+  the parameters for the source, the resolution, the interval, and the start date
+  of data.
+keywords:
+- load historical exchange rate data
+- Alpha Advantage
+- YahooFinance
+- resolution of data
+- intervals of intraday data
+- start date of data
+- currency pairs
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex /load - Reference | OpenBB Terminal Docs" />
 
 Load historical exchange rate data.Available data sources are Alpha Advantage and YahooFinanceBy default main source used for analysis is YahooFinance (yf). To change it use --source av
 

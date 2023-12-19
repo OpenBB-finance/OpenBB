@@ -1,9 +1,18 @@
 ---
 title: add
-description: OpenBB Terminal Function
+description: This page provides documentation for the 'add' function in an Econometrics
+  software. This function allows you to add a new column to your dataset using various
+  computations on existing columns.
+keywords:
+- Econometrics
+- Data manipulation
+- Add function
+- Computations
 ---
 
-# add
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics /add - Reference | OpenBB Terminal Docs" />
 
 Add columns to your dataframe with the option to use formulas. E.g. newdatasetcol = basedatasetcol sign criteriaordatasetcol thesis.high_revenue = thesis.revenue  1000 dataset.debt_ratio = dataset.debt div dataset2.assets
 
@@ -36,7 +45,7 @@ add -n NEWDATASETCOL -b BASEDATASETCOL -s {div,mul,add,sub,mod,pow,,,=,=,==} -c 
 
 2022 May 31, 04:49 (🦋) /econometrics/ $ show wp
 
-                                        Dataset wp | Showing 10 of 4360 rows                                         
+                                        Dataset wp | Showing 10 of 4360 rows
 ┏━━━┳━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃   ┃ nr ┃ year ┃ black ┃ exper ┃ hisp ┃ hours ┃ married ┃ educ ┃ union ┃ lwage ┃ expersq ┃ occupation ┃ after_1990 ┃
 ┡━━━╇━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━┩
@@ -65,7 +74,7 @@ add -n NEWDATASETCOL -b BASEDATASETCOL -s {div,mul,add,sub,mod,pow,,,=,=,==} -c 
 
 2022 May 31, 04:50 (🦋) /econometrics/ $ show wp
 
-                                               Dataset wp | Showing 10 of 4360 rows                                               
+                                               Dataset wp | Showing 10 of 4360 rows
 ┏━━━┳━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃   ┃ nr ┃ year ┃ black ┃ exper ┃ hisp ┃ hours ┃ married ┃ educ ┃ union ┃ lwage ┃ expersq ┃ occupation ┃ after_1990 ┃ after_1985 ┃
 ┡━━━╇━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━┩

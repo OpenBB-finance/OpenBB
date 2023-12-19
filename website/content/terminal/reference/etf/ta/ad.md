@@ -1,9 +1,22 @@
 ---
 title: ad
-description: OpenBB Terminal Function
+description: The Accumulation/Distribution Line page provides information about how
+  this technical analysis tool operates, based on the close location value, to predict
+  trends in stock price. It also covers how to interpret divergence in the indicator,
+  usage of the tool, and parameters for customization.
+keywords:
+- Accumulation/Distribution Line
+- On Balance Volume
+- close location value
+- stock market indicator
+- price movement
+- technical analysis
+- price trends
 ---
 
-# ad
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf/ta/ad - Reference | OpenBB Terminal Docs" />
 
 The Accumulation/Distribution Line is similar to the On Balance Volume (OBV), which sums the volume times +1/-1 based on whether the close is higher than the previous close. The Accumulation/Distribution indicator, however multiplies the volume by the close location value (CLV). The CLV is based on the movement of the issue within a single bar and can be +1, -1 or zero. The Accumulation/Distribution Line is interpreted by looking for a divergence in the direction of the indicator relative to price. If the Accumulation/Distribution Line is trending upward it indicates that the price may follow. Also, if the Accumulation/Distribution Line becomes flat while the price is still rising (or falling) then it signals an impending flattening of the price.
 

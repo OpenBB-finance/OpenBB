@@ -1,12 +1,32 @@
 ---
 title: seasonalnaive
-description: OpenBB SDK Function
+description: The Seasonal Naive forecasting page provides thorough documentation for
+  using and interpreting the results of the Seasonal Naive model and the Seasonal
+  Naive chart. It includes details on parameters, returns, and source code locations.
+  The page is enriched with appropriate examples aiding in easy understanding and
+  implementation of the functionalities.
+keywords:
+- Seasonal Naive forecasting
+- Source Code
+- forecast.seasonalnaive
+- forecast.seasonalnaive_chart
+- Parameters
+- Returns
+- data series
+- forecast values
+- precision
+- Display SeasonalNaive Model
+- residuals
+- forecast only
+- naive
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.seasonalnaive - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# seasonalnaive
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -41,8 +61,6 @@ openbb.forecast.seasonalnaive(data: Union[pd.Series, pd.DataFrame], target_colum
 | ---- | ----------- |
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], StatsForecast] | Adjusted Data series,<br/>List of historical fcast values,<br/>List of predicted fcast values,<br/>Optional[float] - precision,<br/>Fit SeasonalNaive model object. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -84,8 +102,6 @@ openbb.forecast.seasonalnaive_chart(data: Union[pd.DataFrame, pd.Series], target
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

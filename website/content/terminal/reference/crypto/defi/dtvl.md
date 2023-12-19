@@ -1,9 +1,25 @@
 ---
 title: dtvl
-description: OpenBB Terminal Function
+description: dtvl is a tool designed for tracking the historical Total Value Locked
+  (TVL) of different decentralized applications (dApps). It offers users commands
+  to search and display historical TVL data for specific crypto dApps, providing valuable
+  insights for crypto investors and enthusiasts.
+keywords:
+- docusaurus SEO
+- website marketing
+- dApps TVL
+- historical TVL
+- TVL tracking
+- crypto Dapps
+- crypto TVL
+- TVL analytics
+- TVL data
+- crypto data
 ---
 
-# dtvl
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/defi/dtvl - Reference | OpenBB Terminal Docs" />
 
 Displays historical TVL of different dApps. [Source: https://docs.llama.fi/api]
 

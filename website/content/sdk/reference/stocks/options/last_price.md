@@ -1,9 +1,21 @@
 ---
 title: last_price
-description: OpenBB SDK Function
+description: The page provides documentation for the 'last_price' API call in the
+  OpenBBTerminal project of OpenBB.finance. It details how to request for the last
+  price of a specific stock option using the ticker symbol.
+keywords:
+- last_price
+- api request
+- OpenBB.finance
+- stocks
+- options
+- tradier_model.py
+- ticker symbol
 ---
 
-# last_price
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.options.last_price - Reference | OpenBB SDK Docs" />
 
 Makes api request for last price
 
@@ -30,4 +42,3 @@ openbb.stocks.options.last_price(symbol: str)
 | ---- | ----------- |
 |  | Last price |
 ---
-

@@ -1,9 +1,28 @@
 ---
 title: movers
-description: OpenBB Terminal Function
+description: This documentation page provides information on how to get stock movers
+  using Python command line. Detailed explanations for different parameters such as
+  list_type, exchange, and limit are included.
+keywords:
+- stock movers
+- Python command line
+- list_type parameter
+- exchange parameter
+- limit parameter
+- toplosers
+- toppctlosers
+- topvolume
+- topactive
+- topgainers
+- toppctgainers
+- American Stock Exchange
+- New York Stock Exchange
+- NASDAQ
 ---
 
-# movers
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/ally/movers /brokers - Reference | OpenBB Terminal Docs" />
 
 Get stock movers
 

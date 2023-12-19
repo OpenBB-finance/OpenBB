@@ -1,9 +1,21 @@
 ---
 title: quantile
-description: OpenBB Terminal Function
+description: This documentation page provides detailed information on the concept
+  of quantile, a statistical term which refers to the values that divide a set of
+  observations into specified proportions. The page also includes parameters for customizing
+  the quantile function.
+keywords:
+- Quantile
+- Distribution
+- Median
+- n_window
+- f_quantile
+- Parameters
 ---
 
-# quantile
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy/qa/quantile - Reference | OpenBB Terminal Docs" />
 
 The quantiles are values which divide the distribution such that there is a given proportion of observations below the quantile. For example, the median is a quantile. The median is the central value of the distribution, such that half the points are less than or equal to it and half are greater than or equal to it. By default, q is set at 0.5, which effectively is median. Change q to get the desired quantile (0q1).
 

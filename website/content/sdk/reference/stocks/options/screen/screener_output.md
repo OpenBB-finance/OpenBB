@@ -1,12 +1,22 @@
 ---
 title: screener_output
-description: OpenBB SDK Function
+description: This documentation page cover the usage of screener output for OpenBB
+  Terminal. It includes explanations for using preset filters, printing the output,
+  and parameters for sorting and export formatting. There are also links to the source
+  code and Python command line instructions.
+keywords:
+- screener output
+- preset filters
+- export formatting
+- command line instructions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.options.screen.screener_output - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# screener_output
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +46,6 @@ openbb.stocks.options.screen.screener_output(preset: str)
 | ---- | ----------- |
 | Tuple[pd.DataFrame, str] | DataFrame with screener data or empty if errors, String containing error message if supplied |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -69,8 +77,6 @@ openbb.stocks.options.screen.screener_output_chart(preset: str, limit: int = 20,
 | ---- | ----------- |
 | List | List of tickers screened |
 ---
-
-
 
 </TabItem>
 </Tabs>

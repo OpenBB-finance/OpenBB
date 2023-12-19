@@ -6,6 +6,7 @@ from typing import List, Optional, Union
 import pandas as pd
 
 from openbb_terminal.futures import yfinance_model
+from openbb_terminal.rich_config import console
 from openbb_terminal.stocks import databento_model
 
 
@@ -47,7 +48,9 @@ def get_historical(
         )
     if source == "DataBento":
         if isinstance(symbols, list):
-            print("DataBento only supports one symbol at a time.  Using first symbol.")
+            console.print(
+                "DataBento only supports one symbol at a time.  Using first symbol."
+            )
             symbols = symbols[0]
         return databento_model.get_historical_futures(symbols, start_date, end_date)
     return pd.DataFrame()

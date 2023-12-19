@@ -1,10 +1,36 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: heatmap
-description: OpenBB Discord Command
+description: Learn how to use the heatmap command to easily view stock market performance.
+  This guide outlines its usage, parameters, and provides examples for both the market
+  and sector filters.
+keywords:
+- heatmap command
+- stock market performance
+- market filter
+- sector filter
+- usage of heatmap
+- parameters of heatmap
+- example of heatmap command
+- S&P 500
+- NASDAQ 100
+- Russell 2000
+- Russell 1000
+- Dow Jones 30
+- Crypto
+- Basic Materials
+- Conglomerates
+- Consumer Goods
+- Financial
+- Healthcare
+- Industrial Goods
+- Services
+- Technology
+- Utilities
 ---
 
-# heatmap
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="general: heatmap - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve Daily Heat Maps by Market and Sector. The Daily Heat Maps will allow the user a quick overview of current stock market performance.
 

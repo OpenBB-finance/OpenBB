@@ -1,9 +1,21 @@
 ---
 title: sec
-description: OpenBB Terminal Function
+description: This page provides information on how to print and analyze SEC filings
+  of a company using Market Watch. The SEC data includes Filing Date, Document Date,
+  Type, Category, whether the filing is Amended, and a Link to the filing.
+keywords:
+- SEC filings
+- data print
+- financial data
+- Market Watch
+- stock data
+- SEC data
+- stock SEC filings
 ---
 
-# sec
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/dd/sec - Reference | OpenBB Terminal Docs" />
 
 Prints SEC filings of the company. The following fields are expected: Filing Date, Document Date, Type, Category, Amended, and Link. [Source: Market Watch]
 

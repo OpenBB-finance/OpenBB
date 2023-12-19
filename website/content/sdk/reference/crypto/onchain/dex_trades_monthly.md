@@ -1,9 +1,22 @@
 ---
 title: dex_trades_monthly
-description: OpenBB SDK Function
+description: Provides access to aggregated data of trades executed on Decentralized
+  Exchanges. You can set the currency of trade amount, limit the number of days and
+  even sort the data as required.
+keywords:
+- dex_trades_monthly
+- Decentralized Exchanges
+- Trades data
+- openbb_crypto_onchain
+- trade_amount_currency
+- USD
+- limit
+- ascend
 ---
 
-# dex_trades_monthly
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.dex_trades_monthly - Reference | OpenBB SDK Docs" />
 
 Get list of trades on Decentralized Exchanges monthly aggregated.
 
@@ -32,4 +45,3 @@ openbb.crypto.onchain.dex_trades_monthly(trade_amount_currency: str = "USD", lim
 | ---- | ----------- |
 | pd.DataFrame | Trades on Decentralized Exchanges monthly aggregated |
 ---
-

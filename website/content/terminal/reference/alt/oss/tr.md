@@ -1,9 +1,23 @@
 ---
 title: tr
-description: OpenBB Terminal Function
+description: Documentation on how to display top repositories using the GitHub API.
+  Instructions include usage, parameters details, and examples. The user can sort
+  the repos by stars or forks, and can filter by repo categories.
+keywords:
+- top repositories
+- github api
+- parameters
+- stars
+- forks
+- repo categories
+- filter
+- sort
+- usage
 ---
 
-# tr
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="alt/oss/tr - Reference | OpenBB Terminal Docs" />
 
 Display top repositories [Source: https://api.github.com]
 

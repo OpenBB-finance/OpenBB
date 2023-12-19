@@ -101,10 +101,12 @@
   }
 }
 
-@import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap"); */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 
 * {
-  font-family: "Fira Code", monospace !important;
+  font-family: "Inter", monospace !important;
 }
 
 .pagination-nav__link {
@@ -114,6 +116,7 @@
     0 1px 2px -1px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  white-space: nowrap;
 }
 
 [data-theme="dark"] .pagination-nav__link {
@@ -352,6 +355,12 @@
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#062d48", endColorstr="#060709", GradientType=1);
 }
 
+/* convert to css tag */
+.header_docs_pro {
+  background: rgb(2,0,36);background: rgb(2,0,36);
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(36,108,155,1) 13%, rgba(66,154,205,1) 22%, rgba(43,85,107,1) 42%, rgba(12,36,53,1) 61%, rgba(6,6,6,1) 100%);
+}
+
 table {
   border-collapse: collapse;
   border: none;
@@ -448,4 +457,55 @@ details summary {
 
 .main-wrapper main {
   min-height: 1000px !important;
+}
+
+.theme-doc-version-badge {
+  margin-bottom: 20px !important;
+}
+
+
+.sidebar-divider {
+  border-top: 1px solid var(--ifm-color-gray-200);
+  display: block;
+  margin: 0.5rem 0 0.25rem 1rem;
+}
+
+html[data-theme='dark'] .sidebar-divider {
+  border-top: 1px solid var(--ifm-color-gray-800);
+}
+
+.sidebar-title {
+  font-size: 0.8rem;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ifm-color-gray-600);
+}
+
+html[data-theme='dark'] .sidebar-divider {
+  color: var(--ifm-color-gray-200);
+}
+
+@media only screen and (max-width: 998px) {
+  .sidebar-title,
+  .powered-by-banner {
+    margin-left: 1rem;
+  }
+}
+
+.theme-edit-this-page {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.pro-border-gradient {
+  background: linear-gradient(to right, #66CCFF, #005CA9);
+  border-radius: 6px;
+  overflow: hidden;
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  padding: 3px;
+  position: relative;
 }

@@ -103,3 +103,40 @@ class AltRealestate(Category):
         self.get_towns_sold_prices = (
             lib.alt_realestate_landRegistry_model.get_towns_sold_prices
         )
+
+
+class AltCompaniesHouse(Category):
+    """CompaniesHouse Module.
+
+    Attributes:
+        `get_search_results`: Search for company by name\n
+        `get_company_info`: Get details of company by registration number\n
+        `get_officers`: Get company officers\n
+        `get_persons_with_significant_control`: Get people/organisations with significant control over company\n
+        `get_charges`: Get company charges\n
+        `get_filings`: Get company filing details\n
+        `get_filing_document`: Get company filed document\n
+    """
+
+    _location_path = "alt.companieshouse"
+
+    def __init__(self):
+        super().__init__()
+        self.get_search_results = (
+            lib.alt_companieshouse_companieshouse_model.get_search_results
+        )
+        self.get_company_info = (
+            lib.alt_companieshouse_companieshouse_model.get_company_info
+        )
+        self.get_officers = lib.alt_companieshouse_companieshouse_model.get_officers
+        self.get_persons_with_significant_control = (
+            lib.alt_companieshouse_companieshouse_model.get_persons_with_significant_control
+        )
+        self.get_charges = lib.alt_companieshouse_companieshouse_model.get_charges
+        self.get_filings = lib.alt_companieshouse_companieshouse_model.get_filings
+        self.get_filing_document = (
+            lib.alt_companieshouse_companieshouse_model.get_filing_document
+        )
+        self.download_filing_document = (
+            lib.alt_companieshouse_companieshouse_view.download_filing_document
+        )

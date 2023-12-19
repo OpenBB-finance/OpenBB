@@ -75,6 +75,10 @@ function TabList({ className, block, selectedValue, selectValue, tabValues }) {
                 selectedValue === value && pathname.startsWith("/sdk"),
               "border-grey-400 text-grey-400 hover:text-[#ffd4b1] hover:border-[#ffd4b1]":
                 selectedValue !== value && pathname.startsWith("/sdk"),
+                "border-b-2 text-[#FB923C] border-[#FB923C]":
+                  selectedValue === value && pathname.startsWith("/platform"),
+                "border-grey-400 text-grey-400 hover:text-[#ffd4b1] hover:border-[#ffd4b1]":
+                  selectedValue !== value && pathname.startsWith("/platform"),
               "border-grey-400 text-grey-400 hover:text-[#abd2f1] hover:border-[#abd2f1]":
                 selectedValue !== value && pathname.startsWith("/terminal"),
             }

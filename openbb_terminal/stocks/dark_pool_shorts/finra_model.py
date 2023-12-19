@@ -283,7 +283,7 @@ def getATSdata(limit: int = 1000, tier_ats: str = "T1") -> Tuple[pd.DataFrame, D
                     ].values,
                 )[0]
                 d_ats_reg[symbol] = slope
-            except Exception:  # nosec B110
+            except Exception:  # nosec B110 # noqa: S110
                 pass
 
     return df_ats, d_ats_reg

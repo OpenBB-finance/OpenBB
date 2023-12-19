@@ -35,7 +35,7 @@ def process_file(file_path: str, exp: str):
         if long_arg is not None:
             long_arg = long_arg.group()
         if long_arg not in ("HistoryManager.hist_file", RESERVED_ARGS[short_arg]):
-            print(
+            print(  # noqa: T201
                 f"{file_path}: "
                 f"'-{short_arg}' argument expected '{RESERVED_ARGS[short_arg]}'"
                 f" but assigned to '{long_arg}'"

@@ -1,9 +1,23 @@
 ---
 title: var
-description: OpenBB Terminal Function
+description: The page provides a comprehensive guide on the usage of 'var' command
+  for calculating Value at Risk (VaR) of selected stocks. It includes details on parameters,
+  usage, and examples.
+keywords:
+- Value at Risk
+- var
+- stocks
+- stock trading
+- VaR calculation
+- portfolio management
+- risk management
+- quantitative analysis
+- financial tools
 ---
 
-# var
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/qa/var - Reference | OpenBB Terminal Docs" />
 
 Provides value at risk (short: VaR) of the selected stock.
 

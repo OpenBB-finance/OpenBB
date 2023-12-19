@@ -1,36 +1,35 @@
 ---
 title: Source
 sidebar_position: 3
-description: This section provides steps to install the OpenBB Terminal from source. This installation type supports Windows, macOS and Linux systems.
+description: Comprehensive guide to install the OpenBB Terminal and SDK from source.
+  The guide covers the installation process for Windows, macOS, and Linux systems
+  and covers various software installations including Miniconda, Git, Microsoft C++
+  Build Tools, Rosetta2, LibOMP, VcXsrv, and GTK toolchains. Instructions for environment
+  setup and package management through Conda and Poetry are also included, along with
+  troubleshooting tips and community support.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb terminal,
-    pypi,
-    miniconda,
-    git,
-    c++,
-    rosetta2,
-    libomp,
-    vcxsrv,
-    gtk
-  ]
+- Installation
+- Miniconda
+- Git
+- Microsoft C++ Build Tools
+- Rosetta2
+- LibOMP
+- VcXsrv
+- GTK toolchains
+- Conda
+- Poetry
+- Environment setup
+- Python package management
+- Troubleshooting
+- Community support
+- Linux
+- MacOS
+- Windows
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Source - Terminal | OpenBB Docs" />
+<HeadTitle title="Source - Installation | OpenBB Terminal Docs" />
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 

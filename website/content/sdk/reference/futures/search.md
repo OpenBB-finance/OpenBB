@@ -1,9 +1,19 @@
 ---
 title: search
-description: OpenBB SDK Function
+description: This documentation page provides details on the 'search' function related
+  to future investments as available on OpenBB-finance. It covers information on various
+  parameters like 'category', 'exchange', and 'description' to refine search.
+keywords:
+- openbb.finance search function
+- future investments search
+- Yahoo finance
+- finance function Source code
+- search parameters
 ---
 
-# search
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="futures.search - Reference | OpenBB SDK Docs" />
 
 Get search futures [Source: Yahoo Finance]
 
@@ -31,4 +41,3 @@ openbb.futures.search(category: str = "", exchange: str = "", description: str =
 This function does not return anything
 
 ---
-

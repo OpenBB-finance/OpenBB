@@ -18,16 +18,20 @@ export default function TOC({ className, ...props }) {
         className
       )}
     >
-      <p className="uppercase text-sm font-bold text-grey-600 dark:text-grey-200 tracking-widest mb-2">
-        On this page
-      </p>
-      <TOCItems
-        {...props}
-        linkClassName={
-          "text-grey-400 capitalize !no-underline"
-        }
-        linkActiveClassName={"!text-white"}
-      />
+      {props?.toc?.some(item => item.level === 1 || item.level === 2 ||item.level === 3) && (
+        <>
+          <p className="uppercase text-sm font-bold text-grey-600 dark:text-grey-200 tracking-widest mb-2">
+            On this page
+          </p>
+          <TOCItems
+            {...props}
+            linkClassName={
+              "text-grey-400 capitalize !no-underline"
+            }
+            linkActiveClassName={"!text-white"}
+          />
+        </>
+      )}
     </div>
   );
 }

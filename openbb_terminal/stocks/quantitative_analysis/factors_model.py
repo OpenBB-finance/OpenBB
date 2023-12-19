@@ -25,18 +25,17 @@ def get_fama_raw() -> pd.DataFrame:
     fama : pd.DataFrame
         A data with fama french model information
     """
-    with urlopen(
-        "http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
-    ) as url:
-        # Download Zipfile and create pandas DataFrame
-        with ZipFile(BytesIO(url.read())) as zipfile:
-            with zipfile.open("F-F_Research_Data_Factors.CSV") as zip_open:
-                df = pd.read_csv(
-                    zip_open,
-                    header=0,
-                    names=["Date", "MKT-RF", "SMB", "HML", "RF"],
-                    skiprows=3,
-                )
+    url = "http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
+    file = "F-F_Research_Data_Factors.CSV"
+    with urlopen(url) as data, ZipFile(  # noqa: S310
+        BytesIO(data.read())
+    ) as zipfile, zipfile.open(file) as zip_open:
+        df = pd.read_csv(
+            zip_open,
+            header=0,
+            names=["Date", "MKT-RF", "SMB", "HML", "RF"],
+            skiprows=3,
+        )
 
     df = df[df["Date"].apply(lambda x: len(str(x).strip()) == 6)]
     df["Date"] = df["Date"].astype(str) + "01"

@@ -629,8 +629,8 @@ def show_quick_performance(
                     )
                 ),
             )
-    except Exception:
-        pass  # noqa
+    except Exception:  # noqa: S110
+        pass
 
     exchange_str = f"in {exchange.capitalize()}" if source == "ccxt" else ""
     print_rich_table(
@@ -717,42 +717,41 @@ def display_all_coins(
         df = df.merge(df_matched, on="CoinGecko")
         df.drop("index", axis=1, inplace=True)
 
+    elif source == "CoinGecko":
+        coins_df = pycoingecko_model.get_coin_list().drop("index", axis=1)
+        df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
+        df = df[["index", "id", "name"]]
+
+    elif source == "CoinPaprika":
+        coins_df = coinpaprika_model.get_coin_list()
+        df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
+        df = df[["index", "id", "name"]]
+
+    elif source == "Binance":
+        coins_df_gecko = pycoingecko_model.get_coin_list()
+        coins_df_bin = load_binance_map()
+        coins_df_bin.columns = ["symbol", "id"]
+        coins_df = pd.merge(
+            coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
+        )
+        df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
+        df = df[["index", "symbol", "name"]]
+        df.columns = ["index", "id", "name"]
+
+    elif source == "Coinbase":
+        coins_df_gecko = pycoingecko_model.get_coin_list()
+        coins_df_cb = load_coinbase_map()
+        coins_df_cb.columns = ["symbol", "id"]
+        coins_df = pd.merge(
+            coins_df_cb, coins_df_gecko[["id", "name"]], how="left", on="id"
+        )
+        df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
+        df = df[["index", "symbol", "name"]]
+        df.columns = ["index", "id", "name"]
+
     else:
-        if source == "CoinGecko":
-            coins_df = pycoingecko_model.get_coin_list().drop("index", axis=1)
-            df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
-            df = df[["index", "id", "name"]]
-
-        elif source == "CoinPaprika":
-            coins_df = coinpaprika_model.get_coin_list()
-            df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
-            df = df[["index", "id", "name"]]
-
-        elif source == "Binance":
-            coins_df_gecko = pycoingecko_model.get_coin_list()
-            coins_df_bin = load_binance_map()
-            coins_df_bin.columns = ["symbol", "id"]
-            coins_df = pd.merge(
-                coins_df_bin, coins_df_gecko[["id", "name"]], how="left", on="id"
-            )
-            df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
-            df = df[["index", "symbol", "name"]]
-            df.columns = ["index", "id", "name"]
-
-        elif source == "Coinbase":
-            coins_df_gecko = pycoingecko_model.get_coin_list()
-            coins_df_cb = load_coinbase_map()
-            coins_df_cb.columns = ["symbol", "id"]
-            coins_df = pd.merge(
-                coins_df_cb, coins_df_gecko[["id", "name"]], how="left", on="id"
-            )
-            df = _create_closest_match_df(symbol.lower(), coins_df, limit, cutoff)
-            df = df[["index", "symbol", "name"]]
-            df.columns = ["index", "id", "name"]
-
-        else:
-            df = pd.DataFrame(columns=["index", "id", "symbol"])
-            console.print("Couldn't find any coins")
+        df = pd.DataFrame(columns=["index", "id", "symbol"])
+        console.print("Couldn't find any coins")
 
     try:
         df = df[skip : skip + limit]  # noqa
@@ -974,7 +973,7 @@ def plot_order_book(
 def check_cg_id(symbol: str):
     cg_id = get_coingecko_id(symbol)
     if not cg_id:
-        print(f"\n{symbol} not found on CoinGecko")
+        console.print(f"\n{symbol} not found on CoinGecko")
         return ""
     return symbol
 

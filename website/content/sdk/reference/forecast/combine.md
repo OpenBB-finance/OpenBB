@@ -1,9 +1,23 @@
 ---
 title: combine
-description: OpenBB SDK Function
+description: Learn how to use the combine function in OpenBB programming library to
+  add columns to dataframes. This page provides details on parameters, returns, and
+  even source code.
+keywords:
+- Combine function
+- Data manipulation
+- Dataframes
+- Forecasting model
+- Python library
+- Programming
+- Source code
+- Add column
+- Data analysis
 ---
 
-# combine
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.combine - Reference | OpenBB SDK Docs" />
 
 Adds the given column of df2 to df1
 
@@ -33,4 +47,3 @@ openbb.forecast.combine(df1: pd.DataFrame, df2: pd.DataFrame, column: str, datas
 | ---- | ----------- |
 | pd.DataFrame | The new dataframe |
 ---
-

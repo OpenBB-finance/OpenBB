@@ -1,9 +1,22 @@
 ---
 title: btccp
-description: OpenBB Terminal Function
+description: btccp displays the Bitcoin (BTC) circulating supply with ranging parameters.
+  It uses data sourced from blockchain's API while offering a customizable date range.
+keywords:
+- Bitcoin
+- BTC
+- circulating supply
+- blockchain API
+- cryptocurrency
+- data visualization
+- btccp
+- data extraction
+- date parameters
 ---
 
-# btccp
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/onchain/btccp - Reference | OpenBB Terminal Docs" />
 
 Display BTC circulating supply [Source: https://api.blockchain.info/]
 

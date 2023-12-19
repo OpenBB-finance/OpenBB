@@ -1,9 +1,21 @@
 ---
 title: ema
-description: OpenBB Terminal Function
+description: A guide to understanding and using the Exponential Moving Average, a
+  fundamental tool in technical analysis with a focus on its application.
+keywords:
+- Exponential Moving Average
+- technical analysis
+- moving average
+- EMA
+- cumulative calculation
+- data responsiveness
+- EMA use
+- EMA parameters
 ---
 
-# ema
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex/ta/ema - Reference | OpenBB Terminal Docs" />
 
 The Exponential Moving Average is a staple of technical analysis and is used in countless technical indicators. In a Simple Moving Average, each value in the time period carries equal weight, and values outside of the time period are not included in the average. However, the Exponential Moving Average is a cumulative calculation, including all data. Past values have a diminishing contribution to the average, while more recent values have a greater contribution. This method allows the moving average to be more responsive to changes in the data.
 

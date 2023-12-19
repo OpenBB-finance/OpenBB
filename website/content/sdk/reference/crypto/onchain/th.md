@@ -1,12 +1,33 @@
 ---
 title: th
-description: OpenBB SDK Function
+description: This page provides a detailed description and source code for two main
+  features provided by OpenBB-finance. These are the functionalities to acquire token
+  historical transactions data and display information about token history. The page
+  further provides detailed explanations for parameters required for both functions
+  and what each function returns.
+keywords:
+- OpenBB-finance
+- token historical transactions
+- Ethplorer
+- cryptocurrency
+- onchain
+- coding
+- dataframe
+- token balance
+- python function
+- parameters
+- returns
+- string
+- integer
+- boolean
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.th - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# th
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +59,6 @@ openbb.crypto.onchain.th(address: str, sortby: str = "timestamp", ascend: bool =
 | ---- | ----------- |
 | pd.DataFrame | DataFrame with token historical transactions. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -73,8 +92,6 @@ openbb.crypto.onchain.th_chart(address: str, limit: int = 10, sortby: str = "tim
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

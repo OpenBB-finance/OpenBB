@@ -1,9 +1,19 @@
 ---
 title: granger
-description: OpenBB Terminal Function
+description: This is a documentation page for Granger causality command in econometrics.
+  The command is used for analyzing the cause between two-time series. The page also
+  provides usage examples and parameters detail.
+keywords:
+- Granger causality
+- time series analysis
+- Econometrics
+- Command documentation
+- Statistical command
 ---
 
-# granger
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics /granger - Reference | OpenBB Terminal Docs" />
 
 Show Granger causality between two timeseries
 

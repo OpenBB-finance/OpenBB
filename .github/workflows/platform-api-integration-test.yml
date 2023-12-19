@@ -1,0 +1,120 @@
+name: API Integration Tests
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  api-integration-tests:
+    runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      OPENBB_API_AUTH: true
+      OPENBB_API_USERNAME: "USER"
+      OPENBB_API_PASSWORD: "PASS"
+
+    steps:
+      - name: Slack Notification - Starting
+        uses: act10ns/slack@v1
+        with:
+          status: starting
+          channel: "#workflows"
+          message: Starting API Integration Test...
+        if: always()
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Checkout specific ref
+        if: github.event_name == 'pull_request'
+        run: git fetch origin ${{ github.event.pull_request.head.ref }} && git checkout FETCH_HEAD
+
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+          architecture: x64
+
+      - name: Load cached venv
+        id: cached-python-environment
+        uses: actions/cache@v3
+        with:
+          path: runner_env
+          key: runner_env-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
+
+      - name: Install Dependencies
+        if: steps.cached-python-environment.outputs.cache-hit != 'true'
+        run: |
+          python -m venv runner_env
+          source runner_env/bin/activate
+          pip install poetry toml
+          python openbb_platform/dev_install.py -e all
+
+      - name: Populate System Setting Files
+        run: |
+          mkdir -p ~/.openbb_platform
+          touch ~/.openbb_platform/system_settings.json
+          echo '{"log_collect":false}' > ~/.openbb_platform/system_settings.json
+          cat ~/.openbb_platform/system_settings.json
+
+      - name: Create and Populate user_settings.json from GitHub Secrets
+        run: |
+          touch ~/.openbb_platform/user_settings.json
+          echo '{
+            "credentials": {
+              "benzinga_api_key": "${{ secrets.BENZINGA_API_KEY }}",
+              "fmp_api_key": "${{ secrets.FMP_API_KEY }}",
+              "polygon_api_key": "${{ secrets.POLYGON_API_KEY }}",
+              "alpha_vantage_api_key": "${{ secrets.ALPHA_VANTAGE_API_KEY }}",
+              "fred_api_key": "${{ secrets.FRED_API_KEY }}",
+              "intrinio_api_key": "${{ secrets.INTRINIO_API_KEY }}",
+              "tradingeconomics_api_key": "${{ secrets.TRADINGECONOMICS_API_KEY }}",
+              "quandl_api_key": "${{ secrets.QUANDL_API_KEY }}",
+              "biztoc_api_key": "${{ secrets.BIZTOC_API_KEY }}",
+              "nasdaq_api_key": "${{ secrets.NASDAQ_API_KEY }}",
+              "tiingo_token": "${{ secrets.TIINGO_TOKEN }}"
+            }
+          }' > ~/.openbb_platform/user_settings.json
+
+      - name: Launch the Uvicorn Process
+        run: |
+          source runner_env/bin/activate
+          uvicorn openbb_core.api.rest_api:app --host 0.0.0.0 --port 8000 --reload &
+
+      - name: Wait for 42 seconds
+        run: sleep 42
+
+      - name: Run API Integration Tests
+        run: |
+          source runner_env/bin/activate
+          pip list
+          cd openbb_platform
+          pytest -m integration
+
+      - name: Cache pip packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: runner_env-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Upload summary to Slack
+        uses: adrey/slack-file-upload-action@master
+        with:
+          token: ${{ secrets.SLACK_API_TOKEN }}
+          initial_comment: "API Integration test summary"
+          title: "Integration test summary"
+          path: summary.txt
+          channel: ${{ secrets.SLACK_CHANNEL_ID }}
+
+      - name: Slack Notification - Success/Failure
+        uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: "#workflows"
+        if: always()

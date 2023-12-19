@@ -1,9 +1,26 @@
 ---
 title: ch
-description: OpenBB Terminal Function
+description: This documentation outlines the usage of the 'ch' command to display
+  a list of major crypto-related hacks. It details the different parameters available
+  to sort and display the data. Included are specific examples, and the expected output.
+keywords:
+- crypto-related hacks
+- crypto hack
+- hack display
+- sort by parameters
+- crypto platform
+- hack amount
+- hack date
+- hack audit
+- hack slug
+- hack URL
+- reverse display order
+- individual crypto hack
 ---
 
-# ch
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ov/ch - Reference | OpenBB Terminal Docs" />
 
 Display list of major crypto-related hacks [Source: https://rekt.news] Can be sorted by {Platform,Date,Amount [$],Audit,Slug,URL} with --sortby and reverse the display order with --reverse Show only N elements with --limit Accepts --slug or -s to check individual crypto hack (e.g., -s polynetwork-rekt)
 

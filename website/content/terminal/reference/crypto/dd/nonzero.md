@@ -1,9 +1,22 @@
 ---
 title: nonzero
-description: OpenBB Terminal Function
+description: The 'nonzero' page provides documentation on how to display addresses
+  with nonzero assets in a specific blockchain using the Glassnode API. The page details
+  the usage of the command and parameters, along with providing a visual representation.
+keywords:
+- nonzero
+- blockchain
+- glassnode
+- addresses
+- assets
+- data fetching
+- api
+- parameters
 ---
 
-# nonzero
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/nonzero - Reference | OpenBB Terminal Docs" />
 
 Display addresses with nonzero assets in a certain blockchain [Source: https://glassnode.org] Note that free api keys only allow fetching data with a 1y lag
 

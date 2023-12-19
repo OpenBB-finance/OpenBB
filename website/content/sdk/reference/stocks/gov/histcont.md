@@ -1,12 +1,24 @@
 ---
 title: histcont
-description: OpenBB SDK Function
+description: This page provides documentation on OpenBBTerminal's histcont function.
+  The function allows users to get and visualize historical quarterly government contracts.
+keywords:
+- histcont function
+- historical quarterly government contracts
+- quiverquant.com
+- stock data
+- financial data
+- data visualization
+- ticker symbol
+- congress trading data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.gov.histcont - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# histcont
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +48,6 @@ openbb.stocks.gov.histcont(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Historical quarterly government contracts |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -69,8 +79,6 @@ openbb.stocks.gov.histcont_chart(symbol: str, raw: bool = False, export: str = "
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,12 +1,31 @@
 ---
 title: ayr
-description: OpenBB SDK Function
+description: This documentation page provides a detailed overview of the Anchor Yield
+  Reserve's 30-day history. It provides the source code and usage for the `ayr` and
+  `ayr_chart` functions from the `openbb.crypto.defi` namespace, including parameters
+  and returns.
+keywords:
+- docusaurus
+- metadata page
+- Anchor Yield Reserve
+- crypto
+- defi
+- ayr
+- ayr_chart
+- crypto.defi
+- matplotlib
+- dataframe
+- parameters
+- returns
+- 30-day history
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.defi.ayr - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# ayr
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -33,8 +52,6 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing historical data |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -64,8 +81,6 @@ openbb.crypto.defi.ayr_chart(export: str = "", external_axes: Optional[List[matp
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

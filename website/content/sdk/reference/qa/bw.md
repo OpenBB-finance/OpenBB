@@ -1,9 +1,21 @@
 ---
 title: bw
-description: OpenBB SDK Function
+description: The documentation page depicts the usage and configuration options for
+  the 'bw' function in OpenBB Terminal. The function plots box and whisker graphs
+  for quantitative data analysis based on provided DataFrame and target. An example
+  using stock data for 'AAPL' is provided for a clearer understanding.
+keywords:
+- Box and Whisker Plots
+- Quantitative Analysis
+- Yearly Accumulation
+- External Axes
+- AAPL
+- Adjusted Close
 ---
 
-# bw
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="qa.bw - Reference | OpenBB SDK Docs" />
 
 Plots box and whisker plots
 
@@ -43,4 +55,3 @@ openbb.qa.bw(data=df, target="Adj Close")
 ```
 
 ---
-

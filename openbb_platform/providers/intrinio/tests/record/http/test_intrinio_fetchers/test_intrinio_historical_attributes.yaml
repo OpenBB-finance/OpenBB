@@ -1,0 +1,36 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/historical_data/AAPL/ebit?api_key=MOCK_API_KEY&end_date=2023-01-01&frequency=yearly&page_size=1000&provider=intrinio&sort_order=desc&start_date=2013-01-01
+  response:
+    body:
+      string: !!binary |
+        H4sIADIQXmUAA3TQ2wrCMAwG4Hfp9ZQkPaTdq4iMokMHZYpuIoy9u7U3LaPrVWg+/qZZxH14T4/X
+        cPGhu/rJi/a0iFj0ohUERAdwB1KiER8f5niJ6BAkpHOEtSkxJqwLDI6A6xgSNhkbhhhds+iStYXV
+        LOu5aJN12TK5nYGR/1ZCkavAuro1200YlEx1q7d/Y9Ko61Yly9lqqezOvHK7Bx3fyrnnRoz9d+qe
+        /hZ74xzC+gMAAP//AwAceBCU4AEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 22 Nov 2023 14:29:06 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

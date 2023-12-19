@@ -1,0 +1,1 @@
+"""Intrinio models directory."""

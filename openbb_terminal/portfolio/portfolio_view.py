@@ -579,6 +579,11 @@ def display_monthly_returns(
         texttemplate = "%{z:.2f}%" if show_vals else ""
         hovertemplate = "%{x} %{y:.0f}:<br>%{z:.2f}%<extra></extra>"
 
+        if isinstance(portfolio_returns, pd.Series):
+            portfolio_returns = portfolio_returns.to_frame()
+        if isinstance(benchmark_returns, pd.Series):
+            benchmark_returns = benchmark_returns.to_frame()
+
         pb_mins = (portfolio_returns.min().min(), benchmark_returns.min().min())
         pb_maxs = (portfolio_returns.max().max(), benchmark_returns.max().max())
 

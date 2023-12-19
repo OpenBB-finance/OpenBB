@@ -2021,172 +2021,34 @@ class EconomyController(BaseController):
                     "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
                     "'treasury' command."
                 )
-            else:
-                dataset_yaxis1 = pd.DataFrame()
-                dataset_yaxis2 = pd.DataFrame()
+                return
+            dataset_yaxis1 = economy_helpers.get_yaxis_data(
+                self.DATASETS, self.UNITS, self.FRED_TITLES, y1s
+            )
+            if dataset_yaxis1.empty:
+                console.print(
+                    f"[red]Not able to find any data for the --y1 argument. The currently available "
+                    f"options are: {', '.join(self.choices['plot']['--y1'])}[/red]\n"
+                )
 
-                if y1s:
-                    for variable in y1s:
-                        for key, data in self.DATASETS.items():
-                            if variable in data.columns:
-                                if key == "macro":
-                                    split = variable.split("_")
-                                    transform = ""
-                                    if (
-                                        len(split) == 3
-                                        and split[1] in econdb_model.TRANSFORM
-                                    ):
-                                        (
-                                            country,
-                                            transform,
-                                            parameter_abbreviation,
-                                        ) = split
-                                    elif (
-                                        len(split) == 4
-                                        and split[2] in econdb_model.TRANSFORM
-                                    ):
-                                        country = f"{split[0]} {split[1]}"
-                                        transform = split[2]
-                                        parameter_abbreviation = split[3]
-                                    elif len(split) == 2:
-                                        country, parameter_abbreviation = split
-                                    else:
-                                        country = f"{split[0]} {split[1]}"
-                                        parameter_abbreviation = split[2]
+            dataset_yaxis2 = economy_helpers.get_yaxis_data(
+                self.DATASETS, self.UNITS, self.FRED_TITLES, y2s
+            )
+            if dataset_yaxis2.empty:
+                console.print(
+                    f"[red]Not able to find any data for the --y2 argument. The currently available "
+                    f"options are: {', '.join(self.choices['plot']['--y2'])}[/red]\n"
+                )
 
-                                    parameter = econdb_model.PARAMETERS[
-                                        parameter_abbreviation
-                                    ]["name"]
-
-                                    units = self.UNITS[country.replace(" ", "_")][
-                                        parameter_abbreviation
-                                    ]
-                                    transformtype = (
-                                        f" ({econdb_model.TRANSFORM[transform]}) "
-                                        if transform
-                                        else " "
-                                    )
-                                    dataset_yaxis1[
-                                        f"{country}{transformtype}[{parameter}, Units: {units}]"
-                                    ] = data[variable]
-                                elif key == "fred":
-                                    compound_detail = self.FRED_TITLES[variable]
-                                    detail = {
-                                        "units": compound_detail.split("(")[-1].split(
-                                            ")"
-                                        )[0],
-                                        "title": compound_detail.split("(")[0].strip(),
-                                    }
-                                    data_to_plot, title = fred_view.format_data_to_plot(
-                                        data[variable], detail
-                                    )
-                                    dataset_yaxis1[title] = data_to_plot
-                                elif (
-                                    key == "index"
-                                    and variable in yfinance_model.INDICES
-                                ):
-                                    dataset_yaxis1[
-                                        yfinance_model.INDICES[variable]["name"]
-                                    ] = data[variable]
-                                elif key == "treasury":
-                                    parameter, maturity = variable.split("_")
-                                    dataset_yaxis1[f"{parameter} [{maturity}]"] = data[
-                                        variable
-                                    ]
-                                else:
-                                    dataset_yaxis1[variable] = data[variable]
-                                break
-                    if dataset_yaxis1.empty:
-                        console.print(
-                            f"[red]Not able to find any data for the --y1 argument. The currently available "
-                            f"options are: {', '.join(self.choices['plot']['--y1'])}[/red]\n"
-                        )
-
-                if y2s:
-                    for variable in y2s:
-                        for key, data in self.DATASETS.items():
-                            if variable in data.columns:
-                                if key == "macro":
-                                    split = variable.split("_")
-                                    transform = ""
-                                    if (
-                                        len(split) == 3
-                                        and split[1] in econdb_model.TRANSFORM
-                                    ):
-                                        (
-                                            country,
-                                            transform,
-                                            parameter_abbreviation,
-                                        ) = split
-                                    elif (
-                                        len(split) == 4
-                                        and split[2] in econdb_model.TRANSFORM
-                                    ):
-                                        country = f"{split[0]} {split[1]}"
-                                        transform = split[2]
-                                        parameter_abbreviation = split[3]
-                                    elif len(split) == 2:
-                                        country, parameter_abbreviation = split
-                                    else:
-                                        country = f"{split[0]} {split[1]}"
-                                        parameter_abbreviation = split[2]
-
-                                    parameter = econdb_model.PARAMETERS[
-                                        parameter_abbreviation
-                                    ]["name"]
-                                    units = self.UNITS[country.replace(" ", "_")][
-                                        parameter_abbreviation
-                                    ]
-                                    transformtype = (
-                                        f" ({econdb_model.TRANSFORM[transform]}) "
-                                        if transform
-                                        else " "
-                                    )
-                                    dataset_yaxis2[
-                                        f"{country}{transformtype}[{parameter}, Units: {units}]"
-                                    ] = data[variable]
-                                elif key == "fred":
-                                    compound_detail = self.FRED_TITLES[variable]
-                                    detail = {
-                                        "units": compound_detail.split("(")[-1].split(
-                                            ")"
-                                        )[0],
-                                        "title": compound_detail.split("(")[0].strip(),
-                                    }
-                                    data_to_plot, title = fred_view.format_data_to_plot(
-                                        data[variable], detail
-                                    )
-                                    dataset_yaxis2[title] = data_to_plot
-                                elif (
-                                    key == "index"
-                                    and variable in yfinance_model.INDICES
-                                ):
-                                    dataset_yaxis2[
-                                        yfinance_model.INDICES[variable]["name"]
-                                    ] = data[variable]
-                                elif key == "treasury":
-                                    parameter, maturity = variable.split("_")
-                                    dataset_yaxis2[f"{parameter} [{maturity}]"] = data[
-                                        variable
-                                    ]
-                                else:
-                                    dataset_yaxis2[variable] = data[variable]
-                                break
-                    if dataset_yaxis2.empty:
-                        console.print(
-                            f"[red]Not able to find any data for the --y2 argument. The currently available "
-                            f"options are: {', '.join(self.choices['plot']['--y2'])}[/red]\n"
-                        )
-
-                if y1s or y2s:
-                    plot_view.show_plot(
-                        dataset_yaxis_1=dataset_yaxis1,
-                        dataset_yaxis_2=dataset_yaxis2,
-                        export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
-                    )
+            if y1s or y2s:
+                plot_view.show_plot(
+                    dataset_yaxis_1=dataset_yaxis1,
+                    dataset_yaxis_2=dataset_yaxis2,
+                    export=ns_parser.export,
+                    sheet_name=" ".join(ns_parser.sheet_name)
+                    if ns_parser.sheet_name
+                    else None,
+                )
 
     @log_start_end(log=logger)
     def call_valuation(self, other_args: List[str]):

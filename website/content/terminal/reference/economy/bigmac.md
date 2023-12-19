@@ -1,9 +1,20 @@
 ---
 title: bigmac
-description: OpenBB Terminal Function
+description: This page provides information on how to get historical Big Mac Index
+  data using specific commands and parameters. It also gives details about usage and
+  provided country codes.
+keywords:
+- Big Mac Index
+- historical data
+- Nasdaq Data Link
+- country codes
+- data retrieval
+- commands and parameters
 ---
 
-# bigmac
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy /bigmac - Reference | OpenBB Terminal Docs" />
 
 Get historical Big Mac Index [Nasdaq Data Link]
 

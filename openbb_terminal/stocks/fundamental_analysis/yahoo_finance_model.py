@@ -294,7 +294,7 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
     # Making the website believe that you are accessing it using a Mozilla browser
     req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
 
-    webpage = urlopen(req).read()  # pylint: disable= R1732
+    webpage = urlopen(req).read()  # pylint: disable= R1732 # noqa: S310
     soup = BeautifulSoup(webpage, "html.parser")
 
     features = soup.find_all("div", class_="D(tbr)")
@@ -332,15 +332,7 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
         new_headers[:0] = ["Breakdown"]
         df.columns = new_headers
         df.set_index("Breakdown", inplace=True)
-    elif statement == "financials":
-        for dates in headers[2:]:
-            read = datetime.strptime(dates, "%d/%m/%Y")
-            write = read.strftime("%Y-%m-%d")
-            new_headers.append(write)
-        new_headers[:0] = ["Breakdown", "ttm"]
-        df.columns = new_headers
-        df.set_index("Breakdown", inplace=True)
-    elif statement == "cash-flow":
+    elif statement in ("financials", "cash-flow"):
         for dates in headers[2:]:
             read = datetime.strptime(dates, "%d/%m/%Y")
             write = read.strftime("%Y-%m-%d")

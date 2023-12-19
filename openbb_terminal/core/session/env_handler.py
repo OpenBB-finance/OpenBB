@@ -12,11 +12,7 @@ from openbb_terminal.core.config.paths import (
     SETTINGS_ENV_FILE,
 )
 
-DEFAULT_ORDER = [
-    SETTINGS_ENV_FILE,
-    PACKAGE_ENV_FILE,
-    REPOSITORY_ENV_FILE,
-]
+DEFAULT_ORDER = [SETTINGS_ENV_FILE, PACKAGE_ENV_FILE, REPOSITORY_ENV_FILE]
 
 
 def get_reading_order() -> list:

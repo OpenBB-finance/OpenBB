@@ -4,7 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=no-member, too-many-branches, too-many-arguments
 # pylint: disable=inconsistent-return-statements
 # pylint: disable=consider-using-dict-items
-
+# pylint: disable=too-many-lines
 import logging
 import os
 from copy import deepcopy
@@ -206,6 +206,11 @@ def search(
             "industry_group",
             "industry",
             "exchange",
+            "isin",
+            "cusip",
+            "figi",
+            "composite_figi",
+            "shareclass_figi",
         ]
     ]
 
@@ -223,7 +228,21 @@ def search(
         for x in v:
             exchange_suffix[x] = k
 
-    df = df[["name", "country", "sector", "industry_group", "industry", "exchange"]]
+    df = df[
+        [
+            "name",
+            "country",
+            "sector",
+            "industry_group",
+            "industry",
+            "exchange",
+            "isin",
+            "cusip",
+            "figi",
+            "composite_figi",
+            "shareclass_figi",
+        ]
+    ]
     # To automate renaming columns
     df.columns = [col.replace("_", " ") for col in df.columns.tolist()]
     df = df.fillna(value=np.nan)
@@ -232,7 +251,46 @@ def search(
     return df.reset_index()
 
 
-def load(  # pylint: disable=too-many-return-statements
+def get_daily_stock_candidate(
+    source: str,
+    symbol: str,
+    int_string: str,
+    start_date,
+    end_date,
+    monthly: bool,
+    weekly: bool,
+) -> pd.DataFrame:
+    if source == "AlphaVantage":
+        return load_stock_av(symbol, int_string, start_date, end_date)
+
+    if source == "YahooFinance":
+        return load_stock_yf(symbol, start_date, end_date, weekly, monthly)
+
+    if source == "EODHD":
+        try:
+            return load_stock_eodhd(symbol, start_date, end_date, weekly, monthly)
+        except KeyError:
+            console.print(
+                "[red]Invalid symbol for EODHD. Please check your subscription.[/red]\n"
+            )
+            return pd.DataFrame()
+
+    if source == "Polygon":
+        return load_stock_polygon(symbol, start_date, end_date, weekly, monthly)
+
+    if source == "Intrinio":
+        return load_stock_intrinio(symbol, start_date, end_date, weekly, monthly)
+
+    if source == "DataBento":
+        return databento_model.get_historical_stock(
+            symbol, start_date.strftime("%Y-%m-%d"), end_date.strftime("%Y-%m-%d")
+        )
+
+    console.print("[red]Invalid source for stock[/red]\n")
+    return pd.DataFrame()
+
+
+def load(
     symbol: str,
     start_date: Optional[Union[datetime, str]] = None,
     interval: int = 1440,
@@ -298,65 +356,20 @@ def load(  # pylint: disable=too-many-return-statements
     df_stock_candidate: pd.DataFrame
         Dataframe of data
     """
-    if start_date is None:
-        start_date = (datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d")
-
-    if end_date is None:
-        end_date = datetime.now().strftime("%Y-%m-%d")
-
+    start_date = start_date or (datetime.now() - timedelta(days=1100)).strftime(
+        "%Y-%m-%d"
+    )
+    end_date = end_date or datetime.now().strftime("%Y-%m-%d")
     start_date = check_datetime(start_date)
     end_date = check_datetime(end_date, start=False)
-    int_string = "Daily"
-    if weekly:
-        int_string = "Weekly"
-    if monthly:
-        int_string = "Monthly"
+
+    int_string = "Monthly" if monthly else "Weekly" if weekly else "Daily"
 
     # Daily
     if int(interval) == 1440:
-        if source == "AlphaVantage":
-            df_stock_candidate: pd.DataFrame = load_stock_av(
-                symbol, int_string, start_date, end_date
-            )
-
-        elif source == "YahooFinance":
-            df_stock_candidate = load_stock_yf(
-                symbol, start_date, end_date, weekly, monthly
-            )
-
-        elif source == "EODHD":
-            try:
-                df_stock_candidate = load_stock_eodhd(
-                    symbol,
-                    start_date,
-                    end_date,
-                    weekly,
-                    monthly,
-                )
-            except KeyError:
-                console.print(
-                    "[red]Invalid symbol for EODHD. Please check your subscription.[/red]\n"
-                )
-                return pd.DataFrame()
-
-        elif source == "Polygon":
-            df_stock_candidate = load_stock_polygon(
-                symbol, start_date, end_date, weekly, monthly
-            )
-
-        elif source == "Intrinio":
-            df_stock_candidate = load_stock_intrinio(
-                symbol, start_date, end_date, weekly, monthly
-            )
-
-        elif source == "DataBento":
-            df_stock_candidate = databento_model.get_historical_stock(
-                symbol, start_date.strftime("%Y-%m-%d"), end_date.strftime("%Y-%m-%d")
-            )
-
-        else:
-            console.print("[red]Invalid source for stock[/red]\n")
-            return
+        df_stock_candidate = get_daily_stock_candidate(
+            source, symbol, int_string, start_date, end_date, monthly, weekly
+        )
         is_df = isinstance(df_stock_candidate, pd.DataFrame)
         if (is_df and df_stock_candidate.empty) or (
             not is_df and not df_stock_candidate
@@ -417,6 +430,7 @@ def load(  # pylint: disable=too-many-return-statements
 
             # Check that loading a stock was not successful
             if df_stock_candidate.empty:
+                console.print("[red]No results found in yahoo finance reply.[/red]")
                 return pd.DataFrame()
 
             df_stock_candidate.index = pd.to_datetime(
@@ -450,7 +464,7 @@ def load(  # pylint: disable=too-many-return-statements
                 return pd.DataFrame()
 
             r_json = r.json()
-            if "results" not in r_json.keys():
+            if "results" not in r_json:
                 console.print("[red]No results found in polygon reply.[/red]")
                 return pd.DataFrame()
 
@@ -684,9 +698,6 @@ def process_candle(data: pd.DataFrame) -> pd.DataFrame:
 
     df_data["OC_High"] = df_data[["Open", "Close"]].max(axis=1)
     df_data["OC_Low"] = df_data[["Open", "Close"]].min(axis=1)
-
-    df_data["ma20"] = df_data["Close"].rolling(20).mean().fillna(method="bfill")
-    df_data["ma50"] = df_data["Close"].rolling(50).mean().fillna(method="bfill")
 
     return df_data
 
@@ -940,7 +951,7 @@ def show_codes_polygon(ticker: str):
         console.print("[red]Error in polygon request[/red]\n")
         return
     r_json = r.json()
-    if "results" not in r_json.keys():
+    if "results" not in r_json:
         console.print("[red]Results not found in polygon request[/red]")
         return
     r_json = r_json["results"]

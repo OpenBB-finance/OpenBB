@@ -1,12 +1,25 @@
 ---
 title: tyld
-description: OpenBB SDK Function
+description: This page provides documentation for retrieving and displaying historical
+  yield data using the 'tyld' and 'tyld_chart' functions in the OpenBB finance module.
+  This data can be filtered based on various parameters including the interval, maturity
+  and start date. For more in-depth details and access to the source code, please
+  refer to the respective sections.
+keywords:
+- OpenBB finance module
+- historical yield
+- tyld function
+- tyld_chart function
+- data retrieval
+- data display
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.tyld - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# tyld
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +51,6 @@ openbb.economy.tyld(interval: str = "m", maturity: str = "10y", start_date: str 
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of historical yields |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -73,8 +84,6 @@ openbb.economy.tyld_chart(interval: str = "m", maturity: str = "10y", start_date
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

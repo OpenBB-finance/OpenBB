@@ -1,9 +1,24 @@
 ---
 title: unitroot
-description: OpenBB Terminal Function
+description: This documentation page provides a detailed guide on how to use 'unitroot',
+  a python function for executing unit root tests including ADF and KPSS. It includes
+  parameters details, their choices, and usage examples.
+keywords:
+- unitroot
+- ADF
+- KPSS
+- stationarity
+- root test
+- fuller_reg
+- kpss_reg
+- regression
+- stock
+- statistics
 ---
 
-# unitroot
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/qa/unitroot - Reference | OpenBB Terminal Docs" />
 
 Unit root test / stationarity (ADF, KPSS)
 

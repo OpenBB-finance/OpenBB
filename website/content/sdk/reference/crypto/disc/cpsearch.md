@@ -1,12 +1,26 @@
 ---
 title: cpsearch
-description: OpenBB SDK Function
+description: Documentation for 'cpsearch', a cryptocurrency discovery function in
+  OpenBBTerminal using the CoinPaprika API. This page provides details about parameters,
+  source code links and data return types.
+keywords:
+- docusaurus
+- cpsearch
+- coinPaprika
+- cryptocurrency
+- search
+- crypto discovery
+- search parameters
+- coinPaprika API
+- data analytics
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.disc.cpsearch - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# cpsearch
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -41,8 +55,6 @@ openbb.crypto.disc.cpsearch(query: str, category: Optional[Any] = None, modifier
 | pd.DataFrame | Search Results<br/>Columns: Metric, Value |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +87,6 @@ openbb.crypto.disc.cpsearch_chart(query: str, category: str = "all", limit: int 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

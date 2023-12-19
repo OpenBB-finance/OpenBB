@@ -1,9 +1,23 @@
 ---
 title: index
-description: OpenBB Terminal Function
+description: This page of the documentation describes how to set a (multi)index for
+  a dataset. It includes parameters for selecting the dataset, the default index,
+  data adjustments for regressions, and dropping the column that the index is set
+  for. Examples using Python are provided.
+keywords:
+- indexing
+- dataset
+- default index
+- dataset adjustment
+- timeseries regression
+- panel data regression
+- drop column
+- data management
 ---
 
-# index
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics /index - Reference | OpenBB Terminal Docs" />
 
 Set a (multi) index for the dataset
 
@@ -34,7 +48,7 @@ index -n {} [-i INDEX] [-a] [-d]
 
 2022 Jun 01, 06:39 (🦋) /econometrics/ $ show wp
 
-                                      Dataset wp | Showing 10 of 4360 rows                                       
+                                      Dataset wp | Showing 10 of 4360 rows
 ┏━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃   ┃ nr    ┃ year    ┃ black ┃ exper ┃ hisp ┃ hours   ┃ married ┃ educ  ┃ union ┃ lwage ┃ expersq ┃ occupation ┃
 ┡━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩
@@ -64,7 +78,7 @@ Successfully updated 'wp' index to be 'nr, year'
 
 2022 Jun 01, 06:39 (🦋) /econometrics/ $ show wp
 
-                                           Dataset wp | Showing 10 of 4360 rows                                           
+                                           Dataset wp | Showing 10 of 4360 rows
 ┏━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━━━┳━━━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃            ┃ nr    ┃ year    ┃ black ┃ exper ┃ hisp ┃ hours   ┃ married ┃ educ  ┃ union ┃ lwage ┃ expersq ┃ occupation ┃
 ┡━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━╇━━━━━━━━━╇━━━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━┩

@@ -1,12 +1,25 @@
 ---
 title: dret
-description: OpenBB SDK Function
+description: Detailed documentation for 'dret' function of OpenBB Terminal, allows
+  calculation of daily returns and visualization of these returns through charts.
+  This function manipulates and interprets portfolio data.
+keywords:
+- dret
+- portfolio
+- returns
+- PortfolioEngine
+- visualization
+- dret_chart
+- daily returns
+- data analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.dret - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# dret
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -48,8 +61,6 @@ output = openbb.portfolio.dret(p)
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -82,8 +93,6 @@ openbb.portfolio.dret_chart(portfolio_engine: portfolio_engine.PortfolioEngine, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

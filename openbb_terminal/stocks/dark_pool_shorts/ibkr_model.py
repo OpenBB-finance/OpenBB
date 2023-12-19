@@ -21,7 +21,7 @@ def get_cost_to_borrow() -> pd.DataFrame:
     pd.DataFrame
         Cost to borrow
     """
-    ftp = ftplib.FTP("ftp3.interactivebrokers.com", "shortstock")
+    ftp = ftplib.FTP("ftp3.interactivebrokers.com", "shortstock")  # noqa: S321
 
     flo = BytesIO()
     ftp.retrbinary("RETR usa.txt", flo.write)

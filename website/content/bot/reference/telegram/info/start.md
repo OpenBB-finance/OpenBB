@@ -1,10 +1,18 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: help
-description: OpenBB Telegram Command
+description: This is a help documentation page for OpenBB Bot. It provides users with
+  the list of commands for potential usage.
+keywords:
+- OpenBB Bot
+- commands
+- usage
+- help documentation
+- parameters
 ---
 
-# help
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="info: help - Telegram Reference | OpenBB Bot Docs" />
 
 List of commands for OpenBB Bot.
 
@@ -28,4 +36,3 @@ This command has no parameters
 /help
 ```
 ---
-

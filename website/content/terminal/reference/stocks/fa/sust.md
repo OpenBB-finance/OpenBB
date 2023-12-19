@@ -1,9 +1,21 @@
 ---
 title: sust
-description: OpenBB Terminal Function
+description: This documentation page covers the usage of 'sust' command in fetching
+  sustainability values of a company, useful for responsible investment decisions.
+  All values are sourced from Yahoo Finance.
+keywords:
+- sust command
+- sustainability values
+- responsible investments
+- Yahoo Finance
+- ESG scores
+- corporate sustainability
+- investment tool
 ---
 
-# sust
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/fa/sust - Reference | OpenBB Terminal Docs" />
 
 Print sustainability values of the company. The following fields are expected: Palmoil, Controversialweapons, Gambling, Socialscore, Nuclear, Furleather, Alcoholic, Gmo, Catholic, Socialpercentile, Peercount, Governancescore, Environmentpercentile, Animaltesting, Tobacco, Total ESG, Highestcontroversy, ESG Performance, Coal, Pesticides, Adult, Percentile, Peergroup, Smallarms, Environmentscore, Governancepercentile, Militarycontract. [Source: Yahoo Finance]
 

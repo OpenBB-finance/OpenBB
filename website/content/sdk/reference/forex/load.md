@@ -1,9 +1,24 @@
 ---
 title: load
-description: OpenBB SDK Function
+description: The page provides an explanation of the 'load' feature that is used to
+  load forex data for two given symbols. It includes the source code link and details
+  about the parameters including to_symbol, from_symbol, resolution, interval, start_date,
+  source, and verbose.
+keywords:
+- forex data
+- currency symbols
+- forex parameters
+- load forex data
+- forex data source
+- YahooFinance forex data
+- data resolution
+- data interval
+- verbose data loading
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex.load - Reference | OpenBB SDK Docs" />
 
 Load forex for two given symbols.
 
@@ -36,4 +51,3 @@ openbb.forex.load(to_symbol: str, from_symbol: str, resolution: str = "d", inter
 | ---- | ----------- |
 | pd.DataFrame | The loaded data |
 ---
-

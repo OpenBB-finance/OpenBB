@@ -95,6 +95,7 @@ class OpenBBSDK:
             `covid`: Covid Module
             `oss`: Oss Module
             `realestate`: Realestate Module
+            `companieshouse`: CompaniesHouse Module
 
         Attributes:
             `hn`: Get top stories from HackerNews.\n
@@ -433,7 +434,6 @@ class OpenBBSDK:
             `rh`: Set Robinhood key\n
             `santiment`: Set Santiment key.\n
             `set_keys`: Set API keys in bundle.\n
-            `shroom`: Set Shroom key\n
             `smartstake`: Set Smartstake key.\n
             `stocksera`: Set Stocksera key.\n
             `tokenterminal`: Set Token Terminal key.\n

@@ -1,9 +1,22 @@
 ---
 title: fred
-description: OpenBB SDK Function
+description: This page provides thorough instructions for setting up a FRED key in
+  the OpenBB Terminal Python environment, including guidelines for its use within
+  a Jupyter notebook session or as a global terminal environment variable. Examples
+  of correct usage and behaviors are also provided.
+keywords:
+- FRED Key
+- OpenBB terminal
+- API key
+- Jupyter notebook session
+- terminal environment variables
+- Status of key set
+- openbb_terminal.sdk
 ---
 
-# fred
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="keys.fred - Reference | OpenBB SDK Docs" />
 
 Set FRED key
 
@@ -41,4 +54,3 @@ openbb.keys.fred(key="example_key")
 ```
 
 ---
-

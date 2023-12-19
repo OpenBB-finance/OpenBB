@@ -30,7 +30,8 @@ def news(term: str = "", sources: str = "", tag="", source="") -> pd.DataFrame:
     else:
         # Use biztoc if token is provided
         provider = "feedparser"
-        if get_current_user().credentials.API_BIZTOC_TOKEN != "REPLACE_ME":
+        biztoc_token = get_current_user().credentials.API_BIZTOC_TOKEN
+        if biztoc_token != "REPLACE_ME":  # noqa: S105
             provider = "biztoc"
 
     if provider == "feedparser":

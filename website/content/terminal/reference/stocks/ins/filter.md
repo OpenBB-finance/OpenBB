@@ -1,9 +1,23 @@
 ---
 title: filter
-description: OpenBB Terminal Function
+description: Optimize your open insider data using the filter function. This guide
+  provides details on its usage, parameters, and examples, instructing users on how
+  to limit data rows and configure hyperlinks to meet their needs. Learn how to navigate
+  through stock market transactions, including sales and derivative transactions efficiently.
+keywords:
+- OpenInsider
+- filter
+- insider filtered data
+- derivative transaction
+- securities
+- stock market
+- stock transactions
+- data display
 ---
 
-# filter
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ins/filter - Reference | OpenBB Terminal Docs" />
 
 Print open insider filtered data using loaded preset. [Source: OpenInsider]
 

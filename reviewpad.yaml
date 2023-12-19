@@ -4,61 +4,67 @@ groups:
 
 rules:
   - name: changes-requirements
-    spec: $hasFileName("requirements.txt") && $hasFileName("requirements-full.txt")
+    spec: $containsFileName("requirements.txt") && $containsFileName("requirements-full.txt")
+  - name: should-run-reviewpad
+    spec: '!$isElementOf("reviewpad-ignore", $getLabels())'
 
 workflows:
   - name: label-pull-request-with-size
     description: Label pull request based on the number of lines changed
-    always-run: true
-    if:
-        # Calculate size while ignoring patterns in the "ignored-patterns" group
-        # For more details about size follow https://docs.reviewpad.com/guides/built-ins/#size
-        - rule: $size($group("ignored-patterns")) <= 100
-          extra-actions:
+    run:
+      - if: $rule("should-run-reviewpad")
+        then:
+          # Calculate size while ignoring patterns in the "ignored-patterns" group
+          # For more details about size follow https://docs.reviewpad.com/guides/built-ins/#size
+          - if: $getSize($group("ignored-patterns")) <= 100
+            then:
               - $removeLabels(["feat S", "feat M", "feat L", "feat XL"])
               - $addLabel("feat XS")
-        - rule: $size($group("ignored-patterns")) > 100 && $size($group("ignored-patterns")) <= 300
-          extra-actions:
-              - $removeLabels(["feat XS", "feat M", "feat L", "feat XL"])
-              - $addLabel("feat S")
-        - rule: $size($group("ignored-patterns")) > 300 && $size($group("ignored-patterns")) <= 900
-          extra-actions:
-              - $removeLabels(["feat XS", "feat S", "feat L", "feat XL"])
-              - $addLabel("feat M")
-        - rule: $size($group("ignored-patterns")) > 900 && $size($group("ignored-patterns")) <= 1800
-          extra-actions:
-              - $removeLabels(["feat XS", "feat S", "feat M", "feat XL"])
-              - $addLabel("feat L")
-        - rule: $size($group("ignored-patterns")) > 1800
-          extra-actions:
-              - $removeLabels(["feat XS", "feat S", "feat M", "feat L"])
-              - $addLabel("feat XL")
+          - if: $getSize($group("ignored-patterns")) > 100 && $getSize($group("ignored-patterns")) <= 300
+            then:
+                - $removeLabels(["feat XS", "feat M", "feat L", "feat XL"])
+                - $addLabel("feat S")
+          - if: $getSize($group("ignored-patterns")) > 300 && $getSize($group("ignored-patterns")) <= 900
+            then:
+                - $removeLabels(["feat XS", "feat S", "feat L", "feat XL"])
+                - $addLabel("feat M")
+          - if: $getSize($group("ignored-patterns")) > 900 && $getSize($group("ignored-patterns")) <= 1800
+            then:
+                - $removeLabels(["feat XS", "feat S", "feat M", "feat XL"])
+                - $addLabel("feat L")
+          - if: $getSize($group("ignored-patterns")) > 1800
+            then:
+                - $removeLabels(["feat XS", "feat S", "feat M", "feat L"])
+                - $addLabel("feat XL")
   - name: sanity
     description: Verify pull request sanity
-    always-run: true
-    if:
-      - rule: $hasFileExtensions([".py"]) && $size() > 1000
-        extra-actions:
-          - $fail("This PR is very large and hard to review. Please split PR into multiple")
-      - rule: $hasBinaryFile()
-        extra-actions:
-          - $fail("Images are not allowed in the repository, please remove images from the PR")
+    run:
+      - if: $rule("should-run-reviewpad")
+        then:
+          - if: $containsOnlyFileExtensions([".py"]) && $getSize() > 1000
+            then:
+              - $failCheckStatus("This PR is very large and hard to review. Please split PR into multiple")
+          - if: $containsBinaryFiles()
+            then:
+              - $failCheckStatus("Images are not allowed in the repository, please remove images from the PR")
   - name: dependencies
     description: Verify pull request dependency changes
-    always-run: true
-    if:
-      - rule: '!$isDraft() && $hasFileName("poetry.lock") && !$rule("changes-requirements")'
-        extra-actions:
-          - $review("REQUEST_CHANGES", "The `poetry.lock` file has been changed. Please update both `requirements.txt` and `requirements-full.txt` files")
-      - rule: '!$isDraft() && $hasFileName("pyproject.toml") && !$rule("changes-requirements")'
-        extra-actions:
-          - $warn("The `pyproject.toml` file has been changed. Please make sure that the files `requirements.txt` and `requirements-full.txt` do not need to be updated")
+    run:
+      - if: $rule("should-run-reviewpad")
+        then:
+          - if: '!$isDraft() && $containsFileName("poetry.lock") && !$rule("changes-requirements")'
+            then:
+              - $review("REQUEST_CHANGES", "The `poetry.lock` file has been changed. Please update both `requirements.txt` and `requirements-full.txt` files")
+          - if: '!$isDraft() && $containsFileName("pyproject.toml") && !$rule("changes-requirements")'
+            then:
+              - $reportWarning("The `pyproject.toml` file has been changed. Please make sure that the files `requirements.txt` and `requirements-full.txt` do not need to be updated")
   - name: EOF
     description: Verify files EOF
-    always-run: true
-    if:
-      # By default, Reviewpad splits each file in the patch using the line feed character (\n or LF). 
-      # This means that if a file has a carriage return character (\r) at the end, it indicates that the file has CRLF line endings instead.
-      - rule: $hasCodePattern("\r$$")
-        extra-actions:
-          - $warn("It looks like you have files with `CRLF` line endings. Please make sure that all files have `LF` line endings")
+    run:
+      - if: $rule("should-run-reviewpad")
+        then:
+          # By default, Reviewpad splits each file in the patch using the line feed character (\n or LF). 
+          # This means that if a file has a carriage return character (\r) at the end, it indicates that the file has CRLF line endings instead.
+          - if: $containsCodePattern("\r$$")
+            then:
+              - $reportWarning("It looks like you have files with `CRLF` line endings. Please make sure that all files have `LF` line endings")

@@ -1,12 +1,27 @@
 ---
 title: vwap
-description: OpenBB SDK Function
+description: This documentation page provides detailed information about the volume
+  weighted average price, or VWAP, a popular technical analysis indicator. It includes
+  Python code examples for calculating VWAP on a pandas DataFrame of stocks prices,
+  and creating a visual chart of VWAP data using matplotlib.
+keywords:
+- vwap
+- technical analysis
+- volume weighted average price
+- data visualization
+- pandas dataframe
+- stock prices
+- trading indicators
+- OHLC prices
+- matplotlib
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.vwap - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# vwap
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +52,6 @@ openbb.ta.vwap(data: pd.DataFrame, offset: int = 0)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with VWAP data |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -74,8 +87,6 @@ openbb.ta.vwap_chart(data: pd.DataFrame, symbol: str = "", start_date: Optional[
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

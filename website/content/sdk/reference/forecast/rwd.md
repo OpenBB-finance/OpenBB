@@ -1,12 +1,34 @@
 ---
 title: rwd
-description: OpenBB SDK Function
+description: This page represents the functions for Random Walk with Drift (RWD) forecasting
+  including the model and chart view. It provides parameters, their types, descriptions,
+  and default settings, and explains the purpose and results of each function.
+keywords:
+- rwd
+- Random Walk with Drift forecasting
+- forecasting model
+- parameter description
+- OpenBB-finance
+- model object
+- rwd view
+- chart display
+- data series
+- fcast values
+- predict
+- start window
+- forecast horizon
+- export
+- residuals
+- forecast only
+- naive
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.rwd - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# rwd
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +62,6 @@ openbb.forecast.rwd(data: Union[pd.Series, pd.DataFrame], target_column: str = "
 | ---- | ----------- |
 |  | Adjusted Data series,<br/>List of historical fcast values,<br/>List of predicted fcast values,<br/>Optional[float] precision,<br/>Fit RWD model object. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -82,8 +102,6 @@ openbb.forecast.rwd_chart(data: Union[pd.DataFrame, pd.Series], target_column: s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

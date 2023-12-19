@@ -91,8 +91,8 @@ class SettingsController(BaseController):
 
         self.sort_filter = r"((tz\ -t |tz ).*?("
         for tz in pytz.all_timezones:
-            tz = tz.replace("/", r"\/")
-            self.sort_filter += f"{tz}|"
+            clean_tz = tz.replace("/", r"\/")
+            self.sort_filter += f"{clean_tz}|"
         self.sort_filter += ")*)"
 
         self.PREVIEW = ", ".join(
@@ -483,6 +483,11 @@ class SettingsController(BaseController):
     @log_start_end(log=logger)
     def call_userdata(self, other_args: List[str]):
         """Process userdata command"""
+
+        def save_file(file_path: Union[str, Path]):
+            console.print(f"User data to be saved in the default folder: '{file_path}'")
+            self.set_and_save_preference("USER_DATA_DIRECTORY", file_path)
+
         parser = argparse.ArgumentParser(
             add_help=False,
             formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -496,69 +501,44 @@ class SettingsController(BaseController):
             help="Folder where to store user data. ",
             default=f"{str(Path.home() / 'OpenBBUserData')}",
         )
+        parser.add_argument(
+            "--default",
+            action="store",
+            dest="default",
+            default=False,
+            type=bool,
+            help="Revert to the default path.",
+        )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "--folder")
         ns_parser = self.parse_simple_args(parser, other_args)
 
-        if ns_parser and (other_args or self.queue):
-            userdata_path = "" if other_args else "/"
+        if not (ns_parser and (other_args or self.queue)):
+            return
 
-            userdata_path += "/".join([ns_parser.folder] + self.queue)
-            self.queue = []
+        if ns_parser.default:
+            save_file(Path.home() / "OpenBBUserData")
 
-            userdata_path = userdata_path.replace("'", "").replace('"', "")
+        userdata_path = "" if other_args else "/"
+        userdata_path += "/".join([ns_parser.folder] + self.queue)
+        userdata_path = userdata_path.replace("'", "").replace('"', "")
+        # If the path selected does not start from the user root, give relative location from root
+        if userdata_path[0] == "~":
+            userdata_path = userdata_path.replace("~", os.path.expanduser("~"))
 
-            default_path = Path.home() / "OpenBBUserData"
+        self.queue = []
+        # Check if the directory exists
+        if os.path.isdir(userdata_path):
+            save_file(userdata_path)
+            return
 
-            success_userdata = False
-            while not success_userdata:
-                if userdata_path.upper() == "DEFAULT":
-                    console.print(
-                        f"User data to be saved in the default folder: '{default_path}'"
-                    )
-                    self.set_and_save_preference("USER_DATA_DIRECTORY", default_path)
-                    success_userdata = True
-                else:
-                    # If the path selected does not start from the user root, give relative location from root
-                    if userdata_path[0] == "~":
-                        userdata_path = userdata_path.replace(
-                            "~", os.path.expanduser("~")
-                        )
+        user_opt = input(
+            f"Path `{userdata_path}` does not exist, do you wish to create it? [Y/N]\n"
+        )
 
-                    # Check if the directory exists
-                    if os.path.isdir(userdata_path):
-                        console.print(
-                            f"User data to be saved in the selected folder: '{userdata_path}'"
-                        )
-                        self.set_and_save_preference(
-                            "USER_DATA_DIRECTORY", userdata_path
-                        )
-                        success_userdata = True
-                    else:
-                        console.print(
-                            "[red]The path selected to user data does not exist![/red]\n"
-                        )
-                        user_opt = "None"
-                        while user_opt not in ("Y", "N"):
-                            user_opt = input(
-                                f"Do you wish to create folder: `{userdata_path}` ? [Y/N]\n"
-                            ).upper()
-
-                        if user_opt == "Y":
-                            os.makedirs(userdata_path)
-                            console.print(
-                                f"[green]Folder '{userdata_path}' successfully created.[/green]"
-                            )
-                            self.set_and_save_preference(
-                                "USER_DATA_DIRECTORY", userdata_path
-                            )
-                        else:
-                            # Do not update userdata_folder path since we will keep the same as before
-                            console.print(
-                                "[yellow]User data to keep being saved in "
-                                + "the selected folder: "
-                                + f"{str(get_current_user().preferences.USER_DATA_DIRECTORY)}[/yellow]"
-                            )
-                        success_userdata = True
-
-        console.print()
+        if user_opt.upper() == "Y":
+            os.makedirs(userdata_path)
+            console.print(
+                f"[green]Folder '{userdata_path}' successfully created.[/green]"
+            )
+            save_file(userdata_path)

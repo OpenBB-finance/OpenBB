@@ -1,9 +1,21 @@
 ---
 title: topbuys
-description: OpenBB Terminal Function
+description: Explore top buys for government trading. Discover how to use the 'topbuys'
+  feature, including parameter selection for congress, senate and house, past transactions,
+  and more for optimized use. Enhance your trading strategies today with quiverquant.
+keywords:
+- government trading
+- topbuys
+- congress
+- senate
+- house
+- past transactions
+- quiverquant
 ---
 
-# topbuys
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/gov/topbuys - Reference | OpenBB Terminal Docs" />
 
 Top buys for government trading. [Source: www.quiverquant.com]
 

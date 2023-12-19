@@ -1,12 +1,24 @@
 ---
 title: ycrv
-description: OpenBB SDK Function
+description: This documentation page guides users on how to use the 'ycrv' function
+  in OpenBB software to retrieve and display yield curve data.
+keywords:
+- ycrv
+- yield curve
+- Treasury rates
+- data retrieval
+- data display
+- frontend development
+- FRED source code
+- economic data visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.ycrv - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# ycrv
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -46,8 +58,6 @@ ycrv_df = openbb.economy.ycrv()
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -76,8 +86,6 @@ openbb.economy.ycrv_chart(date: datetime.datetime = None, external_axes: Optiona
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

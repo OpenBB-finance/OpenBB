@@ -437,7 +437,6 @@ def display_contracts(
 
     if df_contracts.empty:
         return
-
     if raw:
         print_rich_table(
             df_contracts,
@@ -457,8 +456,8 @@ def display_contracts(
 
     fig.add_bar(
         name="Amount",
-        x=df_contracts["Date"].unique(),
-        y=df_contracts_grouped["Amount"].values / 1000,
+        x=sorted(df_contracts["Date"].unique()),
+        y=df_contracts_grouped["Amount"] / 1000,
     )
     fig.update_layout(xaxis=dict(type="category"))
 
@@ -526,6 +525,7 @@ def display_qtr_contracts(
         max_amount = 0
         quarter_ticks = []
         df_contracts = quiverquant_model.get_government_trading("quarter-contracts")
+        df_contracts["Amount"] = pd.to_numeric(df_contracts["Amount"])
         for symbol in symbols:
             amounts = (
                 df_contracts[df_contracts["Ticker"] == symbol]
@@ -622,21 +622,25 @@ def display_hist_contracts(
     if df_contracts.empty:
         return None
 
-    amounts = df_contracts.sort_values(by=["Year", "Qtr"])["Amount"].values
+    amounts = df_contracts.sort_values(by=["Year", "Qtr"])["Amount"].astype(float)
 
-    qtr = df_contracts.sort_values(by=["Year", "Qtr"])["Qtr"].values
-    year = df_contracts.sort_values(by=["Year", "Qtr"])["Year"].values
-
-    quarter_ticks = [
-        f"{quarter[0]}" if quarter[1] == 1 else "" for quarter in zip(year, qtr)
-    ]
+    date_dict = {
+        1: "03-31",
+        2: "06-30",
+        3: "09-30",
+        4: "12-31",
+    }
+    df_contracts["dates"] = (
+        df_contracts["Year"].astype(str) + "-" + df_contracts["Qtr"].map(date_dict)
+    )
+    df_contracts["dates"] = pd.to_datetime(df_contracts["dates"]).dt.strftime("%Y-%m")
+    df_contracts.sort_values(by="dates", ascending=True, inplace=True)
 
     fig = OpenBBFigure(
         xaxis=dict(
-            title="Quarter",
             tickmode="array",
             tickvals=np.arange(0, len(amounts)),
-            ticktext=quarter_ticks,
+            ticktext=df_contracts["dates"],
         ),
         yaxis_title="Amount ($1k)",
     )
@@ -660,17 +664,19 @@ def display_hist_contracts(
         export,
         os.path.dirname(os.path.abspath(__file__)),
         "histcont",
+        df_contracts.drop(columns=["dates"]),
         sheet_name=sheet_name,
         figure=fig,
     )
 
     if raw:
+        df = df_contracts.drop(columns=["dates"]).astype(str)
         return print_rich_table(
-            df_contracts,
-            headers=list(df_contracts.columns),
-            floatfmt=[".0f", ".0f", ".2f"],
+            df,
+            headers=list(df.columns),
             title="Historical Quarterly Government Contracts",
             export=bool(export),
+            columns_keep_types=["Year"],
         )
 
     return fig.show(external=external_axes)

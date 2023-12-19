@@ -22,7 +22,7 @@ def read_default_sources() -> Dict:
         with open(DATA_SOURCES_DEFAULT_FILE) as file:
             return flatten(json.load(file))
     except Exception as e:
-        print(
+        print(  # noqa: T201
             f"\nFailed to read data sources file: "
             f"{DATA_SOURCES_DEFAULT_FILE}\n{e}\n"
         )

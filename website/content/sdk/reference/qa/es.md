@@ -1,12 +1,26 @@
 ---
 title: es
-description: OpenBB SDK Function
+description: This is a comprehensive guide on how to use OpenBB's quantitative analysis
+  for Expected Shortfall (ES). The document explains how to get the Expected Shortfall
+  for a specific stock dataframe and how to print a table showing expected shortfall
+  using the ES chart. Both the Model and Chart have been clearly explained in the
+  context of their parameters and return types.
+keywords:
+- Quantitative Analysis
+- Expected Shortfall
+- Percentile
+- ES Chart
+- Portfolio
+- use_mean
+- Distribution
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="qa.es - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# es
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -41,8 +55,6 @@ openbb.qa.es(data: pd.DataFrame, use_mean: bool = False, distribution: str = "no
 | pd.DataFrame | DataFrame with Expected Shortfall per percentile |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -75,8 +87,6 @@ openbb.qa.es_chart(data: pd.DataFrame, symbol: str = "", use_mean: bool = False,
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

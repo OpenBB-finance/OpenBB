@@ -1,9 +1,19 @@
 ---
 title: eb
-description: OpenBB Terminal Function
+description: The eb page provides information on how to display active blockchain
+  addresses over time using different exchanges. It also includes details on parameters
+  such as the initial and final dates for fetching data.
+keywords:
+- blockchain addresses
+- data fetching
+- api keys
+- exchanges
+- parameters
 ---
 
-# eb
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/eb - Reference | OpenBB Terminal Docs" />
 
 Display active blockchain addresses over time [Source: https://glassnode.org] Note that free api keys only allow fetching data with a 1y lag
 

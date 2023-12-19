@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+import contextlib
 import logging
 
 # IMPORTATION THIRDPARTY
@@ -10,11 +11,7 @@ from openbb_terminal.core.log.generation.path_tracking_file_handler import (
 
 def do_rollover():
     """RollOver the log file."""
-
     for handler in logging.getLogger().handlers:
         if isinstance(handler, PathTrackingFileHandler):
-            try:
+            with contextlib.suppress(PermissionError):
                 handler.doRollover()
-            # IGNORE PermissionError : WINDOWS FILE OPEN
-            except PermissionError:
-                pass

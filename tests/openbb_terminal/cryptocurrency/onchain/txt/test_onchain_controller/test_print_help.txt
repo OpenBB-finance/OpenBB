@@ -11,7 +11,6 @@
     ueat               unique ethereum addresses which made a transaction              [BitQuery]
     ttcp               top traded crypto pairs on given decentralized exchange         [BitQuery]
     baas               bid, ask prices, average spread for given crypto pair           [BitQuery]
-    query              flipsidecrypto query                                            [Shroom]
 
 Ethereum address: 
 Address type: 

@@ -1,9 +1,20 @@
 ---
 title: hist
-description: OpenBB Terminal Function
+description: This page provides a guide on how to use 'hist' function in Python which
+  plots a histogram with density and rug. It also includes parameters related information
+  and usage syntax.
+keywords:
+- Histogram
+- Density
+- Rug
+- Usage
+- Parameters
+- n_bins
 ---
 
-# hist
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/qa/hist - Reference | OpenBB Terminal Docs" />
 
 Histogram with density and rug
 

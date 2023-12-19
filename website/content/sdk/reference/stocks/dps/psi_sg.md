@@ -1,12 +1,27 @@
 ---
 title: psi_sg
-description: OpenBB SDK Function
+description: The psi_sg page provides Python code snippets for retrieving short interest
+  volume data and stock prices. Also available is the functionality to plot this data
+  or export it in various file formats. The data is sourced from Stockgrid.
+keywords:
+- psi_sg
+- Docusaurus
+- Short interest volume
+- Stock data
+- Stockgrid
+- Python code
+- Data visualization
+- Data export
+- Market days
+- Raw data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.dps.psi_sg - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# psi_sg
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +51,6 @@ openbb.stocks.dps.psi_sg(symbol: str)
 | ---- | ----------- |
 | Tuple[pd.DataFrame, List] | Short interest volume data, Price data |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -70,8 +83,6 @@ openbb.stocks.dps.psi_sg_chart(symbol: str, limit: int = 84, raw: bool = False, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

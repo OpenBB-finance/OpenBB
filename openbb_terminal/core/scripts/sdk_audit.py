@@ -8,6 +8,7 @@ from typing import Callable, List, Tuple
 import pandas as pd
 
 from openbb_terminal.core.config.paths import MAP_PATH
+from openbb_terminal.rich_config import console
 
 try:
     import darts  # pylint: disable=W0611 # noqa: F401
@@ -84,8 +85,10 @@ def get_sdk(file_path: Path = MAP_PATH) -> pd.DataFrame:
     df = pd.read_csv(base_path / file_path)
     df_dups = len(df["trail"]) - len(df["trail"].drop_duplicates())
     if df_dups > 0:
-        print(f"Number of duplicate sdk paths: {df_dups}")
-        print("This indicates that the same SDK trail is being used multiple times\n")
+        console.print(f"Number of duplicate sdk paths: {df_dups}")
+        console.print(
+            "This indicates that the same SDK trail is being used multiple times\n"
+        )
     views = list(df[["view", "trail"]].itertuples(index=False, name=None))
     models = list(df[["model", "trail"]].itertuples(index=False, name=None))
     # Add in whether it is a view or a model in pandas
@@ -146,8 +149,8 @@ def functions_df() -> pd.DataFrame:
     func_df["docstring"] = [x[1] for x in all_formatted]
     func_dups = len(func_df["name"]) - len(func_df["name"].drop_duplicates())
     if func_dups > 0:
-        print(f"Number of duplicate functions found: {func_dups}")
-        print(
+        console.print(f"Number of duplicate functions found: {func_dups}")
+        console.print(
             "This may indicate that functions are defined several times in the terminal.\n"
         )
     func_df = func_df.set_index("name")
@@ -159,7 +162,7 @@ def save_df(data: pd.DataFrame) -> None:
     time_str = (str(timestamp)).replace(".", "")
     output_path = f"{time_str}_sdk_audit.csv"
     data.to_csv(output_path)
-    print(f"File saved to {output_path}")
+    console.print(f"File saved to {output_path}")
 
 
 def get_nonconforming_functions(data: pd.DataFrame) -> pd.DataFrame:
@@ -192,7 +195,7 @@ def get_nonconforming_functions(data: pd.DataFrame) -> pd.DataFrame:
 
 
 def main():
-    print(
+    console.print(
         "This tool checks all functions in a file with a name including 'view' or 'model'against\n"
         "all functions in the sdk, which is gathered from 'trail_map.csv'. If the generated csv\n"
         "has an entry for 'trail' that means it is in the SDK, and if it has an entry for\n"
@@ -209,15 +212,17 @@ def main():
     # Get further stats on bad data
     no_doc_count = len(final_df[final_df["docstring"].isnull()].index)
     if no_doc_count > 0:
-        print(f"The number of rows with blank docstrings is: {no_doc_count}")
-        print(
+        console.print(f"The number of rows with blank docstrings is: {no_doc_count}")
+        console.print(
             "This indicates a matching function does not exist, is not in a 'model' or 'view'\n"
             "file, or that the trailmap does not import it from the place it is defined.\n"
         )
     dup_name_count = len(final_df[final_df.duplicated(keep=False)].index)
     if dup_name_count > 0:
-        print(f"The number of duplicate functions after merge is: {dup_name_count}")
-        print(
+        console.print(
+            f"The number of duplicate functions after merge is: {dup_name_count}"
+        )
+        console.print(
             "This most likely indicates that the same function is being used at "
             "different SDK endpoints.\n"
         )

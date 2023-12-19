@@ -1,9 +1,17 @@
 ---
 title: bw
-description: OpenBB Terminal Function
+description: The page provides details about the 'bw' command in Python for generating
+  Box and Whisker plots. It includes usage, parameters, and an example visual output.
+keywords:
+- Box and Whisker plot
+- bw command
+- Parameter usage
+- Plot Visualization
 ---
 
-# bw
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/qa/bw - Reference | OpenBB Terminal Docs" />
 
 Box and Whisker plot
 

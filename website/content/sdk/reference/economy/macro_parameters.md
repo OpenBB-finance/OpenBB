@@ -1,9 +1,17 @@
 ---
 title: macro_parameters
-description: OpenBB SDK Function
+description: The macro_parameters function in openbb economy section. It does not
+  take any parameters and returns a dictionary with the available macro parameters.
+  Find the source code here.
+keywords:
+- macro parameters
+- economy
+- dictionary
 ---
 
-# macro_parameters
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.macro_parameters - Reference | OpenBB SDK Docs" />
 
 This function returns the available macro parameters with detail.
 
@@ -27,4 +35,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | Dict[str, Dict[str, str]] | A dictionary with the available macro parameters. |
 ---
-

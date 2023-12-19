@@ -1,9 +1,29 @@
 ---
 title: lowfloat
-description: OpenBB Terminal Function
+description: The LowFloat webpage provides sophisticated tools for retrieving information
+  about top stocks with the lowest float. It offers a comprehensive database that
+  includes stocks from Nasdaq, the New York Stock Exchange, the American Stock Exchange,
+  and the Over the Counter Bulletin Board. The service not only provides a stock's
+  float, but also provides additional key data such as the number of outstanding
+  shares, short interest, and company industry.
+keywords:
+- lowfloat
+- stocks
+- stock market
+- Nasdaq
+- New York Stock Exchange
+- American Stock Exchange
+- Outstanding shares
+- Short interest
+- Company industry
+- Stock trading
+- Low float stocks
+- Stock data
 ---
 
-# lowfloat
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/disc/lowfloat - Reference | OpenBB Terminal Docs" />
 
 Print top stocks with lowest float. LowFloat.com provides a convenient sorted database of stocks which have a float of under 10 million shares. Additional key data such as the number of outstanding shares, short interest, and company industry is displayed. Data is presented for the Nasdaq Stock Market, the New York Stock Exchange, the American Stock Exchange, and the Over the Counter Bulletin Board. [Source: www.lowfloat.com]
 

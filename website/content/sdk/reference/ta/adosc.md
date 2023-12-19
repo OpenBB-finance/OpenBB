@@ -1,12 +1,27 @@
 ---
 title: adosc
-description: OpenBB SDK Function
+description: Technical page discussing the calculation and plotting of the AD Oscillator
+  technical indicator. The page also includes links to source code and parameter descriptions.
+keywords:
+- AD Oscillator
+- technical indicator
+- parameter description
+- calculate
+- plot
+- technical analysis
+- fast value
+- slow value
+- volume model
+- TabItem
+- docusaurus
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.adosc - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# adosc
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +54,6 @@ openbb.ta.adosc(data: pd.DataFrame, use_open: bool = False, fast: int = 3, slow:
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with technical indicator |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -75,8 +88,6 @@ openbb.ta.adosc_chart(data: pd.DataFrame, fast: int = 3, slow: int = 10, use_ope
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

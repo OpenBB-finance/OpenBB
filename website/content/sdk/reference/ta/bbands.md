@@ -1,12 +1,24 @@
 ---
 title: bbands
-description: OpenBB SDK Function
+description: This documentation is about the 'bbands' function in the OpenBB finance
+  library. It allows users to calculate and plot Bollinger Bands for financial data,
+  providing multiple parameters for customization.
+keywords:
+- OpenBB finance library
+- Bollinger Bands
+- Financial data analysis
+- Python financial tools
+- Technical analysis
+- Volatility models
+- Financial chart plotting
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.bbands - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# bbands
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +51,6 @@ openbb.ta.bbands(data: pd.DataFrame, window: int = 15, n_std: float = 2, mamode:
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of bollinger band data |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -75,8 +85,6 @@ openbb.ta.bbands_chart(data: pd.DataFrame, symbol: str = "", window: int = 15, n
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

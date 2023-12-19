@@ -1,9 +1,23 @@
 ---
 title: nco
-description: OpenBB SDK Function
+description: This page is about the Non-Convex Optimization (NCO) model used for portfolio
+  optimization. It includes a detailed explanation of the function parameters, return
+  values, and examples of usage using the OpenBB financial software.
+keywords:
+- Non-Convex Optimization
+- portfolio optimization
+- financial software
+- financial modeling
+- risk measures
+- portfolio performance measures
+- Sharpe ratio
+- Value at Risk
+- Maximum Drawdown
 ---
 
-# nco
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.po.nco - Reference | OpenBB SDK Docs" />
 
 Optimize with Non-Convex Optimization (NCO) model.
 
@@ -81,4 +95,3 @@ weights, performance = openbb.portfolio.po.nco(portfolio_engine=p)
 ```
 
 ---
-

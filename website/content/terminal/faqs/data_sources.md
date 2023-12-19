@@ -1,32 +1,22 @@
 ---
 title: Data and Sources
 sidebar_position: 4
-description: Information about data sources and providers offered through the OpenBB Terminal.
+description: The page discusses the data sources and functionalities of OpenBB, an
+  aggregator of data from various sources. It guides on troubleshooting, locating
+  data, and requesting features.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb terminal,
-    data,
-    data provider,
-    india,
-    binance
-  ]
+- data aggregator
+- troubleshooting guide
+- data sources
+- ticker symbols
+- load function
+- feature request
+- data providers
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Data Sources - Terminal | OpenBB Docs" />
+<HeadTitle title="Data and Sources - Faqs | OpenBB Terminal Docs" />
 
 ## Data and Sources
 
@@ -34,13 +24,13 @@ Please note that OpenBB does not provide any data, it is an aggregator which pro
 
 <details><summary>Is there a list of all data providers?</summary>
 
-The complete list is found [here](https://docs.openbb.co/terminal/usage/guides/api-keys)
+The complete list is found [here](/terminal/usage/data/api-keys)
 
 </details>
 
 <details><summary>How do I find and load a ticker symbol from India, or any other country?</summary>
 
-Use the [`/stocks/search`](https://docs.openbb.co/terminal/usage/intros/stocks#search) command.
+Use the [`/stocks/search`](/terminal/menus/stocks/introduction#search) command.
 
 ```console
 search --country canada --industrygroup banks

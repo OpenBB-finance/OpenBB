@@ -1,9 +1,22 @@
 ---
 title: lis
-description: OpenBB Terminal Function
+description: Understand the usage of 'lis' function that prints latest insider sales
+  for stocks. You can limit the amount of datarows to be displayed. This comes from
+  OpenInsider source and can help understand Insider trading data.
+keywords:
+- Print latest insider sales
+- OpenInsider
+- Stocks
+- Insider data
+- Trading
+- Stock markets
+- Financial data
+- Script
 ---
 
-# lis
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ins/lis - Reference | OpenBB Terminal Docs" />
 
 Print latest insider sales. [Source: OpenInsider]
 

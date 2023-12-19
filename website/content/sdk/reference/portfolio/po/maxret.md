@@ -1,9 +1,26 @@
 ---
 title: maxret
-description: OpenBB SDK Function
+description: This documentation page provides detailed information on the maxret function
+  of the OpenBB Terminal library. The function helps in optimizing maximum return
+  weights for a given stock portfolio based on several parameters.
+keywords:
+- maxret function
+- Stock portfolio optimization
+- Maximum return weights
+- Python library
+- PoEngine
+- Portfolio engine
+- Pandas DataFrame
+- Portfolio returns
+- Performance dictionary
+- Risk measures
+- Sharpe ratio
+- Risk free rate
 ---
 
-# maxret
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.po.maxret - Reference | OpenBB SDK Docs" />
 
 Optimize maximum return weights
 
@@ -75,4 +92,3 @@ weights, performance = openbb.portfolio.po.maxret(portfolio_engine=p)
 ```
 
 ---
-

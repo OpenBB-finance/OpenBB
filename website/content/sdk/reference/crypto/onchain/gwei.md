@@ -1,12 +1,24 @@
 ---
 title: gwei
-description: OpenBB SDK Function
+description: This documentation page details the 'gwei' functionality of OpenBB's
+  crypto onchain operations. It contains code snippets and function descriptions for
+  retrieving Ethereum gas fees data, along with export methods for the same.
+keywords:
+- crypto onchain operations
+- gwei
+- Ethereum gas fees data
+- data export
+- Source Code
+- function documentation
+- onchain data
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.gwei - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# gwei
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -33,8 +45,6 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | four gas fees and durations<br/>    (fees for slow, average, fast and<br/>    fastest transactions in gwei and<br/>    its average durations in seconds) |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -63,8 +73,6 @@ openbb.crypto.onchain.gwei_chart(export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

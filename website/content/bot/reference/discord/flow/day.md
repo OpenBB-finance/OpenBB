@@ -1,10 +1,26 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: day
-description: OpenBB Discord Command
+description: This documentation page provides detailed instructions on how to use
+  the 'day' command to retrieve the most recent flow for a stock with a specified
+  ticker symbol. It includes a description of optional and mandatory parameters and
+  provides real-world usage examples.
+keywords:
+- stock market
+- day command
+- flow data
+- ticker symbol
+- expiry date
+- strike price
+- option type
+- stock trading
+- commands
+- parameter
+- examples
 ---
 
-# day
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="flow: day - Discord Reference | OpenBB Bot Docs" />
 
 This command retrieves the most recent flow for a stock with the specified ticker symbol. The command will return the most up-to-date flow data for that stock over $25,000.
 

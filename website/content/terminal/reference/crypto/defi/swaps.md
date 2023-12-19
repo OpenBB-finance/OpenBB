@@ -1,9 +1,25 @@
 ---
 title: swaps
-description: OpenBB Terminal Function
+description: This webpage displays the latest swaps done on Uniswap DEX. It allows
+  users to sort crypto transactions in different ways as per their needs. It's useful
+  for observing and analyzing recent cryptocurrency transactions.
+keywords:
+- Uniswap DEX
+- crypto swaps
+- cryptocurrency transactions
+- defi data
+- last crypto swaps
+- uniswap transactions
+- sort uniswap dex
+- track uniswap swaps
+- token exchange
+- decoding uniswap
+- uniswap analysis
 ---
 
-# swaps
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/defi/swaps - Reference | OpenBB Terminal Docs" />
 
 Display last swaps done on Uniswap DEX. [Source: https://thegraph.com/en/]
 

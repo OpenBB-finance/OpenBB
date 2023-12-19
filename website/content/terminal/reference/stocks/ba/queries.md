@@ -1,9 +1,26 @@
 ---
 title: queries
-description: OpenBB Terminal Function
+description: This page provides documentation on how to use the 'queries' function
+  to print the top related queries associated with a stock's query. Learn how to set
+  a limit on the number of queries and view examples of the output.
+keywords:
+- stock
+- query
+- stock query
+- top related queries
+- print
+- stock's query
+- function
+- Google source
+- limit
+- parameters
+- examples
+- output
 ---
 
-# queries
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ba/queries - Reference | OpenBB Terminal Docs" />
 
 Print top related queries with this stock's query. [Source: Google]
 

@@ -1,9 +1,24 @@
 ---
 title: gh
-description: OpenBB Terminal Function
+description: Learn how to utilize the GH command line tool to track GitHub activity
+  for a given crypto coin. Discover how to filter by development activity, set frequency
+  intervals, and define start and end dates with this powerful Python-based
+  tool.
+keywords:
+- Github activity
+- Pull Request
+- Issue
+- command line tool
+- development activity
+- frequency intervals
+- start and end dates
+- Santiment
+- tracking tool
 ---
 
-# gh
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/gh - Reference | OpenBB Terminal Docs" />
 
 Display github activity over time for a given coin. Github activity includes the following actions: creating a Pull Request, an Issue, commenting on an issue / PR, and many more. See detailed definition at https://academy.santiment.net/metrics/development-activity/ [Source: https://santiment.net/]
 

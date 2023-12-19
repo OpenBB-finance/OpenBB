@@ -1,9 +1,27 @@
 ---
 title: overview
-description: OpenBB Terminal Function
+description: This documentation provides a comprehensive guide on the overview function
+  which displays a brief data of companies based on predefined filters. It can limit
+  the stocks to print, reverse the sorting order, and sort table elements.
+keywords:
+- overview
+- filter presets
+- limit
+- reverse
+- sort
+- stocks
+- stock print
+- data sorting
+- table elements
+- stock analysis
+- commands
+- parameters
+- pre-set filtering
 ---
 
-# overview
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/screener/overview - Reference | OpenBB Terminal Docs" />
 
 Prints overview data of the companies that meet the pre-set filtering.
 

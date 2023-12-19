@@ -1,30 +1,27 @@
 ---
 title: Docker
 sidebar_position: 5
-description: Installing the OpenBB Terminal via Docker supports both Windows and Unix systems (Linux + MacOS). Installation differs a bit between operating system (Windows, macOS and Linux). Please select the section matching to your OS.
+description: Instructions for installing OpenBB Terminal via Docker on different operating
+  systems (Windows, MacOS, Linux). The page includes specific guidelines for Docker
+  Desktop installation, displaying charts in Docker, and how to pull and run OpenBB
+  Terminal Docker image.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb terminal,
-    docker,
-    download
-  ]
+- Docker
+- Installation
+- Windows
+- MacOS
+- Linux
+- VcXsrv
+- XQuartz
+- docker-compose.yaml
+- docker-compose.x11.yaml
+- Docker Desktop
+- Run OpenBB Terminal Docker image
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Docker - Terminal | OpenBB Docs" />
+<HeadTitle title="Docker - Installation | OpenBB Terminal Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';

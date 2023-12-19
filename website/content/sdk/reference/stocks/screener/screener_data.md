@@ -1,12 +1,27 @@
 ---
 title: screener_data
-description: OpenBB SDK Function
+description: This documentation outlines the functionality of the screener_data and
+  screener_data_chart modules in the OpenBB Terminal, a Python library for loading
+  and handling preset stock filters. It provides parameter descriptions and return
+  values, with links to the source code.
+keywords:
+- Screener data
+- Python library
+- Source code
+- Stocks
+- Preset filters
+- Data types
+- Screener data chart
+- Order of stocks
+- Data export
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.screener.screener_data - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# screener_data
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +54,6 @@ openbb.stocks.screener.screener_data(preset_loaded: str = "top_gainers", data_ty
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with loaded filtered stocks |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -75,8 +88,6 @@ openbb.stocks.screener.screener_data_chart(loaded_preset: str = "top_gainers", d
 | ---- | ----------- |
 | List[str] | List of stocks that meet preset criteria |
 ---
-
-
 
 </TabItem>
 </Tabs>

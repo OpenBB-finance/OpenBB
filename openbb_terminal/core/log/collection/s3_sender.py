@@ -119,8 +119,8 @@ def send_to_s3(
 
     if (
         not last
-        and aws_settings.aws_access_key_id != "REPLACE_ME"
-        and aws_settings.aws_secret_access_key != "REPLACE_ME"
+        and aws_settings.aws_access_key_id != "REPLACE_ME"  # noqa: S105
+        and aws_settings.aws_secret_access_key != "REPLACE_ME"  # noqa: S105
     ):
         send_to_s3_directly(
             aws_access_key_id=aws_settings.aws_access_key_id,

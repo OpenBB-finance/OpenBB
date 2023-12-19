@@ -1,9 +1,33 @@
 ---
 title: ols
-description: OpenBB SDK Function
+description: Perform OLS regression on timeseries data using the 'ols' function from
+  OpenBB's econometrics module. The page includes parameters description, return type,
+  and a practical example with code.
+keywords:
+- ols
+- timeseries data
+- statsmodels
+- regression
+- openbb.econometrics.ols
+- Dependent variable series
+- Independent variables series
+- RegressionResultsWrapper
+- OLS Regression Results
+- R-squared
+- Least Squares
+- F-statistic
+- Prob (F-statistic)
+- Log-Likelihood
+- AIC
+- BIC
+- Df Residuals
+- Df Model
+- Covariance Type
 ---
 
-# ols
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics.ols - Reference | OpenBB SDK Docs" />
 
 Performs an OLS regression on timeseries data. [Source: Statsmodels]
 
@@ -70,4 +94,3 @@ Notes:
 [2] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 ```
 ---
-

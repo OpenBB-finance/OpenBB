@@ -1,9 +1,24 @@
 ---
 title: seasonalnaive
-description: OpenBB Terminal Function
+description: This page provides detailed usage of the SeasonalNaive forecasting model
+  including parameters definitions, examples, and results interpretation. It is meant
+  as a guide for using SeasonalNaive to make economic predictions.
+keywords:
+- SeasonalNaive
+- Forecasting
+- Economic Predictions
+- Additive Seasonality
+- Multiplicative Seasonality
+- Models
+- Forecast Parameters
+- Time Series Analysis
+- Cross Validation Time Series
+- Statsforecast
 ---
 
-# seasonalnaive
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /seasonalnaive - Reference | OpenBB Terminal Docs" />
 
 Perform SeasonalNaive forecasting: https://nixtla.github.io/statsforecast/models.html#seasonalnaive
 
@@ -44,10 +59,10 @@ seasonalnaive [--naive] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-p 
 
 Cross Validation Time Series 1: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 115/115 [00:0200:00, 47.75it/s]
 Forecast: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:0000:00, 14873.42it/s]
-SeasonalNaive obtains MAPE: 4.26% 
+SeasonalNaive obtains MAPE: 4.26%
 
 
-   Actual price: 138.38    
+   Actual price: 138.38
 ┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Datetime   ┃ Prediction ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩

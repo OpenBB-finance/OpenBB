@@ -1,0 +1,62 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml
+  response:
+    body:
+      string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<gesmes:Envelope xmlns:gesmes=\"http://www.gesmes.org/xml/2002-08-01\"
+        xmlns=\"http://www.ecb.int/vocabulary/2002-08-01/eurofxref\">\n\t<gesmes:subject>Reference
+        rates</gesmes:subject>\n\t<gesmes:Sender>\n\t\t<gesmes:name>European Central
+        Bank</gesmes:name>\n\t</gesmes:Sender>\n\t<Cube>\n\t\t<Cube time='2023-11-13'>\n\t\t\t<Cube
+        currency='USD' rate='1.0670'/>\n\t\t\t<Cube currency='JPY' rate='161.96'/>\n\t\t\t<Cube
+        currency='BGN' rate='1.9558'/>\n\t\t\t<Cube currency='CZK' rate='24.581'/>\n\t\t\t<Cube
+        currency='DKK' rate='7.4598'/>\n\t\t\t<Cube currency='GBP' rate='0.87155'/>\n\t\t\t<Cube
+        currency='HUF' rate='377.20'/>\n\t\t\t<Cube currency='PLN' rate='4.4280'/>\n\t\t\t<Cube
+        currency='RON' rate='4.9710'/>\n\t\t\t<Cube currency='SEK' rate='11.6100'/>\n\t\t\t<Cube
+        currency='CHF' rate='0.9656'/>\n\t\t\t<Cube currency='ISK' rate='153.30'/>\n\t\t\t<Cube
+        currency='NOK' rate='11.8770'/>\n\t\t\t<Cube currency='TRY' rate='30.5041'/>\n\t\t\t<Cube
+        currency='AUD' rate='1.6742'/>\n\t\t\t<Cube currency='BRL' rate='5.2599'/>\n\t\t\t<Cube
+        currency='CAD' rate='1.4754'/>\n\t\t\t<Cube currency='CNY' rate='7.7794'/>\n\t\t\t<Cube
+        currency='HKD' rate='8.3309'/>\n\t\t\t<Cube currency='IDR' rate='16751.90'/>\n\t\t\t<Cube
+        currency='ILS' rate='4.1267'/>\n\t\t\t<Cube currency='INR' rate='88.8440'/>\n\t\t\t<Cube
+        currency='KRW' rate='1413.72'/>\n\t\t\t<Cube currency='MXN' rate='18.8820'/>\n\t\t\t<Cube
+        currency='MYR' rate='5.0234'/>\n\t\t\t<Cube currency='NZD' rate='1.8142'/>\n\t\t\t<Cube
+        currency='PHP' rate='59.842'/>\n\t\t\t<Cube currency='SGD' rate='1.4520'/>\n\t\t\t<Cube
+        currency='THB' rate='38.407'/>\n\t\t\t<Cube currency='ZAR' rate='20.0025'/>\n\t\t</Cube>\n\t</Cube>\n</gesmes:Envelope>"
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/xml
+      Date:
+      - Mon, 13 Nov 2023 22:46:51 GMT
+      Expires:
+      - Mon, 13 Nov 2023 15:05:19 GMT
+      Last-Modified:
+      - Mon, 13 Nov 2023 14:55:11 GMT
+      Server:
+      - myracloud
+      Strict-Transport-Security:
+      - max-age=63072000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      X-CDN:
+      - '1'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - max-age=300
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,9 +1,23 @@
 ---
 title: rwd
-description: OpenBB Terminal Function
+description: This page details the procedure for performing a Random Walk with Drift
+  (RWD) forecast using the statsforecast tool in Python. Complete with parameter listings,
+  usage instructions, and examples, the guidance facilitates accurate and efficient
+  data analysis.
+keywords:
+- Random Walk with Drift
+- RWD
+- Forecast
+- Statsforecast
+- Dataset
+- Seasonality
+- Residuals
+- Predictions
 ---
 
-# rwd
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /rwd - Reference | OpenBB Terminal Docs" />
 
 Perform Random Walk with Drift forecast: https://nixtla.github.io/statsforecast/models.html#randomwalkwithdrift
 
@@ -45,10 +59,10 @@ rwd [--naive] [-d {}] [-c TARGET_COLUMN] [-n N_DAYS] [-s {N,A,M}] [-w START_WIND
 
 Cross Validation Time Series 1: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 115/115 [00:0200:00, 49.97it/s]
 Forecast: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:0000:00, 15887.52it/s]
-RWD obtains MAPE: 2.98% 
+RWD obtains MAPE: 2.98%
 
 
-   Actual price: 138.38    
+   Actual price: 138.38
 ┏━━━━━━━━━━━━┳━━━━━━━━━━━━┓
 ┃ Datetime   ┃ Prediction ┃
 ┡━━━━━━━━━━━━╇━━━━━━━━━━━━┩

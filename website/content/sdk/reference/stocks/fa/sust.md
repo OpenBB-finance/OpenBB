@@ -1,9 +1,20 @@
 ---
 title: sust
-description: OpenBB SDK Function
+description: This page provides information on how to get sustainability metrics for
+  a stock, using the OpenBB platform which relies on Yahoo Finance. It includes necessary
+  parameters and return values.
+keywords:
+- sustainability metrics
+- Yahoo Finance
+- stock
+- ticker symbol
+- dataframe
+- fundamental analysis
 ---
 
-# sust
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.fa.sust - Reference | OpenBB SDK Docs" />
 
 Get sustainability metrics from yahoo
 
@@ -30,4 +41,3 @@ openbb.stocks.fa.sust(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of sustainability metrics |
 ---
-

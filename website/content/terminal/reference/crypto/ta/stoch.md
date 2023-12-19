@@ -1,9 +1,27 @@
 ---
 title: stoch
-description: OpenBB Terminal Function
+description: Learn about the Stochastic Oscillator, a measurement tool in trading
+  ranges. Discover the meaning of overbought and oversold conditions and how to interpret
+  the signals from Fast %D and Slow %D. Understand how to use parameters like n_fastkperiod,
+  n_slowdperiod, and n_slowkperiod for moving averages.
+keywords:
+- Stochastic Oscillator
+- overbought condition
+- oversold condition
+- Fast %D
+- Slow %D
+- buy signal
+- sell signal
+- Raw %K
+- moving average
+- n_fastkperiod
+- n_slowdperiod
+- n_slowkperiod
 ---
 
-# stoch
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ta/stoch - Reference | OpenBB Terminal Docs" />
 
 The Stochastic Oscillator measures where the close is in relation to the recent trading range. The values range from zero to 100. %D values over 75 indicate an overbought condition; values under 25 indicate an oversold condition. When the Fast %D crosses above the Slow %D, it is a buy signal; when it crosses below, it is a sell signal. The Raw %K is generally considered too erratic to use for crossover signals.
 

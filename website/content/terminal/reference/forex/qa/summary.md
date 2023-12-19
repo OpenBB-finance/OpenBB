@@ -1,9 +1,21 @@
 ---
 title: summary
-description: OpenBB Terminal Function
+description: This page provides a detailed guide on how to use the 'summary' function.
+  This powerful command provides key summary statistics without requiring any additional
+  parameters. Users can leverage such data insights for data analysis and stock market
+  research.
+keywords:
+- data analysis
+- summary function
+- statistical data
+- stock market research
+- data insight
+- parameter-less commands
 ---
 
-# summary
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex/qa/summary - Reference | OpenBB Terminal Docs" />
 
 Summary statistics
 

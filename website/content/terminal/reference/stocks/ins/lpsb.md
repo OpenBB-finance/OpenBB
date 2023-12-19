@@ -1,9 +1,23 @@
 ---
 title: lpsb
-description: OpenBB Terminal Function
+description: The lpsb page provides a user guide on how to use the lpsb command to
+  print the latest penny stock buys. It shows parameters and usage examples, making
+  it easier for users to understand and use this function in their stock market analysis.
+keywords:
+- penny stocks
+- stock buy
+- lpsb command
+- user guide
+- stock analysis
+- command usage
+- data analysis
+- stock market
+- trade data
 ---
 
-# lpsb
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ins/lpsb - Reference | OpenBB Terminal Docs" />
 
 Print latest penny stock buys. [Source: OpenInsider]
 

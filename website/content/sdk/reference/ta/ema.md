@@ -1,9 +1,21 @@
 ---
 title: ema
-description: OpenBB SDK Function
+description: This page provides information on OpenBB's EMA (Exponential Moving Average)
+  functionality, a method often used in technical analysis of stocks. The mathematical
+  model's source code, parameters, and returns are clearly outlined.
+keywords:
+- ema
+- exponential moving average
+- technical analysis
+- stock
+- overlap model
+- dataframe
+- pd.Series
 ---
 
-# ema
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.ema - Reference | OpenBB SDK Docs" />
 
 Gets exponential moving average (EMA) for stock
 
@@ -32,4 +44,3 @@ openbb.ta.ema(data: pd.Series, length: int = 50, offset: int = 0)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing prices and EMA |
 ---
-

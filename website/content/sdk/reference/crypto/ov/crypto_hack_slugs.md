@@ -1,9 +1,16 @@
 ---
 title: crypto_hack_slugs
-description: OpenBB SDK Function
+description: This page provides details on the crypto_hack_slugs function of the OpenBB
+  finance platform. The function retrieves a list of cryptocurrency hack slugs.
+keywords:
+- crypto hack slugs
+- OpenBB finance
+- cryptocurrency
 ---
 
-# crypto_hack_slugs
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.crypto_hack_slugs - Reference | OpenBB SDK Docs" />
 
 Get all crypto hack slugs
 
@@ -27,4 +34,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | List[str] | List with slugs |
 ---
-

@@ -1,9 +1,22 @@
 ---
 title: cps
-description: OpenBB Terminal Function
+description: A comprehensive guide on how to use the CPS tool for displaying Companies
+  per Sectors based on Country and Market Cap. It provides detailed explanation about
+  the command-line parameters, their options and usage.
+keywords:
+- CPS tool
+- Companies per Sectors
+- Country and Market Cap
+- command-line parameters
+- max sectors to display
+- min percentage to display sector
+- output all raw data
+- data visualization
 ---
 
-# cps
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/sia/cps - Reference | OpenBB Terminal Docs" />
 
 Companies per Sectors based on Country and Market Cap
 

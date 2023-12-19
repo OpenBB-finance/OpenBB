@@ -1,12 +1,27 @@
 ---
 title: brnn
-description: OpenBB SDK Function
+description: This page provides comprehensive information about the BRNN function
+  in the OpenBB finance library. It details how to perform Block RNN forecasting and
+  display the forecast with parameters and examples. The page is highly specific to
+  Python developers working in finance and forecasting.
+keywords:
+- BRNN Forecast
+- OpenBB Forecast
+- Python forecasting
+- Data series forecasting
+- RNN
+- LSTM
+- GRU
+- Chart Display
+- Forecasting parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.brnn - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# brnn
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -52,8 +67,6 @@ openbb.forecast.brnn(data: Union[pd.Series, pd.DataFrame], target_column: str = 
 | ---- | ----------- |
 | E501 | Adjusted Data series,<br/>Historical forecast by best RNN model,<br/>list of Predictions,<br/>Mean average precision error,<br/>Best BRNN Model. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -106,8 +119,6 @@ openbb.forecast.brnn_chart(data: Union[pd.Series, pd.DataFrame], target_column: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

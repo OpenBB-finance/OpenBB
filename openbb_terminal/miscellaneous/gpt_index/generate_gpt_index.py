@@ -82,7 +82,7 @@ def process_cmd_parsers(ctrl: ControllerDoc) -> List[Dict[str, str]]:
 
                 elif isinstance(default, datetime):
                     if "start" in action.dest:
-                        random_int = random.randint(1, 365)
+                        random_int = random.randint(1, 365)  # noqa: S311
                         default = (
                             datetime.now() - timedelta(days=random_int)
                         ).strftime("%Y-%m-%d")
@@ -133,9 +133,9 @@ def process_cmd_parsers(ctrl: ControllerDoc) -> List[Dict[str, str]]:
                 if action.type is bool:
                     default = ""
                 elif action.type is int:
-                    default = random.randint(1, 100)
+                    default = random.randint(1, 100)  # noqa: S311
                 elif action.type is float:
-                    default = random.uniform(1, 100)
+                    default = random.uniform(1, 100)  # noqa: S311
                 else:
                     default = "None"
 
@@ -211,7 +211,7 @@ def generate_gpt_txt(cmd_meta: Dict[str, str], trail: str = "") -> str:
                         example += f" {flag}"
                         break
                 if param["choices"]:  # type: ignore
-                    example += f" {random.choice(choices_type(param['choices']))}"  # type: ignore
+                    example += f" {random.choice(choices_type(param['choices']))}"  # type: ignore # noqa: S311
                 elif param["default"]:  # type: ignore
                     default = param["default"]  # type: ignore
                     if default in ["False", "True"]:
@@ -225,7 +225,7 @@ def generate_gpt_txt(cmd_meta: Dict[str, str], trail: str = "") -> str:
                             example += f" {flag}"
                             break
                     if param["choices"]:  # type: ignore
-                        example += f" {random.choice(choices_type(param['choices']))}"  # type: ignore
+                        example += f" {random.choice(choices_type(param['choices']))}"  # type: ignore # noqa: S311
                     elif param["default"]:  # type: ignore
                         default = param["default"]  # type: ignore
                         if default in ["False", "True"]:

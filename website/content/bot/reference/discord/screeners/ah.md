@@ -1,10 +1,20 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: ah
-description: OpenBB Discord Command
+description: This page provides information on how to retrieve After-Hours stock movers
+  using a chosen screener with the command '/scr ah signal'. Examples and parameter
+  details are included.
+keywords:
+- After-Hours stock movers
+- screener preset
+- /scr ah signal
+- After-Hours Top Gainers
+- After-Hours Top Losers
+- After-Hours Most Active
 ---
 
-# ah
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="screeners: ah - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve After-Hours stock movers according to a chosen screener.
 

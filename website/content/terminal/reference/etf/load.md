@@ -1,9 +1,23 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: This page provides a guide on how to load an Exchange Traded Fund (ETF)
+  ticker to perform analysis. It includes the usage, parameters such as ticker, start
+  date, end date and limit of holdings. The page also includes examples of how to
+  use the load feature.
+keywords:
+- load
+- ETF
+- analysis
+- parameters
+- date
+- holdings
+- Yahoo Finance
+- StockAnalysis
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf /load - Reference | OpenBB Terminal Docs" />
 
 Load ETF ticker to perform analysis on.
 

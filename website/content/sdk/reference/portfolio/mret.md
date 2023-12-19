@@ -1,12 +1,24 @@
 ---
 title: mret
-description: OpenBB SDK Function
+description: This page provides comprehensive guides and source codes on how to get
+  and display monthly returns using the functions 'mret' and 'mret_chart' respectively,
+  both under openbb.portfolio of the OpenBB Terminal.
+keywords:
+- portfolio
+- mret
+- mret_chart
+- Monthly returns
+- PortfolioEngine
+- portfolio.load
+- openbb.portfolio.load
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.mret - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# mret
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -48,8 +60,6 @@ output = openbb.portfolio.mret(p)
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -82,8 +92,6 @@ openbb.portfolio.mret_chart(portfolio_engine: portfolio_engine.PortfolioEngine, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

@@ -1,12 +1,27 @@
 ---
 title: prices
-description: OpenBB SDK Function
+description: The 'prices' page shows how to use our API to obtain and display information
+  about historic prices of different cryptocurrencies. This includes parameters and
+  return types.
+keywords:
+- historical prices
+- volume
+- market cap
+- average price
+- onchain
+- tokens
+- Ethplorer
+- cryptocurrency
+- API
+- dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.prices - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# prices
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +54,6 @@ openbb.crypto.onchain.prices(address: str, sortby: str = "date", ascend: bool = 
 | pd.DataFrame | DataFrame with token historical prices. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +85,6 @@ openbb.crypto.onchain.prices_chart(address: str, limit: int = 30, sortby: str = 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

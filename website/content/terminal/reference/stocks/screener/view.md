@@ -1,9 +1,21 @@
 ---
 title: view
-description: OpenBB Terminal Function
+description: The page provides information on the 'view' function which allows one
+  to view available presets under the presets folder. It includes the usage in Python
+  and parameters that can be set, aiding in stock analysis.
+keywords:
+- view
+- presets
+- parameters
+- preset options
+- usage
+- custom preset
+- stock analysis
 ---
 
-# view
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/screener/view - Reference | OpenBB Terminal Docs" />
 
 View available presets under presets folder.
 

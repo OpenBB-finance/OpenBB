@@ -1,34 +1,25 @@
 ---
 title: Developer Issues
 sidebar_position: 7
-description: Help with issues commonly faced by developers.
+description: A comprehensive troubleshooting guide for developers regarding common
+  issues such as launching in debug mode, dealing with GitHub pull requests, git pull
+  errors, missing 'wheel', non-existent .whl files, handling JSONDecodeError, correcting
+  CRLF errors, running OpenBB via VS Code integrated terminal, and more.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb sdk,
-    error,
-    branch,
-    VS Code,
-    .whl
-  ]
+- Developer Issues
+- Debug mode
+- GitHub pull requests
+- git pull error
+- wheel missing
+- whl files
+- JSONDecodeError
+- CRLF error
+- VS Code integrated terminal
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Developer Issues - SDK | OpenBB Docs" />
-
-## Developer Issues
+<HeadTitle title="Developer Issues - Faqs | OpenBB SDK Docs" />
 
 <details><summary>How do I launch in debug mode?</summary>
 
@@ -44,7 +35,7 @@ plots_backend().start(True)
 from openbb_terminal.sdk import openbb
 ```
 
-The charts and tables will now include a developer tools button, located at the top-left of the window.  
+The charts and tables will now include a developer tools button, located at the top-left of the window.
 
 </details>
 

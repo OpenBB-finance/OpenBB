@@ -1,9 +1,20 @@
 ---
 title: var
-description: OpenBB SDK Function
+description: This documentation page describes the portfolio variance function in
+  OpenBB finance. It provides information on parameters, return values and usage examples
+  of the function.
+keywords:
+- OpenBB finance
+- Portfolio variance
+- Python finance library
+- Python code examples
+- Financial data analysis
+- Financial risk assessment
 ---
 
-# var
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.var - Reference | OpenBB SDK Docs" />
 
 Get portfolio VaR
 
@@ -44,4 +55,3 @@ output = openbb.portfolio.var(p)
 ```
 
 ---
-

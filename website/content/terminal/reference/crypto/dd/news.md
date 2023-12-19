@@ -1,9 +1,24 @@
 ---
 title: news
-description: OpenBB Terminal Function
+description: The News Page aggregates the latest crypto news from the CryptoPanic
+  platform, allowing extensive filter and sort options to customize your feed. The
+  page is interactive and easy-to-use for those who want to stay updated with the
+  cryptocurrency market news.
+keywords:
+- news
+- cryptopanic
+- cryptocurrency
+- aggregator platform
+- coin
+- filter options
+- crypto news
+- crypto media
+- parameters
 ---
 
-# news
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/news - Reference | OpenBB Terminal Docs" />
 
 Display most recent news on the given coin from CryptoPanic aggregator platform. [Source: https://cryptopanic.com/]
 

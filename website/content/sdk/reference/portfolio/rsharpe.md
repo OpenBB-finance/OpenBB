@@ -1,12 +1,24 @@
 ---
 title: rsharpe
-description: OpenBB SDK Function
+description: This page talks about the rsharpe function of the OpenBB Finance. The
+  page describes two methods to get a rolling sharpe ratio and to display it. It includes
+  the source code, parameter descriptions, and usage examples.
+keywords:
+- OpenBB Finance
+- portfolio returns
+- rsharpe function
+- risk-free rate
+- rolling sharpe ratio
+- chart display
+- plotting
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.rsharpe - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# rsharpe
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -49,8 +61,6 @@ output = openbb.portfolio.rsharpe(p)
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -82,8 +92,6 @@ openbb.portfolio.rsharpe_chart(portfolio_engine: portfolio_engine.PortfolioEngin
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

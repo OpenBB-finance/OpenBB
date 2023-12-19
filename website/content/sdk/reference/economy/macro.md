@@ -1,12 +1,37 @@
 ---
 title: macro
-description: OpenBB SDK Function
+description: This Docusaurus page offers detailed resources related to the 'macro'
+  function within the OpenBBTerminal Python package. It presents function parameters,
+  provides source code links, and offers examples of two functions that handle querying
+  macroeconomic data from the EconDB database and visualizing the received macro data.
+keywords:
+- docusaurus page
+- metadata
+- macro function
+- EconDB database
+- parameters
+- countries
+- transform
+- start_date
+- end_date
+- symbol
+- macro data
+- macro chart
+- raw
+- econdb_model.py
+- econdb_view.py
+- economy
+- macro parameters
+- macro countries
+- economical data visualization
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.macro - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# macro
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -51,8 +76,6 @@ macro_df = openbb.economy.macro()
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -89,8 +112,6 @@ openbb.economy.macro_chart(parameters: list = None, countries: list = None, tran
 | ---- | ----------- |
 | Plots the Series. |  |
 ---
-
-
 
 </TabItem>
 </Tabs>

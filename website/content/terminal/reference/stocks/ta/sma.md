@@ -1,9 +1,23 @@
 ---
 title: sma
-description: OpenBB Terminal Function
+description: The page explains the simple moving average (SMA) command, used for data
+  smoothing and trend identification. It includes SMA's usage, parameters, and a graphical
+  representation, making it easier to understand how to use SMA to filter data.
+keywords:
+- Moving Average
+- trend identification
+- data smoothing
+- Simple Moving Average
+- SMA
+- data filtering
+- sma command
+- n_length
+- n_offset
 ---
 
-# sma
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ta/sma - Reference | OpenBB Terminal Docs" />
 
 Moving Averages are used to smooth the data in an array to help eliminate noise and identify trends. The Simple Moving Average is literally the simplest form of a moving average. Each output value is the average of the previous n values. In a Simple Moving Average, each value in the time period carries equal weight, and values outside of the time period are not included in the average. This makes it less responsive to recent changes in the data, which can be useful for filtering out those changes.
 

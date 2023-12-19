@@ -1,0 +1,59 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v4/revenue-geographic-segmentation?apikey=MOCK_API_KEY&period=annual&structure=flat&symbol=AAPL
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA43US2sCMRAA4Lu/YulZIZmZzCS9LVaoPdiCeio9LLKle6iKj1Pxvze7ammTuKmg
+        YHZMPueR10FRfPl3UdyBAhgpNwK6u7+s+dXx43RW+gUhUJfX8Prs+fBR74rx5rg+7Jp676O0ALAL
+        wpaz6WLyUMwX5WIyb4NIrLkEdTEn/3ka/pHoTmJSErbInJcwMtmcBNEq7JeoTsIpCfnfhkckJGCU
+        DlMXSZTTTnol2nUSm5Qgyz8kmgDzEl9C7pfYTuJSEqPdtVN6Jca4MCyUOKtY90OkhaBKpoSEKQ9R
+        SqPOQCwh9ver5tuTQ4wUjkQMccjX2tx0iGHO9Ii53a2GDUneYXwv5fKhBaHfQZ1DUg5U7Kcu57AI
+        2fFl61SmLpiYmWLmv4JxlL9FxAqHOVsW3dmcnVdITMn5bBCXr4SAcDQi57OVo8z/1nE/lp/1rllV
+        7dZoUZtg63LfVKOXatW8N6vOGA/o5LjbbOv2oUh03TxV22rdthlhJi8qvtt/2YDIhXsHNgsmLN0P
+        TVt2UW8O3r4BGxCbuegGAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 16 Oct 2023 12:22:05 GMT
+      ETag:
+      - W/"6e8-hNE1JdkgArZ+ciKzEMueoazLOYw"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

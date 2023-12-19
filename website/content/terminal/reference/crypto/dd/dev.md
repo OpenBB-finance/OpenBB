@@ -1,9 +1,29 @@
 ---
 title: dev
-description: OpenBB Terminal Function
+description: This page provides a comprehensive guide to our dev command, which gives
+  insights into the development data of a specific loaded coin. The command includes
+  useful statistics like the number of forks, stars, subscribers, pull requests, merges,
+  etc. on Github.
+keywords:
+- developers data
+- loaded coin
+- github statistics
+- crypto command
+- crypto tool
+- software development
+- code development
+- pull request
+- commits
+- forks
+- merges
+- contributors
+- subscribers
+- stars
 ---
 
-# dev
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/dev - Reference | OpenBB Terminal Docs" />
 
 Developers data for loaded coin. If the development data is available you can see how the code development of given coin is going on. There are some statistics that shows number of stars, forks, subscribers, pull requests, commits, merges, contributors on github.
 

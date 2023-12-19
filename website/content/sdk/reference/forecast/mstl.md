@@ -1,12 +1,25 @@
 ---
 title: mstl
-description: OpenBB SDK Function
+description: MSTL model forecasting and charting documentation, including code and
+  parameter documentation. Details the use of OpenBB.forecast.mstl function in processing
+  time-series data for predictive analysis.
+keywords:
+- MSTL
+- forecasting
+- OpenBB.forecast.mstl
+- time-series data
+- predictive analysis
+- code
+- model
+- parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.mstl - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# mstl
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -41,8 +54,6 @@ openbb.forecast.mstl(data: Union[pd.Series, pd.DataFrame], target_column: str = 
 | ---- | ----------- |
 |  | Adjusted Data series,<br/>List of historical fcast values,<br/>List of predicted fcast values,<br/>Optional[float] - precision,<br/>Fit MSTL model object. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -84,8 +95,6 @@ openbb.forecast.mstl_chart(data: Union[pd.DataFrame, pd.Series], target_column: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

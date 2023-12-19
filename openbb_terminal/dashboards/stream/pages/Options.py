@@ -325,7 +325,7 @@ with st.sidebar:
                     options=["Open Interest", "Volume", "Ratios"],
                     key="stats_type",
                 )
-            if stats_type == "Open Interest" or stats_type == "Volume":
+            if stats_type in ("Open Interest", "Volume"):
                 is_percent = st.checkbox(
                     "Percent of Total", value=False, key="is_percent"
                 )
@@ -437,10 +437,7 @@ with st.sidebar:
                         index=default_strike,
                         key="straddle_strike",
                     )
-                if (
-                    strategy_choice == "Synthetic Long"
-                    or strategy_choice == "Synthetic Short"
-                ):
+                if strategy_choice in ("Synthetic Long", "Synthetic Short"):
                     default_strike_price = get_nearest_call_strike(
                         df, strike_price=df.last_price
                     )
@@ -453,10 +450,7 @@ with st.sidebar:
                         index=default_strike,
                         key="synthetic_strike",
                     )
-                if (
-                    strategy_choice == "Vertical Call"
-                    or strategy_choice == "Vertical Put"
-                ):
+                if strategy_choice in ("Vertical Call", "Vertical Put"):
                     default_strike_price1 = get_nearest_call_strike(
                         df,
                         strike_price=df.last_price + 5
@@ -499,7 +493,7 @@ with st.sidebar:
                 vol_choice = st.selectbox(
                     "Volatility Type", options=vol_choices, index=0, key="vol_choice"
                 )
-                if vol_choice == "Smile" or vol_choice == "Skew":
+                if vol_choice in ("Smile", "Skew"):
                     if vol_choice == "Smile":
                         col1, col2 = st.columns(2)
                         with col1:
@@ -658,7 +652,7 @@ if analysis_type == "Charts" and ticker_good is True and chart_data_type == "Sta
             use_container_width=True,
         )
 
-    elif stats_type == "Open Interest" or stats_type == "Volume":
+    elif stats_type in ("Open Interest", "Volume"):
         tab1, tab2 = st.tabs(["By Expiration", "By Strike"])
         with tab1:
             if stats_type == "Open Interest":
@@ -737,7 +731,7 @@ if analysis_type == "Charts" and chart_data_type == "Strikes" and ticker_good is
         )
         price_data["Call"] = call_price_data[target_column[strike_data_point]]
         price_data["Put"] = put_price_data[target_column[strike_data_point]]
-    if strike_choice == "Separate Calls and Puts" or strike_choice == "% OTM":
+    if strike_choice in ("Separate Calls and Puts", "% OTM"):
         call_price_data = (
             df.chains[df.chains["strike"] == _strikes["call"]]
             .query("`optionType` == 'call'")

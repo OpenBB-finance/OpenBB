@@ -1,9 +1,17 @@
 ---
 title: export
-description: OpenBB SDK Function
+description: Enhance your grasp of the openbb.forecast.export function from the OpenBBTerminal,
+  which is employed to export forecasting data. This function takes no parameters
+  and does not return anything. Chances to learn more about Python source code.
+keywords:
+- openbb.forecast.export
+- forecasting
+- data export
 ---
 
-# export
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.export - Reference | OpenBB SDK Docs" />
 
 None
 
@@ -26,4 +34,3 @@ This function does not take any parameters.
 This function does not return anything
 
 ---
-

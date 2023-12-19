@@ -1,9 +1,28 @@
 ---
 title: maxdecorr
-description: OpenBB Terminal Function
+description: The maxdecorr function offers users the ability to maximize their portfolio's
+  decorrelation using several covariance methods. It gives various options for portfolio
+  allocation, short and long positions, and data interpolation methods. The function
+  leverages yfinance data to produce optimized results. This is a tool for anyone
+  working with financial markets, portfolio management, or financial method development.
+keywords:
+- maxdecorr
+- portfolio optimization
+- decorrelation
+- covariance methods
+- data analysis
+- portfolio allocation
+- financial markets
+- data interpolation
+- yfinance data
+- financial method
+- short positions
+- long positions
 ---
 
-# maxdecorr
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/po/maxdecorr - Reference | OpenBB Terminal Docs" />
 
 Maximizes the portfolio's decorrelation
 

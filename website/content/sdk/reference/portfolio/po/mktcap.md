@@ -1,9 +1,26 @@
 ---
 title: mktcap
-description: OpenBB SDK Function
+description: The page explains the 'mktcap' function of OpenBB Terminal's portfolio
+  optimization module. It includes detailed parametric descriptions and examples showing
+  how to use the function. The 'mktcap' function optimizes a specified portfolio according
+  to market capitalization.
+keywords:
+- market capitalization
+- portfolio optimization
+- PoEngine
+- portfolio engine
+- frequency of returns
+- arithmetic returns
+- log returns
+- outliers threshold
+- nan values
+- data interpolation
+- allocation
 ---
 
-# mktcap
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.po.mktcap - Reference | OpenBB SDK Docs" />
 
 Optimize weighted according to market capitalization
 
@@ -64,4 +81,3 @@ weights, performance = openbb.portfolio.po.mktcap(portfolio_engine=p)
 ```
 
 ---
-

@@ -1,12 +1,23 @@
 ---
 title: slopes
-description: OpenBB SDK Function
+description: Our site offers extensive information on how to use slopes models to
+  analyze COVID-19 data. The models provide detailed data frames based on historical
+  data to help with the analysis and prediction. Learn how to manipulate these models
+  to suit your specific needs.
+keywords:
+- slopes models
+- COVID-19 data analysis
+- data frames
+- historical data
+- OpenBB finance
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="alt.covid.slopes - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# slopes
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +51,6 @@ openbb.alt.covid.slopes(days_back: int = 30, limit: int = 50, threshold: int = 1
 | pd.DataFrame | Dataframe containing slopes |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -73,8 +82,6 @@ openbb.alt.covid.slopes_chart(days_back: int = 30, limit: int = 10, threshold: i
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

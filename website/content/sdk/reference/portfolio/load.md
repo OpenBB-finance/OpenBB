@@ -1,9 +1,23 @@
 ---
 title: load
-description: OpenBB SDK Function
+description: Docusaurus documentation for the load function from the openbb portfolio
+  module. Provides details about parameters and examples of how to use this function
+  to create a PortfolioEngine instance and perform portfolio calculations.
+keywords:
+- PortfolioEngine object
+- openbb portfolio
+- transactions file path
+- benchmark symbol
+- full shares
+- risk free rate
+- portfolio calculations
+- openbb_terminal sdk
+- Portfolio management
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.load - Reference | OpenBB SDK Docs" />
 
 Get PortfolioEngine object
 
@@ -42,4 +56,3 @@ p = openbb.portfolio.load("openbb_terminal/miscellaneous/portfolio_examples/hold
 ```
 
 ---
-

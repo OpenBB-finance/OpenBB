@@ -1,12 +1,25 @@
 ---
 title: sharpe
-description: OpenBB SDK Function
+description: Documentation page on the Sharpe Ratio - a financial measure calculated
+  in the OpenBB framework. Includes parameters, source code, and instructions for
+  plotting the Sharpe ratio in a chart. Relevant for quantitative finance, data analysis,
+  and Python programming.
+keywords:
+- Sharpe Ratio
+- Quantitative Analysis
+- Risk-Free Rate
+- Data Visualization
+- Finance
+- Financial Models
+- Programming
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="qa.sharpe - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# sharpe
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +52,6 @@ openbb.qa.sharpe(data: pd.DataFrame, rfr: float = 0, window: float = 252)
 | pd.DataFrame | sharpe ratio |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +81,6 @@ openbb.qa.sharpe_chart(data: pd.DataFrame, rfr: float = 0, window: float = 252)
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

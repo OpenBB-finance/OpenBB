@@ -1,9 +1,20 @@
 ---
 title: trans
-description: OpenBB Terminal Function
+description: This documentation page provides an in-depth guide on how to perform
+  Transformer Forecast using the trans function. It details usage, parameters with
+  their descriptions, defaults, whether they are optional, and their choices. It also
+  includes examples of application.
+keywords:
+- trans function
+- Transformer Forecast
+- parameter guidance
+- programming
+- examples
 ---
 
-# trans
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /trans - Reference | OpenBB Terminal Docs" />
 
 Perform Transformer Forecast: https://unit8co.github.io/darts/generated_api/darts.models.forecasting.transformer_model.html
 

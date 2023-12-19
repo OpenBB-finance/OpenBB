@@ -62,7 +62,6 @@ def test_fc_update_runtime_choices(mocker):
     cont = fc.ForecastController()
     cont.datasets = {"stonks": df}
     cont.update_runtime_choices()
-    print(type(cont.completer))
     assert isinstance(cont.completer, NestedCompleter)
 
 

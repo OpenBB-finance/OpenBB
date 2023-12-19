@@ -1,9 +1,22 @@
 ---
 title: stables
-description: OpenBB Terminal Function
+description: This page offers detailed information about stablecoins ranked by market
+  capitalization. It explains the usage and parameters of the 'stables' command to
+  sort and display relevant data about different stablecoins.
+keywords:
+- Stablecoins
+- Market Capitalization
+- Cryptocurrency
+- US Dollar
+- Gold
+- Parameters
+- Data Display
+- Sorting Data
 ---
 
-# stables
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ov/stables - Reference | OpenBB Terminal Docs" />
 
 Shows stablecoins by market capitalization. Stablecoins are cryptocurrencies that attempt to peg their market value to some external reference like the U.S. dollar or to a commodity's price such as gold. You can display only N number of coins with --limit parameter. You can sort data by {} with --sortby
 

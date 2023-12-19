@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "openbb-oecd"
+version = "1.0.0"
+description = "OECD extension for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_oecd" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openbb-core = "^1.0.0"
+urllib3 = ">1.26.16"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+oecd = "openbb_oecd:oecd_provider"

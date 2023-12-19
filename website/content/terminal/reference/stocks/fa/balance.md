@@ -1,9 +1,21 @@
 ---
 title: balance
-description: OpenBB Terminal Function
+description: The 'balance' documentation page provides comprehensive instructions
+  for printing a balance sheet statement over time. The page explains expected fields,
+  usage, parameters, and provides examples. It is a helpful resource for anyone looking
+  to understand how to use the 'balance' function effectively.
+keywords:
+- balance sheet statement
+- balance page
+- financial data
+- Alpha Vantage
+- parameters
+- time-series data
 ---
 
-# balance
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/fa/balance - Reference | OpenBB Terminal Docs" />
 
 Prints a complete balance sheet statement over time. This can be either quarterly or annually. The following fields are expected: Accepted date, Account payables, Accumulated other comprehensive income loss, Cash and cash equivalents, Cash and short term investments, Common stock, Deferred revenue, Deferred revenue non current, Deferred tax liabilities non current, Filling date, Final link, Goodwill, Goodwill and intangible assets, Intangible assets, Inventory, Link, Long term debt, Long term investments, Net debt, Net receivables, Other assets, Other current assets, Other current liabilities, Other liabilities, Other non current assets, Other non current liabilities, Othertotal stockholders equity, Period, Property plant equipment net, Retained earnings, Short term debt, Short term investments, Tax assets, Tax payables, Total assets, Total current assets, Total current liabilities, Total debt, Total investments, Total liabilities, Total liabilities and stockholders equity, Total non current assets, Total non current liabilities, and Total stockholders equity. [Source: Alpha Vantage]
 

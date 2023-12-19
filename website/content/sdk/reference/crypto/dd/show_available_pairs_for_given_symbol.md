@@ -1,9 +1,23 @@
 ---
 title: show_available_pairs_for_given_symbol
-description: OpenBB SDK Function
+description: Documentation on the function of showing available pairs for a given
+  symbol in the OpenBB crypto framework at Coinbase. Default symbol is 'ETH'. Other
+  symbols include BTC, UNI, LUNA, DOT and more.
+keywords:
+- crypto
+- BTC
+- ETH
+- UNI
+- LUNA
+- DOT
+- coinbase
+- available pairs
+- symbol
 ---
 
-# show_available_pairs_for_given_symbol
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.show_available_pairs_for_given_symbol - Reference | OpenBB SDK Docs" />
 
 Return all available quoted assets for given symbol. [Source: Coinbase]
 
@@ -30,4 +44,3 @@ openbb.crypto.dd.show_available_pairs_for_given_symbol(symbol: str = "ETH")
 | ---- | ----------- |
 | Tuple[str, list] | Symbol and list of available pairs |
 ---
-

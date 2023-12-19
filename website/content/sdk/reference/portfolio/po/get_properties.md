@@ -1,9 +1,19 @@
 ---
 title: get_properties
-description: OpenBB SDK Function
+description: The get_properties function in OpenBB's portfolio optimization module
+  provides a list of available properties for property optimization purposes. No parameters
+  are required for this function.
+keywords:
+- property optimization
+- get_properties
+- openbb_portfolio
+- Python code
+- optimizer_model
 ---
 
-# get_properties
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.po.get_properties - Reference | OpenBB SDK Docs" />
 
 Get properties to use on property optimization.
 
@@ -27,4 +37,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 |  | List of available properties to use on property optimization. |
 ---
-

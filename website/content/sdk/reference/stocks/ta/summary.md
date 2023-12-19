@@ -1,12 +1,25 @@
 ---
 title: summary
-description: OpenBB SDK Function
+description: The page contains two essential open-source tools, FinBrain's model for
+  technical summary reports and a viewer for those reports. Learn how to populate
+  a technical summary and how to view a summary chart.
+keywords:
+- Open-source tools
+- FinBrain model
+- Technical summary reports
+- Summary chart
+- OpenBB's API
+- Stocks
+- Ticker symbol
+- Technical Analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ta.summary - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# summary
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +50,6 @@ openbb.stocks.ta.summary(symbol: str)
 | str | technical summary report |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -66,8 +77,6 @@ openbb.stocks.ta.summary_chart(symbol: str)
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

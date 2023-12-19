@@ -1,9 +1,26 @@
 ---
 title: pick
-description: OpenBB Terminal Function
+description: This page provides information on how to select different parameters
+  (like high, low, close etc.) for daily stock analysis, especially for TSLA stocks.
+  It explains the usage of the 'pick' command within the Python environment for stock
+  parameter selection.
+keywords:
+- target variable
+- stock analysis
+- daily stock
+- tsla stock
+- pick
+- stock parameter selection
+- stock market
+- stock data manipulation
+- market data
+- financial data analysis
+- time series data
 ---
 
-# pick
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/qa/pick - Reference | OpenBB Terminal Docs" />
 
 Change target variable
 

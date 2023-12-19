@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "openbb-nasdaq"
+version = "1.0.0"
+description = "Nasdaq extension for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_nasdaq" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openbb-core = "^1.0.0"
+random-user-agent = "^1.0.1"
+nasdaq-data-link = "^1.0.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+nasdaq = "openbb_nasdaq:nasdaq_provider"

@@ -1,9 +1,18 @@
 ---
 title: rpf
-description: OpenBB Terminal Function
+description: This page provides information on the usage and parameters of the 'rpf'
+  function, a tool used for removing portfolios.
+keywords:
+- rpf
+- portfolio management
+- command line function
+- programming documentation
+- remove portfolios
 ---
 
-# rpf
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/po/rpf - Reference | OpenBB Terminal Docs" />
 
 Remove one of the portfolios
 

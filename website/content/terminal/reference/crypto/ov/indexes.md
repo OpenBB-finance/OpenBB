@@ -1,9 +1,23 @@
 ---
 title: indexes
-description: OpenBB Terminal Function
+description: Our 'indexes' page offers data on crypto indexes coming from CoinGecko.
+  It allows users to see details of each crypto index and offers several parameters
+  for sorting and limiting the data displayed. Utilize cryptocurrency market data
+  to make informed decisions regarding your crypto investments.
+keywords:
+- cryptocurrency
+- CoinGecko
+- crypto index
+- market cap
+- cryptocurrency market data
+- crypto investment
+- data sorting parameters
+- limit parameter
 ---
 
-# indexes
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ov/indexes - Reference | OpenBB Terminal Docs" />
 
 Shows list of crypto indexes from CoinGecko. Each crypto index is made up of a selection of cryptocurrencies, grouped together and weighted by market cap. You can display only N number of indexes with --limit parameter. You can sort data by Rank, Name, Id, Market, Last, MultiAsset with --sortby and also with --reverse flag to sort descending. Displays: Rank, Name, Id, Market, Last, MultiAsset
 

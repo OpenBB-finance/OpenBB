@@ -1,9 +1,23 @@
 ---
 title: var
-description: OpenBB Terminal Function
+description: Learn how to calculate the Value at Risk (VaR) of your portfolio using
+  different parameters and statistical methods. This guide provides examples and an
+  explanation of all the options.
+keywords:
+- Value at Risk
+- VaR
+- portfolio
+- portfolio return
+- Cornish-Fisher-Expansion
+- student-t distribution
+- percentile
+- VaR calculations
+- Historical VaR
 ---
 
-# var
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/var - Reference | OpenBB Terminal Docs" />
 
 Provides value at risk (short: VaR) of the selected portfolio.
 

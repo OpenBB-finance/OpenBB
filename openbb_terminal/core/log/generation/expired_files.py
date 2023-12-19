@@ -1,4 +1,5 @@
 # IMPORTATION STANDARD
+import contextlib
 from datetime import datetime
 from pathlib import Path
 from typing import List
@@ -25,7 +26,5 @@ def get_expired_file_list(directory: Path, before_timestamp: float) -> List[Path
 
 def remove_file_list(file_list: List[Path]):
     for file in file_list:
-        try:
+        with contextlib.suppress(PermissionError):
             file.unlink(missing_ok=True)
-        except PermissionError:
-            pass

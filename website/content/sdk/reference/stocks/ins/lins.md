@@ -1,12 +1,23 @@
 ---
 title: lins
-description: OpenBB SDK Function
+description: 'The webpage is a technical documentation section related to the usage
+  of the functions ''lins'' and ''lins_chart''. It involves extracting and displaying
+  last insider activity for a particular stock ticker from source: Finviz.'
+keywords:
+- technical documentation
+- stock ticker
+- insider activity
+- Finviz
+- OpenBB.finance
+- functions
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ins.lins - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# lins
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +48,6 @@ openbb.stocks.ins.lins(symbol: str)
 | pd.DataFrame | Latest insider trading activity |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +77,6 @@ openbb.stocks.ins.lins_chart(symbol: str, limit: int = 10, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

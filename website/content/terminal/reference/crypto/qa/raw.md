@@ -1,9 +1,23 @@
 ---
 title: raw
-description: OpenBB Terminal Function
+description: This Docusaurus page provides instructions on how to print raw data to
+  the console using Python. It includes details on parameters such as limit, reverse,
+  and sortby. Examples of usage and output are provided.
+keywords:
+- Raw data
+- sort
+- Limit
+- reverse
+- sortby
+- ascending
+- descending
+- stocks
+- display
 ---
 
-# raw
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/qa/raw - Reference | OpenBB Terminal Docs" />
 
 Print raw data to console
 

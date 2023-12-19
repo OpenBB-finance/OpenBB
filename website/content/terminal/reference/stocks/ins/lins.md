@@ -1,9 +1,24 @@
 ---
 title: lins
-description: OpenBB Terminal Function
+description: 'The lins page provides detailed insight into insider trading activity.
+  It includes fields like Date, Relationship, Transaction, #Shares, Cost, Value ($),
+  #Shares Total, Insider Trading, SEC Form 4. This tool functions as a vital resource
+  for tracking insider trading data.'
+keywords:
+- lins
+- inside traders
+- insider trading
+- SEC Form 4
+- Finviz
+- stock market
+- stock trading
+- financial information
+- trading data
 ---
 
-# lins
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ins/lins - Reference | OpenBB Terminal Docs" />
 
 Prints information about inside traders. The following fields are expected: Date, Relationship, Transaction, #Shares, Cost, Value ($), #Shares Total, Insider Trading, SEC Form 4. [Source: Finviz]
 

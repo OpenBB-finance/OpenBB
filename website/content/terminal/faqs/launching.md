@@ -1,36 +1,25 @@
 ---
 title: Launching
 sidebar_position: 2
-description: Help and troubleshooting when experiencing errors when launching the OpenBB Termainl.
+description: Comprehensive troubleshooting guide for various software and system compatibility
+  issues encountered while using the OpenBB Terminal. Covers topics such as Mac M1/M2
+  Rosetta installation, Terminal, and SDK launch issues, ModuleNotFoundError solutions,
+  SSL certificates authorization failures, proxy connection issues, and Linux Ubuntu
+  specific problems.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb terminal,
-    ssl,
-    certificate,
-    launch,
-    invalid cpu,
-    fail to launch,
-    fontconfig,
-    linux,
-    ubuntu
-  ]
+- Mac M1/M2 Rosetta installation
+- Incompatible library version issue
+- Terminal app launch failure
+- ModuleNotFoundError OpenBB troubleshooting
+- Fontconfig warning solution
+- SSL certificates authorization failure
+- Proxy connection issues
+- Linux Ubuntu OpenBB launch issue
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Launching - Terminal | OpenBB Docs" />
+<HeadTitle title="Launching - Faqs | OpenBB Terminal Docs" />
 
 <details><summary>Mac: Invalid CPU Type - Terminal fails to launch.</summary>
 

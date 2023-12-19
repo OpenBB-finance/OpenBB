@@ -1,9 +1,25 @@
 ---
 title: performance
-description: OpenBB Terminal Function
+description: Documentation for the Performance function that helps to view group data,
+  including sectors, industries, and countries. It details usage, parameters, and
+  provides examples of Performance function use.
+keywords:
+- Performance function
+- group data view
+- sectors
+- industries
+- countries
+- function usage
+- parameters
+- financial data
+- finviz data
+- data presentation
+- data sorting
 ---
 
-# performance
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy /performance - Reference | OpenBB Terminal Docs" />
 
 View group (sectors, industry or country) performance data. [Source: Finviz]
 

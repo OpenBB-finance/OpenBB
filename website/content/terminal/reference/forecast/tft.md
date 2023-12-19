@@ -1,9 +1,27 @@
 ---
 title: tft
-description: OpenBB Terminal Function
+description: This page provides detailed instructions on how to perform temporal forecasting
+  using the Temporal Fusion Transformer (TFT). It includes usage examples, parameter
+  explanations, and result predictions. It's an exceptional resource if you're looking
+  to understand or implement the TFT for data analysis and machine learning purposes.
+keywords:
+- Temporal Fusion Transformer
+- Temporal forecasting
+- Data analysis
+- TFT parameters
+- Model prediction
+- Darts.TFT
+- Darts.models.forecasting
+- Model training
+- Data Science
+- Machine Learning
+- Forecasting Techniques
+- Time Series Forecasting
 ---
 
-# tft
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /tft - Reference | OpenBB Terminal Docs" />
 
 Perform TFT forecast (Temporal Fusion Transformer): https://unit8co.github.io/darts/generated_api/darts.models.forecasting.tft_model.html
 

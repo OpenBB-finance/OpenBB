@@ -51,7 +51,7 @@ FILTERS_VS_USD_BTC = ["usd", "btc"]
 def check_cg_id(symbol: str):
     cg_id = cryptocurrency_helpers.get_coingecko_id(symbol)
     if not cg_id:
-        print(f"\n{symbol} not found on CoinGecko")
+        console.print(f"\n{symbol} not found on CoinGecko")
         return ""
     return symbol
 

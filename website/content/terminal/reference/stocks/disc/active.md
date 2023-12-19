@@ -1,9 +1,23 @@
 ---
 title: active
-description: OpenBB Terminal Function
+description: This page provides an insight into the 'active' command used to display
+  up to 25 top actively traded intraday tickers in the stock market using Python.
+  The page explains the usage conditions, parameters and ends with a clear example
+  showcasing its functionality.
+keywords:
+- Active command
+- Intraday tickers
+- Most actively traded
+- Stocks
+- Yahoo Finance
+- Market data
+- Command-line tool
+- Stock market
 ---
 
-# active
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/disc/active - Reference | OpenBB Terminal Docs" />
 
 Print up to 25 top most actively traded intraday tickers. [Source: Yahoo Finance]
 

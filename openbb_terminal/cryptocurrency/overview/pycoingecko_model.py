@@ -4,6 +4,7 @@ __docformat__ = "numpy"
 # pylint: disable=C0301, E1101
 # pylint: disable=unsupported-assignment-operation
 
+import contextlib
 import logging
 import re
 from typing import List, Union
@@ -516,10 +517,8 @@ def get_global_defi_info() -> pd.DataFrame:
     client = CoinGeckoAPI()
     results = client.get_global_decentralized_finance_defi()
     for key, value in results.items():
-        try:
+        with contextlib.suppress(ValueError, TypeError):
             results[key] = round(float(value), 4)
-        except (ValueError, TypeError):
-            pass
 
     df = pd.Series(results).reset_index()
     df.columns = ["Metric", "Value"]

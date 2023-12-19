@@ -1,12 +1,27 @@
 ---
 title: cpi
-description: OpenBB SDK Function
+description: This page provides documentation on the cpi command within the OpenBBTerminal.
+  It explains how to use the command to fetch Consumer Price Index data from Alpha
+  Vantage and to display the US Consumer Price Index as a chart. It lists all parameters
+  and returns for this command.
+keywords:
+- cpi
+- consumer price index
+- Alpha Vantage
+- dataframe
+- matplotlib
+- economy
+- chart
+- parameters
+- returns
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.cpi - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# cpi
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +52,6 @@ openbb.economy.cpi(interval: str = "m", start_year: int = 2010)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of CPI |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -71,8 +84,6 @@ openbb.economy.cpi_chart(interval: str = "m", start_year: int = 2010, raw: bool 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

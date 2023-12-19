@@ -1,9 +1,27 @@
 ---
 title: load
-description: OpenBB Terminal Function
+description: This page provides instructions on how to load and analyze cryptocurrency
+  data from various sources with custom intervals using Python. Ideal for Bitcoin,
+  Ethereum, and other cryptocurrency investors and analysts.
+keywords:
+- cryptocurrency analysis
+- crypto trading
+- Yahoo Finance
+- ccxt
+- cg
+- crypto exchange
+- Python cryptocurrency
+- coin symbol
+- Bitcoin
+- Ethereum
+- Binance
+- crypto intervals
+- USD trading
 ---
 
-# load
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto /load - Reference | OpenBB Terminal Docs" />
 
 Load crypto currency to perform analysis on. Yahoo Finance is used as default source. Other sources can be used such as 'ccxt' or 'cg' with --source. If you select 'ccxt', you can then select any exchange with --exchange. You can also select a specific interval with --interval.
 

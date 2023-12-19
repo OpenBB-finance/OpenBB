@@ -1,9 +1,24 @@
 ---
 title: upcoming
-description: OpenBB Terminal Function
+description: This documentation page provides information about the 'upcoming' command
+  which displays upcoming earnings release dates. It fetches data from Seeking Alpha
+  and presents it in an easy-to-read format, showcasing the upcoming earnings releases
+  of various companies. Ideal tool for investors seeking recent financial data.
+keywords:
+- upcoming earnings release dates
+- Seeking Alpha
+- stock market
+- financial data
+- finance documentation
+- stock earnings
+- stock investment data
+- financial information
+- investment tools
 ---
 
-# upcoming
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/disc/upcoming - Reference | OpenBB Terminal Docs" />
 
 Upcoming earnings release dates. [Source: Seeking Alpha]
 

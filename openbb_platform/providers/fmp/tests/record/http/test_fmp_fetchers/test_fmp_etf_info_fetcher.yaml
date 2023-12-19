@@ -1,0 +1,64 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v4/etf-info?apikey=MOCK_API_KEY&symbol=IOO
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA51UwW7bMAy99yuEALu1juI4cdzj0nQrsKFA0+5S9KAoTCxAljxRSmoM+/fRdpzu
+        MHfeAgQy+KhH8pHi8wVjP+jP2AirYmP16JqN7u7vR5etUSCCX2o6amD1PShfnbFQkDGZTBfxZJFk
+        c8474LD/ZnUogOBJwifz9ATIgKqsiZJ5Ei/SWRp3XFtA6VTplTU1/pgD2wWzZXsw4ITWFVPmAOiR
+        Cc80CPRswT8wu2OqttVZIrkwTxelLUprwHiGIINTXgF2nsQJTlfK7Ml7C69MUBC617IXdAmJg2Lk
+        4gAMpDW2UJLJXDghPTiFXsmTi3DAMGzQC+NVm+OWCJQUmnn7f6kUoquUhbJmif9UpQTnBZ274IMD
+        vGS2UQ4bCjyKkgIbX2dMmBSYN0DzAdTCg9B1odFZ/LpGpet2jZ7WnRX8bknpC1M1M7EmCQDP4GsJ
+        BuFBUFyCeZRMTogyEppsboRvGGPO+dUkvuKz7rJCZdpY5zk4D4IRzdiMVBuPfdJ2Q3pOOGerx9s3
+        rwM5pTxaZG+WZXAOjKxa6pvOl5T31uEXah0hz42xG/pTxtuA3jX3Pgqkdn8VdauF7srtSrZIctdD
+        Hc1P9p+X7/ORgkUwNBK1ImwN7qAk9NEuosVgWoP0vhxbVlLXA9eXKI/4P3PewI56qw7QQ5pFcTaQ
+        c0Wvd1/18MwjPpTnVhlhJHXkbxJmUTYdyPkZhPa5pCnrEy+O0qHi3bXf78xMEiXpQLJ7Wh2uh4Ya
+        yrPffjzjs4G0D1QwW9G68n0V82g6NMdHkLmx2vZ2dzqLsqHqPXmlm93Ym9f5vTXny+lpH2GDqt0y
+        ufclXo/Hx+MxUtjsjoi27zjguHR2G2gVjuNplk7TcbcYcqu3tH1xaYPxzWOJL+oIL78Ae5qS6RUH
+        AAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 28 Oct 2023 06:45:11 GMT
+      ETag:
+      - W/"715-s1P775tKG2T7YrULwLDY9Nt+1Wo"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,12 +1,27 @@
 ---
 title: qtrcontracts
-description: OpenBB SDK Function
+description: Documentation on the use of qtrcontracts function in Python for analyzing
+  quarterly contracts by ticker. Posts include parameter details for the model and
+  chart functions.
+keywords:
+- qtrcontracts function
+- quarterly contracts analytics
+- OpenBB finance
+- Model function
+- Chart function
+- Parameter settings
+- Source code
+- matplotlib.axes._axes.Axes
+- Total analysis
+- Momentum analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.gov.qtrcontracts - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# qtrcontracts
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +52,6 @@ openbb.stocks.gov.qtrcontracts(analysis: str = "total", limit: int = 5)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with tickers and total amount if total selected. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -71,8 +84,6 @@ openbb.stocks.gov.qtrcontracts_chart(analysis: str = "total", limit: int = 5, ra
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

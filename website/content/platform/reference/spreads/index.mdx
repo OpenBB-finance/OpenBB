@@ -1,0 +1,24 @@
+# spreads
+
+import ReferenceCard from "@site/src/components/General/ReferenceCard";
+
+<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<ReferenceCard
+    title="tmc"
+    description="Treasury Constant Maturity. Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant..."
+    url="/platform/reference/spreads/tmc"
+    command="true"
+/>
+<ReferenceCard
+    title="tmc_effr"
+    description="Select Treasury Constant Maturity. Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate..."
+    url="/platform/reference/spreads/tmc_effr"
+    command="true"
+/>
+<ReferenceCard
+    title="treasury_effr"
+    description="Select Treasury Bill. Get Selected Treasury Bill Minus Federal Funds Rate. Constant maturity is the theoretical..."
+    url="/platform/reference/spreads/treasury_effr"
+    command="true"
+/>
+</ul>

@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "openbb-sec"
+version = "1.0.0"
+description = "SEC extension for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_sec" }]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.12"
+openbb-core = "^1.0.0"
+requests-cache = "^1.1.0"
+xmltodict = "^0.13.0"
+pytest-freezegun = "^0.4.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+sec = "openbb_sec:sec_provider"

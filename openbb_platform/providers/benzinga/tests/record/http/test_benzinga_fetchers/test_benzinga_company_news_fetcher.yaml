@@ -1,0 +1,1315 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      accept:
+      - application/json
+    method: GET
+    uri: https://api.benzinga.com/api/v2/news?displayOutput=full&page=0&pageSize=20&sort=created%3Adesc&tickers=AAPL%2CMSFT&token=MOCK_TOKEN
+  response:
+    body:
+      string: "[{\"id\":34920696,\"author\":\"Benzinga Insights\",\"created\":\"Tue,
+        26 Sep 2023 13:35:17 -0400\",\"updated\":\"Tue, 26 Sep 2023 13:35:18 -0400\",\"title\":\"10
+        Information Technology Stocks With Whale Alerts In Today's Session\",\"teaser\":\"
+        \",\"body\":\"<p>This whale alert can help traders discover the next big trading
+        opportunities.</p>\\n<p>Whales are entities with large sums of money and we
+        track their transactions here at Benzinga on our options activity scanner.</p>\\n<p>Traders
+        will search for circumstances when the market estimation of an option diverges
+        heavily from its normal worth. High amounts of trading activity could push
+        option prices to exaggerated or underestimated levels. </p>\\n<p>Below are
+        some instances of options activity happening in the Information Technology
+        sector:  <table>\\n<thead>\\n<tr>\\n<th><strong>Symbol</strong></th>\\n<th><strong>PUT/CALL</strong></th>\\n<th><strong>Trade
+        Type</strong></th>\\n<th><strong>Sentiment</strong></th>\\n<th><strong>Exp.
+        Date</strong></th>\\n<th><strong>Strike Price</strong></th>\\n<th><strong>Total
+        Trade Price</strong></th>\\n<th><strong>Open Interest</strong></th>\\n<th><strong>Volume</strong></th>\\n</tr>\\n</thead>\\n<tbody>\\n<tr>\\n<td>AAPL</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>09/29/23</td>\\n<td>$172.50</td>\\n<td>$42.7K</td>\\n<td>19.8K</td>\\n<td>73.0K</td>\\n</tr>\\n<tr>\\n<td>NVDA</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>09/29/23</td>\\n<td>$430.00</td>\\n<td>$39.0K</td>\\n<td>9.3K</td>\\n<td>35.2K</td>\\n</tr>\\n<tr>\\n<td>MSFT</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>09/29/23</td>\\n<td>$315.00</td>\\n<td>$26.9K</td>\\n<td>1.3K</td>\\n<td>14.2K</td>\\n</tr>\\n<tr>\\n<td>U</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>09/29/23</td>\\n<td>$31.00</td>\\n<td>$70.9K</td>\\n<td>197</td>\\n<td>2.3K</td>\\n</tr>\\n<tr>\\n<td>NET</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>10/06/23</td>\\n<td>$56.00</td>\\n<td>$34.6K</td>\\n<td>353</td>\\n<td>2.2K</td>\\n</tr>\\n<tr>\\n<td>ORCL</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>12/15/23</td>\\n<td>$105.00</td>\\n<td>$25.2K</td>\\n<td>1.4K</td>\\n<td>647</td>\\n</tr>\\n<tr>\\n<td>DBX</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>06/21/24</td>\\n<td>$30.00</td>\\n<td>$71.5K</td>\\n<td>8.5K</td>\\n<td>420</td>\\n</tr>\\n<tr>\\n<td>AMD</td>\\n<td>CALL</td>\\n<td>SWEEP</td>\\n<td>BEARISH</td>\\n<td>06/21/24</td>\\n<td>$110.00</td>\\n<td>$280.2K</td>\\n<td>5.6K</td>\\n<td>282</td>\\n</tr>\\n<tr>\\n<td>MU</td>\\n<td>PUT</td>\\n<td>TRADE</td>\\n<td>BEARISH</td>\\n<td>12/15/23</td>\\n<td>$70.00</td>\\n<td>$52.4K</td>\\n<td>3.8K</td>\\n<td>144</td>\\n</tr>\\n<tr>\\n<td>NOW</td>\\n<td>PUT</td>\\n<td>SWEEP</td>\\n<td>BULLISH</td>\\n<td>05/17/24</td>\\n<td>$510.00</td>\\n<td>$211.7K</td>\\n<td>2</td>\\n<td>117</td>\\n</tr>\\n</tbody>\\n</table></p>\\n<h2>Explanation</h2>\\n<p>These
+        bullet-by-bullet explanations have been constructed using the accompanying
+        table.  </p>\\n<p>\u2022  For <strong>AAPL</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>), we notice
+        a <strong>put</strong> option <strong>sweep</strong> that happens to be <strong>bearish</strong>,
+        expiring in 3 day(s) on <strong>September 29, 2023</strong>. This event was
+        a transfer of <strong>285</strong> contract(s) at a <strong>$172.50</strong>
+        strike. This particular put needed to be split into 5 different trades to
+        become filled. The total cost received by the writing party (or parties) was
+        <strong>$42.7K</strong>, with a price of <strong>$150.0</strong> per contract.
+        There were <strong>19834</strong> open contracts at this strike prior to today,
+        and today <strong>73042</strong> contract(s) were bought and sold. </p>\\n<p>\u2022
+        \ Regarding <strong>NVDA</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>),
+        we observe a <strong>call</strong> option <strong>sweep</strong> with <strong>bearish</strong>
+        sentiment. It expires in 3 day(s) on <strong>September 29, 2023</strong>.
+        Parties traded <strong>100</strong> contract(s) at a <strong>$430.00</strong>
+        strike. This particular call needed to be split into 7 different trades to
+        become filled. The total cost received by the writing party (or parties) was
+        <strong>$39.0K</strong>, with a price of <strong>$390.0</strong> per contract.
+        There were <strong>9322</strong> open contracts at this strike prior to today,
+        and today <strong>35219</strong> contract(s) were bought and sold. </p>\\n<p>\u2022
+        \ For <strong>MSFT</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>),
+        we notice a <strong>call</strong> option <strong>sweep</strong> that happens
+        to be <strong>bullish</strong>, expiring in 3 day(s) on <strong>September
+        29, 2023</strong>. This event was a transfer of <strong>116</strong> contract(s)
+        at a <strong>$315.00</strong> strike. This particular call needed to be split
+        into 8 different trades to become filled. The total cost received by the writing
+        party (or parties) was <strong>$26.9K</strong>, with a price of <strong>$232.0</strong>
+        per contract. There were <strong>1343</strong> open contracts at this strike
+        prior to today, and today <strong>14289</strong> contract(s) were bought and
+        sold. </p>\\n<p>\u2022  For <strong>U</strong> (NYSE:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/U#NYSE\\\">U</a>), we notice a <strong>call</strong>
+        option <strong>sweep</strong> that happens to be <strong>bullish</strong>,
+        expiring in 3 day(s) on <strong>September 29, 2023</strong>. This event was
+        a transfer of <strong>1365</strong> contract(s) at a <strong>$31.00</strong>
+        strike. This particular call needed to be split into 24 different trades to
+        become filled. The total cost received by the writing party (or parties) was
+        <strong>$70.9K</strong>, with a price of <strong>$52.0</strong> per contract.
+        There were <strong>197</strong> open contracts at this strike prior to today,
+        and today <strong>2365</strong> contract(s) were bought and sold. </p>\\n<p>\u2022
+        \ Regarding <strong>NET</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NET#NYSE\\\">NET</a>),
+        we observe a <strong>put</strong> option <strong>sweep</strong> with <strong>bearish</strong>
+        sentiment. It expires in 10 day(s) on <strong>October 6, 2023</strong>. Parties
+        traded <strong>200</strong> contract(s) at a <strong>$56.00</strong> strike.
+        This particular put needed to be split into 11 different trades to become
+        filled. The total cost received by the writing party (or parties) was <strong>$34.6K</strong>,
+        with a price of <strong>$173.0</strong> per contract. There were <strong>353</strong>
+        open contracts at this strike prior to today, and today <strong>2259</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  For <strong>ORCL</strong>
+        (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/ORCL#NYSE\\\">ORCL</a>),
+        we notice a <strong>call</strong> option <strong>sweep</strong> that happens
+        to be <strong>bullish</strong>, expiring in 80 day(s) on <strong>December
+        15, 2023</strong>. This event was a transfer of <strong>40</strong> contract(s)
+        at a <strong>$105.00</strong> strike. This particular call needed to be split
+        into 6 different trades to become filled. The total cost received by the writing
+        party (or parties) was <strong>$25.2K</strong>, with a price of <strong>$630.0</strong>
+        per contract. There were <strong>1461</strong> open contracts at this strike
+        prior to today, and today <strong>647</strong> contract(s) were bought and
+        sold. </p>\\n<p>\u2022  Regarding <strong>DBX</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/DBX#NASDAQ\\\">DBX</a>), we observe
+        a <strong>call</strong> option <strong>sweep</strong> with <strong>bearish</strong>
+        sentiment. It expires in 269 day(s) on <strong>June 21, 2024</strong>. Parties
+        traded <strong>368</strong> contract(s) at a <strong>$30.00</strong> strike.
+        This particular call needed to be split into 19 different trades to become
+        filled. The total cost received by the writing party (or parties) was <strong>$71.5K</strong>,
+        with a price of <strong>$195.0</strong> per contract. There were <strong>8592</strong>
+        open contracts at this strike prior to today, and today <strong>420</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  For <strong>AMD</strong>
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMD#NASDAQ\\\">AMD</a>),
+        we notice a <strong>call</strong> option <strong>sweep</strong> that happens
+        to be <strong>bearish</strong>, expiring in 269 day(s) on <strong>June 21,
+        2024</strong>. This event was a transfer of <strong>250</strong> contract(s)
+        at a <strong>$110.00</strong> strike. This particular call needed to be split
+        into 5 different trades to become filled. The total cost received by the writing
+        party (or parties) was <strong>$280.2K</strong>, with a price of <strong>$1125.0</strong>
+        per contract. There were <strong>5666</strong> open contracts at this strike
+        prior to today, and today <strong>282</strong> contract(s) were bought and
+        sold. </p>\\n<p>\u2022  Regarding <strong>MU</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/MU#NASDAQ\\\">MU</a>), we observe
+        a <strong>put</strong> option <strong>trade</strong> with <strong>bearish</strong>
+        sentiment. It expires in 80 day(s) on <strong>December 15, 2023</strong>.
+        Parties traded <strong>99</strong> contract(s) at a <strong>$70.00</strong>
+        strike. The total cost received by the writing party (or parties) was <strong>$52.4K</strong>,
+        with a price of <strong>$530.0</strong> per contract. There were <strong>3888</strong>
+        open contracts at this strike prior to today, and today <strong>144</strong>
+        contract(s) were bought and sold. </p>\\n<p>\u2022  Regarding <strong>NOW</strong>
+        (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NOW#NYSE\\\">NOW</a>),
+        we observe a <strong>put</strong> option <strong>sweep</strong> with <strong>bullish</strong>
+        sentiment. It expires in 234 day(s) on <strong>May 17, 2024</strong>. Parties
+        traded <strong>52</strong> contract(s) at a <strong>$510.00</strong> strike.
+        This particular put needed to be split into 13 different trades to become
+        filled. The total cost received by the writing party (or parties) was <strong>$211.7K</strong>,
+        with a price of <strong>$4073.0</strong> per contract. There were <strong>2</strong>
+        open contracts at this strike prior to today, and today <strong>117</strong>
+        contract(s) were bought and sold. </p>\\n<p><strong>Options Alert Terminology</strong><br
+        />\\n - <strong>Call Contracts:</strong> The right to buy shares as indicated
+        in the contract.<br />\\n - <strong>Put Contracts:</strong> The right to sell
+        shares as indicated in the contract.<br />\\n - <strong>Expiration Date:</strong>
+        When the contract expires. One must act on the contract by this date if one
+        wants to use it.<br />\\n - <strong>Premium/Option Price:</strong> The price
+        of the contract.  </p>\\n<p>For more information, visit our <em><a href=\\\"https://pro.benzinga.com/blog/how-to-understand-option-alerts/\\\">Guide
+        to Understanding Options Alerts</a></em> or read <a href=\\\"https://www.benzinga.com/markets/options\\\">more
+        about unusual options activity</a>.  </p>\\n<p>This article was generated
+        by Benzinga's automated content engine and reviewed by an editor.</p>\",\"url\":\"https://www.benzinga.com/markets/options/23/09/34920696/10-information-technology-stocks-with-whale-alerts-in-todays-session\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/options_image_2.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/options_image_2.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/options_image_2.jpeg\"}],\"channels\":[{\"name\":\"Options\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"AMD\"},{\"name\":\"DBX\"},{\"name\":\"MSFT\"},{\"name\":\"MU\"},{\"name\":\"NET\"},{\"name\":\"NOW\"},{\"name\":\"NVDA\"},{\"name\":\"ORCL\"},{\"name\":\"U\"}],\"tags\":[{\"name\":\"BZI-AUOA\"}]},{\"id\":34914178,\"author\":\"Anusuya
+        Lahiri\",\"created\":\"Tue, 26 Sep 2023 13:24:43 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 13:24:44 -0400\",\"title\":\"Google Podcasts To Sunset in 2024,
+        YouTube Music Rises As Podcasting Hub\",\"teaser\":\"Alphabet Inc\_(NASDAQ:
+        GOOG) (NASDAQ: GOOGL)\_Google\_has disclosed its plans to shut down the Google
+        Podcasts app later in 2024, redirecting its users to the YouTube Music platform.\_\",\"body\":\"<p><strong>Alphabet
+        Inc</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOG#NASDAQ\\\">GOOG</a>)
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOGL#NASDAQ\\\">GOOGL</a>)&nbsp;<strong>Google</strong>&nbsp;has
+        disclosed its plans to shut down the Google Podcasts app later in 2024, redirecting
+        its users to the YouTube Music platform.&nbsp;</p>\\r\\n\\r\\n<p>This move
+        is part of Google&#39;s strategy to consolidate its podcast offerings and
+        enhance the podcast experience on YouTube Music by focusing on discovery,
+        community, and seamless switching between audio and video podcasts.</p>\\r\\n\\r\\n<p><strong><em>Also
+        Read:&nbsp;</em></strong><a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/news/23/07/33093135/spotify-expands-video-offering-takes-on-youtube-and-tiktok-with-full-length-music-videos-report\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\"><em>Spotify Expands Video Offering, Takes On YouTube
+        And TikTok With Full-Length Music Videos: Report</em></a></p>\\r\\n\\r\\n<p>Google&#39;s
+        decision is motivated by user behavior, with only 4% of weekly podcast users
+        in the U.S. favoring Google Podcasts, compared to 23% who frequently use YouTube
+        for podcasts, TechCrunch&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://techcrunch.com/2023/09/26/google-podcasts-to-shut-down-in-2024-with-listeners-migrated-to-youtube-music/\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">reports</a>.</p>\\r\\n\\r\\n<p>Meanwhile,<strong>&nbsp;Spotify
+        Technology</strong>&nbsp;(NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SPOT#NYSE\\\">SPOT</a>)
+        has&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/news/23/09/34886447/elon-musk-wows-spotifys-latest-podcast-translation-feature-developed-with-openais-help\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">initiated a trial phase</a>&nbsp;for an AI-powered feature
+        to translate and replicate podcast hosts&#39; voices into multiple languages.&nbsp;</p>\\r\\n\\r\\n<p>It
+        looks to provide a seamless listening experience in Spanish, French, and German
+        by recreating the original speakers&#39; tone, rhythm, and pace.</p>\\r\\n\\r\\n<p>To
+        facilitate the transition, Google will provide users with a migration tool,
+        enabling them to transfer their podcast subscriptions to YouTube Music.&nbsp;</p>\\r\\n\\r\\n<p>Additionally,
+        Google will support the option to download an OPML file of their show subscriptions
+        from Google Podcasts, allowing users to import their subscriptions to other
+        podcast apps if they prefer not to move to YouTube Music.&nbsp;</p>\\r\\n\\r\\n<p>Google
+        aims to position YouTube Music as a strong competitor to platforms like Spotify,&nbsp;<strong>Apple
+        Inc</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        Apple Music, and&nbsp;<strong>Amazon.Com Inc</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>) Amazon Music.&nbsp;</p>\\r\\n\\r\\n<p>While
+        Google has successfully shifted users away from older products in the past,
+        transitioning podcast users presents a unique challenge, as many already turn
+        to YouTube for podcast content.</p>\\r\\n\\r\\n<p><strong>Price Action:</strong>&nbsp;GOOG
+        shares traded lower by 2.12% at $129.37 on the last check Tuesday.</p>\\r\\n\\r\\n<p><strong><em>Disclaimer:</em></strong><em>&nbsp;This
+        content was partially produced with the help of AI tools and was reviewed
+        and published by Benzinga editors.</em></p>\\r\\n \",\"url\":\"https://www.benzinga.com/news/23/09/34914178/google-podcasts-to-sunset-in-2024-youtube-music-rises-as-podcasting-hub\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/youtube-1719926_1920.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/youtube-1719926_1920.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/youtube-1719926_1920.jpg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"AMZN\"},{\"name\":\"GOOG\"},{\"name\":\"GOOGL\"},{\"name\":\"SPOT\"}],\"tags\":[{\"name\":\"AI
+        Generated\"},{\"name\":\"Briefs\"}]},{\"id\":34914563,\"author\":\"The Arora
+        Report\",\"created\":\"Tue, 26 Sep 2023 11:21:48 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 11:25:44 -0400\",\"title\":\"Market Mechanics Taking Over, Window
+        Dressing Meets Higher Rates\",\"teaser\":\"To gain an edge, this is what you
+        need to know today.\\n\\n\",\"body\":\"<p><em>To gain an edge, this is what
+        you need to know today.</em></p>\\r\\n\\r\\n<p><img alt=\\\"\\\" src=\\\"https://thearorareport.com/wp-content/uploads/2023/09/2023-09-26_08h16_48.png\\\"
+        style=\\\"height:342px; width:624px\\\" /></p>\\r\\n\\r\\n<h4><strong>Window
+        Dressing</strong></h4>\\r\\n\\r\\n<p>Please&nbsp;<a href=\\\"https://thearorareport.com/stock-market-chart-analysis-market-mechanics-window-dressing-spy-mc-09262023\\\">click
+        here</a>&nbsp;for a chart of <strong>SPDR S&amp;P 500 ETF Trust</strong> (NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SPY#NYSE\\\">SPY</a>)
+        which represents the benchmark stock market index S&amp;P 500 (SPX).</p>\\r\\n\\r\\n<p>Note
+        the following:</p>\\r\\n\\r\\n<ul>\\r\\n\\t<li>The chart shows that the stock
+        market has pulled back to the top band of the top support zone.</li>\\r\\n\\t<li>The
+        chart shows that the stock market is tracing a head and shoulders pattern.&nbsp;This
+        is a negative pattern about 70% of the time.</li>\\r\\n\\t<li>RSI on the chart
+        shows that the stock market is oversold. Oversold markets tend to bounce.</li>\\r\\n\\t<li>There
+        was aggressive buying in stocks going into the close yesterday due to a market
+        mechanic known as window dressing.&nbsp;In window dressing, many money managers
+        buy the best performing stocks of the quarter and sell the laggards.&nbsp;In
+        this quarter, it means buying the Magnificent Seven stocks and other artificial
+        intelligence stocks.&nbsp;We have been receiving requests for a podcast on
+        window dressing.&nbsp;We have started work on the podcast.&nbsp;The podcast
+        will be available in Arora Ambassador Club.&nbsp;&nbsp;</li>\\r\\n\\t<li><strong>Market
+        mechanics play a much greater role in market movements than most investors
+        realize. Market mechanics impact both short term traders and long term investors.&nbsp;As
+        a reference, about two thirds of the stock market rise this year is attributable
+        to market mechanics.&nbsp;This morning, the market mechanic of window dressing
+        is meeting higher yields.&nbsp;Higher yields are especially negative for tech
+        stocks.&nbsp;These are the same tech stocks that money managers are buying
+        in window dressing.&nbsp;&nbsp;</strong></li>\\r\\n\\t<li>This morning, selling
+        due to higher yields is getting an upper hand over buying due to window dressing.<strong>&nbsp;In
+        The Arora Report analysis, if it was not for window dressing, yesterday and
+        today Nasdaq would have likely been down 2 - 3%.&nbsp;</strong></li>\\r\\n\\t<li>The
+        consensus in the market is that a government shutdown in Washington will be
+        averted.&nbsp;However, prudent investors need to stay alert to a potential
+        government shutdown.</li>\\r\\n\\t<li>As an actionable item, the sum total
+        of the foregoing is in the protection band, which strikes the optimum balance
+        between various crosscurrents.&nbsp;Please scroll down to see the protection
+        band.</li>\\r\\n</ul>\\r\\n\\r\\n<h3><strong>China</strong></h3>\\r\\n\\r\\n<p>Property
+        debt situation is getting worse in China.&nbsp;One of the largest property
+        developers in China, Evergrande Group, failed to make payments on an on-shore
+        bond.&nbsp;Evergrande&rsquo;s stock fell about 25%. An ex-CEO and ex-CFO of
+        the company have been arrested by the Chinese government.&nbsp;These developments
+        are casting a negative shadow on stocks across the globe.</p>\\r\\n\\r\\n<h3><strong>Magnificent
+        Seven Money Flows</strong></h3>\\r\\n\\r\\n<p>In the early trade, money flows
+        are positive in <strong>NVIDIA Corp</strong> (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>).</p>\\r\\n\\r\\n<p>In
+        the early trade, money flows are negative in <strong>Apple Inc</strong> (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>),
+        <strong>Amazon.com, Inc.</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>),
+        <strong>Alphabet Inc Class C</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOG#NASDAQ\\\">GOOG</a>),
+        <strong>Meta Platforms Inc</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/META#NASDAQ\\\">META</a>),
+        <strong>Microsoft Corp</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>),&nbsp;and
+        <strong>Tesla Inc</strong> (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/TSLA#NASDAQ\\\">TSLA</a>).</p>\\r\\n\\r\\n<p>In
+        the early trade, money flows are negative in <strong>SPDR S&amp;P 500 ETF
+        Trust</strong>&nbsp;and <strong>Invesco QQQ Trust Series 1</strong> (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/QQQ#NASDAQ\\\">QQQ</a>).</p>\\r\\n\\r\\n<h3><strong>Momo
+        Crowd And Smart Money In Stocks</strong></h3>\\r\\n\\r\\n<p>The momo crowd
+        is buying stocks in the early trade.&nbsp;Smart money is <strong>&#128274;</strong>
+        stocks in the early trade.</p>\\r\\n\\r\\n<h3><strong>Gold</strong></h3>\\r\\n\\r\\n<p>The
+        momo crowd is selling gold in the early trade.&nbsp;Smart money is <strong>&#128274;&nbsp;</strong>in
+        the early trade.</p>\\r\\n\\r\\n<p>For longer-term, please see gold and silver
+        ratings.</p>\\r\\n\\r\\n<p>The most popular ETF for gold is <strong>SPDR Gold
+        Trust</strong> (NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GLD#NYSE\\\">GLD</a>).&nbsp;The
+        most popular ETF for silver is <strong>iShares Silver Trust</strong> (NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SLV#NYSE\\\">SLV</a>).&nbsp;</p>\\r\\n\\r\\n<h3><strong>Oil</strong></h3>\\r\\n\\r\\n<p>The
+        momo crowd is selling oil in the early trade.&nbsp;Smart money is <strong>&#128274;</strong>
+        in the early trade.</p>\\r\\n\\r\\n<p>For longer-term, please see oil ratings.</p>\\r\\n\\r\\n<p>The
+        most popular ETF for oil is <strong>United States Oil ETF</strong> (NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/USO#NYSE\\\">USO</a>).</p>\\r\\n\\r\\n<h3><strong>Bitcoin</strong></h3>\\r\\n\\r\\n<p><strong>Bitcoin</strong>
+        (CRYPTO: <a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/quote/btc/usd\\\">BTC</a>)
+        is range bound.</p>\\r\\n\\r\\n<h3><strong>Markets</strong></h3>\\r\\n\\r\\n<p>Our
+        very, very short-term early stock market indicator is <strong>&#128274;</strong>.&nbsp;This
+        indicator, with a great track record, is popular among long term investors
+        to stay in tune with the market and among short term traders to independently
+        undertake quick trades.</p>\\r\\n\\r\\n<h3><strong>Protection Band And What
+        To Do Now</strong></h3>\\r\\n\\r\\n<p>It is important for investors to look
+        ahead and not in the rearview mirror.</p>\\r\\n\\r\\n<p>Consider continuing
+        to hold good, very long term, existing positions. Based on individual risk
+        preference, consider holding <strong>&#128274;</strong> in cash or Treasury
+        bills or allocated to short-term tactical trades; and short to medium-term
+        hedges of <strong>&#128274;</strong>, and short term hedges of <strong>&#128274;</strong>.
+        This is a good way to protect yourself and participate in the upside at the
+        same time.</p>\\r\\n\\r\\n<p>You can determine your protection bands by adding
+        cash to hedges.&nbsp;The high band of the protection is appropriate for those
+        who are older or conservative. The low band of the protection is appropriate
+        for those who are younger or aggressive.&nbsp;If you do not hedge, the total
+        cash level should be more than stated above but significantly less than cash
+        plus hedges.</p>\\r\\n\\r\\n<p><strong>It is worth reminding that you cannot
+        take advantage of new upcoming opportunities if you are not holding enough
+        cash.&nbsp;</strong>When adjusting hedge levels, consider adjusting partial
+        stop quantities for stock positions (non ETF); consider using wider stops
+        on remaining quantities and also allowing more room for high beta stocks.&nbsp;High
+        beta stocks are the ones that move more than the market.</p>\\r\\n\\r\\n<h3><strong>Traditional
+        60/40 Portfolio</strong></h3>\\r\\n\\r\\n<p>Probability based risk reward
+        adjusted for inflation does not favor long duration strategic bond allocation
+        at this time.</p>\\r\\n\\r\\n<p>Those who want to stick to traditional 60%
+        allocation to stocks and 40% to bonds may consider focusing on only high quality
+        bonds and bonds of five year duration or less.&nbsp;Those willing to bring
+        sophistication to their investing may consider using bond ETFs as tactical
+        positions and not strategic positions at this time.</p>\\r\\n\\r\\n<p><strong>The
+        Arora Report is known for its accurate calls.&nbsp;The Arora Report correctly
+        called the 2008 financial crash, the start of a mega bull market in 2009,
+        the COVID crash, the post-COVID bull market, and the 2022 bear market.&nbsp;
+        Please click here to sign up for a free forever <a href=\\\"https://thearorareport.com/generate-wealth-newsletter\\\">Generate
+        Wealth Newsletter</a>. </strong></p>\\r\\n \",\"url\":\"https://www.benzinga.com/23/09/34914563/market-mechanics-taking-over-window-dressing-meets-higher-rates\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/tech-daily-ztymiqecyh4-unsplash_6_5.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/tech-daily-ztymiqecyh4-unsplash_6_5.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/tech-daily-ztymiqecyh4-unsplash_6_5.jpg\"}],\"channels\":[{\"name\":\"Asia\"},{\"name\":\"Markets\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"$BTC\"},{\"name\":\"AAPL\"},{\"name\":\"AMZN\"},{\"name\":\"GLD\"},{\"name\":\"GOOG\"},{\"name\":\"META\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"},{\"name\":\"QQQ\"},{\"name\":\"SLV\"},{\"name\":\"SPY\"},{\"name\":\"TSLA\"},{\"name\":\"USO\"}],\"tags\":[{\"name\":\"artificial
+        intelligence\"},{\"name\":\"China\"},{\"name\":\"contributors\"},{\"name\":\"Expert
+        Ideas\"},{\"name\":\"Gold\"},{\"name\":\"Magnificent Seven\"},{\"name\":\"Oil\"}]},{\"id\":34913285,\"author\":\"Upwallstreet\",\"created\":\"Tue,
+        26 Sep 2023 10:56:23 -0400\",\"updated\":\"Tue, 26 Sep 2023 10:58:12 -0400\",\"title\":\"Amazon
+        Goes All In For Its AI Creation\",\"teaser\":\"The e-commerce and cloud titan,
+        Amazon.com Inc (NASDAQ: AMZN) just revealed it had placed a big bet on AI
+        development by investing\_$4 billion in AI company Anthropic, which makes
+        chatbots that rival\_Microsoft Corporation (NASDAQ: MSFT)-backed&amp;\",\"body\":\"<p>The
+        e-commerce and cloud titan, Amazon.com Inc (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>) just revealed
+        it had placed a big bet on AI development by investing&nbsp;$4 billion in
+        AI company Anthropic, which makes chatbots that rival&nbsp;Microsoft Corporation
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)-backed&nbsp;OpenAI&rsquo;s
+        ChatGPT.&nbsp;With the aim to advance generative AI development, the strategic
+        partnership will make&nbsp;Amazon Web Services&nbsp;the startup&rsquo;s&nbsp;primary
+        cloud provider&nbsp;while&nbsp;AWS customers&nbsp;will gain early access to
+        unique features for model customization along with fine-tuning capabilities
+        from Anthropic who was founded by former OpenAI research executives. Anthropic
+        recently&nbsp;debuted its new AI chatbot called Claude 2&nbsp;and is Amazon&rsquo;s
+        latest conquest as it continues competing against Microsoft and Alphabet (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOG#NASDAQ\\\">GOOG</a>)
+        in AI development.</p>\\r\\n\\r\\n<h3>The Deal Is More About Chip Development
+        Than Chatbot Rivalry</h3>\\r\\n\\r\\n<p>San Francisco-based Anthropic has
+        its own AI chatbot that rivals that of Microsoft-backed ChatGPT. Released
+        in July, Claude 2&nbsp;will help AWS customers to develop new generative AI-powered
+        applications that have the power to completely transform their organizations.
+        But, more importantly, Anthropic and Amazon agreed to develop the next set
+        of chips together with Anthropic agreeing to use Amazon&rsquo;s chips to develop
+        its future models. Therefore, the bigger picture is about a power shift on
+        the AI chip front, maybe not in a year, but in about five years, this deal
+        could power Amazon to dramatically change yet another competitive landscape.&nbsp;</p>\\r\\n\\r\\n<h3>Challenging
+        Nvidia, The AI Chip King</h3>\\r\\n\\r\\n<p>Moreover, Amazon&rsquo;s deal
+        with Anthropic aims to show that alternative chips can be used for fueling
+        AI, therefore, challenging the dominance of Nvidia Corporation (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/NVDA#NASDAQ\\\">NVDA</a>).
+        The key product of Nvidia&nbsp;is a GPU, semiconductor that is used to train
+        large AI models.&nbsp;With the AI hype, Nvidia smashed financial forecasts,
+        but that may no longer be the case in the future as Amazon clearly showed
+        its intention of developing customized AWS chips. Nvidia is currently the
+        undebatable AI winner simply because it got into it long before anyone else.</p>\\r\\n\\r\\n<h3>Tech
+        Giants And Their AI Ambitions</h3>\\r\\n\\r\\n<p>Big Tech is increasingly
+        entering collaborations with smaller AI firms. Although Microsoft led the
+        way with its multibillion-dollar investment in OpenAI, Amazon just swooped
+        up a AI hotspot, simultaneously beating Google who was an early investor in
+        Anthropic with the AI startup announcing only seven months ago that it had
+        selected Google as its cloud provider. But Amazon does not have a record of
+        chasing markets but rather creating them. Therefore, only time will show Amazon&rsquo;s
+        new creation and contribution to the AI future in-the-making.&nbsp;</p>\\r\\n\\r\\n<p><em>DISCLAIMER:
+        This content is for informational purposes only. It is not intended as investing
+        advice.</em></p>\\r\\n\",\"url\":\"https://www.benzinga.com/23/09/34913285/amazon-goes-all-in-for-its-ai-creation\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/rm373batch5-18_3.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/rm373batch5-18_3.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/rm373batch5-18_3.jpg\"}],\"channels\":[{\"name\":\"Startups\"},{\"name\":\"Markets\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AMZN\"},{\"name\":\"GOOG\"},{\"name\":\"MSFT\"},{\"name\":\"NVDA\"}],\"tags\":[{\"name\":\"Anthropic\"},{\"name\":\"artificial
+        intelligence\"},{\"name\":\"contributors\"}]},{\"id\":34900651,\"author\":\"Lekha
+        Gupta\",\"created\":\"Tue, 26 Sep 2023 10:55:40 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 10:55:41 -0400\",\"title\":\"Infosys & Microsoft Partner To Drive
+        Industry-Wide Adoption Of Generative AI\",\"teaser\":\"Infosys Ltd\_(NYSE:
+        INFY) disclosed the collaboration with\_Microsoft Corp\_(NASDAQ: MSFT) to
+        create solutions that drive Infosys Topaz,\_\",\"body\":\"<p><strong>Infosys
+        Ltd</strong>&nbsp;(NYSE:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/INFY#NYSE\\\">INFY</a>)
+        disclosed the collaboration with&nbsp;<strong>Microsoft Corp</strong>&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)
+        to create solutions that drive Infosys Topaz,&nbsp;<a class=\\\"editor-rtfLink\\\"
+        href=\\\"https://www.benzinga.com/pressreleases/23/09/n34897804/infosys-collaborates-with-microsoft-to-accelerate-and-democratize-industry-wide-adoption-of-genera\\\"
+        style=\\\"background-image:initial; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\">Azure OpenAI Service, and Azure Cognitive Services</a>.&nbsp;</p>\\r\\n\\r\\n<p>The
+        collaboration aims to leverage enterprise customers&#39; transition from digital
+        to AI solutions.&nbsp;&nbsp;</p>\\r\\n\\r\\n<p>Infosys and Microsoft will
+        deploy their respective artificial intelligence (AI) capabilities to boost
+        enterprise functions with AI-enabled solutions in several industries.&nbsp;</p>\\r\\n\\r\\n<p>The
+        integrated solutions will enhance customers&#39; operational efficiency, lower
+        turn-around-time, future-proof investments, and open new business models.</p>\\r\\n\\r\\n<p>&quot;Infosys
+        Topaz is empowering businesses with improved operational efficiencies and
+        reduced time-to-market for launching new products and services. It converges
+        the power of Infosys Cobalt and data analytics to AI-power business and deliver
+        cognitive solutions and intuitive experiences that revitalize growth. Through
+        our strategic collaboration with Microsoft, we will continue to lead the generative
+        AI revolution, helping businesses amplify human potential and navigate their
+        next towards becoming AI-first enterprises,&quot; stated Balakrishna D. R.
+        (Bali), Executive Vice President and Global Head &ndash; AI and Automation,
+        Application Development &amp; Maintenance, Infosys.</p>\\r\\n\\r\\n<p><strong><em>Also
+        Read</em></strong><em>:&nbsp;</em><a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/news/23/07/33269324/infosys-secures-2b-contract-sets-positive-tone-amidst-accenture-and-tcs-reports-analyst\\\"
+        style=\\\"background-image:initial; background-position:initial; background-size:initial;
+        background-repeat:initial; background-attachment:initial; background-origin:initial;
+        background-clip:initial; margin-top:0pt; margin-bottom:0pt; color:#4a6ee0\\\"
+        target=\\\"_blank\\\"><em>Infosys Secures $2B Contract, Sets Positive Tone
+        Amidst Accenture and TCS Reports: Analyst</em></a></p>\\r\\n\\r\\n<p><strong>Price
+        Action</strong>: INFY shares are trading lower by 1.39% at $17.36 on the last
+        check Tuesday.</p>\\r\\n \",\"url\":\"https://www.benzinga.com/markets/equities/23/09/34900651/infosys-microsoft-partner-to-drive-industry-wide-adoption-of-generative-ai\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/infy.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/infy.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/infy.png\"}],\"channels\":[{\"name\":\"Equities\"},{\"name\":\"Large
+        Cap\"},{\"name\":\"News\"},{\"name\":\"Contracts\"},{\"name\":\"Markets\"}],\"stocks\":[{\"name\":\"INFY\"},{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"Briefs\"}]},{\"id\":34913260,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Tue, 26 Sep 2023 10:54:37 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 10:54:38 -0400\",\"title\":\"Apple's Eddy Cue Expected To Testify
+        Google Search Is The Best, And That There's No Apple Search Engine In The
+        Works\",\"teaser\":\"Apple&#39;s Eddy Cue is set to testify in Google&#39;s
+        ongoing billion-dollar monopoly trial involving a $19 billion search deal.\",\"body\":\"<p>In
+        the ongoing billion-dollar legal standoff between Google and&nbsp;the U.S.
+        Department of Justice&nbsp;concerning an alleged online search monopoly,&nbsp;<strong>Apple
+        Inc.&#8217;s&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)</strong>
+        Senior Vice President of Services, <strong>Eddy Cue</strong>, is preparing
+        to testify. The case revolves around a $19 billion search deal between the
+        tech giants.</p>\\n\\n\\n\\n<p><strong>What Happened</strong>: The trial will
+        examine&nbsp;a deal in which <strong>Alphabet Inc.&#8217;s (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/GOOG#NASDAQ\\\">GOOG</a>) (NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOGL#NASDAQ\\\">GOOGL</a>)
+        Google</strong>&nbsp;compensates&nbsp;Apple billions of dollars to&nbsp;secure
+        its position as&nbsp;the default search engine on&nbsp;iPhone&#8217;s browser
+        and other platforms.</p>\\n\\n\\n\\n<p>According to Bernstein estimates, the
+        payment from Google to Apple is projected to hit $19 billion this year.</p>\\n\\n\\n\\n<p><em>See
+        Also:&nbsp;<a href=\\\"https://www.benzinga.com/news/23/09/34843123/elon-musk-buying-iphone-15-ios-17-draining-battery-jaw-dropping-deal-on-new-phones-and-more-this-wee?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Elon Musk Buying iPhone
+        15, iOS 17 Draining Battery, Jaw-Dropping Deal On New Phones And More: This
+        Week</a></em></p>\\n\\n\\n\\n<p>Cue, the architect of this agreement on behalf
+        of Apple, is expected to argue that Google&#8217;s search engine was selected
+        as the default for iPhones due to its superior quality, <a href=\\\"https://www.cnbc.com/2023/09/26/apple-exec-eddy-cue-testify-google-trial-about-19-billion-search-deal.html\\\">reported</a>
+        CNBC. He will also maintain that Apple has no plans to develop a competing
+        search engine, considering Google&#8217;s robust presence in the market.</p>\\n\\n\\n\\n<p>Cue
+        will also disclose that Apple has entered into revenue-sharing agreements
+        with other search engines, including Yahoo, Microsoft Bing, DuckDuckGo, and
+        Ecosia. This disclosure supports Apple&#8217;s stance that users retain the
+        freedom to select their default search engines.</p>\\n\\n\\n\\n<p>This trial
+        might shed&nbsp;light on one of the&nbsp;most confidential deals in the tech
+        industry that has been kept under wraps for over a decade. The case, which
+        is anticipated to run for 10 weeks, is considered the biggest tech monopoly
+        trial since the Department of Justice&#8217;s lawsuit against&nbsp;Microsoft
+        more than 20 years&nbsp;ago.</p>\\n\\n\\n\\n<p><em>Read Next: Discover Johnny
+        Depp&#8217;s hidden talent that earned him $3.6 million in just a few hours
+        and learn how you can tap into this opportunity to\_<a href=\\\"https://www.benzinga.com/general/23/07/33369326/johnny-depps-lesser-known-talent-rakes-in-3-6-million-in-just-a-few-hours-and-it-could-make-you-rich\\\">potentially
+        boost your wealth too.</a></em></p>\\n\\n\\n\\n<!--Actual content-->\\n    <div
+        style=\\\"font-family: 'Lato', sans-serif\\\">\\n      <hr style=\\\"border:
+        0;height: 5px;background: #225aa9\\\">\\n      <div style=\\\"background-color:
+        #f5f5f5;background-position: center;background-size: cover;justify-content:
+        center\\\"></div>\\n      <p style=\\\"font-family: sans-serif;padding-top:
+        20px\\\">\\n        Engineered by\\n        <span style=\\\"font-weight: bold;text-decoration:
+        none;color: #225aa9;font-size: 1rem\\\">Benzinga Neuro</span>, Edited by\\n
+        \       <span style=\\\"font-weight: bold;text-decoration: none;color: #225aa9;font-size:
+        1rem\\\">\\n          <u><a href=\\\"None\\\" target=\\\"_blank\\\" rel=\\\"noopener\\\"
+        style=\\\"color: #225aa9;text-decoration: none\\\">\\n              Rounak
+        Jain</a></u>\\n        </span>\\n      </p>\\n      <hr style=\\\"border:
+        0;height: 1px;background: #225aa9\\\">\\n      <p style=\\\"font-family: sans-serif;padding-top:
+        20px\\\">\\n        The GPT-4-based Benzinga Neuro content generation system
+        exploits the\\n        extensive Benzinga Ecosystem, including native data,
+        APIs, and more to\\n        create comprehensive and timely stories for you.\\n
+        \       <a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\" target=\\\"_blank\\\"
+        rel=\\\"noopener\\\" style=\\\"color: #225aa9;text-decoration: none\\\">Learn
+        more.</a>\\n      </p>\\n      <hr style=\\\"border: 0;height: 5px;background:
+        #225aa9\\\">\\n    </div>\\n    <!--Actual content end-->\",\"url\":\"https://www.benzinga.com/news/23/09/34913260/apples-eddy-cue-expected-to-testify-google-search-is-the-best-and-that-theres-no-apple-search-engine\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/New,York,City,,Usa,-,March,15,,2020:,Apple,Store_0.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/New,York,City,,Usa,-,March,15,,2020:,Apple,Store_0.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/New,York,City,,Usa,-,March,15,,2020:,Apple,Store_0.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"GOOG\"},{\"name\":\"GOOGL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"Google\"},{\"name\":\"Google Search\"}]},{\"id\":34903478,\"author\":\"Anusuya
+        Lahiri\",\"created\":\"Tue, 26 Sep 2023 10:48:59 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 10:48:59 -0400\",\"title\":\"Apple's Eddy Cue to Testify in DOJ's
+        Google Trial, Defending Google Default Search Deal\",\"teaser\":\"Eddy Cue,\_Apple
+        Inc&#39;s\_(NASDAQ: AAPL) Senior Vice President of Services, is set to testify
+        in federal court as part of a case brought by the\_\",\"body\":\"<p>Eddy Cue,&nbsp;<strong>Apple
+        Inc&#39;s</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        Senior Vice President of Services, is set to testify in federal court as part
+        of a case brought by the&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/government/23/09/34441908/tech-titans-apple-and-google-face-off-in-antitrust-showdown\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">U.S. Department of Justice</a>&nbsp;(DOJ) against&nbsp;<strong>Alphabet
+        Inc&nbsp;</strong>(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOG#NASDAQ\\\">GOOG</a>)
+        (NASDAQ:&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/stock/googl#NASDAQ\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">GOOGL</a>)&nbsp;<strong>Google</strong>.&nbsp;</p>\\r\\n\\r\\n<p>The
+        DOJ alleges that Google is monopolizing online search through licensing agreements,
+        and one of the critical deals under scrutiny is the one where Google pays
+        Apple up to $19 billion in 2023 to be the default search engine on iPhones
+        and other devices, as Bernstein estimates.</p>\\r\\n\\r\\n<p>Cue, who negotiated
+        this deal with Google from Apple, is expected to testify that Apple chose
+        Google as the default search engine because it was the best product available,
+        CNBC&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://www.cnbc.com/2023/09/26/apple-exec-eddy-cue-testify-google-trial-about-19-billion-search-deal.html\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">cites</a>&nbsp;familiar sources.&nbsp;</p>\\r\\n\\r\\n<p>He
+        will also argue that Apple has no incentive to create its search engine since
+        Google already offers a high-quality service.&nbsp;</p>\\r\\n\\r\\n<p>Cue
+        will highlight that Apple has revenue-sharing agreements with competing search
+        engines like Yahoo,&nbsp;<strong>Microsoft Corp</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>) Bing, DuckDuckGo,
+        and Ecosia.&nbsp;</p>\\r\\n\\r\\n<p>Additionally, Apple users have the flexibility
+        to change their default search engines.</p>\\r\\n\\r\\n<p>The DOJ argues that
+        Google&#39;s exclusive agreements with mobile phone makers and browser companies,
+        including Apple and&nbsp;<strong>Samsung Electronics Co, Ltd</strong>&nbsp;(OTC:&nbsp;<a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/stock/ssnlf#OTC\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">SSNLF</a>), create barriers to entry for competing search
+        engines and hinder meaningful competition.&nbsp;</p>\\r\\n\\r\\n<p>Google
+        initiated these agreements in 2001, offering revenue-sharing when users click
+        on ads. Apple began licensing Google&#39;s search engine for its Safari web
+        browser in 2003.&nbsp;</p>\\r\\n\\r\\n<p>In 2005, Google proposed sharing
+        advertising revenue with Apple in exchange for making its search engine the
+        default on desktop computers.</p>\\r\\n\\r\\n<p>The trial provides a glimpse
+        into Google&#39;s practices as it maintains its nearly 90% share of the online
+        search market, contributing significantly to its parent company Alphabet&#39;s&nbsp;<a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.wsj.com/tech/google-trial-spills-details-on-search-engines-deals-with-apple-samsung-f8aaa467?mod=tech_lead_story\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">revenue</a>.</p>\\r\\n\\r\\n<p>Apple recently highlighted
+        a subtle shift in the recent iPhone software update, allowing users to opt
+        for a search engine other than Google&#39;s while using the internet&nbsp;<a
+        class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/government/23/09/34852483/apples-ios-17-update-challenges-googles-search-engine-dominance\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">in private mode</a>.</p>\\r\\n\\r\\n<p><strong>Price
+        Action:</strong>&nbsp;GOOG shares traded lower by 2.45% at $128.93 on the
+        last check Tuesday.</p>\\r\\n\\r\\n<p><strong><em>Disclaimer:</em></strong><em>&nbsp;This
+        content was partially produced with the help of AI tools and was reviewed
+        and published by Benzinga editors.</em></p>\\r\\n \",\"url\":\"https://www.benzinga.com/government/23/09/34903478/apples-eddy-cue-to-testify-in-dojs-google-trial-defending-google-default-search-deal\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/google_bar-photo_by_firmbee_via_pixabay.jpg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/google_bar-photo_by_firmbee_via_pixabay.jpg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/google_bar-photo_by_firmbee_via_pixabay.jpg\"}],\"channels\":[{\"name\":\"Government\"},{\"name\":\"News\"},{\"name\":\"Regulations\"},{\"name\":\"Legal\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"GOOG\"},{\"name\":\"GOOGL\"},{\"name\":\"MSFT\"},{\"name\":\"SSNLF\"}],\"tags\":[{\"name\":\"AI
+        Generated\"},{\"name\":\"Briefs\"}]},{\"id\":34893362,\"author\":\"Anusuya
+        Lahiri\",\"created\":\"Tue, 26 Sep 2023 10:08:41 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 10:08:42 -0400\",\"title\":\"Microsoft's Vision For AI's Future
+        Is Harnessing Nuclear Power\",\"teaser\":\"Microsoft Inc\_(NASDAQ: MSFT) is
+        charting a course to harness the power of small nuclear reactors for its artificial
+        intelligence (AI) operations.\_\",\"body\":\"<p><strong>Microsoft Inc</strong>&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)
+        is charting a course to harness the power of small nuclear reactors for its
+        artificial intelligence (AI) operations.&nbsp;</p>\\r\\n\\r\\n<p>The tech
+        giant recently advertised a job position, seeking a nuclear technology specialist
+        to spearhead the company&#39;s efforts in integrating small modular nuclear
+        reactors and microreactors.&nbsp;</p>\\r\\n\\r\\n<p>These reactors will likely
+        energize the data centers that underpin Microsoft&#39;s Cloud and AI platforms,
+        CNBC&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://www.cnbc.com/2023/09/25/microsoft-is-hiring-a-nuclear-energy-expert-to-help-power-data-centers.html\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">reports</a>.</p>\\r\\n\\r\\n<p><strong>OpenAI</strong>&nbsp;CEO&nbsp;<strong>Sam
+        Altman</strong>&nbsp;believes the widespread use of AI will require substantial
+        energy and has long advocated for access to abundant, affordable, clean energy
+        solutions&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/news/23/07/33352766/sam-altmans-vision-for-giving-everyone-access-to-clean-renewable-nuclear-energy-from-oklo-sparks-spa\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">on a large scale</a>.</p>\\r\\n\\r\\n<p>The job listing
+        explicitly mentions the role of a &quot;principal program manager for nuclear
+        technology.&quot;&nbsp;</p>\\r\\n\\r\\n<p>The candidate will refine and execute
+        a global strategy centered around Small Modular Reactor (SMR) and microreactor
+        energy.&nbsp;</p>\\r\\n\\r\\n<p>The company&#39;s approach leans towards nuclear
+        fission, a process where atoms split, releasing energy.</p>\\r\\n\\r\\n<p>Earlier
+        this year, Microsoft declared a substantial investment in&nbsp;<strong>OpenAI</strong>,
+        the entity behind the widely recognized AI chatbot ChatGPT.&nbsp;</p>\\r\\n\\r\\n<p>Notably,
+        Bill Gates, the co-founder of Microsoft, chairs the board of&nbsp;<strong>TerraPower</strong>,
+        a firm dedicated to innovating small modular reactor designs.&nbsp;</p>\\r\\n\\r\\n<p>While
+        TerraPower has not formalized any deals to supply reactors to Microsoft, the
+        tech behemoth has shown interest in nuclear energy innovations.&nbsp;</p>\\r\\n\\r\\n<p>In
+        a recent development, Microsoft entered into a power purchase agreement with&nbsp;<strong>Helion</strong>,
+        a nuclear fusion startup, with plans to procure electricity by 2028. OpenAI&#39;s
+        CEO, Sam Altman, is a prominent investor in Helion.</p>\\r\\n\\r\\n<p>Nuclear
+        reactors produce electricity without significant carbon dioxide emissions.&nbsp;</p>\\r\\n\\r\\n<p>The
+        U.S. relies on nuclear reactors, primarily constructed between 1970 and 1990,
+        for approximately 18% of its electricity.&nbsp;</p>\\r\\n\\r\\n<p>As per the
+        U.S. Department of Energy, nuclear energy contributed to 47% of America&#39;s
+        carbon-free electricity in 2022.&nbsp;</p>\\r\\n\\r\\n<p>The future of nuclear
+        reactor technology in the U.S. seems to hinge on smaller reactors, which are
+        compact, cost-effective, and faster to construct.&nbsp;</p>\\r\\n\\r\\n<p><strong>Price
+        Action:&nbsp;</strong>MSFT shares traded lower by 1.43% at $313.07 on the
+        last check Tuesday.</p>\\r\\n\\r\\n<p><strong><em>Disclaimer:</em></strong><em>&nbsp;This
+        content was partially produced with the help of AI tools and was reviewed
+        and published by Benzinga editors.</em></p>\\r\\n \",\"url\":\"https://www.benzinga.com/news/23/09/34893362/microsofts-vision-for-ais-future-is-harnessing-nuclear-power\",\"image\":[{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/openai.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/openai.png\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/openai.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"AI
+        Generated\"},{\"name\":\"artificial intelligence\"},{\"name\":\"Briefs\"}]},{\"id\":34906582,\"author\":\"Shanthi
+        Rexaline\",\"created\":\"Tue, 26 Sep 2023 09:08:11 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 09:08:12 -0400\",\"title\":\"Apple's Asian Shift: China's Loss
+        Could Be India's Billion-Dollar Gain And Cut Cupertino's Geopolitical Risk,
+        Says Munster\",\"teaser\":\"Gene Munster says India is key to Apple navigating
+        China&#39;s geopolitical production risk and will in the long run help reduce
+        reliance on China.\",\"body\":\"<p><strong>Apple Inc.</strong>&nbsp;(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)
+        could reduce its&nbsp;<a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/government/23/09/34737120/apples-soaring-demand-in-china-iphone-15-causes-website-crash-and-sells-out-in-under-a-minute\\\"
+        rel=\\\"noreferrer noopener\\\">dependence on China</a>&nbsp;in the coming
+        decade, according to Gene Munster, the founder of Deepwater Asset Management.</p>\\n\\n\\n\\n<p><strong>China&#8217;s
+        Loss, India&#8217;s Gain:</strong>&nbsp;Munster believes Apple&#8217;s efforts
+        could alleviate concerns among investors who worry about the company&#8217;s
+        heavy reliance on China.&nbsp;</p>\\n\\n\\n\\n<p>He anticipates that China&#8217;s
+        share of Apple&#8217;s revenue will decline from 40-45% to 25-30% over the
+        next five years, with roughly half of this reduction stemming from the shift
+        of production to India.</p>\\n\\n\\n\\n<p>This shift is significant because,
+        as Munster argues, Apple needs large markets to maintain its projected 5-10%
+        revenue growth over the next seven years.&nbsp;</p>\\n\\n\\n\\n<p><em>See
+        Also:&nbsp;</em><a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/money/everything-you-need-to-know-about-apple-stock\\\"
+        rel=\\\"noreferrer noopener\\\"><em>Everything You Need To Know About Apple
+        Stock</em></a></p>\\n\\n\\n\\n<p>&#8220;From the demand perspective, India
+        is one of the important parts of Apple's growth story for the balance of the
+        decade,&#8221; he said.&nbsp;</p>\\n\\n\\n\\n<p>Apple has already opened two
+        new stores in India, and it is in the early stages of expanding its channels
+        and investing in direct-to-consumer initiatives.</p>\\n\\n\\n\\n<p>Regarding
+        the potential impact of India on Apple&#8217;s business, Munster predicts
+        that India&#8217;s revenue \u2014 currently accounting for 3% or $12 billion
+        of Apple&#8217;s total sales \u2014 will eventually surpass that of Greater
+        China. Greater China, encompassing mainland China, Hong Kong, Macau, and Taiwan,
+        is expected to contribute 20% or just under $80 billion to Apple&#8217;s revenue
+        in 2023.</p>\\n\\n\\n\\n<p><strong>Made In India:</strong>&nbsp;Reports indicate
+        that Apple will&nbsp;<a target=\\\"_blank\\\" href=\\\"https://in.benzinga.com/content/33870934/apple-kickstarts-iphone-production-in-india-airpods-next-in-line-report\\\"
+        rel=\\\"noreferrer noopener\\\">start producing AirPods</a>&nbsp;in India,
+        and the overall value of products manufactured in the country is projected
+        to increase fivefold over the next four to five years, reaching $40 billion,
+        as noted by Munster.&nbsp;</p>\\n\\n\\n\\n<p>Currently, an estimated 2% of
+        Apple&#8217;s revenue is derived from India, but this figure is expected to
+        rise in the coming five years.</p>\\n\\n\\n\\n<p>The reported target of reaching
+        $40 billion in production in India by 2027 implies a remarkable annual production
+        growth rate of 42% in India. This stands in stark contrast to Apple&#8217;s
+        projected 5% or higher revenue growth rate during the same period, according
+        to Munster.</p>\\n\\n\\n\\n<p>&#8220;India is central to Apple navigating
+        China's geopolitical production risk,&#8221; he added.</p>\\n\\n\\n\\n<p>Apple
+        stock fell 0.60% to $175.02 in premarket trading on Tuesday, according to
+        <a href=\\\"https://benzinga.grsm.io/lxquj26b2sag\\\">Benzinga Pro data</a></p>\\n\\n\\n\\n<p><em>Read
+        Next: <a href=\\\"https://www.benzinga.com/news/23/09/34847968/apples-made-in-india-production-could-surge-to-40-billion-in-the-coming-years\\\">Apple&#8217;s
+        &#8216;Made In India&#8217; Production Could Surge To $40 Billion in the Coming
+        Years</a></em></p>\\n\\n\\n\\n<p><em>Image by oasisamuel on Shutterstock</em></p>\",\"url\":\"https://www.benzinga.com/analyst-ratings/analyst-color/23/09/34906582/apples-asian-shift-chinas-loss-could-be-indias-billion-dollar-gain-and-cut-cupertin\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Apple_China.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Apple_China.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Apple_China.jpeg\"}],\"channels\":[{\"name\":\"Analyst
+        Color\"},{\"name\":\"Asia\"},{\"name\":\"Equities\"},{\"name\":\"News\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Deepwater
+        Asset Management\"},{\"name\":\"Eurasia\"},{\"name\":\"Expert Ideas\"},{\"name\":\"Gene
+        Munster\"}]},{\"id\":34903468,\"author\":\"Rounak Jain\",\"created\":\"Tue,
+        26 Sep 2023 08:11:12 -0400\",\"updated\":\"Tue, 26 Sep 2023 08:11:13 -0400\",\"title\":\"Repairing
+        iPhone 15 Pro's Back Glass Is 3x Cheaper, But It Is Shockingly Fragile\",\"teaser\":\"A
+        new test has revealed that the iPhone 15 Pro&#39;s back glass breaks with
+        a simple thumb press, which YouTuber JerryRig has called &#34;crazy&#34;.\",\"body\":\"<p><strong>Apple
+        Inc.'s (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)</strong>
+        latest flagship, the <a href=\\\"https://www.benzinga.com/news/23/09/34501203/apple-iphone-15-series-with-usb-c-tetraprism-camera-announced-check-price-and-availability-details\\\"><strong>iPhone
+        15 Pro</strong></a>, is mired in another controversy \u2013 the back glass
+        is <a href=\\\"https://www.benzinga.com/news/23/09/34820742/so-is-the-iphone-15-pros-titanium-build-stronger-what-an-early-drop-test-reveals\\\">far
+        more fragile</a> than the one on its predecessor.</p>\\n\\n\\n\\n<p><strong>What
+        Happened:</strong> Although replacing the back glass of the iPhone 15 Pro
+        is cheaper than its predecessor, you may have to do that more often now. A
+        new test has revealed that the iPhone 15 Pro's back glass breaks with a simple
+        thumb press.</p>\\n\\n\\n\\n<p><em>See Also: </em><a href=\\\"https://www.benzinga.com/news/23/09/34901018/iphone-15-pro-max-has-30-worth-titanium-youtuber-jerryrig-finds-it-exquisite-and-worth-every-buzzwor\\\"><em>iPhone
+        15 Pro Max Has $30 Worth Titanium: YouTuber JerryRig Finds It \u2018Exquisite'
+        And Worth Every Buzzword Apple Used</em></a></p>\\n\\n\\n\\n<p>The iPhone
+        15 Pro is mired in controversies right now \u2013 from discoloration to color
+        chipping issues, overheating concerns, and durability of the titanium design,
+        early buyers have been vocal about iPhone 15's problems.</p>\\n\\n\\n\\n<p>The
+        latest in this line is YouTuber Zack Nelson of JerryRig's iPhone 15 Pro Max
+        test. Nelson puts Apple's top-tier iPhone through the paces and finds it easy
+        to damage the back glass.</p>\\n\\n\\n\\n<p>\\\"Most phones do not break.
+        iPhones, especially, do not break like ever. That snap was abnormally quick,\\\"
+        Nelson said when the iPhone 15 Pro Max' back glass broke when he was just
+        getting started with his bend test.</p>\\n\\n\\n\\n<p>\\\"Kind of stunned,\\\"
+        he added, saying that he's not certain if this is because of the grade 5 titanium
+        that Apple has used. \\\"The glass did not like being pressed or flexed by
+        my thumb. That's crazy,\\\" he said.</p>\\n\\n\\n\\n<p><strong>Why It Matters:</strong>
+        Apple has reduced the price of replacing the back glass of the iPhone 15 Pro
+        to $169 from $499 for the iPhone 14 Pro. Likewise, the iPhone 15 Pro Max'
+        back glass costs $199 compared to $549 for the iPhone 14 Pro Max.</p>\\n\\n\\n\\n<p>Essentially,
+        it's now three times cheaper to replace the back glass, but going by Nelson's
+        test, it's also far easier to break it. You might end up spending more to
+        get it replaced throughout your use.</p>\\n\\n\\n\\n<figure class=\\\"wp-block-embed
+        is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9
+        wp-has-aspect-ratio\\\"><div class=\\\"wp-block-embed__wrapper\\\">\\n<iframe
+        loading=\\\"lazy\\\" title=\\\"Be gentle with Apples new Titanium iPhone 15
+        Pro Max ... Yikes!\\\" width=\\\"500\\\" height=\\\"281\\\" src=\\\"https://www.youtube.com/embed/IS0SItAzEXg?feature=oembed\\\"
+        frameborder=\\\"0\\\" allow=\\\"accelerometer; autoplay; clipboard-write;
+        encrypted-media; gyroscope; picture-in-picture; web-share\\\" allowfullscreen></iframe>\\n</div></figure>\\n\\n\\n\\n<p><em>Check
+        out more of Benzinga&#8217;s Consumer Tech coverage by </em><a href=\\\"https://www.benzinga.com/topic/consumer-tech\\\"><em>following
+        this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>Read Next: </em><a href=\\\"https://www.benzinga.com/news/23/09/34864785/early-iphone-15-pro-buyers-complain-of-overheating-some-report-throttling-and-discoloration-issues\\\"><em>Early
+        iPhone 15 Pro Buyers Complain Of Overheating, Some Report Throttling And Discoloration
+        Issues</em></a></p>\",\"url\":\"https://www.benzinga.com/news/23/09/34903468/repairing-iphone-15-pros-back-glass-is-3x-cheaper-but-it-is-shockingly-fragile\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Broken_iPhone.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Broken_iPhone.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Broken_iPhone.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"gadgets\"},{\"name\":\"iPhone\"},{\"name\":\"iPhone 15\"}]},{\"id\":34901018,\"author\":\"Rounak
+        Jain\",\"created\":\"Tue, 26 Sep 2023 07:44:32 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 07:44:32 -0400\",\"title\":\"iPhone 15 Pro Max Has $30 Worth Titanium:
+        YouTuber JerryRig Finds It 'Exquisite' And Worth Every Buzzword Apple Used\",\"teaser\":\"In
+        his latest teardown of the iPhone 15 Pro Max, JerryRigEverything has found
+        out that there&#39;s $30 worth of titanium in Apple&#39;s flagship.\",\"body\":\"<p><strong>Apple
+        Inc.'s (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)</strong>
+        new titanium design on the <a href=\\\"https://www.benzinga.com/news/23/09/34501203/apple-iphone-15-series-with-usb-c-tetraprism-camera-announced-check-price-and-availability-details\\\"><strong>iPhone
+        15 Pro</strong></a> and <strong>iPhone 15 Pro Max</strong> has received a
+        thumbs up from YouTuber JerryRigsEverything amidst <a href=\\\"https://www.benzinga.com/news/23/09/34864785/early-iphone-15-pro-buyers-complain-of-overheating-some-report-throttling-and-discoloration-issues\\\">increasing
+        concerns</a> of discoloration and color chipping.</p>\\n\\n\\n\\n<p><em>See
+        Also: </em><a href=\\\"https://www.benzinga.com/news/23/09/34864785/early-iphone-15-pro-buyers-complain-of-overheating-some-report-throttling-and-discoloration-issues\\\"><em>Early
+        iPhone 15 Pro Buyers Complain Of Overheating, Some Report Throttling And Discoloration
+        Issues</em></a></p>\\n\\n\\n\\n<p><strong>What Happened:</strong> In his latest
+        teardown of the iPhone 15 Pro Max, Zack Nelson of JerryRigEverything estimates
+        that there's approximately $30 worth of titanium in Apple's latest top-tier
+        iPhone.</p>\\n\\n\\n\\n<p>One of the highlights of the iPhone 15 Pro Max is
+        the aerospace-grade titanium \u2013 the same titanium used on the <a href=\\\"https://www.benzinga.com/news/23/09/34507964/apple-designed-the-iphone-15-pro-with-the-same-material-that-is-used-for-the-mars-rover\\\">Mars
+        rover Perseverance</a>.</p>\\n\\n\\n\\n<p>Apple drew inspiration from the
+        Apple Watch Ultra and brought over this material to the iPhones. This helped
+        the company reduce the weight of the otherwise bulky iPhone 15 Pro models
+        by 10% compared to their predecessors.</p>\\n\\n\\n\\n<p>But it's not just
+        the weight reduction that users will appreciate \u2013 according to Nelson,
+        the titanium design takes \\\"extreme skill and expertise\\\" to work with.</p>\\n\\n\\n\\n<p>\\\"It
+        is not an easy thing to do and the frame of this phone is still just as exquisite
+        as every intern-generated buzzword at the event said it would be. Ten thumbs
+        up to Apple for doing something new,\\\" he said.</p>\\n\\n\\n\\n<p><strong>Why
+        It Matters:</strong> Apple touted the much more premium titanium design of
+        the iPhone 15 Pro models, using it as a feature that sets it apart from other
+        phones and the non-Pro iPhone 15 models.</p>\\n\\n\\n\\n<p>However, the titanium
+        design has been in the news for the wrong reasons. Early buyers have been
+        <a href=\\\"https://www.benzinga.com/news/23/09/34864785/early-iphone-15-pro-buyers-complain-of-overheating-some-report-throttling-and-discoloration-issues\\\">complaining</a>
+        about issues like discoloration and the color chipping off too easily.</p>\\n\\n\\n\\n<p>Multiple
+        users and tests have <a href=\\\"https://www.benzinga.com/news/23/09/34820742/so-is-the-iphone-15-pros-titanium-build-stronger-what-an-early-drop-test-reveals\\\">also
+        shown</a> that the iPhone 15 Pro Max is less durable than its predecessor.
+        Unlike the stainless steel band on the iPhone 14 Pro Max, the titanium sides
+        of the iPhone 15 Pro end up dispersing the pressure of the impact to the front
+        and back glass, leading to spiderweb cracks.</p>\\n\\n\\n\\n<p>Regardless,
+        check out the video below to see just how strong the titanium design of the
+        iPhone 15 Pro Max is.</p>\\n\\n\\n\\n<figure class=\\\"wp-block-embed is-type-video
+        is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio\\\"><div
+        class=\\\"wp-block-embed__wrapper\\\">\\n<iframe loading=\\\"lazy\\\" title=\\\"How
+        much &#039;Titanium&#039; does iPhone 15 Pro &#x2A;actually&#x2A; have? -
+        \ NO SECRETS HERE!\\\" width=\\\"500\\\" height=\\\"281\\\" src=\\\"https://www.youtube.com/embed/S_W73ouKtjU?feature=oembed\\\"
+        frameborder=\\\"0\\\" allow=\\\"accelerometer; autoplay; clipboard-write;
+        encrypted-media; gyroscope; picture-in-picture; web-share\\\" allowfullscreen></iframe>\\n</div></figure>\\n\\n\\n\\n<p><em>Image
+        Source &#8211; Apple</em></p>\\n\\n\\n\\n<p><em>Check out more of Benzinga's
+        Consumer Tech coverage by </em><a href=\\\"https://www.benzinga.com/topic/consumer-tech\\\"><em>following
+        this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>Read Next: </em><a href=\\\"https://www.benzinga.com/news/23/09/34859421/i-cant-stand-how-wild-this-is-former-windows-head-is-shocked-that-an-iphone-15-can-offer-a-desktop-l\\\"><em>\u2018I
+        Can't Stand How Wild This Is': Former Windows Head Is Shocked That An iPhone
+        15 Can Offer A Desktop-Like Experience</em></a></p>\",\"url\":\"https://www.benzinga.com/news/23/09/34901018/iphone-15-pro-max-has-30-worth-titanium-youtuber-jerryrig-finds-it-exquisite-and-worth-every-buzzwor\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Apple-iPhone-15-Pro-lineup-color-lineup-geo-230912_big.jpg.large_2x_2.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Apple-iPhone-15-Pro-lineup-color-lineup-geo-230912_big.jpg.large_2x_2.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Apple-iPhone-15-Pro-lineup-color-lineup-geo-230912_big.jpg.large_2x_2.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"gadgets\"},{\"name\":\"iPhone\"},{\"name\":\"iPhone 15\"}]},{\"id\":34892937,\"author\":\"Anusuya
+        Lahiri\",\"created\":\"Tue, 26 Sep 2023 07:40:49 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 07:40:50 -0400\",\"title\":\"Attention Gamers! Assassin's Creed
+        Maker Envisions Netflix-Style Revolution in Gaming Post Microsoft Deal\",\"teaser\":\"UbiSoft
+        Entertainment Inc\_(OTC: UBSFY), the video game company behind popular franchises
+        like\_Assassin&#39;s Creed\_and\_Tom Clancy&#39;s Rainbow Six, is poised to
+        reshape the\_\",\"body\":\"<p><strong>UbiSoft Entertainment Inc</strong>&nbsp;(OTC:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/UBSFY#OTC\\\">UBSFY</a>),
+        the video game company behind popular franchises like&nbsp;<strong>Assassin&#39;s
+        Creed</strong>&nbsp;and&nbsp;<strong>Tom Clancy&#39;s Rainbow Six</strong>,
+        is poised to reshape the&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/news/23/08/33873105/how-in-game-purchases-and-subscriptions-are-shaping-the-60b-gaming-industry-report\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">gaming landscape</a>&nbsp;through streaming, akin to
+        how&nbsp;<strong>Netflix Inc</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/NFLX#NASDAQ\\\">NFLX</a>) transformed
+        the television and film sectors.&nbsp;</p>\\r\\n\\r\\n<p>This assertion comes
+        from Ubisoft&#39;s pivotal cloud-gaming agreement with tech giant&nbsp;<strong>Microsoft
+        Inc</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>).</p>\\r\\n\\r\\n<p><strong><em>Also
+        Read:</em></strong><em>&nbsp;</em><a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/news/23/06/32708514/sony-to-leverage-ai-in-its-quest-for-cloud-gaming-but-ceo-kenichiro-yoshida-expresses-concerns\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\"><em>Sony to Leverage AI in its Quest for Cloud Gaming,
+        but CEO Kenichiro Yoshida Expresses Concerns</em></a></p>\\r\\n\\r\\n<p>Reflecting
+        on the early skepticism surrounding Netflix&#39;s foray into streaming, Ubisoft&#39;s
+        CEO,&nbsp;<strong>Yves Guillemot</strong>, highlighted the streaming service&#39;s
+        subsequent meteoric rise, drawing parallels with the gaming industry&#39;s
+        potential trajectory.&nbsp;</p>\\r\\n\\r\\n<p>&quot;It&#39;s going to be the
+        same with video games, but it will take time. But when it takes off, it will
+        happen very quickly,&quot; Financial Times&nbsp;<a class=\\\"editor-rtfLink\\\"
+        href=\\\"https://www.ft.com/content/71858db3-b1b1-4b53-b25b-3f2402a2fbf9\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">cites</a>&nbsp;Guillemot.</p>\\r\\n\\r\\n<p>Despite
+        its potential, cloud gaming&#39;s ascent has been more gradual than anticipated,
+        facing technological and business-related hurdles.&nbsp;</p>\\r\\n\\r\\n<p>Notably,&nbsp;<strong>Alphabet
+        Inc</strong>&nbsp;(NASDAQ:&nbsp;<a class=\\\"editor-rtfLink\\\" href=\\\"https://www.benzinga.com/stock/goog#NASDAQ\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">GOOG</a>) (NASDAQ:&nbsp;<a class=\\\"editor-rtfLink\\\"
+        href=\\\"https://www.benzinga.com/stock/googl#NASDAQ\\\" style=\\\"color:#4a6ee0;
+        background:transparent; margin-top:0pt; margin-bottom:0pt\\\" target=\\\"_blank\\\">GOOGL</a>)
+        Google had to dump its ambitious Stadia&nbsp;<a class=\\\"editor-rtfLink\\\"
+        href=\\\"https://www.benzinga.com/news/23/09/34307574/youtube-challenges-microsoft-and-nvidia-with-playable-games-trial\\\"
+        style=\\\"color:#4a6ee0; background:transparent; margin-top:0pt; margin-bottom:0pt\\\"
+        target=\\\"_blank\\\">cloud gaming service</a>&nbsp;after failing to garner
+        a substantial user base.&nbsp;</p>\\r\\n\\r\\n<p>Research group Omdia projects
+        that cloud gaming services, including Xbox Game Pass Ultimate and PlayStation
+        Plus Premium, will generate a revenue of $3.2 billion in 2023, accounting
+        for a mere 2% of the total consumer expenditure on games.&nbsp;</p>\\r\\n\\r\\n<p>This
+        figure will likely double in the subsequent five years.</p>\\r\\n\\r\\n<p>Guillemot
+        strongly believes that in the next five to 10 years, many games will be streamed
+        and produced in the cloud, emphasizing the motivation behind the Microsoft
+        partnership.&nbsp;</p>\\r\\n\\r\\n<p>Ubisoft aims to leverage streaming rights
+        to boost its presence in regions outside Europe and the U.S., where traditional
+        console gaming hasn&#39;t gained a strong foothold.&nbsp;</p>\\r\\n\\r\\n<p>Guillemot
+        believes that rapid technological adoption in these regions will lead to a
+        swifter transition to cloud gaming.</p>\\r\\n\\r\\n<p><strong><em>Disclaimer:</em></strong><em>&nbsp;This
+        content was partially produced with the help of AI tools and was reviewed
+        and published by Benzinga editors.</em></p>\\r\\n \",\"url\":\"https://www.benzinga.com/news/23/09/34892937/attention-gamers-assassins-creed-maker-envisions-netflix-style-revolution-in-gaming-post-microsoft-d\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/09/26/assassins_creed-company.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/09/26/assassins_creed-company.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/09/26/assassins_creed-company.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"GOOG\"},{\"name\":\"GOOGL\"},{\"name\":\"MSFT\"},{\"name\":\"NFLX\"},{\"name\":\"UBSFY\"}],\"tags\":[{\"name\":\"AI
+        Generated\"},{\"name\":\"Briefs\"}]},{\"id\":34900811,\"author\":\"Ananya
+        Gairola\",\"created\":\"Tue, 26 Sep 2023 07:34:03 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 07:34:04 -0400\",\"title\":\"Meta Quest 3 Takes On Apple Vision
+        Pro: What You Need to Know \u2014 Release Date, Specs, And Prices Leak Before
+        Connect\",\"teaser\":\"The Meta Quest 3 is set to compete with Apple&#39;s
+        Vision Pro, and this article provides an overview of its release date, specifications,
+        and pricing, all revealed ahead of the Meta Connect event.\",\"body\":\"<p><strong>Meta
+        Platforms Inc.&#8217;s</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/META#NASDAQ\\\">META</a>)&nbsp;<strong>Quest
+        3</strong>&nbsp;is set to&nbsp;<a href=\\\"https://www.benzinga.com/news/23/06/32730028/how-does-apples-vision-pro-compare-with-metas-quest-3\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">compete head-to-head</a>&nbsp;with&nbsp;<strong>Apple
+        Inc.&#8217;s</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)&nbsp;<strong>Vision
+        Pro</strong>, and in this article, we have provided a factual overview of
+        its release date, specifications, and pricing, all revealed ahead of the&nbsp;<strong>Meta
+        Connect</strong>&nbsp;event.</p>\\n\\n\\n\\n<p><strong>What Happened:\_</strong>The
+        Meta Quest 3 will debut at the upcoming Meta Connect event on Sept. 27. It
+        will come with a 40% slimmer design than its predecessor and high-resolution
+        color mixed reality combining AR/VR elements.</p>\\n\\n\\n\\n<p>But here&#8217;s
+        the exciting part \u2013 Latest rumors suggest that Quest 3 might hit the
+        shelves on Oct. 10, just around two weeks after the Connect.</p>\\n\\n\\n\\n<p>Now,
+        this isn&#8217;t set in stone, but this was reported by an\_<strong>X\_</strong>(formerly
+        Twitter) user named Luna on the platform, who supposedly got the info from
+        an insider at\_<strong>GameStop</strong>.</p>\\n\\n\\n\\n<figure class=\\\"wp-block-embed
+        is-type-rich is-provider-twitter wp-block-embed-twitter\\\"><div class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote
+        class=\\\"twitter-tweet\\\" data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p
+        lang=\\\"en\\\" dir=\\\"ltr\\\">Potential Exclusive:<br>An anonymous source
+        at GameStop reached out to me with Meta Quest 3 promo information they got
+        today ahead of next week&#39;s launch at Meta Connect.<br><br>Release Date:
+        October 10th, 2023<br>SKU #1 128GB, $499 USD<br>SKU #2 ???GB, $649 USD <a
+        href=\\\"https://t.co/ZzvJ99svxP\\\">pic.twitter.com/ZzvJ99svxP</a></p>&mdash;
+        Luna (@Lunayian) <a href=\\\"https://twitter.com/Lunayian/status/1704970519953518804?ref_src=twsrc%5Etfw\\\">September
+        21, 2023</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<p><em>See Also:&nbsp;</em><a
+        target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/23/06/32730028/how-does-apples-vision-pro-compare-with-metas-quest-3\\\"
+        rel=\\\"noreferrer noopener\\\"><em>How Does Apple&#8217;s Vision Pro Compare
+        With Meta&#8217;s Quest 3?</em></a></p>\\n\\n\\n\\n<p>Here&#8217;s a compilation
+        of all the leaks, rumors, and confirmed reports related to Meta Quest 3:&nbsp;</p>\\n\\n\\n\\n<p><strong>Pricing
+        Details:</strong>&nbsp;The base model with 128GB of storage is priced at $499,
+        a detail previously confirmed by Meta CEO&nbsp;<strong>Mark Zuckerberg</strong>.
+        However, the aforementioned leak also suggested a higher-tier model priced
+        at $649. This may come with 512GB of storage.&nbsp;</p>\\n\\n\\n\\n<p><strong>Europe
+        And Britain Price Drops:</strong>&nbsp;Interestingly, Meta has reportedly
+        reduced the base 128GB model prices in select regions. In the EU, the price
+        has dropped from \u20AC569.99 to \u20AC549.99, and in the U.K., it decreased
+        from \xA3499.99 to \xA3479.99.&nbsp;</p>\\n\\n\\n\\n<p>The reason behind these
+        potential price drops remains unclear, but it&#8217;s undoubtedly a welcome
+        development for European customers, considering that the Quest 3 will be the
+        most expensive headset by the company to date.&nbsp;</p>\\n\\n\\n\\n<p><strong>Processor
+        Power:&nbsp;</strong>The Quest 3 is&nbsp;<a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/markets/equities/23/05/32611150/apples-mixed-reality-headset-clash-with-meta-to-play-out-same-way-as-formers-15-year-fight-with-\\\"
+        rel=\\\"noreferrer noopener\\\">expected to be equipped</a>&nbsp;with the
+        new&nbsp;<strong>Qualcomm Snapdragon XR2 Gen 2</strong>&nbsp;chipset, which
+        could deliver &#8220;twice the graphics performance&#8221; of the XR2 Gen
+        1 that powered the&nbsp;<strong>Meta Quest 2</strong>.</p>\\n\\n\\n\\n<p><strong>RAM
+        Revelation:\_</strong>Previously, a\_<strong>Reddit</strong>\_<a href=\\\"https://www.reddit.com/r/OculusQuest/comments/16q6va3/psa_quest_3_will_have_8gb_of_ram_not_12/\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">leak</a>\_quashed previous
+        reports and suggested that the headset would come with 8 GB of RAM, not 12
+        GB. This decision may disappoint some, especially considering that the Meta
+        Quest Pro boasts 12 GB of RAM.</p>\\n\\n\\n\\n<figure class=\\\"wp-block-image
+        size-large\\\"><img decoding=\\\"async\\\" loading=\\\"lazy\\\" width=\\\"1024\\\"
+        height=\\\"594\\\" src=\\\"https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/26053002/Screenshot-2023-09-26-at-2.41.01-PM-1024x594.png\\\"
+        alt=\\\"\\\" class=\\\"wp-image-112761\\\" srcset=\\\"https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/26053002/Screenshot-2023-09-26-at-2.41.01-PM-1024x594.png
+        1024w,https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/26053002/Screenshot-2023-09-26-at-2.41.01-PM-300x174.png
+        300w,https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/26053002/Screenshot-2023-09-26-at-2.41.01-PM-768x446.png
+        768w,https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/26053002/Screenshot-2023-09-26-at-2.41.01-PM-1536x891.png
+        1536w,https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/26053002/Screenshot-2023-09-26-at-2.41.01-PM.png
+        1692w\\\" sizes=\\\"(max-width: 1024px) 100vw, 1024px\\\" /></figure>\\n\\n\\n\\n<p><strong>Passthrough
+        And Display Specs:</strong>&nbsp;The same leaked spec sheet, which seems to
+        be marketing material from Meta, provides details on the &#8220;High-fidelity,
+        full-color passthrough powered by Meta Reality.&#8221; It mentions a 4MP color
+        video passthrough with 18 pixels per degree resolution.&nbsp;</p>\\n\\n\\n\\n<figure
+        class=\\\"wp-block-image size-large\\\"><img decoding=\\\"async\\\" loading=\\\"lazy\\\"
+        width=\\\"1024\\\" height=\\\"594\\\" src=\\\"https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/26053015/Screenshot-2023-09-26-at-2.41.01-PM-1-1024x594.png\\\"
+        alt=\\\"\\\" class=\\\"wp-image-112764\\\" srcset=\\\"https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/26053015/Screenshot-2023-09-26-at-2.41.01-PM-1-1024x594.png
+        1024w,https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/26053015/Screenshot-2023-09-26-at-2.41.01-PM-1-300x174.png
+        300w,https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/26053015/Screenshot-2023-09-26-at-2.41.01-PM-1-768x446.png
+        768w,https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/26053015/Screenshot-2023-09-26-at-2.41.01-PM-1-1536x891.png
+        1536w,https://s3.amazonaws.com/editorial.benzinga.com/wp-content/uploads/2023/09/26053015/Screenshot-2023-09-26-at-2.41.01-PM-1.png
+        1692w\\\" sizes=\\\"(max-width: 1024px) 100vw, 1024px\\\" /></figure>\\n\\n\\n\\n<p>It&#8217;s
+        important to note that the 18 PPD figure is likely specific to the video passthrough
+        function and not indicative of the expected PPD when using the headset in
+        virtual reality, where a higher resolution may be anticipated,&nbsp;<a target=\\\"_blank\\\"
+        href=\\\"https://www.tomsguide.com/news/meta-quest-3-release-date-specs-and-final-prices-just-leaked-ahead-of-connect\\\"
+        rel=\\\"noreferrer noopener\\\">reported</a>&nbsp;Tom&#8217;s Guide.&nbsp;&nbsp;</p>\\n\\n\\n\\n<p><strong>Additional
+        Specs:</strong>&nbsp;Aside from the RAM and passthrough details, the leaked
+        specifications largely confirm what was previously known. The headset is expected
+        to feature an LCD with a resolution of 2064 x 2208 pixels per eye, achieved
+        through pancake lenses.</p>\\n\\n\\n\\n<p><strong>Why It&#8217;s Important:</strong>&nbsp;In
+        June earlier this year,&nbsp;<a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/23/06/32684691/ahead-of-apples-arvr-headset-unveiling-meta-launches-quest-3-heres-everything-you-need-to-know\\\"
+        rel=\\\"noreferrer noopener\\\">Zuckerberg revealed the Quest 3</a>&nbsp;just
+        a few days before Apple launched its Vision Pro.&nbsp;</p>\\n\\n\\n\\n<p>The
+        Meta CEO said the Quest 3 was the ultimate way to experience mixed and virtual
+        reality using a single device.</p>\\n\\n\\n\\n<p>It is worth noting that Apple&#8217;s
+        Vision Pro has a hefty price tag of $3499. While Meta Quest 3 is relatively
+        cheaper,&nbsp;<strong>Quest Pro&nbsp;</strong>is currently priced at $999.99
+        in the U.S.</p>\\n\\n\\n\\n<p>Users will have to wait until early 2024 to
+        get their hands on the Vision Pro in the U.S., which will be released in other
+        countries later in the year.</p>\\n\\n\\n\\n<p><em>Image Credits &#8211; Shutterstock</em></p>\\n\\n\\n\\n<p><em>Check
+        out more of Benzinga&#8217;s Consumer Tech coverage by&nbsp;</em><a target=\\\"_blank\\\"
+        href=\\\"https://www.benzinga.com/topic/consumer-tech\\\" rel=\\\"noreferrer
+        noopener\\\"><em>following this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>Read
+        Next:&nbsp;</em><a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/23/07/33413084/mark-zuckerberg-says-meta-quest-3-will-be-the-first-easily-accessible-mainstream-vr-headset\\\"
+        rel=\\\"noreferrer noopener\\\"><em>Mark Zuckerberg Says Meta Quest 3 Will
+        Be The First Easily Accessible Mainstream VR Headset</em></a></p>\",\"url\":\"https://www.benzinga.com/news/23/09/34900811/meta-quest-3-takes-on-apple-vision-pro-what-you-need-to-know-release-date-specs-and-prices-leak-befo\",\"image\":[{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Meta_Quest_2_0.jpeg\"},{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Meta_Quest_2_0.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Meta_Quest_2_0.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"META\"}],\"tags\":[{\"name\":\"AR/VR\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"gadgets\"},{\"name\":\"Headset\"},{\"name\":\"Mark Zuckerberg\"},{\"name\":\"Meta
+        Connect\"},{\"name\":\"Meta Quest 3\"},{\"name\":\"Meta Quest Pro\"},{\"name\":\"virtual
+        reality\"}]},{\"id\":34897425,\"author\":\"Rounak Jain\",\"created\":\"Tue,
+        26 Sep 2023 05:50:59 -0400\",\"updated\":\"Tue, 26 Sep 2023 05:51:00 -0400\",\"title\":\"OnePlus
+        Is Bringing Apple's Dynamic Island To Its Phones With The OxygenOS 14 Update,
+        But There's A Catch\",\"teaser\":\"OnePlus showed off a slew of new features
+        in the upcoming OxygenOS 14 update. One of the highlights is its take on Apple&#39;s
+        Dynamic Island.\",\"body\":\"<p><strong>Apple Inc.'s (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)</strong>
+        <a href=\\\"https://www.benzinga.com/news/23/09/34758033/apples-iphone-15-ad-misfires-disappearing-dynamic-island-to-misaligned-frames\\\"><strong>Dynamic
+        Island</strong></a> has a new fan \u2013 <strong>OnePlus</strong>. The Android
+        phone maker is now working to bring Dynamic Island to its phones with the
+        <strong>OxygenOS 14</strong> update.</p>\\n\\n\\n\\n<p><strong>What Happened:</strong>
+        OnePlus showed off a slew of new features in the upcoming OxygenOS 14 update,
+        and one of the highlights is its take on Apple's Dynamic Island.</p>\\n\\n\\n\\n<p><em>See
+        Also: </em><a href=\\\"https://www.benzinga.com/news/23/09/34758033/apples-iphone-15-ad-misfires-disappearing-dynamic-island-to-misaligned-frames\\\"><em>Apple&#8217;s
+        iPhone 15 Ad Misfires: Disappearing Dynamic Island To Misaligned Frames</em></a></p>\\n\\n\\n\\n<p>OnePlus
+        is not going the whole hog right now, though \u2013 the first OxygenOS 14
+        beta shows that this Dynamic Island styling has been implemented only for
+        the screen recorder controls.</p>\\n\\n\\n\\n<p>A video posted by a user,
+        Shishir, shows a small information chip on the top left that shows a screen
+        recorder time capsule. When tapped, it opens up a card with recording controls.</p>\\n\\n\\n\\n<figure
+        class=\\\"wp-block-embed is-type-rich is-provider-twitter wp-block-embed-twitter\\\"><div
+        class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote class=\\\"twitter-tweet\\\"
+        data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p lang=\\\"en\\\" dir=\\\"ltr\\\">OnePlus
+        OxygenOS 14 <br><br>iOS style Dynamic Island in action &#x1f440;<br><br>Do
+        you like it? <a href=\\\"https://t.co/qVNh5QiK0g\\\">pic.twitter.com/qVNh5QiK0g</a></p>&mdash;
+        Shishir (@ShishirShelke1) <a href=\\\"https://twitter.com/ShishirShelke1/status/1706330487411671244?ref_src=twsrc%5Etfw\\\">September
+        25, 2023</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<p>The animation
+        reminds us a lot of Apple's Dynamic Island. While the information chip is
+        not centered like it is on Apple's iPhones, the expanded controls and the
+        animation are very similar to Apple's. OnePlus is calling it \u2018Fluid Cloud'.</p>\\n\\n\\n\\n<p>It's
+        unclear whether this feature will be limited to the screen recorder or expanded
+        to other system actions and third-party apps. However, OnePlus has taken the
+        first step to possibly see how it's done and whether users like it or not.</p>\\n\\n\\n\\n<p><strong>More
+        On OxygenOS 14:</strong> The OnePlus 11 will be the first smartphone to get
+        the OxygenOS 14 update based on Android 14. OnePlus has already rolled out
+        the first open beta; the final release is expected in November. Other devices
+        will start getting the update later, with the first open beta update expected
+        scheduled to roll out in November.</p>\\n\\n\\n\\n<p>The update includes security
+        and privacy enhancements, which are a part of Android 14. OnePlus <a href=\\\"https://community.oneplus.com/thread/1427813089402683400\\\">says</a>
+        it has also made some performance improvements using algorithms, but beyond
+        the buzzwords, it remains to be seen how the new update works in the real
+        world.</p>\\n\\n\\n\\n<p><em>Image: Shutterstock/ Framesira</em></p>\\n\\n\\n\\n<p><em>Check
+        out more of Benzinga&#8217;s Consumer Tech coverage by </em><a href=\\\"https://www.benzinga.com/topic/consumer-tech\\\"><em>following
+        this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>Read Next: </em><a href=\\\"https://www.benzinga.com/news/23/09/34859421/i-cant-stand-how-wild-this-is-former-windows-head-is-shocked-that-an-iphone-15-can-offer-a-desktop-l\\\"><em>&#8216;I
+        Can&#8217;t Stand How Wild This Is&#8217;: Former Windows Head Is Shocked
+        That An iPhone 15 Can Offer A Desktop-Like Experience</em></a></p>\",\"url\":\"https://www.benzinga.com/news/23/09/34897425/oneplus-is-bringing-apples-dynamic-island-to-its-phones-with-the-oxygenos-14-update-but-theres-a-cat\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/OnePlus_smartphones_0.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/OnePlus_smartphones_0.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/OnePlus_smartphones_0.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"gadgets\"},{\"name\":\"OnePlus\"},{\"name\":\"OxygenOS\"},{\"name\":\"Software
+        &amp; Apps\"}]},{\"id\":34892882,\"author\":\"Benzinga Neuro\",\"created\":\"Tue,
+        26 Sep 2023 03:43:29 -0400\",\"updated\":\"Tue, 26 Sep 2023 03:43:29 -0400\",\"title\":\"Microsoft,
+        Amazon And Google Among Best AI Investment Bets: Analysts\",\"teaser\":\"
+        \",\"body\":\"<p><strong>TD Cowen</strong> has expressed increased optimism
+        for the prospects of major cloud computing vendors including\_<strong>Amazon</strong>
+        <strong>Inc</strong>\_(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/AMZN#NASDAQ\\\">AMZN</a>),\_<strong>Microsoft</strong>
+        <strong>Corporation</strong>\_(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>),
+        and\_<strong>Google</strong>-parent<strong> Alphabet</strong> <strong>Inc</strong>\_(NASDAQ:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOGL#NASDAQ\\\">GOOGL</a>)
+        (NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/GOOG#NASDAQ\\\">GOOG</a>),
+        driven by the potential of generative artificial intelligence (AI) projects,
+        Barron&#8217;s <a href=\\\"https://www.barrons.com/amp/articles/amazon-microsoft-alphabet-google-cloud-stocks-buy-979fe96a\\\">reported</a>.
+        </p>\\n\\n\\n\\n<p>Cowen&#8217;s technology analyst team maintained Outperform
+        ratings for these tech behemoths, based on their recent&nbsp;annual survey
+        results from 680&nbsp;U.S. technology customers.</p>\\n\\n\\n\\n<p><em>See
+        Also:&nbsp;<a href=\\\"https://www.benzinga.com/news/23/09/34839003/jamie-raskin-says-government-shutdown-may-spell-trouble-for-matt-gaetz-marjorie-taylor-going-to-end?itm_source=parsely-api\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">Raskin Warns Shutdown
+        Could Spell Trouble Gaetz, Taylor Greene</a></em></p>\\n\\n\\n\\n<p>The team
+        stated, &#8220;Cloud computing's cost&nbsp;savings cycle makes way for&nbsp;burgeoning
+        Gen AI.&#8221;</p>\\n\\n\\n\\n<p>The survey results indicated a positive outlook
+        for Amazon Web Services, Microsoft Azure, and Google Cloud Platform.</p>\\n\\n\\n\\n<p>The
+        survey indicated that 76% of respondents were likely to conclude&nbsp;their
+        cost optimization or efficiency&nbsp;programs for cloud spending by&nbsp;the
+        end of the year. Furthermore, generative AI projects&nbsp;topped the list
+        of cloud&nbsp;priorities for about 75% of the survey buyers planning to spend
+        on them in the next three years.</p>\\n\\n\\n\\n<p>TD Cowen set the stock
+        price target at&nbsp;$165 for Amazon, $390 for&nbsp;Microsoft, and $150 for
+        Alphabet.&nbsp;As of Monday,&nbsp;Amazon shares rose 1.8% to&nbsp;$131.42,&nbsp;Microsoft
+        fell 0.2% to $316.24,&nbsp;and Alphabet traded up 0.4%&nbsp;to $130.79.</p>\\n\\n\\n\\n<p><em>Read
+        Next: Contemporary art has globally outperformed the S&amp;P 500 between 1995
+        and 2022. These curated pieces could do even better and you can own their
+        shares. Click&nbsp;<a href=\\\"https://www.benzinga.com/alternative-investments/collectibles\\\">here
+        to check them out.</a></em></p>\\n\\n\\n\\n<p><em>Image Credits &#8211; Shuttertcock</em></p>\\n\\n\\n\\n<div
+        style=\\\"font-family: 'Lato', sans-serif\\\">\\n    <div>\\n        <hr style=\\\"border:
+        0;height: 5px;background: #225aa9\\\">\\n        <div style=\\\"background-color:
+        #f5f5f5;background-position: center;background-size: cover;justify-content:
+        center\\\"></div>\\n        <p style=\\\"font-family: sans-serif;padding-top:
+        20px\\\">\\n            Engineered by <span style=\\\"font-weight: bold;text-decoration:
+        none;color: #225aa9;font-size: 1rem\\\">Benzinga Neuro</span>, Edited by <span
+        style=\\\"font-weight: bold;text-decoration: none;color: #225aa9;font-size:
+        1rem\\\">\\n                <u>Pooja Rajkumari</u>\\n            </span>\\n
+        \       </p>\\n        <hr style=\\\"border: 0;height: 1px;background: #225aa9\\\">\\n
+        \       <p style=\\\"font-family: sans-serif;padding-top: 20px\\\">\\n            The
+        GPT-4 Benzinga Neuro content generation system exploits the extensive Benzinga
+        Ecosystem, including native data, APIs, and more to create comprehensive and
+        timely stories for you.\\n            <a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\"
+        target=\\\"_blank\\\" rel=\\\"noopener\\\" style=\\\"color: #225aa9;text-decoration:
+        none\\\">Learn more.</a>\\n        </p>\\n        <hr style=\\\"border: 0;height:
+        5px;background: #225aa9\\\">\\n    </div>\\n</div>\",\"url\":\"https://www.benzinga.com/analyst-ratings/analyst-color/23/09/34892882/microsoft-amazon-and-google-among-best-ai-investment-bets-analysts\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Artificial_Intelligence_AI_1.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Artificial_Intelligence_AI_1.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Artificial_Intelligence_AI_1.jpeg\"}],\"channels\":[{\"name\":\"Analyst
+        Color\"},{\"name\":\"News\"},{\"name\":\"Analyst Ratings\"},{\"name\":\"Media\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"AMZN\"},{\"name\":\"GOOG\"},{\"name\":\"GOOGL\"},{\"name\":\"MSFT\"}],\"tags\":[{\"name\":\"AI
+        Investment\"},{\"name\":\"Amazon\"},{\"name\":\"Google\"},{\"name\":\"Microsoft\"}]},{\"id\":34891432,\"author\":\"Benzinga
+        Neuro\",\"created\":\"Tue, 26 Sep 2023 03:05:30 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 08:12:40 -0400\",\"title\":\"iPhone 15's FineWoven Cases Look
+        Like A Fine Mess, But Tim Cook's Team Has A Strategy For It\",\"teaser\":\"In
+        wake of the negative response to FineWoven cases for iPhone 15,\_Apple has
+        dispatched a\_memo to its retail employees, outlining how to address customer
+        concerns.\",\"body\":\"<p>In the wake of the negative response to its FineWoven
+        cases for the latest iPhone 15,&nbsp;Apple Inc.&nbsp;(NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>)&nbsp;has
+        dispatched a&nbsp;memo to its retail employees outlining how to address customer
+        concerns.</p>\\n\\n\\n\\n<p><strong>What Happened</strong>:&nbsp;Apple is
+        grappling with a poor reception of its newly launched FineWoven cases. The
+        memo, sent to Apple&#8217;s retail staff, gives insights on responding to
+        inquiries about the case&#8217;s durability, material construction, and care,
+        <a href=\\\"https://9to5mac.com/2023/09/25/iphone-15-finewoven-complaints-retail-stores/\\\">reported</a>
+        9to5Mac.</p>\\n\\n\\n\\n<p><em>See Also: <a href=\\\"https://www.benzinga.com/news/23/09/34864785/early-iphone-15-pro-buyers-complain-of-overheating-some-report-throttling-and-discoloration-issues\\\">Early
+        iPhone 15 Pro Buyers Complain Of Overheating, Some Report Throttling And Discoloration
+        Issues</a></em></p>\\n\\n\\n\\n<p>The memo reads, &#8220;You&nbsp;may get
+        questions from customers&nbsp;about the appearance of the&nbsp;new FineWoven
+        material, how it&nbsp;wears over time, and how&nbsp;to care for it.&#8221;
+        Apple&#8217;s retail staff is advised to inform customers that the FineWoven
+        material is a &#8220;luxurious microtwill&#8221; with a &#8220;soft yet durable
+        suede-like texture.&#8221;</p>\\n\\n\\n\\n<p>Staff members are directed to
+        address durability concerns by informing customers that FineWoven cases may
+        exhibit signs of wear over time due to fiber compression from regular use.
+        Apple also restates that &#8220;MagSafe&nbsp;accessories on the FineWoven
+        Case&nbsp;with MagSafe will leave slight&nbsp;imprints,&#8221; a point previously
+        communicated by the company.</p>\\n\\n\\n\\n<p>By likening these characteristics
+        to leather and other materials, Apple suggests a shift away from leather cases.
+        However, the backlash against FineWoven cases could potentially affect customers&#8217;
+        inclination towards environmentally friendly alternatives in the future.</p>\\n\\n\\n\\n<p>Apple
+        has also provided its staff with guidelines on cleaning FineWoven accessories,
+        in line with its support document on &#8220;how to clean your Apple products.&#8221;</p>\\n\\n\\n\\n<p><strong>Why
+        It Matters</strong>: This move comes on the heels of other complaints associated
+        with the iPhone 15. Some early buyers of the iPhone 15 Pro are <a href=\\\"https://www.benzinga.com/news/23/09/34864785/early-iphone-15-pro-buyers-complain-of-overheating-some-report-throttling-and-discoloration-issues\\\">reporting
+        issues</a> like overheating, throttling, and scratches on the new titanium
+        design. The recent FineWoven case debacle adds to the mounting concerns about
+        the latest iPhone model, underlining the need for Apple to address these issues
+        swiftly and proactively.</p>\\n\\n\\n\\n<p><em>Image &#8211; Apple</em></p>\\n\\n\\n\\n<p><em>Read
+        Next: Until 2016, it was illegal for retail investors to invest in high-growth
+        startups. Thanks to changes in federal law, this Kevin O&#8217;Leary-Backed
+        Startup Lets You Become&nbsp;<a href=\\\"https://www.benzinga.com/news/23/04/32102088/kevin-oleary-backed-startup-lets-you-become-a-venture-capitalist-with-100\\\">a
+        Venture Capitalist With $100.</a></em></p>\\n\\n\\n\\n<!--Actual content-->\\n
+        \   <div style=\\\"font-family: 'Lato', sans-serif\\\">\\n      <hr style=\\\"border:
+        0;height: 5px;background: #225aa9\\\">\\n      <div style=\\\"background-color:
+        #f5f5f5;background-position: center;background-size: cover;justify-content:
+        center\\\"></div>\\n      <p style=\\\"font-family: sans-serif;padding-top:
+        20px\\\">\\n        Engineered by\\n        <span style=\\\"font-weight: bold;text-decoration:
+        none;color: #225aa9;font-size: 1rem\\\">Benzinga Neuro</span>, Edited by\\n
+        \       <span style=\\\"font-weight: bold;text-decoration: none;color: #225aa9;font-size:
+        1rem\\\">\\n          <u><a href=\\\"None\\\" target=\\\"_blank\\\" rel=\\\"noopener\\\"
+        style=\\\"color: #225aa9;text-decoration: none\\\">\\n              Rounak
+        Jain</a></u>\\n        </span>\\n      </p>\\n      <hr style=\\\"border:
+        0;height: 1px;background: #225aa9\\\">\\n      <p style=\\\"font-family: sans-serif;padding-top:
+        20px\\\">\\n        The GPT-4-based Benzinga Neuro content generation system
+        exploits the\\n        extensive Benzinga Ecosystem, including native data,
+        APIs, and more to\\n        create comprehensive and timely stories for you.\\n
+        \       <a href=\\\"https://www.benzinga.com/author/benzinga-neuro\\\" target=\\\"_blank\\\"
+        rel=\\\"noopener\\\" style=\\\"color: #225aa9;text-decoration: none\\\">Learn
+        more.</a>\\n      </p>\\n      <hr style=\\\"border: 0;height: 5px;background:
+        #225aa9\\\">\\n    </div>\\n    <!--Actual content end-->\",\"url\":\"https://www.benzinga.com/news/23/09/34891432/iphone-15s-finewoven-cases-look-like-a-fine-mess-but-tim-cooks-team-has-a-strategy-for-retail-teams\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Apple_iPhone_case_0.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Apple_iPhone_case_0.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Apple_iPhone_case_0.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"}]},{\"id\":34889807,\"author\":\"Ananya Gairola\",\"created\":\"Tue,
+        26 Sep 2023 02:08:55 -0400\",\"updated\":\"Tue, 26 Sep 2023 02:08:56 -0400\",\"title\":\"iPhone
+        15 Pro Max Vs. Samsung Galaxy S23 Ultra: Which Takes The Best Moon Shots?
+        The Winner Is Clear, But...\",\"teaser\":\"A leaker known as Ice Universe
+        on Twitter, now rebranded as X, shared side-by-side images of moon shots taken
+        with the iPhone 15 Pro Max and the Samsung Galaxy S23 Ultra.\",\"body\":\"<p>In
+        a comparison between\_<strong>Apple Inc.</strong>&#8216;s (NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>) iPhone 15
+        Pro Max and\_<strong>Samsung Electronics</strong> (OTC:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/SSNLF#OTC\\\">SSNLF</a>) Galaxy S23
+        Ultra, the differences in their\_<a href=\\\"https://www.benzinga.com/news/23/03/31337919/samsung-is-allegedly-faking-zoom-photos-of-the-moon-wonder-how-elon-musk-will-react-now\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">moon photography capabilities</a>\_have
+        sparked discussions on why Apple&#8217;s latest high-end smartphone may have
+        limitations in this aspect compared to Samsung&#8217;s flagship model.</p>\\n\\n\\n\\n<p><strong>What
+        Happened</strong>: On Monday, a leaker known as Ice Universe on Twitter, now
+        rebranded as X, shared side-by-side images of moon shots taken with the iPhone
+        15 Pro Max and the Samsung Galaxy S23 Ultra. These photos were captured at
+        a 25x zoom level.</p>\\n\\n\\n\\n<p><em>See Also:&nbsp;</em><a target=\\\"_blank\\\"
+        href=\\\"https://www.benzinga.com/news/23/09/34671801/tim-cook-defends-apples-stance-why-cupertino-wont-abandon-elon-musks-x-amid-adl-controversy\\\"
+        rel=\\\"noreferrer noopener\\\"><em>Tim Cook Defends Apple&#8217;s Stance:
+        Why Cupertino Won&#8217;t Abandon Elon Musk&#8217;s X Amid ADL Controversy</em></a></p>\\n\\n\\n\\n<p>The
+        image taken with the iPhone 15 Pro Max showed the moon as a somewhat overexposed
+        light source, lacking the defined details one would expect from a high-end
+        smartphone camera. In contrast, the picture taken with the Galaxy S23 Ultra
+        presented a clearer and more detailed view of the lunar surface.</p>\\n\\n\\n\\n<p>In
+        response to questions about potential bias, the leaker defended the iPhone
+        15 Pro Max&#8217;s results, explaining that attempts were made to manually
+        reduce the brightness to improve the photos. However, the iPhone struggled
+        to focus and capture clear details during this process.</p>\\n\\n\\n\\n<figure
+        class=\\\"wp-block-embed is-type-rich is-provider-twitter wp-block-embed-twitter\\\"><div
+        class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote class=\\\"twitter-tweet\\\"
+        data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p lang=\\\"en\\\" dir=\\\"ltr\\\">Some
+        people question that I deliberately overexpose the moon photos taken by iPhone
+        15 pro max, which is a slander. I tried to take a lot of moon photos and tried
+        to manually reduce the brightness many times, but in the process of reducing
+        the brightness, the iPhone was difficult\u2026 <a href=\\\"https://t.co/u73OnswtYk\\\">pic.twitter.com/u73OnswtYk</a></p>&mdash;
+        ICE UNIVERSE (@UniverseIce) <a href=\\\"https://twitter.com/UniverseIce/status/1706469909000257778?ref_src=twsrc%5Etfw\\\">September
+        26, 2023</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<p>Naturally,
+        netizens were quick to jump into the comment section, and while some said
+        that the leaker&#8217;s skills are subpar, others said that &#8220;S23 ultra
+        destroys the iPhone.&#8221;</p>\\n\\n\\n\\n<figure class=\\\"wp-block-embed
+        is-type-rich is-provider-twitter wp-block-embed-twitter\\\"><div class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote
+        class=\\\"twitter-tweet\\\" data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p
+        lang=\\\"en\\\" dir=\\\"ltr\\\">Iphone sucks</p>&mdash; Texas Made (@ramirezdtx)
+        <a href=\\\"https://twitter.com/ramirezdtx/status/1706473561353773380?ref_src=twsrc%5Etfw\\\">September
+        26, 2023</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<figure class=\\\"wp-block-embed
+        is-type-rich is-provider-twitter wp-block-embed-twitter\\\"><div class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote
+        class=\\\"twitter-tweet\\\" data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p
+        lang=\\\"en\\\" dir=\\\"ltr\\\">Use the S23 ultra you will get a good moon
+        shot</p>&mdash; Dale Sr. (@DaleSr141) <a href=\\\"https://twitter.com/DaleSr141/status/1706499786914893959?ref_src=twsrc%5Etfw\\\">September
+        26, 2023</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<figure class=\\\"wp-block-embed
+        is-type-rich is-provider-twitter wp-block-embed-twitter\\\"><div class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote
+        class=\\\"twitter-tweet\\\" data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p
+        lang=\\\"en\\\" dir=\\\"ltr\\\">Moon shots are always difficult on iPhone</p>&mdash;
+        necondaa (@necondaa007) <a href=\\\"https://twitter.com/necondaa007/status/1706472445484597657?ref_src=twsrc%5Etfw\\\">September
+        26, 2023</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<p><strong>Why
+        It&#8217;s Important:&nbsp;</strong>The&nbsp;<a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/23/05/32623067/how-to-take-the-perfect-moon-shot-using-an-iphone-14\\\"
+        rel=\\\"noreferrer noopener\\\">debate between Samsung and Apple</a>&nbsp;in
+        the realm of moon photography isn&#8217;t new.&nbsp;</p>\\n\\n\\n\\n<p>Samsung&#8217;s
+        &#8220;Space Zoom&#8221; feature has garnered attention for its&nbsp;<a target=\\\"_blank\\\"
+        href=\\\"https://www.benzinga.com/news/23/02/30750200/no-its-not-an-iphone-elon-musk-impressed-by-this-smartphones-insane-zoom-capability\\\"
+        rel=\\\"noreferrer noopener\\\">ability to capture detailed moon photos</a>.
+        However, discussions have arisen regarding the authenticity of these images,
+        with some suggesting that Samsung&#8217;s devices add details that were originally
+        absent.</p>\\n\\n\\n\\n<p>In 2021, Input Mag published a feature investigating
+        the &#8220;fake detailed moon photos&#8221; captured by the&nbsp;<strong>Galaxy
+        S21 Ultra</strong>. Samsung maintained that they do not overlay images or
+        apply texture effects but use AI to enhance details by reducing blurs and
+        noise.</p>\\n\\n\\n\\n<p>While the exact methods remain mysterious, it&#8217;s
+        clear that Samsung&#8217;s approach to moon photography involves AI processing,
+        potentially generating details that didn&#8217;t exist in the original photo.</p>\\n\\n\\n\\n<p><em>Check
+        out more of Benzinga&#8217;s Consumer Tech coverage by&nbsp;</em><a target=\\\"_blank\\\"
+        href=\\\"https://www.benzinga.com/topic/consumer-tech\\\" rel=\\\"noreferrer
+        noopener\\\"><em>following this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>Read
+        Next:&nbsp;</em><a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/23/09/34835034/tesla-ceo-elon-musk-is-so-impressed-by-apples-iphone-15-photos-that-he-tells-tim-cook-im-buying-one\\\"
+        rel=\\\"noreferrer noopener\\\"><em>Tesla CEO Elon Musk Is So Impressed By
+        Apple&#8217;s iPhone 15 Photos That He Tells Tim Cook, &#8216;I&#8217;m Buying
+        One&#8217;</em></a></p>\",\"url\":\"https://www.benzinga.com/news/23/09/34889807/iphone-15-pro-max-vs-samsung-galaxy-s23-ultra-which-takes-the-best-moon-shots-the-winner-is-clear-bu\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/iPhone_15_Pro_Max_vs_Samsung_Galaxy_S23_Ultra_Moon_Shot.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/iPhone_15_Pro_Max_vs_Samsung_Galaxy_S23_Ultra_Moon_Shot.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/iPhone_15_Pro_Max_vs_Samsung_Galaxy_S23_Ultra_Moon_Shot.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"AAPL\"},{\"name\":\"SSNLF\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"gadgets\"},{\"name\":\"Galaxy S23 Ultra\"},{\"name\":\"Ice
+        Universe\"},{\"name\":\"iPhone 15 Pro Max\"},{\"name\":\"Moon Photography\"},{\"name\":\"Moon
+        Shots\"},{\"name\":\"Samsung\"},{\"name\":\"twitter\"},{\"name\":\"X\"}]},{\"id\":34887472,\"author\":\"Ananya
+        Gairola\",\"created\":\"Mon, 25 Sep 2023 23:43:12 -0400\",\"updated\":\"Tue,
+        26 Sep 2023 00:55:35 -0400\",\"title\":\"What is Apple's 'Project Nova' And
+        Will It Put A Dedicated Camera Shutter Button On iPhone 16?\",\"teaser\":\"Rumors
+        suggest that Apple is exploring the addition of a dedicated camera shutter
+        button, called the &#34;Capture Button,&#34; to its iPhone 16 models, enhancing
+        photography functionality and user experience.\",\"body\":\"<p>Latest rumors
+        suggest that&nbsp;<strong>Apple Inc.</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\"
+        href=\\\"https://www.benzinga.com/stock/AAPL#NASDAQ\\\">AAPL</a>) might be
+        considering the addition of a dedicated camera shutter button to its&nbsp;<strong>iPhone
+        16&nbsp;</strong>models,&nbsp;<a href=\\\"https://www.benzinga.com/news/23/08/33873580/apple-iphone-16-pro-could-go-big-on-cameras-and-wireless-connectivity\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">expected to launch next
+        year</a>.&nbsp;</p>\\n\\n\\n\\n<p><strong>What Happened:</strong>&nbsp;Apple
+        could incorporate a capacitive &#8220;Capture Button&#8221; just below the
+        sleep/wake button,&nbsp;<a target=\\\"_blank\\\" href=\\\"https://www.macrumors.com/2023/09/25/iphone-16-capture-button/\\\"
+        rel=\\\"noreferrer noopener\\\">reported</a>&nbsp;MacRumors, citing unnamed
+        sources.&nbsp;</p>\\n\\n\\n\\n<p>While the exact function of this button remains
+        undisclosed, its name strongly hints at its role as a dedicated camera shutter.</p>\\n\\n\\n\\n<p><em>See
+        Also:&nbsp;</em><a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/23/09/34822526/iphone-15-series-will-higher-prices-and-exclusive-features-boost-apples-q4-revenue\\\"
+        rel=\\\"noreferrer noopener\\\"><em>iPhone 15 Series: Will Higher Prices And
+        Exclusive Features Boost Apple&#8217;s Q4 Revenue?</em></a></p>\\n\\n\\n\\n<p>According
+        to the source, internally, the &#8220;Capture Button&#8221; is referred to
+        as &#8220;Project Nova,&#8221; while the transformation of the Action button
+        into a capacitive feature is known as &#8220;Project Atlas.&#8221; Previously,
+        &#8220;Project Bongo&#8221; was the codename used for the implementation of
+        capacitive buttons on the remaining controls.</p>\\n\\n\\n\\n<p>This development
+        comes after a previously reported attempt to introduce capacitive buttons
+        on the iPhone 15, which was eventually abandoned during development.&nbsp;</p>\\n\\n\\n\\n<p>In
+        addition to the &#8220;Capture Button,&#8221; the&nbsp;<strong>Action</strong>&nbsp;button
+        would undergo a capacitive transformation, enhancing user interaction.</p>\\n\\n\\n\\n<p>These
+        new capacitive buttons could have pressure sensors, allowing them to respond
+        to the force applied during a press, which could reduce accidental button
+        activations \u2014 a common issue for smartphone users.</p>\\n\\n\\n\\n<p>Moreover,
+        the mmWave cutout, initially situated below the sleep/wake button, is rumored
+        to be repositioned below the volume buttons on the opposite side. This change
+        in layout would apply to devices equipped with a physical SIM slot, the report
+        noted.&nbsp;</p>\\n\\n\\n\\n<p>Although the credibility of this information
+        remains uncertain due to the anonymous source, if these rumors hold true,
+        the iPhone 16 would boast an outer frame with the highest number of elements
+        ever.</p>\\n\\n\\n\\n<p><strong>Why It&#8217;s Important:</strong>&nbsp;Previously,
+        it was reported Apple could use a new technology that would make the iPhone
+        16&#8217;s display&nbsp;<a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/23/09/34168559/apple-is-cooking-up-a-secret-recipe-to-make-the-iphone-16-display-brighter-and-more-efficient\\\"
+        rel=\\\"noreferrer noopener\\\">brighter and more efficient</a>&nbsp;at the
+        same time.</p>\\n\\n\\n\\n<p>Analyst&nbsp;<strong>Jeff Pu</strong>&nbsp;of&nbsp;<strong>Haitong
+        International Securities&nbsp;</strong>has also offered insights into potential
+        upgrades for the iPhone 16 Pro, which include the&nbsp;<a target=\\\"_blank\\\"
+        href=\\\"https://www.benzinga.com/analyst-ratings/analyst-color/22/03/26314706/iphone-14-pro-could-be-coming-with-larger-rear-camera-bump-apple-analyst-explains-w\\\"
+        rel=\\\"noreferrer noopener\\\">adoption of a 48-megapixel</a>&nbsp;Ultra
+        Wide camera sensor\u2014a significant improvement from the current 12-megapixel
+        sensor.</p>\\n\\n\\n\\n<p>Pu&#8217;s research also indicates that Apple is
+        exploring the integration of Wi-Fi 7 technology within the iPhone 16 Pro lineup.</p>\\n\\n\\n\\n<p>In
+        May, it was reported that the iPhone 16 Pro Max model could be dubbed the
+        iPhone 16 Ultra, as it could&nbsp;<a href=\\\"https://www.benzinga.com/news/23/05/32524166/apples-iphone-16-pro-max-design-leak-reveals-impossibly-gigantic-display\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">have a larger display
+        size</a>.&nbsp;</p>\\n\\n\\n\\n<p><em>Image Credits &#8211; Shutterstock</em></p>\\n\\n\\n\\n<p><em>Check
+        out more of Benzinga&#8217;s Consumer Tech coverage by&nbsp;</em><a target=\\\"_blank\\\"
+        href=\\\"https://www.benzinga.com/topic/consumer-tech\\\" rel=\\\"noreferrer
+        noopener\\\"><em>following this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>Read
+        Next:&nbsp;</em><a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/23/09/34835034/tesla-ceo-elon-musk-is-so-impressed-by-apples-iphone-15-photos-that-he-tells-tim-cook-im-buying-one\\\"
+        rel=\\\"noreferrer noopener\\\"><em>Tesla CEO Elon Musk Is So Impressed By
+        Apple&#8217;s iPhone 15 Photos That He Tells Tim Cook, &#8216;I&#8217;m Buying
+        One&#8217;</em></a></p>\",\"url\":\"https://www.benzinga.com/news/23/09/34887472/what-is-apples-project-nova-and-will-it-put-a-dedicated-camera-shutter-button-on-iphone-16\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/iPhone_11.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/iPhone_11.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/iPhone_11.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"},{\"name\":\"Media\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Apple\"},{\"name\":\"Appleverse\"},{\"name\":\"camera
+        shutter\"},{\"name\":\"capacitive buttons\"},{\"name\":\"Capture Button\"},{\"name\":\"Consumer
+        Tech\"},{\"name\":\"iPhone 16\"},{\"name\":\"Jeff Pu\"},{\"name\":\"Wi-Fi
+        7\"}]},{\"id\":34886447,\"author\":\"Ananya Gairola\",\"created\":\"Mon, 25
+        Sep 2023 22:03:35 -0400\",\"updated\":\"Tue, 26 Sep 2023 02:31:32 -0400\",\"title\":\"Elon
+        Musk Wowed By Spotify's Latest Podcast Translation Feature, Developed With
+        OpenAI's Help\",\"teaser\":\"Spotify has launched an AI-powered voice translation
+        feature for podcasts that replicates hosts&#39; voices in multiple languages,
+        earning praise from Elon Musk for its innovative use of technology to bridge
+        language gaps in audio content.\",\"body\":\"<p><strong>Spotify Inc.</strong>&nbsp;(NYSE:<a
+        class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/SPOT#NYSE\\\">SPOT</a>)
+        has unveiled a&nbsp;<a href=\\\"https://www.benzinga.com/news/23/09/34886370/trevor-noah-dax-shepard-steven-bartlett-will-sound-natural-in-spanish-french-german-spotify-tests-ne\\\"
+        target=\\\"_blank\\\" rel=\\\"noreferrer noopener\\\">new voice translation
+        feature</a>&nbsp;for podcasts, earning praise from&nbsp;<strong>Elon Musk</strong>&nbsp;as
+        the streaming giant explores AI-driven technology to bridge language gaps
+        in the world of audio content.</p>\\n\\n\\n\\n<p><strong>What Happened:&nbsp;</strong>Spotify
+        has initiated a trial phase for an AI-powered feature to translate and replicate
+        podcast hosts&#8217; voices into multiple languages.&nbsp;</p>\\n\\n\\n\\n<p>The
+        platform aims to provide a seamless listening experience in Spanish, French,
+        and German by recreating the original speakers&#8217; tone, rhythm, and pace.</p>\\n\\n\\n\\n<p><em>See
+        Also:&nbsp;</em><a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/23/07/33093015/is-elon-musk-now-taking-on-joe-rogan-and-spotify-twitter-set-to-unleash-3-hour-podcast-videos\\\"
+        rel=\\\"noreferrer noopener\\\"><em>Is Elon Musk Now Taking On Joe Rogan And
+        Spotify? Twitter Set To Unleash 3-Hour Podcast Videos</em></a></p>\\n\\n\\n\\n<p>Renowned
+        Russian-American computer scientist and podcast host<strong>&nbsp;Lex Fridman</strong>&nbsp;expressed
+        his excitement on&nbsp;<strong>X</strong>, formerly&nbsp;<strong>Twitter</strong>,
+        about the capabilities of Spotify&#8217;s AI-driven translation and voice
+        cloning.&nbsp;</p>\\n\\n\\n\\n<p>In response, Musk, the visionary behind companies
+        like&nbsp;<strong>Tesla&nbsp;</strong>and&nbsp;<strong>SpaceX</strong>, responded
+        with a simple &#8220;Wow.&#8221;</p>\\n\\n\\n\\n<figure class=\\\"wp-block-embed
+        is-type-rich is-provider-twitter wp-block-embed-twitter\\\"><div class=\\\"wp-block-embed__wrapper\\\">\\n<blockquote
+        class=\\\"twitter-tweet\\\" data-width=\\\"500\\\" data-dnt=\\\"true\\\"><p
+        lang=\\\"und\\\" dir=\\\"ltr\\\">Wow</p>&mdash; Elon Musk (@elonmusk) <a href=\\\"https://twitter.com/elonmusk/status/1706376479720788022?ref_src=twsrc%5Etfw\\\">September
+        25, 2023</a></blockquote><script async src=\\\"https://platform.twitter.com/widgets.js\\\"
+        charset=\\\"utf-8\\\"></script>\\n</div></figure>\\n\\n\\n\\n<p>The tool crafted
+        by Spotify harnesses cutting-edge advancements, including&nbsp;<strong>Microsoft
+        Corporation</strong>&nbsp;(NASDAQ:<a class=\\\"ticker\\\" href=\\\"https://www.benzinga.com/stock/MSFT#NASDAQ\\\">MSFT</a>)-backed&nbsp;<strong>OpenAI&#8217;s</strong>&nbsp;recently
+        unveiled&nbsp;<a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/23/09/34865577/chatgpt-introduces-verbal-responses-challenging-siri-and-alexa\\\"
+        rel=\\\"noreferrer noopener\\\">voice generation technology</a>.</p>\\n\\n\\n\\n<p><strong>Why
+        It&#8217;s Important:&nbsp;</strong>Early tests of this technology have been
+        conducted on popular English-language podcasts, including &#8220;Armchair
+        Expert,&#8221; &#8220;The Diary of a CEO,&#8221; and &#8220;The Rewatchables.&#8221;&nbsp;</p>\\n\\n\\n\\n<p>Spotify
+        intends to expand the feature to encompass more podcasts, even venturing into
+        AI-dubbed content for multilingual hosts, such as<strong>&nbsp;Trevor Noah</strong>.</p>\\n\\n\\n\\n<p><em>Photo
+        by Daniel Oberhaus on Flickr.</em></p>\\n\\n\\n\\n<p><em>Check out more of
+        Benzinga&#8217;s Consumer Tech coverage by&nbsp;</em><a target=\\\"_blank\\\"
+        href=\\\"https://www.benzinga.com/topic/consumer-tech\\\" rel=\\\"noreferrer
+        noopener\\\"><em>following this link</em></a><em>.</em></p>\\n\\n\\n\\n<p><em>Read
+        Next:&nbsp;</em><a target=\\\"_blank\\\" href=\\\"https://www.benzinga.com/news/23/05/32106948/app-store-showdown-elon-musk-amp-spotify-ceo-call-out-apples-stranglehold-on-twitter-subscriptions\\\"
+        rel=\\\"noreferrer noopener\\\"><em>App Store Showdown: Elon Musk &amp; Spotify
+        CEO Call Out Apple&#8217;s Stranglehold On Twitter Subscriptions</em></a></p>\",\"url\":\"https://www.benzinga.com/news/23/09/34886447/elon-musk-wows-spotifys-latest-podcast-translation-feature-developed-with-openais-help\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/Elon_Musk._Photo_by_Daniel_Oberhaus_on_Flickr._10.jpeg\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/Elon_Musk._Photo_by_Daniel_Oberhaus_on_Flickr._10.jpeg\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/Elon_Musk._Photo_by_Daniel_Oberhaus_on_Flickr._10.jpeg\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Tech\"}],\"stocks\":[{\"name\":\"MSFT\"},{\"name\":\"SPOT\"}],\"tags\":[{\"name\":\"artificial
+        intelligence\"},{\"name\":\"Consumer Tech\"},{\"name\":\"Elon Musk\"},{\"name\":\"Lex
+        Fridman Podcast\"},{\"name\":\"OpenAi\"},{\"name\":\"Software &amp; Apps\"},{\"name\":\"Spotify\"},{\"name\":\"Trevor
+        Noah\"},{\"name\":\"twitter\"}]},{\"id\":34881454,\"author\":\"Natan Ponieman\",\"created\":\"Mon,
+        25 Sep 2023 16:57:52 -0400\",\"updated\":\"Mon, 25 Sep 2023 18:41:15 -0400\",\"title\":\"Tax
+        Cuts From The Bush And Trump Eras Have Cost The Government $10 Trillion It
+        Now Owes\",\"teaser\":\"Tax cuts enacted by the Bush and Trump administrations,
+        with support from Congress, will cost the government an added $10 trillion
+        in revenue by the end of this year.\",\"body\":\"<p>As the U.S. Congress grapples
+        with a deadlock battle over government spending <a href=\\\"https://www.benzinga.com/government/23/09/34852831/a-look-at-the-history-how-many-times-has-the-federal-government-shut-down\\\">that
+        could soon lead to a government shutdown</a>, the country is also suffering
+        the highest peak in government debt of its history.</p>\\n\\n\\n\\n<p>While
+        the most conservative side of Republican lawmakers are arguing for spending
+        cuts to compensate for a mounting debt that now reaches $33 trillion, a recent
+        report puts Republican governments to blame.</p>\\n\\n\\n\\n<p>According to
+        the non-partisan think tank Center for American Progress, tax cuts enacted
+        by the Bush and Trump administrations, with support from Congress, will cost
+        the government an added $10 trillion in revenue by the end of this year.</p>\\n\\n\\n\\n<p><strong>The
+        Perils of a Shutdown: </strong>A shutdown would have significant impacts on
+        the economy, potentially affecting <a href=\\\"https://www.benzinga.com/markets/equities/23/09/34542479/2-major-sectors-will-likely-take-the-hit-if-government-shuts-down-in-october\\\">the
+        stock market, several industries</a> and <a href=\\\"https://www.benzinga.com/news/23/09/34753611/full-government-shutdown-could-stall-feds-interest-rate-hike-pimco\\\">an
+        upcoming Fed decision to raise interest rates</a>.</p>\\n\\n\\n\\n<p>Over
+        the weekend, <strong>President Joe Biden </strong><a href=\\\"https://www.benzinga.com/news/23/09/34850134/biden-sounds-alarm-amid-looming-government-shutdown-at-congressional-black-caucus-dinner-america-cou\\\">blamed
+        the potential shutdown to \\\"extreme Republicans\\\"</a> disregarding a prior
+        debt ceiling agreement, while prominent GOP lawmakers, such as <strong>Matt
+        Gaetz</strong>, argued that a short-term shutdown would be better than \\\"<a
+        href=\\\"https://www.benzinga.com/news/23/09/34857538/matt-gaetz-says-ready-for-short-term-us-government-shutdown-amid-budget-disputes-better-than-continu\\\">continuing
+        on the current path to America&#8217;s financial ruin.</a>\\\"</p>\\n\\n\\n\\n<p>Congress'
+        hard-right House Freedom Caucus is arguing for spending cuts on all appropriation
+        bills that need to pass to avoid a shutdown. Border control and financial
+        aid for Ukraine are some of the key issues being debated, locking lawmakers
+        into an almost impossible-to-solve quarrel. </p>\\n\\n\\n\\n<p>Even GOP proposals
+        for a temporary stop-gap spending bill, also known as a continuing resolution,
+        carry too many politically heavy measures to pass the Democratic-controlled
+        Senate.</p>\\n\\n\\n\\n<p>On Monday, <strong>Donald Trump</strong> said that
+        he backs the decision to shut down the government unless Democrats and less
+        conservative Republicans agree with the demands of the Freedom Caucus.</p>\\n\\n\\n\\n<p>\\\"Unless
+        you get everything, shut it down!\\\" wrote the former president on Truth
+        Social.</p>\\n\\n\\n\\n<p>In June, <a href=\\\"https://www.benzinga.com/news/23/06/32704441/biden-signs-debt-ceiling-bill-to-avert-government-default\\\">lawmakers
+        voted to suspend the debt ceiling for two years</a>, allowing the government
+        to take on the extra debt it needs to operate. The deal was reached between
+        Biden and House Speaker Kevin McCarthy after weeks of suspense, taking the
+        government dangerously close to defaulting \u2014 the equivalent of running
+        out of money in the bank.</p>\\n\\n\\n\\n<p>In the midst of this crisis, <a
+        href=\\\"https://www.benzinga.com/23/09/34766166/national-debt-reaches-33-trillion-prudent-investors-concerned-but-momo-crowd-says-debt-doesnt-matter\\\">the
+        federal government reached its highest debt mark ever</a>: $33 trillion. This
+        number is well over 12 times the market cap of <strong>Apple</strong> the
+        world's most valuable public company, or about twice the annual GDP of the
+        entire European Union.</p>\\n\\n\\n\\n<p>After the $33 trillion mark was passed,
+        <a href=\\\"https://www.benzinga.com/news/23/09/34783824/yikes-elon-musk-startled-as-us-debt-soars-by-eye-popping-47b-in-just-48-hours\\\">the
+        government borrowed an average of $1 billion per hour.</a> If borrowing continues
+        at the same pace, debt could reach $50 trillion by the end of the decade.</p>\\n\\n\\n\\n<p><strong>Are
+        Bush and Trump to Blame?</strong> According to a study released earlier this
+        year, the recent spike in the country's debt ratio is directly related to
+        tax cuts enacted during the last three Republican executive terms, including
+        Trump's recent presidency and <strong>George W. Bush</strong>'s two terms
+        between 2001 and 2009.</p>\\n\\n\\n\\n<p>The debt ratio is understood as the
+        total public debt as a percent of gross domestic product, and it currently
+        equals 120%, meaning that the total worth of the U.S. debt surpasses its GDP
+        by 20%. The U.S. has been owing more money than it produces since 2012, yet
+        the government has had trouble bringing down the debt ratio since it spiked
+        during the COVID-19 crisis.</p>\\n\\n\\n\\n<p>According to an analysis by
+        the Center for American Progress, federal debt as a percentage of the U.S.
+        economy is on a path to grow indefinitely. Part of the reason behind this
+        growing trend is demographic: increasing life expectancy, declining fertility,
+        decreased immigration and rising health care costs are causing government
+        revenue to fall behind spending.</p>\\n\\n\\n\\n<p><strong>The study authors
+        argue that, while some Republican lawmakers are looking to enact spending
+        cuts to overcome this issue, the real root comes from Republican measures
+        taken during the Bush and Trump presidencies while they held control of the
+        Congress.</strong></p>\\n\\n\\n\\n<p>\\\"If not for the Bush tax cut and their
+        extensions \u2014 as well as the Trump tax cuts \u2014 revenues would be on
+        track to keep pace with spending indefinitely, and the debt ratio (debt as
+        a percentage of the economy) would be declining,\\\" <a href=\\\"https://www.americanprogress.org/article/tax-cuts-are-primarily-responsible-for-the-increasing-debt-ratio/\\\">reads</a>
+        the study.</p>\\n\\n\\n\\n<p>The tax cuts are responsible for 57% of the increase
+        in the debt ratio since Bush's first government in 2001. That number would
+        reach 90% if we removed the \\\"one-time costs\\\" from bills responding to
+        COVID-19 and the Great Recession.</p>\\n\\n\\n\\n<p>According to the study,
+        tax cuts enacted by the Bush administration in 2001 will have cost more than
+        $8 trillion by the end of fiscal year 2023. Yet the tax cuts were not aimed
+        at helping the average citizen.</p>\\n\\n\\n\\n<p>\\\"These changes were enormously
+        tilted toward the rich and wealthy,\\\" says the report.</p>\\n\\n\\n\\n<p>The
+        U.S., compared to other countries in the OECD, is a relatively low-tax country,
+        with only 26% of tax revenue as a percentage of GDP, compared to an EU average
+        of 37%. Rates for Italy and France are even higher, at 43% and 45%, respectively.</p>\\n\\n\\n\\n<p>Tax
+        cuts signed by Trump in 2017 will have cost roughly $1.7 trillion by the end
+        of fiscal year 2023, said the report.</p>\\n\\n\\n\\n<p>The analysts recommend
+        revising tax cuts \\\"that largely benefited the wealthy,\\\" as a means to
+        reduce government deficit.</p>\\n\\n\\n\\n<p><em>Image made using Midjourney
+        AI.</em></p>\",\"url\":\"https://www.benzinga.com/news/23/09/34881454/tax-cuts-from-the-bush-and-trump-eras-have-cost-the-government-10-trillion-it-now-owes\",\"image\":[{\"size\":\"thumb\",\"url\":\"https://cdn.benzinga.com/files/imagecache/250x187xUP/images/story/2023/benzingaai2023_a_political_cartoon_in_colors_of_donald_trump_an_48b35535-e3f5-409b-905e-7bbafda6f375.png\"},{\"size\":\"small\",\"url\":\"https://cdn.benzinga.com/files/imagecache/1024x768xUP/images/story/2023/benzingaai2023_a_political_cartoon_in_colors_of_donald_trump_an_48b35535-e3f5-409b-905e-7bbafda6f375.png\"},{\"size\":\"large\",\"url\":\"https://cdn.benzinga.com/files/imagecache/2048x1536xUP/images/story/2023/benzingaai2023_a_political_cartoon_in_colors_of_donald_trump_an_48b35535-e3f5-409b-905e-7bbafda6f375.png\"}],\"channels\":[{\"name\":\"News\"},{\"name\":\"Politics\"},{\"name\":\"Top
+        Stories\"},{\"name\":\"Economics\"},{\"name\":\"Markets\"},{\"name\":\"General\"}],\"stocks\":[{\"name\":\"AAPL\"}],\"tags\":[{\"name\":\"Congress\"},{\"name\":\"debt\"},{\"name\":\"Donald
+        Trump\"},{\"name\":\"George W. Bush\"},{\"name\":\"tax\"},{\"name\":\"Tax
+        Cuts\"},{\"name\":\"taxes\"}]}]\n"
+    headers:
+      Cache-Control:
+      - max-age=3, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 26 Sep 2023 19:06:28 GMT
+      ETag:
+      - UBAwzBHz64x2Aw_dWH_SrCQFq_GMgnutcw3wAH80pdQ=
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept,Accept-Encoding
+      Via:
+      - kong/2.8.3, 1.1 d8457484dcfc33f71f1177376ce3a578.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - F2Kgk1NfCz0U0w27EDFABLHDWDdJkULI3oQhu3RTqS90UuanYWsIDQ==
+      X-Amz-Cf-Pop:
+      - MIA3-P4
+      X-Bz-Request-Id:
+      - 192.168.155.192-8000-39-51378072-1-1695755188.000
+      X-Cache:
+      - Miss from cloudfront
+      X-Kong-Proxy-Latency:
+      - '0'
+      X-Kong-Upstream-Latency:
+      - '40'
+      X-Powered-By:
+      - Pentium
+    status:
+      code: 200
+      message: OK
+version: 1

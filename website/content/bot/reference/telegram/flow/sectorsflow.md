@@ -1,10 +1,30 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: sectorsflow
-description: OpenBB Telegram Command
+description: The sectorsflow command page details how to retrieve a summary of all
+  flows by MarketCap percentage per sector over past specified days. It includes nuances
+  on usage and different parameters like sector and number of days.
+keywords:
+- sectorsflow
+- MarketCap percentage
+- sector
+- days
+- flow summary
+- Basic Materials
+- Energy
+- Communication Services
+- Consumer Cyclical
+- Consumer Defensive
+- Financial
+- Healthcare
+- Industrials
+- Real Estate
+- Technology
+- Utilities
 ---
 
-# sectorsflow
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="flow: sectorsflow - Telegram Reference | OpenBB Bot Docs" />
 
 This command retrieves a summary of all flows by MarketCap percentage per sector over the past x days.
 

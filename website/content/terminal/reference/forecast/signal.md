@@ -1,9 +1,19 @@
 ---
 title: signal
-description: OpenBB Terminal Function
+description: The documentation provides information about the 'Signal' function, which
+  is used to add a price signal to a dataset based on closing price. The signal predicts
+  if a short-term price will go up or down as compared to the long-term.
+keywords:
+- Signal function
+- Dataset
+- Closing price
+- Short-term price prediction
+- Long-term price comparison
 ---
 
-# signal
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast /signal - Reference | OpenBB Terminal Docs" />
 
 Add price signal to dataset based on closing price. 1 if the signal is that short term price will go up as compared to the long term. 0 if the signal is that short term price will go down as compared to the long term.
 

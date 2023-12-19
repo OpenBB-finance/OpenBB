@@ -1,9 +1,20 @@
 ---
 title: fred_ids
-description: OpenBB SDK Function
+description: This page helps to understand the 'openbb.economy.fred_ids' function,
+  which is a text query method for getting series IDs on FRED via OpenBB-finance.
+  Includes parameters, return information and link to the source code.
+keywords:
+- FRED
+- OpenBB-finance
+- Series ID
+- Information retrieval
+- FRED series notes database
+- openbb.economy.fred_ids
 ---
 
-# fred_ids
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.fred_ids - Reference | OpenBB SDK Docs" />
 
 Get Series IDs. [Source: FRED]
 
@@ -31,4 +42,3 @@ openbb.economy.fred_ids(search_query: str, limit: int = -1)
 | ---- | ----------- |
 | pd.Dataframe | Dataframe with series IDs and titles |
 ---
-

@@ -1,9 +1,21 @@
 ---
 title: cdf
-description: OpenBB Terminal Function
+description: The 'cdf' page outlines the usage and parameters of the cumulative distribution
+  function within python coding. It also includes examples and an illustrative visual
+  aid.
+keywords:
+- Cumulative distribution function
+- cdf
+- coding
+- parameters
+- examples
+- usage
+- export functions
 ---
 
-# cdf
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/qa/cdf - Reference | OpenBB Terminal Docs" />
 
 Cumulative distribution function
 

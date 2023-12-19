@@ -1,0 +1,48 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Connection:
+      - close
+      Host:
+      - www.alphavantage.co
+    method: GET
+    uri: https://www.alphavantage.co/query?apikey=MOCK_API_KEY&datatype=csv&function=TIME_SERIES_DAILY_ADJUSTED&outputsize=full&period=daily&symbol=AAPL
+  response:
+    body:
+      string: "{\n    \"Information\": \"Thank you for using Alpha Vantage! This is
+        a premium endpoint. You may subscribe to any of the premium plans at https://www.alphavantage.co/premium/
+        to instantly unlock all premium endpoints\"\n}"
+    headers:
+      Allow:
+      - GET, HEAD, OPTIONS
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 8088c0e88c380eb1-AMS
+      Connection:
+      - close
+      Content-Length:
+      - '215'
+      Content-Type:
+      - application/json
+      Cross-Origin-Opener-Policy:
+      - same-origin
+      Date:
+      - Mon, 18 Sep 2023 10:02:28 GMT
+      Referrer-Policy:
+      - same-origin
+      Server:
+      - cloudflare
+      Vary:
+      - Cookie, Origin
+      Via:
+      - 1.1 vegur
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - DENY
+    status:
+      code: 200
+      message: OK
+version: 1

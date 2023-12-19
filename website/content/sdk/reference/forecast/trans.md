@@ -1,12 +1,30 @@
 ---
 title: trans
-description: OpenBB SDK Function
+description: This section emphasizes on Transformer forecasting method implementation
+  and visualization used in OpenBB Terminal. It explains functions like how to apply
+  the approach on data, various parameters to adjust for better forecasting and display
+  the results in chart.
+keywords:
+- Transformer Forecasting
+- Time-Series Prediction
+- Forecasting Parameters
+- Data Visualization
+- pandas series
+- pandas dataframe
+- Machine Learning
+- Activation Function
+- Multi-head Attention Mechanism
+- Encoder layers
+- Decoder layers
+- Feedforward Network
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.trans - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# trans
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,7 +57,7 @@ openbb.forecast.trans(data: Union[pd.Series, pd.DataFrame], target_column: str =
 | num_decoder_layers | int | The number of decoder layers in the encoder. Defaults to 3. | 3 | True |
 | dim_feedforward | int | The dimension of the feedforward network model. Defaults to 512. | 512 | True |
 | activation | str | The activation function of encoder/decoder intermediate layer, ‘relu’ or ‘gelu’. Defaults to 'relu'. | relu | True |
-| dropout | float | Fraction of neurons afected by Dropout. Defaults to 0.0. | 0.0 | True |
+| dropout | float | Fraction of neurons affected by Dropout. Defaults to 0.0. | 0.0 | True |
 | batch_size | int | Number of time series (input and output sequences) used in each training pass. Defaults to 32. | 32 | True |
 | n_epochs | int | Number of epochs over which to train the model. Defaults to 100. | 100 | True |
 | learning_rate | float | Defaults to 1e-3. | 0.001 | True |
@@ -56,8 +74,6 @@ openbb.forecast.trans(data: Union[pd.Series, pd.DataFrame], target_column: str =
 | ---- | ----------- |
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], type[TransformerModel]] | Adjusted Data series,<br/>Historical forecast by best RNN model,<br/>list of Predictions,<br/>Mean average precision error,<br/>Best transformer Model. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -113,8 +129,6 @@ openbb.forecast.trans_chart(data: Union[pd.Series, pd.DataFrame], target_column:
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

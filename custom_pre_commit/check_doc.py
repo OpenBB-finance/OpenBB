@@ -67,12 +67,12 @@ def main(ignore_files: Optional[str], ignore_commands: Optional[str]):
     if not undocumented:
         sys.exit(0)
     else:
-        print("The following commands do not have documentation:")
+        print("The following commands do not have documentation:")  # noqa: T201
 
         undocumented = list(undocumented)
         undocumented.sort()
         for item in undocumented:
-            print(item)
+            print(item)  # noqa: T201
         sys.exit(1)
 
 

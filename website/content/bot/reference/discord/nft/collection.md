@@ -1,10 +1,22 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: collection
-description: OpenBB Discord Command
+description: This documentation page details the procedure to retrieve a collection
+  of Non-Fungible Token (NFT) data, including metadata such as the owner and the number
+  of items in the collection.
+keywords:
+- NFT
+- Non-Fungible Token
+- cryptocurrency
+- collection
+- metadata
+- ownership
+- minted NFTs
+- slug
 ---
 
-# collection
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="nft: collection - Discord Reference | OpenBB Bot Docs" />
 
 This command retrieves a collection of Non-Fungible Token (NFT) data associated with the specified slug. It returns the collection's metadata, including the owner, the number of items in the collection, the total NFTs minted, and various other data on the NFT.
 

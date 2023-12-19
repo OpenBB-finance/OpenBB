@@ -1,12 +1,24 @@
 ---
 title: btc_transac
-description: OpenBB SDK Function
+description: This documentation page provides code and information about retrieving
+  and visualizing BTC confirmed transactions using OpenBB. It includes python code
+  and detailed parameters' description for the functions.
+keywords:
+- BTC confirmed transactions
+- API
+- blockchain.info
+- Data Export
+- Data Visualization
+- crypto.onchain.btc_transac
+- crypto.onchain.btc_transac_chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.btc_transac - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# btc_transac
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -33,8 +45,6 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | BTC confirmed transactions |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -66,8 +76,6 @@ openbb.crypto.onchain.btc_transac_chart(start_date: str = "2010-01-01", end_date
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

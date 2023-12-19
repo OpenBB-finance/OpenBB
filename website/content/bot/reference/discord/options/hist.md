@@ -1,10 +1,24 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: hist
-description: OpenBB Discord Command
+description: Learn how to use the 'op hist' command to retrieve the historical price
+  of options given certain parameters such as ticker, expiry, strike, option type
+  and interval for the past x number of days in chart format. Includes examples and
+  descriptions of the parameters.
+keywords:
+- Stock Ticker
+- Expiration Date
+- Option Strike Price
+- Calls or Puts
+- Chart Minute Interval
+- Past Days to Display
+- op hist command
+- historical price of options
+- chart format
 ---
 
-# hist
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="options: hist - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve the historical price of options for the given parameters of a ticker, expiry, strike , option type, and interval for the past x days in a chart format.
 

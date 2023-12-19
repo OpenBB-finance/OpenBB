@@ -1,20 +1,20 @@
 # Building Installers
-This guide serves to assist developers construct OpenBB Terminal installers on MacOs and Windows.
+This guide serves to assist developers construct OpenBB Terminal installers on macOS and Windows.
 
 ## Overview
-Building an installer  takes source code as input and produces deployable software as an output. For MacOS the output is a DMG while for windows it is an EXE. This process utilizes two major modules: Pyinstaller & Create-dmg. Windows additionally recruits the service of NSIS. There are two ways to build an installer: locally or through Github.
+Building an installer  takes source code as input and produces deployable software as an output. For MacOS the output is a DMG while for Windows it is an EXE. This process utilizes two major modules: Pyinstaller & Create-dmg. Windows additionally recruits the service of NSIS. There are two ways to build an installer: locally or through Github.
 
 ## Local
-In this section we detail the steps necessary to construct an installer locally on a windows machine and mac machine. These steps can be performed on either one of these operating systems so long as they have the OpenBBTerminal repository codebase. This process assumes you already have a working conda environment. Building locally usually takes anywhere from 10-20 minutes.
+In this section we detail the steps necessary to construct an installer locally on a Windows machine and Mac machine. These steps can be performed on either one of these operating systems so long as they have the OpenBBTerminal repository codebase. This process assumes you already have a working conda environment. Building locally usually takes anywhere from 10-20 minutes.
 
 ### MacOS Steps
 1. `brew install create-dmg`
 
-    This installs create-dmg and it’s dependencies onto your system through brew.
+    This installs create-dmg and its dependencies onto your system through brew.
 
 1. `poetry install -E installer`
 
-    This install pyinstaller and it’s dependencies onto your environment.
+    This install pyinstaller and its dependencies onto your environment.
 
 3. `build/pyinstaller/build4mac.sh`
 
@@ -27,7 +27,7 @@ In this section we detail the steps necessary to construct an installer locally 
 ### Windows Steps
 1. `poetry install -E installer`
 
-    This install pyinstaller and it’s dependencies onto your environment.
+    This install pyinstaller and its dependencies onto your environment.
 
 2. `pyinstaller build/pyinstaller/terminal.spec`
 
@@ -49,7 +49,7 @@ In this section we detail the steps necessary to construct an installer locally 
 ## Github
 In order to utilize the automated build workflow on the OpenBBTerminal repo, the branch in which you would like to build an installer from must already be a branch on the repo. You can also utilize the automated build workflow on a PR that is from a branch on the repo. You cannot run an automated build on a forked branch or even a PR from a forked branch.
 
-If you are using this method to create an installer, there is a limitation where only one build automation can occur at a time per workflow. For example if there is already an installer being created on the the ‘Intel MacOS Build’ workflow, any subsequent requests for building will be queued. Additionally, the ‘Windows10 Build’ workflow runs relatively slowly because of the size of the EC2 instance it is currently on. As such, if you are interested in a quick build, then I would suggest building locally. Furthermore, building an installer this way also automatically runs integration tests on the installer.
+If you are using this method to create an installer, there is a limitation where only one build automation can occur at a time per workflow. For example if there is already an installer being created on the ‘Intel MacOS Build’ workflow, any subsequent requests for building will be queued. Additionally, the ‘Windows10 Build’ workflow runs relatively slowly because of the size of the EC2 instance it is currently on. As such, if you are interested in a quick build, then I would suggest building locally. Furthermore, building an installer this way also automatically runs integration tests on the installer.
 
 If you run into a circumstance where a requested build is queued for a long period of time, this might mean that the EC2 instance is not connected to github. If something like this arises, please create an issue.
 

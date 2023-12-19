@@ -106,7 +106,10 @@ def fixture_test_user(mocker):
         credentials=CredentialsModel(),
         preferences=PreferencesModel(),
         profile=ProfileModel(
-            token_type="Bearer", token="123", uuid="00001", email="test@email.com"
+            token_type="Bearer",  # noqa: S106
+            token="123",  # noqa: S106
+            uuid="00001",
+            email="test@email.com",
         ),
         sources=SourcesModel(),
     )
@@ -502,10 +505,7 @@ def test_call_delete(mocker, monkeypatch, test_user):
     controller = account_controller.AccountController(queue=None)
     path_controller = "openbb_terminal.account.account_controller"
 
-    profile = ProfileModel(
-        token_type="Bearer",
-        token="123",
-    )
+    profile = ProfileModel(token_type="Bearer", token="123")  # noqa: S106
     mock_current_user = copy_user(user=test_user, profile=profile)
     mocker.patch(
         target="openbb_terminal.core.session.current_user.__current_user",

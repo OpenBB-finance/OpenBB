@@ -230,6 +230,10 @@ def get_top_headlines(ticker: str) -> dict:
         ):  # If data request failed
             console.print("[red]Status code not 200. Unable to retrieve data\n[/red]")
             return {}
-        return data.json()
+        json = data.json()
+        if "message" in json:
+            console.print(f"[red]{json['message']}[/red]")
+            return {}
+        return json
     console.print("[red]Ticker not supported. Unable to retrieve data\n[/red]")
     return {}

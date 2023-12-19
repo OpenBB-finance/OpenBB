@@ -1,12 +1,25 @@
 ---
 title: get_mt
-description: OpenBB SDK Function
+description: This page covers the get_mt function, its usage, parameters and return
+  types. It defines the method to retrieve available messari timeseries in two different
+  views; Model and Chart.
+keywords:
+- get_mt function
+- messari timeseries
+- Model
+- Chart
+- Source code
+- query
+- export dataframe
+- crypto dd
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.get_mt - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# get_mt
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +49,6 @@ openbb.crypto.dd.get_mt(only_free: bool = True)
 | ---- | ----------- |
 | pd.DataFrame | available timeseries |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -69,8 +80,6 @@ openbb.crypto.dd.get_mt_chart(limit: int = 10, query: str = "", only_free: bool 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

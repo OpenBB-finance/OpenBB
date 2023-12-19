@@ -1,12 +1,24 @@
 ---
 title: tk
-description: OpenBB SDK Function
+description: This page provides documentation for the tk model and chart functions
+  from the openbb.crypto.dd library. The model function returns coin tokenomics for
+  a specific cryptocurrency while the chart function plots the same.
+keywords:
+- cryptocurrency
+- tokenomics
+- openbb.crypto.dd
+- coin tokenomics
+- coin tokenomics plot
+- programming
+- function documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.tk - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# tk
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +50,6 @@ openbb.crypto.dd.tk(symbol: str, coingecko_id: str)
 | Tuple[pd.DataFrame, pd.DataFrame] | Metric Value tokenomics,<br/>Circulating supply overtime |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +79,6 @@ openbb.crypto.dd.tk_chart(symbol: str, export: str = "", external_axes: Optional
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

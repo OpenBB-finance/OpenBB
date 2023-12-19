@@ -1,12 +1,27 @@
 ---
 title: print_insider_data
-description: OpenBB SDK Function
+description: Documentation page for OpenBB-finance's Print Insider Data feature. It
+  includes details about the parameters involved, such as the type of insider data
+  and the limit of data rows to display, as well as the option to export data in a
+  specific format. The page provides source code links for further information.
+keywords:
+- Print insider data
+- Open insider filtered data
+- Type_insider
+- Limit
+- Export data format
+- Docusaurus page metadata
+- Source code
+- OpenBB-finance
+- Metadata SEO
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ins.print_insider_data - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# print_insider_data
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +53,6 @@ openbb.stocks.ins.print_insider_data(type_insider: str = "lcb", limit: int = 10)
 | pd.DataFrame | Open insider filtered data |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +82,6 @@ openbb.stocks.ins.print_insider_data_chart(type_insider: str = "lcb", limit: int
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

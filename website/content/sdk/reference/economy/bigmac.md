@@ -1,12 +1,28 @@
 ---
 title: bigmac
-description: OpenBB SDK Function
+description: This page provides documentation for the Big Mac Index functionality
+  in OpenBB. It includes details on how to use the 'bigmac' function and its parameters,
+  along with source code links and return information. This information is useful
+  for individuals looking to utilize the OpenBB economic dataset for data analysis.
+keywords:
+- bigmac
+- docusaurus
+- Big Mac Index
+- economy
+- country_codes
+- dataframe
+- matplotlib
+- USD equivalent
+- parameters
+- returns
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.bigmac - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# bigmac
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +52,6 @@ openbb.economy.bigmac(country_codes: List[str] = None)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with Big Mac indices converted to USD equivalent. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -69,8 +83,6 @@ openbb.economy.bigmac_chart(country_codes: List[str] = None, raw: bool = False, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

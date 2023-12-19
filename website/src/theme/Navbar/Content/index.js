@@ -26,7 +26,7 @@ function NavbarItems({ items }) {
 }
 function NavbarContentLayout({ left, right }) {
   return (
-    <div className="navbar__inner">
+    <div className="navbar__inner items-center">
       <div className="navbar__items">{left}</div>
       <div className="navbar__items navbar__items--right hidden sm:block">
         {right}

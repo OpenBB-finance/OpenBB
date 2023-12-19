@@ -1,9 +1,19 @@
 ---
 title: hist
-description: OpenBB Terminal Function
+description: A detailed guide on using 'hist', a histogram with density and rug. This
+  page includes usage examples, parameters, and a demonstrative image.
+keywords:
+- Histogram
+- Density
+- Rug
+- Hist guide
+- n_bins parameter
+- Usage examples
 ---
 
-# hist
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy/qa/hist - Reference | OpenBB Terminal Docs" />
 
 Histogram with density and rug
 

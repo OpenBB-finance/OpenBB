@@ -1,9 +1,17 @@
 ---
 title: weights
-description: OpenBB SDK Function
+description: This page provides the function to return the sector weightings allocation
+  of any ETF using the OpenBB's yfinance model. It includes a link to the source code
+  on GitHub.
+keywords:
+- ETF
+- sector weightings allocation
+- yfinance model
 ---
 
-# weights
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf.weights - Reference | OpenBB SDK Docs" />
 
 Return sector weightings allocation of ETF. [Source: Yahoo Finance]
 
@@ -30,4 +38,3 @@ openbb.etf.weights(name: str)
 | ---- | ----------- |
 | Dict[str, Any] | Dictionary with sector weightings allocation |
 ---
-

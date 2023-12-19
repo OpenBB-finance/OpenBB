@@ -1,12 +1,23 @@
 ---
 title: collections
-description: OpenBB SDK Function
+description: This documentation page provides methods to get NFT collections, its
+  source code and ways to visualize the data via charts. The content primarily revolves
+  around usage, parameters, and the return type of the functions.
+keywords:
+- Docusaurus
+- Marketing
+- NFT
+- Collections
+- Chart
+- nftpricefloor
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.nft.collections - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# collections
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -33,8 +44,6 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | nft collections |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -65,8 +74,6 @@ openbb.crypto.nft.collections_chart(show_fp: bool = False, show_sales: bool = Fa
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

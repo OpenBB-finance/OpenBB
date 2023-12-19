@@ -1,9 +1,23 @@
 ---
 title: active
-description: OpenBB Terminal Function
+description: The active function provides an overview of most active ETFs/mutual funds
+  according to WSJ market data. The function details include price, volume, change,
+  and percent change.
+keywords:
+- etf
+- active
+- mutual funds
+- market data
+- wsj.com
+- price
+- volume
+- change
+- percent change
 ---
 
-# active
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf/disc/active - Reference | OpenBB Terminal Docs" />
 
 Displays most active ETF/Mutual funds from wsj.com/market-data
 

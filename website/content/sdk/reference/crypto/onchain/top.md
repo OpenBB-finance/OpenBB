@@ -1,12 +1,25 @@
 ---
 title: top
-description: OpenBB SDK Function
+description: Documentation for the OpenBB project's top 50 crypto tokens function.
+  This is implemented in Python and uses Docusaurus to organize and render the documentation.
+  It covers the parameters required and the expected result, including the sort order
+  and the type of data rendered.
+keywords:
+- Docusaurus
+- Metadata
+- Top 50 Tokens
+- Cryptocurrency
+- ERC20
+- Ethplorer
+- Cryptocurrency Rank
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.top - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# top
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +51,6 @@ openbb.crypto.onchain.top(sortby: str = "rank", ascend: bool = False)
 | pd.DataFrame | DataFrame with list of top 50 tokens. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +81,6 @@ openbb.crypto.onchain.top_chart(limit: int = 15, sortby: str = "rank", ascend: b
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

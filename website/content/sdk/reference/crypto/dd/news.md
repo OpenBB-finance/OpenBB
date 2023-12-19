@@ -1,12 +1,23 @@
 ---
 title: news
-description: OpenBB SDK Function
+description: Detailed information on how to fetch recent cryptocurrency posts from
+  CryptoPanic news aggregator using OpenBB in Python. Also, understand about the news
+  filtering parameters available and how to display the news content.
+keywords:
+- CryptoPanic
+- News Aggregator
+- News Filtering
+- Python Code
+- Cryptocurrency News
+- Github Source Code
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.news - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# news
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -42,8 +53,6 @@ openbb.crypto.dd.news(limit: int = 60, post_kind: str = "news", filter_: Optiona
 | pd.DataFrame | DataFrame with recent news from different sources filtered by provided parameters. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -76,8 +85,6 @@ openbb.crypto.dd.news_chart(post_kind: str = "news", region: str = "en", filter_
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

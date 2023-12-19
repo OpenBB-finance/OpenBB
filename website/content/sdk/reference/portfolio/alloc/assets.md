@@ -1,9 +1,20 @@
 ---
 title: assets
-description: OpenBB SDK Function
+description: This tutorial page provides information about the 'assets' function in
+  the OpenBB Terminal's Portfolio module, how to implement it and its parameters.
+  The 'assets' function is used to display a portfolio's asset allocation as compared
+  to the benchmark.
+keywords:
+- Portfolio module
+- assets function
+- portfolio asset allocation
+- benchmark comparison
+- function parameters
 ---
 
-# assets
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.alloc.assets - Reference | OpenBB SDK Docs" />
 
 Display portfolio asset allocation compared to the benchmark
 
@@ -43,4 +54,3 @@ output = openbb.portfolio.alloc.assets(p)
 ```
 
 ---
-

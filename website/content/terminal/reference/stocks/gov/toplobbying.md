@@ -1,9 +1,21 @@
 ---
 title: toplobbying
-description: OpenBB Terminal Function
+description: Toplobbying is an efficient tool to monitor lobbying activities. It allows
+  users to specify a limit for the number of stocks to display and choose to print
+  raw data.
+keywords:
+- toplobbying
+- lobbying tool
+- stocks
+- limit stocks
+- raw data
+- display stocks
+- quiverquant
 ---
 
-# toplobbying
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/gov/toplobbying - Reference | OpenBB Terminal Docs" />
 
 Top lobbying. [Source: www.quiverquant.com]
 

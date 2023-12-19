@@ -1,9 +1,27 @@
 ---
 title: bbands
-description: OpenBB Terminal Function
+description: Documentation for Bollinger Bands (bbands), an indicator of overbought
+  or oversold conditions in market prices. Includes details on how to use and interpret
+  bbands, as well as information on bbands' parameters (such as n_length, n_std, and
+  s_mamode).
+keywords:
+- Bollinger Bands
+- overbought conditions
+- oversold conditions
+- volatility
+- price target
+- support level
+- resistance level
+- bbands
+- n_length
+- n_std
+- s_mamode
+- sma
 ---
 
-# bbands
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf/ta/bbands - Reference | OpenBB Terminal Docs" />
 
 Bollinger Bands consist of three lines. The middle band is a simple moving average (generally 20 periods) of the typical price (TP). The upper and lower bands are F standard deviations (generally 2) above and below the middle band. The bands widen and narrow when the volatility of the price is higher or lower, respectively. Bollinger Bands do not, in themselves, generate buy or sell signals; they are an indicator of overbought or oversold conditions. When the price is near the upper or lower band it indicates that a reversal may be imminent. The middle band becomes a support or resistance level. The upper and lower bands can also be interpreted as price targets. When the price bounces off of the lower band and crosses the middle band, then the upper band becomes the price target.
 

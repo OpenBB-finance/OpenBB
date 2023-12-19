@@ -497,7 +497,7 @@ def get_qtr_contracts(analysis: str = "total", limit: int = 5) -> pd.DataFrame:
         Dataframe with tickers and total amount if total selected.
     """
     df_contracts = get_government_trading("quarter-contracts")
-
+    df_contracts["Amount"] = pd.to_numeric(df_contracts["Amount"])
     if df_contracts.empty:
         console.print("No quarterly government contracts found\n")
         return pd.DataFrame()

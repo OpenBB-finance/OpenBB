@@ -1,10 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: heatmap
-description: OpenBB Telegram Command
+description: Documentation for the 'heatmap' command which retrieves Daily Heat Maps
+  based on Market and Sector. This provides a quick overview of current stock market
+  performance.
+keywords:
+- Heatmap Command
+- Daily Heat Maps
+- Stock Market Performance
+- Market Filter
+- Sector Filter
 ---
 
-# heatmap
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="overview: heatmap - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve Daily Heat Maps by Market and Sector. The Daily Heat Maps will allow the user a quick overview of current stock market performance.
 

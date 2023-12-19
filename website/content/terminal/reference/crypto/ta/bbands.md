@@ -1,9 +1,25 @@
 ---
 title: bbands
-description: OpenBB Terminal Function
+description: This page provides detailed information about the Bollinger Bands (bbands),
+  a volatility indicator in technical analysis, including usage, parameters, visual
+  representation, data interpretation, and their importance in buy or sell signals
+  generation.
+keywords:
+- Bollinger Bands
+- bbands
+- technical analysis
+- volatility indicators
+- overbought conditions
+- oversold conditions
+- price targets
+- price reversal
+- support level
+- resistance level
 ---
 
-# bbands
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/ta/bbands - Reference | OpenBB Terminal Docs" />
 
 Bollinger Bands consist of three lines. The middle band is a simple moving average (generally 20 periods) of the typical price (TP). The upper and lower bands are F standard deviations (generally 2) above and below the middle band. The bands widen and narrow when the volatility of the price is higher or lower, respectively. Bollinger Bands do not, in themselves, generate buy or sell signals; they are an indicator of overbought or oversold conditions. When the price is near the upper or lower band it indicates that a reversal may be imminent. The middle band becomes a support or resistance level. The upper and lower bands can also be interpreted as price targets. When the price bounces off of the lower band and crosses the middle band, then the upper band becomes the price target.
 

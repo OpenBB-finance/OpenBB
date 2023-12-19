@@ -147,7 +147,7 @@ def test_logout_user(mocker, guest):
     mock_plt_close = mocker.patch(path + "plt.close")
 
     auth_header = "Bearer test_token"
-    token = "test_token"
+    token = "test_token"  # noqa: S105
     base_url = "https://payments.openbb.co/"
     session_model.logout(auth_header, token)
 

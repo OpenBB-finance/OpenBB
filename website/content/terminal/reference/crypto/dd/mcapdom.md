@@ -1,9 +1,20 @@
 ---
 title: mcapdom
-description: OpenBB Terminal Function
+description: The mcapdom documentation page presents an outline of how to display
+  an asset's percentage share of the total crypto circulating market cap. It includes
+  usage and parameters specifically for frequency interval, initial date, and end
+  date.
+keywords:
+- mcapdom
+- crypto circulating market cap
+- asset's percentage share
+- frequency interval
+- initial date
 ---
 
-# mcapdom
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/mcapdom - Reference | OpenBB Terminal Docs" />
 
 Display asset's percentage share of total crypto circulating market cap [Source: https://messari.io]
 

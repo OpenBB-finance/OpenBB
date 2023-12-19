@@ -1,10 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: hsi
-description: OpenBB Discord Command
+description: This documentation helps understand the 'hsi' command, which retrieves
+  the top high short interest stocks over a 20% ratio, a crucial tool for investors
+  looking for possible short squeeze potential.
+keywords:
+- hsi command
+- high short interest stocks
+- short squeeze potential
+- stock investing
+- trading tools
 ---
 
-# hsi
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="short_data: hsi - Discord Reference | OpenBB Bot Docs" />
 
 This command retrieves the top high short interest stocks over a 20% ratio. This information can let an investor identify possible short squeeze potential.
 

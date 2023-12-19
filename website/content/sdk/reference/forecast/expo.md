@@ -1,12 +1,24 @@
 ---
 title: expo
-description: OpenBB SDK Function
+description: The page explores the functionalities and parameters of the 'expo' model
+  and 'chart' functions used in Probabilistic Exponential Smoothing forecasting. These
+  functions take data as input and perform operations like backtesting, retraining
+  historical and prediction. Source code links are also shared.
+keywords:
+- Exponential Smoothing forecasting
+- expo model function
+- expo chart function
+- Probabilistic forecasting
+- data series operations
+- parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.expo - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# expo
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -44,8 +56,6 @@ openbb.forecast.expo(data: Union[pd.Series, pd.DataFrame], target_column: str = 
 | ---- | ----------- |
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[Union[float, ndarray]], ExponentialSmoothing] | Adjusted Data series,<br/>List of historical fcast values,<br/>List of predicted fcast values,<br/>Optional[float] - precision,<br/>Fit Prob. Expo model object. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -90,8 +100,6 @@ openbb.forecast.expo_chart(data: Union[pd.DataFrame, pd.Series], target_column: 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

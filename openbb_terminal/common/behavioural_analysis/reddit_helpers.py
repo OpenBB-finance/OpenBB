@@ -157,7 +157,7 @@ class RedditResponses:
     ) -> None:
         """Validate tickers."""
         valids = []
-        with urllib.request.urlopen(url) as file:
+        with urllib.request.urlopen(url) as file:  # noqa: S310
             for line in file:
                 new_item = line.decode("utf-8").replace("\n", "").strip()
                 valids.append(new_item)

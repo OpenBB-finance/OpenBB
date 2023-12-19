@@ -1,12 +1,27 @@
 ---
 title: stables
-description: OpenBB SDK Function
+description: Documentation for the stable coins API provided by OpenBB, including
+  how to use the model endpoints for data extraction and the chart endpoints for data
+  visualization.
+keywords:
+- OpenBB stable coins API
+- cryptocurrency documentation
+- data extraction
+- data visualization
+- metadata SEO
+- python cryptocurrency API
+- OpenBB documentation
+- CoinGecko API
+- programming examples
+- SDK usage
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.stables - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# stables
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -47,8 +62,6 @@ openbb.crypto.ov.stables(sortby="Volume_[$]", ascend=True, limit=10)
 ```
 
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -91,8 +104,6 @@ openbb.crypto.ov.stables_chart(sortby="Volume_[$]", ascend=True, limit=10)
 ```
 
 ---
-
-
 
 </TabItem>
 </Tabs>

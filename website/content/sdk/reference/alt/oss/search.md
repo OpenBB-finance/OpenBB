@@ -1,9 +1,22 @@
 ---
 title: search
-description: OpenBB SDK Function
+description: Discover OpenBB's robust functionality to sort repos by stars or forks,
+  with an additional category filter feature. The result is straightforwardly produced
+  as a DataFrame. Source code available.
+keywords:
+- OpenBB finance
+- Repo sorter
+- Star ranking
+- Fork ranking
+- Category filter
+- Python API
+- Financial data extraction
+- Dataframe results
 ---
 
-# search
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="alt.oss.search - Reference | OpenBB SDK Docs" />
 
 Get repos sorted by stars or forks. Can be filtered by categories.
 
@@ -32,4 +45,3 @@ openbb.alt.oss.search(sortby: str = "stars", page: int = 1, categories: str = ""
 | ---- | ----------- |
 | pd.DataFrame | Dataframe with repos |
 ---
-

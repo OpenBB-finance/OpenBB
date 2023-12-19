@@ -1,6 +1,7 @@
 """Obtain the integration test coverage for the OpenBB Terminal."""
 
 # IMPORT STANDARD
+import contextlib
 import importlib
 import json
 import os
@@ -170,10 +171,8 @@ def get_commands_and_params(
 
     for command in commands:
         params[command] = []
-        try:
+        with contextlib.suppress(AttributeError):
             params[command] = list(module_data[command].keys())
-        except AttributeError:
-            pass
 
     if get_commands and get_params:
         return commands, params
@@ -277,10 +276,8 @@ def get_missing_params(
         for param in value:
             for param2 in value:
                 if param != param2 and param2.startswith(param):
-                    try:
+                    with contextlib.suppress(ValueError):
                         missing_params[key].remove(param)
-                    except ValueError:
-                        pass
 
     missing_params = {k: v for k, v in missing_params.items() if v}
 

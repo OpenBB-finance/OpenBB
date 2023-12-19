@@ -1,12 +1,26 @@
 ---
 title: cpis
-description: OpenBB SDK Function
+description: cpis and cpis_chart functions are powerful tools in the OpenBBTerminal
+  that inform about the number of companies per industry in a specific sector and
+  market cap, and visualise the data respectively.
+keywords:
+- cpis
+- cpis_chart
+- sector analysis
+- industry analysis
+- company information
+- data visualization
+- market capitalization
+- stock analysis
+- technology industry
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.sia.cpis - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# cpis
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +52,6 @@ openbb.stocks.sia.cpis(sector: str = "Technology", mktcap: str = "Large", exclud
 | ---- | ----------- |
 | dict | Dictionary of industries and number of companies in a specific sector |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -75,8 +87,6 @@ openbb.stocks.sia.cpis_chart(sector: str = "Technology", mktcap: str = "Large", 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

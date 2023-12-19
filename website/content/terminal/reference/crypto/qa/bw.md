@@ -1,9 +1,20 @@
 ---
 title: bw
-description: OpenBB Terminal Function
+description: This page details the usage of the Box and Whisker (bw) plot with its
+  parameters. It also includes a guide on how to display a yearly bw plot.
+keywords:
+- Box and Whisker plot
+- bw plot
+- parameters
+- yearly bw plot
+- data visualization
+- optional choices
+- plot description
 ---
 
-# bw
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/qa/bw - Reference | OpenBB Terminal Docs" />
 
 Box and Whisker plot
 

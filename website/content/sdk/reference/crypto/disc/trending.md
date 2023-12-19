@@ -1,12 +1,23 @@
 ---
 title: trending
-description: OpenBB SDK Function
+description: This page provides detailed information on trending coins. Users can
+  learn how to return and view a table of trending coins from CoinGecko using OpenBB's
+  Python functions.
+keywords:
+- CoinGecko
+- trending coins
+- Python functions
+- cryptocurrency
+- crypto trends
+- dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.disc.trending - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# trending
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -33,8 +44,6 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Trending Coins |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -63,8 +72,6 @@ openbb.crypto.disc.trending_chart(export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

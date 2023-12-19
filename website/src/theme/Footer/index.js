@@ -47,8 +47,8 @@ function Footer() {
 
   return (
     <footer className="px-4 border-t dark:border-grey-600/50 lg:px-12 py-14 bg-white dark:bg-grey-850 z-10 overflow-hidden flex flex-col gap-10 items-center justify-center">
-      <div className="flex w-full flex-col justify-between gap-10 md:flex-row md:items-start">
-        <div className="ml-2 mb-2 space-y-10 md:m-0">
+      <div className="flex w-full justify-between md:flex-row">
+        <div className="md:items-start mt-2">
           <Link
             aria-label="Home"
             to="/"
@@ -56,6 +56,8 @@ function Footer() {
           >
             <LetteringLogo className="h-[14px] w-[140px]" />
           </Link>
+        </div>
+        <div className="justify-end">
           <a
             className="flex h-[32px] w-[172px] rounded-md border border-grey-300 hover:bg-grey-100 dark:border-white bg-grey-100 dark:bg-white text-xs hover:no-underline"
             href="https://github.com/OpenBB-finance/OpenBBTerminal"
@@ -93,7 +95,7 @@ function Footer() {
             Terms
           </Link>
         </div>
-        <div className="mt-4 mb-10 grid grid-cols-4 gap-4 self-start md:my-0 md:grid-cols-8 md:self-end">
+        <div className="mt-4 mb-10 grid grid-cols-4 gap-4 self-start md:my-0 md:grid-cols-7 md:self-end">
           <a
             aria-label="GitHub Link"
             className="h-8 w-8 dark:hover:!text-white hover:text-grey-700"

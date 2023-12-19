@@ -1,9 +1,21 @@
 ---
 title: customer
-description: OpenBB SDK Function
+description: Documentation for the 'customer' function in the OpenBB Terminal. This
+  function allows you to print customers from a ticker, helping in stock analysis
+  and due diligence. Here, you'll find details about parameters, return values, and
+  the source code.
+keywords:
+- customer
+- stocks
+- due diligence
+- dataframe
+- symbol
+- limit
 ---
 
-# customer
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.dd.customer - Reference | OpenBB SDK Docs" />
 
 Print customers from ticker provided
 
@@ -31,4 +43,3 @@ openbb.stocks.dd.customer(symbol: str, limit: int = 50)
 | ---- | ----------- |
 | pd.DataFrame | A dataframe of suppliers |
 ---
-

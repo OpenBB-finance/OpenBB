@@ -1,12 +1,25 @@
 ---
 title: historical
-description: OpenBB SDK Function
+description: The documentation provides comprehensive details on sourcing historical
+  data from Yahoo Finance using the OpenBB Python library. It covers the use of future
+  timeseries symbols and the ways to display, format and export the data.
+keywords:
+- historical data
+- Yahoo Finance
+- future timeseries
+- futures
+- expiry date
+- matplotlib.axes._axes.Axes
+- export data
+- raw format
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="futures.historical - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# historical
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +50,6 @@ openbb.futures.historical(symbols: List[str], expiry: str = "")
 | ---- | ----------- |
 | pd.DataFrame | Dictionary with sector weightings allocation |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -72,8 +83,6 @@ openbb.futures.historical_chart(symbols: List[str], expiry: str = "", start_date
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

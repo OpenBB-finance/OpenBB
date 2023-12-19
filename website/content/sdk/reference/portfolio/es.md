@@ -1,9 +1,22 @@
 ---
 title: es
-description: OpenBB SDK Function
+description: Learn how to use the openbb.portfolio.es function to calculate the portfolio
+  expected shortfall. It allows the use of different distributions and custom percentiles.
+keywords:
+- openbb.portfolio.es
+- Portfolio expected shortfall
+- PortfolioEngine class
+- Calculations on portfolio
+- Portfolio distributions
+- Portfolio percentiles
+- openbb.portfolio.load
+- Portfolio examples
+- Python portfolio calculations
 ---
 
-# es
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio.es - Reference | OpenBB SDK Docs" />
 
 Get portfolio expected shortfall
 
@@ -43,4 +56,3 @@ output = openbb.portfolio.es(p)
 ```
 
 ---
-

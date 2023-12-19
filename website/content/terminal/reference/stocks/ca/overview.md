@@ -1,9 +1,24 @@
 ---
 title: overview
-description: OpenBB Terminal Function
+description: This overview provides a snapshot of similar companies using the 'overview'
+  command, including critical data such as stock price, market cap, P/E ratio, and
+  more. Data sourced from Finviz.
+keywords:
+- stock screener
+- finviz
+- company data
+- stock market
+- financial data
+- stock information
+- company overview
+- market cap
+- PE ratio
+- stock price
 ---
 
-# overview
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ca/overview - Reference | OpenBB Terminal Docs" />
 
 Prints screener data of similar companies. [Source: Finviz]
 

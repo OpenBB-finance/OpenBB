@@ -1,12 +1,27 @@
 ---
 title: baas
-description: OpenBB SDK Function
+description: The 'baas' page details how to get average bid and ask prices, as well
+  as the average spread for a given crypto pair over a chosen time period in OpenBBTerminal.
+  It explains how to use various parameters for sorting and exporting data.
+keywords:
+- baas
+- crypto pair
+- average bid and ask prices
+- average spread
+- time period
+- ERC20 token symbol
+- Quoted currency
+- sort data
+- data ascending
+- Export dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.baas - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# baas
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -41,8 +56,6 @@ openbb.crypto.onchain.baas(symbol: str = "WETH", to_symbol: str = "USDT", limit:
 | pd.DataFrame | Average bid and ask prices, spread for given crypto pair for chosen time period |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -76,8 +89,6 @@ openbb.crypto.onchain.baas_chart(symbol: str = "WETH", to_symbol: str = "USDT", 
 | ---- | ----------- |
 | pd.DataFrame | Average bid and ask prices, spread for given crypto pair for chosen time period |
 ---
-
-
 
 </TabItem>
 </Tabs>

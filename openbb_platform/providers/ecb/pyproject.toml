@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "openbb-ecb"
+version = "1.0.0"
+description = "ECB extension for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_ecb" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openbb-core = "^1.0.0"
+xmltodict = "^0.13.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+ecb = "openbb_ecb:ecb_provider"

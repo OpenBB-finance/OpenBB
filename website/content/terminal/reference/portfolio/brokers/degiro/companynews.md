@@ -1,9 +1,21 @@
 ---
 title: companynews
-description: OpenBB Terminal Function
+description: This page contains a guide on how to use the 'companynews' tool and set
+  its parameters such as SYMBOL, which represents the company's ISIN code; LIMIT for
+  the number of news to display; OFFSET to adjust the displayed news; and LANGUAGES
+  to define the languages in which the news appears.
+keywords:
+- company news tool
+- usage guide
+- ISIN code
+- news display
+- display offset
+- language settings
 ---
 
-# companynews
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/degiro/companynews /brokers - Reference | OpenBB Terminal Docs" />
 
 
 

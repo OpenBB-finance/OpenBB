@@ -1,12 +1,24 @@
 ---
 title: links
-description: OpenBB SDK Function
+description: 'This documentation page includes instructions on how to use two specific
+  functions: ''links'' and ''links_chart'', part of OpenBB''s crypto asset due diligence
+  utilities. These functions help users understand and demonstrate how to handle crypto
+  asset links using Python within the OpenBB terminal.'
+keywords:
+- OpenBB crypto due diligence
+- Crypto asset links utility
+- Python cryptocurrency utilities
+- Crypto symbol link checking
+- Dataframe export to CSV, JSON, XLS
+- External axes in Python
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.links - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# links
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +49,6 @@ openbb.crypto.dd.links(symbol: str)
 | pd.DataFrame | asset links |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +78,6 @@ openbb.crypto.dd.links_chart(symbol: str, export: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

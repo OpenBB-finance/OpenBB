@@ -1,10 +1,21 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: sectors
-description: OpenBB Telegram Command
+description: 'The page contains information about the ''sectors'' command that retrieves
+  a summary of all prints by % of MarketCap by Sector over the last x days. The details
+  include the command usage, parameters required and examples to follow. '
+keywords:
+- sectors command
+- MarketCap by sector
+- darkpool activity
+- sector market cap
+- accumulation
+- days parameter
+- sector parameter
 ---
 
-# sectors
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="darkpool: sectors - Telegram Reference | OpenBB Bot Docs" />
 
 This command allows the user to retrieve a summary of all prints by % of MarketCap by Sector over the last x days. The user will be able to view the sector's market cap divided by total darkpool activity to see possible accumulation.
 

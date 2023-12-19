@@ -1,10 +1,19 @@
 ---
-########### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ###########
 title: 8ball
-description: OpenBB Discord Command
+description: A documentation page about the 8ball command that permits users to ask
+  the 8-ball a question to get an answer. It includes usage and examples of the command.
+keywords:
+- 8ball command
+- command usage
+- usage examples
+- interactive function
+- fun commands
+- programming documentation
 ---
 
-# 8ball
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="fun: 8ball - Discord Reference | OpenBB Bot Docs" />
 
 This command allows the user to ask the 8-ball a question and receive an answer. The question must end in a question mark.
 

@@ -1,12 +1,26 @@
 ---
 title: il
-description: OpenBB SDK Function
+description: 'This page provides technical documentation for two imperative features
+  in OpenBB''s cryptocurrency tool suite: the Impermanent Loss calculation model and
+  its corresponding chart display. Learn about their parameters, return types, and
+  source code.'
+keywords:
+- Cryptocurrency
+- Impermanent Loss
+- Impermanent Loss Model
+- Impermanent Loss Chart Display
+- Crypto Tool Suite
+- Crypto A
+- Crypto B
+- Liquidity Pool
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.tools.il - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# il
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +54,6 @@ openbb.crypto.tools.il(price_changeA: float, price_changeB: float, proportion: f
 | Tuple[pd.DataFrame, str] | - pd.DataFrame: dataframe with results<br/>- str: narrative version of results |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +86,6 @@ openbb.crypto.tools.il_chart(price_changeA: int, price_changeB: int, proportion:
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

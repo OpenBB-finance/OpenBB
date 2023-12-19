@@ -1,9 +1,23 @@
 ---
 title: arktrades
-description: OpenBB SDK Function
+description: Arktrades is a feature provided by OpenBB Stocks, a function in Python
+  facilitating due diligence for stock trading. This page contains the guide to access
+  ARK trades for a particular stock ticker, returning a dataframe of trades. Source
+  code included, hosted on GitHub.
+keywords:
+- arktrades
+- OpenBB Stocks
+- Stocks Due Diligence
+- trade dataframe
+- ARK trades
+- Stock Ticker
+- Stock Trades
+- GitHub Source Code
 ---
 
-# arktrades
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.dd.arktrades - Reference | OpenBB SDK Docs" />
 
 Gets a dataframe of ARK trades for ticker
 
@@ -30,4 +44,3 @@ openbb.stocks.dd.arktrades(symbol: str)
 | ---- | ----------- |
 | pd.DataFrame | DataFrame of trades |
 ---
-

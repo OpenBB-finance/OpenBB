@@ -279,7 +279,26 @@ def create_output_path(input_path: str, parameters_dict: Dict[str, Any]) -> str:
         + "_"
         + f"{report_name}{args_to_output}"
     )
-    report_output_name = report_output_name.replace(".", "_")
+
+    special_chars = [
+        ".",
+        ";",
+        ":",
+        "!",
+        "*",
+        " ",
+        "^",
+        "<",
+        ">",
+        '"',
+        "/",
+        "|",
+        "?",
+        "\\",
+    ]
+    for char in special_chars:
+        report_output_name = report_output_name.replace(char, "_")
+
     output_path = str(
         get_current_user().preferences.USER_REPORTS_DIRECTORY / report_output_name
     )

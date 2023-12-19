@@ -1,9 +1,23 @@
 ---
 title: lasttrades
-description: OpenBB Terminal Function
+description: This page presents 'lasttrades', a comprehensive tool providing details
+  on the last government trades. It provides usage, parameters, and examples on how
+  to retrieve and understand transaction data.
+keywords:
+- lasttrades
+- government trades
+- transaction data
+- trade parameters
+- usage examples
+- congress transactions
+- senate trades
+- house trades
+- Quiver Quant
 ---
 
-# lasttrades
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/gov/lasttrades - Reference | OpenBB Terminal Docs" />
 
 Last government trades. [Source: www.quiverquant.com]
 

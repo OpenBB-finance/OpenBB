@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api-v2.intrinio.com/forex/pairs?api_key=MOCK_API_KEY
+  response:
+    body:
+      string: !!binary |
+        H4sIADIrLWUAA5SUwU7CQBCG32XPPAG3KmAjsZJiE60xBmsPXEQLHAzh3f3HvTDDP9nuse33bXf+
+        nZ1T+N5sh32Yvp5Ct/vswzQUzey2mIVJ+Njs+/fuOAz9V/cbP+Dtz3F3UK8FPk+UXi4ydMBav1+9
+        jNcF1nrVZmxeYK036wxd4AsdUfDaY6Cp2kHx2h3d1I7VHP1/Tyl93tSxSqvjA9MF1jpvG0c3bSM6
+        jc7TdXSg7m5W43WBtc6jc/Tr6KrH5XhdYKPTpvX01ka3nmf8XWCtP9UZtQusdX5lHN1cGRwE77p4
+        nKmuA8W7ztFN14lOu87TddeB4m3j6KZtQPFzd3Rz7qB48o5uksdqPLq4p1R0otPoPF1HB4pH5+gm
+        OlC8dkc3taOH+d/jTUj9Havx6OKeUtGJTqPzdB2d6FWZoQPWernM2LzAWufROfp1dA/P1XhdYK3z
+        SevoZtKC4qPS0c2oBMVHpaObUQmqLerxusAXOh558nFRnvzb+Q8AAP//AwC8qfa84wkAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 16 Oct 2023 12:23:14 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin,Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

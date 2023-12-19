@@ -1,9 +1,18 @@
 ---
 title: set
-description: OpenBB Terminal Function
+description: This page provides instructions on how to set presets from the presets
+  folder. Various industry filter presets are available to tailor your usage.
+keywords:
+- set preset
+- presets folder
+- filter presets
+- python usage
+- Industry presets
 ---
 
-# set
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ins/set - Reference | OpenBB Terminal Docs" />
 
 Set preset from under presets folder.
 

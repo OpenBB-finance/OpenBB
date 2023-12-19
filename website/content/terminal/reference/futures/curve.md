@@ -1,9 +1,20 @@
 ---
 title: curve
-description: OpenBB Terminal Function
+description: Documentation page for the 'curve' command in Python, used to display
+  futures curve sourced from YahooFinance. Provides usage example and a comprehensive
+  list of financial ticker parameters.
+keywords:
+- curve documentation
+- curve usage
+- futures curve
+- financial parameter
+- financial trading
+- YahooFinance
 ---
 
-# curve
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="futures /curve - Reference | OpenBB Terminal Docs" />
 
 Display futures curve. [Source: YahooFinance]
 

@@ -35,8 +35,8 @@ const config = {
       {
         redirects: [
           {
-            from: "/terminal/usage/intros/forecasting",
-            to: "/terminal/usage/intros/forecast",
+            from: "/terminal/menus/forecasting",
+            to: "/terminal/menus/forecast",
           },
         ],
       },
@@ -82,8 +82,9 @@ const config = {
       ({
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl:
-            "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
+          editUrl: "https://github.com/OpenBB-finance/OpenBBTerminal/edit/main/website/",
+          showLastUpdateTime: true,
+          showLastUpdateAuthor: true,
           routeBasePath: "/",
           path: "content",
           remarkPlugins: [math],
@@ -112,12 +113,11 @@ const config = {
       },
       algolia: {
         appId: "7D1HQ0IXAS",
-        apiKey: "a2e289977b4b663ed9cf3d4635a438fd",
+        apiKey: "a2e289977b4b663ed9cf3d4635a438fd",  // pragma: allowlist secret
         indexName: "openbbterminal",
         contextualSearch: false,
       },
     }),
-
   stylesheets: [
     {
       href: "/katex/katex.min.css",

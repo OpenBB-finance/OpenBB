@@ -1,12 +1,26 @@
 ---
 title: options
-description: OpenBB SDK Function
+description: This page details two main functionalities of OpenBB-finance's model
+  and chart components - obtaining columns-dataset combinations from datasets for
+  use in commands and plotting custom data. Code snippets, links to source code, parameters
+  involved, and return types are provided.
+keywords:
+- OpenBB finance
+- data visualization
+- data modelling
+- datasets
+- econometrics
+- tabs
+- chart
+- options
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics.options - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# options
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +52,6 @@ openbb.econometrics.options(datasets: Dict[str, pd.DataFrame], dataset_name: str
 | Dict[Union[str, Any], pd.DataFrame] | A dictionary with a DataFrame for each option. With dataset_name set, only shows one<br/>options table. |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +81,6 @@ openbb.econometrics.options_chart(datasets: Dict[str, pd.DataFrame], dataset_nam
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

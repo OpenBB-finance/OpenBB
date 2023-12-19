@@ -1,9 +1,21 @@
 ---
 title: etf_by_category
-description: OpenBB SDK Function
+description: This page provides information on how to retrieve a selection of ETFs
+  based on category filtered by total assets, using the OpenBB finance platform.
+keywords:
+- OpenBB finance
+- ETFs
+- category filter
+- total assets
+- ETF selection
+- financial data
+- finance database model
+- etf_by_category function
 ---
 
-# etf_by_category
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf.etf_by_category - Reference | OpenBB SDK Docs" />
 
 Return a selection of ETFs based on category filtered by total assets.
 
@@ -30,4 +42,3 @@ openbb.etf.etf_by_category(category: str)
 | ---- | ----------- |
 | Dict[str, Any] | Dictionary with ETFs that match a certain description |
 ---
-

@@ -1,12 +1,21 @@
 ---
 title: cancel
-description: OpenBB SDK Function
+description: This page describes two methods to cancel a pending order in OpenBB's
+  forex trading system using Oanda. It includes Python functions to cancel an order
+  by ID from either the model or chart view.
+keywords:
+- cancel pending order
+- Oanda
+- forex
+- python function
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex.oanda.cancel - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# cancel
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +46,6 @@ This function does not return anything
 
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -67,8 +74,6 @@ openbb.forex.oanda.cancel_chart(accountID: str, orderID: str = "")
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

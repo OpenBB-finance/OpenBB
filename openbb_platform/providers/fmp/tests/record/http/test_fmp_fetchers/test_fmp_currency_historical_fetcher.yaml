@@ -1,0 +1,63 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate, br
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://financialmodelingprep.com/api/v3/historical-price-full/forex/EURUSD?apikey=MOCK_API_KEY&from=2023-01-01&interval=1day&to=2023-01-10
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA5WWPW/bMBCG9/wKwbNt3PFbWdsuXVq0TZeig2ILsQvbCvwVBEH+eynWFY/KSWY8
+        eLj3fBQfv3rJl5uimByet/fNZnJbTD7dfbv7/nEybaur9eHY7NeLqlV++UpRvIRvry2rY932CxBy
+        BjhDCL8JWvNY77yGc7DSia68Wj+sLmVrZFfeNE+XqlBdcbFpDvWlbLTu6tXyzwciSYmu087N5rQN
+        igOHcYHTzv/qdDjWy58DHYtVtXto6zAHELYvfK33i3p3DLrQSkT9/FQ9Xh4l7qe6rwPKz9XuVO2f
+        C4RpIeSkN/TLud7/WG+7Vdu5oeN1Ok4aSp60iJQIaV1ypJEFLV3sTUEbbWT8IzvQon3suCwDuteR
+        gAbtegIFDVqBQmXexxrKDNb/R+fhdhxuY4hZCW4TyXa0Ddk/pS2GbU0kAlsLG7fOwk46EtgWsCdQ
+        2EZb8i/lkXYZpMPcPMyGxaw4yh4+Q1mx6UF7U8pa+A+DeZQwDxfHjIymxMg+j63JYBvm5rHVHFst
+        /MuSCVc5EXsTunFnvcQAI+MOiYmtAxg3cdJBOaMaMTHOJZfLMT/eUtbXKaPMDGXF2hd0XJ8glgxi
+        jZK4iNoUhxhrZRwXFOiV0eOv19ExnrW+cm/yOkL2DbY0louKMdDqCuiwbhicB1uyflY6bonC1swJ
+        qAfSAoYy2VhLTs3IWpSqjKM41mlHkhu67Kc1DQ7t3673WlpetzSEuXmgBetqS040AtoxZ59G3tRq
+        8OyDkty/ImdpaJ5wnNOOxNMoccTTOGdvdGOYRYahMfc+h+x9zt9DGciWu1/QF5Y61kTb9c1MpI6x
+        9XeiUcRpQ5oawvTzJEkNobTlII8dgpgBGcLgf5z99++b178DE4NG0AwAAA==
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Max-Age:
+      - '3600'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 16 Oct 2023 12:21:48 GMT
+      ETag:
+      - W/"cd0-Rv/ywzhqPUdb7KJ/ZDpUXIC8K1A"
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 200
+      message: OK
+version: 1

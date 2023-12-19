@@ -1,12 +1,25 @@
 ---
 title: bgod
-description: OpenBB SDK Function
+description: This page provides documentation for bgod and bgod_chart methods of OpenBB.
+  The bgod method calculates test statistics for autocorrelation in an OLS model,
+  and bgod_chart displays the Breusch-Godfrey autocorrelation test.
+keywords:
+- bgod
+- bgod_chart
+- autocorrelation
+- Breusch-Godfrey Test
+- OLS model
+- statistics
+- data analysis
+- econometrics
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="econometrics.bgod - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# bgod
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +51,6 @@ openbb.econometrics.bgod(model: pd.DataFrame, lags: int = 3)
 | pd.DataFrame | Test results from the Breusch-Godfrey Test |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -69,8 +80,6 @@ openbb.econometrics.bgod_chart(model: statsmodels.regression.linear_model.Regres
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

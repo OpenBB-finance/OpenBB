@@ -1,9 +1,20 @@
 ---
 title: view
-description: OpenBB Terminal Function
+description: Understand how to view available portfolios in various formats using
+  the 'view' command. This page provides a comprehensive guide on the parameters used.
+keywords:
+- portfolio view
+- load portfolios
+- csv portfolio
+- json portfolio
+- xlsx portfolio
+- format command
+- parameters guide
 ---
 
-# view
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/portfolio_analysis/view - Reference | OpenBB Terminal Docs" />
 
 Show available portfolios to load.
 

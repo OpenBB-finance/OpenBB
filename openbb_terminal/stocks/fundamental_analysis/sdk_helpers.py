@@ -3,6 +3,7 @@ __docformat__ = "numpy"
 
 import pandas as pd
 
+from openbb_terminal.rich_config import console
 from openbb_terminal.stocks.fundamental_analysis import (
     av_model,
     eodhd_model,
@@ -83,7 +84,7 @@ def get_income_statement(
     """
     if source == "YahooFinance":
         if quarterly:
-            print(
+            console.print(
                 "Quarterly income statement not available from Yahoo Finance.  Returning annual"
             )
         df = yahoo_finance_model.get_financials(
@@ -147,7 +148,7 @@ def get_balance_sheet(
     """
     if source == "YahooFinance":
         if quarterly:
-            print(
+            console.print(
                 "Quarterly statements not available from Yahoo Finance.  Returning annual"
             )
         df = yahoo_finance_model.get_financials(
@@ -211,7 +212,7 @@ def get_cash_flow(
     """
     if source == "YahooFinance":
         if quarterly:
-            print(
+            console.print(
                 "Quarterly statements not available from Yahoo Finance.  Returning annual"
             )
         df = yahoo_finance_model.get_financials(

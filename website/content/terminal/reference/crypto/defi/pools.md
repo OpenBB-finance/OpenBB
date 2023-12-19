@@ -1,9 +1,25 @@
 ---
 title: pools
-description: OpenBB Terminal Function
+description: This page is a Python script documentation to display and sort Uniswap
+  Pools by volume, token name symbol, and transaction count using dataset from thegraph.com.
+  It provides clear instructions and examples on usage and parameters.
+keywords:
+- Uniswap Pools
+- Volume
+- Token Name
+- Token Symbol
+- Volume USD
+- Transaction Count
+- Sorting
+- Python Script
+- Cryptocurrency
+- TheGraph Source
+- Data Display
 ---
 
-# pools
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/defi/pools - Reference | OpenBB Terminal Docs" />
 
 Display uniswap pools by volume. [Source: https://thegraph.com/en/]
 

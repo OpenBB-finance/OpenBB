@@ -1,12 +1,28 @@
 ---
 title: sentiment
-description: OpenBB SDK Function
+description: This page provides documentation on extracting sentiment from a stock
+  ticker symbol, which includes the parameters for the number of tweets per hour,
+  number of days to extract tweets for, an optional comparison to the corresponding
+  change in stock price, and an optional export format. Plots sentiments can also
+  be visualized using the provided python codes.
+keywords:
+- sentiment analysis
+- stock ticker symbol
+- tweets per hour
+- extract tweets
+- stock price
+- dataframe
+- python code
+- plot sentiments
+- export format
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.ba.sentiment - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# sentiment
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +54,6 @@ openbb.stocks.ba.sentiment(symbol: str, n_tweets: int = 15, n_days_past: int = 2
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of sentiment |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -73,8 +87,6 @@ openbb.stocks.ba.sentiment_chart(symbol: str, n_tweets: int = 15, n_days_past: i
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

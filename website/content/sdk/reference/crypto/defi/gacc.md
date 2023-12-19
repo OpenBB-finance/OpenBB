@@ -1,12 +1,25 @@
 ---
 title: gacc
-description: OpenBB SDK Function
+description: A detailed insight into the gacc function of Terra Blockchain. This documentation
+  shows how to effectively fetch Terra blockchain account growth history and how to
+  plot the related charts using openbb.crypto.defi.
+keywords:
+- Terra Blockchain
+- Account growth history
+- openbb.crypto.defi
+- gacc function
+- Plotting blockchain data
+- Cryptocurrency
+- Crypto defi
+- Blockchain technology
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.defi.gacc - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# gacc
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -36,8 +49,6 @@ openbb.crypto.defi.gacc(cumulative: bool = True)
 | ---- | ----------- |
 | pd.DataFrame | historical data of accounts growth |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -70,8 +81,6 @@ openbb.crypto.defi.gacc_chart(kind: str = "total", cumulative: bool = False, lim
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

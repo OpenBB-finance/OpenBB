@@ -1,0 +1,45 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2023-01-01/2023-01-10?adjusted=True&apiKey=MOCK_API_KEY&limit=49999&sort=desc
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/1TSQWvcPBAG4P8y14hhZqSZkXQL3/ErtPdSyq5XS9KGhKztlBL2vxfXqr3xaTAy
+        j99X8w7T4/CzXaDC/f2XTxDgdW6X3/+9zM8TVAtwaeP8NI37i8PpxzxO7QR1usxtOwD16zu8QTWM
+        uRirtjvyAG+/oLIUzCIBXqByJBQLMKyjxwAPy8goFi3A03I8I0uACSqbxyiWaXkCPENVTSXRNfy1
+        HMkLZY43VmQ0KTuWTDeNtWsRE3erYC6bJYnSblnSaNqtjO6anD/kysgld0sMiVdKCpp0ilBKp9IN
+        JSWz7JQzq9BGkbNlyreUIeUcO+XIsVOK1ClxdN8ot43KJd00aKZJ80YVJrIYP1KWLG2plp8e1nG5
+        oYc1uKn+wxQp7xjlmwrdiZJ0jJGF2ZNzu1u+WDVFF913I++5fKtwb5B9k1zWAleJSZhMr98CjNNh
+        mkeo8Pl/WPbzdW7j9P3xBBWG4Sgtykn1ICQ2uJy5nYse7ejl2M4QYOibfv0TAAD//5fmLtkbAwAA
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '399'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 26 Sep 2023 19:08:11 GMT
+      Server:
+      - nginx/1.19.2
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Vary:
+      - Accept-Encoding
+      X-Request-Id:
+      - ccb2e32d55a2026c72f1ef95b6b79bef
+    status:
+      code: 200
+      message: OK
+version: 1

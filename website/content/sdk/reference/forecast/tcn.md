@@ -1,12 +1,26 @@
 ---
 title: tcn
-description: OpenBB SDK Function
+description: This documentation page provides information on how to use the 'tcn'
+  functionality of OpenBBTerminal. This enables you to perform Temporal Convolutional
+  Network (TCN) forecasting and display the forecast using OpenBB Platform's resources.
+keywords:
+- Temporal Convolutional Network
+- TCN forecasting
+- OpenBB platform
+- tcn_model.py
+- tcn_view.py
+- time series prediction
+- Forecast visualization
+- Source code
+- Predictive analytics
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forecast.tcn - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# tcn
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -53,8 +67,6 @@ openbb.forecast.tcn(data: Union[pd.Series, pd.DataFrame], target_column: str = "
 | ---- | ----------- |
 | Tuple[List[TimeSeries], List[TimeSeries], List[TimeSeries], Optional[float], type[TCNModel]] | Adjusted Data series,<br/>Historical forecast by best RNN model,<br/>list of Predictions,<br/>Mean average precision error,<br/>Best TCN Model. |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -108,8 +120,6 @@ openbb.forecast.tcn_chart(data: Union[pd.DataFrame, pd.Series], target_column: s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

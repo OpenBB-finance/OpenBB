@@ -1,9 +1,21 @@
 ---
 title: summary
-description: OpenBB Terminal Function
+description: The page provides a detailed guide on how to display a summary of portfolio
+  vs benchmark. It explains the usage, parameters, and choices available.
+keywords:
+- summary
+- portfolio
+- benchmark
+- Usage
+- parameters
+- period
+- risk_free_rate
+- calculations
 ---
 
-# summary
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="portfolio/summary - Reference | OpenBB Terminal Docs" />
 
 Display summary of portfolio vs benchmark
 

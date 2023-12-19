@@ -1,9 +1,22 @@
 ---
 title: oi
-description: OpenBB Terminal Function
+description: The documentation page 'oi' provides information about open interest
+  by exchange for certain assets. It includes parameters, usage and an illustrative
+  image.
+keywords:
+- oi
+- API-Reference
+- open interest
+- exchange
+- assets
+- parameters
+- usage
+- illustrative image
 ---
 
-# oi
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/oi - Reference | OpenBB Terminal Docs" />
 
 Displays open interest by exchange for a certain asset [Source: https://coinglass.github.io/API-Reference/]
 

@@ -1,9 +1,22 @@
 ---
 title: acf
-description: OpenBB Terminal Function
+description: The page provides explanation and usage for acf- the Auto-Correlation
+  and Partial Auto-Correlation Functions for diff and diff diff crypto data. It includes
+  parameters details and illustrative plot.
+keywords:
+- acf
+- Auto-Correlation
+- Partial Auto-Correlation
+- diff
+- diff diff
+- crypto data
+- lags
+- plots
 ---
 
-# acf
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/qa/acf - Reference | OpenBB Terminal Docs" />
 
 Auto-Correlation and Partial Auto-Correlation Functions for diff and diff diff crypto data
 

@@ -1,9 +1,25 @@
 ---
 title: arktrades
-description: OpenBB Terminal Function
+description: The page documents the ArkTrades tool. This tool provides trade details
+  for any given ticker in ARK funds. It has optional parameters to limit rows shown
+  or include the ticker symbol in the table.
+keywords:
+- arktrades
+- trades
+- ARK funds
+- limit rows
+- show symbol
+- table
+- stocks
+- trade data
+- sell
+- buy
+- Apple Inc.
 ---
 
-# arktrades
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/dd/arktrades - Reference | OpenBB Terminal Docs" />
 
 Get trades for ticker across all ARK funds.
 

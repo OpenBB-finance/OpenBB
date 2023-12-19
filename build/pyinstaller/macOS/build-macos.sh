@@ -119,6 +119,7 @@ signFiles() {
     echo "Code Sign OpenBB Executable File"
     codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/OpenBBTerminal
     codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/OpenBBPlotsBackend
+    codesign --deep --force --verify --verbose --options runtime --entitlements "$ENTITLEMENTS" -s "$APPLE_SIGNING_IDENTITY" build/pyinstaller/macOS/target/darwinpkg/Applications/OpenBB\ Terminal/.OpenBB/pywry
 }
 
 createInstallationDirectory() {

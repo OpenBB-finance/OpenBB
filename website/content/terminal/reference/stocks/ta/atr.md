@@ -1,9 +1,26 @@
 ---
 title: atr
-description: OpenBB Terminal Function
+description: Technical documentation of the 'atr' function or Average True Range used
+  for measuring volatility in financial markets, particularly those arising due to
+  gaps or limit moves. The page highlights how to use the function using Python, its
+  parameters, and different modes.
+keywords:
+- Averge True Range
+- atr
+- volatility measurement
+- trading algorithms
+- financial markets
+- technical analysis
+- ema
+- sma
+- wma
+- hma
+- zlma
 ---
 
-# atr
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ta/atr - Reference | OpenBB Terminal Docs" />
 
 Averge True Range is used to measure volatility, especially volatility caused by gaps or limit moves.
 

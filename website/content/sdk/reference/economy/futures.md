@@ -1,9 +1,26 @@
 ---
 title: futures
-description: OpenBB SDK Function
+description: This page provides information on how to retrieve and manipulate futures
+  data using the OpenBB economy function. It includes examples and descriptions for
+  parameters such as data source and future type.
+keywords:
+- economy
+- futures data
+- Finviz
+- WSJ
+- Indices
+- Energy
+- Metals
+- Meats
+- Grains
+- Softs
+- Bonds
+- Currencies
 ---
 
-# futures
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="economy.futures - Reference | OpenBB SDK Docs" />
 
 Get futures data.
 
@@ -54,4 +71,3 @@ meat_futures = openbb.economy.futures(source="Finviz", future_type="Meats")
 ```
 
 ---
-

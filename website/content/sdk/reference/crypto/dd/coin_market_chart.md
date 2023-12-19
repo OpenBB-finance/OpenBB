@@ -1,9 +1,23 @@
 ---
 title: coin_market_chart
-description: OpenBB SDK Function
+description: The page provides details about the 'coin_market_chart' function in the
+  OpenBB crypto module. This function fetches and displays coin prices based on specified
+  parameters.
+keywords:
+- coin market chart
+- cryptocurrency prices
+- openbb crypto
+- Python data fetching
+- coin prices API
+- data frame
+- pycoingecko model
+- currency
+- coin pricing data
 ---
 
-# coin_market_chart
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.coin_market_chart - Reference | OpenBB SDK Docs" />
 
 Get prices for given coin. [Source: CoinGecko]
 
@@ -32,4 +46,3 @@ openbb.crypto.dd.coin_market_chart(symbol: str = "", vs_currency: str = "usd", d
 | ---- | ----------- |
 | pd.DataFrame | Prices for given coin<br/>Columns: time, price, currency |
 ---
-

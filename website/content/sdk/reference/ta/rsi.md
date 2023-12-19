@@ -1,12 +1,17 @@
 ---
 title: rsi
-description: OpenBB SDK Function
+description: Implements relative strength index
+keywords:
+- relative strength index
+- technical analysis
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.rsi - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# rsi
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +44,6 @@ openbb.ta.rsi(data: pd.Series, window: int = 14, scalar: float = 100, drift: int
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of technical indicator |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -75,8 +78,6 @@ openbb.ta.rsi_chart(data: pd.Series, window: int = 14, scalar: float = 100.0, dr
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

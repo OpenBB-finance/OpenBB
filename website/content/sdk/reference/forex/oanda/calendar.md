@@ -1,12 +1,29 @@
 ---
 title: calendar
-description: OpenBB SDK Function
+description: Provides a comprehensive guide on the Oanda calendar functionality in
+  the OpenBB finance package. Details include how to request data of significant events,
+  parameters for currency pair and days, model and view interfaces, and corresponding
+  source code.
+keywords:
+- oanda
+- forex
+- calendar
+- events
+- data
+- currency pair
+- advance
+- model
+- view
+- chart
+- OpenBB-finance
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex.oanda.calendar - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# calendar
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +55,6 @@ openbb.forex.oanda.calendar(days: int = 14, instrument: Optional[str] = None)
 | Union[pd.DataFrame, bool] | Calendar events data or False |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +83,6 @@ openbb.forex.oanda.calendar_chart(instrument: str, days: int = 7)
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

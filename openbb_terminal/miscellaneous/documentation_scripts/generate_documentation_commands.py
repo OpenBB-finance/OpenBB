@@ -22,12 +22,10 @@ EN_FILE = I18N_DICT_LOCATION / "en.yml"
 
 MD_FILES = ["CONTRIBUTING.md", "README.md", "openbb_terminal/SDK_README.md"]
 MD_FILES.extend(glob.glob("website/content/sdk/faqs/*.md", recursive=True))
-MD_FILES.extend(glob.glob("website/content/terminal/usage/basics/*.md", recursive=True))
-MD_FILES.extend(glob.glob("website/content/terminal/usage/guides/*.md", recursive=True))
-MD_FILES.extend(glob.glob("website/content/terminal/usage/intros/*.md", recursive=True))
-MD_FILES.extend(glob.glob("website/content/sdk/usage/basics/*.md", recursive=True))
-MD_FILES.extend(glob.glob("website/content/sdk/usage/guides/*.md", recursive=True))
-MD_FILES.extend(glob.glob("website/content/sdk/usage/intros/*.md", recursive=True))
+MD_FILES.extend(glob.glob("website/content/terminal/usage/*.md", recursive=True))
+MD_FILES.extend(glob.glob("website/content/terminal/menus/*.md", recursive=True))
+MD_FILES.extend(glob.glob("website/content/sdk/usage/*.md", recursive=True))
+MD_FILES.extend(glob.glob("website/content/sdk/data-available/*.md", recursive=True))
 
 EXPORT_FILE_PATH = (
     "openbb_terminal/miscellaneous/documentation_scripts/documentation_commands"

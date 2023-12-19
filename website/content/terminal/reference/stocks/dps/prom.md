@@ -1,9 +1,20 @@
 ---
 title: prom
-description: OpenBB Terminal Function
+description: Display dark pool (ATS) data of tickers with growing trades activity
+  using linear regression. Filter and process data from different tiers.
+keywords:
+- prom
+- dark pool
+- ATS data
+- trade activity
+- linear regression
+- data filtering
+- tier processing
 ---
 
-# prom
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/dps/prom - Reference | OpenBB Terminal Docs" />
 
 Display dark pool (ATS) data of tickers with growing trades activity using linear regression.
 

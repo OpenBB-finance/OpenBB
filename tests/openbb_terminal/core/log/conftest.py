@@ -20,7 +20,7 @@ def settings(tmp_path):
         ),
         aws_settings=AWSSettings(
             aws_access_key_id="MOCK_AWS_ACCESS_KEY_ID",
-            aws_secret_access_key="MOCK_AWS_ACCESS_KEY",  # pragma: allowlist secret
+            aws_secret_access_key="MOCK_AWS_ACCESS_KEY",  # pragma: allowlist secret # noqa: S106
         ),
         log_settings=LogSettings(
             directory=tmp_path,

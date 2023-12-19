@@ -114,7 +114,10 @@ function ColorModeToggle({ className, value, onChange }) {
               "text-white": value !== "dark",
             })}
             type="button"
-            onClick={() => onChange("light")}
+            onClick={() => {
+              onChange("light")
+              window.location.reload();
+            }}
             disabled={!isBrowser}
             title={title}
             aria-label={title}
@@ -128,7 +131,10 @@ function ColorModeToggle({ className, value, onChange }) {
               "text-white": value === "dark",
             })}
             type="button"
-            onClick={() => onChange("dark")}
+            onClick={() => {
+              onChange("dark")
+              window.location.reload();
+            }}
             disabled={!isBrowser}
             title={title}
             aria-label={title}

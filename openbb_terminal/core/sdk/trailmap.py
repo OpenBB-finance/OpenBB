@@ -41,7 +41,9 @@ def get_signature_parameters(
             annotation = annotation.__forward_arg__
 
         if isinstance(annotation, str):
-            annotation = eval(annotation, globalns, cache)  # pylint: disable=W0123
+            annotation = eval(  # pylint: disable=W0123 # noqa: S307
+                annotation, globalns, cache
+            )
 
         params[name] = parameter.replace(annotation=annotation)
 

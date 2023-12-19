@@ -1,9 +1,18 @@
 ---
 title: upcoming
-description: OpenBB SDK Function
+description: This documentation page is related to the upcoming() function in OpenBB's
+  stocks discovery module which returns a DataFrame containing upcoming earnings.
+  The page includes source code, function parameters, and return types.
+keywords:
+- OpenBB.stocks.disc.upcoming
+- Upcoming earnings
+- Source Code
+- Number of pages
 ---
 
-# upcoming
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.disc.upcoming - Reference | OpenBB SDK Docs" />
 
 Returns a DataFrame with upcoming earnings
 
@@ -30,4 +39,3 @@ openbb.stocks.disc.upcoming(limit: int = 10)
 | ---- | ----------- |
 | DataFrame | Upcoming earnings DataFrame |
 ---
-

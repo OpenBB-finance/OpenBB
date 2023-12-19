@@ -1,34 +1,26 @@
 ---
 title: General Operation
 sidebar_position: 3
-description: General operation and troubleshooting for the OpenBB Terminal.
+description: Learn how to overcome system-related issues by enabling the 'developer
+  mode' on Windows and MacOS. Get answers for queries and potential issues. Here,
+  you'll also get to know how to run applications that do not meet the system's security
+  policy, allow apps through firewall and get tips on portfolio management.
 keywords:
-  [
-    installation,
-    installer,
-    install,
-    guide,
-    mac,
-    windows,
-    linux,
-    python,
-    github,
-    macos,
-    how to,
-    explanation,
-    openbb terminal,
-    developer,
-    OS,
-    BranchCache,
-    Hyper-V,
-    VcXsrv,
-    code block
-  ]
+- developer mode
+- overcome system-related issues
+- Windows
+- MacOS
+- run applications
+- system's security policy
+- allow apps through firewall
+- Portfolio management
+- Settings
+- FAQ
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="General Operation - Terminal | OpenBB Docs" />
+<HeadTitle title="General Operation - Faqs | OpenBB Terminal Docs" />
 
 Both Windows and MacOS provide a "developer mode", and enabling it may help to overcome system-related issues.
 
@@ -45,7 +37,7 @@ From the Windows Security menu, click on the Firewall & Network Protection tab, 
 
 <details><summary>Why does a specific menu or command not exist?</summary>
 
-It could be that you are running an outdated version in which the menu or command is not yet available. Please check the [installation guide](https://docs.openbb.co/terminal/installation) to download the most recent release.
+It could be that you are running an outdated version in which the menu or command is not yet available. Please check the [installation guide](/terminal/installation) to download the most recent release.
 
 Do note that it is also possible that the menu or command has been deprecated. If this is oversight, please reach out to us [here](https://openbb.co/support).
 
@@ -53,7 +45,7 @@ Do note that it is also possible that the menu or command has been deprecated. I
 
 <details><summary>Charts do not display on Linux/WSL or Docker installation.</summary>
 
-Check that X-11, or similar, is installed, open, and configured. Follow the instructions pertaining to the system here: [https://docs.openbb.co/terminal/installation/docker](https://docs.openbb.co/terminal/installation/docker)
+Check that X-11, or similar, is installed, open, and configured. Follow the instructions pertaining to the system here: [/terminal/installation/docker](/terminal/installation/docker)
 
 </details>
 
@@ -85,19 +77,19 @@ Files can be formatted as either `.csv` or `.xlsx` files, and the required colum
 
 `[Date,Type,Ticker,Side,Price,Quantity,Fees,Investment,Currency,Sector,Industry,Country,Region]`
 
-See the guide [here](https://docs.openbb.co/sdk/guides/intros/portfolio) for more information.
+See the guide [here](/sdk/data-available/portfolio/introduction) for more information.
 
 </details>
 
 <details><summary>How do I change the chart styles?</summary>
 
-See the guide [here](https://docs.openbb.co/terminal/usage/guides/customizing-the-terminal#styles).  The theme can be toggled between light and dark mode, directly on the individual chart.  See the [Terminal Basics page](https://docs.openbb.co/terminal/usage/basics#charts) for more information on working with the charts.
+See the guide [here](/terminal/usage/overview/customizing-the-terminal).  The theme can be toggled between light and dark mode, directly on the individual chart.  See the [Terminal Basics page](/terminal/usage/basics#charts) for more information on working with the charts.
 
 </details>
 
 <details><summary>Can I change the colors of the text in the Terminal?</summary>
 
-Yes, use the `colors` command under the `/settings` menu: [https://docs.openbb.co/terminal/usage/guides/customizing-the-terminal](https://docs.openbb.co/terminal/usage/guides/customizing-the-terminal)
+Yes, use the `colors` command under the `/settings` menu: [/terminal/usage/overview/customizing-the-terminal](/terminal/usage/overview/customizing-the-terminal)
 
 </details>
 
@@ -126,7 +118,7 @@ rnn -d SPY
 
 <details><summary>How do I find stocks from India, or another country?</summary>
 
-Use the `search` command from the `/stocks` menu.  Refer to the menu's introduction guide [here](https://docs.openbb.co/terminal/usage/intros/stocks#search).
+Use the `search` command from the `/stocks` menu.  Refer to the menu's introduction guide [here](/terminal/menus/stocks#search).
 
 As an example, try this:
 

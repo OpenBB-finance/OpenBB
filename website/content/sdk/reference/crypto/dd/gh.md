@@ -1,12 +1,26 @@
 ---
 title: gh
-description: OpenBB SDK Function
+description: This is a documentation for GH development activity tool by OpenBB which
+  includes detailed functionality on how to return lists of Github activity for a
+  given cryptocurrency with adjustable time intervals. Source codes for model and
+  chart representations are included.
+keywords:
+- GH tool
+- developer activity
+- cryptocurrency
+- Github activity
+- time interval
+- model
+- chart
+- dataframe
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.dd.gh - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# gh
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -41,8 +55,6 @@ openbb.crypto.dd.gh(symbol: str, dev_activity: bool = False, interval: str = "1d
 | pd.DataFrame | developer activity over time |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -76,8 +88,6 @@ openbb.crypto.dd.gh_chart(symbol: str, start_date: Optional[str] = None, dev_act
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

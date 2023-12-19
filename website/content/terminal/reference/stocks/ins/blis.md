@@ -1,9 +1,22 @@
 ---
 title: blis
-description: OpenBB Terminal Function
+description: This page describes how to use the blis command to print out the latest
+  insider sales 100k from the OpenInsider source. It includes instructions on how
+  to limit the number of results and gives examples of use cases.
+keywords:
+- blis command
+- print latest insider sales
+- OpenInsider source
+- limit results
+- use cases
+- command usage
+- data display
+- data rows
 ---
 
-# blis
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ins/blis - Reference | OpenBB Terminal Docs" />
 
 Print latest insider sales 100k. [Source: OpenInsider]
 

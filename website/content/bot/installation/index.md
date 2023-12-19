@@ -1,13 +1,27 @@
 ---
 title: Installation
 sidebar_position: 1
-description: How to get started with OpenBB Bot
-keywords: [installation, install, install openbb bot, guide, how to, explanation, openbb bot, openbb, discord, telegram, slack]
+description: Learn how to use OpenBB Bot in Discord and Telegram. Understand the requirements
+  for individual and server uses, and explore additional features by linking your
+  account. Join the community today and leverage over 1.5 Million commands executed
+  on OpenBB Bot.
+keywords:
+- OpenBB Bot
+- Discord
+- Telegram
+- chatting applications
+- link account
+- user metrics
+- commands
+- community
+- add bot
+- server requirements
+- individual requirements
 ---
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Installation - Bot | OpenBB Docs" />
+<HeadTitle title="Overview - Installation | OpenBB Bot Docs" />
 
 import AddBotDialogDiscord from "@site/src/components/General/AddBotDiscord";
 import AddBotDialogTelegram from "@site/src/components/General/AddBotTelegram";

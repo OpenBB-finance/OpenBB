@@ -1,12 +1,22 @@
 ---
 title: unitroot
-description: OpenBB SDK Function
+description: This documentation provides in-depth information on how to calculate
+  unit root test statistics, using the OpenBB software. This includes source code,
+  parameter details, and return values for both model and chart functions.
+keywords:
+- quantitative analysis
+- unit root test
+- ADF test
+- KPSS test
+- regression
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="qa.unitroot - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# unitroot
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +49,6 @@ openbb.qa.unitroot(data: pd.DataFrame, fuller_reg: str = "c", kpss_reg: str = "c
 | pd.DataFrame | Dataframe with results of ADF test and KPSS test |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -72,8 +80,6 @@ openbb.qa.unitroot_chart(data: pd.DataFrame, target: str, fuller_reg: str = "c",
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

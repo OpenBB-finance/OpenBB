@@ -1,9 +1,27 @@
 ---
 title: blop
-description: OpenBB Terminal Function
+description: 'Documentation for ''blop'': a tool for displaying the latest officer
+  purchases in the stock market. The documentation covers usage, parameters, and provides
+  examples of insider data results including company and insider name, trade type,
+  price, quantity, ownership changes, and value.'
+keywords:
+- blop
+- officer purchases
+- stock market
+- insider data
+- trade type
+- purchase
+- company name
+- insider name
+- price
+- quantity
+- ownership
+- value
 ---
 
-# blop
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ins/blop - Reference | OpenBB Terminal Docs" />
 
 Print latest officer purchases 25k. [Source: OpenInsider]
 

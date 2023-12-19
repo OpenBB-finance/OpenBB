@@ -1,0 +1,81 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json, text/plain, */*
+      Accept-Encoding:
+      - gzip
+      Accept-Language:
+      - en-CA,en-US;q=0.7,en;q=0.3
+      Connection:
+      - keep-alive
+      Host:
+      - api.nasdaq.com
+    method: GET
+    uri: https://api.nasdaq.com/api/ipo/calendar?date=2023-11
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAANVV3W7aMBh9Fcva1WRaOyEk4Q4BAzT+1tBN09QLNzElqhNHjrO2QrzSHmJPNjuE
+        rgXSn6272FW+2J/tc47P528NI6oobK9hJuOQRSai+WwJ22nBOYIrRiMm822CyETOokUcXjMZ3CWX
+        gsM2rAIEQ5FkNL2b0oTp4e72D5S/6H5x/zZc0fTKZOzCUzCh8pqpB1nBiko2N4B03vaLYG4GNbQl
+        kwYnLJPycpVB3qPKZJcfBCPBOZWfKS/YbBnsrSwj0ElEkZpTI0Z5oKgqNE3YCVUs0hxuEJTiRo98
+        W5cJo56eJJbtt2y7QXDTd90HgPc0mXfm4wNF5nHKaJZxBj7EKU3DmHIwSsOT4+pMvwZ9MPm4qFOl
+        eYLxEVE810G4nHmkCiGnmJxa2LKf0+adjRyMqz0eKTPfGmRzoaUpMs0tTq+ML3bxgl5y9j/6h91m
+        LFQsKhMrwfrVGBjNZ+DVnjpqHt+yfI9o77h+06v3znBwoMWQJjFXItV2yQuprcPAQIoiQ2Csoif8
+        U6cIaWnzNIh33EKkdFDlgGPaaDMR/EIzEXxvpw16VEnYb7Z8rYbleHa9Gv3xYH6gR59rIDsJniih
+        TtDrfHplARFkOW9E3kGuc5S6a7ktzxjB85x66sFwNDmgHqziJNF5oCtk9ie0CS7v3jrOvomc59hj
+        +2XsWxZy/Yq+eTI4zdV5pruNIVpyGXeCBTif9zqLfq8NzNZWufV70ACBKGTI2qDfG3TOfv4As5Tr
+        59MU1jLm/65NlZs/6CT6qTan/XXt6zt3HMvY3cO+X3/n0+7oAOKUiUZX6KLPlDa7YjKlpkXp7lFW
+        ABgKHunnNzePwR6FVzz7hNQVqus0PXeLvFWPfDEeDQ+gL1jaGDN6VbA95G+D2bYQabnItyuL3cRq
+        FUl6k9baY/u7vR8T60WJSNUKtjV/eMeohG1zNIJKKMrPWF5wpXMtk8jynJoK226SV31xDWVXRMys
+        wwhemniyy9QWCMs5grGlK0pKIe8n4Zcd3PZUAMlCISOw1B7ST/rmwjTf74yLjP1eUSLe/AIQMxb+
+        swkAAA==
+    headers:
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Length:
+      - '802'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Mon, 06 Nov 2023 00:53:04 GMT
+      Expires:
+      - Mon, 06 Nov 2023 00:53:04 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Kestrel
+      Set-Cookie:
+      - ak_bmsc=DBE49838A2FC6F54260D47226026267F~000000000000000000000000000000~YAAQtZo7F0dbhJGLAQAAPG0eohWYZ+IPGtgYBkk67wIb9DvGHXrCahNbWJf/bAY4cHbX/ArdPRbfSQ5sGQK33Q09ZEttvYL4f3k02QfOcGpOan2ggJvSmbcXU19V5E56w02LB2B3Xyiyl0UfPct8ZZHyhdjZreG1DuKwFgZEf1OkJ3+f6MYLmyhyc2ZAD+3eUydDL3bCDBqIMUIQevuRWRPi3SZqEcoCVtCu1VNLdNpXhGpjFNDhjdZJP++d9pNMJkeGbaNkmXP0FcpJ823IXFT99o6ljSiSese4CQ+VPXISKYK8iUgavXdtzgdwZ5u89yNwZ28siU6ENoSa71QW1/j9Q2TWTI5xBkdDntbxDtlvw1bJ2NeqKh568Y+LWvhbls7b+fK714H85nx638EY+I6Psz6p3Q==;
+        Domain=.nasdaq.com; Path=/; Expires=Mon, 06 Nov 2023 02:53:04 GMT; Max-Age=7200;
+        HttpOnly
+      Strict-Transport-Security:
+      - max-age=86400
+      Vary:
+      - Accept-Encoding
+      X-EdgeConnect-MidMile-RTT:
+      - '0'
+      - '3'
+      - '2'
+      X-EdgeConnect-Origin-MEX-Latency:
+      - '215'
+      - '215'
+      - '215'
+      gid:
+      - '103'
+      lang:
+      - en
+      rid:
+      - 604c3e50-4a49-4b83-acb6-acfe32db5c5e
+      srctype:
+      - default
+    status:
+      code: 200
+      message: OK
+version: 1

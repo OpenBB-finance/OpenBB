@@ -1,9 +1,19 @@
 ---
 title: deaths
-description: OpenBB Terminal Function
+description: This page provides access to historical deaths data per country. It explains
+  the usage of the 'deaths' command, which requires no parameters and presents the
+  data in a visual format.
+keywords:
+- Death statistics
+- Historical deaths
+- Country wise death rate
+- Death data visualization
+- Countries death data
 ---
 
-# deaths
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="alt/covid/deaths - Reference | OpenBB Terminal Docs" />
 
 Show historical deaths by country.
 

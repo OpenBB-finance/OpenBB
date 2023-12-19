@@ -1,9 +1,31 @@
 ---
 title: interest
-description: OpenBB Terminal Function
+description: This page serves as a user guide for the 'interest' feature which plots
+  keywords or phrases over time versus stock price. It provides details on its usage,
+  parameters, and provides illustrative execution results. Notable keywords that you
+  could use to influence the plotted interest include topical phrases like 'COVID',
+  'WW3', and 'NFT'. The source for this functionality is based on Google.
+keywords:
+- Interest
+- Stock price
+- Words
+- Sentences
+- Date
+- Parameters
+- Default
+- Optional
+- Start
+- Words
+- Choices
+- Google
+- COVID
+- WW3
+- NFT
 ---
 
-# interest
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ba/interest - Reference | OpenBB Terminal Docs" />
 
 Plot interest over time of words/sentences versus stock price. [Source: Google]
 

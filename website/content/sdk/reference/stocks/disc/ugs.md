@@ -1,9 +1,21 @@
 ---
 title: ugs
-description: OpenBB SDK Function
+description: This page details the UGS function, which identifies stocks with excellent
+  earnings growth rates and relatively low PE and PEG ratios, thus helping to discover
+  undervalued stocks. Source code is also provided.
+keywords:
+- ugs function
+- stock discovery
+- earnings growth rate
+- PE ratio
+- PEG ratio
+- undervalued stocks
+- yahoofinance model
 ---
 
-# ugs
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.disc.ugs - Reference | OpenBB SDK Docs" />
 
 Get stocks with earnings growth rates better than 25% and relatively low PE and PEG ratios.
 
@@ -27,4 +39,3 @@ This function does not take any parameters.
 | ---- | ----------- |
 | pd.DataFrame | Undervalued stocks |
 ---
-

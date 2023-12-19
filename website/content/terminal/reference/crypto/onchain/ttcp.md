@@ -1,9 +1,24 @@
 ---
 title: ttcp
-description: OpenBB Terminal Function
+description: This documentation page provides details on the usage of the ttcp tool
+  used for displaying the most traded crypto pairs on a chosen decentralized exchange
+  over a selected time period. It includes the description and options for each parameter.
+keywords:
+- ttcp
+- traded crypto pairs
+- decentralized exchange
+- crypto trading
+- trading
+- blockchain
+- 1inch
+- Uniswap
+- trade parameters
+- tradeAmount
 ---
 
-# ttcp
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/onchain/ttcp - Reference | OpenBB Terminal Docs" />
 
 Display most traded crypto pairs on given decentralized exchange in chosen time period. [Source: https://graphql.bitquery.io/]
 

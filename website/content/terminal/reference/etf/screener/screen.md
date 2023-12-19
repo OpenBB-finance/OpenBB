@@ -1,9 +1,24 @@
 ---
 title: screen
-description: OpenBB Terminal Function
+description: Documentation for the ETF screen tool, a command-line Python application
+  that scrapes and sorts data from stockanalysis.com. The tool offers various sorting
+  options, including by assets, expense, and volume, among others.
+keywords:
+- ETF Screen
+- Stock Analysis
+- Data Scraping
+- Github Repository
+- CLI
+- Parameters
+- Sort
+- Limit
+- Reverse
+- Financial Data
 ---
 
-# screen
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf/screener/screen - Reference | OpenBB Terminal Docs" />
 
 Screens ETFS from a personal scraping github repository. Data scraped from stockanalysis.com
 

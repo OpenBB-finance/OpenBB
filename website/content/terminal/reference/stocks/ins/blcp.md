@@ -1,9 +1,21 @@
 ---
 title: blcp
-description: OpenBB Terminal Function
+description: This page provides comprehensive instructions for using the 'blcp' feature
+  which displays the latest CEO/CFO purchases. It includes details on the usage, parameters,
+  and real-time examples.
+keywords:
+- blcp usage
+- CEO/CFO purchases
+- limit parameters
+- OpenInsider source
+- Insider data
+- Trade details
+- Python usage examples
 ---
 
-# blcp
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ins/blcp - Reference | OpenBB Terminal Docs" />
 
 Print latest CEO/CFO purchases 25k. [Source: OpenInsider]
 

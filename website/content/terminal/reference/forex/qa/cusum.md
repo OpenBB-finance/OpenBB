@@ -1,9 +1,20 @@
 ---
 title: cusum
-description: OpenBB Terminal Function
+description: The page provides detailed information on using cusum (Cumulative sum
+  algorithm) tool. It covers areas such as algorithm usage with Python, parameters
+  like threshold and drift, and graphical data representation.
+keywords:
+- cusum
+- cumulative sum algorithm
+- data change detection
+- algorithm usage
+- threshold
+- drift
 ---
 
-# cusum
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="forex/qa/cusum - Reference | OpenBB Terminal Docs" />
 
 Cumulative sum algorithm (CUSUM) to detect abrupt changes in data
 

@@ -1,9 +1,21 @@
 ---
 title: stalker
-description: OpenBB Terminal Function
+description: 'Stalker: A tool for tracking and printing the last messages of a Stocktwits
+  user. Allows specification of the username and limit of messages to be shown. Helps
+  users quickly retrieve and review the recent activity of a specific user.'
+keywords:
+- stalker
+- user messages
+- Stocktwits
+- username
+- message limit
+- programming documentation
+- message tracking
 ---
 
-# stalker
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ba/stalker - Reference | OpenBB Terminal Docs" />
 
 Print up to the last 30 messages of a user. [Source: Stocktwits]
 

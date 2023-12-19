@@ -1,9 +1,20 @@
 ---
 title: summary
-description: OpenBB SDK Function
+description: An in-depth overview of ETF summaries using the OpenBB ETF module. This
+  tool fetches ETF data from Yahoo Finance, providing a comprehensive summary based
+  on specified ETF name.
+keywords:
+- ETF
+- OpenBB ETF module
+- Yahoo Finance
+- ETF Summary
+- ETF data
+- ETF name
 ---
 
-# summary
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="etf.summary - Reference | OpenBB SDK Docs" />
 
 Return summary description of ETF. [Source: Yahoo Finance]
 
@@ -30,4 +41,3 @@ openbb.etf.summary(name: str)
 | ---- | ----------- |
 | str | Summary description of the ETF |
 ---
-

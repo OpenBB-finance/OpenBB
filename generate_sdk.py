@@ -536,7 +536,9 @@ class BuildCategoryModelClasses:
                     f.write(content.replace(b"\r", b"\n"))
 
         # We run black to make sure the code is formatted correctly
-        subprocess.check_call(["black", "openbb_terminal"])  # nosec: B603, B607
+        subprocess.check_call(  # noqa: S603  # nosec: B603, B607
+            ["black", "openbb_terminal"]  # noqa: S603,S607
+        )
 
 
 def generate_sdk(sort: bool = False) -> bool:

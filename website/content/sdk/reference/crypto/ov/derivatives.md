@@ -1,12 +1,23 @@
 ---
 title: derivatives
-description: OpenBB SDK Function
+description: This page provides instructions on how to extract crypto derivatives
+  data from CoinGecko API using Python. It provides detailed information on the parameters
+  used in the extraction code for both 'Model' and 'Chart' categories, along with
+  the return data format.
+keywords:
+- CoinGecko API
+- crypto derivatives
+- data extraction
+- cryptocurrency
+- data sorting
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.ov.derivatives - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# derivatives
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -38,8 +49,6 @@ openbb.crypto.ov.derivatives(sortby: str = "Rank", ascend: bool = False)
 | pd.DataFrame | Rank, Market, Symbol, Price, Pct_Change_24h, Contract_Type, Basis, Spread,<br/>Funding_Rate, Volume_24h, |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -70,8 +79,6 @@ openbb.crypto.ov.derivatives_chart(sortby: str = "Rank", ascend: bool = False, l
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

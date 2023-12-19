@@ -1,12 +1,24 @@
 ---
 title: contracts
-description: OpenBB SDK Function
+description: This documentation contains the details of two functions, 'contracts'
+  and 'contracts_chart', that are used to retrieve trading data of U.S. government
+  contracts for specific ticker from 'quiverquant.com'. It explains the parameters
+  and return type of the functions, and provides links to the source code.
+keywords:
+- contracts
+- contracts_chart
+- quiverquant.com
+- government contracts
+- trading data
+- parameters
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks.gov.contracts - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# contracts
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +49,6 @@ openbb.stocks.gov.contracts(symbol: str, past_transaction_days: int = 10)
 | ---- | ----------- |
 | pd.DataFrame | Most recent transactions by members of U.S. Congress |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -71,8 +81,6 @@ openbb.stocks.gov.contracts_chart(symbol: str, past_transaction_days: int = 10, 
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

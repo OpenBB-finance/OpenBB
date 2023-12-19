@@ -1,12 +1,28 @@
 ---
 title: hr
-description: OpenBB SDK Function
+description: The hr Tab provides functionalities to return a dataframe with the mean
+  hashrate of either btc or eth blockchain along with the symbol's price, over a specified
+  interval. Additionally, the hr_chart function provides the ability to plot this
+  data as a chart.
+keywords:
+- OpenBB.crypto.onchain.hr
+- OpenBB.crypto.onchain.hr_chart
+- mean hashrate
+- blockchain
+- btc
+- eth
+- symbol price
+- dataframe
+- plot
+- chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.hr - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# hr
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -40,8 +56,6 @@ openbb.crypto.onchain.hr(symbol: str, interval: str = "24h", start_date: str = "
 | pd.DataFrame | mean hashrate and symbol price over time |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -74,8 +88,6 @@ openbb.crypto.onchain.hr_chart(symbol: str, start_date: str = "2010-01-01", end_
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

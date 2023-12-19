@@ -1,9 +1,20 @@
 ---
 title: view
-description: OpenBB Terminal Function
+description: This page provides instructions on how to view the available presets
+  in the preset folder using the view function. It also provides details about parameters
+  such as preset names.
+keywords:
+- view function
+- using presets
+- parameter description
+- programming
+- software development
+- coding instructions
 ---
 
-# view
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/ins/view - Reference | OpenBB Terminal Docs" />
 
 View available presets under presets folder.
 

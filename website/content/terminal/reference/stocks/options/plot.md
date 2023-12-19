@@ -1,9 +1,32 @@
 ---
 title: plot
-description: OpenBB Terminal Function
+description: Plot documentation page provides information on how to show a plot for
+  the given x and y variables, with variables being last trade date, strike, last
+  price, bid, ask, percentage change, volume, open interest, implied volatility and
+  more. It also shows usage examples and available customizations.
+keywords:
+- plot
+- show plot
+- trade date
+- strike
+- last price
+- bid
+- ask
+- change
+- percent change
+- volume
+- open interest
+- implied volatility
+- stocks
+- options
+- graph
+- custom graphs
+- smile
 ---
 
-# plot
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/options/plot - Reference | OpenBB Terminal Docs" />
 
 Shows a plot for the given x and y variables
 

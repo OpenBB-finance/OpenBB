@@ -1,9 +1,27 @@
 ---
 title: rtat
-description: OpenBB Terminal Function
+description: The rtat tool provides daily insights into the retail trading activity
+  and sentiment for over 9,500 US traded stocks, ADRs, and ETPs. Learn how to use
+  it, understand its parameters, and see examples of results with our detailed documentation.
+keywords:
+- rtat
+- trade tracking
+- investment trades
+- retail activity
+- stocks
+- ADRs
+- ETPs
+- retail sentiment
+- daily view
+- investment sentiment
+- RTAT usage
+- python example
+- parameter limit
 ---
 
-# rtat
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="stocks/disc/rtat - Reference | OpenBB Terminal Docs" />
 
 Tracking over $30B USD/day of individual investors trades, RTAT gives a daily view into retail activity and sentiment for over 9,500 US traded stocks, ADRs, and ETPs
 

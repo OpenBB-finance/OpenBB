@@ -19,10 +19,10 @@ FROM base AS builder
 
 WORKDIR /openbb
 
-COPY ./openbb_sdk ./openbb_sdk
+COPY ./openbb_platform ./openbb_platform
 
 # Install the SDK
-RUN pip install /openbb/openbb_sdk
+RUN pip install /openbb/openbb_platform
 
 # ---- Copy Files ----
 FROM base

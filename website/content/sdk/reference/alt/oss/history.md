@@ -1,12 +1,25 @@
 ---
 title: history
-description: OpenBB SDK Function
+description: This documentation page provides detailed information about using the
+  openbb software's history feature, with sections for its model and chart display.
+  It illustrates how to retrieve repository star history, search for specific repositories,
+  and plot repo summaries.
+keywords:
+- openbb software
+- repository star history
+- github
+- chart display
+- repo summary plot
+- export dataframe
+- software documentation
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="alt.oss.history - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# history
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +50,6 @@ openbb.alt.oss.history(repo: str)
 | pd.DataFrame | Dataframe with star history - Columns: Date, Stars |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +79,6 @@ openbb.alt.oss.history_chart(repo: str, export: str = "", external_axes: Optiona
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

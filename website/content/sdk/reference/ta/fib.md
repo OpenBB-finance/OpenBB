@@ -1,12 +1,25 @@
 ---
 title: fib
-description: OpenBB SDK Function
+description: This page serves as documentation for the Fibonacci levels calculation
+  model and its plotting function. Learn how to set parameters, define retracement
+  periods, and generate charts.
+keywords:
+- Fibonacci levels
+- retracement periods
+- Fibonacci documentation
+- plotting function
+- financial market analytics
+- technical analysis
+- data visualization
+- Fibonacci levels chart
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.fib - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# fib
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +52,6 @@ openbb.ta.fib(data: pd.DataFrame, limit: int = 120, start_date: Any = None, end_
 | ---- | ----------- |
 | pd.DataFrame | Dataframe of fib levels |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -75,8 +86,6 @@ openbb.ta.fib_chart(data: pd.DataFrame, limit: int = 120, start_date: Optional[s
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

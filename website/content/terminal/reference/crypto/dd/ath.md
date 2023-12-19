@@ -1,9 +1,20 @@
 ---
 title: ath
-description: OpenBB Terminal Function
+description: This documentation is about the All Time High (ATH) function for a crypto
+  coin or token. A user can load coin data and see the highest price (in USD or BTC)
+  that coin has ever reached.
+keywords:
+- all time high
+- crypto coin
+- load coin data
+- highest price
+- price in USD
+- price in BTC
 ---
 
-# ath
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto/dd/ath - Reference | OpenBB Terminal Docs" />
 
 All time high data for loaded coin
 

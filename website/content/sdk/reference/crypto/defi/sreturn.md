@@ -1,12 +1,19 @@
 ---
 title: sreturn
-description: OpenBB SDK Function
+description: Get terra blockchain staking returns history
+keywords:
+- blockchain
+- terra
+- staking
+- defi
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.defi.sreturn - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# sreturn
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -37,8 +44,6 @@ openbb.crypto.defi.sreturn(limit: int = 200)
 | pd.DataFrame | historical staking returns |
 ---
 
-
-
 </TabItem>
 <TabItem value="view" label="Chart">
 
@@ -68,8 +73,6 @@ openbb.crypto.defi.sreturn_chart(limit: int = 90, export: str = "", external_axe
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

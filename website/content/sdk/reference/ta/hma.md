@@ -1,9 +1,19 @@
 ---
 title: hma
-description: OpenBB SDK Function
+description: This page provides documentation on the hma function from OpenBB. This
+  function calculates the hull moving average (HMA) of stock prices, using a pandas
+  dataframe as input and returning a dataframe with the prices and the HMA.
+keywords:
+- hma
+- hull moving average
+- stock technical analysis
+- pandas
+- SMA window
 ---
 
-# hma
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ta.hma - Reference | OpenBB SDK Docs" />
 
 Gets hull moving average (HMA) for stock
 
@@ -32,4 +42,3 @@ openbb.ta.hma(data: pd.Series, length: int = 50, offset: int = 0)
 | ---- | ----------- |
 | pd.DataFrame | Dataframe containing prices and HMA |
 ---
-

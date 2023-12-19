@@ -1,12 +1,28 @@
 ---
 title: lt
-description: OpenBB SDK Function
+description: Docusaurus page containing OpenBBTerminal's onchain lt model and view
+  that depict trades happening on Decentralized Exchanges - aggregated per DEX or
+  time. Also includes code snippets, parameter details, and return values.
+keywords:
+- onchain
+- lt model
+- Decentralized Exchanges
+- DEX
+- lt view
+- onchain trading
+- trades aggregation
+- code snippets
+- parameter details
+- return values
+- Bitcoin
 ---
+
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="crypto.onchain.lt - Reference | OpenBB SDK Docs" />
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# lt
 
 <Tabs>
 <TabItem value="model" label="Model" default>
@@ -39,8 +55,6 @@ openbb.crypto.onchain.lt(trade_amount_currency: str = "USD", limit: int = 90, so
 | ---- | ----------- |
 | pd.DataFrame | Trades on Decentralized Exchanges aggregated by DEX |
 ---
-
-
 
 </TabItem>
 <TabItem value="view" label="Chart">
@@ -75,8 +89,6 @@ openbb.crypto.onchain.lt_chart(trade_amount_currency: str = "USD", kind: str = "
 This function does not return anything
 
 ---
-
-
 
 </TabItem>
 </Tabs>

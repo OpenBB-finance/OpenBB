@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "openbb-stockgrid"
+version = "1.0.0"
+description = "stockgrid extension for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_stockgrid" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openbb-core = "^1.0.0"
+pytest-freezegun = "^0.4.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+stockgrid = "openbb_stockgrid:stockgrid_provider"

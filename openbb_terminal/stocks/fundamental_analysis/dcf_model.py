@@ -243,7 +243,7 @@ def get_fama_raw() -> pd.DataFrame:
     df : pd.DataFrame
         Fama French data
     """
-    with urlopen(  # noqa: SIM117
+    with urlopen(  # noqa: SIM117,S310
         "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip"
     ) as url:
         # Download Zipfile and create pandas DataFrame
