@@ -48,7 +48,7 @@ This notebook explains how to calculate and plot the Copper-to-Gold ratio.
 - Performing basic DataFrame operations.
 - Creating charts with Plotly Graph Objects.
 
-usdLiquidityIndex
+### usdLiquidityIndex
 
 This notebook demonstrates how to query the Federal Reserve Economic Database and recreate the USD Liquidity Index.
 
