@@ -23,6 +23,7 @@
         "cboe@1.0.0",
         "ecb@1.0.0",
         "finra@1.0.0",
+        "federal-reserve@1.0.0",
         "fmp@1.0.0",
         "fred@1.0.0",
         "government_us@1.0.0",

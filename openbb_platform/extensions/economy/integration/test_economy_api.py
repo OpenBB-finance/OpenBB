@@ -347,3 +347,28 @@ def test_economy_fred_series(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "adjusted": True}),
+        (
+            {
+                "provider": "federal_reserve",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "adjusted": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_money_measures(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/money_measures?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200

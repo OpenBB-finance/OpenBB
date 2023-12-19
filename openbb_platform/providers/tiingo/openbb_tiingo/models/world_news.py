@@ -38,7 +38,7 @@ class TiingoWorldNewsData(WorldNewsData):
         description="Ticker tagged in the fetched news.", alias="tickers"
     )
     article_id: int = Field(description="Unique ID of the news article.", alias="id")
-    site: str = Field(description="Name of the news source.", alias="source")
+    site: str = Field(description="News source.", alias="source")
     tags: str = Field(description="Tags associated with the news article.")
     crawl_date: datetime = Field(description="Date the news article was crawled.")
 

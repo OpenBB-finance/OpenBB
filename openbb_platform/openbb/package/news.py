@@ -115,17 +115,13 @@ class ROUTER_news(Container):
         url : str
             URL of the news.
         id : Optional[str]
-            ID of the news. (provider: benzinga);
-            Intrinio ID for the article. (provider: intrinio);
-            Article ID. (provider: polygon)
+            Article ID. (provider: benzinga, intrinio, polygon)
         author : Optional[str]
-            Author of the news. (provider: benzinga);
-            Author of the article. (provider: polygon)
+            Author of the article. (provider: benzinga, polygon)
         teaser : Optional[str]
             Teaser of the news. (provider: benzinga)
         images : Optional[Union[List[Dict[str, str]], List[str], str]]
-            Images associated with the news. (provider: benzinga);
-            URL to the images of the news. (provider: fmp)
+            URL to the images of the news. (provider: benzinga, fmp)
         channels : Optional[str]
             Channels associated with the news. (provider: benzinga)
         stocks : Optional[str]
@@ -135,7 +131,8 @@ class ROUTER_news(Container):
         updated : Optional[datetime]
             Updated date of the news. (provider: benzinga)
         site : Optional[str]
-            Name of the news source. (provider: fmp, tiingo)
+            Name of the news source. (provider: fmp);
+            News source. (provider: tiingo)
         amp_url : Optional[str]
             AMP URL. (provider: polygon)
         image_url : Optional[str]
@@ -249,8 +246,7 @@ class ROUTER_news(Container):
         url : Optional[str]
             URL of the news.
         id : Optional[str]
-            ID of the news. (provider: benzinga);
-            Article ID. (provider: intrinio)
+            Article ID. (provider: benzinga, intrinio)
         author : Optional[str]
             Author of the news. (provider: benzinga)
         teaser : Optional[str]
@@ -264,8 +260,7 @@ class ROUTER_news(Container):
         updated : Optional[datetime]
             Updated date of the news. (provider: benzinga)
         site : Optional[str]
-            Site of the news. (provider: fmp);
-            Name of the news source. (provider: tiingo)
+            News source. (provider: fmp, tiingo)
         company : Optional[Dict[str, Any]]
             Company details related to the news article. (provider: intrinio)
         symbols : Optional[str]

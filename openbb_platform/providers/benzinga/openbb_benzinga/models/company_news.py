@@ -88,11 +88,11 @@ class BenzingaCompanyNewsData(CompanyNewsData):
         "images": "image",
     }
 
-    id: str = Field(description="ID of the news.")
-    author: Optional[str] = Field(default=None, description="Author of the news.")
+    id: str = Field(description="Article ID.")
+    author: Optional[str] = Field(default=None, description="Author of the article.")
     teaser: Optional[str] = Field(description="Teaser of the news.", default=None)
     images: Optional[List[Dict[str, str]]] = Field(
-        default=None, description="Images associated with the news."
+        default=None, description="URL to the images of the news."
     )
     channels: Optional[str] = Field(
         default=None,

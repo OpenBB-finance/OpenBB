@@ -41,7 +41,7 @@ Company Filings. Company filings data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.FILINGS(required;[optional])
+=OBB.EQUITY.FUNDAMENTAL.FILINGS(required; [optional])
 ```
 
 ---
@@ -91,4 +91,4 @@ Company Filings. Company filings data.
 | is_xbrl | Whether the filing is an XBRL filing. (provider: sec) |
 | size | The size of the filing. (provider: sec) |
 | complete_submission_url | The URL to the complete filing submission. (provider: sec) |
-| xml | The URL to the primary XML document. (provider: sec) |
+| filing_detail_url | The URL to the filing details. (provider: sec) |

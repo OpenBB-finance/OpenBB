@@ -5,7 +5,7 @@ Calendar Splits. Show Stock Split Calendar.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.CALENDAR.SPLITS(required;[optional])
+=OBB.EQUITY.CALENDAR.SPLITS(required; [optional])
 ```
 
 ---
