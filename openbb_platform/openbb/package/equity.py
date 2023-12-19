@@ -14,7 +14,6 @@ class ROUTER_equity(Container):
     """/equity
     /calendar
     /compare
-    /darkpool
     /discovery
     /estimates
     /fundamental
@@ -45,15 +44,6 @@ class ROUTER_equity(Container):
         from . import equity_compare
 
         return equity_compare.ROUTER_equity_compare(command_runner=self._command_runner)
-
-    @property
-    def darkpool(self):
-        # pylint: disable=import-outside-toplevel
-        from . import equity_darkpool
-
-        return equity_darkpool.ROUTER_equity_darkpool(
-            command_runner=self._command_runner
-        )
 
     @property
     def discovery(self):
