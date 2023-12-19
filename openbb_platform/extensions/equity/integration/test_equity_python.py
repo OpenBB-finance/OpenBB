@@ -26,8 +26,9 @@ def obb(pytestconfig):
             {
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "period": "annual",
-                "limit": 12,
+                "period": "ttm",
+                "fiscal_year": 2014,
+                "limit": 2,
             }
         ),
         (
@@ -57,7 +58,6 @@ def obb(pytestconfig):
                 "period": "annual",
                 "limit": 12,
                 "provider": "fmp",
-                "cik": "0000320193",
             }
         ),
         (
@@ -139,13 +139,13 @@ def test_equity_calendar_earnings(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "period": "annual", "limit": 12}),
         (
             {
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
-                "limit": 12,
+                "fiscal_year": None,
+                "limit": 2,
             }
         ),
         (
@@ -175,7 +175,6 @@ def test_equity_calendar_earnings(params, obb):
                 "period": "annual",
                 "limit": 12,
                 "provider": "fmp",
-                "cik": "0000320193",
             }
         ),
         (
@@ -296,8 +295,9 @@ def test_equity_estimates_historical(params, obb):
             {
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "period": "annual",
-                "limit": 12,
+                "period": "quarter",
+                "fiscal_year": 2020,
+                "limit": 4,
             }
         ),
         (
@@ -327,7 +327,6 @@ def test_equity_estimates_historical(params, obb):
                 "symbol": "AAPL",
                 "limit": 12,
                 "period": "annual",
-                "cik": "0000320193",
             }
         ),
         (
@@ -555,7 +554,16 @@ def test_equity_estimates_consensus(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "period": "annual", "limit": 12}),
+        ({"symbol": "AAPL", "period": "annual", "limit": 12, "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "ttm",
+                "fiscal_year": None,
+                "limit": 12,
+                "provider": "intrinio",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1362,6 +1370,51 @@ def test_equity_fundamental_trailing_dividend_yield(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.equity.fundamental.trailing_dividend_yield(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "AAPL",
+                "statement_type": "income",
+                "period": "quarter",
+                "limit": 5,
+                "fiscal_year": None,
+                "provider": "intrinio",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "statement_type": "cash",
+                "period": "annual",
+                "limit": 1,
+                "fiscal_year": 2015,
+                "provider": "intrinio",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "statement_type": "balance",
+                "period": "annual",
+                "fiscal_year": None,
+                "limit": 10,
+                "provider": "intrinio",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_fundamental_reported_financials(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.equity.fundamental.reported_financials(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
