@@ -1,1 +1,0 @@
-"""OpenBB Provider Abstract Class."""
