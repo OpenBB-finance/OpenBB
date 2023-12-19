@@ -2963,14 +2963,15 @@ def check_nixtla_key(show_output: bool = False) -> str:
     ):  # pragma: allowlist secret
         status = KeyStatus.NOT_DEFINED
     else:
-        timegpt = TimeGPT(
-            token=get_current_user().credentials.API_KEY_NIXTLA,
-        )
-        status = (
-            KeyStatus.DEFINED_TEST_PASSED
-            if timegpt.validate_token()
-            else KeyStatus.DEFINED_TEST_FAILED
-        )
+        # timegpt = TimeGPT(
+        #     token=get_current_user().credentials.API_KEY_NIXTLA,
+        # )
+        # status = (
+        #     KeyStatus.DEFINED_TEST_PASSED
+        #     if timegpt.validate_token()
+        #     else KeyStatus.DEFINED_TEST_FAILED
+        # )
+        status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
         console.print(status.colorize())
