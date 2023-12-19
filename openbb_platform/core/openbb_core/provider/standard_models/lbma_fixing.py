@@ -81,6 +81,7 @@ class LbmaFixingData(Data):
     )
 
     @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def validate_date(cls, v) -> dateType:
         """Validate date."""
         if isinstance(v, datetime):
