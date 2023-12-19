@@ -32,8 +32,11 @@ Extensions:
     - regulators@1.0.0
 
     - benzinga@1.0.0
+    - federal_reserve@1.0.0
+    - finra@1.0.0
     - fmp@1.0.0
     - fred@1.0.0
+    - government_us@1.0.0
     - intrinio@1.0.0
     - oecd@1.0.0
     - polygon@1.0.0
