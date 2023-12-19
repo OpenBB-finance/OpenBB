@@ -132,7 +132,7 @@ class FMPBalanceSheetFetcher(
         query: FMPBalanceSheetQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPBalanceSheetData]:
         """Return the transformed data."""
-        results = data
-        [result.pop("symbol", None) for result in results]
-        [result.pop("cik", None) for result in results]
+        for result in data:
+            result.pop("symbol", None)
+            result.pop("cik", None)
         return [FMPBalanceSheetData.model_validate(d) for d in data]

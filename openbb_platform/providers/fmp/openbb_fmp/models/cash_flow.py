@@ -113,7 +113,7 @@ class FMPCashFlowStatementFetcher(
         query: FMPCashFlowStatementQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPCashFlowStatementData]:
         """Return the transformed data."""
-        results = data
-        [result.pop("symbol", None) for result in results]
-        [result.pop("cik", None) for result in results]
-        return [FMPCashFlowStatementData.model_validate(d) for d in results]
+        for result in data:
+            result.pop("symbol", None)
+            result.pop("cik", None)
+        return [FMPCashFlowStatementData.model_validate(d) for d in data]
