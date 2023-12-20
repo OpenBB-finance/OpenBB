@@ -5,105 +5,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
-      Connection:
-      - keep-alive
-    method: GET
-    uri: https://fc.yahoo.com/
-  response:
-    body:
-      string: "<!DOCTYPE html>\n<html lang=\"en-us\">\n  <head>\n    <meta http-equiv=\"content-type\"
-        content=\"text/html; charset=UTF-8\">\n    <meta charset=\"utf-8\">\n    <title>Yahoo</title>\n
-        \   <meta name=\"viewport\" content=\"width=device-width,initial-scale=1,minimal-ui\">\n
-        \   <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n    <style>\n
-        \     html {\n          height: 100%;\n      }\n      body {\n          background:
-        #fafafc url(https://s.yimg.com/nn/img/sad-panda-201402200631.png) 50% 50%;\n
-        \         background-size: cover;\n          height: 100%;\n          text-align:
-        center;\n          font: 300 18px \"helvetica neue\", helvetica, verdana,
-        tahoma, arial, sans-serif;\n          margin: 0;\n      }\n      table {\n
-        \         height: 100%;\n          width: 100%;\n          table-layout: fixed;\n
-        \         border-collapse: collapse;\n          border-spacing: 0;\n          border:
-        none;\n      }\n      h1 {\n          font-size: 42px;\n          font-weight:
-        400;\n          color: #400090;\n      }\n      p {\n          color: #1A1A1A;\n
-        \     }\n      #message-1 {\n          font-weight: bold;\n          margin:
-        0;\n      }\n      #message-2 {\n          display: inline-block;\n          *display:
-        inline;\n          zoom: 1;\n          max-width: 17em;\n          _width:
-        17em;\n      }\n      </style>\n      <script>\n      \n      </script>\n
-        \ </head>\n  <body>\n  <!-- status code : 502 -->\n  <!-- Could Not Connect
-        -->\n  <!-- host machine: e5.ycpi.swb.yahoo.com -->\n  <!-- timestamp: 1702188227.479
-        -->\n  <!-- url: https://fc.yahoo.com/-->\n  <script type=\"text/javascript\">\n
-        \   function buildUrl(url, parameters){\n      var qs = [];\n      for(var
-        key in parameters) {\n        var value = parameters[key];\n        qs.push(encodeURIComponent(key)
-        + \"=\" + encodeURIComponent(value));\n      }\n      url = url + \"?\" +
-        qs.join('&');\n      return url;\n    }\n\n    function generateBRBMarkup(site)
-        {\n      params.source = 'brb';\n      generateBeaconMarkup(params);\n      var
-        englishHeader = 'Will be right back...';\n      var englishMessage1 = 'Thank
-        you for your patience.';\n      var englishMessage2 = 'Our engineers are working
-        quickly to resolve the issue.';\n      var defaultLogoStyle = '';\n      var
-        siteDataMap = {\n        'default': {\n          logo: 'https://s.yimg.com/rz/p/yahoo_frontpage_en-US_s_f_p_205x58_frontpage.png',\n
-        \         logoAlt: 'Yahoo Logo',\n          logoStyle: defaultLogoStyle,\n
-        \         header: englishHeader,\n          message1: englishMessage1,\n          message2:
-        englishMessage2\n        }\n      };\n\n      var siteDetails = siteDataMap['default'];\n\n
-        \     document.write('<table><tbody><tr><td>');\n      document.write('<div
-        id=\"content\">');\n      document.write('<img src=\"' + siteDetails['logo']
-        + '\" alt=\"' + siteDetails['logoAlt'] + '\" style=\"' + siteDetails['logoStyle']
-        + '\">');\n      document.write('<h1 style=\"margin-top:20px;\">' + siteDetails['header']
-        + '</h1>');\n      document.write('<p id=\"message-1\">' + siteDetails['message1']
-        + '</p>');\n      document.write('<p id=\"message-2\">' + siteDetails['message2']
-        + '</p>');\n      document.write('</div>');\n      document.write('</td></tr></tbody></table>');\n
-        \   }\n\n    function generateBeaconMarkup(params) {\n        document.write('<img
-        src=\"' + buildUrl('//geo.yahoo.com/b', params) + '\" style=\"display:none;\"
-        width=\"0px\" height=\"0px\"/>');\n        var beacon = new Image();\n        beacon.src
-        = buildUrl('//bcn.fp.yahoo.com/p', params);\n    }\n\n    var hostname = window.location.hostname;\n
-        \   var device = 'desktop';\n    var ynet = ('-' === '1');\n    var time =
-        new Date().getTime();\n    var params = {\n        s: '1197757129',\n        t:
-        time,\n        err_url: document.URL,\n        err: '502',\n        test:
-        '-',\n        ats_host: 'e5.ycpi.swb.yahoo.com',\n        rid: '-',\n        message:
-        'Could Not Connect'\n    };\n\n    if(ynet) {\n        document.write('<div
-        style=\"height: 5px; background-color: red;\"></div>');\n    }\n    generateBRBMarkup(hostname,
-        params);\n\n  </script>\n  <noscript>\n  <table>\n    <tbody>\n      <tr>\n
-        \       <td>\n          <div id=\"englishContent\">\n            <h1 style=\"margin-top:20px;\">Will
-        be right back...</h1>\n            <p id=\"message-1\">Thank you for your
-        patience.</p>\n            <p id=\"message-2\">Our engineers are working quickly
-        to resolve the issue.</p>\n          </div>\n        </td>\n      </tr>\n
-        \   </tbody>\n  </table>\n  </noscript>\n  </body>\n</html>\n"
-    headers:
-      Cache-Control:
-      - no-store
-      Connection:
-      - keep-alive
-      Content-Language:
-      - en
-      Content-Length:
-      - '4350'
-      Content-Type:
-      - text/html
-      Date:
-      - Sun, 10 Dec 2023 06:04:04 GMT
-      Expect-CT:
-      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
-      Server:
-      - ATS
-      Set-Cookie:
-      - A3=d=AQABBMNUdWUCEHHotkmiYDzy9IYxIAom2AMFEgEBAQGmdmV_ZSXUxyMA_eMAAA&S=AQAAAq0ej1llRnFRH7mN3U_LlbQ;
-        Expires=Mon, 9 Dec 2024 12:04:04 GMT; Max-Age=31557600; Domain=.yahoo.com;
-        Path=/; SameSite=None; Secure; HttpOnly
-      Strict-Transport-Security:
-      - max-age=31536000
-      X-Content-Type-Options:
-      - nosniff
-      X-XSS-Protection:
-      - 1; mode=block
-    status:
-      code: 502
-      message: Connection timed out
-- request:
-    body: null
-    headers:
-      Accept:
-      - '*/*'
-      Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
       Cookie:
@@ -112,7 +14,7 @@ interactions:
     uri: https://query1.finance.yahoo.com/v1/test/getcrumb
   response:
     body:
-      string: PcpVn10YeHm
+      string: pzrtQzapOQy
     headers:
       Age:
       - '0'
@@ -135,11 +37,11 @@ interactions:
       content-type:
       - text/plain;charset=utf-8
       date:
-      - Sun, 10 Dec 2023 06:04:04 GMT
+      - Wed, 20 Dec 2023 11:48:10 GMT
       server:
       - ATS
       x-envoy-decorator-operation:
-      - finance-yql--mtls-default-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-yql--mtls-default-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
       - '1'
       x-frame-options:
@@ -153,7 +55,7 @@ interactions:
       Accept:
       - '*/*'
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
       Cookie:
@@ -163,89 +65,89 @@ interactions:
   response:
     body:
       string: !!binary |
-        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
+        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
     headers:
       Age:
       - '0'
@@ -270,15 +172,15 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Sun, 10 Dec 2023 06:04:04 GMT
+      - Wed, 20 Dec 2023 11:48:10 GMT
       server:
       - ATS
       vary:
       - Origin,Accept-Encoding
       x-envoy-decorator-operation:
-      - finance-company-fundamentals-api--mtls-production-gq1.finance-k8s.svc.yahoo.local:4080/*
+      - finance-company-fundamentals-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '52'
+      - '41'
     status:
       code: 200
       message: OK
