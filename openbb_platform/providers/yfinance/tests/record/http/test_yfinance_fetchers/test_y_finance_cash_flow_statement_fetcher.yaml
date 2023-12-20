@@ -11,82 +11,132 @@ interactions:
       Cookie:
       - MOCK_COOKIE
     method: GET
+    uri: https://query1.finance.yahoo.com/v1/test/getcrumb
+  response:
+    body:
+      string: pzrtQzapOQy
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - private
+      content-type:
+      - text/plain;charset=utf-8
+      date:
+      - Wed, 20 Dec 2023 11:48:38 GMT
+      server:
+      - ATS
+      x-envoy-decorator-operation:
+      - finance-yql--mtls-default-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '1'
+      x-frame-options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
     uri: https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/AAPL?crumb=MOCK_CRUMB&period1=MOCK_PERIOD_1&period2=MOCK_PERIOD_2&symbol=AAPL&type=annualForeignSales%2CannualDomesticSales%2CannualAdjustedGeographySegmentData%2CannualFreeCashFlow%2CannualRepurchaseOfCapitalStock%2CannualRepaymentOfDebt%2CannualIssuanceOfDebt%2CannualIssuanceOfCapitalStock%2CannualCapitalExpenditure%2CannualInterestPaidSupplementalData%2CannualIncomeTaxPaidSupplementalData%2CannualEndCashPosition%2CannualOtherCashAdjustmentOutsideChangeinCash%2CannualBeginningCashPosition%2CannualEffectOfExchangeRateChanges%2CannualChangesInCash%2CannualOtherCashAdjustmentInsideChangeinCash%2CannualCashFlowFromDiscontinuedOperation%2CannualFinancingCashFlow%2CannualCashFromDiscontinuedFinancingActivities%2CannualCashFlowFromContinuingFinancingActivities%2CannualNetOtherFinancingCharges%2CannualInterestPaidCFF%2CannualProceedsFromStockOptionExercised%2CannualCashDividendsPaid%2CannualPreferredStockDividendPaid%2CannualCommonStockDividendPaid%2CannualNetPreferredStockIssuance%2CannualPreferredStockPayments%2CannualPreferredStockIssuance%2CannualNetCommonStockIssuance%2CannualCommonStockPayments%2CannualCommonStockIssuance%2CannualNetIssuancePaymentsOfDebt%2CannualNetShortTermDebtIssuance%2CannualShortTermDebtPayments%2CannualShortTermDebtIssuance%2CannualNetLongTermDebtIssuance%2CannualLongTermDebtPayments%2CannualLongTermDebtIssuance%2CannualInvestingCashFlow%2CannualCashFromDiscontinuedInvestingActivities%2CannualCashFlowFromContinuingInvestingActivities%2CannualNetOtherInvestingChanges%2CannualInterestReceivedCFI%2CannualDividendsReceivedCFI%2CannualNetInvestmentPurchaseAndSale%2CannualSaleOfInvestment%2CannualPurchaseOfInvestment%2CannualNetInvestmentPropertiesPurchaseAndSale%2CannualSaleOfInvestmentProperties%2CannualPurchaseOfInvestmentProperties%2CannualNetBusinessPurchaseAndSale%2CannualSaleOfBusiness%2CannualPurchaseOfBusiness%2CannualNetIntangiblesPurchaseAndSale%2CannualSaleOfIntangibles%2CannualPurchaseOfIntangibles%2CannualNetPPEPurchaseAndSale%2CannualSaleOfPPE%2CannualPurchaseOfPPE%2CannualCapitalExpenditureReported%2CannualOperatingCashFlow%2CannualCashFromDiscontinuedOperatingActivities%2CannualCashFlowFromContinuingOperatingActivities%2CannualTaxesRefundPaid%2CannualInterestReceivedCFO%2CannualInterestPaidCFO%2CannualDividendReceivedCFO%2CannualDividendPaidCFO%2CannualChangeInWorkingCapital%2CannualChangeInOtherWorkingCapital%2CannualChangeInOtherCurrentLiabilities%2CannualChangeInOtherCurrentAssets%2CannualChangeInPayablesAndAccruedExpense%2CannualChangeInAccruedExpense%2CannualChangeInInterestPayable%2CannualChangeInPayable%2CannualChangeInDividendPayable%2CannualChangeInAccountPayable%2CannualChangeInTaxPayable%2CannualChangeInIncomeTaxPayable%2CannualChangeInPrepaidAssets%2CannualChangeInInventory%2CannualChangeInReceivables%2CannualChangesInAccountReceivables%2CannualOtherNonCashItems%2CannualExcessTaxBenefitFromStockBasedCompensation%2CannualStockBasedCompensation%2CannualUnrealizedGainLossOnInvestmentSecurities%2CannualProvisionandWriteOffofAssets%2CannualAssetImpairmentCharge%2CannualAmortizationOfSecurities%2CannualDeferredTax%2CannualDeferredIncomeTax%2CannualDepreciationAmortizationDepletion%2CannualDepletion%2CannualDepreciationAndAmortization%2CannualAmortizationCashFlow%2CannualAmortizationOfIntangibles%2CannualDepreciation%2CannualOperatingGainsLosses%2CannualPensionAndEmployeeBenefitExpense%2CannualEarningsLossesFromEquityInvestments%2CannualGainLossOnInvestmentSecurities%2CannualNetForeignCurrencyExchangeGainLoss%2CannualGainLossOnSaleOfPPE%2CannualGainLossOnSaleOfBusiness%2CannualNetIncomeFromContinuingOperations%2CannualCashFlowsfromusedinOperatingActivitiesDirect%2CannualTaxesRefundPaidDirect%2CannualInterestReceivedDirect%2CannualInterestPaidDirect%2CannualDividendsReceivedDirect%2CannualDividendsPaidDirect%2CannualClassesofCashPayments%2CannualOtherCashPaymentsfromOperatingActivities%2CannualPaymentsonBehalfofEmployees%2CannualPaymentstoSuppliersforGoodsandServices%2CannualClassesofCashReceiptsfromOperatingActivities%2CannualOtherCashReceiptsfromOperatingActivities%2CannualReceiptsfromGovernmentGrants%2CannualReceiptsfromCustomers
   response:
     body:
       string: !!binary |
-        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
+        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
+        s7r5B/wBCErdTF5Xq8Xix4//AZ6nrncnnQAA
     headers:
       Age:
       - '0'
@@ -111,7 +161,7 @@ interactions:
       content-type:
       - application/json;charset=utf-8
       date:
-      - Wed, 20 Dec 2023 12:00:41 GMT
+      - Wed, 20 Dec 2023 11:48:38 GMT
       server:
       - ATS
       vary:
@@ -119,7 +169,7 @@ interactions:
       x-envoy-decorator-operation:
       - finance-company-fundamentals-api--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '39'
+      - '59'
     status:
       code: 200
       message: OK

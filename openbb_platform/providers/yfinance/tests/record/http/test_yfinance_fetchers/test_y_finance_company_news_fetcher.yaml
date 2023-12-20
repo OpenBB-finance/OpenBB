@@ -11,6 +11,56 @@ interactions:
       Cookie:
       - MOCK_COOKIE
     method: GET
+    uri: https://query1.finance.yahoo.com/v1/test/getcrumb
+  response:
+    body:
+      string: pzrtQzapOQy
+    headers:
+      Age:
+      - '0'
+      Connection:
+      - keep-alive
+      Expect-CT:
+      - max-age=31536000, report-uri="http://csp.yahoo.com/beacon/csp?src=yahoocom-expect-ct-report-only"
+      Referrer-Policy:
+      - no-referrer-when-downgrade
+      Strict-Transport-Security:
+      - max-age=31536000
+      Transfer-Encoding:
+      - chunked
+      X-Content-Type-Options:
+      - nosniff
+      X-XSS-Protection:
+      - 1; mode=block
+      cache-control:
+      - private
+      content-type:
+      - text/plain;charset=utf-8
+      date:
+      - Wed, 20 Dec 2023 11:46:32 GMT
+      server:
+      - ATS
+      x-envoy-decorator-operation:
+      - finance-yql--mtls-default-production-ir2.finance-k8s.svc.yahoo.local:4080/*
+      x-envoy-upstream-service-time:
+      - '1'
+      x-frame-options:
+      - SAMEORIGIN
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Cookie:
+      - MOCK_COOKIE
+    method: GET
     uri: https://query2.finance.yahoo.com/v1/finance/search?crumb=MOCK_CRUMB&q=AAPL%2CMSFT
   response:
     body:
@@ -58,12 +108,12 @@ interactions:
         k/9SY0LTIAEGbDLYHEUZkaFG4qQ6GtZsjI0fw2K6UMJ+DizprX/nasfd3snyULXN1vKRrNovqqV1
         X+Ju9gF9icB3LN8Ev8GWQYilYWIGOobDWNdc+Mp2+hKW86I4ehc06VFrNEwOVXXa/FrvXqTtIRt6
         nwfNe/T+RXiOZHp/PpZNibEE5uK5Rd66kKMSrcFo8NwVl++myEPlKnDdvM4bnh9P+6fnJ9PO0yu9
-        3W7g863gn8XmjS0YmZOMhmc8Fdl2MIcikSc860Y8Zmc8L+PtTCEKEq9d29YkoXM+Jfc86YrsdPPC
-        17Dwy4lR9RLNro7OnWEvnokFKWgopdkerTvzY8jkOEDJ2WQjzncWtbIyoaFPchDo1dRI2ufNDWev
-        9X01P9lV/c1sCyxRZiT28pxXN3/7Hyd4m50CHwAA
+        3W7g863gn8XmjS0YmZOMhmc8Fdl2MIcikSc860Y8Zmc8L+PtTCEKEq9d25QvdeDTlNzzpCuy080L
+        X8NwXk6MqpdodnV07gx78UwsSEFDKc32aN2ZH0MmxwFKziYbcb6zqJWVCQ19koNAr6ZG0j5vbjh7
+        re+r+cmu6m9mW2CJMiOxl+e8uvnb/wBMrLkNAh8AAA==
     headers:
       Age:
-      - '3'
+      - '1'
       Connection:
       - keep-alive
       Expect-CT:
@@ -81,11 +131,11 @@ interactions:
       content-encoding:
       - gzip
       content-length:
-      - '2595'
+      - '2596'
       content-type:
       - application/json;charset=utf-8
       date:
-      - Wed, 20 Dec 2023 12:00:40 GMT
+      - Wed, 20 Dec 2023 11:46:32 GMT
       server:
       - ATS
       vary:
@@ -93,7 +143,7 @@ interactions:
       x-envoy-decorator-operation:
       - finance-search--mtls-production-ir2.finance-k8s.svc.yahoo.local:4080/*
       x-envoy-upstream-service-time:
-      - '75'
+      - '60'
     status:
       code: 200
       message: OK
