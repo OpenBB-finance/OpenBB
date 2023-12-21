@@ -112,7 +112,7 @@ class CboeEquityHistoricalFetcher(
         """Return the raw data from the Cboe endpoint."""
 
         symbols = query.symbol.split(",")
-        INDEXES = await get_index_directory()
+        INDEXES = await get_index_directory(use_cache=query.use_cache)
         INDEXES = INDEXES.set_index("index_symbol")
         INTERVAL_DICT = {"1m": "intraday", "1d": "historical"}
 
