@@ -1,6 +1,6 @@
 """FMP Equity Quote Model."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Union
 
 from openbb_core.provider.abstract.data import ForceInt
@@ -92,13 +92,19 @@ class FMPEquityQuoteData(EquityQuoteData):
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         v = int(v) if isinstance(v, str) else v
-        return datetime.utcfromtimestamp(int(v)).replace(tzinfo=utc)
+        return datetime.utcfromtimestamp(int(v)).replace(tzinfo=timezone.utc)
 
     @field_validator("earnings_announcement", mode="before", check_fields=False)
     @classmethod
     def timestamp_validate(cls, v):  # pylint: disable=E0213
         """Return the datetime string as a datetime object."""
-        return datetime.fromisoformat(v) if v else None
+        if v:
+            dt = datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%f%z")
+            dt = dt.replace(microsecond=0)
+            timestamp = dt.timestamp()
+            return datetime.fromtimestamp(timestamp, tz=timezone.utc)
+        else:
+            return None
 
     @field_validator("change_percent", mode="after", check_fields=False)
     @classmethod
