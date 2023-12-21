@@ -1,7 +1,7 @@
 """FMP Equity Quote Model."""
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -12,6 +12,7 @@ from openbb_core.provider.standard_models.equity_quote import (
 from openbb_core.provider.utils.helpers import amake_requests
 from openbb_fmp.utils.helpers import get_querystring
 from pydantic import Field, field_validator
+from pytz import utc
 
 
 class FMPEquityQuoteQueryParams(EquityQuoteQueryParams):
@@ -28,18 +29,35 @@ class FMPEquityQuoteData(EquityQuoteData):
         "price_avg50": "priceAvg50",
         "price_avg200": "priceAvg200",
         "date": "timestamp",
+        "high": "dayHigh",
+        "low": "dayLow",
+        "last_price": "price",
+        "change_percent": "changesPercentage",
     }
-
+    date: datetime = Field(description="Date and time of the date.")
     symbol: Optional[str] = Field(default=None, description="Symbol of the company.")
     name: Optional[str] = Field(default=None, description="Name of the company.")
-    price: Optional[float] = Field(
+    exchange: Optional[str] = Field(
+        default=None, description="Exchange the equity is traded on."
+    )
+    last_price: Optional[float] = Field(
         default=None, description="Current trading price of the equity."
     )
-    changes_percentage: Optional[float] = Field(
-        default=None, description="Change percentage of the equity price."
+    open: float = Field(description="Open price for the trading day.")
+    high: float = Field(description="High price for the trading day.")
+    low: float = Field(description="Low price for the trading day.")
+    volume: Optional[ForceInt] = Field(
+        default=None,
+        description="Volume of the equity in the current trading day.",
+    )
+    previous_close: Optional[float] = Field(
+        default=None, description="Previous closing price of the equity."
     )
     change: Optional[float] = Field(
         default=None, description="Change in the equity price."
+    )
+    change_percent: Optional[float] = Field(
+        default=None, description="Change in price as a normalized percentage."
     )
     year_high: Optional[float] = Field(
         default=None, description="Highest price of the equity in the last 52 weeks."
@@ -47,51 +65,46 @@ class FMPEquityQuoteData(EquityQuoteData):
     year_low: Optional[float] = Field(
         default=None, description="Lowest price of the equity in the last 52 weeks."
     )
-    market_cap: Optional[float] = Field(
-        default=None, description="Market cap of the company."
-    )
     price_avg50: Optional[float] = Field(
-        default=None, description="50 days average price of the equity."
+        default=None, description="50 day moving average price."
     )
     price_avg200: Optional[float] = Field(
-        default=None, description="200 days average price of the equity."
-    )
-    volume: Optional[ForceInt] = Field(
-        default=None,
-        description="Volume of the equity in the current trading day.",
+        default=None, description="200 day moving average price."
     )
     avg_volume: Optional[ForceInt] = Field(
         default=None,
-        description="Average volume of the equity in the last 10 trading days.",
+        description="Average volume over the last 10 trading days.",
     )
-    exchange: Optional[str] = Field(
-        default=None, description="Exchange the equity is traded on."
-    )
-    open: Optional[float] = Field(
-        default=None,
-        description="Opening price of the equity in the current trading day.",
-    )
-    previous_close: Optional[float] = Field(
-        default=None, description="Previous closing price of the equity."
-    )
-    eps: Optional[float] = Field(
-        default=None, description="Earnings per share of the equity."
-    )
-    pe: Optional[float] = Field(
-        default=None, description="Price earnings ratio of the equity."
-    )
-    earnings_announcement: Optional[str] = Field(
-        default=None, description="Earnings announcement date of the equity."
+    market_cap: Optional[float] = Field(
+        default=None, description="Market cap of the company."
     )
     shares_outstanding: Optional[ForceInt] = Field(
-        default=None, description="Number of shares outstanding of the equity."
+        default=None, description="Number of shares outstanding."
+    )
+    eps: Optional[float] = Field(default=None, description="Earnings per share.")
+    pe: Optional[float] = Field(default=None, description="Price earnings ratio.")
+    earnings_announcement: Optional[Union[datetime, str]] = Field(
+        default=None, description="Upcoming earnings announcement date."
     )
 
-    @field_validator("timestamp", mode="before", check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d")
+        v = int(v) if isinstance(v, str) else v
+        return datetime.utcfromtimestamp(int(v)).replace(tzinfo=utc)
+
+    @field_validator("earnings_announcement", mode="before", check_fields=False)
+    @classmethod
+    def timestamp_validate(cls, v):  # pylint: disable=E0213
+        """Return the datetime string as a datetime object."""
+        return datetime.fromisoformat(v) if v else None
+
+    @field_validator("change_percent", mode="after", check_fields=False)
+    @classmethod
+    def normalize_percent(cls, v):  # pylint: disable=E0213
+        """Return the percent value as a normalized value."""
+        return float(v) / 100 if v else None
 
 
 class FMPEquityQuoteFetcher(
