@@ -12,7 +12,6 @@ from openbb_core.provider.standard_models.equity_quote import (
 from openbb_core.provider.utils.helpers import amake_requests
 from openbb_fmp.utils.helpers import get_querystring
 from pydantic import Field, field_validator
-from pytz import utc
 
 
 class FMPEquityQuoteQueryParams(EquityQuoteQueryParams):
