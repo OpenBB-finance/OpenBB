@@ -104,7 +104,7 @@ class IntrinioIncomeStatementData(IncomeStatementData):
         "short_term_borrowings_interest_expense": "shorttermborrowinginterestexpense",
         "cost_of_revenue": "totalcostofrevenue",
         "gross_profit": "totalgrossprofit",
-        "gross_profit_ratio": "grossmargin",
+        "gross_profit_magin": "grossmargin",
         "total_interest_expense": "totalinterestexpense",
         "interest_and_investment_income": "totalinterestincome",
         "total_non_interest_expense": "totalnoninterestexpense",
@@ -137,7 +137,7 @@ class IntrinioIncomeStatementData(IncomeStatementData):
     gross_profit: Optional[float] = Field(
         default=None, description="Total gross profit"
     )
-    gross_profit_ratio: Optional[float] = Field(
+    gross_profit_margin: Optional[float] = Field(
         default=None, description="Gross margin ratio."
     )
     provision_for_credit_losses: Optional[float] = Field(
