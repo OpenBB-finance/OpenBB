@@ -87,7 +87,7 @@ class PolygonIncomeStatementData(IncomeStatementData):
         "total_pre_tax_income": "income_loss_from_continuing_operations_before_tax",
         "income_tax_expense": "income_tax_expense_benefit",
         "interest_and_debt_expense": "interest_and_debt_expense",
-        "net_income": "net_income_loss",
+        "consolidated_net_income": "net_income_loss",
         "eps": "basic_earnings_per_share",
         "eps_diluted": "diluted_earnings_per_share",
         "interest_and_dividend_income": "interest_and_dividend_income_operating",
@@ -198,7 +198,7 @@ class PolygonIncomeStatementData(IncomeStatementData):
     income_after_tax: Optional[float] = Field(
         default=None, description="Income After Tax"
     )
-    net_income: Optional[float] = Field(default=None, description="Net Income/Loss")
+    consolidated_net_income: Optional[float] = Field(default=None, description="Net Income/Loss")
     net_income_attributable_noncontrolling_interest: Optional[float] = Field(
         default=None,
         description="Net income (loss) attributable to noncontrolling interest",
