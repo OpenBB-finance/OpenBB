@@ -41,7 +41,7 @@ pycoingecko = "^3.1.0"
 detecta = "^0.0.5"
 tradingview-ta = "^3.2.3"
 finvizfinance = "0.14.7rc1"
-statsmodels = "^0.13"
+statsmodels = "^0.14"
 python-coinmarketcap = "^0.2"
 oandapyV20 = "^0.6.3"
 valinvest = "^0.0.2"
@@ -112,7 +112,7 @@ transformers = { version = "4.27.1", optional = true }
 yt-dlp = { version = "^2023.2.17", optional = true }
 pydantic = "^2.5.1"
 posthog = "^3.0.1"
-reportlab = "<4"                                                      #Pinning due to build error on MacOs
+reportlab = "^4"
 arch = "^5.5.0"
 llama-index = "^0.8.8"
 # langchain = "0.0.266"                                                 # Pinned for llama index
@@ -124,6 +124,7 @@ python-jose = "^3.3.0"
 nltk = "^3.8.1"   # Is a dependence for llama index
 openai = "0.28.1"
 openbb = "^4.0.1"
+openbb-charting = "^1.1.0"
 
 
 [tool.poetry.extras]
