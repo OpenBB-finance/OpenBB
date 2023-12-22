@@ -198,7 +198,9 @@ class PolygonIncomeStatementData(IncomeStatementData):
     income_after_tax: Optional[float] = Field(
         default=None, description="Income After Tax"
     )
-    consolidated_net_income: Optional[float] = Field(default=None, description="Net Income/Loss")
+    consolidated_net_income: Optional[float] = Field(
+        default=None, description="Net Income/Loss"
+    )
     net_income_attributable_noncontrolling_interest: Optional[float] = Field(
         default=None,
         description="Net income (loss) attributable to noncontrolling interest",
