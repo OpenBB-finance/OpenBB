@@ -4,15 +4,17 @@ __docformat__ = "numpy"
 import argparse
 import logging
 import os
+from datetime import datetime, timedelta
 from typing import List, Optional
 
 import financedatabase as fd
 
-from argparse_translator.argparse_class_processor import ArgparseClassProcessor
-
-# pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
-from openbb_sdk.openbb import obb
 from openbb_terminal import config_terminal
+from openbb_terminal.common import (
+    feedparser_view,
+    newsapi_view,
+    ultima_newsmonitor_view,
+)
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -21,7 +23,7 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     export_data,
-    print_rich_table,
+    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
@@ -29,11 +31,9 @@ from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
 from openbb_terminal.terminal_helper import suppress_stdout
 
-logger = logging.getLogger(__name__)
+# pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 
-stocks_translations = ArgparseClassProcessor(
-    target_class=obb.stocks, menu_designation="stocks", add_help=False
-)
+logger = logging.getLogger(__name__)
 
 
 class StocksController(StockBaseController):
@@ -46,7 +46,6 @@ class StocksController(StockBaseController):
         "tob",
         "candle",
         "news",
-        "multiples",
         "resources",
         "codes",
     ]
@@ -121,7 +120,6 @@ class StocksController(StockBaseController):
         mt.add_cmd("candle", self.ticker)
         mt.add_cmd("codes", self.ticker)
         mt.add_cmd("news", self.ticker)
-        mt.add_cmd("multiples", self.ticker)
         mt.add_raw("\n")
         mt.add_menu("th")
         mt.add_menu("options")
@@ -151,29 +149,6 @@ class StocksController(StockBaseController):
         """Class specific component of load command"""
         with suppress_stdout():
             self.call_load(other_args)
-
-    def call_load(self, other_args: List[str]):
-        """Process load command."""
-        translator = stocks_translations.get_translator(menu="stocks", command="load")
-        parser = translator.parser
-
-        if ns_parser := self.parse_known_args_and_warn(parser, other_args):
-            c_out = translator.execute_func(parsed_args=ns_parser)
-
-            if c_out.error:
-                console.print(f"[red]{c_out.error}[/]\n")
-            else:
-                self.ticker = ns_parser.symbol
-                self.stock = c_out.to_dataframe()
-
-                # TODO : temporary workaround
-                # core gives all columns lower case and terminal expects 1st letter upper case
-                # upper case first letter of all columns
-                self.stock.columns = [
-                    x[0].upper() + x[1:] for x in self.stock.columns.tolist()
-                ]
-                if ns_parser.chart:
-                    c_out.show()
 
     @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
@@ -565,83 +540,96 @@ class StocksController(StockBaseController):
     @log_start_end(log=logger)
     def call_news(self, other_args: List[str]):
         """Process news command."""
-        translator = stocks_translations.get_translator(menu="stocks", command="news")
-        parser = translator.parser
-
-        if ns_parser := self.parse_known_args_and_warn(
-            parser=parser,
-            other_args=other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-        ):
-            c_out = translator.execute_func(parsed_args=ns_parser)
-
-            if c_out.error:
-                console.print(f"[red]{c_out.error}[/]\n")
-            else:
-                sheet_name = (
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                )
-                export = ns_parser.export if ns_parser.export else None
-
-                print_rich_table(
-                    df=c_out.to_dataframe(),
-                    show_index=True,
-                    title="News",
-                    index_name="Date",
-                    export=bool(export),
-                    print_to_console=not ns_parser.chart,
-                )
-                export_data(
-                    export_type=export,
-                    dir_path=os.path.dirname(os.path.abspath(__file__)),
-                    func_name="news",
-                    df=c_out.to_dataframe(),
-                    sheet_name=sheet_name,
-                )
-
-                # if ns_parser.chart:
-                #     c_out.show()
-
-    @log_start_end(log=logger)
-    def call_multiples(self, other_args: List[str]):
-        translator = stocks_translations.get_translator(
-            menu="stocks", command="multiples"
+        parser = argparse.ArgumentParser(
+            add_help=False,
+            prog="news",
+            description="latest news of the company",
         )
-        parser = translator.parser
-
-        if ns_parser := self.parse_known_args_and_warn(
-            parser=parser,
-            other_args=other_args,
-            export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED,
-        ):
-            c_out = translator.execute_func(parsed_args=ns_parser)
-
-            if c_out.error:
-                console.print(f"[red]{c_out.error}[/]\n")
+        parser.add_argument(
+            "-t",
+            "--ticker",
+            action="store",
+            dest="ticker",
+            required=not any(x in other_args for x in ["-h", "--help"])
+            and not self.ticker,
+            help="Ticker to get data for",
+        )
+        parser.add_argument(
+            "-d",
+            "--date",
+            action="store",
+            dest="n_start_date",
+            type=valid_date,
+            default=datetime.now() - timedelta(days=7),
+            help="The starting date (format YYYY-MM-DD) to search articles from",
+        )
+        parser.add_argument(
+            "-o",
+            "--oldest",
+            action="store_false",
+            dest="n_oldest",
+            default=True,
+            help="Show oldest articles first",
+        )
+        parser.add_argument(
+            "-s",
+            "--sources",
+            dest="sources",
+            type=str,
+            default="",
+            help="Show news only from the sources specified (e.g bloomberg,reuters)",
+        )
+        if other_args and "-" not in other_args[0][0]:
+            other_args.insert(0, "-t")
+        ns_parser = self.parse_known_args_and_warn(
+            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=10
+        )
+        if ns_parser:
+            if ns_parser.ticker:
+                self.ticker = ns_parser.ticker
+                self.custom_load_wrapper([self.ticker])
+            if self.ticker:
+                if ns_parser.source == "NewsApi":
+                    newsapi_view.display_news(
+                        query=self.ticker,
+                        limit=ns_parser.limit,
+                        start_date=ns_parser.n_start_date.strftime("%Y-%m-%d"),
+                        show_newest=ns_parser.n_oldest,
+                        sources=ns_parser.sources,
+                    )
+                elif str(ns_parser.source).lower() == "ultima":
+                    query = str(self.ticker).upper()
+                    if query not in ultima_newsmonitor_view.supported_terms():
+                        console.print(
+                            "[red]Ticker not supported by Ultima Insights News Monitor. Falling back to default.\n[/red]"
+                        )
+                        feedparser_view.display_news(
+                            term=query,
+                            sources=ns_parser.sources,
+                            limit=ns_parser.limit,
+                            export=ns_parser.export,
+                            sheet_name=ns_parser.sheet_name,
+                        )
+                    else:
+                        ultima_newsmonitor_view.display_news(
+                            term=query,
+                            sources=ns_parser.sources,
+                            limit=ns_parser.limit,
+                            export=ns_parser.export,
+                            sheet_name=ns_parser.sheet_name,
+                        )
+                elif ns_parser.source == "Feedparser":
+                    feedparser_view.display_news(
+                        term=self.ticker,
+                        sources=ns_parser.sources,
+                        limit=ns_parser.limit,
+                        export=ns_parser.export,
+                        sheet_name=" ".join(ns_parser.sheet_name)
+                        if ns_parser.sheet_name
+                        else None,
+                    )
             else:
-                sheet_name = (
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                )
-                export = ns_parser.export if ns_parser.export else None
-
-                print_rich_table(
-                    df=c_out.to_dataframe(),
-                    show_index=True,
-                    title=f"Multiples",
-                    index_name="Metric",
-                    export=bool(export),
-                    print_to_console=not ns_parser.chart,
-                )
-                export_data(
-                    export_type=export,
-                    dir_path=os.path.dirname(os.path.abspath(__file__)),
-                    func_name="multiples",
-                    df=c_out.to_dataframe(),
-                    sheet_name=sheet_name,
-                )
-
-                # if ns_parser.chart:
-                #     c_out.show()
+                console.print("Use 'load <ticker>' prior to this command!")
 
     @log_start_end(log=logger)
     def call_disc(self, _):
