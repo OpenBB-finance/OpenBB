@@ -34,7 +34,7 @@ class ArgparseClassProcessor:
         Process the methods of the target class to create ArgparseTranslators.
         """
         for name, method in inspect.getmembers(self._target_class, inspect.ismethod):
-            if name.startswith("__"):
+            if name.startswith("__") or name.startswith("_"):
                 continue
 
             self._translators[self._menu_designation][name] = ArgparseTranslator(

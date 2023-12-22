@@ -315,9 +315,10 @@ class ArgparseTranslator:
         return wrapper_func
 
 
-# from openbb_sdk.openbb import obb
+# from openbb import obb
 
-# translator = ArgparseTranslator(obb.stocks.load)
-# stocks_load = translator.translate()
-# result = stocks_load()
+
+# translator = ArgparseTranslator(obb.equity.price.historical)
+# equity_historical_price = translator.translate()
+# result = equity_historical_price()
 # print(result)
