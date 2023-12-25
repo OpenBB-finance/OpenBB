@@ -55,12 +55,8 @@ class CompanyFilingsData(Data):
     cik: Optional[str] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("cik", "")
     )
-    report_type: Optional[str] = Field(
-        default=None, description="Type of filing."
-    )
-    filing_url: Optional[str] = Field(
-        default=None, description="URL to the filing page."
-    )
+    report_type: Optional[str] = Field(default=None, description="Type of filing.")
+    filing_url: Optional[str] = Field(default=None, description="URL to the filing page.")
     report_url: str = Field(description="URL to the actual report.")
 
     @field_validator("filing_date", "accepted_date", mode="before", check_fields=False)
