@@ -155,4 +155,7 @@ class OptionsChainsData(Data):
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the datetime object from the date string"""
-        return datetime.strptime(v, "%Y-%m-%d")
+        if isinstance(v, datetime):
+            return datetime.strftime(v, "%Y-%m-%d")
+        if isinstance(v, str):
+            return datetime.strptime(v, "%Y-%m-%d")

@@ -12,7 +12,7 @@ from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request
 from pandas import DataFrame
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class CboeIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):
@@ -21,9 +21,16 @@ class CboeIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):
     Source: https://www.cboe.com/
     """
 
-    region: Literal["us", "eu"] = Field(
+    region: Literal[None, "us", "eu"] = Field(
         default="us",
     )
+
+    @field_validator("region", mode="after", check_fields=False)
+    @classmethod
+    def validate_region(cls, v: str):
+        """Validate region."""
+        if v is None:
+            return "us"
 
 
 class CboeIndexSnapshotsData(IndexSnapshotsData):

@@ -12,7 +12,8 @@ from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 class IndexSnapshotsQueryParams(QueryParams):
     """Index Snapshots Query."""
 
-    region: str = Field(
+    region: Optional[str] = Field(
+        default=None,
         description="The region to return data for - i.e. 'us' or 'eu'."
     )
 
