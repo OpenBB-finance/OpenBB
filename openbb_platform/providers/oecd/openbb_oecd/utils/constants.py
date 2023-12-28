@@ -405,7 +405,7 @@ ppi_list = [
     "united_states",
 ]
 
-COUNTRY_TO_CODE_PPI = {k: v for k, v in full_dict.keys() if v in ppi_list}
+COUNTRY_TO_CODE_PPI = {k: v for k, v in full_dict.items() if k in ppi_list}
 CODE_TO_COUNTRY_PPI = {v: k for k, v in COUNTRY_TO_CODE_PPI.items()}
 
 cci_list = [
