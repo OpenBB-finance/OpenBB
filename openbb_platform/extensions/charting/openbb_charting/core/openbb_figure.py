@@ -1455,7 +1455,6 @@ class OpenBBFigure(go.Figure):
 
         self._margin_adjusted = True
 
-
     # pylint: disable=import-outside-toplevel
     def _add_cmd_source(self, command_location: Optional[str] = "") -> None:
         """Set the watermark for OpenBB Terminal."""
