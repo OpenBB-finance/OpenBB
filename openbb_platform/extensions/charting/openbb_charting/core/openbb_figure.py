@@ -22,7 +22,7 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.io as pio
-from openbb_charting.core.backend import PLOTLYJS_PATH, get_backend
+from openbb_charting.core.backend import PLOTLYJS_PATH, create_backend, get_backend
 from openbb_charting.core.chart_style import ChartStyle
 from openbb_charting.core.config.openbb_styles import (
     PLT_TBL_ROW_COLORS,
@@ -99,6 +99,9 @@ class OpenBBFigure(go.Figure):
         self._export_image: Optional[Union[Path, str]] = ""
         self._subplot_xdates: Dict[int, Dict[int, List[Any]]] = {}
 
+        if kwargs.pop("create_backend", False):
+            create_backend(self._charting_settings)
+            get_backend().start(debug=self._charting_settings.debug_mode)
         self._theme = ChartStyle(
             self._charting_settings.chart_style,
             self._charting_settings.user_styles_directory,
