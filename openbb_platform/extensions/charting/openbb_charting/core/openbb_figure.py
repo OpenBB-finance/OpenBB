@@ -164,7 +164,7 @@ class OpenBBFigure(go.Figure):
         self._cmd_xshift = value
 
     @classmethod
-    def create_subplots(  # noqa: PLR0913
+    def create_subplots(  # noqa: R0913
         cls,
         rows: int = 1,
         cols: int = 1,
@@ -270,7 +270,7 @@ class OpenBBFigure(go.Figure):
         except Exception as e:
             raise ValueError(f"Error adding trend line: {e}") from e
 
-    def add_histplot(  # noqa: PLR0913, PLR0915
+    def add_histplot(  # noqa: R0913, PLR0915
         self,
         dataset: Union[np.ndarray, pd.Series, TimeSeriesT],
         name: Optional[Union[str, List[str]]] = None,
@@ -312,7 +312,7 @@ class OpenBBFigure(go.Figure):
             Column of the subplot, by default 1
         """
 
-        from scipy import stats
+        from scipy import stats  # pylint: disable=import-outside-toplevel
 
         callback = stats.norm if curve == "normal" else stats.gaussian_kde
 
@@ -1572,7 +1572,7 @@ class OpenBBFigure(go.Figure):
             ],
         )
 
-    def add_corr_plot(  # noqa: PLR0913
+    def add_corr_plot(  # noqa: R0913
         self,
         series: pd.DataFrame,
         max_lag: int = 20,
