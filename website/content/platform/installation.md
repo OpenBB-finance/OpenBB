@@ -105,6 +105,12 @@ Or install a single provider:
 pip install openbb[yfinance]
 ```
 
+To install the Nightly distribution (this installs all extras by default):
+
+```console
+pip install openbb-nightly
+```
+
 From your python interpreter, import the OpenBB Platform:
 
 ```console
