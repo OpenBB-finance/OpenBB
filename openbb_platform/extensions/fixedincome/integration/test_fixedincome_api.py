@@ -155,7 +155,6 @@ def test_fixedincome_rate_ameribor(params, headers):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
                 "parameter": "weekly",
@@ -515,10 +514,23 @@ def test_fixedincome_government_treasury_auctions(params, headers):
         ),
         (
             {
-                "date": None,
+                "date": "2023-12-28",
                 "cusip": None,
                 "security_type": "bill",
                 "provider": "government_us",
+            }
+        ),
+        (
+            {
+                "date": None,
+                "provider": "tmx",
+                "govt_type": "federal",
+                "issue_date_min": None,
+                "issue_date_max": None,
+                "last_traded_min": None,
+                "maturity_date_min": None,
+                "maturity_date_max": None,
+                "use_cache": True,
             }
         ),
     ],
@@ -531,6 +543,41 @@ def test_fixedincome_government_treasury_prices(params, headers):
     url = (
         f"http://0.0.0.0:8000/api/v1/fixedincome/government/treasury_prices?{query_str}"
     )
+    result = requests.get(url, headers=headers, timeout=30)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "date": None,
+                "provider": "tmx",
+                "issue_date_min": None,
+                "issue_date_max": None,
+                "last_traded_min": None,
+                "coupon_min": 3,
+                "coupon_max": None,
+                "currency": None,
+                "issued_amount_min": None,
+                "issued_amount_max": None,
+                "maturity_date_min": None,
+                "maturity_date_max": None,
+                "isin": None,
+                "lei": None,
+                "use_cache": False,
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_coporate_bond_prices(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/corporate/bond_prices?{query_str}"
     result = requests.get(url, headers=headers, timeout=30)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

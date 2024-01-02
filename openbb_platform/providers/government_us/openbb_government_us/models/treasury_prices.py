@@ -7,15 +7,15 @@ from typing import Any, Dict, List, Literal, Optional
 import requests
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.treasury_prices import (
-    USTreasuryPricesData,
-    USTreasuryPricesQueryParams,
+    TreasuryPricesData,
+    TreasuryPricesQueryParams,
 )
 from openbb_government_us.utils.helpers import get_random_agent
 from pandas import read_csv, to_datetime
 from pydantic import Field
 
 
-class GovernmentUSTreasuryPricesQueryParams(USTreasuryPricesQueryParams):
+class GovernmentUSTreasuryPricesQueryParams(TreasuryPricesQueryParams):
     """US Government Treasury Prices Query."""
 
     cusip: Optional[str] = Field(description="Filter by CUSIP.", default=None)
@@ -25,7 +25,7 @@ class GovernmentUSTreasuryPricesQueryParams(USTreasuryPricesQueryParams):
     )
 
 
-class GovernmentUSTreasuryPricesData(USTreasuryPricesData):
+class GovernmentUSTreasuryPricesData(TreasuryPricesData):
     """US Government Treasury Prices Data."""
 
 

@@ -99,3 +99,14 @@ async def commercial_paper(
     and many find it to be a lower-cost alternative to bank loans.
     """
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(model="BondPrices")
+async def bond_prices(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Corporate Bond Prices."""
+    return await OBBject.from_query(Query(**locals()))

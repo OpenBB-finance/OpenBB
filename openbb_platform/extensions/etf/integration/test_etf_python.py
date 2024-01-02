@@ -21,6 +21,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
     "params",
     [
         ({"query": None, "provider": "fmp"}),
+        ({"query": "vanguard", "provider": "tmx", "div_freq": "quarterly", "sort_by": "return_1y", "use_cache": False}),
     ],
 )
 @pytest.mark.integration
@@ -68,7 +69,7 @@ def test_etf_historical(params, obb):
     "params",
     [
         ({"symbol": "IOO", "provider": "fmp"}),
-        ({"symbol": "MISL", "provider": "fmp"}),
+        ({"symbol": "XIU", "provider": "tmx", "use_cache": False}),
     ],
 )
 @pytest.mark.integration
@@ -85,7 +86,7 @@ def test_etf_info(params, obb):
     "params",
     [
         ({"symbol": "IOO", "provider": "fmp"}),
-        ({"symbol": "MISL", "provider": "fmp"}),
+        ({"symbol": "XIU", "provider": "tmx", "use_cache": False}),
     ],
 )
 @pytest.mark.integration
@@ -149,6 +150,13 @@ def test_etf_holdings_date(params, obb):
                 "use_cache": False,
             }
         ),
+        (
+            {
+                "symbol": "XIU",
+                "provider": "tmx",
+                "use_cache": False,
+            }
+        )
     ],
 )
 @pytest.mark.integration
@@ -177,7 +185,10 @@ def test_etf_price_performance(params, obb):
 
 @parametrize(
     "params",
-    [({"symbol": "IOO"})],
+    [
+        ({"symbol": "IOO", "provider": "fmp"}),
+        ({"symbol": "XIU", "provider": "tmx", "use_cache": False}),
+    ],
 )
 @pytest.mark.integration
 def test_etf_countries(params, obb):

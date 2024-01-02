@@ -23,6 +23,7 @@ def headers():
     "params",
     [
         ({"query": "", "provider": "fmp"}),
+        ({"query": "vanguard", "provider": "tmx", "div_freq": "quarterly", "sort_by": "return_1y", "use_cache": False}),
     ],
 )
 @pytest.mark.integration
@@ -72,7 +73,7 @@ def test_etf_historical(params, headers):
     "params",
     [
         ({"symbol": "IOO", "provider": "fmp"}),
-        ({"symbol": "MISL", "provider": "fmp"}),
+        ({"symbol": "XIU", "provider": "tmx", "use_cache": False}),
     ],
 )
 @pytest.mark.integration
@@ -90,7 +91,7 @@ def test_etf_info(params, headers):
     "params",
     [
         ({"symbol": "IOO", "provider": "fmp"}),
-        ({"symbol": "MISL", "provider": "fmp"}),
+        ({"symbol": "XIU", "provider": "tmx", "use_cache": False}),
     ],
 )
 @pytest.mark.integration
@@ -156,6 +157,13 @@ def test_etf_holdings_date(params, headers):
                 "use_cache": False,
             }
         ),
+        (
+            {
+                "symbol": "XIU",
+                "provider": "tmx",
+                "use_cache": False,
+            }
+        )
     ],
 )
 @pytest.mark.integration
@@ -186,7 +194,10 @@ def test_etf_price_performance(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "IOO"})],
+    [
+        ({"symbol": "IOO", "provider": "fmp"}),
+        ({"symbol": "XIU", "use_cache": False, "provider": "tmx"}),
+    ],
 )
 @pytest.mark.integration
 def test_etf_countries(params, headers):

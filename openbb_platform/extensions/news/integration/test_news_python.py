@@ -147,6 +147,14 @@ def test_news_world(params, obb):
                 "symbols": "AAPL,MSFT",
             }
         ),
+        (
+            {
+                "provider": "tmx",
+                "symbols": "AAPL:US",
+                "limit": 10,
+                "page": 1,
+            }
+        ),
     ],
 )
 @pytest.mark.integration

@@ -153,6 +153,14 @@ def test_news_world(params, headers):
                 "sectors": "Real Estate",
             }
         ),
+        (
+            {
+                "provider": "tmx",
+                "symbols": "AAPL:US",
+                "limit": 10,
+                "page": 1,
+            }
+        ),
     ],
 )
 @pytest.mark.integration

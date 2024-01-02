@@ -1,7 +1,7 @@
 """CBOE Index Snapshots Model."""
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd
 from openbb_cboe.utils.helpers import (
@@ -25,6 +25,10 @@ class CboeIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):
 
     Source: https://www.cboe.com/
     """
+
+    region: Optional[Literal["us", "eu"]] = Field(
+        description="The region to return. Choices are ['us', 'eu'].", default="us"
+    )
 
 
 class CboeIndexSnapshotsData(IndexSnapshotsData):
@@ -61,7 +65,7 @@ class CboeIndexSnapshotsFetcher(
         """Return the raw data from the CBOE endpoint"""
         data = pd.DataFrame()
 
-        if query.region == "US":
+        if query.region == "us":
             r = make_request(
                 "https://cdn.cboe.com/api/global/delayed_quotes/quotes/all_us_indices.json"
             )
@@ -100,7 +104,7 @@ class CboeIndexSnapshotsFetcher(
                 ]
             ]
 
-        if query.region == "EU":
+        if query.region == "eu":
             r = make_request(
                 "https://cdn.cboe.com/api/global/european_indices/index_quotes/all-indices.json"
             )
