@@ -30,6 +30,12 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # actions/checkout v3.0.2
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 20
+
+      - name: Fetch base branch
+        run: git fetch --no-tags --depth=20 origin ${{ github.base_ref }}
 
       - name: Setup Python 3.9
         uses: actions/setup-python@v4
@@ -42,7 +48,9 @@ jobs:
         run: |
           # "Checking PR diff"
           echo "terminal_files=$(git diff --name-only origin/${{ github.base_ref }}...${{ github.head_ref }} | grep 'openbb_terminal/.*\.py$' | xargs)" >> $GITHUB_ENV
+          echo $terminal_files
           echo "platform_files=$(git diff --name-only origin/${{ github.base_ref }}...${{ github.head_ref }} | grep 'openbb_platform/.*\.py$' | grep -v 'openbb_platform/openbb/package' | grep -v 'integration' | grep -v 'tests' | xargs)" >> $GITHUB_ENV
+          echo $platform_files
 
       - uses: actions/cache@v3
         with:

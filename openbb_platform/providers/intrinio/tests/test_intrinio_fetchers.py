@@ -13,6 +13,7 @@ from openbb_intrinio.models.equity_historical import IntrinioEquityHistoricalFet
 from openbb_intrinio.models.equity_info import IntrinioEquityInfoFetcher
 from openbb_intrinio.models.equity_quote import IntrinioEquityQuoteFetcher
 from openbb_intrinio.models.equity_search import IntrinioEquitySearchFetcher
+from openbb_intrinio.models.financial_ratios import IntrinioFinancialRatiosFetcher
 from openbb_intrinio.models.fred_series import IntrinioFredSeriesFetcher
 from openbb_intrinio.models.historical_attributes import (
     IntrinioHistoricalAttributesFetcher,
@@ -30,6 +31,7 @@ from openbb_intrinio.models.latest_attributes import IntrinioLatestAttributesFet
 from openbb_intrinio.models.market_indices import IntrinioMarketIndicesFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
+from openbb_intrinio.models.reported_financials import IntrinioReportedFinancialsFetcher
 from openbb_intrinio.models.search_attributes import (
     IntrinioSearchAttributesFetcher,
 )
@@ -313,5 +315,28 @@ def test_intrinio_equity_search_fetcher(credentials=test_credentials):
     params = {"query": "gold", "limit": 100}
 
     fetcher = IntrinioEquitySearchFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_financial_ratios_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL", "period": "annual", "limit": 2, "use_cache": False}
+
+    fetcher = IntrinioFinancialRatiosFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_reported_financials_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "AAPL",
+        "statement_type": "cash",
+        "period": "quarter",
+        "limit": 1,
+    }
+
+    fetcher = IntrinioReportedFinancialsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

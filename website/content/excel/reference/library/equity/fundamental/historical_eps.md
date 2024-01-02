@@ -14,7 +14,7 @@ Historical earnings-per-share for a given company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS(required;[optional])
+=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS(required; [optional])
 ```
 
 ---
@@ -38,9 +38,8 @@ Historical earnings-per-share for a given company.
 | announce_time | Timing of the earnings announcement.  |
 | eps_actual | Actual EPS from the earnings date.  |
 | eps_estimated | Estimated EPS for the earnings date.  |
-| actual_eps | The actual earnings per share announced. (provider: fmp) |
 | revenue_estimated | Estimated consensus revenue for the reporting period. (provider: fmp) |
-| actual_revenue | The actual reported revenue. (provider: fmp) |
+| revenue_actual | The actual reported revenue. (provider: fmp) |
 | reporting_time | The reporting time - e.g. after market close. (provider: fmp) |
 | updated_at | The date when the data was last updated. (provider: fmp) |
 | period_ending | The fiscal period end date. (provider: fmp) |
