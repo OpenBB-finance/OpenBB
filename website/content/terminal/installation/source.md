@@ -33,6 +33,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
+:::warning
+The instructons on this page are for installing the OpenBB Terminal from the source code, which uses a legacy version of the Python SDK.  If you do not wish to install the OpenBB Terminal application, please refer to the installation instructions [here](/platform/installation)
+:::
+
 This section provides steps to install the OpenBB Terminal and SDK from source. This installation type supports Windows, macOS and Linux systems. **Before starting the installation process, make sure the following pieces of software are installed.**
 
 <details><summary>Miniconda</summary>
