@@ -13,7 +13,7 @@ from openbb_core.provider.standard_models.treasury_prices import (
 )
 from openbb_tmx.utils.helpers import get_all_bonds
 from pandas import DataFrame
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class TmxTreasuryPricesQueryParams(TreasuryPricesQueryParams):
@@ -72,6 +72,17 @@ class TmxTreasuryPricesData(TreasuryPricesData):
         "issue_date": "originalIssueDate",
         "issuer_name": "issuer",
     }
+
+    @field_validator(
+        "ytm",
+        "rate",
+        mode="before",
+        check_fields=False,
+    )
+    @classmethod
+    def normalize_percent(cls, v):
+        """Return percents as normalized percentage points."""
+        return round(float(v) / 100, 6) if v else None
 
 
 class TmxTreasuryPricesFetcher(

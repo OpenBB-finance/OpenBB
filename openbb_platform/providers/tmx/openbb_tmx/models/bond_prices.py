@@ -13,7 +13,7 @@ from openbb_core.provider.standard_models.bond_reference import (
 )
 from openbb_tmx.utils.helpers import get_all_bonds
 from pandas import DataFrame
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class TmxBondPricesQueryParams(BondReferenceQueryParams):
@@ -103,6 +103,17 @@ class TmxBondPricesData(BondReferenceData):
         description="Name of the issuing entity.",
         alias="issuer",
     )
+
+    @field_validator(
+        "ytm",
+        "coupon_rate",
+        mode="before",
+        check_fields=False,
+    )
+    @classmethod
+    def normalize_percent(cls, v):
+        """Return percents as normalized percentage points."""
+        return round(float(v) / 100, 6) if v else None
 
 
 class TmxBondPricesFetcher(
