@@ -470,7 +470,7 @@ class IntrinioIncomeStatementFetcher(
             sub_dict: Dict[str, Any] = {}
 
             for sub_item in item["financials"]:
-                unit =  sub_item["data_tag"].get("unit", "")
+                unit = sub_item["data_tag"].get("unit", "")
                 if unit and "share" not in unit:
                     units.append(unit)
                 field_name = sub_item["data_tag"]["tag"]
