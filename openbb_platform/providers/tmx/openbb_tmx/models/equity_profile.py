@@ -1,4 +1,5 @@
 """TMX Equity Profile fetcher"""
+# pylint: disable=unused-argument
 import asyncio
 import json
 from typing import Any, Dict, List, Optional

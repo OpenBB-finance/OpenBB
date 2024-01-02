@@ -1,4 +1,5 @@
 """TMX Equity Search fetcher."""
+# pylint: disable=unused-argument
 
 from typing import Any, Dict, List, Optional
 
@@ -62,6 +63,8 @@ class TmxEquitySearchFetcher(
         return results.reset_index(drop=True).astype(str).to_dict("records")
 
     @staticmethod
-    def transform_data(data: List[Dict], **kwargs: Any) -> List[TmxEquitySearchData]:
+    def transform_data(
+        query: TmxEquitySearchQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[TmxEquitySearchData]:
         """Transform the data to the standard format."""
         return [TmxEquitySearchData.model_validate(d) for d in data]

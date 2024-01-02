@@ -1,4 +1,5 @@
 """GraphQL query definitions."""
+# pylint: disable=line-too-long
 # ruff: noqa: E501
 
 stock_info_query = """ query getQuoteBySymbol(

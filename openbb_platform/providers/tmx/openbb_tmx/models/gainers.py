@@ -1,5 +1,5 @@
 """TMX Equity Gainers Model."""
-
+# pylint: disable=unused-argument
 import json
 from typing import Any, Dict, List, Literal, Optional
 
@@ -127,7 +127,7 @@ class TmxGainersFetcher(
             raise EmptyDataError()
         results = response["data"]["stockList"].get("listItems")
         metric = response["data"]["stockList"].get("metricTitle")
-        for i in range(len(results)):
+        for i in enumerate(results):
             if "metric" in results[i]:
                 results[i][metric] = results[i]["metric"]
                 del results[i]["metric"]

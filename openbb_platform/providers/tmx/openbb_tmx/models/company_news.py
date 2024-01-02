@@ -1,4 +1,5 @@
 """TMX Stock News model."""
+# pylint: disable=unused-argument
 import asyncio
 import json
 from datetime import datetime
@@ -114,6 +115,8 @@ class TmxCompanyNewsFetcher(
         return sorted(results, key=lambda d: d["datetime"], reverse=True)
 
     @staticmethod
-    def transform_data(data: List[Dict], **kwargs: Any) -> List[TmxCompanyNewsData]:
+    def transform_data(
+        query: TmxCompanyNewsQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[TmxCompanyNewsData]:
         """Return the transformed data."""
         return [TmxCompanyNewsData.model_validate(d) for d in data]

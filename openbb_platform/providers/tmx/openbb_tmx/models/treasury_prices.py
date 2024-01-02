@@ -1,4 +1,5 @@
 """TMX Treasury Prices Fetcher"""
+# pylint: disable=unused-argument
 from datetime import (
     date as dateType,
     datetime,
@@ -130,7 +131,7 @@ class TmxTreasuryPricesFetcher(
             "federal": "government of canada",
             "municipal": "municipal",
         }
-        govt_type = govt_type_dict[query.govt_type]  # noqa
+        govt_type = govt_type_dict[query.govt_type]  # noqa  # pylint: disable=W0612
         data = bonds.query(
             "maturityDate >= @query.maturity_date_min.strftime('%Y-%m-%d')"
             + " & bondType == 'Govt'"

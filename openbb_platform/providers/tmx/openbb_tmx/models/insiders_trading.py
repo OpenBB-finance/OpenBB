@@ -1,4 +1,5 @@
 """TMX Insiders Trading Model"""
+# pylint: disable=unused-argument
 import json
 from typing import Any, Dict, List, Optional
 

@@ -1,5 +1,5 @@
 """TMX Earnings Calendar Model"""
-
+# pylint: disable=unused-argument
 import asyncio
 import json
 from datetime import datetime, timedelta
@@ -117,7 +117,7 @@ class TmxCalendarEarningsFetcher(
                     data = r["data"].get("getEnhancedEarningsForDate")
                     data = [{"report_date": date, **d} for d in data]
             except Exception as e:
-                raise (e)
+                raise RuntimeError(e) from e
             if len(data) > 0:
                 results.extend(data)
             return results
@@ -130,8 +130,10 @@ class TmxCalendarEarningsFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], **kwargs: Any
+        query: TmxCalendarEarningsQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
     ) -> List[TmxCalendarEarningsData]:
         """Return the transformed data."""
-        data = [{k: (None if v == "N/A" else v) for k, v in d.items()} for d in data]
-        return [TmxCalendarEarningsData.model_validate(d) for d in data]
+        results = [{k: (None if v == "N/A" else v) for k, v in d.items()} for d in data]
+        return [TmxCalendarEarningsData.model_validate(d) for d in results]

@@ -1,4 +1,5 @@
 """TMX Helpers Module."""
+# pylint: disable=too-many-lines
 import asyncio
 import json
 from datetime import (
@@ -312,7 +313,7 @@ def replace_values_in_list_of_dicts(data):
             if isinstance(v, dict):
                 replace_values_in_list_of_dicts([v])  # Recurse into nested dictionary
             elif isinstance(v, list):
-                for i in range(len(v)):
+                for i in enumerate(v):
                     if isinstance(v[i], dict):
                         replace_values_in_list_of_dicts(
                             [v[i]]
@@ -366,7 +367,7 @@ async def get_all_etfs(use_cache: bool = True) -> List[Dict]:
 
     response = replace_values_in_list_of_dicts(response)
 
-    etfs = pd.DataFrame(response).rename(columns=(COLUMNS_DICT))
+    etfs = pd.DataFrame(response).rename(columns=COLUMNS_DICT)
 
     etfs = etfs.drop(
         columns=[
@@ -711,11 +712,7 @@ async def get_company_filings(
             },
         )
     except Exception as _e:
-        raise RuntimeError(
-            f"Timeout error - > {_e} - This can be due to a rate limit, or the request being too large. "
-            "Financial Institutions have considerably more results than other companies."
-            " Please try narrowing the search and try again."
-        )
+        raise RuntimeError(_e) from _e
     if r["data"]["filings"] is None:
         results = []
     results = r.get("data").get("filings")
@@ -776,7 +773,9 @@ async def get_daily_price_history(
             False if adjustment == "unadjusted" else True  # noqa: SIM211
         )
         payload["variables"]["adjustmentType"] = (
-            "SO" if adjustment == "splits_only" else None
+            "SO"
+            if adjustment == "splits_only"
+            else None  # pylint: disable=simplifiable-if-expression
         )
         payload["variables"]["end"] = end.strftime("%Y-%m-%d")
         payload["variables"]["start"] = start.strftime("%Y-%m-%d")
@@ -784,7 +783,9 @@ async def get_daily_price_history(
         payload["variables"]["unadjusted"] = (
             True if adjustment == "unadjusted" else False  # noqa: SIM210
         )
-        if payload["variables"]["adjustmentType"] is None:
+        if (
+            payload["variables"]["adjustmentType"] is None
+        ):  # pylint: disable=simplifiable-if-expression
             payload["variables"].pop("adjustmentType")
         url = "https://app-money.tmx.com/graphql"
 
@@ -948,8 +949,7 @@ async def get_intraday_price_history(
     end_date = datetime.now().date() if end_date is None else end_date
     # This is the first date of available intraday data.
     date_check = datetime(2022, 4, 12).date()
-    if start_date < date_check:
-        start_date = date_check
+    start_date = max(start_date, date_check)
     if end_date < date_check:
         end_date = datetime.now().date()
     # Generate a list of dates from start_date to end_date with a frequency of 3 weeks

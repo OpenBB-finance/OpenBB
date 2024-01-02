@@ -1,4 +1,5 @@
 """TMX Equity Historical Model."""
+# pylint: disable=unused-argument
 import asyncio
 import warnings
 from datetime import datetime
@@ -57,27 +58,28 @@ class TmxEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 
     @field_validator("interval", mode="after", check_fields=False)
     @classmethod
-    def validate_interval(cls, v):
+    def validate_interval(cls, v):  # pylint: disable=R0911
         """Validate the interval to be valid for the TMX request."""
         if v is None or v == "day":
             return "day"
-        elif v in ("1M", "1mo", "month"):
+        if v in ("1M", "1mo", "month"):
             return "month"
-        elif "m" in v:
+        if "m" in v:
             return int(v.replace("m", ""))
-        elif "h" in v:
+        if "h" in v:
             return int(v.replace("h", "")) * 60
-        elif v == "1d":
+        if v == "1d":
             return "day"
-        elif v in ("1W", "1w", "week"):
+        if v in ("1W", "1w", "week"):
             return "week"
-        elif v.isnumeric():
+        if v.isnumeric():
             return int(v)
-        else:
-            raise ValueError(f"Invalid interval: {v}")
+        raise ValueError(f"Invalid interval: {v}")
 
 
 class TmxEquityHistoricalData(EquityHistoricalData):
+    """TMX Equity Historical Data."""
+
     __alias_dict__ = {
         "date": "datetime",
         "open": "openPrice",
@@ -101,9 +103,9 @@ class TmxEquityHistoricalData(EquityHistoricalData):
         description="Nominal value of recorded transactions.", default=None
     )
 
-    @field_validator("date", mode="before", check_fields=False)
     @classmethod
-    def date_validate(cls, v):  # pylint: disable=E0213
+    @field_validator(field="date", mode="before", check_fields=False)
+    def date_validate(cls, v):  # pylint: disable=W0221
         """Validate the datetime format."""
         try:
             dt = datetime.strptime(v, "%Y-%m-%d %H:%M:%S%z")

@@ -1,5 +1,5 @@
 """TMX ETF Holdings fetcher."""
-
+# pylint: disable=unused-argument
 from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
@@ -130,6 +130,10 @@ class TmxEtfHoldingsFetcher(
         return results
 
     @staticmethod
-    def transform_data(data: List[Dict], **kwargs: Any) -> List[TmxEtfHoldingsData]:
+    def transform_data(
+        query: TmxEtfHoldingsQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
+    ) -> List[TmxEtfHoldingsData]:
         """Transform the data to the standard format."""
         return [TmxEtfHoldingsData.model_validate(d) for d in data]

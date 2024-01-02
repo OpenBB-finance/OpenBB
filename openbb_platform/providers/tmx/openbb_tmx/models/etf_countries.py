@@ -1,5 +1,5 @@
 """TMX ETF Countries fetcher."""
-
+# pylint: disable=unused-argument
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -67,7 +67,7 @@ class TmxEtfCountriesFetcher(
                     target = target.set_index("country")
                 for i in target.index:
                     data.update({i: target.loc[i]["weight"]})
-                if data != {}:
+                if data:
                     results.update({symbol: data})
 
         output = (

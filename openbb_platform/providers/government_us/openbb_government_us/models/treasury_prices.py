@@ -1,4 +1,5 @@
 """US Government Treasury Prices"""
+# pylint: disable=unused-argument
 import asyncio
 from datetime import datetime, timedelta
 from io import StringIO
@@ -56,7 +57,7 @@ class GovernmentUSTreasuryPricesFetcher(
         return GovernmentUSTreasuryPricesQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def aextract_data(
         query: GovernmentUSTreasuryPricesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -132,7 +133,7 @@ class GovernmentUSTreasuryPricesFetcher(
                 )
 
         except Exception as e:
-            raise RuntimeError("No data was returned: " + str(e))
+            raise RuntimeError(e) from e
 
         if query.security_type is not None:
             results = results[

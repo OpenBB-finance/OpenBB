@@ -1,4 +1,5 @@
 """TMX Stock Analysts Model"""
+# pylint: disable=unused-argument
 import asyncio
 import json
 from typing import Any, Dict, List, Optional
@@ -146,7 +147,9 @@ class TmxPriceTargetConsensusFetcher(
 
     @staticmethod
     def transform_data(
-        data: List[Dict], **kwargs: Any
+        query: TmxPriceTargetConsensusQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
     ) -> List[TmxPriceTargetConsensusData]:
         """Return the transformed data."""
         return [TmxPriceTargetConsensusData.model_validate(d) for d in data]

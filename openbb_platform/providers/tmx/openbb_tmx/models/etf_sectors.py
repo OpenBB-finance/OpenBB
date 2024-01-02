@@ -1,5 +1,5 @@
 """TMX ETF Sectors fetcher."""
-
+# pylint: disable=unused-argument
 import warnings
 from typing import Any, Dict, List, Optional
 
@@ -69,7 +69,11 @@ class TmxEtfSectorsFetcher(
         return target.to_dict(orient="records")
 
     @staticmethod
-    def transform_data(data: List[Dict], **kwargs: Any) -> List[TmxEtfSectorsData]:
+    def transform_data(
+        query: TmxEtfSectorsQueryParams,
+        data: List[Dict],
+        **kwargs: Any,
+    ) -> List[TmxEtfSectorsData]:
         """Return the transformed data."""
         target = DataFrame(data)
         target["weight"] = target["weight"] / 100

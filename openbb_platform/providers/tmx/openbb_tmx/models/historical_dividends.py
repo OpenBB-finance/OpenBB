@@ -1,4 +1,5 @@
 """TMX Stock Dividends Model"""
+# pylint: disable=unused-argument
 import json
 from datetime import date as dateType
 from typing import Any, Dict, List, Optional
@@ -93,7 +94,7 @@ class TmxHistoricalDividendsFetcher(
                 data = sorted(data["dividends"], key=lambda d: d["exDate"])
 
         except Exception as e:
-            raise (e)
+            raise RuntimeError(e) from e
 
         return data
 

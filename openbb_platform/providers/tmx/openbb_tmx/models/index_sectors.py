@@ -1,5 +1,5 @@
 """TMX Index Sectors fetcher."""
-
+# pylint: disable=unused-argument
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -24,8 +24,6 @@ class TmxIndexSectorsQueryParams(IndexSectorsQueryParams):
 
 class TmxIndexSectorsData(IndexSectorsData):
     """TMX Index Sectors Data."""
-
-    __alias_dict = {"name": "sector"}
 
     @field_validator("weight", mode="after", check_fields=False)
     @classmethod
