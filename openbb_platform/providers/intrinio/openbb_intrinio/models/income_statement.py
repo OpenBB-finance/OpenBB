@@ -124,6 +124,10 @@ class IntrinioIncomeStatementData(IncomeStatementData):
         "weighted_average_diluted_shares_outstanding": "weightedavedilutedsharesos",
     }
 
+    reported_currency: Optional[str] = Field(
+        description="The currency in which the balance sheet is reported.",
+        default=None,
+    )
     revenue: Optional[float] = Field(default=None, description="Total revenue")
     operating_revenue: Optional[float] = Field(
         default=None, description="Total operating revenue"
@@ -461,11 +465,13 @@ class IntrinioIncomeStatementFetcher(
     ) -> List[IntrinioIncomeStatementData]:
         """Return the transformed data."""
         transformed_data: List[IntrinioIncomeStatementData] = []
-
+        units = []
         for item in data:
             sub_dict: Dict[str, Any] = {}
 
             for sub_item in item["financials"]:
+                unit = sub_item["data_tag"]["unit"]
+                units.append(unit)
                 field_name = sub_item["data_tag"]["tag"]
                 sub_dict[field_name] = (
                     float(sub_item["value"])
@@ -476,6 +482,7 @@ class IntrinioIncomeStatementFetcher(
             sub_dict["period_ending"] = item["period_ending"]
             sub_dict["fiscal_year"] = item["fiscal_year"]
             sub_dict["fiscal_period"] = item["fiscal_period"]
+            sub_dict["reported_currency"] = list(set(units))[0]
 
             transformed_data.append(IntrinioIncomeStatementData(**sub_dict))
 
