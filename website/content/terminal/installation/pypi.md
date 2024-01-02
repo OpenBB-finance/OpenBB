@@ -28,6 +28,10 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 This section provides steps to install the OpenBB Terminal and SDK from PyPI. This installation type supports Windows, macOS and Linux systems. **Before starting the installation process, make sure the following pieces of software are installed.**
 
+:::warning
+The instructons on this page are for installing the OpenBB Terminal from PyPI, which uses a legacy version of the Python SDK.  If you do not wish to install the OpenBB Terminal application, please refer to the installation instructions [here](/platform/installation)
+:::
+
 <details><summary>Miniconda</summary>
 Miniconda is a Python environment and package manager. It is required for installing certain dependencies.
 
