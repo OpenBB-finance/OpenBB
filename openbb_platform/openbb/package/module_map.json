@@ -88,6 +88,7 @@
     "equity_fundamental_multiples": "/equity/fundamental/multiples",
     "equity_fundamental_overview": "/equity/fundamental/overview",
     "equity_fundamental_ratios": "/equity/fundamental/ratios",
+    "equity_fundamental_reported_financials": "/equity/fundamental/reported_financials",
     "equity_fundamental_revenue_per_geography": "/equity/fundamental/revenue_per_geography",
     "equity_fundamental_revenue_per_segment": "/equity/fundamental/revenue_per_segment",
     "equity_fundamental_search_attributes": "/equity/fundamental/search_attributes",
