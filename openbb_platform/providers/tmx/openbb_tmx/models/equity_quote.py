@@ -317,7 +317,7 @@ class TmxEquityQuoteFetcher(
     ) -> List[TmxEquityQuoteData]:
         """Return the transformed data."""
 
-        # Remove the items assoiated with `equity.profile()`.
+        # Remove the items associated with `equity.profile()`.
         items_list = [
             "shortDescription",
             "longDescription",

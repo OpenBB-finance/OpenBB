@@ -28,7 +28,7 @@ from openbb_tmx.models.treasury_prices import TmxTreasuryPricesFetcher
 tmx_provider = Provider(
     name="tmx",
     website="https://www.tmx.com/",
-    description="""Unoffical TMX Data Provider Extension
+    description="""Unofficial TMX Data Provider Extension
         TMX Group Companies
          - Toronto Stock Exchange
          - TSX Venture Exchange

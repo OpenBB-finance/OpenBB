@@ -44,7 +44,7 @@ class TmxBondPricesQueryParams(BondReferenceQueryParams):
         default=True,
         description="All bond data is sourced from a single JSON file that is updated daily."
         + " The file is cached for one day to eliminate downloading more than once."
-        + " Caching will signifantly speed up subsequent queries. To bypass, set to False.",
+        + " Caching will significantly speed up subsequent queries. To bypass, set to False.",
     )
 
 
