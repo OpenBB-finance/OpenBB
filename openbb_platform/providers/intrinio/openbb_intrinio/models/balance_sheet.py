@@ -470,8 +470,9 @@ class IntrinioBalanceSheetFetcher(
 
             for sub_item in item["financials"]:
                 field_name = sub_item["data_tag"]["tag"]
-                unit = sub_item["data_tag"]["unit"]
-                units.append(unit)
+                unit =  sub_item["data_tag"].get("unit", "")
+                if unit and "share" not in unit:
+                    units.append(unit)
                 sub_dict[field_name] = (
                     float(sub_item["value"])
                     if sub_item["value"] and sub_item["value"] != 0

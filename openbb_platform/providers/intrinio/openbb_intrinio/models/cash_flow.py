@@ -302,8 +302,9 @@ class IntrinioCashFlowStatementFetcher(
             sub_dict: Dict[str, Any] = {}
 
             for sub_item in item["financials"]:
-                unit = sub_item["data_tag"]["unit"]
-                units.append(unit)
+                unit =  sub_item["data_tag"].get("unit", "")
+                if unit and "share" not in unit:
+                    units.append(unit)
                 field_name = sub_item["data_tag"]["tag"]
                 sub_dict[field_name] = (
                     float(sub_item["value"])
