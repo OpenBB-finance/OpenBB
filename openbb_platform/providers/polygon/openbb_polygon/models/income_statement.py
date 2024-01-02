@@ -106,6 +106,8 @@ class PolygonIncomeStatementData(IncomeStatementData):
         "undistributed_earnings_allocated_to_participating_securities": "undistributed_earnings_loss_allocated_to_participating_securities_basic",  # type: ignore # noqa: E501
         "weighted_average_diluted_shares_outstanding": "diluted_average_shares",
         "weighted_average_basic_shares_outstanding": "basic_average_shares",
+        "basic_earnings_per_share": "eps",
+        "diluted_earnings_per_share": "eps_diluted",
     }
 
     revenue: Optional[float] = Field(default=None, description="Total Revenue")
@@ -228,15 +230,17 @@ class PolygonIncomeStatementData(IncomeStatementData):
     preferred_stock_dividends_and_other_adjustments: Optional[float] = Field(
         default=None, description="Preferred stock dividends and other adjustments"
     )
+    basic_earnings_per_share: Optional[float] = Field(
+        default=None, description="Earnings Per Share"
+    )
+    diluted_earnings_per_share: Optional[float] = Field(
+        default=None, description="Diluted Earnings Per Share"
+    )
     weighted_average_basic_shares_outstanding: Optional[float] = Field(
         default=None, description="Basic Average Shares"
     )
     weighted_average_diluted_shares_outstanding: Optional[float] = Field(
         default=None, description="Diluted Average Shares"
-    )
-    eps: Optional[float] = Field(default=None, description="Earnings Per Share")
-    diluted_eps: Optional[float] = Field(
-        default=None, description="Diluted Earnings Per Share"
     )
 
     @model_validator(mode="before")
