@@ -50,7 +50,7 @@ class IntrinioFinancialStatementsNotesFetcher(
         return IntrinioFinancialStatementsNotesQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: IntrinioFinancialStatementsNotesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -61,7 +61,7 @@ class IntrinioFinancialStatementsNotesFetcher(
 
         url = f"https://api-v2.intrinio.com/filings/notes/{query.tag}?content_format={query.content_format}&api_key={api_key}"
 
-        data = get_data_one(url)
+        data = await get_data_one(url)
 
         return data
 

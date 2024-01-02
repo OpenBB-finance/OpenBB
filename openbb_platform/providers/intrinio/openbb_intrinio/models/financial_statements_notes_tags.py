@@ -62,7 +62,7 @@ class IntrinioFinancialStatementsNotesTagsFetcher(
         return IntrinioFinancialStatementsNotesTagsQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: IntrinioFinancialStatementsNotesTagsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -78,7 +78,7 @@ class IntrinioFinancialStatementsNotesTagsFetcher(
             f"&api_key={api_key}"
         )
 
-        data = get_data_many(url, "filing_notes")
+        data = await get_data_many(url, "filing_notes")
 
         return data
 
