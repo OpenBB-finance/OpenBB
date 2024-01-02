@@ -21,7 +21,15 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
     "params",
     [
         ({"query": None, "provider": "fmp"}),
-        ({"query": "vanguard", "provider": "tmx", "div_freq": "quarterly", "sort_by": "return_1y", "use_cache": False}),
+        (
+            {
+                "query": "vanguard",
+                "provider": "tmx",
+                "div_freq": "quarterly",
+                "sort_by": "return_1y",
+                "use_cache": False,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -156,7 +164,7 @@ def test_etf_holdings_date(params, obb):
                 "provider": "tmx",
                 "use_cache": False,
             }
-        )
+        ),
     ],
 )
 @pytest.mark.integration

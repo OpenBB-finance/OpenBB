@@ -23,7 +23,15 @@ def headers():
     "params",
     [
         ({"query": "", "provider": "fmp"}),
-        ({"query": "vanguard", "provider": "tmx", "div_freq": "quarterly", "sort_by": "return_1y", "use_cache": False}),
+        (
+            {
+                "query": "vanguard",
+                "provider": "tmx",
+                "div_freq": "quarterly",
+                "sort_by": "return_1y",
+                "use_cache": False,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -163,7 +171,7 @@ def test_etf_holdings_date(params, headers):
                 "provider": "tmx",
                 "use_cache": False,
             }
-        )
+        ),
     ],
 )
 @pytest.mark.integration

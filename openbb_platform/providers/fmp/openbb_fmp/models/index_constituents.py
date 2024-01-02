@@ -29,6 +29,7 @@ class FMPIndexConstituentsQueryParams(IndexConstituentsQueryParams):
         description="The index to get constituents for. Either 'dowjones', 'sp500' or 'nasdaq'.",
     )
 
+
 class FMPIndexConstituentsData(IndexConstituentsData):
     """FMP Index Constituents Data."""
 
