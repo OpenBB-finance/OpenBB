@@ -127,7 +127,7 @@ class TmxGainersFetcher(
             raise EmptyDataError()
         results = response["data"]["stockList"].get("listItems")
         metric = response["data"]["stockList"].get("metricTitle")
-        for i in enumerate(results):
+        for i in range(len(results)):  # pylint: disable=C0200
             if "metric" in results[i]:
                 results[i][metric] = results[i]["metric"]
                 del results[i]["metric"]

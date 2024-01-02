@@ -95,7 +95,7 @@ class TmxCompanyNewsFetcher(
             data = response["data"] if response.get("data") else data
             if data.get("news") is not None:
                 news = data["news"]
-                for i in range(len(news)):
+                for i in range(len(news)):  # pylint: disable=C0200
                     url = f"https://money.tmx.com/quote/{symbol.upper()}/news/{news[i]['newsid']}"
                     news[i]["url"] = url
                     # The newsid was used to create the URL, so we drop it.

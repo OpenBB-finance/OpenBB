@@ -1,5 +1,7 @@
 """TMX Helpers Module."""
 # pylint: disable=too-many-lines
+# pylint: disable=unused-argument
+# pylint: disable=simplifiable-if-expression
 import asyncio
 import json
 from datetime import (
@@ -313,7 +315,7 @@ def replace_values_in_list_of_dicts(data):
             if isinstance(v, dict):
                 replace_values_in_list_of_dicts([v])  # Recurse into nested dictionary
             elif isinstance(v, list):
-                for i in enumerate(v):
+                for i in range(len(v)):  # pylint: disable=C0200
                     if isinstance(v[i], dict):
                         replace_values_in_list_of_dicts(
                             [v[i]]
@@ -775,7 +777,7 @@ async def get_daily_price_history(
         payload["variables"]["adjustmentType"] = (
             "SO"
             if adjustment == "splits_only"
-            else None  # pylint: disable=simplifiable-if-expression
+            else None
         )
         payload["variables"]["end"] = end.strftime("%Y-%m-%d")
         payload["variables"]["start"] = start.strftime("%Y-%m-%d")
@@ -785,7 +787,7 @@ async def get_daily_price_history(
         )
         if (
             payload["variables"]["adjustmentType"] is None
-        ):  # pylint: disable=simplifiable-if-expression
+        ):
             payload["variables"].pop("adjustmentType")
         url = "https://app-money.tmx.com/graphql"
 
