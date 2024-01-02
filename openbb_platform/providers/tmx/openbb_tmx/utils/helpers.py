@@ -317,7 +317,7 @@ def replace_values_in_list_of_dicts(data):
                         replace_values_in_list_of_dicts(
                             [v[i]]
                         )  # Recurse into nested dictionary in list
-                    elif v[i] == "NA" or v[i] == "-":
+                    elif v[i] in ("NA", "-"):
                         v[i] = None  # Replace "NA" and "-" with None
             elif v in ("NA", "-"):
                 d[k] = None  # Replace "NA" and "-" with None

@@ -83,7 +83,11 @@ class TmxOptionsChainsFetcher(
         """Return the data."""
         results = []
         if query.date is not None:
-            chains = await download_eod_chains(symbol=query.symbol, date=query.date, use_cache=query.use_cache)  # type: ignore
+            chains = await download_eod_chains(
+                symbol=query.symbol,
+                date=query.date,
+                use_cache=query.use_cache
+            )
         else:
             chains = await get_current_options(query.symbol, use_cache=query.use_cache)
 
