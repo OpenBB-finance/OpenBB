@@ -13,8 +13,7 @@ class IndexSnapshotsQueryParams(QueryParams):
     """Index Snapshots Query."""
 
     region: Optional[str] = Field(
-        default=None,
-        description="The region to return data for - i.e. 'us' or 'eu'."
+        default=None, description="The region to return data for - i.e. 'us' or 'eu'."
     )
 
 
