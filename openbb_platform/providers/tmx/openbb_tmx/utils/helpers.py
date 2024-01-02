@@ -775,9 +775,7 @@ async def get_daily_price_history(
             False if adjustment == "unadjusted" else True  # noqa: SIM211
         )
         payload["variables"]["adjustmentType"] = (
-            "SO"
-            if adjustment == "splits_only"
-            else None
+            "SO" if adjustment == "splits_only" else None
         )
         payload["variables"]["end"] = end.strftime("%Y-%m-%d")
         payload["variables"]["start"] = start.strftime("%Y-%m-%d")
@@ -785,9 +783,7 @@ async def get_daily_price_history(
         payload["variables"]["unadjusted"] = (
             True if adjustment == "unadjusted" else False  # noqa: SIM210
         )
-        if (
-            payload["variables"]["adjustmentType"] is None
-        ):
+        if payload["variables"]["adjustmentType"] is None:
             payload["variables"].pop("adjustmentType")
         url = "https://app-money.tmx.com/graphql"
 
