@@ -457,7 +457,7 @@ class CommandMap:
         return self._command_coverage
 
     @property
-    def commands_model(self) -> Dict[str, List[str]]:
+    def commands_model(self) -> Dict[str, str]:
         return self._commands_model
 
     @staticmethod
@@ -526,9 +526,7 @@ class CommandMap:
         return coverage_map
 
     @staticmethod
-    def get_commands_model(
-        router: Router, sep: Optional[str] = None
-    ) -> Dict[str, List[str]]:
+    def get_commands_model(router: Router, sep: Optional[str] = None) -> Dict[str, str]:
         api_router = router.api_router
 
         coverage_map: Dict[Any, Any] = {}

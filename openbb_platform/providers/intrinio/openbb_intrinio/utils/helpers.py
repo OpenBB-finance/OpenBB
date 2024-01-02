@@ -7,15 +7,15 @@ from datetime import (
     timedelta,
 )
 from io import StringIO
-from typing import Any, List, Optional, TypeVar, Union
+from typing import Any, Dict, List, Optional, TypeVar, Union
 
-import aiohttp
-import requests
-from openbb_core.provider import helpers
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_core.provider.utils.helpers import async_make_request
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    ClientSession,
+    amake_request,
+)
 from pydantic import BaseModel
-from requests.exceptions import SSLError
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -39,8 +39,8 @@ def request(url: str) -> BasicResponse:
     """
     Request function for PyScript. Pass in Method and make sure to await.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     url: str
         URL to make request to
 
@@ -56,49 +56,51 @@ def request(url: str) -> BasicResponse:
     return BasicResponse(response)
 
 
-def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
-    """Get data from Intrinio endpoint."""
-    try:
-        r: Union[requests.Response, BasicResponse] = helpers.make_request(url, **kwargs)
-    except SSLError:
-        r = request(url)
-    if r.status_code == 404:
-        raise RuntimeError("Intrinio endpoint doesn't exist.")
+async def response_callback(
+    response: ClientResponse, _: ClientSession
+) -> Union[dict, List[dict]]:
+    """Callback for async_request."""
+    data = await response.json()
 
-    data = r.json()
-    if r.status_code != 200:
-        error = data.get("error")
-        message = data.get("message")
-        value = error or message
-        raise RuntimeError(f"Error in Intrinio request -> {value}")
+    if isinstance(data, dict) and response.status != 200:
+        if message := data.get("error", None) or data.get("message", None):
+            raise RuntimeError(f"Error in Intrinio request -> {message}")
+
+        if error := data.get("Error Message", None):
+            raise RuntimeError(f"Intrinio Error Message -> {error}")
 
     if isinstance(data, (str, float)):
         data = {"value": data}
 
-    if len(data) == 0:
+    if isinstance(data, list) and len(data) == 0:
         raise EmptyDataError()
 
     return data
 
 
-def get_data_many(
+async def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
+    """Get data from Intrinio endpoint."""
+    return await amake_request(url, response_callback=response_callback, **kwargs)
+
+
+async def get_data_many(
     url: str, sub_dict: Optional[str] = None, **kwargs: Any
 ) -> List[dict]:
     """Get data from Intrinio endpoint and convert to list of schemas.
 
-    Parameters:
-    -----------
+    Parameters
+    ----------
     url: str
         The URL to get the data from.
     sub_dict: Optional[str]
         The sub-dictionary to use.
 
-    Returns:
-    --------
+    Returns
+    -------
     List[dict]
         Dictionary of data.
     """
-    data = get_data(url, **kwargs)
+    data = await get_data(url, **kwargs)
     if sub_dict and isinstance(data, dict):
         data = data.get(sub_dict, [])
     if isinstance(data, dict):
@@ -106,9 +108,9 @@ def get_data_many(
     return data
 
 
-def get_data_one(url: str, **kwargs: Any) -> dict:
+async def get_data_one(url: str, **kwargs: Any) -> Dict[str, Any]:
     """Get data from Intrinio endpoint and convert to schema."""
-    data = get_data(url, **kwargs)
+    data = await get_data(url, **kwargs)
     if isinstance(data, list):
         if len(data) == 0:
             raise ValueError("Expected dict, got empty list")
@@ -128,29 +130,15 @@ def get_weekday(date: dateType) -> str:
     return date.strftime("%Y-%m-%d")
 
 
-async def response_callback(response: aiohttp.ClientResponse) -> dict:
-    """Return the response."""
-    data: dict = await response.json()
-
-    if message := data.get("error", None) or data.get("message", None):
-        raise RuntimeError(f"Error in Intrinio request -> {message}")
-
-    if error := data.get("Error Message", None):
-        raise RuntimeError(f"Intrinio Error Message -> {error}")
-
-    return data
-
-
 async def async_get_data_one(
     url: str, limit: int = 1, sleep: float = 1, **kwargs: Any
-) -> dict:
+) -> Union[list, dict]:
+    """Get data from Intrinio endpoint and convert to schema."""
     if limit > 100:
         await asyncio.sleep(sleep)
 
     try:
-        data: dict = await async_make_request(
-            url, response_callback=response_callback, **kwargs
-        )
+        data = await get_data(url, **kwargs)
     except Exception as e:
         if "limit" not in str(e):
             raise e

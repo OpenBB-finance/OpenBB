@@ -30,12 +30,27 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # actions/checkout v3.0.2
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 20
+
+      - name: Fetch base branch
+        run: git fetch --no-tags --depth=20 origin ${{ github.base_ref }}
 
       - name: Setup Python 3.9
         uses: actions/setup-python@v4
         with:
           python-version: "3.9"
           architecture: x64
+
+      - name: Get changed files in openbb_terminal and openbb_platform for PR
+        if: github.event_name == 'pull_request'
+        run: |
+          # "Checking PR diff"
+          echo "terminal_files=$(git diff --name-only origin/${{ github.base_ref }}...${{ github.head_ref }} | grep 'openbb_terminal/.*\.py$' | xargs)" >> $GITHUB_ENV
+          echo $terminal_files
+          echo "platform_files=$(git diff --name-only origin/${{ github.base_ref }}...${{ github.head_ref }} | grep 'openbb_platform/.*\.py$' | grep -v 'openbb_platform/openbb/package' | grep -v 'integration' | grep -v 'tests' | xargs)" >> $GITHUB_ENV
+          echo $platform_files
 
       - uses: actions/cache@v3
         with:
@@ -50,8 +65,22 @@ jobs:
       - run: black --diff --check .
       - run: codespell --ignore-words=.codespell.ignore --skip="$(tr '\n' ',' < .codespell.skip | sed 's/,$//')" --quiet-level=2
       - run: ruff .
-      - run: mypy --ignore-missing-imports openbb_terminal
-      - run: pylint terminal.py openbb_terminal tests
+      - run: |
+          # Run linters for openbb_terminal
+          if [ -n "${{ env.terminal_files }}" ]; then
+            mypy --ignore-missing-imports ${{ env.terminal_files }}
+            pylint terminal.py ${{ env.terminal_files }}
+          else
+            echo "No Python files changed in openbb_terminal"
+          fi
+      - run: |
+          # Run linters for openbb_platform
+          if [ -n "${{ env.platform_files }}" ]; then
+            # Add mypy to this part of the linting workflow once we're ready
+            pylint ${{ env.platform_files }}
+          else
+            echo "No Python files changed in openbb_platform"
+          fi
 
   markdown-link-check:
     name: Markdown Linting

@@ -35,7 +35,7 @@ class FMPRiskPremiumFetcher(
         return FMPRiskPremiumQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPRiskPremiumQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -45,7 +45,7 @@ class FMPRiskPremiumFetcher(
 
         url = create_url(4, "market_risk_premium", api_key)
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

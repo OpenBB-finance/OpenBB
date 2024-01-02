@@ -9,8 +9,13 @@ from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
     EquityHistoricalQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
-from openbb_fmp.utils.helpers import async_get_data_many, get_interval
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    amake_requests,
+    get_querystring,
+)
+from openbb_fmp.utils.helpers import get_interval
 from pydantic import Field, NonNegativeInt
 
 
@@ -39,7 +44,7 @@ class FMPEquityHistoricalData(EquityHistoricalData):
         default=None, description="Human readable format of the date."
     )
     adj_close: Optional[float] = Field(
-        default=None, description="Adjusted Close Price of the symbol."
+        default=None, description=DATA_DESCRIPTIONS.get("adj_close", "")
     )
     unadjusted_volume: Optional[float] = Field(
         default=None, description="Unadjusted volume of the symbol."
@@ -79,11 +84,8 @@ class FMPEquityHistoricalFetcher(
 
         return FMPEquityHistoricalQueryParams(**transformed_params)
 
-    # TODO: Fix fetcher to allow async/sync methods or turn everything async
-    # @overloading the method does not work, it breaks the type hinting for the
-    # synchronous method implemented in other providers
     @staticmethod
-    async def extract_data(  # pylint: disable=invalid-overridden-method
+    async def aextract_data(
         query: FMPEquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -96,13 +98,33 @@ class FMPEquityHistoricalFetcher(
         base_url = "https://financialmodelingprep.com/api/v3"
         query_str = get_querystring(query.model_dump(), ["symbol", "interval"])
 
-        url_params = f"{query.symbol}?{query_str}&apikey={api_key}"
-        url = f"{base_url}/historical-chart/{interval}/{url_params}"
+        def get_url_params(symbol: str) -> str:
+            url_params = f"{symbol}?{query_str}&apikey={api_key}"
+            url = f"{base_url}/historical-chart/{interval}/{url_params}"
+            if interval == "1day":
+                url = f"{base_url}/historical-price-full/{url_params}"
+            return url
 
-        if interval == "1day":
-            url = f"{base_url}/historical-price-full/{url_params}"
+        # if there are more than 20 symbols, we need to increase the timeout
+        if len(query.symbol.split(",")) > 20:
+            kwargs.update({"preferences": {"request_timeout": 30}})
 
-        return await async_get_data_many(url, "historical", **kwargs)
+        async def callback(response: ClientResponse, _: Any) -> List[Dict]:
+            data: dict = await response.json()
+            symbol = response.url.parts[-1]
+
+            if isinstance(data, dict):
+                data = data.get("historical", [])
+
+            if "," in query.symbol:
+                for d in data:
+                    d["symbol"] = symbol
+
+            return data
+
+        urls = [get_url_params(symbol) for symbol in query.symbol.split(",")]
+
+        return await amake_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(

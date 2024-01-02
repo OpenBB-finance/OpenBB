@@ -11,6 +11,7 @@ from typing import (
     Optional,
     Set,
     TypeVar,
+    Union,
 )
 
 import pandas as pd
@@ -21,9 +22,9 @@ from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
-from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.query import Query
 from openbb_core.app.utils import basemodel_to_df
+from openbb_core.provider.abstract.data import Data
 
 if TYPE_CHECKING:
     try:
@@ -32,7 +33,6 @@ if TYPE_CHECKING:
         PolarsDataFrame = None
 
 T = TypeVar("T")
-PROVIDERS = Literal[tuple(ProviderInterface().available_providers)]  # type: ignore
 
 
 class OBBject(Tagged, Generic[T]):
@@ -42,7 +42,7 @@ class OBBject(Tagged, Generic[T]):
         default=None,
         description="Serializable results.",
     )
-    provider: Optional[PROVIDERS] = Field(  # type: ignore
+    provider: Optional[str] = Field(  # type: ignore
         default=None,
         description="Provider name.",
     )
@@ -89,11 +89,15 @@ class OBBject(Tagged, Generic[T]):
         """Return the model name with the parameters."""
         return f"OBBject[{cls.results_type_repr(params)}]"
 
-    def to_df(self) -> pd.DataFrame:
+    def to_df(
+        self, index: Optional[str] = None, sort_by: Optional[str] = None
+    ) -> pd.DataFrame:
         """Alias for `to_dataframe`."""
-        return self.to_dataframe()
+        return self.to_dataframe(index=index, sort_by=sort_by)
 
-    def to_dataframe(self) -> pd.DataFrame:
+    def to_dataframe(
+        self, index: Optional[str] = None, sort_by: Optional[str] = None
+    ) -> pd.DataFrame:
         """Convert results field to pandas dataframe.
 
         Supports converting creating pandas DataFrames from the following
@@ -109,18 +113,25 @@ class OBBject(Tagged, Generic[T]):
         - Dict[str, List]
         - Dict[str, BaseModel]
 
+        Parameters
+        ----------
+        index : Optional[str]
+            Column name to use as index.
+        sort_by : Optional[str]
+            Column name to sort by.
+
         Returns
         -------
         pd.DataFrame
             Pandas dataframe.
         """
 
-        def is_list_of_basemodel(items: List[Any]) -> bool:
+        def is_list_of_basemodel(items: Union[List[T], T]) -> bool:
             return isinstance(items, list) and all(
                 isinstance(item, BaseModel) for item in items
             )
 
-        if self.results is None or self.results == []:
+        if self.results is None or not self.results:
             raise OpenBBError("Results not found.")
 
         if isinstance(self.results, pd.DataFrame):
@@ -139,7 +150,7 @@ class OBBject(Tagged, Generic[T]):
                 for k, v in r.items():
                     # Dict[str, List[BaseModel]]
                     if is_list_of_basemodel(v):
-                        dict_of_df[k] = basemodel_to_df(v, "date")
+                        dict_of_df[k] = basemodel_to_df(v, index or "date")
                         sort_columns = False
                     # Dict[str, Any]
                     else:
@@ -149,12 +160,17 @@ class OBBject(Tagged, Generic[T]):
 
             # List[BaseModel]
             elif is_list_of_basemodel(res):
-                df = basemodel_to_df(res, "date")
+                dt: Union[List[Data], Data] = res  # type: ignore
+                df = basemodel_to_df(dt, index or "date")
                 sort_columns = False
             # List[List | str | int | float] | Dict[str, Dict | List | BaseModel]
             else:
                 try:
                     df = pd.DataFrame(res)
+                    # Set index, if any
+                    if index and index in df.columns:
+                        df.set_index(index, inplace=True)
+
                 except ValueError:
                     if isinstance(res, dict):
                         df = pd.DataFrame([res])
@@ -166,6 +182,10 @@ class OBBject(Tagged, Generic[T]):
             if sort_columns:
                 df.sort_index(axis=1, inplace=True)
             df = df.dropna(axis=1, how="all")
+
+            # Sort by specified column
+            if sort_by:
+                df.sort_values(by=sort_by, inplace=True)
 
         except OpenBBError as e:
             raise e
@@ -223,7 +243,8 @@ class OBBject(Tagged, Generic[T]):
             if not isinstance(self.results, dict):
                 transpose = False
             else:  # Only enter the loop if self.results is a dictionary
-                for key, value in self.results.items():
+                self.results: Dict[str, Any] = self.results  # type: ignore
+                for _, value in self.results.items():
                     if not isinstance(value, dict):
                         transpose = False
                         break
@@ -237,6 +258,7 @@ class OBBject(Tagged, Generic[T]):
     def to_chart(self, **kwargs):
         """
         Create or update the `Chart`.
+
         This function assumes that the provided data is a time series, if it's not, it will
         most likely result in an Exception.
 
@@ -287,5 +309,4 @@ class OBBject(Tagged, Generic[T]):
         OBBject[ResultsType]
             OBBject with results.
         """
-
         return cls(results=await query.execute())

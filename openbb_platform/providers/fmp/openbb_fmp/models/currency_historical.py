@@ -10,6 +10,7 @@ from openbb_core.provider.standard_models.currency_historical import (
     CurrencyHistoricalData,
     CurrencyHistoricalQueryParams,
 )
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_fmp.utils.helpers import get_data_many, get_querystring
 from pydantic import Field
 
@@ -20,6 +21,8 @@ class FMPCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Historical-Forex-Price
     """
 
+    __alias_dict__ = {"start_date": "from", "end_date": "to"}
+
     interval: Literal[
         "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
     ] = Field(default="1day", description="Data granularity.")
@@ -29,7 +32,7 @@ class FMPCurrencyHistoricalData(CurrencyHistoricalData):
     """FMP Currency Historical Price Data."""
 
     adj_close: Optional[float] = Field(
-        default=None, description="Adjusted Close Price of the symbol."
+        default=None, description=DATA_DESCRIPTIONS.get("adj_close", "")
     )
     unadjusted_volume: Optional[float] = Field(
         default=None, description="Unadjusted volume of the symbol."
@@ -73,7 +76,7 @@ class FMPCurrencyHistoricalFetcher(
         return FMPCurrencyHistoricalQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPCurrencyHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -82,11 +85,7 @@ class FMPCurrencyHistoricalFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        query_str = (
-            get_querystring(query.model_dump(), ["symbol"])
-            .replace("start_date", "from")
-            .replace("end_date", "to")
-        )
+        query_str = get_querystring(query.model_dump(), ["symbol"])
 
         url_params = f"{query.symbol}?{query_str}&apikey={api_key}"
         url = f"{base_url}/historical-chart/{query.interval}/{url_params}"
@@ -94,7 +93,7 @@ class FMPCurrencyHistoricalFetcher(
         if query.interval == "1day":
             url = f"{base_url}/historical-price-full/forex/{url_params}"
 
-        return get_data_many(url, "historical", **kwargs)
+        return await get_data_many(url, "historical", **kwargs)
 
     @staticmethod
     def transform_data(

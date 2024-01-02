@@ -59,6 +59,17 @@ async def cash(
     return await OBBject.from_query(Query(**locals()))
 
 
+@router.command(model="ReportedFinancials")
+async def reported_financials(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Financial statements, as-reported."""
+    return await OBBject.from_query(Query(**locals()))
+
+
 @router.command(model="CashFlowStatementGrowth")
 async def cash_growth(
     cc: CommandContext,

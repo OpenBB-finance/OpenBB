@@ -6,9 +6,8 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -43,7 +42,7 @@ class ROUTER_currency_price(Container):
         ] = None,
         provider: Optional[Literal["fmp", "polygon", "tiingo"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Currency Historical Price. Currency historical data.
 
         Parameters
@@ -102,7 +101,7 @@ class ROUTER_currency_price(Container):
         vwap : Optional[Annotated[float, Gt(gt=0)]]
             Volume Weighted Average Price over the period.
         adj_close : Optional[float]
-            Adjusted Close Price of the symbol. (provider: fmp)
+            The adjusted close price. (provider: fmp)
         unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
@@ -122,19 +121,17 @@ class ROUTER_currency_price(Container):
         >>> obb.currency.price.historical(symbol="EURUSD")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "start_date": start_date,
-                "end_date": end_date,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/currency/price/historical",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
         )

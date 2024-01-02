@@ -6,9 +6,8 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -48,7 +47,7 @@ class ROUTER_equity_price(Container):
         ] = None,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "tiingo"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Equity Historical price. Load stock data for a specific ticker.
 
         Parameters
@@ -114,7 +113,7 @@ class ROUTER_equity_price(Container):
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         adj_close : Optional[float]
-            Adjusted Close Price of the symbol. (provider: fmp);
+            The adjusted close price. (provider: fmp);
             Adjusted closing price during the period. (provider: intrinio);
             Adjusted closing price during the period. (provider: tiingo)
         unadjusted_volume : Optional[float]
@@ -162,22 +161,20 @@ class ROUTER_equity_price(Container):
         >>> obb.equity.price.historical(symbol="AAPL", interval="1d")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "interval": interval,
-                "start_date": start_date,
-                "end_date": end_date,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/price/historical",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "interval": interval,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -189,7 +186,7 @@ class ROUTER_equity_price(Container):
         ],
         provider: Optional[Literal["polygon"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Equity NBBO. Load National Best Bid and Offer for a specific equity.
 
         Parameters
@@ -293,19 +290,17 @@ class ROUTER_equity_price(Container):
         >>> obb.equity.price.nbbo(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/price/nbbo",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -317,7 +312,7 @@ class ROUTER_equity_price(Container):
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Price performance as a return, over different periods.
 
         Parameters
@@ -382,19 +377,17 @@ class ROUTER_equity_price(Container):
         >>> obb.equity.price.performance(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/price/performance",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -408,7 +401,7 @@ class ROUTER_equity_price(Container):
         ],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Equity Quote. Load stock data for a specific ticker.
 
         Parameters
@@ -533,17 +526,15 @@ class ROUTER_equity_price(Container):
         >>> obb.equity.price.quote(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/price/quote",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )

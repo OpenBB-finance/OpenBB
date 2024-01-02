@@ -6,9 +6,8 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -43,7 +42,7 @@ class ROUTER_crypto_price(Container):
         ] = None,
         provider: Optional[Literal["fmp", "polygon", "tiingo"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Cryptocurrency Historical Price. Cryptocurrency historical price data.
 
         Parameters
@@ -106,7 +105,7 @@ class ROUTER_crypto_price(Container):
         vwap : Optional[Annotated[float, Gt(gt=0)]]
             Volume Weighted Average Price over the period.
         adj_close : Optional[float]
-            Adjusted Close Price of the symbol. (provider: fmp)
+            The adjusted close price. (provider: fmp)
         unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
@@ -118,8 +117,7 @@ class ROUTER_crypto_price(Container):
         change_over_time : Optional[float]
             Change % in the price of the symbol over a period of time. (provider: fmp)
         transactions : Optional[Union[Annotated[int, Gt(gt=0)], int]]
-            Number of transactions for the symbol in the time period. (provider: polygon);
-            Number of trades. (provider: tiingo)
+            Number of transactions for the symbol in the time period. (provider: polygon, tiingo)
         volume_notional : Optional[float]
             The last size done for the asset on the specific date in the quote currency. The volume of the asset on the specific date in the quote currency. (provider: tiingo)
 
@@ -129,19 +127,17 @@ class ROUTER_crypto_price(Container):
         >>> obb.crypto.price.historical(symbol="BTCUSD")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "start_date": start_date,
-                "end_date": end_date,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/crypto/price/historical",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
         )

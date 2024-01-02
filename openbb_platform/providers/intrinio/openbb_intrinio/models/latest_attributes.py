@@ -36,7 +36,7 @@ class IntrinioLatestAttributesFetcher(
         return IntrinioLatestAttributesQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: IntrinioLatestAttributesQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -44,7 +44,7 @@ class IntrinioLatestAttributesFetcher(
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         url = f"https://api-v2.intrinio.com/companies/{query.symbol}/data_point/{query.tag}?api_key={api_key}"
-        return get_data(url)
+        return await get_data(url)
 
     @staticmethod
     def transform_data(

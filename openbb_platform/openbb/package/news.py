@@ -1,14 +1,13 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional
+from typing import Literal, Optional
 
 from annotated_types import Ge
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -38,7 +37,7 @@ class ROUTER_news(Container):
             Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo"]
         ] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Company News. Get news for one or more companies.
 
         Parameters
@@ -116,17 +115,13 @@ class ROUTER_news(Container):
         url : str
             URL of the news.
         id : Optional[str]
-            ID of the news. (provider: benzinga);
-            Intrinio ID for the article. (provider: intrinio);
-            Article ID. (provider: polygon)
+            Article ID. (provider: benzinga, intrinio, polygon)
         author : Optional[str]
-            Author of the news. (provider: benzinga);
-            Author of the article. (provider: polygon)
+            Author of the article. (provider: benzinga, polygon)
         teaser : Optional[str]
             Teaser of the news. (provider: benzinga)
         images : Optional[Union[List[Dict[str, str]], List[str], str]]
-            Images associated with the news. (provider: benzinga);
-            URL to the images of the news. (provider: fmp)
+            URL to the images of the news. (provider: benzinga, fmp)
         channels : Optional[str]
             Channels associated with the news. (provider: benzinga)
         stocks : Optional[str]
@@ -136,7 +131,8 @@ class ROUTER_news(Container):
         updated : Optional[datetime]
             Updated date of the news. (provider: benzinga)
         site : Optional[str]
-            Name of the news source. (provider: fmp, tiingo)
+            Name of the news source. (provider: fmp);
+            News source. (provider: tiingo)
         amp_url : Optional[str]
             AMP URL. (provider: polygon)
         image_url : Optional[str]
@@ -156,20 +152,18 @@ class ROUTER_news(Container):
         >>> obb.news.company(symbols="AAPL,MSFT", limit=20)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbols": symbols,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/news/company",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbols": symbols,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -183,7 +177,7 @@ class ROUTER_news(Container):
         ] = 20,
         provider: Optional[Literal["benzinga", "fmp", "intrinio", "tiingo"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """World News. Global news data.
 
         Parameters
@@ -252,8 +246,7 @@ class ROUTER_news(Container):
         url : Optional[str]
             URL of the news.
         id : Optional[str]
-            ID of the news. (provider: benzinga);
-            Article ID. (provider: intrinio)
+            Article ID. (provider: benzinga, intrinio)
         author : Optional[str]
             Author of the news. (provider: benzinga)
         teaser : Optional[str]
@@ -267,8 +260,7 @@ class ROUTER_news(Container):
         updated : Optional[datetime]
             Updated date of the news. (provider: benzinga)
         site : Optional[str]
-            Site of the news. (provider: fmp);
-            Name of the news source. (provider: tiingo)
+            News source. (provider: fmp, tiingo)
         company : Optional[Dict[str, Any]]
             Company details related to the news article. (provider: intrinio)
         symbols : Optional[str]
@@ -284,17 +276,15 @@ class ROUTER_news(Container):
         >>> obb.news.world(limit=20)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/news/world",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
         )

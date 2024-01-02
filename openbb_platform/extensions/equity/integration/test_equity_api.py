@@ -29,7 +29,8 @@ def headers():
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "period": "annual",
-                "limit": 12,
+                "fiscal_year": None,
+                "limit": 2,
             }
         ),
         (
@@ -59,7 +60,6 @@ def headers():
                 "period": "annual",
                 "limit": 12,
                 "provider": "fmp",
-                "cik": "0000320193",
             }
         ),
         (
@@ -154,13 +154,13 @@ def test_equity_calendar_earnings(params, headers):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "period": "annual", "limit": 12, "provider": "fmp"}),
         (
             {
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "period": "annual",
-                "limit": 12,
+                "period": "ttm",
+                "fiscal_year": 2015,
+                "limit": 4,
             }
         ),
         (
@@ -190,7 +190,6 @@ def test_equity_calendar_earnings(params, headers):
                 "period": "annual",
                 "limit": 12,
                 "provider": "fmp",
-                "cik": "0000320193",
             }
         ),
         (
@@ -321,8 +320,9 @@ def test_equity_estimates_historical(params, headers):
             {
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "period": "annual",
-                "limit": 12,
+                "period": "ytd",
+                "fiscal_year": 2020,
+                "limit": 4,
             }
         ),
         (
@@ -352,7 +352,6 @@ def test_equity_estimates_historical(params, headers):
                 "period": "annual",
                 "limit": 12,
                 "provider": "fmp",
-                "cik": "0000320193",
             }
         ),
         (
@@ -594,7 +593,18 @@ def test_equity_estimates_consensus(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL", "period": "annual", "limit": 12})],
+    [
+        ({"symbol": "AAPL", "period": "annual", "limit": 12, "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "ttm",
+                "fiscal_year": 2019,
+                "limit": 4,
+                "provider": "intrinio",
+            }
+        ),
+    ],
 )
 @pytest.mark.integration
 def test_equity_fundamental_ratios(params, headers):
@@ -1505,6 +1515,54 @@ def test_equity_fundamental_statements_notes(params, headers):
         tags_url
     ) = f"http://0.0.0.0:8000/api/v1/equity/fundamental/statements_notes?{query_str}"
 
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "AAPL",
+                "statement_type": "income",
+                "period": "quarter",
+                "limit": 5,
+                "fiscal_year": None,
+                "provider": "intrinio",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "statement_type": "cash",
+                "period": "annual",
+                "limit": 1,
+                "fiscal_year": 2015,
+                "provider": "intrinio",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "statement_type": "balance",
+                "period": "annual",
+                "fiscal_year": None,
+                "limit": 10,
+                "provider": "intrinio",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_fundamental_reported_financials(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = (
+        f"http://0.0.0.0:8000/api/v1/equity/fundamental/reported_financials?{query_str}"
+    )
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

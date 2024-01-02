@@ -2,14 +2,16 @@
 
 from typing import Any, Dict, List, Literal, Optional, Union
 
-import pandas as pd
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.fred_search import (
     SearchData,
     SearchQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import async_make_request, get_querystring
+from openbb_core.provider.utils.helpers import (
+    amake_request,
+    get_querystring,
+)
 from pydantic import Field, NonNegativeInt
 
 
@@ -88,19 +90,18 @@ class FredSearchFetcher(
         return transformed_params
 
     @staticmethod
-    async def extract_data(
+    async def aextract_data(
         query: FredSearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data."""
-
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         if query.is_release is True:
             url = f"https://api.stlouisfed.org/fred/releases?api_key={api_key}&file_type=json"
 
-            response = await async_make_request(url, timeout=5, **kwargs)
+            response = await amake_request(url, timeout=5, **kwargs)
 
             return response.get("releases")  #  type: ignore[return-value, union-attr]
 
@@ -119,7 +120,7 @@ class FredSearchFetcher(
         querystring = get_querystring(query.model_dump(), exclude).replace(" ", "+")
 
         url = url + querystring + f"&file_type=json&api_key={api_key}"
-        response = await async_make_request(url, timeout=5, **kwargs)
+        response = await amake_request(url, timeout=5, **kwargs)
 
         return response.get("seriess")  #  type: ignore[return-value, union-attr]
 
@@ -128,26 +129,10 @@ class FredSearchFetcher(
         query: FredSearchQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FredSearchData]:
         """Transform data."""
+        for observation in data:
+            id_column_name = "release_id" if query.is_release is True else "series_id"
+            observation[id_column_name] = observation.pop("id")
+            observation.pop("realtime_start", None)
+            observation.pop("realtime_end", None)
 
-        df = pd.DataFrame()
-        if data is not None:
-            [d.pop("realtime_start") for d in data]
-            [d.pop("realtime_end") for d in data]
-            df = (
-                pd.DataFrame.from_records(data)
-                .fillna("N/A")
-                .replace("N/A", None)
-                .rename(
-                    columns={"id": "release_id"}
-                    if query.is_release is True
-                    else {"id": "series_id"}
-                )
-            )
-            target = "name" if query.is_release is True else "title"
-            if query.query is not None:
-                df = df[
-                    df[target].str.contains(query.query, case=False)
-                    | df["notes"].str.contains(query.query, case=False)
-                ]
-
-        return [FredSearchData.model_validate(d) for d in df.to_dict("records")]
+        return [FredSearchData.model_validate(d) for d in data]

@@ -17,6 +17,7 @@ from openbb_intrinio.models.financial_statements_notes import (
 from openbb_intrinio.models.financial_statements_notes_tags import (
     IntrinioFinancialStatementsNotesTagsFetcher,
 )
+from openbb_intrinio.models.financial_ratios import IntrinioFinancialRatiosFetcher
 from openbb_intrinio.models.fred_series import IntrinioFredSeriesFetcher
 from openbb_intrinio.models.historical_attributes import (
     IntrinioHistoricalAttributesFetcher,
@@ -34,6 +35,7 @@ from openbb_intrinio.models.latest_attributes import IntrinioLatestAttributesFet
 from openbb_intrinio.models.market_indices import IntrinioMarketIndicesFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
+from openbb_intrinio.models.reported_financials import IntrinioReportedFinancialsFetcher
 from openbb_intrinio.models.search_attributes import (
     IntrinioSearchAttributesFetcher,
 )
@@ -59,6 +61,7 @@ intrinio_provider = Provider(
         "EquitySearch": IntrinioEquitySearchFetcher,
         "FinancialStatementsNotes": IntrinioFinancialStatementsNotesFetcher,
         "FinancialStatementsNotesTags": IntrinioFinancialStatementsNotesTagsFetcher,
+        "FinancialRatios": IntrinioFinancialRatiosFetcher,
         "FredSeries": IntrinioFredSeriesFetcher,
         "HistoricalAttributes": IntrinioHistoricalAttributesFetcher,
         "HistoricalDividends": IntrinioHistoricalDividendsFetcher,
@@ -70,6 +73,7 @@ intrinio_provider = Provider(
         "MarketIndices": IntrinioMarketIndicesFetcher,
         "OptionsChains": IntrinioOptionsChainsFetcher,
         "OptionsUnusual": IntrinioOptionsUnusualFetcher,
+        "ReportedFinancials": IntrinioReportedFinancialsFetcher,
         "SearchAttributes": IntrinioSearchAttributesFetcher,
         "ShareStatistics": IntrinioShareStatisticsFetcher,
         "WorldNews": IntrinioWorldNewsFetcher,

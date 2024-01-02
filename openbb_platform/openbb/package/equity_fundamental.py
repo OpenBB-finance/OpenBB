@@ -7,9 +7,8 @@ from annotated_types import Ge
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -61,7 +60,7 @@ class ROUTER_equity_fundamental(Container):
         ] = 5,
         provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Balance Sheet. Balance sheet statement.
 
         Parameters
@@ -264,21 +263,19 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.balance(symbol="AAPL", period="annual", limit=5)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "period": period,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/balance",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "period": period,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -294,7 +291,7 @@ class ROUTER_equity_fundamental(Container):
         ] = 10,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Balance Sheet Statement Growth. Information about the growth of the company balance sheet.
 
         Parameters
@@ -415,20 +412,18 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.balance_growth(symbol="AAPL", limit=10)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/balance_growth",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -448,7 +443,7 @@ class ROUTER_equity_fundamental(Container):
         ] = 5,
         provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Cash Flow Statement. Information about the cash flow statement.
 
         Parameters
@@ -623,21 +618,19 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.cash(symbol="AAPL", period="annual", limit=5)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "period": period,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/cash",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "period": period,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -653,7 +646,7 @@ class ROUTER_equity_fundamental(Container):
         ] = 10,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Cash Flow Statement Growth. Information about the growth of the company cash flow statement.
 
         Parameters
@@ -756,20 +749,18 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.cash_growth(symbol="AAPL", limit=10)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/cash_growth",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -781,7 +772,7 @@ class ROUTER_equity_fundamental(Container):
         ],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Historical Dividends. Historical dividends data for a given company.
 
         Parameters
@@ -838,19 +829,17 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.dividends(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/dividends",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -862,7 +851,7 @@ class ROUTER_equity_fundamental(Container):
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Historical Employees. Historical number of employees.
 
         Parameters
@@ -915,19 +904,17 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.employee_count(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/employee_count",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -949,7 +936,7 @@ class ROUTER_equity_fundamental(Container):
         ] = 100,
         provider: Optional[Literal["fmp", "intrinio", "sec"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Company Filings. Company filings data.
 
         Parameters
@@ -1043,8 +1030,8 @@ class ROUTER_equity_fundamental(Container):
             The size of the filing. (provider: sec)
         complete_submission_url : Optional[str]
             The URL to the complete filing submission. (provider: sec)
-        xml : Optional[str]
-            The URL to the primary XML document. (provider: sec)
+        filing_detail_url : Optional[str]
+            The URL to the filing details. (provider: sec)
 
         Example
         -------
@@ -1052,21 +1039,19 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.filings(limit=100)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "form_type": form_type,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/filings",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "form_type": form_type,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -1109,7 +1094,7 @@ class ROUTER_equity_fundamental(Container):
         ] = "desc",
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Fetch the historical values of a data tag from Intrinio.
 
         Parameters
@@ -1162,26 +1147,24 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.historical_attributes(symbol="AAPL", tag="TEST_STRING", frequency="yearly", limit=1000, sort="desc")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "tag": tag,
-                "start_date": start_date,
-                "end_date": end_date,
-                "frequency": frequency,
-                "limit": limit,
-                "type": type,
-                "sort": sort,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/historical_attributes",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "tag": tag,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                    "frequency": frequency,
+                    "limit": limit,
+                    "type": type,
+                    "sort": sort,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -1193,7 +1176,7 @@ class ROUTER_equity_fundamental(Container):
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Historical earnings-per-share for a given company.
 
         Parameters
@@ -1233,11 +1216,9 @@ class ROUTER_equity_fundamental(Container):
             Actual EPS from the earnings date.
         eps_estimated : Optional[float]
             Estimated EPS for the earnings date.
-        actual_eps : Optional[float]
-            The actual earnings per share announced. (provider: fmp)
         revenue_estimated : Optional[float]
             Estimated consensus revenue for the reporting period. (provider: fmp)
-        actual_revenue : Optional[float]
+        revenue_actual : Optional[float]
             The actual reported revenue. (provider: fmp)
         reporting_time : Optional[str]
             The reporting time - e.g. after market close. (provider: fmp)
@@ -1252,19 +1233,17 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.historical_eps(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/historical_eps",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -1276,7 +1255,7 @@ class ROUTER_equity_fundamental(Container):
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Historical Splits. Historical splits data.
 
         Parameters
@@ -1319,19 +1298,17 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.historical_splits(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/historical_splits",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -1351,7 +1328,7 @@ class ROUTER_equity_fundamental(Container):
         ] = 5,
         provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Income Statement. Report on a company's financial performance.
 
         Parameters
@@ -1528,21 +1505,19 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.income(symbol="AAPL", period="annual", limit=5)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "period": period,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/income",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "period": period,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -1562,7 +1537,7 @@ class ROUTER_equity_fundamental(Container):
         ] = "annual",
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Income Statement Growth. Information about the growth of the company income statement.
 
         Parameters
@@ -1659,21 +1634,19 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.income_growth(symbol="AAPL", limit=10, period="annual")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "limit": limit,
-                "period": period,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/income_growth",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "limit": limit,
+                    "period": period,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -1688,7 +1661,7 @@ class ROUTER_equity_fundamental(Container):
         ],
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
-    ) -> OBBject[Data]:
+    ) -> OBBject:
         """Fetch the latest value of a data tag from Intrinio.
 
         Parameters
@@ -1727,20 +1700,18 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.latest_attributes(symbol="AAPL", tag="TEST_STRING")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "tag": tag,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/latest_attributes",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "tag": tag,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -1752,7 +1723,7 @@ class ROUTER_equity_fundamental(Container):
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Key Executives. Key executives for a given company.
 
         Parameters
@@ -1786,7 +1757,7 @@ class ROUTER_equity_fundamental(Container):
             Name of the key executive.
         pay : Optional[int]
             Pay of the key executive.
-        currency_pay : str
+        currency_pay : Optional[str]
             Currency of the pay.
         gender : Optional[str]
             Gender of the key executive.
@@ -1801,19 +1772,17 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.management(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/management",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -1825,7 +1794,7 @@ class ROUTER_equity_fundamental(Container):
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Get Executive Compensation. Information about the executive compensation for a given company.
 
         Parameters
@@ -1886,19 +1855,17 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.management_compensation(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/management_compensation",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -1918,7 +1885,7 @@ class ROUTER_equity_fundamental(Container):
         ] = 100,
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
-    ) -> OBBject[Union[List[Data], Data]]:
+    ) -> OBBject:
         """Key Metrics. Key metrics for a given company.
 
         Parameters
@@ -2089,21 +2056,19 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.metrics(symbol="AAPL", period="annual", limit=100)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "period": period,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/metrics",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "period": period,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -2115,7 +2080,7 @@ class ROUTER_equity_fundamental(Container):
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Equity Valuation Multiples. Valuation multiples for a stock ticker.
 
         Parameters
@@ -2272,19 +2237,17 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.multiples(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/multiples",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -2296,7 +2259,7 @@ class ROUTER_equity_fundamental(Container):
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[Data]:
+    ) -> OBBject:
         """Company Overview. General information about a company.
 
         Parameters
@@ -2403,19 +2366,17 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.overview(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/overview",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -2435,7 +2396,7 @@ class ROUTER_equity_fundamental(Container):
         ] = 12,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Extensive set of ratios over time. Financial ratios for a given company.
 
         Parameters
@@ -2594,21 +2555,19 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.ratios(symbol="AAPL", period="annual", limit=12)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "period": period,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/ratios",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "period": period,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -2628,7 +2587,7 @@ class ROUTER_equity_fundamental(Container):
         ] = "flat",
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Revenue Geographic. Geographic revenue data.
 
         Parameters
@@ -2681,21 +2640,19 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.revenue_per_geography(symbol="AAPL", period="annual", structure="flat")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "period": period,
-                "structure": structure,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/revenue_per_geography",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "period": period,
+                    "structure": structure,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -2715,7 +2672,7 @@ class ROUTER_equity_fundamental(Container):
         ] = "flat",
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Revenue Business Line. Business line revenue data.
 
         Parameters
@@ -2758,21 +2715,19 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.revenue_per_segment(symbol="AAPL", period="annual", structure="flat")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "period": period,
-                "structure": structure,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/revenue_per_segment",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "period": period,
+                    "structure": structure,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -2787,7 +2742,7 @@ class ROUTER_equity_fundamental(Container):
         ] = 1000,
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Search Intrinio data tags.
 
         Parameters
@@ -2846,20 +2801,18 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.search_attributes(query="TEST_STRING", limit=1000)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "query": query,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/search_attributes",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "query": query,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -2871,7 +2824,7 @@ class ROUTER_equity_fundamental(Container):
         ] = None,
         provider: Optional[Literal["tiingo"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Trailing 1yr dividend yield.
 
         Parameters
@@ -2910,19 +2863,17 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.trailing_dividend_yield()
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/trailing_dividend_yield",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -2938,7 +2889,7 @@ class ROUTER_equity_fundamental(Container):
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Earnings Call Transcript. Earnings call transcript for a given company.
 
         Parameters
@@ -2985,18 +2936,16 @@ class ROUTER_equity_fundamental(Container):
         >>> obb.equity.fundamental.transcript(symbol="AAPL", year=1)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "year": year,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/fundamental/transcript",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "year": year,
+                },
+                extra_params=kwargs,
+            )
         )

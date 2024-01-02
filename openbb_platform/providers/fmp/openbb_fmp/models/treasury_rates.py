@@ -69,7 +69,7 @@ class FMPTreasuryRatesFetcher(
         return FMPTreasuryRatesQueryParams(**transformed_params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPTreasuryRatesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -82,7 +82,7 @@ class FMPTreasuryRatesFetcher(
         query_str = query_str.replace("start_date", "from").replace("end_date", "to")
         url = f"{base_url}treasury?{query_str}&apikey={api_key}"
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

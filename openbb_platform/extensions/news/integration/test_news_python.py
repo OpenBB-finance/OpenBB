@@ -141,6 +141,12 @@ def test_news_world(params, obb):
                 "source": "bloomberg.com",
             }
         ),
+        (
+            {
+                "provider": "ultima",
+                "symbols": "AAPL,MSFT",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -153,8 +159,17 @@ def test_news_company(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.skip(reason="Not providers implement this yet.")
-@pytest.mark.parametrize("params", [])
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "ultima",
+                "sectors": "Real Estate",
+            }
+        ),
+    ],
+)
 @pytest.mark.integration
 def test_news_sector(params, obb):
     params = {p: v for p, v in params.items() if v}
