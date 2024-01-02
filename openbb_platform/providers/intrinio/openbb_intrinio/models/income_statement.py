@@ -1,5 +1,5 @@
 """Intrinio Income Statement Model."""
-
+# pylint: disable=unused-argument
 import warnings
 from typing import Any, Dict, List, Literal, Optional
 

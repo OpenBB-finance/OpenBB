@@ -1,5 +1,5 @@
 """Intrinio Balance Sheet Model."""
-
+# pylint: disable=unused-argument
 import warnings
 from typing import Any, Dict, List, Literal, Optional
 
