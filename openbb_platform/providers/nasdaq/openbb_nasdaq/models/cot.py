@@ -165,7 +165,7 @@ class NasdaqCotFetcher(Fetcher[NasdaqCotQueryParams, List[NasdaqCotData]]):
             return data.to_dict("records")
 
         except Exception as e:
-            raise RuntimeError(e)
+            raise RuntimeError(e) from e
 
     @staticmethod
     def transform_data(

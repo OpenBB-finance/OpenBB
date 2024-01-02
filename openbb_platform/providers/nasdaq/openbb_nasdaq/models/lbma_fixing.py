@@ -1,5 +1,5 @@
 """Nasdaq LBMA Fixing Model."""
-
+# pylint: disable=unused-argument
 from typing import Any, Dict, List, Literal, Optional
 
 import nasdaqdatalink
