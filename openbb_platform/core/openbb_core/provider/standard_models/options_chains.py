@@ -159,3 +159,4 @@ class OptionsChainsData(Data):
             return datetime.strftime(v, "%Y-%m-%d")
         if isinstance(v, str):
             return datetime.strptime(v, "%Y-%m-%d")
+        return v

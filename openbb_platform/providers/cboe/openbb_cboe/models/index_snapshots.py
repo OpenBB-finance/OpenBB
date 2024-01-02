@@ -29,8 +29,7 @@ class CboeIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):
     @classmethod
     def validate_region(cls, v: str):
         """Validate region."""
-        if v is None:
-            return "us"
+        return "us" if v is None else v
 
 
 class CboeIndexSnapshotsData(IndexSnapshotsData):

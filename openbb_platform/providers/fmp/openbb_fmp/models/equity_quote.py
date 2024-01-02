@@ -102,8 +102,7 @@ class FMPEquityQuoteData(EquityQuoteData):
             dt = dt.replace(microsecond=0)
             timestamp = dt.timestamp()
             return datetime.fromtimestamp(timestamp, tz=timezone.utc)
-        else:
-            return None
+        return None
 
     @field_validator("change_percent", mode="after", check_fields=False)
     @classmethod
