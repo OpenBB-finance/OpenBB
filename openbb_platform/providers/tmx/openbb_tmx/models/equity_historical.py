@@ -104,7 +104,7 @@ class TmxEquityHistoricalData(EquityHistoricalData):
     )
 
     @classmethod
-    @field_validator(field="date", mode="before", check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=W0221
         """Validate the datetime format."""
         try:
