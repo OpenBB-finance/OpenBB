@@ -55,6 +55,7 @@ jobs:
 
       - run: |
           pip uninstall Brotli -y
+          pip install pytest
           pytest tests/website --autodoc
           python website/generate_sdk_v3_markdown.py
           python website/generate_terminal_v3_markdown.py
