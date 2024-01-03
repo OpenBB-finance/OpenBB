@@ -141,12 +141,12 @@ def test_news_world(params, obb):
                 "source": "bloomberg.com",
             }
         ),
-        (
-            {
-                "provider": "ultima",
-                "symbols": "AAPL,MSFT",
-            }
-        ),
+        # (
+        #     {
+        #         "provider": "ultima",
+        #         "symbols": "AAPL,MSFT",
+        #     }
+        # ),
     ],
 )
 @pytest.mark.integration
@@ -159,6 +159,7 @@ def test_news_company(params, obb):
     assert len(result.results) > 0
 
 
+@pytest.mark.skip("openbb-ultima is not installed on the CI.")
 @parametrize(
     "params",
     [
