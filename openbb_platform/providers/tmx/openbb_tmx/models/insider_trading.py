@@ -1,29 +1,30 @@
-"""TMX Insiders Trading Model"""
+"""TMX Insider Trading Model"""
 # pylint: disable=unused-argument
 import json
 from typing import Any, Dict, List, Optional
 
-from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.abstract.query_params import QueryParams
+from openbb_core.provider.standard_models.insider_trading import (
+    InsiderTradingData,
+    InsiderTradingQueryParams,
+)
 from openbb_core.provider.utils.helpers import to_snake_case
 from openbb_tmx.utils import gql
 from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent
 from pydantic import Field, field_validator
 
 
-class TmxInsidersTradingQueryParams(QueryParams):
-    """TMX Insiders Trading Query Params"""
+class TmxInsiderTradingQueryParams(InsiderTradingQueryParams):
+    """TMX Insider Trading Query Params"""
 
-    symbol: str = Field(description="The ticker symbol of the company")
     summary: bool = Field(
         default=False,
         description="Return a summary of the insider activity instead of the individuals.",
     )
 
 
-class TmxInsidersTradingData(Data):
-    """TMX Insiders Trading Data"""
+class TmxInsiderTradingData(InsiderTradingData):
+    """TMX Insider Trading Data"""
 
     period: str = Field(
         description="The period of the activity. Bucketed by three, six, and twelve months."
@@ -66,22 +67,22 @@ class TmxInsidersTradingData(Data):
         return to_snake_case(v) if v else None
 
 
-class TmxInsidersTradingFetcher(
+class TmxInsiderTradingFetcher(
     Fetcher[
-        TmxInsidersTradingQueryParams,
-        List[TmxInsidersTradingData],
+        TmxInsiderTradingQueryParams,
+        List[TmxInsiderTradingData],
     ]
 ):
-    """TMX Insiders Trading Fetcher."""
+    """TMX Insider Trading Fetcher."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> TmxInsidersTradingQueryParams:
+    def transform_query(params: Dict[str, Any]) -> TmxInsiderTradingQueryParams:
         """Transform the query."""
-        return TmxInsidersTradingQueryParams(**params)
+        return TmxInsiderTradingQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
-        query: TmxInsidersTradingQueryParams,
+        query: TmxInsiderTradingQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -122,10 +123,10 @@ class TmxInsidersTradingFetcher(
 
     @staticmethod
     def transform_data(
-        query: TmxInsidersTradingQueryParams,
+        query: TmxInsiderTradingQueryParams,
         data: List[Dict],
         **kwargs: Any,
-    ) -> List[TmxInsidersTradingData]:
+    ) -> List[TmxInsiderTradingData]:
         """Transform the data."""
         data = data.copy()
         results = []
@@ -135,7 +136,7 @@ class TmxInsidersTradingFetcher(
                 for transaction in activity[transaction_type]:
                     new_transaction = {
                         "period": activity["periodkey"],
-                        "acquisition_or_deposition": transaction_type,
+                        "acquisition_or_disposition": transaction_type,
                         "owner_name": transaction["name"],
                         "number_of_trades": transaction["trades"],
                         "securities_transacted": transaction["shares"],
@@ -158,4 +159,4 @@ class TmxInsidersTradingFetcher(
         elif query.summary is True and len(flattened_summary) > 0:
             results = flattened_summary
 
-        return [TmxInsidersTradingData.model_validate(d) for d in results]
+        return [TmxInsiderTradingData.model_validate(d) for d in results]

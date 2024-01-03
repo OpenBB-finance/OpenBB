@@ -20,7 +20,7 @@ from openbb_tmx.models.historical_dividends import TmxHistoricalDividendsFetcher
 from openbb_tmx.models.index_constituents import TmxIndexConstituentsFetcher
 from openbb_tmx.models.index_sectors import TmxIndexSectorsFetcher
 from openbb_tmx.models.index_snapshots import TmxIndexSnapshotsFetcher
-from openbb_tmx.models.insiders_trading import TmxInsidersTradingFetcher
+from openbb_tmx.models.insider_trading import TmxInsiderTradingFetcher
 from openbb_tmx.models.options_chains import TmxOptionsChainsFetcher
 from openbb_tmx.models.price_target_consensus import TmxPriceTargetConsensusFetcher
 from openbb_tmx.models.treasury_prices import TmxTreasuryPricesFetcher
@@ -61,7 +61,7 @@ tmx_provider = Provider(
         "IndexConstituents": TmxIndexConstituentsFetcher,
         "IndexSectors": TmxIndexSectorsFetcher,
         "IndexSnapshots": TmxIndexSnapshotsFetcher,
-        "InsiderTrading": TmxInsidersTradingFetcher,
+        "InsiderTrading": TmxInsiderTradingFetcher,
         "OptionsChains": TmxOptionsChainsFetcher,
         "PriceTargetConsensus": TmxPriceTargetConsensusFetcher,
         "TreasuryPrices": TmxTreasuryPricesFetcher,

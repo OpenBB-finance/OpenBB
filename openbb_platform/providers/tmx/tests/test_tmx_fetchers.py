@@ -23,7 +23,7 @@ from openbb_tmx.models.historical_dividends import TmxHistoricalDividendsFetcher
 from openbb_tmx.models.index_constituents import TmxIndexConstituentsFetcher
 from openbb_tmx.models.index_sectors import TmxIndexSectorsFetcher
 from openbb_tmx.models.index_snapshots import TmxIndexSnapshotsFetcher
-from openbb_tmx.models.insiders_trading import TmxInsidersTradingFetcher
+from openbb_tmx.models.insider_trading import TmxInsiderTradingFetcher
 from openbb_tmx.models.options_chains import TmxOptionsChainsFetcher
 from openbb_tmx.models.price_target_consensus import TmxPriceTargetConsensusFetcher
 from openbb_tmx.models.treasury_prices import TmxTreasuryPricesFetcher
@@ -212,10 +212,10 @@ def test_tmx_index_snapshots_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_tmx_insiders_trading_fetcher(credentials=test_credentials):
+def test_tmx_insider_trading_fetcher(credentials=test_credentials):
     params = {"symbol": "SHOP", "summary": False}
 
-    fetcher = TmxInsidersTradingFetcher()
+    fetcher = TmxInsiderTradingFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
