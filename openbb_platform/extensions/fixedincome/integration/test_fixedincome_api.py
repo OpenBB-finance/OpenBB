@@ -553,7 +553,6 @@ def test_fixedincome_government_treasury_prices(params, headers):
     [
         (
             {
-                "date": None,
                 "provider": "tmx",
                 "issue_date_min": None,
                 "issue_date_max": None,
@@ -567,6 +566,7 @@ def test_fixedincome_government_treasury_prices(params, headers):
                 "maturity_date_max": None,
                 "isin": None,
                 "lei": None,
+                "country": None,
                 "use_cache": False,
             }
         )

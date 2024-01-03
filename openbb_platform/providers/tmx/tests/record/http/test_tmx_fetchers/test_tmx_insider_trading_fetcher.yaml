@@ -22,17 +22,17 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA8WVXW+bMBSG7/crENcI+fsjd1mbLqtUTUqq3lS5cIMzvIKpwMnGovz3mTZdTBaJ
-        bJ02rrB9eB/OeX3sbZwpp+LRNv6s3UVVPinbfrSNyXTdjJfObIwzuunWzctsOHm/jZ90barsUbfx
-        KHZ5rfVNZV3exEn8sPZz94skbnRRPMdaVWofNq1Wq1Kbxuk6ia71auWDXa2yThH68FzV3SvmELyO
-        prrI4hGCDNB97J0q1l4McUCo3CUHcV27751s05ilCpTRQVlAJPrKkBIg+spUMAF4SgPtK2MfdeH/
-        29gkmqq60G10Y5a50kUAYgeQ5AIfgQAmkvVJPgUhUEqp3D8Bcp4ra5XH3VYPrY0u1cZkp1mIEihR
-        n4YRZZT0aZAziIGv2aLDhPY15tvbzAtKzLGkg+ZRgCEgqcCvifNzjKQHCmRYwkEnIZCIYZay3/cS
-        BilBSYkcdtMXFyMJUon/k43uqy42b2xDHqSN5Bl9yCVFAKTwrFaEOOhyRAQftlACyTFMGT6xU86z
-        EoVQhjEZttLnKbHkqWB7Kvs3lh4g11VuG1d5ykVVFFrb00cl998dpQMhAn15QiD0Bxohgf54Pp0k
-        0ezT+8nsNvowmY1nl6cJBMujgmFIBDouGIeC+K0fujM3ZZVEVyb7Yk5LM3nsP+q86ukKX8MUIb/Z
-        /UZWLzdQO1+Xparb4Wtovid1NaqKLBha7fb3Wfs8dpVTxc/1gQPyb8n+2rB/rLzY7XbvfgAhUcFN
-        0wcAAA==
+        H4sIAAAAAAAAA8WVy27bMBBF9/0KQWtB4PvhnZs4dQMEBewgm8ALxqIrNnoEEu1WNfzvpRKnolQD
+        cpui1cqkRvd65syQ+zBRVoWTffhZ24syf1JF87GoTaKrerq2Zmes0XX73rzs+pv3+/BJV6ZMHnUT
+        TkKbVlrflIVN6zAKH7Zu734VhbXOsufYQuXahc3LzSbXpra6ioJrvdm4YFuppFWELjxVVfsTcwhe
+        V3OdJeEEQQboMfZOZVsnhjggVB6iTlxX9nsrW9dmrTxl1CkLiERfGVICRF+ZCiYAj6mnfWWKR525
+        /22KKJirKtNNcGPWqdKZZ0Q7I8kpHRgBTCTrO3GAMccx89NYpqoolLO5LR+aIrhUO5N4HqzzQJRA
+        ifouGFFGSd8FcgYxcLVatTY+ttp8exs0r7QcSzoKjQIMAYkFlseHnwOQdC6QIQBHCUIgAKYyJuS3
+        GUKvD6Gkw0Y8RdEVF3AOYsFes/pPOO1Xne3eOIbcSx/JM+aQS4oAiOFZowixN+WICD6OUgLJMYwZ
+        PtEx5yFFvinDmIwjdXlKLHmHlP0bpJ3JdZkWtS2dy0WZZVoXp49K7r4bpAMhAn15QiB0B1pvGqbL
+        +SwKFp/ezxa3wYfZYrq4PO1AsBwUDEMi0LBgHAoC4h6dpcnLKLgyyRdzWprJIX/UsurpClfDGCHX
+        7K6R1csN1Cy3ea6qZvwaWh6d2hqVWeItC22P91nzvLalVdnP9yMH5d+S/XVg/1h5dTgc3v0A+pNt
+        u9MHAAA=
     headers:
       Access-Control-Allow-Origin:
       - '*'
@@ -45,17 +45,15 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 27 Dec 2023 22:03:33 GMT
+      - Wed, 03 Jan 2024 20:08:44 GMT
       Etag:
-      - W/"7d3-1+GLra0/OsEjikyNzJAvLzKwh7Y"
+      - W/"7d3-DY9oT4dVvL8jzGyeL78a7Ws2Ogo"
       Strict-Transport-Security:
       - max-age=15552000; includeSubDomains
       Transfer-Encoding:
       - chunked
       Vary:
       - Origin, Accept-Encoding
-      X-Content-Security-Policy:
-      - frame-ancestors 'none'; default-src 'self'
       X-Content-Type-Options:
       - nosniff
       X-DNS-Prefetch-Control:
@@ -64,8 +62,6 @@ interactions:
       - noopen
       X-Frame-Options:
       - SAMEORIGIN
-      X-WebKit-CSP:
-      - frame-ancestors 'none'; default-src 'self'
       X-XSS-Protection:
       - 1; mode=block
     status:

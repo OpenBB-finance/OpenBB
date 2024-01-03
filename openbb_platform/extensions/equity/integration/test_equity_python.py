@@ -368,6 +368,7 @@ def test_equity_fundamental_income_growth(params, obb):
             {
                 "symbol": "RY",
                 "provider": "tmx",
+                "limit": None,
             }
         ),
         (
@@ -896,7 +897,7 @@ def test_equity_compare_peers(params, obb):
                 "start_date": "2023-01-01",
                 "end_date": "2023-12-31",
                 "interval": "1d",
-                "adjustments": "splits_only",
+                "adjustment": "splits_only",
             }
         ),
     ],
