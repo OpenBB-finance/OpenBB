@@ -1,5 +1,5 @@
 """FMP Cash Flow Statement Model."""
-
+# pylint: disable=unused-argument
 
 from datetime import (
     date as dateType,
@@ -40,11 +40,11 @@ class FMPCashFlowStatementData(CashFlowStatementData):
         "deferred_income_tax": "deferredIncomeTax",
         "stock_based_compensation": "stockBasedCompensation",
         "change_in_working_capital": "changeInWorkingCapital",
-        "changes_in_account_receivables": "accountsReceivables",
-        "changes_in_inventory": "inventory",
+        "change_in_account_receivables": "accountsReceivables",
+        "change_in_inventory": "inventory",
         "change_in_account_payable": "accountsPayables",
-        "changes_in_other_working_capital": "otherWorkingCapital",
-        "changes_in_other_non_cash_items": "otherNonCashItems",
+        "change_in_other_working_capital": "otherWorkingCapital",
+        "change_in_other_non_cash_items": "otherNonCashItems",
         "net_cash_from_operating_activities": "netCashProvidedByOperatingActivities",
         "purchase_of_property_plant_and_equipment": "investmentsInPropertyPlantAndEquipment",
         "acquisitions": "acquisitionsNet",
@@ -69,9 +69,148 @@ class FMPCashFlowStatementData(CashFlowStatementData):
         "final_link": "finalLink",
     }
 
-    fiscal_year: int = Field(description="The fiscal year of the fiscal period.")
-    filing_date: dateType = Field(description="The date of the filing.")
-    accepted_date: datetime = Field(description="The date the filing was accepted.")
+    fiscal_year: Optional[int] = Field(
+        default=None,
+        description="The fiscal year of the fiscal period.",
+    )
+    filing_date: Optional[dateType] = Field(
+        default=None,
+        description="The date of the filing.",
+    )
+    accepted_date: Optional[datetime] = Field(
+        default=None, description="The date the filing was accepted."
+    )
+    reported_currency: Optional[str] = Field(
+        default=None,
+        description="The currency in which the cash flow statement was reported.",
+    )
+    net_income: Optional[float] = Field(
+        default=None,
+        description="Net income.",
+    )
+    depreciation_and_amortization: Optional[float] = Field(
+        default=None,
+        description="Depreciation and amortization.",
+    )
+    deferred_income_tax: Optional[float] = Field(
+        default=None,
+        description="Deferred income tax.",
+    )
+    stock_based_compensation: Optional[float] = Field(
+        default=None,
+        description="Stock-based compensation.",
+    )
+    change_in_working_capital: Optional[float] = Field(
+        default=None,
+        description="Change in working capital.",
+    )
+    change_in_account_receivables: Optional[float] = Field(
+        default=None,
+        description="Change in account receivables.",
+    )
+    change_in_inventory: Optional[float] = Field(
+        default=None,
+        description="Change in inventory.",
+    )
+    change_in_account_payable: Optional[float] = Field(
+        default=None,
+        description="Change in account payable.",
+    )
+    change_in_other_working_capital: Optional[float] = Field(
+        default=None,
+        description="Change in other working capital.",
+    )
+    change_in_other_non_cash_items: Optional[float] = Field(
+        default=None,
+        description="Change in other non-cash items.",
+    )
+    net_cash_from_operating_activities: Optional[float] = Field(
+        default=None,
+        description="Net cash from operating activities.",
+    )
+    purchase_of_property_plant_and_equipment: Optional[float] = Field(
+        default=None,
+        description="Purchase of property, plant and equipment.",
+    )
+    acquisitions: Optional[float] = Field(
+        default=None,
+        description="Acquisitions.",
+    )
+    purchase_of_investment_securities: Optional[float] = Field(
+        default=None,
+        description="Purchase of investment securities.",
+    )
+    sale_and_maturity_of_investments: Optional[float] = Field(
+        default=None,
+        description="Sale and maturity of investments.",
+    )
+    other_investing_activities: Optional[float] = Field(
+        default=None,
+        description="Other investing activities.",
+    )
+    net_cash_from_investing_activities: Optional[float] = Field(
+        default=None,
+        description="Net cash from investing activities.",
+    )
+    repayment_of_debt: Optional[float] = Field(
+        default=None,
+        description="Repayment of debt.",
+    )
+    issuance_of_common_equity: Optional[float] = Field(
+        default=None,
+        description="Issuance of common equity.",
+    )
+    repurchase_of_common_equity: Optional[float] = Field(
+        default=None,
+        description="Repurchase of common equity.",
+    )
+    payment_of_dividends: Optional[float] = Field(
+        default=None,
+        description="Payment of dividends.",
+    )
+    other_financing_activities: Optional[float] = Field(
+        default=None,
+        description="Other financing activities.",
+    )
+    net_cash_from_financing_activities: Optional[float] = Field(
+        default=None,
+        description="Net cash from financing activities.",
+    )
+    effect_of_exchange_rate_changes_on_cash: Optional[float] = Field(
+        default=None,
+        description="Effect of exchange rate changes on cash.",
+    )
+    net_change_in_cash_and_equivalents: Optional[float] = Field(
+        default=None,
+        description="Net change in cash and equivalents.",
+    )
+    cash_at_beginning_of_period: Optional[float] = Field(
+        default=None,
+        description="Cash at beginning of period.",
+    )
+    cash_at_end_of_period: Optional[float] = Field(
+        default=None,
+        description="Cash at end of period.",
+    )
+    operating_cash_flow: Optional[float] = Field(
+        default=None,
+        description="Operating cash flow.",
+    )
+    capital_expenditure: Optional[float] = Field(
+        default=None,
+        description="Capital expenditure.",
+    )
+    free_cash_flow: Optional[float] = Field(
+        default=None,
+    )
+    link: Optional[str] = Field(
+        default=None,
+        description="Link to the filing.",
+    )
+    final_link: Optional[str] = Field(
+        default=None,
+        description="Link to the filing document.",
+    )
 
     @model_validator(mode="before")
     @classmethod
