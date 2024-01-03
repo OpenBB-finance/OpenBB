@@ -95,7 +95,7 @@ async def money_measures(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """Money Measures (M1/M2 and components."""
+    """Money Measures (M1/M2 and components)."""
     return await OBBject.from_query(Query(**locals()))
 
 

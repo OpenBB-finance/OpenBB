@@ -62,13 +62,15 @@ def fetch_data(url: str, csv_kwargs: Optional[Dict] = None, **kwargs: Any) -> Da
 def oecd_xml_to_df(xml_string: str) -> DataFrame:
     """Helper function to parse the OECD XML and return a dataframe.
 
-    Parameters
+     Parameters
     ----------
-    xml_string
+    xml_string : str
+        A string containing the OECD XML data.
 
     Returns
     -------
-
+    DataFrame
+        A Pandas DataFrame containing the parsed data from the XML string.
     """
     root = fromstring(xml_string)
 
@@ -124,13 +126,15 @@ def check_cache_exists_and_valid(function: str, cache_method: str = "parquet") -
 
     Parameters
     ----------
-    cache_path:str
-        Path to the cache file
+    function : str
+        The name of the function for which the cache is being checked.
+    cache_method : str, optional
+        The method used for caching (default is 'parquet').
 
     Returns
     -------
     bool
-        True if the cache exists and is valid, False otherwise
+        True if the cache exists and is valid for the current day, False otherwise.
     """
     # TODO: add setting to disable cache for tests
 
@@ -156,12 +160,17 @@ def write_to_cache(function: str, data: DataFrame, cache_method: str) -> None:
 
     Parameters
     ----------
-    function:str
-        Function name
-    data:DataFrame
-        Data to write to the cache
-    cache_method:str
-        Method to use to write the cache
+    function : str
+        The name of the function for which data is being cached.
+    data : DataFrame
+        The DataFrame to be cached.
+    cache_method : str
+        The method used for caching the data.
+
+    Raises
+    ------
+    NotImplementedError
+        If the cache_method is not 'parquet'.
     """
     if cache_method == "parquet":
         cache_path = f"{cache}/{function}.parquet"
@@ -176,6 +185,23 @@ def write_to_cache(function: str, data: DataFrame, cache_method: str) -> None:
 def get_possibly_cached_data(
     url: str, function: Optional[str] = None, cache_method: str = "parquet"
 ) -> DataFrame:
+    """
+    Retrieve data from a given URL or from the cache if available and valid.
+
+    Parameters
+    ----------
+    url : str
+        The URL from which to fetch the data if it's not available in the cache.
+    function : Optional[str], optional
+        The name of the function for which data is being fetched or cached.
+    cache_method : str, optional
+        The method used for caching the data (default is 'parquet').
+
+    Returns
+    -------
+    DataFrame
+        A Pandas DataFrame containing the fetched or cached data.
+    """
     if cache_method == "parquet":
         cache_path = f"{cache}/{function}.parquet"
 
