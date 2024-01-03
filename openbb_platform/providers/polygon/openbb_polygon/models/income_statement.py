@@ -1,5 +1,5 @@
 """Polygon Income Statement Model."""
-
+# pylint: disable=unused-argument
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional
 
@@ -84,26 +84,30 @@ class PolygonIncomeStatementData(IncomeStatementData):
         "non_operating_income": "nonoperating_income_loss",
         "income_before_equity_method_investments": "income_loss_before_equity_method_investments",
         "income_from_equity_method_investments": "income_loss_from_equity_method_investments",
-        "income_before_tax": "income_loss_from_continuing_operations_before_tax",
+        "total_pre_tax_income": "income_loss_from_continuing_operations_before_tax",
         "income_tax_expense": "income_tax_expense_benefit",
         "interest_and_debt_expense": "interest_and_debt_expense",
-        "net_income": "net_income_loss",
+        "consolidated_net_income": "net_income_loss",
         "eps": "basic_earnings_per_share",
         "eps_diluted": "diluted_earnings_per_share",
         "interest_and_dividend_income": "interest_and_dividend_income_operating",
-        "interest_expense": "interest_expense_operating",
+        "total_interest_expense": "interest_expense_operating",
         "interest_income_after_provision_for_losses": "interest_income_expense_after_provision_for_losses",
-        "interest_income_net": "interest_income_expense_operating_net",
+        "net_interest_income": "interest_income_expense_operating_net",
         "non_interest_income": "noninterest_income",
         "non_interest_expense": "noninterest_expense",
         "income_after_tax": "income_loss_from_continuing_operations_after_tax",
         "income_from_discontinued_operations_net_of_tax_on_disposal": "income_loss_from_discontinued_operations_net_of_tax_gain_loss_on_disposal",  # type: ignore # noqa: E501
         "income_from_discontinued_operations_net_of_tax": "income_loss_from_discontinued_operations_net_of_tax",
-        "net_income_attributable_minority_interest": "net_income_loss_attributable_to_noncontrolling_interest",
+        "net_income_attributable_to_noncontrolling_interest": "net_income_loss_attributable_to_noncontrolling_interest",
         "net_income_attributable_to_parent": "net_income_loss_attributable_to_parent",
-        "net_income_available_to_stock_holders": "net_income_loss_available_to_common_stockholders_basic",
+        "net_income_attributable_to_common_shareholders": "net_income_loss_available_to_common_stockholders_basic",
         "participating_securities_earnings": "participating_securities_distributed_and_undistributed_earnings_loss_basic",
         "undistributed_earnings_allocated_to_participating_securities": "undistributed_earnings_loss_allocated_to_participating_securities_basic",  # type: ignore # noqa: E501
+        "weighted_average_diluted_shares_outstanding": "diluted_average_shares",
+        "weighted_average_basic_shares_outstanding": "basic_average_shares",
+        "basic_earnings_per_share": "eps",
+        "diluted_earnings_per_share": "eps_diluted",
     }
 
     revenue: Optional[float] = Field(default=None, description="Total Revenue")
@@ -132,8 +136,8 @@ class PolygonIncomeStatementData(IncomeStatementData):
     benefits_costs_expenses: Optional[float] = Field(
         default=None, description="Benefits, costs and expenses"
     )
-    selling_general_and_administrative_expenses: Optional[float] = Field(
-        default=None, description="Selling, general and administrative expenses"
+    selling_general_and_administrative_expense: Optional[float] = Field(
+        default=None, description="Selling, general and administrative expense"
     )
     research_and_development: Optional[float] = Field(
         default=None, description="Research and development"
@@ -156,13 +160,13 @@ class PolygonIncomeStatementData(IncomeStatementData):
     interest_and_dividend_income: Optional[float] = Field(
         default=None, description="Interest and Dividend Income"
     )
-    interest_expense: Optional[float] = Field(
+    total_interest_expense: Optional[float] = Field(
         default=None, description="Interest Expense"
     )
     interest_and_debt_expense: Optional[float] = Field(
         default=None, description="Interest and Debt Expense"
     )
-    interest_income_net: Optional[float] = Field(
+    net_interest_income: Optional[float] = Field(
         default=None, description="Interest Income Net"
     )
     interest_income_after_provision_for_losses: Optional[float] = Field(
@@ -187,7 +191,7 @@ class PolygonIncomeStatementData(IncomeStatementData):
     income_from_equity_method_investments: Optional[float] = Field(
         default=None, description="Income From Equity Method Investments"
     )
-    income_before_tax: Optional[float] = Field(
+    total_pre_tax_income: Optional[float] = Field(
         default=None, description="Income Before Tax"
     )
     income_tax_expense: Optional[float] = Field(
@@ -196,15 +200,17 @@ class PolygonIncomeStatementData(IncomeStatementData):
     income_after_tax: Optional[float] = Field(
         default=None, description="Income After Tax"
     )
-    net_income: Optional[float] = Field(default=None, description="Net Income/Loss")
-    net_income_attributable_minority_interest: Optional[float] = Field(
+    consolidated_net_income: Optional[float] = Field(
+        default=None, description="Net Income/Loss"
+    )
+    net_income_attributable_noncontrolling_interest: Optional[float] = Field(
         default=None,
         description="Net income (loss) attributable to noncontrolling interest",
     )
     net_income_attributable_to_parent: Optional[float] = Field(
         default=None, description="Net income (loss) attributable to parent"
     )
-    net_income_available_to_stock_holders: Optional[float] = Field(
+    net_income_attributable_to_common_shareholders: Optional[float] = Field(
         default=None,
         description="Net Income/Loss Available To Common Stockholders Basic",
     )
@@ -224,15 +230,17 @@ class PolygonIncomeStatementData(IncomeStatementData):
     preferred_stock_dividends_and_other_adjustments: Optional[float] = Field(
         default=None, description="Preferred stock dividends and other adjustments"
     )
-    basic_average_shares: Optional[float] = Field(
+    basic_earnings_per_share: Optional[float] = Field(
+        default=None, description="Earnings Per Share"
+    )
+    diluted_earnings_per_share: Optional[float] = Field(
+        default=None, description="Diluted Earnings Per Share"
+    )
+    weighted_average_basic_shares_outstanding: Optional[float] = Field(
         default=None, description="Basic Average Shares"
     )
-    diluted_average_shares: Optional[float] = Field(
+    weighted_average_diluted_shares_outstanding: Optional[float] = Field(
         default=None, description="Diluted Average Shares"
-    )
-    eps: Optional[float] = Field(default=None, description="Earnings Per Share")
-    diluted_eps: Optional[float] = Field(
-        default=None, description="Diluted Earnings Per Share"
     )
 
     @model_validator(mode="before")
