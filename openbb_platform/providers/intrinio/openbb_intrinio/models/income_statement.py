@@ -1,5 +1,5 @@
 """Intrinio Income Statement Model."""
-
+# pylint: disable=unused-argument
 import warnings
 from typing import Any, Dict, List, Literal, Optional
 
@@ -104,7 +104,7 @@ class IntrinioIncomeStatementData(IncomeStatementData):
         "short_term_borrowings_interest_expense": "shorttermborrowinginterestexpense",
         "cost_of_revenue": "totalcostofrevenue",
         "gross_profit": "totalgrossprofit",
-        "gross_profit_ratio": "grossmargin",
+        "gross_profit_magin": "grossmargin",
         "total_interest_expense": "totalinterestexpense",
         "interest_and_investment_income": "totalinterestincome",
         "total_non_interest_expense": "totalnoninterestexpense",
@@ -124,6 +124,10 @@ class IntrinioIncomeStatementData(IncomeStatementData):
         "weighted_average_diluted_shares_outstanding": "weightedavedilutedsharesos",
     }
 
+    reported_currency: Optional[str] = Field(
+        description="The currency in which the balance sheet is reported.",
+        default=None,
+    )
     revenue: Optional[float] = Field(default=None, description="Total revenue")
     operating_revenue: Optional[float] = Field(
         default=None, description="Total operating revenue"
@@ -137,7 +141,7 @@ class IntrinioIncomeStatementData(IncomeStatementData):
     gross_profit: Optional[float] = Field(
         default=None, description="Total gross profit"
     )
-    gross_profit_ratio: Optional[float] = Field(
+    gross_profit_margin: Optional[float] = Field(
         default=None, description="Gross margin ratio."
     )
     provision_for_credit_losses: Optional[float] = Field(
@@ -461,11 +465,14 @@ class IntrinioIncomeStatementFetcher(
     ) -> List[IntrinioIncomeStatementData]:
         """Return the transformed data."""
         transformed_data: List[IntrinioIncomeStatementData] = []
-
+        units = []
         for item in data:
             sub_dict: Dict[str, Any] = {}
 
             for sub_item in item["financials"]:
+                unit = sub_item["data_tag"].get("unit", "")
+                if unit and "share" not in unit:
+                    units.append(unit)
                 field_name = sub_item["data_tag"]["tag"]
                 sub_dict[field_name] = (
                     float(sub_item["value"])
@@ -476,6 +483,7 @@ class IntrinioIncomeStatementFetcher(
             sub_dict["period_ending"] = item["period_ending"]
             sub_dict["fiscal_year"] = item["fiscal_year"]
             sub_dict["fiscal_period"] = item["fiscal_period"]
+            sub_dict["reported_currency"] = list(set(units))[0]
 
             transformed_data.append(IntrinioIncomeStatementData(**sub_dict))
 
