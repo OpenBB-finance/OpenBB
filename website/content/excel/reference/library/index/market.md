@@ -84,7 +84,7 @@ Historical Market Indices.
 | low | The low price.  |
 | close | The close price.  |
 | volume | The trading volume.  |
-| adj_close | Adjusted Close Price of the symbol. (provider: fmp) |
+| adj_close | The adjusted close price. (provider: fmp) |
 | unadjusted_volume | Unadjusted volume of the symbol. (provider: fmp) |
 | change | Change in the price of the symbol from the previous day. (provider: fmp) |
 | change_percent | Change % in the price of the symbol. (provider: fmp) |

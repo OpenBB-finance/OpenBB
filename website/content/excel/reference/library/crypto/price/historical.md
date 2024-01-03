@@ -67,11 +67,11 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 | close | The close price.  |
 | volume | The trading volume.  |
 | vwap | Volume Weighted Average Price over the period.  |
-| adj_close | Adjusted Close Price of the symbol. (provider: fmp) |
+| adj_close | The adjusted close price. (provider: fmp) |
 | unadjusted_volume | Unadjusted volume of the symbol. (provider: fmp) |
 | change | Change in the price of the symbol from the previous day. (provider: fmp) |
 | change_percent | Change % in the price of the symbol. (provider: fmp) |
 | label | Human readable format of the date. (provider: fmp) |
 | change_over_time | Change % in the price of the symbol over a period of time. (provider: fmp) |
-| transactions | Number of transactions for the symbol in the time period. (provider: polygon);     Number of trades. (provider: tiingo) |
+| transactions | Number of transactions for the symbol in the time period. (provider: polygon, tiingo) |
 | volume_notional | The last size done for the asset on the specific date in the quote currency. The volume of the asset on the specific date in the quote currency. (provider: tiingo) |

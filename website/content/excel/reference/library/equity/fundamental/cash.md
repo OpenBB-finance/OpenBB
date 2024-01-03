@@ -90,57 +90,83 @@ Cash Flow Statement. Information about the cash flow statement.
 
 | Name | Description |
 | ---- | ----------- |
-| symbol | Symbol representing the entity requested in the data.  |
-| date | The date of the data.  |
-| period | Reporting period of the statement.  |
-| cik | Central Index Key (CIK) for the requested entity.  |
-| net_income | Net income.  |
-| depreciation_and_amortization | Depreciation and amortization.  |
-| stock_based_compensation | Stock based compensation.  |
-| deferred_income_tax | Deferred income tax.  |
-| other_non_cash_items | Other non-cash items.  |
-| changes_in_operating_assets_and_liabilities | Changes in operating assets and liabilities.  |
-| accounts_receivables | Accounts receivables.  |
-| inventory | Inventory.  |
-| vendor_non_trade_receivables | Vendor non-trade receivables.  |
-| other_current_and_non_current_assets | Other current and non-current assets.  |
-| accounts_payables | Accounts payables.  |
-| deferred_revenue | Deferred revenue.  |
-| other_current_and_non_current_liabilities | Other current and non-current liabilities.  |
-| net_cash_flow_from_operating_activities | Net cash flow from operating activities.  |
-| purchases_of_marketable_securities | Purchases of investments.  |
-| sales_from_maturities_of_investments | Sales and maturities of investments.  |
-| investments_in_property_plant_and_equipment | Investments in property, plant, and equipment.  |
-| payments_from_acquisitions | Acquisitions, net of cash acquired, and other  |
-| other_investing_activities | Other investing activities  |
-| net_cash_flow_from_investing_activities | Net cash used for investing activities.  |
-| taxes_paid_on_net_share_settlement | Taxes paid on net share settlement of equity awards.  |
-| dividends_paid | Payments for dividends and dividend equivalents  |
-| common_stock_repurchased | Payments related to repurchase of common stock  |
-| debt_proceeds | Proceeds from issuance of term debt  |
-| debt_repayment | Payments of long-term debt  |
-| other_financing_activities | Other financing activities, net  |
-| net_cash_flow_from_financing_activities | Net cash flow from financing activities.  |
-| net_change_in_cash | Net increase (decrease) in cash, cash equivalents, and restricted cash  |
-| reportedCurrency | Reported currency in the statement. (provider: fmp) |
-| filling_date | Filling date. (provider: fmp) |
-| accepted_date | Accepted date. (provider: fmp) |
-| calendar_year | Calendar year. (provider: fmp) |
-| change_in_working_capital | Change in working capital. (provider: fmp) |
-| other_working_capital | Other working capital. (provider: fmp) |
-| common_stock_issued | Common stock issued. (provider: fmp) |
-| effect_of_forex_changes_on_cash | Effect of forex changes on cash. (provider: fmp) |
-| cash_at_beginning_of_period | Cash at beginning of period. (provider: fmp) |
-| cash_at_end_of_period | Cash, cash equivalents, and restricted cash at end of period (provider: fmp) |
-| operating_cash_flow | Operating cash flow. (provider: fmp) |
-| capital_expenditure | Capital expenditure. (provider: fmp) |
-| free_cash_flow | Free cash flow. (provider: fmp) |
-| link | Link to the statement. (provider: fmp) |
-| final_link | Link to the final statement. (provider: fmp) |
-| net_income_continuing | Net income from continuing operations. (provider: intrinio) |
-| net_cash_from_continuing_operating_activities | Net cash from continuing operating activities. (provider: intrinio) |
-| net_cash_from_continuing_investing_activities | Net cash from continuing investing activities. (provider: intrinio) |
-| net_cash_from_continuing_financing_activities | Net cash from continuing financing activities. (provider: intrinio) |
-| cash_interest_paid | Cash paid for interest. (provider: intrinio) |
-| cash_income_taxes_paid | Cash paid for income taxes. (provider: intrinio) |
-| issuance_of_common_equity | Issuance of common equity. (provider: intrinio) |
+| period_ending | The end date of the reporting period.  |
+| fiscal_period | The fiscal period of the report.  |
+| fiscal_year | The fiscal year of the fiscal period.  |
+| filingDate | The date of the filing. (provider: fmp) |
+| acceptedDate | The date the filing was accepted. (provider: fmp) |
+| reported_currency | The currency in which the cash flow statement was reported. (provider: fmp);     The currency in which the balance sheet is reported. (provider: intrinio) |
+| net_income | Net income. (provider: fmp);     Consolidated Net Income. (provider: intrinio) |
+| depreciationAndAmortization | Depreciation and amortization. (provider: fmp) |
+| deferredIncomeTax | Deferred income tax. (provider: fmp) |
+| stockBasedCompensation | Stock-based compensation. (provider: fmp) |
+| changeInWorkingCapital | Change in working capital. (provider: fmp) |
+| changeInAccountReceivables | Change in account receivables. (provider: fmp) |
+| changeInInventory | Change in inventory. (provider: fmp) |
+| changeInAccountPayable | Change in account payable. (provider: fmp) |
+| changeInOtherWorkingCapital | Change in other working capital. (provider: fmp) |
+| changeInOtherNonCashItems | Change in other non-cash items. (provider: fmp) |
+| net_cash_from_operating_activities | Net cash from operating activities. (provider: fmp, intrinio) |
+| purchase_of_property_plant_and_equipment | Purchase of property, plant and equipment. (provider: fmp, intrinio) |
+| acquisitions | Acquisitions. (provider: fmp, intrinio) |
+| purchase_of_investment_securities | Purchase of investment securities. (provider: fmp, intrinio) |
+| sale_and_maturity_of_investments | Sale and maturity of investments. (provider: fmp, intrinio) |
+| other_investing_activities | Other investing activities. (provider: fmp, intrinio) |
+| net_cash_from_investing_activities | Net cash from investing activities. (provider: fmp, intrinio) |
+| repayment_of_debt | Repayment of debt. (provider: fmp, intrinio) |
+| issuance_of_common_equity | Issuance of common equity. (provider: fmp, intrinio) |
+| repurchase_of_common_equity | Repurchase of common equity. (provider: fmp, intrinio) |
+| payment_of_dividends | Payment of dividends. (provider: fmp, intrinio) |
+| other_financing_activities | Other financing activities. (provider: fmp, intrinio) |
+| net_cash_from_financing_activities | Net cash from financing activities. (provider: fmp, intrinio) |
+| effectOfExchangeRateChangesOnCash | Effect of exchange rate changes on cash. (provider: fmp) |
+| net_change_in_cash_and_equivalents | Net change in cash and equivalents. (provider: fmp, intrinio) |
+| cashAtBeginningOfPeriod | Cash at beginning of period. (provider: fmp) |
+| cashAtEndOfPeriod | Cash at end of period. (provider: fmp) |
+| operatingCashFlow | Operating cash flow. (provider: fmp) |
+| capitalExpenditure | Capital expenditure. (provider: fmp) |
+| freeCashFlow | None |
+| link | Link to the filing. (provider: fmp) |
+| finalLink | Link to the filing document. (provider: fmp) |
+| provisionForLoanLosses | Provision for Loan Losses (provider: intrinio) |
+| provision_for_credit_losses | Provision for credit losses (provider: intrinio) |
+| depreciationExpense | Depreciation Expense. (provider: intrinio) |
+| amortizationExpense | Amortization Expense. (provider: intrinio) |
+| share_based_compensation | Share-based compensation. (provider: intrinio) |
+| nonCashAdjustmentsToReconcileNetIncome | Non-Cash Adjustments to Reconcile Net Income. (provider: intrinio) |
+| changesInOperatingAssetsAndLiabilities | Changes in Operating Assets and Liabilities (Net) (provider: intrinio) |
+| netCashFromContinuingOperatingActivities | Net Cash from Continuing Operating Activities (provider: intrinio) |
+| netCashFromDiscontinuedOperatingActivities | Net Cash from Discontinued Operating Activities (provider: intrinio) |
+| netIncomeContinuingOperations | Net Income (Continuing Operations) (provider: intrinio) |
+| netIncomeDiscontinuedOperations | Net Income (Discontinued Operations) (provider: intrinio) |
+| divestitures | Divestitures (provider: intrinio) |
+| saleOfPropertyPlantAndEquipment | Sale of Property, Plant, and Equipment (provider: intrinio) |
+| purchaseOfInvestments | Purchase of Investments (provider: intrinio) |
+| loansHeldForSale | Loans Held for Sale (Net) (provider: intrinio) |
+| netCashFromContinuingInvestingActivities | Net Cash from Continuing Investing Activities (provider: intrinio) |
+| netCashFromDiscontinuedInvestingActivities | Net Cash from Discontinued Investing Activities (provider: intrinio) |
+| repurchaseOfPreferredEquity | Repurchase of Preferred Equity (provider: intrinio) |
+| issuanceOfPreferredEquity | Issuance of Preferred Equity (provider: intrinio) |
+| issuanceOfDebt | Issuance of Debt (provider: intrinio) |
+| cashInterestReceived | Cash Interest Received (provider: intrinio) |
+| netChangeInDeposits | Net Change in Deposits (provider: intrinio) |
+| netIncreaseInFedFundsSold | Net Increase in Fed Funds Sold (provider: intrinio) |
+| netCashFromContinuingFinancingActivities | Net Cash from Continuing Financing Activities (provider: intrinio) |
+| netCashFromDiscontinuedFinancingActivities | Net Cash from Discontinued Financing Activities (provider: intrinio) |
+| effectOfExchangeRateChanges | Effect of Exchange Rate Changes (provider: intrinio) |
+| otherNetChangesInCash | Other Net Changes in Cash (provider: intrinio) |
+| cashIncomeTaxesPaid | Cash Income Taxes Paid (provider: intrinio) |
+| cashInterestPaid | Cash Interest Paid (provider: intrinio) |
+| net_cash_flow_from_operating_activities_continuing | Net cash flow from operating activities continuing. (provider: polygon) |
+| net_cash_flow_from_operating_activities_discontinued | Net cash flow from operating activities discontinued. (provider: polygon) |
+| net_cash_flow_from_operating_activities | Net cash flow from operating activities. (provider: polygon) |
+| net_cash_flow_from_investing_activities_continuing | Net cash flow from investing activities continuing. (provider: polygon) |
+| net_cash_flow_from_investing_activities_discontinued | Net cash flow from investing activities discontinued. (provider: polygon) |
+| net_cash_flow_from_investing_activities | Net cash flow from investing activities. (provider: polygon) |
+| net_cash_flow_from_financing_activities_continuing | Net cash flow from financing activities continuing. (provider: polygon) |
+| net_cash_flow_from_financing_activities_discontinued | Net cash flow from financing activities discontinued. (provider: polygon) |
+| net_cash_flow_from_financing_activities | Net cash flow from financing activities. (provider: polygon) |
+| net_cash_flow_continuing | Net cash flow continuing. (provider: polygon) |
+| net_cash_flow_discontinued | Net cash flow discontinued. (provider: polygon) |
+| exchange_gains_losses | Exchange gains losses. (provider: polygon) |
+| net_cash_flow | Net cash flow. (provider: polygon) |

@@ -65,7 +65,7 @@ Currency Historical Price. Currency historical data.
 | close | The close price.  |
 | volume | The trading volume.  |
 | vwap | Volume Weighted Average Price over the period.  |
-| adj_close | Adjusted Close Price of the symbol. (provider: fmp) |
+| adj_close | The adjusted close price. (provider: fmp) |
 | unadjusted_volume | Unadjusted volume of the symbol. (provider: fmp) |
 | change | Change in the price of the symbol from the previous day. (provider: fmp) |
 | change_percent | Change % in the price of the symbol. (provider: fmp) |

@@ -82,15 +82,15 @@ Company News. Get news for one or more companies.
 | image | Image URL of the news.  |
 | text | Text/body of the news.  |
 | url | URL of the news.  |
-| id | ID of the news. (provider: benzinga);     Intrinio ID for the article. (provider: intrinio);     Article ID. (provider: polygon) |
-| author | Author of the news. (provider: benzinga);     Author of the article. (provider: polygon) |
+| id | Article ID. (provider: benzinga, intrinio, polygon) |
+| author | Author of the article. (provider: benzinga, polygon) |
 | teaser | Teaser of the news. (provider: benzinga) |
-| images | Images associated with the news. (provider: benzinga);     URL to the images of the news. (provider: fmp) |
+| images | URL to the images of the news. (provider: benzinga, fmp) |
 | channels | Channels associated with the news. (provider: benzinga) |
 | stocks | Stocks associated with the news. (provider: benzinga) |
 | tags | Tags associated with the news. (provider: benzinga, tiingo) |
 | updated | Updated date of the news. (provider: benzinga) |
-| site | Name of the news source. (provider: fmp, tiingo) |
+| site | Name of the news source. (provider: fmp);     News source. (provider: tiingo) |
 | amp_url | AMP URL. (provider: polygon) |
 | image_url | Image URL. (provider: polygon) |
 | keywords | Keywords in the article (provider: polygon) |
