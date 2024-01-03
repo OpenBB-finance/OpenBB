@@ -58,7 +58,7 @@ python dev_install.py -e
 
 <details><summary>Why is the data returned not the start/end date I requested?</summary>
 
-The provider may not return data from the requested period, in which case the data will what is available. For example, `provider='yfinance'` at one-minute intervals will not return beyond one week ago.
+The provider may not have data from the requested period, in which case the data will be what they return. For example, `provider='yfinance'` at one-minute intervals will not return beyond one week ago.
 
 Another reason could be the data entitlements of your API key. Check the provider's website to know what data coverage to expect. If there is technical problem with a provider or function, please check [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new/choose) and raise an issue if one does not already exist. Or, send us an [email](mailto:support@openbb.co) with the details, your system configuration, the syntax used, and any error messages that are raised.
 
