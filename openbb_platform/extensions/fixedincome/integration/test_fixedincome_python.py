@@ -145,6 +145,13 @@ def test_fixedincome_rate_ameribor(params, obb):
                 "end_date": "2023-06-06",
             }
         ),
+        (
+            {
+                "provider": "federal_reserve",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -469,7 +476,7 @@ def test_fixedincome_government_treasury_auctions(params, obb):
         ),
         (
             {
-                "date": None,
+                "date": "2023-11-16",
                 "cusip": None,
                 "security_type": "bill",
                 "provider": "government_us",

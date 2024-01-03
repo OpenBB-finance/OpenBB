@@ -178,6 +178,8 @@ class ROUTER_fixedincome_corporate(Container):
                 Maturity.
             yield_curve : Literal['spot', 'par']
                 The yield curve type.
+            series_id : Optional[str]
+                FRED series id. (provider: fred)
 
             Example
             -------

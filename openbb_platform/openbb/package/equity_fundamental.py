@@ -1216,11 +1216,9 @@ class ROUTER_equity_fundamental(Container):
             Actual EPS from the earnings date.
         eps_estimated : Optional[float]
             Estimated EPS for the earnings date.
-        actual_eps : Optional[float]
-            The actual earnings per share announced. (provider: fmp)
         revenue_estimated : Optional[float]
             Estimated consensus revenue for the reporting period. (provider: fmp)
-        actual_revenue : Optional[float]
+        revenue_actual : Optional[float]
             The actual reported revenue. (provider: fmp)
         reporting_time : Optional[str]
             The reporting time - e.g. after market close. (provider: fmp)
@@ -1759,7 +1757,7 @@ class ROUTER_equity_fundamental(Container):
             Name of the key executive.
         pay : Optional[int]
             Pay of the key executive.
-        currency_pay : str
+        currency_pay : Optional[str]
             Currency of the pay.
         gender : Optional[str]
             Gender of the key executive.

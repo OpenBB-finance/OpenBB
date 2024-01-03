@@ -5,7 +5,7 @@ Search for FRED series or economic releases by ID or fuzzy query. This does not 
 ## Syntax
 
 ```excel wordwrap
-=OBB.ECONOMY.FRED_SEARCH(required;[optional])
+=OBB.ECONOMY.FRED_SEARCH(required; [optional])
 ```
 
 ---
