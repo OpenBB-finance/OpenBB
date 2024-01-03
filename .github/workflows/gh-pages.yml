@@ -55,6 +55,7 @@ jobs:
 
       - run: |
           pip uninstall Brotli -y
+          pip install importlib-metadata
           pip install pytest
           pytest tests/website --autodoc
           python website/generate_sdk_v3_markdown.py
