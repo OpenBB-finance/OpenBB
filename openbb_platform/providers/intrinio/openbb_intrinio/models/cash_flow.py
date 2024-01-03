@@ -1,5 +1,5 @@
 """Intrinio Cash Flow Statement Model."""
-
+# pylint: disable=unused-argument
 import warnings
 from typing import Any, Dict, List, Literal, Optional
 
@@ -84,6 +84,10 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
         "sale_of_property_plant_and_equipment": "saleofplantpropertyandequipment",
     }
 
+    reported_currency: Optional[str] = Field(
+        description="The currency in which the balance sheet is reported.",
+        default=None,
+    )
     net_income: Optional[float] = Field(
         default=None, description="Consolidated Net Income."
     )
@@ -293,10 +297,14 @@ class IntrinioCashFlowStatementFetcher(
     ) -> List[IntrinioCashFlowStatementData]:
         """Return the transformed data."""
         transformed_data: List[IntrinioCashFlowStatementData] = []
+        units = []
         for item in data:
             sub_dict: Dict[str, Any] = {}
 
             for sub_item in item["financials"]:
+                unit = sub_item["data_tag"].get("unit", "")
+                if unit and "share" not in unit:
+                    units.append(unit)
                 field_name = sub_item["data_tag"]["tag"]
                 sub_dict[field_name] = (
                     float(sub_item["value"])
@@ -307,6 +315,7 @@ class IntrinioCashFlowStatementFetcher(
             sub_dict["period_ending"] = item["period_ending"]
             sub_dict["fiscal_year"] = item["fiscal_year"]
             sub_dict["fiscal_period"] = item["fiscal_period"]
+            sub_dict["reported_currency"] = list(set(units))[0]
 
             transformed_data.append(IntrinioCashFlowStatementData(**sub_dict))
 

@@ -147,12 +147,12 @@ def test_news_world(params, headers):
                 "source": "bloomberg.com",
             }
         ),
-        (
-            {
-                "provider": "ultima",
-                "sectors": "Real Estate",
-            }
-        ),
+        # (
+        #     {
+        #         "provider": "ultima",
+        #         "sectors": "Real Estate",
+        #     }
+        # ),
     ],
 )
 @pytest.mark.integration
@@ -166,6 +166,7 @@ def test_news_company(params, headers):
     assert result.status_code == 200
 
 
+@pytest.mark.skip("openbb-ultima is not installed on the CI.")
 @parametrize(
     "params",
     [
