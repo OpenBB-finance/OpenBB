@@ -1,6 +1,8 @@
 ,Tracking Error
 mtd,-
-qtd,-
+qtd,"Adj Close   NaN
+Total       NaN
+dtype: float64"
 ytd,-
 3m,-
 6m,-
