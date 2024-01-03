@@ -21,6 +21,7 @@ class ROUTER_economy(Container):
     /gdp
     money_measures
     risk_premium
+    unemployment
     """
 
     def __repr__(self) -> str:
@@ -843,7 +844,7 @@ class ROUTER_economy(Container):
         provider: Optional[Literal["federal_reserve"]] = None,
         **kwargs
     ) -> OBBject:
-        """Money Measures.
+        """Money Measures (M1/M2 and components.
 
         Parameters
         ----------
@@ -880,15 +881,15 @@ class ROUTER_economy(Container):
             Value of the M1 money supply in billions.
         M2 : float
             Value of the M2 money supply in billions.
-        currency : float
+        currency : Optional[float]
             Value of currency in circulation in billions.
-        demand_deposits : float
+        demand_deposits : Optional[float]
             Value of demand deposits in billions.
-        retail_money_market_funds : float
+        retail_money_market_funds : Optional[float]
             Value of retail money market funds in billions.
-        other_liquid_deposits : float
+        other_liquid_deposits : Optional[float]
             Value of other liquid deposits in billions.
-        small_denomination_time_deposits : float
+        small_denomination_time_deposits : Optional[float]
             Value of small denomination time deposits in billions.
 
         Example
@@ -963,6 +964,90 @@ class ROUTER_economy(Container):
                     "provider": provider,
                 },
                 standard_params={},
+                extra_params=kwargs,
+            )
+        )
+
+    @validate
+    def unemployment(
+        self,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        provider: Optional[Literal["oecd"]] = None,
+        **kwargs
+    ) -> OBBject:
+        """Global unemployment data.
+
+        Parameters
+        ----------
+        start_date : Optional[datetime.date]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Optional[datetime.date]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['oecd']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'oecd' if there is
+            no default.
+        country : Literal['colombia', 'new_zealand', 'united_kingdom', 'italy', 'luxembourg', 'euro_area19', 'sweden', 'oecd', 'south_africa', 'denmark', 'canada', 'switzerland', 'slovakia', 'hungary', 'portugal', 'spain', 'france', 'czech_republic', 'costa_rica', 'japan', 'slovenia', 'russia', 'austria', 'latvia', 'netherlands', 'israel', 'iceland', 'united_states', 'ireland', 'mexico', 'germany', 'greece', 'turkey', 'australia', 'poland', 'south_korea', 'chile', 'finland', 'european_union27_2020', 'norway', 'lithuania', 'euro_area20', 'estonia', 'belgium', 'brazil', 'indonesia', 'all']
+            Country to get GDP for. (provider: oecd)
+        sex : Literal['total', 'male', 'female']
+            Sex to get unemployment for. (provider: oecd)
+        frequency : Literal['monthly', 'quarterly', 'annual']
+            Frequency to get unemployment for. (provider: oecd)
+        age : Literal['total', '15-24', '15-64', '25-54', '55-64']
+            Age group to get unemployment for. Total indicates 15 years or over (provider: oecd)
+        seasonal_adjustment : bool
+            Whether to get seasonally adjusted unemployment. Defaults to False. (provider: oecd)
+
+        Returns
+        -------
+        OBBject
+            results : List[Unemployment]
+                Serializable results.
+            provider : Optional[Literal['oecd']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        Unemployment
+        ------------
+        date : Optional[date]
+            The date of the data.
+        value : Optional[float]
+            Unemployment rate (given as a whole number, i.e 10=10%)
+        country : Optional[str]
+            Country for which unemployment rate is given
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.economy.unemployment()
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/unemployment",
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
                 extra_params=kwargs,
             )
         )
