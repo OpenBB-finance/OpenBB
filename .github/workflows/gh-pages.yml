@@ -53,18 +53,23 @@ jobs:
       - name: Install packages
         run: poetry install --no-interaction -E forecast -E doc -E optimization
 
-      - run: |
+      - name: Generate SDK v3 Markdown
+        run: |
           pip uninstall Brotli -y
-          pip install importlib-metadata
-          pip install pytest
           pytest tests/website --autodoc
-          python website/generate_sdk_v3_markdown.py
-          python website/generate_terminal_v3_markdown.py
+          poetry run python website/generate_sdk_v3_markdown.py
+          poetry run python website/generate_terminal_v3_markdown.py
+
+      - name: Generate Platform Markdown
+        run: |
           pip install -U poetry
-          python openbb_platform/dev_install.py -e all
+          poetry run python openbb_platform/dev_install.py -e all
           pip uninstall nbmake -y
-          python website/generate_platform_v4_markdown.py
-          python website/generate_widgets_library.py
+          poetry run python website/generate_platform_v4_markdown.py
+
+      - name: Generate Widgets Library
+        run: |
+          poetry run python website/generate_widgets_library.py
 
       - name: Setup Node
         uses: actions/setup-node@v3
