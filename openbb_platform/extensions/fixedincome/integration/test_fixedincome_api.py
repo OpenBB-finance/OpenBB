@@ -573,7 +573,7 @@ def test_fixedincome_government_treasury_prices(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_coporate_bond_prices(params, headers):
+def test_fixedincome_corporate_bond_prices(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
