@@ -29,7 +29,7 @@ You can find all data models [here](/platform/data_models), or the [Reference](/
 
 The router populates itself from the installed extensions. For example, if the Technical Analysis extension is not installed, the `obb.technical` router path will not be present.
 
-The same applies to data extensions, if a provider module is not installed, it will not be displayed as a choice.
+The same applies to data extensions. If a provider module is not installed, it will not be displayed as a choice.
 
 If you have just installed a new extension, the Python interface may need to be rebuilt. This can be triggered manually with:
 
@@ -56,14 +56,13 @@ python dev_install.py -e
 
 </details>
 
-<details><summary>Why is the data returned not the start/end date I requested?</summary>
+<details><summary>Why is the returned data not matching the start/end date I requested?</summary>
 
 The provider may not have data from the requested period, in which case the data will be what they return. For example, `provider='yfinance'` at one-minute intervals will not return beyond one week ago.
 
 Another reason could be the data entitlements of your API key. Check the provider's website to know what data coverage to expect. If there is technical problem with a provider or function, please check [GitHub](https://github.com/OpenBB-finance/OpenBBTerminal/issues/new/choose) and raise an issue if one does not already exist. Or, send us an [email](mailto:support@openbb.co) with the details, your system configuration, the syntax used, and any error messages that are raised.
 
 </details>
-
 
 <details><summary>How do I load a ticker symbol from India?</summary>
 

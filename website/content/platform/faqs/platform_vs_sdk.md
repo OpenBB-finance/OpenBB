@@ -79,7 +79,7 @@ OpenBB Hub Preferences for default sources do not currently sync with V4 Platfor
 
 ### API Key Management
 
-API keys and user preferences are stored in a JSON file - `$HOME/.openbb_platform` - instead of the `ENV` file in `$HOME/.openbb_sdk`.
+API keys and user preferences are stored in a JSON file - `$HOME/.openbb_platform/user_settings.json` - instead of the `ENV` file in `$HOME/.openbb_sdk/.env`.
 
 Credentials can be entered directly from the Python interface:
 
@@ -115,6 +115,10 @@ data = obb.equity.price.historical("AAPL", provider="yfinance")
 df = data.to_df()
 ```
 
+:::warning
+DataFrames are not JSON serializable. Changing this preference will remove REST API compatibility.
+:::
+
 ### Jupyter
 
 Jupyter does not get installed with the OpenBB Platform. Install from `pip` in the environment containing the Platform.
@@ -126,6 +130,12 @@ pip install jupyter
 ### Views
 
 Most of the development has been on the core architecture and data providers. Most views from the V3 SDK and Terminal have yet to be ported over to the V4 Platform, although some charts are already available with the `openbb-charting` toolkit extension - which includes PyWry for window creation.
+
+Install the charting extension with:
+
+```bash
+pip install openbb-charting
+```
 
 The equivalent to `openbb.stocks.candle("AAPL")` is, `obb.equity.price.historical("AAPL", chart=True).show()`.
 
