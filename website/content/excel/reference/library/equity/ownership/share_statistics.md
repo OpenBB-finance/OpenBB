@@ -23,7 +23,7 @@ Share Statistics. Share statistics for a given company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.OWNERSHIP.SHARE_STATISTICS(required; [optional])
+=OBB.EQUITY.OWNERSHIP.SHARE_STATISTICS( symbol; [provider] )
 ```
 
 ---
@@ -32,7 +32,7 @@ Share Statistics. Share statistics for a given company.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp, intrinio | True |
 
 ---
@@ -49,3 +49,11 @@ Share Statistics. Share statistics for a given company.
 | source | Source of the received data.  |
 | adjusted_outstanding_shares | Total number of shares of a publicly-traded company, adjusted for splits. (provider: intrinio) |
 | public_float | Aggregate market value of the shares of a publicly-traded company. (provider: intrinio) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.OWNERSHIP.SHARE_STATISTICS( "AAPL" )
+```
+

@@ -31,7 +31,7 @@ Historical Dividends. Historical dividends data for a given company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.DIVIDENDS(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.DIVIDENDS( symbol; [provider]; [page_size] )
 ```
 
 ---
@@ -40,7 +40,7 @@ Historical Dividends. Historical dividends data for a given company.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp, intrinio | True |
 | page_size | Number | The number of data entries to return. (provider: intrinio) | True |
 
@@ -60,3 +60,11 @@ Historical Dividends. Historical dividends data for a given company.
 | factor | factor by which to multiply stock prices before this date, in order to calculate historically-adjusted stock prices. (provider: intrinio) |
 | dividend_currency | The currency of the dividend. (provider: intrinio) |
 | split_ratio | The ratio of the stock split, if a stock split occurred. (provider: intrinio) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.DIVIDENDS( "AAPL" )
+```
+

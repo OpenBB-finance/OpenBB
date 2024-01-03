@@ -30,7 +30,7 @@ Historical Employees. Historical number of employees.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT( symbol; [provider] )
 ```
 
 ---
@@ -39,7 +39,7 @@ Historical Employees. Historical number of employees.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp | True |
 
 ---
@@ -57,3 +57,11 @@ Historical Employees. Historical number of employees.
 | filing_date | Filing date of the company employee  |
 | employee_count | Count of employees of the company.  |
 | source | Source URL which retrieves this data for the company.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT( "AAPL" )
+```
+

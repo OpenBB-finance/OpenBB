@@ -5,7 +5,7 @@ Get data by series ID from FRED.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ECONOMY.FRED_SERIES(required; [optional])
+=OBB.ECONOMY.FRED_SERIES( symbol; [provider]; [start_date]; [end_date]; [limit]; [frequency]; [aggregation_method]; [transform]; [all_pages]; [sleep] )
 ```
 
 ---
@@ -14,7 +14,7 @@ Get data by series ID from FRED.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fred, intrinio | True |
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
@@ -33,3 +33,11 @@ Get data by series ID from FRED.
 | ---- | ----------- |
 | date | The date of the data.  |
 | value | Value of the index. (provider: intrinio) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.ECONOMY.FRED_SERIES(  )
+```
+

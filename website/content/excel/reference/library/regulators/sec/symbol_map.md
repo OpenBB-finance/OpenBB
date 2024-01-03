@@ -26,7 +26,7 @@ Get the ticker symbol corresponding to a company's CIK.
 ## Syntax
 
 ```excel wordwrap
-=OBB.REGULATORS.SEC.SYMBOL_MAP(required; [optional])
+=OBB.REGULATORS.SEC.SYMBOL_MAP( [provider]; [query] )
 ```
 
 ---
@@ -45,3 +45,11 @@ Get the ticker symbol corresponding to a company's CIK.
 | Name | Description |
 | ---- | ----------- |
 | symbol | Symbol representing the entity requested in the data. (provider: sec) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.REGULATORS.SEC.SYMBOL_MAP( )
+```
+

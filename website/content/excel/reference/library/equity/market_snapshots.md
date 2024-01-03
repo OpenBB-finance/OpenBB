@@ -31,7 +31,7 @@ Get a current, complete, market snapshot.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.MARKET_SNAPSHOTS(required; [optional])
+=OBB.EQUITY.MARKET_SNAPSHOTS( [provider]; [market] )
 ```
 
 ---
@@ -89,3 +89,11 @@ Get a current, complete, market snapshot.
 | last_trade_conditions | The last trade condition codes. (provider: polygon) |
 | last_trade_exchange | The last trade exchange ID code. (provider: polygon) |
 | last_trade_timestamp | The last trade timestamp. (provider: polygon) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.MARKET_SNAPSHOTS( )
+```
+

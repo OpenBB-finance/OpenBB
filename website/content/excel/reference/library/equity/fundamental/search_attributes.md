@@ -5,7 +5,7 @@ Search Intrinio data tags.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES( query; [provider]; [limit] )
 ```
 
 ---
@@ -14,7 +14,7 @@ Search Intrinio data tags.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| query | Text | Query to search for. | False |
+| **query** | **Text** | **Query to search for.** | **False** |
 | provider | Text | Options: intrinio | True |
 | limit | Number | The number of data entries to return. | True |
 
@@ -35,3 +35,11 @@ Search Intrinio data tags.
 | transaction | Transaction type (credit/debit) of the financial attribute.  |
 | type | Type of the financial attribute.  |
 | unit | Unit of the financial attribute.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES(  )
+```
+

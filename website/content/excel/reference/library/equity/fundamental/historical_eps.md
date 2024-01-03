@@ -14,7 +14,7 @@ Historical earnings-per-share for a given company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS( symbol; [provider]; [limit] )
 ```
 
 ---
@@ -23,7 +23,7 @@ Historical earnings-per-share for a given company.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp | True |
 | limit | Number | The number of data entries to return. (provider: fmp) | True |
 
@@ -43,3 +43,11 @@ Historical earnings-per-share for a given company.
 | reporting_time | The reporting time - e.g. after market close. (provider: fmp) |
 | updated_at | The date when the data was last updated. (provider: fmp) |
 | period_ending | The fiscal period end date. (provider: fmp) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS( "AAPL" )
+```
+

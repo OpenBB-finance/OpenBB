@@ -14,7 +14,7 @@ Moody Corporate Bond Index.  Moody's Aaa and Baa are investment bonds that acts 
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.CORPORATE.MOODY(required; [optional])
+=OBB.FIXEDINCOME.CORPORATE.MOODY( [provider]; [start_date]; [end_date]; [index_type]; [spread] )
 ```
 
 ---
@@ -37,3 +37,11 @@ Moody Corporate Bond Index.  Moody's Aaa and Baa are investment bonds that acts 
 | ---- | ----------- |
 | date | The date of the data.  |
 | rate | Moody Corporate Bond Index Rate.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.FIXEDINCOME.CORPORATE.MOODY( )
+```
+

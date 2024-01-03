@@ -34,7 +34,7 @@ Get Executive Compensation. Information about the executive compensation for a g
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION( symbol; [provider] )
 ```
 
 ---
@@ -43,7 +43,7 @@ Get Executive Compensation. Information about the executive compensation for a g
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp | True |
 
 ---
@@ -65,3 +65,11 @@ Get Executive Compensation. Information about the executive compensation for a g
 | all_other_compensation | All other compensation of the executive.  |
 | total | Total compensation of the executive.  |
 | url | URL of the filing data.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION( "AAPL" )
+```
+

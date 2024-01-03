@@ -32,7 +32,7 @@ Equity Historical price. Load stock data for a specific ticker.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.PRICE.HISTORICAL(required; [optional])
+=OBB.EQUITY.PRICE.HISTORICAL( symbol; [provider]; [interval]; [start_date]; [end_date]; [limit]; [start_time]; [end_time]; [timezone]; [source]; [sort]; [adjusted] )
 ```
 
 ---
@@ -41,7 +41,7 @@ Equity Historical price. Load stock data for a specific ticker.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp, intrinio, polygon, tiingo | True |
 | interval | Text | Time interval of the data to return. | True |
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
@@ -88,3 +88,11 @@ Equity Historical price. Load stock data for a specific ticker.
 | fifty_two_week_high | 52 week high price for the symbol. (provider: intrinio) |
 | fifty_two_week_low | 52 week low price for the symbol. (provider: intrinio) |
 | transactions | Number of transactions for the symbol in the time period. (provider: polygon) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.PRICE.HISTORICAL( "AAPL" )
+```
+

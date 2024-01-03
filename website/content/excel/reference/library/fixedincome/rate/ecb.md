@@ -25,7 +25,7 @@ European Central Bank Interest Rates.  The Governing Council of the ECB sets the
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.RATE.ECB(required; [optional])
+=OBB.FIXEDINCOME.RATE.ECB( [provider]; [start_date]; [end_date]; [interest_rate_type] )
 ```
 
 ---
@@ -47,3 +47,11 @@ European Central Bank Interest Rates.  The Governing Council of the ECB sets the
 | ---- | ----------- |
 | date | The date of the data.  |
 | rate | European Central Bank Interest Rate.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.FIXEDINCOME.RATE.ECB( )
+```
+

@@ -14,7 +14,7 @@ Get the most-recent filings submitted to the SEC.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.DISCOVERY.FILINGS(required; [optional])
+=OBB.EQUITY.DISCOVERY.FILINGS( [provider]; [start_date]; [end_date]; [form_type]; [limit]; [isDone] )
 ```
 
 ---
@@ -42,3 +42,11 @@ Get the most-recent filings submitted to the SEC.
 | date | The date of the data.  |
 | form_type | The form type of the filing  |
 | link | URL to the filing page on the SEC site.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.DISCOVERY.FILINGS( )
+```
+

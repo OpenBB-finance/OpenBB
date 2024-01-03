@@ -14,7 +14,7 @@ Nominal GDP Data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ECONOMY.GDP.NOMINAL(required; [optional])
+=OBB.ECONOMY.GDP.NOMINAL( [provider]; [units]; [start_date]; [end_date]; [country] )
 ```
 
 ---
@@ -37,3 +37,11 @@ Nominal GDP Data.
 | ---- | ----------- |
 | date | The date of the data.  |
 | value | Nominal GDP value on the date.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.ECONOMY.GDP.NOMINAL( )
+```
+

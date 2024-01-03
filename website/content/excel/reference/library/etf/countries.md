@@ -22,7 +22,7 @@ ETF Country weighting.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ETF.COUNTRIES(required; [optional])
+=OBB.ETF.COUNTRIES( symbol; [provider] )
 ```
 
 ---
@@ -31,7 +31,7 @@ ETF Country weighting.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. (ETF) | False |
+| **symbol** | **Text** | **Symbol to get data for. (ETF)** | **False** |
 | provider | Text | Options: fmp | True |
 
 ---
@@ -41,3 +41,11 @@ ETF Country weighting.
 | Name | Description |
 | ---- | ----------- |
 | country | The country of the exposure.  Corresponding values are normalized percentage points.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.ETF.COUNTRIES( "SPY" )
+```
+

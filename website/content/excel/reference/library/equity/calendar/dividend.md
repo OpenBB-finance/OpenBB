@@ -35,7 +35,7 @@ Upcoming and Historical Dividend Calendar.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.CALENDAR.DIVIDEND(required; [optional])
+=OBB.EQUITY.CALENDAR.DIVIDEND( [provider]; [start_date]; [end_date] )
 ```
 
 ---
@@ -63,3 +63,11 @@ Upcoming and Historical Dividend Calendar.
 | declaration_date | Declaration date of the dividend.  |
 | adjusted_amount | The adjusted-dividend amount. (provider: fmp) |
 | label | Ex-dividend date formatted for display. (provider: fmp) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.CALENDAR.DIVIDEND( )
+```
+

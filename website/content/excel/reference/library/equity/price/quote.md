@@ -68,7 +68,7 @@ Equity Quote. Load stock data for a specific ticker.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.PRICE.QUOTE(required; [optional])
+=OBB.EQUITY.PRICE.QUOTE( symbol; [provider]; [source] )
 ```
 
 ---
@@ -77,7 +77,7 @@ Equity Quote. Load stock data for a specific ticker.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. In this case, the comma separated list of symbols. | False |
+| **symbol** | **Text** | **Symbol to get data for. In this case, the comma separated list of symbols.** | **False** |
 | provider | Text | Options: fmp, intrinio | True |
 | source | Text | Source of the data. (provider: intrinio) | True |
 
@@ -131,3 +131,11 @@ Equity Quote. Load stock data for a specific ticker.
 | is_darkpool | Whether or not the current trade is from a darkpool. (provider: intrinio) |
 | messages | Messages associated with the endpoint. (provider: intrinio) |
 | security | Security details related to the quote. (provider: intrinio) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.PRICE.QUOTE( "AAPL" )
+```
+

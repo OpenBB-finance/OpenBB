@@ -30,7 +30,7 @@ Fuzzy search for Industry Titles, Reporting Office, and SIC Codes.
 ## Syntax
 
 ```excel wordwrap
-=OBB.REGULATORS.SEC.SIC_SEARCH(required; [optional])
+=OBB.REGULATORS.SEC.SIC_SEARCH( [provider]; [query]; [use_cache] )
 ```
 
 ---
@@ -52,3 +52,11 @@ Fuzzy search for Industry Titles, Reporting Office, and SIC Codes.
 | sic | Sector Industrial Code (SIC) (provider: sec) |
 | industry | Industry title. (provider: sec) |
 | office | Reporting office within the Corporate Finance Office (provider: sec) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.REGULATORS.SEC.SIC_SEARCH( )
+```
+

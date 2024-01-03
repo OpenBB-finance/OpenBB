@@ -26,7 +26,7 @@ Revenue Business Line. Business line revenue data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT( symbol; [provider]; [period]; [structure] )
 ```
 
 ---
@@ -35,7 +35,7 @@ Revenue Business Line. Business line revenue data.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp | True |
 | period | Text | Time period of the data to return. | True |
 | structure | Text | Structure of the returned data. | True |
@@ -48,3 +48,11 @@ Revenue Business Line. Business line revenue data.
 | ---- | ----------- |
 | date | The date of the data.  |
 | business_line | Day level data containing the revenue of the business line.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT( "AAPL" )
+```
+

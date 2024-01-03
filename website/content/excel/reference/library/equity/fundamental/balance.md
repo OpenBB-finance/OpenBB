@@ -20,7 +20,7 @@ Balance Sheet. Balance sheet statement.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.BALANCE(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.BALANCE( symbol; [provider]; [period]; [limit]; [cik]; [filing_date]; [filing_date_lt]; [filing_date_lte]; [filing_date_gt]; [filing_date_gte]; [period_of_report_date]; [period_of_report_date_lt]; [period_of_report_date_lte]; [period_of_report_date_gt]; [period_of_report_date_gte]; [include_sources]; [order]; [sort] )
 ```
 
 ---
@@ -29,7 +29,7 @@ Balance Sheet. Balance sheet statement.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp, intrinio, polygon | True |
 | period | Text | Time period of the data to return. | True |
 | limit | Number | The number of data entries to return. | True |
@@ -181,3 +181,11 @@ Balance Sheet. Balance sheet statement.
 | totalStockHoldersEquity | Total stock holders equity (provider: polygon) |
 | totalLiabilitiesAndStockHoldersEquity | Total liabilities and stockholders equity (provider: polygon) |
 | totalEquity | Total equity (provider: polygon) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.BALANCE( "AAPL" )
+```
+

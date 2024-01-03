@@ -30,7 +30,7 @@ Consumer Price Index (CPI) Data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ECONOMY.CPI(required; [optional])
+=OBB.ECONOMY.CPI( countries; [provider]; [units]; [frequency]; [harmonized]; [start_date]; [end_date] )
 ```
 
 ---
@@ -39,7 +39,7 @@ Consumer Price Index (CPI) Data.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| countries | Any | The country or countries to get data. | False |
+| **countries** | **Any** | **The country or countries to get data.** | **False** |
 | provider | Text | Options: fred | True |
 | units | Text | The unit of measurement for the data. Options: - `growth_previous`: growth from the previous period - `growth_same`: growth from the same period in the previous year - `index_2015`: index with base year 2015. | True |
 | frequency | Text | The frequency of the data. Options: `monthly`, `quarter`, and `annual`. | True |
@@ -54,3 +54,11 @@ Consumer Price Index (CPI) Data.
 | Name | Description |
 | ---- | ----------- |
 | date | The date of the data.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.ECONOMY.CPI( "united_states,germany" )
+```
+

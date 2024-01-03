@@ -14,7 +14,7 @@ Fed Funds Rate.  Get Effective Federal Funds Rate data. A bank rate is the inter
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.RATE.EFFR(required; [optional])
+=OBB.FIXEDINCOME.RATE.EFFR( [provider]; [start_date]; [end_date]; [parameter] )
 ```
 
 ---
@@ -36,3 +36,11 @@ Fed Funds Rate.  Get Effective Federal Funds Rate data. A bank rate is the inter
 | ---- | ----------- |
 | date | The date of the data.  |
 | rate | FED rate.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.FIXEDINCOME.RATE.EFFR( )
+```
+

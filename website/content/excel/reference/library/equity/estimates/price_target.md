@@ -28,7 +28,7 @@ Price Target. Price target data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.ESTIMATES.PRICE_TARGET(required; [optional])
+=OBB.EQUITY.ESTIMATES.PRICE_TARGET( symbol; [provider]; [with_grade] )
 ```
 
 ---
@@ -37,7 +37,7 @@ Price Target. Price target data.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp | True |
 | with_grade | Boolean | Include upgrades and downgrades in the response. (provider: fmp) | True |
 
@@ -61,3 +61,11 @@ Price Target. Price target data.
 | new_grade | New grade (provider: fmp) |
 | previous_grade | Previous grade (provider: fmp) |
 | grading_company | Grading company (provider: fmp) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.ESTIMATES.PRICE_TARGET( "AAPL" )
+```
+

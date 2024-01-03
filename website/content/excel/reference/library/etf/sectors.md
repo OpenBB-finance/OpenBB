@@ -29,7 +29,7 @@ ETF Sector weighting.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ETF.SECTORS(required; [optional])
+=OBB.ETF.SECTORS( symbol; [provider] )
 ```
 
 ---
@@ -38,7 +38,7 @@ ETF Sector weighting.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. (ETF) | False |
+| **symbol** | **Text** | **Symbol to get data for. (ETF)** | **False** |
 | provider | Text | Options: fmp | True |
 
 ---
@@ -49,3 +49,11 @@ ETF Sector weighting.
 | ---- | ----------- |
 | sector | Sector of exposure.  |
 | weight | Exposure of the ETF to the sector in normalized percentage points.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.ETF.SECTORS( "SPY" )
+```
+

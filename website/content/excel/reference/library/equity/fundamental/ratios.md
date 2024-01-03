@@ -30,7 +30,7 @@ Extensive set of ratios over time. Financial ratios for a given company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.RATIOS(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.RATIOS( symbol; [provider]; [period]; [limit]; [with_ttm] )
 ```
 
 ---
@@ -39,7 +39,7 @@ Extensive set of ratios over time. Financial ratios for a given company.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp | True |
 | period | Text | Time period of the data to return. | True |
 | limit | Number | The number of data entries to return. | True |
@@ -110,3 +110,11 @@ Extensive set of ratios over time. Financial ratios for a given company.
 | dividend_per_share | Dividend per share. (provider: fmp) |
 | enterprise_value_multiple | Enterprise value multiple. (provider: fmp) |
 | price_fair_value | Price fair value. (provider: fmp) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.RATIOS( "AAPL" )
+```
+

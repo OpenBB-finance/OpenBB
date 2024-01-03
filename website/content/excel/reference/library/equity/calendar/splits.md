@@ -5,7 +5,7 @@ Calendar Splits. Show Stock Split Calendar.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.CALENDAR.SPLITS(required; [optional])
+=OBB.EQUITY.CALENDAR.SPLITS( [provider]; [start_date]; [end_date] )
 ```
 
 ---
@@ -29,3 +29,11 @@ Calendar Splits. Show Stock Split Calendar.
 | symbol | Symbol representing the entity requested in the data.  |
 | numerator | Numerator of the stock splits.  |
 | denominator | Denominator of the stock splits.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.CALENDAR.SPLITS( )
+```
+

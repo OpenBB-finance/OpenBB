@@ -25,7 +25,7 @@ Get the CIK number corresponding to a ticker symbol.
 ## Syntax
 
 ```excel wordwrap
-=OBB.REGULATORS.SEC.CIK_MAP(required; [optional])
+=OBB.REGULATORS.SEC.CIK_MAP( symbol; [provider] )
 ```
 
 ---
@@ -34,7 +34,7 @@ Get the CIK number corresponding to a ticker symbol.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: sec | True |
 
 ---
@@ -44,3 +44,11 @@ Get the CIK number corresponding to a ticker symbol.
 | Name | Description |
 | ---- | ----------- |
 | cik | Central Index Key (provider: sec) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.REGULATORS.SEC.CIK_MAP( "AAPL" )
+```
+

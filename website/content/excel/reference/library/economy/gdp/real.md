@@ -30,7 +30,7 @@ Real GDP Data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ECONOMY.GDP.REAL(required; [optional])
+=OBB.ECONOMY.GDP.REAL( [provider]; [units]; [start_date]; [end_date]; [country] )
 ```
 
 ---
@@ -53,3 +53,11 @@ Real GDP Data.
 | ---- | ----------- |
 | date | The date of the data.  |
 | value | Nominal GDP value on the date.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.ECONOMY.GDP.REAL( )
+```
+

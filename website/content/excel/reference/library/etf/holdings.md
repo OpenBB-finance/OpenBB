@@ -48,7 +48,7 @@ Get the holdings for an individual ETF.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ETF.HOLDINGS(required; [optional])
+=OBB.ETF.HOLDINGS( symbol; [provider]; [date]; [cik] )
 ```
 
 ---
@@ -57,7 +57,7 @@ Get the holdings for an individual ETF.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. (ETF) | False |
+| **symbol** | **Text** | **Symbol to get data for. (ETF)** | **False** |
 | provider | Text | Options: fmp | True |
 | date | Text | A specific date to get data for. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp) | True |
 | cik | Text | The CIK of the filing entity. Overrides symbol. (provider: fmp) | True |
@@ -146,3 +146,11 @@ Get the holdings for an individual ETF.
 | notional_amount | The notional amount of the derivative. (provider: sec) |
 | notional_currency | The currency of the derivative's notional amount. (provider: sec) |
 | unrealized_gain | The unrealized gain or loss on the derivative. (provider: sec) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.ETF.HOLDINGS( "SPY" )
+```
+

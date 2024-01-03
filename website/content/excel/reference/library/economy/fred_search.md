@@ -5,7 +5,7 @@ Search for FRED series or economic releases by ID or fuzzy query. This does not 
 ## Syntax
 
 ```excel wordwrap
-=OBB.ECONOMY.FRED_SEARCH(required; [optional])
+=OBB.ECONOMY.FRED_SEARCH( [provider]; [query]; [is_release]; [release_id]; [limit]; [offset]; [filter_variable]; [filter_value]; [tag_names]; [exclude_tag_names] )
 ```
 
 ---
@@ -49,3 +49,11 @@ Search for FRED series or economic releases by ID or fuzzy query. This does not 
 | url | URL to the release.  |
 | popularity | Popularity of the series (provider: fred) |
 | group_popularity | Group popularity of the release (provider: fred) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.ECONOMY.FRED_SEARCH( )
+```
+

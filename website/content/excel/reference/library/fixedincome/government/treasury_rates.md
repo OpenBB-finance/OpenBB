@@ -14,7 +14,7 @@ Government Treasury Rates.
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.GOVERNMENT.TREASURY_RATES(required; [optional])
+=OBB.FIXEDINCOME.GOVERNMENT.TREASURY_RATES( [provider]; [start_date]; [end_date] )
 ```
 
 ---
@@ -46,3 +46,11 @@ Government Treasury Rates.
 | year_10 | 10 year treasury rate.  |
 | year_20 | 20 year treasury rate.  |
 | year_30 | 30 year treasury rate.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.FIXEDINCOME.GOVERNMENT.TREASURY_RATES( )
+```
+

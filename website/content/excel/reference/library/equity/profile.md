@@ -54,7 +54,7 @@ Equity Info. Get general price and performance metrics of a stock.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.PROFILE(required; [optional])
+=OBB.EQUITY.PROFILE( symbol; [provider] )
 ```
 
 ---
@@ -63,7 +63,7 @@ Equity Info. Get general price and performance metrics of a stock.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: intrinio | True |
 
 ---
@@ -110,3 +110,11 @@ Equity Info. Get general price and performance metrics of a stock.
 | last_stock_price_date | Date of the company's last stock price.  |
 | id | Intrinio ID for the company. (provider: intrinio) |
 | thea_enabled | Whether the company has been enabled for Thea. (provider: intrinio) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.PROFILE( "AAPL" )
+```
+

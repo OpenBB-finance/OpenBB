@@ -66,7 +66,7 @@ World News. Global news data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.NEWS.WORLD(required; [optional])
+=OBB.NEWS.WORLD( [provider]; [limit]; [display]; [date]; [start_date]; [end_date]; [updated_since]; [published_since]; [sort]; [order]; [isin]; [cusip]; [channels]; [topics]; [authors]; [content_types]; [source] )
 ```
 
 ---
@@ -116,3 +116,11 @@ World News. Global news data.
 | symbols | Ticker tagged in the fetched news. (provider: tiingo) |
 | article_id | Unique ID of the news article. (provider: tiingo) |
 | crawl_date | Date the news article was crawled. (provider: tiingo) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.NEWS.WORLD( )
+```
+

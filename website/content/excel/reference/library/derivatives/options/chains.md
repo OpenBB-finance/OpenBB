@@ -43,7 +43,7 @@ Get the complete options chain for a ticker.
 ## Syntax
 
 ```excel wordwrap
-=OBB.DERIVATIVES.OPTIONS.CHAINS(required; [optional])
+=OBB.DERIVATIVES.OPTIONS.CHAINS( symbol; [provider]; [date] )
 ```
 
 ---
@@ -52,7 +52,7 @@ Get the complete options chain for a ticker.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: intrinio | True |
 | date | Text | Date for which the options chains are returned. (provider: intrinio) | True |
 
@@ -88,3 +88,11 @@ Get the complete options chain for a ticker.
 | gamma | Gamma of the option.  |
 | theta | Theta of the option.  |
 | vega | Vega of the option.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.DERIVATIVES.OPTIONS.CHAINS( "AAPL" )
+```
+

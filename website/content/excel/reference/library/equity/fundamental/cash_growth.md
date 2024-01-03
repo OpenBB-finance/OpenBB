@@ -53,7 +53,7 @@ Cash Flow Statement Growth. Information about the growth of the company cash flo
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.CASH_GROWTH(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.CASH_GROWTH( symbol; [provider]; [limit] )
 ```
 
 ---
@@ -62,7 +62,7 @@ Cash Flow Statement Growth. Information about the growth of the company cash flo
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp | True |
 | limit | Number | The number of data entries to return. | True |
 
@@ -105,3 +105,11 @@ Cash Flow Statement Growth. Information about the growth of the company cash flo
 | growth_operating_cash_flow | Growth rate of operating cash flow.  |
 | growth_capital_expenditure | Growth rate of capital expenditure.  |
 | growth_free_cash_flow | Growth rate of free cash flow.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.CASH_GROWTH( "AAPL" )
+```
+

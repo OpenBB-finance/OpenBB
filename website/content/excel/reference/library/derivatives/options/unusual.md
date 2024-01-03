@@ -34,7 +34,7 @@ Get the complete options chain for a ticker.
 ## Syntax
 
 ```excel wordwrap
-=OBB.DERIVATIVES.OPTIONS.UNUSUAL(required; [optional])
+=OBB.DERIVATIVES.OPTIONS.UNUSUAL( [provider]; [symbol]; [source] )
 ```
 
 ---
@@ -64,3 +64,11 @@ Get the complete options chain for a ticker.
 | bid_at_execution | Bid price at execution. (provider: intrinio) |
 | underlying_price_at_execution | Price of the underlying security at execution of trade. (provider: intrinio) |
 | timestamp | The UTC timestamp of order placement. (provider: intrinio) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.DERIVATIVES.OPTIONS.UNUSUAL( )
+```
+

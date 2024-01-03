@@ -81,7 +81,7 @@ Key Metrics. Key metrics for a given company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.METRICS(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.METRICS( symbol; [provider]; [period]; [limit]; [with_ttm] )
 ```
 
 ---
@@ -90,7 +90,7 @@ Key Metrics. Key metrics for a given company.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp, intrinio | True |
 | period | Text | Time period of the data to return. | True |
 | limit | Number | The number of data entries to return. | True |
@@ -167,3 +167,11 @@ Key Metrics. Key metrics for a given company.
 | volume | Volume (provider: intrinio) |
 | fifty_two_week_high | 52 week high (provider: intrinio) |
 | fifty_two_week_low | 52 week low (provider: intrinio) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.METRICS( "AAPL" )
+```
+

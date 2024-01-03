@@ -14,7 +14,7 @@ Discount Window Primary Credit Rate.  A bank rate is the interest rate a nation'
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.RATE.DPCREDIT(required; [optional])
+=OBB.FIXEDINCOME.RATE.DPCREDIT( [provider]; [start_date]; [end_date]; [parameter] )
 ```
 
 ---
@@ -36,3 +36,11 @@ Discount Window Primary Credit Rate.  A bank rate is the interest rate a nation'
 | ---- | ----------- |
 | date | The date of the data.  |
 | rate | Discount Window Primary Credit Rate.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.FIXEDINCOME.RATE.DPCREDIT( )
+```
+

@@ -40,7 +40,7 @@ Company News. Get news for one or more companies.
 ## Syntax
 
 ```excel wordwrap
-=OBB.NEWS.COMPANY(required; [optional])
+=OBB.NEWS.COMPANY( symbols; [provider]; [limit]; [display]; [date]; [start_date]; [end_date]; [updated_since]; [published_since]; [sort]; [order]; [isin]; [cusip]; [channels]; [topics]; [authors]; [content_types]; [page]; [published_utc]; [source] )
 ```
 
 ---
@@ -49,7 +49,7 @@ Company News. Get news for one or more companies.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbols | Text | Here it is a separated list of symbols. | False |
+| **symbols** | **Text** | **Here it is a separated list of symbols.** | **False** |
 | provider | Text | Options: benzinga, fmp, intrinio, polygon, tiingo | True |
 | limit | Number | The number of data entries to return. | True |
 | display | Text | Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga) | True |
@@ -97,3 +97,11 @@ Company News. Get news for one or more companies.
 | publisher | Publisher of the article. (provider: polygon) |
 | article_id | Unique ID of the news article. (provider: tiingo) |
 | crawl_date | Date the news article was crawled. (provider: tiingo) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.NEWS.COMPANY( "AAPL,MSFT" )
+```
+

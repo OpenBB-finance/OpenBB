@@ -5,7 +5,7 @@ Fetch the historical values of a data tag from Intrinio.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES( symbol; tag; [provider]; [start_date]; [end_date]; [frequency]; [limit]; [type]; [sort] )
 ```
 
 ---
@@ -14,8 +14,8 @@ Fetch the historical values of a data tag from Intrinio.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
-| tag | Text | Intrinio data tag ID or code. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
+| **tag** | **Text** | **Intrinio data tag ID or code.** | **False** |
 | provider | Text | Options: intrinio | True |
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
@@ -32,3 +32,11 @@ Fetch the historical values of a data tag from Intrinio.
 | ---- | ----------- |
 | date | The date of the data.  |
 | value | The value of the data.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES( "AAPL" ;  )
+```
+

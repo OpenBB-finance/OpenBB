@@ -29,7 +29,7 @@ Cryptocurrency Search. Search available cryptocurrency pairs.
 ## Syntax
 
 ```excel wordwrap
-=OBB.CRYPTO.SEARCH(required; [optional])
+=OBB.CRYPTO.SEARCH( [provider]; [query] )
 ```
 
 ---
@@ -52,3 +52,11 @@ Cryptocurrency Search. Search available cryptocurrency pairs.
 | currency | The currency the crypto trades for. (provider: fmp) |
 | exchange | The exchange code the crypto trades on. (provider: fmp) |
 | exchange_name | The short name of the exchange the crypto trades on. (provider: fmp) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.CRYPTO.SEARCH( )
+```
+

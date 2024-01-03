@@ -29,7 +29,7 @@ Historical Splits. Historical splits data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS( symbol; [provider] )
 ```
 
 ---
@@ -38,7 +38,7 @@ Historical Splits. Historical splits data.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp | True |
 
 ---
@@ -51,3 +51,11 @@ Historical Splits. Historical splits data.
 | label | Label of the historical stock splits.  |
 | numerator | Numerator of the historical stock splits.  |
 | denominator | Denominator of the historical stock splits.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS( "AAPL" )
+```
+

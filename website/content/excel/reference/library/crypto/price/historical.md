@@ -32,7 +32,7 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.CRYPTO.PRICE.HISTORICAL(required; [optional])
+=OBB.CRYPTO.PRICE.HISTORICAL( symbol; [provider]; [start_date]; [end_date]; [timeseries]; [interval]; [multiplier]; [timespan]; [sort]; [limit]; [adjusted]; [exchanges] )
 ```
 
 ---
@@ -41,7 +41,7 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. | False |
+| **symbol** | **Text** | **Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format.** | **False** |
 | provider | Text | Options: fmp, polygon, tiingo | True |
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
@@ -75,3 +75,11 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 | change_over_time | Change % in the price of the symbol over a period of time. (provider: fmp) |
 | transactions | Number of transactions for the symbol in the time period. (provider: polygon, tiingo) |
 | volume_notional | The last size done for the asset on the specific date in the quote currency. The volume of the asset on the specific date in the quote currency. (provider: tiingo) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.CRYPTO.PRICE.HISTORICAL( "BTCUSD" )
+```
+

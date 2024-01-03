@@ -45,7 +45,7 @@ Economic Calendar.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ECONOMY.CALENDAR(required; [optional])
+=OBB.ECONOMY.CALENDAR( [provider]; [start_date]; [end_date]; [country]; [importance]; [group] )
 ```
 
 ---
@@ -85,3 +85,11 @@ Economic Calendar.
 | change_percent | Percentage change since previous. (provider: fmp) |
 | updated_at | Last updated timestamp. (provider: fmp) |
 | created_at | Created at timestamp. (provider: fmp) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.ECONOMY.CALENDAR( )
+```
+

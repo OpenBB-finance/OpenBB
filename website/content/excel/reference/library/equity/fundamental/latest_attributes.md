@@ -5,7 +5,7 @@ Fetch the latest value of a data tag from Intrinio.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES( symbol; tag; [provider] )
 ```
 
 ---
@@ -14,8 +14,8 @@ Fetch the latest value of a data tag from Intrinio.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
-| tag | Text | Intrinio data tag ID or code. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
+| **tag** | **Text** | **Intrinio data tag ID or code.** | **False** |
 | provider | Text | Options: intrinio | True |
 
 ---
@@ -25,3 +25,11 @@ Fetch the latest value of a data tag from Intrinio.
 | Name | Description |
 | ---- | ----------- |
 | value | The value of the data.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES( "AAPL" ;  )
+```
+

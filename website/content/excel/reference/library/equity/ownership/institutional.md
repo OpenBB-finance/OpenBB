@@ -65,7 +65,7 @@ Institutional Ownership. Institutional ownership data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.OWNERSHIP.INSTITUTIONAL(required; [optional])
+=OBB.EQUITY.OWNERSHIP.INSTITUTIONAL( symbol; [provider]; [include_current_quarter]; [date]; [page_size] )
 ```
 
 ---
@@ -74,7 +74,7 @@ Institutional Ownership. Institutional ownership data.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp, intrinio | True |
 | include_current_quarter | Boolean | Include current quarter data. (provider: fmp) | True |
 | date | Text | A specific date to get data for. (provider: fmp) | True |
@@ -131,3 +131,11 @@ Institutional Ownership. Institutional ownership data.
 | previous_amount | Previous amount of the institutional owner. (provider: intrinio) |
 | amount_change | Amount change of the institutional owner. (provider: intrinio) |
 | amount_percent_change | Amount percent change of the institutional owner. (provider: intrinio) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.OWNERSHIP.INSTITUTIONAL( "AAPL" )
+```
+

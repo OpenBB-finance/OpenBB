@@ -35,7 +35,7 @@ Upcoming and Historical earnings calendar.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.CALENDAR.EARNINGS(required; [optional])
+=OBB.EQUITY.CALENDAR.EARNINGS( [provider]; [start_date]; [end_date] )
 ```
 
 ---
@@ -65,3 +65,11 @@ Upcoming and Historical earnings calendar.
 | period_ending | The fiscal period end date. (provider: fmp) |
 | reporting_time | The reporting time - e.g. after market close. (provider: fmp) |
 | updated_date | The date the data was updated last. (provider: fmp) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.CALENDAR.EARNINGS( )
+```
+

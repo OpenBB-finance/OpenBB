@@ -14,7 +14,7 @@ Euro Short-Term Rate.  The euro short-term rate (€STR) reflects the wholesale 
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.RATE.ESTR(required; [optional])
+=OBB.FIXEDINCOME.RATE.ESTR( [provider]; [start_date]; [end_date]; [parameter] )
 ```
 
 ---
@@ -36,3 +36,11 @@ Euro Short-Term Rate.  The euro short-term rate (€STR) reflects the wholesale 
 | ---- | ----------- |
 | date | The date of the data.  |
 | rate | ESTR rate.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.FIXEDINCOME.RATE.ESTR( )
+```
+

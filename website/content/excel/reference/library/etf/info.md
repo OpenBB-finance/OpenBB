@@ -34,7 +34,7 @@ ETF Information Overview.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ETF.INFO(required; [optional])
+=OBB.ETF.INFO( symbol; [provider] )
 ```
 
 ---
@@ -43,7 +43,7 @@ ETF Information Overview.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. (ETF) | False |
+| **symbol** | **Text** | **Symbol to get data for. (ETF)** | **False** |
 | provider | Text | Options: fmp | True |
 
 ---
@@ -68,3 +68,11 @@ ETF Information Overview.
 | nav_currency | Currency of the ETF's net asset value. (provider: fmp) |
 | website | Website link of the ETF. (provider: fmp) |
 | holdings_count | Number of holdings in the ETF. (provider: fmp) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.ETF.INFO( "SPY" )
+```
+

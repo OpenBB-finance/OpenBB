@@ -27,7 +27,7 @@ Index Constituents. Constituents of an index.
 ## Syntax
 
 ```excel wordwrap
-=OBB.INDEX.CONSTITUENTS(required; [optional])
+=OBB.INDEX.CONSTITUENTS( [provider]; [index] )
 ```
 
 ---
@@ -53,3 +53,11 @@ Index Constituents. Constituents of an index.
 | date_first_added | Date the constituent company was added to the index.  |
 | cik | Central Index Key (CIK) for the requested entity.  |
 | founded | Founding year of the constituent company in the index.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.INDEX.CONSTITUENTS( )
+```
+

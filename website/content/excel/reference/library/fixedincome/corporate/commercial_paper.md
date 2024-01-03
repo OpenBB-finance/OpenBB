@@ -32,7 +32,7 @@ Commercial Paper.  Commercial paper (CP) consists of short-term, promissory note
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER(required; [optional])
+=OBB.FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER( [provider]; [start_date]; [end_date]; [maturity]; [category]; [grade] )
 ```
 
 ---
@@ -56,3 +56,11 @@ Commercial Paper.  Commercial paper (CP) consists of short-term, promissory note
 | ---- | ----------- |
 | date | The date of the data.  |
 | rate | Commercial Paper Rate.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER( )
+```
+

@@ -33,6 +33,20 @@ class CommandLib(PathHandler):
         "string": "Text",
     }
 
+    EXAMPLE_PARAMS = {
+        "last": {"symbol": '"AAPL"', "tag": '"EBITDA"'},
+        "hist": {"symbol": '"AAPL"', "tag": '"EBITDA"'},
+        "crypto": {"symbol": '"BTCUSD"'},
+        "currency": {"symbol": '"EURUSD"'},
+        "derivatives": {"symbol": '"AAPL"'},
+        "economy": {"countries": '"united_states,germany"'},
+        "equity": {"symbol": '"AAPL"'},
+        "etf": {"symbol": '"SPY"'},
+        "index": {"symbol": '"SPX"'},
+        "news": {"symbols": '"AAPL,MSFT"'},
+        "regulators": {"symbol": '"AAPL"'},
+    }
+
     def __init__(self):
         self.pi = ProviderInterface()
         self.route_map = self.build_route_map()
@@ -78,6 +92,23 @@ class CommandLib(PathHandler):
             return self.xl_funcs.get(cmd, {}).get("name", ".").split(".")[-1].lower()
         return ""
 
+    def get_signature(self, cmd: str, path_only: bool = False) -> str:
+        """Get the signature of the command."""
+        if cmd in self.route_map:
+            sig = "=OBB." + self.xl_funcs[cmd].get("name", "")
+            if path_only:
+                return sig
+            sig += "( "
+            for p in self.xl_funcs[cmd]["parameters"]:
+                if p.get("optional", False):
+                    sig += f'[{p["name"]}]'
+                else:
+                    sig += f'{p["name"]}'
+                sig += "; "
+            sig = sig[:-2] + " )" if sig[-2:] == "; " else sig + ")"
+            return sig
+        return ""
+
     def get_model(self, cmd: str) -> str:
         """Get the model of the command."""
         route = self.route_map.get(cmd, None)
@@ -118,22 +149,38 @@ class CommandLib(PathHandler):
 
         return {}
 
+    def get_examples(self, cmd: str) -> dict:
+        cmd_info = self.xl_funcs[cmd]
+        if cmd in self.route_map:
+            parameters = cmd_info["parameters"]
+            minimal_eg = "=OBB." + cmd_info.get("name", "") + "( "
+            category = cmd.split("/")[1]
+            for p in parameters:
+                p_name = p["name"]
+                if not p.get("optional", False):
+                    p_value = self.EXAMPLE_PARAMS.get(category, {}).get(p_name, "")
+                    minimal_eg += f"{p_value} ; "
+            minimal_eg = minimal_eg[:-2] + ")" if minimal_eg[-2:] == "; " else minimal_eg + ")"
+            return {"A. Minimal": minimal_eg}
+        return {}
+
     def get_info(self, cmd: str) -> Dict[str, Any]:
         """Get the info for a command."""
         name = self.get_func(cmd)
         if not name:
             return {}
         description = self.xl_funcs[cmd].get("description", "").replace("\n", " ")
-        signature_ = (
-            "=OBB." + self.xl_funcs[cmd].get("name", "") + "(required; [optional])"
-        )
+        signature_ = self.get_signature(cmd)
         return_ = self.xl_funcs[cmd].get("result", {}).get("dimensionality", "")
+        examples = self.get_examples(cmd)
         if model_name := self.get_model(cmd):
             return {
                 "name": name,
                 "description": description,
                 "signature": signature_,
+                "parameters": self.xl_funcs[cmd]["parameters"],
                 "return": return_,
+                "examples": examples,
                 "model_name": model_name,
             }
         return {}
@@ -203,7 +250,7 @@ class Editor:
             description += "\n\n"
             return description
 
-        def get_sintax() -> str:
+        def get_syntax() -> str:
             sig = cmd_info["signature"]
             syntax = "## Syntax\n\n"
             syntax += f"```{self.interface} wordwrap\n"
@@ -220,15 +267,12 @@ class Editor:
                 type_ = field_info["type"]
                 description = field_info["description"]
                 optional = field_info["optional"]
-                parameters += f"| {name} | {type_} | {description} | {optional} |\n"
+                if optional == "True":
+                    parameters += f"| {name} | {type_} | {description} | {optional} |\n"
+                else:
+                    parameters += f"| **{name}** | **{type_}** | **{description}** | **{optional}** |\n"
             parameters += "\n"
             return parameters
-
-        # def get_return_type() -> str:
-        #     ret = cmd_info["return"]
-        #     return_ = "## Return Type\n\n"
-        #     return_ += f"* {ret}\n\n"
-        #     return return_
 
         def get_return_data() -> str:
             data = "## Return Data\n\n"
@@ -240,16 +284,27 @@ class Editor:
                 data += f"| {name} | {description} |\n"
             return data
 
+        def get_examples() -> str:
+            examples = "## Example\n\n"
+
+            for _, v in cmd_info["examples"].items():
+                # examples += f"### {k}\n\n"
+                examples += f"```{self.interface} wordwrap\n"
+                examples += f"{v}\n"
+                examples += "```\n\n"
+
+            return examples
+
         content = get_header()
         content += get_tab()
         content += get_description()
-        content += get_sintax()
+        content += get_syntax()
         content += "---\n\n"
         content += get_parameters()
         content += "---\n\n"
-        # content += get_return_type()
-        # content += "---\n\n"
         content += get_return_data()
+        content += "---\n\n"
+        content += get_examples()
         Editor.write(path, content)
 
     def generate_sidebar(self):

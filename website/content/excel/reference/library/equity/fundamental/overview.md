@@ -55,7 +55,7 @@ Company Overview. General information about a company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.OVERVIEW(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.OVERVIEW( symbol; [provider] )
 ```
 
 ---
@@ -64,7 +64,7 @@ Company Overview. General information about a company.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp | True |
 
 ---
@@ -109,3 +109,11 @@ Company Overview. General information about a company.
 | is_actively_trading | If the company is actively trading.  |
 | is_adr | If the company is an ADR.  |
 | is_fund | If the company is a fund.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.OVERVIEW( "AAPL" )
+```
+

@@ -30,7 +30,7 @@ Historical Market Risk Premium.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ECONOMY.RISK_PREMIUM(required; [optional])
+=OBB.ECONOMY.RISK_PREMIUM( [provider] )
 ```
 
 ---
@@ -51,3 +51,11 @@ Historical Market Risk Premium.
 | continent | Continent of the country.  |
 | total_equity_risk_premium | Total equity risk premium for the country.  |
 | country_risk_premium | Country-specific risk premium.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.ECONOMY.RISK_PREMIUM( )
+```
+

@@ -30,7 +30,7 @@ Look up institutions regulated by the SEC.
 ## Syntax
 
 ```excel wordwrap
-=OBB.REGULATORS.SEC.INSTITUTIONS_SEARCH(required; [optional])
+=OBB.REGULATORS.SEC.INSTITUTIONS_SEARCH( [provider]; [query]; [use_cache] )
 ```
 
 ---
@@ -51,3 +51,11 @@ Look up institutions regulated by the SEC.
 | ---- | ----------- |
 | name | The name of the institution. (provider: sec) |
 | cik | Central Index Key (CIK) (provider: sec) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.REGULATORS.SEC.INSTITUTIONS_SEARCH( )
+```
+

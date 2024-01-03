@@ -28,7 +28,7 @@ Search for ETFs.  An empty query returns the full list of ETFs from the provider
 ## Syntax
 
 ```excel wordwrap
-=OBB.ETF.SEARCH(required; [optional])
+=OBB.ETF.SEARCH( [provider]; [query]; [exchange]; [is_active] )
 ```
 
 ---
@@ -61,3 +61,11 @@ Search for ETFs.  An empty query returns the full list of ETFs from the provider
 | exchange_name | The full name of the exchange the ETF trades on. (provider: fmp) |
 | country | The country the ETF is registered in. (provider: fmp) |
 | actively_trading | Whether the ETF is actively trading. (provider: fmp) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.ETF.SEARCH( )
+```
+

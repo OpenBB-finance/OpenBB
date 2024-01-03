@@ -24,7 +24,7 @@ Key Executives. Key executives for a given company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT( symbol; [provider] )
 ```
 
 ---
@@ -33,7 +33,7 @@ Key Executives. Key executives for a given company.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp | True |
 
 ---
@@ -49,3 +49,11 @@ Key Executives. Key executives for a given company.
 | gender | Gender of the key executive.  |
 | year_born | Birth year of the key executive.  |
 | title_since | Date the tile was held since.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT( "AAPL" )
+```
+

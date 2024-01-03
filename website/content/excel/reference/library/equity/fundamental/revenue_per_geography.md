@@ -34,7 +34,7 @@ Revenue Geographic. Geographic revenue data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY( symbol; [provider]; [period]; [structure] )
 ```
 
 ---
@@ -43,7 +43,7 @@ Revenue Geographic. Geographic revenue data.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp | True |
 | period | Text | Time period of the data to return. | True |
 | structure | Text | Structure of the returned data. | True |
@@ -61,3 +61,11 @@ Revenue Geographic. Geographic revenue data.
 | greater_china | Revenue from the the Greater China segment.  |
 | japan | Revenue from the the Japan segment.  |
 | rest_of_asia_pacific | Revenue from the the Rest of Asia Pacific segment.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY( "AAPL" )
+```
+

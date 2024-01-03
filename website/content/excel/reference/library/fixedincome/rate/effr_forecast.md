@@ -14,7 +14,7 @@ Fed Funds Rate Projections.  The projections for the federal funds rate are the 
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.RATE.EFFR_FORECAST(required; [optional])
+=OBB.FIXEDINCOME.RATE.EFFR_FORECAST( [provider]; [long_run] )
 ```
 
 ---
@@ -40,3 +40,11 @@ Fed Funds Rate Projections.  The projections for the federal funds rate are the 
 | central_tendency_midpoint | Central tendency of midpoint projection of rates.  |
 | range_low | Low projection of rates.  |
 | central_tendency_low | Central tendency of low projection of rates.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.FIXEDINCOME.RATE.EFFR_FORECAST( )
+```
+

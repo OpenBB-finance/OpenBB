@@ -56,7 +56,7 @@ Equity Search. Search for a company or stock ticker.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.SEARCH(required; [optional])
+=OBB.EQUITY.SEARCH( [provider]; [query]; [is_symbol]; [is_fund]; [use_cache] )
 ```
 
 ---
@@ -82,3 +82,11 @@ Equity Search. Search for a company or stock ticker.
 | cik | ;     Central Index Key (provider: sec) |
 | lei | The Legal Entity Identifier (LEI) of the company. (provider: intrinio) |
 | intrinioId | The Intrinio ID of the company. (provider: intrinio) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.SEARCH( )
+```
+

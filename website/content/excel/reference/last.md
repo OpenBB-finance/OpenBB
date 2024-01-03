@@ -5,7 +5,7 @@ Get latest data point by providing stock symbol and tag. See tag options at: htt
 ## Syntax
 
 ```excel wordwrap
-=OBB.LAST(required; [optional])
+=OBB.LAST( symbol; tag )
 ```
 
 ---
@@ -14,8 +14,8 @@ Get latest data point by providing stock symbol and tag. See tag options at: htt
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for, e.g. 'AAPL'. | False |
-| tag | Text | Field tag to get data for, e.g. 'EBITDA'. See options at: https://data.intrinio.com/data-tags. | False |
+| **symbol** | **Text** | **Symbol to get data for, e.g. 'AAPL'.** | **False** |
+| **tag** | **Text** | **Field tag to get data for, e.g. 'EBITDA'. See options at: https://data.intrinio.com/data-tags.** | **False** |
 
 ---
 
@@ -24,3 +24,11 @@ Get latest data point by providing stock symbol and tag. See tag options at: htt
 | Name | Description |
 | ---- | ----------- |
 | value | The value of the data.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.LAST( "AAPL" ; "EBITDA" )
+```
+

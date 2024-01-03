@@ -23,7 +23,7 @@ Earnings Call Transcript. Earnings call transcript for a given company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT( symbol; year; [provider] )
 ```
 
 ---
@@ -32,8 +32,8 @@ Earnings Call Transcript. Earnings call transcript for a given company.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
-| year | Number | Year of the earnings call transcript. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
+| **year** | **Number** | **Year of the earnings call transcript.** | **False** |
 | provider | Text | Options: fmp | True |
 
 ---
@@ -47,3 +47,11 @@ Earnings Call Transcript. Earnings call transcript for a given company.
 | year | Year of the earnings call transcript.  |
 | date | The date of the data.  |
 | content | Content of the earnings call transcript.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT( "AAPL" ;  )
+```
+

@@ -49,7 +49,7 @@ Historical Market Indices.
 ## Syntax
 
 ```excel wordwrap
-=OBB.INDEX.MARKET(required; [optional])
+=OBB.INDEX.MARKET( symbol; [provider]; [start_date]; [end_date]; [timeseries]; [interval]; [tag]; [type]; [sort]; [limit]; [timespan]; [adjusted]; [multiplier] )
 ```
 
 ---
@@ -58,7 +58,7 @@ Historical Market Indices.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp, intrinio, polygon | True |
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
@@ -91,3 +91,11 @@ Historical Market Indices.
 | label | Human readable format of the date. (provider: fmp) |
 | change_over_time | Change % in the price of the symbol over a period of time. (provider: fmp) |
 | transactions | Number of transactions for the symbol in the time period. (provider: polygon) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.INDEX.MARKET( "SPX" )
+```
+

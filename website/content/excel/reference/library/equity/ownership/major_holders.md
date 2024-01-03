@@ -42,7 +42,7 @@ Equity Ownership. Information about the company ownership.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.OWNERSHIP.MAJOR_HOLDERS(required; [optional])
+=OBB.EQUITY.OWNERSHIP.MAJOR_HOLDERS( symbol; [provider]; [date]; [page] )
 ```
 
 ---
@@ -51,7 +51,7 @@ Equity Ownership. Information about the company ownership.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp | True |
 | date | Text | A specific date to get data for. | True |
 | page | Number | Page number of the data to fetch. | True |
@@ -101,3 +101,11 @@ Equity Ownership. Information about the company ownership.
 | last_performance | Last performance of the stock ownership.  |
 | change_in_performance | Change in performance of the stock ownership.  |
 | is_counted_for_performance | Is the stock ownership counted for performance.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.OWNERSHIP.MAJOR_HOLDERS( "AAPL" )
+```
+

@@ -39,7 +39,7 @@ Insider Trading. Information about insider trading.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.OWNERSHIP.INSIDER_TRADING(required; [optional])
+=OBB.EQUITY.OWNERSHIP.INSIDER_TRADING( symbol; [provider]; [limit]; [transactionType]; [start_date]; [end_date]; [ownership_type]; [sort_by] )
 ```
 
 ---
@@ -48,7 +48,7 @@ Insider Trading. Information about insider trading.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp, intrinio | True |
 | limit | Number | The number of data entries to return. | True |
 | transactionType | Any | Type of the transaction. (provider: fmp) | True |
@@ -92,3 +92,11 @@ Insider Trading. Information about insider trading.
 | other_relation | Whether the owner is having another relation. (provider: intrinio) |
 | derivative_transaction | Whether the owner is having a derivative transaction. (provider: intrinio) |
 | report_line_number | Report line number of the insider trading. (provider: intrinio) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.OWNERSHIP.INSIDER_TRADING( "AAPL" )
+```
+

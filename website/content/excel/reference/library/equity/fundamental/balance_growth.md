@@ -56,7 +56,7 @@ Balance Sheet Statement Growth. Information about the growth of the company bala
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.BALANCE_GROWTH(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.BALANCE_GROWTH( symbol; [provider]; [limit] )
 ```
 
 ---
@@ -65,7 +65,7 @@ Balance Sheet Statement Growth. Information about the growth of the company bala
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp | True |
 | limit | Number | The number of data entries to return. | True |
 
@@ -117,3 +117,11 @@ Balance Sheet Statement Growth. Information about the growth of the company bala
 | growth_total_investments | Growth rate of total investments.  |
 | growth_total_debt | Growth rate of total debt.  |
 | growth_net_debt | Growth rate of net debt.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.BALANCE_GROWTH( "AAPL" )
+```
+

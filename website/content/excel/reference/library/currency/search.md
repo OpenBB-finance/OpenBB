@@ -49,7 +49,7 @@ Currency Search. Search available currency pairs.
 ## Syntax
 
 ```excel wordwrap
-=OBB.CURRENCY.SEARCH(required; [optional])
+=OBB.CURRENCY.SEARCH( [provider]; [symbol]; [date]; [search]; [active]; [order]; [sort]; [limit] )
 ```
 
 ---
@@ -89,3 +89,11 @@ Currency Search. Search available currency pairs.
 | base_currency_name | Name of the base currency. (provider: polygon) |
 | last_updated_utc | The last updated timestamp in UTC. (provider: polygon) |
 | delisted_utc | The delisted timestamp in UTC. (provider: polygon) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.CURRENCY.SEARCH( )
+```
+

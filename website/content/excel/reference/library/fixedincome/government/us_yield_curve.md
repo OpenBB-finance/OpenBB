@@ -27,7 +27,7 @@ US Yield Curve. Get United States yield curve.
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE(required; [optional])
+=OBB.FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE( [provider]; [date]; [inflation_adjusted] )
 ```
 
 ---
@@ -48,3 +48,11 @@ US Yield Curve. Get United States yield curve.
 | ---- | ----------- |
 | maturity | Maturity of the treasury rate in years.  |
 | rate | Associated rate given in decimal form (0.05 is 5%)  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE( )
+```
+

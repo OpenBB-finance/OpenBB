@@ -31,7 +31,7 @@ Equity Peers. Company peers.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.COMPARE.PEERS(required; [optional])
+=OBB.EQUITY.COMPARE.PEERS( symbol; [provider] )
 ```
 
 ---
@@ -40,7 +40,7 @@ Equity Peers. Company peers.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp | True |
 
 ---
@@ -50,3 +50,11 @@ Equity Peers. Company peers.
 | Name | Description |
 | ---- | ----------- |
 | peers_list | A list of equity peers based on sector, exchange and market cap.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.COMPARE.PEERS( "AAPL" )
+```
+

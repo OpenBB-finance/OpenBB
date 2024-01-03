@@ -14,7 +14,7 @@ Ameribor.  Ameribor (short for the American interbank offered rate) is a benchma
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.RATE.AMERIBOR(required; [optional])
+=OBB.FIXEDINCOME.RATE.AMERIBOR( [provider]; [start_date]; [end_date]; [parameter] )
 ```
 
 ---
@@ -36,3 +36,11 @@ Ameribor.  Ameribor (short for the American interbank offered rate) is a benchma
 | ---- | ----------- |
 | date | The date of the data.  |
 | rate | AMERIBOR rate.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.FIXEDINCOME.RATE.AMERIBOR( )
+```
+

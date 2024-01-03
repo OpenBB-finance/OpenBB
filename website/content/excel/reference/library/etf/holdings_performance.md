@@ -25,7 +25,7 @@ Get the ETF holdings performance.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ETF.HOLDINGS_PERFORMANCE(required; [optional])
+=OBB.ETF.HOLDINGS_PERFORMANCE( symbol; [provider] )
 ```
 
 ---
@@ -34,7 +34,7 @@ Get the ETF holdings performance.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp | True |
 
 ---
@@ -58,3 +58,11 @@ Get the ETF holdings performance.
 | ten_year | Ten-year return.  |
 | max | Return from the beginning of the time series.  |
 | symbol | The ticker symbol. (provider: fmp) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.ETF.HOLDINGS_PERFORMANCE( "SPY" )
+```
+

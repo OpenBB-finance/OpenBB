@@ -29,7 +29,7 @@ Treasury Constant Maturity.  Get data for 10-Year Treasury Constant Maturity Min
 ## Syntax
 
 ```excel wordwrap
-=OBB.FIXEDINCOME.SPREADS.TMC(required; [optional])
+=OBB.FIXEDINCOME.SPREADS.TMC( [provider]; [start_date]; [end_date]; [maturity] )
 ```
 
 ---
@@ -51,3 +51,11 @@ Treasury Constant Maturity.  Get data for 10-Year Treasury Constant Maturity Min
 | ---- | ----------- |
 | date | The date of the data.  |
 | rate | TreasuryConstantMaturity Rate.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.FIXEDINCOME.SPREADS.TMC( )
+```
+

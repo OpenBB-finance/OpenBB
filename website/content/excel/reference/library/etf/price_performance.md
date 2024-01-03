@@ -38,7 +38,7 @@ Price performance as a return, over different periods.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ETF.PRICE_PERFORMANCE(required; [optional])
+=OBB.ETF.PRICE_PERFORMANCE( symbol; [provider] )
 ```
 
 ---
@@ -47,7 +47,7 @@ Price performance as a return, over different periods.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp | True |
 
 ---
@@ -71,3 +71,11 @@ Price performance as a return, over different periods.
 | ten_year | Ten-year return.  |
 | max | Return from the beginning of the time series.  |
 | symbol | The ticker symbol. (provider: fmp) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.ETF.PRICE_PERFORMANCE( "SPY" )
+```
+

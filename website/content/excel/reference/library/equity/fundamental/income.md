@@ -50,7 +50,7 @@ Income Statement. Report on a company's financial performance.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.INCOME(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.INCOME( symbol; [provider]; [period]; [limit]; [cik]; [filing_date]; [filing_date_lt]; [filing_date_lte]; [filing_date_gt]; [filing_date_gte]; [period_of_report_date]; [period_of_report_date_lt]; [period_of_report_date_lte]; [period_of_report_date_gt]; [period_of_report_date_gte]; [include_sources]; [order]; [sort] )
 ```
 
 ---
@@ -59,7 +59,7 @@ Income Statement. Report on a company's financial performance.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp, intrinio, polygon | True |
 | period | Text | Time period of the data to return. | True |
 | limit | Number | The number of data entries to return. | True |
@@ -206,3 +206,11 @@ Income Statement. Report on a company's financial performance.
 | undistributedEarningsAllocatedToParticipatingSecurities | Undistributed Earnings Allocated To Participating Securities (provider: polygon) |
 | common_stock_dividends | Common Stock Dividends (provider: polygon) |
 | preferred_stock_dividends_and_other_adjustments | Preferred stock dividends and other adjustments (provider: polygon) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.INCOME( "AAPL" )
+```
+

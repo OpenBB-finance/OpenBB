@@ -14,7 +14,7 @@ Trailing 1yr dividend yield.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD( [provider]; [symbol] )
 ```
 
 ---
@@ -34,3 +34,11 @@ Trailing 1yr dividend yield.
 | ---- | ----------- |
 | date | The date of the data.  |
 | trailing_dividend_yield | Trailing dividend yield.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD( )
+```
+

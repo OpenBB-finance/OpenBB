@@ -14,7 +14,7 @@ Forecasted GDP Data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ECONOMY.GDP.FORECAST(required; [optional])
+=OBB.ECONOMY.GDP.FORECAST( [provider]; [period]; [start_date]; [end_date]; [type]; [country] )
 ```
 
 ---
@@ -38,3 +38,11 @@ Forecasted GDP Data.
 | ---- | ----------- |
 | date | The date of the data.  |
 | value | Nominal GDP value on the date.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.ECONOMY.GDP.FORECAST( )
+```
+

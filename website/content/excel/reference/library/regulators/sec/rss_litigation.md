@@ -30,7 +30,7 @@ The RSS feed provides links to litigation releases concerning civil lawsuits bro
 ## Syntax
 
 ```excel wordwrap
-=OBB.REGULATORS.SEC.RSS_LITIGATION(required; [optional])
+=OBB.REGULATORS.SEC.RSS_LITIGATION( [provider] )
 ```
 
 ---
@@ -52,3 +52,11 @@ The RSS feed provides links to litigation releases concerning civil lawsuits bro
 | summary | Short summary of the release. (provider: sec) |
 | id | The identifier associated with the release. (provider: sec) |
 | link | URL to the release. (provider: sec) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.REGULATORS.SEC.RSS_LITIGATION( )
+```
+

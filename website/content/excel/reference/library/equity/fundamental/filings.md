@@ -41,7 +41,7 @@ Company Filings. Company filings data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.FILINGS(required; [optional])
+=OBB.EQUITY.FUNDAMENTAL.FILINGS( [provider]; [symbol]; [form_type]; [limit]; [start_date]; [end_date]; [thea_enabled]; [cik]; [use_cache] )
 ```
 
 ---
@@ -92,3 +92,11 @@ Company Filings. Company filings data.
 | size | The size of the filing. (provider: sec) |
 | complete_submission_url | The URL to the complete filing submission. (provider: sec) |
 | filing_detail_url | The URL to the filing details. (provider: sec) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.FILINGS( )
+```
+

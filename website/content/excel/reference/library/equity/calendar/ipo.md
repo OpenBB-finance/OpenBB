@@ -59,7 +59,7 @@ Upcoming and Historical IPO Calendar.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.CALENDAR.IPO(required; [optional])
+=OBB.EQUITY.CALENDAR.IPO( [provider]; [symbol]; [start_date]; [end_date]; [limit]; [status]; [offer_amount_greater_than]; [offer_amount_less_than] )
 ```
 
 ---
@@ -105,3 +105,11 @@ Upcoming and Historical IPO Calendar.
 | id | The Intrinio ID of the IPO. (provider: intrinio) |
 | company | The company that is going public via the IPO. (provider: intrinio) |
 | security | The primary Security for the Company that is going public via the IPO (provider: intrinio) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.CALENDAR.IPO( )
+```
+

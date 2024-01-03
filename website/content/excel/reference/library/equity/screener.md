@@ -13,7 +13,7 @@ Equity Screen. Screen for companies meeting various criteria.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.SCREENER(required; [optional])
+=OBB.EQUITY.SCREENER( [provider]; [mktcap_min]; [mktcap_max]; [price_min]; [price_max]; [beta_min]; [beta_max]; [volume_min]; [volume_max]; [dividend_min]; [dividend_max]; [is_etf]; [is_active]; [sector]; [industry]; [country]; [exchange]; [limit] )
 ```
 
 ---
@@ -61,3 +61,11 @@ Equity Screen. Screen for companies meeting various criteria.
 | country | The two-letter country abbreviation where the head office is located. (provider: fmp) |
 | is_etf | Whether the ticker is an ETF. (provider: fmp) |
 | actively_trading | Whether the ETF is actively trading. (provider: fmp) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.SCREENER( )
+```
+

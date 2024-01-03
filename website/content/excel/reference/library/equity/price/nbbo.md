@@ -44,7 +44,7 @@ Equity NBBO. Load National Best Bid and Offer for a specific equity.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.PRICE.NBBO(required; [optional])
+=OBB.EQUITY.PRICE.NBBO( symbol; [provider]; [limit]; [timestamp]; [timestamp_lt]; [timestamp_gt]; [timestamp_lte]; [timestamp_gte] )
 ```
 
 ---
@@ -53,7 +53,7 @@ Equity NBBO. Load National Best Bid and Offer for a specific equity.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: polygon | True |
 | limit | Number | The number of data entries to return. Up to ten million records will be returned. Pagination occurs in groups of 50,000. Remaining limit values will always return 50,000 more records unless it is the last page. High volume tickers will require multiple max requests for a single day's NBBO records. Expect stocks, like SPY, to approach 1GB in size, per day, as a raw CSV. Splitting large requests into chunks is recommended for full-day requests of high-volume symbols. (provider: polygon) | True |
 | timestamp | Text | A specific date to get data for. Use bracketed the timestamp parameters to specify exact time ranges. (provider: polygon) | True |
@@ -81,3 +81,11 @@ Equity NBBO. Load National Best Bid and Offer for a specific equity.
 | participant_timestamp |              The nanosecond accuracy Participant/Exchange Unix Timestamp.             This is the timestamp of when the quote was actually generated at the exchange.          (provider: polygon) |
 | sip_timestamp |              The nanosecond accuracy SIP Unix Timestamp.             This is the timestamp of when the SIP received this quote from the exchange which produced it.          (provider: polygon) |
 | trf_timestamp |              The nanosecond accuracy TRF (Trade Reporting Facility) Unix Timestamp.             This is the timestamp of when the trade reporting facility received this quote.          (provider: polygon) |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.PRICE.NBBO( "AAPL" )
+```
+

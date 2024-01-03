@@ -62,7 +62,7 @@ Historical Analyst Estimates. Analyst stock recommendations.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.ESTIMATES.HISTORICAL(required; [optional])
+=OBB.EQUITY.ESTIMATES.HISTORICAL( symbol; [provider]; [period]; [limit] )
 ```
 
 ---
@@ -71,7 +71,7 @@ Historical Analyst Estimates. Analyst stock recommendations.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| symbol | Text | Symbol to get data for. | False |
+| **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | provider | Text | Options: fmp | True |
 | period | Text | Time period of the data to return. | True |
 | limit | Number | The number of data entries to return. | True |
@@ -104,3 +104,11 @@ Historical Analyst Estimates. Analyst stock recommendations.
 | estimated_eps_low | Estimated EPS low.  |
 | number_analyst_estimated_revenue | Number of analysts who estimated revenue.  |
 | number_analysts_estimated_eps | Number of analysts who estimated EPS.  |
+---
+
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.ESTIMATES.HISTORICAL( "AAPL" )
+```
+
