@@ -1,5 +1,5 @@
 """FMP Income Statement Model."""
-
+# pylint: disable=unused-argument
 from datetime import (
     date as dateType,
     datetime,
@@ -37,7 +37,7 @@ class FMPIncomeStatementData(IncomeStatementData):
         "revenue": "revenue",
         "cost_of_revenue": "costOfRevenue",
         "gross_profit": "grossProfit",
-        "gross_profit_ratio": "grossProfitRatio",
+        "gross_profit_margin": "grossProfitRatio",
         "general_and_admin_expense": "generalAndAdministrativeExpenses",
         "research_and_development_expense": "researchAndDevelopmentExpenses",
         "selling_and_marketing_expense": "sellingAndMarketingExpenses",
@@ -46,18 +46,18 @@ class FMPIncomeStatementData(IncomeStatementData):
         "total_operating_expenses": "operatingExpenses",
         "cost_and_expenses": "costAndExpenses",
         "interest_income": "interestIncome",
-        "interest_expense": "interestExpense",
+        "total_interest_expense": "interestExpense",
         "depreciation_and_amortization": "depreciationAndAmortization",
         "ebitda": "ebitda",
         "ebitda_margin": "ebitdaratio",
-        "operating_income": "operatingIncome",
-        "operating_income_ratio": "operatingIncomeRatio",
-        "total_other_income_expenses_net": "totalOtherIncomeExpensesNet",
-        "income_before_tax": "incomeBeforeTax",
-        "income_before_tax_ratio": "incomeBeforeTaxRatio",
+        "total_operating_income": "operatingIncome",
+        "operating_income_margin": "operatingIncomeRatio",
+        "total_other_income_expenses": "totalOtherIncomeExpensesNet",
+        "total_pre_tax_income": "incomeBeforeTax",
+        "pre_tax_income_margin": "incomeBeforeTaxRatio",
         "income_tax_expense": "incomeTaxExpense",
         "consolidated_net_income": "netIncome",
-        "net_income_ratio": "netIncomeRatio",
+        "net_income_margin": "netIncomeRatio",
         "basic_earnings_per_share": "eps",
         "diluted_earnings_per_share": "epsdiluted",
         "weighted_average_basic_shares_outstanding": "weightedAverageShsOut",
@@ -66,10 +66,137 @@ class FMPIncomeStatementData(IncomeStatementData):
         "final_link": "finalLink",
     }
 
-    filing_date: dateType = Field(description="The date of the filing.")
-    accepted_date: datetime = Field(description="The date the filing was accepted.")
-    reported_currency: str = Field(
-        description="The reported currency of the filing.",
+    filing_date: Optional[dateType] = Field(
+        default=None,
+        description="The date when the filing was made.",
+    )
+    accepted_date: Optional[datetime] = Field(
+        default=None,
+        description="The date and time when the filing was accepted.",
+    )
+    reported_currency: Optional[str] = Field(
+        default=None,
+        description="The currency in which the balance sheet was reported.",
+    )
+    revenue: Optional[float] = Field(
+        default=None,
+        description="Total revenue.",
+    )
+    cost_of_revenue: Optional[float] = Field(
+        default=None,
+        description="Cost of revenue.",
+    )
+    gross_profit: Optional[float] = Field(
+        default=None,
+        description="Gross profit.",
+    )
+    gross_profit_margin: Optional[float] = Field(
+        default=None,
+        description="Gross profit margin.",
+    )
+    general_and_admin_expense: Optional[float] = Field(
+        default=None,
+        description="General and administrative expenses.",
+    )
+    research_and_development_expense: Optional[float] = Field(
+        default=None,
+        description="Research and development expenses.",
+    )
+    selling_and_marketing_expense: Optional[float] = Field(
+        default=None,
+        description="Selling and marketing expenses.",
+    )
+    selling_general_and_admin_expense: Optional[float] = Field(
+        default=None,
+        description="Selling, general and administrative expenses.",
+    )
+    other_expenses: Optional[float] = Field(
+        default=None,
+        description="Other expenses.",
+    )
+    total_operating_expenses: Optional[float] = Field(
+        default=None,
+        description="Total operating expenses.",
+    )
+    cost_and_expenses: Optional[float] = Field(
+        default=None,
+        description="Cost and expenses.",
+    )
+    interest_income: Optional[float] = Field(
+        default=None,
+        description="Interest income.",
+    )
+    total_interest_expense: Optional[float] = Field(
+        default=None,
+        description="Total interest expenses.",
+    )
+    depreciation_and_amortization: Optional[float] = Field(
+        default=None,
+        description="Depreciation and amortization.",
+    )
+    ebitda: Optional[float] = Field(
+        default=None,
+        description="EBITDA.",
+    )
+    ebitda_margin: Optional[float] = Field(
+        default=None,
+        description="EBITDA margin.",
+    )
+    total_operating_income: Optional[float] = Field(
+        default=None,
+        description="Total operating income.",
+    )
+    operating_income_margin: Optional[float] = Field(
+        default=None,
+        description="Operating income margin.",
+    )
+    total_other_income_expenses: Optional[float] = Field(
+        default=None,
+        description="Total other income and expenses.",
+    )
+    total_pre_tax_income: Optional[float] = Field(
+        default=None,
+        description="Total pre-tax income.",
+    )
+    pre_tax_income_margin: Optional[float] = Field(
+        default=None,
+        description="Pre-tax income margin.",
+    )
+    income_tax_expense: Optional[float] = Field(
+        default=None,
+        description="Income tax expense.",
+    )
+    consolidated_net_income: Optional[float] = Field(
+        default=None,
+        description="Consolidated net income.",
+    )
+    net_income_margin: Optional[float] = Field(
+        default=None,
+        description="Net income margin.",
+    )
+    basic_earnings_per_share: Optional[float] = Field(
+        default=None,
+        description="Basic earnings per share.",
+    )
+    diluted_earnings_per_share: Optional[float] = Field(
+        default=None,
+        description="Diluted earnings per share.",
+    )
+    weighted_average_basic_shares_outstanding: Optional[float] = Field(
+        default=None,
+        description="Weighted average basic shares outstanding.",
+    )
+    weighted_average_diluted_shares_outstanding: Optional[float] = Field(
+        default=None,
+        description="Weighted average diluted shares outstanding.",
+    )
+    link: Optional[str] = Field(
+        default=None,
+        description="Link to the filing.",
+    )
+    final_link: Optional[str] = Field(
+        default=None,
+        description="Link to the filing document.",
     )
 
     @model_validator(mode="before")
