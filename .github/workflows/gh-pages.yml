@@ -48,13 +48,14 @@ jobs:
               libwebkit2gtk-4.0-dev
 
       - name: Install dependencies
-        run: poetry install --no-interaction --no-root -E doc
+        run: poetry install --no-interaction --no-root
 
       - name: Install packages
         run: poetry install --no-interaction -E forecast -E doc -E optimization
 
       - name: Generate SDK v3 Markdown
         run: |
+          source .venv/bin/activate
           pip uninstall Brotli -y
           pytest tests/website --autodoc
           poetry run python website/generate_sdk_v3_markdown.py
@@ -62,6 +63,7 @@ jobs:
 
       - name: Generate Platform Markdown
         run: |
+          source .venv/bin/activate
           pip install -U poetry
           poetry run python openbb_platform/dev_install.py -e all
           pip uninstall nbmake -y
@@ -69,6 +71,7 @@ jobs:
 
       - name: Generate Widgets Library
         run: |
+          source .venv/bin/activate
           poetry run python website/generate_widgets_library.py
 
       - name: Setup Node
