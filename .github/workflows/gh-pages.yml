@@ -6,10 +6,10 @@ on:
       - main
       - release/*
   pull_request:
-      types: [opened, synchronize, reopened, closed]
-      branches:
-        - develop
-        - 'docs/*'
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - develop
+      - "docs/*"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -47,22 +47,13 @@ jobs:
               libgtk-3-dev \
               libwebkit2gtk-4.0-dev
 
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v3
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock') }}
-
       - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root -E doc
 
       - name: Install packages
         run: poetry install --no-interaction -E forecast -E doc -E optimization
 
       - run: |
-          source $VENV
           pip uninstall Brotli -y
           pytest tests/website --autodoc
           python website/generate_sdk_v3_markdown.py
