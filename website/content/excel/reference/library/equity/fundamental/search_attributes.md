@@ -40,6 +40,6 @@ Search Intrinio data tags.
 ## Example
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES(  )
+=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES( "EBITDA" )
 ```
 

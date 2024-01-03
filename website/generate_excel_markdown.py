@@ -33,14 +33,19 @@ class CommandLib(PathHandler):
         "string": "Text",
     }
 
-    EXAMPLE_PARAMS = {
+    EXAMPLE_PARAMS: Dict[str, Dict] = {
         "last": {"symbol": '"AAPL"', "tag": '"EBITDA"'},
         "hist": {"symbol": '"AAPL"', "tag": '"EBITDA"'},
         "crypto": {"symbol": '"BTCUSD"'},
         "currency": {"symbol": '"EURUSD"'},
         "derivatives": {"symbol": '"AAPL"'},
         "economy": {"countries": '"united_states,germany"'},
-        "equity": {"symbol": '"AAPL"'},
+        "equity": {
+            "symbol": '"AAPL"',
+            "tag": '"EBITDA"',
+            "query": '"EBITDA"',
+            "year": 2022,
+        },
         "etf": {"symbol": '"SPY"'},
         "index": {"symbol": '"SPX"'},
         "news": {"symbols": '"AAPL,MSFT"'},
@@ -160,7 +165,9 @@ class CommandLib(PathHandler):
                 if not p.get("optional", False):
                     p_value = self.EXAMPLE_PARAMS.get(category, {}).get(p_name, "")
                     minimal_eg += f"{p_value} ; "
-            minimal_eg = minimal_eg[:-2] + ")" if minimal_eg[-2:] == "; " else minimal_eg + ")"
+            minimal_eg = (
+                minimal_eg[:-2] + ")" if minimal_eg[-2:] == "; " else minimal_eg + ")"
+            )
             return {"A. Minimal": minimal_eg}
         return {}
 
