@@ -277,7 +277,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         ),
         (
             "call_quote",
-            [],
+            ["--ticker=AAPL", "--load_source=YahooFinance"],
             "stocks_view.display_quote",
             [],
             dict(),
@@ -523,7 +523,7 @@ def test_custom_reset(expected, ticker):
     assert result == expected
 
 
-@pytest.mark.vcr
+@pytest.mark.vcr(record_mode="none")
 def test_call_load(mocker):
     # FORCE SINGLE THREADING
     yf_download = stocks_controller.stocks_helper.yf.download
@@ -539,5 +539,6 @@ def test_call_load(mocker):
         "TSLA",
         "--start=2021-12-17",
         "--end=2021-12-18",
+        "--source=YahooFinance",
     ]
     controller.call_load(other_args=other_args)
