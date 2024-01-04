@@ -52,6 +52,12 @@ or by cloning the GitHub repo, from the `/openbb_platform/` folder:
 python dev_install.py -e
 ```
 
+The nightly PyPI distribution is another way to install everything, and to be on the bleeding edge of development:
+
+```bashe
+pip install openbb-nightly
+```
+
 :::
 
 </details>
