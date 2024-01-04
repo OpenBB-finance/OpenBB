@@ -13,7 +13,6 @@ from openbb_core.env import Env
 
 T = TypeVar("T")
 
-POETRY_PLUGIN = "openbb_core_extension"
 # this is needed because static assets and api endpoints are built before any user is instantiated
 EXTENSION_NAME = Env().CHARTING_EXTENSION
 

@@ -41,6 +41,21 @@ class ExtensionLoader(metaclass=SingletonMeta):
         self._core_objects: Dict[str, Any] = {}
         self._provider_objects: Dict[str, Provider] = {}
 
+    @property
+    def obbject_entry_points(self) -> EntryPoints:
+        """Return the obbject entry points."""
+        return self._obbject_entry_points
+
+    @property
+    def core_entry_points(self) -> EntryPoints:
+        """Return the core entry points."""
+        return self._core_entry_points
+
+    @property
+    def provider_entry_points(self) -> EntryPoints:
+        """Return the provider entry points."""
+        return self._provider_entry_points
+
     @staticmethod
     def _get_entry_point(
         entry_points_: EntryPoints, ext_name: str
