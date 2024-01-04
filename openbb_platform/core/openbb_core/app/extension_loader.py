@@ -12,8 +12,6 @@ from openbb_core.app.model.extension import Extension
 # from openbb_core.app.router import Router
 from openbb_core.provider.abstract.provider import Provider
 
-# GroupType = TypeVar("GroupType", Router, Provider, Extension)
-
 
 class OpenBBGroups(Enum):
     """OpenBB Extension Groups."""
