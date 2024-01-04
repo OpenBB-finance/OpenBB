@@ -78,7 +78,7 @@ Equity Quote. Load stock data for a specific ticker.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for. In this case, the comma separated list of symbols.** | **False** |
-| provider | Text | Options: fmp, intrinio | True |
+| provider | Text | Options: fmp, intrinio, defaults to fmp. | True |
 | source | Text | Source of the data. (provider: intrinio) | True |
 
 ---

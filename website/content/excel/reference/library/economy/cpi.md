@@ -25,7 +25,7 @@ keywords:
 
 <!-- markdownlint-disable MD041 -->
 
-Consumer Price Index (CPI) Data.
+Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate of change (inflation).
 
 ## Syntax
 
@@ -40,8 +40,8 @@ Consumer Price Index (CPI) Data.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **countries** | **Any** | **The country or countries to get data.** | **False** |
-| provider | Text | Options: fred | True |
-| units | Text | The unit of measurement for the data. Options: - `growth_previous`: growth from the previous period - `growth_same`: growth from the same period in the previous year - `index_2015`: index with base year 2015. | True |
+| provider | Text | Options: fred, defaults to fred. | True |
+| units | Text | The unit of measurement for the data. Options: - `growth_previous`: Percent growth from the previous period. If monthly data, this is month-over-month, etc - `growth_same`: Percent growth from the same period in the previous year. If looking at monthly data, this would be year-over-year, etc. - `index_2015`: Rescaled index value, such that the value in 2015 is 100. | True |
 | frequency | Text | The frequency of the data. Options: `monthly`, `quarter`, and `annual`. | True |
 | harmonized | Boolean | Whether you wish to obtain harmonized data. | True |
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |

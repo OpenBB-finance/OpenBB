@@ -52,7 +52,7 @@ Equity Ownership. Information about the company ownership.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp | True |
+| provider | Text | Options: fmp, defaults to fmp. | True |
 | date | Text | A specific date to get data for. | True |
 | page | Number | Page number of the data to fetch. | True |
 

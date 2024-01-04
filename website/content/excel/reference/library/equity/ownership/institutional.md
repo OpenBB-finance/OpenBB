@@ -75,7 +75,7 @@ Institutional Ownership. Institutional ownership data.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, intrinio | True |
+| provider | Text | Options: fmp, intrinio, defaults to fmp. | True |
 | include_current_quarter | Boolean | Include current quarter data. (provider: fmp) | True |
 | date | Text | A specific date to get data for. (provider: fmp) | True |
 | page_size | Number | The number of data entries to return. (provider: intrinio) | True |

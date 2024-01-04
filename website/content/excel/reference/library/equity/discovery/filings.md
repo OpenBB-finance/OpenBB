@@ -23,7 +23,7 @@ Get the most-recent filings submitted to the SEC.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp | True |
+| provider | Text | Options: fmp, defaults to fmp. | True |
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
 | form_type | Text | Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types. | True |

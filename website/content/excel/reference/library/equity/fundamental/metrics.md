@@ -91,7 +91,7 @@ Key Metrics. Key metrics for a given company.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, intrinio | True |
+| provider | Text | Options: fmp, intrinio, defaults to fmp. | True |
 | period | Text | Time period of the data to return. | True |
 | limit | Number | The number of data entries to return. | True |
 | with_ttm | Boolean | Include trailing twelve months (TTM) data. (provider: fmp) | True |

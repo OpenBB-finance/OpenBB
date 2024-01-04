@@ -54,7 +54,7 @@ Economic Calendar.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp, tradingeconomics | True |
+| provider | Text | Options: fmp, tradingeconomics, defaults to fmp. | True |
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
 | country | Any | Country of the event (provider: tradingeconomics) | True |

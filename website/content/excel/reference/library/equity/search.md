@@ -56,7 +56,7 @@ Equity Search. Search for a company or stock ticker.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.SEARCH( [provider]; [query]; [is_symbol]; [is_fund]; [use_cache] )
+=OBB.EQUITY.SEARCH( [provider]; [query]; [is_symbol]; [active]; [limit] )
 ```
 
 ---
@@ -65,11 +65,11 @@ Equity Search. Search for a company or stock ticker.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: sec | True |
+| provider | Text | Options: intrinio, defaults to intrinio. | True |
 | query | Text | Search query. | True |
 | is_symbol | Boolean | Whether to search by ticker symbol. | True |
-| is_fund | Boolean | Whether to direct the search to the list of mutual funds and ETFs. (provider: sec) | True |
-| use_cache | Boolean | Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec) | True |
+| active | Boolean | When true, return companies that are actively traded (having stock prices within the past 14 days). When false, return companies that are not actively traded or never have been traded. (provider: intrinio) | True |
+| limit | Number | The number of data entries to return. (provider: intrinio) | True |
 
 ---
 

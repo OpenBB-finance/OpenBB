@@ -66,7 +66,7 @@ Balance Sheet Statement Growth. Information about the growth of the company bala
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp | True |
+| provider | Text | Options: fmp, defaults to fmp. | True |
 | limit | Number | The number of data entries to return. | True |
 
 ---

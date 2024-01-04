@@ -22,7 +22,7 @@ Equity Screen. Screen for companies meeting various criteria.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp | True |
+| provider | Text | Options: fmp, defaults to fmp. | True |
 | mktcap_min | Number | Filter by market cap greater than this value. (provider: fmp) | True |
 | mktcap_max | Number | Filter by market cap less than this value. (provider: fmp) | True |
 | price_min | Number | Filter by price greater than this value. (provider: fmp) | True |

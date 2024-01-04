@@ -32,7 +32,7 @@ Equity Historical price. Load stock data for a specific ticker.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.PRICE.HISTORICAL( symbol; [provider]; [interval]; [start_date]; [end_date]; [limit]; [start_time]; [end_time]; [timezone]; [source]; [sort]; [adjusted] )
+=OBB.EQUITY.PRICE.HISTORICAL( symbol; [provider]; [interval]; [start_date]; [end_date]; [limit]; [sort]; [start_time]; [end_time]; [timezone]; [source]; [sleep]; [adjusted] )
 ```
 
 ---
@@ -42,16 +42,17 @@ Equity Historical price. Load stock data for a specific ticker.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, intrinio, polygon, tiingo | True |
+| provider | Text | Options: fmp, intrinio, polygon, defaults to fmp. | True |
 | interval | Text | Time interval of the data to return. | True |
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
-| limit | Number | Number of days to look back (Only for interval 1d). (provider: fmp); The number of data entries to return. (provider: polygon) | True |
+| limit | Number | Number of days to look back (Only for interval 1d). (provider: fmp); The number of results to return per page. (provider: intrinio); The number of data entries to return. (provider: polygon) | True |
+| sort | Text | Sort the data in ascending or descending order. (provider: fmp); Sort order of the data. (provider: polygon) | True |
 | start_time | Text | Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio) | True |
 | end_time | Text | Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'. (provider: intrinio) | True |
 | timezone | Text | Timezone of the data, in the IANA format (Continent/City). (provider: intrinio) | True |
 | source | Text | The source of the data. (provider: intrinio) | True |
-| sort | Text | Sort order of the data. (provider: polygon) | True |
+| sleep | Number | Time to sleep between requests to avoid rate limiting. (provider: intrinio) | True |
 | adjusted | Boolean | Output time series is adjusted by historical split and dividend events. (provider: polygon) | True |
 
 ---
@@ -68,7 +69,7 @@ Equity Historical price. Load stock data for a specific ticker.
 | volume | The trading volume.  |
 | vwap | Volume Weighted Average Price over the period.  |
 | label | Human readable format of the date. (provider: fmp) |
-| adj_close | The adjusted close price. (provider: fmp);     Adjusted closing price during the period. (provider: intrinio);     Adjusted closing price during the period. (provider: tiingo) |
+| adj_close | The adjusted close price. (provider: fmp);     Adjusted closing price during the period. (provider: intrinio) |
 | unadjusted_volume | Unadjusted volume of the symbol. (provider: fmp) |
 | change | Change in the price of the symbol from the previous day. (provider: fmp, intrinio) |
 | change_percent | Change % in the price of the symbol. (provider: fmp) |
@@ -77,13 +78,13 @@ Equity Historical price. Load stock data for a specific ticker.
 | interval | The data time frequency. (provider: intrinio) |
 | average | Average trade price of an individual equity during the interval. (provider: intrinio) |
 | intra_period | If true, the equity price represents an unfinished period (be it day, week, quarter, month, or year), meaning that the close price is the latest price available, not the official close price for the period (provider: intrinio) |
-| adj_open | Adjusted open price during the period. (provider: intrinio, tiingo) |
-| adj_high | Adjusted high price during the period. (provider: intrinio, tiingo) |
-| adj_low | Adjusted low price during the period. (provider: intrinio, tiingo) |
-| adj_volume | Adjusted volume during the period. (provider: intrinio, tiingo) |
+| adj_open | Adjusted open price during the period. (provider: intrinio) |
+| adj_high | Adjusted high price during the period. (provider: intrinio) |
+| adj_low | Adjusted low price during the period. (provider: intrinio) |
+| adj_volume | Adjusted volume during the period. (provider: intrinio) |
 | factor | factor by which to multiply equity prices before this date, in order to calculate historically-adjusted equity prices. (provider: intrinio) |
-| split_ratio | Ratio of the equity split, if a equity split occurred. (provider: intrinio, tiingo) |
-| dividend | Dividend amount, if a dividend was paid. (provider: intrinio, tiingo) |
+| split_ratio | Ratio of the equity split, if a equity split occurred. (provider: intrinio) |
+| dividend | Dividend amount, if a dividend was paid. (provider: intrinio) |
 | percent_change | Percent change in the price of the symbol from the previous day. (provider: intrinio) |
 | fifty_two_week_high | 52 week high price for the symbol. (provider: intrinio) |
 | fifty_two_week_low | 52 week low price for the symbol. (provider: intrinio) |

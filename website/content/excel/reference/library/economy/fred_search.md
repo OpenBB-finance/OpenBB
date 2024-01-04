@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD041 -->
 
-Search for FRED series or economic releases by ID or fuzzy query. This does not return the observation values, only the metadata. Use this function to find series IDs for `fred_series()`.
+Search for FRED series or economic releases by ID or string. This does not return the observation values, only the metadata. Use this function to find series IDs for `fred_series()`.
 
 ## Syntax
 
@@ -14,7 +14,7 @@ Search for FRED series or economic releases by ID or fuzzy query. This does not 
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fred | True |
+| provider | Text | Options: fred, defaults to fred. | True |
 | query | Text | The search word(s). | True |
 | is_release | Boolean | Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True. (provider: fred) | True |
 | release_id | Any | A specific release ID to target. (provider: fred) | True |

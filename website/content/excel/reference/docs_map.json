@@ -74,7 +74,7 @@
   "/crypto/price/historical": {
     "name": "historical",
     "description": "Cryptocurrency Historical Price. Cryptocurrency historical price data.",
-    "signature": "=OBB.CRYPTO.PRICE.HISTORICAL( symbol; [provider]; [start_date]; [end_date]; [timeseries]; [interval]; [multiplier]; [timespan]; [sort]; [limit]; [adjusted]; [exchanges] )",
+    "signature": "=OBB.CRYPTO.PRICE.HISTORICAL( symbol; [provider]; [start_date]; [end_date]; [timeseries]; [interval]; [multiplier]; [timespan]; [sort]; [limit]; [adjusted] )",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -83,7 +83,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp, polygon, tiingo",
+        "description": "Options: fmp, polygon, defaults to fmp.",
         "optional": "True"
       },
       "start_date": {
@@ -103,160 +103,7 @@
       },
       "interval": {
         "type": "Text",
-        "description": "Data granularity. (provider: fmp, tiingo)",
-        "optional": "True"
-      },
-      "multiplier": {
-        "type": "Number",
-        "description": "Multiplier of the timespan. (provider: polygon)",
-        "optional": "True"
-      },
-      "timespan": {
-        "type": "Text",
-        "description": "Timespan of the data. (provider: polygon)",
-        "optional": "True"
-      },
-      "sort": {
-        "type": "Text",
-        "description": "Sort order of the data. (provider: polygon)",
-        "optional": "True"
-      },
-      "limit": {
-        "type": "Number",
-        "description": "The number of data entries to return. (provider: polygon)",
-        "optional": "True"
-      },
-      "adjusted": {
-        "type": "Boolean",
-        "description": "Whether the data is adjusted. (provider: polygon)",
-        "optional": "True"
-      },
-      "exchanges": {
-        "type": "Any",
-        "description": "To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX'] (provider: tiingo)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "open": {
-        "description": "The open price. "
-      },
-      "high": {
-        "description": "The high price. "
-      },
-      "low": {
-        "description": "The low price. "
-      },
-      "close": {
-        "description": "The close price. "
-      },
-      "volume": {
-        "description": "The trading volume. "
-      },
-      "vwap": {
-        "description": "Volume Weighted Average Price over the period. "
-      },
-      "adj_close": {
-        "description": "The adjusted close price. (provider: fmp)"
-      },
-      "unadjusted_volume": {
-        "description": "Unadjusted volume of the symbol. (provider: fmp)"
-      },
-      "change": {
-        "description": "Change in the price of the symbol from the previous day. (provider: fmp)"
-      },
-      "change_percent": {
-        "description": "Change % in the price of the symbol. (provider: fmp)"
-      },
-      "label": {
-        "description": "Human readable format of the date. (provider: fmp)"
-      },
-      "change_over_time": {
-        "description": "Change % in the price of the symbol over a period of time. (provider: fmp)"
-      },
-      "transactions": {
-        "description": "Number of transactions for the symbol in the time period. (provider: polygon, tiingo)"
-      },
-      "volume_notional": {
-        "description": "The last size done for the asset on the specific date in the quote currency. The volume of the asset on the specific date in the quote currency. (provider: tiingo)"
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.CRYPTO.PRICE.HISTORICAL( \"BTCUSD\" )"
-    },
-    "model_name": "CryptoHistorical"
-  },
-  "/crypto/search": {
-    "name": "search",
-    "description": "Cryptocurrency Search. Search available cryptocurrency pairs.",
-    "signature": "=OBB.CRYPTO.SEARCH( [provider]; [query] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fmp",
-        "optional": "True"
-      },
-      "query": {
-        "type": "Text",
-        "description": "Search query.",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "symbol": {
-        "description": "Symbol representing the entity requested in the data. (Crypto) "
-      },
-      "name": {
-        "description": "Name of the crypto. "
-      },
-      "currency": {
-        "description": "The currency the crypto trades for. (provider: fmp)"
-      },
-      "exchange": {
-        "description": "The exchange code the crypto trades on. (provider: fmp)"
-      },
-      "exchange_name": {
-        "description": "The short name of the exchange the crypto trades on. (provider: fmp)"
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.CRYPTO.SEARCH( )"
-    },
-    "model_name": "CryptoSearch"
-  },
-  "/currency/price/historical": {
-    "name": "historical",
-    "description": "Currency Historical Price. Currency historical data.",
-    "signature": "=OBB.CURRENCY.PRICE.HISTORICAL( symbol; [provider]; [start_date]; [end_date]; [interval]; [multiplier]; [timespan]; [sort]; [limit]; [adjusted] )",
-    "parameters": {
-      "symbol": {
-        "type": "Text",
-        "description": "Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format.",
-        "optional": "False"
-      },
-      "provider": {
-        "type": "Text",
-        "description": "Options: fmp, polygon, tiingo",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "interval": {
-        "type": "Text",
-        "description": "Data granularity. (provider: fmp, tiingo)",
+        "description": "Data granularity. (provider: fmp)",
         "optional": "True"
       },
       "multiplier": {
@@ -331,280 +178,48 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.CURRENCY.PRICE.HISTORICAL( \"EURUSD\" )"
+      "A. Minimal": "=OBB.CRYPTO.PRICE.HISTORICAL( \"BTCUSD\" )"
     },
-    "model_name": "CurrencyHistorical"
+    "model_name": "CryptoHistorical"
   },
-  "/currency/search": {
+  "/crypto/search": {
     "name": "search",
-    "description": "Currency Search. Search available currency pairs.",
-    "signature": "=OBB.CURRENCY.SEARCH( [provider]; [symbol]; [date]; [search]; [active]; [order]; [sort]; [limit] )",
+    "description": "Cryptocurrency Search. Search available cryptocurrency pairs.",
+    "signature": "=OBB.CRYPTO.SEARCH( [provider]; [query] )",
     "parameters": {
       "provider": {
         "type": "Text",
-        "description": "Options: fmp, intrinio, polygon",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       },
-      "symbol": {
+      "query": {
         "type": "Text",
-        "description": "Symbol of the pair to search. (provider: polygon)",
-        "optional": "True"
-      },
-      "date": {
-        "type": "Text",
-        "description": "A specific date to get data for. (provider: polygon)",
-        "optional": "True"
-      },
-      "search": {
-        "type": "Text",
-        "description": "Search for terms within the ticker and/or company name. (provider: polygon)",
-        "optional": "True"
-      },
-      "active": {
-        "type": "Boolean",
-        "description": "Specify if the tickers returned should be actively traded on the queried date. (provider: polygon)",
-        "optional": "True"
-      },
-      "order": {
-        "type": "Text",
-        "description": "Order data by ascending or descending. (provider: polygon)",
-        "optional": "True"
-      },
-      "sort": {
-        "type": "Text",
-        "description": "Sort field used for ordering. (provider: polygon)",
-        "optional": "True"
-      },
-      "limit": {
-        "type": "Number",
-        "description": "The number of data entries to return. (provider: polygon)",
+        "description": "Search query.",
         "optional": "True"
       }
     },
     "data": {
-      "name": {
-        "description": "Name of the currency pair. "
-      },
       "symbol": {
-        "description": "Symbol of the currency pair. (provider: fmp)"
+        "description": "Symbol representing the entity requested in the data. (Crypto) "
+      },
+      "name": {
+        "description": "Name of the crypto. "
       },
       "currency": {
-        "description": "Base currency of the currency pair. (provider: fmp)"
+        "description": "The currency the crypto trades for. (provider: fmp)"
       },
-      "stock_exchange": {
-        "description": "Stock exchange of the currency pair. (provider: fmp)"
+      "exchange": {
+        "description": "The exchange code the crypto trades on. (provider: fmp)"
       },
-      "exchange_short_name": {
-        "description": "Short name of the stock exchange of the currency pair. (provider: fmp)"
-      },
-      "code": {
-        "description": "Code of the currency pair. (provider: intrinio)"
-      },
-      "base_currency": {
-        "description": "ISO 4217 currency code of the base currency. (provider: intrinio)"
-      },
-      "quote_currency": {
-        "description": "ISO 4217 currency code of the quote currency. (provider: intrinio)"
-      },
-      "market": {
-        "description": "Name of the trading market. Always 'fx'. (provider: polygon)"
-      },
-      "locale": {
-        "description": "Locale of the currency pair. (provider: polygon)"
-      },
-      "currency_symbol": {
-        "description": "The symbol of the quote currency. (provider: polygon)"
-      },
-      "currency_name": {
-        "description": "Name of the quote currency. (provider: polygon)"
-      },
-      "base_currency_symbol": {
-        "description": "The symbol of the base currency. (provider: polygon)"
-      },
-      "base_currency_name": {
-        "description": "Name of the base currency. (provider: polygon)"
-      },
-      "last_updated_utc": {
-        "description": "The last updated timestamp in UTC. (provider: polygon)"
-      },
-      "delisted_utc": {
-        "description": "The delisted timestamp in UTC. (provider: polygon)"
+      "exchange_name": {
+        "description": "The short name of the exchange the crypto trades on. (provider: fmp)"
       }
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.CURRENCY.SEARCH( )"
+      "A. Minimal": "=OBB.CRYPTO.SEARCH( )"
     },
-    "model_name": "CurrencyPairs"
-  },
-  "/derivatives/options/chains": {
-    "name": "chains",
-    "description": "Get the complete options chain for a ticker.",
-    "signature": "=OBB.DERIVATIVES.OPTIONS.CHAINS( symbol; [provider]; [date] )",
-    "parameters": {
-      "symbol": {
-        "type": "Text",
-        "description": "Symbol to get data for.",
-        "optional": "False"
-      },
-      "provider": {
-        "type": "Text",
-        "description": "Options: intrinio",
-        "optional": "True"
-      },
-      "date": {
-        "type": "Text",
-        "description": "Date for which the options chains are returned. (provider: intrinio)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "contract_symbol": {
-        "description": "Contract symbol for the option. "
-      },
-      "symbol": {
-        "description": "Symbol representing the entity requested in the data. Here its the underlying symbol for the option. "
-      },
-      "expiration": {
-        "description": "Expiration date of the contract. "
-      },
-      "strike": {
-        "description": "Strike price of the contract. "
-      },
-      "option_type": {
-        "description": "Call or Put. "
-      },
-      "eod_date": {
-        "description": "Date for which the options chains are returned. "
-      },
-      "close": {
-        "description": "The close price. "
-      },
-      "close_bid": {
-        "description": "The closing bid price for the option that day. "
-      },
-      "close_ask": {
-        "description": "The closing ask price for the option that day. "
-      },
-      "volume": {
-        "description": "The trading volume. "
-      },
-      "open": {
-        "description": "The open price. "
-      },
-      "open_bid": {
-        "description": "The opening bid price for the option that day. "
-      },
-      "open_ask": {
-        "description": "The opening ask price for the option that day. "
-      },
-      "open_interest": {
-        "description": "Open interest on the contract. "
-      },
-      "high": {
-        "description": "The high price. "
-      },
-      "low": {
-        "description": "The low price. "
-      },
-      "mark": {
-        "description": "The mid-price between the latest bid-ask spread. "
-      },
-      "ask_high": {
-        "description": "The highest ask price for the option that day. "
-      },
-      "ask_low": {
-        "description": "The lowest ask price for the option that day. "
-      },
-      "bid_high": {
-        "description": "The highest bid price for the option that day. "
-      },
-      "bid_low": {
-        "description": "The lowest bid price for the option that day. "
-      },
-      "implied_volatility": {
-        "description": "Implied volatility of the option. "
-      },
-      "delta": {
-        "description": "Delta of the option. "
-      },
-      "gamma": {
-        "description": "Gamma of the option. "
-      },
-      "theta": {
-        "description": "Theta of the option. "
-      },
-      "vega": {
-        "description": "Vega of the option. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.DERIVATIVES.OPTIONS.CHAINS( \"AAPL\" )"
-    },
-    "model_name": "OptionsChains"
-  },
-  "/derivatives/options/unusual": {
-    "name": "unusual",
-    "description": "Get the complete options chain for a ticker.",
-    "signature": "=OBB.DERIVATIVES.OPTIONS.UNUSUAL( [provider]; [symbol]; [source] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: intrinio",
-        "optional": "True"
-      },
-      "symbol": {
-        "type": "Text",
-        "description": "Symbol to get data for. (the underlying symbol)",
-        "optional": "True"
-      },
-      "source": {
-        "type": "Text",
-        "description": "The source of the data. Either realtime or delayed. (provider: intrinio)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "underlying_symbol": {
-        "description": "Symbol representing the entity requested in the data. (the underlying symbol) "
-      },
-      "contract_symbol": {
-        "description": "Contract symbol for the option. "
-      },
-      "trade_type": {
-        "description": "The type of unusual trade. (provider: intrinio)"
-      },
-      "sentiment": {
-        "description": "Bullish, Bearish, or Neutral Sentiment is estimated based on whether the trade was executed at the bid, ask, or mark price. (provider: intrinio)"
-      },
-      "total_value": {
-        "description": "The aggregated value of all option contract premiums included in the trade. (provider: intrinio)"
-      },
-      "total_size": {
-        "description": "The total number of contracts involved in a single transaction. (provider: intrinio)"
-      },
-      "average_price": {
-        "description": "The average premium paid per option contract. (provider: intrinio)"
-      },
-      "ask_at_execution": {
-        "description": "Ask price at execution. (provider: intrinio)"
-      },
-      "bid_at_execution": {
-        "description": "Bid price at execution. (provider: intrinio)"
-      },
-      "underlying_price_at_execution": {
-        "description": "Price of the underlying security at execution of trade. (provider: intrinio)"
-      },
-      "timestamp": {
-        "description": "The UTC timestamp of order placement. (provider: intrinio)"
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.DERIVATIVES.OPTIONS.UNUSUAL( )"
-    },
-    "model_name": "OptionsUnusual"
+    "model_name": "CryptoSearch"
   },
   "/economy/calendar": {
     "name": "calendar",
@@ -613,7 +228,7 @@
     "parameters": {
       "provider": {
         "type": "Text",
-        "description": "Options: fmp, tradingeconomics",
+        "description": "Options: fmp, tradingeconomics, defaults to fmp.",
         "optional": "True"
       },
       "start_date": {
@@ -706,7 +321,7 @@
   },
   "/economy/cpi": {
     "name": "cpi",
-    "description": "Consumer Price Index (CPI) Data.",
+    "description": "Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate of change (inflation).",
     "signature": "=OBB.ECONOMY.CPI( countries; [provider]; [units]; [frequency]; [harmonized]; [start_date]; [end_date] )",
     "parameters": {
       "countries": {
@@ -716,12 +331,12 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fred",
+        "description": "Options: fred, defaults to fred.",
         "optional": "True"
       },
       "units": {
         "type": "Text",
-        "description": "The unit of measurement for the data. Options: - `growth_previous`: growth from the previous period - `growth_same`: growth from the same period in the previous year - `index_2015`: index with base year 2015.",
+        "description": "The unit of measurement for the data. Options: - `growth_previous`: Percent growth from the previous period. If monthly data, this is month-over-month, etc - `growth_same`: Percent growth from the same period in the previous year. If looking at monthly data, this would be year-over-year, etc. - `index_2015`: Rescaled index value, such that the value in 2015 is 100.",
         "optional": "True"
       },
       "frequency": {
@@ -758,12 +373,12 @@
   },
   "/economy/fred_search": {
     "name": "fred_search",
-    "description": "Search for FRED series or economic releases by ID or fuzzy query. This does not return the observation values, only the metadata. Use this function to find series IDs for `fred_series()`.",
+    "description": "Search for FRED series or economic releases by ID or string. This does not return the observation values, only the metadata. Use this function to find series IDs for `fred_series()`.",
     "signature": "=OBB.ECONOMY.FRED_SEARCH( [provider]; [query]; [is_release]; [release_id]; [limit]; [offset]; [filter_variable]; [filter_value]; [tag_names]; [exclude_tag_names] )",
     "parameters": {
       "provider": {
         "type": "Text",
-        "description": "Options: fred",
+        "description": "Options: fred, defaults to fred.",
         "optional": "True"
       },
       "query": {
@@ -886,7 +501,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fred, intrinio",
+        "description": "Options: fred, intrinio, defaults to fred.",
         "optional": "True"
       },
       "start_date": {
@@ -944,146 +559,6 @@
     },
     "model_name": "FredSeries"
   },
-  "/economy/gdp/forecast": {
-    "name": "forecast",
-    "description": "Forecasted GDP Data.",
-    "signature": "=OBB.ECONOMY.GDP.FORECAST( [provider]; [period]; [start_date]; [end_date]; [type]; [country] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: oecd",
-        "optional": "True"
-      },
-      "period": {
-        "type": "Text",
-        "description": "Time period of the data to return. Units for nominal GDP period. Either quarter or annual.",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "type": {
-        "type": "Text",
-        "description": "Type of GDP to get forecast of. Either nominal or real.",
-        "optional": "True"
-      },
-      "country": {
-        "type": "Text",
-        "description": "Country to get GDP for. (provider: oecd)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "value": {
-        "description": "Nominal GDP value on the date. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.ECONOMY.GDP.FORECAST( )"
-    },
-    "model_name": "GdpForecast"
-  },
-  "/economy/gdp/nominal": {
-    "name": "nominal",
-    "description": "Nominal GDP Data.",
-    "signature": "=OBB.ECONOMY.GDP.NOMINAL( [provider]; [units]; [start_date]; [end_date]; [country] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: oecd",
-        "optional": "True"
-      },
-      "units": {
-        "type": "Text",
-        "description": "The unit of measurement for the data. Units to get nominal GDP in. Either usd or usd_cap indicating per capita.",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "country": {
-        "type": "Text",
-        "description": "Country to get GDP for. (provider: oecd)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "value": {
-        "description": "Nominal GDP value on the date. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.ECONOMY.GDP.NOMINAL( )"
-    },
-    "model_name": "GdpNominal"
-  },
-  "/economy/gdp/real": {
-    "name": "real",
-    "description": "Real GDP Data.",
-    "signature": "=OBB.ECONOMY.GDP.REAL( [provider]; [units]; [start_date]; [end_date]; [country] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: oecd",
-        "optional": "True"
-      },
-      "units": {
-        "type": "Text",
-        "description": "The unit of measurement for the data. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "country": {
-        "type": "Text",
-        "description": "Country to get GDP for. (provider: oecd)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "value": {
-        "description": "Nominal GDP value on the date. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.ECONOMY.GDP.REAL( )"
-    },
-    "model_name": "GdpReal"
-  },
   "/economy/risk_premium": {
     "name": "risk_premium",
     "description": "Historical Market Risk Premium.",
@@ -1091,7 +566,7 @@
     "parameters": {
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       }
     },
@@ -1122,7 +597,7 @@
     "parameters": {
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       },
       "start_date": {
@@ -1178,7 +653,7 @@
     "parameters": {
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       },
       "start_date": {
@@ -1240,7 +715,7 @@
     "parameters": {
       "provider": {
         "type": "Text",
-        "description": "Options: intrinio",
+        "description": "Options: intrinio, defaults to intrinio.",
         "optional": "True"
       },
       "symbol": {
@@ -1360,7 +835,7 @@
     "parameters": {
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       },
       "start_date": {
@@ -1409,7 +884,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       }
     },
@@ -1431,7 +906,7 @@
     "parameters": {
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       },
       "start_date": {
@@ -1498,7 +973,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       }
     },
@@ -1537,7 +1012,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       },
       "period": {
@@ -1637,7 +1112,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       },
       "with_grade": {
@@ -1699,7 +1174,7 @@
   "/equity/fundamental/balance": {
     "name": "balance",
     "description": "Balance Sheet. Balance sheet statement.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.BALANCE( symbol; [provider]; [period]; [limit]; [cik]; [filing_date]; [filing_date_lt]; [filing_date_lte]; [filing_date_gt]; [filing_date_gte]; [period_of_report_date]; [period_of_report_date_lt]; [period_of_report_date_lte]; [period_of_report_date_gt]; [period_of_report_date_gte]; [include_sources]; [order]; [sort] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.BALANCE( symbol; [provider]; [period]; [limit]; [fiscal_year]; [filing_date]; [filing_date_lt]; [filing_date_lte]; [filing_date_gt]; [filing_date_gte]; [period_of_report_date]; [period_of_report_date_lt]; [period_of_report_date_lte]; [period_of_report_date_gt]; [period_of_report_date_gte]; [include_sources]; [order]; [sort] )",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -1708,7 +1183,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp, intrinio, polygon",
+        "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
         "optional": "True"
       },
       "period": {
@@ -1721,9 +1196,9 @@
         "description": "The number of data entries to return.",
         "optional": "True"
       },
-      "cik": {
-        "type": "Text",
-        "description": "Central Index Key (CIK) of the company. (provider: fmp)",
+      "fiscal_year": {
+        "type": "Number",
+        "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
         "optional": "True"
       },
       "filing_date": {
@@ -2193,7 +1668,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       },
       "limit": {
@@ -2339,7 +1814,7 @@
   "/equity/fundamental/cash": {
     "name": "cash",
     "description": "Cash Flow Statement. Information about the cash flow statement.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.CASH( symbol; [provider]; [period]; [limit]; [cik]; [filing_date]; [filing_date_lt]; [filing_date_lte]; [filing_date_gt]; [filing_date_gte]; [period_of_report_date]; [period_of_report_date_lt]; [period_of_report_date_lte]; [period_of_report_date_gt]; [period_of_report_date_gte]; [include_sources]; [order]; [sort] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.CASH( symbol; [provider]; [period]; [limit]; [fiscal_year]; [filing_date]; [filing_date_lt]; [filing_date_lte]; [filing_date_gt]; [filing_date_gte]; [period_of_report_date]; [period_of_report_date_lt]; [period_of_report_date_lte]; [period_of_report_date_gt]; [period_of_report_date_gte]; [include_sources]; [order]; [sort] )",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -2348,7 +1823,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp, intrinio, polygon",
+        "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
         "optional": "True"
       },
       "period": {
@@ -2361,9 +1836,9 @@
         "description": "The number of data entries to return.",
         "optional": "True"
       },
-      "cik": {
-        "type": "Text",
-        "description": "Central Index Key (CIK) of the company. (provider: fmp)",
+      "fiscal_year": {
+        "type": "Number",
+        "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
         "optional": "True"
       },
       "filing_date": {
@@ -2422,12 +1897,12 @@
         "optional": "True"
       },
       "order": {
-        "type": "Text",
+        "type": "Any",
         "description": "Order of the financial statement. (provider: polygon)",
         "optional": "True"
       },
       "sort": {
-        "type": "Text",
+        "type": "Any",
         "description": "Sort of the financial statement. (provider: polygon)",
         "optional": "True"
       }
@@ -2692,7 +2167,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       },
       "limit": {
@@ -2820,7 +2295,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp, intrinio",
+        "description": "Options: fmp, intrinio, defaults to fmp.",
         "optional": "True"
       },
       "page_size": {
@@ -2879,7 +2354,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       }
     },
@@ -2921,11 +2396,11 @@
   "/equity/fundamental/filings": {
     "name": "filings",
     "description": "Company Filings. Company filings data.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.FILINGS( [provider]; [symbol]; [form_type]; [limit]; [start_date]; [end_date]; [thea_enabled]; [cik]; [use_cache] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.FILINGS( [provider]; [symbol]; [form_type]; [limit]; [start_date]; [end_date]; [thea_enabled] )",
     "parameters": {
       "provider": {
         "type": "Text",
-        "description": "Options: fmp, intrinio, sec",
+        "description": "Options: fmp, intrinio, defaults to fmp.",
         "optional": "True"
       },
       "symbol": {
@@ -2935,7 +2410,7 @@
       },
       "form_type": {
         "type": "Text",
-        "description": "Type of the SEC filing form. (provider: sec)",
+        "description": "Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types.",
         "optional": "True"
       },
       "limit": {
@@ -2956,16 +2431,6 @@
       "thea_enabled": {
         "type": "Boolean",
         "description": "Return filings that have been read by Intrinio's Thea NLP. (provider: intrinio)",
-        "optional": "True"
-      },
-      "cik": {
-        "type": "Any",
-        "description": "Lookup filings by Central Index Key (CIK) instead of by symbol. (provider: sec)",
-        "optional": "True"
-      },
-      "use_cache": {
-        "type": "Boolean",
-        "description": "Whether or not to use cache.  If True, cache will store for one day. (provider: sec)",
         "optional": "True"
       }
     },
@@ -3072,7 +2537,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: intrinio",
+        "description": "Options: intrinio, defaults to intrinio.",
         "optional": "True"
       },
       "start_date": {
@@ -3132,7 +2597,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       },
       "limit": {
@@ -3191,7 +2656,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       }
     },
@@ -3218,7 +2683,7 @@
   "/equity/fundamental/income": {
     "name": "income",
     "description": "Income Statement. Report on a company's financial performance.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.INCOME( symbol; [provider]; [period]; [limit]; [cik]; [filing_date]; [filing_date_lt]; [filing_date_lte]; [filing_date_gt]; [filing_date_gte]; [period_of_report_date]; [period_of_report_date_lt]; [period_of_report_date_lte]; [period_of_report_date_gt]; [period_of_report_date_gte]; [include_sources]; [order]; [sort] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.INCOME( symbol; [provider]; [period]; [limit]; [fiscal_year]; [filing_date]; [filing_date_lt]; [filing_date_lte]; [filing_date_gt]; [filing_date_gte]; [period_of_report_date]; [period_of_report_date_lt]; [period_of_report_date_lte]; [period_of_report_date_gt]; [period_of_report_date_gte]; [include_sources]; [order]; [sort] )",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -3227,7 +2692,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp, intrinio, polygon",
+        "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
         "optional": "True"
       },
       "period": {
@@ -3240,9 +2705,9 @@
         "description": "The number of data entries to return.",
         "optional": "True"
       },
-      "cik": {
-        "type": "Text",
-        "description": "The CIK of the company if no symbol is provided. (provider: fmp)",
+      "fiscal_year": {
+        "type": "Number",
+        "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
         "optional": "True"
       },
       "filing_date": {
@@ -3697,7 +3162,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       },
       "limit": {
@@ -3823,7 +3288,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: intrinio",
+        "description": "Options: intrinio, defaults to intrinio.",
         "optional": "True"
       }
     },
@@ -3850,7 +3315,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       }
     },
@@ -3895,7 +3360,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       }
     },
@@ -3958,7 +3423,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp, intrinio",
+        "description": "Options: fmp, intrinio, defaults to fmp.",
         "optional": "True"
       },
       "period": {
@@ -4192,7 +3657,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       }
     },
@@ -4399,7 +3864,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       }
     },
@@ -4522,7 +3987,7 @@
   "/equity/fundamental/ratios": {
     "name": "ratios",
     "description": "Extensive set of ratios over time. Financial ratios for a given company.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.RATIOS( symbol; [provider]; [period]; [limit]; [with_ttm] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.RATIOS( symbol; [provider]; [period]; [limit]; [with_ttm]; [fiscal_year] )",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -4531,7 +3996,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, intrinio, defaults to fmp.",
         "optional": "True"
       },
       "period": {
@@ -4546,7 +4011,12 @@
       },
       "with_ttm": {
         "type": "Boolean",
-        "description": "Include trailing twelve months (TTM) data. (provider: fmp)",
+        "description": "Include trailing twelve months (TTM) data. (provider: fmp, intrinio)",
+        "optional": "True"
+      },
+      "fiscal_year": {
+        "type": "Number",
+        "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
         "optional": "True"
       }
     },
@@ -4735,6 +4205,59 @@
     },
     "model_name": "FinancialRatios"
   },
+  "/equity/fundamental/reported_financials": {
+    "name": "reported_financials",
+    "description": "Financial statements, as-reported.",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS( symbol; [provider]; [period]; [statement_type]; [limit]; [fiscal_year] )",
+    "parameters": {
+      "symbol": {
+        "type": "Text",
+        "description": "Symbol to get data for.",
+        "optional": "False"
+      },
+      "provider": {
+        "type": "Text",
+        "description": "Options: intrinio, defaults to intrinio.",
+        "optional": "True"
+      },
+      "period": {
+        "type": "Text",
+        "description": "Time period of the data to return.",
+        "optional": "True"
+      },
+      "statement_type": {
+        "type": "Text",
+        "description": "The type of financial statement - i.e, balance, income, cash.",
+        "optional": "True"
+      },
+      "limit": {
+        "type": "Number",
+        "description": "The number of data entries to return. Although the response object contains multiple results, because of the variance in the fields, year-to-year and quarter-to-quarter, it is recommended to view results in small chunks.",
+        "optional": "True"
+      },
+      "fiscal_year": {
+        "type": "Number",
+        "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
+        "optional": "True"
+      }
+    },
+    "data": {
+      "period_ending": {
+        "description": "The ending date of the reporting period. "
+      },
+      "fiscal_period": {
+        "description": "The fiscal period of the report (e.g. FY, Q1, etc.). "
+      },
+      "fiscal_year": {
+        "description": "The fiscal year of the fiscal period. "
+      }
+    },
+    "return": "matrix",
+    "examples": {
+      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS( \"AAPL\" )"
+    },
+    "model_name": "ReportedFinancials"
+  },
   "/equity/fundamental/revenue_per_geography": {
     "name": "revenue_per_geography",
     "description": "Revenue Geographic. Geographic revenue data.",
@@ -4747,7 +4270,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       },
       "period": {
@@ -4802,7 +4325,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       },
       "period": {
@@ -4842,7 +4365,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: intrinio",
+        "description": "Options: intrinio, defaults to intrinio.",
         "optional": "True"
       },
       "limit": {
@@ -4892,36 +4415,6 @@
     },
     "model_name": "SearchAttributes"
   },
-  "/equity/fundamental/trailing_dividend_yield": {
-    "name": "trailing_dividend_yield",
-    "description": "Trailing 1yr dividend yield.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD( [provider]; [symbol] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: tiingo",
-        "optional": "True"
-      },
-      "symbol": {
-        "type": "Text",
-        "description": "Symbol to get data for.",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "trailing_dividend_yield": {
-        "description": "Trailing dividend yield. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD( )"
-    },
-    "model_name": "TrailingDividendYield"
-  },
   "/equity/fundamental/transcript": {
     "name": "transcript",
     "description": "Earnings Call Transcript. Earnings call transcript for a given company.",
@@ -4939,7 +4432,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       }
     },
@@ -4973,7 +4466,7 @@
     "parameters": {
       "provider": {
         "type": "Text",
-        "description": "Options: fmp, polygon",
+        "description": "Options: fmp, polygon, defaults to fmp.",
         "optional": "True"
       },
       "market": {
@@ -5122,7 +4615,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp, intrinio",
+        "description": "Options: fmp, intrinio, defaults to fmp.",
         "optional": "True"
       },
       "limit": {
@@ -5263,7 +4756,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp, intrinio",
+        "description": "Options: fmp, intrinio, defaults to fmp.",
         "optional": "True"
       },
       "include_current_quarter": {
@@ -5437,7 +4930,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       },
       "date": {
@@ -5588,7 +5081,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp, intrinio",
+        "description": "Options: fmp, intrinio, defaults to fmp.",
         "optional": "True"
       }
     },
@@ -5627,7 +5120,7 @@
   "/equity/price/historical": {
     "name": "historical",
     "description": "Equity Historical price. Load stock data for a specific ticker.",
-    "signature": "=OBB.EQUITY.PRICE.HISTORICAL( symbol; [provider]; [interval]; [start_date]; [end_date]; [limit]; [start_time]; [end_time]; [timezone]; [source]; [sort]; [adjusted] )",
+    "signature": "=OBB.EQUITY.PRICE.HISTORICAL( symbol; [provider]; [interval]; [start_date]; [end_date]; [limit]; [sort]; [start_time]; [end_time]; [timezone]; [source]; [sleep]; [adjusted] )",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -5636,7 +5129,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp, intrinio, polygon, tiingo",
+        "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
         "optional": "True"
       },
       "interval": {
@@ -5656,7 +5149,12 @@
       },
       "limit": {
         "type": "Number",
-        "description": "Number of days to look back (Only for interval 1d). (provider: fmp); The number of data entries to return. (provider: polygon)",
+        "description": "Number of days to look back (Only for interval 1d). (provider: fmp); The number of results to return per page. (provider: intrinio); The number of data entries to return. (provider: polygon)",
+        "optional": "True"
+      },
+      "sort": {
+        "type": "Text",
+        "description": "Sort the data in ascending or descending order. (provider: fmp); Sort order of the data. (provider: polygon)",
         "optional": "True"
       },
       "start_time": {
@@ -5679,9 +5177,9 @@
         "description": "The source of the data. (provider: intrinio)",
         "optional": "True"
       },
-      "sort": {
-        "type": "Text",
-        "description": "Sort order of the data. (provider: polygon)",
+      "sleep": {
+        "type": "Number",
+        "description": "Time to sleep between requests to avoid rate limiting. (provider: intrinio)",
         "optional": "True"
       },
       "adjusted": {
@@ -5716,7 +5214,7 @@
         "description": "Human readable format of the date. (provider: fmp)"
       },
       "adj_close": {
-        "description": "The adjusted close price. (provider: fmp);     Adjusted closing price during the period. (provider: intrinio);     Adjusted closing price during the period. (provider: tiingo)"
+        "description": "The adjusted close price. (provider: fmp);     Adjusted closing price during the period. (provider: intrinio)"
       },
       "unadjusted_volume": {
         "description": "Unadjusted volume of the symbol. (provider: fmp)"
@@ -5743,25 +5241,25 @@
         "description": "If true, the equity price represents an unfinished period (be it day, week, quarter, month, or year), meaning that the close price is the latest price available, not the official close price for the period (provider: intrinio)"
       },
       "adj_open": {
-        "description": "Adjusted open price during the period. (provider: intrinio, tiingo)"
+        "description": "Adjusted open price during the period. (provider: intrinio)"
       },
       "adj_high": {
-        "description": "Adjusted high price during the period. (provider: intrinio, tiingo)"
+        "description": "Adjusted high price during the period. (provider: intrinio)"
       },
       "adj_low": {
-        "description": "Adjusted low price during the period. (provider: intrinio, tiingo)"
+        "description": "Adjusted low price during the period. (provider: intrinio)"
       },
       "adj_volume": {
-        "description": "Adjusted volume during the period. (provider: intrinio, tiingo)"
+        "description": "Adjusted volume during the period. (provider: intrinio)"
       },
       "factor": {
         "description": "factor by which to multiply equity prices before this date, in order to calculate historically-adjusted equity prices. (provider: intrinio)"
       },
       "split_ratio": {
-        "description": "Ratio of the equity split, if a equity split occurred. (provider: intrinio, tiingo)"
+        "description": "Ratio of the equity split, if a equity split occurred. (provider: intrinio)"
       },
       "dividend": {
-        "description": "Dividend amount, if a dividend was paid. (provider: intrinio, tiingo)"
+        "description": "Dividend amount, if a dividend was paid. (provider: intrinio)"
       },
       "percent_change": {
         "description": "Percent change in the price of the symbol from the previous day. (provider: intrinio)"
@@ -5794,7 +5292,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: polygon",
+        "description": "Options: polygon, defaults to polygon.",
         "optional": "True"
       },
       "limit": {
@@ -5887,7 +5385,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       }
     },
@@ -5956,7 +5454,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp, intrinio",
+        "description": "Options: fmp, intrinio, defaults to fmp.",
         "optional": "True"
       },
       "source": {
@@ -6117,7 +5615,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: intrinio",
+        "description": "Options: intrinio, defaults to intrinio.",
         "optional": "True"
       }
     },
@@ -6250,7 +5748,7 @@
     "parameters": {
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       },
       "mktcap_min": {
@@ -6392,11 +5890,11 @@
   "/equity/search": {
     "name": "search",
     "description": "Equity Search. Search for a company or stock ticker.",
-    "signature": "=OBB.EQUITY.SEARCH( [provider]; [query]; [is_symbol]; [is_fund]; [use_cache] )",
+    "signature": "=OBB.EQUITY.SEARCH( [provider]; [query]; [is_symbol]; [active]; [limit] )",
     "parameters": {
       "provider": {
         "type": "Text",
-        "description": "Options: sec",
+        "description": "Options: intrinio, defaults to intrinio.",
         "optional": "True"
       },
       "query": {
@@ -6409,14 +5907,14 @@
         "description": "Whether to search by ticker symbol.",
         "optional": "True"
       },
-      "is_fund": {
+      "active": {
         "type": "Boolean",
-        "description": "Whether to direct the search to the list of mutual funds and ETFs. (provider: sec)",
+        "description": "When true, return companies that are actively traded (having stock prices within the past 14 days). When false, return companies that are not actively traded or never have been traded. (provider: intrinio)",
         "optional": "True"
       },
-      "use_cache": {
-        "type": "Boolean",
-        "description": "Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec)",
+      "limit": {
+        "type": "Number",
+        "description": "The number of data entries to return. (provider: intrinio)",
         "optional": "True"
       }
     },
@@ -6443,1528 +5941,6 @@
     },
     "model_name": "EquitySearch"
   },
-  "/equity/shorts/fails_to_deliver": {
-    "name": "fails_to_deliver",
-    "description": "Get reported Fail-to-deliver (FTD) data.",
-    "signature": "=OBB.EQUITY.SHORTS.FAILS_TO_DELIVER( symbol; [provider]; [limit]; [skip_reports] )",
-    "parameters": {
-      "symbol": {
-        "type": "Text",
-        "description": "Symbol to get data for.",
-        "optional": "False"
-      },
-      "provider": {
-        "type": "Text",
-        "description": "Options: sec",
-        "optional": "True"
-      },
-      "limit": {
-        "type": "Number",
-        "description": "Limit the number of reports to parse, from most recent. Approximately 24 reports per year, going back to 2009. (provider: sec)",
-        "optional": "True"
-      },
-      "skip_reports": {
-        "type": "Number",
-        "description": "Skip N number of reports from current. A value of 1 will skip the most recent report. (provider: sec)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "settlement_date": {
-        "description": "The settlement date of the fail. "
-      },
-      "symbol": {
-        "description": "Symbol representing the entity requested in the data. "
-      },
-      "cusip": {
-        "description": "CUSIP of the Security. "
-      },
-      "quantity": {
-        "description": "The number of fails on that settlement date. "
-      },
-      "price": {
-        "description": "The price at the previous closing price from the settlement date. "
-      },
-      "description": {
-        "description": "The description of the Security. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.EQUITY.SHORTS.FAILS_TO_DELIVER( \"AAPL\" )"
-    },
-    "model_name": "EquityFTD"
-  },
-  "/etf/countries": {
-    "name": "countries",
-    "description": "ETF Country weighting.",
-    "signature": "=OBB.ETF.COUNTRIES( symbol; [provider] )",
-    "parameters": {
-      "symbol": {
-        "type": "Text",
-        "description": "Symbol to get data for. (ETF)",
-        "optional": "False"
-      },
-      "provider": {
-        "type": "Text",
-        "description": "Options: fmp",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "country": {
-        "description": "The country of the exposure.  Corresponding values are normalized percentage points. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.ETF.COUNTRIES( \"SPY\" )"
-    },
-    "model_name": "EtfCountries"
-  },
-  "/etf/holdings": {
-    "name": "holdings",
-    "description": "Get the holdings for an individual ETF.",
-    "signature": "=OBB.ETF.HOLDINGS( symbol; [provider]; [date]; [cik] )",
-    "parameters": {
-      "symbol": {
-        "type": "Text",
-        "description": "Symbol to get data for. (ETF)",
-        "optional": "False"
-      },
-      "provider": {
-        "type": "Text",
-        "description": "Options: fmp",
-        "optional": "True"
-      },
-      "date": {
-        "type": "Text",
-        "description": "A specific date to get data for. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp)",
-        "optional": "True"
-      },
-      "cik": {
-        "type": "Text",
-        "description": "The CIK of the filing entity. Overrides symbol. (provider: fmp)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "symbol": {
-        "description": "Symbol representing the entity requested in the data. (ETF) "
-      },
-      "name": {
-        "description": "Name of the ETF holding. "
-      },
-      "lei": {
-        "description": "The LEI of the holding. (provider: fmp, sec)"
-      },
-      "title": {
-        "description": "The title of the holding. (provider: fmp)"
-      },
-      "cusip": {
-        "description": "The CUSIP of the holding. (provider: fmp, sec)"
-      },
-      "isin": {
-        "description": "The ISIN of the holding. (provider: fmp, sec)"
-      },
-      "balance": {
-        "description": "The balance of the holding. (provider: fmp, sec)"
-      },
-      "units": {
-        "description": "The units of the holding. (provider: fmp, sec)"
-      },
-      "currency": {
-        "description": "The currency of the holding. (provider: fmp, sec)"
-      },
-      "value": {
-        "description": "The value of the holding in USD. (provider: fmp, sec)"
-      },
-      "weight": {
-        "description": "The weight of the holding in ETF in %. (provider: fmp, sec)"
-      },
-      "payoff_profile": {
-        "description": "The payoff profile of the holding. (provider: fmp, sec)"
-      },
-      "asset_category": {
-        "description": "The asset category of the holding. (provider: fmp, sec)"
-      },
-      "issuer_category": {
-        "description": "The issuer category of the holding. (provider: fmp, sec)"
-      },
-      "country": {
-        "description": "The country of the holding. (provider: fmp, sec)"
-      },
-      "is_restricted": {
-        "description": "Whether the holding is restricted. (provider: fmp, sec)"
-      },
-      "fair_value_level": {
-        "description": "The fair value level of the holding. (provider: fmp, sec)"
-      },
-      "is_cash_collateral": {
-        "description": "Whether the holding is cash collateral. (provider: fmp, sec)"
-      },
-      "is_non_cash_collateral": {
-        "description": "Whether the holding is non-cash collateral. (provider: fmp, sec)"
-      },
-      "is_loan_by_fund": {
-        "description": "Whether the holding is loan by fund. (provider: fmp, sec)"
-      },
-      "cik": {
-        "description": "The CIK of the filing. (provider: fmp)"
-      },
-      "acceptance_datetime": {
-        "description": "The acceptance datetime of the filing. (provider: fmp)"
-      },
-      "other_id": {
-        "description": "Internal identifier for the holding. (provider: sec)"
-      },
-      "loan_value": {
-        "description": "The loan value of the holding. (provider: sec)"
-      },
-      "issuer_conditional": {
-        "description": "The issuer conditions of the holding. (provider: sec)"
-      },
-      "asset_conditional": {
-        "description": "The asset conditions of the holding. (provider: sec)"
-      },
-      "maturity_date": {
-        "description": "The maturity date of the debt security. (provider: sec)"
-      },
-      "coupon_kind": {
-        "description": "The type of coupon for the debt security. (provider: sec)"
-      },
-      "rate_type": {
-        "description": "The type of rate for the debt security, floating or fixed. (provider: sec)"
-      },
-      "annualized_return": {
-        "description": "The annualized return on the debt security. (provider: sec)"
-      },
-      "is_default": {
-        "description": "If the debt security is defaulted. (provider: sec)"
-      },
-      "in_arrears": {
-        "description": "If the debt security is in arrears. (provider: sec)"
-      },
-      "is_paid_kind": {
-        "description": "If the debt security payments are are paid in kind. (provider: sec)"
-      },
-      "derivative_category": {
-        "description": "The derivative category of the holding. (provider: sec)"
-      },
-      "counterparty": {
-        "description": "The counterparty of the derivative. (provider: sec)"
-      },
-      "underlying_name": {
-        "description": "The name of the underlying asset associated with the derivative. (provider: sec)"
-      },
-      "option_type": {
-        "description": "The type of option. (provider: sec)"
-      },
-      "derivative_payoff": {
-        "description": "The payoff profile of the derivative. (provider: sec)"
-      },
-      "expiry_date": {
-        "description": "The expiry or termination date of the derivative. (provider: sec)"
-      },
-      "exercise_price": {
-        "description": "The exercise price of the option. (provider: sec)"
-      },
-      "exercise_currency": {
-        "description": "The currency of the option exercise price. (provider: sec)"
-      },
-      "shares_per_contract": {
-        "description": "The number of shares per contract. (provider: sec)"
-      },
-      "delta": {
-        "description": "The delta of the option. (provider: sec)"
-      },
-      "rate_type_rec": {
-        "description": "The type of rate for reveivable portion of the swap. (provider: sec)"
-      },
-      "receive_currency": {
-        "description": "The receive currency of the swap. (provider: sec)"
-      },
-      "upfront_receive": {
-        "description": "The upfront amount received of the swap. (provider: sec)"
-      },
-      "floating_rate_index_rec": {
-        "description": "The floating rate index for reveivable portion of the swap. (provider: sec)"
-      },
-      "floating_rate_spread_rec": {
-        "description": "The floating rate spread for reveivable portion of the swap. (provider: sec)"
-      },
-      "rate_tenor_rec": {
-        "description": "The rate tenor for reveivable portion of the swap. (provider: sec)"
-      },
-      "rate_tenor_unit_rec": {
-        "description": "The rate tenor unit for reveivable portion of the swap. (provider: sec)"
-      },
-      "reset_date_rec": {
-        "description": "The reset date for reveivable portion of the swap. (provider: sec)"
-      },
-      "reset_date_unit_rec": {
-        "description": "The reset date unit for reveivable portion of the swap. (provider: sec)"
-      },
-      "rate_type_pmnt": {
-        "description": "The type of rate for payment portion of the swap. (provider: sec)"
-      },
-      "payment_currency": {
-        "description": "The payment currency of the swap. (provider: sec)"
-      },
-      "upfront_payment": {
-        "description": "The upfront amount received of the swap. (provider: sec)"
-      },
-      "floating_rate_index_pmnt": {
-        "description": "The floating rate index for payment portion of the swap. (provider: sec)"
-      },
-      "floating_rate_spread_pmnt": {
-        "description": "The floating rate spread for payment portion of the swap. (provider: sec)"
-      },
-      "rate_tenor_pmnt": {
-        "description": "The rate tenor for payment portion of the swap. (provider: sec)"
-      },
-      "rate_tenor_unit_pmnt": {
-        "description": "The rate tenor unit for payment portion of the swap. (provider: sec)"
-      },
-      "reset_date_pmnt": {
-        "description": "The reset date for payment portion of the swap. (provider: sec)"
-      },
-      "reset_date_unit_pmnt": {
-        "description": "The reset date unit for payment portion of the swap. (provider: sec)"
-      },
-      "repo_type": {
-        "description": "The type of repo. (provider: sec)"
-      },
-      "is_cleared": {
-        "description": "If the repo is cleared. (provider: sec)"
-      },
-      "is_tri_party": {
-        "description": "If the repo is tri party. (provider: sec)"
-      },
-      "principal_amount": {
-        "description": "The principal amount of the repo. (provider: sec)"
-      },
-      "principal_currency": {
-        "description": "The currency of the principal amount. (provider: sec)"
-      },
-      "collateral_type": {
-        "description": "The collateral type of the repo. (provider: sec)"
-      },
-      "collateral_amount": {
-        "description": "The collateral amount of the repo. (provider: sec)"
-      },
-      "collateral_currency": {
-        "description": "The currency of the collateral amount. (provider: sec)"
-      },
-      "exchange_currency": {
-        "description": "The currency of the exchange rate. (provider: sec)"
-      },
-      "exchange_rate": {
-        "description": "The exchange rate. (provider: sec)"
-      },
-      "currency_sold": {
-        "description": "The currency sold in a Forward Derivative. (provider: sec)"
-      },
-      "currency_amount_sold": {
-        "description": "The amount of currency sold in a Forward Derivative. (provider: sec)"
-      },
-      "currency_bought": {
-        "description": "The currency bought in a Forward Derivative. (provider: sec)"
-      },
-      "currency_amount_bought": {
-        "description": "The amount of currency bought in a Forward Derivative. (provider: sec)"
-      },
-      "notional_amount": {
-        "description": "The notional amount of the derivative. (provider: sec)"
-      },
-      "notional_currency": {
-        "description": "The currency of the derivative's notional amount. (provider: sec)"
-      },
-      "unrealized_gain": {
-        "description": "The unrealized gain or loss on the derivative. (provider: sec)"
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.ETF.HOLDINGS( \"SPY\" )"
-    },
-    "model_name": "EtfHoldings"
-  },
-  "/etf/holdings_date": {
-    "name": "holdings_date",
-    "description": "Get the holdings filing date for an individual ETF.",
-    "signature": "=OBB.ETF.HOLDINGS_DATE( symbol; [provider]; [cik] )",
-    "parameters": {
-      "symbol": {
-        "type": "Text",
-        "description": "Symbol to get data for. (ETF)",
-        "optional": "False"
-      },
-      "provider": {
-        "type": "Text",
-        "description": "Options: fmp",
-        "optional": "True"
-      },
-      "cik": {
-        "type": "Text",
-        "description": "The CIK of the filing entity. Overrides symbol. (provider: fmp)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.ETF.HOLDINGS_DATE( \"SPY\" )"
-    },
-    "model_name": "EtfHoldingsDate"
-  },
-  "/etf/holdings_performance": {
-    "name": "holdings_performance",
-    "description": "Get the ETF holdings performance.",
-    "signature": "=OBB.ETF.HOLDINGS_PERFORMANCE( symbol; [provider] )",
-    "parameters": {
-      "symbol": {
-        "type": "Text",
-        "description": "Symbol to get data for.",
-        "optional": "False"
-      },
-      "provider": {
-        "type": "Text",
-        "description": "Options: fmp",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "one_day": {
-        "description": "One-day return. "
-      },
-      "wtd": {
-        "description": "Week to date return. "
-      },
-      "one_week": {
-        "description": "One-week return. "
-      },
-      "mtd": {
-        "description": "Month to date return. "
-      },
-      "one_month": {
-        "description": "One-month return. "
-      },
-      "qtd": {
-        "description": "Quarter to date return. "
-      },
-      "three_month": {
-        "description": "Three-month return. "
-      },
-      "six_month": {
-        "description": "Six-month return. "
-      },
-      "ytd": {
-        "description": "Year to date return. "
-      },
-      "one_year": {
-        "description": "One-year return. "
-      },
-      "three_year": {
-        "description": "Three-year return. "
-      },
-      "five_year": {
-        "description": "Five-year return. "
-      },
-      "ten_year": {
-        "description": "Ten-year return. "
-      },
-      "max": {
-        "description": "Return from the beginning of the time series. "
-      },
-      "symbol": {
-        "description": "The ticker symbol. (provider: fmp)"
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.ETF.HOLDINGS_PERFORMANCE( \"SPY\" )"
-    },
-    "model_name": "EtfHoldingsPerformance"
-  },
-  "/etf/info": {
-    "name": "info",
-    "description": "ETF Information Overview.",
-    "signature": "=OBB.ETF.INFO( symbol; [provider] )",
-    "parameters": {
-      "symbol": {
-        "type": "Text",
-        "description": "Symbol to get data for. (ETF)",
-        "optional": "False"
-      },
-      "provider": {
-        "type": "Text",
-        "description": "Options: fmp",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "symbol": {
-        "description": "Symbol representing the entity requested in the data. (ETF) "
-      },
-      "name": {
-        "description": "Name of the ETF. "
-      },
-      "inception_date": {
-        "description": "Inception date of the ETF. "
-      },
-      "asset_class": {
-        "description": "Asset class of the ETF. (provider: fmp)"
-      },
-      "aum": {
-        "description": "Assets under management. (provider: fmp)"
-      },
-      "avg_volume": {
-        "description": "Average trading volume of the ETF. (provider: fmp)"
-      },
-      "cusip": {
-        "description": "CUSIP of the ETF. (provider: fmp)"
-      },
-      "description": {
-        "description": "Description of the ETF. (provider: fmp)"
-      },
-      "domicile": {
-        "description": "Domicile of the ETF. (provider: fmp)"
-      },
-      "etf_company": {
-        "description": "Company of the ETF. (provider: fmp)"
-      },
-      "expense_ratio": {
-        "description": "Expense ratio of the ETF. (provider: fmp)"
-      },
-      "isin": {
-        "description": "ISIN of the ETF. (provider: fmp)"
-      },
-      "nav": {
-        "description": "Net asset value of the ETF. (provider: fmp)"
-      },
-      "nav_currency": {
-        "description": "Currency of the ETF's net asset value. (provider: fmp)"
-      },
-      "website": {
-        "description": "Website link of the ETF. (provider: fmp)"
-      },
-      "holdings_count": {
-        "description": "Number of holdings in the ETF. (provider: fmp)"
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.ETF.INFO( \"SPY\" )"
-    },
-    "model_name": "EtfInfo"
-  },
-  "/etf/price_performance": {
-    "name": "price_performance",
-    "description": "Price performance as a return, over different periods.",
-    "signature": "=OBB.ETF.PRICE_PERFORMANCE( symbol; [provider] )",
-    "parameters": {
-      "symbol": {
-        "type": "Text",
-        "description": "Symbol to get data for.",
-        "optional": "False"
-      },
-      "provider": {
-        "type": "Text",
-        "description": "Options: fmp",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "one_day": {
-        "description": "One-day return. "
-      },
-      "wtd": {
-        "description": "Week to date return. "
-      },
-      "one_week": {
-        "description": "One-week return. "
-      },
-      "mtd": {
-        "description": "Month to date return. "
-      },
-      "one_month": {
-        "description": "One-month return. "
-      },
-      "qtd": {
-        "description": "Quarter to date return. "
-      },
-      "three_month": {
-        "description": "Three-month return. "
-      },
-      "six_month": {
-        "description": "Six-month return. "
-      },
-      "ytd": {
-        "description": "Year to date return. "
-      },
-      "one_year": {
-        "description": "One-year return. "
-      },
-      "three_year": {
-        "description": "Three-year return. "
-      },
-      "five_year": {
-        "description": "Five-year return. "
-      },
-      "ten_year": {
-        "description": "Ten-year return. "
-      },
-      "max": {
-        "description": "Return from the beginning of the time series. "
-      },
-      "symbol": {
-        "description": "The ticker symbol. (provider: fmp)"
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.ETF.PRICE_PERFORMANCE( \"SPY\" )"
-    },
-    "model_name": "PricePerformance"
-  },
-  "/etf/search": {
-    "name": "search",
-    "description": "Search for ETFs.  An empty query returns the full list of ETFs from the provider.",
-    "signature": "=OBB.ETF.SEARCH( [provider]; [query]; [exchange]; [is_active] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fmp",
-        "optional": "True"
-      },
-      "query": {
-        "type": "Text",
-        "description": "Search query.",
-        "optional": "True"
-      },
-      "exchange": {
-        "type": "Text",
-        "description": "The exchange code the ETF trades on. (provider: fmp)",
-        "optional": "True"
-      },
-      "is_active": {
-        "type": "Boolean",
-        "description": "Whether the ETF is actively trading. (provider: fmp)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "symbol": {
-        "description": "Symbol representing the entity requested in the data.(ETF) "
-      },
-      "name": {
-        "description": "Name of the ETF. "
-      },
-      "market_cap": {
-        "description": "The market cap of the ETF. (provider: fmp)"
-      },
-      "sector": {
-        "description": "The sector of the ETF. (provider: fmp)"
-      },
-      "industry": {
-        "description": "The industry of the ETF. (provider: fmp)"
-      },
-      "beta": {
-        "description": "The beta of the ETF. (provider: fmp)"
-      },
-      "price": {
-        "description": "The current price of the ETF. (provider: fmp)"
-      },
-      "last_annual_dividend": {
-        "description": "The last annual dividend paid. (provider: fmp)"
-      },
-      "volume": {
-        "description": "The current trading volume of the ETF. (provider: fmp)"
-      },
-      "exchange": {
-        "description": "The exchange code the ETF trades on. (provider: fmp)"
-      },
-      "exchange_name": {
-        "description": "The full name of the exchange the ETF trades on. (provider: fmp)"
-      },
-      "country": {
-        "description": "The country the ETF is registered in. (provider: fmp)"
-      },
-      "actively_trading": {
-        "description": "Whether the ETF is actively trading. (provider: fmp)"
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.ETF.SEARCH( )"
-    },
-    "model_name": "EtfSearch"
-  },
-  "/etf/sectors": {
-    "name": "sectors",
-    "description": "ETF Sector weighting.",
-    "signature": "=OBB.ETF.SECTORS( symbol; [provider] )",
-    "parameters": {
-      "symbol": {
-        "type": "Text",
-        "description": "Symbol to get data for. (ETF)",
-        "optional": "False"
-      },
-      "provider": {
-        "type": "Text",
-        "description": "Options: fmp",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "sector": {
-        "description": "Sector of exposure. "
-      },
-      "weight": {
-        "description": "Exposure of the ETF to the sector in normalized percentage points. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.ETF.SECTORS( \"SPY\" )"
-    },
-    "model_name": "EtfSectors"
-  },
-  "/fixedincome/corporate/commercial_paper": {
-    "name": "commercial_paper",
-    "description": "Commercial Paper.  Commercial paper (CP) consists of short-term, promissory notes issued primarily by corporations. Maturities range up to 270 days but average about 30 days. Many companies use CP to raise cash needed for current transactions, and many find it to be a lower-cost alternative to bank loans.",
-    "signature": "=OBB.FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER( [provider]; [start_date]; [end_date]; [maturity]; [category]; [grade] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "maturity": {
-        "type": "Text",
-        "description": "The maturity.",
-        "optional": "True"
-      },
-      "category": {
-        "type": "Text",
-        "description": "The category.",
-        "optional": "True"
-      },
-      "grade": {
-        "type": "Text",
-        "description": "The grade.",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "rate": {
-        "description": "Commercial Paper Rate. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER( )"
-    },
-    "model_name": "CommercialPaper"
-  },
-  "/fixedincome/corporate/hqm": {
-    "name": "hqm",
-    "description": "High Quality Market Corporate Bond.  The HQM yield curve represents the high quality corporate bond market, i.e., corporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms. These terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve that is the market-weighted average (MWA) quality of high quality bonds.",
-    "signature": "=OBB.FIXEDINCOME.CORPORATE.HQM( [provider]; [date]; [yield_curve] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "date": {
-        "type": "Text",
-        "description": "A specific date to get data for.",
-        "optional": "True"
-      },
-      "yield_curve": {
-        "type": "Text",
-        "description": "The yield curve type.",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "rate": {
-        "description": "HighQualityMarketCorporateBond Rate. "
-      },
-      "maturity": {
-        "description": "Maturity. "
-      },
-      "yield_curve": {
-        "description": "The yield curve type. "
-      },
-      "series_id": {
-        "description": "FRED series id. (provider: fred)"
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.CORPORATE.HQM( )"
-    },
-    "model_name": "HighQualityMarketCorporateBond"
-  },
-  "/fixedincome/corporate/ice_bofa": {
-    "name": "ice_bofa",
-    "description": "ICE BofA US Corporate Bond Indices.  The ICE BofA US Corporate Index tracks the performance of US dollar denominated investment grade corporate debt publicly issued in the US domestic market. Qualifying securities must have an investment grade rating (based on an average of Moody\u2019s, S&P and Fitch), at least 18 months to final maturity at the time of issuance, at least one year remaining term to final maturity as of the rebalance date, a fixed coupon schedule and a minimum amount outstanding of $250 million. The ICE BofA US Corporate Index is a component of the US Corporate Master Index.",
-    "signature": "=OBB.FIXEDINCOME.CORPORATE.ICE_BOFA( [provider]; [start_date]; [end_date]; [index_type]; [category]; [area]; [grade]; [options] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "index_type": {
-        "type": "Text",
-        "description": "The type of series.",
-        "optional": "True"
-      },
-      "category": {
-        "type": "Text",
-        "description": "The type of category. (provider: fred)",
-        "optional": "True"
-      },
-      "area": {
-        "type": "Text",
-        "description": "The type of area. (provider: fred)",
-        "optional": "True"
-      },
-      "grade": {
-        "type": "Text",
-        "description": "The type of grade. (provider: fred)",
-        "optional": "True"
-      },
-      "options": {
-        "type": "Boolean",
-        "description": "Whether to include options in the results. (provider: fred)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "rate": {
-        "description": "ICE BofA US Corporate Bond Indices Rate. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.CORPORATE.ICE_BOFA( )"
-    },
-    "model_name": "ICEBofA"
-  },
-  "/fixedincome/corporate/moody": {
-    "name": "moody",
-    "description": "Moody Corporate Bond Index.  Moody's Aaa and Baa are investment bonds that acts as an index of the performance of all bonds given an Aaa or Baa rating by Moody's Investors Service respectively. These corporate bonds often are used in macroeconomics as an alternative to the federal ten-year Treasury Bill as an indicator of the interest rate.",
-    "signature": "=OBB.FIXEDINCOME.CORPORATE.MOODY( [provider]; [start_date]; [end_date]; [index_type]; [spread] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "index_type": {
-        "type": "Text",
-        "description": "The type of series.",
-        "optional": "True"
-      },
-      "spread": {
-        "type": "Text",
-        "description": "The type of spread. (provider: fred)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "rate": {
-        "description": "Moody Corporate Bond Index Rate. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.CORPORATE.MOODY( )"
-    },
-    "model_name": "MoodyCorporateBondIndex"
-  },
-  "/fixedincome/corporate/spot_rates": {
-    "name": "spot_rates",
-    "description": "Spot Rates.  The spot rates for any maturity is the yield on a bond that provides a single payment at that maturity. This is a zero coupon bond. Because each spot rate pertains to a single cashflow, it is the relevant interest rate concept for discounting a pension liability at the same maturity.",
-    "signature": "=OBB.FIXEDINCOME.CORPORATE.SPOT_RATES( [provider]; [start_date]; [end_date]; [maturity]; [category] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "maturity": {
-        "type": "Any",
-        "description": "The maturities in years.",
-        "optional": "True"
-      },
-      "category": {
-        "type": "Any",
-        "description": "The category.",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "rate": {
-        "description": "Spot Rate. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.CORPORATE.SPOT_RATES( )"
-    },
-    "model_name": "SpotRate"
-  },
-  "/fixedincome/government/treasury_rates": {
-    "name": "treasury_rates",
-    "description": "Government Treasury Rates.",
-    "signature": "=OBB.FIXEDINCOME.GOVERNMENT.TREASURY_RATES( [provider]; [start_date]; [end_date] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fmp",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "month_1": {
-        "description": "1 month treasury rate. "
-      },
-      "month_2": {
-        "description": "2 month treasury rate. "
-      },
-      "month_3": {
-        "description": "3 month treasury rate. "
-      },
-      "month_6": {
-        "description": "6 month treasury rate. "
-      },
-      "year_1": {
-        "description": "1 year treasury rate. "
-      },
-      "year_2": {
-        "description": "2 year treasury rate. "
-      },
-      "year_3": {
-        "description": "3 year treasury rate. "
-      },
-      "year_5": {
-        "description": "5 year treasury rate. "
-      },
-      "year_7": {
-        "description": "7 year treasury rate. "
-      },
-      "year_10": {
-        "description": "10 year treasury rate. "
-      },
-      "year_20": {
-        "description": "20 year treasury rate. "
-      },
-      "year_30": {
-        "description": "30 year treasury rate. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.GOVERNMENT.TREASURY_RATES( )"
-    },
-    "model_name": "TreasuryRates"
-  },
-  "/fixedincome/government/us_yield_curve": {
-    "name": "us_yield_curve",
-    "description": "US Yield Curve. Get United States yield curve.",
-    "signature": "=OBB.FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE( [provider]; [date]; [inflation_adjusted] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "date": {
-        "type": "Text",
-        "description": "A specific date to get data for. Defaults to the most recent FRED entry.",
-        "optional": "True"
-      },
-      "inflation_adjusted": {
-        "type": "Boolean",
-        "description": "Get inflation adjusted rates.",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "maturity": {
-        "description": "Maturity of the treasury rate in years. "
-      },
-      "rate": {
-        "description": "Associated rate given in decimal form (0.05 is 5%) "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE( )"
-    },
-    "model_name": "USYieldCurve"
-  },
-  "/fixedincome/rate/ameribor": {
-    "name": "ameribor",
-    "description": "Ameribor.  Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the American Financial Exchange (AFX).",
-    "signature": "=OBB.FIXEDINCOME.RATE.AMERIBOR( [provider]; [start_date]; [end_date]; [parameter] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "parameter": {
-        "type": "Text",
-        "description": "Period of AMERIBOR rate. (provider: fred)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "rate": {
-        "description": "AMERIBOR rate. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.RATE.AMERIBOR( )"
-    },
-    "model_name": "AMERIBOR"
-  },
-  "/fixedincome/rate/dpcredit": {
-    "name": "dpcredit",
-    "description": "Discount Window Primary Credit Rate.  A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.",
-    "signature": "=OBB.FIXEDINCOME.RATE.DPCREDIT( [provider]; [start_date]; [end_date]; [parameter] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "parameter": {
-        "type": "Text",
-        "description": "FRED series ID of DWPCR data. (provider: fred)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "rate": {
-        "description": "Discount Window Primary Credit Rate. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.RATE.DPCREDIT( )"
-    },
-    "model_name": "DiscountWindowPrimaryCreditRate"
-  },
-  "/fixedincome/rate/ecb": {
-    "name": "ecb",
-    "description": "European Central Bank Interest Rates.  The Governing Council of the ECB sets the key interest rates for the euro area:  - The interest rate on the main refinancing operations (MRO), which provide the bulk of liquidity to the banking system. - The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem. - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.",
-    "signature": "=OBB.FIXEDINCOME.RATE.ECB( [provider]; [start_date]; [end_date]; [interest_rate_type] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "interest_rate_type": {
-        "type": "Text",
-        "description": "The type of interest rate.",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "rate": {
-        "description": "European Central Bank Interest Rate. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.RATE.ECB( )"
-    },
-    "model_name": "EuropeanCentralBankInterestRates"
-  },
-  "/fixedincome/rate/effr": {
-    "name": "effr",
-    "description": "Fed Funds Rate.  Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.",
-    "signature": "=OBB.FIXEDINCOME.RATE.EFFR( [provider]; [start_date]; [end_date]; [parameter] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "parameter": {
-        "type": "Text",
-        "description": "Period of FED rate. (provider: fred)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "rate": {
-        "description": "FED rate. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.RATE.EFFR( )"
-    },
-    "model_name": "FEDFUNDS"
-  },
-  "/fixedincome/rate/effr_forecast": {
-    "name": "effr_forecast",
-    "description": "Fed Funds Rate Projections.  The projections for the federal funds rate are the value of the midpoint of the projected appropriate target range for the federal funds rate or the projected appropriate target level for the federal funds rate at the end of the specified calendar year or over the longer run.",
-    "signature": "=OBB.FIXEDINCOME.RATE.EFFR_FORECAST( [provider]; [long_run] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "long_run": {
-        "type": "Boolean",
-        "description": "Flag to show long run projections (provider: fred)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "range_high": {
-        "description": "High projection of rates. "
-      },
-      "central_tendency_high": {
-        "description": "Central tendency of high projection of rates. "
-      },
-      "median": {
-        "description": "Median projection of rates. "
-      },
-      "range_midpoint": {
-        "description": "Midpoint projection of rates. "
-      },
-      "central_tendency_midpoint": {
-        "description": "Central tendency of midpoint projection of rates. "
-      },
-      "range_low": {
-        "description": "Low projection of rates. "
-      },
-      "central_tendency_low": {
-        "description": "Central tendency of low projection of rates. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.RATE.EFFR_FORECAST( )"
-    },
-    "model_name": "PROJECTIONS"
-  },
-  "/fixedincome/rate/estr": {
-    "name": "estr",
-    "description": "Euro Short-Term Rate.  The euro short-term rate (\u20acSTR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in the euro area. The \u20acSTR is published on each TARGET2 business day based on transactions conducted and settled on the previous TARGET2 business day (the reporting date \u201cT\u201d) with a maturity date of T+1 which are deemed to have been executed at arm\u2019s length and thus reflect market rates in an unbiased way.",
-    "signature": "=OBB.FIXEDINCOME.RATE.ESTR( [provider]; [start_date]; [end_date]; [parameter] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "parameter": {
-        "type": "Text",
-        "description": "Period of ESTR rate. (provider: fred)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "rate": {
-        "description": "ESTR rate. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.RATE.ESTR( )"
-    },
-    "model_name": "ESTR"
-  },
-  "/fixedincome/rate/iorb": {
-    "name": "iorb",
-    "description": "Interest on Reserve Balances.  Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.",
-    "signature": "=OBB.FIXEDINCOME.RATE.IORB( [provider]; [start_date]; [end_date] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "rate": {
-        "description": "IORB rate. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.RATE.IORB( )"
-    },
-    "model_name": "IORB"
-  },
-  "/fixedincome/rate/sonia": {
-    "name": "sonia",
-    "description": "Sterling Overnight Index Average.  SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual transactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other financial institutions and other institutional investors.",
-    "signature": "=OBB.FIXEDINCOME.RATE.SONIA( [provider]; [start_date]; [end_date]; [parameter] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "parameter": {
-        "type": "Text",
-        "description": "Period of SONIA rate. (provider: fred)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "rate": {
-        "description": "SONIA rate. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.RATE.SONIA( )"
-    },
-    "model_name": "SONIA"
-  },
-  "/fixedincome/sofr": {
-    "name": "sofr",
-    "description": "Secured Overnight Financing Rate.  The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of borrowing cash overnight collateralizing by Treasury securities.",
-    "signature": "=OBB.FIXEDINCOME.SOFR( [provider]; [start_date]; [end_date]; [period] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "period": {
-        "type": "Text",
-        "description": "Period of SOFR rate. (provider: fred)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "rate": {
-        "description": "SOFR rate. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.SOFR( )"
-    },
-    "model_name": "SOFR"
-  },
-  "/fixedincome/spreads/tmc": {
-    "name": "tmc",
-    "description": "Treasury Constant Maturity.  Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity. Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S. Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.",
-    "signature": "=OBB.FIXEDINCOME.SPREADS.TMC( [provider]; [start_date]; [end_date]; [maturity] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "maturity": {
-        "type": "Text",
-        "description": "The maturity",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "rate": {
-        "description": "TreasuryConstantMaturity Rate. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.SPREADS.TMC( )"
-    },
-    "model_name": "TreasuryConstantMaturity"
-  },
-  "/fixedincome/spreads/tmc_effr": {
-    "name": "tmc_effr",
-    "description": "Select Treasury Constant Maturity.  Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S. Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.",
-    "signature": "=OBB.FIXEDINCOME.SPREADS.TMC_EFFR( [provider]; [start_date]; [end_date]; [maturity] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "maturity": {
-        "type": "Text",
-        "description": "The maturity",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "rate": {
-        "description": "Selected Treasury Constant Maturity Rate. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.SPREADS.TMC_EFFR( )"
-    },
-    "model_name": "SelectedTreasuryConstantMaturity"
-  },
-  "/fixedincome/spreads/treasury_effr": {
-    "name": "treasury_effr",
-    "description": "Select Treasury Bill.  Get Selected Treasury Bill Minus Federal Funds Rate. Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S. Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.",
-    "signature": "=OBB.FIXEDINCOME.SPREADS.TREASURY_EFFR( [provider]; [start_date]; [end_date]; [maturity] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: fred",
-        "optional": "True"
-      },
-      "start_date": {
-        "type": "Text",
-        "description": "Start date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "end_date": {
-        "type": "Text",
-        "description": "End date of the data, in YYYY-MM-DD format.",
-        "optional": "True"
-      },
-      "maturity": {
-        "type": "Text",
-        "description": "The maturity",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "date": {
-        "description": "The date of the data. "
-      },
-      "rate": {
-        "description": "SelectedTreasuryBill Rate. "
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.SPREADS.TREASURY_EFFR( )"
-    },
-    "model_name": "SelectedTreasuryBill"
-  },
   "/index/available": {
     "name": "available",
     "description": "Available Indices. Available indices for a given provider.",
@@ -7972,7 +5948,7 @@
     "parameters": {
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       }
     },
@@ -8003,7 +5979,7 @@
     "parameters": {
       "provider": {
         "type": "Text",
-        "description": "Options: fmp",
+        "description": "Options: fmp, defaults to fmp.",
         "optional": "True"
       },
       "index": {
@@ -8047,7 +6023,7 @@
   "/index/market": {
     "name": "market",
     "description": "Historical Market Indices.",
-    "signature": "=OBB.INDEX.MARKET( symbol; [provider]; [start_date]; [end_date]; [timeseries]; [interval]; [tag]; [type]; [sort]; [limit]; [timespan]; [adjusted]; [multiplier] )",
+    "signature": "=OBB.INDEX.MARKET( symbol; [provider]; [start_date]; [end_date]; [timeseries]; [interval]; [sort]; [tag]; [type]; [limit]; [sleep]; [timespan]; [adjusted]; [multiplier] )",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -8056,7 +6032,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: fmp, intrinio, polygon",
+        "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
         "optional": "True"
       },
       "start_date": {
@@ -8079,6 +6055,11 @@
         "description": "Data granularity. (provider: fmp)",
         "optional": "True"
       },
+      "sort": {
+        "type": "Text",
+        "description": "Sort the data in ascending or descending order. (provider: fmp); Sort order. (provider: intrinio); Sort order of the data. (provider: polygon)",
+        "optional": "True"
+      },
       "tag": {
         "type": "Text",
         "description": "Index tag. (provider: intrinio)",
@@ -8089,14 +6070,14 @@
         "description": "Index type. (provider: intrinio)",
         "optional": "True"
       },
-      "sort": {
-        "type": "Text",
-        "description": "Sort order. (provider: intrinio); Sort order of the data. (provider: polygon)",
-        "optional": "True"
-      },
       "limit": {
         "type": "Number",
         "description": "The number of data entries to return. (provider: intrinio, polygon)",
+        "optional": "True"
+      },
+      "sleep": {
+        "type": "Number",
+        "description": "Time to sleep between requests to avoid rate limiting. (provider: intrinio)",
         "optional": "True"
       },
       "timespan": {
@@ -8165,7 +6146,7 @@
   "/news/company": {
     "name": "company",
     "description": "Company News. Get news for one or more companies.",
-    "signature": "=OBB.NEWS.COMPANY( symbols; [provider]; [limit]; [display]; [date]; [start_date]; [end_date]; [updated_since]; [published_since]; [sort]; [order]; [isin]; [cusip]; [channels]; [topics]; [authors]; [content_types]; [page]; [published_utc]; [source] )",
+    "signature": "=OBB.NEWS.COMPANY( symbols; [provider]; [limit]; [display]; [date]; [start_date]; [end_date]; [updated_since]; [published_since]; [sort]; [order]; [isin]; [cusip]; [channels]; [topics]; [authors]; [content_types]; [page]; [published_utc] )",
     "parameters": {
       "symbols": {
         "type": "Text",
@@ -8174,7 +6155,7 @@
       },
       "provider": {
         "type": "Text",
-        "description": "Options: benzinga, fmp, intrinio, polygon, tiingo",
+        "description": "Options: benzinga, fmp, intrinio, polygon, defaults to benzinga.",
         "optional": "True"
       },
       "limit": {
@@ -8261,11 +6242,6 @@
         "type": "Text",
         "description": "Date query to fetch articles. Supports operators <, <=, >, >= (provider: polygon)",
         "optional": "True"
-      },
-      "source": {
-        "type": "Text",
-        "description": "A comma-separated list of the domains requested. (provider: tiingo)",
-        "optional": "True"
       }
     },
     "data": {
@@ -8306,13 +6282,13 @@
         "description": "Stocks associated with the news. (provider: benzinga)"
       },
       "tags": {
-        "description": "Tags associated with the news. (provider: benzinga, tiingo)"
+        "description": "Tags associated with the news. (provider: benzinga)"
       },
       "updated": {
         "description": "Updated date of the news. (provider: benzinga)"
       },
       "site": {
-        "description": "Name of the news source. (provider: fmp);     News source. (provider: tiingo)"
+        "description": "Name of the news source. (provider: fmp)"
       },
       "amp_url": {
         "description": "AMP URL. (provider: polygon)"
@@ -8325,12 +6301,6 @@
       },
       "publisher": {
         "description": "Publisher of the article. (provider: polygon)"
-      },
-      "article_id": {
-        "description": "Unique ID of the news article. (provider: tiingo)"
-      },
-      "crawl_date": {
-        "description": "Date the news article was crawled. (provider: tiingo)"
       }
     },
     "return": "matrix",
@@ -8342,11 +6312,11 @@
   "/news/world": {
     "name": "world",
     "description": "World News. Global news data.",
-    "signature": "=OBB.NEWS.WORLD( [provider]; [limit]; [display]; [date]; [start_date]; [end_date]; [updated_since]; [published_since]; [sort]; [order]; [isin]; [cusip]; [channels]; [topics]; [authors]; [content_types]; [source] )",
+    "signature": "=OBB.NEWS.WORLD( [provider]; [limit]; [display]; [date]; [start_date]; [end_date]; [updated_since]; [published_since]; [sort]; [order]; [isin]; [cusip]; [channels]; [topics]; [authors]; [content_types] )",
     "parameters": {
       "provider": {
         "type": "Text",
-        "description": "Options: benzinga, fmp, intrinio, tiingo",
+        "description": "Options: benzinga, fmp, intrinio, defaults to benzinga.",
         "optional": "True"
       },
       "limit": {
@@ -8423,11 +6393,6 @@
         "type": "Text",
         "description": "Content types of the news to retrieve. (provider: benzinga)",
         "optional": "True"
-      },
-      "source": {
-        "type": "Text",
-        "description": "A comma-separated list of the domains requested. (provider: tiingo)",
-        "optional": "True"
       }
     },
     "data": {
@@ -8462,25 +6427,16 @@
         "description": "Stocks associated with the news. (provider: benzinga)"
       },
       "tags": {
-        "description": "Tags associated with the news. (provider: benzinga, tiingo)"
+        "description": "Tags associated with the news. (provider: benzinga)"
       },
       "updated": {
         "description": "Updated date of the news. (provider: benzinga)"
       },
       "site": {
-        "description": "News source. (provider: fmp, tiingo)"
+        "description": "News source. (provider: fmp)"
       },
       "company": {
         "description": "Company details related to the news article. (provider: intrinio)"
-      },
-      "symbols": {
-        "description": "Ticker tagged in the fetched news. (provider: tiingo)"
-      },
-      "article_id": {
-        "description": "Unique ID of the news article. (provider: tiingo)"
-      },
-      "crawl_date": {
-        "description": "Date the news article was crawled. (provider: tiingo)"
       }
     },
     "return": "matrix",
@@ -8488,198 +6444,5 @@
       "A. Minimal": "=OBB.NEWS.WORLD( )"
     },
     "model_name": "WorldNews"
-  },
-  "/regulators/sec/cik_map": {
-    "name": "cik_map",
-    "description": "Get the CIK number corresponding to a ticker symbol.",
-    "signature": "=OBB.REGULATORS.SEC.CIK_MAP( symbol; [provider] )",
-    "parameters": {
-      "symbol": {
-        "type": "Text",
-        "description": "Symbol to get data for.",
-        "optional": "False"
-      },
-      "provider": {
-        "type": "Text",
-        "description": "Options: sec",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "cik": {
-        "description": "Central Index Key (provider: sec)"
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.REGULATORS.SEC.CIK_MAP( \"AAPL\" )"
-    },
-    "model_name": "CikMap"
-  },
-  "/regulators/sec/institutions_search": {
-    "name": "institutions_search",
-    "description": "Look up institutions regulated by the SEC.",
-    "signature": "=OBB.REGULATORS.SEC.INSTITUTIONS_SEARCH( [provider]; [query]; [use_cache] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: sec",
-        "optional": "True"
-      },
-      "query": {
-        "type": "Text",
-        "description": "Search query.",
-        "optional": "True"
-      },
-      "use_cache": {
-        "type": "Boolean",
-        "description": "Whether or not to use cache. If True, cache will store for seven days. (provider: sec)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "name": {
-        "description": "The name of the institution. (provider: sec)"
-      },
-      "cik": {
-        "description": "Central Index Key (CIK) (provider: sec)"
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.REGULATORS.SEC.INSTITUTIONS_SEARCH( )"
-    },
-    "model_name": "InstitutionsSearch"
-  },
-  "/regulators/sec/rss_litigation": {
-    "name": "rss_litigation",
-    "description": "The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.",
-    "signature": "=OBB.REGULATORS.SEC.RSS_LITIGATION( [provider] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: sec",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "published": {
-        "description": "The date of publication. (provider: sec)"
-      },
-      "title": {
-        "description": "The title of the release. (provider: sec)"
-      },
-      "summary": {
-        "description": "Short summary of the release. (provider: sec)"
-      },
-      "id": {
-        "description": "The identifier associated with the release. (provider: sec)"
-      },
-      "link": {
-        "description": "URL to the release. (provider: sec)"
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.REGULATORS.SEC.RSS_LITIGATION( )"
-    },
-    "model_name": "RssLitigation"
-  },
-  "/regulators/sec/schema_files": {
-    "name": "schema_files",
-    "description": "Get lists of SEC XML schema files by year.",
-    "signature": "=OBB.REGULATORS.SEC.SCHEMA_FILES( [provider]; [query]; [url] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: sec",
-        "optional": "True"
-      },
-      "query": {
-        "type": "Text",
-        "description": "Search query.",
-        "optional": "True"
-      },
-      "url": {
-        "type": "Text",
-        "description": "Enter an optional URL path to fetch the next level. (provider: sec)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "files": {
-        "description": "Dictionary of URLs to SEC Schema Files (provider: sec)"
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.REGULATORS.SEC.SCHEMA_FILES( )"
-    },
-    "model_name": "SchemaFiles"
-  },
-  "/regulators/sec/sic_search": {
-    "name": "sic_search",
-    "description": "Fuzzy search for Industry Titles, Reporting Office, and SIC Codes.",
-    "signature": "=OBB.REGULATORS.SEC.SIC_SEARCH( [provider]; [query]; [use_cache] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: sec",
-        "optional": "True"
-      },
-      "query": {
-        "type": "Text",
-        "description": "Search query.",
-        "optional": "True"
-      },
-      "use_cache": {
-        "type": "Boolean",
-        "description": "Whether to use the cache or not. The full list will be cached for seven days if True. (provider: sec)",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "sic": {
-        "description": "Sector Industrial Code (SIC) (provider: sec)"
-      },
-      "industry": {
-        "description": "Industry title. (provider: sec)"
-      },
-      "office": {
-        "description": "Reporting office within the Corporate Finance Office (provider: sec)"
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.REGULATORS.SEC.SIC_SEARCH( )"
-    },
-    "model_name": "SicSearch"
-  },
-  "/regulators/sec/symbol_map": {
-    "name": "symbol_map",
-    "description": "Get the ticker symbol corresponding to a company's CIK.",
-    "signature": "=OBB.REGULATORS.SEC.SYMBOL_MAP( [provider]; [query] )",
-    "parameters": {
-      "provider": {
-        "type": "Text",
-        "description": "Options: sec",
-        "optional": "True"
-      },
-      "query": {
-        "type": "Text",
-        "description": "Search query.",
-        "optional": "True"
-      }
-    },
-    "data": {
-      "symbol": {
-        "description": "Symbol representing the entity requested in the data. (provider: sec)"
-      }
-    },
-    "return": "matrix",
-    "examples": {
-      "A. Minimal": "=OBB.REGULATORS.SEC.SYMBOL_MAP( )"
-    },
-    "model_name": "SymbolMap"
   }
 }

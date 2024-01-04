@@ -68,7 +68,7 @@ Upcoming and Historical IPO Calendar.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: intrinio | True |
+| provider | Text | Options: intrinio, defaults to intrinio. | True |
 | symbol | Text | Symbol to get data for. | True |
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |

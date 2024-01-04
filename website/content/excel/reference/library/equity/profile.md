@@ -64,7 +64,7 @@ Equity Info. Get general price and performance metrics of a stock.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: intrinio | True |
+| provider | Text | Options: intrinio, defaults to intrinio. | True |
 
 ---
 

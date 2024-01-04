@@ -30,7 +30,7 @@ Extensive set of ratios over time. Financial ratios for a given company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.RATIOS( symbol; [provider]; [period]; [limit]; [with_ttm] )
+=OBB.EQUITY.FUNDAMENTAL.RATIOS( symbol; [provider]; [period]; [limit]; [with_ttm]; [fiscal_year] )
 ```
 
 ---
@@ -40,10 +40,11 @@ Extensive set of ratios over time. Financial ratios for a given company.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp | True |
+| provider | Text | Options: fmp, intrinio, defaults to fmp. | True |
 | period | Text | Time period of the data to return. | True |
 | limit | Number | The number of data entries to return. | True |
-| with_ttm | Boolean | Include trailing twelve months (TTM) data. (provider: fmp) | True |
+| with_ttm | Boolean | Include trailing twelve months (TTM) data. (provider: fmp, intrinio) | True |
+| fiscal_year | Number | The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio) | True |
 
 ---
 

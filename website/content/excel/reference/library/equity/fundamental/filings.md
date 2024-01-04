@@ -41,7 +41,7 @@ Company Filings. Company filings data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.FILINGS( [provider]; [symbol]; [form_type]; [limit]; [start_date]; [end_date]; [thea_enabled]; [cik]; [use_cache] )
+=OBB.EQUITY.FUNDAMENTAL.FILINGS( [provider]; [symbol]; [form_type]; [limit]; [start_date]; [end_date]; [thea_enabled] )
 ```
 
 ---
@@ -50,15 +50,13 @@ Company Filings. Company filings data.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp, intrinio, sec | True |
+| provider | Text | Options: fmp, intrinio, defaults to fmp. | True |
 | symbol | Text | Symbol to get data for. | True |
-| form_type | Text | Type of the SEC filing form. (provider: sec) | True |
+| form_type | Text | Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types. | True |
 | limit | Number | The number of data entries to return. | True |
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. (provider: intrinio) | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. (provider: intrinio) | True |
 | thea_enabled | Boolean | Return filings that have been read by Intrinio's Thea NLP. (provider: intrinio) | True |
-| cik | Any | Lookup filings by Central Index Key (CIK) instead of by symbol. (provider: sec) | True |
-| use_cache | Boolean | Whether or not to use cache.  If True, cache will store for one day. (provider: sec) | True |
 
 ---
 

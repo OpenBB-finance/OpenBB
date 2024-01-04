@@ -49,7 +49,7 @@ Historical Market Indices.
 ## Syntax
 
 ```excel wordwrap
-=OBB.INDEX.MARKET( symbol; [provider]; [start_date]; [end_date]; [timeseries]; [interval]; [tag]; [type]; [sort]; [limit]; [timespan]; [adjusted]; [multiplier] )
+=OBB.INDEX.MARKET( symbol; [provider]; [start_date]; [end_date]; [timeseries]; [interval]; [sort]; [tag]; [type]; [limit]; [sleep]; [timespan]; [adjusted]; [multiplier] )
 ```
 
 ---
@@ -59,15 +59,16 @@ Historical Market Indices.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, intrinio, polygon | True |
+| provider | Text | Options: fmp, intrinio, polygon, defaults to fmp. | True |
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
 | timeseries | Number | Number of days to look back. (provider: fmp) | True |
 | interval | Text | Data granularity. (provider: fmp) | True |
+| sort | Text | Sort the data in ascending or descending order. (provider: fmp); Sort order. (provider: intrinio); Sort order of the data. (provider: polygon) | True |
 | tag | Text | Index tag. (provider: intrinio) | True |
 | type | Text | Index type. (provider: intrinio) | True |
-| sort | Text | Sort order. (provider: intrinio); Sort order of the data. (provider: polygon) | True |
 | limit | Number | The number of data entries to return. (provider: intrinio, polygon) | True |
+| sleep | Number | Time to sleep between requests to avoid rate limiting. (provider: intrinio) | True |
 | timespan | Text | Timespan of the data. (provider: polygon) | True |
 | adjusted | Boolean | Whether the data is adjusted. (provider: polygon) | True |
 | multiplier | Number | Multiplier of the timespan. (provider: polygon) | True |

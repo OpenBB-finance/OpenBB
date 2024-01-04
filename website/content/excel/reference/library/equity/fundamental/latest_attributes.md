@@ -16,7 +16,7 @@ Fetch the latest value of a data tag from Intrinio.
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | **tag** | **Text** | **Intrinio data tag ID or code.** | **False** |
-| provider | Text | Options: intrinio | True |
+| provider | Text | Options: intrinio, defaults to intrinio. | True |
 
 ---
 

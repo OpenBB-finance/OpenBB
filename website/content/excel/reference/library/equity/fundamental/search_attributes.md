@@ -15,7 +15,7 @@ Search Intrinio data tags.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **query** | **Text** | **Query to search for.** | **False** |
-| provider | Text | Options: intrinio | True |
+| provider | Text | Options: intrinio, defaults to intrinio. | True |
 | limit | Number | The number of data entries to return. | True |
 
 ---

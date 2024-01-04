@@ -40,7 +40,7 @@ Get a current, complete, market snapshot.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp, polygon | True |
+| provider | Text | Options: fmp, polygon, defaults to fmp. | True |
 | market | Text | The market to fetch data for. (provider: fmp) | True |
 
 ---

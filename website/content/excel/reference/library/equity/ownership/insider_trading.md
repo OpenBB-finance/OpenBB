@@ -49,7 +49,7 @@ Insider Trading. Information about insider trading.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, intrinio | True |
+| provider | Text | Options: fmp, intrinio, defaults to fmp. | True |
 | limit | Number | The number of data entries to return. | True |
 | transactionType | Any | Type of the transaction. (provider: fmp) | True |
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. (provider: intrinio) | True |

@@ -20,7 +20,7 @@ Balance Sheet. Balance sheet statement.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.BALANCE( symbol; [provider]; [period]; [limit]; [cik]; [filing_date]; [filing_date_lt]; [filing_date_lte]; [filing_date_gt]; [filing_date_gte]; [period_of_report_date]; [period_of_report_date_lt]; [period_of_report_date_lte]; [period_of_report_date_gt]; [period_of_report_date_gte]; [include_sources]; [order]; [sort] )
+=OBB.EQUITY.FUNDAMENTAL.BALANCE( symbol; [provider]; [period]; [limit]; [fiscal_year]; [filing_date]; [filing_date_lt]; [filing_date_lte]; [filing_date_gt]; [filing_date_gte]; [period_of_report_date]; [period_of_report_date_lt]; [period_of_report_date_lte]; [period_of_report_date_gt]; [period_of_report_date_gte]; [include_sources]; [order]; [sort] )
 ```
 
 ---
@@ -30,10 +30,10 @@ Balance Sheet. Balance sheet statement.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, intrinio, polygon | True |
+| provider | Text | Options: fmp, intrinio, polygon, defaults to fmp. | True |
 | period | Text | Time period of the data to return. | True |
 | limit | Number | The number of data entries to return. | True |
-| cik | Text | Central Index Key (CIK) of the company. (provider: fmp) | True |
+| fiscal_year | Number | The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio) | True |
 | filing_date | Text | Filing date of the financial statement. (provider: polygon) | True |
 | filing_date_lt | Text | Filing date less than the given date. (provider: polygon) | True |
 | filing_date_lte | Text | Filing date less than or equal to the given date. (provider: polygon) | True |

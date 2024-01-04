@@ -34,7 +34,7 @@ Earnings Call Transcript. Earnings call transcript for a given company.
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for.** | **False** |
 | **year** | **Number** | **Year of the earnings call transcript.** | **False** |
-| provider | Text | Options: fmp | True |
+| provider | Text | Options: fmp, defaults to fmp. | True |
 
 ---
 

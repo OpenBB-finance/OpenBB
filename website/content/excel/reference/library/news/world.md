@@ -66,7 +66,7 @@ World News. Global news data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.NEWS.WORLD( [provider]; [limit]; [display]; [date]; [start_date]; [end_date]; [updated_since]; [published_since]; [sort]; [order]; [isin]; [cusip]; [channels]; [topics]; [authors]; [content_types]; [source] )
+=OBB.NEWS.WORLD( [provider]; [limit]; [display]; [date]; [start_date]; [end_date]; [updated_since]; [published_since]; [sort]; [order]; [isin]; [cusip]; [channels]; [topics]; [authors]; [content_types] )
 ```
 
 ---
@@ -75,7 +75,7 @@ World News. Global news data.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: benzinga, fmp, intrinio, tiingo | True |
+| provider | Text | Options: benzinga, fmp, intrinio, defaults to benzinga. | True |
 | limit | Number | The number of data entries to return. Here its the no. of articles to return. | True |
 | display | Text | Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga) | True |
 | date | Text | Date of the news to retrieve. (provider: benzinga) | True |
@@ -91,7 +91,6 @@ World News. Global news data.
 | topics | Text | Topics of the news to retrieve. (provider: benzinga) | True |
 | authors | Text | Authors of the news to retrieve. (provider: benzinga) | True |
 | content_types | Text | Content types of the news to retrieve. (provider: benzinga) | True |
-| source | Text | A comma-separated list of the domains requested. (provider: tiingo) | True |
 
 ---
 
@@ -109,13 +108,10 @@ World News. Global news data.
 | teaser | Teaser of the news. (provider: benzinga) |
 | channels | Channels associated with the news. (provider: benzinga) |
 | stocks | Stocks associated with the news. (provider: benzinga) |
-| tags | Tags associated with the news. (provider: benzinga, tiingo) |
+| tags | Tags associated with the news. (provider: benzinga) |
 | updated | Updated date of the news. (provider: benzinga) |
-| site | News source. (provider: fmp, tiingo) |
+| site | News source. (provider: fmp) |
 | company | Company details related to the news article. (provider: intrinio) |
-| symbols | Ticker tagged in the fetched news. (provider: tiingo) |
-| article_id | Unique ID of the news article. (provider: tiingo) |
-| crawl_date | Date the news article was crawled. (provider: tiingo) |
 ---
 
 ## Example

@@ -44,7 +44,7 @@ Revenue Geographic. Geographic revenue data.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp | True |
+| provider | Text | Options: fmp, defaults to fmp. | True |
 | period | Text | Time period of the data to return. | True |
 | structure | Text | Structure of the returned data. | True |
 

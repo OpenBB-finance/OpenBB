@@ -15,7 +15,7 @@ Get data by series ID from FRED.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fred, intrinio | True |
+| provider | Text | Options: fred, intrinio, defaults to fred. | True |
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
 | limit | Number | The number of data entries to return. | True |

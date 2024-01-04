@@ -32,7 +32,7 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.CRYPTO.PRICE.HISTORICAL( symbol; [provider]; [start_date]; [end_date]; [timeseries]; [interval]; [multiplier]; [timespan]; [sort]; [limit]; [adjusted]; [exchanges] )
+=OBB.CRYPTO.PRICE.HISTORICAL( symbol; [provider]; [start_date]; [end_date]; [timeseries]; [interval]; [multiplier]; [timespan]; [sort]; [limit]; [adjusted] )
 ```
 
 ---
@@ -42,17 +42,16 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format.** | **False** |
-| provider | Text | Options: fmp, polygon, tiingo | True |
+| provider | Text | Options: fmp, polygon, defaults to fmp. | True |
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
 | timeseries | Number | Number of days to look back. (provider: fmp) | True |
-| interval | Text | Data granularity. (provider: fmp, tiingo) | True |
+| interval | Text | Data granularity. (provider: fmp) | True |
 | multiplier | Number | Multiplier of the timespan. (provider: polygon) | True |
 | timespan | Text | Timespan of the data. (provider: polygon) | True |
 | sort | Text | Sort order of the data. (provider: polygon) | True |
 | limit | Number | The number of data entries to return. (provider: polygon) | True |
 | adjusted | Boolean | Whether the data is adjusted. (provider: polygon) | True |
-| exchanges | Any | To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX'] (provider: tiingo) | True |
 
 ---
 
@@ -73,8 +72,7 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 | change_percent | Change % in the price of the symbol. (provider: fmp) |
 | label | Human readable format of the date. (provider: fmp) |
 | change_over_time | Change % in the price of the symbol over a period of time. (provider: fmp) |
-| transactions | Number of transactions for the symbol in the time period. (provider: polygon, tiingo) |
-| volume_notional | The last size done for the asset on the specific date in the quote currency. The volume of the asset on the specific date in the quote currency. (provider: tiingo) |
+| transactions | Number of transactions for the symbol in the time period. (provider: polygon) |
 ---
 
 ## Example

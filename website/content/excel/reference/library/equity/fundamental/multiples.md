@@ -83,7 +83,7 @@ Equity Valuation Multiples. Valuation multiples for a stock ticker.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp | True |
+| provider | Text | Options: fmp, defaults to fmp. | True |
 
 ---
 

@@ -36,7 +36,7 @@ Index Constituents. Constituents of an index.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp | True |
+| provider | Text | Options: fmp, defaults to fmp. | True |
 | index | Text | Index for which we want to fetch the constituents. | True |
 
 ---
