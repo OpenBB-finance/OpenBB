@@ -97,7 +97,7 @@ class CommandLib(PathHandler):
             return self.xl_funcs.get(cmd, {}).get("name", ".").split(".")[-1].lower()
         return ""
 
-    def get_signature(self, cmd: str, path_only: bool = False) -> str:
+    def _get_signature(self, cmd: str, path_only: bool = False) -> str:
         """Get the signature of the command."""
         if cmd in self.route_map:
             sig = "=OBB." + self.xl_funcs[cmd].get("name", "")
@@ -114,7 +114,7 @@ class CommandLib(PathHandler):
             return sig
         return ""
 
-    def get_model(self, cmd: str) -> str:
+    def _get_model(self, cmd: str) -> str:
         """Get the model of the command."""
         route = self.route_map.get(cmd, None)
         if route:
@@ -127,11 +127,10 @@ class CommandLib(PathHandler):
                 return p
         return None
 
-    def get_parameters(self, cmd: str) -> dict:
+    def _get_parameters(self, cmd: str) -> dict:
         """Get the parameters of the command."""
         parameters = {}
-        cmd_info = self.xl_funcs[cmd]
-        for p in cmd_info["parameters"]:
+        for p in self.xl_funcs[cmd]["parameters"]:
             parameters[p["name"]] = {
                 "type": self.to_xl(str(p["type"])),
                 "description": p["description"].replace("\n", " "),
@@ -140,9 +139,9 @@ class CommandLib(PathHandler):
 
         return parameters
 
-    def get_data(self, cmd: str) -> dict:
+    def _get_data(self, cmd: str) -> dict:
         """Get the data of the command."""
-        model_name = self.get_model(cmd)
+        model_name = self._get_model(cmd)
         if model_name:
             schema = self.pi.return_schema[model_name].model_json_schema()["properties"]
             data = {}
@@ -154,7 +153,7 @@ class CommandLib(PathHandler):
 
         return {}
 
-    def get_examples(self, cmd: str) -> dict:
+    def _get_examples(self, cmd: str) -> dict:
         cmd_info = self.xl_funcs[cmd]
         if cmd in self.route_map:
             parameters = cmd_info["parameters"]
@@ -177,15 +176,18 @@ class CommandLib(PathHandler):
         if not name:
             return {}
         description = self.xl_funcs[cmd].get("description", "").replace("\n", " ")
-        signature_ = self.get_signature(cmd)
+        signature_ = self._get_signature(cmd)
+        parameters = self._get_parameters(cmd)
+        data = self._get_data(cmd)
         return_ = self.xl_funcs[cmd].get("result", {}).get("dimensionality", "")
-        examples = self.get_examples(cmd)
-        if model_name := self.get_model(cmd):
+        examples = self._get_examples(cmd)
+        if model_name := self._get_model(cmd):
             return {
                 "name": name,
                 "description": description,
                 "signature": signature_,
-                "parameters": self.xl_funcs[cmd]["parameters"],
+                "parameters": parameters,
+                "data": data,
                 "return": return_,
                 "examples": examples,
                 "model_name": model_name,
@@ -227,9 +229,7 @@ class Editor:
         with open(path, "w", encoding="utf-8", newline="\n") as f:  # type: ignore
             f.write(content)
 
-    def generate_md(self, path: Path, cmd: str):
-        cmd_info = self.cmd_lib.get_info(cmd)
-
+    def generate_md(self, path: Path, cmd: str, cmd_info: dict):
         def get_header() -> str:
             header = ""
             metadata = self.cmd_lib.seo_metadata.get(cmd, {})
@@ -269,7 +269,7 @@ class Editor:
             parameters = "## Parameters\n\n"
             parameters += "| Name | Type | Description | Optional |\n"
             parameters += "| ---- | ---- | ----------- | -------- |\n"
-            for field_name, field_info in self.cmd_lib.get_parameters(cmd).items():
+            for field_name, field_info in cmd_info["parameters"].items():
                 name = field_name
                 type_ = field_info["type"]
                 description = field_info["description"]
@@ -285,7 +285,7 @@ class Editor:
             data = "## Return Data\n\n"
             data += "| Name | Description |\n"
             data += "| ---- | ----------- |\n"
-            for field_name, field_info in self.cmd_lib.get_data(cmd).items():
+            for field_name, field_info in cmd_info["data"].items():
                 name = field_name
                 description = field_info["description"]
                 data += f"| {name} | {description} |\n"
@@ -445,6 +445,8 @@ class Editor:
     def go(self):
         """Generate the website reference."""
 
+        docs_map = {}
+
         self.delete(self.target_dir)
         for cmd in self.cmd_lib.xl_funcs:
             if self.cmd_lib.get_func(cmd):
@@ -454,9 +456,14 @@ class Editor:
                 filename = cmd.split("/")[-1] + ".md"
                 filepath = self.target_dir / folder / filename
                 filepath.parent.mkdir(parents=True, exist_ok=True)
-                self.generate_md(filepath, cmd)
+                cmd_info = self.cmd_lib.get_info(cmd)
+                docs_map[cmd] = cmd_info
+                self.generate_md(filepath, cmd, cmd_info)
 
         self.generate_sidebar()
+
+        with open(self.target_dir / "docs_map.json", "w") as f:
+            json.dump(docs_map, f, indent=2)
         print(f"Markdown files generated, check the {self.target_dir} folder.")
 
 
