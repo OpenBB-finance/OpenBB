@@ -17,10 +17,20 @@ from pandas import DataFrame
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.helpers import maybe_coroutine, run_async
+from openbb_core.provider.abstract.cache import (
+    AsyncRedisCache,
+    generate_cache_key,
+    AsyncLRUCache,
+)
 
 Q = TypeVar("Q", bound=QueryParams)
 D = TypeVar("D", bound=Data)
 R = TypeVar("R")  # Return, usually List[D], but can be just D for example
+
+try:
+    cache = AsyncRedisCache()
+except RuntimeError:  # pylint: disable=W0703
+    cache = AsyncLRUCache()
 
 
 class classproperty:
@@ -81,9 +91,18 @@ class Fetcher(Generic[Q, R]):
     ) -> R:
         """Fetch data from a provider."""
         query = cls.transform_query(params=params)
+        cache_key = generate_cache_key(cls.__name__, params)
+
+        cached_result = await cache.get(cache_key)
+        if cached_result is not None:
+            return cls.transform_data(query=query, data=cached_result, **kwargs)
+
         data = await maybe_coroutine(
             cls.extract_data, query=query, credentials=credentials, **kwargs
         )
+
+        await cache.set(cache_key, data)
+
         return cls.transform_data(query=query, data=data, **kwargs)
 
     @classproperty
