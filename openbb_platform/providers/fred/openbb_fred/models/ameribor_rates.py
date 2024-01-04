@@ -1,5 +1,5 @@
 """FRED AMERIBOR Model."""
-
+# pylint: disable=unused-argument
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -8,7 +8,7 @@ from openbb_core.provider.standard_models.ameribor_rates import (
     AMERIBORQueryParams,
 )
 from openbb_fred.utils.fred_base import Fred
-from pydantic import Field, field_validator
+from pydantic import Field
 
 AMERIBOR_PARAMETER_TO_FRED_ID = {
     "overnight": "AMERIBOR",
@@ -42,24 +42,19 @@ class FREDAMERIBORQueryParams(AMERIBORQueryParams):
         "90_day_ma",
     ] = Field(default="overnight", description="Period of AMERIBOR rate.")
 
+    round: Optional[int] = Field(
+        default=None,
+        description="Rounds the value to the specified number of decimal places.",
+    )
 
 class FREDAMERIBORData(AMERIBORData):
     """FRED AMERIBOR Data."""
 
     __alias_dict__ = {"rate": "value"}
 
-    @field_validator("rate", mode="before", check_fields=False)
-    @classmethod
-    def value_validate(cls, v):
-        """Validate rate."""
-        try:
-            return float(v)
-        except ValueError:
-            return None
-
 
 class FREDAMERIBORFetcher(
-    Fetcher[FREDAMERIBORQueryParams, List[Dict[str, List[FREDAMERIBORData]]]]
+    Fetcher[FREDAMERIBORQueryParams, List[FREDAMERIBORData]]
 ):
     """Transform the query, extract and transform the data from the FRED endpoints."""
 
@@ -86,7 +81,12 @@ class FREDAMERIBORFetcher(
     @staticmethod
     def transform_data(
         query: FREDAMERIBORQueryParams, data: dict, **kwargs: Any
-    ) -> List[Dict[str, List[FREDAMERIBORData]]]:
+    ) -> List[FREDAMERIBORData]:
         """Transform data."""
         keys = ["date", "value"]
-        return [FREDAMERIBORData(**{k: x[k] for k in keys}) for x in data]
+        new_data = [{k: x[k] for k in keys} for x in data if x["value"] != "."]
+        if query.round is None:
+            new_data = [{k: float(v)/100 if k == "value" else v for k, v in d.items()} for d in new_data]
+        else:
+            new_data = [{k: round(float(v)/100, query.round) if k == "value" else v for k, v in d.items()} for d in new_data]
+        return [FREDAMERIBORData.model_validate(d) for d in new_data]

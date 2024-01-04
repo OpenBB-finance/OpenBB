@@ -31,4 +31,7 @@ class AMERIBORData(Data):
     """AMERIBOR Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: Optional[float] = Field(description="AMERIBOR rate.")
+    rate: Optional[float] = Field(
+        default=None,
+        description="AMERIBOR rate as a normalized percentage. (e.g. 0.0001 == 0.01%)",
+    )
