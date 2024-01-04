@@ -1,5 +1,5 @@
 """Intrinio Balance Sheet Model."""
-
+# pylint: disable=unused-argument
 import warnings
 from typing import Any, Dict, List, Literal, Optional
 
@@ -135,7 +135,10 @@ class IntrinioBalanceSheetData(BalanceSheetData):
         "total_equity_non_controlling_interests": "totalequityandnoncontrollinginterests",
         "total_liabilities_shareholders_equity": "totalliabilitiesandequity",
     }
-
+    reported_currency: Optional[str] = Field(
+        description="The currency in which the balance sheet is reported.",
+        default=None,
+    )
     cash_and_cash_equivalents: Optional[int] = Field(
         description="Cash and cash equivalents.", default=None
     )
@@ -461,12 +464,15 @@ class IntrinioBalanceSheetFetcher(
     ) -> List[IntrinioBalanceSheetData]:
         """Return the transformed data."""
         transformed_data: List[IntrinioBalanceSheetData] = []
-
+        units = []
         for item in data:
             sub_dict: Dict[str, Any] = {}
 
             for sub_item in item["financials"]:
                 field_name = sub_item["data_tag"]["tag"]
+                unit = sub_item["data_tag"].get("unit", "")
+                if unit and "share" not in unit:
+                    units.append(unit)
                 sub_dict[field_name] = (
                     float(sub_item["value"])
                     if sub_item["value"] and sub_item["value"] != 0
@@ -476,6 +482,7 @@ class IntrinioBalanceSheetFetcher(
             sub_dict["period_ending"] = item["period_ending"]
             sub_dict["fiscal_year"] = item["fiscal_year"]
             sub_dict["fiscal_period"] = item["fiscal_period"]
+            sub_dict["reported_currency"] = list(set(units))[0]
 
             # Intrinio does not return Q4 data but FY data instead
             if query.period == "QTR" and item["fiscal_period"] == "FY":
