@@ -19,8 +19,8 @@ class OpenBBGroups(Enum):
     """OpenBB Extension Groups."""
 
     core = "openbb_core_extension"
-    obbject = "openbb_obbject_extension"
     provider = "openbb_provider_extension"
+    obbject = "openbb_obbject_extension"
 
 
 class ExtensionLoader(metaclass=SingletonMeta):
