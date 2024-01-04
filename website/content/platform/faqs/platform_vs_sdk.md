@@ -124,7 +124,7 @@ DataFrames are not JSON serializable. Changing this preference will remove REST 
 Jupyter does not get installed with the OpenBB Platform. Install from `pip` in the environment containing the Platform.
 
 ```bash
-pip install jupyter
+pip install jupyter-lab
 ```
 
 ### Views
