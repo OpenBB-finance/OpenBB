@@ -277,7 +277,7 @@ def test_call_func_expect_queue(expected_queue, func, queue):
         ),
         (
             "call_quote",
-            [],
+            ["--ticker=AAPL", "--load_source=YahooFinance"],
             "stocks_view.display_quote",
             [],
             dict(),
