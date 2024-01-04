@@ -66,7 +66,7 @@ World News. Global news data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.NEWS.WORLD(required;[optional])
+=OBB.NEWS.WORLD(required; [optional])
 ```
 
 ---
@@ -104,16 +104,14 @@ World News. Global news data.
 | images | Images associated with the news.  |
 | text | Text/body of the news.  |
 | url | URL of the news.  |
-| id | ID of the news. (provider: benzinga);
-    Article ID. (provider: intrinio) |
+| id | ID of the news. (provider: benzinga);     Article ID. (provider: intrinio) |
 | author | Author of the news. (provider: benzinga) |
 | teaser | Teaser of the news. (provider: benzinga) |
 | channels | Channels associated with the news. (provider: benzinga) |
 | stocks | Stocks associated with the news. (provider: benzinga) |
 | tags | Tags associated with the news. (provider: benzinga, tiingo) |
 | updated | Updated date of the news. (provider: benzinga) |
-| site | Site of the news. (provider: fmp);
-    Name of the news source. (provider: tiingo) |
+| site | Site of the news. (provider: fmp);     Name of the news source. (provider: tiingo) |
 | company | Company details related to the news article. (provider: intrinio) |
 | symbols | Ticker tagged in the fetched news. (provider: tiingo) |
 | article_id | Unique ID of the news article. (provider: tiingo) |

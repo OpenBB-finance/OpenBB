@@ -40,7 +40,7 @@ Company News. Get news for one or more companies.
 ## Syntax
 
 ```excel wordwrap
-=OBB.NEWS.COMPANY(required;[optional])
+=OBB.NEWS.COMPANY(required; [optional])
 ```
 
 ---
@@ -82,14 +82,10 @@ Company News. Get news for one or more companies.
 | image | Image URL of the news.  |
 | text | Text/body of the news.  |
 | url | URL of the news.  |
-| id | ID of the news. (provider: benzinga);
-    Intrinio ID for the article. (provider: intrinio);
-    Article ID. (provider: polygon) |
-| author | Author of the news. (provider: benzinga);
-    Author of the article. (provider: polygon) |
+| id | ID of the news. (provider: benzinga);     Intrinio ID for the article. (provider: intrinio);     Article ID. (provider: polygon) |
+| author | Author of the news. (provider: benzinga);     Author of the article. (provider: polygon) |
 | teaser | Teaser of the news. (provider: benzinga) |
-| images | Images associated with the news. (provider: benzinga);
-    URL to the images of the news. (provider: fmp) |
+| images | Images associated with the news. (provider: benzinga);     URL to the images of the news. (provider: fmp) |
 | channels | Channels associated with the news. (provider: benzinga) |
 | stocks | Stocks associated with the news. (provider: benzinga) |
 | tags | Tags associated with the news. (provider: benzinga, tiingo) |

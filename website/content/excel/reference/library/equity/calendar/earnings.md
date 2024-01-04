@@ -35,7 +35,7 @@ Upcoming and Historical earnings calendar.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.CALENDAR.EARNINGS(required;[optional])
+=OBB.EQUITY.CALENDAR.EARNINGS(required; [optional])
 ```
 
 ---
@@ -59,8 +59,8 @@ Upcoming and Historical earnings calendar.
 | name | Name of the entity.  |
 | eps_previous | The earnings-per-share from the same previously reported period.  |
 | eps_consensus | The analyst conesus earnings-per-share estimate.  |
-| actual_eps | The actual earnings per share announced. (provider: fmp) |
-| actual_revenue | The actual reported revenue. (provider: fmp) |
+| eps_actual | The actual earnings per share announced. (provider: fmp) |
+| revenue_actual | The actual reported revenue. (provider: fmp) |
 | revenue_consensus | The revenue forecast consensus. (provider: fmp) |
 | period_ending | The fiscal period end date. (provider: fmp) |
 | reporting_time | The reporting time - e.g. after market close. (provider: fmp) |
