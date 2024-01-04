@@ -2,9 +2,9 @@
 
 from enum import Enum
 from functools import lru_cache
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
-from importlib_metadata import EntryPoints, entry_points
+from importlib_metadata import EntryPoint, EntryPoints, entry_points
 
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.extension import Extension
@@ -30,33 +30,37 @@ class ExtensionLoader(metaclass=SingletonMeta):
         self,
     ) -> None:
         """Initialize the extension loader."""
-        self._obbject_entry_points = self._sorted_entry_points(
+        self._obbject_entry_points: EntryPoints = self._sorted_entry_points(
             group=OpenBBGroups.obbject.value
         )
-        self._core_entry_points = self._sorted_entry_points(
+        self._core_entry_points: EntryPoints = self._sorted_entry_points(
             group=OpenBBGroups.core.value
         )
-        self._provider_entry_points = self._sorted_entry_points(
+        self._provider_entry_points: EntryPoints = self._sorted_entry_points(
             group=OpenBBGroups.provider.value
         )
         self._obbject_objects: Dict[str, Extension] = {}
         self._core_objects: Dict[str, Any] = {}
         self._provider_objects: Dict[str, Provider] = {}
 
-    @property
-    def obbject_entry_points(self) -> EntryPoints:
-        """Return a dictionary of obbject extension entry points."""
-        return self._obbject_entry_points
+    @staticmethod
+    def _get_entry_point(
+        entry_points_: EntryPoints, ext_name: str
+    ) -> Optional[EntryPoint]:
+        """Given an extension name and a list of entry points, return the corresponding entry point."""
+        return next((ep for ep in entry_points_ if ep.name == ext_name), None)
 
-    @property
-    def core_entry_points(self) -> EntryPoints:
-        """Return a dictionary of core extension entry points."""
-        return self._core_entry_points
+    def get_obbject_entry_point(self, ext_name: str) -> Optional[EntryPoint]:
+        """Given an extension name, return the corresponding entry point."""
+        return self._get_entry_point(self._obbject_entry_points, ext_name)
 
-    @property
-    def provider_entry_points(self) -> EntryPoints:
-        """Return a dictionary of provider extension entry points."""
-        return self._provider_entry_points
+    def get_core_entry_point(self, ext_name: str) -> Optional[EntryPoint]:
+        """Given an extension name, return the corresponding entry point."""
+        return self._get_entry_point(self._core_entry_points, ext_name)
+
+    def get_provider_entry_point(self, ext_name: str) -> Optional[EntryPoint]:
+        """Given an extension name, return the corresponding entry point."""
+        return self._get_entry_point(self._provider_entry_points, ext_name)
 
     @property
     @lru_cache

@@ -20,6 +20,10 @@ EXT_NAME = Env().API_AUTH_EXTENSION
 logger = logging.getLogger("uvicorn.error")
 
 
+class AuthServiceError(Exception):
+    """Authentication service error."""
+
+
 class AuthService(metaclass=SingletonMeta):
     """Auth service."""
 
@@ -48,14 +52,16 @@ class AuthService(metaclass=SingletonMeta):
     @staticmethod
     def _is_installed(ext_name: str) -> bool:
         """Checks if auth_extension is installed."""
-        entry_points_ = ExtensionLoader().core_entry_points
-        return ext_name in [ext.name for ext in entry_points_]
+        extension = ExtensionLoader().get_core_entry_point(ext_name)
+        return extension and ext_name == extension.name  # type: ignore
 
     @staticmethod
     def _get_entry_mod(ext_name: str) -> ModuleType:
         """Get the module of the given auth_extension."""
-        entry_points_ = ExtensionLoader().core_entry_points
-        return import_module(entry_points_[ext_name].module)
+        extension = ExtensionLoader().get_core_entry_point(ext_name)
+        if not extension:
+            raise AuthServiceError(f"Extension '{ext_name}' is not installed.")
+        return import_module(extension.module)
 
     def _load_extension(self, ext_name: Optional[str]) -> bool:
         """Load auth extension."""
