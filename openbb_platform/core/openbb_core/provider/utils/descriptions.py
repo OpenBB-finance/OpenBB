@@ -27,3 +27,10 @@ DATA_DESCRIPTIONS = {
     "adj_close": "The adjusted close price.",
     "vwap": "Volume Weighted Average Price over the period.",
 }
+
+DATA_UNITS = {
+    "percent": "Normalized percentage points",
+    "index": "Values are indexed (normalized) to 100 at a certain date - i.e, 100 = 2015-01-01.",
+    "number": "Values are float or integer numbers.",
+    "price": "Values represent a price in a specific currency.",
+}
