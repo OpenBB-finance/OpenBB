@@ -5,6 +5,7 @@ import warnings
 from functools import lru_cache
 from typing import Dict
 
+from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.env import Env
 from openbb_core.provider.abstract.provider import Provider
@@ -38,15 +39,10 @@ class RegistryLoader:
     @lru_cache
     def from_extensions() -> Registry:
         """Load providers from entry points."""
-        # pylint: disable=import-outside-toplevel
-        from openbb_core.app.extension_loader import ExtensionLoader
-
         registry = Registry()
-
         el = ExtensionLoader()
-        entry_points_: Dict[str, Provider] = el.provider_objects
 
-        for name, entry in entry_points_.items():
+        for name, entry in el.provider_objects.items():
             try:
                 registry.include_provider(provider=entry)
             except Exception as e:

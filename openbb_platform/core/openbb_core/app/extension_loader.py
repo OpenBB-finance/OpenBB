@@ -9,9 +9,6 @@ from importlib_metadata import EntryPoint, EntryPoints, entry_points
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.extension import Extension
 
-# from openbb_core.app.router import Router
-from openbb_core.provider.abstract.provider import Provider
-
 
 class OpenBBGroups(Enum):
     """OpenBB Extension Groups."""
@@ -39,7 +36,7 @@ class ExtensionLoader(metaclass=SingletonMeta):
         )
         self._obbject_objects: Dict[str, Extension] = {}
         self._core_objects: Dict[str, Any] = {}
-        self._provider_objects: Dict[str, Provider] = {}
+        self._provider_objects: Dict[str, Any] = {}
 
     @property
     def obbject_entry_points(self) -> EntryPoints:
@@ -95,7 +92,7 @@ class ExtensionLoader(metaclass=SingletonMeta):
 
     @property
     @lru_cache
-    def provider_objects(self) -> Dict[str, Provider]:
+    def provider_objects(self) -> Dict[str, Any]:
         """Return a dict of provider extension objects."""
         self._provider_objects = self._load_entry_points(
             self._provider_entry_points, OpenBBGroups.provider
@@ -125,18 +122,22 @@ class ExtensionLoader(metaclass=SingletonMeta):
 
         def load_core(eps: EntryPoints) -> Dict[str, Any]:
             """Return a dictionary of core objects."""
-            # TODO : this should filter out using the `Router` class, which causes a circular import error
-            # return {
-            #     ep.name: entry for ep in eps if isinstance((entry := ep.load()), Router)
-            # }
-            return {ep.name: ep.load() for ep in eps}
+            # pylint: disable=import-outside-toplevel
+            from openbb_core.app.router import Router
 
-        def load_provider(eps: EntryPoints) -> Dict[str, Provider]:
+            return {
+                ep.name: entry for ep in eps if isinstance((entry := ep.load()), Router)
+            }
+
+        def load_provider(eps: EntryPoints) -> Dict[str, Any]:
             """
             Return a dictionary of provider objects.
 
             Keys are entry point names and values are instances of the Provider class.
             """
+            # pylint: disable=import-outside-toplevel
+            from openbb_core.provider.abstract.provider import Provider
+
             return {
                 ep.name: entry
                 for ep in eps

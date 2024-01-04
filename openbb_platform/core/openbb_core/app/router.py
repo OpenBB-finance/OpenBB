@@ -600,12 +600,10 @@ class RouterLoader:
         """Load routes from extensions."""
         router = Router()
         el = ExtensionLoader()
-        entry_points_: Dict[str, Any] = el.core_objects
 
-        for name, entry in entry_points_.items():
+        for name, entry in el.core_objects.items():
             try:
-                if isinstance(entry, Router):
-                    router.include_router(router=entry, prefix=f"/{name}")
+                router.include_router(router=entry, prefix=f"/{name}")
             except Exception as e:
                 msg = f"Error loading extension: {name}\n"
                 if Env().DEBUG_MODE:
