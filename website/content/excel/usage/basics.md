@@ -78,5 +78,5 @@ The add-in provides 3 types of custom functions all starting with `OBB.`.
         ```
 
     :::tip
-    If you want to skip a parameter just use semi-colon (or comma depending on your number separator) without any value. In example iii. we are skip the first parameter (provider) and the second parameter (symbol).
+    If you want to skip a parameter just use semi-colon (or comma depending on your number separator) without any value. In example iii. we are skipping the first parameter (provider) and the second parameter (symbol).
     :::
