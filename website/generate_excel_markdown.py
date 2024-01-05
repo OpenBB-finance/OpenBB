@@ -32,7 +32,6 @@ class CommandLib(PathHandler):
         "str": "Text",
         "string": "Text",
     }
-
     EXAMPLE_PARAMS: Dict[str, Dict] = {
         "last": {"symbol": '"AAPL"', "tag": '"EBITDA"'},
         "hist": {"symbol": '"AAPL"', "tag": '"EBITDA"'},
@@ -440,6 +439,11 @@ class Editor:
         write_mdx_and_category(self.target_dir, self.main_folder, 5)
         recursive(self.target_dir)
 
+    def dump(self, docs_map: Dict) -> None:
+        """Dump the docs structured information to json."""
+        with open(self.target_dir / "docs_map.json", "w") as f:
+            json.dump(docs_map, f, indent=2)
+
     def go(self):
         """Generate the website reference."""
 
@@ -459,9 +463,7 @@ class Editor:
                 self.generate_md(filepath, cmd, cmd_info)
 
         self.generate_sidebar()
-
-        with open(self.target_dir / "docs_map.json", "w") as f:
-            json.dump(docs_map, f, indent=2)
+        self.dump(docs_map)
         print(f"Markdown files generated, check the {self.target_dir} folder.")
 
 
