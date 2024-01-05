@@ -100,7 +100,7 @@ class ChartingService(metaclass=SingletonMeta):
     @staticmethod
     def _check_charting_extension_installed(ext_name: str) -> bool:
         """Checks if a given extension is installed."""
-        extension = ExtensionLoader().get_core_entry_point(ext_name)
+        extension = ExtensionLoader().get_core_entry_point(ext_name) or False
         return extension and ext_name == extension.name  # type: ignore
 
     @staticmethod
@@ -132,7 +132,7 @@ class ChartingService(metaclass=SingletonMeta):
     def _get_extension_router(cls, extension_name: str):
         """Get the module of the given extension."""
         extension = ExtensionLoader().get_core_entry_point(extension_name)
-        if not extension:
+        if not extension or extension_name != extension.name:
             raise ChartingServiceError(
                 f"Extension '{extension_name}' is not installed."
             )
