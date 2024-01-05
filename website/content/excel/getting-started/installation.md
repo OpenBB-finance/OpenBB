@@ -17,7 +17,7 @@ The OpenBB Excel Add-in is available on:
 
 ## Installation
 
-The OpenBB Excel Add-in is available on the Microsoft AppSource. It can be installed by an administrator or by individual users.
+The OpenBB Excel Add-in is available on the [Microsoft AppSource](https://appsource.microsoft.com/pt-pt/product/office/wa200006381?tab=overview). It can be installed by an administrator or by individual users.
 
 ### Individual user
 
