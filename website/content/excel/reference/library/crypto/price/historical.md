@@ -32,7 +32,7 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.CRYPTO.PRICE.HISTORICAL( symbol; [provider]; [start_date]; [end_date]; [timeseries]; [interval]; [multiplier]; [timespan]; [sort]; [limit]; [adjusted] )
+=OBB.CRYPTO.PRICE.HISTORICAL(symbol;[provider];[start_date];[end_date];[timeseries];[interval];[multiplier];[timespan];[sort];[limit];[adjusted])
 ```
 
 ---

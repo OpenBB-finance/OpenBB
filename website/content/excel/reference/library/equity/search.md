@@ -56,7 +56,7 @@ Equity Search. Search for a company or stock ticker.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.SEARCH( [provider]; [query]; [is_symbol]; [active]; [limit] )
+=OBB.EQUITY.SEARCH([provider];[query];[is_symbol];[active];[limit])
 ```
 
 ---

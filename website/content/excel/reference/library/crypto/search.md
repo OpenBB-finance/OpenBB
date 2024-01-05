@@ -29,7 +29,7 @@ Cryptocurrency Search. Search available cryptocurrency pairs.
 ## Syntax
 
 ```excel wordwrap
-=OBB.CRYPTO.SEARCH( [provider]; [query] )
+=OBB.CRYPTO.SEARCH([provider];[query])
 ```
 
 ---

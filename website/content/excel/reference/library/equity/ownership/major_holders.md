@@ -42,7 +42,7 @@ Equity Ownership. Information about the company ownership.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.OWNERSHIP.MAJOR_HOLDERS( symbol; [provider]; [date]; [page] )
+=OBB.EQUITY.OWNERSHIP.MAJOR_HOLDERS(symbol;[provider];[date];[page])
 ```
 
 ---

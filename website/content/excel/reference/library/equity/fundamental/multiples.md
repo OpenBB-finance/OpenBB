@@ -73,7 +73,7 @@ Equity Valuation Multiples. Valuation multiples for a stock ticker.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.MULTIPLES( symbol; [provider] )
+=OBB.EQUITY.FUNDAMENTAL.MULTIPLES(symbol;[provider])
 ```
 
 ---

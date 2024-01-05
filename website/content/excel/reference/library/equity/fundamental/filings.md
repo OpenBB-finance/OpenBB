@@ -41,7 +41,7 @@ Company Filings. Company filings data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.FILINGS( [provider]; [symbol]; [form_type]; [limit]; [start_date]; [end_date]; [thea_enabled] )
+=OBB.EQUITY.FUNDAMENTAL.FILINGS([provider];[symbol];[form_type];[limit];[start_date];[end_date];[thea_enabled])
 ```
 
 ---

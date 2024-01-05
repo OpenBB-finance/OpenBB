@@ -54,7 +54,7 @@ Equity Info. Get general price and performance metrics of a stock.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.PROFILE( symbol; [provider] )
+=OBB.EQUITY.PROFILE(symbol;[provider])
 ```
 
 ---

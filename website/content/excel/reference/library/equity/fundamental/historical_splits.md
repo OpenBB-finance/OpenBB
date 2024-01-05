@@ -29,7 +29,7 @@ Historical Splits. Historical splits data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS( symbol; [provider] )
+=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS(symbol;[provider])
 ```
 
 ---

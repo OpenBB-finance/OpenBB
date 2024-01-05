@@ -27,7 +27,7 @@ Index Constituents. Constituents of an index.
 ## Syntax
 
 ```excel wordwrap
-=OBB.INDEX.CONSTITUENTS( [provider]; [index] )
+=OBB.INDEX.CONSTITUENTS([provider];[index])
 ```
 
 ---

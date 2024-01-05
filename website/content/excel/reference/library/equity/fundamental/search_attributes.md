@@ -5,7 +5,7 @@ Search Intrinio data tags.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES( query; [provider]; [limit] )
+=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES(query;[provider];[limit])
 ```
 
 ---

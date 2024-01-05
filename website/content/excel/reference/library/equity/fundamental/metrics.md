@@ -81,7 +81,7 @@ Key Metrics. Key metrics for a given company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.METRICS( symbol; [provider]; [period]; [limit]; [with_ttm] )
+=OBB.EQUITY.FUNDAMENTAL.METRICS(symbol;[provider];[period];[limit];[with_ttm])
 ```
 
 ---

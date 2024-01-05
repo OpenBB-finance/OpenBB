@@ -5,7 +5,7 @@ Get historical data by providing stock symbol and field tag. See tag options at:
 ## Syntax
 
 ```excel wordwrap
-=OBB.HIST( symbol; tag; [start_date]; [end_date]; [frequency] )
+=OBB.HIST(symbol;tag;[start_date];[end_date];[frequency])
 ```
 
 ---

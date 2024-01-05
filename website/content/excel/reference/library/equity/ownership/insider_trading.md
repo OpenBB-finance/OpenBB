@@ -39,7 +39,7 @@ Insider Trading. Information about insider trading.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.OWNERSHIP.INSIDER_TRADING( symbol; [provider]; [limit]; [transactionType]; [start_date]; [end_date]; [ownership_type]; [sort_by] )
+=OBB.EQUITY.OWNERSHIP.INSIDER_TRADING(symbol;[provider];[limit];[transactionType];[start_date];[end_date];[ownership_type];[sort_by])
 ```
 
 ---

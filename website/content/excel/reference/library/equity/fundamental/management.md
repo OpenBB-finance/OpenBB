@@ -24,7 +24,7 @@ Key Executives. Key executives for a given company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT( symbol; [provider] )
+=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT(symbol;[provider])
 ```
 
 ---

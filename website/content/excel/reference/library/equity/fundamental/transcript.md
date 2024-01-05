@@ -23,7 +23,7 @@ Earnings Call Transcript. Earnings call transcript for a given company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT( symbol; year; [provider] )
+=OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT(symbol;year;[provider])
 ```
 
 ---

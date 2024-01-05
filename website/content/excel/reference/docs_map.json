@@ -2,7 +2,7 @@
   "/last": {
     "name": "last",
     "description": "Get latest data point by providing stock symbol and tag. See tag options at: https://data.intrinio.com/data-tags.",
-    "signature": "=OBB.LAST( symbol; tag )",
+    "signature": "=OBB.LAST(symbol;tag)",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -29,7 +29,7 @@
   "/hist": {
     "name": "hist",
     "description": "Get historical data by providing stock symbol and field tag. See tag options at: https://data.intrinio.com/data-tags.",
-    "signature": "=OBB.HIST( symbol; tag; [start_date]; [end_date]; [frequency] )",
+    "signature": "=OBB.HIST(symbol;tag;[start_date];[end_date];[frequency])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -74,7 +74,7 @@
   "/crypto/price/historical": {
     "name": "historical",
     "description": "Cryptocurrency Historical Price. Cryptocurrency historical price data.",
-    "signature": "=OBB.CRYPTO.PRICE.HISTORICAL( symbol; [provider]; [start_date]; [end_date]; [timeseries]; [interval]; [multiplier]; [timespan]; [sort]; [limit]; [adjusted] )",
+    "signature": "=OBB.CRYPTO.PRICE.HISTORICAL(symbol;[provider];[start_date];[end_date];[timeseries];[interval];[multiplier];[timespan];[sort];[limit];[adjusted])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -185,7 +185,7 @@
   "/crypto/search": {
     "name": "search",
     "description": "Cryptocurrency Search. Search available cryptocurrency pairs.",
-    "signature": "=OBB.CRYPTO.SEARCH( [provider]; [query] )",
+    "signature": "=OBB.CRYPTO.SEARCH([provider];[query])",
     "parameters": {
       "provider": {
         "type": "Text",
@@ -224,7 +224,7 @@
   "/economy/calendar": {
     "name": "calendar",
     "description": "Economic Calendar.",
-    "signature": "=OBB.ECONOMY.CALENDAR( [provider]; [start_date]; [end_date]; [country]; [importance]; [group] )",
+    "signature": "=OBB.ECONOMY.CALENDAR([provider];[start_date];[end_date];[country];[importance];[group])",
     "parameters": {
       "provider": {
         "type": "Text",
@@ -322,7 +322,7 @@
   "/economy/cpi": {
     "name": "cpi",
     "description": "Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate of change (inflation).",
-    "signature": "=OBB.ECONOMY.CPI( countries; [provider]; [units]; [frequency]; [harmonized]; [start_date]; [end_date] )",
+    "signature": "=OBB.ECONOMY.CPI(countries;[provider];[units];[frequency];[harmonized];[start_date];[end_date])",
     "parameters": {
       "countries": {
         "type": "Any",
@@ -374,7 +374,7 @@
   "/economy/fred_search": {
     "name": "fred_search",
     "description": "Search for FRED series or economic releases by ID or string. This does not return the observation values, only the metadata. Use this function to find series IDs for `fred_series()`.",
-    "signature": "=OBB.ECONOMY.FRED_SEARCH( [provider]; [query]; [is_release]; [release_id]; [limit]; [offset]; [filter_variable]; [filter_value]; [tag_names]; [exclude_tag_names] )",
+    "signature": "=OBB.ECONOMY.FRED_SEARCH([provider];[query];[is_release];[release_id];[limit];[offset];[filter_variable];[filter_value];[tag_names];[exclude_tag_names])",
     "parameters": {
       "provider": {
         "type": "Text",
@@ -492,7 +492,7 @@
   "/economy/fred_series": {
     "name": "fred_series",
     "description": "Get data by series ID from FRED.",
-    "signature": "=OBB.ECONOMY.FRED_SERIES( symbol; [provider]; [start_date]; [end_date]; [limit]; [frequency]; [aggregation_method]; [transform]; [all_pages]; [sleep] )",
+    "signature": "=OBB.ECONOMY.FRED_SERIES(symbol;[provider];[start_date];[end_date];[limit];[frequency];[aggregation_method];[transform];[all_pages];[sleep])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -562,7 +562,7 @@
   "/economy/risk_premium": {
     "name": "risk_premium",
     "description": "Historical Market Risk Premium.",
-    "signature": "=OBB.ECONOMY.RISK_PREMIUM( [provider] )",
+    "signature": "=OBB.ECONOMY.RISK_PREMIUM([provider])",
     "parameters": {
       "provider": {
         "type": "Text",
@@ -593,7 +593,7 @@
   "/equity/calendar/dividend": {
     "name": "dividend",
     "description": "Upcoming and Historical Dividend Calendar.",
-    "signature": "=OBB.EQUITY.CALENDAR.DIVIDEND( [provider]; [start_date]; [end_date] )",
+    "signature": "=OBB.EQUITY.CALENDAR.DIVIDEND([provider];[start_date];[end_date])",
     "parameters": {
       "provider": {
         "type": "Text",
@@ -649,7 +649,7 @@
   "/equity/calendar/earnings": {
     "name": "earnings",
     "description": "Upcoming and Historical earnings calendar.",
-    "signature": "=OBB.EQUITY.CALENDAR.EARNINGS( [provider]; [start_date]; [end_date] )",
+    "signature": "=OBB.EQUITY.CALENDAR.EARNINGS([provider];[start_date];[end_date])",
     "parameters": {
       "provider": {
         "type": "Text",
@@ -711,7 +711,7 @@
   "/equity/calendar/ipo": {
     "name": "ipo",
     "description": "Upcoming and Historical IPO Calendar.",
-    "signature": "=OBB.EQUITY.CALENDAR.IPO( [provider]; [symbol]; [start_date]; [end_date]; [limit]; [status]; [offer_amount_greater_than]; [offer_amount_less_than] )",
+    "signature": "=OBB.EQUITY.CALENDAR.IPO([provider];[symbol];[start_date];[end_date];[limit];[status];[offer_amount_greater_than];[offer_amount_less_than])",
     "parameters": {
       "provider": {
         "type": "Text",
@@ -831,7 +831,7 @@
   "/equity/calendar/splits": {
     "name": "splits",
     "description": "Calendar Splits. Show Stock Split Calendar.",
-    "signature": "=OBB.EQUITY.CALENDAR.SPLITS( [provider]; [start_date]; [end_date] )",
+    "signature": "=OBB.EQUITY.CALENDAR.SPLITS([provider];[start_date];[end_date])",
     "parameters": {
       "provider": {
         "type": "Text",
@@ -875,7 +875,7 @@
   "/equity/compare/peers": {
     "name": "peers",
     "description": "Equity Peers. Company peers.",
-    "signature": "=OBB.EQUITY.COMPARE.PEERS( symbol; [provider] )",
+    "signature": "=OBB.EQUITY.COMPARE.PEERS(symbol;[provider])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -902,7 +902,7 @@
   "/equity/discovery/filings": {
     "name": "filings",
     "description": "Get the most-recent filings submitted to the SEC.",
-    "signature": "=OBB.EQUITY.DISCOVERY.FILINGS( [provider]; [start_date]; [end_date]; [form_type]; [limit]; [isDone] )",
+    "signature": "=OBB.EQUITY.DISCOVERY.FILINGS([provider];[start_date];[end_date];[form_type];[limit];[isDone])",
     "parameters": {
       "provider": {
         "type": "Text",
@@ -964,7 +964,7 @@
   "/equity/estimates/consensus": {
     "name": "consensus",
     "description": "Price Target Consensus. Price target consensus data.",
-    "signature": "=OBB.EQUITY.ESTIMATES.CONSENSUS( symbol; [provider] )",
+    "signature": "=OBB.EQUITY.ESTIMATES.CONSENSUS(symbol;[provider])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -1003,7 +1003,7 @@
   "/equity/estimates/historical": {
     "name": "historical",
     "description": "Historical Analyst Estimates. Analyst stock recommendations.",
-    "signature": "=OBB.EQUITY.ESTIMATES.HISTORICAL( symbol; [provider]; [period]; [limit] )",
+    "signature": "=OBB.EQUITY.ESTIMATES.HISTORICAL(symbol;[provider];[period];[limit])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -1103,7 +1103,7 @@
   "/equity/estimates/price_target": {
     "name": "price_target",
     "description": "Price Target. Price target data.",
-    "signature": "=OBB.EQUITY.ESTIMATES.PRICE_TARGET( symbol; [provider]; [with_grade] )",
+    "signature": "=OBB.EQUITY.ESTIMATES.PRICE_TARGET(symbol;[provider];[with_grade])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -1174,7 +1174,7 @@
   "/equity/fundamental/balance": {
     "name": "balance",
     "description": "Balance Sheet. Balance sheet statement.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.BALANCE( symbol; [provider]; [period]; [limit]; [fiscal_year]; [filing_date]; [filing_date_lt]; [filing_date_lte]; [filing_date_gt]; [filing_date_gte]; [period_of_report_date]; [period_of_report_date_lt]; [period_of_report_date_lte]; [period_of_report_date_gt]; [period_of_report_date_gte]; [include_sources]; [order]; [sort] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.BALANCE(symbol;[provider];[period];[limit];[fiscal_year];[filing_date];[filing_date_lt];[filing_date_lte];[filing_date_gt];[filing_date_gte];[period_of_report_date];[period_of_report_date_lt];[period_of_report_date_lte];[period_of_report_date_gt];[period_of_report_date_gte];[include_sources];[order];[sort])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -1659,7 +1659,7 @@
   "/equity/fundamental/balance_growth": {
     "name": "balance_growth",
     "description": "Balance Sheet Statement Growth. Information about the growth of the company balance sheet.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.BALANCE_GROWTH( symbol; [provider]; [limit] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.BALANCE_GROWTH(symbol;[provider];[limit])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -1814,7 +1814,7 @@
   "/equity/fundamental/cash": {
     "name": "cash",
     "description": "Cash Flow Statement. Information about the cash flow statement.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.CASH( symbol; [provider]; [period]; [limit]; [fiscal_year]; [filing_date]; [filing_date_lt]; [filing_date_lte]; [filing_date_gt]; [filing_date_gte]; [period_of_report_date]; [period_of_report_date_lt]; [period_of_report_date_lte]; [period_of_report_date_gt]; [period_of_report_date_gte]; [include_sources]; [order]; [sort] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.CASH(symbol;[provider];[period];[limit];[fiscal_year];[filing_date];[filing_date_lt];[filing_date_lte];[filing_date_gt];[filing_date_gte];[period_of_report_date];[period_of_report_date_lt];[period_of_report_date_lte];[period_of_report_date_gt];[period_of_report_date_gte];[include_sources];[order];[sort])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -2158,7 +2158,7 @@
   "/equity/fundamental/cash_growth": {
     "name": "cash_growth",
     "description": "Cash Flow Statement Growth. Information about the growth of the company cash flow statement.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.CASH_GROWTH( symbol; [provider]; [limit] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.CASH_GROWTH(symbol;[provider];[limit])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -2286,7 +2286,7 @@
   "/equity/fundamental/dividends": {
     "name": "dividends",
     "description": "Historical Dividends. Historical dividends data for a given company.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.DIVIDENDS( symbol; [provider]; [page_size] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.DIVIDENDS(symbol;[provider];[page_size])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -2345,7 +2345,7 @@
   "/equity/fundamental/employee_count": {
     "name": "employee_count",
     "description": "Historical Employees. Historical number of employees.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT( symbol; [provider] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT(symbol;[provider])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -2396,7 +2396,7 @@
   "/equity/fundamental/filings": {
     "name": "filings",
     "description": "Company Filings. Company filings data.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.FILINGS( [provider]; [symbol]; [form_type]; [limit]; [start_date]; [end_date]; [thea_enabled] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.FILINGS([provider];[symbol];[form_type];[limit];[start_date];[end_date];[thea_enabled])",
     "parameters": {
       "provider": {
         "type": "Text",
@@ -2523,7 +2523,7 @@
   "/equity/fundamental/historical_attributes": {
     "name": "historical_attributes",
     "description": "Fetch the historical values of a data tag from Intrinio.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES( symbol; tag; [provider]; [start_date]; [end_date]; [frequency]; [limit]; [type]; [sort] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES(symbol;tag;[provider];[start_date];[end_date];[frequency];[limit];[type];[sort])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -2588,7 +2588,7 @@
   "/equity/fundamental/historical_eps": {
     "name": "historical_eps",
     "description": "Historical earnings-per-share for a given company.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS( symbol; [provider]; [limit] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS(symbol;[provider];[limit])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -2647,7 +2647,7 @@
   "/equity/fundamental/historical_splits": {
     "name": "historical_splits",
     "description": "Historical Splits. Historical splits data.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS( symbol; [provider] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS(symbol;[provider])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -2683,7 +2683,7 @@
   "/equity/fundamental/income": {
     "name": "income",
     "description": "Income Statement. Report on a company's financial performance.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.INCOME( symbol; [provider]; [period]; [limit]; [fiscal_year]; [filing_date]; [filing_date_lt]; [filing_date_lte]; [filing_date_gt]; [filing_date_gte]; [period_of_report_date]; [period_of_report_date_lt]; [period_of_report_date_lte]; [period_of_report_date_gt]; [period_of_report_date_gte]; [include_sources]; [order]; [sort] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.INCOME(symbol;[provider];[period];[limit];[fiscal_year];[filing_date];[filing_date_lt];[filing_date_lte];[filing_date_gt];[filing_date_gte];[period_of_report_date];[period_of_report_date_lt];[period_of_report_date_lte];[period_of_report_date_gt];[period_of_report_date_gte];[include_sources];[order];[sort])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -3153,7 +3153,7 @@
   "/equity/fundamental/income_growth": {
     "name": "income_growth",
     "description": "Income Statement Growth. Information about the growth of the company income statement.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.INCOME_GROWTH( symbol; [provider]; [limit]; [period] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.INCOME_GROWTH(symbol;[provider];[limit];[period])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -3274,7 +3274,7 @@
   "/equity/fundamental/latest_attributes": {
     "name": "latest_attributes",
     "description": "Fetch the latest value of a data tag from Intrinio.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES( symbol; tag; [provider] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES(symbol;tag;[provider])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -3306,7 +3306,7 @@
   "/equity/fundamental/management": {
     "name": "management",
     "description": "Key Executives. Key executives for a given company.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT( symbol; [provider] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT(symbol;[provider])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -3351,7 +3351,7 @@
   "/equity/fundamental/management_compensation": {
     "name": "management_compensation",
     "description": "Get Executive Compensation. Information about the executive compensation for a given company.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION( symbol; [provider] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION(symbol;[provider])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -3414,7 +3414,7 @@
   "/equity/fundamental/metrics": {
     "name": "metrics",
     "description": "Key Metrics. Key metrics for a given company.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.METRICS( symbol; [provider]; [period]; [limit]; [with_ttm] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.METRICS(symbol;[provider];[period];[limit];[with_ttm])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -3648,7 +3648,7 @@
   "/equity/fundamental/multiples": {
     "name": "multiples",
     "description": "Equity Valuation Multiples. Valuation multiples for a stock ticker.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.MULTIPLES( symbol; [provider] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.MULTIPLES(symbol;[provider])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -3855,7 +3855,7 @@
   "/equity/fundamental/overview": {
     "name": "overview",
     "description": "Company Overview. General information about a company.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.OVERVIEW( symbol; [provider] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.OVERVIEW(symbol;[provider])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -3987,7 +3987,7 @@
   "/equity/fundamental/ratios": {
     "name": "ratios",
     "description": "Extensive set of ratios over time. Financial ratios for a given company.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.RATIOS( symbol; [provider]; [period]; [limit]; [with_ttm]; [fiscal_year] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.RATIOS(symbol;[provider];[period];[limit];[with_ttm];[fiscal_year])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -4208,7 +4208,7 @@
   "/equity/fundamental/reported_financials": {
     "name": "reported_financials",
     "description": "Financial statements, as-reported.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS( symbol; [provider]; [period]; [statement_type]; [limit]; [fiscal_year] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS(symbol;[provider];[period];[statement_type];[limit];[fiscal_year])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -4261,7 +4261,7 @@
   "/equity/fundamental/revenue_per_geography": {
     "name": "revenue_per_geography",
     "description": "Revenue Geographic. Geographic revenue data.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY( symbol; [provider]; [period]; [structure] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY(symbol;[provider];[period];[structure])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -4316,7 +4316,7 @@
   "/equity/fundamental/revenue_per_segment": {
     "name": "revenue_per_segment",
     "description": "Revenue Business Line. Business line revenue data.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT( symbol; [provider]; [period]; [structure] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT(symbol;[provider];[period];[structure])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -4356,7 +4356,7 @@
   "/equity/fundamental/search_attributes": {
     "name": "search_attributes",
     "description": "Search Intrinio data tags.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES( query; [provider]; [limit] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES(query;[provider];[limit])",
     "parameters": {
       "query": {
         "type": "Text",
@@ -4418,7 +4418,7 @@
   "/equity/fundamental/transcript": {
     "name": "transcript",
     "description": "Earnings Call Transcript. Earnings call transcript for a given company.",
-    "signature": "=OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT( symbol; year; [provider] )",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT(symbol;year;[provider])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -4462,7 +4462,7 @@
   "/equity/market_snapshots": {
     "name": "market_snapshots",
     "description": "Get a current, complete, market snapshot.",
-    "signature": "=OBB.EQUITY.MARKET_SNAPSHOTS( [provider]; [market] )",
+    "signature": "=OBB.EQUITY.MARKET_SNAPSHOTS([provider];[market])",
     "parameters": {
       "provider": {
         "type": "Text",
@@ -4606,7 +4606,7 @@
   "/equity/ownership/insider_trading": {
     "name": "insider_trading",
     "description": "Insider Trading. Information about insider trading.",
-    "signature": "=OBB.EQUITY.OWNERSHIP.INSIDER_TRADING( symbol; [provider]; [limit]; [transactionType]; [start_date]; [end_date]; [ownership_type]; [sort_by] )",
+    "signature": "=OBB.EQUITY.OWNERSHIP.INSIDER_TRADING(symbol;[provider];[limit];[transactionType];[start_date];[end_date];[ownership_type];[sort_by])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -4747,7 +4747,7 @@
   "/equity/ownership/institutional": {
     "name": "institutional",
     "description": "Institutional Ownership. Institutional ownership data.",
-    "signature": "=OBB.EQUITY.OWNERSHIP.INSTITUTIONAL( symbol; [provider]; [include_current_quarter]; [date]; [page_size] )",
+    "signature": "=OBB.EQUITY.OWNERSHIP.INSTITUTIONAL(symbol;[provider];[include_current_quarter];[date];[page_size])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -4921,7 +4921,7 @@
   "/equity/ownership/major_holders": {
     "name": "major_holders",
     "description": "Equity Ownership. Information about the company ownership.",
-    "signature": "=OBB.EQUITY.OWNERSHIP.MAJOR_HOLDERS( symbol; [provider]; [date]; [page] )",
+    "signature": "=OBB.EQUITY.OWNERSHIP.MAJOR_HOLDERS(symbol;[provider];[date];[page])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -5072,7 +5072,7 @@
   "/equity/ownership/share_statistics": {
     "name": "share_statistics",
     "description": "Share Statistics. Share statistics for a given company.",
-    "signature": "=OBB.EQUITY.OWNERSHIP.SHARE_STATISTICS( symbol; [provider] )",
+    "signature": "=OBB.EQUITY.OWNERSHIP.SHARE_STATISTICS(symbol;[provider])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -5120,7 +5120,7 @@
   "/equity/price/historical": {
     "name": "historical",
     "description": "Equity Historical price. Load stock data for a specific ticker.",
-    "signature": "=OBB.EQUITY.PRICE.HISTORICAL( symbol; [provider]; [interval]; [start_date]; [end_date]; [limit]; [sort]; [start_time]; [end_time]; [timezone]; [source]; [sleep]; [adjusted] )",
+    "signature": "=OBB.EQUITY.PRICE.HISTORICAL(symbol;[provider];[interval];[start_date];[end_date];[limit];[sort];[start_time];[end_time];[timezone];[source];[sleep];[adjusted])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -5283,7 +5283,7 @@
   "/equity/price/nbbo": {
     "name": "nbbo",
     "description": "Equity NBBO. Load National Best Bid and Offer for a specific equity.",
-    "signature": "=OBB.EQUITY.PRICE.NBBO( symbol; [provider]; [limit]; [timestamp]; [timestamp_lt]; [timestamp_gt]; [timestamp_lte]; [timestamp_gte] )",
+    "signature": "=OBB.EQUITY.PRICE.NBBO(symbol;[provider];[limit];[timestamp];[timestamp_lt];[timestamp_gt];[timestamp_lte];[timestamp_gte])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -5376,7 +5376,7 @@
   "/equity/price/performance": {
     "name": "performance",
     "description": "Price performance as a return, over different periods.",
-    "signature": "=OBB.EQUITY.PRICE.PERFORMANCE( symbol; [provider] )",
+    "signature": "=OBB.EQUITY.PRICE.PERFORMANCE(symbol;[provider])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -5445,7 +5445,7 @@
   "/equity/price/quote": {
     "name": "quote",
     "description": "Equity Quote. Load stock data for a specific ticker.",
-    "signature": "=OBB.EQUITY.PRICE.QUOTE( symbol; [provider]; [source] )",
+    "signature": "=OBB.EQUITY.PRICE.QUOTE(symbol;[provider];[source])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -5606,7 +5606,7 @@
   "/equity/profile": {
     "name": "profile",
     "description": "Equity Info. Get general price and performance metrics of a stock.",
-    "signature": "=OBB.EQUITY.PROFILE( symbol; [provider] )",
+    "signature": "=OBB.EQUITY.PROFILE(symbol;[provider])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -5744,7 +5744,7 @@
   "/equity/screener": {
     "name": "screener",
     "description": "Equity Screen. Screen for companies meeting various criteria.",
-    "signature": "=OBB.EQUITY.SCREENER( [provider]; [mktcap_min]; [mktcap_max]; [price_min]; [price_max]; [beta_min]; [beta_max]; [volume_min]; [volume_max]; [dividend_min]; [dividend_max]; [is_etf]; [is_active]; [sector]; [industry]; [country]; [exchange]; [limit] )",
+    "signature": "=OBB.EQUITY.SCREENER([provider];[mktcap_min];[mktcap_max];[price_min];[price_max];[beta_min];[beta_max];[volume_min];[volume_max];[dividend_min];[dividend_max];[is_etf];[is_active];[sector];[industry];[country];[exchange];[limit])",
     "parameters": {
       "provider": {
         "type": "Text",
@@ -5890,7 +5890,7 @@
   "/equity/search": {
     "name": "search",
     "description": "Equity Search. Search for a company or stock ticker.",
-    "signature": "=OBB.EQUITY.SEARCH( [provider]; [query]; [is_symbol]; [active]; [limit] )",
+    "signature": "=OBB.EQUITY.SEARCH([provider];[query];[is_symbol];[active];[limit])",
     "parameters": {
       "provider": {
         "type": "Text",
@@ -5944,7 +5944,7 @@
   "/index/available": {
     "name": "available",
     "description": "Available Indices. Available indices for a given provider.",
-    "signature": "=OBB.INDEX.AVAILABLE( [provider] )",
+    "signature": "=OBB.INDEX.AVAILABLE([provider])",
     "parameters": {
       "provider": {
         "type": "Text",
@@ -5975,7 +5975,7 @@
   "/index/constituents": {
     "name": "constituents",
     "description": "Index Constituents. Constituents of an index.",
-    "signature": "=OBB.INDEX.CONSTITUENTS( [provider]; [index] )",
+    "signature": "=OBB.INDEX.CONSTITUENTS([provider];[index])",
     "parameters": {
       "provider": {
         "type": "Text",
@@ -6023,7 +6023,7 @@
   "/index/market": {
     "name": "market",
     "description": "Historical Market Indices.",
-    "signature": "=OBB.INDEX.MARKET( symbol; [provider]; [start_date]; [end_date]; [timeseries]; [interval]; [sort]; [tag]; [type]; [limit]; [sleep]; [timespan]; [adjusted]; [multiplier] )",
+    "signature": "=OBB.INDEX.MARKET(symbol;[provider];[start_date];[end_date];[timeseries];[interval];[sort];[tag];[type];[limit];[sleep];[timespan];[adjusted];[multiplier])",
     "parameters": {
       "symbol": {
         "type": "Text",
@@ -6146,7 +6146,7 @@
   "/news/company": {
     "name": "company",
     "description": "Company News. Get news for one or more companies.",
-    "signature": "=OBB.NEWS.COMPANY( symbols; [provider]; [limit]; [display]; [date]; [start_date]; [end_date]; [updated_since]; [published_since]; [sort]; [order]; [isin]; [cusip]; [channels]; [topics]; [authors]; [content_types]; [page]; [published_utc] )",
+    "signature": "=OBB.NEWS.COMPANY(symbols;[provider];[limit];[display];[date];[start_date];[end_date];[updated_since];[published_since];[sort];[order];[isin];[cusip];[channels];[topics];[authors];[content_types];[page];[published_utc])",
     "parameters": {
       "symbols": {
         "type": "Text",
@@ -6312,7 +6312,7 @@
   "/news/world": {
     "name": "world",
     "description": "World News. Global news data.",
-    "signature": "=OBB.NEWS.WORLD( [provider]; [limit]; [display]; [date]; [start_date]; [end_date]; [updated_since]; [published_since]; [sort]; [order]; [isin]; [cusip]; [channels]; [topics]; [authors]; [content_types] )",
+    "signature": "=OBB.NEWS.WORLD([provider];[limit];[display];[date];[start_date];[end_date];[updated_since];[published_since];[sort];[order];[isin];[cusip];[channels];[topics];[authors];[content_types])",
     "parameters": {
       "provider": {
         "type": "Text",

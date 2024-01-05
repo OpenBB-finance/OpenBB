@@ -49,7 +49,7 @@ Historical Market Indices.
 ## Syntax
 
 ```excel wordwrap
-=OBB.INDEX.MARKET( symbol; [provider]; [start_date]; [end_date]; [timeseries]; [interval]; [sort]; [tag]; [type]; [limit]; [sleep]; [timespan]; [adjusted]; [multiplier] )
+=OBB.INDEX.MARKET(symbol;[provider];[start_date];[end_date];[timeseries];[interval];[sort];[tag];[type];[limit];[sleep];[timespan];[adjusted];[multiplier])
 ```
 
 ---

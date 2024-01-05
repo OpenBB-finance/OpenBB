@@ -102,14 +102,14 @@ class CommandLib(PathHandler):
             sig = "=OBB." + self.xl_funcs[cmd].get("name", "")
             if path_only:
                 return sig
-            sig += "( "
+            sig += "("
             for p in self.xl_funcs[cmd]["parameters"]:
                 if p.get("optional", False):
                     sig += f'[{p["name"]}]'
                 else:
                     sig += f'{p["name"]}'
-                sig += "; "
-            sig = sig[:-2] + " )" if sig[-2:] == "; " else sig + ")"
+                sig += ";"
+            sig = sig.strip("; ") + ")"
             return sig
         return ""
 

@@ -30,7 +30,7 @@ Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate 
 ## Syntax
 
 ```excel wordwrap
-=OBB.ECONOMY.CPI( countries; [provider]; [units]; [frequency]; [harmonized]; [start_date]; [end_date] )
+=OBB.ECONOMY.CPI(countries;[provider];[units];[frequency];[harmonized];[start_date];[end_date])
 ```
 
 ---

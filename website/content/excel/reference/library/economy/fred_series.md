@@ -5,7 +5,7 @@ Get data by series ID from FRED.
 ## Syntax
 
 ```excel wordwrap
-=OBB.ECONOMY.FRED_SERIES( symbol; [provider]; [start_date]; [end_date]; [limit]; [frequency]; [aggregation_method]; [transform]; [all_pages]; [sleep] )
+=OBB.ECONOMY.FRED_SERIES(symbol;[provider];[start_date];[end_date];[limit];[frequency];[aggregation_method];[transform];[all_pages];[sleep])
 ```
 
 ---

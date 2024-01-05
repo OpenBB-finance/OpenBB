@@ -31,7 +31,7 @@ Get a current, complete, market snapshot.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.MARKET_SNAPSHOTS( [provider]; [market] )
+=OBB.EQUITY.MARKET_SNAPSHOTS([provider];[market])
 ```
 
 ---

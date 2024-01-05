@@ -14,7 +14,7 @@ Historical earnings-per-share for a given company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS( symbol; [provider]; [limit] )
+=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS(symbol;[provider];[limit])
 ```
 
 ---

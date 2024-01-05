@@ -31,7 +31,7 @@ Historical Dividends. Historical dividends data for a given company.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.DIVIDENDS( symbol; [provider]; [page_size] )
+=OBB.EQUITY.FUNDAMENTAL.DIVIDENDS(symbol;[provider];[page_size])
 ```
 
 ---

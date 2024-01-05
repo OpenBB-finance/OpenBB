@@ -5,7 +5,7 @@ Fetch the latest value of a data tag from Intrinio.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES( symbol; tag; [provider] )
+=OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES(symbol;tag;[provider])
 ```
 
 ---

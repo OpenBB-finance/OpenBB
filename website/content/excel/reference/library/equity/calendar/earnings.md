@@ -35,7 +35,7 @@ Upcoming and Historical earnings calendar.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.CALENDAR.EARNINGS( [provider]; [start_date]; [end_date] )
+=OBB.EQUITY.CALENDAR.EARNINGS([provider];[start_date];[end_date])
 ```
 
 ---

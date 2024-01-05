@@ -5,7 +5,7 @@ Financial statements, as-reported.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS( symbol; [provider]; [period]; [statement_type]; [limit]; [fiscal_year] )
+=OBB.EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS(symbol;[provider];[period];[statement_type];[limit];[fiscal_year])
 ```
 
 ---

@@ -28,7 +28,7 @@ Price Target. Price target data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.ESTIMATES.PRICE_TARGET( symbol; [provider]; [with_grade] )
+=OBB.EQUITY.ESTIMATES.PRICE_TARGET(symbol;[provider];[with_grade])
 ```
 
 ---

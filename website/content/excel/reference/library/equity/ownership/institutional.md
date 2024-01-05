@@ -65,7 +65,7 @@ Institutional Ownership. Institutional ownership data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.OWNERSHIP.INSTITUTIONAL( symbol; [provider]; [include_current_quarter]; [date]; [page_size] )
+=OBB.EQUITY.OWNERSHIP.INSTITUTIONAL(symbol;[provider];[include_current_quarter];[date];[page_size])
 ```
 
 ---

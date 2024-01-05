@@ -5,7 +5,7 @@ Search for FRED series or economic releases by ID or string. This does not retur
 ## Syntax
 
 ```excel wordwrap
-=OBB.ECONOMY.FRED_SEARCH( [provider]; [query]; [is_release]; [release_id]; [limit]; [offset]; [filter_variable]; [filter_value]; [tag_names]; [exclude_tag_names] )
+=OBB.ECONOMY.FRED_SEARCH([provider];[query];[is_release];[release_id];[limit];[offset];[filter_variable];[filter_value];[tag_names];[exclude_tag_names])
 ```
 
 ---

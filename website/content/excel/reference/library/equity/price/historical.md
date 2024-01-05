@@ -32,7 +32,7 @@ Equity Historical price. Load stock data for a specific ticker.
 ## Syntax
 
 ```excel wordwrap
-=OBB.EQUITY.PRICE.HISTORICAL( symbol; [provider]; [interval]; [start_date]; [end_date]; [limit]; [sort]; [start_time]; [end_time]; [timezone]; [source]; [sleep]; [adjusted] )
+=OBB.EQUITY.PRICE.HISTORICAL(symbol;[provider];[interval];[start_date];[end_date];[limit];[sort];[start_time];[end_time];[timezone];[source];[sleep];[adjusted])
 ```
 
 ---
