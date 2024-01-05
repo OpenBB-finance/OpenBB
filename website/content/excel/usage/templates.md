@@ -9,4 +9,4 @@ keywords:
 - Examples
 ---
 
-* [EquityAddinTemplate.xlsx](https://github.com/OpenBB-finance/OpenBBTerminal/files/13842104/EquityAddinTemplate.xlsx)
+Coming soon.
