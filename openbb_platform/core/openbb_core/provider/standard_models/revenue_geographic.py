@@ -9,7 +9,6 @@ from pydantic import Field, field_validator
 from openbb_core.provider.abstract.data import Data, ForceInt
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
-    DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
 
@@ -41,7 +40,7 @@ class RevenueGeographicQueryParams(QueryParams):
 class RevenueGeographicData(Data):
     """Revenue by Geographic Segments Data."""
 
-    period_ending: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    period_ending: dateType = Field(description="The end date of the reporting period.")
     fiscal_period: Optional[str] = Field(
         default=None, description="The fiscal period of the reporting period."
     )
