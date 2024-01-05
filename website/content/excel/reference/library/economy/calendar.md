@@ -50,6 +50,14 @@ Economic Calendar.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.ECONOMY.CALENDAR()
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -85,11 +93,3 @@ Economic Calendar.
 | change_percent | Percentage change since previous. (provider: fmp) |
 | updated_at | Last updated timestamp. (provider: fmp) |
 | created_at | Created at timestamp. (provider: fmp) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.ECONOMY.CALENDAR( )
-```
-

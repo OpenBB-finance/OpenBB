@@ -10,6 +10,14 @@ Search for FRED series or economic releases by ID or string. This does not retur
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.ECONOMY.FRED_SEARCH()
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -49,11 +57,3 @@ Search for FRED series or economic releases by ID or string. This does not retur
 | url | URL to the release.  |
 | popularity | Popularity of the series (provider: fred) |
 | group_popularity | Group popularity of the release (provider: fred) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.ECONOMY.FRED_SEARCH( )
-```
-

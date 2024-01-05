@@ -86,6 +86,14 @@ Key Metrics. Key metrics for a given company.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.METRICS("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -167,11 +175,3 @@ Key Metrics. Key metrics for a given company.
 | volume | Volume (provider: intrinio) |
 | fifty_two_week_high | 52 week high (provider: intrinio) |
 | fifty_two_week_low | 52 week low (provider: intrinio) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.METRICS( "AAPL" )
-```
-

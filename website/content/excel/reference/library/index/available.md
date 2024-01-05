@@ -18,6 +18,14 @@ Available Indices. Available indices for a given provider.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.INDEX.AVAILABLE()
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -34,11 +42,3 @@ Available Indices. Available indices for a given provider.
 | currency | Currency the index is traded in.  |
 | stock_exchange | Stock exchange where the index is listed. (provider: fmp) |
 | exchange_short_name | Short name of the stock exchange where the index is listed. (provider: fmp) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.INDEX.AVAILABLE( )
-```
-

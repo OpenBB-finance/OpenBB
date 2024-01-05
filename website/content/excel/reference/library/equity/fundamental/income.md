@@ -55,6 +55,14 @@ Income Statement. Report on a company's financial performance.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.INCOME("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -206,11 +214,3 @@ Income Statement. Report on a company's financial performance.
 | undistributedEarningsAllocatedToParticipatingSecurities | Undistributed Earnings Allocated To Participating Securities (provider: polygon) |
 | common_stock_dividends | Common Stock Dividends (provider: polygon) |
 | preferred_stock_dividends_and_other_adjustments | Preferred stock dividends and other adjustments (provider: polygon) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.INCOME( "AAPL" )
-```
-

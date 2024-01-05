@@ -10,6 +10,14 @@ Get historical data by providing stock symbol and field tag. See tag options at:
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.HIST("AAPL" ; "EBITDA")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -28,11 +36,3 @@ Get historical data by providing stock symbol and field tag. See tag options at:
 | ---- | ----------- |
 | date | The date of the data.  |
 | value | The value of the data.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.HIST( "AAPL" ; "EBITDA" )
-```
-

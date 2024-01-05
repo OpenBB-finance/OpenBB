@@ -157,16 +157,14 @@ class CommandLib(PathHandler):
         cmd_info = self.xl_funcs[cmd]
         if cmd in self.route_map:
             parameters = cmd_info["parameters"]
-            minimal_eg = "=OBB." + cmd_info.get("name", "") + "( "
+            minimal_eg = "=OBB." + cmd_info.get("name", "") + "("
             category = cmd.split("/")[1]
             for p in parameters:
                 p_name = p["name"]
                 if not p.get("optional", False):
                     p_value = self.EXAMPLE_PARAMS.get(category, {}).get(p_name, "")
                     minimal_eg += f"{p_value} ; "
-            minimal_eg = (
-                minimal_eg[:-2] + ")" if minimal_eg[-2:] == "; " else minimal_eg + ")"
-            )
+            minimal_eg = minimal_eg.strip("; ") + ")"
             return {"A. Minimal": minimal_eg}
         return {}
 
@@ -307,11 +305,11 @@ class Editor:
         content += get_description()
         content += get_syntax()
         content += "---\n\n"
+        content += get_examples()
+        content += "---\n\n"
         content += get_parameters()
         content += "---\n\n"
         content += get_return_data()
-        content += "---\n\n"
-        content += get_examples()
         Editor.write(path, content)
 
     def generate_sidebar(self):

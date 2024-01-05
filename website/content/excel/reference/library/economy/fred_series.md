@@ -10,6 +10,14 @@ Get data by series ID from FRED.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.ECONOMY.FRED_SERIES()
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -33,11 +41,3 @@ Get data by series ID from FRED.
 | ---- | ----------- |
 | date | The date of the data.  |
 | value | Value of the index. (provider: intrinio) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.ECONOMY.FRED_SERIES(  )
-```
-

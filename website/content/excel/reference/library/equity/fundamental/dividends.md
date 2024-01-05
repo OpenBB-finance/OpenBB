@@ -36,6 +36,14 @@ Historical Dividends. Historical dividends data for a given company.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.DIVIDENDS("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -60,11 +68,3 @@ Historical Dividends. Historical dividends data for a given company.
 | factor | factor by which to multiply stock prices before this date, in order to calculate historically-adjusted stock prices. (provider: intrinio) |
 | dividend_currency | The currency of the dividend. (provider: intrinio) |
 | split_ratio | The ratio of the stock split, if a stock split occurred. (provider: intrinio) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.DIVIDENDS( "AAPL" )
-```
-

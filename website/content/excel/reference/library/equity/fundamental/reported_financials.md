@@ -10,6 +10,14 @@ Financial statements, as-reported.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -30,11 +38,3 @@ Financial statements, as-reported.
 | period_ending | The ending date of the reporting period.  |
 | fiscal_period | The fiscal period of the report (e.g. FY, Q1, etc.).  |
 | fiscal_year | The fiscal year of the fiscal period.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS( "AAPL" )
-```
-

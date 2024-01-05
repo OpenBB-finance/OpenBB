@@ -35,6 +35,14 @@ Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate 
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.ECONOMY.CPI("united_states,germany")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -54,11 +62,3 @@ Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate 
 | Name | Description |
 | ---- | ----------- |
 | date | The date of the data.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.ECONOMY.CPI( "united_states,germany" )
-```
-

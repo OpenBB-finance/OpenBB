@@ -18,6 +18,14 @@ Equity Screen. Screen for companies meeting various criteria.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.SCREENER()
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -61,11 +69,3 @@ Equity Screen. Screen for companies meeting various criteria.
 | country | The two-letter country abbreviation where the head office is located. (provider: fmp) |
 | is_etf | Whether the ticker is an ETF. (provider: fmp) |
 | actively_trading | Whether the ETF is actively trading. (provider: fmp) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.SCREENER( )
-```
-

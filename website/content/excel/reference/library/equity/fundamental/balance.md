@@ -25,6 +25,14 @@ Balance Sheet. Balance sheet statement.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.BALANCE("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -181,11 +189,3 @@ Balance Sheet. Balance sheet statement.
 | totalStockHoldersEquity | Total stock holders equity (provider: polygon) |
 | totalLiabilitiesAndStockHoldersEquity | Total liabilities and stockholders equity (provider: polygon) |
 | totalEquity | Total equity (provider: polygon) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.BALANCE( "AAPL" )
-```
-

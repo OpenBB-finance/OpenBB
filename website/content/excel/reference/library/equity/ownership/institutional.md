@@ -70,6 +70,14 @@ Institutional Ownership. Institutional ownership data.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.OWNERSHIP.INSTITUTIONAL("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -131,11 +139,3 @@ Institutional Ownership. Institutional ownership data.
 | previous_amount | Previous amount of the institutional owner. (provider: intrinio) |
 | amount_change | Amount change of the institutional owner. (provider: intrinio) |
 | amount_percent_change | Amount percent change of the institutional owner. (provider: intrinio) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.OWNERSHIP.INSTITUTIONAL( "AAPL" )
-```
-

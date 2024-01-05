@@ -54,6 +54,14 @@ Historical Market Indices.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.INDEX.MARKET("SPX")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -92,11 +100,3 @@ Historical Market Indices.
 | label | Human readable format of the date. (provider: fmp) |
 | change_over_time | Change % in the price of the symbol over a period of time. (provider: fmp) |
 | transactions | Number of transactions for the symbol in the time period. (provider: polygon) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.INDEX.MARKET( "SPX" )
-```
-

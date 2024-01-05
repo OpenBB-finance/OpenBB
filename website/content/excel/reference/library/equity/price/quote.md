@@ -73,6 +73,14 @@ Equity Quote. Load stock data for a specific ticker.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.PRICE.QUOTE("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -131,11 +139,3 @@ Equity Quote. Load stock data for a specific ticker.
 | is_darkpool | Whether or not the current trade is from a darkpool. (provider: intrinio) |
 | messages | Messages associated with the endpoint. (provider: intrinio) |
 | security | Security details related to the quote. (provider: intrinio) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.PRICE.QUOTE( "AAPL" )
-```
-

@@ -78,6 +78,14 @@ Equity Valuation Multiples. Valuation multiples for a stock ticker.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.MULTIPLES("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -152,11 +160,3 @@ Equity Valuation Multiples. Valuation multiples for a stock ticker.
 | inventory_turnover_ttm | Inventory turnover calculated as trailing twelve months.  |
 | roe_ttm | Return on equity calculated as trailing twelve months.  |
 | capex_per_share_ttm | Capital expenditures per share calculated as trailing twelve months.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.MULTIPLES( "AAPL" )
-```
-

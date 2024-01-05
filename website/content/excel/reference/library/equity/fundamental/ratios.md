@@ -35,6 +35,14 @@ Extensive set of ratios over time. Financial ratios for a given company.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.RATIOS("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -111,11 +119,3 @@ Extensive set of ratios over time. Financial ratios for a given company.
 | dividend_per_share | Dividend per share. (provider: fmp) |
 | enterprise_value_multiple | Enterprise value multiple. (provider: fmp) |
 | price_fair_value | Price fair value. (provider: fmp) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.RATIOS( "AAPL" )
-```
-

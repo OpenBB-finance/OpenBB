@@ -58,6 +58,14 @@ Cash Flow Statement Growth. Information about the growth of the company cash flo
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.CASH_GROWTH("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -105,11 +113,3 @@ Cash Flow Statement Growth. Information about the growth of the company cash flo
 | growth_operating_cash_flow | Growth rate of operating cash flow.  |
 | growth_capital_expenditure | Growth rate of capital expenditure.  |
 | growth_free_cash_flow | Growth rate of free cash flow.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.CASH_GROWTH( "AAPL" )
-```
-

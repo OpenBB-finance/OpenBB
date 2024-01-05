@@ -10,6 +10,14 @@ Fetch the historical values of a data tag from Intrinio.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES("AAPL" ; "EBITDA")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -32,11 +40,3 @@ Fetch the historical values of a data tag from Intrinio.
 | ---- | ----------- |
 | date | The date of the data.  |
 | value | The value of the data.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES( "AAPL" ; "EBITDA" )
-```
-

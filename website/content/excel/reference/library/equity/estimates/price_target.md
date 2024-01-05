@@ -33,6 +33,14 @@ Price Target. Price target data.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.ESTIMATES.PRICE_TARGET("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -61,11 +69,3 @@ Price Target. Price target data.
 | new_grade | New grade (provider: fmp) |
 | previous_grade | Previous grade (provider: fmp) |
 | grading_company | Grading company (provider: fmp) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.ESTIMATES.PRICE_TARGET( "AAPL" )
-```
-

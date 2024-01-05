@@ -39,6 +39,14 @@ Get Executive Compensation. Information about the executive compensation for a g
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -65,11 +73,3 @@ Get Executive Compensation. Information about the executive compensation for a g
 | all_other_compensation | All other compensation of the executive.  |
 | total | Total compensation of the executive.  |
 | url | URL of the filing data.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION( "AAPL" )
-```
-

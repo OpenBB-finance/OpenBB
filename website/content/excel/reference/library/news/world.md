@@ -71,6 +71,14 @@ World News. Global news data.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.NEWS.WORLD()
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -112,11 +120,3 @@ World News. Global news data.
 | updated | Updated date of the news. (provider: benzinga) |
 | site | News source. (provider: fmp) |
 | company | Company details related to the news article. (provider: intrinio) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.NEWS.WORLD( )
-```
-

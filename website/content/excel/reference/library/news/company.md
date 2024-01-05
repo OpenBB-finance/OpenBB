@@ -45,6 +45,14 @@ Company News. Get news for one or more companies.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.NEWS.COMPANY("AAPL,MSFT")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -94,11 +102,3 @@ Company News. Get news for one or more companies.
 | image_url | Image URL. (provider: polygon) |
 | keywords | Keywords in the article (provider: polygon) |
 | publisher | Publisher of the article. (provider: polygon) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.NEWS.COMPANY( "AAPL,MSFT" )
-```
-

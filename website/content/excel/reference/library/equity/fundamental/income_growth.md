@@ -56,6 +56,14 @@ Income Statement Growth. Information about the growth of the company income stat
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.INCOME_GROWTH("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -100,11 +108,3 @@ Income Statement Growth. Information about the growth of the company income stat
 | growth_eps_diluted | Growth rate of diluted Earnings Per Share (EPS).  |
 | growth_weighted_average_shs_out | Growth rate of weighted average shares outstanding.  |
 | growth_weighted_average_shs_out_dil | Growth rate of diluted weighted average shares outstanding.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.INCOME_GROWTH( "AAPL" )
-```
-

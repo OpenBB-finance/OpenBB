@@ -39,6 +39,14 @@ Revenue Geographic. Geographic revenue data.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -61,11 +69,3 @@ Revenue Geographic. Geographic revenue data.
 | greater_china | Revenue from the the Greater China segment.  |
 | japan | Revenue from the the Japan segment.  |
 | rest_of_asia_pacific | Revenue from the the Rest of Asia Pacific segment.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY( "AAPL" )
-```
-

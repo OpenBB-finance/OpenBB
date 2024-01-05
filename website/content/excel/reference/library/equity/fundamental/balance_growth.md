@@ -61,6 +61,14 @@ Balance Sheet Statement Growth. Information about the growth of the company bala
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.BALANCE_GROWTH("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -117,11 +125,3 @@ Balance Sheet Statement Growth. Information about the growth of the company bala
 | growth_total_investments | Growth rate of total investments.  |
 | growth_total_debt | Growth rate of total debt.  |
 | growth_net_debt | Growth rate of net debt.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.BALANCE_GROWTH( "AAPL" )
-```
-

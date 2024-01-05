@@ -37,6 +37,14 @@ Equity Historical price. Load stock data for a specific ticker.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.PRICE.HISTORICAL("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -89,11 +97,3 @@ Equity Historical price. Load stock data for a specific ticker.
 | fifty_two_week_high | 52 week high price for the symbol. (provider: intrinio) |
 | fifty_two_week_low | 52 week low price for the symbol. (provider: intrinio) |
 | transactions | Number of transactions for the symbol in the time period. (provider: polygon) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.PRICE.HISTORICAL( "AAPL" )
-```
-

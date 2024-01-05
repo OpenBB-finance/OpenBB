@@ -28,6 +28,14 @@ Earnings Call Transcript. Earnings call transcript for a given company.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT("AAPL" ; 2022)
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -47,11 +55,3 @@ Earnings Call Transcript. Earnings call transcript for a given company.
 | year | Year of the earnings call transcript.  |
 | date | The date of the data.  |
 | content | Content of the earnings call transcript.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT( "AAPL" ; 2022 )
-```
-

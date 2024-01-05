@@ -64,6 +64,14 @@ Upcoming and Historical IPO Calendar.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.CALENDAR.IPO()
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -105,11 +113,3 @@ Upcoming and Historical IPO Calendar.
 | id | The Intrinio ID of the IPO. (provider: intrinio) |
 | company | The company that is going public via the IPO. (provider: intrinio) |
 | security | The primary Security for the Company that is going public via the IPO (provider: intrinio) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.CALENDAR.IPO( )
-```
-

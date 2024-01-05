@@ -10,6 +10,14 @@ Search Intrinio data tags.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES("EBITDA")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -35,11 +43,3 @@ Search Intrinio data tags.
 | transaction | Transaction type (credit/debit) of the financial attribute.  |
 | type | Type of the financial attribute.  |
 | unit | Unit of the financial attribute.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES( "EBITDA" )
-```
-

@@ -46,6 +46,14 @@ Company Filings. Company filings data.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.FILINGS()
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -90,11 +98,3 @@ Company Filings. Company filings data.
 | size | The size of the filing. (provider: sec) |
 | complete_submission_url | The URL to the complete filing submission. (provider: sec) |
 | filing_detail_url | The URL to the filing details. (provider: sec) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.FILINGS( )
-```
-

@@ -10,6 +10,14 @@ Calendar Splits. Show Stock Split Calendar.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.CALENDAR.SPLITS()
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -29,11 +37,3 @@ Calendar Splits. Show Stock Split Calendar.
 | symbol | Symbol representing the entity requested in the data.  |
 | numerator | Numerator of the stock splits.  |
 | denominator | Denominator of the stock splits.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.CALENDAR.SPLITS( )
-```
-

@@ -67,6 +67,14 @@ Historical Analyst Estimates. Analyst stock recommendations.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.ESTIMATES.HISTORICAL("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -104,11 +112,3 @@ Historical Analyst Estimates. Analyst stock recommendations.
 | estimated_eps_low | Estimated EPS low.  |
 | number_analyst_estimated_revenue | Number of analysts who estimated revenue.  |
 | number_analysts_estimated_eps | Number of analysts who estimated EPS.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.ESTIMATES.HISTORICAL( "AAPL" )
-```
-

@@ -10,6 +10,14 @@ Get latest data point by providing stock symbol and tag. See tag options at: htt
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.LAST("AAPL" ; "EBITDA")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -24,11 +32,3 @@ Get latest data point by providing stock symbol and tag. See tag options at: htt
 | Name | Description |
 | ---- | ----------- |
 | value | The value of the data.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.LAST( "AAPL" ; "EBITDA" )
-```
-

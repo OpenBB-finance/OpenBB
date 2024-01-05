@@ -31,6 +31,14 @@ Revenue Business Line. Business line revenue data.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -48,11 +56,3 @@ Revenue Business Line. Business line revenue data.
 | ---- | ----------- |
 | date | The date of the data.  |
 | business_line | Day level data containing the revenue of the business line.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT( "AAPL" )
-```
-

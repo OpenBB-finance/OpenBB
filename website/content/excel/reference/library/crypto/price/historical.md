@@ -37,6 +37,14 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.CRYPTO.PRICE.HISTORICAL("BTCUSD")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -73,11 +81,3 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 | label | Human readable format of the date. (provider: fmp) |
 | change_over_time | Change % in the price of the symbol over a period of time. (provider: fmp) |
 | transactions | Number of transactions for the symbol in the time period. (provider: polygon) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.CRYPTO.PRICE.HISTORICAL( "BTCUSD" )
-```
-

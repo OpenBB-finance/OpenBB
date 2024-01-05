@@ -44,6 +44,14 @@ Insider Trading. Information about insider trading.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.OWNERSHIP.INSIDER_TRADING("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -92,11 +100,3 @@ Insider Trading. Information about insider trading.
 | other_relation | Whether the owner is having another relation. (provider: intrinio) |
 | derivative_transaction | Whether the owner is having a derivative transaction. (provider: intrinio) |
 | report_line_number | Report line number of the insider trading. (provider: intrinio) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.OWNERSHIP.INSIDER_TRADING( "AAPL" )
-```
-

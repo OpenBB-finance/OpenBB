@@ -28,6 +28,14 @@ Share Statistics. Share statistics for a given company.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.OWNERSHIP.SHARE_STATISTICS("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -49,11 +57,3 @@ Share Statistics. Share statistics for a given company.
 | source | Source of the received data.  |
 | adjusted_outstanding_shares | Total number of shares of a publicly-traded company, adjusted for splits. (provider: intrinio) |
 | public_float | Aggregate market value of the shares of a publicly-traded company. (provider: intrinio) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.OWNERSHIP.SHARE_STATISTICS( "AAPL" )
-```
-

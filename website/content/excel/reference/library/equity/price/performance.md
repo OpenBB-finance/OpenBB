@@ -43,6 +43,14 @@ Price performance as a return, over different periods.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.PRICE.PERFORMANCE("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -71,11 +79,3 @@ Price performance as a return, over different periods.
 | ten_year | Ten-year return.  |
 | max | Return from the beginning of the time series.  |
 | symbol | The ticker symbol. (provider: fmp) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.PRICE.PERFORMANCE( "AAPL" )
-```
-

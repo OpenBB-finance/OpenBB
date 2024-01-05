@@ -34,6 +34,14 @@ Historical Splits. Historical splits data.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -51,11 +59,3 @@ Historical Splits. Historical splits data.
 | label | Label of the historical stock splits.  |
 | numerator | Numerator of the historical stock splits.  |
 | denominator | Denominator of the historical stock splits.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS( "AAPL" )
-```
-

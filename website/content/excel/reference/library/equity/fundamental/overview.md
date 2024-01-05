@@ -60,6 +60,14 @@ Company Overview. General information about a company.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.OVERVIEW("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -109,11 +117,3 @@ Company Overview. General information about a company.
 | is_actively_trading | If the company is actively trading.  |
 | is_adr | If the company is an ADR.  |
 | is_fund | If the company is a fund.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.OVERVIEW( "AAPL" )
-```
-

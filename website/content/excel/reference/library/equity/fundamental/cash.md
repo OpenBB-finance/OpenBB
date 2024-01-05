@@ -61,6 +61,14 @@ Cash Flow Statement. Information about the cash flow statement.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.CASH("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -170,11 +178,3 @@ Cash Flow Statement. Information about the cash flow statement.
 | net_cash_flow_discontinued | Net cash flow discontinued. (provider: polygon) |
 | exchange_gains_losses | Exchange gains losses. (provider: polygon) |
 | net_cash_flow | Net cash flow. (provider: polygon) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.CASH( "AAPL" )
-```
-

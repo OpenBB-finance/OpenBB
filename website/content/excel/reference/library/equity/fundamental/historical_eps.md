@@ -19,6 +19,14 @@ Historical earnings-per-share for a given company.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -43,11 +51,3 @@ Historical earnings-per-share for a given company.
 | reporting_time | The reporting time - e.g. after market close. (provider: fmp) |
 | updated_at | The date when the data was last updated. (provider: fmp) |
 | period_ending | The fiscal period end date. (provider: fmp) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS( "AAPL" )
-```
-

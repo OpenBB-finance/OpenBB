@@ -10,6 +10,14 @@ Fetch the latest value of a data tag from Intrinio.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES("AAPL" ; "EBITDA")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -25,11 +33,3 @@ Fetch the latest value of a data tag from Intrinio.
 | Name | Description |
 | ---- | ----------- |
 | value | The value of the data.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES( "AAPL" ; "EBITDA" )
-```
-

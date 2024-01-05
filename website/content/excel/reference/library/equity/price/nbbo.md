@@ -49,6 +49,14 @@ Equity NBBO. Load National Best Bid and Offer for a specific equity.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.PRICE.NBBO("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -81,11 +89,3 @@ Equity NBBO. Load National Best Bid and Offer for a specific equity.
 | participant_timestamp |              The nanosecond accuracy Participant/Exchange Unix Timestamp.             This is the timestamp of when the quote was actually generated at the exchange.          (provider: polygon) |
 | sip_timestamp |              The nanosecond accuracy SIP Unix Timestamp.             This is the timestamp of when the SIP received this quote from the exchange which produced it.          (provider: polygon) |
 | trf_timestamp |              The nanosecond accuracy TRF (Trade Reporting Facility) Unix Timestamp.             This is the timestamp of when the trade reporting facility received this quote.          (provider: polygon) |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.PRICE.NBBO( "AAPL" )
-```
-

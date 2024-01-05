@@ -32,6 +32,14 @@ Price Target Consensus. Price target consensus data.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.ESTIMATES.CONSENSUS("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -50,11 +58,3 @@ Price Target Consensus. Price target consensus data.
 | target_low | Low target of the price target consensus.  |
 | target_consensus | Consensus target of the price target consensus.  |
 | target_median | Median target of the price target consensus.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.ESTIMATES.CONSENSUS( "AAPL" )
-```
-

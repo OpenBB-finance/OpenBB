@@ -29,6 +29,14 @@ Key Executives. Key executives for a given company.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -49,11 +57,3 @@ Key Executives. Key executives for a given company.
 | gender | Gender of the key executive.  |
 | year_born | Birth year of the key executive.  |
 | title_since | Date the tile was held since.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT( "AAPL" )
-```
-

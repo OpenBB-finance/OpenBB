@@ -36,6 +36,14 @@ Equity Peers. Company peers.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.COMPARE.PEERS("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -50,11 +58,3 @@ Equity Peers. Company peers.
 | Name | Description |
 | ---- | ----------- |
 | peers_list | A list of equity peers based on sector, exchange and market cap.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.COMPARE.PEERS( "AAPL" )
-```
-

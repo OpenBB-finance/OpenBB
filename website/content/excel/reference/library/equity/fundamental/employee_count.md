@@ -35,6 +35,14 @@ Historical Employees. Historical number of employees.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -57,11 +65,3 @@ Historical Employees. Historical number of employees.
 | filing_date | Filing date of the company employee  |
 | employee_count | Count of employees of the company.  |
 | source | Source URL which retrieves this data for the company.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT( "AAPL" )
-```
-

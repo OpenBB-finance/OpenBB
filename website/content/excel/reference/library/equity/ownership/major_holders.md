@@ -47,6 +47,14 @@ Equity Ownership. Information about the company ownership.
 
 ---
 
+## Example
+
+```excel wordwrap
+=OBB.EQUITY.OWNERSHIP.MAJOR_HOLDERS("AAPL")
+```
+
+---
+
 ## Parameters
 
 | Name | Type | Description | Optional |
@@ -101,11 +109,3 @@ Equity Ownership. Information about the company ownership.
 | last_performance | Last performance of the stock ownership.  |
 | change_in_performance | Change in performance of the stock ownership.  |
 | is_counted_for_performance | Is the stock ownership counted for performance.  |
----
-
-## Example
-
-```excel wordwrap
-=OBB.EQUITY.OWNERSHIP.MAJOR_HOLDERS( "AAPL" )
-```
-
