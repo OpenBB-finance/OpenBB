@@ -13,7 +13,7 @@ Fetch the historical values of a data tag from Intrinio.
 ## Example
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES("AAPL" ; "EBITDA")
+=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES("AAPL";"EBITDA")
 ```
 
 ---

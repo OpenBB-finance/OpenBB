@@ -31,7 +31,7 @@ Earnings Call Transcript. Earnings call transcript for a given company.
 ## Example
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT("AAPL" ; 2022)
+=OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT("AAPL";2022)
 ```
 
 ---

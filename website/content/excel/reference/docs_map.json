@@ -22,7 +22,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.LAST(\"AAPL\" ; \"EBITDA\")"
+      "A. Minimal": "=OBB.LAST(\"AAPL\";\"EBITDA\")"
     },
     "model_name": "LatestAttributes"
   },
@@ -67,7 +67,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.HIST(\"AAPL\" ; \"EBITDA\")"
+      "A. Minimal": "=OBB.HIST(\"AAPL\";\"EBITDA\")"
     },
     "model_name": "HistoricalAttributes"
   },
@@ -2581,7 +2581,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES(\"AAPL\" ; \"EBITDA\")"
+      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES(\"AAPL\";\"EBITDA\")"
     },
     "model_name": "HistoricalAttributes"
   },
@@ -3299,7 +3299,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES(\"AAPL\" ; \"EBITDA\")"
+      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES(\"AAPL\";\"EBITDA\")"
     },
     "model_name": "LatestAttributes"
   },
@@ -4455,7 +4455,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT(\"AAPL\" ; 2022)"
+      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT(\"AAPL\";2022)"
     },
     "model_name": "EarningsCallTranscript"
   },

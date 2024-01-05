@@ -13,7 +13,7 @@ Get historical data by providing stock symbol and field tag. See tag options at:
 ## Example
 
 ```excel wordwrap
-=OBB.HIST("AAPL" ; "EBITDA")
+=OBB.HIST("AAPL";"EBITDA")
 ```
 
 ---

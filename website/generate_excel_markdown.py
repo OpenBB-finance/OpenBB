@@ -162,7 +162,7 @@ class CommandLib(PathHandler):
                 p_name = p["name"]
                 if not p.get("optional", False):
                     p_value = self.EXAMPLE_PARAMS.get(category, {}).get(p_name, "")
-                    minimal_eg += f"{p_value} ; "
+                    minimal_eg += f"{p_value};"
             minimal_eg = minimal_eg.strip("; ") + ")"
             return {"A. Minimal": minimal_eg}
         return {}
