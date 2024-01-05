@@ -1,4 +1,5 @@
 import json
+import shutil
 import sys
 from pathlib import Path
 from textwrap import shorten
@@ -211,15 +212,6 @@ class Editor:
 
         self.target_dir = directory / interface / main_folder
         self.cmd_lib = cmd_lib
-
-    @staticmethod
-    def delete(path: Path):
-        """Delete all files in a directory."""
-        for file in path.glob("*"):
-            if file.is_dir():
-                Editor.delete(file)
-            else:
-                file.unlink()
 
     @staticmethod
     def write(path: Path, content: str):
@@ -449,7 +441,7 @@ class Editor:
 
         docs_map = {}
 
-        self.delete(self.target_dir)
+        shutil.rmtree(self.target_dir, ignore_errors=True)
         for cmd in self.cmd_lib.xl_funcs:
             if self.cmd_lib.get_func(cmd):
                 folder = "/".join(cmd.split("/")[1:-1])
