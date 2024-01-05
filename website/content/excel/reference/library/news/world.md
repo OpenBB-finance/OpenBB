@@ -115,7 +115,10 @@ World News. Global news data.
 | teaser | Teaser of the news. (provider: benzinga) |
 | channels | Channels associated with the news. (provider: benzinga) |
 | stocks | Stocks associated with the news. (provider: benzinga) |
-| tags | Tags associated with the news. (provider: benzinga) |
+| tags | Tags associated with the news. (provider: benzinga, tiingo) |
 | updated | Updated date of the news. (provider: benzinga) |
-| site | News source. (provider: fmp) |
+| site | News source. (provider: fmp, tiingo) |
 | company | Company details related to the news article. (provider: intrinio) |
+| symbols | Ticker tagged in the fetched news. (provider: tiingo) |
+| article_id | Unique ID of the news article. (provider: tiingo) |
+| crawl_date | Date the news article was crawled. (provider: tiingo) |

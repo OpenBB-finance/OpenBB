@@ -75,7 +75,7 @@ Equity Historical price. Load stock data for a specific ticker.
 | volume | The trading volume.  |
 | vwap | Volume Weighted Average Price over the period.  |
 | label | Human readable format of the date. (provider: fmp) |
-| adj_close | The adjusted close price. (provider: fmp);     Adjusted closing price during the period. (provider: intrinio) |
+| adj_close | The adjusted close price. (provider: fmp);     Adjusted closing price during the period. (provider: intrinio);     Adjusted closing price during the period. (provider: tiingo) |
 | unadjusted_volume | Unadjusted volume of the symbol. (provider: fmp) |
 | change | Change in the price of the symbol from the previous day. (provider: fmp, intrinio) |
 | change_percent | Change % in the price of the symbol. (provider: fmp) |
@@ -84,13 +84,13 @@ Equity Historical price. Load stock data for a specific ticker.
 | interval | The data time frequency. (provider: intrinio) |
 | average | Average trade price of an individual equity during the interval. (provider: intrinio) |
 | intra_period | If true, the equity price represents an unfinished period (be it day, week, quarter, month, or year), meaning that the close price is the latest price available, not the official close price for the period (provider: intrinio) |
-| adj_open | Adjusted open price during the period. (provider: intrinio) |
-| adj_high | Adjusted high price during the period. (provider: intrinio) |
-| adj_low | Adjusted low price during the period. (provider: intrinio) |
-| adj_volume | Adjusted volume during the period. (provider: intrinio) |
+| adj_open | Adjusted open price during the period. (provider: intrinio, tiingo) |
+| adj_high | Adjusted high price during the period. (provider: intrinio, tiingo) |
+| adj_low | Adjusted low price during the period. (provider: intrinio, tiingo) |
+| adj_volume | Adjusted volume during the period. (provider: intrinio, tiingo) |
 | factor | factor by which to multiply equity prices before this date, in order to calculate historically-adjusted equity prices. (provider: intrinio) |
-| split_ratio | Ratio of the equity split, if a equity split occurred. (provider: intrinio) |
-| dividend | Dividend amount, if a dividend was paid. (provider: intrinio) |
+| split_ratio | Ratio of the equity split, if a equity split occurred. (provider: intrinio, tiingo) |
+| dividend | Dividend amount, if a dividend was paid. (provider: intrinio, tiingo) |
 | percent_change | Percent change in the price of the symbol from the previous day. (provider: intrinio) |
 | fifty_two_week_high | 52 week high price for the symbol. (provider: intrinio) |
 | fifty_two_week_low | 52 week low price for the symbol. (provider: intrinio) |

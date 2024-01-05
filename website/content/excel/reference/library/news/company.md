@@ -94,10 +94,12 @@ Company News. Get news for one or more companies.
 | images | URL to the images of the news. (provider: benzinga, fmp) |
 | channels | Channels associated with the news. (provider: benzinga) |
 | stocks | Stocks associated with the news. (provider: benzinga) |
-| tags | Tags associated with the news. (provider: benzinga) |
+| tags | Tags associated with the news. (provider: benzinga, tiingo) |
 | updated | Updated date of the news. (provider: benzinga) |
-| site | Name of the news source. (provider: fmp) |
+| site | Name of the news source. (provider: fmp);     News source. (provider: tiingo) |
 | amp_url | AMP URL. (provider: polygon) |
 | image_url | Image URL. (provider: polygon) |
 | keywords | Keywords in the article (provider: polygon) |
 | publisher | Publisher of the article. (provider: polygon) |
+| article_id | Unique ID of the news article. (provider: tiingo) |
+| crawl_date | Date the news article was crawled. (provider: tiingo) |

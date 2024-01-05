@@ -178,7 +178,10 @@
         "description": "Change % in the price of the symbol over a period of time. (provider: fmp)"
       },
       "transactions": {
-        "description": "Number of transactions for the symbol in the time period. (provider: polygon)"
+        "description": "Number of transactions for the symbol in the time period. (provider: polygon, tiingo)"
+      },
+      "volume_notional": {
+        "description": "The last size done for the asset on the specific date in the quote currency. The volume of the asset on the specific date in the quote currency. (provider: tiingo)"
       }
     },
     "return": "matrix",
@@ -5005,6 +5008,36 @@
     },
     "model_name": "SearchAttributes"
   },
+  "/equity/fundamental/trailing_dividend_yield": {
+    "name": "trailing_dividend_yield",
+    "description": "Trailing 1yr dividend yield.",
+    "signature": "=OBB.EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD([provider];[symbol])",
+    "parameters": {
+      "provider": {
+        "type": "Text",
+        "description": "Options: tiingo, defaults to tiingo.",
+        "optional": "True"
+      },
+      "symbol": {
+        "type": "Text",
+        "description": "Symbol to get data for.",
+        "optional": "True"
+      }
+    },
+    "data": {
+      "date": {
+        "description": "The date of the data. "
+      },
+      "trailing_dividend_yield": {
+        "description": "Trailing dividend yield. "
+      }
+    },
+    "return": "matrix",
+    "examples": {
+      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD()"
+    },
+    "model_name": "TrailingDividendYield"
+  },
   "/equity/fundamental/transcript": {
     "name": "transcript",
     "description": "Earnings Call Transcript. Earnings call transcript for a given company.",
@@ -5804,7 +5837,7 @@
         "description": "Human readable format of the date. (provider: fmp)"
       },
       "adj_close": {
-        "description": "The adjusted close price. (provider: fmp);     Adjusted closing price during the period. (provider: intrinio)"
+        "description": "The adjusted close price. (provider: fmp);     Adjusted closing price during the period. (provider: intrinio);     Adjusted closing price during the period. (provider: tiingo)"
       },
       "unadjusted_volume": {
         "description": "Unadjusted volume of the symbol. (provider: fmp)"
@@ -5831,25 +5864,25 @@
         "description": "If true, the equity price represents an unfinished period (be it day, week, quarter, month, or year), meaning that the close price is the latest price available, not the official close price for the period (provider: intrinio)"
       },
       "adj_open": {
-        "description": "Adjusted open price during the period. (provider: intrinio)"
+        "description": "Adjusted open price during the period. (provider: intrinio, tiingo)"
       },
       "adj_high": {
-        "description": "Adjusted high price during the period. (provider: intrinio)"
+        "description": "Adjusted high price during the period. (provider: intrinio, tiingo)"
       },
       "adj_low": {
-        "description": "Adjusted low price during the period. (provider: intrinio)"
+        "description": "Adjusted low price during the period. (provider: intrinio, tiingo)"
       },
       "adj_volume": {
-        "description": "Adjusted volume during the period. (provider: intrinio)"
+        "description": "Adjusted volume during the period. (provider: intrinio, tiingo)"
       },
       "factor": {
         "description": "factor by which to multiply equity prices before this date, in order to calculate historically-adjusted equity prices. (provider: intrinio)"
       },
       "split_ratio": {
-        "description": "Ratio of the equity split, if a equity split occurred. (provider: intrinio)"
+        "description": "Ratio of the equity split, if a equity split occurred. (provider: intrinio, tiingo)"
       },
       "dividend": {
-        "description": "Dividend amount, if a dividend was paid. (provider: intrinio)"
+        "description": "Dividend amount, if a dividend was paid. (provider: intrinio, tiingo)"
       },
       "percent_change": {
         "description": "Percent change in the price of the symbol from the previous day. (provider: intrinio)"
@@ -8414,13 +8447,13 @@
         "description": "Stocks associated with the news. (provider: benzinga)"
       },
       "tags": {
-        "description": "Tags associated with the news. (provider: benzinga)"
+        "description": "Tags associated with the news. (provider: benzinga, tiingo)"
       },
       "updated": {
         "description": "Updated date of the news. (provider: benzinga)"
       },
       "site": {
-        "description": "Name of the news source. (provider: fmp)"
+        "description": "Name of the news source. (provider: fmp);     News source. (provider: tiingo)"
       },
       "amp_url": {
         "description": "AMP URL. (provider: polygon)"
@@ -8433,6 +8466,12 @@
       },
       "publisher": {
         "description": "Publisher of the article. (provider: polygon)"
+      },
+      "article_id": {
+        "description": "Unique ID of the news article. (provider: tiingo)"
+      },
+      "crawl_date": {
+        "description": "Date the news article was crawled. (provider: tiingo)"
       }
     },
     "return": "matrix",
@@ -8564,16 +8603,25 @@
         "description": "Stocks associated with the news. (provider: benzinga)"
       },
       "tags": {
-        "description": "Tags associated with the news. (provider: benzinga)"
+        "description": "Tags associated with the news. (provider: benzinga, tiingo)"
       },
       "updated": {
         "description": "Updated date of the news. (provider: benzinga)"
       },
       "site": {
-        "description": "News source. (provider: fmp)"
+        "description": "News source. (provider: fmp, tiingo)"
       },
       "company": {
         "description": "Company details related to the news article. (provider: intrinio)"
+      },
+      "symbols": {
+        "description": "Ticker tagged in the fetched news. (provider: tiingo)"
+      },
+      "article_id": {
+        "description": "Unique ID of the news article. (provider: tiingo)"
+      },
+      "crawl_date": {
+        "description": "Date the news article was crawled. (provider: tiingo)"
       }
     },
     "return": "matrix",
