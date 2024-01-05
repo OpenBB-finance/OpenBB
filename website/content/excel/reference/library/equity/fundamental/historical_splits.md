@@ -32,9 +32,7 @@ Historical Splits. Historical splits data.
 =OBB.EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS(symbol;[provider])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS("AAPL")

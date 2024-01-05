@@ -45,9 +45,7 @@ Equity Ownership. Information about the company ownership.
 =OBB.EQUITY.OWNERSHIP.MAJOR_HOLDERS(symbol;[provider];[date];[page])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.OWNERSHIP.MAJOR_HOLDERS("AAPL")

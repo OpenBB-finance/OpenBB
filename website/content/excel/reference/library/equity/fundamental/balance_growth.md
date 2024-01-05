@@ -59,9 +59,7 @@ Balance Sheet Statement Growth. Information about the growth of the company bala
 =OBB.EQUITY.FUNDAMENTAL.BALANCE_GROWTH(symbol;[provider];[limit])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.BALANCE_GROWTH("AAPL")

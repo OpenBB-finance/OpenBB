@@ -34,9 +34,7 @@ Historical Dividends. Historical dividends data for a given company.
 =OBB.EQUITY.FUNDAMENTAL.DIVIDENDS(symbol;[provider];[page_size])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.DIVIDENDS("AAPL")

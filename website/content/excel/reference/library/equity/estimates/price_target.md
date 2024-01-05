@@ -31,9 +31,7 @@ Price Target. Price target data.
 =OBB.EQUITY.ESTIMATES.PRICE_TARGET(symbol;[provider];[with_grade])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.ESTIMATES.PRICE_TARGET("AAPL")

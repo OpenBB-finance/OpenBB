@@ -62,9 +62,7 @@ Upcoming and Historical IPO Calendar.
 =OBB.EQUITY.CALENDAR.IPO([provider];[symbol];[start_date];[end_date];[limit];[status];[offer_amount_greater_than];[offer_amount_less_than])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.CALENDAR.IPO()

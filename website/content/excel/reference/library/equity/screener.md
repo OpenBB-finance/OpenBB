@@ -16,9 +16,7 @@ Equity Screen. Screen for companies meeting various criteria.
 =OBB.EQUITY.SCREENER([provider];[mktcap_min];[mktcap_max];[price_min];[price_max];[beta_min];[beta_max];[volume_min];[volume_max];[dividend_min];[dividend_max];[is_etf];[is_active];[sector];[industry];[country];[exchange];[limit])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.SCREENER()

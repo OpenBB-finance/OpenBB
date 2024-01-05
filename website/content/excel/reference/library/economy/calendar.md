@@ -48,9 +48,7 @@ Economic Calendar.
 =OBB.ECONOMY.CALENDAR([provider];[start_date];[end_date];[country];[importance];[group])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.ECONOMY.CALENDAR()

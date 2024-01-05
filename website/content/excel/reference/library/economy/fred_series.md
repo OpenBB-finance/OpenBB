@@ -8,9 +8,7 @@ Get data by series ID from FRED.
 =OBB.ECONOMY.FRED_SERIES(symbol;[provider];[start_date];[end_date];[limit];[frequency];[aggregation_method];[transform];[all_pages];[sleep])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.ECONOMY.FRED_SERIES()

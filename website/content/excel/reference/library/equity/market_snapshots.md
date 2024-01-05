@@ -34,9 +34,7 @@ Get a current, complete, market snapshot.
 =OBB.EQUITY.MARKET_SNAPSHOTS([provider];[market])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.MARKET_SNAPSHOTS()

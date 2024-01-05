@@ -8,9 +8,7 @@ Search Intrinio data tags.
 =OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES(query;[provider];[limit])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES("EBITDA")

@@ -37,9 +37,7 @@ Get Executive Compensation. Information about the executive compensation for a g
 =OBB.EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION(symbol;[provider])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION("AAPL")

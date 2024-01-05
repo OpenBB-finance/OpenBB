@@ -26,9 +26,7 @@ Share Statistics. Share statistics for a given company.
 =OBB.EQUITY.OWNERSHIP.SHARE_STATISTICS(symbol;[provider])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.OWNERSHIP.SHARE_STATISTICS("AAPL")

@@ -32,12 +32,10 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.CRYPTO.PRICE.HISTORICAL(symbol;[provider];[start_date];[end_date];[timeseries];[interval];[multiplier];[timespan];[sort];[limit];[adjusted])
+=OBB.CRYPTO.PRICE.HISTORICAL(symbol;[provider];[start_date];[end_date];[timeseries];[interval];[multiplier];[timespan];[sort];[limit];[adjusted];[exchanges])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.CRYPTO.PRICE.HISTORICAL("BTCUSD")
@@ -50,16 +48,17 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format.** | **False** |
-| provider | Text | Options: fmp, polygon, defaults to fmp. | True |
+| provider | Text | Options: fmp, polygon, tiingo, defaults to fmp. | True |
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
 | timeseries | Number | Number of days to look back. (provider: fmp) | True |
-| interval | Text | Data granularity. (provider: fmp) | True |
+| interval | Text | Data granularity. (provider: fmp, tiingo) | True |
 | multiplier | Number | Multiplier of the timespan. (provider: polygon) | True |
 | timespan | Text | Timespan of the data. (provider: polygon) | True |
 | sort | Text | Sort order of the data. (provider: polygon) | True |
 | limit | Number | The number of data entries to return. (provider: polygon) | True |
 | adjusted | Boolean | Whether the data is adjusted. (provider: polygon) | True |
+| exchanges | Any | To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX'] (provider: tiingo) | True |
 
 ---
 

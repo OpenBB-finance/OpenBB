@@ -8,9 +8,7 @@ Search for FRED series or economic releases by ID or string. This does not retur
 =OBB.ECONOMY.FRED_SEARCH([provider];[query];[is_release];[release_id];[limit];[offset];[filter_variable];[filter_value];[tag_names];[exclude_tag_names])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.ECONOMY.FRED_SEARCH()

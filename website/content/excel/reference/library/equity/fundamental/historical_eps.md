@@ -17,9 +17,7 @@ Historical earnings-per-share for a given company.
 =OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS(symbol;[provider];[limit])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS("AAPL")

@@ -52,9 +52,7 @@ Historical Market Indices.
 =OBB.INDEX.MARKET(symbol;[provider];[start_date];[end_date];[timeseries];[interval];[sort];[tag];[type];[limit];[sleep];[timespan];[adjusted];[multiplier])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.INDEX.MARKET("SPX")

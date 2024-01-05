@@ -71,9 +71,7 @@ Equity Quote. Load stock data for a specific ticker.
 =OBB.EQUITY.PRICE.QUOTE(symbol;[provider];[source])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.PRICE.QUOTE("AAPL")

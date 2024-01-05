@@ -281,7 +281,7 @@ class Editor:
             return data
 
         def get_examples() -> str:
-            examples = "## Example\n\n"
+            examples = "### Example\n\n"
 
             for _, v in cmd_info["examples"].items():
                 # examples += f"### {k}\n\n"
@@ -295,7 +295,6 @@ class Editor:
         content += get_tab()
         content += get_description()
         content += get_syntax()
-        content += "---\n\n"
         content += get_examples()
         content += "---\n\n"
         content += get_parameters()
@@ -460,8 +459,11 @@ class Editor:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "--update":
+    if len(sys.argv) > 1 and sys.argv[1] == "--no-update":
+        pass
+    else:
         CommandLib.fetch()
+
     Editor(
         directory=CONTENT_PATH,
         interface="excel",

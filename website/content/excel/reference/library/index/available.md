@@ -16,9 +16,7 @@ Available Indices. Available indices for a given provider.
 =OBB.INDEX.AVAILABLE([provider])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.INDEX.AVAILABLE()

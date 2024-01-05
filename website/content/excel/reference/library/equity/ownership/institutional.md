@@ -68,9 +68,7 @@ Institutional Ownership. Institutional ownership data.
 =OBB.EQUITY.OWNERSHIP.INSTITUTIONAL(symbol;[provider];[include_current_quarter];[date];[page_size])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.OWNERSHIP.INSTITUTIONAL("AAPL")

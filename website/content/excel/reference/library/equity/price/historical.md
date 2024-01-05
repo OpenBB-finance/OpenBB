@@ -35,9 +35,7 @@ Equity Historical price. Load stock data for a specific ticker.
 =OBB.EQUITY.PRICE.HISTORICAL(symbol;[provider];[interval];[start_date];[end_date];[limit];[sort];[start_time];[end_time];[timezone];[source];[sleep];[adjusted])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.PRICE.HISTORICAL("AAPL")
@@ -50,7 +48,7 @@ Equity Historical price. Load stock data for a specific ticker.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, intrinio, polygon, defaults to fmp. | True |
+| provider | Text | Options: fmp, intrinio, polygon, tiingo, defaults to fmp. | True |
 | interval | Text | Time interval of the data to return. | True |
 | start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
 | end_date | Text | End date of the data, in YYYY-MM-DD format. | True |

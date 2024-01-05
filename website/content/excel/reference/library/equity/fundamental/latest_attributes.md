@@ -8,9 +8,7 @@ Fetch the latest value of a data tag from Intrinio.
 =OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES(symbol;tag;[provider])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES("AAPL";"EBITDA")

@@ -8,9 +8,7 @@ Financial statements, as-reported.
 =OBB.EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS(symbol;[provider];[period];[statement_type];[limit];[fiscal_year])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS("AAPL")

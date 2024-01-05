@@ -8,9 +8,7 @@ Get latest data point by providing stock symbol and tag. See tag options at: htt
 =OBB.LAST(symbol;tag)
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.LAST("AAPL";"EBITDA")

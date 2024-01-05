@@ -38,9 +38,7 @@ Upcoming and Historical earnings calendar.
 =OBB.EQUITY.CALENDAR.EARNINGS([provider];[start_date];[end_date])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.CALENDAR.EARNINGS()

@@ -38,9 +38,7 @@ Upcoming and Historical Dividend Calendar.
 =OBB.EQUITY.CALENDAR.DIVIDEND([provider];[start_date];[end_date])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.CALENDAR.DIVIDEND()

@@ -30,9 +30,7 @@ Index Constituents. Constituents of an index.
 =OBB.INDEX.CONSTITUENTS([provider];[index])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.INDEX.CONSTITUENTS()

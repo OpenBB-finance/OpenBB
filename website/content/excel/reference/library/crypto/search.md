@@ -32,9 +32,7 @@ Cryptocurrency Search. Search available cryptocurrency pairs.
 =OBB.CRYPTO.SEARCH([provider];[query])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.CRYPTO.SEARCH()

@@ -37,9 +37,7 @@ Revenue Geographic. Geographic revenue data.
 =OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY(symbol;[provider];[period];[structure])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY("AAPL")

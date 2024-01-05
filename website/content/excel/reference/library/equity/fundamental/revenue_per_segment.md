@@ -29,9 +29,7 @@ Revenue Business Line. Business line revenue data.
 =OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT(symbol;[provider];[period];[structure])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT("AAPL")

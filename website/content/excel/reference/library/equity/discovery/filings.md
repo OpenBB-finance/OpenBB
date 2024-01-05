@@ -17,9 +17,7 @@ Get the most-recent filings submitted to the SEC.
 =OBB.EQUITY.DISCOVERY.FILINGS([provider];[start_date];[end_date];[form_type];[limit];[isDone])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.DISCOVERY.FILINGS()

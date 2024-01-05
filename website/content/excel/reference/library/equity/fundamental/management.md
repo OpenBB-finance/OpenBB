@@ -27,9 +27,7 @@ Key Executives. Key executives for a given company.
 =OBB.EQUITY.FUNDAMENTAL.MANAGEMENT(symbol;[provider])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.MANAGEMENT("AAPL")

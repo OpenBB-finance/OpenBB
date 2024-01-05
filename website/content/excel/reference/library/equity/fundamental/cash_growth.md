@@ -56,9 +56,7 @@ Cash Flow Statement Growth. Information about the growth of the company cash flo
 =OBB.EQUITY.FUNDAMENTAL.CASH_GROWTH(symbol;[provider];[limit])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.CASH_GROWTH("AAPL")

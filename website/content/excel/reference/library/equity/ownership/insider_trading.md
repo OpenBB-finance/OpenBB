@@ -42,9 +42,7 @@ Insider Trading. Information about insider trading.
 =OBB.EQUITY.OWNERSHIP.INSIDER_TRADING(symbol;[provider];[limit];[transactionType];[start_date];[end_date];[ownership_type];[sort_by])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.OWNERSHIP.INSIDER_TRADING("AAPL")

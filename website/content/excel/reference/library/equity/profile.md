@@ -57,9 +57,7 @@ Equity Info. Get general price and performance metrics of a stock.
 =OBB.EQUITY.PROFILE(symbol;[provider])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.PROFILE("AAPL")

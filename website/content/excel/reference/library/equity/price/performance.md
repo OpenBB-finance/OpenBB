@@ -41,9 +41,7 @@ Price performance as a return, over different periods.
 =OBB.EQUITY.PRICE.PERFORMANCE(symbol;[provider])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.PRICE.PERFORMANCE("AAPL")

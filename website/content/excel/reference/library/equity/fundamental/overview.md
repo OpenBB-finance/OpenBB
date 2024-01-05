@@ -58,9 +58,7 @@ Company Overview. General information about a company.
 =OBB.EQUITY.FUNDAMENTAL.OVERVIEW(symbol;[provider])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.OVERVIEW("AAPL")

@@ -54,9 +54,7 @@ Income Statement Growth. Information about the growth of the company income stat
 =OBB.EQUITY.FUNDAMENTAL.INCOME_GROWTH(symbol;[provider];[limit];[period])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.INCOME_GROWTH("AAPL")

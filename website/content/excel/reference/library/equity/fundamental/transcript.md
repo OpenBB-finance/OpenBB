@@ -26,9 +26,7 @@ Earnings Call Transcript. Earnings call transcript for a given company.
 =OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT(symbol;year;[provider])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT("AAPL";2022)

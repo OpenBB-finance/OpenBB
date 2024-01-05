@@ -33,9 +33,7 @@ Historical Market Risk Premium.
 =OBB.ECONOMY.RISK_PREMIUM([provider])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.ECONOMY.RISK_PREMIUM()

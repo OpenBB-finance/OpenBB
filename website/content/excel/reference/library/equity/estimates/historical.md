@@ -65,9 +65,7 @@ Historical Analyst Estimates. Analyst stock recommendations.
 =OBB.EQUITY.ESTIMATES.HISTORICAL(symbol;[provider];[period];[limit])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.ESTIMATES.HISTORICAL("AAPL")

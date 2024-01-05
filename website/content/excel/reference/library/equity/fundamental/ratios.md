@@ -33,9 +33,7 @@ Extensive set of ratios over time. Financial ratios for a given company.
 =OBB.EQUITY.FUNDAMENTAL.RATIOS(symbol;[provider];[period];[limit];[with_ttm];[fiscal_year])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.RATIOS("AAPL")

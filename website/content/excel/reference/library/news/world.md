@@ -66,12 +66,10 @@ World News. Global news data.
 ## Syntax
 
 ```excel wordwrap
-=OBB.NEWS.WORLD([provider];[limit];[display];[date];[start_date];[end_date];[updated_since];[published_since];[sort];[order];[isin];[cusip];[channels];[topics];[authors];[content_types])
+=OBB.NEWS.WORLD([provider];[limit];[display];[date];[start_date];[end_date];[updated_since];[published_since];[sort];[order];[isin];[cusip];[channels];[topics];[authors];[content_types];[source])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.NEWS.WORLD()
@@ -83,7 +81,7 @@ World News. Global news data.
 
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: benzinga, fmp, intrinio, defaults to benzinga. | True |
+| provider | Text | Options: benzinga, fmp, intrinio, tiingo, defaults to benzinga. | True |
 | limit | Number | The number of data entries to return. Here its the no. of articles to return. | True |
 | display | Text | Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga) | True |
 | date | Text | Date of the news to retrieve. (provider: benzinga) | True |
@@ -99,6 +97,7 @@ World News. Global news data.
 | topics | Text | Topics of the news to retrieve. (provider: benzinga) | True |
 | authors | Text | Authors of the news to retrieve. (provider: benzinga) | True |
 | content_types | Text | Content types of the news to retrieve. (provider: benzinga) | True |
+| source | Text | A comma-separated list of the domains requested. (provider: tiingo) | True |
 
 ---
 

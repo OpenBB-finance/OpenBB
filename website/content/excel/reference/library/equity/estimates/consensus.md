@@ -30,9 +30,7 @@ Price Target Consensus. Price target consensus data.
 =OBB.EQUITY.ESTIMATES.CONSENSUS(symbol;[provider])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.ESTIMATES.CONSENSUS("AAPL")

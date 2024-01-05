@@ -33,9 +33,7 @@ Historical Employees. Historical number of employees.
 =OBB.EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT(symbol;[provider])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT("AAPL")

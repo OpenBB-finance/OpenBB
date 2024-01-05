@@ -8,9 +8,7 @@ Get historical data by providing stock symbol and field tag. See tag options at:
 =OBB.HIST(symbol;tag;[start_date];[end_date];[frequency])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.HIST("AAPL";"EBITDA")

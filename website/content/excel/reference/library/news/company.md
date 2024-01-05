@@ -40,12 +40,10 @@ Company News. Get news for one or more companies.
 ## Syntax
 
 ```excel wordwrap
-=OBB.NEWS.COMPANY(symbols;[provider];[limit];[display];[date];[start_date];[end_date];[updated_since];[published_since];[sort];[order];[isin];[cusip];[channels];[topics];[authors];[content_types];[page];[published_utc])
+=OBB.NEWS.COMPANY(symbols;[provider];[limit];[display];[date];[start_date];[end_date];[updated_since];[published_since];[sort];[order];[isin];[cusip];[channels];[topics];[authors];[content_types];[page];[published_utc];[source])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.NEWS.COMPANY("AAPL,MSFT")
@@ -58,7 +56,7 @@ Company News. Get news for one or more companies.
 | Name | Type | Description | Optional |
 | ---- | ---- | ----------- | -------- |
 | **symbols** | **Text** | **Here it is a separated list of symbols.** | **False** |
-| provider | Text | Options: benzinga, fmp, intrinio, polygon, defaults to benzinga. | True |
+| provider | Text | Options: benzinga, fmp, intrinio, polygon, tiingo, defaults to benzinga. | True |
 | limit | Number | The number of data entries to return. | True |
 | display | Text | Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga) | True |
 | date | Text | Date of the news to retrieve. (provider: benzinga) | True |
@@ -76,6 +74,7 @@ Company News. Get news for one or more companies.
 | content_types | Text | Content types of the news to retrieve. (provider: benzinga) | True |
 | page | Number | Page number of the results. Use in combination with limit. (provider: fmp) | True |
 | published_utc | Text | Date query to fetch articles. Supports operators <, <=, >, >= (provider: polygon) | True |
+| source | Text | A comma-separated list of the domains requested. (provider: tiingo) | True |
 
 ---
 

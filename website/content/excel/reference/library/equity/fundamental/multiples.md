@@ -76,9 +76,7 @@ Equity Valuation Multiples. Valuation multiples for a stock ticker.
 =OBB.EQUITY.FUNDAMENTAL.MULTIPLES(symbol;[provider])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.MULTIPLES("AAPL")

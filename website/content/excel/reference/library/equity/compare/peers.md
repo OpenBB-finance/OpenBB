@@ -34,9 +34,7 @@ Equity Peers. Company peers.
 =OBB.EQUITY.COMPARE.PEERS(symbol;[provider])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.COMPARE.PEERS("AAPL")

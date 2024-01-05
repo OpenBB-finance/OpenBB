@@ -8,9 +8,7 @@ Calendar Splits. Show Stock Split Calendar.
 =OBB.EQUITY.CALENDAR.SPLITS([provider];[start_date];[end_date])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.CALENDAR.SPLITS()

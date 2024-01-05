@@ -84,9 +84,7 @@ Key Metrics. Key metrics for a given company.
 =OBB.EQUITY.FUNDAMENTAL.METRICS(symbol;[provider];[period];[limit];[with_ttm])
 ```
 
----
-
-## Example
+### Example
 
 ```excel wordwrap
 =OBB.EQUITY.FUNDAMENTAL.METRICS("AAPL")
