@@ -40,21 +40,6 @@ class IntrinioEquityQuoteData(EquityQuoteData):
         "ask": "ask_price",
     }
 
-    bid: float = Field(description="Price of the top bid order.")
-    bid_size: int = Field(description="Size of the top bid order.")
-    ask: float = Field(description="Price of the top ask order.")
-    ask_size: int = Field(description="Size of the top ask order.")
-    last_price: float = Field(description="Price of the last trade.")
-    last_size: Optional[int] = Field(description="Size of the last trade.")
-    last_time: Optional[datetime] = Field(
-        default=None, description="Date and Time when the last trade occurred."
-    )
-    open: float = Field(description="Open price for the trading day.")
-    high: float = Field(description="High price for the trading day.")
-    low: float = Field(description="Low price for the trading day.")
-    close: Optional[float] = Field(
-        default=None, description="Closing price for the trading day (IEX source only)."
-    )
     exchange_volume: Optional[int] = Field(
         default=None,
         description="Number of shares exchanged during the trading day on the exchange.",

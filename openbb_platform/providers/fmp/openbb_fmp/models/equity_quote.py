@@ -27,37 +27,13 @@ class FMPEquityQuoteData(EquityQuoteData):
     __alias_dict__ = {
         "price_avg50": "priceAvg50",
         "price_avg200": "priceAvg200",
-        "date": "timestamp",
+        "last_time": "timestamp",
         "high": "dayHigh",
         "low": "dayLow",
         "last_price": "price",
         "change_percent": "changesPercentage",
+        "prev_close": "previousClose",
     }
-    date: datetime = Field(description="Date and time of the date.")
-    symbol: Optional[str] = Field(default=None, description="Symbol of the company.")
-    name: Optional[str] = Field(default=None, description="Name of the company.")
-    exchange: Optional[str] = Field(
-        default=None, description="Exchange the equity is traded on."
-    )
-    last_price: Optional[float] = Field(
-        default=None, description="Current trading price of the equity."
-    )
-    open: float = Field(description="Open price for the trading day.")
-    high: float = Field(description="High price for the trading day.")
-    low: float = Field(description="Low price for the trading day.")
-    volume: Optional[ForceInt] = Field(
-        default=None,
-        description="Volume of the equity in the current trading day.",
-    )
-    previous_close: Optional[float] = Field(
-        default=None, description="Previous closing price of the equity."
-    )
-    change: Optional[float] = Field(
-        default=None, description="Change in the equity price."
-    )
-    change_percent: Optional[float] = Field(
-        default=None, description="Change in price as a normalized percentage."
-    )
     year_high: Optional[float] = Field(
         default=None, description="Highest price of the equity in the last 52 weeks."
     )
