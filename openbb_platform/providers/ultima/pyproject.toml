@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb-ultima"
-version = "1.0.0"
+version = "1.1.0"
 description = "Ultima Insights extension for OpenBB"
 authors = ["Ultima Insights Team <hello@ultimainsights.ai>"]
 readme = "README.md"
@@ -8,7 +8,7 @@ packages = [{ include = "openbb_ultima" }]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-openbb-core = "^1.0.0"
+openbb-core = "^1.1.0"
 
 [build-system]
 requires = ["poetry-core"]
