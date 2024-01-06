@@ -22,7 +22,7 @@ export default function Home(): JSX.Element {
               All the documentation for the tools you need for your investment research.
             </p>
           </div>
-          <div className="flex flex-col md:flex-row w-full container items-center justify-center gap-6 px-6 sm:mx-0">
+          <div className="flex flex-col md:flex-row w-full container items-center justify-center gap-6 px-6 sm:mx-0 sm:flex-col">
             <Link
               style={{
                 backgroundSize: "100% 110%",
@@ -68,6 +68,7 @@ export default function Home(): JSX.Element {
               </p>
             </Link>
           </div>
+          <div className="my-4 md:my-0" />
           <div className="flex flex-col md:flex-row w-full container items-center justify-center gap-6 px-6 sm:mx-0 my-8 lg:!my-10">
             <Link
               style={{
@@ -92,6 +93,7 @@ export default function Home(): JSX.Element {
               </p>
             </Link>
           </div>
+          <div className="my-4 md:my-0" />
           <div className="flex flex-col md:flex-row w-full container items-center justify-center gap-6 px-6 sm:mx-0">
             <Link
               style={{
