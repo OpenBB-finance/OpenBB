@@ -1,7 +1,7 @@
 """ESG Risk Rating Standard Model."""
 
-
-from typing import List, Literal, Set, Union
+from datetime import date as dateType
+from typing import List, Literal, Optional, Set, Union
 
 from pydantic import Field, field_validator
 
@@ -30,20 +30,28 @@ class ESGRiskRatingQueryParams(QueryParams):
 class ESGRiskRatingData(Data):
     """ESG Risk Rating Data."""
 
-    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    cik: str = Field(description=DATA_DESCRIPTIONS.get("cik", ""))
-    company_name: str = Field(description="Company name of the company.")
-    industry: str = Field(description="Industry of the company.")
-    year: int = Field(description="Year of the ESG risk rating.")
-    esg_risk_rating: Literal[
-        "A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"
+    date: Optional[dateType] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("date", "")
+    )
+    symbol: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
+    )
+    cik: Optional[Union[int, str]] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("cik", "")
+    )
+    company_name: Optional[str] = Field(
+        default=None, description="Company name of the company."
+    )
+    industry: Optional[str] = Field(
+        description="Industry of the company.",
+        default=None,
+    )
+    year: Optional[int] = Field(
+        default=None, description="Year of the ESG risk rating."
+    )
+    esg_risk_rating: Optional[
+        Literal["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"]
     ] = Field(description="ESG risk rating of the company.")
-    industry_rank: str = Field(description="Industry rank of the company.")
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+    industry_rank: Optional[str] = Field(
+        default=None, description="Industry rank of the company."
+    )

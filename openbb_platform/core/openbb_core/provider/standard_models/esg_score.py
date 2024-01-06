@@ -5,7 +5,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import List, Set, Union
+from typing import List, Optional, Set, Union
 
 from pydantic import Field, field_validator
 
@@ -34,24 +34,27 @@ class ESGScoreQueryParams(QueryParams):
 class ESGScoreData(Data):
     """ESG Score Data."""
 
-    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    cik: str = Field(description=DATA_DESCRIPTIONS.get("cik", ""))
-    company_name: str = Field(description="Company name of the company.")
-    form_type: str = Field(description="Form type of the company.")
-    accepted_date: datetime = Field(description="Accepted date of the company.")
-    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    environmental_score: float = Field(
-        description="Environmental score of the company."
+    date: Optional[dateType] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("date", "")
     )
-    social_score: float = Field(description="Social score of the company.")
-    governance_score: float = Field(description="Governance score of the company.")
-    esg_score: float = Field(description="ESG score of the company.")
-    url: str = Field(description="URL of the company.")
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+    symbol: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
+    )
+    cik: Optional[Union[int, str]] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("cik", "")
+    )
+    company_name: Optional[str] = Field(
+        default=None, description="Company name of the company."
+    )
+    environmental_score: Optional[float] = Field(
+        default=None, description="Environmental score of the company."
+    )
+    social_score: Optional[float] = Field(
+        default=None, description="Social score of the company."
+    )
+    governance_score: Optional[float] = Field(
+        default=None, description="Governance score of the company."
+    )
+    esg_score: Optional[float] = Field(
+        default=None, description="ESG score of the company."
+    )
