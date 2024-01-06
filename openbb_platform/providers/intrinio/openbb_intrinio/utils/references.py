@@ -36,7 +36,7 @@ VENUES = {
     "X": "NASDAQ OMX PSX, Inc. LLC",
     "Y": "Bats BYX Exchange, Inc.",
     "Z": "Bats BZX Exchange, Inc.",
-    "u": "Other OTC Markets,"
+    "u": "Other OTC Markets",
 }
 
 
