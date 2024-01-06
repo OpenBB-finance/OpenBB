@@ -28,8 +28,12 @@ class CalendarSplitsQueryParams(QueryParams):
 class CalendarSplitsData(Data):
     """Calendar Splits Data."""
 
-    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    label: str = Field(description="Label of the stock splits.")
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", "") + " (Ex-date)")
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    numerator: float = Field(description="Numerator of the stock splits.")
-    denominator: float = Field(description="Denominator of the stock splits.")
+    numerator: Optional[float] = Field(
+        default=None, description="Numerator of the stock splits."
+    )
+    denominator: Optional[float] = Field(
+        default=None, description="Denominator of the stock splits."
+    )
+    factor: Optional[float] = Field(default=None, description="The split factor value.")

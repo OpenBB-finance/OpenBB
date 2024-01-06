@@ -10,6 +10,7 @@ from openbb_core.provider.standard_models.calendar_splits import (
     CalendarSplitsQueryParams,
 )
 from openbb_fmp.utils.helpers import create_url, get_data_many
+from pydantic import Field
 
 
 class FMPCalendarSplitsQueryParams(CalendarSplitsQueryParams):
@@ -23,6 +24,8 @@ class FMPCalendarSplitsQueryParams(CalendarSplitsQueryParams):
 
 class FMPCalendarSplitsData(CalendarSplitsData):
     """FMP Calendar Splits Data."""
+
+    label: Optional[str] = Field(default=None, description="Label of the stock splits.")
 
 
 class FMPCalendarSplitsFetcher(

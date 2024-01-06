@@ -18,19 +18,6 @@ class EquityOwnershipQueryParams(QueryParams):
     """Equity Ownership Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    date: Optional[dateType] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("date", "")
-    )
-    page: Optional[int] = Field(
-        default=0, description="Page number of the data to fetch."
-    )
-
-    @field_validator("date", mode="before", check_fields=False)
-    @classmethod
-    def time_validate(cls, v: str):
-        """Validate the date."""
-        if v is None:
-            v = dateType.today()
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
@@ -44,117 +31,167 @@ class EquityOwnershipQueryParams(QueryParams):
 class EquityOwnershipData(Data):
     """Equity Ownership Data."""
 
-    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    cik: int = Field(description=DATA_DESCRIPTIONS.get("cik", ""))
-    filing_date: dateType = Field(description="Filing date of the stock ownership.")
-    investor_name: str = Field(
-        ...,
-        description="Investor name of the stock ownership.",
+    date: Optional[dateType] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("date", "")
     )
-    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    security_name: str = Field(
-        ...,
-        description="Security name of the stock ownership.",
+    cik: Optional[Union[str, int]] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("cik", "")
     )
-    type_of_security: str = Field(
-        ...,
-        description="Type of security of the stock ownership.",
+    filing_date: Optional[dateType] = Field(
+        default=None, description="Filing date of the disclosure."
     )
-    security_cusip: str = Field(
-        ...,
-        description="Security cusip of the stock ownership.",
+    investor_name: Optional[str] = Field(
+        default=None,
+        description="Name of the investor.",
     )
-    shares_type: str = Field(description="Shares type of the stock ownership.")
-    put_call_share: str = Field(
-        ...,
-        description="Put call share of the stock ownership.",
+    symbol: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    investment_discretion: str = Field(
-        ...,
-        description="Investment discretion of the stock ownership.",
+    security_name: Optional[str] = Field(
+        default=None,
+        description="Name of the security.",
     )
-    industry_title: str = Field(
-        ...,
+    type_of_security: Optional[str] = Field(
+        default=None,
+        description="The type of security.",
+    )
+    security_cusip: Optional[str] = Field(
+        default=None,
+        description="CUSIP of the security.",
+    )
+    shares_type: Optional[str] = Field(
+        default=None,
+        description="The type of shares.",
+    )
+    put_call_share: Optional[str] = Field(
+        default=None,
+        description="Whether the security is a share, put or call.",
+    )
+    investment_discretion: Optional[str] = Field(
+        default=None,
+        description="Investment discretion of the ownership.",
+    )
+    industry_title: Optional[str] = Field(
+        default=None,
         description="Industry title of the stock ownership.",
     )
-    weight: float = Field(description="Weight of the stock ownership.")
-    last_weight: float = Field(description="Last weight of the stock ownership.")
-    change_in_weight: float = Field(
-        ...,
-        description="Change in weight of the stock ownership.",
+    weight: Optional[float] = Field(
+        default=None,
+        description="Weight of ownership, as a normalized percentage.",
+        json_schema_extra={"x-frontendmultiply": 100},
     )
-    change_in_weight_percentage: float = Field(
-        ...,
-        description="Change in weight percentage of the stock ownership.",
+    last_weight: Optional[float] = Field(
+        default=None,
+        description="The weight of ownership from the previous reporting period, as a normalized percentage.",
+        json_schema_extra={"x-frontendmultiply": 100},
     )
-    market_value: int = Field(description="Market value of the stock ownership.")
-    last_market_value: int = Field(
-        ...,
-        description="Last market value of the stock ownership.",
+    change_in_weight: Optional[float] = Field(
+        default=None,
+        description="Previous weight minus the current weight.",
+        json_schema_extra={"x-frontendmultiply": 100},
     )
-    change_in_market_value: int = Field(
-        ...,
-        description="Change in market value of the stock ownership.",
+    change_in_weight_percent: Optional[float] = Field(
+        default=None,
+        description="The change as a percent of the weight, as a normalized percentage.",
+        json_schema_extra={"x-frontendmultiply": 100},
     )
-    change_in_market_value_percentage: float = Field(
-        ...,
-        description="Change in market value percentage of the stock ownership.",
+    market_value: Optional[int] = Field(
+        default=None,
+        description="Market value of the position.",
     )
-    shares_number: int = Field(
-        ...,
-        description="Shares number of the stock ownership.",
+    last_market_value: Optional[int] = Field(
+        default=None,
+        description="The previous report's market value.",
     )
-    last_shares_number: int = Field(
-        ...,
-        description="Last shares number of the stock ownership.",
+    change_in_market_value: Optional[int] = Field(
+        default=None,
+        description="Change in market value from the previous report.",
     )
-    change_in_shares_number: float = Field(
-        ...,
-        description="Change in shares number of the stock ownership.",
+    change_in_market_value_percent: Optional[float] = Field(
+        default=None,
+        description="Percent change in market value, as a normalized percentage.",
+        json_schema_extra={"x-frontendmultiply": 100},
     )
-    change_in_shares_number_percentage: float = Field(
-        ...,
-        description="Change in shares number percentage of the stock ownership.",
+    shares_number: Optional[int] = Field(
+        default=None,
+        description="Number of shares owned.",
     )
-    quarter_end_price: float = Field(
-        ...,
-        description="Quarter end price of the stock ownership.",
+    last_shares_number: Optional[int] = Field(
+        default=None,
+        description="The previous report's number of shares.",
     )
-    avg_price_paid: float = Field(
-        ...,
-        description="Average price paid of the stock ownership.",
+    change_in_shares_number: Optional[float] = Field(
+        default=None,
+        description="Change in the number of shares owned.",
     )
-    is_new: bool = Field(description="Is the stock ownership new.")
-    is_sold_out: bool = Field(description="Is the stock ownership sold out.")
-    ownership: float = Field(description="How much is the ownership.")
-    last_ownership: float = Field(description="Last ownership amount.")
-    change_in_ownership: float = Field(description="Change in ownership amount.")
-    change_in_ownership_percentage: float = Field(
-        ...,
-        description="Change in ownership percentage.",
+    change_in_shares_percent: Optional[float] = Field(
+        default=None,
+        description="Percent change in the number of shares owned, as a normalized percentage.",
+        json_schema_extra={"x-frontendmultiply": 100},
     )
-    holding_period: int = Field(
-        ...,
-        description="Holding period of the stock ownership.",
+    quarter_end_price: Optional[float] = Field(
+        default=None,
+        description="End of quarter price of the security.",
     )
-    first_added: dateType = Field(
-        ...,
-        description="First added date of the stock ownership.",
+    avg_price_paid: Optional[float] = Field(
+        default=None,
+        description="Average price paid.",
     )
-    performance: float = Field(description="Performance of the stock ownership.")
-    performance_percentage: float = Field(
-        ...,
-        description="Performance percentage of the stock ownership.",
+    is_new: Optional[bool] = Field(
+        default=None,
+        description="Is the stock ownership new.",
     )
-    last_performance: float = Field(
-        ...,
-        description="Last performance of the stock ownership.",
+    is_sold_out: Optional[bool] = Field(
+        default=None,
+        description="Is the position sold out.",
     )
-    change_in_performance: float = Field(
-        ...,
-        description="Change in performance of the stock ownership.",
+    ownership: Optional[float] = Field(
+        default=None,
+        description="The ownership of the outstanding shares, as a normalized percentage.",
+        json_schema_extra={"x-frontendmultiply": 100},
     )
-    is_counted_for_performance: bool = Field(
-        ...,
+    last_ownership: Optional[float] = Field(
+        default=None,
+        description="The ownership of the outstanding shares from the previous report,"
+        + " as a normalized percentage.",
+        json_schema_extra={"x-frontendmultiply": 100},
+    )
+    change_in_ownership: Optional[float] = Field(
+        default=None,
+        description="Change in ownership amount.",
+        json_schema_extra={"x-frontendmultiply": 100},
+    )
+    change_in_ownership_percent: Optional[float] = Field(
+        default=None,
+        description="Percent change in ownership from the previous report, as a normalized percentage.",
+        json_schema_extra={"x-frontendmultiply": 100},
+    )
+    holding_period: Optional[int] = Field(
+        default=None,
+        description="Holding period of the position.",
+    )
+    first_added: Optional[dateType] = Field(
+        default=None,
+        description="The first date of ownership.",
+    )
+    performance: Optional[float] = Field(
+        default=None,
+        description="Performance of the position in dollars.",
+    )
+    performance_percent: Optional[float] = Field(
+        default=None,
+        description="Performance of the position as a normalized percentage.",
+        json_schema_extra={"x-frontendmultiply": 100},
+    )
+    last_performance: Optional[float] = Field(
+        default=None,
+        description="Performance of the position from the previous report.",
+    )
+    change_in_performance: Optional[float] = Field(
+        default=None,
+        description="Change in the performance value from the previous report.",
+    )
+    is_counted_for_performance: Optional[bool] = Field(
+        default=None,
         description="Is the stock ownership counted for performance.",
     )

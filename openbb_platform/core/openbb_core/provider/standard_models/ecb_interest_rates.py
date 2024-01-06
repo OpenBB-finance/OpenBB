@@ -35,4 +35,8 @@ class EuropeanCentralBankInterestRatesData(Data):
     """European Central Bank Interest Rates Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: Optional[float] = Field(description="European Central Bank Interest Rate.")
+    rate: Optional[float] = Field(
+        default=None,
+        description="European Central Bank Interest Rate.",
+        json_schema_extra={"x-frontendmultiply": 100},
+    )

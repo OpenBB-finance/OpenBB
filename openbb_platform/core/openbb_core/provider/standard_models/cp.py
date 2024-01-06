@@ -43,4 +43,8 @@ class CommercialPaperData(Data):
     """Commercial Paper Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: Optional[float] = Field(description="Commercial Paper Rate.")
+    rate: Optional[float] = Field(
+        default=None,
+        description="Commercial Paper rate, as a normalized percentage. (e.g. 0.0001 == 0.01%)",
+        json_schema_extra={"x-frontendmultiply": 100},
+    )
