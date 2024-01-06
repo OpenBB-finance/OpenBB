@@ -23,12 +23,9 @@ class FREDCommercialPaperData(CommercialPaperData):
 
     @field_validator("rate", mode="before", check_fields=False)
     @classmethod
-    def value_validate(cls, v):
-        """Validate rate."""
-        try:
-            return float(v)
-        except ValueError:
-            return None
+    def normalize_percent(cls, v):
+        """Normalize percent."""
+        return float(v)/ 100 if v else None
 
 
 class FREDCommercialPaperFetcher(

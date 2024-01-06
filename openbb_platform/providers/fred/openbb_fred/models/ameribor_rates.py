@@ -8,7 +8,7 @@ from openbb_core.provider.standard_models.ameribor_rates import (
     AMERIBORQueryParams,
 )
 from openbb_fred.utils.fred_base import Fred
-from pydantic import Field
+from pydantic import Field, field_validator
 
 AMERIBOR_PARAMETER_TO_FRED_ID = {
     "overnight": "AMERIBOR",
@@ -42,15 +42,17 @@ class FREDAMERIBORQueryParams(AMERIBORQueryParams):
         "90_day_ma",
     ] = Field(default="overnight", description="Period of AMERIBOR rate.")
 
-    round: Optional[int] = Field(
-        default=None,
-        description="Rounds the value to the specified number of decimal places.",
-    )
 
 class FREDAMERIBORData(AMERIBORData):
     """FRED AMERIBOR Data."""
 
     __alias_dict__ = {"rate": "value"}
+
+    @field_validator("rate", mode="before", check_fields=False)
+    @classmethod
+    def normalize_percent(cls, v):
+        """Normalize percent."""
+        return float(v)/ 100 if v else None
 
 
 class FREDAMERIBORFetcher(
@@ -85,8 +87,4 @@ class FREDAMERIBORFetcher(
         """Transform data."""
         keys = ["date", "value"]
         new_data = [{k: x[k] for k in keys} for x in data if x["value"] != "."]
-        if query.round is None:
-            new_data = [{k: float(v)/100 if k == "value" else v for k, v in d.items()} for d in new_data]
-        else:
-            new_data = [{k: round(float(v)/100, query.round) if k == "value" else v for k, v in d.items()} for d in new_data]
         return [FREDAMERIBORData.model_validate(d) for d in new_data]

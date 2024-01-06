@@ -1,7 +1,7 @@
 """Equity Short Interest Standard Model."""
 
-
 from datetime import date as dateType
+from typing import Optional
 
 from pydantic import Field
 
@@ -36,34 +36,41 @@ class ShortInterestData(Data):
             "position reports are received, the short interest data is compiled for each "
             "equity security and provided for publication on the 7th business day after "
             "the reporting settlement date."
-        )
+        ),
     )
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    issue_name: str = Field(description="Unique identifier of the issue.")
-    market_class: str = Field(description="Primary listing market.")
-    current_short_position: float = Field(
+    issue_name: Optional[str] = Field(
+        default=None, description="Unique identifier of the issue."
+    )
+    market_class: Optional[str] = Field(
+        default=None, description="Primary listing market."
+    )
+    current_short_position: Optional[float] = Field(
+        default=None,
         description=(
             "The total number of shares in the issue that are reflected on the books "
             "and records of the reporting firms as short as defined by Rule 200 of "
             "Regulation SHO as of the current cycle’s designated settlement date."
-        )
+        ),
     )
-    previous_short_position: float = Field(
+    previous_short_position: Optional[float] = Field(
+        default=None,
         description=(
             "The total number of shares in the issue that are reflected on the books "
             "and records of the reporting firms as short as defined by Rule 200 of "
             "Regulation SHO as of the previous cycle’s designated settlement date."
-        )
+        ),
     )
-    avg_daily_volume: float = Field(
+    avg_daily_volume: Optional[float] = Field(
+        default=None,
         description=(
             "Total Volume or Adjusted Volume in case of splits / Total trade days "
             "between (previous settlement date + 1) to (current settlement date). The "
             "NULL values are translated as zero."
-        )
+        ),
     )
-
-    days_to_cover: float = Field(
+    days_to_cover: Optional[float] = Field(
+        default=None,
         description=(
             "The number of days of average share volume it would require to buy all of "
             "the shares that were sold short during the reporting cycle. Formula: Short "
@@ -71,14 +78,17 @@ class ShortInterestData(Data):
             "displayed for any values equal or less than 1 (i.e., Average Daily Share is "
             "equal to or greater than Short Interest). N/A will be displayed If the days "
             "to cover is Zero (i.e., Average Daily Share Volume is Zero)."
-        )
+        ),
     )
-    change: float = Field(
+    change: Optional[float] = Field(
+        default=None,
         description=(
             "Change in Shares Short from Previous Cycle: Difference in short interest "
             "between the current cycle and the previous cycle."
-        )
+        ),
     )
-    change_pct: float = Field(
-        description="Change in Shares Short from Previous Cycle as a percent."
+    change_percent: Optional[float] = Field(
+        default=None,
+        description="Change in Shares Short from Previous Cycle as a percent.",
+        json_schema_extra={"x-frontendmultiply": 100},
     )
