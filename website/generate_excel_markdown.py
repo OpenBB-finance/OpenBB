@@ -21,10 +21,7 @@ XL_FUNCS_URL = "https://excel.openbb.co/assets/functions.json"
 class CommandLib(PathHandler):
     """Command library."""
 
-    MANUAL_MAP = {
-        "/last": "/equity/fundamental/latest_attributes",
-        "/hist": "/equity/fundamental/historical_attributes",
-    }
+    MANUAL_MAP = {}  # no commands should be added manually until we decide how to proceed
     XL_TYPE_MAP = {
         "bool": "Boolean",
         "float": "Number",
@@ -381,7 +378,7 @@ class Editor:
                 if index is not None:
                     cmd_folder = files.pop(index)
                     files.append(cmd_folder)
-                content += get_cards(folder=folder, files=files, command=True)
+                content += get_cards(folder=folder, files=files, command=False)
                 return content
 
             ### Menus
