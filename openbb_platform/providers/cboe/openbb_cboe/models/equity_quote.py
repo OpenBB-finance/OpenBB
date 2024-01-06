@@ -39,50 +39,15 @@ class CboeEquityQuoteData(EquityQuoteData):
     __alias_dict__ = {
         "last_time": "last_trade_time",
         "prev_close": "prev_day_close",
-        "type": "security_type",
+        "asset_type": "security_type",
         "last_price": "current_price",
-        "price_annual_high": "annual_high",
-        "price_annual_low": "annual_low",
+        "year_high": "annual_high",
+        "year_low": "annual_low",
+        "last_tick": "tick",
+        "change": "price_change",
+        "change_percent": "price_change_percent",
     }
 
-    symbol: str
-    type: Optional[str] = Field(default=None, description="Type of asset.")
-    name: Optional[str] = Field(
-        default=None, description="Name of the company or asset."
-    )
-    bid: Optional[float] = Field(default=None, description="Current bid price.")
-    bid_size: Optional[float] = Field(default=None, description="Bid lot size.")
-    ask: Optional[float] = Field(default=None, description="Current ask price.")
-    ask_size: Optional[float] = Field(default=None, description="Ask lot size.")
-    last_price: Optional[float] = Field(
-        default=None, description="Price of the last trade."
-    )
-    tick: Optional[str] = Field(
-        default=None, description="Whether the last sale was an up or down tick."
-    )
-    last_time: Optional[datetime] = Field(
-        default=None, description="Time of the last trade."
-    )
-    open: Optional[float] = Field(default=None, description="Opening price.")
-    high: Optional[float] = Field(default=None, description="High price.")
-    low: Optional[float] = Field(default=None, description="Low price.")
-    close: Optional[float] = Field(default=None, description="Closing price.")
-    prev_close: Optional[float] = Field(
-        default=None, description="Previous closing price."
-    )
-    price_change: Optional[float] = Field(default=None, description="Change in price.")
-    price_change_percent: Optional[float] = Field(
-        default=None, description="Change in price as a normalized percentage value."
-    )
-    price_annual_high: Optional[float] = Field(
-        default=None, description="The annual high price of the stock."
-    )
-    price_annual_low: Optional[float] = Field(
-        default=None, description="The annual low price of the stock."
-    )
-    volume: Optional[int] = Field(
-        default=None, description="Stock volume for the current trading day."
-    )
     iv30: Optional[float] = Field(
         default=None, description="The 30-day implied volatility of the stock."
     )
@@ -95,34 +60,40 @@ class CboeEquityQuoteData(EquityQuoteData):
         + " stock as a normalized percentage value.",
     )
     iv30_annual_high: Optional[float] = Field(
-        default=None, description="The 1-year high of implied volatility."
+        default=None, description="The 1-year high of 30-day implied volatility."
     )
     hv30_annual_high: Optional[float] = Field(
-        default=None, description="The 1-year high of realized volatility."
+        default=None, description="The 1-year high of 30-day realized volatility."
     )
     iv30_annual_low: Optional[float] = Field(
-        default=None, description="The 1-year low of implied volatility."
+        default=None, description="The 1-year low of 30-day implied volatility."
     )
     hv30_annual_low: Optional[float] = Field(
-        default=None, description="The 1-year low of realized volatility."
+        default=None, description="The 1-year low of 30-dayrealized volatility."
     )
     iv60_annual_high: Optional[float] = Field(
-        default=None, description="The 60-day high of implied volatility."
+        default=None, description="The 1-year high of 60-day implied volatility."
     )
     hv60_annual_high: Optional[float] = Field(
-        default=None, description="The 60-day high of realized volatility."
+        default=None, description="The 1-year high of 60-day realized volatility."
     )
     iv60_annual_low: Optional[float] = Field(
-        default=None, description="The 60-day low of implied volatility."
+        default=None, description="The 1-year low of 60-day implied volatility."
     )
     hv60_annual_low: Optional[float] = Field(
-        default=None, description="The 60-day low of realized volatility."
+        default=None, description="The 1-year low of 60-day realized volatility."
     )
     iv90_annual_high: Optional[float] = Field(
-        default=None, description="The 90-day high of implied volatility."
+        default=None, description="The 1-year high of 90-day implied volatility."
     )
     hv90_annual_high: Optional[float] = Field(
-        default=None, description="The 90-day high of realized volatility."
+        default=None, description="The 1-year high of 90-day realized volatility."
+    )
+    iv90_annual_low: Optional[float] = Field(
+        default=None, description="The 1-year low of 90-day implied volatility."
+    )
+    hv90_annual_low: Optional[float] = Field(
+        default=None, description="The 1-year low of 90-day realized volatility."
     )
 
 
@@ -222,6 +193,7 @@ class CboeEquityQuoteFetcher(
                 ]
 
         # Now get the IV data.
+        iv = DataFrame()
         iv_responses = await amake_requests(iv_urls)
         if iv_responses:
             iv_data = [d["data"] for d in iv_responses]
