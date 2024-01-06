@@ -21,7 +21,8 @@ XL_FUNCS_URL = "https://excel.openbb.co/assets/functions.json"
 class CommandLib(PathHandler):
     """Command library."""
 
-    MANUAL_MAP = {}  # no commands should be added manually until we decide how to proceed
+    # No commands should be added manually until we decide how to proceed
+    MANUAL_MAP = {}
     XL_TYPE_MAP = {
         "bool": "Boolean",
         "float": "Number",
