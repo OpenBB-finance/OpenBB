@@ -24,9 +24,9 @@ class WSJGainersData(ETFPerformanceData):
 
     __alias_dict__ = {
         "symbol": "ticker",
-        "last_price": "lastPrice",
-        "percent_change": "percentChange",
-        "net_change": "priceChange",
+        "price": "lastPrice",
+        "change_percent": "percentChange",
+        "change": "priceChange",
         "date": "timestamp",
     }
 
@@ -62,6 +62,12 @@ class WSJGainersData(ETFPerformanceData):
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the datetime object from the date string."""
         return datetime.strptime(v[:10], "%Y-%m-%d").date()
+
+    @field_validator("change_percent", mode="after", check_fields=False)
+    @classmethod
+    def normalize_percent(cls, v):
+        """Normalize percent."""
+        return float(v) / 100 if v else None
 
 
 class WSJGainersFetcher(Fetcher[WSJGainersQueryParams, List[WSJGainersData]]):

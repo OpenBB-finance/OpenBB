@@ -31,4 +31,8 @@ class ESTRData(Data):
     """ESTR Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: Optional[float] = Field(description="ESTR rate.")
+    rate: Optional[float] = Field(
+        default=None,
+        description="ESTR rate.",
+        json_schema_extra={"x-frontendmultiply": 100},
+    )

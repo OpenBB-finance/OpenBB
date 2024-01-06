@@ -1,5 +1,6 @@
 """ETF Performance Standard Model."""
 from datetime import date as dateType
+from typing import Optional
 
 from pydantic import Field
 
@@ -18,7 +19,7 @@ class ETFPerformanceQueryParams(QueryParams):
         default="desc",
         description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.",
     )
-    limit: int = Field(
+    limit: Optional[int] = Field(
         default=10,
         description=QUERY_DESCRIPTIONS.get("limit", ""),
     )
@@ -27,24 +28,29 @@ class ETFPerformanceQueryParams(QueryParams):
 class ETFPerformanceData(Data):
     """ETF Performance Data."""
 
+    date: Optional[dateType] = Field(
+        default=None,
+        description=DATA_DESCRIPTIONS.get("date", ""),
+    )
     symbol: str = Field(
         description=DATA_DESCRIPTIONS.get("symbol", ""),
     )
-    name: str = Field(
+    name: Optional[str] = Field(
+        default=None,
         description="Name of the entity.",
     )
-    last_price: float = Field(
+    price: float = Field(
         description="Last price.",
     )
-    percent_change: float = Field(
-        description="Percent change.",
+    change: Optional[float] = Field(
+        description="Change in price value.",
     )
-    net_change: float = Field(
-        description="Net change.",
+    change_percent: Optional[float] = Field(
+        default=None,
+        description="Change in price as a normalized percentage.",
+        json_schema_extra={"x-frontendmultiply": 100},
     )
-    volume: float = Field(
+    volume: Optional[float] = Field(
+        default=None,
         description=DATA_DESCRIPTIONS.get("volume", ""),
-    )
-    date: dateType = Field(
-        description=DATA_DESCRIPTIONS.get("date", ""),
     )
