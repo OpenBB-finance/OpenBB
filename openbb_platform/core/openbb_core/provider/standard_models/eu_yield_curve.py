@@ -29,4 +29,8 @@ class EUYieldCurveData(Data):
     """Euro Area Yield Curve Data."""
 
     maturity: str = Field(description="Yield curve rate maturity.")
-    rate: Optional[float] = Field(description="Yield curve rate.", default=None)
+    rate: Optional[float] = Field(
+        default=None,
+        description="Yield curve rate.",
+        json_schema_extra={"x-frontendmultiply": 100},
+    )

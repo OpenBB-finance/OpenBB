@@ -7,7 +7,7 @@ from datetime import (
 )
 from typing import List, Optional, Set, Union
 
-from pydantic import Field, NonNegativeFloat, field_validator
+from pydantic import Field, field_validator
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -35,25 +35,36 @@ class ExecutiveCompensationData(Data):
     """Executive Compensation Data."""
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
-    cik: Optional[str] = Field(
+    cik: Optional[Union[int, str]] = Field(
         default=None,
         description=DATA_DESCRIPTIONS.get("cik", ""),
     )
-    filing_date: dateType = Field(description="Date of the filing.")
-    accepted_date: datetime = Field(description="Date the filing was accepted.")
-    name_and_position: str = Field(description="Name and position of the executive.")
-    year: int = Field(description="Year of the compensation.")
-    salary: NonNegativeFloat = Field(description="Salary of the executive.")
-    bonus: NonNegativeFloat = Field(description="Bonus of the executive.")
-    stock_award: NonNegativeFloat = Field(description="Stock award of the executive.")
-    incentive_plan_compensation: NonNegativeFloat = Field(
-        description="Incentive plan compensation of the executive."
+    filing_date: Optional[dateType] = Field(
+        default=None, description="Date of the filing."
     )
-    all_other_compensation: NonNegativeFloat = Field(
-        description="All other compensation of the executive."
+    accepted_date: Optional[datetime] = Field(
+        default=None, description="Date the filing was accepted."
     )
-    total: NonNegativeFloat = Field(description="Total compensation of the executive.")
-    url: str = Field(description="URL of the filing data.")
+    name_and_position: Optional[str] = Field(
+        default=None, description="Name and position of the executive."
+    )
+    year: Optional[int] = Field(default=None, description="Year of the compensation.")
+    salary: Optional[float] = Field(
+        default=None, description="Salary of the executive."
+    )
+    bonus: Optional[float] = Field(default=None, description="Bonus of the executive.")
+    stock_award: Optional[float] = Field(
+        default=None, description="Stock award of the executive."
+    )
+    incentive_plan_compensation: Optional[float] = Field(
+        default=None, description="Incentive plan compensation of the executive."
+    )
+    all_other_compensation: Optional[float] = Field(
+        default=None, description="All other compensation of the executive."
+    )
+    total: Optional[float] = Field(
+        default=None, description="Total compensation of the executive."
+    )
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod

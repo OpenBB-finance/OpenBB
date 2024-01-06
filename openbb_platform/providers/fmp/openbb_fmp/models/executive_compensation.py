@@ -9,7 +9,7 @@ from openbb_core.provider.standard_models.executive_compensation import (
     ExecutiveCompensationQueryParams,
 )
 from openbb_fmp.utils.helpers import create_url, get_data_many
-from pydantic import field_validator
+from pydantic import Field, field_validator
 
 
 class FMPExecutiveCompensationQueryParams(ExecutiveCompensationQueryParams):
@@ -21,6 +21,11 @@ class FMPExecutiveCompensationQueryParams(ExecutiveCompensationQueryParams):
 
 class FMPExecutiveCompensationData(ExecutiveCompensationData):
     """FMP Executive Compensation Data."""
+
+    url: Optional[str] = Field(
+        default=None,
+        description="URL to the discolsure filing.",
+    )
 
     @field_validator("filingDate", mode="before", check_fields=False)
     @classmethod
