@@ -31,4 +31,8 @@ class FEDData(Data):
     """FED Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: Optional[float] = Field(description="FED rate.")
+    rate: Optional[float] = Field(
+        default=None,
+        description="FED rate.",
+        json_schema_extra={"x-frontendmultiply": 100},
+    )

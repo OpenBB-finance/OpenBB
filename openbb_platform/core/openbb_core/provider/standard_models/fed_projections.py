@@ -19,16 +19,38 @@ class PROJECTIONData(Data):
     """PROJECTION Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    range_high: Optional[float] = Field(description="High projection of rates.")
+    range_high: Optional[float] = Field(
+        default=None,
+        description="High projection of rates.",
+        json_schema_extra={"x-frontendmultiply": 100},
+    )
     central_tendency_high: Optional[float] = Field(
-        description="Central tendency of high projection of rates."
+        default=None,
+        description="Central tendency of high projection of rates.",
+        json_schema_extra={"x-frontendmultiply": 100},
     )
-    median: Optional[float] = Field(description="Median projection of rates.")
-    range_midpoint: Optional[float] = Field(description="Midpoint projection of rates.")
+    median: Optional[float] = Field(
+        default=None,
+        description="Median projection of rates.",
+        json_schema_extra={"x-frontendmultiply": 100},
+    )
+    range_midpoint: Optional[float] = Field(
+        default=None,
+        description="Midpoint projection of rates.",
+        json_schema_extra={"x-frontendmultiply": 100},
+    )
     central_tendency_midpoint: Optional[float] = Field(
-        description="Central tendency of midpoint projection of rates."
+        default=None,
+        description="Central tendency of midpoint projection of rates.",
+        json_schema_extra={"x-frontendmultiply": 100},
     )
-    range_low: Optional[float] = Field(description="Low projection of rates.")
+    range_low: Optional[float] = Field(
+        default=None,
+        description="Low projection of rates.",
+        json_schema_extra={"x-frontendmultiply": 100},
+    )
     central_tendency_low: Optional[float] = Field(
-        description="Central tendency of low projection of rates."
+        default=None,
+        description="Central tendency of low projection of rates.",
+        json_schema_extra={"x-frontendmultiply": 100},
     )

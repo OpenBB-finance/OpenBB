@@ -36,5 +36,7 @@ class SelectedTreasuryConstantMaturityData(Data):
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     rate: Optional[float] = Field(
-        description="Selected Treasury Constant Maturity Rate."
+        default=None,
+        description="Selected Treasury Constant Maturity Rate.",
+        json_schema_extra={"x-frontendmultiply": 100},
     )
