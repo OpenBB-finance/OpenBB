@@ -31,6 +31,12 @@ class HighQualityMarketCorporateBondData(Data):
     """High Quality Market Corporate Bond Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: Optional[float] = Field(description="HighQualityMarketCorporateBond Rate.")
+    rate: Optional[float] = Field(
+        default=None,
+        description="HighQualityMarketCorporateBond Rate.",
+        json_schema_extra={"x-frontendmultiply": 100},
+    )
     maturity: str = Field(description="Maturity.")
-    yield_curve: Literal["spot", "par"] = Field(description="The yield curve type.")
+    yield_curve: Optional[Literal["spot", "par"]] = Field(
+        default=None, description="The yield curve type."
+    )

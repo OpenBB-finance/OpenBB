@@ -2,7 +2,7 @@
 
 
 from datetime import date as dateType
-from typing import List, Set, Union
+from typing import List, Optional, Set, Union
 
 from pydantic import Field, field_validator
 
@@ -31,9 +31,12 @@ class HistoricalSplitsQueryParams(QueryParams):
 class HistoricalSplitsData(Data):
     """Historical Splits Data."""
 
-    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    label: str = Field(description="Label of the historical stock splits.")
-    numerator: float = Field(description="Numerator of the historical stock splits.")
-    denominator: float = Field(
-        description="Denominator of the historical stock splits."
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", "") + " (Ex-date)")
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
+    numerator: Optional[float] = Field(
+        default=None, description="Numerator of the stock splits."
     )
+    denominator: Optional[float] = Field(
+        default=None, description="Denominator of the stock splits."
+    )
+    factor: Optional[float] = Field(default=None, description="The split factor value.")
