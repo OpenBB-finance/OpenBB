@@ -25,16 +25,38 @@ export default function Home(): JSX.Element {
           <div className="flex flex-col md:flex-row w-full container items-center justify-center gap-6 px-6 sm:mx-0">
             <Link
               style={{
-                backgroundSize: "100% 130%",
+                backgroundSize: "100% 110%",
               }}
-              to="/pro"
+              to="/terminal"
               className="!bg-grey-900 bg-[url('/img/pro.png')] bg-no-repeat shadow-sm group !no-underline text-white dark:hover:border-white hover:border-grey-600/80 relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-300 hover:!text-white"
             >
               <h3 className="uppercase tracking-widest font-bold mb-0 mt-0 text-white">
-                OpenBB Terminal Pro [EARLY ACCESS]
+                OpenBB Terminal Pro
               </h3>
               <p className="text-sm lg:text-base dark:text-grey-300">
                 The OpenBB Terminal Pro is the investment research platform for the 21st century.
+              </p>
+              <p
+                className={clsx(
+                  "mt-auto inline-flex items-center gap-1 font-normal text-sm",
+                )}
+              >
+                See more
+                <ChevronRightIcon className="group-hover:translate-x-2 tw-transition w-3" />
+              </p>
+            </Link>
+            <Link
+              style={{
+                backgroundSize: "100% 130%",
+              }}
+              to="/excel"
+              className="!bg-grey-900 bg-[url('/img/excelbg.png')] bg-no-repeat shadow-sm group !no-underline text-white dark:hover:border-white hover:border-grey-600/80 relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-300 hover:!text-white"
+            >
+              <h3 className="uppercase tracking-widest font-bold mb-0 mt-0 text-white">
+                OpenBB Excel Add-In
+              </h3>
+              <p className="text-sm lg:text-base text-grey-300">
+                The OpenBB Excel Add-In allows access to the same data as the OpenBB Terminal Pro, but through Excel.
               </p>
               <p
                 className={clsx(
