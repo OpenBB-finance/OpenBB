@@ -201,14 +201,12 @@ class Editor:
         directory: Path,
         interface: Literal["excel"],
         main_folder: str,
-        cmds_folder: str,
         cmd_lib: CommandLib,
     ) -> None:
         """Initialize the editor."""
         self.directory = directory
         self.interface = interface
         self.main_folder = main_folder
-        self.cmds_folder = cmds_folder
 
         self.target_dir = directory / interface / main_folder
         self.cmd_lib = cmd_lib
@@ -337,11 +335,11 @@ class Editor:
                 content += OPEN_UL
                 for file in files:
                     t = file.stem
-                    title = t if t != self.cmds_folder else t.title()
+                    title = t if t != self.main_folder else t.title()
                     if command:
                         p = (
-                            self.cmds_folder
-                            if self.cmds_folder in file.parts
+                            self.main_folder
+                            if self.main_folder in file.parts
                             else folder
                         )
                         cmd = "/" + filter_path(file.parts.index(p) + 1, file)
@@ -376,7 +374,7 @@ class Editor:
                     (
                         i
                         for i, path in enumerate(files)
-                        if path.stem == self.cmds_folder
+                        if path.stem == self.main_folder
                     ),
                     None,
                 )
@@ -406,8 +404,6 @@ class Editor:
         def format_label(text: str):
             if text == self.main_folder:
                 return self.main_folder.title()
-            if text == self.cmds_folder:
-                return self.cmds_folder.title()
             return text.lower()
 
         def write_mdx_and_category(path: Path, folder: str, position: int):
@@ -444,8 +440,6 @@ class Editor:
         for cmd in self.cmd_lib.xl_funcs:
             if self.cmd_lib.get_func(cmd):
                 folder = "/".join(cmd.split("/")[1:-1])
-                if folder:
-                    folder = self.cmds_folder + "/" + folder
                 filename = cmd.split("/")[-1] + ".md"
                 filepath = self.target_dir / folder / filename
                 filepath.parent.mkdir(parents=True, exist_ok=True)
@@ -468,6 +462,5 @@ if __name__ == "__main__":
         directory=CONTENT_PATH,
         interface="excel",
         main_folder="reference",
-        cmds_folder="library",
         cmd_lib=CommandLib(),
     ).go()
