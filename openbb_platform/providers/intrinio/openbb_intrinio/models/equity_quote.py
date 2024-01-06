@@ -1,4 +1,5 @@
 """Intrinio Equity Quote Model."""
+# pylint: disable=unused-argument
 import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -120,7 +121,7 @@ class IntrinioEquityQuoteFetcher(
             response_data = await response.json()
             response_data["symbol"] = response_data["security"].get("ticker", None)  # type: ignore
             if "messages" in response_data and response_data.get("messages"):  # type: ignore
-                _message = [d for d in response_data.pop("messages")]  # type: ignore
+                _message = list(response_data.pop("messages"))  # type: ignore
                 _warn(str(",".join(_message)))
             return response_data  # type: ignore
 
