@@ -45,7 +45,19 @@ class ROUTER_equity_price(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "intrinio", "polygon", "tiingo"]] = None,
+        chart: bool = False,
+        provider: Optional[
+            Literal[
+                "alpha_vantage",
+                "cboe",
+                "fmp",
+                "intrinio",
+                "polygon",
+                "tiingo",
+                "tmx",
+                "yfinance",
+            ]
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Equity Historical price. Load stock data for a specific ticker.
@@ -60,10 +72,21 @@ class ROUTER_equity_price(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo']]
+        chart : bool
+            Whether to create a chart or not, by default False.
+        provider : Optional[Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'pol...
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
+            If None, the provider specified in defaults is selected or 'alpha_vantage' if there is
             no default.
+        adjusted : Optional[bool]
+            Output time series is adjusted by historical split and dividend events. (provider: alpha_vantage, polygon);
+            Adjust all OHLC data automatically. (provider: yfinance)
+        extended_hours : Optional[bool]
+            Extended trading hours during pre-market and after-hours.Only available for intraday data. (provider: alpha_vantage)
+        month : Optional[str]
+            Query a specific month in history (in YYYY-MM format). (provider: alpha_vantage)
+        output_size : Optional[Literal['compact', 'full']]
+            Compact returns only the latest 100 data points in the intraday time series; full returns trailing 30 days of the most recent intraday data if the month parameter is not specified, or the full intraday data for aspecific month in history if the month parameter is specified. (provider: alpha_vantage)
         limit : Optional[Union[Annotated[int, Ge(ge=0)], int]]
             Number of days to look back (Only for interval 1d). (provider: fmp);
             The number of data entries to return. (provider: polygon)
@@ -77,15 +100,21 @@ class ROUTER_equity_price(Container):
             The source of the data. (provider: intrinio)
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
-        adjusted : bool
-            Output time series is adjusted by historical split and dividend events. (provider: polygon)
+        adjustment : Literal['splits_only', 'splits_and_dividends', 'unadjusted']
+            The adjustment factor to apply. Only valid for daily data. (provider: tmx)
+        prepost : bool
+            Include Pre and Post market data. (provider: yfinance)
+        include : bool
+            Include Dividends and Stock Splits in results. (provider: yfinance)
+        ignore_tz : bool
+            When combining from different timezones, ignore that part of datetime. (provider: yfinance)
 
         Returns
         -------
         OBBject
             results : List[EquityHistorical]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo']]
+            provider : Optional[Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'tiingo', 'tmx', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -110,18 +139,30 @@ class ROUTER_equity_price(Container):
             The trading volume.
         vwap : Optional[Annotated[float, Gt(gt=0)]]
             Volume Weighted Average Price over the period.
-        label : Optional[str]
-            Human readable format of the date. (provider: fmp)
-        adj_close : Optional[float]
-            The adjusted close price. (provider: fmp);
+        adj_close : Optional[Union[Annotated[float, Gt(gt=0)], float]]
+            The adjusted close price. (provider: alpha_vantage, fmp);
             Adjusted closing price during the period. (provider: intrinio);
             Adjusted closing price during the period. (provider: tiingo)
+        dividend_amount : Optional[Annotated[float, Ge(ge=0)]]
+            Dividend amount paid for the corresponding date. (provider: alpha_vantage)
+        split_coefficient : Optional[Annotated[float, Ge(ge=0)]]
+            Split coefficient for the corresponding date. (provider: alpha_vantage)
+        calls_volume : Optional[float]
+            Number of calls traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
+        puts_volume : Optional[float]
+            Number of puts traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
+        total_options_volume : Optional[float]
+            Total number of options traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
+        label : Optional[str]
+            Human readable format of the date. (provider: fmp)
         unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
-            Change in the price of the symbol from the previous day. (provider: fmp, intrinio)
+            Change in the price of the symbol from the previous day. (provider: fmp, intrinio);
+            Change in price. (provider: tmx)
         change_percent : Optional[float]
-            Change % in the price of the symbol. (provider: fmp)
+            Change % in the price of the symbol. (provider: fmp);
+            Change in price, as a normalized percentage. (provider: tmx)
         change_over_time : Optional[float]
             Change % in the price of the symbol over a period of time. (provider: fmp)
         close_time : Optional[datetime]
@@ -152,8 +193,11 @@ class ROUTER_equity_price(Container):
             52 week high price for the symbol. (provider: intrinio)
         fifty_two_week_low : Optional[float]
             52 week low price for the symbol. (provider: intrinio)
-        transactions : Optional[Annotated[int, Gt(gt=0)]]
-            Number of transactions for the symbol in the time period. (provider: polygon)
+        transactions : Optional[Union[Annotated[int, Gt(gt=0)], int]]
+            Number of transactions for the symbol in the time period. (provider: polygon);
+            Total number of transactions recorded. (provider: tmx)
+        transactions_value : Optional[float]
+            Nominal value of recorded transactions. (provider: tmx)
 
         Example
         -------
@@ -174,6 +218,7 @@ class ROUTER_equity_price(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                chart=chart,
             )
         )
 
@@ -399,7 +444,7 @@ class ROUTER_equity_price(Container):
                 description="Symbol to get data for. In this case, the comma separated list of symbols."
             ),
         ],
-        provider: Optional[Literal["fmp", "intrinio"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "tmx"]] = None,
         **kwargs
     ) -> OBBject:
         """Equity Quote. Load stock data for a specific ticker.
@@ -408,7 +453,7 @@ class ROUTER_equity_price(Container):
         ----------
         symbol : str
             Symbol to get data for. In this case, the comma separated list of symbols.
-        provider : Optional[Literal['fmp', 'intrinio']]
+        provider : Optional[Literal['fmp', 'intrinio', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -420,7 +465,7 @@ class ROUTER_equity_price(Container):
         OBBject
             results : List[EquityQuote]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[Literal['fmp', 'intrinio', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -440,43 +485,55 @@ class ROUTER_equity_price(Container):
         symbol : Optional[str]
             Symbol of the company. (provider: fmp)
         name : Optional[str]
-            Name of the company. (provider: fmp)
+            Name of the company. (provider: fmp);
+            The name of the asset. (provider: tmx)
         price : Optional[float]
             Current trading price of the equity. (provider: fmp)
         changes_percentage : Optional[float]
             Change percentage of the equity price. (provider: fmp)
         change : Optional[float]
-            Change in the equity price. (provider: fmp)
+            Change in the equity price. (provider: fmp);
+            The change in price. (provider: tmx)
         year_high : Optional[float]
-            Highest price of the equity in the last 52 weeks. (provider: fmp)
+            Highest price of the equity in the last 52 weeks. (provider: fmp);
+            Fifty-two week high. (provider: tmx)
         year_low : Optional[float]
-            Lowest price of the equity in the last 52 weeks. (provider: fmp)
-        market_cap : Optional[float]
-            Market cap of the company. (provider: fmp)
+            Lowest price of the equity in the last 52 weeks. (provider: fmp);
+            Fifty-two week low. (provider: tmx)
+        market_cap : Optional[Union[float, int]]
+            Market cap of the company. (provider: fmp);
+            Market capitalization. (provider: tmx)
         price_avg50 : Optional[float]
             50 days average price of the equity. (provider: fmp)
         price_avg200 : Optional[float]
             200 days average price of the equity. (provider: fmp)
         volume : Optional[int]
-            Volume of the equity in the current trading day. (provider: fmp)
+            Volume of the equity in the current trading day. (provider: fmp);
+            Volume Weighted Average Price over the period. (provider: tmx)
         avg_volume : Optional[int]
             Average volume of the equity in the last 10 trading days. (provider: fmp)
         exchange : Optional[str]
-            Exchange the equity is traded on. (provider: fmp)
+            Exchange the equity is traded on. (provider: fmp);
+            The listing exchange code. (provider: tmx)
         open : Optional[float]
-            Opening price of the equity in the current trading day. (provider: fmp)
+            Opening price of the equity in the current trading day. (provider: fmp);
+            The open price. (provider: tmx)
         previous_close : Optional[float]
             Previous closing price of the equity. (provider: fmp)
-        eps : Optional[float]
-            Earnings per share of the equity. (provider: fmp)
-        pe : Optional[float]
-            Price earnings ratio of the equity. (provider: fmp)
+        eps : Optional[Union[float, str]]
+            Earnings per share of the equity. (provider: fmp);
+            The earnings per share. (provider: tmx)
+        pe : Optional[Union[float, str]]
+            Price earnings ratio of the equity. (provider: fmp);
+            The price to earnings ratio. (provider: tmx)
         earnings_announcement : Optional[str]
             Earnings announcement date of the equity. (provider: fmp)
         shares_outstanding : Optional[int]
-            Number of shares outstanding of the equity. (provider: fmp)
+            Number of shares outstanding of the equity. (provider: fmp);
+            The number of listed shares outstanding. (provider: tmx)
         last_price : Optional[float]
-            Price of the last trade. (provider: intrinio)
+            Price of the last trade. (provider: intrinio);
+            The last price of the asset. (provider: tmx)
         last_time : Optional[datetime]
             Date and Time when the last trade occurred. (provider: intrinio)
         last_size : Optional[int]
@@ -519,6 +576,74 @@ class ROUTER_equity_price(Container):
             Messages associated with the endpoint. (provider: intrinio)
         security : Optional[Dict[str, Any]]
             Security details related to the quote. (provider: intrinio)
+        security_type : Optional[str]
+            The issuance type of the asset. (provider: tmx)
+        sector : Optional[str]
+            The sector of the asset. (provider: tmx)
+        industry_category : Optional[str]
+            The industry category of the asset. (provider: tmx)
+        industry_group : Optional[str]
+            The industry group of the asset. (provider: tmx)
+        high : Optional[float]
+            The high price. (provider: tmx)
+        low : Optional[float]
+            The low price. (provider: tmx)
+        close : Optional[float]
+            None
+        vwap : Optional[float]
+            Volume Weighted Average Price over the period. (provider: tmx)
+        prev_close : Optional[float]
+
+        change_percent : Optional[float]
+            The change in price as a normalized percent. (provider: tmx)
+        ma_21 : Optional[float]
+            Twenty-one day moving average. (provider: tmx)
+        ma_50 : Optional[float]
+            Fifty day moving average. (provider: tmx)
+        ma_200 : Optional[float]
+            Two-hundred day moving average. (provider: tmx)
+        volume_avg_10d : Optional[int]
+            Ten day average volume. (provider: tmx)
+        volume_avg_30d : Optional[int]
+            Thirty day average volume. (provider: tmx)
+        volume_avg_50d : Optional[int]
+            Fifty day average volume. (provider: tmx)
+        market_cap_all_classes : Optional[int]
+            Market capitalization of all share classes. (provider: tmx)
+        div_amount : Optional[float]
+            The most recent dividend amount. (provider: tmx)
+        div_currency : Optional[str]
+            The currency the dividend is paid in. (provider: tmx)
+        div_yield : Optional[float]
+            The dividend yield as a normalized percentage. (provider: tmx)
+        div_freq : Optional[str]
+            The frequency of dividend payments. (provider: tmx)
+        div_ex_date : Optional[date]
+            The ex-dividend date. (provider: tmx)
+        div_pay_date : Optional[date]
+            The next dividend ayment date. (provider: tmx)
+        div_growth_3y : Optional[Union[str, float]]
+            The three year dividend growth as a normalized percentage. (provider: tmx)
+        div_growth_5y : Optional[Union[str, float]]
+            The five year dividend growth as a normalized percentage. (provider: tmx)
+        debt_to_equity : Optional[Union[str, float]]
+            The debt to equity ratio. (provider: tmx)
+        price_to_book : Optional[Union[str, float]]
+            The price to book ratio. (provider: tmx)
+        price_to_cf : Optional[Union[str, float]]
+            The price to cash flow ratio. (provider: tmx)
+        return_on_equity : Optional[Union[str, float]]
+            The return on equity, as a normalized percentage. (provider: tmx)
+        return_on_assets : Optional[Union[str, float]]
+            The return on assets, as a normalized percentage. (provider: tmx)
+        beta : Optional[Union[str, float]]
+            The beta relative to the TSX Composite. (provider: tmx)
+        alpha : Optional[Union[str, float]]
+            The alpha relative to the TSX Composite. (provider: tmx)
+        shares_escrow : Optional[int]
+            The number of shares held in escrow. (provider: tmx)
+        shares_total : Optional[int]
+            The total number of shares outstanding from all classes. (provider: tmx)
 
         Example
         -------

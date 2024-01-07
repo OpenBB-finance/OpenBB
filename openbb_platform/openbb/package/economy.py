@@ -880,15 +880,15 @@ class ROUTER_economy(Container):
             Value of the M1 money supply in billions.
         M2 : float
             Value of the M2 money supply in billions.
-        currency : float
+        currency : Optional[float]
             Value of currency in circulation in billions.
-        demand_deposits : float
+        demand_deposits : Optional[float]
             Value of demand deposits in billions.
-        retail_money_market_funds : float
+        retail_money_market_funds : Optional[float]
             Value of retail money market funds in billions.
-        other_liquid_deposits : float
+        other_liquid_deposits : Optional[float]
             Value of other liquid deposits in billions.
-        small_denomination_time_deposits : float
+        small_denomination_time_deposits : Optional[float]
             Value of small denomination time deposits in billions.
 
         Example

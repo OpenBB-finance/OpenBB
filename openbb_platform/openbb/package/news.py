@@ -14,6 +14,7 @@ from typing_extensions import Annotated
 class ROUTER_news(Container):
     """/news
     company
+    sector
     world
     """
 
@@ -34,7 +35,16 @@ class ROUTER_news(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 20,
         provider: Optional[
-            Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo"]
+            Literal[
+                "benzinga",
+                "fmp",
+                "intrinio",
+                "polygon",
+                "tiingo",
+                "tmx",
+                "ultima",
+                "yfinance",
+            ]
         ] = None,
         **kwargs
     ) -> OBBject:
@@ -80,7 +90,8 @@ class ROUTER_news(Container):
         content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
         page : Optional[int]
-            Page number of the results. Use in combination with limit. (provider: fmp)
+            Page number of the results. Use in combination with limit. (provider: fmp);
+            The page number to start from. Use with limit. (provider: tmx)
         published_utc : Optional[str]
             Date query to fetch articles. Supports operators <, <=, >, >= (provider: polygon)
         source : Optional[str]
@@ -91,7 +102,7 @@ class ROUTER_news(Container):
         OBBject
             results : List[CompanyNews]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo']]
+            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'tmx', 'ultima', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -139,12 +150,22 @@ class ROUTER_news(Container):
             Image URL. (provider: polygon)
         keywords : Optional[List[str]]
             Keywords in the article (provider: polygon)
-        publisher : Optional[openbb_polygon.models.company_news.PolygonPublisher]
-            Publisher of the article. (provider: polygon)
+        publisher : Optional[Union[openbb_polygon.models.company_news.PolygonPublisher, str]]
+            Publisher of the article. (provider: polygon, ultima, yfinance)
         article_id : Optional[int]
             Unique ID of the news article. (provider: tiingo)
         crawl_date : Optional[datetime]
             Date the news article was crawled. (provider: tiingo)
+        source : Optional[str]
+            Source of the news. (provider: tmx)
+        risk_category : Optional[str]
+            Risk category of the news. (provider: ultima)
+        uuid : Optional[str]
+            Unique identifier for the news article (provider: yfinance)
+        type : Optional[str]
+            Type of the news article (provider: yfinance)
+        thumbnail : Optional[List]
+            Thumbnail related data to the ticker news article. (provider: yfinance)
 
         Example
         -------
@@ -167,6 +188,85 @@ class ROUTER_news(Container):
         )
 
     @validate
+    def sector(
+        self,
+        sectors: Annotated[
+            str, OpenBBCustomParameter(description="A coma separated list of sectors.")
+        ],
+        limit: Annotated[
+            int,
+            OpenBBCustomParameter(
+                description="The number of data entries to return. Here it is the no. of articles to return."
+            ),
+        ] = 20,
+        provider: Optional[Literal["ultima"]] = None,
+        **kwargs
+    ) -> OBBject:
+        """Sector News. Get news for one or more sectors.
+
+        Parameters
+        ----------
+        sectors : str
+            A coma separated list of sectors.
+        limit : int
+            The number of data entries to return. Here it is the no. of articles to return.
+        provider : Optional[Literal['ultima']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'ultima' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[SectorNews]
+                Serializable results.
+            provider : Optional[Literal['ultima']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        SectorNews
+        ----------
+        date : datetime
+            The date of the data. Here it is the published date of the news.
+        title : str
+            Title of the news.
+        images : Optional[List[Dict[str, str]]]
+            Images associated with the news.
+        text : Optional[str]
+            Text/body of the news.
+        url : Optional[str]
+            URL of the news.
+        publisher : Optional[str]
+            Publisher of the news. (provider: ultima)
+        risk_category : Optional[str]
+            Risk category of the news. (provider: ultima)
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.news.sector(sectors="TEST_STRING", limit=20)
+        """  # noqa: E501
+
+        return self._run(
+            "/news/sector",
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "sectors": sectors,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
+        )
+
+    @validate
     def world(
         self,
         limit: Annotated[
@@ -175,7 +275,9 @@ class ROUTER_news(Container):
                 description="The number of data entries to return. Here its the no. of articles to return."
             ),
         ] = 20,
-        provider: Optional[Literal["benzinga", "fmp", "intrinio", "tiingo"]] = None,
+        provider: Optional[
+            Literal["benzinga", "biztoc", "fmp", "intrinio", "tiingo"]
+        ] = None,
         **kwargs
     ) -> OBBject:
         """World News. Global news data.
@@ -184,7 +286,7 @@ class ROUTER_news(Container):
         ----------
         limit : int
             The number of data entries to return. Here its the no. of articles to return.
-        provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'tiingo']]
+        provider : Optional[Literal['benzinga', 'biztoc', 'fmp', 'intrinio', 'tiingo...
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
@@ -216,15 +318,22 @@ class ROUTER_news(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
+        filter : Literal['crypto', 'hot', 'latest', 'main', 'media', 'source', 'tag']
+            Filter by type of news. (provider: biztoc)
         source : Optional[str]
+            Filter by a specific publisher. Only valid when filter is set to source. (provider: biztoc);
             A comma-separated list of the domains requested. (provider: tiingo)
+        tag : Optional[str]
+            Tag, topic, to filter articles by. Only valid when filter is set to tag. (provider: biztoc)
+        term : Optional[str]
+            Search term to filter articles by. This overrides all other filters. (provider: biztoc)
 
         Returns
         -------
         OBBject
             results : List[WorldNews]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'tiingo']]
+            provider : Optional[Literal['benzinga', 'biztoc', 'fmp', 'intrinio', 'tiingo']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -246,7 +355,7 @@ class ROUTER_news(Container):
         url : Optional[str]
             URL of the news.
         id : Optional[str]
-            Article ID. (provider: benzinga, intrinio)
+            Article ID. (provider: benzinga, biztoc, intrinio)
         author : Optional[str]
             Author of the news. (provider: benzinga)
         teaser : Optional[str]
@@ -255,10 +364,14 @@ class ROUTER_news(Container):
             Channels associated with the news. (provider: benzinga)
         stocks : Optional[str]
             Stocks associated with the news. (provider: benzinga)
-        tags : Optional[str]
-            Tags associated with the news. (provider: benzinga, tiingo)
+        tags : Optional[Union[str, List[str]]]
+            Tags associated with the news. (provider: benzinga, biztoc, tiingo)
         updated : Optional[datetime]
             Updated date of the news. (provider: benzinga)
+        favicon : Optional[str]
+            Icon image for the source of the article. (provider: biztoc)
+        score : Optional[float]
+            Search relevance score for the article. (provider: biztoc)
         site : Optional[str]
             News source. (provider: fmp, tiingo)
         company : Optional[Dict[str, Any]]

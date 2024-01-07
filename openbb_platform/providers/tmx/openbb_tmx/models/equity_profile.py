@@ -138,6 +138,7 @@ class TmxEquityProfileFetcher(
             "website",
             "phoneNumber",
             "fullAddress",
+            "sector",
             "qmdescription",
             "industry",
             "exchangeCode",

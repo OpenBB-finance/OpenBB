@@ -33,7 +33,7 @@ class ROUTER_equity_ownership(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 500,
-        provider: Optional[Literal["fmp", "intrinio"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "tmx"]] = None,
         **kwargs
     ) -> OBBject:
         """Insider Trading. Information about insider trading.
@@ -44,7 +44,7 @@ class ROUTER_equity_ownership(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio']]
+        provider : Optional[Literal['fmp', 'intrinio', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -58,13 +58,15 @@ class ROUTER_equity_ownership(Container):
             Type of ownership. (provider: intrinio)
         sort_by : Optional[Literal['filing_date', 'updated_on']]
             Field to sort by. (provider: intrinio)
+        summary : bool
+            Return a summary of the insider activity instead of the individuals. (provider: tmx)
 
         Returns
         -------
         OBBject
             results : List[InsiderTrading]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[Literal['fmp', 'intrinio', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -75,34 +77,34 @@ class ROUTER_equity_ownership(Container):
 
         InsiderTrading
         --------------
-        symbol : str
+        symbol : Optional[str]
             Symbol representing the entity requested in the data.
-        company_cik : int
-            Company CIK of the insider trading.
-        filing_date : datetime
-            Filing date of the insider trading.
+        company_cik : Optional[Union[str, int]]
+            CIK for the company of the shares transacted.
+        filing_date : Optional[datetime]
+            The date of the filing discolsure.
         transaction_date : Optional[date]
-            Transaction date of the insider trading.
-        owner_cik : int
-            Reporting CIK of the insider trading.
-        owner_name : str
-            Reporting name of the insider trading.
+            The date of the transaction.
+        owner_cik : Optional[Union[str, int]]
+            The owner's CIK for SEC reporting.
+        owner_name : Optional[str]
+            The name of the owner making the transaction.
         owner_title : Optional[str]
-            Designation of owner of the insider trading.
-        transaction_type : str
-            Transaction type of the insider trading.
+            The job title held by the owner of the shares.
+        transaction_type : Optional[str]
+            The type of transaction.
         acquisition_or_disposition : Optional[str]
-            Acquisition or disposition of the insider trading.
+            Acquisition or disposition of the shares.
         security_type : Optional[str]
-            Security type of the insider trading.
+            The type of security being transacted.
         securities_owned : Optional[float]
-            Number of securities owned in the insider trading.
+            Number of securities owned by the insider.
         securities_transacted : Optional[float]
-            Securities transacted of the insider trading.
+            Number of securities transacted.
         transaction_price : Optional[float]
-            Price of the insider trading.
-        filing_url : str
-            Link of the insider trading.
+            The execution price of the trade.
+        filing_url : Optional[str]
+            URL for the public filing document.
         form_type : Optional[str]
             Form type of the insider trading. (provider: fmp)
         company_name : Optional[str]
@@ -133,6 +135,20 @@ class ROUTER_equity_ownership(Container):
             Whether the owner is having a derivative transaction. (provider: intrinio)
         report_line_number : Optional[int]
             Report line number of the insider trading. (provider: intrinio)
+        period : Optional[str]
+            The period of the activity. Bucketed by three, six, and twelve months. (provider: tmx)
+        acquisition_or_deposition : Optional[str]
+            Whether the insider bought or sold the shares. (provider: tmx)
+        number_of_trades : Optional[int]
+            The number of shares traded over the period. (provider: tmx)
+        trade_value : Optional[float]
+            The value of the shares traded by the insider. (provider: tmx)
+        securities_bought : Optional[int]
+            The total number of shares bought by all insiders over the period. (provider: tmx)
+        securities_sold : Optional[int]
+            The total number of shares sold by all insiders over the period. (provider: tmx)
+        net_activity : Optional[int]
+            The total net activity by all insiders over the period. (provider: tmx)
 
         Example
         -------
