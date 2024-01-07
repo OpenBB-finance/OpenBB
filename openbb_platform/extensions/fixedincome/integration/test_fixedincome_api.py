@@ -554,6 +554,7 @@ def test_fixedincome_government_treasury_prices(params, headers):
         (
             {
                 "provider": "tmx",
+                "issuer_name": "federal",
                 "issue_date_min": None,
                 "issue_date_max": None,
                 "last_traded_min": None,
