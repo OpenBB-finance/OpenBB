@@ -71,9 +71,8 @@ class GovernmentUSTreasuryAuctionsFetcher(
         data = pd.DataFrame(r.json())
         results = (
             data.fillna("N/A")
-            .replace("N/A", None)
             .replace("", None)
-            .convert_dtypes()
+            .replace("N/A", None)
             .to_dict("records")
         )
 
