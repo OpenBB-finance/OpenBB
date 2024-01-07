@@ -70,7 +70,11 @@ class GovernmentUSTreasuryAuctionsFetcher(
             raise RuntimeError(r.status_code)
         data = pd.DataFrame(r.json())
         results = (
-            data.fillna("N/A").replace("N/A", None).convert_dtypes().to_dict("records")
+            data.fillna("N/A")
+            .replace("N/A", None)
+            .replace("", None)
+            .convert_dtypes()
+            .to_dict("records")
         )
 
         return results
