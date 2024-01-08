@@ -601,7 +601,7 @@ class RouterLoader:
         router = Router()
         el = ExtensionLoader()
 
-        for name, entry in el.core_objects.items():
+        for name, entry in ExtensionLoader().core_objects.items():
             try:
                 router.include_router(router=entry, prefix=f"/{name}")
             except Exception as e:
