@@ -1,4 +1,5 @@
 """Yahoo Finance Equity Historical Price Model."""
+# pylint: disable=unused-argument
 # ruff: noqa: SIM105
 
 from datetime import datetime, timedelta
