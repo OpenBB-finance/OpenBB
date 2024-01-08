@@ -27,7 +27,7 @@ export default function Home(): JSX.Element {
               style={{
                 backgroundSize: "100% 110%",
               }}
-              to="/terminal"
+              to="/pro"
               className="!bg-grey-900 bg-[url('/img/pro.png')] bg-no-repeat shadow-sm group !no-underline text-white dark:hover:border-white hover:border-grey-600/80 relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-300 hover:!text-white"
             >
               <h3 className="uppercase tracking-widest font-bold mb-0 mt-0 text-white">
