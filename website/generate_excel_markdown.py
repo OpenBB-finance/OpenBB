@@ -45,7 +45,7 @@ class CommandLib(PathHandler):
             "year": 2022,
         },
         "etf": {"symbol": '"SPY"'},
-        "index": {"symbol": '"SPX"'},
+        "index": {"symbol": '"^GSPC"'},
         "news": {"symbols": '"AAPL,MSFT"'},
         "regulators": {"symbol": '"AAPL"'},
     }
