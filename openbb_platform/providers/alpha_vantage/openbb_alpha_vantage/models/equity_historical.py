@@ -176,6 +176,7 @@ class AVEquityHistoricalFetcher(
 
         return data[dynamic_key]
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: AVEquityHistoricalQueryParams, data: Dict, **kwargs: Any
