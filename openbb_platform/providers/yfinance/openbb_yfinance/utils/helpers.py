@@ -1,5 +1,5 @@
 """Yahoo Finance helpers module."""
-
+# pylint: disable=unused-argument
 from datetime import (
     date as dateType,
     datetime,
@@ -134,8 +134,8 @@ def yf_download(
             threads=False,
             **kwargs,
         )
-    except ValueError:
-        raise EmptyDataError()
+    except ValueError as exc:
+        raise EmptyDataError() from exc
 
     tickers = symbol.split(",")
     if len(tickers) > 1:
@@ -148,7 +148,8 @@ def yf_download(
                 columns={"Date": "date", "Datetime": "date"}
             )
             _data = pd.concat([_data, temp])
-        _data = _data.set_index(["date", "symbol"]).sort_index()
+        index_keys = ["date", "symbol"] if "symbol" in _data.columns else ["date"]
+        _data = _data.set_index(index_keys).sort_index()
         data = _data
     if not data.empty:
         data = data.reset_index()
