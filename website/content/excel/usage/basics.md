@@ -16,6 +16,10 @@ The add-in provides direct access to the OpenBB platform, where each function im
 
 - `OBB.[MENU].[SUB_MENU].[COMMAND]`
 
+:::tip
+Use the <TAB\> key to autocomplete the function name after typing `=OBB.`
+:::
+
 Examples:
 
 1. Getting balance sheet data for a stock:
