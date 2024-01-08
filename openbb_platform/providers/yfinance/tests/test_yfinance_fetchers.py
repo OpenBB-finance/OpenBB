@@ -26,8 +26,6 @@ from openbb_yfinance.models.undervalued_growth_equities import (
 )
 from openbb_yfinance.models.undervalued_large_caps import YFUndervaluedLargeCapsFetcher
 
-pytest.skip("yf cassettes bug the CI.", allow_module_level=True)
-
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
 )
@@ -101,7 +99,7 @@ def test_y_finance_currency_historical_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_futures_historical_fetcher(credentials=test_credentials):
     params = {
-        "symbol": "ES",
+        "symbol": "ES=F",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 1, 10),
     }
