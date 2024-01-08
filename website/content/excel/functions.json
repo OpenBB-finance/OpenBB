@@ -72,7 +72,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, polygon, tiingo",
+          "description": "Options: fmp, polygon, tiingo, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -150,7 +150,7 @@
       "name": "CRYPTO.SEARCH",
       "parameters": [
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -178,7 +178,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, polygon, tiingo",
+          "description": "Options: fmp, polygon, tiingo, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -243,7 +243,7 @@
       "name": "CURRENCY.SEARCH",
       "parameters": [
         {
-          "description": "Options: fmp, intrinio, polygon",
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -307,7 +307,7 @@
           "type": "string"
         },
         {
-          "description": "Options: intrinio",
+          "description": "Options: intrinio, defaults to intrinio.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -330,7 +330,7 @@
       "name": "DERIVATIVES.OPTIONS.UNUSUAL",
       "parameters": [
         {
-          "description": "Options: intrinio",
+          "description": "Options: intrinio, defaults to intrinio.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -359,7 +359,7 @@
       "name": "ECONOMY.CALENDAR",
       "parameters": [
         {
-          "description": "Options: fmp, tradingeconomics",
+          "description": "Options: fmp, tradingeconomics, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -400,7 +400,7 @@
       }
     },
     {
-      "description": "Consumer Price Index (CPI) Data.",
+      "description": "Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate of change (inflation).",
       "helpUrl": "https://docs.openbb.co/excel/reference/library/economy/cpi",
       "id": "ECONOMY.CPI",
       "name": "ECONOMY.CPI",
@@ -412,13 +412,13 @@
           "type": "any"
         },
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "The unit of measurement for the data.\nOptions:\n- `growth_previous`: growth from the previous period\n- `growth_same`: growth from the same period in the previous year\n- `index_2015`: index with base year 2015.",
+          "description": "The unit of measurement for the data.\nOptions:\n- `growth_previous`: Percent growth from the previous period.\nIf monthly data, this is month-over-month, etc\n- `growth_same`: Percent growth from the same period in the previous year.\nIf looking at monthly data, this would be year-over-year, etc.\n- `index_2015`: Rescaled index value, such that the value in 2015 is 100.",
           "name": "units",
           "optional": true,
           "type": "string"
@@ -453,13 +453,13 @@
       }
     },
     {
-      "description": "Search for FRED series or economic releases by ID or fuzzy query.\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
+      "description": "Search for FRED series or economic releases by ID or string.\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
       "helpUrl": "https://docs.openbb.co/excel/reference/library/economy/fred_search",
       "id": "ECONOMY.FRED_SEARCH",
       "name": "ECONOMY.FRED_SEARCH",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -535,7 +535,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fred, intrinio",
+          "description": "Options: fred, intrinio, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -600,7 +600,7 @@
       "name": "ECONOMY.GDP.FORECAST",
       "parameters": [
         {
-          "description": "Options: oecd",
+          "description": "Options: oecd, defaults to oecd.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -647,7 +647,7 @@
       "name": "ECONOMY.GDP.NOMINAL",
       "parameters": [
         {
-          "description": "Options: oecd",
+          "description": "Options: oecd, defaults to oecd.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -688,7 +688,7 @@
       "name": "ECONOMY.GDP.REAL",
       "parameters": [
         {
-          "description": "Options: oecd",
+          "description": "Options: oecd, defaults to oecd.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -723,13 +723,48 @@
       }
     },
     {
+      "description": "Money Measures.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/economy/money_measures",
+      "id": "ECONOMY.MONEY_MEASURES",
+      "name": "ECONOMY.MONEY_MEASURES",
+      "parameters": [
+        {
+          "description": "Options: federal_reserve, defaults to federal_reserve.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Whether to return seasonally adjusted data.",
+          "name": "adjusted",
+          "optional": true,
+          "type": "boolean"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
       "description": "Historical Market Risk Premium.",
       "helpUrl": "https://docs.openbb.co/excel/reference/library/economy/risk_premium",
       "id": "ECONOMY.RISK_PREMIUM",
       "name": "ECONOMY.RISK_PREMIUM",
       "parameters": [
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -746,7 +781,7 @@
       "name": "EQUITY.CALENDAR.DIVIDEND",
       "parameters": [
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -775,7 +810,7 @@
       "name": "EQUITY.CALENDAR.EARNINGS",
       "parameters": [
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -804,7 +839,7 @@
       "name": "EQUITY.CALENDAR.IPO",
       "parameters": [
         {
-          "description": "Options: intrinio",
+          "description": "Options: intrinio, defaults to intrinio.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -863,7 +898,7 @@
       "name": "EQUITY.CALENDAR.SPLITS",
       "parameters": [
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -897,7 +932,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -914,7 +949,7 @@
       "name": "EQUITY.DISCOVERY.FILINGS",
       "parameters": [
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -966,7 +1001,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -988,7 +1023,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1022,7 +1057,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1050,7 +1085,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio, polygon",
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1068,10 +1103,10 @@
           "type": "number"
         },
         {
-          "description": "Central Index Key (CIK) of the company. (provider: fmp)",
-          "name": "cik",
+          "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
+          "name": "fiscal_year",
           "optional": true,
-          "type": "string"
+          "type": "number"
         },
         {
           "description": "Filing date of the financial statement. (provider: polygon)",
@@ -1168,7 +1203,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1196,7 +1231,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio, polygon",
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1214,10 +1249,10 @@
           "type": "number"
         },
         {
-          "description": "Central Index Key (CIK) of the company. (provider: fmp)",
-          "name": "cik",
+          "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
+          "name": "fiscal_year",
           "optional": true,
-          "type": "string"
+          "type": "number"
         },
         {
           "description": "Filing date of the financial statement. (provider: polygon)",
@@ -1289,13 +1324,13 @@
           "description": "Order of the financial statement. (provider: polygon)",
           "name": "order",
           "optional": true,
-          "type": "string"
+          "type": "any"
         },
         {
           "description": "Sort of the financial statement. (provider: polygon)",
           "name": "sort",
           "optional": true,
-          "type": "string"
+          "type": "any"
         }
       ],
       "result": {
@@ -1314,7 +1349,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1342,7 +1377,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio",
+          "description": "Options: fmp, intrinio, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1370,7 +1405,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1387,7 +1422,7 @@
       "name": "EQUITY.FUNDAMENTAL.FILINGS",
       "parameters": [
         {
-          "description": "Options: fmp, intrinio, sec",
+          "description": "Options: fmp, intrinio, sec, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1462,7 +1497,7 @@
           "type": "string"
         },
         {
-          "description": "Options: intrinio",
+          "description": "Options: intrinio, defaults to intrinio.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1520,7 +1555,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1548,7 +1583,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1570,7 +1605,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio, polygon",
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1588,10 +1623,10 @@
           "type": "number"
         },
         {
-          "description": "The CIK of the company if no symbol is provided. (provider: fmp)",
-          "name": "cik",
+          "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
+          "name": "fiscal_year",
           "optional": true,
-          "type": "string"
+          "type": "number"
         },
         {
           "description": "Filing date of the financial statement. (provider: polygon)",
@@ -1688,7 +1723,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1727,7 +1762,7 @@
           "type": "string"
         },
         {
-          "description": "Options: intrinio",
+          "description": "Options: intrinio, defaults to intrinio.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1749,7 +1784,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1771,7 +1806,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1793,7 +1828,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio",
+          "description": "Options: fmp, intrinio, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1833,7 +1868,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1855,7 +1890,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1877,7 +1912,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, intrinio, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1895,10 +1930,62 @@
           "type": "number"
         },
         {
-          "description": "Include trailing twelve months (TTM) data. (provider: fmp)",
+          "description": "Include trailing twelve months (TTM) data. (provider: fmp, intrinio)",
           "name": "with_ttm",
           "optional": true,
           "type": "boolean"
+        },
+        {
+          "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
+          "name": "fiscal_year",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Financial statements, as-reported.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/reported_financials",
+      "id": "EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS",
+      "name": "EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Options: intrinio, defaults to intrinio.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Time period of the data to return.",
+          "name": "period",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The type of financial statement - i.e, balance, income, cash.",
+          "name": "statement_type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. Although the response object contains multiple results, because of the variance in the fields, year-to-year and quarter-to-quarter, it is recommended to view results in small chunks.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
+          "name": "fiscal_year",
+          "optional": true,
+          "type": "number"
         }
       ],
       "result": {
@@ -1917,7 +2004,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1951,7 +2038,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1985,7 +2072,7 @@
           "type": "string"
         },
         {
-          "description": "Options: intrinio",
+          "description": "Options: intrinio, defaults to intrinio.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2008,7 +2095,7 @@
       "name": "EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD",
       "parameters": [
         {
-          "description": "Options: tiingo",
+          "description": "Options: tiingo, defaults to tiingo.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2041,7 +2128,7 @@
           "type": "number"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2058,7 +2145,7 @@
       "name": "EQUITY.MARKET_SNAPSHOTS",
       "parameters": [
         {
-          "description": "Options: fmp, polygon",
+          "description": "Options: fmp, polygon, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2086,7 +2173,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio",
+          "description": "Options: fmp, intrinio, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2144,7 +2231,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio",
+          "description": "Options: fmp, intrinio, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2184,7 +2271,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2218,7 +2305,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio",
+          "description": "Options: fmp, intrinio, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2240,7 +2327,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio, polygon, tiingo",
+          "description": "Options: fmp, intrinio, polygon, tiingo, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2264,10 +2351,16 @@
           "type": "string"
         },
         {
-          "description": "Number of days to look back (Only for interval 1d). (provider: fmp);\nThe number of data entries to return. (provider: polygon)",
+          "description": "Number of days to look back (Only for interval 1d). (provider: fmp);\nThe number of results to return per page. (provider: intrinio);\nThe number of data entries to return. (provider: polygon)",
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Sort the data in ascending or descending order. (provider: fmp);\nSort order of the data. (provider: polygon)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)",
@@ -2294,10 +2387,10 @@
           "type": "string"
         },
         {
-          "description": "Sort order of the data. (provider: polygon)",
-          "name": "sort",
+          "description": "Time to sleep between requests to avoid rate limiting. (provider: intrinio)",
+          "name": "sleep",
           "optional": true,
-          "type": "string"
+          "type": "number"
         },
         {
           "description": "Output time series is adjusted by historical split and dividend events. (provider: polygon)",
@@ -2322,7 +2415,7 @@
           "type": "string"
         },
         {
-          "description": "Options: polygon",
+          "description": "Options: polygon, defaults to polygon.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2380,7 +2473,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2402,7 +2495,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio",
+          "description": "Options: fmp, intrinio, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2430,7 +2523,7 @@
           "type": "string"
         },
         {
-          "description": "Options: intrinio",
+          "description": "Options: intrinio, defaults to intrinio.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2447,7 +2540,7 @@
       "name": "EQUITY.SCREENER",
       "parameters": [
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2566,7 +2659,7 @@
       "name": "EQUITY.SEARCH",
       "parameters": [
         {
-          "description": "Options: sec",
+          "description": "Options: intrinio, sec, defaults to intrinio.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2582,6 +2675,18 @@
           "name": "is_symbol",
           "optional": true,
           "type": "boolean"
+        },
+        {
+          "description": "When true, return companies that are actively traded (having stock prices within the past 14 days). When false, return companies that are not actively traded or never have been traded. (provider: intrinio)",
+          "name": "active",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "The number of data entries to return. (provider: intrinio)",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
         },
         {
           "description": "Whether to direct the search to the list of mutual funds and ETFs. (provider: sec)",
@@ -2612,7 +2717,7 @@
           "type": "string"
         },
         {
-          "description": "Options: sec",
+          "description": "Options: sec, defaults to sec.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2646,7 +2751,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2668,13 +2773,13 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, sec, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "A specific date to get data for. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp)",
+          "description": "A specific date to get data for. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);\nA specific date to get data for.  The date represents the period ending.  The date entered will return the closest filing. (provider: sec)",
           "name": "date",
           "optional": true,
           "type": "string"
@@ -2684,6 +2789,12 @@
           "name": "cik",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Whether or not to use cache for the request. (provider: sec)",
+          "name": "use_cache",
+          "optional": true,
+          "type": "boolean"
         }
       ],
       "result": {
@@ -2702,7 +2813,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2730,7 +2841,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2752,7 +2863,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2774,7 +2885,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2791,7 +2902,7 @@
       "name": "ETF.SEARCH",
       "parameters": [
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2831,7 +2942,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2848,7 +2959,7 @@
       "name": "FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2895,7 +3006,7 @@
       "name": "FIXEDINCOME.CORPORATE.HQM",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2924,7 +3035,7 @@
       "name": "FIXEDINCOME.CORPORATE.ICE_BOFA",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2983,7 +3094,7 @@
       "name": "FIXEDINCOME.CORPORATE.MOODY",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3024,7 +3135,7 @@
       "name": "FIXEDINCOME.CORPORATE.SPOT_RATES",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3061,66 +3172,13 @@
       }
     },
     {
-      "description": "Government Treasury Auctions.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/government/treasury_auctions",
-      "id": "FIXEDINCOME.GOVERNMENT.TREASURY_AUCTIONS",
-      "name": "FIXEDINCOME.GOVERNMENT.TREASURY_AUCTIONS",
-      "parameters": [
-        {
-          "description": "Options: government_us",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Used to only return securities of a particular type.",
-          "name": "type",
-          "optional": true,
-          "type": "any"
-        },
-        {
-          "description": "Filter securities by CUSIP.",
-          "name": "cusip",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Maximum number of results to return; you must also include pagenum when using pagesize.",
-          "name": "pagesize",
-          "optional": true,
-          "type": "number"
-        },
-        {
-          "description": "The first page number to display results for; used in combination with page size.",
-          "name": "pagenum",
-          "optional": true,
-          "type": "number"
-        },
-        {
-          "description": "Start date of the data, in YYYY-MM-DD format. The default is 90 days ago.",
-          "name": "start_date",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "End date of the data, in YYYY-MM-DD format. The default is today.",
-          "name": "end_date",
-          "optional": true,
-          "type": "string"
-        }
-      ],
-      "result": {
-        "dimensionality": "matrix"
-      }
-    },
-    {
       "description": "Government Treasury Rates.",
       "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/government/treasury_rates",
       "id": "FIXEDINCOME.GOVERNMENT.TREASURY_RATES",
       "name": "FIXEDINCOME.GOVERNMENT.TREASURY_RATES",
       "parameters": [
         {
-          "description": "Options: fmp",
+          "description": "Options: federal_reserve, fmp, defaults to federal_reserve.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3149,7 +3207,7 @@
       "name": "FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3178,7 +3236,7 @@
       "name": "FIXEDINCOME.RATE.AMERIBOR",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3213,7 +3271,7 @@
       "name": "FIXEDINCOME.RATE.DPCREDIT",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3248,7 +3306,7 @@
       "name": "FIXEDINCOME.RATE.ECB",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3283,7 +3341,7 @@
       "name": "FIXEDINCOME.RATE.EFFR",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: federal_reserve, fred, defaults to federal_reserve.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3318,7 +3376,7 @@
       "name": "FIXEDINCOME.RATE.EFFR_FORECAST",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3341,7 +3399,7 @@
       "name": "FIXEDINCOME.RATE.ESTR",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3376,7 +3434,7 @@
       "name": "FIXEDINCOME.RATE.IORB",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3405,7 +3463,7 @@
       "name": "FIXEDINCOME.RATE.SONIA",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3440,7 +3498,7 @@
       "name": "FIXEDINCOME.SOFR",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3475,7 +3533,7 @@
       "name": "FIXEDINCOME.SPREADS.TMC",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3510,7 +3568,7 @@
       "name": "FIXEDINCOME.SPREADS.TMC_EFFR",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3545,7 +3603,7 @@
       "name": "FIXEDINCOME.SPREADS.TREASURY_EFFR",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3580,7 +3638,7 @@
       "name": "INDEX.AVAILABLE",
       "parameters": [
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3597,7 +3655,7 @@
       "name": "INDEX.CONSTITUENTS",
       "parameters": [
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3625,7 +3683,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio, polygon",
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3655,6 +3713,12 @@
           "type": "string"
         },
         {
+          "description": "Sort the data in ascending or descending order. (provider: fmp);\nSort order. (provider: intrinio);\nSort order of the data. (provider: polygon)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
+        },
+        {
           "description": "Index tag. (provider: intrinio)",
           "name": "tag",
           "optional": true,
@@ -3667,14 +3731,14 @@
           "type": "string"
         },
         {
-          "description": "Sort order. (provider: intrinio);\nSort order of the data. (provider: polygon)",
-          "name": "sort",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "The number of data entries to return. (provider: intrinio, polygon)",
           "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Time to sleep between requests to avoid rate limiting. (provider: intrinio)",
+          "name": "sleep",
           "optional": true,
           "type": "number"
         },
@@ -3713,7 +3777,7 @@
           "type": "string"
         },
         {
-          "description": "Options: benzinga, fmp, intrinio, polygon, tiingo",
+          "description": "Options: benzinga, fmp, intrinio, polygon, tiingo, defaults to benzinga.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3838,7 +3902,7 @@
       "name": "NEWS.WORLD",
       "parameters": [
         {
-          "description": "Options: benzinga, fmp, intrinio, tiingo",
+          "description": "Options: benzinga, fmp, intrinio, tiingo, defaults to benzinga.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3956,7 +4020,7 @@
           "type": "string"
         },
         {
-          "description": "Options: sec",
+          "description": "Options: sec, defaults to sec.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3973,7 +4037,7 @@
       "name": "REGULATORS.SEC.INSTITUTIONS_SEARCH",
       "parameters": [
         {
-          "description": "Options: sec",
+          "description": "Options: sec, defaults to sec.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -4002,7 +4066,7 @@
       "name": "REGULATORS.SEC.RSS_LITIGATION",
       "parameters": [
         {
-          "description": "Options: sec",
+          "description": "Options: sec, defaults to sec.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -4019,7 +4083,7 @@
       "name": "REGULATORS.SEC.SCHEMA_FILES",
       "parameters": [
         {
-          "description": "Options: sec",
+          "description": "Options: sec, defaults to sec.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -4042,13 +4106,13 @@
       }
     },
     {
-      "description": "Fuzzy search for Industry Titles, Reporting Office, and SIC Codes.",
+      "description": "Search for Industry Titles, Reporting Office, and SIC Codes.",
       "helpUrl": "https://docs.openbb.co/excel/reference/library/regulators/sec/sic_search",
       "id": "REGULATORS.SEC.SIC_SEARCH",
       "name": "REGULATORS.SEC.SIC_SEARCH",
       "parameters": [
         {
-          "description": "Options: sec",
+          "description": "Options: sec, defaults to sec.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -4077,7 +4141,7 @@
       "name": "REGULATORS.SEC.SYMBOL_MAP",
       "parameters": [
         {
-          "description": "Options: sec",
+          "description": "Options: sec, defaults to sec.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -4087,43 +4151,6 @@
           "name": "query",
           "optional": true,
           "type": "string"
-        }
-      ],
-      "result": {
-        "dimensionality": "matrix"
-      }
-    },
-    {
-      "description": "Get fred indices from the OpenBB SDK API.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/search/fred",
-      "id": "SEARCH.FRED",
-      "name": "SEARCH.FRED",
-      "parameters": [
-        {
-          "name": "q",
-          "optional": true,
-          "type": "string"
-        }
-      ],
-      "result": {
-        "dimensionality": "matrix"
-      }
-    },
-    {
-      "description": "Get supported tickers from the OpenBB SDK API.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/search/symbols",
-      "id": "SEARCH.SYMBOLS",
-      "name": "SEARCH.SYMBOLS",
-      "parameters": [
-        {
-          "name": "q",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "name": "type",
-          "optional": true,
-          "type": "any"
         }
       ],
       "result": {

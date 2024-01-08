@@ -30,8 +30,7 @@ export default function NavbarLayout({ children }) {
 
   useEffect(() => {
     if (cleanedPath.startsWith("/terminal") ||
-        cleanedPath.startsWith("/pro") ||
-        cleanedPath.startsWith("/excel")
+        cleanedPath.startsWith("/pro")
     ) {
       if (document.documentElement.getAttribute('data-theme') === 'dark') {
         document.documentElement.style.setProperty(
@@ -59,7 +58,23 @@ export default function NavbarLayout({ children }) {
           "#511d11",
         );
       }
-    } else if (cleanedPath.startsWith("/bot")) {
+    }
+    else if (
+      cleanedPath.startsWith("/excel")
+    ) {
+      if (document.documentElement.getAttribute('data-theme') === 'dark') {
+        document.documentElement.style.setProperty(
+          "--ifm-color-primary",
+          "#16A34A",
+        );
+      } else {
+        document.documentElement.style.setProperty(
+          "--ifm-color-primary",
+          "#14532D",
+        );
+      }
+    }
+    else if (cleanedPath.startsWith("/bot")) {
       if (document.documentElement.getAttribute('data-theme') === 'dark') {
         document.documentElement.style.setProperty(
           "--ifm-color-primary",
@@ -81,8 +96,8 @@ export default function NavbarLayout({ children }) {
         "border-b border-grey-600 lg:px-12",
         {
           header_docs_terminal: cleanedPath.startsWith("/terminal"),
-          header_docs_pro: cleanedPath.startsWith("/pro") ||
-          cleanedPath.startsWith("/excel"),
+          header_docs_pro: cleanedPath.startsWith("/pro"),
+          header_docs_excel: cleanedPath.startsWith("/excel"),
           header_docs_sdk:
             cleanedPath.startsWith("/sdk") ||
             cleanedPath.startsWith("/platform"),
