@@ -61,10 +61,7 @@ class CredentialsLoader:
     def from_obbject(self) -> None:
         """Load credentials from OBBject extensions."""
         self.credentials["obbject"] = set()
-        el = ExtensionLoader()
-        entry_points_: Dict[str, Extension] = el.obbject_objects
-
-        for name, entry in entry_points_.items():
+        for name, entry in ExtensionLoader().obbject_objects.items():
             try:
                 for c in entry.credentials:
                     self.credentials["obbject"].add(c)
