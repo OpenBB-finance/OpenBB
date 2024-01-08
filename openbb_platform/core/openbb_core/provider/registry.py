@@ -42,7 +42,7 @@ class RegistryLoader:
         registry = Registry()
         el = ExtensionLoader()
 
-        for name, entry in el.provider_objects.items():
+        for name, entry in ExtensionLoader().provider_objects.items():
             try:
                 registry.include_provider(provider=entry)
             except Exception as e:
