@@ -134,8 +134,8 @@ def yf_download(
             threads=False,
             **kwargs,
         )
-    except ValueError:
-        raise EmptyDataError()
+    except ValueError as exc:
+        raise EmptyDataError() from exc
 
     tickers = symbol.split(",")
     if len(tickers) > 1:
