@@ -99,7 +99,8 @@ class ExtensionLoader(metaclass=SingletonMeta):
         )
         return self._provider_objects
 
-    def _sorted_entry_points(self, group: str) -> EntryPoints:
+    @staticmethod
+    def _sorted_entry_points(group: str) -> EntryPoints:
         """Return a sorted dictionary of entry points."""
         return sorted(entry_points(group=group))  # type: ignore
 
