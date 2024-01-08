@@ -7,7 +7,10 @@ from openbb_core.provider.standard_models.equity_info import (
     EquityInfoData,
     EquityInfoQueryParams,
 )
-from openbb_intrinio.utils.helpers import get_data_one
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    amake_requests,
+)
 from pydantic import Field
 
 
@@ -34,7 +37,7 @@ class IntrinioEquityInfoData(EquityInfoData):
 class IntrinioEquityInfoFetcher(
     Fetcher[
         IntrinioEquityInfoQueryParams,
-        IntrinioEquityInfoData,
+        List[IntrinioEquityInfoData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
@@ -53,15 +56,29 @@ class IntrinioEquityInfoFetcher(
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         base_url = "https://api-v2.intrinio.com"
-        url = f"{base_url}/companies/{query.symbol}?api_key={api_key}"
 
-        return await get_data_one(url, **kwargs)
+        async def callback(response: ClientResponse, _: Any) -> dict:
+            """Return the response."""
+            if response.status != 200:
+                return {}
+
+            response_data = await response.json()
+            response_data["symbol"] = response.url.parts[-1]
+
+            return response_data
+
+        urls = [
+            f"{base_url}/companies/{s.strip()}?api_key={api_key}"
+            for s in query.symbol.split(",")
+        ]
+
+        return await amake_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(
         query: IntrinioEquityInfoQueryParams,
         data: List[Dict],
         **kwargs: Any,  # pylint: disable=unused-argument
-    ) -> IntrinioEquityInfoData:
+    ) -> List[IntrinioEquityInfoData]:
         """Transforms the data."""
-        return IntrinioEquityInfoData.model_validate(data)
+        return [IntrinioEquityInfoData.model_validate(d) for d in data]
