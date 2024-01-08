@@ -25,7 +25,7 @@ def load_req_ext(file: Path) -> Dict[str, VersionConstraint]:
     req_ext = {}
     for k, v in deps.items():
         if k.startswith("openbb-") and k not in ("openbb-core"):
-            name = k[7:]
+            name = k[7:].replace("-", "_")
             if isinstance(v, str):
                 req_ext[name] = parse_constraint(v)
             elif isinstance(v, dict) and not v.get("optional", False):
