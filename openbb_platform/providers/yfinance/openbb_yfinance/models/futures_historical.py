@@ -76,9 +76,14 @@ class YFinanceFuturesHistoricalFetcher(
                 new_symbols.append(new_symbol)
             else:
                 new_symbols.append(symbol)
-        formatted_symbols = [
-            f"{s.upper()}=F" if "." not in s.upper() else s.upper() for s in new_symbols
-        ]
+
+        formatted_symbols = []
+        for s in new_symbols:
+            if "." not in s.upper() and "=F" not in s.upper():
+                formatted_symbols.append(f"{s.upper()}=F")
+            else:
+                formatted_symbols.append(s.upper())
+
         transformed_params["symbol"] = ",".join(formatted_symbols)
 
         now = datetime.now()
