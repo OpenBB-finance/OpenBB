@@ -37,7 +37,7 @@ class TiingoTrailingDivYieldFetcher(
         transformed_params = params
         return TiingoTrailingDivYieldQueryParams(**transformed_params)
 
-    # pylint: disable=protected-access
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: TiingoTrailingDivYieldQueryParams,
@@ -60,4 +60,5 @@ class TiingoTrailingDivYieldFetcher(
         **kwargs: Any,
     ) -> List[TiingoTrailingDivYieldData]:
         """Return the transformed data."""
+        data = data[-query.limit :] if query.limit else data
         return [TiingoTrailingDivYieldData.model_validate(d) for d in data]
