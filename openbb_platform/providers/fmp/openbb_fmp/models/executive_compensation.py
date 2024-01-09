@@ -77,8 +77,14 @@ class FMPExecutiveCompensationFetcher(
         query: FMPExecutiveCompensationQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPExecutiveCompensationData]:
         """Return the transformed data."""
-        return [
-            FMPExecutiveCompensationData.model_validate(d)
-            for d in data
-            if d["year"] >= query.start_date.year and d["year"] <= query.end_date.year
-        ]
+        result = []
+        for d in data:
+            if "year" in d:
+                if (
+                    d["year"] >= query.start_date.year
+                    and d["year"] <= query.end_date.year
+                ):
+                    result.append(FMPExecutiveCompensationData(**d))
+            else:
+                result.append(FMPExecutiveCompensationData(**d))
+        return result
