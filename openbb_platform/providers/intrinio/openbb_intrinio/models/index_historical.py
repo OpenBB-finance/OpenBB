@@ -1,13 +1,13 @@
-"""Intrinio Market Indices Model."""
+"""Intrinio Index Historical Model."""
 
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.market_indices import (
-    MarketIndicesData,
-    MarketIndicesQueryParams,
+from openbb_core.provider.standard_models.index_historical import (
+    IndexHistoricalData,
+    IndexHistoricalQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import get_querystring
@@ -15,8 +15,8 @@ from openbb_intrinio.utils.helpers import get_data_many
 from pydantic import Field, NonNegativeInt
 
 
-class IntrinioMarketIndicesQueryParams(MarketIndicesQueryParams):
-    """Intrinio Market Indices Query.
+class IntrinioIndexHistoricalQueryParams(IndexHistoricalQueryParams):
+    """Intrinio Index Historical Query.
 
     Source: https://docs.intrinio.com/documentation/web_api/get_stock_market_index_historical_data_v2
     """
@@ -38,22 +38,22 @@ class IntrinioMarketIndicesQueryParams(MarketIndicesQueryParams):
     )
 
 
-class IntrinioMarketIndicesData(MarketIndicesData):
-    """Intrinio Market Indices Data."""
+class IntrinioIndexHistoricalData(IndexHistoricalData):
+    """Intrinio Index Historical Data."""
 
     __alias_dict__ = {"close": "value"}
 
 
-class IntrinioMarketIndicesFetcher(
+class IntrinioIndexHistoricalFetcher(
     Fetcher[
-        IntrinioMarketIndicesQueryParams,
-        List[IntrinioMarketIndicesData],
+        IntrinioIndexHistoricalQueryParams,
+        List[IntrinioIndexHistoricalData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> IntrinioMarketIndicesQueryParams:
+    def transform_query(params: Dict[str, Any]) -> IntrinioIndexHistoricalQueryParams:
         """Transform the query params."""
         transformed_params = params
 
@@ -64,11 +64,11 @@ class IntrinioMarketIndicesFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        return IntrinioMarketIndicesQueryParams(**transformed_params)
+        return IntrinioIndexHistoricalQueryParams(**transformed_params)
 
     @staticmethod
     async def aextract_data(
-        query: IntrinioMarketIndicesQueryParams,
+        query: IntrinioIndexHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -83,9 +83,9 @@ class IntrinioMarketIndicesFetcher(
 
     @staticmethod
     def transform_data(
-        query: IntrinioMarketIndicesQueryParams,  # pylint: disable=unused-argument
+        query: IntrinioIndexHistoricalQueryParams,  # pylint: disable=unused-argument
         data: List[Dict],
         **kwargs: Any,
-    ) -> List[IntrinioMarketIndicesData]:
+    ) -> List[IntrinioIndexHistoricalData]:
         """Return the transformed data."""
-        return [IntrinioMarketIndicesData.model_validate(d) for d in data]
+        return [IntrinioIndexHistoricalData.model_validate(d) for d in data]
