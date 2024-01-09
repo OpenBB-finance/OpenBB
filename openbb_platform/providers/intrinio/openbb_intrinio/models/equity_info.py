@@ -1,7 +1,5 @@
 """Intrinio Equity Info Model."""
 
-# pylint: disable=W0613:unused-argument
-
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -49,9 +47,10 @@ class IntrinioEquityInfoFetcher(
         """Transform the query."""
         return IntrinioEquityInfoQueryParams(**params)
 
+    # pylint: disable=W0613:unused-argument
     @staticmethod
     async def aextract_data(
-        query: IntrinioEquityInfoQueryParams,  # pylint: disable=unused-argument
+        query: IntrinioEquityInfoQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict:
@@ -76,11 +75,12 @@ class IntrinioEquityInfoFetcher(
 
         return await amake_requests(urls, callback, **kwargs)
 
+    # pylint: disable=W0613:unused-argument
     @staticmethod
     def transform_data(
         query: IntrinioEquityInfoQueryParams,
         data: List[Dict],
-        **kwargs: Any,  # pylint: disable=unused-argument
+        **kwargs: Any,
     ) -> List[IntrinioEquityInfoData]:
         """Transforms the data."""
         return [IntrinioEquityInfoData.model_validate(d) for d in data]
