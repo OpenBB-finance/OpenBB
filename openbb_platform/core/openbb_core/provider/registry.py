@@ -40,7 +40,6 @@ class RegistryLoader:
     def from_extensions() -> Registry:
         """Load providers from entry points."""
         registry = Registry()
-        el = ExtensionLoader()
 
         for name, entry in ExtensionLoader().provider_objects.items():
             try:

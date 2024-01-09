@@ -2,12 +2,16 @@
 
 from enum import Enum
 from functools import lru_cache
-from typing import Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict, Optional
 
 from importlib_metadata import EntryPoint, EntryPoints, entry_points
 
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.extension import Extension
+
+if TYPE_CHECKING:
+    from openbb_core.app.router import Router
+    from openbb_core.provider.abstract.provider import Provider
 
 
 class OpenBBGroups(Enum):
@@ -35,8 +39,8 @@ class ExtensionLoader(metaclass=SingletonMeta):
             group=OpenBBGroups.provider.value
         )
         self._obbject_objects: Dict[str, Extension] = {}
-        self._core_objects: Dict[str, Any] = {}
-        self._provider_objects: Dict[str, Any] = {}
+        self._core_objects: Dict[str, Router] = {}
+        self._provider_objects: Dict[str, Provider] = {}
 
     @property
     def obbject_entry_points(self) -> EntryPoints:
@@ -83,7 +87,7 @@ class ExtensionLoader(metaclass=SingletonMeta):
 
     @property
     @lru_cache
-    def core_objects(self) -> Dict[str, Any]:
+    def core_objects(self) -> Dict[str, "Router"]:
         """Return a dict of core extension objects."""
         self._core_objects = self._load_entry_points(
             self._core_entry_points, OpenBBGroups.core
@@ -92,7 +96,7 @@ class ExtensionLoader(metaclass=SingletonMeta):
 
     @property
     @lru_cache
-    def provider_objects(self) -> Dict[str, Any]:
+    def provider_objects(self) -> Dict[str, "Provider"]:
         """Return a dict of provider extension objects."""
         self._provider_objects = self._load_entry_points(
             self._provider_entry_points, OpenBBGroups.provider
@@ -121,7 +125,7 @@ class ExtensionLoader(metaclass=SingletonMeta):
                 if isinstance((entry := ep.load()), Extension)
             }
 
-        def load_core(eps: EntryPoints) -> Dict[str, Any]:
+        def load_core(eps: EntryPoints) -> Dict[str, "Router"]:
             """Return a dictionary of core objects."""
             # pylint: disable=import-outside-toplevel
             from openbb_core.app.router import Router
@@ -130,7 +134,7 @@ class ExtensionLoader(metaclass=SingletonMeta):
                 ep.name: entry for ep in eps if isinstance((entry := ep.load()), Router)
             }
 
-        def load_provider(eps: EntryPoints) -> Dict[str, Any]:
+        def load_provider(eps: EntryPoints) -> Dict[str, "Provider"]:
             """
             Return a dictionary of provider objects.
 
@@ -150,4 +154,4 @@ class ExtensionLoader(metaclass=SingletonMeta):
             OpenBBGroups.core: load_core,
             OpenBBGroups.provider: load_provider,
         }
-        return func[group](entry_points_)
+        return func[group](entry_points_)  # type: ignore

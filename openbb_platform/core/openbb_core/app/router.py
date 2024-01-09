@@ -599,7 +599,6 @@ class RouterLoader:
     def from_extensions() -> Router:
         """Load routes from extensions."""
         router = Router()
-        el = ExtensionLoader()
 
         for name, entry in ExtensionLoader().core_objects.items():
             try:

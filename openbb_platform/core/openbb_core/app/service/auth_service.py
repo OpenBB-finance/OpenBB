@@ -52,7 +52,7 @@ class AuthService(metaclass=SingletonMeta):
     @staticmethod
     def _is_installed(ext_name: str) -> bool:
         """Checks if auth_extension is installed."""
-        extension = ExtensionLoader().get_core_entry_point(ext_name)
+        extension = ExtensionLoader().get_core_entry_point(ext_name) or False
         return extension and ext_name == extension.name  # type: ignore
 
     @staticmethod

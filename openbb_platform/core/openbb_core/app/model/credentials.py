@@ -15,7 +15,6 @@ from typing_extensions import Annotated
 
 from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
-from openbb_core.app.model.extension import Extension
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.env import Env
 
