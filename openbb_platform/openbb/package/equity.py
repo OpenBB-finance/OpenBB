@@ -241,7 +241,7 @@ class ROUTER_equity(Container):
         Returns
         -------
         OBBject
-            results : EquityInfo
+            results : List[EquityInfo]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
