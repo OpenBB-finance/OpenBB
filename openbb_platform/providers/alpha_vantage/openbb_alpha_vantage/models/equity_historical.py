@@ -5,7 +5,12 @@ from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
-from openbb_alpha_vantage.utils.helpers import extract_key_name, get_data, get_interval
+from openbb_alpha_vantage.utils.helpers import (
+    extract_key_name,
+    filter_by_dates,
+    get_data,
+    get_interval,
+)
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalData,
@@ -171,6 +176,7 @@ class AVEquityHistoricalFetcher(
 
         return data[dynamic_key]
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: AVEquityHistoricalQueryParams, data: Dict, **kwargs: Any
@@ -180,5 +186,6 @@ class AVEquityHistoricalFetcher(
             {"date": date, **{extract_key_name(k): v for k, v in values.items()}}
             for date, values in data.items()
         ]
+        data = filter_by_dates(data, query.start_date, query.end_date)
 
         return [AVEquityHistoricalData.model_validate(d) for d in data]
