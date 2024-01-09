@@ -130,14 +130,106 @@ class ROUTER_equity_fundamental(Container):
             The date when the filing was made. (provider: fmp)
         accepted_date : Optional[datetime]
             The date and time when the filing was accepted. (provider: fmp)
-        cash_and_cash_equivalents : Optional[int]
-            Cash and cash equivalents. (provider: intrinio)
+        reported_currency : Optional[str]
+            The currency in which the balance sheet was reported. (provider: fmp, intrinio)
+        cash_and_cash_equivalents : Optional[Union[float, int]]
+            Cash and cash equivalents. (provider: fmp, intrinio)
+        short_term_investments : Optional[Union[float, int]]
+            Short term investments. (provider: fmp, intrinio)
+        cash_and_short_term_investments : Optional[float]
+            Cash and short term investments. (provider: fmp)
+        net_receivables : Optional[float]
+            Net receivables. (provider: fmp)
+        inventory : Optional[Union[float, int]]
+            Inventory. (provider: fmp, polygon)
+        other_current_assets : Optional[Union[float, int]]
+            Other current assets. (provider: fmp, intrinio, polygon)
+        total_current_assets : Optional[Union[float, int]]
+            Total current assets. (provider: fmp, intrinio, polygon)
+        plant_property_equipment_net : Optional[Union[float, int]]
+            Plant property equipment net. (provider: fmp, intrinio)
+        goodwill : Optional[Union[float, int]]
+            Goodwill. (provider: fmp, intrinio)
+        intangible_assets : Optional[Union[float, int]]
+            Intangible assets. (provider: fmp, intrinio, polygon)
+        goodwill_and_intangible_assets : Optional[float]
+            Goodwill and intangible assets. (provider: fmp)
+        long_term_investments : Optional[Union[float, int]]
+            Long term investments. (provider: fmp, intrinio)
+        tax_assets : Optional[float]
+            Tax assets. (provider: fmp)
+        other_non_current_assets : Optional[Union[float, int]]
+            Other non current assets. (provider: fmp, polygon)
+        non_current_assets : Optional[float]
+            Total non current assets. (provider: fmp)
+        other_assets : Optional[Union[float, int]]
+            Other assets. (provider: fmp, intrinio)
+        total_assets : Optional[Union[float, int]]
+            Total assets. (provider: fmp, intrinio, polygon)
+        accounts_payable : Optional[Union[float, int]]
+            Accounts payable. (provider: fmp, intrinio, polygon)
+        short_term_debt : Optional[Union[float, int]]
+            Short term debt. (provider: fmp, intrinio)
+        tax_payables : Optional[float]
+            Tax payables. (provider: fmp)
+        current_deferred_revenue : Optional[Union[float, int]]
+            Current deferred revenue. (provider: fmp, intrinio)
+        other_current_liabilities : Optional[Union[float, int]]
+            Other current liabilities. (provider: fmp, intrinio, polygon)
+        total_current_liabilities : Optional[Union[float, int]]
+            Total current liabilities. (provider: fmp, intrinio, polygon)
+        long_term_debt : Optional[Union[float, int]]
+            Long term debt. (provider: fmp, intrinio, polygon)
+        deferred_revenue_non_current : Optional[float]
+            Non current deferred revenue. (provider: fmp)
+        deferred_tax_liabilities_non_current : Optional[float]
+            Deferred tax liabilities non current. (provider: fmp)
+        other_non_current_liabilities : Optional[Union[float, int]]
+            Other non current liabilities. (provider: fmp, polygon)
+        total_non_current_liabilities : Optional[Union[float, int]]
+            Total non current liabilities. (provider: fmp, intrinio, polygon)
+        other_liabilities : Optional[float]
+            Other liabilities. (provider: fmp)
+        capital_lease_obligations : Optional[Union[float, int]]
+            Capital lease obligations. (provider: fmp, intrinio)
+        total_liabilities : Optional[Union[float, int]]
+            Total liabilities. (provider: fmp, intrinio, polygon)
+        preferred_stock : Optional[Union[float, int]]
+            Preferred stock. (provider: fmp, intrinio, polygon)
+        common_stock : Optional[Union[float, int]]
+            Common stock. (provider: fmp, intrinio)
+        retained_earnings : Optional[Union[float, int]]
+            Retained earnings. (provider: fmp, intrinio)
+        accumulated_other_comprehensive_income : Optional[Union[float, int]]
+            Accumulated other comprehensive income (loss). (provider: fmp, intrinio)
+        other_shareholders_equity : Optional[float]
+            Other shareholders equity. (provider: fmp)
+        other_total_shareholders_equity : Optional[float]
+            Other total shareholders equity. (provider: fmp)
+        total_common_equity : Optional[Union[float, int]]
+            Total common equity. (provider: fmp, intrinio)
+        total_equity_non_controlling_interests : Optional[Union[float, int]]
+            Total equity non controlling interests. (provider: fmp, intrinio)
+        total_liabilities_and_shareholders_equity : Optional[float]
+            Total liabilities and shareholders equity. (provider: fmp)
+        minority_interest : Optional[Union[float, int]]
+            Minority interest. (provider: fmp, polygon)
+        total_liabilities_and_total_equity : Optional[float]
+            Total liabilities and total equity. (provider: fmp)
+        total_investments : Optional[float]
+            Total investments. (provider: fmp)
+        total_debt : Optional[float]
+            Total debt. (provider: fmp)
+        net_debt : Optional[float]
+            Net debt. (provider: fmp)
+        link : Optional[str]
+            Link to the filing. (provider: fmp)
+        final_link : Optional[str]
+            Link to the filing document. (provider: fmp)
         cash_and_due_from_banks : Optional[int]
             Cash and due from banks. (provider: intrinio)
         restricted_cash : Optional[int]
             Restricted cash. (provider: intrinio)
-        short_term_investments : Optional[int]
-            Short term investments. (provider: intrinio)
         federal_funds_sold : Optional[int]
             Federal funds sold. (provider: intrinio)
         accounts_receivable : Optional[int]
@@ -160,8 +252,6 @@ class ROUTER_equity_fundamental(Container):
             Allowance for loan and lease losses. (provider: intrinio)
         current_deferred_refundable_income_taxes : Optional[int]
             Current deferred refundable income taxes. (provider: intrinio)
-        other_current_assets : Optional[int]
-            Other current assets. (provider: intrinio, polygon)
         loans_and_leases_net_of_allowance : Optional[int]
             Loans and leases net of allowance. (provider: intrinio)
         accrued_investment_income : Optional[int]
@@ -172,18 +262,12 @@ class ROUTER_equity_fundamental(Container):
             Loans held for sale. (provider: intrinio)
         prepaid_expenses : Optional[int]
             Prepaid expenses. (provider: intrinio, polygon)
-        total_current_assets : Optional[int]
-            Total current assets. (provider: intrinio, polygon)
         plant_property_equipment_gross : Optional[int]
             Plant property equipment gross. (provider: intrinio)
         accumulated_depreciation : Optional[int]
             Accumulated depreciation. (provider: intrinio)
         premises_and_equipment_net : Optional[int]
             Net premises and equipment. (provider: intrinio)
-        plant_property_equipment_net : Optional[int]
-            Net plant property equipment. (provider: intrinio)
-        long_term_investments : Optional[int]
-            Long term investments. (provider: intrinio)
         mortgage_servicing_rights : Optional[int]
             Mortgage servicing rights. (provider: intrinio)
         unearned_premiums_asset : Optional[int]
@@ -192,18 +276,12 @@ class ROUTER_equity_fundamental(Container):
             Non-current note lease receivables. (provider: intrinio)
         deferred_acquisition_cost : Optional[int]
             Deferred acquisition cost. (provider: intrinio)
-        goodwill : Optional[int]
-            Goodwill. (provider: intrinio)
         separate_account_business_assets : Optional[int]
             Separate account business assets. (provider: intrinio)
         non_current_deferred_refundable_income_taxes : Optional[int]
             Noncurrent deferred refundable income taxes. (provider: intrinio)
-        intangible_assets : Optional[int]
-            Intangible assets. (provider: intrinio, polygon)
         employee_benefit_assets : Optional[int]
             Employee benefit assets. (provider: intrinio)
-        other_assets : Optional[int]
-            Other assets. (provider: intrinio)
         other_non_current_operating_assets : Optional[int]
             Other noncurrent operating assets. (provider: intrinio)
         other_non_current_non_operating_assets : Optional[int]
@@ -212,20 +290,12 @@ class ROUTER_equity_fundamental(Container):
             Interest bearing deposits. (provider: intrinio)
         total_non_current_assets : Optional[int]
             Total noncurrent assets. (provider: intrinio, polygon)
-        total_assets : Optional[int]
-            Total assets. (provider: intrinio, polygon)
         non_interest_bearing_deposits : Optional[int]
             Non interest bearing deposits. (provider: intrinio)
         federal_funds_purchased_and_securities_sold : Optional[int]
             Federal funds purchased and securities sold. (provider: intrinio)
         bankers_acceptance_outstanding : Optional[int]
             Bankers acceptance outstanding. (provider: intrinio)
-        short_term_debt : Optional[int]
-            Short term debt. (provider: intrinio)
-        accounts_payable : Optional[int]
-            Accounts payable. (provider: intrinio, polygon)
-        current_deferred_revenue : Optional[int]
-            Current deferred revenue. (provider: intrinio)
         current_deferred_payable_income_tax_liabilities : Optional[int]
             Current deferred payable income tax liabilities. (provider: intrinio)
         accrued_interest_payable : Optional[int]
@@ -250,16 +320,10 @@ class ROUTER_equity_fundamental(Container):
             Other taxes payable. (provider: intrinio)
         policy_holder_funds : Optional[int]
             Policy holder funds. (provider: intrinio)
-        other_current_liabilities : Optional[int]
-            Other current liabilities. (provider: intrinio, polygon)
         other_current_non_operating_liabilities : Optional[int]
             Other current non-operating liabilities. (provider: intrinio)
         separate_account_business_liabilities : Optional[int]
             Separate account business liabilities. (provider: intrinio)
-        total_current_liabilities : Optional[int]
-            Total current liabilities. (provider: intrinio, polygon)
-        long_term_debt : Optional[int]
-            Long term debt. (provider: intrinio, polygon)
         other_long_term_liabilities : Optional[int]
             Other long term liabilities. (provider: intrinio)
         non_current_deferred_revenue : Optional[int]
@@ -272,56 +336,30 @@ class ROUTER_equity_fundamental(Container):
             Other non-current operating liabilities. (provider: intrinio)
         other_non_current_non_operating_liabilities : Optional[int]
             Other non-current, non-operating liabilities. (provider: intrinio)
-        total_non_current_liabilities : Optional[int]
-            Total non-current liabilities. (provider: intrinio, polygon)
-        capital_lease_obligations : Optional[int]
-            Capital lease obligations. (provider: intrinio)
         asset_retirement_reserve_litigation_obligation : Optional[int]
             Asset retirement reserve litigation obligation. (provider: intrinio)
-        total_liabilities : Optional[int]
-            Total liabilities. (provider: intrinio, polygon)
         commitments_contingencies : Optional[int]
             Commitments contingencies. (provider: intrinio)
         redeemable_non_controlling_interest : Optional[int]
             Redeemable non-controlling interest. (provider: intrinio, polygon)
-        preferred_stock : Optional[int]
-            Preferred stock. (provider: intrinio, polygon)
-        common_stock : Optional[int]
-            Common stock. (provider: intrinio)
-        retained_earnings : Optional[int]
-            Retained earnings. (provider: intrinio)
         treasury_stock : Optional[int]
             Treasury stock. (provider: intrinio)
-        accumulated_other_comprehensive_income : Optional[int]
-            Accumulated other comprehensive income. (provider: intrinio)
         participating_policy_holder_equity : Optional[int]
             Participating policy holder equity. (provider: intrinio)
         other_equity_adjustments : Optional[int]
             Other equity adjustments. (provider: intrinio)
-        total_common_equity : Optional[int]
-            Total common equity. (provider: intrinio)
         total_preferred_common_equity : Optional[int]
             Total preferred common equity. (provider: intrinio)
         non_controlling_interest : Optional[int]
             Non-controlling interest. (provider: intrinio)
-        total_equity_non_controlling_interests : Optional[int]
-            Total equity non-controlling interests. (provider: intrinio)
         total_liabilities_shareholders_equity : Optional[int]
             Total liabilities and shareholders equity. (provider: intrinio)
         marketable_securities : Optional[int]
             Marketable securities (provider: polygon)
         property_plant_equipment_net : Optional[int]
             Property plant and equipment net (provider: polygon)
-        inventory : Optional[int]
-            Inventory (provider: polygon)
-        other_non_current_assets : Optional[int]
-            Other non-current assets (provider: polygon)
         employee_wages : Optional[int]
             Employee wages (provider: polygon)
-        other_non_current_liabilities : Optional[int]
-            Other non-current liabilities (provider: polygon)
-        minority_interest : Optional[int]
-            Minority interest (provider: polygon)
         temporary_equity_attributable_to_parent : Optional[int]
             Temporary equity attributable to parent (provider: polygon)
         equity_attributable_to_parent : Optional[int]
@@ -592,8 +630,74 @@ class ROUTER_equity_fundamental(Container):
             The date of the filing. (provider: fmp)
         accepted_date : Optional[datetime]
             The date the filing was accepted. (provider: fmp)
+        reported_currency : Optional[str]
+            The currency in which the cash flow statement was reported. (provider: fmp);
+            The currency in which the balance sheet is reported. (provider: intrinio)
         net_income : Optional[float]
+            Net income. (provider: fmp);
             Consolidated Net Income. (provider: intrinio)
+        depreciation_and_amortization : Optional[float]
+            Depreciation and amortization. (provider: fmp)
+        deferred_income_tax : Optional[float]
+            Deferred income tax. (provider: fmp)
+        stock_based_compensation : Optional[float]
+            Stock-based compensation. (provider: fmp)
+        change_in_working_capital : Optional[float]
+            Change in working capital. (provider: fmp)
+        change_in_account_receivables : Optional[float]
+            Change in account receivables. (provider: fmp)
+        change_in_inventory : Optional[float]
+            Change in inventory. (provider: fmp)
+        change_in_account_payable : Optional[float]
+            Change in account payable. (provider: fmp)
+        change_in_other_working_capital : Optional[float]
+            Change in other working capital. (provider: fmp)
+        change_in_other_non_cash_items : Optional[float]
+            Change in other non-cash items. (provider: fmp)
+        net_cash_from_operating_activities : Optional[float]
+            Net cash from operating activities. (provider: fmp, intrinio)
+        purchase_of_property_plant_and_equipment : Optional[float]
+            Purchase of property, plant and equipment. (provider: fmp, intrinio)
+        acquisitions : Optional[float]
+            Acquisitions. (provider: fmp, intrinio)
+        purchase_of_investment_securities : Optional[float]
+            Purchase of investment securities. (provider: fmp, intrinio)
+        sale_and_maturity_of_investments : Optional[float]
+            Sale and maturity of investments. (provider: fmp, intrinio)
+        other_investing_activities : Optional[float]
+            Other investing activities. (provider: fmp, intrinio)
+        net_cash_from_investing_activities : Optional[float]
+            Net cash from investing activities. (provider: fmp, intrinio)
+        repayment_of_debt : Optional[float]
+            Repayment of debt. (provider: fmp, intrinio)
+        issuance_of_common_equity : Optional[float]
+            Issuance of common equity. (provider: fmp, intrinio)
+        repurchase_of_common_equity : Optional[float]
+            Repurchase of common equity. (provider: fmp, intrinio)
+        payment_of_dividends : Optional[float]
+            Payment of dividends. (provider: fmp, intrinio)
+        other_financing_activities : Optional[float]
+            Other financing activities. (provider: fmp, intrinio)
+        net_cash_from_financing_activities : Optional[float]
+            Net cash from financing activities. (provider: fmp, intrinio)
+        effect_of_exchange_rate_changes_on_cash : Optional[float]
+            Effect of exchange rate changes on cash. (provider: fmp)
+        net_change_in_cash_and_equivalents : Optional[float]
+            Net change in cash and equivalents. (provider: fmp, intrinio)
+        cash_at_beginning_of_period : Optional[float]
+            Cash at beginning of period. (provider: fmp)
+        cash_at_end_of_period : Optional[float]
+            Cash at end of period. (provider: fmp)
+        operating_cash_flow : Optional[float]
+            Operating cash flow. (provider: fmp)
+        capital_expenditure : Optional[float]
+            Capital expenditure. (provider: fmp)
+        free_cash_flow : Optional[float]
+            None
+        link : Optional[str]
+            Link to the filing. (provider: fmp)
+        final_link : Optional[str]
+            Link to the filing document. (provider: fmp)
         provision_for_loan_losses : Optional[float]
             Provision for Loan Losses (provider: intrinio)
         provision_for_credit_losses : Optional[float]
@@ -616,48 +720,24 @@ class ROUTER_equity_fundamental(Container):
             Net Income (Continuing Operations) (provider: intrinio)
         net_income_discontinued_operations : Optional[float]
             Net Income (Discontinued Operations) (provider: intrinio)
-        net_cash_from_operating_activities : Optional[float]
-            Net Cash from Operating Activities (provider: intrinio)
         divestitures : Optional[float]
             Divestitures (provider: intrinio)
         sale_of_property_plant_and_equipment : Optional[float]
             Sale of Property, Plant, and Equipment (provider: intrinio)
-        acquisitions : Optional[float]
-            Acquisitions (provider: intrinio)
         purchase_of_investments : Optional[float]
             Purchase of Investments (provider: intrinio)
-        purchase_of_investment_securities : Optional[float]
-            Purchase of Investment Securities (provider: intrinio)
-        sale_and_maturity_of_investments : Optional[float]
-            Sale and Maturity of Investments (provider: intrinio)
         loans_held_for_sale : Optional[float]
             Loans Held for Sale (Net) (provider: intrinio)
-        purchase_of_property_plant_and_equipment : Optional[float]
-            Purchase of Property, Plant, and Equipment (provider: intrinio)
-        other_investing_activities : Optional[float]
-            Other Investing Activities (Net) (provider: intrinio)
         net_cash_from_continuing_investing_activities : Optional[float]
             Net Cash from Continuing Investing Activities (provider: intrinio)
         net_cash_from_discontinued_investing_activities : Optional[float]
             Net Cash from Discontinued Investing Activities (provider: intrinio)
-        net_cash_from_investing_activities : Optional[float]
-            Net Cash from Investing Activities (provider: intrinio)
-        payment_of_dividends : Optional[float]
-            Payment of Dividends (provider: intrinio)
-        repurchase_of_common_equity : Optional[float]
-            Repurchase of Common Equity (provider: intrinio)
         repurchase_of_preferred_equity : Optional[float]
             Repurchase of Preferred Equity (provider: intrinio)
-        issuance_of_common_equity : Optional[float]
-            Issuance of Common Equity (provider: intrinio)
         issuance_of_preferred_equity : Optional[float]
             Issuance of Preferred Equity (provider: intrinio)
         issuance_of_debt : Optional[float]
             Issuance of Debt (provider: intrinio)
-        repayment_of_debt : Optional[float]
-            Repayment of Debt (provider: intrinio)
-        other_financing_activities : Optional[float]
-            Other Financing Activities (Net) (provider: intrinio)
         cash_interest_received : Optional[float]
             Cash Interest Received (provider: intrinio)
         net_change_in_deposits : Optional[float]
@@ -668,14 +748,10 @@ class ROUTER_equity_fundamental(Container):
             Net Cash from Continuing Financing Activities (provider: intrinio)
         net_cash_from_discontinued_financing_activities : Optional[float]
             Net Cash from Discontinued Financing Activities (provider: intrinio)
-        net_cash_from_financing_activities : Optional[float]
-            Net Cash from Financing Activities (provider: intrinio)
         effect_of_exchange_rate_changes : Optional[float]
             Effect of Exchange Rate Changes (provider: intrinio)
         other_net_changes_in_cash : Optional[float]
             Other Net Changes in Cash (provider: intrinio)
-        net_change_in_cash_and_equivalents : Optional[float]
-            Net Change in Cash and Equivalents (provider: intrinio)
         cash_income_taxes_paid : Optional[float]
             Cash Income Taxes Paid (provider: intrinio)
         cash_interest_paid : Optional[float]
@@ -865,6 +941,18 @@ class ROUTER_equity_fundamental(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
@@ -874,6 +962,10 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
+        start_date : Optional[datetime.date]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Optional[datetime.date]
+            End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -932,6 +1024,8 @@ class ROUTER_equity_fundamental(Container):
                 },
                 standard_params={
                     "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "start_date": start_date,
+                    "end_date": end_date,
                 },
                 extra_params=kwargs,
             )
@@ -1489,31 +1583,86 @@ class ROUTER_equity_fundamental(Container):
         fiscal_year : Optional[int]
             The fiscal year of the fiscal period.
         filing_date : Optional[date]
-            The date of the filing. (provider: fmp)
+            The date when the filing was made. (provider: fmp)
         accepted_date : Optional[datetime]
-            The date the filing was accepted. (provider: fmp)
+            The date and time when the filing was accepted. (provider: fmp)
         reported_currency : Optional[str]
-            The reported currency of the filing. (provider: fmp)
+            The currency in which the balance sheet was reported. (provider: fmp, intrinio)
         revenue : Optional[float]
-            Total revenue (provider: intrinio, polygon)
+            Total revenue. (provider: fmp, intrinio, polygon)
+        cost_of_revenue : Optional[float]
+            Cost of revenue. (provider: fmp, intrinio, polygon)
+        gross_profit : Optional[float]
+            Gross profit. (provider: fmp, intrinio, polygon)
+        gross_profit_margin : Optional[float]
+            Gross profit margin. (provider: fmp);
+            Gross margin ratio. (provider: intrinio)
+        general_and_admin_expense : Optional[float]
+            General and administrative expenses. (provider: fmp)
+        research_and_development_expense : Optional[float]
+            Research and development expenses. (provider: fmp, intrinio)
+        selling_and_marketing_expense : Optional[float]
+            Selling and marketing expenses. (provider: fmp)
+        selling_general_and_admin_expense : Optional[float]
+            Selling, general and administrative expenses. (provider: fmp, intrinio)
+        other_expenses : Optional[float]
+            Other expenses. (provider: fmp)
+        total_operating_expenses : Optional[float]
+            Total operating expenses. (provider: fmp, intrinio)
+        cost_and_expenses : Optional[float]
+            Cost and expenses. (provider: fmp)
+        interest_income : Optional[float]
+            Interest income. (provider: fmp)
+        total_interest_expense : Optional[float]
+            Total interest expenses. (provider: fmp, intrinio);
+            Interest Expense (provider: polygon)
+        depreciation_and_amortization : Optional[float]
+            Depreciation and amortization. (provider: fmp, polygon)
+        ebitda : Optional[float]
+            EBITDA. (provider: fmp);
+            Earnings Before Interest, Taxes, Depreciation and Amortization. (provider: intrinio)
+        ebitda_margin : Optional[float]
+            EBITDA margin. (provider: fmp);
+            Margin on Earnings Before Interest, Taxes, Depreciation and Amortization. (provider: intrinio)
+        total_operating_income : Optional[float]
+            Total operating income. (provider: fmp, intrinio)
+        operating_income_margin : Optional[float]
+            Operating income margin. (provider: fmp)
+        total_other_income_expenses : Optional[float]
+            Total other income and expenses. (provider: fmp)
+        total_pre_tax_income : Optional[float]
+            Total pre-tax income. (provider: fmp, intrinio);
+            Income Before Tax (provider: polygon)
+        pre_tax_income_margin : Optional[float]
+            Pre-tax income margin. (provider: fmp, intrinio)
+        income_tax_expense : Optional[float]
+            Income tax expense. (provider: fmp, intrinio, polygon)
+        consolidated_net_income : Optional[float]
+            Consolidated net income. (provider: fmp, intrinio);
+            Net Income/Loss (provider: polygon)
+        net_income_margin : Optional[float]
+            Net income margin. (provider: fmp)
+        basic_earnings_per_share : Optional[float]
+            Basic earnings per share. (provider: fmp, intrinio);
+            Earnings Per Share (provider: polygon)
+        diluted_earnings_per_share : Optional[float]
+            Diluted earnings per share. (provider: fmp, intrinio, polygon)
+        weighted_average_basic_shares_outstanding : Optional[float]
+            Weighted average basic shares outstanding. (provider: fmp, intrinio);
+            Basic Average Shares (provider: polygon)
+        weighted_average_diluted_shares_outstanding : Optional[float]
+            Weighted average diluted shares outstanding. (provider: fmp, intrinio);
+            Diluted Average Shares (provider: polygon)
+        link : Optional[str]
+            Link to the filing. (provider: fmp)
+        final_link : Optional[str]
+            Link to the filing document. (provider: fmp)
         operating_revenue : Optional[float]
             Total operating revenue (provider: intrinio)
-        cost_of_revenue : Optional[float]
-            Total cost of revenue (provider: intrinio);
-            Cost of Revenue (provider: polygon)
         operating_cost_of_revenue : Optional[float]
             Total operating cost of revenue (provider: intrinio)
-        gross_profit : Optional[float]
-            Total gross profit (provider: intrinio);
-            Gross Profit (provider: polygon)
-        gross_profit_ratio : Optional[float]
-            Gross margin ratio. (provider: intrinio)
         provision_for_credit_losses : Optional[float]
             Provision for credit losses (provider: intrinio)
-        research_and_development_expense : Optional[float]
-            Research and development expense (provider: intrinio)
-        selling_general_and_admin_expense : Optional[float]
-            Selling, general, and admin expense (provider: intrinio)
         salaries_and_employee_benefits : Optional[float]
             Salaries and employee benefits (provider: intrinio)
         marketing_expense : Optional[float]
@@ -1532,10 +1681,6 @@ class ROUTER_equity_fundamental(Container):
             Exploration expense (provider: intrinio)
         depletion_expense : Optional[float]
             Depletion expense (provider: intrinio)
-        total_operating_expenses : Optional[float]
-            Total operating expenses (provider: intrinio)
-        total_operating_income : Optional[float]
-            Total operating income (provider: intrinio)
         deposits_and_money_market_investments_interest_income : Optional[float]
             Deposits and money market investments interest income (provider: intrinio)
         federal_funds_sold_and_securities_borrowed_interest_income : Optional[float]
@@ -1564,10 +1709,9 @@ class ROUTER_equity_fundamental(Container):
             Federal funds purchased and securities sold interest expense (provider: intrinio)
         other_interest_expense : Optional[float]
             Other interest expense (provider: intrinio)
-        total_interest_expense : Optional[float]
-            Total interest expense (provider: intrinio)
         net_interest_income : Optional[float]
-            Net interest income (provider: intrinio)
+            Net interest income (provider: intrinio);
+            Interest Income Net (provider: polygon)
         other_non_interest_income : Optional[float]
             Other non-interest income (provider: intrinio)
         investment_banking_income : Optional[float]
@@ -1599,18 +1743,8 @@ class ROUTER_equity_fundamental(Container):
             Extraordinary income (provider: intrinio)
         total_other_income : Optional[float]
             Total other income (provider: intrinio)
-        ebitda : Optional[float]
-            Earnings Before Interest, Taxes, Depreciation and Amortization. (provider: intrinio)
-        ebitda_margin : Optional[float]
-            Margin on Earnings Before Interest, Taxes, Depreciation and Amortization. (provider: intrinio)
-        total_pre_tax_income : Optional[float]
-            Total pre-tax income (provider: intrinio)
         ebit : Optional[float]
             Earnings Before Interest and Taxes. (provider: intrinio)
-        pre_tax_income_margin : Optional[float]
-            Pre-Tax Income Margin. (provider: intrinio)
-        income_tax_expense : Optional[float]
-            Income tax expense (provider: intrinio, polygon)
         impairment_charge : Optional[float]
             Impairment charge (provider: intrinio)
         restructuring_charge : Optional[float]
@@ -1627,8 +1761,6 @@ class ROUTER_equity_fundamental(Container):
             Net income (continuing operations) (provider: intrinio)
         net_income_discontinued_operations : Optional[float]
             Net income (discontinued operations) (provider: intrinio)
-        consolidated_net_income : Optional[float]
-            Consolidated net income (provider: intrinio)
         other_adjustments_to_consolidated_net_income : Optional[float]
             Other adjustments to consolidated net income (provider: intrinio)
         other_adjustment_to_net_income_attributable_to_common_shareholders : Optional[float]
@@ -1636,21 +1768,14 @@ class ROUTER_equity_fundamental(Container):
         net_income_attributable_to_noncontrolling_interest : Optional[float]
             Net income attributable to noncontrolling interest (provider: intrinio)
         net_income_attributable_to_common_shareholders : Optional[float]
-            Net income attributable to common shareholders (provider: intrinio)
-        basic_earnings_per_share : Optional[float]
-            Basic earnings per share (provider: intrinio)
-        diluted_earnings_per_share : Optional[float]
-            Diluted earnings per share (provider: intrinio)
+            Net income attributable to common shareholders (provider: intrinio);
+            Net Income/Loss Available To Common Stockholders Basic (provider: polygon)
         basic_and_diluted_earnings_per_share : Optional[float]
             Basic and diluted earnings per share (provider: intrinio)
         cash_dividends_to_common_per_share : Optional[float]
             Cash dividends to common per share (provider: intrinio)
         preferred_stock_dividends_declared : Optional[float]
             Preferred stock dividends declared (provider: intrinio)
-        weighted_average_basic_shares_outstanding : Optional[float]
-            Weighted average basic shares outstanding (provider: intrinio)
-        weighted_average_diluted_shares_outstanding : Optional[float]
-            Weighted average diluted shares outstanding (provider: intrinio)
         weighted_average_basic_and_diluted_shares_outstanding : Optional[float]
             Weighted average basic and diluted shares outstanding (provider: intrinio)
         cost_of_revenue_goods : Optional[float]
@@ -1659,16 +1784,14 @@ class ROUTER_equity_fundamental(Container):
             Cost of Revenue - Services (provider: polygon)
         provisions_for_loan_lease_and_other_losses : Optional[float]
             Provisions for loan lease and other losses (provider: polygon)
-        depreciation_and_amortization : Optional[float]
-            Depreciation and Amortization (provider: polygon)
         income_tax_expense_benefit_current : Optional[float]
             Income tax expense benefit current (provider: polygon)
         deferred_tax_benefit : Optional[float]
             Deferred tax benefit (provider: polygon)
         benefits_costs_expenses : Optional[float]
             Benefits, costs and expenses (provider: polygon)
-        selling_general_and_administrative_expenses : Optional[float]
-            Selling, general and administrative expenses (provider: polygon)
+        selling_general_and_administrative_expense : Optional[float]
+            Selling, general and administrative expense (provider: polygon)
         research_and_development : Optional[float]
             Research and development (provider: polygon)
         costs_and_expenses : Optional[float]
@@ -1679,12 +1802,8 @@ class ROUTER_equity_fundamental(Container):
             Operating Income/Loss (provider: polygon)
         interest_and_dividend_income : Optional[float]
             Interest and Dividend Income (provider: polygon)
-        interest_expense : Optional[float]
-            Interest Expense (provider: polygon)
         interest_and_debt_expense : Optional[float]
             Interest and Debt Expense (provider: polygon)
-        interest_income_net : Optional[float]
-            Interest Income Net (provider: polygon)
         interest_income_after_provision_for_losses : Optional[float]
             Interest Income After Provision for Losses (provider: polygon)
         non_interest_expense : Optional[float]
@@ -1699,18 +1818,12 @@ class ROUTER_equity_fundamental(Container):
             Income Before Equity Method Investments (provider: polygon)
         income_from_equity_method_investments : Optional[float]
             Income From Equity Method Investments (provider: polygon)
-        income_before_tax : Optional[float]
-            Income Before Tax (provider: polygon)
         income_after_tax : Optional[float]
             Income After Tax (provider: polygon)
-        net_income : Optional[float]
-            Net Income/Loss (provider: polygon)
-        net_income_attributable_minority_interest : Optional[float]
+        net_income_attributable_noncontrolling_interest : Optional[float]
             Net income (loss) attributable to noncontrolling interest (provider: polygon)
         net_income_attributable_to_parent : Optional[float]
             Net income (loss) attributable to parent (provider: polygon)
-        net_income_available_to_stock_holders : Optional[float]
-            Net Income/Loss Available To Common Stockholders Basic (provider: polygon)
         participating_securities_earnings : Optional[float]
             Participating Securities Distributed And Undistributed Earnings Loss Basic (provider: polygon)
         undistributed_earnings_allocated_to_participating_securities : Optional[float]
@@ -1719,14 +1832,6 @@ class ROUTER_equity_fundamental(Container):
             Common Stock Dividends (provider: polygon)
         preferred_stock_dividends_and_other_adjustments : Optional[float]
             Preferred stock dividends and other adjustments (provider: polygon)
-        basic_average_shares : Optional[float]
-            Basic Average Shares (provider: polygon)
-        diluted_average_shares : Optional[float]
-            Diluted Average Shares (provider: polygon)
-        eps : Optional[float]
-            Earnings Per Share (provider: polygon)
-        diluted_eps : Optional[float]
-            Diluted Earnings Per Share (provider: polygon)
 
         Example
         -------
@@ -2936,20 +3041,16 @@ class ROUTER_equity_fundamental(Container):
 
         RevenueGeographic
         -----------------
-        date : date
-            The date of the data.
+        period_ending : date
+            The end date of the reporting period.
+        fiscal_period : Optional[str]
+            The fiscal period of the reporting period.
+        fiscal_year : Optional[int]
+            The fiscal year of the reporting period.
+        filing_date : Optional[date]
+            The filing date of the report.
         geographic_segment : int
-            Day level data containing the revenue of the geographic segment.
-        americas : Optional[int]
-            Revenue from the the American segment.
-        europe : Optional[int]
-            Revenue from the the European segment.
-        greater_china : Optional[int]
-            Revenue from the the Greater China segment.
-        japan : Optional[int]
-            Revenue from the the Japan segment.
-        rest_of_asia_pacific : Optional[int]
-            Revenue from the the Rest of Asia Pacific segment.
+            Dictionary of the revenue by geographic segment.
 
         Example
         -------
@@ -3021,10 +3122,16 @@ class ROUTER_equity_fundamental(Container):
 
         RevenueBusinessLine
         -------------------
-        date : date
-            The date of the data.
+        period_ending : date
+            The end date of the reporting period.
+        fiscal_period : Optional[str]
+            The fiscal period of the reporting period.
+        fiscal_year : Optional[int]
+            The fiscal year of the reporting period.
+        filing_date : Optional[date]
+            The filing date of the report.
         business_line : int
-            Day level data containing the revenue of the business line.
+            Dictionary containing the revenue of the business line.
 
         Example
         -------
@@ -3139,6 +3246,12 @@ class ROUTER_equity_fundamental(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ] = None,
+        limit: Annotated[
+            Optional[int],
+            OpenBBCustomParameter(
+                description="The number of data entries to return. Default is 252, the number of trading days in a year."
+            ),
+        ] = 252,
         provider: Optional[Literal["tiingo"]] = None,
         **kwargs
     ) -> OBBject:
@@ -3148,6 +3261,8 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
+        limit : Optional[int]
+            The number of data entries to return. Default is 252, the number of trading days in a year.
         provider : Optional[Literal['tiingo']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'tiingo' if there is
@@ -3177,7 +3292,7 @@ class ROUTER_equity_fundamental(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.fundamental.trailing_dividend_yield()
+        >>> obb.equity.fundamental.trailing_dividend_yield(limit=252)
         """  # noqa: E501
 
         return self._run(
@@ -3188,6 +3303,7 @@ class ROUTER_equity_fundamental(Container):
                 },
                 standard_params={
                     "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "limit": limit,
                 },
                 extra_params=kwargs,
             )
