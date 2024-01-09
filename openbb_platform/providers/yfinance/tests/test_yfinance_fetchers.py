@@ -178,7 +178,7 @@ def test_y_finance_etf_historical_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_yf_active_fetcher(credentials=test_credentials):
+def test_y_finance_active_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFActiveFetcher()
@@ -187,7 +187,7 @@ def test_yf_active_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_yf_gainers_fetcher(credentials=test_credentials):
+def test_y_finance_gainers_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFGainersFetcher()
@@ -196,7 +196,7 @@ def test_yf_gainers_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_yf_losers_fetcher(credentials=test_credentials):
+def test_y_finance_losers_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFLosersFetcher()
@@ -205,7 +205,7 @@ def test_yf_losers_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_yf_undervalued_large_caps_fetcher(credentials=test_credentials):
+def test_y_finance_undervalued_large_caps_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFUndervaluedLargeCapsFetcher()
@@ -214,7 +214,7 @@ def test_yf_undervalued_large_caps_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_yf_undervalued_growth_equities_fetcher(credentials=test_credentials):
+def test_y_finance_undervalued_growth_equities_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFUndervaluedGrowthEquitiesFetcher()
@@ -223,7 +223,7 @@ def test_yf_undervalued_growth_equities_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_yf_aggressive_small_caps_fetcher(credentials=test_credentials):
+def test_y_finance_aggressive_small_caps_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFAggressiveSmallCapsFetcher()
@@ -232,7 +232,7 @@ def test_yf_aggressive_small_caps_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_yf_growth_tech_equities_fetcher(credentials=test_credentials):
+def test_y_finance_growth_tech_equities_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFGrowthTechEquitiesFetcher()
