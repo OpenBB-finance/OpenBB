@@ -1118,7 +1118,9 @@ def test_equity_price_quote(params, headers):
     "params",
     [
         ({"symbol": "AAPL", "provider": "cboe"}),
-        ({"provider": "intrinio", "symbol": "AAPL"}),
+        ({"symbol": "MSFT", "provider": "intrinio"}),
+        ({"symbol": "AAPL,MSFT", "provider": "cboe"}),
+        ({"symbol": "AAPL,MSFT", "provider": "intrinio"}),
     ],
 )
 @pytest.mark.integration
