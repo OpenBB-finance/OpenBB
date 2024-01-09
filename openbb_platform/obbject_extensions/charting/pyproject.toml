@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "openbb-obbject-charting"
+version = "0.1.0"
+description = ""
+authors = ["hjoaquim <h.joaquim@campus.fct.unl.pt>"]
+readme = "README.md"
+packages = [{ include = "charting" }]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+openbb-core = "^1.1.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_obbject_extension"]
+openbb_obbject_charting = "charting:ext"
