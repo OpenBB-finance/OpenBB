@@ -358,7 +358,26 @@
 /* convert to css tag */
 .header_docs_pro {
   background: rgb(2,0,36);background: rgb(2,0,36);
-  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(36,108,155,1) 13%, rgba(66,154,205,1) 22%, rgba(43,85,107,1) 42%, rgba(12,36,53,1) 61%, rgba(6,6,6,1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(2,0,36,1) 0%,
+    rgba(36,108,155,1) 13%,
+    rgba(66,154,205,1) 22%,
+    rgba(43,85,107,1) 42%,
+    rgba(12,36,53,1) 61%,
+    rgba(6,6,6,1) 100%);
+}
+
+.header_docs_excel {
+  background: rgb(2, 24, 11);background: rgb(2, 24, 11);
+  background: linear-gradient(
+    90deg,
+    rgb(2, 24, 11) 0%,
+    rgb(22, 163, 74, 1) 13%,
+    rgb(21, 128, 61, 1) 22%,
+    rgb(22, 101, 52, 1) 42%,
+    rgb(20, 83, 45, 1) 61%,
+    rgb(6, 43, 21) 100%);
 }
 
 table {
