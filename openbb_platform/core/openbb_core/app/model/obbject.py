@@ -60,6 +60,8 @@ class OBBject(Tagged, Generic[T]):
         description="Extra info.",
     )
     _credentials: ClassVar[Optional[BaseModel]] = None
+    _user_settings: ClassVar[Optional[BaseModel]] = None
+    _system_settings: ClassVar[Optional[BaseModel]] = None
     _accessors: ClassVar[Set[str]] = set()
 
     def __repr__(self) -> str:
