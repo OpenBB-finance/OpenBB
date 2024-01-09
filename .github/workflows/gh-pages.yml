@@ -68,6 +68,11 @@ jobs:
           poetry run python openbb_platform/dev_install.py -e all
           pip uninstall nbmake -y
           poetry run python website/generate_platform_v4_markdown.py
+      
+      - name: Generate Excel Docs
+        run: |
+          source .venv/bin/activate
+          poetry run python website/generate_excel_markdown.py
 
       - name: Generate Widgets Library
         run: |
