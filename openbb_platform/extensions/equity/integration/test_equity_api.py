@@ -231,11 +231,26 @@ def test_equity_fundamental_cash_growth(params, headers):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "provider": "fmp"}),
-        ({"symbol": "AAPL", "start_date": "2020-01-01"}),
-        ({"symbol": "AAPL", "start_date": "2020-01-01", "end_date": "2021-01-01"}),
-        ({"symbol": "AAPL,MSFT", "provider": "fmp"}),
-        ({"symbol": "AAPL,MSFT", "start_date": "2020-01-01", "end_date": "2021-01-01"}),
+        (
+            {
+                "symbol": "AAPL",
+                "start_date": "2020-01-01",
+                "end_date": "2021-01-01",
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "provider": "fmp",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
