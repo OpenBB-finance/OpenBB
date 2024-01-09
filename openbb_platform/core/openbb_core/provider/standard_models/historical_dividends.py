@@ -3,6 +3,7 @@
 
 from datetime import date as dateType
 from typing import List, Optional, Set, Union
+
 from pydantic import Field, field_validator
 
 from openbb_core.provider.abstract.data import Data

@@ -6,8 +6,8 @@ from datetime import (
 )
 from typing import Any, Dict, List, Optional
 
-from dateutil.relativedelta import relativedelta
 from dateutil import parser
+from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.historical_dividends import (
     HistoricalDividendsData,
