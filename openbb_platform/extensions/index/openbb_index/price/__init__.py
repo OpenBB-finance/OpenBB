@@ -1,0 +1,1 @@
+"""Market Index Price."""
