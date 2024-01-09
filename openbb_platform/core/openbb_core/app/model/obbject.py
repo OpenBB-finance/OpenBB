@@ -22,11 +22,12 @@ from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
 from openbb_core.app.model.abstract.warning import Warning_
 from openbb_core.app.model.charts.chart import Chart
-from openbb_core.app.query import Query
 from openbb_core.app.utils import basemodel_to_df
 from openbb_core.provider.abstract.data import Data
 
 if TYPE_CHECKING:
+    from openbb_core.app.query import Query
+
     try:
         from polars import DataFrame as PolarsDataFrame  # type: ignore
     except ImportError:
@@ -296,7 +297,7 @@ class OBBject(Tagged, Generic[T]):
         self.chart.fig.show()
 
     @classmethod
-    async def from_query(cls, query: Query) -> "OBBject":
+    async def from_query(cls, query: "Query") -> "OBBject":
         """Create OBBject from query.
 
         Parameters
