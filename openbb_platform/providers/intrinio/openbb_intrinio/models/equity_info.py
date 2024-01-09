@@ -8,9 +8,9 @@ from openbb_core.provider.standard_models.equity_info import (
     EquityInfoQueryParams,
 )
 from openbb_core.provider.utils.helpers import (
-    ClientResponse,
     amake_requests,
 )
+from openbb_intrinio.utils.helpers import response_callback
 from pydantic import Field
 
 
@@ -58,22 +58,12 @@ class IntrinioEquityInfoFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         base_url = "https://api-v2.intrinio.com"
 
-        async def callback(response: ClientResponse, _: Any) -> dict:
-            """Return the response."""
-            if response.status != 200:
-                return {}
-
-            response_data = await response.json()
-            response_data["symbol"] = response.url.parts[-1]
-
-            return response_data
-
         urls = [
             f"{base_url}/companies/{s.strip()}?api_key={api_key}"
             for s in query.symbol.split(",")
         ]
 
-        return await amake_requests(urls, callback, **kwargs)
+        return await amake_requests(urls, response_callback, **kwargs)
 
     # pylint: disable=W0613:unused-argument
     @staticmethod
