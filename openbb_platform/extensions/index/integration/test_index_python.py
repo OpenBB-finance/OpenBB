@@ -135,7 +135,7 @@ def test_index_constituents(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_index_market(params, obb):
+def test_index_price_historical(params, obb):
     result = obb.index.market(**params)
     assert result
     assert isinstance(result, OBBject)

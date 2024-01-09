@@ -139,7 +139,7 @@ def test_index_constituents(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_index_market(params, headers):
+def test_index_price_historical(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])

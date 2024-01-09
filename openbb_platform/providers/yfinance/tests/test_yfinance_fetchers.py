@@ -17,10 +17,10 @@ from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalF
 from openbb_yfinance.models.gainers import YFGainersFetcher
 from openbb_yfinance.models.growth_tech_equities import YFGrowthTechEquitiesFetcher
 from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
-from openbb_yfinance.models.losers import YFLosersFetcher
-from openbb_yfinance.models.market_indices import (
-    YFinanceMarketIndicesFetcher,
+from openbb_yfinance.models.index_historical import (
+    YFinanceIndexHistoricalFetcher,
 )
+from openbb_yfinance.models.losers import YFLosersFetcher
 from openbb_yfinance.models.undervalued_growth_equities import (
     YFUndervaluedGrowthEquitiesFetcher,
 )
@@ -49,14 +49,14 @@ def vcr_config():
 
 
 @pytest.mark.record_http
-def test_y_finance_market_indices_fetcher(credentials=test_credentials):
+def test_y_finance_index_historical_fetcher(credentials=test_credentials):
     params = {
         "symbol": "^GSPC",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 1, 10),
     }
 
-    fetcher = YFinanceMarketIndicesFetcher()
+    fetcher = YFinanceIndexHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
