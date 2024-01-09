@@ -104,7 +104,7 @@ class FMPHistoricalDividendsFetcher(
             if "date" in d:
                 dt = parser.parse(str(d["date"])).date()
 
-                if dt >= query.start_date and dt <= query.end_date:
+                if query.start_date <= dt <= query.end_date:
                     result.append(FMPHistoricalDividendsData(**d))
             else:
                 result.append(FMPHistoricalDividendsData(**d))
