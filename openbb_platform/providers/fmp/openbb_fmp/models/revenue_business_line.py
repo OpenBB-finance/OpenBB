@@ -1,5 +1,5 @@
 """FMP Revenue by Business Line Model."""
-
+# pylint: disable=unused-argument
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -8,6 +8,7 @@ from openbb_core.provider.standard_models.revenue_business_line import (
     RevenueBusinessLineData,
     RevenueBusinessLineQueryParams,
 )
+from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from pydantic import field_validator
 
@@ -22,11 +23,11 @@ class FMPRevenueBusinessLineQueryParams(RevenueBusinessLineQueryParams):
 class FMPRevenueBusinessLineData(RevenueBusinessLineData):
     """FMP Revenue by Business Line Data."""
 
-    @field_validator("date", mode="before", check_fields=False)
+    @field_validator("period_ending", "filing_date", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
-        return datetime.strptime(v, "%Y-%m-%d")
+        return datetime.strptime(v, "%Y-%m-%d") if v else None
 
 
 class FMPRevenueBusinessLineFetcher(
@@ -53,15 +54,35 @@ class FMPRevenueBusinessLineFetcher(
 
         url = create_url(4, "revenue-product-segmentation", api_key, query)
 
-        return await get_data_many(url, **kwargs)
+        cf_fetcher = FMPCashFlowStatementFetcher()
+        cf_query = cf_fetcher.transform_query(
+            {"symbol": query.symbol, "period": query.period, "limit": 200}
+        )
+        cf_data = await cf_fetcher.aextract_data(cf_query, {"fmp_api_key": api_key})
+        filing_dates = sorted(
+            [
+                {
+                    "period_ending": d["date"],
+                    "fiscal_year": d["calendarYear"],
+                    "fiscal_period": d["period"],
+                    "filing_date": d["fillingDate"],
+                }
+                for d in cf_data
+            ],
+            key=lambda d: d["period_ending"],
+        )
+        rev_data = await get_data_many(url, **kwargs)
+        rev_data_dict = {list(d.keys())[0]: list(d.values())[0] for d in rev_data}
+        combined_data = [
+            {**d, "business_line": rev_data_dict[d["period_ending"]]}
+            for d in filing_dates
+            if d["period_ending"] in rev_data_dict
+        ]
+        return combined_data
 
     @staticmethod
     def transform_data(
         query: FMPRevenueBusinessLineQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPRevenueBusinessLineData]:
         """Return the transformed data."""
-        return [
-            FMPRevenueBusinessLineData(date=key, business_line=value)
-            for d in data
-            for key, value in d.items()
-        ]
+        return [FMPRevenueBusinessLineData.model_validate(d) for d in data]
