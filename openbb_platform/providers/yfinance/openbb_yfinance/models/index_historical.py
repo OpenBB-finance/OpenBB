@@ -89,10 +89,9 @@ class YFinanceIndexHistoricalFetcher(
     def extract_data(
         query: YFinanceIndexHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any,
+        **kwargs: Any,  # pylint: disable=unused-argument
     ) -> List[dict]:
         """Return the raw data from the Yahoo Finance endpoint."""
-
         data = yf_download(
             symbol=query.symbol,
             start_date=query.start_date,

@@ -64,7 +64,7 @@ class CboeIndexHistoricalFetcher(
     def extract_data(
         query: CboeIndexHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
-        **kwargs: Any,
+        **kwargs: Any,  # pylint: disable=unused-argument
     ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint."""
         # Synbol directories are cached for seven days and are used for error handling and URL generation.
