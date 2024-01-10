@@ -6,10 +6,10 @@ on:
       - main
       - release/*
   pull_request:
-      types: [opened, synchronize, reopened, closed]
-      branches:
-        - develop
-        - 'docs/*'
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - develop
+      - "docs/*"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -47,31 +47,37 @@ jobs:
               libgtk-3-dev \
               libwebkit2gtk-4.0-dev
 
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v3
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock') }}
-
       - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root -E doc
+        run: poetry install --no-interaction --no-root
 
       - name: Install packages
         run: poetry install --no-interaction -E forecast -E doc -E optimization
 
-      - run: |
-          source $VENV
+      - name: Generate SDK v3 Markdown
+        run: |
+          source .venv/bin/activate
           pip uninstall Brotli -y
           pytest tests/website --autodoc
-          python website/generate_sdk_v3_markdown.py
-          python website/generate_terminal_v3_markdown.py
+          poetry run python website/generate_sdk_v3_markdown.py
+          poetry run python website/generate_terminal_v3_markdown.py
+
+      - name: Generate Platform Markdown
+        run: |
+          source .venv/bin/activate
           pip install -U poetry
-          python openbb_platform/dev_install.py -e all
+          poetry run python openbb_platform/dev_install.py -e all
           pip uninstall nbmake -y
-          python website/generate_platform_v4_markdown.py
-          python website/generate_widgets_library.py
+          poetry run python website/generate_platform_v4_markdown.py
+      
+      - name: Generate Excel Docs
+        run: |
+          source .venv/bin/activate
+          poetry run python website/generate_excel_markdown.py
+
+      - name: Generate Widgets Library
+        run: |
+          source .venv/bin/activate
+          poetry run python website/generate_widgets_library.py
 
       - name: Setup Node
         uses: actions/setup-node@v3

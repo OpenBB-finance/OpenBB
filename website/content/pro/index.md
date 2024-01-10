@@ -32,7 +32,7 @@ Plus, with built-in access to high-quality financial data curated from official 
 <div style={{position: 'relative', paddingBottom: '56.25%', height: '0', overflow: 'hidden', maxWidth: '100%'}}>
     <iframe
         style={{position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', display: 'block', margin: '0 auto'}}
-        src="https://www.youtube.com/embed/9EEI4uce5Bs?si=us54nvFmBtfqe4Tz"
+        src="https://www.youtube.com/embed/hz12c9HuQvc?si=S12Qkt1PN506NZpj"
         title="YouTube video player"
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
