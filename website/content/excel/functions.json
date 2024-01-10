@@ -12,12 +12,6 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, polygon, tiingo, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -26,6 +20,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, polygon, tiingo, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -90,14 +90,14 @@
       "name": "CRYPTO.SEARCH",
       "parameters": [
         {
-          "description": "Options: fmp, defaults to fmp.",
-          "name": "provider",
+          "description": "Search query.",
+          "name": "query",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Search query.",
-          "name": "query",
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -118,12 +118,6 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, polygon, tiingo, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -132,6 +126,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, polygon, tiingo, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -270,14 +270,14 @@
       "name": "DERIVATIVES.OPTIONS.UNUSUAL",
       "parameters": [
         {
-          "description": "Options: intrinio, defaults to intrinio.",
-          "name": "provider",
+          "description": "Symbol to get data for. (the underlying symbol)",
+          "name": "symbol",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Symbol to get data for. (the underlying symbol)",
-          "name": "symbol",
+          "description": "Options: intrinio, defaults to intrinio.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -299,12 +299,6 @@
       "name": "ECONOMY.CALENDAR",
       "parameters": [
         {
-          "description": "Options: fmp, tradingeconomics, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -313,6 +307,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, tradingeconomics, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -352,12 +352,6 @@
           "type": "any"
         },
         {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "The unit of measurement for the data.\nOptions:\n- `growth_previous`: Percent growth from the previous period.\nIf monthly data, this is month-over-month, etc\n- `growth_same`: Percent growth from the same period in the previous year.\nIf looking at monthly data, this would be year-over-year, etc.\n- `index_2015`: Rescaled index value, such that the value in 2015 is 100.",
           "name": "units",
           "optional": true,
@@ -386,6 +380,12 @@
           "name": "end_date",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -399,14 +399,14 @@
       "name": "ECONOMY.FRED_SEARCH",
       "parameters": [
         {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
+          "description": "The search word(s).",
+          "name": "query",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "The search word(s).",
-          "name": "query",
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -475,12 +475,6 @@
           "type": "string"
         },
         {
-          "description": "Options: fred, intrinio, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -497,6 +491,12 @@
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fred, intrinio, defaults to fred.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Frequency aggregation to convert high frequency data to lower frequency.\nNone = No change\na = Annual\nq = Quarterly\nm = Monthly\nw = Weekly\nd = Daily\nwef = Weekly, Ending Friday\nweth = Weekly, Ending Thursday\nwew = Weekly, Ending Wednesday\nwetu = Weekly, Ending Tuesday\nwem = Weekly, Ending Monday\nwesu = Weekly, Ending Sunday\nwesa = Weekly, Ending Saturday\nbwew = Biweekly, Ending Wednesday\nbwem = Biweekly, Ending Monday\n(provider: fred)",
@@ -540,12 +540,6 @@
       "name": "ECONOMY.GDP.FORECAST",
       "parameters": [
         {
-          "description": "Options: oecd, defaults to oecd.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Time period of the data to return. Units for nominal GDP period. Either quarter or annual.",
           "name": "period",
           "optional": true,
@@ -570,6 +564,12 @@
           "type": "string"
         },
         {
+          "description": "Options: oecd, defaults to oecd.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
           "description": "Country to get GDP for. (provider: oecd)",
           "name": "country",
           "optional": true,
@@ -587,12 +587,6 @@
       "name": "ECONOMY.GDP.NOMINAL",
       "parameters": [
         {
-          "description": "Options: oecd, defaults to oecd.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "The unit of measurement for the data. Units to get nominal GDP in. Either usd or usd_cap indicating per capita.",
           "name": "units",
           "optional": true,
@@ -607,6 +601,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: oecd, defaults to oecd.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -628,12 +628,6 @@
       "name": "ECONOMY.GDP.REAL",
       "parameters": [
         {
-          "description": "Options: oecd, defaults to oecd.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "The unit of measurement for the data. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)",
           "name": "units",
           "optional": true,
@@ -648,6 +642,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: oecd, defaults to oecd.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -669,12 +669,6 @@
       "name": "ECONOMY.MONEY_MEASURES",
       "parameters": [
         {
-          "description": "Options: federal_reserve, defaults to federal_reserve.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -691,6 +685,12 @@
           "name": "adjusted",
           "optional": true,
           "type": "boolean"
+        },
+        {
+          "description": "Options: federal_reserve, defaults to federal_reserve.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -721,12 +721,6 @@
       "name": "EQUITY.CALENDAR.DIVIDEND",
       "parameters": [
         {
-          "description": "Options: fmp, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -735,6 +729,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -750,12 +750,6 @@
       "name": "EQUITY.CALENDAR.EARNINGS",
       "parameters": [
         {
-          "description": "Options: fmp, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -764,6 +758,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -778,12 +778,6 @@
       "id": "EQUITY.CALENDAR.IPO",
       "name": "EQUITY.CALENDAR.IPO",
       "parameters": [
-        {
-          "description": "Options: intrinio, defaults to intrinio.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Symbol to get data for.",
           "name": "symbol",
@@ -807,6 +801,12 @@
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: intrinio, defaults to intrinio.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Status of the IPO. [upcoming, priced, or withdrawn] (provider: intrinio)",
@@ -838,12 +838,6 @@
       "name": "EQUITY.CALENDAR.SPLITS",
       "parameters": [
         {
-          "description": "Options: fmp, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -852,6 +846,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -889,12 +889,6 @@
       "name": "EQUITY.DISCOVERY.FILINGS",
       "parameters": [
         {
-          "description": "Options: fmp, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -917,6 +911,12 @@
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Flag for whether or not the filing is done. (provider: fmp)",
@@ -963,12 +963,6 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Time period of the data to return.",
           "name": "period",
           "optional": true,
@@ -979,6 +973,12 @@
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -1025,12 +1025,6 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Time period of the data to return.",
           "name": "period",
           "optional": true,
@@ -1041,6 +1035,12 @@
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
@@ -1143,16 +1143,16 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "The number of data entries to return.",
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -1171,12 +1171,6 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Time period of the data to return.",
           "name": "period",
           "optional": true,
@@ -1187,6 +1181,12 @@
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
@@ -1289,16 +1289,16 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "The number of data entries to return.",
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -1362,14 +1362,14 @@
       "name": "EQUITY.FUNDAMENTAL.FILINGS",
       "parameters": [
         {
-          "description": "Options: fmp, intrinio, sec, defaults to fmp.",
-          "name": "provider",
+          "description": "Symbol to get data for.",
+          "name": "symbol",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Symbol to get data for.",
-          "name": "symbol",
+          "description": "Options: fmp, intrinio, sec, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -1437,12 +1437,6 @@
           "type": "string"
         },
         {
-          "description": "Options: intrinio, defaults to intrinio.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -1475,6 +1469,12 @@
         {
           "description": "Sort order.",
           "name": "sort",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: intrinio, defaults to intrinio.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -1545,12 +1545,6 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Time period of the data to return.",
           "name": "period",
           "optional": true,
@@ -1561,6 +1555,12 @@
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
@@ -1663,12 +1663,6 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "The number of data entries to return.",
           "name": "limit",
           "optional": true,
@@ -1677,6 +1671,12 @@
         {
           "description": "Time period of the data to return.",
           "name": "period",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -1768,12 +1768,6 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Time period of the data to return.",
           "name": "period",
           "optional": true,
@@ -1784,6 +1778,12 @@
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fmp, intrinio, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Include trailing twelve months (TTM) data. (provider: fmp)",
@@ -1852,12 +1852,6 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Time period of the data to return.",
           "name": "period",
           "optional": true,
@@ -1868,6 +1862,12 @@
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fmp, intrinio, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Include trailing twelve months (TTM) data. (provider: fmp, intrinio)",
@@ -1898,12 +1898,6 @@
           "type": "string"
         },
         {
-          "description": "Options: intrinio, defaults to intrinio.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Time period of the data to return.",
           "name": "period",
           "optional": true,
@@ -1920,6 +1914,12 @@
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: intrinio, defaults to intrinio.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
@@ -1944,12 +1944,6 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Time period of the data to return.",
           "name": "period",
           "optional": true,
@@ -1958,6 +1952,12 @@
         {
           "description": "Structure of the returned data.",
           "name": "structure",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -1978,12 +1978,6 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Time period of the data to return.",
           "name": "period",
           "optional": true,
@@ -1992,6 +1986,12 @@
         {
           "description": "Structure of the returned data.",
           "name": "structure",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -2012,16 +2012,16 @@
           "type": "string"
         },
         {
-          "description": "Options: intrinio, defaults to intrinio.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "The number of data entries to return.",
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: intrinio, defaults to intrinio.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -2035,14 +2035,14 @@
       "name": "EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD",
       "parameters": [
         {
-          "description": "Options: tiingo, defaults to tiingo.",
-          "name": "provider",
+          "description": "Symbol to get data for.",
+          "name": "symbol",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Symbol to get data for.",
-          "name": "symbol",
+          "description": "Options: tiingo, defaults to tiingo.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -2113,16 +2113,16 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "The number of data entries to return.",
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fmp, intrinio, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Type of the transaction. (provider: fmp)",
@@ -2211,12 +2211,6 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "A specific date to get data for.",
           "name": "date",
           "optional": true,
@@ -2227,6 +2221,12 @@
           "name": "page",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -2267,12 +2267,6 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio, polygon, tiingo, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Time interval of the data to return.",
           "name": "interval",
           "optional": true,
@@ -2287,6 +2281,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, intrinio, polygon, tiingo, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -2599,12 +2599,6 @@
       "name": "EQUITY.SEARCH",
       "parameters": [
         {
-          "description": "Options: intrinio, sec, defaults to intrinio.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Search query.",
           "name": "query",
           "optional": true,
@@ -2615,6 +2609,12 @@
           "name": "is_symbol",
           "optional": true,
           "type": "boolean"
+        },
+        {
+          "description": "Options: intrinio, sec, defaults to intrinio.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "When true, return companies that are actively traded (having stock prices within the past 14 days). When false, return companies that are not actively traded or never have been traded. (provider: intrinio)",
@@ -2842,14 +2842,14 @@
       "name": "ETF.SEARCH",
       "parameters": [
         {
-          "description": "Options: fmp, defaults to fmp.",
-          "name": "provider",
+          "description": "Search query.",
+          "name": "query",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Search query.",
-          "name": "query",
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -2899,12 +2899,6 @@
       "name": "FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER",
       "parameters": [
         {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -2933,6 +2927,12 @@
           "name": "grade",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -2946,12 +2946,6 @@
       "name": "FIXEDINCOME.CORPORATE.HQM",
       "parameters": [
         {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "A specific date to get data for.",
           "name": "date",
           "optional": true,
@@ -2960,6 +2954,12 @@
         {
           "description": "The yield curve type.",
           "name": "yield_curve",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -2975,12 +2975,6 @@
       "name": "FIXEDINCOME.CORPORATE.ICE_BOFA",
       "parameters": [
         {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -2995,6 +2989,12 @@
         {
           "description": "The type of series.",
           "name": "index_type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -3034,12 +3034,6 @@
       "name": "FIXEDINCOME.CORPORATE.MOODY",
       "parameters": [
         {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -3054,6 +3048,12 @@
         {
           "description": "The type of series.",
           "name": "index_type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -3074,12 +3074,6 @@
       "id": "FIXEDINCOME.CORPORATE.SPOT_RATES",
       "name": "FIXEDINCOME.CORPORATE.SPOT_RATES",
       "parameters": [
-        {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -3105,6 +3099,12 @@
           "name": "category",
           "optional": true,
           "type": "any"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -3118,12 +3118,6 @@
       "name": "FIXEDINCOME.GOVERNMENT.TREASURY_RATES",
       "parameters": [
         {
-          "description": "Options: federal_reserve, fmp, defaults to federal_reserve.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -3132,6 +3126,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: federal_reserve, fmp, defaults to federal_reserve.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -3147,12 +3147,6 @@
       "name": "FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE",
       "parameters": [
         {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "A specific date to get data for. Defaults to the most recent FRED entry.",
           "name": "date",
           "optional": true,
@@ -3163,6 +3157,12 @@
           "name": "inflation_adjusted",
           "optional": true,
           "type": "boolean"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -3176,12 +3176,6 @@
       "name": "FIXEDINCOME.RATE.AMERIBOR",
       "parameters": [
         {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -3190,6 +3184,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -3211,12 +3211,6 @@
       "name": "FIXEDINCOME.RATE.DPCREDIT",
       "parameters": [
         {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -3225,6 +3219,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -3246,12 +3246,6 @@
       "name": "FIXEDINCOME.RATE.ECB",
       "parameters": [
         {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -3268,6 +3262,12 @@
           "name": "interest_rate_type",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -3281,12 +3281,6 @@
       "name": "FIXEDINCOME.RATE.EFFR",
       "parameters": [
         {
-          "description": "Options: federal_reserve, fred, defaults to federal_reserve.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -3295,6 +3289,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: federal_reserve, fred, defaults to federal_reserve.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -3339,12 +3339,6 @@
       "name": "FIXEDINCOME.RATE.ESTR",
       "parameters": [
         {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -3353,6 +3347,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -3374,12 +3374,6 @@
       "name": "FIXEDINCOME.RATE.IORB",
       "parameters": [
         {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -3388,6 +3382,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -3403,12 +3403,6 @@
       "name": "FIXEDINCOME.RATE.SONIA",
       "parameters": [
         {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -3417,6 +3411,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -3438,12 +3438,6 @@
       "name": "FIXEDINCOME.SOFR",
       "parameters": [
         {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -3452,6 +3446,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -3473,12 +3473,6 @@
       "name": "FIXEDINCOME.SPREADS.TMC",
       "parameters": [
         {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -3493,6 +3487,12 @@
         {
           "description": "The maturity",
           "name": "maturity",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -3508,12 +3508,6 @@
       "name": "FIXEDINCOME.SPREADS.TMC_EFFR",
       "parameters": [
         {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -3528,6 +3522,12 @@
         {
           "description": "The maturity",
           "name": "maturity",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -3543,12 +3543,6 @@
       "name": "FIXEDINCOME.SPREADS.TREASURY_EFFR",
       "parameters": [
         {
-          "description": "Options: fred, defaults to fred.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -3563,6 +3557,12 @@
         {
           "description": "The maturity",
           "name": "maturity",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -3595,14 +3595,14 @@
       "name": "INDEX.CONSTITUENTS",
       "parameters": [
         {
-          "description": "Options: fmp, defaults to fmp.",
-          "name": "provider",
+          "description": "Index for which we want to fetch the constituents.",
+          "name": "index",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Index for which we want to fetch the constituents.",
-          "name": "index",
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -3623,12 +3623,6 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
           "optional": true,
@@ -3637,6 +3631,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -3717,16 +3717,16 @@
           "type": "string"
         },
         {
-          "description": "Options: benzinga, fmp, intrinio, polygon, tiingo, defaults to benzinga.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "The number of data entries to return.",
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: benzinga, fmp, intrinio, polygon, tiingo, defaults to benzinga.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)",
@@ -3842,16 +3842,16 @@
       "name": "NEWS.WORLD",
       "parameters": [
         {
-          "description": "Options: benzinga, fmp, intrinio, tiingo, defaults to benzinga.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "The number of data entries to return. Here its the no. of articles to return.",
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: benzinga, fmp, intrinio, tiingo, defaults to benzinga.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)",
@@ -3977,14 +3977,14 @@
       "name": "REGULATORS.SEC.INSTITUTIONS_SEARCH",
       "parameters": [
         {
-          "description": "Options: sec, defaults to sec.",
-          "name": "provider",
+          "description": "Search query.",
+          "name": "query",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Search query.",
-          "name": "query",
+          "description": "Options: sec, defaults to sec.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -4023,14 +4023,14 @@
       "name": "REGULATORS.SEC.SCHEMA_FILES",
       "parameters": [
         {
-          "description": "Options: sec, defaults to sec.",
-          "name": "provider",
+          "description": "Search query.",
+          "name": "query",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Search query.",
-          "name": "query",
+          "description": "Options: sec, defaults to sec.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -4052,14 +4052,14 @@
       "name": "REGULATORS.SEC.SIC_SEARCH",
       "parameters": [
         {
-          "description": "Options: sec, defaults to sec.",
-          "name": "provider",
+          "description": "Search query.",
+          "name": "query",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Search query.",
-          "name": "query",
+          "description": "Options: sec, defaults to sec.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -4081,14 +4081,14 @@
       "name": "REGULATORS.SEC.SYMBOL_MAP",
       "parameters": [
         {
-          "description": "Options: sec, defaults to sec.",
-          "name": "provider",
+          "description": "Search query.",
+          "name": "query",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Search query.",
-          "name": "query",
+          "description": "Options: sec, defaults to sec.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
