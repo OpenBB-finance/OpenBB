@@ -1,4 +1,4 @@
-"""Market Indices Standard Model."""
+"""Index Historical Standard Model."""
 
 from datetime import (
     date as dateType,
@@ -17,8 +17,8 @@ from openbb_core.provider.utils.descriptions import (
 )
 
 
-class MarketIndicesQueryParams(QueryParams):
-    """Market Indices Query."""
+class IndexHistoricalQueryParams(QueryParams):
+    """Index Historical Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     start_date: Optional[dateType] = Field(
@@ -37,8 +37,8 @@ class MarketIndicesQueryParams(QueryParams):
         return ",".join([symbol.upper() for symbol in list(v)])
 
 
-class MarketIndicesData(Data):
-    """Market Indices Data."""
+class IndexHistoricalData(Data):
+    """Index Historical Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     open: Optional[StrictFloat] = Field(

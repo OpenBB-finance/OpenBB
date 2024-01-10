@@ -20,13 +20,13 @@ from openbb_intrinio.models.historical_dividends import (
     IntrinioHistoricalDividendsFetcher,
 )
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
+from openbb_intrinio.models.index_historical import IntrinioIndexHistoricalFetcher
 from openbb_intrinio.models.insider_trading import IntrinioInsiderTradingFetcher
 from openbb_intrinio.models.institutional_ownership import (
     IntrinioInstitutionalOwnershipFetcher,
 )
 from openbb_intrinio.models.key_metrics import IntrinioKeyMetricsFetcher
 from openbb_intrinio.models.latest_attributes import IntrinioLatestAttributesFetcher
-from openbb_intrinio.models.market_indices import IntrinioMarketIndicesFetcher
 from openbb_intrinio.models.options_chains import IntrinioOptionsChainsFetcher
 from openbb_intrinio.models.options_unusual import IntrinioOptionsUnusualFetcher
 from openbb_intrinio.models.reported_financials import IntrinioReportedFinancialsFetcher
@@ -58,11 +58,11 @@ intrinio_provider = Provider(
         "HistoricalAttributes": IntrinioHistoricalAttributesFetcher,
         "HistoricalDividends": IntrinioHistoricalDividendsFetcher,
         "IncomeStatement": IntrinioIncomeStatementFetcher,
+        "IndexHistorical": IntrinioIndexHistoricalFetcher,
         "InsiderTrading": IntrinioInsiderTradingFetcher,
         "InstitutionalOwnership": IntrinioInstitutionalOwnershipFetcher,
         "KeyMetrics": IntrinioKeyMetricsFetcher,
         "LatestAttributes": IntrinioLatestAttributesFetcher,
-        "MarketIndices": IntrinioMarketIndicesFetcher,
         "OptionsChains": IntrinioOptionsChainsFetcher,
         "OptionsUnusual": IntrinioOptionsUnusualFetcher,
         "ReportedFinancials": IntrinioReportedFinancialsFetcher,

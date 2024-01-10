@@ -44,11 +44,11 @@ from openbb_fmp.models.historical_splits import FMPHistoricalSplitsFetcher
 from openbb_fmp.models.income_statement import FMPIncomeStatementFetcher
 from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFetcher
 from openbb_fmp.models.index_constituents import FMPIndexConstituentsFetcher
+from openbb_fmp.models.index_historical import FMPIndexHistoricalFetcher
 from openbb_fmp.models.insider_trading import FMPInsiderTradingFetcher
 from openbb_fmp.models.institutional_ownership import FMPInstitutionalOwnershipFetcher
 from openbb_fmp.models.key_executives import FMPKeyExecutivesFetcher
 from openbb_fmp.models.key_metrics import FMPKeyMetricsFetcher
-from openbb_fmp.models.market_indices import FMPMarketIndicesFetcher
 from openbb_fmp.models.market_snapshots import FMPMarketSnapshotsFetcher
 from openbb_fmp.models.price_performance import FMPPricePerformanceFetcher
 from openbb_fmp.models.price_target import FMPPriceTargetFetcher
@@ -107,12 +107,12 @@ fmp_provider = Provider(
         "HistoricalSplits": FMPHistoricalSplitsFetcher,
         "IncomeStatement": FMPIncomeStatementFetcher,
         "IncomeStatementGrowth": FMPIncomeStatementGrowthFetcher,
+        "IndexHistorical": FMPIndexHistoricalFetcher,
         "IndexConstituents": FMPIndexConstituentsFetcher,
         "InsiderTrading": FMPInsiderTradingFetcher,
         "InstitutionalOwnership": FMPInstitutionalOwnershipFetcher,
         "KeyExecutives": FMPKeyExecutivesFetcher,
         "KeyMetrics": FMPKeyMetricsFetcher,
-        "MarketIndices": FMPMarketIndicesFetcher,
         "MarketSnapshots": FMPMarketSnapshotsFetcher,
         "PricePerformance": FMPPricePerformanceFetcher,
         "PriceTarget": FMPPriceTargetFetcher,
