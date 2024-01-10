@@ -21,6 +21,14 @@ class ExecutiveCompensationQueryParams(QueryParams):
     """Executive Compensation Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    start_date: Optional[dateType] = Field(
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("start_date", ""),
+    )
+    end_date: Optional[dateType] = Field(
+        default=None,
+        description=QUERY_DESCRIPTIONS.get("end_date", ""),
+    )
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod

@@ -212,7 +212,26 @@ def test_equity_fundamental_cash_growth(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "start_date": "2020-01-01",
+                "end_date": "2021-01-01",
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "provider": "fmp",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1049,7 +1068,9 @@ def test_equity_price_quote(params, obb):
     "params",
     [
         ({"symbol": "AAPL", "provider": "cboe"}),
-        ({"provider": "intrinio", "symbol": "AAPL"}),
+        ({"symbol": "MSFT", "provider": "intrinio"}),
+        ({"symbol": "AAPL,MSFT", "provider": "cboe"}),
+        ({"symbol": "AAPL,MSFT", "provider": "intrinio"}),
     ],
 )
 @pytest.mark.integration
@@ -1361,7 +1382,7 @@ def test_equity_fundamental_historical_eps(params, obb):
 
 @parametrize(
     "params",
-    [({"provider": "tiingo", "symbol": "AAPL"})],
+    [({"provider": "tiingo", "symbol": "AAPL", "limit": 10})],
 )
 @pytest.mark.integration
 def test_equity_fundamental_trailing_dividend_yield(params, obb):
