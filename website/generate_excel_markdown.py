@@ -21,8 +21,6 @@ XL_FUNCS_URL = "https://excel.openbb.co/assets/functions.json"
 class CommandLib(PathHandler):
     """Command library."""
 
-    # No commands should be added manually until we decide how to proceed
-    MANUAL_MAP: Dict[str, str] = {}
     XL_TYPE_MAP = {
         "bool": "Boolean",
         "float": "Number",
@@ -32,8 +30,6 @@ class CommandLib(PathHandler):
         "string": "Text",
     }
     EXAMPLE_PARAMS: Dict[str, Dict] = {
-        "last": {"symbol": '"AAPL"', "tag": '"EBITDA"'},
-        "hist": {"symbol": '"AAPL"', "tag": '"EBITDA"'},
         "crypto": {"symbol": '"BTCUSD"'},
         "currency": {"symbol": '"EURUSD"'},
         "derivatives": {"symbol": '"AAPL"'},
@@ -56,19 +52,12 @@ class CommandLib(PathHandler):
         self.xl_funcs = self.read_xl_funcs()
         self.seo_metadata = self.read_seo_metadata()
 
-        self.update()
-
     @staticmethod
     def fetch():
         """Fetch the excel functions."""
         r = requests.get(XL_FUNCS_URL, timeout=10)
         with open(XL_FUNCS_PATH, "w") as f:
             json.dump(r.json(), f, indent=2)
-
-    def update(self):
-        """Update with manual map."""
-        for key, value in self.MANUAL_MAP.items():
-            self.route_map[key] = self.route_map[value]
 
     def read_seo_metadata(self) -> dict:
         """Get the SEO metadata."""
