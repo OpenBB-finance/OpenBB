@@ -83,7 +83,7 @@ def test_cboe_equity_search_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_cboe_equity_historical_fetcher(credentials=test_credentials):
-    params = params = {
+    params = {
         "symbol": "AAPL",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 1, 10),
