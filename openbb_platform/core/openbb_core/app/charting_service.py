@@ -1,9 +1,9 @@
+"""Charting service."""
 from importlib import import_module
 from inspect import getmembers, getsource, isfunction
 from typing import Callable, List, Optional, Tuple, TypeVar
 
-from importlib_metadata import entry_points
-
+from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.singleton import SingletonMeta
 from openbb_core.app.model.charts.chart import Chart, ChartFormat
 from openbb_core.app.model.charts.charting_settings import ChartingSettings
@@ -13,18 +13,18 @@ from openbb_core.env import Env
 
 T = TypeVar("T")
 
-POETRY_PLUGIN = "openbb_core_extension"
 # this is needed because static assets and api endpoints are built before any user is instantiated
 EXTENSION_NAME = Env().CHARTING_EXTENSION
 
 
 class ChartingServiceError(Exception):
-    pass
+    """Charting service error."""
 
 
 class ChartingService(metaclass=SingletonMeta):
     """
-    Charting service class.
+    Charting Service.
+
     It is responsible for retrieving and executing the charting function, corresponding
     to a given route, from the user's preferred charting extension.
 
@@ -53,6 +53,7 @@ class ChartingService(metaclass=SingletonMeta):
         user_settings: Optional[UserSettings] = None,
         system_settings: Optional[SystemSettings] = None,
     ) -> None:
+        """Initializes ChartingService."""
         # Although the __init__ method states that both the user_settings and the system_settings
         # are optional, they are actually required for the first initialization of the ChartingService.
         # This is because the ChartingService is a singleton and it is initialized only once.
@@ -73,6 +74,7 @@ class ChartingService(metaclass=SingletonMeta):
 
     @property
     def charting_settings(self) -> ChartingSettings:
+        """Gets charting settings."""
         return self._charting_settings
 
     @charting_settings.setter
@@ -87,9 +89,7 @@ class ChartingService(metaclass=SingletonMeta):
     def _check_and_get_charting_extension_name(
         user_preferences_charting_extension: str,
     ):
-        """
-        Checks if the charting extension defined on user preferences is the same as the one defined in the env file.
-        """
+        """Checks if the charting extension defined on user preferences is the same as the one defined in the env file."""
         if user_preferences_charting_extension != EXTENSION_NAME:
             raise ChartingServiceError(
                 f"The charting extension defined on user preferences must be the same as the one defined in the env file."
@@ -98,49 +98,16 @@ class ChartingService(metaclass=SingletonMeta):
         return user_preferences_charting_extension
 
     @staticmethod
-    def _check_charting_extension_installed(
-        charting_extension: str, plugin: str = POETRY_PLUGIN
-    ) -> bool:
-        """
-        Checks if charting extension is installed.
-        Given a charting extension name, it checks if it is installed under the given plugin.
-
-        Parameters
-        ----------
-        charting_extension : str
-            Charting extension name.
-        plugin : Optional[str]
-            Plugin name.
-        Returns
-        -------
-        bool
-            Either charting extension is installed or not.
-        """
-        extensions = [ext.name for ext in entry_points(group=plugin)]
-
-        return charting_extension in extensions
-
-    @staticmethod
-    def _get_extension_router(
-        extension_name: str, plugin: Optional[str] = POETRY_PLUGIN
-    ):
-        """
-        Get the module of the given extension.
-        """
-        entry_points_ = entry_points(group=plugin)
-        entry_point = next(
-            (ep for ep in entry_points_ if ep.name == extension_name), None
-        )
-        if entry_point is None:
-            raise ChartingServiceError(
-                f"Extension '{extension_name}' is not installed."
-            )
-        return import_module(entry_point.module)
+    def _check_charting_extension_installed(ext_name: str) -> bool:
+        """Checks if a given extension is installed."""
+        extension = ExtensionLoader().get_core_entry_point(ext_name) or False
+        return extension and ext_name == extension.name  # type: ignore
 
     @staticmethod
     def _handle_backend(charting_extension: str, charting_settings: ChartingSettings):
         """
         Handles the backend of the given charting extension.
+
         This function that the module expose in its root (__init__.py) the following functions:
             - `create_backend(charting_settings: ChartingSettings)`
             - `get_backend()`
@@ -162,9 +129,20 @@ class ChartingService(metaclass=SingletonMeta):
         get_backend_func().start(debug=charting_settings.debug_mode)
 
     @classmethod
+    def _get_extension_router(cls, extension_name: str):
+        """Get the module of the given extension."""
+        extension = ExtensionLoader().get_core_entry_point(extension_name)
+        if not extension or extension_name != extension.name:
+            raise ChartingServiceError(
+                f"Extension '{extension_name}' is not installed."
+            )
+        return import_module(extension.module)
+
+    @classmethod
     def _get_chart_format(cls, extension_name: str) -> ChartFormat:
         """
         Given an extension name, it returns the chart format.
+
         The module must contain the `CHART_FORMAT` attribute.
         """
         module = cls._get_extension_router(extension_name)
@@ -174,6 +152,7 @@ class ChartingService(metaclass=SingletonMeta):
     def _get_chart_function(cls, extension_name: str, route: str) -> Callable:
         """
         Given an extension name and a route, it returns the chart function.
+
         The module must contain the given route.
         """
         adjusted_route = route.replace("/", "_")[1:]
@@ -184,9 +163,7 @@ class ChartingService(metaclass=SingletonMeta):
     def get_implemented_charting_functions(
         cls, extension_name: str = EXTENSION_NAME
     ) -> List[str]:
-        """
-        Given an extension name, it returns the implemented charting functions from its router.
-        """
+        """Given an extension name, it returns the implemented charting functions from its router."""
         implemented_functions = []
 
         try:
@@ -226,7 +203,6 @@ class ChartingService(metaclass=SingletonMeta):
         Exception
             If the charting extension module does not contain the `to_chart` function.
         """
-
         if not self._charting_extension_installed:
             raise ChartingServiceError(
                 f"Charting extension `{self._charting_extension}` is not installed"
@@ -258,6 +234,8 @@ class ChartingService(metaclass=SingletonMeta):
         **kwargs,
     ) -> Chart:
         """
+        Given a route and an obbject item, it returns the chart object.
+
         If the charting extension is not installed, an error is raised.
         Otherwise, a charting function will be retrieved and executed from the user's preferred charting extension.
         This function assumes that, in order to successfully retrieve the charting function,
@@ -276,6 +254,7 @@ class ChartingService(metaclass=SingletonMeta):
             Route name, example: `/stocks/load`.
         obbject_item
             Command output item.
+
         Returns
         -------
         Chart

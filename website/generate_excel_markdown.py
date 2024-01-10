@@ -21,8 +21,6 @@ XL_FUNCS_URL = "https://excel.openbb.co/assets/functions.json"
 class CommandLib(PathHandler):
     """Command library."""
 
-    # No commands should be added manually until we decide how to proceed
-    MANUAL_MAP = {}
     XL_TYPE_MAP = {
         "bool": "Boolean",
         "float": "Number",
@@ -32,8 +30,6 @@ class CommandLib(PathHandler):
         "string": "Text",
     }
     EXAMPLE_PARAMS: Dict[str, Dict] = {
-        "last": {"symbol": '"AAPL"', "tag": '"EBITDA"'},
-        "hist": {"symbol": '"AAPL"', "tag": '"EBITDA"'},
         "crypto": {"symbol": '"BTCUSD"'},
         "currency": {"symbol": '"EURUSD"'},
         "derivatives": {"symbol": '"AAPL"'},
@@ -56,19 +52,12 @@ class CommandLib(PathHandler):
         self.xl_funcs = self.read_xl_funcs()
         self.seo_metadata = self.read_seo_metadata()
 
-        self.update()
-
     @staticmethod
     def fetch():
         """Fetch the excel functions."""
         r = requests.get(XL_FUNCS_URL, timeout=10)
         with open(XL_FUNCS_PATH, "w") as f:
             json.dump(r.json(), f, indent=2)
-
-    def update(self):
-        """Update with manual map."""
-        for key, value in self.MANUAL_MAP.items():
-            self.route_map[key] = self.route_map[value]
 
     def read_seo_metadata(self) -> dict:
         """Get the SEO metadata."""
@@ -95,18 +84,16 @@ class CommandLib(PathHandler):
             return self.xl_funcs.get(cmd, {}).get("name", ".").split(".")[-1].lower()
         return ""
 
-    def _get_signature(self, cmd: str, path_only: bool = False) -> str:
+    def _get_signature(self, cmd: str, parameters: dict) -> str:
         """Get the signature of the command."""
         if cmd in self.route_map:
             sig = "=OBB." + self.xl_funcs[cmd].get("name", "")
-            if path_only:
-                return sig
             sig += "("
-            for p in self.xl_funcs[cmd]["parameters"]:
-                if p.get("optional", False):
-                    sig += f'[{p["name"]}]'
+            for p_name, p_info in parameters.items():
+                if p_info["required"]:
+                    sig += f"{p_name}"
                 else:
-                    sig += f'{p["name"]}'
+                    sig += f"[{p_name}]"
                 sig += ";"
             sig = sig.strip("; ") + ")"
             return sig
@@ -132,7 +119,7 @@ class CommandLib(PathHandler):
             parameters[p["name"]] = {
                 "type": self.to_xl(str(p["type"])),
                 "description": p["description"].replace("\n", " "),
-                "optional": str(p.get("optional", False)).title(),
+                "required": not p.get("optional", False),
             }
 
         return parameters
@@ -151,20 +138,15 @@ class CommandLib(PathHandler):
 
         return {}
 
-    def _get_examples(self, cmd: str) -> dict:
-        cmd_info = self.xl_funcs[cmd]
-        if cmd in self.route_map:
-            parameters = cmd_info["parameters"]
-            minimal_eg = "=OBB." + cmd_info.get("name", "") + "("
-            category = cmd.split("/")[1]
-            for p in parameters:
-                p_name = p["name"]
-                if not p.get("optional", False):
-                    p_value = self.EXAMPLE_PARAMS.get(category, {}).get(p_name, "")
-                    minimal_eg += f"{p_value};"
-            minimal_eg = minimal_eg.strip("; ") + ")"
-            return {"A. Minimal": minimal_eg}
-        return {}
+    def _get_examples(self, signature_: str, parameters: dict) -> dict:
+        minimal_eg = signature_.split("(")[0] + "("
+        category = signature_.split(".")[1].lower()
+        for p_name, p_info in parameters.items():
+            if p_info["required"]:
+                p_value = self.EXAMPLE_PARAMS.get(category, {}).get(p_name, "")
+                minimal_eg += f"{p_value};"
+        minimal_eg = minimal_eg.strip("; ") + ")"
+        return {"A. Minimal": minimal_eg}
 
     def get_info(self, cmd: str) -> Dict[str, Any]:
         """Get the info for a command."""
@@ -172,11 +154,11 @@ class CommandLib(PathHandler):
         if not name:
             return {}
         description = self.xl_funcs[cmd].get("description", "").replace("\n", " ")
-        signature_ = self._get_signature(cmd)
         parameters = self._get_parameters(cmd)
+        signature_ = self._get_signature(cmd, parameters)
         data = self._get_data(cmd)
         return_ = self.xl_funcs[cmd].get("result", {}).get("dimensionality", "")
-        examples = self._get_examples(cmd)
+        examples = self._get_examples(signature_, parameters)
         if model_name := self._get_model(cmd):
             return {
                 "name": name,
@@ -252,17 +234,21 @@ class Editor:
 
         def get_parameters() -> str:
             parameters = "## Parameters\n\n"
-            parameters += "| Name | Type | Description | Optional |\n"
+            parameters += "| Name | Type | Description | Required |\n"
             parameters += "| ---- | ---- | ----------- | -------- |\n"
             for field_name, field_info in cmd_info["parameters"].items():
                 name = field_name
                 type_ = field_info["type"]
                 description = field_info["description"]
-                optional = field_info["optional"]
-                if optional == "True":
-                    parameters += f"| {name} | {type_} | {description} | {optional} |\n"
+                required = field_info["required"]
+                required_str = str(required).title()
+                if required:
+                    parameters += f"| **{name}** | **{type_}** | **{description}** | **{required_str}** |\n"
                 else:
-                    parameters += f"| **{name}** | **{type_}** | **{description}** | **{optional}** |\n"
+                    parameters += (
+                        f"| {name} | {type_} | {description} | {required_str} |\n"
+                    )
+
             parameters += "\n"
             return parameters
 
