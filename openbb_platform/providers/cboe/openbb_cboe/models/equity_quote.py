@@ -1,6 +1,5 @@
 """Cboe Equity Info Model."""
 # pylint: disable=invalid-name,too-many-locals, expression-not-assigned
-from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_cboe.utils.helpers import (
