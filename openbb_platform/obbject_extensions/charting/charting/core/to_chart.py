@@ -1,7 +1,7 @@
+"""Module containing the to_chart function."""
 from typing import Any, Dict, Optional, Tuple, Union
 
 import pandas as pd
-from openbb_core.app.model.charts.charting_settings import ChartingSettings
 
 from charting.core.openbb_figure import OpenBBFigure
 from charting.core.plotly_ta.data_classes import ChartIndicators
@@ -9,7 +9,6 @@ from charting.core.plotly_ta.ta_class import PlotlyTA
 
 
 def to_chart(
-    charting_settings: ChartingSettings,
     data: Union[pd.DataFrame, pd.Series],
     indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = None,
     symbol: str = "",
@@ -20,14 +19,13 @@ def to_chart(
 ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
     """
     Returns the plotly json representation of the chart.
+
     This function is used so it can be called at the module level and used out of the box,
     which allows some more flexibility, ease of use and doesn't require the user to know
     about the PlotlyTA class.
 
     Parameters
     ----------
-    charting_settings : ChartingSettings
-        Charting settings.
     data : Union[pd.DataFrame, pd.Series]
         Data to be plotted.
     indicators : Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]], optional
@@ -48,9 +46,8 @@ def to_chart(
     Tuple[OpenBBFigure, Dict[str, Any]]
         Tuple containing the OpenBBFigure and the plotly json representation of the chart.
     """
-
     try:
-        ta = PlotlyTA(charting_settings=charting_settings)
+        ta = PlotlyTA()
         fig = ta.plot(
             df_stock=data,
             indicators=indicators,
