@@ -3,6 +3,7 @@ from re import sub
 from typing import (
     TYPE_CHECKING,
     Any,
+    Callable,
     ClassVar,
     Dict,
     Generic,
@@ -258,45 +259,12 @@ class OBBject(Tagged, Generic[T]):
             del results["index"]
         return results
 
-    def to_chart(self, **kwargs):
-        """
-        Create or update the `Chart`.
-
-        This function assumes that the provided data is a time series, if it's not, it will
-        most likely result in an Exception.
-
-        Note that the `chart` attribute is composed by: `content`, `format` and `fig`.
-
-        Parameters
-        ----------
-        **kwargs
-            Keyword arguments to be passed to the charting extension.
-            This implies that the user has some knowledge on the charting extension API.
-            This is the case because the charting extension may vary on user preferences.
-
-        Returns
-        -------
-        chart.fig
-            The chart figure.
-        """
-        #  pylint: disable=import-outside-toplevel
-        # Avoids circular import
-        from openbb_core.app.charting_service import ChartingService
-
-        cs = ChartingService()
-        kwargs["data"] = self.to_dataframe()
-
-        self.chart = cs.to_chart(**kwargs)
-        return self.chart.fig
-
     def show(self):
         """Display chart."""
-        if not self.chart or not self.chart.fig:
-            raise OpenBBError(
-                "Chart not found. "
-                "Please compute the chart first by using the `chart=True` argument."
-            )
-        self.chart.fig.show()
+        if not self.chart or not hasattr(self.chart, "fig"):
+            raise OpenBBError("Chart not found.")
+        show_function: Callable = getattr(self.chart, "show")
+        show_function()
 
     @classmethod
     async def from_query(cls, query: "Query") -> "OBBject":
