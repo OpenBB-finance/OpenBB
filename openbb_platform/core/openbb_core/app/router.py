@@ -215,6 +215,8 @@ class Router:
         api_router = self._api_router
 
         model = kwargs.pop("model", "")
+        deprecation_message = kwargs.pop("deprecation_message", None)
+
         if model:
             kwargs["response_model_exclude_unset"] = True
             kwargs["openapi_extra"] = {"model": model}
@@ -252,6 +254,15 @@ class Router:
                     },
                 },
             )
+
+            # For custom deprecation messages
+            if kwargs.get("deprecated", False):
+                if deprecation_message:
+                    kwargs["summary"] = deprecation_message
+                else:
+                    kwargs[
+                        "summary"
+                    ] = "This functionality will be deprecated in the future releases."
 
             api_router.add_api_route(**kwargs)
 
