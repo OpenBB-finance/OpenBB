@@ -480,12 +480,12 @@ class MethodDefinition:
     @staticmethod
     def is_deprecated_function(path: str) -> bool:
         """Check if the function is deprecated."""
-        return PathHandler.build_route_map()[path].deprecated
+        return getattr(PathHandler.build_route_map()[path], "deprecated", False)
 
     @staticmethod
     def get_deprecation_message(path: str) -> str:
         """Get the deprecation message."""
-        return PathHandler.build_route_map()[path].summary
+        return getattr(PathHandler.build_route_map()[path], "summary", "")
 
     @staticmethod
     def reorder_params(params: Dict[str, Parameter]) -> "OrderedDict[str, Parameter]":
@@ -693,8 +693,8 @@ class MethodDefinition:
 
         if MethodDefinition.is_deprecated_function(path):
             deprecation_message = MethodDefinition.get_deprecation_message(path)
-            code += "        from warnings import warn\n"
-            code += f"""        warn("{deprecation_message}")\n\n"""
+            code += "        from warnings import warn, simplefilter; simplefilter('always', DeprecationWarning)\n"
+            code += f"""        warn("{deprecation_message}", category=DeprecationWarning, stacklevel=2)\n\n"""
 
         code += "        return self._run(\n"
         code += f"""            "{path}",\n"""
