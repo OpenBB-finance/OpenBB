@@ -34,6 +34,7 @@ from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
 from openbb_core.app.charting_service import ChartingService
+from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap, RouterLoader
@@ -110,16 +111,22 @@ class PackageBuilder:
 
     def _get_extension_map(self) -> Dict[str, List[str]]:
         """Get map of extensions available at build time."""
-        groups = ("openbb_core_extension", "openbb_provider_extension")
-        ext_map = {
-            g: sorted(
-                [
-                    f"{e.name}@{getattr(e.dist, 'version', '')}"
-                    for e in entry_points(group=g)
-                ]
-            )
-            for g in groups
-        }
+        el = ExtensionLoader()
+        ext_map: Dict[str, List[str]] = {}
+
+        groups = [
+            OpenBBGroups.core.value,
+            OpenBBGroups.provider.value,
+        ]
+        entry_points_ = [
+            el.core_entry_points,
+            el.provider_entry_points,
+        ]
+
+        for group, entry_point in zip(groups, entry_points_):
+            ext_map[group] = [
+                f"{e.name}@{getattr(e.dist, 'version', '')}" for e in entry_point
+            ]
         return ext_map
 
     def _save_extension_map(self, ext_map: Dict[str, List[str]]) -> None:
