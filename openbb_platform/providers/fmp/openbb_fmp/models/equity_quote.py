@@ -27,19 +27,13 @@ class FMPEquityQuoteData(EquityQuoteData):
     __alias_dict__ = {
         "price_avg50": "priceAvg50",
         "price_avg200": "priceAvg200",
-        "last_time": "timestamp",
+        "last_timestamp": "timestamp",
         "high": "dayHigh",
         "low": "dayLow",
         "last_price": "price",
         "change_percent": "changesPercentage",
         "prev_close": "previousClose",
     }
-    year_high: Optional[float] = Field(
-        default=None, description="Highest price of the equity in the last 52 weeks."
-    )
-    year_low: Optional[float] = Field(
-        default=None, description="Lowest price of the equity in the last 52 weeks."
-    )
     price_avg50: Optional[float] = Field(
         default=None, description="50 day moving average price."
     )
@@ -62,9 +56,9 @@ class FMPEquityQuoteData(EquityQuoteData):
         default=None, description="Upcoming earnings announcement date."
     )
 
-    @field_validator("date", mode="before", check_fields=False)
+    @field_validator("last_timestamp", mode="before", check_fields=False)
     @classmethod
-    def date_validate(cls, v):  # pylint: disable=E0213
+    def validate_last_timestamp(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         v = int(v) if isinstance(v, str) else v
         return datetime.utcfromtimestamp(int(v)).replace(tzinfo=timezone.utc)

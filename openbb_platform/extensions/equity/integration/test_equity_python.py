@@ -1051,7 +1051,10 @@ def test_equity_price_quote(params, obb):
 @parametrize(
     "params",
     [
-        ({"provider": "intrinio", "symbol": "AAPL"}),
+        ({"symbol": "AAPL", "provider": "cboe"}),
+        ({"symbol": "MSFT", "provider": "intrinio"}),
+        ({"symbol": "AAPL,MSFT", "provider": "cboe"}),
+        ({"symbol": "AAPL,MSFT", "provider": "intrinio"}),
     ],
 )
 @pytest.mark.integration
@@ -1363,7 +1366,7 @@ def test_equity_fundamental_historical_eps(params, obb):
 
 @parametrize(
     "params",
-    [({"provider": "tiingo", "symbol": "AAPL"})],
+    [({"provider": "tiingo", "symbol": "AAPL", "limit": 10})],
 )
 @pytest.mark.integration
 def test_equity_fundamental_trailing_dividend_yield(params, obb):
