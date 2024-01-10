@@ -83,7 +83,7 @@ Before moving forward, please take a look at the high-level view of the OpenBB P
 
 The Standardization Framework is a set of tools and guidelines that enable the user to query and obtain data in a consistent way across multiple providers.
 
-Each data model should inherit from a [standard data](platform/core/provider/standard_models) model that is already defined inside the OpenBB Platform. All standard models are created and maintained by the OpenBB team.
+Each data model should inherit from a [standard data](/platform/data_models) model that is already defined inside the OpenBB Platform. All standard models are created and maintained by the OpenBB team.
 
 Usage of these models will unlock a set of perks that are only available to standardized data, namely:
 
