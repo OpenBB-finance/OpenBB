@@ -21,5 +21,9 @@ def tests(session):
     session.install("pytest")
     session.install("pytest-cov")
     session.run(
+        "export",
+        "OPENBB_AUTO_BUILD=false",
+    )
+    session.run(
         "pytest", *test_locations, "--cov=openbb_platform/", "-m", "not integration"
     )
