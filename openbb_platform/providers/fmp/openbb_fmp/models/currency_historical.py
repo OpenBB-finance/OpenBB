@@ -14,6 +14,8 @@ from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_fmp.utils.helpers import get_data_many, get_querystring
 from pydantic import Field
 
+# noqa: W0613
+
 
 class FMPCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
     """FMP Currency Historical Price Query.
