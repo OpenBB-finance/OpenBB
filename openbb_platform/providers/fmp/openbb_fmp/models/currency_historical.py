@@ -100,4 +100,12 @@ class FMPCurrencyHistoricalFetcher(
         query: FMPCurrencyHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPCurrencyHistoricalData]:
         """Return the transformed data."""
+        # pylint: disable=unused-argument
+        data = [
+            d
+            for d in data
+            if d.get("vwap") != 0
+            and d.get("change") != 0
+            and d.get("changeOverTime") != 0
+        ]
         return [FMPCurrencyHistoricalData.model_validate(d) for d in data]
