@@ -18,7 +18,7 @@ labels:
     files:
       - "openbb_platform/.*"
 
-  - label: "enhancements"
+  - label: "enhancement"
     branch: "^feature/.*"
 
   - label: "bug"
