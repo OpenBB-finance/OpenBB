@@ -24,18 +24,16 @@ export default function TemplateCard({
           <img
             className="w-full h-auto mb-0 mt-0"
             src={imageUrl}
-            alt="template"
+            alt={title}
           />
         </div>
         <div className="flex flex-col ml-5" style={{ width: "60%" }}>
           <p className="font-bold text-lg my-0 text-grey-900 dark:text-grey-200">
             {title}
           </p>
-          {description ? (
-            <p className="text-grey-900 dark:text-grey-200 text-xs font-medium mt-2 mb-0 leading-5">
-              {description}
-            </p>
-          ) : null}
+          <p className="text-grey-900 dark:text-grey-200 text-xs font-medium mt-2 mb-0 leading-5">
+            {description}
+          </p>
           <div className="flex-grow flex items-end justify-start mt-5">
             <button
               onClick={() => (window.location.href = downloadUrl)}
