@@ -39,7 +39,7 @@ class CompanyNewsData(Data):
     symbols: str = Field(
         min_length=1,
         description=DATA_DESCRIPTIONS.get("symbols", "")
-        + " Here it is a separated list of symbols.",
+        + " Comma separated list of symbols.",
     )
     date: datetime = Field(
         description=DATA_DESCRIPTIONS.get("date", "")

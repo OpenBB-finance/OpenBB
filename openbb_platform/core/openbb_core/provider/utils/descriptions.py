@@ -2,6 +2,7 @@
 
 QUERY_DESCRIPTIONS = {
     "symbol": "Symbol to get data for.",
+    "symbols": "Symbols to get data for.",
     "start_date": "Start date of the data, in YYYY-MM-DD format.",
     "end_date": "End date of the data, in YYYY-MM-DD format.",
     "interval": "Time interval of the data to return.",
