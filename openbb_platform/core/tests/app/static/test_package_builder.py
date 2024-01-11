@@ -302,7 +302,10 @@ def test_build_command_method_body(method_definition):
 
     with patch(
         "openbb_core.app.static.package_builder.MethodDefinition.is_data_processing_function",
-        **{"return_value": False},
+        return_value=False,
+    ), patch(
+        "openbb_core.app.static.package_builder.MethodDefinition.is_deprecated_function",
+        return_value=False,
     ):
         output = method_definition.build_command_method_body(
             path="openbb_core.app.static.container.Container", func=some_func
@@ -321,7 +324,10 @@ def test_build_command_method(method_definition):
 
     with patch(
         "openbb_core.app.static.package_builder.MethodDefinition.is_data_processing_function",
-        **{"return_value": False},
+        return_value=False,
+    ), patch(
+        "openbb_core.app.static.package_builder.MethodDefinition.is_deprecated_function",
+        return_value=False,
     ):
         output = method_definition.build_command_method(
             path="openbb_core.app.static.container.Container",
