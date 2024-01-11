@@ -37,7 +37,14 @@ async def historical(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="PriceTargetConsensus")
+@router.command(
+    model="PriceTargetConsensus",
+    deprecated=True,
+    deprecation_message="The functionality of this endpoint has been replaced by the"
+    " `equity.estimates.ratings` endpoint."
+    " In the future, this endpoint will not cease to exist but breaking changes might be introduced,"
+    " i.e., removing currently supported providers and adding new ones.",
+)
 async def consensus(
     cc: CommandContext,
     provider_choices: ProviderChoices,
