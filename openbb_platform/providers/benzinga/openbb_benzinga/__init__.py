@@ -1,6 +1,6 @@
 """Benzinga provider module."""
-from openbb_benzinga.models.price_target import BenzingaPriceTargetFetcher
 from openbb_benzinga.models.company_news import BenzingaCompanyNewsFetcher
+from openbb_benzinga.models.price_target import BenzingaPriceTargetFetcher
 from openbb_benzinga.models.world_news import BenzingaWorldNewsFetcher
 from openbb_core.provider.abstract.provider import Provider
 

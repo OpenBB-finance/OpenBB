@@ -129,7 +129,8 @@ class BenzingaPriceTargetData(PriceTargetData):
         "",
     ] = Field(
         default=None,
-        description="Description of the change in rating from firm's last rating. Note that all of these terms are precisely defined.",
+        description="Description of the change in rating from firm's last rating."
+        "Note that all of these terms are precisely defined.",
     )
     action_pt: Literal[
         "Announces", "Maintains", "Lowers", "Raises", "Removes", "Adjusts", ""
