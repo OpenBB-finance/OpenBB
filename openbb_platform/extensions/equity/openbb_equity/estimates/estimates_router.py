@@ -53,3 +53,14 @@ async def consensus(
 ) -> OBBject[BaseModel]:
     """Price Target Consensus. Price target consensus data."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(model="AnalystRatings")
+async def ratings(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Analyst ratings data."""
+    return await OBBject.from_query(Query(**locals()))

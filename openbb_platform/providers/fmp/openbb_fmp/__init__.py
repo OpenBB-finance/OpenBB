@@ -2,6 +2,7 @@
 
 from openbb_core.provider.abstract.provider import Provider
 from openbb_fmp.models.analyst_estimates import FMPAnalystEstimatesFetcher
+from openbb_fmp.models.analyst_ratings import FMPAnalystRatingsFetcher
 from openbb_fmp.models.available_indices import FMPAvailableIndicesFetcher
 from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
 from openbb_fmp.models.balance_sheet_growth import FMPBalanceSheetGrowthFetcher
@@ -123,5 +124,6 @@ fmp_provider = Provider(
         "ShareStatistics": FMPShareStatisticsFetcher,
         "TreasuryRates": FMPTreasuryRatesFetcher,
         "WorldNews": FMPWorldNewsFetcher,
+        "AnalystRatings": FMPAnalystRatingsFetcher,
     },
 )
