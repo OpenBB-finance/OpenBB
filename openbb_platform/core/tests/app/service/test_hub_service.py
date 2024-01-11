@@ -6,7 +6,6 @@
 from unittest.mock import MagicMock, patch
 
 import pytest
-from openbb_core.app.model.hub.features_keys import FeaturesKeys
 from openbb_core.app.service.hub_service import (
     Credentials,
     HubService,
@@ -175,11 +174,11 @@ def test_put_user_settings():
 def test_hub2platform():
     """Test hub2platform."""
     mock_user_settings = MagicMock(spec=HubUserSettings)
-    mock_user_settings.features_keys = FeaturesKeys(
-        API_KEY_FINANCIALMODELINGPREP="fmp",
-        API_POLYGON_KEY="polygon",
-        API_FRED_KEY="fred",
-    )
+    mock_user_settings.features_keys = {
+        "API_KEY_FINANCIALMODELINGPREP": "fmp",
+        "API_POLYGON_KEY": "polygon",
+        "API_FRED_KEY": "fred",
+    }
 
     credentials = HubService.hub2platform(mock_user_settings)
     assert isinstance(credentials, Credentials)
@@ -190,13 +189,14 @@ def test_hub2platform():
 
 def test_platform2hub():
     """Test platform2hub."""
-    mock_credentials = MagicMock(spec=Credentials)
-    mock_credentials.fmp_api_key = SecretStr("fmp")
-    mock_credentials.polygon_api_key = SecretStr("polygon")
-    mock_credentials.fred_api_key = SecretStr("fred")
+    mock_credentials = Credentials(
+        fmp_api_key=SecretStr("fmp"),
+        polygon_api_key=SecretStr("polygon"),
+        fred_api_key=SecretStr("fred"),
+    )
 
     user_settings = HubService.platform2hub(mock_credentials)
     assert isinstance(user_settings, HubUserSettings)
-    assert user_settings.features_keys.API_KEY_FINANCIALMODELINGPREP == "fmp"
-    assert user_settings.features_keys.API_POLYGON_KEY == "polygon"
-    assert user_settings.features_keys.API_FRED_KEY == "fred"
+    assert user_settings.features_keys["fmp_api_key"] == "fmp"
+    assert user_settings.features_keys["polygon_api_key"] == "polygon"
+    assert user_settings.features_keys["fred_api_key"] == "fred"
