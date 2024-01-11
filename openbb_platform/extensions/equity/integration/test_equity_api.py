@@ -261,10 +261,11 @@ def test_equity_fundamental_historical_splits(params, headers):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "provider": "fmp"}),
         (
             {
                 "symbol": "AAPL",
+                "start_date": "2021-01-01",
+                "end_date": "2023-06-06",
                 "limit": 100,
                 "provider": "intrinio",
             }
@@ -274,14 +275,19 @@ def test_equity_fundamental_historical_splits(params, headers):
                 "symbol": "AAPL",
                 "start_date": "2021-01-01",
                 "end_date": "2023-06-06",
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "limit": 3,
                 "provider": "intrinio",
             }
         ),
         (
             {
                 "symbol": "AAPL",
-                "start_date": "2021-01-01",
-                "end_date": "2023-06-06",
                 "provider": "fmp",
             }
         ),
