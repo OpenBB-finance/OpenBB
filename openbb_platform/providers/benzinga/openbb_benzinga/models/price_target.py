@@ -1,20 +1,20 @@
-"""Benzinga Analyst Ratings Model."""
+"""Benzinga Price Target Model."""
 
 import math
 from copy import deepcopy
 from typing import Any, Dict, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.analyst_ratings import (
-    AnalystRatingsData,
-    AnalystRatingsQueryParams,
+from openbb_core.provider.standard_models.price_target import (
+    PriceTargetData,
+    PriceTargetQueryParams,
 )
 from openbb_core.provider.utils.helpers import amake_requests, get_querystring
 from pydantic import Field, PrivateAttr, model_validator
 
 
-class BenzingaAnalystRatingsQueryParams(AnalystRatingsQueryParams):
-    """Benzinga Analyst Ratings Query.
+class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
+    """Benzinga Price Target Query.
 
     Source: https://docs.benzinga.io/benzinga-apis/calendar/get-ratings
     """
@@ -84,8 +84,8 @@ class BenzingaAnalystRatingsQueryParams(AnalystRatingsQueryParams):
     @model_validator(mode="after")
     @classmethod
     def assemble_parameters(
-        cls, values: "BenzingaAnalystRatingsQueryParams"
-    ) -> "BenzingaAnalystRatingsQueryParams":
+        cls, values: "BenzingaPriceTargetQueryParams"
+    ) -> "BenzingaPriceTargetQueryParams":
         """Assemble the parameters private attribute."""
         model_fields = values.model_fields
 
@@ -105,26 +105,26 @@ class BenzingaAnalystRatingsQueryParams(AnalystRatingsQueryParams):
         return values
 
 
-class BenzingaAnalystRatingsData(AnalystRatingsData):
-    """Benzinga Analyst Ratings Data."""
+class BenzingaPriceTargetData(PriceTargetData):
+    """Benzinga Price Target Data."""
 
 
-class BenzingaAnalystRatingsFetcher(
+class BenzingaPriceTargetFetcher(
     Fetcher[
-        BenzingaAnalystRatingsQueryParams,
-        BenzingaAnalystRatingsData,
+        BenzingaPriceTargetQueryParams,
+        BenzingaPriceTargetData,
     ]
 ):
     """Transform the query, extract and transform the data from the Benzinga endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> BenzingaAnalystRatingsQueryParams:
+    def transform_query(params: Dict[str, Any]) -> BenzingaPriceTargetQueryParams:
         """Transform the query params."""
-        return BenzingaAnalystRatingsQueryParams(**params)
+        return BenzingaPriceTargetQueryParams(**params)
 
     @staticmethod
     async def aextract_data(
-        query: BenzingaAnalystRatingsQueryParams,
+        query: BenzingaPriceTargetQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict:
@@ -152,11 +152,9 @@ class BenzingaAnalystRatingsFetcher(
     # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        query: BenzingaAnalystRatingsQueryParams,
+        query: BenzingaPriceTargetQueryParams,
         data: Dict,
         **kwargs: Any,
-    ) -> BenzingaAnalystRatingsData:
+    ) -> BenzingaPriceTargetData:
         """Return the transformed data."""
-        return [
-            BenzingaAnalystRatingsData.model_validate(d) for d in data[0]["ratings"]
-        ]
+        return [BenzingaPriceTargetData.model_validate(d) for d in data[0]["ratings"]]
