@@ -1,5 +1,4 @@
 import Link from "@docusaurus/Link";
-import clsx from "clsx";
 import React from "react";
 
 export default function TemplateCard({
@@ -14,18 +13,10 @@ export default function TemplateCard({
   downloadUrl: string;
 }) {
   return (
-    <Link
-      className={clsx(
-        "rounded-lg p-5 !bg-grey-100 dark:!bg-black !text-white !no-underline relative overflow-hidden"
-      )}
-    >
+    <Link className="rounded-lg p-5 !bg-grey-100 dark:!bg-black !text-white !no-underline relative overflow-hidden">
       <div className="flex">
         <div style={{ width: "40%" }}>
-          <img
-            className="w-full h-auto mb-0 mt-0"
-            src={imageUrl}
-            alt={title}
-          />
+          <img className="w-full h-auto mb-0 mt-0" src={imageUrl} alt={title} />
         </div>
         <div className="flex flex-col ml-5" style={{ width: "60%" }}>
           <p className="font-bold text-lg my-0 text-grey-900 dark:text-grey-200">
