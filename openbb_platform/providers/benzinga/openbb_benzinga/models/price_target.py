@@ -2,6 +2,7 @@
 
 import math
 from copy import deepcopy
+from datetime import datetime
 from typing import Any, Dict, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -10,7 +11,7 @@ from openbb_core.provider.standard_models.price_target import (
     PriceTargetQueryParams,
 )
 from openbb_core.provider.utils.helpers import amake_requests, get_querystring
-from pydantic import Field, PrivateAttr, model_validator
+from pydantic import Field, PrivateAttr, field_validator, model_validator
 
 
 class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
@@ -21,6 +22,7 @@ class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
 
     __alias_dict__ = {
         "limit": "pageSize",
+        "symbol": "parameters[tickers]",
     }
 
     fields: Optional[str] = Field(
@@ -40,11 +42,6 @@ class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
     )
     date_to: Optional[str] = Field(
         default=None, description="Date to query to point in time.", is_parameters=True
-    )
-    tickers: Optional[str] = Field(
-        default=None,
-        description="Comma-separated list of tickers to filter by.",
-        is_parameters=True,
     )
     importance: Optional[int] = Field(
         default=None, description="Importance level to filter by.", is_parameters=True
@@ -107,6 +104,99 @@ class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
 
 class BenzingaPriceTargetData(PriceTargetData):
     """Benzinga Price Target Data."""
+
+    __alias_dict__ = {
+        "symbol": "ticker",
+        "published_date": "date",
+        "news_url": "url_news",
+        "adj_price_target": "adjusted_pt_current",
+        "analyst_name": "analyst",
+        "price_target": "pt_current",
+    }
+
+    action_company: Literal[
+        "Downgrades",
+        "Maintains",
+        "Reinstates",
+        "Reiterates",
+        "Upgrades",
+        "Assumes",
+        "Initiates Coverage On",
+        "Terminates Coverage On",
+        "Removes",
+        "Suspends",
+        "Firm Dissolved",
+        "",
+    ] = Field(
+        default=None,
+        description="Description of the change in rating from firm's last rating. Note that all of these terms are precisely defined.",
+    )
+    action_pt: Literal[
+        "Announces", "Maintains", "Lowers", "Raises", "Removes", "Adjusts", ""
+    ] = Field(
+        default=None,
+        description="Description of the change in price target from firm's last price target.",
+    )
+    adjusted_pt_prior: str = Field(
+        default=None,
+        description="Analyst's prior price target, adjusted to account for stock splits and stock dividends."
+        " If none are applicable, the pt_prior value is used.",
+    )
+    analyst_id: str = Field(default=None, description="Id of the analyst.")
+    currency: str = Field(
+        default=None, description="Currency the data is denominated in."
+    )
+    exchange: str = Field(default=None, description="Exchange of the price target.")
+    id: str = Field(default=None, description="Unique ID of this entry.")
+    importance: Literal[0, 1, 2, 3, 4, 5] = Field(
+        default=None,
+        description="Subjective Basis of How Important Event is to Market. 5 = High",
+    )
+    notes: str = Field(default=None, description="Notes of the price target.")
+    pt_prior: str = Field(default=None, description="Analyst's prior price target.")
+    rating_current: str = Field(
+        default=None, description="The analyst's rating for the company."
+    )
+    rating_prior: str = Field(
+        default=None, description="Prior analyst rating for the company."
+    )
+    ratings_accuracy: str = Field(
+        default=None, description="Ratings accuracy of the price target."
+    )
+    time: str = Field(default=None, description="Last updated timestamp, UTC.")
+    updated: int = Field(default=None, description="Last updated timestamp, UTC.")
+    url: str = Field(
+        default=None,
+        description="URL for analyst ratings page for this ticker on Benzinga.com.",
+    )
+    url_calendar: str = Field(
+        default=None,
+        description="URL for analyst ratings page for this ticker on Benzinga.com.",
+    )
+    name: str = Field(
+        default=None, description="Name of company that is subject of rating."
+    )
+
+    @field_validator("published_date", mode="before", check_fields=False)
+    @classmethod
+    def parse_date(cls, v: str) -> datetime:
+        """Parse the date field."""
+        if v:
+            v = datetime.strptime(v, "%Y-%m-%d")
+
+        return v
+
+    @field_validator("adj_price_target", mode="before", check_fields=False)
+    @classmethod
+    def parse_adj_price_target(cls, v: str) -> float:
+        """Parse the adj_price_target field."""
+        return float(v) if v else 0.0
+
+    @field_validator("price_target", mode="before", check_fields=False)
+    @classmethod
+    def parse_price_target(cls, v: str) -> float:
+        """Parse the price_target field."""
+        return float(v) if v else 0.0
 
 
 class BenzingaPriceTargetFetcher(
