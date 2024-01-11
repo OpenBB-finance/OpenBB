@@ -6,6 +6,7 @@ from datetime import date
 import pytest
 from openbb_core.app.service.user_service import UserService
 from openbb_fmp.models.analyst_estimates import FMPAnalystEstimatesFetcher
+from openbb_fmp.models.analyst_ratings import FMPAnalystRatingsFetcher
 from openbb_fmp.models.available_indices import FMPAvailableIndicesFetcher
 from openbb_fmp.models.balance_sheet import FMPBalanceSheetFetcher
 from openbb_fmp.models.balance_sheet_growth import FMPBalanceSheetGrowthFetcher
@@ -618,5 +619,14 @@ def test_fmp_calendar_earnings_fetcher(credentials=test_credentials):
         "end_date": date(2023, 1, 10),
     }
     fetcher = FMPCalendarEarningsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_analyst_ratings_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = FMPAnalystRatingsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
