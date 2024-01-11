@@ -23,8 +23,12 @@ class SearchFinancialAttributesData(Data):
 
     id: str = Field(description="ID of the financial attribute.")
     name: str = Field(description="Name of the financial attribute.")
-    tag: str = Field(description="Tag of the financial attribute.")
-    statement_code: str = Field(description="Code of the financial statement.")
+    tag: Optional[str] = Field(
+        default=None, description="Tag of the financial attribute."
+    )
+    statement_code: Optional[str] = Field(
+        default=None, description="Code of the financial statement."
+    )
     statement_type: Optional[str] = Field(
         default=None, description="Type of the financial statement."
     )

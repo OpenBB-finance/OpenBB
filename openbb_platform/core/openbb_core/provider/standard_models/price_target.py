@@ -53,10 +53,3 @@ class PriceTargetData(Data):
     news_base_url: Optional[str] = Field(
         default=None, description="News base URL of the price target."
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])

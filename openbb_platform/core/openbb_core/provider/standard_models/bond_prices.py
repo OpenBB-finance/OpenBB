@@ -96,7 +96,7 @@ class BondPricesData(Data):
     coupon_rate: Optional[float] = Field(
         default=None,
         description="Coupon rate of the bond, as a normalized percentage.",
-        json_schema_extra={"x-frontendmultiply": 100},
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     price: Optional[float] = Field(
         default=None,
@@ -105,17 +105,17 @@ class BondPricesData(Data):
     current_yield: Optional[float] = Field(
         default=None,
         description="Current yield of the bond, as a normalized percentage.",
-        json_schema_extra={"x-frontendmultiply": 100},
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     ytm: Optional[float] = Field(
         default=None,
         description="Yield to maturity of the bond, as a normalized percentage.",
-        json_schema_extra={"x-frontendmultiply": 100},
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     ytw: Optional[float] = Field(
         default=None,
         description="Yield to worst of the bond, as a normalized percentage.",
-        json_schema_extra={"x-frontendmultiply": 100},
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     duration: Optional[float] = Field(
         default=None,

@@ -45,13 +45,21 @@ class FuturesHistoricalData(Data):
     """Futures Historical Price Data."""
 
     date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    open: float = Field(description=DATA_DESCRIPTIONS.get("open", ""))
-    high: float = Field(description=DATA_DESCRIPTIONS.get("high", ""))
-    low: float = Field(description=DATA_DESCRIPTIONS.get("low", ""))
+    open: Optional[float] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("open", "")
+    )
+    high: Optional[float] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("high", "")
+    )
+    low: Optional[float] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("low", "")
+    )
     close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: float = Field(description=DATA_DESCRIPTIONS.get("volume", ""))
+    volume: Optional[Union[int,float]] = Field(
+        default= None, description=DATA_DESCRIPTIONS.get("volume", "")
+    )
 
-    @field_validator("symbol", mode="before", check_fields=False)
+    @field_validator("date", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):
         """Return formatted datetime."""

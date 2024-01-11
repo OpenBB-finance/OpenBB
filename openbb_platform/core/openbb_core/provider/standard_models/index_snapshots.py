@@ -43,5 +43,7 @@ class IndexSnapshotsData(Data):
     )
     change: Optional[float] = Field(default=None, description="Change of the index.")
     change_percent: Optional[float] = Field(
-        default=None, description="Change percent of the index."
+        default=None,
+        description="Change in the index level, as a normalized percentage.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )

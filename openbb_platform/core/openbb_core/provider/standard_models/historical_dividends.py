@@ -30,5 +30,5 @@ class HistoricalDividendsQueryParams(QueryParams):
 class HistoricalDividendsData(Data):
     """Historical Dividends Data."""
 
-    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    dividend: float = Field(description="Dividend of the historical dividends.")
+    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", "") + " (Ex-Date)")
+    dividend: float = Field(description="The amount paid per share.")

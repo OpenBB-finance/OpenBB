@@ -1,5 +1,5 @@
 """OECD Nominal GDP Model."""
-
+# pylint: disable=unused-argument
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional, Union
 
@@ -8,6 +8,7 @@ from openbb_core.provider.standard_models.gdp_nominal import (
     GdpNominalData,
     GdpNominalQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_oecd.utils import constants, helpers
 from pydantic import Field, field_validator
 
@@ -21,7 +22,11 @@ class OECDGdpNominalQueryParams(GdpNominalQueryParams):
     country: GDPCountriesLiteral = Field(
         description="Country to get GDP for.", default="united_states"
     )
-
+    units: Literal["usd", "usd_cap"] = Field(
+        default="usd",
+        description=QUERY_DESCRIPTIONS.get("units", "")
+        + " Units to get nominal GDP in. Either usd or usd_cap indicating per capita.",
+    )
 
 class OECDGdpNominalData(GdpNominalData):
     """OECD Nominal GDP Data."""

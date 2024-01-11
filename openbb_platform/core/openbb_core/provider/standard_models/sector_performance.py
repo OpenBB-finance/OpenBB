@@ -14,4 +14,7 @@ class SectorPerformanceData(Data):
     """Sector Performance Data."""
 
     sector: str = Field(description="The name of the sector.")
-    change_percent: float = Field(description="The change in percent from open.")
+    change_percent: float = Field(
+        description="The change, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )

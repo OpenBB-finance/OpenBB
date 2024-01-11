@@ -30,4 +30,8 @@ class IORBData(Data):
     """IORB Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: Optional[float] = Field(description="IORB rate.")
+    rate: Optional[float] = Field(
+        default=None,
+        description="IORB rate.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )

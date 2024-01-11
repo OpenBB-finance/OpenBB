@@ -40,8 +40,8 @@ class SpotRateQueryParams(QueryParams):
         for i in v:
             if not isinstance(i, float):
                 raise ValueError("`maturity` must be a float")
-            if not 1 <= i <= 100:
-                raise ValueError("`maturity` must be between 1 and 100")
+            if not 0 <= i <= 100:
+                raise ValueError("`maturity` must be between 0 and 100")
         return v
 
 
@@ -49,4 +49,8 @@ class SpotRateData(Data):
     """Spot Rate Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: Optional[float] = Field(description="Spot Rate.")
+    rate: Optional[float] = Field(
+        default=None,
+        description="Spot Rate.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )

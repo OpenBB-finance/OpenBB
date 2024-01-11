@@ -38,5 +38,5 @@ class EuropeanCentralBankInterestRatesData(Data):
     rate: Optional[float] = Field(
         default=None,
         description="European Central Bank Interest Rate.",
-        json_schema_extra={"x-frontendmultiply": 100},
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )

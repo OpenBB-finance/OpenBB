@@ -31,4 +31,8 @@ class SONIAData(Data):
     """SONIA Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: Optional[float] = Field(description="SONIA rate.")
+    rate: Optional[float] = Field(
+        default=None,
+        description="SONIA rate.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )

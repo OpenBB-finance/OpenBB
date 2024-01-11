@@ -27,4 +27,7 @@ class IndexSectorsData(Data):
     """Index Sectors Data."""
 
     sector: str = Field(description="The sector name.")
-    weight: float = Field(description="The weight of the sector in the index.")
+    weight: float = Field(
+        description="The weight of the sector in the index.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )

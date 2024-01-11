@@ -33,8 +33,9 @@ class USTreasuryPricesData(Data):
         description="The type of US Treasury security. Bill, Note, Bond, TIPS, FRN."
     )
     rate: Optional[float] = Field(
-        description="The annualized interest rate or coupon of the security.",
+        description="The annualized interest rate or coupon of the security, as a normalized percent.",
         default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     maturity_date: dateType = Field(description="The maturity date of the security.")
     call_date: Optional[dateType] = Field(

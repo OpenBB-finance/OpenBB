@@ -28,18 +28,66 @@ class TreasuryRatesQueryParams(QueryParams):
 
 
 class TreasuryRatesData(Data):
-    """Treasury Rates Data."""
+    """Treasury Rates Data. All rates are a normalized percent."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    month_1: Optional[float] = Field(description="1 month treasury rate.", default=None)
-    month_2: Optional[float] = Field(description="2 month treasury rate.", default=None)
-    month_3: Optional[float] = Field(description="3 month treasury rate.", default=None)
-    month_6: Optional[float] = Field(description="6 month treasury rate.", default=None)
-    year_1: Optional[float] = Field(description="1 year treasury rate.", default=None)
-    year_2: Optional[float] = Field(description="2 year treasury rate.", default=None)
-    year_3: Optional[float] = Field(description="3 year treasury rate.", default=None)
-    year_5: Optional[float] = Field(description="5 year treasury rate.", default=None)
-    year_7: Optional[float] = Field(description="7 year treasury rate.", default=None)
-    year_10: Optional[float] = Field(description="10 year treasury rate.", default=None)
-    year_20: Optional[float] = Field(description="20 year treasury rate.", default=None)
-    year_30: Optional[float] = Field(description="30 year treasury rate.", default=None)
+    month_1: Optional[float] = Field(
+        description="1 month treasury rate.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    month_2: Optional[float] = Field(
+        description="2 month treasury rate.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    month_3: Optional[float] = Field(
+        description="3 month treasury rate.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    month_6: Optional[float] = Field(
+        description="6 month treasury rate.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    year_1: Optional[float] = Field(
+        description="1 year treasury rate.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    year_2: Optional[float] = Field(
+        description="2 year treasury rate.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    year_3: Optional[float] = Field(
+        description="3 year treasury rate.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    year_5: Optional[float] = Field(
+        description="5 year treasury rate.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    year_7: Optional[float] = Field(
+        description="7 year treasury rate.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    year_10: Optional[float] = Field(
+        description="10 year treasury rate.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    year_20: Optional[float] = Field(
+        description="20 year treasury rate.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    year_30: Optional[float] = Field(
+        description="30 year treasury rate.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )

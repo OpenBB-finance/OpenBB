@@ -34,7 +34,7 @@ class HighQualityMarketCorporateBondData(Data):
     rate: Optional[float] = Field(
         default=None,
         description="HighQualityMarketCorporateBond Rate.",
-        json_schema_extra={"x-frontendmultiply": 100},
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     maturity: str = Field(description="Maturity.")
     yield_curve: Optional[Literal["spot", "par"]] = Field(

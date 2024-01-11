@@ -1,8 +1,8 @@
 """Income Statement Growth Standard Model."""
 
-
+import warnings
 from datetime import date as dateType
-from typing import List, Literal, Optional, Set, Union
+from typing import List, Optional, Set, Union
 
 from pydantic import Field, field_validator
 
@@ -13,108 +13,164 @@ from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
 
+_warn = warnings.warn
 
 class IncomeStatementGrowthQueryParams(QueryParams):
     """Income Statement Growth Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    limit: int = Field(default=10, description=QUERY_DESCRIPTIONS.get("limit", ""))
-    period: Literal["annual", "quarter"] = Field(
+    period: str = Field(
         default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
     )
+    limit: int = Field(default=10, description=QUERY_DESCRIPTIONS.get("limit", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+    def upper_symbol(cls, v: str):
         """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+        if "," in v:
+            _warn(
+                f"{QUERY_DESCRIPTIONS.get('symbol_list_warning', '')} {v.split(',')[0].upper()}"
+            )
+        return v.split(",")[0].upper() if "," in v else v.upper()
 
 
 class IncomeStatementGrowthData(Data):
-    """Income Statement Growth Data."""
+    """Income Statement Growth Data. All values are normalized percent changes from the previous period."""
 
     symbol: Optional[str] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    period: str = Field(description="Period the statement is returned for.")
-    growth_revenue: float = Field(description="Growth rate of total revenue.")
-    growth_cost_of_revenue: float = Field(
-        description="Growth rate of cost of goods sold."
+    period_ending: dateType = Field(description="Data for the fiscal period ending.")
+    fiscal_year: Optional[int] = Field(default= None, description="Fiscal year of the fiscal period.")
+    fiscal_period: Optional[str] = Field(default=None, description="Fiscal period of the fiscal year.")
+    growth_revenue: Optional[float] = Field(
+        default= None,
+        description="Growth rate of total revenue.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_gross_profit: float = Field(description="Growth rate of gross profit.")
-    growth_gross_profit_ratio: float = Field(
-        description="Growth rate of gross profit as a percentage of revenue."
+    growth_cost_of_revenue: Optional[float] = Field(
+        default=None,
+        description="Growth rate of cost of goods sold.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_research_and_development_expenses: float = Field(
-        description="Growth rate of expenses on research and development."
+    growth_gross_profit: Optional[float] = Field(
+        default=None,
+        description="Growth rate of gross profit.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_general_and_administrative_expenses: float = Field(
-        description="Growth rate of general and administrative expenses."
+    growth_gross_profit_ratio: Optional[float] = Field(
+        default=None,
+        description="Growth rate of gross profit as a percentage of revenue.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_selling_and_marketing_expenses: float = Field(
-        description="Growth rate of expenses on selling and marketing activities."
+    growth_research_and_development_expenses: Optional[float] = Field(
+        default=None,
+        description="Growth rate of expenses on research and development.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_other_expenses: float = Field(
-        description="Growth rate of other operating expenses."
+    growth_general_and_administrative_expenses: Optional[float] = Field(
+        default=None,
+        description="Growth rate of general and administrative expenses.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_operating_expenses: float = Field(
-        description="Growth rate of total operating expenses."
+    growth_selling_and_marketing_expenses: Optional[float] = Field(
+        default=None,
+        description="Growth rate of expenses on selling and marketing activities.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_cost_and_expenses: float = Field(
-        description="Growth rate of total costs and expenses."
+    growth_other_expenses: Optional[float] = Field(
+        default=None,
+        description="Growth rate of other operating expenses.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_interest_expense: float = Field(
-        description="Growth rate of interest expenses."
+    growth_operating_expenses: Optional[float] = Field(
+        default=None,
+        description="Growth rate of total operating expenses.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_depreciation_and_amortization: float = Field(
-        description="Growth rate of depreciation and amortization expenses."
+    growth_cost_and_expenses: Optional[float] = Field(
+        default=None,
+        description="Growth rate of total costs and expenses.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_ebitda: float = Field(
-        description="Growth rate of Earnings Before Interest, Taxes, Depreciation, and Amortization."
+    growth_interest_expense: Optional[float] = Field(
+        default=None,
+        description="Growth rate of interest expenses.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_ebitda_ratio: float = Field(
-        description="Growth rate of EBITDA as a percentage of revenue."
+    growth_depreciation_and_amortization: Optional[float] = Field(
+        default=None,
+        description="Growth rate of depreciation and amortization expenses.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_operating_income: float = Field(
-        description="Growth rate of operating income."
+    growth_ebitda: Optional[float] = Field(
+        default=None,
+        description="Growth rate of Earnings Before Interest, Taxes, Depreciation, and Amortization.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_operating_income_ratio: float = Field(
-        description="Growth rate of operating income as a percentage of revenue."
+    growth_ebitda_ratio: Optional[float] = Field(
+        default=None,
+        description="Growth rate of EBITDA as a percentage of revenue.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_total_other_income_expenses_net: float = Field(
-        description="Growth rate of net total other income and expenses."
+    growth_operating_income: Optional[float] = Field(
+        default=None,
+        description="Growth rate of operating income.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_income_before_tax: float = Field(
-        description="Growth rate of income before taxes."
+    growth_operating_income_ratio: Optional[float] = Field(
+        default=None,
+        description="Growth rate of operating income as a percentage of revenue.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_income_before_tax_ratio: float = Field(
-        description="Growth rate of income before taxes as a percentage of revenue."
+    growth_total_other_income_expenses_net: Optional[float] = Field(
+        default=None,
+        description="Growth rate of net total other income and expenses.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_income_tax_expense: float = Field(
-        description="Growth rate of income tax expenses."
+    growth_income_before_tax: Optional[float] = Field(
+        default=None,
+        description="Growth rate of income before taxes.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_net_income: float = Field(description="Growth rate of net income.")
-    growth_net_income_ratio: float = Field(
-        description="Growth rate of net income as a percentage of revenue."
+    growth_income_before_tax_ratio: Optional[float] = Field(
+        default=None,
+        description="Growth rate of income before taxes as a percentage of revenue.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_eps: float = Field(description="Growth rate of Earnings Per Share (EPS).")
-    growth_eps_diluted: float = Field(
-        description="Growth rate of diluted Earnings Per Share (EPS)."
+    growth_income_tax_expense: Optional[float] = Field(
+        default=None,
+        description="Growth rate of income tax expenses.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_weighted_average_shs_out: float = Field(
-        description="Growth rate of weighted average shares outstanding."
+    growth_net_income: Optional[float] = Field(
+        default=None,
+        description="Growth rate of net income.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_weighted_average_shs_out_dil: float = Field(
-        description="Growth rate of diluted weighted average shares outstanding."
+    growth_net_income_ratio: Optional[float] = Field(
+        default=None,
+        description="Growth rate of net income as a percentage of revenue.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)]) if v else None
+    growth_eps: Optional[float] = Field(
+        default=None,
+        description="Growth rate of Earnings Per Share (EPS).",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    growth_eps_diluted: Optional[float] = Field(
+        default=None,
+        description="Growth rate of diluted Earnings Per Share (EPS).",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    growth_weighted_average_shares_outstanding: Optional[float] = Field(
+        default=None,
+        description="Growth rate of weighted average shares outstanding.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    growth_weighted_average_diluted_shares: Optional[float] = Field(
+        default=None,
+        description="Growth rate of diluted weighted average shares outstanding.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )

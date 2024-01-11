@@ -25,7 +25,7 @@ class SelectedTreasuryBillQueryParams(QueryParams):
         default=None,
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
-    maturity: Optional[Literal["3m", "6m"]] = Field(
+    maturity: Optional[str] = Field(
         default="3m",
         description="The maturity",
     )
@@ -35,4 +35,8 @@ class SelectedTreasuryBillData(Data):
     """Selected Treasury Bill Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    rate: Optional[float] = Field(description="SelectedTreasuryBill Rate.")
+    rate: Optional[float] = Field(
+        default=None,
+        description="The rate, as a normailzed percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )

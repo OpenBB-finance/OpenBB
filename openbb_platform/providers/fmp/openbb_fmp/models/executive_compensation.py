@@ -10,7 +10,7 @@ from openbb_core.provider.standard_models.executive_compensation import (
 )
 from openbb_core.provider.utils.helpers import amake_requests
 from openbb_fmp.utils.helpers import response_callback
-from pydantic import field_validator
+from pydantic import Field, field_validator
 
 
 class FMPExecutiveCompensationQueryParams(ExecutiveCompensationQueryParams):

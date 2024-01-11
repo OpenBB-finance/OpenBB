@@ -32,5 +32,5 @@ class EUYieldCurveData(Data):
     rate: Optional[float] = Field(
         default=None,
         description="Yield curve rate.",
-        json_schema_extra={"x-frontendmultiply": 100},
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )

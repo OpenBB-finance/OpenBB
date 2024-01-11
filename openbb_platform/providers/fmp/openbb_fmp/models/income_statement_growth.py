@@ -1,15 +1,16 @@
 """FMP Income Statement Growth Model."""
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.income_statement_growth import (
     IncomeStatementGrowthData,
     IncomeStatementGrowthQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_fmp.utils.helpers import create_url, get_data_many
-from pydantic import field_validator
+from pydantic import Field, field_validator
 
 
 class FMPIncomeStatementGrowthQueryParams(IncomeStatementGrowthQueryParams):
@@ -18,15 +19,24 @@ class FMPIncomeStatementGrowthQueryParams(IncomeStatementGrowthQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/financial-statements-growth-api/
     """
 
+    period: Literal["annual", "quarter"] = Field(
+        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
+    )
+
 
 class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
     """FMP Income Statement Growth Data."""
 
     __alias_dict__ = {
+        "fiscal_year": "calendarYear",
+        "fiscal_period": "period",
+        "period_ending": "date",
         "growth_ebitda": "growthEBITDA",
         "growth_ebitda_ratio": "growthEBITDARatio",
         "growth_eps": "growthEPS",
         "growth_eps_diluted": "growthEPSDiluted",
+        "growth_weighted_average_shares_outstanding": "growthWeightedAverageShsOut",
+        "growth_weighted_average_diluted_shares": "growthWeightedAverageShsOutDil",
     }
 
     @field_validator("date", mode="before", check_fields=False)

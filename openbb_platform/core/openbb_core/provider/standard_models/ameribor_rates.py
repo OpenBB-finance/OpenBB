@@ -34,5 +34,5 @@ class AMERIBORData(Data):
     rate: Optional[float] = Field(
         default=None,
         description="AMERIBOR rate as a normalized percentage. (e.g. 0.0001 == 0.01%)",
-        json_schema_extra={"x-frontendmultiply": 100},
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )

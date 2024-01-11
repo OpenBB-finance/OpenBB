@@ -47,6 +47,10 @@ MOODY_TO_OPTIONS = {
 class FREDMoodyCorporateBondIndexQueryParams(MoodyCorporateBondIndexQueryParams):
     """FRED Moody Corporate Bond Index Query."""
 
+    index_type: Literal["aaa", "baa"] = Field(
+        default="aaa",
+        description="The type of series.",
+    )
     spread: Optional[Literal["treasury", "fed_funds"]] = Field(
         default=None, description="The type of spread."
     )

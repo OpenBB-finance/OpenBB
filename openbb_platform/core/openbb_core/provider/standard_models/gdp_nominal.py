@@ -1,6 +1,6 @@
 """Nominal GDP Standard Model."""
 from datetime import date as dateType
-from typing import Literal, Optional
+from typing import Optional
 
 from pydantic import Field
 
@@ -15,11 +15,6 @@ from openbb_core.provider.utils.descriptions import (
 class GdpNominalQueryParams(QueryParams):
     """Nominal GDP Query."""
 
-    units: Literal["usd", "usd_cap"] = Field(
-        default="usd",
-        description=QUERY_DESCRIPTIONS.get("units", "")
-        + " Units to get nominal GDP in. Either usd or usd_cap indicating per capita.",
-    )
     start_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
     )

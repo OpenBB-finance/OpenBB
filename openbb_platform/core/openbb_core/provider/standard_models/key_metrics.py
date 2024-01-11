@@ -1,6 +1,7 @@
 """Key Metrics Standard Model."""
 
-from typing import List, Literal, Optional, Set, Union
+from datetime import date as dateType
+from typing import List, Optional, Set, Union
 
 from pydantic import Field, field_validator
 
@@ -16,7 +17,7 @@ class KeyMetricsQueryParams(QueryParams):
     """Key Metrics Query."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
-    period: Optional[Literal["annual", "quarter"]] = Field(
+    period: Optional[str] = Field(
         default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
     )
     limit: Optional[int] = Field(
@@ -38,17 +39,12 @@ class KeyMetricsData(Data):
     symbol: Optional[str] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
+    period_ending: dateType = Field(description="Data for the fiscal period ending.")
+    fiscal_year: Optional[int] = Field(default= None, description="Fiscal year of the fiscal period.")
+    fiscal_period: Optional[str] = Field(default=None, description="Fiscal period of the fiscal year.")
     market_cap: Optional[float] = Field(
         default=None, description="Market capitalization"
     )
     pe_ratio: Optional[float] = Field(
         default=None, description="Price-to-earnings ratio (P/E ratio)"
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)]) if v else None

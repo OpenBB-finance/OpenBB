@@ -30,5 +30,5 @@ class EtfSectorsData(Data):
     weight: Optional[float] = Field(
         default=None,
         description="Exposure of the ETF to the sector in normalized percentage points.",
-        json_schema_extra={"x-frontendmultiply": 100},
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )

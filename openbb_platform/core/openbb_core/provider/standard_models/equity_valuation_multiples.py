@@ -116,12 +116,12 @@ class EquityValuationMultiplesData(Data):
     earnings_yield_ttm: Optional[float] = Field(
         default=None,
         description="Earnings yield calculated as trailing twelve months.",
-        json_schema_extra={"x-frontendmultiply": 100},
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     free_cash_flow_yield_ttm: Optional[float] = Field(
         default=None,
         description="Free cash flow yield calculated as trailing twelve months.",
-        json_schema_extra={"x-frontendmultiply": 100},
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     debt_to_equity_ttm: Optional[float] = Field(
         default=None,
@@ -148,7 +148,7 @@ class EquityValuationMultiplesData(Data):
     dividend_yield_ttm: Optional[float] = Field(
         default=None,
         description="Dividend yield calculated as trailing twelve months.",
-        json_schema_extra={"x-frontendmultiply": 100},
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     dividend_to_market_cap_ttm: Optional[float] = Field(
         default=None,
@@ -195,12 +195,12 @@ class EquityValuationMultiplesData(Data):
     roic_ttm: Optional[float] = Field(
         default=None,
         description="Return on invested capital calculated as trailing twelve months.",
-        json_schema_extra={"x-frontendmultiply": 100},
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     return_on_tangible_assets_ttm: Optional[float] = Field(
         default=None,
         description="Return on tangible assets calculated as trailing twelve months.",
-        json_schema_extra={"x-frontendmultiply": 100},
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     graham_net_net_ttm: Optional[float] = Field(
         default=None,
@@ -261,7 +261,7 @@ class EquityValuationMultiplesData(Data):
     roe_ttm: Optional[float] = Field(
         default=None,
         description="Return on equity calculated as trailing twelve months.",
-        json_schema_extra={"x-frontendmultiply": 100},
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     capex_per_share_ttm: Optional[float] = Field(
         default=None,

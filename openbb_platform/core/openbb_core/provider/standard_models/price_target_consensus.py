@@ -42,10 +42,3 @@ class PriceTargetConsensusData(Data):
     target_median: Optional[float] = Field(
         default=None, description="Median target of the price target consensus."
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])

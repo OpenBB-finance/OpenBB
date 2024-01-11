@@ -4,7 +4,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -12,7 +12,7 @@ from openbb_core.provider.standard_models.key_metrics import (
     KeyMetricsData,
     KeyMetricsQueryParams,
 )
-from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
@@ -27,6 +27,10 @@ class FMPKeyMetricsQueryParams(KeyMetricsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/company-key-metrics-api/
     """
 
+    period: Optional[Literal["annual", "quarter"]] = Field(
+        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
+    )
+
     with_ttm: Optional[bool] = Field(
         default=False, description="Include trailing twelve months (TTM) data."
     )
@@ -35,11 +39,12 @@ class FMPKeyMetricsQueryParams(KeyMetricsQueryParams):
 class FMPKeyMetricsData(KeyMetricsData):
     """FMP Key Metrics Data."""
 
-    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    period: str = Field(description="Period of the data.")
-    calendar_year: Optional[ForceInt] = Field(
-        default=None, description="Calendar year."
-    )
+    __alias_dict__ = {
+        "period_ending": "date",
+        "fiscal_period": "period",
+        "fiscal_year": "calendarYear",
+    }
+
     revenue_per_share: Optional[float] = Field(
         default=None, description="Revenue per share"
     )
@@ -117,7 +122,11 @@ class FMPKeyMetricsData(KeyMetricsData):
         default=None, description="Interest coverage"
     )
     income_quality: Optional[float] = Field(default=None, description="Income quality")
-    dividend_yield: Optional[float] = Field(default=None, description="Dividend yield")
+    dividend_yield: Optional[float] = Field(
+        default=None,
+        description="Dividend yield",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
     payout_ratio: Optional[float] = Field(default=None, description="Payout ratio")
     sales_general_and_administrative_to_revenue: Optional[float] = Field(
         default=None,
@@ -145,10 +154,14 @@ class FMPKeyMetricsData(KeyMetricsData):
     )
     graham_number: Optional[float] = Field(default=None, description="Graham number")
     roic: Optional[float] = Field(
-        default=None, description="Return on invested capital"
+        default=None,
+        description="Return on invested capital",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     return_on_tangible_assets: Optional[float] = Field(
-        default=None, description="Return on tangible assets"
+        default=None,
+        description="Return on tangible assets",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     graham_net_net: Optional[float] = Field(
         default=None, description="Graham net-net working capital"
@@ -192,7 +205,11 @@ class FMPKeyMetricsData(KeyMetricsData):
     inventory_turnover: Optional[float] = Field(
         default=None, description="Inventory turnover"
     )
-    roe: Optional[float] = Field(default=None, description="Return on equity")
+    roe: Optional[float] = Field(
+        default=None,
+        description="Return on equity",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
     capex_per_share: Optional[float] = Field(
         default=None, description="Capital expenditures per share"
     )

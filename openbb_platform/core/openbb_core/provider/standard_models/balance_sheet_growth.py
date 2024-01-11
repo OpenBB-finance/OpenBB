@@ -1,8 +1,8 @@
 """Balance Sheet Statement Growth Standard Model."""
 
-
+import warnings
 from datetime import date as dateType
-from typing import List, Optional, Set, Union
+from typing import Optional
 
 from pydantic import Field, field_validator
 
@@ -13,126 +13,229 @@ from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
 
+_warn = warnings.warn
 
 class BalanceSheetGrowthQueryParams(QueryParams):
-    """Balance Sheet Statement Growth Query."""
+    """Balance Sheet Statement Growth Query. All values are normalized percent changes from the previous period."""
 
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    period: str = Field(
+        default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
+    )
     limit: int = Field(default=10, description=QUERY_DESCRIPTIONS.get("limit", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+    @classmethod
+    def upper_symbol(cls, v: str):
         """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+        if "," in v:
+            _warn(
+                f"{QUERY_DESCRIPTIONS.get('symbol_list_warning', '')} {v.split(',')[0].upper()}"
+            )
+        return v.split(",")[0].upper() if "," in v else v.upper()
 
 
 class BalanceSheetGrowthData(Data):
-    """Balance Sheet Statement Growth Data."""
+    """Balance Sheet Statement Growth Data. All values are normalized percent changes from the previous period."""
 
     symbol: Optional[str] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
-    period: str = Field(description="Reporting period.")
-    growth_cash_and_cash_equivalents: float = Field(
-        description="Growth rate of cash and cash equivalents."
+    period_ending: dateType = Field(description="Data for the fiscal period ending.")
+    fiscal_year: Optional[int] = Field(default= None, description="Fiscal year of the fiscal period.")
+    fiscal_period: Optional[str] = Field(default=None, description="Fiscal period of the fiscal year.")
+    growth_cash_and_cash_equivalents: Optional[float] = Field(
+        default=None,
+        description="Growth rate of cash and cash equivalents.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_short_term_investments: float = Field(
-        description="Growth rate of short-term investments."
+    growth_short_term_investments: Optional[float] = Field(
+        default=None,
+        description="Growth rate of short-term investments.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_cash_and_short_term_investments: float = Field(
-        description="Growth rate of cash and short-term investments."
+    growth_cash_and_short_term_investments: Optional[float] = Field(
+        default=None,
+        description="Growth rate of cash and short-term investments.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_net_receivables: float = Field(description="Growth rate of net receivables.")
-    growth_inventory: float = Field(description="Growth rate of inventory.")
-    growth_other_current_assets: float = Field(
-        description="Growth rate of other current assets."
+    growth_net_receivables: Optional[float] = Field(
+        default=None,
+        description="Growth rate of net receivables.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_total_current_assets: float = Field(
-        description="Growth rate of total current assets."
+    growth_inventory: Optional[float] = Field(
+        default=None,
+        description="Growth rate of inventory.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_property_plant_equipment_net: float = Field(
-        description="Growth rate of net property, plant, and equipment."
+    growth_other_current_assets: Optional[float] = Field(
+        default=None,
+        description="Growth rate of other current assets.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_goodwill: float = Field(description="Growth rate of goodwill.")
-    growth_intangible_assets: float = Field(
-        description="Growth rate of intangible assets."
+    growth_total_current_assets: Optional[float] = Field(
+        default=None,
+        description="Growth rate of total current assets.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_goodwill_and_intangible_assets: float = Field(
-        description="Growth rate of goodwill and intangible assets."
+    growth_property_plant_equipment_net: Optional[float] = Field(
+        default=None,
+        description="Growth rate of net property, plant, and equipment.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_long_term_investments: float = Field(
-        description="Growth rate of long-term investments."
+    growth_goodwill: Optional[float] = Field(
+        default=None,
+        description="Growth rate of goodwill.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_tax_assets: float = Field(description="Growth rate of tax assets.")
-    growth_other_non_current_assets: float = Field(
-        description="Growth rate of other non-current assets."
+    growth_intangible_assets: Optional[float] = Field(
+        default=None,
+        description="Growth rate of intangible assets.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_total_non_current_assets: float = Field(
-        description="Growth rate of total non-current assets."
+    growth_goodwill_and_intangible_assets: Optional[float] = Field(
+        default=None,
+        description="Growth rate of goodwill and intangible assets.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_other_assets: float = Field(description="Growth rate of other assets.")
-    growth_total_assets: float = Field(description="Growth rate of total assets.")
-    growth_account_payables: float = Field(
-        description="Growth rate of accounts payable."
+    growth_long_term_investments: Optional[float] = Field(
+        default=None,
+        description="Growth rate of long-term investments.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_short_term_debt: float = Field(description="Growth rate of short-term debt.")
-    growth_tax_payables: float = Field(description="Growth rate of tax payables.")
-    growth_deferred_revenue: float = Field(
-        description="Growth rate of deferred revenue."
+    growth_tax_assets: Optional[float] = Field(
+        default=None,
+        description="Growth rate of tax assets.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_other_current_liabilities: float = Field(
-        description="Growth rate of other current liabilities."
+    growth_other_non_current_assets: Optional[float] = Field(
+        default=None,
+        description="Growth rate of other non-current assets.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_total_current_liabilities: float = Field(
-        description="Growth rate of total current liabilities."
+    growth_total_non_current_assets: Optional[float] = Field(
+        default=None,
+        description="Growth rate of total non-current assets.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_long_term_debt: float = Field(description="Growth rate of long-term debt.")
-    growth_deferred_revenue_non_current: float = Field(
-        description="Growth rate of non-current deferred revenue."
+    growth_other_assets: Optional[float] = Field(
+        default=None,
+        description="Growth rate of other assets.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_deferrred_tax_liabilities_non_current: float = Field(
-        description="Growth rate of non-current deferred tax liabilities."
+    growth_total_assets: Optional[float] = Field(
+        default=None,
+        description="Growth rate of total assets.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_other_non_current_liabilities: float = Field(
-        description="Growth rate of other non-current liabilities."
+    growth_account_payables: Optional[float] = Field(
+        default=None,
+        description="Growth rate of accounts payable.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_total_non_current_liabilities: float = Field(
-        description="Growth rate of total non-current liabilities."
+    growth_short_term_debt: Optional[float] = Field(
+        default=None,
+        description="Growth rate of short-term debt.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_other_liabilities: float = Field(
-        description="Growth rate of other liabilities."
+    growth_tax_payables: Optional[float] = Field(
+        default=None,
+        description="Growth rate of tax payables.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_total_liabilities: float = Field(
-        description="Growth rate of total liabilities."
+    growth_deferred_revenue: Optional[float] = Field(
+        default=None,
+        description="Growth rate of deferred revenue.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_common_stock: float = Field(description="Growth rate of common stock.")
-    growth_retained_earnings: float = Field(
-        description="Growth rate of retained earnings."
+    growth_other_current_liabilities: Optional[float] = Field(
+        default=None,
+        description="Growth rate of other current liabilities.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_accumulated_other_comprehensive_income_loss: float = Field(
-        description="Growth rate of accumulated other comprehensive income/loss."
+    growth_total_current_liabilities: Optional[float] = Field(
+        default=None,
+        description="Growth rate of total current liabilities.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_othertotal_stockholders_equity: float = Field(
-        description="Growth rate of other total stockholders' equity."
+    growth_long_term_debt: Optional[float] = Field(
+        default=None,
+        description="Growth rate of long-term debt.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_total_stockholders_equity: float = Field(
-        description="Growth rate of total stockholders' equity."
+    growth_deferred_revenue_non_current: Optional[float] = Field(
+        default=None,
+        description="Growth rate of non-current deferred revenue.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_total_liabilities_and_stockholders_equity: float = Field(
-        description="Growth rate of total liabilities and stockholders' equity."
+    growth_deferrred_tax_liabilities_non_current: Optional[float] = Field(
+        default=None,
+        description="Growth rate of non-current deferred tax liabilities.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_total_investments: float = Field(
-        description="Growth rate of total investments."
+    growth_other_non_current_liabilities: Optional[float] = Field(
+        default=None,
+        description="Growth rate of other non-current liabilities.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    growth_total_debt: float = Field(description="Growth rate of total debt.")
-    growth_net_debt: float = Field(description="Growth rate of net debt.")
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)]) if v else None
+    growth_total_non_current_liabilities: Optional[float] = Field(
+        default=None,
+        description="Growth rate of total non-current liabilities.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    growth_other_liabilities: Optional[float] = Field(
+        default=None,
+        description="Growth rate of other liabilities.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    growth_total_liabilities: Optional[float] = Field(
+        default=None,
+        description="Growth rate of total liabilities.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    growth_common_stock: Optional[float] = Field(
+        default=None,
+        description="Growth rate of common stock.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    growth_retained_earnings: Optional[float] = Field(
+        default=None,
+        description="Growth rate of retained earnings.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    growth_accumulated_other_comprehensive_income: Optional[float] = Field(
+        default=None,
+        description="Growth rate of accumulated other comprehensive income/loss.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    growth_other_total_shareholders_equity: Optional[float] = Field(
+        default=None,
+        description="Growth rate of other total shareholders' equity.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    growth_total_shareholders_equity: Optional[float] = Field(
+        default=None,
+        description="Growth rate of total shareholders' equity.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    growth_total_liabilities_and_shareholders_equity: Optional[float] = Field(
+        default=None,
+        description="Growth rate of total liabilities and shareholders' equity.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    growth_total_investments: Optional[float] = Field(
+        default=None,
+        description="Growth rate of total investments.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    growth_total_debt: Optional[float] = Field(
+        default=None,
+        description="Growth rate of total debt.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    growth_net_debt: Optional[float] = Field(
+        default=None,
+        description="Growth rate of net debt.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
