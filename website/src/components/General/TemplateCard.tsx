@@ -14,7 +14,7 @@ export default function TemplateCard({
 }) {
   return (
     <Link className="rounded-lg p-5 !bg-grey-100 dark:!bg-black !text-white !no-underline relative overflow-hidden">
-      <div className="flex">
+      <div className="flex min-h-[212px]">
         <div style={{ width: "40%" }}>
           <img className="w-full h-auto mb-0 mt-0" src={imageUrl} alt={title} />
         </div>
