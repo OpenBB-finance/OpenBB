@@ -37,9 +37,9 @@ Examples:
 3. Getting the earnings calendar:
 
     ```excel
-    =OBB.EQUITY.CALENDAR.IPO(;;"2023-11-20")
+    =OBB.EQUITY.CALENDAR.IPO(;"2023-11-20")
     ```
 
 :::tip
-If you want to skip a parameter just use semi-colon (or comma depending on your number separator) without any value. In example iii. we are skipping the first parameter (provider) and the second parameter (symbol).
+If you want to skip a parameter use semi-colon (or comma depending on your number separator) without any value. In example iii. we are skipping the first parameter (symbol).
 :::
