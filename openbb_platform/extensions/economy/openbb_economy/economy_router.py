@@ -108,3 +108,17 @@ async def unemployment(
 ) -> OBBject[BaseModel]:
     """Global unemployment data."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(model="CLI")
+async def composite_leading_indicator(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """The composite leading indicator (CLI) is designed to provide early signals of turning points
+    in business cycles showing fluctuation of the economic activity around its long term potential level.
+    CLIs show short-term economic movements in qualitative rather than quantitative terms.
+    """
+    return await OBBject.from_query(Query(**locals()))

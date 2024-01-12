@@ -67,3 +67,18 @@ def test_oecd_unemployment_fetcher(credentials=test_credentials):
     fetcher = OECDUnemploymentFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
+
+
+from openbb_oecd.models.composite_leading_indicator import OECDCLIFetcher
+
+
+@pytest.mark.record_http
+def test_oecdcli_fetcher(credentials=test_credentials):
+    params = {
+        "start_date": datetime.date(2023, 1, 1),
+        "end_date": datetime.date(2023, 6, 6),
+    }
+
+    fetcher = OECDCLIFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None

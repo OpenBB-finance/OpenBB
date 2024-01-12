@@ -1,5 +1,6 @@
 """OECD provider module."""
 from openbb_core.provider.abstract.provider import Provider
+from openbb_oecd.models.composite_leading_indicator import OECDCLIFetcher
 from openbb_oecd.models.gdp_forecast import OECDGdpForecastFetcher
 from openbb_oecd.models.gdp_nominal import OECDGdpNominalFetcher
 from openbb_oecd.models.gdp_real import OECDGdpRealFetcher
@@ -14,5 +15,6 @@ oecd_provider = Provider(
         "GdpReal": OECDGdpRealFetcher,
         "GdpForecast": OECDGdpForecastFetcher,
         "Unemployment": OECDUnemploymentFetcher,
+        "CLI": OECDCLIFetcher,
     },
 )
