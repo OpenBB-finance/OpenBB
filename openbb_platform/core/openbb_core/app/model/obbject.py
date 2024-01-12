@@ -1,4 +1,8 @@
 """The OBBject."""
+import warnings
+from functools import wraps
+from importlib import import_module
+from inspect import signature
 from re import sub
 from typing import (
     TYPE_CHECKING,
@@ -20,10 +24,11 @@ from pydantic import BaseModel, Field
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
-from openbb_core.app.model.abstract.warning import Warning_
+from openbb_core.app.model.abstract.warning import OpenBBWarning, Warning_
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.query import Query
 from openbb_core.app.utils import basemodel_to_df
+from openbb_core.env import Env
 from openbb_core.provider.abstract.data import Data
 
 if TYPE_CHECKING:
@@ -60,6 +65,40 @@ class OBBject(Tagged, Generic[T]):
     )
     _credentials: ClassVar[Optional[BaseModel]] = None
     _accessors: ClassVar[Set[str]] = set()
+
+    def __init__(self, **kwargs: Any) -> None:
+        """Initialize OBBject."""
+        super().__init__(**kwargs)
+        self.init_to_chart()
+
+    @classmethod
+    def init_to_chart(cls):
+        """Initialize to_chart method."""
+
+        def change_signature(new_signature):
+            def decorator(func):
+                @wraps(func)
+                def wrapper(*args, **kwargs):
+                    return func(*args, **kwargs)
+
+                wrapper.__signature__ = new_signature
+                return wrapper
+
+            return decorator
+
+        try:
+            openbb_charting = import_module(Env().CHARTING_EXTENSION)
+
+            to_chart = getattr(openbb_charting, "to_chart")
+            to_chart_signature = signature(to_chart)
+
+            cls.to_chart = change_signature(to_chart_signature)(cls.to_chart)
+        except Exception as e:
+            if Env().DEBUG_MODE:
+                warnings.warn(
+                    message=e,
+                    category=OpenBBWarning,
+                )
 
     def __repr__(self) -> str:
         """Human readable representation of the object."""
@@ -331,7 +370,9 @@ class OBBject(Tagged, Generic[T]):
         from openbb_core.app.charting_service import ChartingService
 
         cs = ChartingService()
-        kwargs["data"] = self.to_dataframe()
+
+        if not kwargs.get("data", False):
+            kwargs["data"] = self.to_dataframe()
 
         self.chart = cs.to_chart(**kwargs)
         return self.chart.fig
