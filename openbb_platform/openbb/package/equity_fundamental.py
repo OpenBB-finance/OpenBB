@@ -941,7 +941,7 @@ class ROUTER_equity_fundamental(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp", "intrinio"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "tmx"]] = None,
         **kwargs
     ) -> OBBject:
         """Historical Dividends. Historical dividends data for a given company.
@@ -950,7 +950,7 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp', 'intrinio']]
+        provider : Optional[Literal['fmp', 'intrinio', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -962,7 +962,7 @@ class ROUTER_equity_fundamental(Container):
         OBBject
             results : List[HistoricalDividends]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[Literal['fmp', 'intrinio', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -982,9 +982,11 @@ class ROUTER_equity_fundamental(Container):
         adj_dividend : Optional[float]
             Adjusted dividend of the historical dividends. (provider: fmp)
         record_date : Optional[date]
-            Record date of the historical dividends. (provider: fmp)
+            Record date of the historical dividends. (provider: fmp);
+            The record date of ownership for rights to the dividend. (provider: tmx)
         payment_date : Optional[date]
-            Payment date of the historical dividends. (provider: fmp)
+            Payment date of the historical dividends. (provider: fmp);
+            The date the dividend is paid. (provider: tmx)
         declaration_date : Optional[date]
             Declaration date of the historical dividends. (provider: fmp)
         factor : Optional[float]
@@ -993,6 +995,10 @@ class ROUTER_equity_fundamental(Container):
             The currency of the dividend. (provider: intrinio)
         split_ratio : Optional[float]
             The ratio of the stock split, if a stock split occurred. (provider: intrinio)
+        currency : Optional[str]
+            The currency the dividend is paid in. (provider: tmx)
+        decalaration_date : Optional[date]
+            The date of the announcement. (provider: tmx)
 
         Example
         -------
@@ -1105,7 +1111,7 @@ class ROUTER_equity_fundamental(Container):
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        provider: Optional[Literal["fmp", "intrinio", "sec"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "sec", "tmx"]] = None,
         **kwargs
     ) -> OBBject:
         """Company Filings. Company filings data.
@@ -1118,14 +1124,16 @@ class ROUTER_equity_fundamental(Container):
             Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types.
         limit : int
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio', 'sec']]
+        provider : Optional[Literal['fmp', 'intrinio', 'sec', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         start_date : Optional[datetime.date]
-            Start date of the data, in YYYY-MM-DD format. (provider: intrinio)
+            Start date of the data, in YYYY-MM-DD format. (provider: intrinio);
+            The start date to fetch. (provider: tmx)
         end_date : Optional[datetime.date]
-            End date of the data, in YYYY-MM-DD format. (provider: intrinio)
+            End date of the data, in YYYY-MM-DD format. (provider: intrinio);
+            The end date to fetch. (provider: tmx)
         thea_enabled : Optional[bool]
             Return filings that have been read by Intrinio's Thea NLP. (provider: intrinio)
         cik : Optional[Union[str, int]]
@@ -1140,7 +1148,7 @@ class ROUTER_equity_fundamental(Container):
         OBBject
             results : List[CompanyFilings]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'sec']]
+            provider : Optional[Literal['fmp', 'intrinio', 'sec', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -1198,11 +1206,14 @@ class ROUTER_equity_fundamental(Container):
         is_xbrl : Optional[Union[str, int]]
             Whether the filing is an XBRL filing. (provider: sec)
         size : Optional[Union[str, int]]
-            The size of the filing. (provider: sec)
+            The size of the filing. (provider: sec);
+            The file size of the PDF document. (provider: tmx)
         complete_submission_url : Optional[str]
             The URL to the complete filing submission. (provider: sec)
         filing_detail_url : Optional[str]
             The URL to the filing details. (provider: sec)
+        description : Optional[str]
+            The description of the filing. (provider: tmx)
 
         Example
         -------

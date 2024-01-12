@@ -463,7 +463,7 @@ class ROUTER_fixedincome_government(Container):
                 description="A specific date to get data for. No date will return the current posted data."
             ),
         ] = None,
-        provider: Optional[Literal["government_us"]] = None,
+        provider: Optional[Literal["government_us", "tmx"]] = None,
         **kwargs
     ) -> OBBject:
         """Government Treasury Prices by date.
@@ -472,7 +472,7 @@ class ROUTER_fixedincome_government(Container):
         ----------
         date : Optional[datetime.date]
             A specific date to get data for. No date will return the current posted data.
-        provider : Optional[Literal['government_us']]
+        provider : Optional[Literal['government_us', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'government_us' if there is
             no default.
@@ -480,13 +480,27 @@ class ROUTER_fixedincome_government(Container):
             Filter by CUSIP. (provider: government_us)
         security_type : Literal[None, 'bill', 'note', 'bond', 'tips', 'frn']
             Filter by security type. (provider: government_us)
+        govt_type : Literal['federal', 'provincial', 'municipal']
+            The level of government issuer. (provider: tmx)
+        issue_date_min : Optional[datetime.date]
+            Filter by the minimum original issue date. (provider: tmx)
+        issue_date_max : Optional[datetime.date]
+            Filter by the maximum original issue date. (provider: tmx)
+        last_traded_min : Optional[datetime.date]
+            Filter by the minimum last trade date. (provider: tmx)
+        maturity_date_min : Optional[datetime.date]
+            Filter by the minimum maturity date. (provider: tmx)
+        maturity_date_max : Optional[datetime.date]
+            Filter by the maximum maturity date. (provider: tmx)
+        use_cache : bool
+            All bond data is sourced from a single JSON file that is updated daily. The file is cached for one day to eliminate downloading more than once. Caching will significantly speed up subsequent queries. To bypass, set to False. (provider: tmx)
 
         Returns
         -------
         OBBject
             results : List[TreasuryPrices]
                 Serializable results.
-            provider : Optional[Literal['government_us']]
+            provider : Optional[Literal['government_us', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

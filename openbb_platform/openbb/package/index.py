@@ -19,6 +19,7 @@ class ROUTER_index(Container):
     european_constituents
     market
     search
+    sectors
     snapshots
     sp500_multiples
     """
@@ -28,25 +29,29 @@ class ROUTER_index(Container):
 
     @validate
     def available(
-        self, provider: Optional[Literal["cboe", "fmp", "yfinance"]] = None, **kwargs
+        self,
+        provider: Optional[Literal["cboe", "fmp", "tmx", "yfinance"]] = None,
+        **kwargs
     ) -> OBBject:
         """Available Indices. Available indices for a given provider.
 
         Parameters
         ----------
-        provider : Optional[Literal['cboe', 'fmp', 'yfinance']]
+        provider : Optional[Literal['cboe', 'fmp', 'tmx', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
         europe : bool
             Filter for European indices. False for US indices. (provider: cboe)
+        use_cache : bool
+            Whether to use a cached request. Index data is from a single JSON file, updated each day after close. It is cached for one day. To bypass, set to False. (provider: tmx)
 
         Returns
         -------
         OBBject
             results : List[AvailableIndices]
                 Serializable results.
-            provider : Optional[Literal['cboe', 'fmp', 'yfinance']]
+            provider : Optional[Literal['cboe', 'fmp', 'tmx', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -66,7 +71,7 @@ class ROUTER_index(Container):
         region : Optional[str]
             Region for the index. Valid only for European indices (provider: cboe)
         symbol : Optional[str]
-            Symbol for the index. (provider: cboe, yfinance)
+            Symbol for the index. (provider: cboe, tmx, yfinance)
         description : Optional[str]
             Description for the index. Valid only for US indices. (provider: cboe)
         data_delay : Optional[int]
@@ -114,7 +119,7 @@ class ROUTER_index(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Optional[Literal["fmp", "tmx"]] = None,
         **kwargs
     ) -> OBBject:
         """Index Constituents. Constituents of an index.
@@ -123,17 +128,19 @@ class ROUTER_index(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['fmp', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
+        use_cache : bool
+            Whether to use a cached request. Index data is from a single JSON file, updated each day after close. It is cached for one day. To bypass, set to False. (provider: tmx)
 
         Returns
         -------
         OBBject
             results : List[IndexConstituents]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -162,6 +169,8 @@ class ROUTER_index(Container):
             Central Index Key (CIK) for the requested entity. (provider: fmp)
         founded : Optional[Union[str, date]]
             Founding year of the constituent company in the index. (provider: fmp)
+        market_value : Optional[float]
+            The quoted market value of the asset. (provider: tmx)
 
         Example
         -------
@@ -585,6 +594,69 @@ class ROUTER_index(Container):
         )
 
     @validate
+    def sectors(
+        self,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
+        ],
+        provider: Optional[Literal["tmx"]] = None,
+        **kwargs
+    ) -> OBBject:
+        """Index Sectors. Sector weighting of an index.
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for.
+        provider : Optional[Literal['tmx']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'tmx' if there is
+            no default.
+        use_cache : bool
+            Whether to use a cached request. All Index data comes from a single JSON file that is updated daily. To bypass, set to False. If True, the data will be cached for 1 day. (provider: tmx)
+
+        Returns
+        -------
+        OBBject
+            results : List[IndexSectors]
+                Serializable results.
+            provider : Optional[Literal['tmx']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        IndexSectors
+        ------------
+        sector : str
+            The sector name.
+        weight : float
+            The weight of the sector in the index.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.index.sectors(symbol="SPX")
+        """  # noqa: E501
+
+        return self._run(
+            "/index/sectors",
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
+        )
+
+    @validate
     def snapshots(
         self,
         region: Annotated[
@@ -593,7 +665,7 @@ class ROUTER_index(Container):
                 description="The region of focus for the data - i.e., us, eu."
             ),
         ] = "us",
-        provider: Optional[Literal["cboe"]] = None,
+        provider: Optional[Literal["cboe", "tmx"]] = None,
         **kwargs
     ) -> OBBject:
         """Index Snapshots. Current levels for all indices from a provider.
@@ -602,17 +674,19 @@ class ROUTER_index(Container):
         ----------
         region : str
             The region of focus for the data - i.e., us, eu.
-        provider : Optional[Literal['cboe']]
+        provider : Optional[Literal['cboe', 'tmx']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
+        use_cache : bool
+            Whether to use a cached request. Index data is from a single JSON file, updated each day after close. It is cached for one day. To bypass, set to False. (provider: tmx)
 
         Returns
         -------
         OBBject
             results : List[IndexSnapshots]
                 Serializable results.
-            provider : Optional[Literal['cboe']]
+            provider : Optional[Literal['cboe', 'tmx']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -649,6 +723,34 @@ class ROUTER_index(Container):
             ISIN code for the index. Valid only for European indices. (provider: cboe)
         last_trade_timestamp : Optional[datetime]
             Last trade timestamp for the index. (provider: cboe)
+        year_high : Optional[float]
+            The 52-week high of the index. (provider: tmx)
+        year_low : Optional[float]
+            The 52-week low of the index. (provider: tmx)
+        return_mtd : Optional[float]
+            The month-to-date return of the index as a normalized percentage. (provider: tmx)
+        return_qtd : Optional[float]
+            The quarter-to-date return of the index as a normalized percentage. (provider: tmx)
+        return_ytd : Optional[float]
+            The year-to-date return of the index as a normalized percentage. (provider: tmx)
+        total_market_value : Optional[float]
+            The total quoted market value of the index. (provider: tmx)
+        number_of_constituents : Optional[int]
+            The number of constituents in the index. (provider: tmx)
+        constituent_average_market_value : Optional[float]
+            The average quoted market value of the index constituents. (provider: tmx)
+        constituent_median_market_value : Optional[float]
+            The median quoted market value of the index constituents. (provider: tmx)
+        constituent_top10_market_value : Optional[float]
+            The sum of the top 10 quoted market values of the index constituents. (provider: tmx)
+        constituent_largest_market_value : Optional[float]
+            The largest quoted market value of the index constituents. (provider: tmx)
+        constituent_largest_weight : Optional[float]
+            The largest weight of the index constituents, as a normalized percentage. (provider: tmx)
+        constituent_smallest_market_value : Optional[float]
+            The smallest quoted market value of the index constituents. (provider: tmx)
+        constituent_smallest_weight : Optional[float]
+            The smallest weight of the index constituents, as a normalized percentage. (provider: tmx)
 
         Example
         -------
