@@ -21,10 +21,11 @@ class IntrinioHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_security_stock_price_adjustments_v2
     """
 
+    __alias_dict__ = {"limit": "page_size"}
+
     limit: Optional[int] = Field(
         default=100,
         description=QUERY_DESCRIPTIONS.get("limit", ""),
-        alias="page_size",
     )
 
 
