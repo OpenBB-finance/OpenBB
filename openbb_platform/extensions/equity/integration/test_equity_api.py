@@ -584,7 +584,10 @@ def test_equity_ownership_major_holders(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL", "provider": "fmp"})],
+    [
+        ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL", "provider": "benzinga"}),
+    ],
 )
 @pytest.mark.integration
 def test_equity_estimates_price_target(params, headers):

@@ -548,6 +548,7 @@ def test_equity_ownership_major_holders(params, obb):
     "params",
     [
         ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL", "provider": "benzinga"}),
     ],
 )
 @pytest.mark.integration
