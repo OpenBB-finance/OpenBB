@@ -90,4 +90,35 @@ The user can use any number of `**kwargs` that will be passed to the `PlotlyTA` 
 Refer to the [`to_chart` implementation](openbb_charting/core/to_chart.py) for further details.
 
 > Note that, this method will only work to some limited extent with data that is not standardized.
-> Also, it is currently designed only to handle time series data.
+> Also, it is currently designed only to handle time series (OHLCV) data.
+
+Example usage:
+
+- Plotting a time series with TA indicators
+
+  ```python
+
+    from openbb import obb
+    res = obb.equity.price.historical("AAPL")
+
+    indicators = dict(
+        sma=dict(length=[20,30,50]),
+        adx=dict(length=14),
+        rsi=dict(length=14),
+        macd=dict(fast=12, slow=26, signal=9),
+        bbands=dict(length=20, std=2),
+        stoch=dict(length=14),
+        ema=dict(length=[20,30,50]),
+    )
+    res.to_chart(**{"indicators": indicators})
+
+  ```
+
+- Get all the available indicators
+
+    ```python
+
+    from openbb_charting.core.plotly_ta.data_classes import ChartIndicators
+    ChartIndicators.get_available_indicators()
+
+    ```
