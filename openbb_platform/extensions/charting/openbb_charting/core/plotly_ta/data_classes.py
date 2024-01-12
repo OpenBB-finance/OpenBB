@@ -1,9 +1,10 @@
+"""Dataclasses for the charting extension."""
 # pylint: disable=C0302,R0915,R0914,R0913,R0903,R0904
 
 import sys
 import warnings
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Literal, Optional, Tuple, Union
 
 import pandas as pd
 import pandas_ta as ta
@@ -15,7 +16,7 @@ datacls_kwargs = {"slots": True} if sys.version_info >= (3, 10) else {}
 
 
 def columns_regex(df_ta: pd.DataFrame, name: str) -> List[str]:
-    """Return columns that match regex name"""
+    """Return columns that match regex name."""
     column_name = df_ta.filter(regex=rf"{name}(?=[^\d]|$)").columns.tolist()
 
     return column_name
@@ -23,28 +24,58 @@ def columns_regex(df_ta: pd.DataFrame, name: str) -> List[str]:
 
 @dataclass(**datacls_kwargs)
 class Arguments:
+    """Arguments for technical analysis indicators."""
+
     label: str
     values: Any
 
     def __post_init__(self):
+        """Post init."""
         if isinstance(self.values, list) and len(self.values) == 1:
             self.values = self.values[0]
 
 
 @dataclass(**datacls_kwargs)
 class TAIndicator:
-    name: str
+    """Technical analysis indicator."""
+
+    name: Literal[
+        "ad",
+        "adosc",
+        "adx",
+        "aroon",
+        "atr",
+        "cci",
+        "donchian",
+        "fisher",
+        "kc",
+        "obv",
+        "stoch",
+        "vwap",
+        "fib",
+        "srlines",
+        "clenow",
+        "demark",
+        "ichimoku",
+        "sma",
+        "ema",
+        "wma",
+        "hma",
+        "zlma",
+        "rma",
+    ]
     args: List[Arguments]
 
     def __post_init__(self):
+        """Post init."""
         self.args = [Arguments(**arg) for arg in self.args]
 
     def __iter__(self):
-        """Return iterator"""
+        """Return iterator."""
         return iter(self.args)
 
     def get_args(self, label: str) -> Union[Arguments, None]:
-        """Return arguments by label"""
+        """Return arguments by label."""
         output = None
         for opt in self.args:
             if opt.label == label:
@@ -52,7 +83,7 @@ class TAIndicator:
         return output
 
     def get_argument_values(self, label: str) -> Union[List[Any], Any]:
-        """Returns arguments values by label"""
+        """Returns arguments values by label."""
         output = []
         options = self.get_args(label)
         if options is not None:
@@ -62,9 +93,12 @@ class TAIndicator:
 
 @dataclass(**datacls_kwargs)
 class ChartIndicators:
+    """Chart technical analysis indicators."""
+
     indicators: Optional[List[TAIndicator]] = None
 
     def __post_init__(self):
+        """Post init."""
         self.indicators = (
             [TAIndicator(**indicator) for indicator in self.indicators]
             if self.indicators
@@ -72,7 +106,7 @@ class ChartIndicators:
         )
 
     def get_indicator(self, name: str) -> Union[TAIndicator, None]:
-        """Returns indicator with given name"""
+        """Returns indicator with given name."""
         output = None
         for indicator in self.indicators:  # type: ignore
             if indicator.name == name:
@@ -80,7 +114,7 @@ class ChartIndicators:
         return output
 
     def get_indicator_args(self, name: str, label: str) -> Union[Arguments, None]:
-        """Returns argument values for given indicator and label"""
+        """Returns argument values for given indicator and label."""
         output = None
         indicator = self.get_indicator(name)
         if indicator is not None:
@@ -90,25 +124,25 @@ class ChartIndicators:
         return output
 
     def get_indicators(self) -> Optional[List[TAIndicator]]:
-        """Return active indicators and their arguments"""
+        """Return active indicators and their arguments."""
         return self.indicators
 
     def get_params(self) -> Dict[str, TAIndicator]:
-        """Return dictionary of active indicators and their arguments"""
+        """Return dictionary of active indicators and their arguments."""
         output = {}
         if self.indicators:
             output = {indicator.name: indicator for indicator in self.indicators}
         return output
 
     def get_active_ids(self) -> List[str]:
-        """Returns list of names of active indicators"""
+        """Returns list of names of active indicators."""
         active_ids = []
         if self.indicators:
             active_ids = [indicator.name for indicator in self.indicators]
         return active_ids
 
     def get_arg_names(self, name: str) -> List[str]:
-        """Returns list of argument labels for given indicator"""
+        """Returns list of argument labels for given indicator."""
         output = []
         indicator = self.get_indicator(name)
         if indicator is not None:
@@ -117,7 +151,7 @@ class ChartIndicators:
         return output
 
     def get_options_dict(self, name: str) -> Dict[str, Optional[Arguments]]:
-        """Returns dictionary of argument labels and values for given indicator"""
+        """Returns dictionary of argument labels and values for given indicator."""
         output = None
         options = self.get_arg_names(name)
         if options:
@@ -127,9 +161,14 @@ class ChartIndicators:
 
         return output
 
+    @staticmethod
+    def get_available_indicators() -> Tuple[str, ...]:
+        """Returns tuple of available indicators."""
+        return TAIndicator.__annotations__["name"].__args__  # pylint: disable=E1101
+
     @classmethod
     def from_dict(cls, indicators: Dict[str, Dict[str, Any]]) -> "ChartIndicators":
-        """Return ChartIndicators from dictionary"""
+        """Return ChartIndicators from dictionary."""
         data = []
         for indicator in indicators:
             args = []
@@ -164,7 +203,7 @@ class ChartIndicators:
         return output
 
     def remove_indicator(self, name: str) -> None:
-        """Remove indicator from active indicators"""
+        """Remove indicator from active indicators."""
         if self.indicators:
             for indicator in self.indicators:
                 if indicator.name == name:
@@ -172,12 +211,12 @@ class ChartIndicators:
 
 
 class TA_DataException(Exception):
-    pass
+    """Exception for TA_Data."""
 
 
 class TA_Data:
-    """Process technical analysis data
-
+    """
+    Process technical analysis data.
 
     Parameters
     ----------
@@ -193,14 +232,12 @@ class TA_Data:
                 rsi=dict(length=14),
             )
 
-
     Methods
     -------
     to_dataframe()
         Return dataframe with technical analysis indicators
     get_indicator_data(indicator: TAIndicator, **kwargs)
         Return dataframe given indicator and arguments
-
     """
 
     def __init__(
@@ -209,6 +246,7 @@ class TA_Data:
         indicators: Union[ChartIndicators, Dict[str, Dict[str, Any]]],
         ma_mode: Optional[List[str]] = None,
     ):
+        """Initialize."""
         if isinstance(df_ta, pd.Series):
             df_ta = df_ta.to_frame()
 
@@ -240,7 +278,8 @@ class TA_Data:
         self.has_volume = "volume" in df_ta.columns and bool(df_ta["volume"].sum() > 0)
 
     def get_indicator_data(self, indicator: TAIndicator, **args) -> pd.DataFrame:
-        """Returns dataframe with indicator data
+        """
+        Returns dataframe with indicator data.
 
         Parameters
         ----------
@@ -302,7 +341,7 @@ class TA_Data:
         return output
 
     def to_dataframe(self) -> pd.DataFrame:
-        """Returns dataframe with all indicators"""
+        """Returns dataframe with all indicators."""
         active_indicators = self.indicators.get_indicators()
 
         if not active_indicators:
