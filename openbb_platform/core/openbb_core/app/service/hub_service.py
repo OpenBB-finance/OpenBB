@@ -226,7 +226,8 @@ class HubService:
             "API_ULTIMA_KEY": "ultima_api_key",
         }
         hub_credentials = {
-            V3TOV4.get(k, k): v for k, v in settings.features_keys.items()
+            V3TOV4.get(k, k): settings.features_keys.get(V3TOV4.get(k, k), v)
+            for k, v in settings.features_keys.items()
         }
         return Credentials(**hub_credentials)
 
