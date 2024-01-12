@@ -3,7 +3,7 @@
 import math
 from copy import deepcopy
 from datetime import datetime
-from typing import Any, Dict, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.price_target import (
@@ -203,7 +203,7 @@ class BenzingaPriceTargetData(PriceTargetData):
 class BenzingaPriceTargetFetcher(
     Fetcher[
         BenzingaPriceTargetQueryParams,
-        BenzingaPriceTargetData,
+        List[BenzingaPriceTargetData],
     ]
 ):
     """Transform the query, extract and transform the data from the Benzinga endpoints."""
@@ -246,6 +246,6 @@ class BenzingaPriceTargetFetcher(
         query: BenzingaPriceTargetQueryParams,
         data: Dict,
         **kwargs: Any,
-    ) -> BenzingaPriceTargetData:
+    ) -> List[BenzingaPriceTargetData]:
         """Return the transformed data."""
         return [BenzingaPriceTargetData.model_validate(d) for d in data[0]["ratings"]]
