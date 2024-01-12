@@ -53,6 +53,7 @@ class FMPPriceTargetFetcher(
         """Transform the query params."""
         return FMPPriceTargetQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     async def aextract_data(
         query: FMPPriceTargetQueryParams,
@@ -70,6 +71,7 @@ class FMPPriceTargetFetcher(
 
         return await get_data_urls(urls)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: FMPPriceTargetQueryParams, data: List[Dict], **kwargs: Any
