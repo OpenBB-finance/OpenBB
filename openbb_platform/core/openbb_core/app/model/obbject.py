@@ -271,10 +271,60 @@ class OBBject(Tagged, Generic[T]):
             This implies that the user has some knowledge on the charting extension API.
             This is the case because the charting extension may vary on user preferences.
 
+            To consult the charting extension `to_chart()` method you can refer to the
+            `__init__.py` file of the charting extension you're using - this is a requirement
+            to integrate with the ChartingService.
+
+            For the `openbb-charting` extension, this is how the `to_chart()` method signature looks like:
+
+            ```python
+
+            def to_chart(
+                charting_settings: ChartingSettings,
+                data: Union[pd.DataFrame, pd.Series],
+                indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = None,
+                symbol: str = "",
+                candles: bool = True,
+                volume: bool = True,
+                prepost: bool = False,
+                volume_ticks_x: int = 7,
+            ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+
+                ...
+            ```
+
+            Please refer to examples to check how to use this method.
+
         Returns
         -------
         chart.fig
             The chart figure.
+
+        Examples
+        --------
+        Note: this examples assume the user is using the default charting extension - `openbb-charting`
+
+        1) Plotting a time series with TA indicators
+
+        > from openbb import obb
+        > res = obb.equity.price.historical("AAPL")
+        > indicators = dict(
+        >    sma=dict(length=[20,30,50]),
+        >    adx=dict(length=14),
+        >    rsi=dict(length=14),
+        >    macd=dict(fast=12, slow=26, signal=9),
+        >    bbands=dict(length=20, std=2),
+        >    stoch=dict(length=14),
+        >    ema=dict(length=[20,30,50]),
+        > )
+        > res.to_chart(**{"indicators": indicators})
+
+        2) Get all the available indicators
+
+        > from openbb_charting.core.plotly_ta.data_classes import ChartIndicators
+        > ChartIndicators.get_available_indicators()
+
+
         """
         #  pylint: disable=import-outside-toplevel
         # Avoids circular import
