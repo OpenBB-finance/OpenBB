@@ -225,6 +225,7 @@ class HubService:
             "API_KEY_QUANDL": "nasdaq_api_key",
             "API_ULTIMA_KEY": "ultima_api_key",
         }
+        # We give priority to V4 keys over V3 keys if both are present
         hub_credentials = {
             V3TOV4.get(k, k): settings.features_keys.get(V3TOV4.get(k, k), v)
             for k, v in settings.features_keys.items()
