@@ -12,71 +12,34 @@ keywords:
 
 > To access the following features you need to sign-in first with your OpenBB Pro account.
 
-The add-in provides 3 types of custom functions all starting with `OBB.`.
+The add-in provides direct access to the OpenBB platform, where each function implements the following pattern:
 
-1. **Last value**: returns the last value of a given symbol/field combination
+- `OBB.[MENU].[SUB_MENU].[COMMAND]`
 
-    - `OBB.LAST`
+:::tip
+Use the <TAB\> key to autocomplete the function name after typing `=OBB.`
+:::
 
-    Examples:
+Examples:
 
-    1. Getting the last price of a stock:
+1. Getting balance sheet data for a stock:
 
-        ```excel
-        =OBB.LAST("AAPL";"CLOSE_PRICE")
-        ```
+    ```excel
+    =OBB.EQUITY.FUNDAMENTAL.BALANCE("AAPL")
+    ```
 
-    2. Getting the industry group of a stock:
+2. Getting the latest news for a stock:
 
-        ```excel
-        =OBB.LAST("AAPL";"INDUSTRY_GROUP")
-        ```
+    ```excel
+    =OBB.NEWS.COMPANY("AAPL")
+    ```
 
-2. **Historical data**: returns the historical values of a given symbol/field combination
+3. Getting the earnings calendar:
 
-    - `OBB.HIST`
+    ```excel
+    =OBB.EQUITY.CALENDAR.IPO(;"2023-11-20")
+    ```
 
-    Examples:
-
-    1. Getting the historical EBITDA:
-
-        ```excel
-        =OBB.HIST("AAPL";"EBITDA")
-        ```
-
-    2. Getting the historical Return on Equity (ROE) for a given period:
-
-        ```excel
-        =OBB.HIST("AAPL";"ROE";"2020-01-01";"2020-12-31")
-        ```
-
-    :::tip
-    Dates can be specified in text format (YYYY-MM-DD) or as Excel dates from a cell or `DATE(YYYY;MM;DD)`.
-    :::
-
-3. **Library**: direct access to the OpenBB library
-    - `OBB.[MENU].[SUB_MENU].[COMMAND]`
-
-    Examples:
-
-    1. Getting balance sheet data for a stock:
-
-        ```excel
-        =OBB.EQUITY.FUNDAMENTAL.BALANCE("AAPL")
-        ```
-
-    2. Getting the latest news for a stock:
-
-        ```excel
-        =OBB.NEWS.COMPANY("AAPL")
-        ```
-
-    3. Getting the earnings calendar:
-
-        ```excel
-        =OBB.EQUITY.CALENDAR.IPO(;;"2023-11-20")
-        ```
-
-    :::tip
-    If you want to skip a parameter just use semi-colon (or comma depending on your number separator) without any value. In example iii. we are skip the first parameter (provider) and the second parameter (symbol).
-    :::
+:::tip
+If you want to skip a parameter use semi-colon (or comma depending on your number separator) without any value. In example iii. we are skipping the first parameter (symbol).
+:::

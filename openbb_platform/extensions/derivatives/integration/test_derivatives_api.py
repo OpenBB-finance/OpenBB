@@ -63,24 +63,11 @@ def test_derivatives_options_unusual(params, headers):
         (
             {
                 "provider": "yfinance",
-                "symbol": "ES",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "expiration": "2024-06",
-            }
-        ),
-        (
-            {
-                "provider": "yfinance",
                 "interval": "1d",
-                "period": "max",
-                "prepost": True,
-                "adjust": True,
-                "back_adjust": True,
-                "symbol": "ES",
+                "symbol": "CL,BZ",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "expiration": "2024-06",
+                "expiration": "2025-12",
             }
         ),
     ],
