@@ -27,6 +27,7 @@ class HubService:
     ):
         self._base_url = base_url or Env().HUB_BACKEND
         self._session = session
+        self._hub_user_settings: Optional[HubUserSettings] = None
 
     @property
     def base_url(self) -> str:
@@ -67,7 +68,10 @@ class HubService:
         """Push user settings to Hub."""
         if self._session:
             if user_settings.credentials:
-                hub_user_settings = self.platform2hub(user_settings.credentials)
+                hub_user_settings = self.platform2hub(
+                    user_settings.credentials,
+                    self._hub_user_settings or HubUserSettings(features_keys={}),
+                )
                 return self._put_user_settings(self._session, hub_user_settings)
             return False
         raise OpenBBError(
@@ -77,12 +81,12 @@ class HubService:
     def pull(self) -> UserSettings:
         """Pull user settings from Hub."""
         if self._session:
-            hub_user_settings = self._get_user_settings(self._session)
-            if hub_user_settings:
+            self._hub_user_settings = self._get_user_settings(self._session)
+            if self._hub_user_settings:
                 profile = Profile(
                     hub_session=self._session,
                 )
-                credentials = self.hub2platform(hub_user_settings)
+                credentials = self.hub2platform(self._hub_user_settings)
                 return UserSettings(profile=profile, credentials=credentials)
         raise OpenBBError(
             "No session found. Login or provide a 'HubSession' on initialization."
@@ -212,8 +216,7 @@ class HubService:
         detail = response.json().get("detail", None)
         raise HTTPException(status_code, detail)
 
-    @classmethod
-    def hub2platform(cls, settings: HubUserSettings) -> Credentials:
+    def hub2platform(self, settings: HubUserSettings) -> Credentials:
         """Convert Hub user settings to Platform models."""
         V3TOV4 = {
             "API_KEY_ALPHAVANTAGE": "alpha_vantage_api_key",
@@ -232,11 +235,13 @@ class HubService:
         }
         return Credentials(**hub_credentials)
 
-    @classmethod
-    def platform2hub(cls, credentials: Credentials) -> HubUserSettings:
-        """Convert Platform models to Hub user settings."""
+    def platform2hub(
+        self, credentials: Credentials, settings: HubUserSettings
+    ) -> HubUserSettings:
+        """Convert Platform models to Hub user settings, updating settings to preserve the incoming state."""
         feature_keys = credentials.model_dump(mode="json", exclude_none=True)
-        return HubUserSettings(features_keys=feature_keys)
+        settings.features_keys.update(feature_keys)
+        return settings
 
     @staticmethod
     def check_token_expiration(token: str) -> None:
