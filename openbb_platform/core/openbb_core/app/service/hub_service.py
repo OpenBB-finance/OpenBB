@@ -68,10 +68,7 @@ class HubService:
         """Push user settings to Hub."""
         if self._session:
             if user_settings.credentials:
-                hub_user_settings = self.platform2hub(
-                    user_settings.credentials,
-                    self._hub_user_settings or HubUserSettings(features_keys={}),
-                )
+                hub_user_settings = self.platform2hub(user_settings.credentials)
                 return self._put_user_settings(self._session, hub_user_settings)
             return False
         raise OpenBBError(
@@ -235,11 +232,10 @@ class HubService:
         }
         return Credentials(**hub_credentials)
 
-    def platform2hub(
-        self, credentials: Credentials, settings: HubUserSettings
-    ) -> HubUserSettings:
+    def platform2hub(self, credentials: Credentials) -> HubUserSettings:
         """Convert Platform models to Hub user settings, updating settings to preserve the incoming state."""
         feature_keys = credentials.model_dump(mode="json", exclude_none=True)
+        settings = self._hub_user_settings or HubUserSettings()
         settings.features_keys.update(feature_keys)
         return settings
 

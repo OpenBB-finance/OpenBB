@@ -180,7 +180,7 @@ def test_hub2platform_v4_only():
         "fred_api_key": "ghi",
     }
 
-    credentials = HubService.hub2platform(mock_user_settings)
+    credentials = HubService().hub2platform(mock_user_settings)
     assert isinstance(credentials, Credentials)
     assert credentials.fmp_api_key.get_secret_value() == "abc"
     assert credentials.polygon_api_key.get_secret_value() == "def"
@@ -196,7 +196,7 @@ def test_hub2platform_v3_only():
         "API_FRED_KEY": "ghi",
     }
 
-    credentials = HubService.hub2platform(mock_user_settings)
+    credentials = HubService().hub2platform(mock_user_settings)
     assert isinstance(credentials, Credentials)
     assert credentials.fmp_api_key.get_secret_value() == "abc"
     assert credentials.polygon_api_key.get_secret_value() == "def"
@@ -213,7 +213,7 @@ def test_hub2platform_v3v4():
         "API_FRED_KEY": "ghi",
     }
 
-    credentials = HubService.hub2platform(mock_user_settings)
+    credentials = HubService().hub2platform(mock_user_settings)
     assert isinstance(credentials, Credentials)
     assert credentials.fmp_api_key.get_secret_value() == "other_key"
     assert credentials.polygon_api_key.get_secret_value() == "def"
@@ -227,9 +227,21 @@ def test_platform2hub():
         polygon_api_key=SecretStr("polygon"),
         fred_api_key=SecretStr("fred"),
     )
+    mock_user_settings = MagicMock(spec=HubUserSettings)
+    mock_user_settings.features_keys = {
+        "API_KEY_FINANCIALMODELINGPREP": "abc",
+        "fmp_api_key": "other_key",
+        "API_POLYGON_KEY": "def",
+        "API_FRED_KEY": "ghi",
+    }
+    mock_hub_service = HubService()
+    mock_hub_service._hub_user_settings = mock_user_settings
+    user_settings = mock_hub_service.platform2hub(mock_credentials)
 
-    user_settings = HubService.platform2hub(mock_credentials)
     assert isinstance(user_settings, HubUserSettings)
+    assert user_settings.features_keys["API_KEY_FINANCIALMODELINGPREP"] == "abc"
+    assert user_settings.features_keys["API_POLYGON_KEY"] == "def"
+    assert user_settings.features_keys["API_FRED_KEY"] == "ghi"
     assert user_settings.features_keys["fmp_api_key"] == "fmp"
     assert user_settings.features_keys["polygon_api_key"] == "polygon"
     assert user_settings.features_keys["fred_api_key"] == "fred"
