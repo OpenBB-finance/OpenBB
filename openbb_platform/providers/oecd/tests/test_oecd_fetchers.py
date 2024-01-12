@@ -2,6 +2,7 @@ import datetime
 
 import pytest
 from openbb_core.app.service.user_service import UserService
+from openbb_oecd.models.composite_leading_indicator import OECDCLIFetcher
 from openbb_oecd.models.gdp_forecast import OECDGdpForecastFetcher
 from openbb_oecd.models.gdp_nominal import OECDGdpNominalFetcher
 from openbb_oecd.models.gdp_real import OECDGdpRealFetcher
@@ -67,9 +68,6 @@ def test_oecd_unemployment_fetcher(credentials=test_credentials):
     fetcher = OECDUnemploymentFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
-
-
-from openbb_oecd.models.composite_leading_indicator import OECDCLIFetcher
 
 
 @pytest.mark.record_http
