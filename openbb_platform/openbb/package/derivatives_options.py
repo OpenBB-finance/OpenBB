@@ -26,7 +26,7 @@ class ROUTER_derivatives_options(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["cboe", "intrinio", "tmx"]] = None,
+        provider: Optional[Literal["cboe", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
         """Get the complete options chain for a ticker.
@@ -35,22 +35,19 @@ class ROUTER_derivatives_options(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['cboe', 'intrinio', 'tmx']]
+        provider : Optional[Literal['cboe', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
         date : Optional[datetime.date]
-            Date for which the options chains are returned. (provider: intrinio);
-            A specific date to get data for. (provider: tmx)
-        use_cache : bool
-            Caching is used to validate the supplied ticker symbol, or if a historical EOD chain is requested. To bypass, set to False. (provider: tmx)
+            Date for which the options chains are returned. (provider: intrinio)
 
         Returns
         -------
         OBBject
             results : List[OptionsChains]
                 Serializable results.
-            provider : Optional[Literal['cboe', 'intrinio', 'tmx']]
+            provider : Optional[Literal['cboe', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -134,15 +131,7 @@ class ROUTER_derivatives_options(Container):
         last_trade_timestamp : Optional[datetime]
             Last trade timestamp of the option. (provider: cboe)
         dte : Optional[int]
-            Days to expiration for the option. (provider: cboe, tmx)
-        transactions : Optional[int]
-            Number of transactions for the contract. (provider: tmx)
-        total_value : Optional[float]
-            Total value of the transactions. (provider: tmx)
-        settlement_price : Optional[float]
-            Settlement price on that date. (provider: tmx)
-        underlying_price : Optional[float]
-            Price of the underlying stock on that date. (provider: tmx)
+            Days to expiration for the option. (provider: cboe)
 
         Example
         -------

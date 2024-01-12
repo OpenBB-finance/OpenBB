@@ -234,7 +234,7 @@ class ROUTER_equity(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["cboe", "intrinio", "tmx"]] = None,
+        provider: Optional[Literal["cboe", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
         """Equity Info. Get general price and performance metrics of a stock.
@@ -243,7 +243,7 @@ class ROUTER_equity(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['cboe', 'intrinio', 'tmx']]
+        provider : Optional[Literal['cboe', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -253,7 +253,7 @@ class ROUTER_equity(Container):
         OBBject
             results : List[EquityInfo]
                 Serializable results.
-            provider : Optional[Literal['cboe', 'intrinio', 'tmx']]
+            provider : Optional[Literal['cboe', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -382,18 +382,6 @@ class ROUTER_equity(Container):
             Intrinio ID for the company. (provider: intrinio)
         thea_enabled : Optional[bool]
             Whether the company has been enabled for Thea. (provider: intrinio)
-        email : Optional[str]
-            The email of the company. (provider: tmx)
-        issue_type : Optional[str]
-            The issuance type of the asset. (provider: tmx)
-        shares_outstanding : Optional[int]
-            The number of listed shares outstanding. (provider: tmx)
-        shares_escrow : Optional[int]
-            The number of shares held in escrow. (provider: tmx)
-        shares_total : Optional[int]
-            The total number of shares outstanding from all classes. (provider: tmx)
-        dividend_frequency : Optional[str]
-            The dividend frequency. (provider: tmx)
 
         Example
         -------
@@ -529,7 +517,7 @@ class ROUTER_equity(Container):
             bool,
             OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ] = False,
-        provider: Optional[Literal["cboe", "intrinio", "nasdaq", "sec", "tmx"]] = None,
+        provider: Optional[Literal["cboe", "intrinio", "nasdaq", "sec"]] = None,
         **kwargs
     ) -> OBBject:
         """Equity Search. Search for a company or stock ticker.
@@ -540,7 +528,7 @@ class ROUTER_equity(Container):
             Search query.
         is_symbol : bool
             Whether to search by ticker symbol.
-        provider : Optional[Literal['cboe', 'intrinio', 'nasdaq', 'sec', 'tmx']]
+        provider : Optional[Literal['cboe', 'intrinio', 'nasdaq', 'sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
@@ -552,8 +540,7 @@ class ROUTER_equity(Container):
             If True, returns ETFs. (provider: nasdaq)
         use_cache : Optional[bool]
             If True, caches the symbol directory for one day. (provider: nasdaq);
-            Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec);
-            Whether to use a cached request. The list of companies is cached for two days. (provider: tmx)
+            Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec)
         is_fund : bool
             Whether to direct the search to the list of mutual funds and ETFs. (provider: sec)
 
@@ -562,7 +549,7 @@ class ROUTER_equity(Container):
         OBBject
             results : List[EquitySearch]
                 Serializable results.
-            provider : Optional[Literal['cboe', 'intrinio', 'nasdaq', 'sec', 'tmx']]
+            provider : Optional[Literal['cboe', 'intrinio', 'nasdaq', 'sec']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

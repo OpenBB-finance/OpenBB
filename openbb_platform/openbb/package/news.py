@@ -36,14 +36,7 @@ class ROUTER_news(Container):
         ] = 20,
         provider: Optional[
             Literal[
-                "benzinga",
-                "fmp",
-                "intrinio",
-                "polygon",
-                "tiingo",
-                "tmx",
-                "ultima",
-                "yfinance",
+                "benzinga", "fmp", "intrinio", "polygon", "tiingo", "ultima", "yfinance"
             ]
         ] = None,
         **kwargs
@@ -90,8 +83,7 @@ class ROUTER_news(Container):
         content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
         page : Optional[int]
-            Page number of the results. Use in combination with limit. (provider: fmp);
-            The page number to start from. Use with limit. (provider: tmx)
+            Page number of the results. Use in combination with limit. (provider: fmp)
         published_utc : Optional[str]
             Date query to fetch articles. Supports operators <, <=, >, >= (provider: polygon)
         source : Optional[str]
@@ -102,7 +94,7 @@ class ROUTER_news(Container):
         OBBject
             results : List[CompanyNews]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'tmx', 'ultima', 'yfinance']]
+            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'ultima', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -156,8 +148,6 @@ class ROUTER_news(Container):
             Unique ID of the news article. (provider: tiingo)
         crawl_date : Optional[datetime]
             Date the news article was crawled. (provider: tiingo)
-        source : Optional[str]
-            Source of the news. (provider: tmx)
         risk_category : Optional[str]
             Risk category of the news. (provider: ultima)
         uuid : Optional[str]

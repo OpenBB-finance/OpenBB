@@ -125,7 +125,7 @@ class ROUTER_equity_calendar(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "nasdaq", "tmx"]] = None,
+        provider: Optional[Literal["fmp", "nasdaq"]] = None,
         **kwargs
     ) -> OBBject:
         """Upcoming and Historical earnings calendar.
@@ -136,7 +136,7 @@ class ROUTER_equity_calendar(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'nasdaq', 'tmx']]
+        provider : Optional[Literal['fmp', 'nasdaq']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -146,7 +146,7 @@ class ROUTER_equity_calendar(Container):
         OBBject
             results : List[CalendarEarnings]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'nasdaq', 'tmx']]
+            provider : Optional[Literal['fmp', 'nasdaq']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -168,8 +168,7 @@ class ROUTER_equity_calendar(Container):
         eps_consensus : Optional[float]
             The analyst conesus earnings-per-share estimate.
         eps_actual : Optional[float]
-            The actual earnings per share announced. (provider: fmp, nasdaq);
-            The actual EPS in dollars. (provider: tmx)
+            The actual earnings per share announced. (provider: fmp, nasdaq)
         revenue_actual : Optional[float]
             The actual reported revenue. (provider: fmp)
         revenue_consensus : Optional[float]
@@ -177,21 +176,17 @@ class ROUTER_equity_calendar(Container):
         period_ending : Optional[Union[date, str]]
             The fiscal period end date. (provider: fmp, nasdaq)
         reporting_time : Optional[str]
-            The reporting time - e.g. after market close. (provider: fmp, nasdaq);
-            The time of the report - i.e., before or after market. (provider: tmx)
+            The reporting time - e.g. after market close. (provider: fmp, nasdaq)
         updated_date : Optional[date]
             The date the data was updated last. (provider: fmp)
         surprise_percent : Optional[float]
-            The earnings surprise as normalized percentage points. (provider: nasdaq);
-            The EPS surprise as a normalized percent. (provider: tmx)
+            The earnings surprise as normalized percentage points. (provider: nasdaq)
         num_estimates : Optional[int]
             The number of analysts providing estimates for the consensus. (provider: nasdaq)
         previous_report_date : Optional[date]
             The previous report date for the same period last year. (provider: nasdaq)
         market_cap : Optional[int]
             The market cap (USD) of the reporting entity. (provider: nasdaq)
-        eps_surprise : Optional[float]
-            The EPS surprise in dollars. (provider: tmx)
 
         Example
         -------

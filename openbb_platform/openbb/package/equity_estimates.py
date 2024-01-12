@@ -27,7 +27,7 @@ class ROUTER_equity_estimates(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp", "tmx"]] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """Price Target Consensus. Price target consensus data.
@@ -36,7 +36,7 @@ class ROUTER_equity_estimates(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp', 'tmx']]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -44,9 +44,9 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : Union[List[PriceTargetConsensus], PriceTargetConsensus]
+            results : PriceTargetConsensus
                 Serializable results.
-            provider : Optional[Literal['fmp', 'tmx']]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -67,18 +67,6 @@ class ROUTER_equity_estimates(Container):
             Consensus target of the price target consensus.
         target_median : Optional[float]
             Median target of the price target consensus.
-        target_upside : Optional[float]
-            Percent of upside, as a normalized percent. (provider: tmx)
-        total_analysts : Optional[int]
-            Total number of analyst. (provider: tmx)
-        buy_ratings : Optional[int]
-            Number of buy ratings. (provider: tmx)
-        sell_ratings : Optional[int]
-            Number of sell ratings. (provider: tmx)
-        hold_ratings : Optional[int]
-            Number of hold ratings. (provider: tmx)
-        consensus_action : Optional[str]
-            Consensus action. (provider: tmx)
 
         Example
         -------

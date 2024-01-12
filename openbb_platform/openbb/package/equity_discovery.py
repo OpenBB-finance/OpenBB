@@ -289,7 +289,7 @@ class ROUTER_equity_discovery(Container):
                 description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
             ),
         ] = "desc",
-        provider: Optional[Literal["tmx", "yfinance"]] = None,
+        provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
         """Get the top Equity gainers.
@@ -298,19 +298,17 @@ class ROUTER_equity_discovery(Container):
         ----------
         sort : str
             Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.
-        provider : Optional[Literal['tmx', 'yfinance']]
+        provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'tmx' if there is
+            If None, the provider specified in defaults is selected or 'yfinance' if there is
             no default.
-        category : Literal['dividend', 'energy', 'healthcare', 'industrials', 'price_performer', 'rising_stars', 'real_estate', 'tech', 'utilities', '52w_high', 'volume']
-            The category of list to retrieve. Defaults to `price_performer`. (provider: tmx)
 
         Returns
         -------
         OBBject
             results : List[EquityGainers]
                 Serializable results.
-            provider : Optional[Literal['tmx', 'yfinance']]
+            provider : Optional[Literal['yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -333,8 +331,6 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : float
             The trading volume.
-        rank : Optional[int]
-            The rank of the stock in the list. (provider: tmx)
         market_cap : Optional[str]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
