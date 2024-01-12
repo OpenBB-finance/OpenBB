@@ -441,7 +441,7 @@ class ROUTER_equity_price(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. In this case, the comma separated list of symbols."
+                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas."
             ),
         ],
         provider: Optional[Literal["fmp", "intrinio", "tmx"]] = None,
@@ -452,8 +452,8 @@ class ROUTER_equity_price(Container):
         Parameters
         ----------
         symbol : str
-            Symbol to get data for. In this case, the comma separated list of symbols.
-        provider : Optional[Literal['fmp', 'intrinio', 'tmx']]
+            Symbol to get data for. This endpoint will accept multiple symbols separated by commas.
+        provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -476,105 +476,95 @@ class ROUTER_equity_price(Container):
 
         EquityQuote
         -----------
-        day_low : Optional[float]
-            Lowest price of the stock in the current trading day.
-        day_high : Optional[float]
-            Highest price of the stock in the current trading day.
-        date : Optional[datetime]
-            The date of the data.
-        symbol : Optional[str]
-            Symbol of the company. (provider: fmp)
+        symbol : str
+            Symbol representing the entity requested in the data.
+        asset_type : Optional[str]
+            Type of asset - i.e, stock, ETF, etc.
         name : Optional[str]
-            Name of the company. (provider: fmp);
-            The name of the asset. (provider: tmx)
-        price : Optional[float]
-            Current trading price of the equity. (provider: fmp)
-        changes_percentage : Optional[float]
-            Change percentage of the equity price. (provider: fmp)
-        change : Optional[float]
-            Change in the equity price. (provider: fmp);
-            The change in price. (provider: tmx)
-        year_high : Optional[float]
-            Highest price of the equity in the last 52 weeks. (provider: fmp);
-            Fifty-two week high. (provider: tmx)
-        year_low : Optional[float]
-            Lowest price of the equity in the last 52 weeks. (provider: fmp);
-            Fifty-two week low. (provider: tmx)
-        market_cap : Optional[Union[float, int]]
-            Market cap of the company. (provider: fmp);
-            Market capitalization. (provider: tmx)
-        price_avg50 : Optional[float]
-            50 days average price of the equity. (provider: fmp)
-        price_avg200 : Optional[float]
-            200 days average price of the equity. (provider: fmp)
-        volume : Optional[int]
-            Volume of the equity in the current trading day. (provider: fmp);
-            Volume Weighted Average Price over the period. (provider: tmx)
-        avg_volume : Optional[int]
-            Average volume of the equity in the last 10 trading days. (provider: fmp)
+            Name of the company or asset.
         exchange : Optional[str]
-            Exchange the equity is traded on. (provider: fmp);
-            The listing exchange code. (provider: tmx)
-        open : Optional[float]
-            Opening price of the equity in the current trading day. (provider: fmp);
-            The open price. (provider: tmx)
-        previous_close : Optional[float]
-            Previous closing price of the equity. (provider: fmp)
-        eps : Optional[Union[float, str]]
-            Earnings per share of the equity. (provider: fmp);
-            The earnings per share. (provider: tmx)
-        pe : Optional[Union[float, str]]
-            Price earnings ratio of the equity. (provider: fmp);
-            The price to earnings ratio. (provider: tmx)
-        earnings_announcement : Optional[str]
-            Earnings announcement date of the equity. (provider: fmp)
-        shares_outstanding : Optional[int]
-            Number of shares outstanding of the equity. (provider: fmp);
-            The number of listed shares outstanding. (provider: tmx)
-        last_price : Optional[float]
-            Price of the last trade. (provider: intrinio);
-            The last price of the asset. (provider: tmx)
-        last_time : Optional[datetime]
-            Date and Time when the last trade occurred. (provider: intrinio)
-        last_size : Optional[int]
-            Size of the last trade. (provider: intrinio)
-        bid_price : Optional[float]
-            Price of the top bid order. (provider: intrinio)
+            The name or symbol of the venue where the data is from.
+        bid : Optional[float]
+            Price of the top bid order.
         bid_size : Optional[int]
-            Size of the top bid order. (provider: intrinio)
-        ask_price : Optional[float]
-            Price of the top ask order. (provider: intrinio)
+            This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+        bid_exchange : Optional[str]
+            The specific trading venue where the purchase order was placed.
+        ask : Optional[float]
+            Price of the top ask order.
         ask_size : Optional[int]
-            Size of the top ask order. (provider: intrinio)
-        open_price : Optional[float]
-            Open price for the trading day. (provider: intrinio)
-        close_price : Optional[float]
-            Closing price for the trading day (IEX source only). (provider: intrinio)
-        high_price : Optional[float]
-            High Price for the trading day. (provider: intrinio)
-        low_price : Optional[float]
-            Low Price for the trading day. (provider: intrinio)
-        exchange_volume : Optional[int]
-            Number of shares exchanged during the trading day on the exchange. (provider: intrinio)
-        market_volume : Optional[int]
-            Number of shares exchanged during the trading day for the whole market. (provider: intrinio)
-        updated_on : Optional[datetime]
-            Date and Time when the data was last updated. (provider: intrinio)
-        source : Optional[str]
-            Source of the data. (provider: intrinio)
-        listing_venue : Optional[str]
-            Listing venue where the trade took place (SIP source only). (provider: intrinio)
-        sales_conditions : Optional[str]
-            Indicates any sales condition modifiers associated with the trade. (provider: intrinio)
-        quote_conditions : Optional[str]
-            Indicates any quote condition modifiers associated with the trade. (provider: intrinio)
-        market_center_code : Optional[str]
-            Market center character code. (provider: intrinio)
+            This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+        ask_exchange : Optional[str]
+            The specific trading venue where the sale order was placed.
+        quote_conditions : Optional[Union[str, int, List[str], List[int]]]
+            Conditions or condition codes applicable to the quote.
+        quote_indicators : Optional[Union[str, int, List[str], List[int]]]
+            Indicators or indicator codes applicable to the participant quote related to the price bands for the issue, or the affect the quote has on the NBBO.
+        sales_conditions : Optional[Union[str, int, List[str], List[int]]]
+            Conditions or condition codes applicable to the sale.
+        sequence_number : Optional[int]
+            The sequence number represents the sequence in which message events happened. These are increasing and unique per ticker symbol, but will not always be sequential (e.g., 1, 2, 6, 9, 10, 11).
+        market_center : Optional[str]
+            The ID of the UTP participant that originated the message.
+        participant_timestamp : Optional[datetime]
+            Timestamp for when the quote was generated by the exchange.
+        trf_timestamp : Optional[datetime]
+            Timestamp for when the TRF (Trade Reporting Facility) received the message.
+        sip_timestamp : Optional[datetime]
+            Timestamp for when the SIP (Security Information Processor) received the message from the exchange.
+        last_price : Optional[float]
+            Price of the last trade.
+        last_tick : Optional[str]
+            Whether the last sale was an up or down tick.
+        last_size : Optional[int]
+            Size of the last trade.
+        last_timestamp : Optional[datetime]
+            Date and Time when the last price was recorded.
+        open : Optional[float]
+            The open price.
+        high : Optional[float]
+            The high price.
+        low : Optional[float]
+            The low price.
+        close : Optional[float]
+            The close price.
+        volume : Optional[Union[int, float]]
+            The trading volume.
+        exchange_volume : Optional[Union[int, float]]
+            Volume of shares exchanged during the trading day on the specific exchange.
+        prev_close : Optional[float]
+
+        change : Optional[float]
+            Change in price from previous close.
+        change_percent : Optional[float]
+            Change in price as a normalized percentage.
+        year_high : Optional[float]
+            The one year high (52W High).
+        year_low : Optional[float]
+            The one year low (52W Low).
+        price_avg50 : Optional[float]
+            50 day moving average price. (provider: fmp)
+        price_avg200 : Optional[float]
+            200 day moving average price. (provider: fmp)
+        avg_volume : Optional[int]
+            Average volume over the last 10 trading days. (provider: fmp)
+        market_cap : Optional[float]
+            Market cap of the company. (provider: fmp)
+        shares_outstanding : Optional[int]
+            Number of shares outstanding. (provider: fmp)
+        eps : Optional[float]
+            Earnings per share. (provider: fmp)
+        pe : Optional[float]
+            Price earnings ratio. (provider: fmp)
+        earnings_announcement : Optional[Union[datetime, str]]
+            Upcoming earnings announcement date. (provider: fmp)
         is_darkpool : Optional[bool]
             Whether or not the current trade is from a darkpool. (provider: intrinio)
-        messages : Optional[List[str]]
-            Messages associated with the endpoint. (provider: intrinio)
-        security : Optional[Dict[str, Any]]
+        source : Optional[str]
+            Source of the Intrinio data. (provider: intrinio)
+        updated_on : Optional[datetime]
+            Date and Time when the data was last updated. (provider: intrinio)
+        security : Optional[openbb_intrinio.utils.references.IntrinioSecurity]
             Security details related to the quote. (provider: intrinio)
         security_type : Optional[str]
             The issuance type of the asset. (provider: tmx)

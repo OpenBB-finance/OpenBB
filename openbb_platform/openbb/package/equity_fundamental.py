@@ -2119,6 +2119,18 @@ class ROUTER_equity_fundamental(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -2128,6 +2140,10 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
+        start_date : Optional[datetime.date]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Optional[datetime.date]
+            End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2190,6 +2206,8 @@ class ROUTER_equity_fundamental(Container):
                 },
                 standard_params={
                     "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "start_date": start_date,
+                    "end_date": end_date,
                 },
                 extra_params=kwargs,
             )
@@ -3038,20 +3056,16 @@ class ROUTER_equity_fundamental(Container):
 
         RevenueGeographic
         -----------------
-        date : date
-            The date of the data.
+        period_ending : date
+            The end date of the reporting period.
+        fiscal_period : Optional[str]
+            The fiscal period of the reporting period.
+        fiscal_year : Optional[int]
+            The fiscal year of the reporting period.
+        filing_date : Optional[date]
+            The filing date of the report.
         geographic_segment : int
-            Day level data containing the revenue of the geographic segment.
-        americas : Optional[int]
-            Revenue from the the American segment.
-        europe : Optional[int]
-            Revenue from the the European segment.
-        greater_china : Optional[int]
-            Revenue from the the Greater China segment.
-        japan : Optional[int]
-            Revenue from the the Japan segment.
-        rest_of_asia_pacific : Optional[int]
-            Revenue from the the Rest of Asia Pacific segment.
+            Dictionary of the revenue by geographic segment.
 
         Example
         -------
@@ -3123,10 +3137,16 @@ class ROUTER_equity_fundamental(Container):
 
         RevenueBusinessLine
         -------------------
-        date : date
-            The date of the data.
+        period_ending : date
+            The end date of the reporting period.
+        fiscal_period : Optional[str]
+            The fiscal period of the reporting period.
+        fiscal_year : Optional[int]
+            The fiscal year of the reporting period.
+        filing_date : Optional[date]
+            The filing date of the report.
         business_line : int
-            Day level data containing the revenue of the business line.
+            Dictionary containing the revenue of the business line.
 
         Example
         -------
@@ -3241,6 +3261,12 @@ class ROUTER_equity_fundamental(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ] = None,
+        limit: Annotated[
+            Optional[int],
+            OpenBBCustomParameter(
+                description="The number of data entries to return. Default is 252, the number of trading days in a year."
+            ),
+        ] = 252,
         provider: Optional[Literal["tiingo"]] = None,
         **kwargs
     ) -> OBBject:
@@ -3250,6 +3276,8 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
+        limit : Optional[int]
+            The number of data entries to return. Default is 252, the number of trading days in a year.
         provider : Optional[Literal['tiingo']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'tiingo' if there is
@@ -3279,7 +3307,7 @@ class ROUTER_equity_fundamental(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.fundamental.trailing_dividend_yield()
+        >>> obb.equity.fundamental.trailing_dividend_yield(limit=252)
         """  # noqa: E501
 
         return self._run(
@@ -3290,6 +3318,7 @@ class ROUTER_equity_fundamental(Container):
                 },
                 standard_params={
                     "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "limit": limit,
                 },
                 extra_params=kwargs,
             )

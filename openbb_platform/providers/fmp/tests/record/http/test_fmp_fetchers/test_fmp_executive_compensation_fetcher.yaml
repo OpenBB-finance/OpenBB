@@ -3,11 +3,55 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
+      Host:
+      - financialmodelingprep.com
+    method: GET
+    uri: https://financialmodelingprep.com/api/v4//governance/executive_compensation?apikey=MOCK_API_KEY&symbol=AAPL
+  response:
+    body: {}
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - X-Requested-With, content-type, auth-token, Authorization, stripe-signature,
+        APPS
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Date:
+      - Tue, 09 Jan 2024 13:21:38 GMT
+      Location:
+      - /api/v4/governance/executive_compensation?symbol=AAPL&apikey=MOCK_API_KEY
+      Server:
+      - nginx/1.18.0 (Ubuntu)
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Powered-By:
+      - Express
+    status:
+      code: 302
+      message: Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Host:
+      - financialmodelingprep.com
     method: GET
     uri: https://financialmodelingprep.com/api/v4/governance/executive_compensation?apikey=MOCK_API_KEY&symbol=AAPL
   response:
@@ -145,8 +189,8 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Mon, 16 Oct 2023 12:22:31 GMT
-      ETag:
+      - Tue, 09 Jan 2024 13:21:38 GMT
+      Etag:
       - W/"29e10-m7KQ336F1nPtYBLPbk8xYXFZhMk"
       Server:
       - nginx/1.18.0 (Ubuntu)
