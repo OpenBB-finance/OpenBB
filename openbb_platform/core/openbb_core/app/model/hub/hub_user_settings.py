@@ -1,5 +1,6 @@
 """Hub user settings model."""
 from typing import Dict, Optional
+
 from pydantic import BaseModel, ConfigDict, Field
 
 
