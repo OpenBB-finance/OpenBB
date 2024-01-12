@@ -233,8 +233,9 @@ class HubService:
         return Credentials(**hub_credentials)
 
     def platform2hub(self, credentials: Credentials) -> HubUserSettings:
-        """Convert Platform models to Hub user settings, updating settings to preserve the incoming state."""
+        """Convert Platform models to Hub user settings."""
         feature_keys = credentials.model_dump(mode="json", exclude_none=True)
+        # We update the fetched feature keys with the existing credentials
         settings = self._hub_user_settings or HubUserSettings()
         settings.features_keys.update(feature_keys)
         return settings
