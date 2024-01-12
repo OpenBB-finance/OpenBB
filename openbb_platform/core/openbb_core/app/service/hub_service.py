@@ -79,12 +79,9 @@ class HubService:
         """Pull user settings from Hub."""
         if self._session:
             self._hub_user_settings = self._get_user_settings(self._session)
-            if self._hub_user_settings:
-                profile = Profile(
-                    hub_session=self._session,
-                )
-                credentials = self.hub2platform(self._hub_user_settings)
-                return UserSettings(profile=profile, credentials=credentials)
+            profile = Profile(hub_session=self._session)
+            credentials = self.hub2platform(self._hub_user_settings)
+            return UserSettings(profile=profile, credentials=credentials)
         raise OpenBBError(
             "No session found. Login or provide a 'HubSession' on initialization."
         )
