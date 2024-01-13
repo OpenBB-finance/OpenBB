@@ -21,7 +21,6 @@ class Charting:
         from openbb_core.app.model.obbject import OBBject
 
         self._obbject: OBBject = obbject
-        self._obbject = obbject
         self._charting_settings = ChartingSettings(
             self._obbject._user_settings, self._obbject._system_settings
         )
