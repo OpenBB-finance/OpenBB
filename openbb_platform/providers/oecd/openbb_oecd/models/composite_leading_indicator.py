@@ -73,11 +73,8 @@ class OECDCLIData(CLIData):
                 year, month = map(int, in_date.split("-"))
                 if month == 12:
                     return date(year, month, 31)
-                else:
-                    next_month = date(year, month + 1, 1)
-                    return date(next_month.year, next_month.month, 1) - timedelta(
-                        days=1
-                    )
+                next_month = date(year, month + 1, 1)
+                return date(next_month.year, next_month.month, 1) - timedelta(days=1)
             # Now match if it is yearly, i.e 2022
             elif re.match(r"\d{4}$", in_date):
                 return date(int(in_date), 12, 31)
@@ -104,7 +101,7 @@ class OECDCLIFetcher(Fetcher[OECDCLIQueryParams, List[OECDCLIData]]):
 
     @staticmethod
     def extract_data(
-        query: OECDCLIQueryParams,
+        query: OECDCLIQueryParams,  # pylint: disable=W0613
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict:
