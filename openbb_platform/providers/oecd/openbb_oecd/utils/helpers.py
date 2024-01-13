@@ -27,7 +27,7 @@ class CustomHttpAdapter(requests.adapters.HTTPAdapter):
         super().__init__(**kwargs)
 
     def init_poolmanager(self, connections, maxsize, block=False):
-        self.poolmanager = urllib3.poolmanager.PoolManager(
+        self.poolmanager = urllib3.poolmanager.PoolManager(  # pylint: disable=attribute-defined-outside-init
             num_pools=connections,
             maxsize=maxsize,
             block=block,
