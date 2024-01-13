@@ -38,6 +38,7 @@ openbb-biztoc = { version = "^1.1.0", optional = true }
 openbb-cboe = { version = "^1.1.0", optional = true }
 openbb-ecb = { version = "^1.1.0", optional = true }
 openbb-finra = { version = "^1.1.0", optional = true }
+openbb-finviz = { version = "^1.1.0", optional = true }
 openbb-government-us = { version = "^1.1.0", optional = true }
 openbb-nasdaq = { version = "^1.1.1", optional = true }
 openbb-seeking-alpha = { version = "^1.1.0", optional = true }
@@ -58,6 +59,7 @@ charting = ["openbb-charting"]
 ecb = ["openbb-ecb"]
 econometrics = ["openbb-econometrics"]
 finra = ["openbb-finra"]
+finviz = ["openbb-finviz"]
 government = ["openbb-government-us"]
 nasdaq = ["openbb-nasdaq"]
 quantitative = ["openbb-quantitative"]
@@ -76,6 +78,7 @@ all = [
     "openbb-ecb",
     "openbb-econometrics",
     "openbb-government-us",
+    "openbb-finviz",
     "openbb-nasdaq",
     "openbb-quantitative",
     "openbb-seeking-alpha",
