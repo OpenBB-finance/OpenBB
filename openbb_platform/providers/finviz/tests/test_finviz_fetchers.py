@@ -16,33 +16,18 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
-        "filter_headers": [("User-Agent", None)],
+        "filter_headers": [
+            ("User-Agent", None),
+            ("Cookie", "MOCK_COOKIE"),
+        ],
     }
 
 
 @pytest.mark.record_http
-def test_finviz_compare_groups_fetcher(credentials=test_credentials):
-    params = {"group": "country", "metric": "performance"}
-
-    fetcher = FinvizCompareGroupsFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-def test_finviz_equity_profile_fetcher(credentials=test_credentials):
+def test_finviz_price_target_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
-    fetcher = FinvizEquityProfileFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-def test_finviz_key_metrics_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
-
-    fetcher = FinvizKeyMetricsFetcher()
+    fetcher = FinvizPriceTargetFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -57,9 +42,27 @@ def test_finviz_price_performance_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_finviz_price_target_fetcher(credentials=test_credentials):
+def test_finviz_key_metrics_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
-    fetcher = FinvizPriceTargetFetcher()
+    fetcher = FinvizKeyMetricsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_finviz_equity_profile_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = FinvizEquityProfileFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_finviz_compare_groups_fetcher(credentials=test_credentials):
+    params = {"group": "country", "metric": "performance"}
+
+    fetcher = FinvizCompareGroupsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
