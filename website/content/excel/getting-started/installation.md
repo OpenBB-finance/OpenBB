@@ -9,11 +9,10 @@ keywords:
 
 ## Requirements
 
-The OpenBB Excel Add-in is available on the following platforms:
+- The OpenBB Excel Add-in is available on the following platforms: Windows (Microsoft 365), Mac (Microsoft 365), Excel on the web.
+- Access to the OpenBB Terminal Pro. If you don't have access you can sign up for the waitlist [here](https://my.openbb.co/app/pro).
 
-- Windows (Microsoft 365)
-- Mac (Microsoft 365)
-- Excel on the web
+---
 
 ## Installation
 
