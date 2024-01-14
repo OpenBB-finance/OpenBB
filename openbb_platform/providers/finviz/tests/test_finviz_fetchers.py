@@ -19,6 +19,11 @@ def vcr_config():
         "filter_headers": [
             ("User-Agent", None),
             ("Cookie", "MOCK_COOKIE"),
+            ("Set-Cookie", "MOCK_COOKIE"),
+        ],
+        "filter_query_parameters": [
+            ("Cookie", "MOCK_COOKIE"),
+            ("Set-Cookie", "MOCK_COOKIE"),
         ],
     }
 
