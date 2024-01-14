@@ -1,12 +1,12 @@
-name-template: 'OpenBB Terminal v$NEXT_MINOR_VERSION'
+name-template: 'OpenBB Platform v$NEXT_MINOR_VERSION'
 tag-template: 'v$NEXT_MINOR_VERSION'
 categories:
   - title: 🦋 OpenBB Platform Enhancements
-    labels: 
+    labels:
       - 'platform'
       - 'v4'
   - title: 🐛 OpenBB Platform Bug Fixes
-    labels: 
+    labels:
       - 'bug'
 exclude-contributors:
   - 'jmaslek'
