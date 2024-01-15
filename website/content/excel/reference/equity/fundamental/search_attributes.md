@@ -4,7 +4,9 @@ Search Intrinio data tags.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES(query;[provider];[limit])</span>```
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES(query;[limit];[provider])
+```
 
 ### Example
 
@@ -16,11 +18,11 @@ Search Intrinio data tags.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **query** | **Text** | **Query to search for.** | **False** |
-| provider | Text | Options: intrinio, defaults to intrinio. | True |
-| limit | Number | The number of data entries to return. | True |
+| **query** | **Text** | **Query to search for.** | **True** |
+| limit | Number | The number of data entries to return. | False |
+| provider | Text | Options: intrinio, defaults to intrinio. | False |
 
 ---
 

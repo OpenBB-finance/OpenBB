@@ -24,7 +24,9 @@ European Central Bank Interest Rates.  The Governing Council of the ECB sets the
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.FIXEDINCOME.RATE.ECB([provider];[start_date];[end_date];[interest_rate_type])</span>```
+```excel wordwrap
+=OBB.FIXEDINCOME.RATE.ECB([start_date];[end_date];[interest_rate_type];[provider])
+```
 
 ### Example
 
@@ -36,12 +38,12 @@ European Central Bank Interest Rates.  The Governing Council of the ECB sets the
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fred, defaults to fred. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
-| interest_rate_type | Text | The type of interest rate. | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| interest_rate_type | Text | The type of interest rate. | False |
+| provider | Text | Options: fred, defaults to fred. | False |
 
 ---
 

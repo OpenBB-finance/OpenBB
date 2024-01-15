@@ -30,7 +30,9 @@ Get a current, complete, market snapshot.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.MARKET_SNAPSHOTS([provider];[market])</span>```
+```excel wordwrap
+=OBB.EQUITY.MARKET_SNAPSHOTS([provider];[market])
+```
 
 ### Example
 
@@ -42,10 +44,10 @@ Get a current, complete, market snapshot.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp, polygon, defaults to fmp. | True |
-| market | Text | The market to fetch data for. (provider: fmp) | True |
+| provider | Text | Options: fmp, polygon, defaults to fmp. | False |
+| market | Text | The market to fetch data for. (provider: fmp) | False |
 
 ---
 

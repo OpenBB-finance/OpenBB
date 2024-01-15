@@ -6,19 +6,20 @@ from textwrap import shorten
 from typing import Any, Dict, List, Literal
 
 import requests
-from openbb_core.app.provider_interface import ProviderInterface
-from openbb_core.app.static.package_builder import PathHandler
 
 # Paths
 WEBSITE_PATH = Path(__file__).parent.absolute()
 CONTENT_PATH = WEBSITE_PATH / "content"
 XL_FUNCS_PATH = CONTENT_PATH / "excel" / "functions.json"
+XL_PLATFORM_PATH = CONTENT_PATH / "excel" / "openapi.json"
 SEO_METADATA_PATH = WEBSITE_PATH / "metadata" / "platform_v4_seo_metadata.json"
 
+# URLs: the platorm url should match the backend being used by excel.openbb.co
 XL_FUNCS_URL = "https://excel.openbb.co/assets/functions.json"
+XL_PLATFORM_URL = "https://sdk.openbb.co/openapi.json"
 
 
-class CommandLib(PathHandler):
+class CommandLib:
     """Command library."""
 
     XL_TYPE_MAP = {
@@ -33,7 +34,7 @@ class CommandLib(PathHandler):
         "crypto": {"symbol": '"BTCUSD"'},
         "currency": {"symbol": '"EURUSD"'},
         "derivatives": {"symbol": '"AAPL"'},
-        "economy": {"countries": '"united_states,germany"'},
+        "economy": {"countries": '"united_states"'},
         "equity": {
             "symbol": '"AAPL"',
             "tag": '"EBITDA"',
@@ -47,16 +48,22 @@ class CommandLib(PathHandler):
     }
 
     def __init__(self):
-        self.pi = ProviderInterface()
-        self.route_map = self.build_route_map()
         self.xl_funcs = self.read_xl_funcs()
+        self.openapi = self.read_openapi()
         self.seo_metadata = self.read_seo_metadata()
 
     @staticmethod
-    def fetch():
+    def fetch_functions():
         """Fetch the excel functions."""
         r = requests.get(XL_FUNCS_URL, timeout=10)
         with open(XL_FUNCS_PATH, "w") as f:
+            json.dump(r.json(), f, indent=2)
+
+    @staticmethod
+    def fetch_openapi():
+        """Fetch the openapi.json."""
+        r = requests.get(XL_PLATFORM_URL, timeout=10)
+        with open(XL_PLATFORM_PATH, "w") as f:
             json.dump(r.json(), f, indent=2)
 
     def read_seo_metadata(self) -> dict:
@@ -74,37 +81,31 @@ class CommandLib(PathHandler):
             for func in funcs["functions"]
         }
 
+    def read_openapi(self) -> dict:
+        """Get the openapi.json."""
+        with open(XL_PLATFORM_PATH) as f:
+            return json.load(f)
+
     def to_xl(self, type_: str) -> str:
         """Convert a type to an Excel type."""
         return self.XL_TYPE_MAP.get(type_, type_).title()
 
     def get_func(self, cmd: str) -> str:
         """Get the func of the command."""
-        if cmd in self.route_map:
-            return self.xl_funcs.get(cmd, {}).get("name", ".").split(".")[-1].lower()
-        return ""
+        return self.xl_funcs.get(cmd, {}).get("name", ".").split(".")[-1].lower()
 
     def _get_signature(self, cmd: str, parameters: dict) -> str:
         """Get the signature of the command."""
-        if cmd in self.route_map:
-            sig = "=OBB." + self.xl_funcs[cmd].get("name", "")
-            sig += "("
-            for p_name, p_info in parameters.items():
-                if p_info["required"]:
-                    sig += f"{p_name}"
-                else:
-                    sig += f"[{p_name}]"
-                sig += ";"
-            sig = sig.strip("; ") + ")"
-            return sig
-        return ""
-
-    def _get_model(self, cmd: str) -> str:
-        """Get the model of the command."""
-        route = self.route_map.get(cmd, None)
-        if route:
-            return route.openapi_extra.get("model", "")
-        return ""
+        sig = "=OBB." + self.xl_funcs[cmd].get("name", "")
+        sig += "("
+        for p_name, p_info in parameters.items():
+            if p_info["required"]:
+                sig += f"{p_name}"
+            else:
+                sig += f"[{p_name}]"
+            sig += ";"
+        sig = sig.strip("; ") + ")"
+        return sig
 
     def get_xl_param(self, cmd, param):
         for p in self.xl_funcs[cmd]["parameters"]:
@@ -125,17 +126,16 @@ class CommandLib(PathHandler):
         return parameters
 
     def _get_data(self, cmd: str) -> dict:
-        """Get the data of the command."""
-        model_name = self._get_model(cmd)
-        if model_name:
-            schema = self.pi.return_schema[model_name].model_json_schema()["properties"]
+        """Get the data of the command from the openapi."""
+        model = self.openapi["paths"][f"/api/v1{cmd}"]["get"]["model"]
+        if model:
+            schema = self.openapi["components"]["schemas"][model]["properties"]
             data = {}
             for name, info in schema.items():
                 data[name] = {
                     "description": info.get("description", "").replace("\n", " "),
                 }
             return data
-
         return {}
 
     def _get_examples(self, signature_: str, parameters: dict) -> dict:
@@ -159,18 +159,15 @@ class CommandLib(PathHandler):
         data = self._get_data(cmd)
         return_ = self.xl_funcs[cmd].get("result", {}).get("dimensionality", "")
         examples = self._get_examples(signature_, parameters)
-        if model_name := self._get_model(cmd):
-            return {
-                "name": name,
-                "description": description,
-                "signature": signature_,
-                "parameters": parameters,
-                "data": data,
-                "return": return_,
-                "examples": examples,
-                "model_name": model_name,
-            }
-        return {}
+        return {
+            "name": name,
+            "description": description,
+            "signature": signature_,
+            "parameters": parameters,
+            "data": data,
+            "return": return_,
+            "examples": examples,
+        }
 
 
 class Editor:
@@ -440,7 +437,8 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--no-update":
         pass
     else:
-        CommandLib.fetch()
+        CommandLib.fetch_functions()
+        CommandLib.fetch_openapi()
 
     Editor(
         directory=CONTENT_PATH,

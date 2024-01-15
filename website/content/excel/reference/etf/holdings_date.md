@@ -27,7 +27,9 @@ Get the holdings filing date for an individual ETF.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.ETF.HOLDINGS_DATE(symbol;[provider];[cik])</span>```
+```excel wordwrap
+=OBB.ETF.HOLDINGS_DATE(symbol;[provider];[cik])
+```
 
 ### Example
 
@@ -39,11 +41,11 @@ Get the holdings filing date for an individual ETF.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for. (ETF)** | **False** |
-| provider | Text | Options: fmp, defaults to fmp. | True |
-| cik | Text | The CIK of the filing entity. Overrides symbol. (provider: fmp) | True |
+| **symbol** | **Text** | **Symbol to get data for. (ETF)** | **True** |
+| provider | Text | Options: fmp, defaults to fmp. | False |
+| cik | Text | The CIK of the filing entity. Overrides symbol. (provider: fmp) | False |
 
 ---
 
