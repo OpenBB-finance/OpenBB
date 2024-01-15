@@ -30,6 +30,8 @@ class CommandLib:
         "str": "Text",
         "string": "Text",
     }
+
+    # These examples will be generated in the core, but we keep them here meanwhile
     EXAMPLE_PARAMS: Dict[str, Dict] = {
         "crypto": {
             "symbol": '"BTCUSD"',
@@ -72,7 +74,7 @@ class CommandLib:
             "form_type": '"10-K"',
             "period": '"annual"',
             "frequency": '"quarterly"',
-            "type": '',
+            "type": "",
             "sort": '"desc"',
             "structure": '"flat"',
             "date": '"2023-05-07"',
