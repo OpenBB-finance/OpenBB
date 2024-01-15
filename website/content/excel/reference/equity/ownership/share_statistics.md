@@ -22,7 +22,9 @@ Share Statistics. Share statistics for a given company.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.OWNERSHIP.SHARE_STATISTICS(symbol;[provider])</span>```
+```excel wordwrap
+=OBB.EQUITY.OWNERSHIP.SHARE_STATISTICS(symbol;[provider])
+```
 
 ### Example
 
@@ -34,10 +36,10 @@ Share Statistics. Share statistics for a given company.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, intrinio, defaults to fmp. | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| provider | Text | Options: fmp, intrinio, defaults to fmp. | False |
 
 ---
 

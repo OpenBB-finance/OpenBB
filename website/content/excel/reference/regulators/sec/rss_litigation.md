@@ -29,7 +29,9 @@ The RSS feed provides links to litigation releases concerning civil lawsuits bro
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.REGULATORS.SEC.RSS_LITIGATION([provider])</span>```
+```excel wordwrap
+=OBB.REGULATORS.SEC.RSS_LITIGATION([provider])
+```
 
 ### Example
 
@@ -41,9 +43,9 @@ The RSS feed provides links to litigation releases concerning civil lawsuits bro
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: sec, defaults to sec. | True |
+| provider | Text | Options: sec, defaults to sec. | False |
 
 ---
 

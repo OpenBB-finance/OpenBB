@@ -24,7 +24,9 @@ Get the ETF holdings performance.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.ETF.HOLDINGS_PERFORMANCE(symbol;[provider])</span>```
+```excel wordwrap
+=OBB.ETF.HOLDINGS_PERFORMANCE(symbol;[provider])
+```
 
 ### Example
 
@@ -36,10 +38,10 @@ Get the ETF holdings performance.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, defaults to fmp. | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 

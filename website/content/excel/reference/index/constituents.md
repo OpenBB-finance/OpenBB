@@ -26,7 +26,9 @@ Index Constituents. Constituents of an index.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.INDEX.CONSTITUENTS([provider];[index])</span>```
+```excel wordwrap
+=OBB.INDEX.CONSTITUENTS([index];[provider])
+```
 
 ### Example
 
@@ -38,10 +40,10 @@ Index Constituents. Constituents of an index.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp, defaults to fmp. | True |
-| index | Text | Index for which we want to fetch the constituents. | True |
+| index | Text | Index for which we want to fetch the constituents. | False |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 

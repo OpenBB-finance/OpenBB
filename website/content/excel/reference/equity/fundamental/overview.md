@@ -54,7 +54,9 @@ Company Overview. General information about a company.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.FUNDAMENTAL.OVERVIEW(symbol;[provider])</span>```
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.OVERVIEW(symbol;[provider])
+```
 
 ### Example
 
@@ -66,10 +68,10 @@ Company Overview. General information about a company.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, defaults to fmp. | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 

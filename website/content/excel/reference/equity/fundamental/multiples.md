@@ -72,7 +72,9 @@ Equity Valuation Multiples. Valuation multiples for a stock ticker.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.FUNDAMENTAL.MULTIPLES(symbol;[provider])</span>```
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.MULTIPLES(symbol;[provider])
+```
 
 ### Example
 
@@ -84,10 +86,10 @@ Equity Valuation Multiples. Valuation multiples for a stock ticker.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, defaults to fmp. | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 
@@ -95,6 +97,7 @@ Equity Valuation Multiples. Valuation multiples for a stock ticker.
 
 | Name | Description |
 | ---- | ----------- |
+| symbol | Symbol representing the entity requested in the data.  |
 | revenue_per_share_ttm | Revenue per share calculated as trailing twelve months.  |
 | net_income_per_share_ttm | Net income per share calculated as trailing twelve months.  |
 | operating_cash_flow_per_share_ttm | Operating cash flow per share calculated as trailing twelve months.  |

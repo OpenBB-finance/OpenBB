@@ -24,7 +24,9 @@ Get reported Fail-to-deliver (FTD) data.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.SHORTS.FAILS_TO_DELIVER(symbol;[provider];[limit];[skip_reports])</span>```
+```excel wordwrap
+=OBB.EQUITY.SHORTS.FAILS_TO_DELIVER(symbol;[provider];[limit];[skip_reports])
+```
 
 ### Example
 
@@ -36,12 +38,12 @@ Get reported Fail-to-deliver (FTD) data.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: sec, defaults to sec. | True |
-| limit | Number | Limit the number of reports to parse, from most recent. Approximately 24 reports per year, going back to 2009. (provider: sec) | True |
-| skip_reports | Number | Skip N number of reports from current. A value of 1 will skip the most recent report. (provider: sec) | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| provider | Text | Options: sec, defaults to sec. | False |
+| limit | Number | Limit the number of reports to parse, from most recent. Approximately 24 reports per year, going back to 2009. (provider: sec) | False |
+| skip_reports | Number | Skip N number of reports from current. A value of 1 will skip the most recent report. (provider: sec) | False |
 
 ---
 

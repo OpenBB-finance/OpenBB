@@ -55,7 +55,9 @@ Equity Search. Search for a company or stock ticker.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.SEARCH([provider];[query];[is_symbol];[active];[limit];[is_fund];[use_cache])</span>```
+```excel wordwrap
+=OBB.EQUITY.SEARCH([query];[is_symbol];[provider];[active];[limit];[is_fund];[use_cache])
+```
 
 ### Example
 
@@ -67,15 +69,15 @@ Equity Search. Search for a company or stock ticker.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: intrinio, sec, defaults to intrinio. | True |
-| query | Text | Search query. | True |
-| is_symbol | Boolean | Whether to search by ticker symbol. | True |
-| active | Boolean | When true, return companies that are actively traded (having stock prices within the past 14 days). When false, return companies that are not actively traded or never have been traded. (provider: intrinio) | True |
-| limit | Number | The number of data entries to return. (provider: intrinio) | True |
-| is_fund | Boolean | Whether to direct the search to the list of mutual funds and ETFs. (provider: sec) | True |
-| use_cache | Boolean | Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec) | True |
+| query | Text | Search query. | False |
+| is_symbol | Boolean | Whether to search by ticker symbol. | False |
+| provider | Text | Options: intrinio, sec, defaults to intrinio. | False |
+| active | Boolean | When true, return companies that are actively traded (having stock prices within the past 14 days). When false, return companies that are not actively traded or never have been traded. (provider: intrinio) | False |
+| limit | Number | The number of data entries to return. (provider: intrinio) | False |
+| is_fund | Boolean | Whether to direct the search to the list of mutual funds and ETFs. (provider: sec) | False |
+| use_cache | Boolean | Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec) | False |
 
 ---
 
@@ -85,6 +87,6 @@ Equity Search. Search for a company or stock ticker.
 | ---- | ----------- |
 | symbol | Symbol representing the entity requested in the data.  |
 | name | Name of the company.  |
-| dpm_name | Name of the primary market maker. (provider: cboe) |
-| post_station | Post and station location on the CBOE trading floor. (provider: cboe) |
-| cik | Central Index Key (provider: sec) |
+| cik | ;     Central Index Key (provider: sec) |
+| lei | The Legal Entity Identifier (LEI) of the company. (provider: intrinio) |
+| intrinio_id | The Intrinio ID of the company. (provider: intrinio) |

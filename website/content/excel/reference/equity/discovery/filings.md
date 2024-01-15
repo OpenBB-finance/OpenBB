@@ -13,7 +13,9 @@ Get the most-recent filings submitted to the SEC.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.DISCOVERY.FILINGS([provider];[start_date];[end_date];[form_type];[limit];[isDone])</span>```
+```excel wordwrap
+=OBB.EQUITY.DISCOVERY.FILINGS([start_date];[end_date];[form_type];[limit];[provider];[isDone])
+```
 
 ### Example
 
@@ -25,14 +27,14 @@ Get the most-recent filings submitted to the SEC.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp, defaults to fmp. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
-| form_type | Text | Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types. | True |
-| limit | Number | The number of data entries to return. | True |
-| isDone | Boolean | Flag for whether or not the filing is done. (provider: fmp) | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| form_type | Text | Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types. | False |
+| limit | Number | The number of data entries to return. | False |
+| provider | Text | Options: fmp, defaults to fmp. | False |
+| isDone | Boolean | Flag for whether or not the filing is done. (provider: fmp) | False |
 
 ---
 

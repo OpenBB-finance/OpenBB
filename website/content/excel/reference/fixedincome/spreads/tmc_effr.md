@@ -32,7 +32,9 @@ Select Treasury Constant Maturity.  Get data for Selected Treasury Constant Matu
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.FIXEDINCOME.SPREADS.TMC_EFFR([provider];[start_date];[end_date];[maturity])</span>```
+```excel wordwrap
+=OBB.FIXEDINCOME.SPREADS.TMC_EFFR([start_date];[end_date];[maturity];[provider])
+```
 
 ### Example
 
@@ -44,12 +46,12 @@ Select Treasury Constant Maturity.  Get data for Selected Treasury Constant Matu
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fred, defaults to fred. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
-| maturity | Text | The maturity | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| maturity | Text | The maturity | False |
+| provider | Text | Options: fred, defaults to fred. | False |
 
 ---
 

@@ -29,7 +29,9 @@ Look up institutions regulated by the SEC.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.REGULATORS.SEC.INSTITUTIONS_SEARCH([provider];[query];[use_cache])</span>```
+```excel wordwrap
+=OBB.REGULATORS.SEC.INSTITUTIONS_SEARCH([query];[provider];[use_cache])
+```
 
 ### Example
 
@@ -41,11 +43,11 @@ Look up institutions regulated by the SEC.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: sec, defaults to sec. | True |
-| query | Text | Search query. | True |
-| use_cache | Boolean | Whether or not to use cache. If True, cache will store for seven days. (provider: sec) | True |
+| query | Text | Search query. | False |
+| provider | Text | Options: sec, defaults to sec. | False |
+| use_cache | Boolean | Whether or not to use cache. If True, cache will store for seven days. (provider: sec) | False |
 
 ---
 
