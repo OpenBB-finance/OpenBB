@@ -8,7 +8,9 @@ from datetime import datetime, timedelta
 from typing import List, Optional
 
 import financedatabase as fd
+from openbb import obb
 
+from argparse_translator.argparse_class_processor import ArgparseClassProcessor
 from openbb_terminal import config_terminal
 from openbb_terminal.common import (
     feedparser_view,
@@ -35,8 +37,6 @@ from openbb_terminal.terminal_helper import suppress_stdout
 
 logger = logging.getLogger(__name__)
 
-from openbb import obb
-from argparse_translator.argparse_class_processor import ArgparseClassProcessor
 
 equity_price_translations = ArgparseClassProcessor(target_class=obb.equity.price)
 
@@ -157,7 +157,9 @@ class StocksController(StockBaseController):
 
     def call_load(self, other_args: List[str]):
         """Process load command."""
-        translator = equity_price_translations.get_translator(command="historical")
+        translator = equity_price_translations.get_translator(
+            command="equity_price_historical"
+        )
         parser = translator.parser
 
         if ns_parser := self.parse_known_args_and_warn(parser, other_args):

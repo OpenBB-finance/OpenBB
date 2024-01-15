@@ -108,6 +108,7 @@ class TerminalController(BaseController):
         "futures",
         "fixedincome",
         "funds",
+        "poc_plat_equity",
     ]
 
     if is_auth_enabled():
@@ -244,6 +245,7 @@ class TerminalController(BaseController):
         mt.add_menu("fixedincome")
         mt.add_menu("alternative")
         mt.add_menu("funds")
+        mt.add_menu("poc_plat_equity")
         mt.add_raw("\n")
         mt.add_info("_toolkits_")
         mt.add_menu("econometrics")
@@ -604,6 +606,14 @@ class TerminalController(BaseController):
         from openbb_terminal.mutual_funds.mutual_fund_controller import FundController
 
         self.queue = self.load_class(FundController, self.queue)
+
+    def call_poc_plat_equity(self, _):
+        """Process poc_platform_equity command."""
+        from openbb_terminal.poc_platform_equity_controller import (
+            PocPlatformEquityController,
+        )
+
+        self.queue = self.load_class(PocPlatformEquityController, self.queue)
 
     def call_intro(self, _):
         """Process intro command."""
