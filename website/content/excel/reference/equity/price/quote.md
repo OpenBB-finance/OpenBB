@@ -67,7 +67,9 @@ Equity Quote. Load stock data for a specific ticker.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.PRICE.QUOTE(symbol;[provider];[source])</span>```
+```excel wordwrap
+=OBB.EQUITY.PRICE.QUOTE(symbol;[provider];[source])
+```
 
 ### Example
 
@@ -79,11 +81,11 @@ Equity Quote. Load stock data for a specific ticker.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for. In this case, the comma separated list of symbols.** | **False** |
-| provider | Text | Options: fmp, intrinio, defaults to fmp. | True |
-| source | Text | Source of the data. (provider: intrinio) | True |
+| **symbol** | **Text** | **Symbol to get data for. In this case, the comma separated list of symbols.** | **True** |
+| provider | Text | Options: fmp, intrinio, defaults to fmp. | False |
+| source | Text | Source of the data. (provider: intrinio) | False |
 
 ---
 
@@ -102,8 +104,8 @@ Equity Quote. Load stock data for a specific ticker.
 | year_high | Highest price of the equity in the last 52 weeks. (provider: fmp) |
 | year_low | Lowest price of the equity in the last 52 weeks. (provider: fmp) |
 | market_cap | Market cap of the company. (provider: fmp) |
-| priceAvg50 | 50 days average price of the equity. (provider: fmp) |
-| priceAvg200 | 200 days average price of the equity. (provider: fmp) |
+| price_avg50 | 50 days average price of the equity. (provider: fmp) |
+| price_avg200 | 200 days average price of the equity. (provider: fmp) |
 | volume | Volume of the equity in the current trading day. (provider: fmp) |
 | avg_volume | Average volume of the equity in the last 10 trading days. (provider: fmp) |
 | exchange | Exchange the equity is traded on. (provider: fmp) |

@@ -80,7 +80,9 @@ Key Metrics. Key metrics for a given company.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.FUNDAMENTAL.METRICS(symbol;[provider];[period];[limit];[with_ttm])</span>```
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.METRICS(symbol;[period];[limit];[provider];[with_ttm])
+```
 
 ### Example
 
@@ -92,13 +94,13 @@ Key Metrics. Key metrics for a given company.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, intrinio, defaults to fmp. | True |
-| period | Text | Time period of the data to return. | True |
-| limit | Number | The number of data entries to return. | True |
-| with_ttm | Boolean | Include trailing twelve months (TTM) data. (provider: fmp) | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| period | Text | Time period of the data to return. | False |
+| limit | Number | The number of data entries to return. | False |
+| provider | Text | Options: fmp, intrinio, defaults to fmp. | False |
+| with_ttm | Boolean | Include trailing twelve months (TTM) data. (provider: fmp) | False |
 
 ---
 

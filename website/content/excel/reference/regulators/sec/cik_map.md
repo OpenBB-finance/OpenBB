@@ -24,7 +24,9 @@ Get the CIK number corresponding to a ticker symbol.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.REGULATORS.SEC.CIK_MAP(symbol;[provider])</span>```
+```excel wordwrap
+=OBB.REGULATORS.SEC.CIK_MAP(symbol;[provider])
+```
 
 ### Example
 
@@ -36,10 +38,10 @@ Get the CIK number corresponding to a ticker symbol.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: sec, defaults to sec. | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| provider | Text | Options: sec, defaults to sec. | False |
 
 ---
 

@@ -13,7 +13,9 @@ Fed Funds Rate Projections.  The projections for the federal funds rate are the 
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.FIXEDINCOME.RATE.EFFR_FORECAST([provider];[long_run])</span>```
+```excel wordwrap
+=OBB.FIXEDINCOME.RATE.EFFR_FORECAST([provider];[long_run])
+```
 
 ### Example
 
@@ -25,10 +27,10 @@ Fed Funds Rate Projections.  The projections for the federal funds rate are the 
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fred, defaults to fred. | True |
-| long_run | Boolean | Flag to show long run projections (provider: fred) | True |
+| provider | Text | Options: fred, defaults to fred. | False |
+| long_run | Boolean | Flag to show long run projections (provider: fred) | False |
 
 ---
 

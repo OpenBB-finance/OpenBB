@@ -53,7 +53,9 @@ Equity Info. Get general price and performance metrics of a stock.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.PROFILE(symbol;[provider])</span>```
+```excel wordwrap
+=OBB.EQUITY.PROFILE(symbol;[provider])
+```
 
 ### Example
 
@@ -65,10 +67,10 @@ Equity Info. Get general price and performance metrics of a stock.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: intrinio, defaults to intrinio. | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| provider | Text | Options: intrinio, defaults to intrinio. | False |
 
 ---
 
@@ -112,26 +114,5 @@ Equity Info. Get general price and performance metrics of a stock.
 | last_fundamental_date | Date of the company's last fundamental.  |
 | first_stock_price_date | Date of the company's first stock price.  |
 | last_stock_price_date | Date of the company's last stock price.  |
-| type | Type of asset. (provider: cboe) |
-| exchange_id | The Exchange ID number. (provider: cboe) |
-| tick | Whether the last sale was an up or down tick. (provider: cboe) |
-| bid | Current bid price. (provider: cboe) |
-| bid_size | Bid lot size. (provider: cboe) |
-| ask | Current ask price. (provider: cboe) |
-| ask_size | Ask lot size. (provider: cboe) |
-| volume | Stock volume for the current trading day. (provider: cboe) |
-| iv30 | The 30-day implied volatility of the stock. (provider: cboe) |
-| iv30_change | Change in 30-day implied volatility of the stock. (provider: cboe) |
-| last_trade_timestamp | Last trade timestamp for the stock. (provider: cboe) |
-| iv30_annual_high | The 1-year high of implied volatility. (provider: cboe) |
-| hv30_annual_high | The 1-year high of realized volatility. (provider: cboe) |
-| iv30_annual_low | The 1-year low of implied volatility. (provider: cboe) |
-| hv30_annual_low | The 1-year low of realized volatility. (provider: cboe) |
-| iv60_annual_high | The 60-day high of implied volatility. (provider: cboe) |
-| hv60_annual_high | The 60-day high of realized volatility. (provider: cboe) |
-| iv60_annual_low | The 60-day low of implied volatility. (provider: cboe) |
-| hv60_annual_low | The 60-day low of realized volatility. (provider: cboe) |
-| iv90_annual_high | The 90-day high of implied volatility. (provider: cboe) |
-| hv90_annual_high | The 90-day high of realized volatility. (provider: cboe) |
 | id | Intrinio ID for the company. (provider: intrinio) |
 | thea_enabled | Whether the company has been enabled for Thea. (provider: intrinio) |

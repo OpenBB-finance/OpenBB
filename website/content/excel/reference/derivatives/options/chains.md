@@ -42,7 +42,9 @@ Get the complete options chain for a ticker.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.DERIVATIVES.OPTIONS.CHAINS(symbol;[provider];[date])</span>```
+```excel wordwrap
+=OBB.DERIVATIVES.OPTIONS.CHAINS(symbol;[provider];[date])
+```
 
 ### Example
 
@@ -54,11 +56,11 @@ Get the complete options chain for a ticker.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: intrinio, defaults to intrinio. | True |
-| date | Text | Date for which the options chains are returned. (provider: intrinio) | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| provider | Text | Options: intrinio, defaults to intrinio. | False |
+| date | Text | Date for which the options chains are returned. (provider: intrinio) | False |
 
 ---
 
@@ -92,14 +94,3 @@ Get the complete options chain for a ticker.
 | gamma | Gamma of the option.  |
 | theta | Theta of the option.  |
 | vega | Vega of the option.  |
-| bid_size | Bid size for the option. (provider: cboe) |
-| ask_size | Ask size for the option. (provider: cboe) |
-| theoretical | Theoretical value of the option. (provider: cboe) |
-| last_trade_price | Last trade price of the option. (provider: cboe) |
-| tick | Whether the last tick was up or down in price. (provider: cboe) |
-| prev_close | Previous closing price of the option. (provider: cboe) |
-| change | Change in  price of the option. (provider: cboe) |
-| change_percent | Change, in percent, of the option. (provider: cboe) |
-| rho | Rho of the option. (provider: cboe) |
-| last_trade_timestamp | Last trade timestamp of the option. (provider: cboe) |
-| dte | Days to expiration for the option. (provider: cboe) |
