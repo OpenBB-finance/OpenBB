@@ -1,4 +1,5 @@
 import json
+import shutil
 import sys
 from pathlib import Path
 from textwrap import shorten
@@ -20,10 +21,6 @@ XL_FUNCS_URL = "https://excel.openbb.co/assets/functions.json"
 class CommandLib(PathHandler):
     """Command library."""
 
-    MANUAL_MAP = {
-        "/last": "/equity/fundamental/latest_attributes",
-        "/hist": "/equity/fundamental/historical_attributes",
-    }
     XL_TYPE_MAP = {
         "bool": "Boolean",
         "float": "Number",
@@ -32,6 +29,22 @@ class CommandLib(PathHandler):
         "str": "Text",
         "string": "Text",
     }
+    EXAMPLE_PARAMS: Dict[str, Dict] = {
+        "crypto": {"symbol": '"BTCUSD"'},
+        "currency": {"symbol": '"EURUSD"'},
+        "derivatives": {"symbol": '"AAPL"'},
+        "economy": {"countries": '"united_states,germany"'},
+        "equity": {
+            "symbol": '"AAPL"',
+            "tag": '"EBITDA"',
+            "query": '"EBITDA"',
+            "year": 2022,
+        },
+        "etf": {"symbol": '"SPY"'},
+        "index": {"symbol": '"^GSPC"'},
+        "news": {"symbols": '"AAPL,MSFT"'},
+        "regulators": {"symbol": '"AAPL"'},
+    }
 
     def __init__(self):
         self.pi = ProviderInterface()
@@ -39,19 +52,12 @@ class CommandLib(PathHandler):
         self.xl_funcs = self.read_xl_funcs()
         self.seo_metadata = self.read_seo_metadata()
 
-        self.update()
-
     @staticmethod
     def fetch():
         """Fetch the excel functions."""
         r = requests.get(XL_FUNCS_URL, timeout=10)
         with open(XL_FUNCS_PATH, "w") as f:
             json.dump(r.json(), f, indent=2)
-
-    def update(self):
-        """Update with manual map."""
-        for key, value in self.MANUAL_MAP.items():
-            self.route_map[key] = self.route_map[value]
 
     def read_seo_metadata(self) -> dict:
         """Get the SEO metadata."""
@@ -78,7 +84,22 @@ class CommandLib(PathHandler):
             return self.xl_funcs.get(cmd, {}).get("name", ".").split(".")[-1].lower()
         return ""
 
-    def get_model(self, cmd: str) -> str:
+    def _get_signature(self, cmd: str, parameters: dict) -> str:
+        """Get the signature of the command."""
+        if cmd in self.route_map:
+            sig = "=OBB." + self.xl_funcs[cmd].get("name", "")
+            sig += "("
+            for p_name, p_info in parameters.items():
+                if p_info["required"]:
+                    sig += f"{p_name}"
+                else:
+                    sig += f"[{p_name}]"
+                sig += ";"
+            sig = sig.strip("; ") + ")"
+            return sig
+        return ""
+
+    def _get_model(self, cmd: str) -> str:
         """Get the model of the command."""
         route = self.route_map.get(cmd, None)
         if route:
@@ -91,22 +112,21 @@ class CommandLib(PathHandler):
                 return p
         return None
 
-    def get_parameters(self, cmd: str) -> dict:
+    def _get_parameters(self, cmd: str) -> dict:
         """Get the parameters of the command."""
         parameters = {}
-        cmd_info = self.xl_funcs[cmd]
-        for p in cmd_info["parameters"]:
+        for p in self.xl_funcs[cmd]["parameters"]:
             parameters[p["name"]] = {
                 "type": self.to_xl(str(p["type"])),
                 "description": p["description"].replace("\n", " "),
-                "optional": str(p.get("optional", False)).title(),
+                "required": not p.get("optional", False),
             }
 
         return parameters
 
-    def get_data(self, cmd: str) -> dict:
+    def _get_data(self, cmd: str) -> dict:
         """Get the data of the command."""
-        model_name = self.get_model(cmd)
+        model_name = self._get_model(cmd)
         if model_name:
             schema = self.pi.return_schema[model_name].model_json_schema()["properties"]
             data = {}
@@ -118,22 +138,36 @@ class CommandLib(PathHandler):
 
         return {}
 
+    def _get_examples(self, signature_: str, parameters: dict) -> dict:
+        minimal_eg = signature_.split("(")[0] + "("
+        category = signature_.split(".")[1].lower()
+        for p_name, p_info in parameters.items():
+            if p_info["required"]:
+                p_value = self.EXAMPLE_PARAMS.get(category, {}).get(p_name, "")
+                minimal_eg += f"{p_value};"
+        minimal_eg = minimal_eg.strip("; ") + ")"
+        return {"A. Minimal": minimal_eg}
+
     def get_info(self, cmd: str) -> Dict[str, Any]:
         """Get the info for a command."""
         name = self.get_func(cmd)
         if not name:
             return {}
         description = self.xl_funcs[cmd].get("description", "").replace("\n", " ")
-        signature_ = (
-            "=OBB." + self.xl_funcs[cmd].get("name", "") + "(required; [optional])"
-        )
+        parameters = self._get_parameters(cmd)
+        signature_ = self._get_signature(cmd, parameters)
+        data = self._get_data(cmd)
         return_ = self.xl_funcs[cmd].get("result", {}).get("dimensionality", "")
-        if model_name := self.get_model(cmd):
+        examples = self._get_examples(signature_, parameters)
+        if model_name := self._get_model(cmd):
             return {
                 "name": name,
                 "description": description,
                 "signature": signature_,
+                "parameters": parameters,
+                "data": data,
                 "return": return_,
+                "examples": examples,
                 "model_name": model_name,
             }
         return {}
@@ -147,35 +181,22 @@ class Editor:
         directory: Path,
         interface: Literal["excel"],
         main_folder: str,
-        cmds_folder: str,
         cmd_lib: CommandLib,
     ) -> None:
         """Initialize the editor."""
         self.directory = directory
         self.interface = interface
         self.main_folder = main_folder
-        self.cmds_folder = cmds_folder
 
         self.target_dir = directory / interface / main_folder
         self.cmd_lib = cmd_lib
-
-    @staticmethod
-    def delete(path: Path):
-        """Delete all files in a directory."""
-        for file in path.glob("*"):
-            if file.is_dir():
-                Editor.delete(file)
-            else:
-                file.unlink()
 
     @staticmethod
     def write(path: Path, content: str):
         with open(path, "w", encoding="utf-8", newline="\n") as f:  # type: ignore
             f.write(content)
 
-    def generate_md(self, path: Path, cmd: str):
-        cmd_info = self.cmd_lib.get_info(cmd)
-
+    def generate_md(self, path: Path, cmd: str, cmd_info: dict):
         def get_header() -> str:
             header = ""
             metadata = self.cmd_lib.seo_metadata.get(cmd, {})
@@ -203,7 +224,7 @@ class Editor:
             description += "\n\n"
             return description
 
-        def get_sintax() -> str:
+        def get_syntax() -> str:
             sig = cmd_info["signature"]
             syntax = "## Syntax\n\n"
             syntax += f"```{self.interface} wordwrap\n"
@@ -213,42 +234,53 @@ class Editor:
 
         def get_parameters() -> str:
             parameters = "## Parameters\n\n"
-            parameters += "| Name | Type | Description | Optional |\n"
+            parameters += "| Name | Type | Description | Required |\n"
             parameters += "| ---- | ---- | ----------- | -------- |\n"
-            for field_name, field_info in self.cmd_lib.get_parameters(cmd).items():
+            for field_name, field_info in cmd_info["parameters"].items():
                 name = field_name
                 type_ = field_info["type"]
                 description = field_info["description"]
-                optional = field_info["optional"]
-                parameters += f"| {name} | {type_} | {description} | {optional} |\n"
+                required = field_info["required"]
+                required_str = str(required).title()
+                if required:
+                    parameters += f"| **{name}** | **{type_}** | **{description}** | **{required_str}** |\n"
+                else:
+                    parameters += (
+                        f"| {name} | {type_} | {description} | {required_str} |\n"
+                    )
+
             parameters += "\n"
             return parameters
-
-        # def get_return_type() -> str:
-        #     ret = cmd_info["return"]
-        #     return_ = "## Return Type\n\n"
-        #     return_ += f"* {ret}\n\n"
-        #     return return_
 
         def get_return_data() -> str:
             data = "## Return Data\n\n"
             data += "| Name | Description |\n"
             data += "| ---- | ----------- |\n"
-            for field_name, field_info in self.cmd_lib.get_data(cmd).items():
+            for field_name, field_info in cmd_info["data"].items():
                 name = field_name
                 description = field_info["description"]
                 data += f"| {name} | {description} |\n"
             return data
 
+        def get_examples() -> str:
+            examples = "### Example\n\n"
+
+            for _, v in cmd_info["examples"].items():
+                # examples += f"### {k}\n\n"
+                examples += f"```{self.interface} wordwrap\n"
+                examples += f"{v}\n"
+                examples += "```\n\n"
+
+            return examples
+
         content = get_header()
         content += get_tab()
         content += get_description()
-        content += get_sintax()
+        content += get_syntax()
+        content += get_examples()
         content += "---\n\n"
         content += get_parameters()
         content += "---\n\n"
-        # content += get_return_type()
-        # content += "---\n\n"
         content += get_return_data()
         Editor.write(path, content)
 
@@ -287,11 +319,11 @@ class Editor:
                 content += OPEN_UL
                 for file in files:
                     t = file.stem
-                    title = t if t != self.cmds_folder else t.title()
+                    title = t if t != self.main_folder else t.title()
                     if command:
                         p = (
-                            self.cmds_folder
-                            if self.cmds_folder in file.parts
+                            self.main_folder
+                            if self.main_folder in file.parts
                             else folder
                         )
                         cmd = "/" + filter_path(file.parts.index(p) + 1, file)
@@ -326,14 +358,14 @@ class Editor:
                     (
                         i
                         for i, path in enumerate(files)
-                        if path.stem == self.cmds_folder
+                        if path.stem == self.main_folder
                     ),
                     None,
                 )
                 if index is not None:
                     cmd_folder = files.pop(index)
                     files.append(cmd_folder)
-                content += get_cards(folder=folder, files=files, command=True)
+                content += get_cards(folder=folder, files=files, command=False)
                 return content
 
             ### Menus
@@ -356,8 +388,6 @@ class Editor:
         def format_label(text: str):
             if text == self.main_folder:
                 return self.main_folder.title()
-            if text == self.cmds_folder:
-                return self.cmds_folder.title()
             return text.lower()
 
         def write_mdx_and_category(path: Path, folder: str, position: int):
@@ -380,31 +410,41 @@ class Editor:
         write_mdx_and_category(self.target_dir, self.main_folder, 5)
         recursive(self.target_dir)
 
+    def dump(self, docs_map: Dict) -> None:
+        """Dump the docs structured information to json."""
+        with open(self.target_dir / "docs_map.json", "w") as f:
+            json.dump(docs_map, f, indent=2)
+
     def go(self):
         """Generate the website reference."""
 
-        self.delete(self.target_dir)
+        docs_map = {}
+
+        shutil.rmtree(self.target_dir, ignore_errors=True)
         for cmd in self.cmd_lib.xl_funcs:
             if self.cmd_lib.get_func(cmd):
                 folder = "/".join(cmd.split("/")[1:-1])
-                if folder:
-                    folder = self.cmds_folder + "/" + folder
                 filename = cmd.split("/")[-1] + ".md"
                 filepath = self.target_dir / folder / filename
                 filepath.parent.mkdir(parents=True, exist_ok=True)
-                self.generate_md(filepath, cmd)
+                cmd_info = self.cmd_lib.get_info(cmd)
+                docs_map[cmd] = cmd_info
+                self.generate_md(filepath, cmd, cmd_info)
 
         self.generate_sidebar()
+        self.dump(docs_map)
         print(f"Markdown files generated, check the {self.target_dir} folder.")
 
 
 if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "--update":
+    if len(sys.argv) > 1 and sys.argv[1] == "--no-update":
+        pass
+    else:
         CommandLib.fetch()
+
     Editor(
         directory=CONTENT_PATH,
         interface="excel",
         main_folder="reference",
-        cmds_folder="library",
         cmd_lib=CommandLib(),
     ).go()

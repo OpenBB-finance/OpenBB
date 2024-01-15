@@ -1,80 +1,14 @@
 {
   "functions": [
     {
-      "description": "Get latest data point by providing stock symbol and tag. See tag options at: https://data.intrinio.com/data-tags.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/last",
-      "id": "LAST",
-      "name": "LAST",
-      "parameters": [
-        {
-          "description": "Symbol to get data for, e.g. 'AAPL'.",
-          "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Field tag to get data for, e.g. 'EBITDA'. See options at: https://data.intrinio.com/data-tags.",
-          "name": "tag",
-          "type": "string"
-        }
-      ],
-      "result": {
-        "dimensionality": "matrix"
-      }
-    },
-    {
-      "description": "Get historical data by providing stock symbol and field tag. See tag options at: https://data.intrinio.com/data-tags.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/hist",
-      "id": "HIST",
-      "name": "HIST",
-      "parameters": [
-        {
-          "description": "Symbol to get data for, e.g. 'AAPL'.",
-          "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Field tag to get data for, e.g. 'EBITDA'. See options at: https://data.intrinio.com/data-tags.",
-          "name": "tag",
-          "type": "string"
-        },
-        {
-          "description": "Start date of the data, in YYYY-MM-DD format, defaults to 5 years ago.",
-          "name": "start_date",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "End date of the data, in YYYY-MM-DD format, defaults to today.",
-          "name": "end_date",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "The frequency of the data, can be 'yearly' or 'quarterly', defaults to 'yearly'.",
-          "name": "frequency",
-          "optional": true,
-          "type": "string"
-        }
-      ],
-      "result": {
-        "dimensionality": "matrix"
-      }
-    },
-    {
       "description": "Cryptocurrency Historical Price. Cryptocurrency historical price data.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/crypto/price/historical",
+      "helpUrl": "https://docs.openbb.co/excel/reference/crypto/price/historical",
       "id": "CRYPTO.PRICE.HISTORICAL",
       "name": "CRYPTO.PRICE.HISTORICAL",
       "parameters": [
         {
           "description": "Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format.",
           "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Options: fmp, polygon, tiingo",
-          "name": "provider",
-          "optional": true,
           "type": "string"
         },
         {
@@ -86,6 +20,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, polygon, tiingo, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -145,19 +85,19 @@
     },
     {
       "description": "Cryptocurrency Search. Search available cryptocurrency pairs.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/crypto/search",
+      "helpUrl": "https://docs.openbb.co/excel/reference/crypto/search",
       "id": "CRYPTO.SEARCH",
       "name": "CRYPTO.SEARCH",
       "parameters": [
         {
-          "description": "Options: fmp",
-          "name": "provider",
+          "description": "Search query.",
+          "name": "query",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Search query.",
-          "name": "query",
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -168,19 +108,13 @@
     },
     {
       "description": "Currency Historical Price. Currency historical data.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/currency/price/historical",
+      "helpUrl": "https://docs.openbb.co/excel/reference/currency/price/historical",
       "id": "CURRENCY.PRICE.HISTORICAL",
       "name": "CURRENCY.PRICE.HISTORICAL",
       "parameters": [
         {
           "description": "Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format.",
           "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Options: fmp, polygon, tiingo",
-          "name": "provider",
-          "optional": true,
           "type": "string"
         },
         {
@@ -192,6 +126,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, polygon, tiingo, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -238,12 +178,12 @@
     },
     {
       "description": "Currency Search. Search available currency pairs.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/currency/search",
+      "helpUrl": "https://docs.openbb.co/excel/reference/currency/search",
       "id": "CURRENCY.SEARCH",
       "name": "CURRENCY.SEARCH",
       "parameters": [
         {
-          "description": "Options: fmp, intrinio, polygon",
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -297,7 +237,7 @@
     },
     {
       "description": "Get the complete options chain for a ticker.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/derivatives/options/chains",
+      "helpUrl": "https://docs.openbb.co/excel/reference/derivatives/options/chains",
       "id": "DERIVATIVES.OPTIONS.CHAINS",
       "name": "DERIVATIVES.OPTIONS.CHAINS",
       "parameters": [
@@ -307,7 +247,7 @@
           "type": "string"
         },
         {
-          "description": "Options: intrinio",
+          "description": "Options: intrinio, defaults to intrinio.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -325,19 +265,19 @@
     },
     {
       "description": "Get the complete options chain for a ticker.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/derivatives/options/unusual",
+      "helpUrl": "https://docs.openbb.co/excel/reference/derivatives/options/unusual",
       "id": "DERIVATIVES.OPTIONS.UNUSUAL",
       "name": "DERIVATIVES.OPTIONS.UNUSUAL",
       "parameters": [
         {
-          "description": "Options: intrinio",
-          "name": "provider",
+          "description": "Symbol to get data for. (the underlying symbol)",
+          "name": "symbol",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Symbol to get data for. (the underlying symbol)",
-          "name": "symbol",
+          "description": "Options: intrinio, defaults to intrinio.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -354,16 +294,10 @@
     },
     {
       "description": "Economic Calendar.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/economy/calendar",
+      "helpUrl": "https://docs.openbb.co/excel/reference/economy/calendar",
       "id": "ECONOMY.CALENDAR",
       "name": "ECONOMY.CALENDAR",
       "parameters": [
-        {
-          "description": "Options: fmp, tradingeconomics",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -373,6 +307,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, tradingeconomics, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -400,8 +340,8 @@
       }
     },
     {
-      "description": "Consumer Price Index (CPI) Data.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/economy/cpi",
+      "description": "Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate of change (inflation).",
+      "helpUrl": "https://docs.openbb.co/excel/reference/economy/cpi",
       "id": "ECONOMY.CPI",
       "name": "ECONOMY.CPI",
       "parameters": [
@@ -412,13 +352,7 @@
           "type": "any"
         },
         {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "The unit of measurement for the data.\nOptions:\n- `growth_previous`: growth from the previous period\n- `growth_same`: growth from the same period in the previous year\n- `index_2015`: index with base year 2015.",
+          "description": "The unit of measurement for the data.\nOptions:\n- `growth_previous`: Percent growth from the previous period.\nIf monthly data, this is month-over-month, etc\n- `growth_same`: Percent growth from the same period in the previous year.\nIf looking at monthly data, this would be year-over-year, etc.\n- `index_2015`: Rescaled index value, such that the value in 2015 is 100.",
           "name": "units",
           "optional": true,
           "type": "string"
@@ -446,6 +380,12 @@
           "name": "end_date",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -453,20 +393,20 @@
       }
     },
     {
-      "description": "Search for FRED series or economic releases by ID or fuzzy query.\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/economy/fred_search",
+      "description": "Search for FRED series or economic releases by ID or string.\nThis does not return the observation values, only the metadata.\nUse this function to find series IDs for `fred_series()`.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/economy/fred_search",
       "id": "ECONOMY.FRED_SEARCH",
       "name": "ECONOMY.FRED_SEARCH",
       "parameters": [
         {
-          "description": "Options: fred",
-          "name": "provider",
+          "description": "The search word(s).",
+          "name": "query",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "The search word(s).",
-          "name": "query",
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -525,19 +465,13 @@
     },
     {
       "description": "Get data by series ID from FRED.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/economy/fred_series",
+      "helpUrl": "https://docs.openbb.co/excel/reference/economy/fred_series",
       "id": "ECONOMY.FRED_SERIES",
       "name": "ECONOMY.FRED_SERIES",
       "parameters": [
         {
           "description": "Symbol to get data for.",
           "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Options: fred, intrinio",
-          "name": "provider",
-          "optional": true,
           "type": "string"
         },
         {
@@ -557,6 +491,12 @@
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fred, intrinio, defaults to fred.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Frequency aggregation to convert high frequency data to lower frequency.\nNone = No change\na = Annual\nq = Quarterly\nm = Monthly\nw = Weekly\nd = Daily\nwef = Weekly, Ending Friday\nweth = Weekly, Ending Thursday\nwew = Weekly, Ending Wednesday\nwetu = Weekly, Ending Tuesday\nwem = Weekly, Ending Monday\nwesu = Weekly, Ending Sunday\nwesa = Weekly, Ending Saturday\nbwew = Biweekly, Ending Wednesday\nbwem = Biweekly, Ending Monday\n(provider: fred)",
@@ -595,16 +535,10 @@
     },
     {
       "description": "Forecasted GDP Data.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/economy/gdp/forecast",
+      "helpUrl": "https://docs.openbb.co/excel/reference/economy/gdp/forecast",
       "id": "ECONOMY.GDP.FORECAST",
       "name": "ECONOMY.GDP.FORECAST",
       "parameters": [
-        {
-          "description": "Options: oecd",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Time period of the data to return. Units for nominal GDP period. Either quarter or annual.",
           "name": "period",
@@ -630,6 +564,12 @@
           "type": "string"
         },
         {
+          "description": "Options: oecd, defaults to oecd.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
           "description": "Country to get GDP for. (provider: oecd)",
           "name": "country",
           "optional": true,
@@ -642,16 +582,10 @@
     },
     {
       "description": "Nominal GDP Data.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/economy/gdp/nominal",
+      "helpUrl": "https://docs.openbb.co/excel/reference/economy/gdp/nominal",
       "id": "ECONOMY.GDP.NOMINAL",
       "name": "ECONOMY.GDP.NOMINAL",
       "parameters": [
-        {
-          "description": "Options: oecd",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "The unit of measurement for the data. Units to get nominal GDP in. Either usd or usd_cap indicating per capita.",
           "name": "units",
@@ -671,6 +605,12 @@
           "type": "string"
         },
         {
+          "description": "Options: oecd, defaults to oecd.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
           "description": "Country to get GDP for. (provider: oecd)",
           "name": "country",
           "optional": true,
@@ -683,16 +623,10 @@
     },
     {
       "description": "Real GDP Data.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/economy/gdp/real",
+      "helpUrl": "https://docs.openbb.co/excel/reference/economy/gdp/real",
       "id": "ECONOMY.GDP.REAL",
       "name": "ECONOMY.GDP.REAL",
       "parameters": [
-        {
-          "description": "Options: oecd",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "The unit of measurement for the data. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).)",
           "name": "units",
@@ -712,6 +646,12 @@
           "type": "string"
         },
         {
+          "description": "Options: oecd, defaults to oecd.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
           "description": "Country to get GDP for. (provider: oecd)",
           "name": "country",
           "optional": true,
@@ -723,13 +663,48 @@
       }
     },
     {
+      "description": "Money Measures.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/economy/money_measures",
+      "id": "ECONOMY.MONEY_MEASURES",
+      "name": "ECONOMY.MONEY_MEASURES",
+      "parameters": [
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Whether to return seasonally adjusted data.",
+          "name": "adjusted",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "Options: federal_reserve, defaults to federal_reserve.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
       "description": "Historical Market Risk Premium.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/economy/risk_premium",
+      "helpUrl": "https://docs.openbb.co/excel/reference/economy/risk_premium",
       "id": "ECONOMY.RISK_PREMIUM",
       "name": "ECONOMY.RISK_PREMIUM",
       "parameters": [
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -741,16 +716,10 @@
     },
     {
       "description": "Upcoming and Historical Dividend Calendar.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/calendar/dividend",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/calendar/dividend",
       "id": "EQUITY.CALENDAR.DIVIDEND",
       "name": "EQUITY.CALENDAR.DIVIDEND",
       "parameters": [
-        {
-          "description": "Options: fmp",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -760,6 +729,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -770,16 +745,10 @@
     },
     {
       "description": "Upcoming and Historical earnings calendar.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/calendar/earnings",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/calendar/earnings",
       "id": "EQUITY.CALENDAR.EARNINGS",
       "name": "EQUITY.CALENDAR.EARNINGS",
       "parameters": [
-        {
-          "description": "Options: fmp",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -791,6 +760,12 @@
           "name": "end_date",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -799,16 +774,10 @@
     },
     {
       "description": "Upcoming and Historical IPO Calendar.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/calendar/ipo",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/calendar/ipo",
       "id": "EQUITY.CALENDAR.IPO",
       "name": "EQUITY.CALENDAR.IPO",
       "parameters": [
-        {
-          "description": "Options: intrinio",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Symbol to get data for.",
           "name": "symbol",
@@ -832,6 +801,12 @@
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: intrinio, defaults to intrinio.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Status of the IPO. [upcoming, priced, or withdrawn] (provider: intrinio)",
@@ -858,16 +833,10 @@
     },
     {
       "description": "Calendar Splits. Show Stock Split Calendar.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/calendar/splits",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/calendar/splits",
       "id": "EQUITY.CALENDAR.SPLITS",
       "name": "EQUITY.CALENDAR.SPLITS",
       "parameters": [
-        {
-          "description": "Options: fmp",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -879,6 +848,12 @@
           "name": "end_date",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -887,7 +862,7 @@
     },
     {
       "description": "Equity Peers. Company peers.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/compare/peers",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/compare/peers",
       "id": "EQUITY.COMPARE.PEERS",
       "name": "EQUITY.COMPARE.PEERS",
       "parameters": [
@@ -897,7 +872,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -909,16 +884,10 @@
     },
     {
       "description": "Get the most-recent filings submitted to the SEC.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/discovery/filings",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/discovery/filings",
       "id": "EQUITY.DISCOVERY.FILINGS",
       "name": "EQUITY.DISCOVERY.FILINGS",
       "parameters": [
-        {
-          "description": "Options: fmp",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -944,6 +913,12 @@
           "type": "number"
         },
         {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
           "description": "Flag for whether or not the filing is done. (provider: fmp)",
           "name": "isDone",
           "optional": true,
@@ -956,7 +931,7 @@
     },
     {
       "description": "Price Target Consensus. Price target consensus data.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/estimates/consensus",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/estimates/consensus",
       "id": "EQUITY.ESTIMATES.CONSENSUS",
       "name": "EQUITY.ESTIMATES.CONSENSUS",
       "parameters": [
@@ -966,7 +941,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -978,19 +953,13 @@
     },
     {
       "description": "Historical Analyst Estimates. Analyst stock recommendations.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/estimates/historical",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/estimates/historical",
       "id": "EQUITY.ESTIMATES.HISTORICAL",
       "name": "EQUITY.ESTIMATES.HISTORICAL",
       "parameters": [
         {
           "description": "Symbol to get data for.",
           "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Options: fmp",
-          "name": "provider",
-          "optional": true,
           "type": "string"
         },
         {
@@ -1004,6 +973,12 @@
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -1012,7 +987,7 @@
     },
     {
       "description": "Price Target. Price target data.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/estimates/price_target",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/estimates/price_target",
       "id": "EQUITY.ESTIMATES.PRICE_TARGET",
       "name": "EQUITY.ESTIMATES.PRICE_TARGET",
       "parameters": [
@@ -1022,7 +997,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1040,19 +1015,13 @@
     },
     {
       "description": "Balance Sheet. Balance sheet statement.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/balance",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/balance",
       "id": "EQUITY.FUNDAMENTAL.BALANCE",
       "name": "EQUITY.FUNDAMENTAL.BALANCE",
       "parameters": [
         {
           "description": "Symbol to get data for.",
           "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Options: fmp, intrinio, polygon",
-          "name": "provider",
-          "optional": true,
           "type": "string"
         },
         {
@@ -1068,10 +1037,16 @@
           "type": "number"
         },
         {
-          "description": "Central Index Key (CIK) of the company. (provider: fmp)",
-          "name": "cik",
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
+          "name": "fiscal_year",
+          "optional": true,
+          "type": "number"
         },
         {
           "description": "Filing date of the financial statement. (provider: polygon)",
@@ -1158,7 +1133,7 @@
     },
     {
       "description": "Balance Sheet Statement Growth. Information about the growth of the company balance sheet.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/balance_growth",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/balance_growth",
       "id": "EQUITY.FUNDAMENTAL.BALANCE_GROWTH",
       "name": "EQUITY.FUNDAMENTAL.BALANCE_GROWTH",
       "parameters": [
@@ -1168,16 +1143,16 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "The number of data entries to return.",
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -1186,19 +1161,13 @@
     },
     {
       "description": "Cash Flow Statement. Information about the cash flow statement.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/cash",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/cash",
       "id": "EQUITY.FUNDAMENTAL.CASH",
       "name": "EQUITY.FUNDAMENTAL.CASH",
       "parameters": [
         {
           "description": "Symbol to get data for.",
           "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Options: fmp, intrinio, polygon",
-          "name": "provider",
-          "optional": true,
           "type": "string"
         },
         {
@@ -1214,10 +1183,16 @@
           "type": "number"
         },
         {
-          "description": "Central Index Key (CIK) of the company. (provider: fmp)",
-          "name": "cik",
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
+          "name": "fiscal_year",
+          "optional": true,
+          "type": "number"
         },
         {
           "description": "Filing date of the financial statement. (provider: polygon)",
@@ -1289,13 +1264,13 @@
           "description": "Order of the financial statement. (provider: polygon)",
           "name": "order",
           "optional": true,
-          "type": "string"
+          "type": "any"
         },
         {
           "description": "Sort of the financial statement. (provider: polygon)",
           "name": "sort",
           "optional": true,
-          "type": "string"
+          "type": "any"
         }
       ],
       "result": {
@@ -1304,7 +1279,7 @@
     },
     {
       "description": "Cash Flow Statement Growth. Information about the growth of the company cash flow statement.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/cash_growth",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/cash_growth",
       "id": "EQUITY.FUNDAMENTAL.CASH_GROWTH",
       "name": "EQUITY.FUNDAMENTAL.CASH_GROWTH",
       "parameters": [
@@ -1314,16 +1289,16 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "The number of data entries to return.",
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -1332,7 +1307,7 @@
     },
     {
       "description": "Historical Dividends. Historical dividends data for a given company.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/dividends",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/dividends",
       "id": "EQUITY.FUNDAMENTAL.DIVIDENDS",
       "name": "EQUITY.FUNDAMENTAL.DIVIDENDS",
       "parameters": [
@@ -1342,7 +1317,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio",
+          "description": "Options: fmp, intrinio, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1360,7 +1335,7 @@
     },
     {
       "description": "Historical Employees. Historical number of employees.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/employee_count",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/employee_count",
       "id": "EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT",
       "name": "EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT",
       "parameters": [
@@ -1370,7 +1345,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1382,19 +1357,19 @@
     },
     {
       "description": "Company Filings. Company filings data.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/filings",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/filings",
       "id": "EQUITY.FUNDAMENTAL.FILINGS",
       "name": "EQUITY.FUNDAMENTAL.FILINGS",
       "parameters": [
         {
-          "description": "Options: fmp, intrinio, sec",
-          "name": "provider",
+          "description": "Symbol to get data for.",
+          "name": "symbol",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Symbol to get data for.",
-          "name": "symbol",
+          "description": "Options: fmp, intrinio, sec, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -1447,7 +1422,7 @@
     },
     {
       "description": "Fetch the historical values of a data tag from Intrinio.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/historical_attributes",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/historical_attributes",
       "id": "EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES",
       "name": "EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES",
       "parameters": [
@@ -1459,12 +1434,6 @@
         {
           "description": "Intrinio data tag ID or code.",
           "name": "tag",
-          "type": "string"
-        },
-        {
-          "description": "Options: intrinio",
-          "name": "provider",
-          "optional": true,
           "type": "string"
         },
         {
@@ -1502,6 +1471,12 @@
           "name": "sort",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Options: intrinio, defaults to intrinio.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -1510,7 +1485,7 @@
     },
     {
       "description": "Historical earnings-per-share for a given company.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/historical_eps",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/historical_eps",
       "id": "EQUITY.FUNDAMENTAL.HISTORICAL_EPS",
       "name": "EQUITY.FUNDAMENTAL.HISTORICAL_EPS",
       "parameters": [
@@ -1520,7 +1495,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1538,7 +1513,7 @@
     },
     {
       "description": "Historical Splits. Historical splits data.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/historical_splits",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/historical_splits",
       "id": "EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS",
       "name": "EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS",
       "parameters": [
@@ -1548,7 +1523,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1560,19 +1535,13 @@
     },
     {
       "description": "Income Statement. Report on a company's financial performance.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/income",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/income",
       "id": "EQUITY.FUNDAMENTAL.INCOME",
       "name": "EQUITY.FUNDAMENTAL.INCOME",
       "parameters": [
         {
           "description": "Symbol to get data for.",
           "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Options: fmp, intrinio, polygon",
-          "name": "provider",
-          "optional": true,
           "type": "string"
         },
         {
@@ -1588,10 +1557,16 @@
           "type": "number"
         },
         {
-          "description": "The CIK of the company if no symbol is provided. (provider: fmp)",
-          "name": "cik",
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
+          "name": "fiscal_year",
+          "optional": true,
+          "type": "number"
         },
         {
           "description": "Filing date of the financial statement. (provider: polygon)",
@@ -1678,19 +1653,13 @@
     },
     {
       "description": "Income Statement Growth. Information about the growth of the company income statement.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/income_growth",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/income_growth",
       "id": "EQUITY.FUNDAMENTAL.INCOME_GROWTH",
       "name": "EQUITY.FUNDAMENTAL.INCOME_GROWTH",
       "parameters": [
         {
           "description": "Symbol to get data for.",
           "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Options: fmp",
-          "name": "provider",
-          "optional": true,
           "type": "string"
         },
         {
@@ -1704,6 +1673,12 @@
           "name": "period",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -1712,7 +1687,7 @@
     },
     {
       "description": "Fetch the latest value of a data tag from Intrinio.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/latest_attributes",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/latest_attributes",
       "id": "EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES",
       "name": "EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES",
       "parameters": [
@@ -1727,7 +1702,7 @@
           "type": "string"
         },
         {
-          "description": "Options: intrinio",
+          "description": "Options: intrinio, defaults to intrinio.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1739,7 +1714,7 @@
     },
     {
       "description": "Key Executives. Key executives for a given company.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/management",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/management",
       "id": "EQUITY.FUNDAMENTAL.MANAGEMENT",
       "name": "EQUITY.FUNDAMENTAL.MANAGEMENT",
       "parameters": [
@@ -1749,7 +1724,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1761,7 +1736,7 @@
     },
     {
       "description": "Get Executive Compensation. Information about the executive compensation for a given company.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/management_compensation",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/management_compensation",
       "id": "EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION",
       "name": "EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION",
       "parameters": [
@@ -1771,7 +1746,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1783,19 +1758,13 @@
     },
     {
       "description": "Key Metrics. Key metrics for a given company.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/metrics",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/metrics",
       "id": "EQUITY.FUNDAMENTAL.METRICS",
       "name": "EQUITY.FUNDAMENTAL.METRICS",
       "parameters": [
         {
           "description": "Symbol to get data for.",
           "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Options: fmp, intrinio",
-          "name": "provider",
-          "optional": true,
           "type": "string"
         },
         {
@@ -1809,6 +1778,12 @@
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fmp, intrinio, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Include trailing twelve months (TTM) data. (provider: fmp)",
@@ -1823,7 +1798,7 @@
     },
     {
       "description": "Equity Valuation Multiples. Valuation multiples for a stock ticker.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/multiples",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/multiples",
       "id": "EQUITY.FUNDAMENTAL.MULTIPLES",
       "name": "EQUITY.FUNDAMENTAL.MULTIPLES",
       "parameters": [
@@ -1833,7 +1808,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1845,7 +1820,7 @@
     },
     {
       "description": "Company Overview. General information about a company.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/overview",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/overview",
       "id": "EQUITY.FUNDAMENTAL.OVERVIEW",
       "name": "EQUITY.FUNDAMENTAL.OVERVIEW",
       "parameters": [
@@ -1855,7 +1830,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -1867,19 +1842,13 @@
     },
     {
       "description": "Extensive set of ratios over time. Financial ratios for a given company.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/ratios",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/ratios",
       "id": "EQUITY.FUNDAMENTAL.RATIOS",
       "name": "EQUITY.FUNDAMENTAL.RATIOS",
       "parameters": [
         {
           "description": "Symbol to get data for.",
           "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Options: fmp",
-          "name": "provider",
-          "optional": true,
           "type": "string"
         },
         {
@@ -1895,10 +1864,68 @@
           "type": "number"
         },
         {
-          "description": "Include trailing twelve months (TTM) data. (provider: fmp)",
+          "description": "Options: fmp, intrinio, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Include trailing twelve months (TTM) data. (provider: fmp, intrinio)",
           "name": "with_ttm",
           "optional": true,
           "type": "boolean"
+        },
+        {
+          "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
+          "name": "fiscal_year",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Financial statements, as-reported.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/reported_financials",
+      "id": "EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS",
+      "name": "EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Time period of the data to return.",
+          "name": "period",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The type of financial statement - i.e, balance, income, cash.",
+          "name": "statement_type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. Although the response object contains multiple results, because of the variance in the fields, year-to-year and quarter-to-quarter, it is recommended to view results in small chunks.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Options: intrinio, defaults to intrinio.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The specific fiscal year.  Reports do not go beyond 2008. (provider: intrinio)",
+          "name": "fiscal_year",
+          "optional": true,
+          "type": "number"
         }
       ],
       "result": {
@@ -1907,19 +1934,13 @@
     },
     {
       "description": "Revenue Geographic. Geographic revenue data.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/revenue_per_geography",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/revenue_per_geography",
       "id": "EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY",
       "name": "EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY",
       "parameters": [
         {
           "description": "Symbol to get data for.",
           "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Options: fmp",
-          "name": "provider",
-          "optional": true,
           "type": "string"
         },
         {
@@ -1931,6 +1952,12 @@
         {
           "description": "Structure of the returned data.",
           "name": "structure",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -1941,19 +1968,13 @@
     },
     {
       "description": "Revenue Business Line. Business line revenue data.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/revenue_per_segment",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/revenue_per_segment",
       "id": "EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT",
       "name": "EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT",
       "parameters": [
         {
           "description": "Symbol to get data for.",
           "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Options: fmp",
-          "name": "provider",
-          "optional": true,
           "type": "string"
         },
         {
@@ -1967,6 +1988,12 @@
           "name": "structure",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -1975,7 +2002,7 @@
     },
     {
       "description": "Search Intrinio data tags.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/search_attributes",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/search_attributes",
       "id": "EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES",
       "name": "EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES",
       "parameters": [
@@ -1985,16 +2012,16 @@
           "type": "string"
         },
         {
-          "description": "Options: intrinio",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "The number of data entries to return.",
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: intrinio, defaults to intrinio.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -2003,19 +2030,19 @@
     },
     {
       "description": "Trailing 1yr dividend yield.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/trailing_dividend_yield",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/trailing_dividend_yield",
       "id": "EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD",
       "name": "EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD",
       "parameters": [
         {
-          "description": "Options: tiingo",
-          "name": "provider",
+          "description": "Symbol to get data for.",
+          "name": "symbol",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Symbol to get data for.",
-          "name": "symbol",
+          "description": "Options: tiingo, defaults to tiingo.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -2026,7 +2053,7 @@
     },
     {
       "description": "Earnings Call Transcript. Earnings call transcript for a given company.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/fundamental/transcript",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/fundamental/transcript",
       "id": "EQUITY.FUNDAMENTAL.TRANSCRIPT",
       "name": "EQUITY.FUNDAMENTAL.TRANSCRIPT",
       "parameters": [
@@ -2041,7 +2068,7 @@
           "type": "number"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2053,12 +2080,12 @@
     },
     {
       "description": "Get a current, complete, market snapshot.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/market_snapshots",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/market_snapshots",
       "id": "EQUITY.MARKET_SNAPSHOTS",
       "name": "EQUITY.MARKET_SNAPSHOTS",
       "parameters": [
         {
-          "description": "Options: fmp, polygon",
+          "description": "Options: fmp, polygon, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2076,7 +2103,7 @@
     },
     {
       "description": "Insider Trading. Information about insider trading.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/ownership/insider_trading",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/ownership/insider_trading",
       "id": "EQUITY.OWNERSHIP.INSIDER_TRADING",
       "name": "EQUITY.OWNERSHIP.INSIDER_TRADING",
       "parameters": [
@@ -2086,16 +2113,16 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "The number of data entries to return.",
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fmp, intrinio, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Type of the transaction. (provider: fmp)",
@@ -2134,7 +2161,7 @@
     },
     {
       "description": "Institutional Ownership. Institutional ownership data.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/ownership/institutional",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/ownership/institutional",
       "id": "EQUITY.OWNERSHIP.INSTITUTIONAL",
       "name": "EQUITY.OWNERSHIP.INSTITUTIONAL",
       "parameters": [
@@ -2144,7 +2171,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio",
+          "description": "Options: fmp, intrinio, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2174,19 +2201,13 @@
     },
     {
       "description": "Equity Ownership. Information about the company ownership.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/ownership/major_holders",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/ownership/major_holders",
       "id": "EQUITY.OWNERSHIP.MAJOR_HOLDERS",
       "name": "EQUITY.OWNERSHIP.MAJOR_HOLDERS",
       "parameters": [
         {
           "description": "Symbol to get data for.",
           "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Options: fmp",
-          "name": "provider",
-          "optional": true,
           "type": "string"
         },
         {
@@ -2200,6 +2221,12 @@
           "name": "page",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -2208,7 +2235,7 @@
     },
     {
       "description": "Share Statistics. Share statistics for a given company.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/ownership/share_statistics",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/ownership/share_statistics",
       "id": "EQUITY.OWNERSHIP.SHARE_STATISTICS",
       "name": "EQUITY.OWNERSHIP.SHARE_STATISTICS",
       "parameters": [
@@ -2218,7 +2245,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio",
+          "description": "Options: fmp, intrinio, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2230,19 +2257,13 @@
     },
     {
       "description": "Equity Historical price. Load stock data for a specific ticker.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/price/historical",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/price/historical",
       "id": "EQUITY.PRICE.HISTORICAL",
       "name": "EQUITY.PRICE.HISTORICAL",
       "parameters": [
         {
           "description": "Symbol to get data for.",
           "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Options: fmp, intrinio, polygon, tiingo",
-          "name": "provider",
-          "optional": true,
           "type": "string"
         },
         {
@@ -2264,10 +2285,22 @@
           "type": "string"
         },
         {
-          "description": "Number of days to look back (Only for interval 1d). (provider: fmp);\nThe number of data entries to return. (provider: polygon)",
+          "description": "Options: fmp, intrinio, polygon, tiingo, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Number of days to look back (Only for interval 1d). (provider: fmp);\nThe number of results to return per page. (provider: intrinio);\nThe number of data entries to return. (provider: polygon)",
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Sort the data in ascending or descending order. (provider: fmp);\nSort order of the data. (provider: polygon)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)",
@@ -2294,10 +2327,10 @@
           "type": "string"
         },
         {
-          "description": "Sort order of the data. (provider: polygon)",
-          "name": "sort",
+          "description": "Time to sleep between requests to avoid rate limiting. (provider: intrinio)",
+          "name": "sleep",
           "optional": true,
-          "type": "string"
+          "type": "number"
         },
         {
           "description": "Output time series is adjusted by historical split and dividend events. (provider: polygon)",
@@ -2312,7 +2345,7 @@
     },
     {
       "description": "Equity NBBO. Load National Best Bid and Offer for a specific equity.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/price/nbbo",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/price/nbbo",
       "id": "EQUITY.PRICE.NBBO",
       "name": "EQUITY.PRICE.NBBO",
       "parameters": [
@@ -2322,7 +2355,7 @@
           "type": "string"
         },
         {
-          "description": "Options: polygon",
+          "description": "Options: polygon, defaults to polygon.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2370,7 +2403,7 @@
     },
     {
       "description": "Price performance as a return, over different periods.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/price/performance",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/price/performance",
       "id": "EQUITY.PRICE.PERFORMANCE",
       "name": "EQUITY.PRICE.PERFORMANCE",
       "parameters": [
@@ -2380,7 +2413,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2392,7 +2425,7 @@
     },
     {
       "description": "Equity Quote. Load stock data for a specific ticker.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/price/quote",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/price/quote",
       "id": "EQUITY.PRICE.QUOTE",
       "name": "EQUITY.PRICE.QUOTE",
       "parameters": [
@@ -2402,7 +2435,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, intrinio",
+          "description": "Options: fmp, intrinio, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2420,7 +2453,7 @@
     },
     {
       "description": "Equity Info. Get general price and performance metrics of a stock.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/profile",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/profile",
       "id": "EQUITY.PROFILE",
       "name": "EQUITY.PROFILE",
       "parameters": [
@@ -2430,7 +2463,7 @@
           "type": "string"
         },
         {
-          "description": "Options: intrinio",
+          "description": "Options: intrinio, defaults to intrinio.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2442,12 +2475,12 @@
     },
     {
       "description": "Equity Screen. Screen for companies meeting various criteria.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/screener",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/screener",
       "id": "EQUITY.SCREENER",
       "name": "EQUITY.SCREENER",
       "parameters": [
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2561,16 +2594,10 @@
     },
     {
       "description": "Equity Search. Search for a company or stock ticker.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/search",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/search",
       "id": "EQUITY.SEARCH",
       "name": "EQUITY.SEARCH",
       "parameters": [
-        {
-          "description": "Options: sec",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Search query.",
           "name": "query",
@@ -2582,6 +2609,24 @@
           "name": "is_symbol",
           "optional": true,
           "type": "boolean"
+        },
+        {
+          "description": "Options: intrinio, sec, defaults to intrinio.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "When true, return companies that are actively traded (having stock prices within the past 14 days). When false, return companies that are not actively traded or never have been traded. (provider: intrinio)",
+          "name": "active",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "The number of data entries to return. (provider: intrinio)",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
         },
         {
           "description": "Whether to direct the search to the list of mutual funds and ETFs. (provider: sec)",
@@ -2602,7 +2647,7 @@
     },
     {
       "description": "Get reported Fail-to-deliver (FTD) data.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/equity/shorts/fails_to_deliver",
+      "helpUrl": "https://docs.openbb.co/excel/reference/equity/shorts/fails_to_deliver",
       "id": "EQUITY.SHORTS.FAILS_TO_DELIVER",
       "name": "EQUITY.SHORTS.FAILS_TO_DELIVER",
       "parameters": [
@@ -2612,7 +2657,7 @@
           "type": "string"
         },
         {
-          "description": "Options: sec",
+          "description": "Options: sec, defaults to sec.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2636,7 +2681,7 @@
     },
     {
       "description": "ETF Country weighting.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/etf/countries",
+      "helpUrl": "https://docs.openbb.co/excel/reference/etf/countries",
       "id": "ETF.COUNTRIES",
       "name": "ETF.COUNTRIES",
       "parameters": [
@@ -2646,7 +2691,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2658,7 +2703,7 @@
     },
     {
       "description": "Get the holdings for an individual ETF.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/etf/holdings",
+      "helpUrl": "https://docs.openbb.co/excel/reference/etf/holdings",
       "id": "ETF.HOLDINGS",
       "name": "ETF.HOLDINGS",
       "parameters": [
@@ -2668,13 +2713,13 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, sec, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "A specific date to get data for. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp)",
+          "description": "A specific date to get data for. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);\nA specific date to get data for.  The date represents the period ending.  The date entered will return the closest filing. (provider: sec)",
           "name": "date",
           "optional": true,
           "type": "string"
@@ -2684,6 +2729,12 @@
           "name": "cik",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Whether or not to use cache for the request. (provider: sec)",
+          "name": "use_cache",
+          "optional": true,
+          "type": "boolean"
         }
       ],
       "result": {
@@ -2692,7 +2743,7 @@
     },
     {
       "description": "Get the holdings filing date for an individual ETF.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/etf/holdings_date",
+      "helpUrl": "https://docs.openbb.co/excel/reference/etf/holdings_date",
       "id": "ETF.HOLDINGS_DATE",
       "name": "ETF.HOLDINGS_DATE",
       "parameters": [
@@ -2702,7 +2753,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2720,7 +2771,7 @@
     },
     {
       "description": "Get the ETF holdings performance.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/etf/holdings_performance",
+      "helpUrl": "https://docs.openbb.co/excel/reference/etf/holdings_performance",
       "id": "ETF.HOLDINGS_PERFORMANCE",
       "name": "ETF.HOLDINGS_PERFORMANCE",
       "parameters": [
@@ -2730,7 +2781,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2742,7 +2793,7 @@
     },
     {
       "description": "ETF Information Overview.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/etf/info",
+      "helpUrl": "https://docs.openbb.co/excel/reference/etf/info",
       "id": "ETF.INFO",
       "name": "ETF.INFO",
       "parameters": [
@@ -2752,7 +2803,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2764,7 +2815,7 @@
     },
     {
       "description": "Price performance as a return, over different periods.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/etf/price_performance",
+      "helpUrl": "https://docs.openbb.co/excel/reference/etf/price_performance",
       "id": "ETF.PRICE_PERFORMANCE",
       "name": "ETF.PRICE_PERFORMANCE",
       "parameters": [
@@ -2774,7 +2825,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2786,19 +2837,19 @@
     },
     {
       "description": "Search for ETFs.\n\nAn empty query returns the full list of ETFs from the provider.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/etf/search",
+      "helpUrl": "https://docs.openbb.co/excel/reference/etf/search",
       "id": "ETF.SEARCH",
       "name": "ETF.SEARCH",
       "parameters": [
         {
-          "description": "Options: fmp",
-          "name": "provider",
+          "description": "Search query.",
+          "name": "query",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Search query.",
-          "name": "query",
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -2821,7 +2872,7 @@
     },
     {
       "description": "ETF Sector weighting.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/etf/sectors",
+      "helpUrl": "https://docs.openbb.co/excel/reference/etf/sectors",
       "id": "ETF.SECTORS",
       "name": "ETF.SECTORS",
       "parameters": [
@@ -2831,7 +2882,7 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -2843,16 +2894,10 @@
     },
     {
       "description": "Commercial Paper.\n\nCommercial paper (CP) consists of short-term, promissory notes issued primarily by corporations.\nMaturities range up to 270 days but average about 30 days.\nMany companies use CP to raise cash needed for current transactions,\nand many find it to be a lower-cost alternative to bank loans.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/corporate/commercial_paper",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/corporate/commercial_paper",
       "id": "FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER",
       "name": "FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER",
       "parameters": [
-        {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -2882,6 +2927,12 @@
           "name": "grade",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -2890,16 +2941,10 @@
     },
     {
       "description": "High Quality Market Corporate Bond.\n\nThe HQM yield curve represents the high quality corporate bond market, i.e.,\ncorporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms.\nThese terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve\nthat is the market-weighted average (MWA) quality of high quality bonds.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/corporate/hqm",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/corporate/hqm",
       "id": "FIXEDINCOME.CORPORATE.HQM",
       "name": "FIXEDINCOME.CORPORATE.HQM",
       "parameters": [
-        {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "A specific date to get data for.",
           "name": "date",
@@ -2911,6 +2956,12 @@
           "name": "yield_curve",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -2919,16 +2970,10 @@
     },
     {
       "description": "ICE BofA US Corporate Bond Indices.\n\nThe ICE BofA US Corporate Index tracks the performance of US dollar denominated investment grade corporate debt\npublicly issued in the US domestic market. Qualifying securities must have an investment grade rating (based on an\naverage of Moody\u2019s, S&P and Fitch), at least 18 months to final maturity at the time of issuance, at least one year\nremaining term to final maturity as of the rebalance date, a fixed coupon schedule and a minimum amount\noutstanding of $250 million. The ICE BofA US Corporate Index is a component of the US Corporate Master Index.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/corporate/ice_bofa",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/corporate/ice_bofa",
       "id": "FIXEDINCOME.CORPORATE.ICE_BOFA",
       "name": "FIXEDINCOME.CORPORATE.ICE_BOFA",
       "parameters": [
-        {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -2944,6 +2989,12 @@
         {
           "description": "The type of series.",
           "name": "index_type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -2978,16 +3029,10 @@
     },
     {
       "description": "Moody Corporate Bond Index.\n\nMoody's Aaa and Baa are investment bonds that acts as an index of\nthe performance of all bonds given an Aaa or Baa rating by Moody's Investors Service respectively.\nThese corporate bonds often are used in macroeconomics as an alternative to the federal ten-year\nTreasury Bill as an indicator of the interest rate.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/corporate/moody",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/corporate/moody",
       "id": "FIXEDINCOME.CORPORATE.MOODY",
       "name": "FIXEDINCOME.CORPORATE.MOODY",
       "parameters": [
-        {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -3007,6 +3052,12 @@
           "type": "string"
         },
         {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
           "description": "The type of spread. (provider: fred)",
           "name": "spread",
           "optional": true,
@@ -3019,16 +3070,10 @@
     },
     {
       "description": "Spot Rates.\n\nThe spot rates for any maturity is the yield on a bond that provides a single payment at that maturity.\nThis is a zero coupon bond.\nBecause each spot rate pertains to a single cashflow, it is the relevant interest rate\nconcept for discounting a pension liability at the same maturity.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/corporate/spot_rates",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/corporate/spot_rates",
       "id": "FIXEDINCOME.CORPORATE.SPOT_RATES",
       "name": "FIXEDINCOME.CORPORATE.SPOT_RATES",
       "parameters": [
-        {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -3054,57 +3099,10 @@
           "name": "category",
           "optional": true,
           "type": "any"
-        }
-      ],
-      "result": {
-        "dimensionality": "matrix"
-      }
-    },
-    {
-      "description": "Government Treasury Auctions.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/government/treasury_auctions",
-      "id": "FIXEDINCOME.GOVERNMENT.TREASURY_AUCTIONS",
-      "name": "FIXEDINCOME.GOVERNMENT.TREASURY_AUCTIONS",
-      "parameters": [
+        },
         {
-          "description": "Options: government_us",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Used to only return securities of a particular type.",
-          "name": "type",
-          "optional": true,
-          "type": "any"
-        },
-        {
-          "description": "Filter securities by CUSIP.",
-          "name": "cusip",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Maximum number of results to return; you must also include pagenum when using pagesize.",
-          "name": "pagesize",
-          "optional": true,
-          "type": "number"
-        },
-        {
-          "description": "The first page number to display results for; used in combination with page size.",
-          "name": "pagenum",
-          "optional": true,
-          "type": "number"
-        },
-        {
-          "description": "Start date of the data, in YYYY-MM-DD format. The default is 90 days ago.",
-          "name": "start_date",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "End date of the data, in YYYY-MM-DD format. The default is today.",
-          "name": "end_date",
           "optional": true,
           "type": "string"
         }
@@ -3115,16 +3113,10 @@
     },
     {
       "description": "Government Treasury Rates.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/government/treasury_rates",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/government/treasury_rates",
       "id": "FIXEDINCOME.GOVERNMENT.TREASURY_RATES",
       "name": "FIXEDINCOME.GOVERNMENT.TREASURY_RATES",
       "parameters": [
-        {
-          "description": "Options: fmp",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -3136,6 +3128,12 @@
           "name": "end_date",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Options: federal_reserve, fmp, defaults to federal_reserve.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -3144,16 +3142,10 @@
     },
     {
       "description": "US Yield Curve. Get United States yield curve.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/government/us_yield_curve",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/government/us_yield_curve",
       "id": "FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE",
       "name": "FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE",
       "parameters": [
-        {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "A specific date to get data for. Defaults to the most recent FRED entry.",
           "name": "date",
@@ -3165,6 +3157,12 @@
           "name": "inflation_adjusted",
           "optional": true,
           "type": "boolean"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -3173,16 +3171,10 @@
     },
     {
       "description": "Ameribor.\n\nAmeribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of\nshort-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the\nAmerican Financial Exchange (AFX).",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/rate/ameribor",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/rate/ameribor",
       "id": "FIXEDINCOME.RATE.AMERIBOR",
       "name": "FIXEDINCOME.RATE.AMERIBOR",
       "parameters": [
-        {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -3192,6 +3184,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -3208,16 +3206,10 @@
     },
     {
       "description": "Discount Window Primary Credit Rate.\n\nA bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money.\nThe rates central banks charge are set to stabilize the economy.\nIn the United States, the Federal Reserve System's Board of Governors set the bank rate,\nalso known as the discount rate.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/rate/dpcredit",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/rate/dpcredit",
       "id": "FIXEDINCOME.RATE.DPCREDIT",
       "name": "FIXEDINCOME.RATE.DPCREDIT",
       "parameters": [
-        {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -3227,6 +3219,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -3243,16 +3241,10 @@
     },
     {
       "description": "European Central Bank Interest Rates.\n\nThe Governing Council of the ECB sets the key interest rates for the euro area:\n\n- The interest rate on the main refinancing operations (MRO), which provide\nthe bulk of liquidity to the banking system.\n- The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem.\n- The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/rate/ecb",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/rate/ecb",
       "id": "FIXEDINCOME.RATE.ECB",
       "name": "FIXEDINCOME.RATE.ECB",
       "parameters": [
-        {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -3270,6 +3262,12 @@
           "name": "interest_rate_type",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -3278,16 +3276,10 @@
     },
     {
       "description": "Fed Funds Rate.\n\nGet Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its\ndomestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the\nUnited States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/rate/effr",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/rate/effr",
       "id": "FIXEDINCOME.RATE.EFFR",
       "name": "FIXEDINCOME.RATE.EFFR",
       "parameters": [
-        {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -3297,6 +3289,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: federal_reserve, fred, defaults to federal_reserve.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -3313,12 +3311,12 @@
     },
     {
       "description": "Fed Funds Rate Projections.\n\nThe projections for the federal funds rate are the value of the midpoint of the\nprojected appropriate target range for the federal funds rate or the projected\nappropriate target level for the federal funds rate at the end of the specified\ncalendar year or over the longer run.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/rate/effr_forecast",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/rate/effr_forecast",
       "id": "FIXEDINCOME.RATE.EFFR_FORECAST",
       "name": "FIXEDINCOME.RATE.EFFR_FORECAST",
       "parameters": [
         {
-          "description": "Options: fred",
+          "description": "Options: fred, defaults to fred.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3336,16 +3334,10 @@
     },
     {
       "description": "Euro Short-Term Rate.\n\nThe euro short-term rate (\u20acSTR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in\nthe euro area. The \u20acSTR is published on each TARGET2 business day based on transactions conducted and settled on\nthe previous TARGET2 business day (the reporting date \u201cT\u201d) with a maturity date of T+1 which are deemed to have been\nexecuted at arm\u2019s length and thus reflect market rates in an unbiased way.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/rate/estr",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/rate/estr",
       "id": "FIXEDINCOME.RATE.ESTR",
       "name": "FIXEDINCOME.RATE.ESTR",
       "parameters": [
-        {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -3355,6 +3347,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -3371,16 +3369,10 @@
     },
     {
       "description": "Interest on Reserve Balances.\n\nGet Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its\ndomestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the\nUnited States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/rate/iorb",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/rate/iorb",
       "id": "FIXEDINCOME.RATE.IORB",
       "name": "FIXEDINCOME.RATE.IORB",
       "parameters": [
-        {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -3390,6 +3382,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -3400,16 +3398,10 @@
     },
     {
       "description": "Sterling Overnight Index Average.\n\nSONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual\ntransactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other\nfinancial institutions and other institutional investors.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/rate/sonia",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/rate/sonia",
       "id": "FIXEDINCOME.RATE.SONIA",
       "name": "FIXEDINCOME.RATE.SONIA",
       "parameters": [
-        {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -3419,6 +3411,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -3435,16 +3433,10 @@
     },
     {
       "description": "Secured Overnight Financing Rate.\n\nThe Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of\nborrowing cash overnight collateralizing by Treasury securities.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/sofr",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/sofr",
       "id": "FIXEDINCOME.SOFR",
       "name": "FIXEDINCOME.SOFR",
       "parameters": [
-        {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -3454,6 +3446,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -3470,16 +3468,10 @@
     },
     {
       "description": "Treasury Constant Maturity.\n\nGet data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.\nConstant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.\nTreasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury\nyield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/spreads/tmc",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/spreads/tmc",
       "id": "FIXEDINCOME.SPREADS.TMC",
       "name": "FIXEDINCOME.SPREADS.TMC",
       "parameters": [
-        {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -3495,6 +3487,12 @@
         {
           "description": "The maturity",
           "name": "maturity",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -3505,16 +3503,10 @@
     },
     {
       "description": "Select Treasury Constant Maturity.\n\nGet data for Selected Treasury Constant Maturity Minus Federal Funds Rate\nConstant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S.\nTreasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury\nyield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/spreads/tmc_effr",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/spreads/tmc_effr",
       "id": "FIXEDINCOME.SPREADS.TMC_EFFR",
       "name": "FIXEDINCOME.SPREADS.TMC_EFFR",
       "parameters": [
-        {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -3530,6 +3522,12 @@
         {
           "description": "The maturity",
           "name": "maturity",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -3540,16 +3538,10 @@
     },
     {
       "description": "Select Treasury Bill.\n\nGet Selected Treasury Bill Minus Federal Funds Rate.\nConstant maturity is the theoretical value of a U.S. Treasury that is based on recent values of\nauctioned U.S. Treasuries.\nThe value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury\nyield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/fixedincome/spreads/treasury_effr",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/spreads/treasury_effr",
       "id": "FIXEDINCOME.SPREADS.TREASURY_EFFR",
       "name": "FIXEDINCOME.SPREADS.TREASURY_EFFR",
       "parameters": [
-        {
-          "description": "Options: fred",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Start date of the data, in YYYY-MM-DD format.",
           "name": "start_date",
@@ -3567,6 +3559,12 @@
           "name": "maturity",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Options: fred, defaults to fred.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         }
       ],
       "result": {
@@ -3575,12 +3573,12 @@
     },
     {
       "description": "Available Indices. Available indices for a given provider.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/index/available",
+      "helpUrl": "https://docs.openbb.co/excel/reference/index/available",
       "id": "INDEX.AVAILABLE",
       "name": "INDEX.AVAILABLE",
       "parameters": [
         {
-          "description": "Options: fmp",
+          "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3592,19 +3590,19 @@
     },
     {
       "description": "Index Constituents. Constituents of an index.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/index/constituents",
+      "helpUrl": "https://docs.openbb.co/excel/reference/index/constituents",
       "id": "INDEX.CONSTITUENTS",
       "name": "INDEX.CONSTITUENTS",
       "parameters": [
         {
-          "description": "Options: fmp",
-          "name": "provider",
+          "description": "Index for which we want to fetch the constituents.",
+          "name": "index",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Index for which we want to fetch the constituents.",
-          "name": "index",
+          "description": "Options: fmp, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }
@@ -3615,19 +3613,13 @@
     },
     {
       "description": "Historical Market Indices.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/index/market",
+      "helpUrl": "https://docs.openbb.co/excel/reference/index/market",
       "id": "INDEX.MARKET",
       "name": "INDEX.MARKET",
       "parameters": [
         {
           "description": "Symbol to get data for.",
           "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "Options: fmp, intrinio, polygon",
-          "name": "provider",
-          "optional": true,
           "type": "string"
         },
         {
@@ -3639,6 +3631,12 @@
         {
           "description": "End date of the data, in YYYY-MM-DD format.",
           "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -3655,6 +3653,12 @@
           "type": "string"
         },
         {
+          "description": "Sort the data in ascending or descending order. (provider: fmp);\nSort order. (provider: intrinio);\nSort order of the data. (provider: polygon)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
+        },
+        {
           "description": "Index tag. (provider: intrinio)",
           "name": "tag",
           "optional": true,
@@ -3667,14 +3671,14 @@
           "type": "string"
         },
         {
-          "description": "Sort order. (provider: intrinio);\nSort order of the data. (provider: polygon)",
-          "name": "sort",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "The number of data entries to return. (provider: intrinio, polygon)",
           "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Time to sleep between requests to avoid rate limiting. (provider: intrinio)",
+          "name": "sleep",
           "optional": true,
           "type": "number"
         },
@@ -3703,7 +3707,7 @@
     },
     {
       "description": "Company News. Get news for one or more companies.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/news/company",
+      "helpUrl": "https://docs.openbb.co/excel/reference/news/company",
       "id": "NEWS.COMPANY",
       "name": "NEWS.COMPANY",
       "parameters": [
@@ -3713,16 +3717,16 @@
           "type": "string"
         },
         {
-          "description": "Options: benzinga, fmp, intrinio, polygon, tiingo",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
-        {
           "description": "The number of data entries to return.",
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: benzinga, fmp, intrinio, polygon, tiingo, defaults to benzinga.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)",
@@ -3833,21 +3837,21 @@
     },
     {
       "description": "World News. Global news data.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/news/world",
+      "helpUrl": "https://docs.openbb.co/excel/reference/news/world",
       "id": "NEWS.WORLD",
       "name": "NEWS.WORLD",
       "parameters": [
-        {
-          "description": "Options: benzinga, fmp, intrinio, tiingo",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "The number of data entries to return. Here its the no. of articles to return.",
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Options: benzinga, fmp, intrinio, tiingo, defaults to benzinga.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)",
@@ -3946,7 +3950,7 @@
     },
     {
       "description": "Get the CIK number corresponding to a ticker symbol.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/regulators/sec/cik_map",
+      "helpUrl": "https://docs.openbb.co/excel/reference/regulators/sec/cik_map",
       "id": "REGULATORS.SEC.CIK_MAP",
       "name": "REGULATORS.SEC.CIK_MAP",
       "parameters": [
@@ -3956,7 +3960,7 @@
           "type": "string"
         },
         {
-          "description": "Options: sec",
+          "description": "Options: sec, defaults to sec.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3968,19 +3972,19 @@
     },
     {
       "description": "Look up institutions regulated by the SEC.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/regulators/sec/institutions_search",
+      "helpUrl": "https://docs.openbb.co/excel/reference/regulators/sec/institutions_search",
       "id": "REGULATORS.SEC.INSTITUTIONS_SEARCH",
       "name": "REGULATORS.SEC.INSTITUTIONS_SEARCH",
       "parameters": [
         {
-          "description": "Options: sec",
-          "name": "provider",
+          "description": "Search query.",
+          "name": "query",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Search query.",
-          "name": "query",
+          "description": "Options: sec, defaults to sec.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -3997,12 +4001,12 @@
     },
     {
       "description": "The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/regulators/sec/rss_litigation",
+      "helpUrl": "https://docs.openbb.co/excel/reference/regulators/sec/rss_litigation",
       "id": "REGULATORS.SEC.RSS_LITIGATION",
       "name": "REGULATORS.SEC.RSS_LITIGATION",
       "parameters": [
         {
-          "description": "Options: sec",
+          "description": "Options: sec, defaults to sec.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -4014,19 +4018,19 @@
     },
     {
       "description": "Get lists of SEC XML schema files by year.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/regulators/sec/schema_files",
+      "helpUrl": "https://docs.openbb.co/excel/reference/regulators/sec/schema_files",
       "id": "REGULATORS.SEC.SCHEMA_FILES",
       "name": "REGULATORS.SEC.SCHEMA_FILES",
       "parameters": [
         {
-          "description": "Options: sec",
-          "name": "provider",
+          "description": "Search query.",
+          "name": "query",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Search query.",
-          "name": "query",
+          "description": "Options: sec, defaults to sec.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -4042,20 +4046,20 @@
       }
     },
     {
-      "description": "Fuzzy search for Industry Titles, Reporting Office, and SIC Codes.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/regulators/sec/sic_search",
+      "description": "Search for Industry Titles, Reporting Office, and SIC Codes.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/regulators/sec/sic_search",
       "id": "REGULATORS.SEC.SIC_SEARCH",
       "name": "REGULATORS.SEC.SIC_SEARCH",
       "parameters": [
         {
-          "description": "Options: sec",
-          "name": "provider",
+          "description": "Search query.",
+          "name": "query",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "Search query.",
-          "name": "query",
+          "description": "Options: sec, defaults to sec.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         },
@@ -4072,58 +4076,21 @@
     },
     {
       "description": "Get the ticker symbol corresponding to a company's CIK.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/regulators/sec/symbol_map",
+      "helpUrl": "https://docs.openbb.co/excel/reference/regulators/sec/symbol_map",
       "id": "REGULATORS.SEC.SYMBOL_MAP",
       "name": "REGULATORS.SEC.SYMBOL_MAP",
       "parameters": [
-        {
-          "description": "Options: sec",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        },
         {
           "description": "Search query.",
           "name": "query",
           "optional": true,
           "type": "string"
-        }
-      ],
-      "result": {
-        "dimensionality": "matrix"
-      }
-    },
-    {
-      "description": "Get fred indices from the OpenBB SDK API.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/search/fred",
-      "id": "SEARCH.FRED",
-      "name": "SEARCH.FRED",
-      "parameters": [
-        {
-          "name": "q",
-          "optional": true,
-          "type": "string"
-        }
-      ],
-      "result": {
-        "dimensionality": "matrix"
-      }
-    },
-    {
-      "description": "Get supported tickers from the OpenBB SDK API.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/library/search/symbols",
-      "id": "SEARCH.SYMBOLS",
-      "name": "SEARCH.SYMBOLS",
-      "parameters": [
-        {
-          "name": "q",
-          "optional": true,
-          "type": "string"
         },
         {
-          "name": "type",
+          "description": "Options: sec, defaults to sec.",
+          "name": "provider",
           "optional": true,
-          "type": "any"
+          "type": "string"
         }
       ],
       "result": {
