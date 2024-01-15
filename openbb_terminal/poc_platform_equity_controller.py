@@ -69,7 +69,17 @@ class PocPlatformEquityController(BaseController):
         """Print help."""
         mt = MenuText("poc_plat_equity/", 80)
 
-        for cmd in self.CHOICES_COMMANDS:
-            mt.add_cmd(cmd)
+        menus = equity.paths
+        commands = self.CHOICES_COMMANDS.copy()
+
+        for path in menus:
+            if equity.paths[path] == "path":
+                continue
+            mt.add_menu(path)
+            new_commands = [command for command in commands if path in command]
+            for command in new_commands:
+                mt.add_cmd(command)
+
+            mt.add_raw("\n")
 
         console.print(text=mt.menu_text, menu="POC Platform Equity")
