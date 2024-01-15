@@ -502,15 +502,15 @@ class Editor:
         write_mdx_and_category(self.target_dir, self.main_folder, 5)
         recursive(self.target_dir)
 
-    def dump(self, docs_map: Dict) -> None:
-        """Dump the docs structured information to json."""
-        with open(self.target_dir / "docs_map.json", "w") as f:
-            json.dump(docs_map, f, indent=2)
+    def dump(self, reference_map: Dict) -> None:
+        """Dump the reference structured information to json."""
+        with open(self.target_dir / "reference_map.json", "w") as f:
+            json.dump(reference_map, f, indent=2)
 
     def go(self):
         """Generate the website reference."""
 
-        docs_map = {}
+        reference_map = {}
 
         shutil.rmtree(self.target_dir, ignore_errors=True)
 
@@ -522,11 +522,11 @@ class Editor:
                 filepath = self.target_dir / folder / filename
                 filepath.parent.mkdir(parents=True, exist_ok=True)
                 cmd_info = self.cmd_lib.get_info(cmd)
-                docs_map[cmd] = cmd_info
+                reference_map[cmd] = cmd_info
                 self.generate_md(filepath, cmd, cmd_info)
 
         self.generate_sidebar()
-        self.dump(docs_map)
+        self.dump(reference_map)
         print(f"Markdown files generated, check the {self.target_dir} folder.")
 
 
