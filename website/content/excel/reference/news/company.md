@@ -1,5 +1,5 @@
 ---
-title: company
+title: COMPANY
 description: Get company news for one or more companies using various providers. This
   API allows you to retrieve news articles along with metadata such as date, title,
   image, text, and URL. The available providers include Benzinga, FMP, Intrinio, Polygon,

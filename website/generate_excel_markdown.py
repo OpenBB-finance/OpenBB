@@ -219,8 +219,7 @@ class CommandLib:
         def get_p_value(cmd, p_name) -> str:
             if cmd in self.EXAMPLE_PARAMS:
                 return self.EXAMPLE_PARAMS[cmd].get(p_name, "")
-            else:
-                return self.EXAMPLE_PARAMS.get(category, {}).get(p_name, "")
+            return self.EXAMPLE_PARAMS.get(category, {}).get(p_name, "")
 
         required_eg = sig
         for p_name, p_info in parameters.items():
@@ -293,7 +292,7 @@ class Editor:
             header = ""
             metadata = self.cmd_lib.seo_metadata.get(cmd, {})
             if metadata:
-                title = metadata["title"]
+                title = metadata["title"].upper()
                 description = metadata["description"]
                 keywords = metadata["keywords"]
                 header = "---\n"
@@ -302,6 +301,11 @@ class Editor:
                 header += "keywords: \n"
                 for kw in keywords:
                     header += f"- {kw}\n"
+                header += "---\n\n"
+            else:
+                title = cmd_info["name"].upper()
+                header = "---\n"
+                header += f"title: {title}\n"
                 header += "---\n\n"
             return header
 
@@ -411,7 +415,7 @@ class Editor:
                 content += OPEN_UL
                 for file in files:
                     t = file.stem
-                    title = t if t != self.main_folder else t.title()
+                    title = t.upper() if t != self.main_folder else t.title()
                     if command:
                         p = (
                             self.main_folder
@@ -480,7 +484,7 @@ class Editor:
         def format_label(text: str):
             if text == self.main_folder:
                 return self.main_folder.title()
-            return text.lower()
+            return text.upper()
 
         def write_mdx_and_category(path: Path, folder: str, position: int):
             Editor.write(path=path / "index.mdx", content=get_index(path, folder))

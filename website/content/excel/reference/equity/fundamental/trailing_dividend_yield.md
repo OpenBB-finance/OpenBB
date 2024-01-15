@@ -1,5 +1,5 @@
 ---
-title: trailing_dividend_yield
+title: TRAILING_DIVIDEND_YIELD
 description: Trailing 1yr dividend yield
 keywords: 
 - equity

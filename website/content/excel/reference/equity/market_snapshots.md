@@ -1,5 +1,5 @@
 ---
-title: market_snapshots
+title: MARKET_SNAPSHOTS
 description: Get a current, complete market snapshot with the obb.equity.market_snapshots
   Python method. Retrieve equity data such as stock information, financial data, market
   analysis, and trading volume. Explore details like stock performance, price change,

@@ -1,5 +1,5 @@
 ---
-title: ratios
+title: RATIOS
 description: Learn about financial ratios for a given company over time. Explore various
   equity ratios, such as current ratio, quick ratio, and cash conversion cycle. Understand
   key profitability metrics like return on equity and profit margin. Analyze debt

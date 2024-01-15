@@ -1,5 +1,5 @@
 ---
-title: tmc
+title: TMC
 description: Learn about Treasury Constant Maturity and how to get data for it. Understand
   constant maturity calculation and the use of Treasury yield curve and Treasury securities.
   Explore parameters like start date, end date, maturity, and provider. Get a list

@@ -1,5 +1,5 @@
 ---
-title: revenue_per_geography
+title: REVENUE_PER_GEOGRAPHY
 description: Learn about the revenue per geography data with the geographic revenue
   data Python function in this documentation page. Understand the symbol, period,
   structure, and provider parameters. Explore the returns, results, metadata, and

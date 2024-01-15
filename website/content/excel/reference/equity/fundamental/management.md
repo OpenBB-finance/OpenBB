@@ -1,5 +1,5 @@
 ---
-title: management
+title: MANAGEMENT
 description: Learn about key executives for a company and how to retrieve their data
   using the `obb.equity.fundamental.management` function. Get details such as designation,
   name, pay, currency, gender, birth year, and title since.

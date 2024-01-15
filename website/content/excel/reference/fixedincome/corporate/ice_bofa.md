@@ -1,5 +1,5 @@
 ---
-title: ice_bofa
+title: ICE_BOFA
 description: Learn about ICE BofA US Corporate Bond Indices, including the ICE BofA
   US Corporate Index and parameters for the `obb.fixedincome.corporate.ice_bofa` function.
   Find out how to retrieve historical data and explore the available categories and

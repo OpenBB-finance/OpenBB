@@ -1,5 +1,5 @@
 ---
-title: income
+title: INCOME
 description: Get income statement and financial performance data for a company. Parameters
   include symbol, period, limit, provider, and more. Data includes revenue, gross
   profit, operating expenses, net income, and more.

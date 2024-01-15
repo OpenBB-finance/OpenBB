@@ -1,5 +1,5 @@
 ---
-title: income_growth
+title: INCOME_GROWTH
 description: Explore the growth of a company's income statement with the Python function
   obb.equity.fundamental.income_growth. Retrieve data for symbols, specify the limit,
   period, and provider, and get detailed information on various aspects of the income

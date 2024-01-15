@@ -1,5 +1,5 @@
 ---
-title: historical_splits
+title: HISTORICAL_SPLITS
 description: Learn how to retrieve historical stock splits data using the Python obb.equity.fundamental.historical_splits
   function. Understand the parameters, returns, and data structure for this API call.
 keywords: 

@@ -1,5 +1,5 @@
 ---
-title: price_performance
+title: PRICE_PERFORMANCE
 description: Learn about price performance returns over different periods and how
   to retrieve data for a given symbol. Find out how to analyze the time series data,
   view the provider information, and access additional metadata and warnings.

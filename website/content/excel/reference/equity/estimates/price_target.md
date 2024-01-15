@@ -1,5 +1,5 @@
 ---
-title: price_target
+title: PRICE_TARGET
 description: Get price target data for an equity symbol. Retrieve information such
   as publication date, analyst details, price target, and more. Supports multiple
   symbols and customizable providers.

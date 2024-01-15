@@ -1,5 +1,5 @@
 ---
-title: multiples
+title: MULTIPLES
 description: Learn how to calculate equity valuation multiples for a stock ticker
   using the OBB Python function. Discover the available parameters and the data returned,
   including revenue per share, net income per share, market capitalization, price-to-earnings

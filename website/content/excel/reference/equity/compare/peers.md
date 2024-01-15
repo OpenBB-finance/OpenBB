@@ -1,5 +1,5 @@
 ---
-title: peers
+title: PEERS
 description: Learn how to compare and analyze equity peers with the `obb.equity.compare.peers`
   function. This function allows you to retrieve a list of company peers based on
   symbol, sector, exchange, and market cap. Understand the parameters, returns, and

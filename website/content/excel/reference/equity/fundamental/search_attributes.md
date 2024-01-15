@@ -1,3 +1,7 @@
+---
+title: SEARCH_ATTRIBUTES
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Search Intrinio data tags.

@@ -1,5 +1,5 @@
 ---
-title: ipo
+title: IPO
 description: Access the Upcoming and Historical IPO Calendars and retrieve IPO information
   using Python.
 keywords: 

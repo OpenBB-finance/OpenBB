@@ -1,5 +1,5 @@
 ---
-title: rss_litigation
+title: RSS_LITIGATION
 description: Learn how to use the RSS feed to access litigation releases, including
   civil lawsuits brought by the Commission in federal court. This documentation provides
   details about the 'obb.regulators.sec.rss_litigation' python function, its parameters

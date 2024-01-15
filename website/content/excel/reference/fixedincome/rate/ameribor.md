@@ -1,5 +1,5 @@
 ---
-title: ameribor
+title: AMERIBOR
 description: Ameribor
 keywords: 
 - fixedincome

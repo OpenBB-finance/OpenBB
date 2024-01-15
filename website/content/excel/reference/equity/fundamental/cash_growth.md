@@ -1,5 +1,5 @@
 ---
-title: cash_growth
+title: CASH_GROWTH
 description: Learn about Cash Flow Statement Growth and how to retrieve cash growth
   data using the Python function obb.equity.fundamental.cash_growth(). This page provides
   details on the function's parameters and the data it returns, including information

@@ -1,5 +1,5 @@
 ---
-title: filings
+title: FILINGS
 description: Learn how to retrieve company filings data such as date, type of document,
   and link. Understand the available parameters to filter the data, including symbol,
   limit, provider, type, and page. Explore the different fields in the data, such

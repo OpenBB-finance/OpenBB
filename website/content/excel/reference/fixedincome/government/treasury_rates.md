@@ -1,5 +1,5 @@
 ---
-title: treasury_rates
+title: TREASURY_RATES
 description: Government Treasury Rates
 keywords: 
 - fixedincome

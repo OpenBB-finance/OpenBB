@@ -1,5 +1,5 @@
 ---
-title: profile
+title: PROFILE
 description: Get general price and performance metrics of a stock with the Equity
   Information API. Retrieve data such as the symbol, name, price, open price, high
   price, low price, close price, change in price, change percent, previous close,

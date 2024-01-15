@@ -1,5 +1,5 @@
 ---
-title: filings
+title: FILINGS
 description: Get the most-recent filings submitted to the SEC
 keywords: 
 - equity

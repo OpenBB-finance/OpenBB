@@ -1,5 +1,5 @@
 ---
-title: sofr
+title: SOFR
 description: Learn about the Secured Overnight Financing Rate (SOFR), a measure of
   the cost of borrowing cash overnight collateralized by Treasury securities. Explore
   the SOFR Python function parameters, data returns, and more.

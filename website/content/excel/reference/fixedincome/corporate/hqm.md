@@ -1,5 +1,5 @@
 ---
-title: hqm
+title: HQM
 description: Learn about the HQM yield curve and the high quality corporate bond market.
   Get information on AAA, AA, and A bonds, market-weighted average quality, corporate
   bond rates, maturity, yield curve type, provider, and data.

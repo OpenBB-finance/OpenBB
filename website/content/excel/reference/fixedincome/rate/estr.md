@@ -1,5 +1,5 @@
 ---
-title: estr
+title: ESTR
 description: Euro Short-Term Rate
 keywords: 
 - fixedincome

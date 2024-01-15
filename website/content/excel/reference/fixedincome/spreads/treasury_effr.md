@@ -1,5 +1,5 @@
 ---
-title: treasury_effr
+title: TREASURY_EFFR
 description: This documentation page provides information about Treasury Bill data,
   including the selected Treasury Bill rate minus Federal Funds Rate. It explains
   the concept of constant maturity and the Treasury yield curve. The page also covers

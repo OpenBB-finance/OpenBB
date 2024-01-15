@@ -1,5 +1,5 @@
 ---
-title: moody
+title: MOODY
 description: Moody Corporate Bond Index
 keywords: 
 - fixedincome

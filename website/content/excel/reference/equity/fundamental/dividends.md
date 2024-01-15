@@ -1,5 +1,5 @@
 ---
-title: dividends
+title: DIVIDENDS
 description: Get historical dividends data for a given company with the OBB.equity.fundamental.dividends
   function. Explore parameters like symbol and provider, and understand the returned
   results, warnings, and metadata. View the data fields, including date, label, adj_dividend,

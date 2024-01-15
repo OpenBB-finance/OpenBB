@@ -1,5 +1,5 @@
 ---
-title: schema_files
+title: SCHEMA_FILES
 description: Get lists of SEC XML schema files by year with the OBBect function. Returns
   serializable results, provider name, warnings list, chart object, metadata info,
   and data including a list of URLs to SEC Schema Files.

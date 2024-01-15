@@ -1,5 +1,5 @@
 ---
-title: metrics
+title: METRICS
 description: Learn about key metrics for a given company using the `obb.equity.fundamental.metrics`
   Python function. This API endpoint provides data such as revenue per share, net
   income per share, market capitalization, price-to-earnings ratio, and more. Explore

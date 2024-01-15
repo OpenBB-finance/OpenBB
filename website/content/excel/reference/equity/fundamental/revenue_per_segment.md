@@ -1,5 +1,5 @@
 ---
-title: revenue_per_segment
+title: REVENUE_PER_SEGMENT
 description: Learn how to get revenue data for a specific business line using the
   equity fundamental revenue per segment function.
 keywords: 

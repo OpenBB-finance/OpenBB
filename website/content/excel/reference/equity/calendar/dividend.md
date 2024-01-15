@@ -1,5 +1,5 @@
 ---
-title: dividend
+title: DIVIDEND
 description: Get upcoming and historical dividend data with the OBB.equity.calendar.dividend
   method. This method allows you to retrieve dividend information such as dates, amounts,
   and provider details. It also provides warnings, charts, and metadata for further

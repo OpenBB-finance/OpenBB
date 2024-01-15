@@ -1,5 +1,5 @@
 ---
-title: employee_count
+title: EMPLOYEE_COUNT
 description: Learn how to retrieve historical employee count data using the Python
   API. Understand the parameters, returns, and data structure for the OBB.equity.fundamental.employee_count
   method.

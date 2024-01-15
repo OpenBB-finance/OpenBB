@@ -1,5 +1,5 @@
 ---
-title: cpi
+title: CPI
 description: Get Consumer Price Index (CPI) data for various countries and calculate
   inflation measurements. This economic indicator provides insights into the growth
   rate of prices on a monthly, quarterly, and annual basis. Harmonized CPI data is

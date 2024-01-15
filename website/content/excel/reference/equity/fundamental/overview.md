@@ -1,5 +1,5 @@
 ---
-title: overview
+title: OVERVIEW
 description: Learn about the company overview and get essential information, including
   symbol, price, beta, volume average, market capitalization, last dividend, industry,
   website, CEO, sector, country, and more.

@@ -1,5 +1,5 @@
 ---
-title: screener
+title: SCREENER
 description: Equity Screen
 keywords: 
 - equity

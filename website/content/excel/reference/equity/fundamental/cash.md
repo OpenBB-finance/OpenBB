@@ -1,5 +1,5 @@
 ---
-title: cash
+title: CASH
 description: Learn how to use the Cash Flow Statement API endpoint to retrieve information
   about cash flow statements. Understand the parameters and return values of the API,
   and explore the available data fields for cash flow statements.

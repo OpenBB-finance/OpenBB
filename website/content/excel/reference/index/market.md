@@ -1,5 +1,5 @@
 ---
-title: market
+title: MARKET
 description: Learn how to retrieve historical market indices data using various data
   providers and query parameters. Understand the available parameters and return values,
   such as symbol, start date, end date, provider, interval, timeseries, timespan,

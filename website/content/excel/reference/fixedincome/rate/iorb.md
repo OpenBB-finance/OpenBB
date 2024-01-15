@@ -1,5 +1,5 @@
 ---
-title: iorb
+title: IORB
 description: Interest on Reserve Balances
 keywords: 
 - fixedincome

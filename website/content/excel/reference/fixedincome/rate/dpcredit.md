@@ -1,5 +1,5 @@
 ---
-title: dpcredit
+title: DPCREDIT
 description: Discount Window Primary Credit Rate
 keywords: 
 - fixedincome

@@ -1,5 +1,5 @@
 ---
-title: chains
+title: CHAINS
 description: Learn how to get the complete options chain for a ticker using the OBB.equity.options.chains
   function. Explore the available parameters like symbol and provider, and understand
   the data returned, including contract symbol, expiration, strike price, and more.

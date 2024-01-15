@@ -1,3 +1,7 @@
+---
+title: SPLITS
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Calendar Splits. Show Stock Split Calendar.

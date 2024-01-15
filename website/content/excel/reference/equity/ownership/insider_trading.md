@@ -1,5 +1,5 @@
 ---
-title: insider_trading
+title: INSIDER_TRADING
 description: Learn how to use the stock insider trading Python function to get information
   about insider trading, including parameter details, return types, and data descriptions.
 keywords: 

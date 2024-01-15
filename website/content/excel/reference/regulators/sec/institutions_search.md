@@ -1,5 +1,5 @@
 ---
-title: institutions_search
+title: INSTITUTIONS_SEARCH
 description: Learn how to use the OBB.regulators.sec.institutions_search() method
   to look up institutions regulated by the SEC. This method allows you to search for
   institutions based on various parameters such as the query and provider. It returns

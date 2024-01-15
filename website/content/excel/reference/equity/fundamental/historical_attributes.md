@@ -1,3 +1,7 @@
+---
+title: HISTORICAL_ATTRIBUTES
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Fetch the historical values of a data tag from Intrinio.

@@ -1,5 +1,5 @@
 ---
-title: holdings_date
+title: HOLDINGS_DATE
 description: Learn how to retrieve the holdings filing date for an individual ETF
   using the OBB.etf.holdings_date API. Explore the available parameters, such as symbol
   and provider, and understand the returned results like results list, chart object,

@@ -1,3 +1,7 @@
+---
+title: FRED_SERIES
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Get data by series ID from FRED.

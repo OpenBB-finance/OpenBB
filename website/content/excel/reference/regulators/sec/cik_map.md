@@ -1,5 +1,5 @@
 ---
-title: cik_map
+title: CIK_MAP
 description: Learn how to retrieve the CIK number corresponding to a ticker symbol
   using the python obb.regulators.sec.cik_map function. Understand the available parameters,
   return values, and data structure.

@@ -1,5 +1,5 @@
 ---
-title: fails_to_deliver
+title: FAILS_TO_DELIVER
 description: Learn how to retrieve reported Fail-to-deliver (FTD) data using the OBB.equity.shorts.fails_to_deliver
   function in Python. Explore the available parameters for symbol selection and provider
   options. Understand the data returned, including settlement date, symbol, quantity

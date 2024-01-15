@@ -1,5 +1,5 @@
 ---
-title: ecb
+title: ECB
 description: Learn about the key interest rates set by the European Central Bank (ECB)
   for the Euro area. Explore the Python API for accessing European Central Bank interest
   rate data and understand the available parameters to customize your queries.

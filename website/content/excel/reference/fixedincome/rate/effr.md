@@ -1,5 +1,5 @@
 ---
-title: effr
+title: EFFR
 description: Fed Funds Rate
 keywords: 
 - fixedincome

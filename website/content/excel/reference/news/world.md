@@ -1,5 +1,5 @@
 ---
-title: world
+title: WORLD
 description: Learn how to retrieve global news data using the obb.news.world API.
   This documentation covers the parameters, returns, and data structures used in the
   API, including details on how to set the limit and provider, and how to filter the

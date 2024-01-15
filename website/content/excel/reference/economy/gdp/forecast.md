@@ -1,5 +1,5 @@
 ---
-title: forecast
+title: FORECAST
 description: Forecasted GDP Data
 keywords: 
 - economy

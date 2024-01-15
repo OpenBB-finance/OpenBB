@@ -1,5 +1,5 @@
 ---
-title: tmc_effr
+title: TMC_EFFR
 description: Learn how to select Treasury Constant Maturity and access data for it
   using the obb.fixedincome.spreads.tmc_effr function. Understand constant maturity,
   Treasury yield curve, bid-yields, and Treasury securities. Explore the parameters

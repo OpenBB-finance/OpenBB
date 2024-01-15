@@ -1,5 +1,5 @@
 ---
-title: available
+title: AVAILABLE
 description: Available Indices
 keywords: 
 - index

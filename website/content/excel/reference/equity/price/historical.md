@@ -1,5 +1,5 @@
 ---
-title: historical
+title: HISTORICAL
 description: Learn how to use the `obb.equity.price.historical` function to load historical
   price data for a specific stock ticker. Find out about the available parameters
   and providers, as well as the structure of the returned data and the columns it

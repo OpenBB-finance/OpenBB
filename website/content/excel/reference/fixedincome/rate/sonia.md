@@ -1,5 +1,5 @@
 ---
-title: sonia
+title: SONIA
 description: Sterling Overnight Index Average
 keywords: 
 - fixedincome

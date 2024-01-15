@@ -1,5 +1,5 @@
 ---
-title: countries
+title: COUNTRIES
 description: Learn about ETF country weighting and how to retrieve country exposure
   data using obb.etf.countries API endpoint.
 keywords: 

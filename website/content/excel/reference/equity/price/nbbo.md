@@ -1,5 +1,5 @@
 ---
-title: nbbo
+title: NBBO
 description: Learn how to load the National Best Bid and Offer (NBBO) for a specific
   equity using the OBB.equity.price.nbbo API. Explore the parameters and data returned
   by the query, including ask price, bid price, ask size, bid size, exchange details,

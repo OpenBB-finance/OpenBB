@@ -1,5 +1,5 @@
 ---
-title: symbol_map
+title: SYMBOL_MAP
 description: Retrieve the ticker symbol corresponding to a company CIK using the
   OBB API endpoint. This function allows you to perform a search query and get the
   results along with additional metadata, warnings, and optional chart data.

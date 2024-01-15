@@ -1,5 +1,5 @@
 ---
-title: info
+title: INFO
 description: Get an overview of ETF information using the `obb.etf.info` function.
   Learn about the available parameters, returns, and data fields like name, inception
   date, asset class, assets under management, average trading volume, CUSIP, description,

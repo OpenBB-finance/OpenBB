@@ -1,5 +1,5 @@
 ---
-title: spot_rates
+title: SPOT_RATES
 description: Learn about spot rates and how they are used to calculate the yield on
   a bond. Understand the concept of discounting and its application in evaluating
   pension liabilities. Explore the parameters needed to query and retrieve spot rate

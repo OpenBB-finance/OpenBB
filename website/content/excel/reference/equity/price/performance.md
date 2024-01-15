@@ -1,5 +1,5 @@
 ---
-title: performance
+title: PERFORMANCE
 description: Learn how to calculate the price performance return for a symbol over
   different time periods using the OBB.equity.price.performance function. Retrieve
   data such as one-day return, week to date return, one-week return, month to date

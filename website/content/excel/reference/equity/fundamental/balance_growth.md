@@ -1,5 +1,5 @@
 ---
-title: balance_growth
+title: BALANCE_GROWTH
 description: Learn about balance sheet statement growth, equity data for a company,
   parameters like symbol, limit, and provider, and explore the returned results, warnings,
   charts, and metadata. Retrieve detailed data on various balance sheet growth metrics

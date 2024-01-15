@@ -1,5 +1,5 @@
 ---
-title: sectors
+title: SECTORS
 description: Learn about ETF sector weighting using OBB.etf.sectors API. Find information
   about the parameters, returns, and data, including sectors, weights, and exposure
   levels in normalized percentage points.

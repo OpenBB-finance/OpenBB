@@ -1,5 +1,5 @@
 ---
-title: quote
+title: QUOTE
 description: Learn how to load stock data for a specific ticker with the Equity Quote
   function. Discover the various parameters and data returned, including day low,
   day high, date, symbol, name, price, volume, and more.

@@ -1,5 +1,5 @@
 ---
-title: management_compensation
+title: MANAGEMENT_COMPENSATION
 description: Learn how to retrieve executive compensation data for a company using
   the equity management compensation function in Python. Understand the parameters,
   return values, and available data fields such as symbol, salary, bonus, stock award,

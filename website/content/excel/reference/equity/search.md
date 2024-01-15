@@ -1,5 +1,5 @@
 ---
-title: search
+title: SEARCH
 description: Learn how to perform an equity search to find a company or stock ticker.
   Understand the query parameters, such as search by ticker symbol and search provider.
   Explore the various filters available, including market cap, price, beta, volume,

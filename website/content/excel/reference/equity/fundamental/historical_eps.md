@@ -1,5 +1,5 @@
 ---
-title: historical_eps
+title: HISTORICAL_EPS
 description: Historical earnings-per-share for a given company
 keywords: 
 - equity

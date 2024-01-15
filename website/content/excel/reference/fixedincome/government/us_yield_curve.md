@@ -1,5 +1,5 @@
 ---
-title: us_yield_curve
+title: US_YIELD_CURVE
 description: Learn about the US Yield Curve and how to retrieve United States yield
   curve data using the OBB.fixedincome.government.us_yield_curve function. Explore
   parameters like date, inflation adjustment, and provider. Understand the returned

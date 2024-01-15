@@ -1,5 +1,5 @@
 ---
-title: historical
+title: HISTORICAL
 description: Learn about historical analyst estimates and analyst stock recommendations
   with the OBBPy library in Python. Explore the usage of the `obb.equity.estimates.historical`
   function and its parameters, including `symbol`, `period`, `limit`, and `provider`.

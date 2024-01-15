@@ -1,5 +1,5 @@
 ---
-title: unusual
+title: UNUSUAL
 description: Learn how to get the complete options chain for a ticker with the equity
   options unusual API. Explore the available parameters such as symbol and provider.
   Retrieve valuable data like the underlying symbol, contract symbol, trade type,

@@ -1,5 +1,5 @@
 ---
-title: search
+title: SEARCH
 description: Learn how to search for available currency pairs using the `obb.currency.search`
   function, and retrieve a list of results, including provider name, warnings, chart,
   and metadata. Explore the various parameters such as provider, symbol, date, search

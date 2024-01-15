@@ -1,5 +1,5 @@
 ---
-title: nominal
+title: NOMINAL
 description: Nominal GDP Data
 keywords: 
 - economy

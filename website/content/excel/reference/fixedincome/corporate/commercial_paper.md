@@ -1,5 +1,5 @@
 ---
-title: commercial_paper
+title: COMMERCIAL_PAPER
 description: Learn about commercial paper, a form of short-term promissory notes issued
   primarily by corporations. Discover how it can help raise cash for current transactions
   and serve as a lower-cost alternative to bank loans. Explore the parameters and

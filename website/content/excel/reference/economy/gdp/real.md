@@ -1,5 +1,5 @@
 ---
-title: real
+title: REAL
 description: Learn about Real GDP Data and how to access it using the provided parameters.
   Find detailed descriptions of the available parameters and the data returned. Understand
   the structure of the returns and explore the data attributes.

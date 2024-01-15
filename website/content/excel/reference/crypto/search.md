@@ -1,5 +1,5 @@
 ---
-title: search
+title: SEARCH
 description: The documentation page provides information on how to perform a cryptocurrency
   search, including the search query and provider parameters, as well as the resulting
   crypto search data such as symbol, name, currency, and exchange information.

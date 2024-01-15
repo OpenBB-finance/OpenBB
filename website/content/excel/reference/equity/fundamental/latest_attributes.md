@@ -1,3 +1,7 @@
+---
+title: LATEST_ATTRIBUTES
+---
+
 <!-- markdownlint-disable MD041 -->
 
 Fetch the latest value of a data tag from Intrinio.

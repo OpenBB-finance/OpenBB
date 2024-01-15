@@ -1,5 +1,5 @@
 ---
-title: search
+title: SEARCH
 description: Learn how to search for ETFs with parameters like query, provider, exchange
   code, and more. Retrieve key details about ETFs, including market cap, industry,
   sector, beta, current price, annual dividend, trading volume, exchange, and country.

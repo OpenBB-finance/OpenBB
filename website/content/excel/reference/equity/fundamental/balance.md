@@ -1,5 +1,5 @@
 ---
-title: balance
+title: BALANCE
 description: Learn how to use the balance sheet function in Python to retrieve financial
   statement data. This documentation provides details about the function parameters,
   return values, and available data types.

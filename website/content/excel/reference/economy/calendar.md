@@ -1,5 +1,5 @@
 ---
-title: calendar
+title: CALENDAR
 description: The Economic Calendar provides information on economic events and data.
   Use the OBB Python function `obb.economy.calendar()` to retrieve economic calendar
   data. The function accepts parameters such as start date, end date, provider, country,

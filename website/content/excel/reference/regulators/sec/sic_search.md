@@ -1,5 +1,5 @@
 ---
-title: sic_search
+title: SIC_SEARCH
 description: Learn how to perform a search for industry titles, reporting office,
   and SIC codes using Python. Explore the parameters, returns, and data associated
   with the `obb.regulators.sec.sic_search` function.

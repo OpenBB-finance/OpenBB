@@ -1,5 +1,5 @@
 ---
-title: consensus
+title: CONSENSUS
 description: Learn how to access and use the Price Target Consensus functionality
   in your application. Explore the available parameters and understand the returned
   data structure.

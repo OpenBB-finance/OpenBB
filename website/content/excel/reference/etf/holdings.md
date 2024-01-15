@@ -1,5 +1,5 @@
 ---
-title: holdings
+title: HOLDINGS
 description: Learn how to get the holdings data for an individual ETF using the `obb.etf.holdings`
   method. Understand the parameters like symbol, provider, date, and CIK. Explore
   the returns, results, warnings, chart, and metadata. Dive into the data fields like

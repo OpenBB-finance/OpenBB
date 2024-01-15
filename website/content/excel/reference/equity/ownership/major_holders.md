@@ -1,5 +1,5 @@
 ---
-title: major_holders
+title: MAJOR_HOLDERS
 description: Get detailed information about equity ownership and stock ownership,
   including investment data, security data, market value data, shares data, performance
   data, and ownership data. Use the equity ownership API to retrieve equity ownership

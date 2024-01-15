@@ -1,5 +1,5 @@
 ---
-title: institutional
+title: INSTITUTIONAL
 description: Learn about institutional ownership data, and how to use the OBB.equity.ownership.institutional
   function in Python to access the data. Explore the symbol, include_current_quarter,
   date, and provider parameters. Understand the meaning and usage of the results,
