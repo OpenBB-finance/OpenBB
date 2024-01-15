@@ -412,6 +412,8 @@ class Editor:
         docs_map = {}
 
         shutil.rmtree(self.target_dir, ignore_errors=True)
+
+        # We start from xl_funcs to make sure only the commands in the add-in are included
         for cmd in self.cmd_lib.xl_funcs:
             if self.cmd_lib.get_func(cmd):
                 folder = "/".join(cmd.split("/")[1:-1])
