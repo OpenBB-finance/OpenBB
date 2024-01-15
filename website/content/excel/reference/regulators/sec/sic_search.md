@@ -29,7 +29,9 @@ Search for Industry Titles, Reporting Office, and SIC Codes.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.REGULATORS.SEC.SIC_SEARCH([provider];[query];[use_cache])</span>```
+```excel wordwrap
+=OBB.REGULATORS.SEC.SIC_SEARCH([query];[provider];[use_cache])
+```
 
 ### Example
 
@@ -41,11 +43,11 @@ Search for Industry Titles, Reporting Office, and SIC Codes.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: sec, defaults to sec. | True |
-| query | Text | Search query. | True |
-| use_cache | Boolean | Whether to use the cache or not. The full list will be cached for seven days if True. (provider: sec) | True |
+| query | Text | Search query. | False |
+| provider | Text | Options: sec, defaults to sec. | False |
+| use_cache | Boolean | Whether to use the cache or not. The full list will be cached for seven days if True. (provider: sec) | False |
 
 ---
 

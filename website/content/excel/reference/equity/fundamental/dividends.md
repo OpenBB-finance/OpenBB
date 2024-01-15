@@ -30,7 +30,9 @@ Historical Dividends. Historical dividends data for a given company.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.FUNDAMENTAL.DIVIDENDS(symbol;[provider];[page_size])</span>```
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.DIVIDENDS(symbol;[provider];[page_size])
+```
 
 ### Example
 
@@ -42,11 +44,11 @@ Historical Dividends. Historical dividends data for a given company.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, intrinio, defaults to fmp. | True |
-| page_size | Number | The number of data entries to return. (provider: intrinio) | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| provider | Text | Options: fmp, intrinio, defaults to fmp. | False |
+| page_size | Number | The number of data entries to return. (provider: intrinio) | False |
 
 ---
 
@@ -55,9 +57,12 @@ Historical Dividends. Historical dividends data for a given company.
 | Name | Description |
 | ---- | ----------- |
 | date | The date of the data.  |
-| label | Label of the historical dividends.  |
-| adj_dividend | Adjusted dividend of the historical dividends.  |
 | dividend | Dividend of the historical dividends.  |
-| record_date | Record date of the historical dividends.  |
-| payment_date | Payment date of the historical dividends.  |
-| declaration_date | Declaration date of the historical dividends.  |
+| label | Label of the historical dividends. (provider: fmp) |
+| adj_dividend | Adjusted dividend of the historical dividends. (provider: fmp) |
+| record_date | Record date of the historical dividends. (provider: fmp) |
+| payment_date | Payment date of the historical dividends. (provider: fmp) |
+| declaration_date | Declaration date of the historical dividends. (provider: fmp) |
+| factor | factor by which to multiply stock prices before this date, in order to calculate historically-adjusted stock prices. (provider: intrinio) |
+| dividend_currency | The currency of the dividend. (provider: intrinio) |
+| split_ratio | The ratio of the stock split, if a stock split occurred. (provider: intrinio) |

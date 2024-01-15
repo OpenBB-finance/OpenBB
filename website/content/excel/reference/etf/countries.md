@@ -21,7 +21,9 @@ ETF Country weighting.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.ETF.COUNTRIES(symbol;[provider])</span>```
+```excel wordwrap
+=OBB.ETF.COUNTRIES(symbol;[provider])
+```
 
 ### Example
 
@@ -33,10 +35,10 @@ ETF Country weighting.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for. (ETF)** | **False** |
-| provider | Text | Options: fmp, defaults to fmp. | True |
+| **symbol** | **Text** | **Symbol to get data for. (ETF)** | **True** |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 

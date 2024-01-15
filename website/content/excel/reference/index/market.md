@@ -48,34 +48,36 @@ Historical Market Indices.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.INDEX.MARKET(symbol;[provider];[start_date];[end_date];[timeseries];[interval];[sort];[tag];[type];[limit];[sleep];[timespan];[adjusted];[multiplier])</span>```
+```excel wordwrap
+=OBB.INDEX.MARKET(symbol;[start_date];[end_date];[provider];[timeseries];[interval];[sort];[tag];[type];[limit];[sleep];[timespan];[adjusted];[multiplier])
+```
 
 ### Example
 
 ```excel wordwrap
-=OBB.INDEX.MARKET("SPX")
+=OBB.INDEX.MARKET("^GSPC")
 ```
 
 ---
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, intrinio, polygon, defaults to fmp. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
-| timeseries | Number | Number of days to look back. (provider: fmp) | True |
-| interval | Text | Data granularity. (provider: fmp) | True |
-| sort | Text | Sort the data in ascending or descending order. (provider: fmp); Sort order. (provider: intrinio); Sort order of the data. (provider: polygon) | True |
-| tag | Text | Index tag. (provider: intrinio) | True |
-| type | Text | Index type. (provider: intrinio) | True |
-| limit | Number | The number of data entries to return. (provider: intrinio, polygon) | True |
-| sleep | Number | Time to sleep between requests to avoid rate limiting. (provider: intrinio) | True |
-| timespan | Text | Timespan of the data. (provider: polygon) | True |
-| adjusted | Boolean | Whether the data is adjusted. (provider: polygon) | True |
-| multiplier | Number | Multiplier of the timespan. (provider: polygon) | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| provider | Text | Options: fmp, intrinio, polygon, defaults to fmp. | False |
+| timeseries | Number | Number of days to look back. (provider: fmp) | False |
+| interval | Text | Data granularity. (provider: fmp) | False |
+| sort | Text | Sort the data in ascending or descending order. (provider: fmp); Sort order. (provider: intrinio); Sort order of the data. (provider: polygon) | False |
+| tag | Text | Index tag. (provider: intrinio) | False |
+| type | Text | Index type. (provider: intrinio) | False |
+| limit | Number | The number of data entries to return. (provider: intrinio, polygon) | False |
+| sleep | Number | Time to sleep between requests to avoid rate limiting. (provider: intrinio) | False |
+| timespan | Text | Timespan of the data. (provider: polygon) | False |
+| adjusted | Boolean | Whether the data is adjusted. (provider: polygon) | False |
+| multiplier | Number | Multiplier of the timespan. (provider: polygon) | False |
 
 ---
 
@@ -89,14 +91,10 @@ Historical Market Indices.
 | low | The low price.  |
 | close | The close price.  |
 | volume | The trading volume.  |
-| calls_volume | Number of calls traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe) |
-| puts_volume | Number of puts traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe) |
-| total_options_volume | Total number of options traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe) |
-| adj_close | Adjusted Close Price of the symbol. (provider: fmp) |
+| adj_close | The adjusted close price. (provider: fmp) |
 | unadjusted_volume | Unadjusted volume of the symbol. (provider: fmp) |
 | change | Change in the price of the symbol from the previous day. (provider: fmp) |
 | change_percent | Change % in the price of the symbol. (provider: fmp) |
 | label | Human readable format of the date. (provider: fmp) |
 | change_over_time | Change % in the price of the symbol over a period of time. (provider: fmp) |
-| value | Index value. (provider: intrinio) |
 | transactions | Number of transactions for the symbol in the time period. (provider: polygon) |

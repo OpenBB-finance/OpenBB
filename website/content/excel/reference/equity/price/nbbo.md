@@ -43,7 +43,9 @@ Equity NBBO. Load National Best Bid and Offer for a specific equity.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.PRICE.NBBO(symbol;[provider];[limit];[timestamp];[timestamp_lt];[timestamp_gt];[timestamp_lte];[timestamp_gte])</span>```
+```excel wordwrap
+=OBB.EQUITY.PRICE.NBBO(symbol;[provider];[limit];[timestamp];[timestamp_lt];[timestamp_gt];[timestamp_lte];[timestamp_gte])
+```
 
 ### Example
 
@@ -55,16 +57,16 @@ Equity NBBO. Load National Best Bid and Offer for a specific equity.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: polygon, defaults to polygon. | True |
-| limit | Number | The number of data entries to return. Up to ten million records will be returned. Pagination occurs in groups of 50,000. Remaining limit values will always return 50,000 more records unless it is the last page. High volume tickers will require multiple max requests for a single day's NBBO records. Expect stocks, like SPY, to approach 1GB in size, per day, as a raw CSV. Splitting large requests into chunks is recommended for full-day requests of high-volume symbols. (provider: polygon) | True |
-| timestamp | Text | A specific date to get data for. Use bracketed the timestamp parameters to specify exact time ranges. (provider: polygon) | True |
-| timestamp_lt | Text | Query by datetime, less than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string, YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour. (provider: polygon) | True |
-| timestamp_gt | Text | Query by datetime, greater than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string, YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour. (provider: polygon) | True |
-| timestamp_lte | Text | Query by datetime, less than or equal to. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string, YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour. (provider: polygon) | True |
-| timestamp_gte | Text | Query by datetime, greater than or equal to. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string, YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour. (provider: polygon) | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| provider | Text | Options: polygon, defaults to polygon. | False |
+| limit | Number | The number of data entries to return. Up to ten million records will be returned. Pagination occurs in groups of 50,000. Remaining limit values will always return 50,000 more records unless it is the last page. High volume tickers will require multiple max requests for a single day's NBBO records. Expect stocks, like SPY, to approach 1GB in size, per day, as a raw CSV. Splitting large requests into chunks is recommended for full-day requests of high-volume symbols. (provider: polygon) | False |
+| timestamp | Text | A specific date to get data for. Use bracketed the timestamp parameters to specify exact time ranges. (provider: polygon) | False |
+| timestamp_lt | Text | Query by datetime, less than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string, YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour. (provider: polygon) | False |
+| timestamp_gt | Text | Query by datetime, greater than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string, YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour. (provider: polygon) | False |
+| timestamp_lte | Text | Query by datetime, less than or equal to. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string, YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour. (provider: polygon) | False |
+| timestamp_gte | Text | Query by datetime, greater than or equal to. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string, YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour. (provider: polygon) | False |
 
 ---
 

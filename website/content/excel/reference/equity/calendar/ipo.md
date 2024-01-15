@@ -58,7 +58,9 @@ Upcoming and Historical IPO Calendar.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.CALENDAR.IPO([provider];[symbol];[start_date];[end_date];[limit];[status];[offer_amount_greater_than];[offer_amount_less_than])</span>```
+```excel wordwrap
+=OBB.EQUITY.CALENDAR.IPO([symbol];[start_date];[end_date];[limit];[provider];[status];[offer_amount_greater_than];[offer_amount_less_than])
+```
 
 ### Example
 
@@ -70,16 +72,16 @@ Upcoming and Historical IPO Calendar.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: intrinio, defaults to intrinio. | True |
-| symbol | Text | Symbol to get data for. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
-| limit | Number | The number of data entries to return. | True |
-| status | Text | Status of the IPO. [upcoming, priced, or withdrawn] (provider: intrinio) | True |
-| offer_amount_greater_than | Number | Return IPOs with an offer dollar amount greater than the given amount. (provider: intrinio) | True |
-| offer_amount_less_than | Number | Return IPOs with an offer dollar amount less than the given amount. (provider: intrinio) | True |
+| symbol | Text | Symbol to get data for. | False |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| limit | Number | The number of data entries to return. | False |
+| provider | Text | Options: intrinio, defaults to intrinio. | False |
+| status | Text | Status of the IPO. [upcoming, priced, or withdrawn] (provider: intrinio) | False |
+| offer_amount_greater_than | Number | Return IPOs with an offer dollar amount greater than the given amount. (provider: intrinio) | False |
+| offer_amount_less_than | Number | Return IPOs with an offer dollar amount less than the given amount. (provider: intrinio) | False |
 
 ---
 
@@ -91,11 +93,11 @@ Upcoming and Historical IPO Calendar.
 | ipo_date | The date of the IPO, when the stock first trades on a major exchange.  |
 | status |              The status of the IPO. Upcoming IPOs have not taken place yet but are expected to.             Priced IPOs have taken place.             Withdrawn IPOs were expected to take place, but were subsequently withdrawn and did not take place          (provider: intrinio) |
 | exchange |              The acronym of the stock exchange that the company is going to trade publicly on.             Typically NYSE or NASDAQ.          (provider: intrinio) |
-| offer_amount | The total dollar amount of shares offered in the IPO. Typically this is share price * share count (provider: intrinio);     The dollar value of the shares offered. (provider: nasdaq) |
+| offer_amount | The total dollar amount of shares offered in the IPO. Typically this is share price * share count (provider: intrinio) |
 | share_price | The price per share at which the IPO was offered. (provider: intrinio) |
 | share_price_lowest |              The expected lowest price per share at which the IPO will be offered.             Before an IPO is priced, companies typically provide a range of prices per share at which             they expect to offer the IPO (typically available for upcoming IPOs).          (provider: intrinio) |
 | share_price_highest |              The expected highest price per share at which the IPO will be offered.             Before an IPO is priced, companies typically provide a range of prices per share at which             they expect to offer the IPO (typically available for upcoming IPOs).          (provider: intrinio) |
-| share_count | The number of shares offered in the IPO. (provider: intrinio, nasdaq) |
+| share_count | The number of shares offered in the IPO. (provider: intrinio) |
 | share_count_lowest |              The expected lowest number of shares that will be offered in the IPO. Before an IPO is priced,             companies typically provide a range of shares that they expect to offer in the IPO             (typically available for upcoming IPOs).          (provider: intrinio) |
 | share_count_highest |              The expected highest number of shares that will be offered in the IPO. Before an IPO is priced,             companies typically provide a range of shares that they expect to offer in the IPO             (typically available for upcoming IPOs).          (provider: intrinio) |
 | announcement_url | The URL to the company's announcement of the IPO (provider: intrinio) |
@@ -109,8 +111,3 @@ Upcoming and Historical IPO Calendar.
 | id | The Intrinio ID of the IPO. (provider: intrinio) |
 | company | The company that is going public via the IPO. (provider: intrinio) |
 | security | The primary Security for the Company that is going public via the IPO (provider: intrinio) |
-| name | The name of the company. (provider: nasdaq) |
-| expected_price_date | The date the pricing is expected. (provider: nasdaq) |
-| filed_date | The date the IPO was filed. (provider: nasdaq) |
-| withdraw_date | The date the IPO was withdrawn. (provider: nasdaq) |
-| deal_status | The status of the deal. (provider: nasdaq) |

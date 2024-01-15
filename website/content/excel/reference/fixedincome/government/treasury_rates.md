@@ -13,7 +13,9 @@ Government Treasury Rates.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.FIXEDINCOME.GOVERNMENT.TREASURY_RATES([provider];[start_date];[end_date])</span>```
+```excel wordwrap
+=OBB.FIXEDINCOME.GOVERNMENT.TREASURY_RATES([start_date];[end_date];[provider])
+```
 
 ### Example
 
@@ -25,11 +27,11 @@ Government Treasury Rates.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: federal_reserve, fmp, defaults to federal_reserve. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| provider | Text | Options: federal_reserve, fmp, defaults to federal_reserve. | False |
 
 ---
 

@@ -13,7 +13,9 @@ Historical earnings-per-share for a given company.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS(symbol;[provider];[limit])</span>```
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS(symbol;[provider];[limit])
+```
 
 ### Example
 
@@ -25,11 +27,11 @@ Historical earnings-per-share for a given company.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, defaults to fmp. | True |
-| limit | Number | The number of data entries to return. (provider: fmp) | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| provider | Text | Options: fmp, defaults to fmp. | False |
+| limit | Number | The number of data entries to return. (provider: fmp) | False |
 
 ---
 
@@ -42,9 +44,8 @@ Historical earnings-per-share for a given company.
 | announce_time | Timing of the earnings announcement.  |
 | eps_actual | Actual EPS from the earnings date.  |
 | eps_estimated | Estimated EPS for the earnings date.  |
-| actual_eps | The actual earnings per share announced. (provider: fmp) |
 | revenue_estimated | Estimated consensus revenue for the reporting period. (provider: fmp) |
-| actual_revenue | The actual reported revenue. (provider: fmp) |
+| revenue_actual | The actual reported revenue. (provider: fmp) |
 | reporting_time | The reporting time - e.g. after market close. (provider: fmp) |
 | updated_at | The date when the data was last updated. (provider: fmp) |
 | period_ending | The fiscal period end date. (provider: fmp) |

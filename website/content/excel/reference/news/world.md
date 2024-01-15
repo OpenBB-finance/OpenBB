@@ -65,7 +65,9 @@ World News. Global news data.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.NEWS.WORLD([provider];[limit];[display];[date];[start_date];[end_date];[updated_since];[published_since];[sort];[order];[isin];[cusip];[channels];[topics];[authors];[content_types];[source])</span>```
+```excel wordwrap
+=OBB.NEWS.WORLD([limit];[provider];[display];[date];[start_date];[end_date];[updated_since];[published_since];[sort];[order];[isin];[cusip];[channels];[topics];[authors];[content_types];[source])
+```
 
 ### Example
 
@@ -77,25 +79,25 @@ World News. Global news data.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: benzinga, fmp, intrinio, tiingo, defaults to benzinga. | True |
-| limit | Number | The number of data entries to return. Here its the no. of articles to return. | True |
-| display | Text | Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga) | True |
-| date | Text | Date of the news to retrieve. (provider: benzinga) | True |
-| start_date | Text | Start date of the news to retrieve. (provider: benzinga) | True |
-| end_date | Text | End date of the news to retrieve. (provider: benzinga) | True |
-| updated_since | Number | Number of seconds since the news was updated. (provider: benzinga) | True |
-| published_since | Number | Number of seconds since the news was published. (provider: benzinga) | True |
-| sort | Text | Key to sort the news by. (provider: benzinga) | True |
-| order | Text | Order to sort the news by. (provider: benzinga) | True |
-| isin | Text | The ISIN of the news to retrieve. (provider: benzinga) | True |
-| cusip | Text | The CUSIP of the news to retrieve. (provider: benzinga) | True |
-| channels | Text | Channels of the news to retrieve. (provider: benzinga) | True |
-| topics | Text | Topics of the news to retrieve. (provider: benzinga) | True |
-| authors | Text | Authors of the news to retrieve. (provider: benzinga) | True |
-| content_types | Text | Content types of the news to retrieve. (provider: benzinga) | True |
-| source | Text | A comma-separated list of the domains requested. (provider: tiingo) | True |
+| limit | Number | The number of data entries to return. Here its the no. of articles to return. | False |
+| provider | Text | Options: benzinga, fmp, intrinio, tiingo, defaults to benzinga. | False |
+| display | Text | Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga) | False |
+| date | Text | Date of the news to retrieve. (provider: benzinga) | False |
+| start_date | Text | Start date of the news to retrieve. (provider: benzinga) | False |
+| end_date | Text | End date of the news to retrieve. (provider: benzinga) | False |
+| updated_since | Number | Number of seconds since the news was updated. (provider: benzinga) | False |
+| published_since | Number | Number of seconds since the news was published. (provider: benzinga) | False |
+| sort | Text | Key to sort the news by. (provider: benzinga) | False |
+| order | Text | Order to sort the news by. (provider: benzinga) | False |
+| isin | Text | The ISIN of the news to retrieve. (provider: benzinga) | False |
+| cusip | Text | The CUSIP of the news to retrieve. (provider: benzinga) | False |
+| channels | Text | Channels of the news to retrieve. (provider: benzinga) | False |
+| topics | Text | Topics of the news to retrieve. (provider: benzinga) | False |
+| authors | Text | Authors of the news to retrieve. (provider: benzinga) | False |
+| content_types | Text | Content types of the news to retrieve. (provider: benzinga) | False |
+| source | Text | A comma-separated list of the domains requested. (provider: tiingo) | False |
 
 ---
 
@@ -108,16 +110,14 @@ World News. Global news data.
 | images | Images associated with the news.  |
 | text | Text/body of the news.  |
 | url | URL of the news.  |
-| id | ID of the news. (provider: benzinga);     Unique Article ID. (provider: biztoc);     Article ID. (provider: intrinio) |
+| id | Article ID. (provider: benzinga, intrinio) |
 | author | Author of the news. (provider: benzinga) |
 | teaser | Teaser of the news. (provider: benzinga) |
 | channels | Channels associated with the news. (provider: benzinga) |
 | stocks | Stocks associated with the news. (provider: benzinga) |
-| tags | Tags associated with the news. (provider: benzinga, biztoc, tiingo) |
+| tags | Tags associated with the news. (provider: benzinga, tiingo) |
 | updated | Updated date of the news. (provider: benzinga) |
-| favicon | Icon image for the source of the article. (provider: biztoc) |
-| score | Search relevance score for the article. (provider: biztoc) |
-| site | Site of the news. (provider: fmp);     Name of the news source. (provider: tiingo) |
+| site | News source. (provider: fmp, tiingo) |
 | company | Company details related to the news article. (provider: intrinio) |
 | symbols | Ticker tagged in the fetched news. (provider: tiingo) |
 | article_id | Unique ID of the news article. (provider: tiingo) |

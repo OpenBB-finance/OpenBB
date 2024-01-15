@@ -37,7 +37,9 @@ Price performance as a return, over different periods.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.ETF.PRICE_PERFORMANCE(symbol;[provider])</span>```
+```excel wordwrap
+=OBB.ETF.PRICE_PERFORMANCE(symbol;[provider])
+```
 
 ### Example
 
@@ -49,10 +51,10 @@ Price performance as a return, over different periods.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, defaults to fmp. | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 

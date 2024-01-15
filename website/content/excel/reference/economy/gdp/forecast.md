@@ -13,7 +13,9 @@ Forecasted GDP Data.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.ECONOMY.GDP.FORECAST([provider];[period];[start_date];[end_date];[type];[country])</span>```
+```excel wordwrap
+=OBB.ECONOMY.GDP.FORECAST([period];[start_date];[end_date];[type];[provider];[country])
+```
 
 ### Example
 
@@ -25,14 +27,14 @@ Forecasted GDP Data.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: oecd, defaults to oecd. | True |
-| period | Text | Time period of the data to return. Units for nominal GDP period. Either quarter or annual. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
-| type | Text | Type of GDP to get forecast of. Either nominal or real. | True |
-| country | Text | Country to get GDP for. (provider: oecd) | True |
+| period | Text | Time period of the data to return. Units for nominal GDP period. Either quarter or annual. | False |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| type | Text | Type of GDP to get forecast of. Either nominal or real. | False |
+| provider | Text | Options: oecd, defaults to oecd. | False |
+| country | Text | Country to get GDP for. (provider: oecd) | False |
 
 ---
 

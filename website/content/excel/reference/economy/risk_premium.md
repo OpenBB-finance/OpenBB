@@ -29,7 +29,9 @@ Historical Market Risk Premium.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.ECONOMY.RISK_PREMIUM([provider])</span>```
+```excel wordwrap
+=OBB.ECONOMY.RISK_PREMIUM([provider])
+```
 
 ### Example
 
@@ -41,9 +43,9 @@ Historical Market Risk Premium.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp, defaults to fmp. | True |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 
