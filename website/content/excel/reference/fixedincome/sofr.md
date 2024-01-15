@@ -31,7 +31,9 @@ Secured Overnight Financing Rate.  The Secured Overnight Financing Rate (SOFR) i
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.FIXEDINCOME.SOFR([provider];[start_date];[end_date];[period])</span>```
+```excel wordwrap
+=OBB.FIXEDINCOME.SOFR([start_date];[end_date];[provider];[period])
+```
 
 ### Example
 
@@ -43,12 +45,12 @@ Secured Overnight Financing Rate.  The Secured Overnight Financing Rate (SOFR) i
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fred, defaults to fred. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
-| period | Text | Period of SOFR rate. (provider: fred) | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| provider | Text | Options: fred, defaults to fred. | False |
+| period | Text | Period of SOFR rate. (provider: fred) | False |
 
 ---
 

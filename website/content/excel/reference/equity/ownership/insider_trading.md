@@ -38,7 +38,9 @@ Insider Trading. Information about insider trading.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.OWNERSHIP.INSIDER_TRADING(symbol;[provider];[limit];[transactionType];[start_date];[end_date];[ownership_type];[sort_by])</span>```
+```excel wordwrap
+=OBB.EQUITY.OWNERSHIP.INSIDER_TRADING(symbol;[limit];[provider];[transactionType];[start_date];[end_date];[ownership_type];[sort_by])
+```
 
 ### Example
 
@@ -50,16 +52,16 @@ Insider Trading. Information about insider trading.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, intrinio, defaults to fmp. | True |
-| limit | Number | The number of data entries to return. | True |
-| transactionType | Any | Type of the transaction. (provider: fmp) | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. (provider: intrinio) | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. (provider: intrinio) | True |
-| ownership_type | Text | Type of ownership. (provider: intrinio) | True |
-| sort_by | Text | Field to sort by. (provider: intrinio) | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| limit | Number | The number of data entries to return. | False |
+| provider | Text | Options: fmp, intrinio, defaults to fmp. | False |
+| transactionType | Any | Type of the transaction. (provider: fmp) | False |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. (provider: intrinio) | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. (provider: intrinio) | False |
+| ownership_type | Text | Type of ownership. (provider: intrinio) | False |
+| sort_by | Text | Field to sort by. (provider: intrinio) | False |
 
 ---
 

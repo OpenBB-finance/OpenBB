@@ -31,7 +31,9 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.CRYPTO.PRICE.HISTORICAL(symbol;[provider];[start_date];[end_date];[timeseries];[interval];[multiplier];[timespan];[sort];[limit];[adjusted];[exchanges])</span>```
+```excel wordwrap
+=OBB.CRYPTO.PRICE.HISTORICAL(symbol;[start_date];[end_date];[provider];[timeseries];[interval];[multiplier];[timespan];[sort];[limit];[adjusted];[exchanges])
+```
 
 ### Example
 
@@ -43,20 +45,20 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format.** | **False** |
-| provider | Text | Options: fmp, polygon, tiingo, defaults to fmp. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
-| timeseries | Number | Number of days to look back. (provider: fmp) | True |
-| interval | Text | Data granularity. (provider: fmp, tiingo) | True |
-| multiplier | Number | Multiplier of the timespan. (provider: polygon) | True |
-| timespan | Text | Timespan of the data. (provider: polygon) | True |
-| sort | Text | Sort order of the data. (provider: polygon) | True |
-| limit | Number | The number of data entries to return. (provider: polygon) | True |
-| adjusted | Boolean | Whether the data is adjusted. (provider: polygon) | True |
-| exchanges | Any | To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX'] (provider: tiingo) | True |
+| **symbol** | **Text** | **Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format.** | **True** |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| provider | Text | Options: fmp, polygon, tiingo, defaults to fmp. | False |
+| timeseries | Number | Number of days to look back. (provider: fmp) | False |
+| interval | Text | Data granularity. (provider: fmp, tiingo) | False |
+| multiplier | Number | Multiplier of the timespan. (provider: polygon) | False |
+| timespan | Text | Timespan of the data. (provider: polygon) | False |
+| sort | Text | Sort order of the data. (provider: polygon) | False |
+| limit | Number | The number of data entries to return. (provider: polygon) | False |
+| adjusted | Boolean | Whether the data is adjusted. (provider: polygon) | False |
+| exchanges | Any | To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX'] (provider: tiingo) | False |
 
 ---
 
@@ -71,11 +73,11 @@ Cryptocurrency Historical Price. Cryptocurrency historical price data.
 | close | The close price.  |
 | volume | The trading volume.  |
 | vwap | Volume Weighted Average Price over the period.  |
-| adj_close | Adjusted Close Price of the symbol. (provider: fmp) |
+| adj_close | The adjusted close price. (provider: fmp) |
 | unadjusted_volume | Unadjusted volume of the symbol. (provider: fmp) |
 | change | Change in the price of the symbol from the previous day. (provider: fmp) |
 | change_percent | Change % in the price of the symbol. (provider: fmp) |
 | label | Human readable format of the date. (provider: fmp) |
 | change_over_time | Change % in the price of the symbol over a period of time. (provider: fmp) |
-| transactions | Number of transactions for the symbol in the time period. (provider: polygon);     Number of trades. (provider: tiingo) |
+| transactions | Number of transactions for the symbol in the time period. (provider: polygon, tiingo) |
 | volume_notional | The last size done for the asset on the specific date in the quote currency. The volume of the asset on the specific date in the quote currency. (provider: tiingo) |

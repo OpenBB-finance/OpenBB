@@ -34,7 +34,9 @@ Upcoming and Historical Dividend Calendar.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.CALENDAR.DIVIDEND([provider];[start_date];[end_date])</span>```
+```excel wordwrap
+=OBB.EQUITY.CALENDAR.DIVIDEND([start_date];[end_date];[provider])
+```
 
 ### Example
 
@@ -46,11 +48,11 @@ Upcoming and Historical Dividend Calendar.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp, defaults to fmp. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 
@@ -67,7 +69,3 @@ Upcoming and Historical Dividend Calendar.
 | declaration_date | Declaration date of the dividend.  |
 | adjusted_amount | The adjusted-dividend amount. (provider: fmp) |
 | label | Ex-dividend date formatted for display. (provider: fmp) |
-| factor | factor by which to multiply stock prices before this date, in order to calculate historically-adjusted stock prices. (provider: intrinio) |
-| dividend_currency | The currency of the dividend. (provider: intrinio) |
-| split_ratio | The ratio of the stock split, if a stock split occurred. (provider: intrinio) |
-| annualized_amount | The indicated annualized dividend amount. (provider: nasdaq) |

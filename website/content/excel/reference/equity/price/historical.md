@@ -31,7 +31,9 @@ Equity Historical price. Load stock data for a specific ticker.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.PRICE.HISTORICAL(symbol;[provider];[interval];[start_date];[end_date];[limit];[sort];[start_time];[end_time];[timezone];[source];[sleep];[adjusted])</span>```
+```excel wordwrap
+=OBB.EQUITY.PRICE.HISTORICAL(symbol;[interval];[start_date];[end_date];[provider];[limit];[sort];[start_time];[end_time];[timezone];[source];[sleep];[adjusted])
+```
 
 ### Example
 
@@ -43,21 +45,21 @@ Equity Historical price. Load stock data for a specific ticker.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, intrinio, polygon, tiingo, defaults to fmp. | True |
-| interval | Text | Time interval of the data to return. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
-| limit | Number | Number of days to look back (Only for interval 1d). (provider: fmp); The number of results to return per page. (provider: intrinio); The number of data entries to return. (provider: polygon) | True |
-| sort | Text | Sort the data in ascending or descending order. (provider: fmp); Sort order of the data. (provider: polygon) | True |
-| start_time | Text | Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio) | True |
-| end_time | Text | Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'. (provider: intrinio) | True |
-| timezone | Text | Timezone of the data, in the IANA format (Continent/City). (provider: intrinio) | True |
-| source | Text | The source of the data. (provider: intrinio) | True |
-| sleep | Number | Time to sleep between requests to avoid rate limiting. (provider: intrinio) | True |
-| adjusted | Boolean | Output time series is adjusted by historical split and dividend events. (provider: polygon) | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| interval | Text | Time interval of the data to return. | False |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| provider | Text | Options: fmp, intrinio, polygon, tiingo, defaults to fmp. | False |
+| limit | Number | Number of days to look back (Only for interval 1d). (provider: fmp); The number of results to return per page. (provider: intrinio); The number of data entries to return. (provider: polygon) | False |
+| sort | Text | Sort the data in ascending or descending order. (provider: fmp); Sort order of the data. (provider: polygon) | False |
+| start_time | Text | Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio) | False |
+| end_time | Text | Return intervals stopping at the specified time on the `end_date` formatted as 'HH:MM:SS'. (provider: intrinio) | False |
+| timezone | Text | Timezone of the data, in the IANA format (Continent/City). (provider: intrinio) | False |
+| source | Text | The source of the data. (provider: intrinio) | False |
+| sleep | Number | Time to sleep between requests to avoid rate limiting. (provider: intrinio) | False |
+| adjusted | Boolean | Output time series is adjusted by historical split and dividend events. (provider: polygon) | False |
 
 ---
 
@@ -72,13 +74,8 @@ Equity Historical price. Load stock data for a specific ticker.
 | close | The close price.  |
 | volume | The trading volume.  |
 | vwap | Volume Weighted Average Price over the period.  |
-| adj_close | The adjusted close price. (provider: alpha_vantage);     Adjusted Close Price of the symbol. (provider: fmp);     Adjusted closing price during the period. (provider: intrinio);     Adjusted closing price during the period. (provider: tiingo) |
-| dividend_amount | Dividend amount paid for the corresponding date. (provider: alpha_vantage) |
-| split_coefficient | Split coefficient for the corresponding date. (provider: alpha_vantage) |
-| calls_volume | Number of calls traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe) |
-| puts_volume | Number of puts traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe) |
-| total_options_volume | Total number of options traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe) |
 | label | Human readable format of the date. (provider: fmp) |
+| adj_close | The adjusted close price. (provider: fmp);     Adjusted closing price during the period. (provider: intrinio);     Adjusted closing price during the period. (provider: tiingo) |
 | unadjusted_volume | Unadjusted volume of the symbol. (provider: fmp) |
 | change | Change in the price of the symbol from the previous day. (provider: fmp, intrinio) |
 | change_percent | Change % in the price of the symbol. (provider: fmp) |

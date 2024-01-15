@@ -48,7 +48,9 @@ Currency Search. Search available currency pairs.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.CURRENCY.SEARCH([provider];[symbol];[date];[search];[active];[order];[sort];[limit])</span>```
+```excel wordwrap
+=OBB.CURRENCY.SEARCH([provider];[symbol];[date];[search];[active];[order];[sort];[limit])
+```
 
 ### Example
 
@@ -60,16 +62,16 @@ Currency Search. Search available currency pairs.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp, intrinio, polygon, defaults to fmp. | True |
-| symbol | Text | Symbol of the pair to search. (provider: polygon) | True |
-| date | Text | A specific date to get data for. (provider: polygon) | True |
-| search | Text | Search for terms within the ticker and/or company name. (provider: polygon) | True |
-| active | Boolean | Specify if the tickers returned should be actively traded on the queried date. (provider: polygon) | True |
-| order | Text | Order data by ascending or descending. (provider: polygon) | True |
-| sort | Text | Sort field used for ordering. (provider: polygon) | True |
-| limit | Number | The number of data entries to return. (provider: polygon) | True |
+| provider | Text | Options: fmp, intrinio, polygon, defaults to fmp. | False |
+| symbol | Text | Symbol of the pair to search. (provider: polygon) | False |
+| date | Text | A specific date to get data for. (provider: polygon) | False |
+| search | Text | Search for terms within the ticker and/or company name. (provider: polygon) | False |
+| active | Boolean | Specify if the tickers returned should be actively traded on the queried date. (provider: polygon) | False |
+| order | Text | Order data by ascending or descending. (provider: polygon) | False |
+| sort | Text | Sort field used for ordering. (provider: polygon) | False |
+| limit | Number | The number of data entries to return. (provider: polygon) | False |
 
 ---
 

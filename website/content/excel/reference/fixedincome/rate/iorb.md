@@ -13,7 +13,9 @@ Interest on Reserve Balances.  Get Interest Rate on Reserve Balances data A bank
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.FIXEDINCOME.RATE.IORB([provider];[start_date];[end_date])</span>```
+```excel wordwrap
+=OBB.FIXEDINCOME.RATE.IORB([start_date];[end_date];[provider])
+```
 
 ### Example
 
@@ -25,11 +27,11 @@ Interest on Reserve Balances.  Get Interest Rate on Reserve Balances data A bank
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fred, defaults to fred. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| provider | Text | Options: fred, defaults to fred. | False |
 
 ---
 

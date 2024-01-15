@@ -13,7 +13,9 @@ Trailing 1yr dividend yield.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD([provider];[symbol])</span>```
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD([symbol];[provider])
+```
 
 ### Example
 
@@ -25,10 +27,10 @@ Trailing 1yr dividend yield.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: tiingo, defaults to tiingo. | True |
-| symbol | Text | Symbol to get data for. | True |
+| symbol | Text | Symbol to get data for. | False |
+| provider | Text | Options: tiingo, defaults to tiingo. | False |
 
 ---
 

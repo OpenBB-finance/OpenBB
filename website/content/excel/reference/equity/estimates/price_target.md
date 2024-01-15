@@ -27,7 +27,9 @@ Price Target. Price target data.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.ESTIMATES.PRICE_TARGET(symbol;[provider];[with_grade])</span>```
+```excel wordwrap
+=OBB.EQUITY.ESTIMATES.PRICE_TARGET(symbol;[provider];[with_grade])
+```
 
 ### Example
 
@@ -39,11 +41,11 @@ Price Target. Price target data.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, defaults to fmp. | True |
-| with_grade | Boolean | Include upgrades and downgrades in the response. (provider: fmp) | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| provider | Text | Options: fmp, defaults to fmp. | False |
+| with_grade | Boolean | Include upgrades and downgrades in the response. (provider: fmp) | False |
 
 ---
 

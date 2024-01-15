@@ -26,7 +26,9 @@ US Yield Curve. Get United States yield curve.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE([provider];[date];[inflation_adjusted])</span>```
+```excel wordwrap
+=OBB.FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE([date];[inflation_adjusted];[provider])
+```
 
 ### Example
 
@@ -38,11 +40,11 @@ US Yield Curve. Get United States yield curve.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fred, defaults to fred. | True |
-| date | Text | A specific date to get data for. Defaults to the most recent FRED entry. | True |
-| inflation_adjusted | Boolean | Get inflation adjusted rates. | True |
+| date | Text | A specific date to get data for. Defaults to the most recent FRED entry. | False |
+| inflation_adjusted | Boolean | Get inflation adjusted rates. | False |
+| provider | Text | Options: fred, defaults to fred. | False |
 
 ---
 

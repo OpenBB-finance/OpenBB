@@ -31,7 +31,9 @@ Spot Rates.  The spot rates for any maturity is the yield on a bond that provide
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.FIXEDINCOME.CORPORATE.SPOT_RATES([provider];[start_date];[end_date];[maturity];[category])</span>```
+```excel wordwrap
+=OBB.FIXEDINCOME.CORPORATE.SPOT_RATES([start_date];[end_date];[maturity];[category];[provider])
+```
 
 ### Example
 
@@ -43,13 +45,13 @@ Spot Rates.  The spot rates for any maturity is the yield on a bond that provide
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fred, defaults to fred. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
-| maturity | Any | The maturities in years. | True |
-| category | Any | The category. | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| maturity | Any | The maturities in years. | False |
+| category | Any | The category. | False |
+| provider | Text | Options: fred, defaults to fred. | False |
 
 ---
 

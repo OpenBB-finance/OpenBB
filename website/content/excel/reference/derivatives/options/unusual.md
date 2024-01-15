@@ -33,7 +33,9 @@ Get the complete options chain for a ticker.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.DERIVATIVES.OPTIONS.UNUSUAL([provider];[symbol];[source])</span>```
+```excel wordwrap
+=OBB.DERIVATIVES.OPTIONS.UNUSUAL([symbol];[provider];[source])
+```
 
 ### Example
 
@@ -45,11 +47,11 @@ Get the complete options chain for a ticker.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: intrinio, defaults to intrinio. | True |
-| symbol | Text | Symbol to get data for. (the underlying symbol) | True |
-| source | Text | The source of the data. Either realtime or delayed. (provider: intrinio) | True |
+| symbol | Text | Symbol to get data for. (the underlying symbol) | False |
+| provider | Text | Options: intrinio, defaults to intrinio. | False |
+| source | Text | The source of the data. Either realtime or delayed. (provider: intrinio) | False |
 
 ---
 

@@ -41,7 +41,9 @@ ICE BofA US Corporate Bond Indices.  The ICE BofA US Corporate Index tracks the 
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.FIXEDINCOME.CORPORATE.ICE_BOFA([provider];[start_date];[end_date];[index_type];[category];[area];[grade];[options])</span>```
+```excel wordwrap
+=OBB.FIXEDINCOME.CORPORATE.ICE_BOFA([start_date];[end_date];[index_type];[provider];[category];[area];[grade];[options])
+```
 
 ### Example
 
@@ -53,16 +55,16 @@ ICE BofA US Corporate Bond Indices.  The ICE BofA US Corporate Index tracks the 
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fred, defaults to fred. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
-| index_type | Text | The type of series. | True |
-| category | Text | The type of category. (provider: fred) | True |
-| area | Text | The type of area. (provider: fred) | True |
-| grade | Text | The type of grade. (provider: fred) | True |
-| options | Boolean | Whether to include options in the results. (provider: fred) | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| index_type | Text | The type of series. | False |
+| provider | Text | Options: fred, defaults to fred. | False |
+| category | Text | The type of category. (provider: fred) | False |
+| area | Text | The type of area. (provider: fred) | False |
+| grade | Text | The type of grade. (provider: fred) | False |
+| options | Boolean | Whether to include options in the results. (provider: fred) | False |
 
 ---
 
