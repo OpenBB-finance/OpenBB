@@ -1,6 +1,6 @@
 ---
 title: Basics
-sidebar_position: 1
+sidebar_position: 2
 description: This page provides an overview of the basics of the OpenBB add-in for Microsoft Excel. It covers the basic usage of the add-in and the available functions.
 keywords:
 - Microsoft Excel
@@ -10,9 +10,7 @@ keywords:
 - Functions
 ---
 
-> To access the following features you need to sign-in first with your OpenBB Pro account.
-
-The add-in provides direct access to the OpenBB platform, where each function implements the following pattern:
+The OpenBB Excel Add-in provides direct access to the OpenBB platform, where each function implements the following pattern:
 
 - `OBB.[MENU].[SUB_MENU].[COMMAND]`
 
