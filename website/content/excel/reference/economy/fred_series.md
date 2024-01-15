@@ -11,7 +11,7 @@ Get data by series ID from FRED.
 ### Example
 
 ```excel wordwrap
-=OBB.ECONOMY.FRED_SERIES()
+=OBB.ECONOMY.FRED_SERIES("GFDGDPA188S")
 ```
 
 ---

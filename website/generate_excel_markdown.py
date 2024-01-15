@@ -31,20 +31,97 @@ class CommandLib:
         "string": "Text",
     }
     EXAMPLE_PARAMS: Dict[str, Dict] = {
-        "crypto": {"symbol": '"BTCUSD"'},
-        "currency": {"symbol": '"EURUSD"'},
-        "derivatives": {"symbol": '"AAPL"'},
-        "economy": {"countries": '"united_states"'},
+        "crypto": {
+            "symbol": '"BTCUSD"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "query": '"coin"',
+        },
+        "currency": {
+            "symbol": '"EURUSD"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+        },
+        "derivatives": {
+            "symbol": '"AAPL"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+        },
+        "economy": {
+            "countries": '"united_states"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "units": '"growth_previous"',
+            "frequency": '"quarterly"',
+            "harmonized": "TRUE",
+            "query": '"gdp"',
+            "symbol": '"GFDGDPA188S"',
+            "limit": 5,
+            "period": '"quarter"',
+            "type": '"real"',
+            "adjusted": "TRUE",
+        },
         "equity": {
             "symbol": '"AAPL"',
-            "tag": '"EBITDA"',
-            "query": '"EBITDA"',
+            "tag": '"ebitda"',
+            "query": '"ebitda"',
             "year": 2022,
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "limit": 5,
+            "form_type": '"10-K"',
+            "period": '"annual"',
+            "frequency": '"quarterly"',
+            "type": '',
+            "sort": '"desc"',
+            "structure": '"flat"',
+            "date": '"2023-05-07"',
+            "page": 1,
+            "interval": '"1d"',
+            "is_symbol": "FALSE",
         },
-        "etf": {"symbol": '"SPY"'},
-        "index": {"symbol": '"^GSPC"'},
-        "news": {"symbols": '"AAPL,MSFT"'},
-        "regulators": {"symbol": '"AAPL"'},
+        "/equity/fundamental/reported_financials": {
+            "symbol": '"AAPL"',
+            "period": '"annual"',
+            "statement_type": '"balance"',
+            "limit": 5,
+        },
+        "etf": {
+            "symbol": '"SPY"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "query": '"global"',
+        },
+        "fixedincome": {
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "maturity": '"90d"',
+            "category": '"nonfinancial"',
+            "grade": '"aa"',
+            "date": '"2023-05-07"',
+            "yield_curve": '"spot"',
+            "index_type": '"yield"',
+            "inflation_adjusted": "TRUE",
+            "interest_rate_type": '"deposit"',
+        },
+        "index": {
+            "symbol": '"^GSPC"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "index": '"sp500"',
+        },
+        "news": {
+            "symbols": '"AAPL,MSFT"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "limit": 5,
+        },
+        "regulators": {
+            "symbol": '"AAPL"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "query": '"AAPL"',
+        },
     }
 
     def __init__(self):
@@ -132,15 +209,37 @@ class CommandLib:
             return data
         return {}
 
-    def _get_examples(self, signature_: str, parameters: dict) -> dict:
-        minimal_eg = signature_.split("(")[0] + "("
+    def _get_examples(self, cmd: str, signature_: str, parameters: dict) -> dict:
+        """Get the examples of the command."""
+        sig = signature_.split("(")[0] + "("
         category = signature_.split(".")[1].lower()
+
+        def get_p_value(cmd, p_name) -> str:
+            if cmd in self.EXAMPLE_PARAMS:
+                return self.EXAMPLE_PARAMS[cmd].get(p_name, "")
+            else:
+                return self.EXAMPLE_PARAMS.get(category, {}).get(p_name, "")
+
+        required_eg = sig
         for p_name, p_info in parameters.items():
             if p_info["required"]:
-                p_value = self.EXAMPLE_PARAMS.get(category, {}).get(p_name, "")
-                minimal_eg += f"{p_value};"
-        minimal_eg = minimal_eg.strip("; ") + ")"
-        return {"A. Minimal": minimal_eg}
+                p_value = get_p_value(cmd, p_name)
+                required_eg += f"{p_value};"
+        required_eg = required_eg.strip("; ") + ")"
+
+        standard_eg = sig
+        for p_name, p_info in parameters.items():
+            if p_name == "provider":
+                break
+            p_value = get_p_value(cmd, p_name)
+            standard_eg += f"{p_value};"
+        standard_eg = standard_eg.strip("; ") + ")"
+
+        if required_eg == standard_eg:
+            return {"A. Required": required_eg}
+        # Uncomment to add standard examples
+        # return {"A. Required": required_eg, "B. Standard": standard_eg}
+        return {"A. Required": required_eg}
 
     def get_info(self, cmd: str) -> Dict[str, Any]:
         """Get the info for a command."""
@@ -152,7 +251,7 @@ class CommandLib:
         signature_ = self._get_signature(cmd, parameters)
         data = self._get_data(cmd)
         return_ = self.xl_funcs[cmd].get("result", {}).get("dimensionality", "")
-        examples = self._get_examples(signature_, parameters)
+        examples = self._get_examples(cmd, signature_, parameters)
         return {
             "name": name,
             "description": description,

@@ -11,7 +11,7 @@ Search Intrinio data tags.
 ### Example
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES("EBITDA")
+=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES("ebitda")
 ```
 
 ---

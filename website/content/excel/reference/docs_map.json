@@ -114,7 +114,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.CRYPTO.PRICE.HISTORICAL(\"BTCUSD\")"
+      "A. Required": "=OBB.CRYPTO.PRICE.HISTORICAL(\"BTCUSD\")"
     }
   },
   "/crypto/search": {
@@ -152,7 +152,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.CRYPTO.SEARCH()"
+      "A. Required": "=OBB.CRYPTO.SEARCH()"
     }
   },
   "/currency/price/historical": {
@@ -257,7 +257,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.CURRENCY.PRICE.HISTORICAL(\"EURUSD\")"
+      "A. Required": "=OBB.CURRENCY.PRICE.HISTORICAL(\"EURUSD\")"
     }
   },
   "/currency/search": {
@@ -358,7 +358,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.CURRENCY.SEARCH()"
+      "A. Required": "=OBB.CURRENCY.SEARCH()"
     }
   },
   "/derivatives/options/chains": {
@@ -464,7 +464,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.DERIVATIVES.OPTIONS.CHAINS(\"AAPL\")"
+      "A. Required": "=OBB.DERIVATIVES.OPTIONS.CHAINS(\"AAPL\")"
     }
   },
   "/derivatives/options/unusual": {
@@ -525,7 +525,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.DERIVATIVES.OPTIONS.UNUSUAL()"
+      "A. Required": "=OBB.DERIVATIVES.OPTIONS.UNUSUAL()"
     }
   },
   "/economy/calendar": {
@@ -622,7 +622,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.ECONOMY.CALENDAR()"
+      "A. Required": "=OBB.ECONOMY.CALENDAR()"
     }
   },
   "/economy/cpi": {
@@ -673,7 +673,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.ECONOMY.CPI(\"united_states\")"
+      "A. Required": "=OBB.ECONOMY.CPI(\"united_states\")"
     }
   },
   "/economy/fred_search": {
@@ -790,7 +790,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.ECONOMY.FRED_SEARCH()"
+      "A. Required": "=OBB.ECONOMY.FRED_SEARCH()"
     }
   },
   "/economy/fred_series": {
@@ -859,7 +859,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.ECONOMY.FRED_SERIES()"
+      "A. Required": "=OBB.ECONOMY.FRED_SERIES(\"GFDGDPA188S\")"
     }
   },
   "/economy/gdp/forecast": {
@@ -908,7 +908,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.ECONOMY.GDP.FORECAST()"
+      "A. Required": "=OBB.ECONOMY.GDP.FORECAST()"
     }
   },
   "/economy/gdp/nominal": {
@@ -952,7 +952,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.ECONOMY.GDP.NOMINAL()"
+      "A. Required": "=OBB.ECONOMY.GDP.NOMINAL()"
     }
   },
   "/economy/gdp/real": {
@@ -996,7 +996,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.ECONOMY.GDP.REAL()"
+      "A. Required": "=OBB.ECONOMY.GDP.REAL()"
     }
   },
   "/economy/money_measures": {
@@ -1053,7 +1053,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.ECONOMY.MONEY_MEASURES()"
+      "A. Required": "=OBB.ECONOMY.MONEY_MEASURES()"
     }
   },
   "/economy/risk_premium": {
@@ -1083,7 +1083,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.ECONOMY.RISK_PREMIUM()"
+      "A. Required": "=OBB.ECONOMY.RISK_PREMIUM()"
     }
   },
   "/equity/calendar/dividend": {
@@ -1138,7 +1138,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.CALENDAR.DIVIDEND()"
+      "A. Required": "=OBB.EQUITY.CALENDAR.DIVIDEND()"
     }
   },
   "/equity/calendar/earnings": {
@@ -1199,7 +1199,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.CALENDAR.EARNINGS()"
+      "A. Required": "=OBB.EQUITY.CALENDAR.EARNINGS()"
     }
   },
   "/equity/calendar/ipo": {
@@ -1318,7 +1318,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.CALENDAR.IPO()"
+      "A. Required": "=OBB.EQUITY.CALENDAR.IPO()"
     }
   },
   "/equity/calendar/splits": {
@@ -1361,7 +1361,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.CALENDAR.SPLITS()"
+      "A. Required": "=OBB.EQUITY.CALENDAR.SPLITS()"
     }
   },
   "/equity/compare/peers": {
@@ -1387,7 +1387,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.COMPARE.PEERS(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.COMPARE.PEERS(\"AAPL\")"
     }
   },
   "/equity/discovery/filings": {
@@ -1448,7 +1448,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.DISCOVERY.FILINGS()"
+      "A. Required": "=OBB.EQUITY.DISCOVERY.FILINGS()"
     }
   },
   "/equity/estimates/consensus": {
@@ -1486,7 +1486,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.ESTIMATES.CONSENSUS(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.ESTIMATES.CONSENSUS(\"AAPL\")"
     }
   },
   "/equity/estimates/historical": {
@@ -1585,7 +1585,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.ESTIMATES.HISTORICAL(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.ESTIMATES.HISTORICAL(\"AAPL\")"
     }
   },
   "/equity/estimates/price_target": {
@@ -1655,7 +1655,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.ESTIMATES.PRICE_TARGET(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.ESTIMATES.PRICE_TARGET(\"AAPL\")"
     }
   },
   "/equity/fundamental/balance": {
@@ -2142,7 +2142,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.BALANCE(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.BALANCE(\"AAPL\")"
     }
   },
   "/equity/fundamental/balance_growth": {
@@ -2296,7 +2296,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.BALANCE_GROWTH(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.BALANCE_GROWTH(\"AAPL\")"
     }
   },
   "/equity/fundamental/cash": {
@@ -2642,7 +2642,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.CASH(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.CASH(\"AAPL\")"
     }
   },
   "/equity/fundamental/cash_growth": {
@@ -2769,7 +2769,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.CASH_GROWTH(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.CASH_GROWTH(\"AAPL\")"
     }
   },
   "/equity/fundamental/dividends": {
@@ -2827,7 +2827,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.DIVIDENDS(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.DIVIDENDS(\"AAPL\")"
     }
   },
   "/equity/fundamental/employee_count": {
@@ -2877,7 +2877,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT(\"AAPL\")"
     }
   },
   "/equity/fundamental/filings": {
@@ -3013,7 +3013,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.FILINGS()"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.FILINGS()"
     }
   },
   "/equity/fundamental/historical_attributes": {
@@ -3077,7 +3077,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES(\"AAPL\";\"EBITDA\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES(\"AAPL\";\"ebitda\")"
     }
   },
   "/equity/fundamental/historical_eps": {
@@ -3135,7 +3135,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS(\"AAPL\")"
     }
   },
   "/equity/fundamental/historical_splits": {
@@ -3170,7 +3170,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS(\"AAPL\")"
     }
   },
   "/equity/fundamental/income": {
@@ -3642,7 +3642,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.INCOME(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.INCOME(\"AAPL\")"
     }
   },
   "/equity/fundamental/income_growth": {
@@ -3762,7 +3762,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.INCOME_GROWTH(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.INCOME_GROWTH(\"AAPL\")"
     }
   },
   "/equity/fundamental/latest_attributes": {
@@ -3793,7 +3793,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES(\"AAPL\";\"EBITDA\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES(\"AAPL\";\"ebitda\")"
     }
   },
   "/equity/fundamental/management": {
@@ -3837,7 +3837,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT(\"AAPL\")"
     }
   },
   "/equity/fundamental/management_compensation": {
@@ -3899,7 +3899,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION(\"AAPL\")"
     }
   },
   "/equity/fundamental/metrics": {
@@ -4132,7 +4132,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.METRICS(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.METRICS(\"AAPL\")"
     }
   },
   "/equity/fundamental/multiples": {
@@ -4338,7 +4338,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.MULTIPLES(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.MULTIPLES(\"AAPL\")"
     }
   },
   "/equity/fundamental/overview": {
@@ -4469,7 +4469,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.OVERVIEW(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.OVERVIEW(\"AAPL\")"
     }
   },
   "/equity/fundamental/ratios": {
@@ -4689,7 +4689,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.RATIOS(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.RATIOS(\"AAPL\")"
     }
   },
   "/equity/fundamental/reported_financials": {
@@ -4741,7 +4741,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS(\"AAPL\")"
     }
   },
   "/equity/fundamental/revenue_per_geography": {
@@ -4795,7 +4795,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY(\"AAPL\")"
     }
   },
   "/equity/fundamental/revenue_per_segment": {
@@ -4834,7 +4834,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT(\"AAPL\")"
     }
   },
   "/equity/fundamental/search_attributes": {
@@ -4895,7 +4895,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES(\"EBITDA\")"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES(\"ebitda\")"
     }
   },
   "/equity/fundamental/trailing_dividend_yield": {
@@ -4924,7 +4924,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD()"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD()"
     }
   },
   "/equity/fundamental/transcript": {
@@ -4967,7 +4967,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT(\"AAPL\";2022)"
+      "A. Required": "=OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT(\"AAPL\";2022)"
     }
   },
   "/equity/market_snapshots": {
@@ -5110,7 +5110,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.MARKET_SNAPSHOTS()"
+      "A. Required": "=OBB.EQUITY.MARKET_SNAPSHOTS()"
     }
   },
   "/equity/ownership/insider_trading": {
@@ -5250,7 +5250,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.OWNERSHIP.INSIDER_TRADING(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.OWNERSHIP.INSIDER_TRADING(\"AAPL\")"
     }
   },
   "/equity/ownership/institutional": {
@@ -5423,7 +5423,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.OWNERSHIP.INSTITUTIONAL(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.OWNERSHIP.INSTITUTIONAL(\"AAPL\")"
     }
   },
   "/equity/ownership/major_holders": {
@@ -5573,7 +5573,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.OWNERSHIP.MAJOR_HOLDERS(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.OWNERSHIP.MAJOR_HOLDERS(\"AAPL\")"
     }
   },
   "/equity/ownership/share_statistics": {
@@ -5620,7 +5620,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.OWNERSHIP.SHARE_STATISTICS(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.OWNERSHIP.SHARE_STATISTICS(\"AAPL\")"
     }
   },
   "/equity/price/historical": {
@@ -5782,7 +5782,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.PRICE.HISTORICAL(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.PRICE.HISTORICAL(\"AAPL\")"
     }
   },
   "/equity/price/nbbo": {
@@ -5874,7 +5874,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.PRICE.NBBO(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.PRICE.NBBO(\"AAPL\")"
     }
   },
   "/equity/price/performance": {
@@ -5942,7 +5942,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.PRICE.PERFORMANCE(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.PRICE.PERFORMANCE(\"AAPL\")"
     }
   },
   "/equity/price/quote": {
@@ -6102,7 +6102,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.PRICE.QUOTE(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.PRICE.QUOTE(\"AAPL\")"
     }
   },
   "/equity/profile": {
@@ -6239,7 +6239,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.PROFILE(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.PROFILE(\"AAPL\")"
     }
   },
   "/equity/screener": {
@@ -6384,7 +6384,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.SCREENER()"
+      "A. Required": "=OBB.EQUITY.SCREENER()"
     }
   },
   "/equity/search": {
@@ -6447,7 +6447,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.SEARCH()"
+      "A. Required": "=OBB.EQUITY.SEARCH()"
     }
   },
   "/equity/shorts/fails_to_deliver": {
@@ -6498,7 +6498,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.EQUITY.SHORTS.FAILS_TO_DELIVER(\"AAPL\")"
+      "A. Required": "=OBB.EQUITY.SHORTS.FAILS_TO_DELIVER(\"AAPL\")"
     }
   },
   "/etf/countries": {
@@ -6524,7 +6524,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.ETF.COUNTRIES(\"SPY\")"
+      "A. Required": "=OBB.ETF.COUNTRIES(\"SPY\")"
     }
   },
   "/etf/holdings": {
@@ -6796,7 +6796,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.ETF.HOLDINGS(\"SPY\")"
+      "A. Required": "=OBB.ETF.HOLDINGS(\"SPY\")"
     }
   },
   "/etf/holdings_date": {
@@ -6827,7 +6827,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.ETF.HOLDINGS_DATE(\"SPY\")"
+      "A. Required": "=OBB.ETF.HOLDINGS_DATE(\"SPY\")"
     }
   },
   "/etf/holdings_performance": {
@@ -6895,7 +6895,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.ETF.HOLDINGS_PERFORMANCE(\"SPY\")"
+      "A. Required": "=OBB.ETF.HOLDINGS_PERFORMANCE(\"SPY\")"
     }
   },
   "/etf/info": {
@@ -6966,7 +6966,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.ETF.INFO(\"SPY\")"
+      "A. Required": "=OBB.ETF.INFO(\"SPY\")"
     }
   },
   "/etf/price_performance": {
@@ -7034,7 +7034,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.ETF.PRICE_PERFORMANCE(\"SPY\")"
+      "A. Required": "=OBB.ETF.PRICE_PERFORMANCE(\"SPY\")"
     }
   },
   "/etf/search": {
@@ -7106,7 +7106,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.ETF.SEARCH()"
+      "A. Required": "=OBB.ETF.SEARCH()"
     }
   },
   "/etf/sectors": {
@@ -7135,7 +7135,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.ETF.SECTORS(\"SPY\")"
+      "A. Required": "=OBB.ETF.SECTORS(\"SPY\")"
     }
   },
   "/fixedincome/corporate/commercial_paper": {
@@ -7184,7 +7184,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER()"
+      "A. Required": "=OBB.FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER()"
     }
   },
   "/fixedincome/corporate/hqm": {
@@ -7227,7 +7227,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.CORPORATE.HQM()"
+      "A. Required": "=OBB.FIXEDINCOME.CORPORATE.HQM()"
     }
   },
   "/fixedincome/corporate/ice_bofa": {
@@ -7286,7 +7286,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.CORPORATE.ICE_BOFA()"
+      "A. Required": "=OBB.FIXEDINCOME.CORPORATE.ICE_BOFA()"
     }
   },
   "/fixedincome/corporate/moody": {
@@ -7330,7 +7330,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.CORPORATE.MOODY()"
+      "A. Required": "=OBB.FIXEDINCOME.CORPORATE.MOODY()"
     }
   },
   "/fixedincome/corporate/spot_rates": {
@@ -7374,7 +7374,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.CORPORATE.SPOT_RATES()"
+      "A. Required": "=OBB.FIXEDINCOME.CORPORATE.SPOT_RATES()"
     }
   },
   "/fixedincome/government/treasury_rates": {
@@ -7441,7 +7441,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.GOVERNMENT.TREASURY_RATES()"
+      "A. Required": "=OBB.FIXEDINCOME.GOVERNMENT.TREASURY_RATES()"
     }
   },
   "/fixedincome/government/us_yield_curve": {
@@ -7475,7 +7475,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE()"
+      "A. Required": "=OBB.FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE()"
     }
   },
   "/fixedincome/rate/ameribor": {
@@ -7514,7 +7514,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.RATE.AMERIBOR()"
+      "A. Required": "=OBB.FIXEDINCOME.RATE.AMERIBOR()"
     }
   },
   "/fixedincome/rate/dpcredit": {
@@ -7553,7 +7553,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.RATE.DPCREDIT()"
+      "A. Required": "=OBB.FIXEDINCOME.RATE.DPCREDIT()"
     }
   },
   "/fixedincome/rate/ecb": {
@@ -7592,7 +7592,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.RATE.ECB()"
+      "A. Required": "=OBB.FIXEDINCOME.RATE.ECB()"
     }
   },
   "/fixedincome/rate/effr": {
@@ -7631,7 +7631,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.RATE.EFFR()"
+      "A. Required": "=OBB.FIXEDINCOME.RATE.EFFR()"
     }
   },
   "/fixedincome/rate/effr_forecast": {
@@ -7678,7 +7678,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.RATE.EFFR_FORECAST()"
+      "A. Required": "=OBB.FIXEDINCOME.RATE.EFFR_FORECAST()"
     }
   },
   "/fixedincome/rate/estr": {
@@ -7717,7 +7717,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.RATE.ESTR()"
+      "A. Required": "=OBB.FIXEDINCOME.RATE.ESTR()"
     }
   },
   "/fixedincome/rate/iorb": {
@@ -7751,7 +7751,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.RATE.IORB()"
+      "A. Required": "=OBB.FIXEDINCOME.RATE.IORB()"
     }
   },
   "/fixedincome/rate/sonia": {
@@ -7790,7 +7790,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.RATE.SONIA()"
+      "A. Required": "=OBB.FIXEDINCOME.RATE.SONIA()"
     }
   },
   "/fixedincome/sofr": {
@@ -7829,7 +7829,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.SOFR()"
+      "A. Required": "=OBB.FIXEDINCOME.SOFR()"
     }
   },
   "/fixedincome/spreads/tmc": {
@@ -7868,7 +7868,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.SPREADS.TMC()"
+      "A. Required": "=OBB.FIXEDINCOME.SPREADS.TMC()"
     }
   },
   "/fixedincome/spreads/tmc_effr": {
@@ -7907,7 +7907,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.SPREADS.TMC_EFFR()"
+      "A. Required": "=OBB.FIXEDINCOME.SPREADS.TMC_EFFR()"
     }
   },
   "/fixedincome/spreads/treasury_effr": {
@@ -7946,7 +7946,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.FIXEDINCOME.SPREADS.TREASURY_EFFR()"
+      "A. Required": "=OBB.FIXEDINCOME.SPREADS.TREASURY_EFFR()"
     }
   },
   "/index/available": {
@@ -7976,7 +7976,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.INDEX.AVAILABLE()"
+      "A. Required": "=OBB.INDEX.AVAILABLE()"
     }
   },
   "/index/constituents": {
@@ -8023,7 +8023,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.INDEX.CONSTITUENTS()"
+      "A. Required": "=OBB.INDEX.CONSTITUENTS()"
     }
   },
   "/index/market": {
@@ -8145,7 +8145,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.INDEX.MARKET(\"^GSPC\")"
+      "A. Required": "=OBB.INDEX.MARKET(\"^GSPC\")"
     }
   },
   "/news/company": {
@@ -8321,7 +8321,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.NEWS.COMPANY(\"AAPL,MSFT\")"
+      "A. Required": "=OBB.NEWS.COMPANY(\"AAPL,MSFT\")"
     }
   },
   "/news/world": {
@@ -8470,7 +8470,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.NEWS.WORLD()"
+      "A. Required": "=OBB.NEWS.WORLD()"
     }
   },
   "/regulators/sec/cik_map": {
@@ -8496,7 +8496,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.REGULATORS.SEC.CIK_MAP(\"AAPL\")"
+      "A. Required": "=OBB.REGULATORS.SEC.CIK_MAP(\"AAPL\")"
     }
   },
   "/regulators/sec/institutions_search": {
@@ -8530,7 +8530,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.REGULATORS.SEC.INSTITUTIONS_SEARCH()"
+      "A. Required": "=OBB.REGULATORS.SEC.INSTITUTIONS_SEARCH()"
     }
   },
   "/regulators/sec/rss_litigation": {
@@ -8563,7 +8563,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.REGULATORS.SEC.RSS_LITIGATION()"
+      "A. Required": "=OBB.REGULATORS.SEC.RSS_LITIGATION()"
     }
   },
   "/regulators/sec/schema_files": {
@@ -8594,7 +8594,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.REGULATORS.SEC.SCHEMA_FILES()"
+      "A. Required": "=OBB.REGULATORS.SEC.SCHEMA_FILES()"
     }
   },
   "/regulators/sec/sic_search": {
@@ -8631,7 +8631,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.REGULATORS.SEC.SIC_SEARCH()"
+      "A. Required": "=OBB.REGULATORS.SEC.SIC_SEARCH()"
     }
   },
   "/regulators/sec/symbol_map": {
@@ -8657,7 +8657,7 @@
     },
     "return": "matrix",
     "examples": {
-      "A. Minimal": "=OBB.REGULATORS.SEC.SYMBOL_MAP()"
+      "A. Required": "=OBB.REGULATORS.SEC.SYMBOL_MAP()"
     }
   }
 }

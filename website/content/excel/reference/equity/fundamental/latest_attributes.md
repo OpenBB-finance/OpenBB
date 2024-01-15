@@ -11,7 +11,7 @@ Fetch the latest value of a data tag from Intrinio.
 ### Example
 
 ```excel wordwrap
-=OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES("AAPL";"EBITDA")
+=OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES("AAPL";"ebitda")
 ```
 
 ---
