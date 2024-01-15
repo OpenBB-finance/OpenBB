@@ -83,7 +83,7 @@ Before moving forward, please take a look at the high-level view of the OpenBB P
 
 The Standardization Framework is a set of tools and guidelines that enable the user to query and obtain data in a consistent way across multiple providers.
 
-Each data model should inherit from a [standard data](platform/core/provider/standard_models) model that is already defined inside the OpenBB Platform. All standard models are created and maintained by the OpenBB team.
+Each data model should inherit from a [standard data](/platform/data_models) model that is already defined inside the OpenBB Platform. All standard models are created and maintained by the OpenBB team.
 
 Usage of these models will unlock a set of perks that are only available to standardized data, namely:
 
@@ -95,7 +95,7 @@ Usage of these models will unlock a set of perks that are only available to stan
 
 The standard models are defined under the `/OpenBBTerminal/openbb_platform/platform/core/provider/standard_models/` directory.
 
-Each standard model defines a [`QueryParams`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/platform/provider/openbb_provider/abstract/query_params.py) and [`Data`](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/platform/provider/openbb_provider/abstract/data.py) model, which are used to query and output data. Under the hood, these are just pydantic models, meaning you can leverage all the built-in pydantic features such as validators.
+Each standard model defines a [`QueryParams`](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform/core/openbb_core/provider/abstract/query_params.py) and [`Data`](https://github.com/OpenBB-finance/OpenBBTerminal/tree/develop/openbb_platform/core/openbb_core/provider/abstract/data.py) model, which are used to query and output data. Under the hood, these are just pydantic models, meaning you can leverage all the built-in pydantic features such as validators.
 
 #### Standardization Caveats
 

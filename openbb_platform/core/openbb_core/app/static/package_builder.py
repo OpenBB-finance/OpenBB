@@ -478,6 +478,16 @@ class MethodDefinition:
         return "POST" in methods
 
     @staticmethod
+    def is_deprecated_function(path: str) -> bool:
+        """Check if the function is deprecated."""
+        return getattr(PathHandler.build_route_map()[path], "deprecated", False)
+
+    @staticmethod
+    def get_deprecation_message(path: str) -> str:
+        """Get the deprecation message."""
+        return getattr(PathHandler.build_route_map()[path], "summary", "")
+
+    @staticmethod
     def reorder_params(params: Dict[str, Parameter]) -> "OrderedDict[str, Parameter]":
         """Reorder the params."""
         formatted_keys = list(params.keys())
@@ -668,6 +678,7 @@ class MethodDefinition:
         sig = signature(func)
         parameter_map = dict(sig.parameters)
         parameter_map.pop("cc", None)
+        code = ""
 
         if (
             path.replace("/", "_")[1:]
@@ -680,7 +691,12 @@ class MethodDefinition:
                 default=False,
             )
 
-        code = "        return self._run(\n"
+        if MethodDefinition.is_deprecated_function(path):
+            deprecation_message = MethodDefinition.get_deprecation_message(path)
+            code += "        from warnings import warn, simplefilter; simplefilter('always', DeprecationWarning)\n"
+            code += f"""        warn("{deprecation_message}", category=DeprecationWarning, stacklevel=2)\n\n"""
+
+        code += "        return self._run(\n"
         code += f"""            "{path}",\n"""
         code += "            **filter_inputs(\n"
         for name, param in parameter_map.items():
