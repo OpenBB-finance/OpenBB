@@ -1,5 +1,5 @@
 import inspect
-from typing import Dict, Type, Optional
+from typing import Dict, Type
 
 from argparse_translator.argparse_translator import ArgparseTranslator
 
@@ -12,7 +12,7 @@ class ArgparseClassProcessor:
     def __init__(
         self,
         target_class: Type,
-        add_help: Optional[bool] = False,
+        add_help: bool = False,
     ):
         """
         Initialize the ArgparseClassProcessor.
@@ -28,19 +28,39 @@ class ArgparseClassProcessor:
         self._add_help: bool = add_help
         self._translators: Dict[str, ArgparseTranslator] = {}
 
-        self._process_methods()
+        self._translators = self._process_class(
+            target=self._target_class, add_help=self._add_help
+        )
 
-    def _process_methods(self):
-        """
-        Process the methods of the target class to create ArgparseTranslators.
-        """
-        for name, method in inspect.getmembers(self._target_class, inspect.ismethod):
+    @staticmethod
+    def _process_class(
+        target: type,
+        add_help: bool = False,
+    ) -> Dict[str, ArgparseTranslator]:
+        methods = {}
+
+        for name, member in inspect.getmembers(target):
             if name.startswith("__") or name.startswith("_"):
                 continue
+            if inspect.ismethod(member):
+                class_name = (
+                    str(type(target))
+                    .rsplit(".", maxsplit=1)[-1]
+                    .replace("'>", "")
+                    .replace("ROUTER_", "")
+                )
+                methods[f"{class_name}_{name}"] = ArgparseTranslator(
+                    func=member, add_help=add_help
+                )
+            else:
+                methods = {
+                    **methods,
+                    **ArgparseClassProcessor._process_class(
+                        target=getattr(target, name), add_help=add_help
+                    ),
+                }
 
-            self._translators[name] = ArgparseTranslator(
-                func=method, add_help=self._add_help
-            )
+        return methods
 
     def get_translator(self, command: str) -> ArgparseTranslator:
         """
