@@ -32,6 +32,18 @@ class ArgparseClassProcessor:
             target=self._target_class, add_help=self._add_help
         )
 
+    @property
+    def translators(self) -> Dict[str, ArgparseTranslator]:
+        """
+        Get the ArgparseTranslators associated with the target class.
+
+        Returns
+        -------
+        Dict[str, ArgparseTranslator]
+            The ArgparseTranslators associated with the target class.
+        """
+        return self._translators
+
     @staticmethod
     def _process_class(
         target: type,
