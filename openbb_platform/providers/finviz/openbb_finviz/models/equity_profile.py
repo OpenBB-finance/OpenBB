@@ -56,7 +56,7 @@ class FinvizEquityProfileData(EquityInfoData):
     institutional_ownership: Optional[float] = Field(
         default=None,
         description="The institutional ownership of the stock, as a normalized percent.",
-        json_schema_extra={"units_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     market_cap: Optional[str] = Field(
         default=None,
@@ -65,7 +65,7 @@ class FinvizEquityProfileData(EquityInfoData):
     dividend_yield: Optional[float] = Field(
         default=None,
         description="The dividend yield of the stock, as a normalized percent.",
-        json_schema_extra={"units_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     earnings_date: Optional[str] = Field(
         default=None,
