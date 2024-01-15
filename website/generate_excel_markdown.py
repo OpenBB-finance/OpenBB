@@ -107,12 +107,6 @@ class CommandLib:
         sig = sig.strip("; ") + ")"
         return sig
 
-    def get_xl_param(self, cmd, param):
-        for p in self.xl_funcs[cmd]["parameters"]:
-            if p["name"] == param:
-                return p
-        return None
-
     def _get_parameters(self, cmd: str) -> dict:
         """Get the parameters of the command."""
         parameters = {}
