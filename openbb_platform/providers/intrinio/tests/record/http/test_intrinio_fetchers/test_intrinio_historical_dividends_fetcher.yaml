@@ -3,17 +3,17 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://api-v2.intrinio.com/securities/AAPL/prices/adjustments?api_key=MOCK_API_KEY&end_date=2023-06-06&limit=100&start_date=2023-01-01
+    uri: https://api-v2.intrinio.com/securities/AAPL/prices/adjustments?api_key=MOCK_API_KEY&end_date=2023-06-06&page_size=100&start_date=2023-01-01
   response:
     body:
       string: !!binary |
-        H4sIABJIZmUAA5RRW2vCMBT+KyPPKklr7OVN2ZDB5i7icIwRQhpjtE1Lkg6r+N934gbDvu3xfNdz
+        H4sIAM+MoWUAA5RRW2vCMBT+KyPPKklr7OVN2ZDB5i7icIwRQhpjtE1Lkg6r+N934gbDvu3xfNdz
         khNyvhZ71lgtJOPFrnW+ksY7lH+cUMG9RDmKcBQPMR2SCA3QhgtfW5TjUZalE5ImmOKYZgkZoEJ/
         6UKaIpDR+G9morVWGtFB1mp5CyGuKbVnlntdo5yM8HnQK4uGBPfLxgmlOE3IhJC4Vxb/q+wTMAky
         7UF0QhoyAsC42lm1A4eoq4abjl0YGNhiPZkfn0LW5bXkQWy5UfJH4A6K1cdHm3UgMLwKV0ybppQ3
@@ -27,7 +27,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 28 Nov 2023 20:05:38 GMT
+      - Fri, 12 Jan 2024 19:02:39 GMT
       Transfer-Encoding:
       - chunked
       Vary:

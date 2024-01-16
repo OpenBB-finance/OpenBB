@@ -2,6 +2,7 @@
 
 
 from datetime import date as dateType
+from typing import Optional
 
 from pydantic import Field
 
@@ -17,6 +18,11 @@ class TrailingDivYieldQueryParams(QueryParams):
     """Trailing Dividend Yield Query."""
 
     symbol: str = Field(default=None, description=QUERY_DESCRIPTIONS.get("symbol", ""))
+    limit: Optional[int] = Field(
+        default=252,
+        description=f"{QUERY_DESCRIPTIONS.get('limit', '')}"
+        " Default is 252, the number of trading days in a year.",
+    )
 
 
 class TrailingDivYieldData(Data):

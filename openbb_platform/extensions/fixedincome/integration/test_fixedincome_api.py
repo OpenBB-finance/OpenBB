@@ -515,7 +515,7 @@ def test_fixedincome_government_treasury_auctions(params, headers):
         ),
         (
             {
-                "date": None,
+                "date": "2023-11-16",
                 "cusip": None,
                 "security_type": "bill",
                 "provider": "government_us",

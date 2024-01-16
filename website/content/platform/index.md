@@ -16,6 +16,10 @@ keywords:
 
 <!-- markdownlint-disable MD012 MD031 MD033 -->
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="OpenBB Platform Docs" />
+
 The OpenBB Platform has been created and is currently maintained by the OpenBB team together with the contributions from hundreds of community members. This gives us an unrivaled speed of development and the ability to maintain stable integrations with numerous third-party data providers.
 
 Developing and maintaining a full-blown investment research infrastructure from the ground up takes a lot of time and effort. However, it does not have to be this way. By taking advantage of OpenBB Platform with its out-of-the-box data connectors and library of extensions, you can focus on designing and building your financial reports and applications.
