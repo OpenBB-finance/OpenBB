@@ -4,9 +4,9 @@ from datetime import datetime, timedelta
 
 import numpy as np
 import pandas as pd
-from charting.core.config.openbb_styles import PLT_FIB_COLORWAY
-from charting.core.openbb_figure import OpenBBFigure
-from charting.core.plotly_ta.base import PltTA, indicator
+from openbb_charting.core.config.openbb_styles import PLT_FIB_COLORWAY
+from openbb_charting.core.openbb_figure import OpenBBFigure
+from openbb_charting.core.plotly_ta.base import PltTA, indicator
 
 
 class Custom(PltTA):

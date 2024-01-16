@@ -9,8 +9,8 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type, Union
 
 import pandas as pd
 
-from charting.core.chart_style import ChartStyle
-from charting.core.openbb_figure import OpenBBFigure
+from openbb_charting.core.chart_style import ChartStyle
+from openbb_charting.core.openbb_figure import OpenBBFigure
 
 from .base import PltTA
 from .data_classes import ChartIndicators

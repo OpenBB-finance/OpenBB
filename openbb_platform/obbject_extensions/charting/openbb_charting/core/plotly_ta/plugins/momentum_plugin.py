@@ -4,12 +4,12 @@ import warnings
 import numpy as np
 import pandas as pd
 import pandas_ta as ta
-from charting.core.openbb_figure import OpenBBFigure
-from charting.core.plotly_ta.base import (
+from openbb_charting.core.openbb_figure import OpenBBFigure
+from openbb_charting.core.plotly_ta.base import (
     PltTA,
     indicator,
 )
-from charting.core.plotly_ta.data_classes import (
+from openbb_charting.core.plotly_ta.data_classes import (
     columns_regex,
 )
 

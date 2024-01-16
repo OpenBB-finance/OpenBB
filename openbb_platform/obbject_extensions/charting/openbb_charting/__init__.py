@@ -4,8 +4,8 @@ from typing import Any, Callable, Dict, Optional, Tuple, Union
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.extension import Extension
 
-from charting import charting_router
-from charting.core.to_chart import ChartIndicators, OpenBBFigure, to_chart
+from openbb_charting import charting_router
+from openbb_charting.core.to_chart import ChartIndicators, OpenBBFigure, to_chart
 
 ext = Extension(name="charting")
 
@@ -27,9 +27,13 @@ class Charting:
         )
         self._handle_backend()
 
+    @property
+    def indicators(self):
+        return ChartIndicators.get_available_indicators()
+
     def _handle_backend(self):
         # pylint: disable=import-outside-toplevel
-        from charting.core.backend import create_backend, get_backend
+        from openbb_charting.core.backend import create_backend, get_backend
 
         create_backend(self._charting_settings)
         get_backend().start(debug=self._charting_settings.debug_mode)
@@ -80,7 +84,7 @@ class Charting:
         Parameters
         ----------
         data : Union[pd.DataFrame, pd.Series]
-            Data to be plotted.
+            Data to be plotted Data to be plotted (OHLCV data).
         indicators : Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]], optional
             Indicators to be plotted, by default None
         symbol : str, optional
@@ -118,7 +122,6 @@ class Charting:
         2) Get all the available indicators
         > from openbb_charting.core.plotly_ta.data_classes import ChartIndicators
         > ChartIndicators.get_available_indicators()
-
         """
         data = self._obbject.to_dataframe()
         fig, content = to_chart(

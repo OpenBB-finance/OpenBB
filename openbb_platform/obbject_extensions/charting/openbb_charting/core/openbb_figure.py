@@ -24,9 +24,9 @@ import plotly.graph_objects as go
 import plotly.io as pio
 from plotly.subplots import make_subplots
 
-from charting.core.backend import PLOTLYJS_PATH, create_backend, get_backend
-from charting.core.chart_style import ChartStyle
-from charting.core.config.openbb_styles import (
+from openbb_charting.core.backend import PLOTLYJS_PATH, create_backend, get_backend
+from openbb_charting.core.chart_style import ChartStyle
+from openbb_charting.core.config.openbb_styles import (
     PLT_TBL_ROW_COLORS,
 )
 

@@ -3,9 +3,9 @@ from typing import Any, Dict, Optional, Tuple, Union
 
 import pandas as pd
 
-from charting.core.openbb_figure import OpenBBFigure
-from charting.core.plotly_ta.data_classes import ChartIndicators
-from charting.core.plotly_ta.ta_class import PlotlyTA
+from openbb_charting.core.openbb_figure import OpenBBFigure
+from openbb_charting.core.plotly_ta.data_classes import ChartIndicators
+from openbb_charting.core.plotly_ta.ta_class import PlotlyTA
 
 
 def to_chart(

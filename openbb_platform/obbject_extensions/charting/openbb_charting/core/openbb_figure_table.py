@@ -2,7 +2,7 @@ from typing import List, Optional, Union
 
 import pandas as pd
 
-from charting.core.openbb_figure import OpenBBFigure
+from openbb_charting.core.openbb_figure import OpenBBFigure
 
 
 class OpenBBFigureTable(OpenBBFigure):
