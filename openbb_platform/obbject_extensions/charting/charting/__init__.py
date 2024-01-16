@@ -96,8 +96,29 @@ class Charting:
 
         Returns
         -------
-        Tuple[OpenBBFigure, Dict[str, Any]]
-            Tuple containing the OpenBBFigure and the plotly json representation of the chart.
+        OpenBBFigure - note that although it only returns the figure, the chart is also saved
+        to the OBBject.
+
+        Examples
+        --------
+        1) Plotting a time series with TA indicators
+        > from openbb import obb
+        > res = obb.equity.price.historical("AAPL")
+        > indicators = dict(
+        >    sma=dict(length=[20,30,50]),
+        >    adx=dict(length=14),
+        >    rsi=dict(length=14),
+        >    macd=dict(fast=12, slow=26, signal=9),
+        >    bbands=dict(length=20, std=2),
+        >    stoch=dict(length=14),
+        >    ema=dict(length=[20,30,50]),
+        > )
+        > res.to_chart(**{"indicators": indicators})
+
+        2) Get all the available indicators
+        > from openbb_charting.core.plotly_ta.data_classes import ChartIndicators
+        > ChartIndicators.get_available_indicators()
+
         """
         data = self._obbject.to_dataframe()
         fig, content = to_chart(
