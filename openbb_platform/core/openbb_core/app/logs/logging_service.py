@@ -180,6 +180,7 @@ class LoggingService(metaclass=SingletonMeta):
         exec_info: Optional[
             Tuple[Type[BaseException], BaseException, Optional[TracebackType]]
         ] = None,
+        custom_headers: Optional[Dict[str, Any]] = None,
     ):
         """
         Log command output and relevant information.
@@ -230,6 +231,7 @@ class LoggingService(metaclass=SingletonMeta):
                     "route": route,
                     "input": kwargs,
                     "error": str(openbb_error.original) if openbb_error else None,
+                    "custom_headers": str(custom_headers),
                 },
                 default=to_jsonable_python,
             )

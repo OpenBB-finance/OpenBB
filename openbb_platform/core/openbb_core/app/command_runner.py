@@ -305,6 +305,11 @@ class StaticCommandRunner:
         # If we're on the api we need to remove "chart" here because the parameter is added on
         # commands.py and the function signature does not expect "chart"
         kwargs.pop("chart", None)
+        # We also pop custom headers
+        custom_headers = {
+            h: kwargs.pop(h.replace("-", "_"), None)
+            for h in SystemService().system_settings.api_settings.custom_headers or {}
+        }
 
         try:
             obbject = await cls._command(
@@ -334,6 +339,7 @@ class StaticCommandRunner:
                 func=func,
                 kwargs=kwargs,
                 exec_info=exc_info(),
+                custom_headers=custom_headers,
             )
 
         return obbject
