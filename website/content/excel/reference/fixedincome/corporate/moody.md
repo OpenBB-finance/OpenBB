@@ -13,7 +13,9 @@ Moody Corporate Bond Index.  Moody's Aaa and Baa are investment bonds that acts 
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.FIXEDINCOME.CORPORATE.MOODY([provider];[start_date];[end_date];[index_type];[spread])</span>```
+```excel wordwrap
+=OBB.FIXEDINCOME.CORPORATE.MOODY([start_date];[end_date];[index_type];[provider];[spread])
+```
 
 ### Example
 
@@ -25,13 +27,13 @@ Moody Corporate Bond Index.  Moody's Aaa and Baa are investment bonds that acts 
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fred, defaults to fred. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
-| index_type | Text | The type of series. | True |
-| spread | Text | The type of spread. (provider: fred) | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| index_type | Text | The type of series. | False |
+| provider | Text | Options: fred, defaults to fred. | False |
+| spread | Text | The type of spread. (provider: fred) | False |
 
 ---
 

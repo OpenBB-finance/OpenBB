@@ -28,7 +28,9 @@ Cryptocurrency Search. Search available cryptocurrency pairs.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.CRYPTO.SEARCH([provider];[query])</span>```
+```excel wordwrap
+=OBB.CRYPTO.SEARCH([query];[provider])
+```
 
 ### Example
 
@@ -40,10 +42,10 @@ Cryptocurrency Search. Search available cryptocurrency pairs.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp, defaults to fmp. | True |
-| query | Text | Search query. | True |
+| query | Text | Search query. | False |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 

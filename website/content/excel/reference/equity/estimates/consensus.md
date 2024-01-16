@@ -26,7 +26,9 @@ Price Target Consensus. Price target consensus data.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.ESTIMATES.CONSENSUS(symbol;[provider])</span>```
+```excel wordwrap
+=OBB.EQUITY.ESTIMATES.CONSENSUS(symbol;[provider])
+```
 
 ### Example
 
@@ -38,10 +40,10 @@ Price Target Consensus. Price target consensus data.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, defaults to fmp. | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 

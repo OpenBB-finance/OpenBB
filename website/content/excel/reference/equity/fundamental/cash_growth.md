@@ -52,7 +52,9 @@ Cash Flow Statement Growth. Information about the growth of the company cash flo
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.FUNDAMENTAL.CASH_GROWTH(symbol;[provider];[limit])</span>```
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.CASH_GROWTH(symbol;[limit];[provider])
+```
 
 ### Example
 
@@ -64,11 +66,11 @@ Cash Flow Statement Growth. Information about the growth of the company cash flo
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, defaults to fmp. | True |
-| limit | Number | The number of data entries to return. | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| limit | Number | The number of data entries to return. | False |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 

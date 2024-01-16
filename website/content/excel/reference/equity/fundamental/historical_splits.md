@@ -28,7 +28,9 @@ Historical Splits. Historical splits data.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS(symbol;[provider])</span>```
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS(symbol;[provider])
+```
 
 ### Example
 
@@ -40,10 +42,10 @@ Historical Splits. Historical splits data.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, defaults to fmp. | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 
