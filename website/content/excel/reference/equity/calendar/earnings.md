@@ -34,7 +34,9 @@ Upcoming and Historical earnings calendar.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.CALENDAR.EARNINGS([provider];[start_date];[end_date])</span>```
+```excel wordwrap
+=OBB.EQUITY.CALENDAR.EARNINGS([start_date];[end_date];[provider])
+```
 
 ### Example
 
@@ -46,11 +48,11 @@ Upcoming and Historical earnings calendar.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp, defaults to fmp. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 
@@ -63,13 +65,9 @@ Upcoming and Historical earnings calendar.
 | name | Name of the entity.  |
 | eps_previous | The earnings-per-share from the same previously reported period.  |
 | eps_consensus | The analyst conesus earnings-per-share estimate.  |
-| actual_eps | The actual earnings per share announced. (provider: fmp, nasdaq) |
-| actual_revenue | The actual reported revenue. (provider: fmp) |
+| eps_actual | The actual earnings per share announced. (provider: fmp) |
+| revenue_actual | The actual reported revenue. (provider: fmp) |
 | revenue_consensus | The revenue forecast consensus. (provider: fmp) |
-| period_ending | The fiscal period end date. (provider: fmp, nasdaq) |
-| reporting_time | The reporting time - e.g. after market close. (provider: fmp, nasdaq) |
+| period_ending | The fiscal period end date. (provider: fmp) |
+| reporting_time | The reporting time - e.g. after market close. (provider: fmp) |
 | updated_date | The date the data was updated last. (provider: fmp) |
-| surprise_percent | The earnings surprise as normalized percentage points. (provider: nasdaq) |
-| num_estimates | The number of analysts providing estimates for the consensus. (provider: nasdaq) |
-| previous_report_date | The previous report date for the same period last year. (provider: nasdaq) |
-| market_cap | The market cap (USD) of the reporting entity. (provider: nasdaq) |

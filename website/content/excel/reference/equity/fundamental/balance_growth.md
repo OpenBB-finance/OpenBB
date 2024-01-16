@@ -55,7 +55,9 @@ Balance Sheet Statement Growth. Information about the growth of the company bala
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.FUNDAMENTAL.BALANCE_GROWTH(symbol;[provider];[limit])</span>```
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.BALANCE_GROWTH(symbol;[limit];[provider])
+```
 
 ### Example
 
@@ -67,11 +69,11 @@ Balance Sheet Statement Growth. Information about the growth of the company bala
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, defaults to fmp. | True |
-| limit | Number | The number of data entries to return. | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| limit | Number | The number of data entries to return. | False |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 
