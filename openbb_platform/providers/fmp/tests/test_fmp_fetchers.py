@@ -1,5 +1,6 @@
 """Unit tests for FMP provider modules."""
 
+import re
 from datetime import date
 
 import pytest
@@ -70,6 +71,15 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 )
 
 
+def response_filter(response):
+    if "Location" in response["headers"]:
+        response["headers"]["Location"] = [
+            re.sub(r"apikey=[^&]+", "apikey=MOCK_API_KEY", x)
+            for x in response["headers"]["Location"]
+        ]
+    return response
+
+
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
@@ -77,6 +87,7 @@ def vcr_config():
         "filter_query_parameters": [
             ("apikey", "MOCK_API_KEY"),
         ],
+        "before_record_response": response_filter,
     }
 
 
