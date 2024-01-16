@@ -22,6 +22,17 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 OpenBB for Excel opens the gateway to a wealth of standardized financial data sourced from top-tier industry providers such as Polygon.io, Financial Modeling Prep, Benzinga, Intrinio, the Federal Reserve Bank of St. Louis, Trading Economics, and Ultima Insights, among others.
 
+<div className="flex-grow flex items-center justify-center mt-5">
+    <a href="https://my.openbb.co/app/pro">
+        <button
+            className="bg-grey-200 hover:bg-grey-400 dark:bg-[#303038] dark:hover:bg-grey-600 text-grey-900 dark:text-grey-200 text-sm font-medium py-2 px-4 rounded"
+        >
+            Join Excel Add-In waitlist
+        </button>
+    </a>
+</div>
+
+
 Data standardization is at the core of OpenBB for Excel, offering you a consistent and reliable dataset from a diverse range of asset classes, from equity, fixed income, and cryptocurrency to macroeconomics. This seamless fetch of data means you can readily compare across providers and update it instantly, ensuring accuracy and saving you valuable time.
 
 ---
