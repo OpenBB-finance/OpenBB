@@ -3,7 +3,6 @@
 import warnings
 from typing import Any, Dict, List, Literal, Optional
 
-from openbb_core.provider.abstract.data import ForceInt
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.balance_sheet import (
     BalanceSheetData,
