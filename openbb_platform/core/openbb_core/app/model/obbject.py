@@ -263,7 +263,9 @@ class OBBject(Tagged, Generic[T]):
         """Display chart."""
         if not self.chart or not hasattr(self.chart, "fig"):
             raise OpenBBError("Chart not found.")
-        show_function: Callable = getattr(self.chart, "show")
+        show_function: Callable = getattr(
+            self.chart.fig, "show"  # pylint: disable=no-member
+        )
         show_function()
 
     @classmethod
