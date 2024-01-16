@@ -27,6 +27,16 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 Discover the superior investment research capabilities of the OpenBB Terminal Pro. Built on top of the open-source OpenBB Terminal, our platform provides a sleek graphical interface that is intuitive and fully customizable, making it easier for you to access and analyze financial information with ease.
 
+<div className="flex-grow flex items-center justify-center mt-5">
+    <a href="https://my.openbb.co/app/pro">
+        <button
+            className="bg-grey-200 hover:bg-grey-400 dark:bg-[#303038] dark:hover:bg-grey-600 text-grey-900 dark:text-grey-200 text-sm font-medium py-2 px-4 rounded"
+        >
+            Join Terminal Pro waitlist
+        </button>
+    </a>
+</div>
+
 Plus, with built-in access to high-quality financial data curated from official partnerships with data providers, you can conduct comprehensive analysis and gain valuable insights that inform your investment decisions.
 
 <div style={{position: 'relative', paddingBottom: '56.25%', height: '0', overflow: 'hidden', maxWidth: '100%'}}>
@@ -39,6 +49,7 @@ Plus, with built-in access to high-quality financial data curated from official 
         allowFullScreen>
     </iframe>
 </div>
+
 
 ---
 
