@@ -1,7 +1,7 @@
 ---
 title: Installation
 sidebar_position: 1
-description: This page presents the general requirements and the steps to install the OpenBB Excel Add-in. The OpenBB Excel Add-in is available on Windows, Mac, and Excel on the web. It can be installed by an administrator or by individual users.
+description: This page presents the general requirements and the steps to install the OpenBB Add-in for Excel. The OpenBB Add-in for Excel is available on Windows, Mac, and Excel on the web. It can be installed by an administrator or by individual users.
 keywords:
 - Microsoft Excel
 - Add-in
@@ -9,7 +9,7 @@ keywords:
 
 ## Requirements
 
-The OpenBB Excel Add-in is available on:
+The OpenBB Add-in for Excel is available on:
 
 - Windows (Microsoft 365)
 - Mac (Microsoft 365)
@@ -17,7 +17,7 @@ The OpenBB Excel Add-in is available on:
 
 ## Installation
 
-The OpenBB Excel Add-in is available on the Microsoft AppSource. It can be installed by an administrator or by individual users.
+The OpenBB Add-in for Excel is available on the Microsoft AppSource. It can be installed by an administrator or by individual users.
 
 ### Individual user
 
