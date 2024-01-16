@@ -7,6 +7,10 @@ keywords:
 - Add-in
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Installation | OpenBB Add-in for Excel Docs" />
+
 ## Requirements
 
 - The OpenBB Excel Add-in is available on the following platforms: Windows (Microsoft 365), Mac (Microsoft 365), Excel on the web.

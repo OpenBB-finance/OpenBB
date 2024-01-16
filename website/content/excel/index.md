@@ -18,7 +18,7 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="OpenBB Excel Add-in Docs" />
+<HeadTitle title="OpenBB Add-in for Excel Docs" />
 
 OpenBB for Excel opens the gateway to a wealth of standardized financial data sourced from top-tier industry providers such as Polygon.io, Financial Modeling Prep, Benzinga, Intrinio, the Federal Reserve Bank of St. Louis, Trading Economics, and Ultima Insights, among others.
 
