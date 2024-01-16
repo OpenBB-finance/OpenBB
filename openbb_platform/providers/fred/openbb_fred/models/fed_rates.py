@@ -40,18 +40,9 @@ class FREDFEDData(FEDData):
 
     __alias_dict__ = {"rate": "value"}
 
-    @field_validator("rate", mode="before", check_fields=False)
-    @classmethod
-    def value_validate(cls, v):
-        """Validate rate."""
-        try:
-            return float(v)
-        except ValueError:
-            return None
 
-
-class FREDFEDFetcher(Fetcher[FREDFEDQueryParams, List[Dict[str, List[FREDFEDData]]]]):
-    """FRED FED Model."""
+class FREDFEDFetcher(Fetcher[FREDFEDQueryParams, List[FREDFEDData]]):
+    """FRED Fed Rates Fetcher."""
 
     data_type = FREDFEDData
 
@@ -63,7 +54,7 @@ class FREDFEDFetcher(Fetcher[FREDFEDQueryParams, List[Dict[str, List[FREDFEDData
     @staticmethod
     def extract_data(
         query: FREDFEDQueryParams, credentials: Optional[Dict[str, str]], **kwargs: Any
-    ) -> dict:
+    ) -> List[Dict]:
         """Extract data."""
         key = credentials.get("fred_api_key") if credentials else ""
         fred_series = FED_PARAMETER_TO_FRED_ID[query.parameter]
@@ -74,7 +65,16 @@ class FREDFEDFetcher(Fetcher[FREDFEDQueryParams, List[Dict[str, List[FREDFEDData
     @staticmethod
     def transform_data(
         query: FREDFEDQueryParams, data: dict, **kwargs: Any
-    ) -> List[Dict[str, List[FREDFEDData]]]:
+    ) -> List[FREDFEDData]:
         """Transform data."""
         keys = ["date", "value"]
-        return [FREDFEDData(**{k: x[k] for k in keys}) for x in data]
+        new_data = []
+        if query.parameter == "volume":
+            new_data = [{k: x[k] for k in keys} for x in data if x["value"] != "."]
+        if query.parameter != "volume":
+            new_data = [
+                {k: x[k] if k != "value" else float(x[k]) / 100 for k in keys}
+                for x in data
+                if x["value"] != "."
+            ]
+        return [FREDFEDData.model_validate(d) for d in new_data]

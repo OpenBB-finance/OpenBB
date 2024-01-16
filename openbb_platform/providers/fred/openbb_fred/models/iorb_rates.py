@@ -21,12 +21,12 @@ class FREDIORBData(IORBData):
     __alias_dict__ = {"rate": "value"}
 
     @field_validator("rate", mode="before", check_fields=False)
-    def value_validate(cls, v):  # pylint: disable=E0213
-        """Validate rate."""
-        try:
-            return float(v)
-        except ValueError:
+    @classmethod
+    def normalize_percent(cls, v):
+        """Normalize percent."""
+        if v and isinstance(v, str) and v == ".":
             return None
+        return float(v) / 100 if v else None
 
 
 class FREDIORBFetcher(

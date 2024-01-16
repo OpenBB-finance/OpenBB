@@ -27,12 +27,11 @@ class FREDSelectedTreasuryBillData(SelectedTreasuryBillData):
 
     @field_validator("rate", mode="before", check_fields=False)
     @classmethod
-    def value_validate(cls, v):
-        """Validate rate."""
-        try:
-            return float(v)
-        except ValueError:
+    def normalize_percent(cls, v):
+        """Normalize percent."""
+        if v and isinstance(v, str) and v == ".":
             return None
+        return float(v) / 100 if v else None
 
 
 class FREDSelectedTreasuryBillFetcher(

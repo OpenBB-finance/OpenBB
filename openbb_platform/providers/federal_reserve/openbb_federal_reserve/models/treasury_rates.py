@@ -11,7 +11,7 @@ from openbb_core.provider.standard_models.treasury_rates import (
     TreasuryRatesQueryParams,
 )
 from openbb_core.provider.utils.helpers import make_request
-from pydantic import field_validator
+from pydantic import field_validator, model_validator
 
 maturities = [
     "month_1",
@@ -40,6 +40,16 @@ class FederalReserveTreasuryRatesData(TreasuryRatesData):
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d")
+
+    @model_validator(mode="before")
+    @classmethod
+    def validate(cls, values):  # pylint: disable=E0213
+        """Normlize percent values."""
+
+        for k, v in values.items():
+            if k != "date" and v:
+                values[k] = float(v) / 100
+        return values
 
 
 class FederalReserveTreasuryRatesFetcher(

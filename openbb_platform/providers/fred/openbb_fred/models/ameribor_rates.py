@@ -52,12 +52,12 @@ class FREDAMERIBORData(AMERIBORData):
     @classmethod
     def normalize_percent(cls, v):
         """Normalize percent."""
-        return float(v)/ 100 if v else None
+        if v and isinstance(v, str) and v == ".":
+            return None
+        return float(v) / 100 if v else None
 
 
-class FREDAMERIBORFetcher(
-    Fetcher[FREDAMERIBORQueryParams, List[FREDAMERIBORData]]
-):
+class FREDAMERIBORFetcher(Fetcher[FREDAMERIBORQueryParams, List[FREDAMERIBORData]]):
     """Transform the query, extract and transform the data from the FRED endpoints."""
 
     data_type = FREDAMERIBORData

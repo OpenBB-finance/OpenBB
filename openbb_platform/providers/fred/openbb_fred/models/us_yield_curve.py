@@ -74,13 +74,13 @@ class FREDYieldCurveFetcher(
                 )
                 for item in sorted_data:
                     if item.get("value") and item["value"] != ".":
-                        value = float(item["value"])
+                        value = float(item["value"]) / 100
                         break
 
             else:
                 # if date is empty, find the most recent date's value
                 sorted_data = sorted(data, key=lambda x: x["date"], reverse=True)
-                value = float(sorted_data[0]["value"]) if sorted_data else None
+                value = float(sorted_data[0]["value"]) / 100 if sorted_data else None
 
             if isinstance(value, (float, int)):
                 vals.append(value)
