@@ -50,7 +50,9 @@ Income Statement Growth. Information about the growth of the company income stat
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.FUNDAMENTAL.INCOME_GROWTH(symbol;[provider];[limit];[period])</span>```
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.INCOME_GROWTH(symbol;[limit];[period];[provider])
+```
 
 ### Example
 
@@ -62,12 +64,12 @@ Income Statement Growth. Information about the growth of the company income stat
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, defaults to fmp. | True |
-| limit | Number | The number of data entries to return. | True |
-| period | Text | Time period of the data to return. | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| limit | Number | The number of data entries to return. | False |
+| period | Text | Time period of the data to return. | False |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 

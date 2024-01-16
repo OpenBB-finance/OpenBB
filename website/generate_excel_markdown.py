@@ -6,19 +6,20 @@ from textwrap import shorten
 from typing import Any, Dict, List, Literal
 
 import requests
-from openbb_core.app.provider_interface import ProviderInterface
-from openbb_core.app.static.package_builder import PathHandler
 
 # Paths
 WEBSITE_PATH = Path(__file__).parent.absolute()
 CONTENT_PATH = WEBSITE_PATH / "content"
 XL_FUNCS_PATH = CONTENT_PATH / "excel" / "functions.json"
+XL_PLATFORM_PATH = CONTENT_PATH / "excel" / "openapi.json"
 SEO_METADATA_PATH = WEBSITE_PATH / "metadata" / "platform_v4_seo_metadata.json"
 
+# URLs: the platorm url should match the backend being used by excel.openbb.co
 XL_FUNCS_URL = "https://excel.openbb.co/assets/functions.json"
+XL_PLATFORM_URL = "https://sdk.openbb.co/openapi.json"
 
 
-class CommandLib(PathHandler):
+class CommandLib:
     """Command library."""
 
     XL_TYPE_MAP = {
@@ -29,34 +30,119 @@ class CommandLib(PathHandler):
         "str": "Text",
         "string": "Text",
     }
+
+    # These examples will be generated in the core, but we keep them here meanwhile
     EXAMPLE_PARAMS: Dict[str, Dict] = {
-        "crypto": {"symbol": '"BTCUSD"'},
-        "currency": {"symbol": '"EURUSD"'},
-        "derivatives": {"symbol": '"AAPL"'},
-        "economy": {"countries": '"united_states,germany"'},
+        "crypto": {
+            "symbol": '"BTCUSD"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "query": '"coin"',
+        },
+        "currency": {
+            "symbol": '"EURUSD"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+        },
+        "derivatives": {
+            "symbol": '"AAPL"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+        },
+        "economy": {
+            "countries": '"united_states"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "units": '"growth_previous"',
+            "frequency": '"quarterly"',
+            "harmonized": "TRUE",
+            "query": '"gdp"',
+            "symbol": '"GFDGDPA188S"',
+            "limit": 5,
+            "period": '"quarter"',
+            "type": '"real"',
+            "adjusted": "TRUE",
+        },
         "equity": {
             "symbol": '"AAPL"',
-            "tag": '"EBITDA"',
-            "query": '"EBITDA"',
+            "tag": '"ebitda"',
+            "query": '"ebitda"',
             "year": 2022,
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "limit": 5,
+            "form_type": '"10-K"',
+            "period": '"annual"',
+            "frequency": '"quarterly"',
+            "type": "",
+            "sort": '"desc"',
+            "structure": '"flat"',
+            "date": '"2023-05-07"',
+            "page": 1,
+            "interval": '"1d"',
+            "is_symbol": "FALSE",
         },
-        "etf": {"symbol": '"SPY"'},
-        "index": {"symbol": '"^GSPC"'},
-        "news": {"symbols": '"AAPL,MSFT"'},
-        "regulators": {"symbol": '"AAPL"'},
+        "/equity/fundamental/reported_financials": {
+            "symbol": '"AAPL"',
+            "period": '"annual"',
+            "statement_type": '"balance"',
+            "limit": 5,
+        },
+        "etf": {
+            "symbol": '"SPY"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "query": '"global"',
+        },
+        "fixedincome": {
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "maturity": '"90d"',
+            "category": '"nonfinancial"',
+            "grade": '"aa"',
+            "date": '"2023-05-07"',
+            "yield_curve": '"spot"',
+            "index_type": '"yield"',
+            "inflation_adjusted": "TRUE",
+            "interest_rate_type": '"deposit"',
+        },
+        "index": {
+            "symbol": '"^GSPC"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "index": '"sp500"',
+        },
+        "news": {
+            "symbols": '"AAPL,MSFT"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "limit": 5,
+        },
+        "regulators": {
+            "symbol": '"AAPL"',
+            "start_date": '"2023-01-01"',
+            "end_date": '"2023-12-31"',
+            "query": '"AAPL"',
+        },
     }
 
     def __init__(self):
-        self.pi = ProviderInterface()
-        self.route_map = self.build_route_map()
         self.xl_funcs = self.read_xl_funcs()
+        self.openapi = self.read_openapi()
         self.seo_metadata = self.read_seo_metadata()
 
     @staticmethod
-    def fetch():
+    def fetch_functions():
         """Fetch the excel functions."""
         r = requests.get(XL_FUNCS_URL, timeout=10)
         with open(XL_FUNCS_PATH, "w") as f:
+            json.dump(r.json(), f, indent=2)
+
+    @staticmethod
+    def fetch_openapi():
+        """Fetch the openapi.json."""
+        r = requests.get(XL_PLATFORM_URL, timeout=10)
+        with open(XL_PLATFORM_PATH, "w") as f:
             json.dump(r.json(), f, indent=2)
 
     def read_seo_metadata(self) -> dict:
@@ -74,43 +160,31 @@ class CommandLib(PathHandler):
             for func in funcs["functions"]
         }
 
+    def read_openapi(self) -> dict:
+        """Get the openapi.json."""
+        with open(XL_PLATFORM_PATH) as f:
+            return json.load(f)
+
     def to_xl(self, type_: str) -> str:
         """Convert a type to an Excel type."""
         return self.XL_TYPE_MAP.get(type_, type_).title()
 
     def get_func(self, cmd: str) -> str:
         """Get the func of the command."""
-        if cmd in self.route_map:
-            return self.xl_funcs.get(cmd, {}).get("name", ".").split(".")[-1].lower()
-        return ""
+        return self.xl_funcs.get(cmd, {}).get("name", ".").split(".")[-1].lower()
 
     def _get_signature(self, cmd: str, parameters: dict) -> str:
         """Get the signature of the command."""
-        if cmd in self.route_map:
-            sig = "=OBB." + self.xl_funcs[cmd].get("name", "")
-            sig += "("
-            for p_name, p_info in parameters.items():
-                if p_info["required"]:
-                    sig += f"{p_name}"
-                else:
-                    sig += f"[{p_name}]"
-                sig += ";"
-            sig = sig.strip("; ") + ")"
-            return sig
-        return ""
-
-    def _get_model(self, cmd: str) -> str:
-        """Get the model of the command."""
-        route = self.route_map.get(cmd, None)
-        if route:
-            return route.openapi_extra.get("model", "")
-        return ""
-
-    def get_xl_param(self, cmd, param):
-        for p in self.xl_funcs[cmd]["parameters"]:
-            if p["name"] == param:
-                return p
-        return None
+        sig = "=OBB." + self.xl_funcs[cmd].get("name", "")
+        sig += "("
+        for p_name, p_info in parameters.items():
+            if p_info["required"]:
+                sig += f"{p_name}"
+            else:
+                sig += f"[{p_name}]"
+            sig += ";"
+        sig = sig.strip("; ") + ")"
+        return sig
 
     def _get_parameters(self, cmd: str) -> dict:
         """Get the parameters of the command."""
@@ -125,28 +199,49 @@ class CommandLib(PathHandler):
         return parameters
 
     def _get_data(self, cmd: str) -> dict:
-        """Get the data of the command."""
-        model_name = self._get_model(cmd)
-        if model_name:
-            schema = self.pi.return_schema[model_name].model_json_schema()["properties"]
+        """Get the data of the command from the openapi."""
+        model = self.openapi["paths"][f"/api/v1{cmd}"]["get"]["model"]
+        if model:
+            schema = self.openapi["components"]["schemas"][model]["properties"]
             data = {}
             for name, info in schema.items():
                 data[name] = {
                     "description": info.get("description", "").replace("\n", " "),
                 }
             return data
-
         return {}
 
-    def _get_examples(self, signature_: str, parameters: dict) -> dict:
-        minimal_eg = signature_.split("(")[0] + "("
+    def _get_examples(self, cmd: str, signature_: str, parameters: dict) -> dict:
+        """Get the examples of the command."""
+        sig = signature_.split("(")[0] + "("
         category = signature_.split(".")[1].lower()
+
+        def get_p_value(cmd, p_name) -> str:
+            if cmd in self.EXAMPLE_PARAMS:
+                return self.EXAMPLE_PARAMS[cmd].get(p_name, "")
+            else:
+                return self.EXAMPLE_PARAMS.get(category, {}).get(p_name, "")
+
+        required_eg = sig
         for p_name, p_info in parameters.items():
             if p_info["required"]:
-                p_value = self.EXAMPLE_PARAMS.get(category, {}).get(p_name, "")
-                minimal_eg += f"{p_value};"
-        minimal_eg = minimal_eg.strip("; ") + ")"
-        return {"A. Minimal": minimal_eg}
+                p_value = get_p_value(cmd, p_name)
+                required_eg += f"{p_value};"
+        required_eg = required_eg.strip("; ") + ")"
+
+        standard_eg = sig
+        for p_name, p_info in parameters.items():
+            if p_name == "provider":
+                break
+            p_value = get_p_value(cmd, p_name)
+            standard_eg += f"{p_value};"
+        standard_eg = standard_eg.strip("; ") + ")"
+
+        if required_eg == standard_eg:
+            return {"A. Required": required_eg}
+        # Uncomment to add standard examples
+        # return {"A. Required": required_eg, "B. Standard": standard_eg}
+        return {"A. Required": required_eg}
 
     def get_info(self, cmd: str) -> Dict[str, Any]:
         """Get the info for a command."""
@@ -158,19 +253,16 @@ class CommandLib(PathHandler):
         signature_ = self._get_signature(cmd, parameters)
         data = self._get_data(cmd)
         return_ = self.xl_funcs[cmd].get("result", {}).get("dimensionality", "")
-        examples = self._get_examples(signature_, parameters)
-        if model_name := self._get_model(cmd):
-            return {
-                "name": name,
-                "description": description,
-                "signature": signature_,
-                "parameters": parameters,
-                "data": data,
-                "return": return_,
-                "examples": examples,
-                "model_name": model_name,
-            }
-        return {}
+        examples = self._get_examples(cmd, signature_, parameters)
+        return {
+            "name": name,
+            "description": description,
+            "signature": signature_,
+            "parameters": parameters,
+            "data": data,
+            "return": return_,
+            "examples": examples,
+        }
 
 
 class Editor:
@@ -410,17 +502,19 @@ class Editor:
         write_mdx_and_category(self.target_dir, self.main_folder, 5)
         recursive(self.target_dir)
 
-    def dump(self, docs_map: Dict) -> None:
-        """Dump the docs structured information to json."""
-        with open(self.target_dir / "docs_map.json", "w") as f:
-            json.dump(docs_map, f, indent=2)
+    def dump(self, reference_map: Dict) -> None:
+        """Dump the reference structured information to json."""
+        with open(self.target_dir / "reference_map.json", "w") as f:
+            json.dump(reference_map, f, indent=2)
 
     def go(self):
         """Generate the website reference."""
 
-        docs_map = {}
+        reference_map = {}
 
         shutil.rmtree(self.target_dir, ignore_errors=True)
+
+        # We start from xl_funcs to make sure only the commands in the add-in are included
         for cmd in self.cmd_lib.xl_funcs:
             if self.cmd_lib.get_func(cmd):
                 folder = "/".join(cmd.split("/")[1:-1])
@@ -428,11 +522,11 @@ class Editor:
                 filepath = self.target_dir / folder / filename
                 filepath.parent.mkdir(parents=True, exist_ok=True)
                 cmd_info = self.cmd_lib.get_info(cmd)
-                docs_map[cmd] = cmd_info
+                reference_map[cmd] = cmd_info
                 self.generate_md(filepath, cmd, cmd_info)
 
         self.generate_sidebar()
-        self.dump(docs_map)
+        self.dump(reference_map)
         print(f"Markdown files generated, check the {self.target_dir} folder.")
 
 
@@ -440,7 +534,8 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--no-update":
         pass
     else:
-        CommandLib.fetch()
+        CommandLib.fetch_functions()
+        CommandLib.fetch_openapi()
 
     Editor(
         directory=CONTENT_PATH,

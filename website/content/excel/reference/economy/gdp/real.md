@@ -29,7 +29,9 @@ Real GDP Data.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.ECONOMY.GDP.REAL([provider];[units];[start_date];[end_date];[country])</span>```
+```excel wordwrap
+=OBB.ECONOMY.GDP.REAL([units];[start_date];[end_date];[provider];[country])
+```
 
 ### Example
 
@@ -41,13 +43,13 @@ Real GDP Data.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: oecd, defaults to oecd. | True |
-| units | Text | The unit of measurement for the data. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).) | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
-| country | Text | Country to get GDP for. (provider: oecd) | True |
+| units | Text | The unit of measurement for the data. Either idx (indicating 2015=100), qoq (previous period) or yoy (same period, previous year).) | False |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| provider | Text | Options: oecd, defaults to oecd. | False |
+| country | Text | Country to get GDP for. (provider: oecd) | False |
 
 ---
 

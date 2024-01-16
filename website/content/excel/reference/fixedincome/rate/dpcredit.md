@@ -13,7 +13,9 @@ Discount Window Primary Credit Rate.  A bank rate is the interest rate a nation'
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.FIXEDINCOME.RATE.DPCREDIT([provider];[start_date];[end_date];[parameter])</span>```
+```excel wordwrap
+=OBB.FIXEDINCOME.RATE.DPCREDIT([start_date];[end_date];[provider];[parameter])
+```
 
 ### Example
 
@@ -25,12 +27,12 @@ Discount Window Primary Credit Rate.  A bank rate is the interest rate a nation'
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fred, defaults to fred. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
-| parameter | Text | FRED series ID of DWPCR data. (provider: fred) | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| provider | Text | Options: fred, defaults to fred. | False |
+| parameter | Text | FRED series ID of DWPCR data. (provider: fred) | False |
 
 ---
 

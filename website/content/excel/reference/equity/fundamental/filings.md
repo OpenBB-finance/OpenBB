@@ -40,7 +40,9 @@ Company Filings. Company filings data.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.FUNDAMENTAL.FILINGS([provider];[symbol];[form_type];[limit];[start_date];[end_date];[thea_enabled];[cik];[use_cache])</span>```
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.FILINGS([symbol];[provider];[form_type];[limit];[start_date];[end_date];[thea_enabled];[cik];[use_cache])
+```
 
 ### Example
 
@@ -52,17 +54,17 @@ Company Filings. Company filings data.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp, intrinio, sec, defaults to fmp. | True |
-| symbol | Text | Symbol to get data for. | True |
-| form_type | Text | Type of the SEC filing form. (provider: sec) | True |
-| limit | Number | The number of data entries to return. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. (provider: intrinio) | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. (provider: intrinio) | True |
-| thea_enabled | Boolean | Return filings that have been read by Intrinio's Thea NLP. (provider: intrinio) | True |
-| cik | Any | Lookup filings by Central Index Key (CIK) instead of by symbol. (provider: sec) | True |
-| use_cache | Boolean | Whether or not to use cache.  If True, cache will store for one day. (provider: sec) | True |
+| symbol | Text | Symbol to get data for. | False |
+| provider | Text | Options: fmp, intrinio, sec, defaults to fmp. | False |
+| form_type | Text | Type of the SEC filing form. (provider: sec) | False |
+| limit | Number | The number of data entries to return. | False |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. (provider: intrinio) | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. (provider: intrinio) | False |
+| thea_enabled | Boolean | Return filings that have been read by Intrinio's Thea NLP. (provider: intrinio) | False |
+| cik | Any | Lookup filings by Central Index Key (CIK) instead of by symbol. (provider: sec) | False |
+| use_cache | Boolean | Whether or not to use cache.  If True, cache will store for one day. (provider: sec) | False |
 
 ---
 
@@ -95,4 +97,4 @@ Company Filings. Company filings data.
 | is_xbrl | Whether the filing is an XBRL filing. (provider: sec) |
 | size | The size of the filing. (provider: sec) |
 | complete_submission_url | The URL to the complete filing submission. (provider: sec) |
-| xml | The URL to the primary XML document. (provider: sec) |
+| filing_detail_url | The URL to the filing details. (provider: sec) |
