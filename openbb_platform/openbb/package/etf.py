@@ -1,6 +1,5 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import datetime
 from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
@@ -14,8 +13,6 @@ from typing_extensions import Annotated
 class ROUTER_etf(Container):
     """/etf
     countries
-    /discovery
-    historical
     holdings
     holdings_date
     holdings_performance
@@ -35,7 +32,7 @@ class ROUTER_etf(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
         ],
-        provider: Optional[Literal["fmp", "tmx"]] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """ETF Country weighting.
@@ -44,7 +41,7 @@ class ROUTER_etf(Container):
         ----------
         symbol : str
             Symbol to get data for. (ETF)
-        provider : Optional[Literal['fmp', 'tmx']]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -54,7 +51,7 @@ class ROUTER_etf(Container):
         OBBject
             results : List[EtfCountries]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'tmx']]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -87,102 +84,6 @@ class ROUTER_etf(Container):
             )
         )
 
-    @property
-    def discovery(self):
-        # pylint: disable=import-outside-toplevel
-        from . import etf_discovery
-
-        return etf_discovery.ROUTER_etf_discovery(command_runner=self._command_runner)
-
-    @validate
-    def historical(
-        self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
-        ],
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        provider: Optional[Literal["yfinance"]] = None,
-        **kwargs
-    ) -> OBBject:
-        """ETF Historical Market Price.
-
-        Parameters
-        ----------
-        symbol : str
-            Symbol to get data for. (ETF)
-        start_date : Optional[datetime.date]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
-            End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'yfinance' if there is
-            no default.
-
-        Returns
-        -------
-        OBBject
-            results : List[EtfHistorical]
-                Serializable results.
-            provider : Optional[Literal['yfinance']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        EtfHistorical
-        -------------
-        date : date
-            The date of the data.
-        open : float
-            The open price.
-        high : float
-            The high price.
-        low : float
-            The low price.
-        close : float
-            The close price.
-        volume : Optional[Annotated[int, Ge(ge=0)]]
-            The trading volume.
-        adj_close : Optional[float]
-            The adjusted closing price of the ETF. (provider: yfinance)
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.etf.historical(symbol="AAPL")
-        """  # noqa: E501
-
-        return self._run(
-            "/etf/historical",
-            **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
-                standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                    "start_date": start_date,
-                    "end_date": end_date,
-                },
-                extra_params=kwargs,
-            )
-        )
-
     @validate
     def holdings(
         self,
@@ -190,7 +91,7 @@ class ROUTER_etf(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
         ],
-        provider: Optional[Literal["fmp", "sec", "tmx"]] = None,
+        provider: Optional[Literal["fmp", "sec"]] = None,
         **kwargs
     ) -> OBBject:
         """Get the holdings for an individual ETF.
@@ -199,7 +100,7 @@ class ROUTER_etf(Container):
         ----------
         symbol : str
             Symbol to get data for. (ETF)
-        provider : Optional[Literal['fmp', 'sec', 'tmx']]
+        provider : Optional[Literal['fmp', 'sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -216,7 +117,7 @@ class ROUTER_etf(Container):
         OBBject
             results : List[EtfHoldings]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'sec', 'tmx']]
+            provider : Optional[Literal['fmp', 'sec']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -244,12 +145,11 @@ class ROUTER_etf(Container):
         units : Optional[Union[str, float]]
             The units of the holding. (provider: fmp, sec)
         currency : Optional[str]
-            The currency of the holding. (provider: fmp, sec, tmx)
+            The currency of the holding. (provider: fmp, sec)
         value : Optional[float]
             The value of the holding in USD. (provider: fmp, sec)
         weight : Optional[float]
-            The weight of the holding in ETF in %. (provider: fmp, sec);
-            The weight of the asset in the portfolio. (provider: tmx)
+            The weight of the holding in ETF in %. (provider: fmp, sec)
         payoff_profile : Optional[str]
             The payoff profile of the holding. (provider: fmp, sec)
         asset_category : Optional[str]
@@ -257,7 +157,7 @@ class ROUTER_etf(Container):
         issuer_category : Optional[str]
             The issuer category of the holding. (provider: fmp, sec)
         country : Optional[str]
-            The country of the holding. (provider: fmp, sec, tmx)
+            The country of the holding. (provider: fmp, sec)
         is_restricted : Optional[str]
             Whether the holding is restricted. (provider: fmp, sec)
         fair_value_level : Optional[int]
@@ -384,20 +284,6 @@ class ROUTER_etf(Container):
             The currency of the derivative's notional amount. (provider: sec)
         unrealized_gain : Optional[float]
             The unrealized gain or loss on the derivative. (provider: sec)
-        shares : Optional[Union[str, int]]
-            The value of the assets under management. (provider: tmx)
-        market_value : Optional[Union[str, float]]
-            The market value of the holding. (provider: tmx)
-        share_percentage : Optional[float]
-            The share percentage of the holding. (provider: tmx)
-        share_change : Optional[Union[str, float]]
-            The change in shares of the holding. (provider: tmx)
-        exchange : Optional[str]
-            The exchange code of the holding. (provider: tmx)
-        type_id : Optional[str]
-            The holding type ID of the asset. (provider: tmx)
-        fund_id : Optional[str]
-            The fund ID of the asset. (provider: tmx)
 
         Example
         -------
@@ -573,7 +459,7 @@ class ROUTER_etf(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
         ],
-        provider: Optional[Literal["fmp", "tmx"]] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """ETF Information Overview.
@@ -582,7 +468,7 @@ class ROUTER_etf(Container):
         ----------
         symbol : str
             Symbol to get data for. (ETF)
-        provider : Optional[Literal['fmp', 'tmx']]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -592,7 +478,7 @@ class ROUTER_etf(Container):
         OBBject
             results : List[EtfInfo]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'tmx']]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -612,15 +498,13 @@ class ROUTER_etf(Container):
         asset_class : Optional[str]
             Asset class of the ETF. (provider: fmp)
         aum : Optional[float]
-            Assets under management. (provider: fmp);
-            The AUM of the ETF. (provider: tmx)
-        avg_volume : Optional[Union[float, int]]
-            Average trading volume of the ETF. (provider: fmp);
-            The average daily volume of the ETF. (provider: tmx)
+            Assets under management. (provider: fmp)
+        avg_volume : Optional[float]
+            Average trading volume of the ETF. (provider: fmp)
         cusip : Optional[str]
             CUSIP of the ETF. (provider: fmp)
         description : Optional[str]
-            Description of the ETF. (provider: fmp, tmx)
+            Description of the ETF. (provider: fmp)
         domicile : Optional[str]
             Domicile of the ETF. (provider: fmp)
         etf_company : Optional[str]
@@ -634,62 +518,9 @@ class ROUTER_etf(Container):
         nav_currency : Optional[str]
             Currency of the ETF's net asset value. (provider: fmp)
         website : Optional[str]
-            Website link of the ETF. (provider: fmp);
-            The website of the ETF. (provider: tmx)
+            Website link of the ETF. (provider: fmp)
         holdings_count : Optional[int]
             Number of holdings in the ETF. (provider: fmp)
-        issuer : Optional[str]
-            The issuer of the ETF. (provider: tmx)
-        investment_style : Optional[str]
-            The investment style of the ETF. (provider: tmx)
-        esg : Optional[bool]
-            Whether the ETF qualifies as an ESG fund. (provider: tmx)
-        currency : Optional[str]
-            The currency of the ETF. (provider: tmx)
-        unit_price : Optional[float]
-            The unit price of the ETF. (provider: tmx)
-        close : Optional[float]
-            The closing price of the ETF. (provider: tmx)
-        prev_close : Optional[float]
-            The previous closing price of the ETF. (provider: tmx)
-        return_1m : Optional[float]
-            The one-month return of the ETF. (provider: tmx)
-        return_3m : Optional[float]
-            The three-month return of the ETF. (provider: tmx)
-        return_6m : Optional[float]
-            The six-month return of the ETF. (provider: tmx)
-        return_ytd : Optional[float]
-            The year-to-date return of the ETF. (provider: tmx)
-        return_1y : Optional[float]
-            The one-year return of the ETF. (provider: tmx)
-        return_3y : Optional[float]
-            The three-year return of the ETF. (provider: tmx)
-        return_5y : Optional[float]
-            The five-year return of the ETF. (provider: tmx)
-        return_10y : Optional[float]
-            The ten-year return of the ETF. (provider: tmx)
-        return_from_inception : Optional[float]
-            The return from inception of the ETF. (provider: tmx)
-        avg_volume_30d : Optional[int]
-            The 30-day average volume of the ETF. (provider: tmx)
-        pe_ratio : Optional[float]
-            The price-to-earnings ratio of the ETF. (provider: tmx)
-        pb_ratio : Optional[float]
-            The price-to-book ratio of the ETF. (provider: tmx)
-        management_fee : Optional[float]
-            The management fee of the ETF. (provider: tmx)
-        mer : Optional[float]
-            The management expense ratio of the ETF. (provider: tmx)
-        distribution_yield : Optional[float]
-            The distribution yield of the ETF. (provider: tmx)
-        dividend_frequency : Optional[str]
-            The dividend payment frequency of the ETF. (provider: tmx)
-        sectors : Optional[List[Dict]]
-            The sector weightings of the ETF holdings. (provider: tmx)
-        regions : Optional[List[Dict]]
-            The region weightings of the ETF holdings. (provider: tmx)
-        holdings_top10 : Optional[List[Dict]]
-            The top 10 holdings of the ETF. (provider: tmx)
 
         Example
         -------
@@ -803,7 +634,7 @@ class ROUTER_etf(Container):
         query: Annotated[
             Optional[str], OpenBBCustomParameter(description="Search query.")
         ] = "",
-        provider: Optional[Literal["fmp", "tmx"]] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """Search for ETFs.
@@ -815,7 +646,7 @@ class ROUTER_etf(Container):
             ----------
             query : Optional[str]
                 Search query.
-            provider : Optional[Literal['fmp', 'tmx']]
+            provider : Optional[Literal['fmp']]
                 The provider to use for the query, by default None.
                 If None, the provider specified in defaults is selected or 'fmp' if there is
                 no default.
@@ -823,17 +654,13 @@ class ROUTER_etf(Container):
                 The exchange code the ETF trades on. (provider: fmp)
             is_active : Optional[Literal[True, False]]
                 Whether the ETF is actively trading. (provider: fmp)
-            div_freq : Optional[Literal['monthly', 'annually', 'quarterly']]
-                The dividend payment frequency. (provider: tmx)
-            sort_by : Optional[Literal['nav', 'return_1m', 'return_3m', 'return_6m', 'return_1y', 'return_3y', 'return_ytd', 'beta_1y', 'volume_avg_daily', 'management_fee', 'distribution_yield', 'pb_ratio', 'pe_ratio']]
-                The column to sort by. (provider: tmx)
 
             Returns
             -------
             OBBject
                 results : List[EtfSearch]
                     Serializable results.
-                provider : Optional[Literal['fmp', 'tmx']]
+                provider : Optional[Literal['fmp']]
                     Provider name.
                 warnings : Optional[List[Warning_]]
                     List of warnings.
@@ -870,70 +697,6 @@ class ROUTER_etf(Container):
                 The country the ETF is registered in. (provider: fmp)
             actively_trading : Optional[Literal[True, False]]
                 Whether the ETF is actively trading. (provider: fmp)
-            short_name : Optional[str]
-                The short name of the ETF. (provider: tmx)
-            inception_date : Optional[str]
-                The inception date of the ETF. (provider: tmx)
-            issuer : Optional[str]
-                The issuer of the ETF. (provider: tmx)
-            investment_style : Optional[str]
-                The investment style of the ETF. (provider: tmx)
-            esg : Optional[bool]
-                Whether the ETF qualifies as an ESG fund. (provider: tmx)
-            currency : Optional[str]
-                The currency of the ETF. (provider: tmx)
-            unit_price : Optional[float]
-                The unit price of the ETF. (provider: tmx)
-            close : Optional[float]
-                The closing price of the ETF. (provider: tmx)
-            prev_close : Optional[float]
-                The previous closing price of the ETF. (provider: tmx)
-            return_1m : Optional[float]
-                The one-month return of the ETF. (provider: tmx)
-            return_3m : Optional[float]
-                The three-month return of the ETF. (provider: tmx)
-            return_6m : Optional[float]
-                The six-month return of the ETF. (provider: tmx)
-            return_ytd : Optional[float]
-                The year-to-date return of the ETF. (provider: tmx)
-            return_1y : Optional[float]
-                The one-year return of the ETF. (provider: tmx)
-            beta_1y : Optional[float]
-                The one-year beta of the ETF. (provider: tmx)
-            return_3y : Optional[float]
-                The three-year return of the ETF. (provider: tmx)
-            beta_3y : Optional[float]
-                The three-year beta of the ETF. (provider: tmx)
-            return_5y : Optional[float]
-                The five-year return of the ETF. (provider: tmx)
-            beta_5y : Optional[float]
-                The five-year beta of the ETF. (provider: tmx)
-            return_10y : Optional[float]
-                The ten-year return of the ETF. (provider: tmx)
-            beta_10y : Optional[float]
-                The ten-year beta of the ETF. (provider: tmx)
-            beta_15y : Optional[float]
-                The fifteen-year beta of the ETF. (provider: tmx)
-            return_from_inception : Optional[float]
-                The return from inception of the ETF. (provider: tmx)
-            avg_volume : Optional[int]
-                The average daily volume of the ETF. (provider: tmx)
-            avg_volume_30d : Optional[int]
-                The 30-day average volume of the ETF. (provider: tmx)
-            aum : Optional[float]
-                The AUM of the ETF. (provider: tmx)
-            pe_ratio : Optional[float]
-                The price-to-earnings ratio of the ETF. (provider: tmx)
-            pb_ratio : Optional[float]
-                The price-to-book ratio of the ETF. (provider: tmx)
-            management_fee : Optional[float]
-                The management fee of the ETF. (provider: tmx)
-            mer : Optional[float]
-                The management expense ratio of the ETF. (provider: tmx)
-            distribution_yield : Optional[float]
-                The distribution yield of the ETF. (provider: tmx)
-            dividend_frequency : Optional[str]
-                The dividend payment frequency of the ETF. (provider: tmx)
 
             Example
             -------
@@ -961,7 +724,7 @@ class ROUTER_etf(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
         ],
-        provider: Optional[Literal["fmp", "tmx"]] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """ETF Sector weighting.
@@ -970,7 +733,7 @@ class ROUTER_etf(Container):
         ----------
         symbol : str
             Symbol to get data for. (ETF)
-        provider : Optional[Literal['fmp', 'tmx']]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -980,7 +743,7 @@ class ROUTER_etf(Container):
         OBBject
             results : List[EtfSectors]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'tmx']]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -995,8 +758,6 @@ class ROUTER_etf(Container):
             Sector of exposure.
         weight : Optional[float]
             Exposure of the ETF to the sector in normalized percentage points.
-        other : Optional[float]
-            Other Sector Weight. (provider: tmx)
 
         Example
         -------

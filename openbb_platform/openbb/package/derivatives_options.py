@@ -26,7 +26,7 @@ class ROUTER_derivatives_options(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["cboe", "intrinio", "tmx"]] = None,
+        provider: Optional[Literal["intrinio"]] = None,
         **kwargs
     ) -> OBBject:
         """Get the complete options chain for a ticker.
@@ -35,22 +35,19 @@ class ROUTER_derivatives_options(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['cboe', 'intrinio', 'tmx']]
+        provider : Optional[Literal['intrinio']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'cboe' if there is
+            If None, the provider specified in defaults is selected or 'intrinio' if there is
             no default.
-        use_cache : bool
-            When True, the company directories will be cached for 24 hours and are used to validate symbols. The results of the function are not cached. Set as False to bypass. (provider: cboe)
         date : Optional[datetime.date]
-            The end-of-day date for options chains data. (provider: intrinio);
-            A specific date to get data for. (provider: tmx)
+            Date for which the options chains are returned. (provider: intrinio)
 
         Returns
         -------
         OBBject
             results : List[OptionsChains]
                 Serializable results.
-            provider : Optional[Literal['cboe', 'intrinio', 'tmx']]
+            provider : Optional[Literal['intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -61,80 +58,48 @@ class ROUTER_derivatives_options(Container):
 
         OptionsChains
         -------------
-        symbol : Optional[str]
-            Symbol representing the entity requested in the data. Here, it is the underlying symbol for the option.
         contract_symbol : str
             Contract symbol for the option.
-        eod_date : Optional[date]
-            Date for which the options chains are returned.
+        symbol : Optional[str]
+            Symbol representing the entity requested in the data. Here its the underlying symbol for the option.
         expiration : date
             Expiration date of the contract.
         strike : float
             Strike price of the contract.
         option_type : str
             Call or Put.
-        open_interest : Optional[int]
-            Open interest on the contract.
-        volume : Optional[int]
+        eod_date : Optional[date]
+            Date for which the options chains are returned.
+        close : Optional[float]
+            The close price.
+        close_bid : Optional[float]
+            The closing bid price for the option that day.
+        close_ask : Optional[float]
+            The closing ask price for the option that day.
+        volume : Optional[float]
             The trading volume.
-        theoretical_price : Optional[float]
-            Theoretical value of the option.
-        last_trade_price : Optional[float]
-            Last trade price of the option.
-        tick : Optional[str]
-            Whether the last tick was up or down in price.
-        bid : Optional[float]
-            Current bid price for the option.
-        bid_size : Optional[int]
-            Bid size for the option.
-        ask : Optional[float]
-            Current ask price for the option.
-        ask_size : Optional[int]
-            Ask size for the option.
-        mark : Optional[float]
-            The mid-price between the latest bid and ask.
         open : Optional[float]
             The open price.
         open_bid : Optional[float]
             The opening bid price for the option that day.
         open_ask : Optional[float]
             The opening ask price for the option that day.
+        open_interest : Optional[float]
+            Open interest on the contract.
         high : Optional[float]
             The high price.
-        bid_high : Optional[float]
-            The highest bid price for the option that day.
-        ask_high : Optional[float]
-            The highest ask price for the option that day.
         low : Optional[float]
             The low price.
-        bid_low : Optional[float]
-            The lowest bid price for the option that day.
+        mark : Optional[float]
+            The mid-price between the latest bid-ask spread.
+        ask_high : Optional[float]
+            The highest ask price for the option that day.
         ask_low : Optional[float]
             The lowest ask price for the option that day.
-        close : Optional[float]
-            The close price.
-        close_size : Optional[int]
-            The closing trade size for the option that day.
-        close_time : Optional[datetime]
-            The time of the closing price for the option that day.
-        close_bid : Optional[float]
-            The closing bid price for the option that day.
-        close_bid_size : Optional[int]
-            The closing bid size for the option that day.
-        close_bid_time : Optional[datetime]
-            The time of the bid closing price for the option that day.
-        close_ask : Optional[float]
-            The closing ask price for the option that day.
-        close_ask_size : Optional[int]
-            The closing ask size for the option that day.
-        close_ask_time : Optional[datetime]
-            The time of the ask closing price for the option that day.
-        prev_close : Optional[float]
-
-        change : Optional[float]
-            The change in the price of the option.
-        change_percent : Optional[float]
-            Change, in normalizezd percentage points, of the option.
+        bid_high : Optional[float]
+            The highest bid price for the option that day.
+        bid_low : Optional[float]
+            The lowest bid price for the option that day.
         implied_volatility : Optional[float]
             Implied volatility of the option.
         delta : Optional[float]
@@ -145,22 +110,6 @@ class ROUTER_derivatives_options(Container):
             Theta of the option.
         vega : Optional[float]
             Vega of the option.
-        rho : Optional[float]
-            Rho of the option.
-        last_trade_timestamp : Optional[datetime]
-            Last trade timestamp of the option. (provider: cboe)
-        dte : Optional[int]
-            Days to expiration for the option. (provider: cboe, tmx)
-        exercise_style : Optional[str]
-            The exercise style of the option, American or European. (provider: intrinio)
-        transactions : Optional[int]
-            Number of transactions for the contract. (provider: tmx)
-        total_value : Optional[float]
-            Total value of the transactions. (provider: tmx)
-        settlement_price : Optional[float]
-            Settlement price on that date. (provider: tmx)
-        underlying_price : Optional[float]
-            Price of the underlying stock on that date. (provider: tmx)
 
         Example
         -------

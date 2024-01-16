@@ -45,18 +45,7 @@ class ROUTER_equity_price(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        chart: bool = False,
-        provider: Optional[
-            Literal[
-                "alpha_vantage",
-                "cboe",
-                "fmp",
-                "intrinio",
-                "polygon",
-                "tiingo",
-                "yfinance",
-            ]
-        ] = None,
+        provider: Optional[Literal["fmp", "intrinio", "polygon", "tiingo"]] = None,
         **kwargs
     ) -> OBBject:
         """Equity Historical price. Load stock data for a specific ticker.
@@ -71,23 +60,10 @@ class ROUTER_equity_price(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        chart : bool
-            Whether to create a chart or not, by default False.
-        provider : Optional[Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'pol...
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'alpha_vantage' if there is
+            If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        adjusted : Optional[bool]
-            Output time series is adjusted by historical split and dividend events. (provider: alpha_vantage, polygon);
-            Adjust all OHLC data automatically. (provider: yfinance)
-        extended_hours : Optional[bool]
-            Extended trading hours during pre-market and after-hours.Only available for intraday data. (provider: alpha_vantage)
-        month : Optional[str]
-            Query a specific month in history (in YYYY-MM format). (provider: alpha_vantage)
-        output_size : Optional[Literal['compact', 'full']]
-            Compact returns only the latest 100 data points in the intraday time series; full returns trailing 30 days of the most recent intraday data if the month parameter is not specified, or the full intraday data for aspecific month in history if the month parameter is specified. (provider: alpha_vantage)
-        use_cache : bool
-            When True, the company directories will be cached for 24 hours and are used to validate symbols. The results of the function are not cached. Set as False to bypass. (provider: cboe)
         limit : Optional[Union[Annotated[int, Ge(ge=0)], int]]
             Number of days to look back (Only for interval 1d). (provider: fmp);
             The number of data entries to return. (provider: polygon)
@@ -101,19 +77,15 @@ class ROUTER_equity_price(Container):
             The source of the data. (provider: intrinio)
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
-        prepost : bool
-            Include Pre and Post market data. (provider: yfinance)
-        include : bool
-            Include Dividends and Stock Splits in results. (provider: yfinance)
-        ignore_tz : bool
-            When combining from different timezones, ignore that part of datetime. (provider: yfinance)
+        adjusted : bool
+            Output time series is adjusted by historical split and dividend events. (provider: polygon)
 
         Returns
         -------
         OBBject
             results : List[EquityHistorical]
                 Serializable results.
-            provider : Optional[Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -124,7 +96,7 @@ class ROUTER_equity_price(Container):
 
         EquityHistorical
         ----------------
-        date : Union[date, datetime]
+        date : datetime
             The date of the data.
         open : float
             The open price.
@@ -136,24 +108,14 @@ class ROUTER_equity_price(Container):
             The close price.
         volume : Union[float, int]
             The trading volume.
-        vwap : Optional[float]
+        vwap : Optional[Annotated[float, Gt(gt=0)]]
             Volume Weighted Average Price over the period.
-        adj_close : Optional[Union[Annotated[float, Gt(gt=0)], float]]
-            The adjusted close price. (provider: alpha_vantage, fmp);
-            Adjusted closing price during the period. (provider: intrinio);
-            Adjusted closing price during the period. (provider: tiingo)
-        dividend_amount : Optional[Annotated[float, Ge(ge=0)]]
-            Dividend amount paid for the corresponding date. (provider: alpha_vantage)
-        split_coefficient : Optional[Annotated[float, Ge(ge=0)]]
-            Split coefficient for the corresponding date. (provider: alpha_vantage)
-        calls_volume : Optional[int]
-            Number of calls traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
-        puts_volume : Optional[int]
-            Number of puts traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
-        total_options_volume : Optional[int]
-            Total number of options traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
+        adj_close : Optional[float]
+            The adjusted close price. (provider: fmp);
+            Adjusted closing price during the period. (provider: intrinio);
+            Adjusted closing price during the period. (provider: tiingo)
         unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
@@ -212,7 +174,6 @@ class ROUTER_equity_price(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                chart=chart,
             )
         )
 
@@ -438,7 +399,7 @@ class ROUTER_equity_price(Container):
                 description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas."
             ),
         ],
-        provider: Optional[Literal["cboe", "fmp", "intrinio"]] = None,
+        provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
         """Equity Quote. Load stock data for a specific ticker.
@@ -449,10 +410,8 @@ class ROUTER_equity_price(Container):
             Symbol to get data for. This endpoint will accept multiple symbols separated by commas.
         provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'cboe' if there is
+            If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        use_cache : bool
-            When True, the company directories will be cached for 24 hours and are used to validate symbols. The results of the function are not cached. Set as False to bypass. (provider: cboe)
         source : Literal['iex', 'bats', 'bats_delayed', 'utp_delayed', 'cta_a_delayed', 'cta_b_delayed', 'intrinio_mx', 'intrinio_mx_plus', 'delayed_sip']
             Source of the data. (provider: intrinio)
 
@@ -461,7 +420,7 @@ class ROUTER_equity_price(Container):
         OBBject
             results : List[EquityQuote]
                 Serializable results.
-            provider : Optional[Literal['cboe', 'fmp', 'intrinio']]
+            provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
