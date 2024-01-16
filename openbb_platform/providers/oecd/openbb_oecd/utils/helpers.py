@@ -121,7 +121,7 @@ def parse_url(url: str) -> DataFrame:
     return oecd_xml_to_df(response.text)
 
 
-def check_cache_exists_and_valid(function: str, cache_method: str = "parquet") -> bool:
+def check_cache_exists_and_valid(function: str, cache_method: str = "csv") -> bool:
     """Check if the cache exists and is valid.
 
     Parameters
@@ -129,7 +129,7 @@ def check_cache_exists_and_valid(function: str, cache_method: str = "parquet") -
     function : str
         The name of the function for which the cache is being checked.
     cache_method : str, optional
-        The method used for caching (default is 'parquet').
+        The method used for caching (default is 'csv').
 
     Returns
     -------
@@ -138,9 +138,9 @@ def check_cache_exists_and_valid(function: str, cache_method: str = "parquet") -
     """
     # TODO: add setting to disable cache for tests
 
-    if cache_method != "parquet":
-        raise NotImplementedError("Currently only working with parquet")
-    # First check that the cache exists.  This will be a parquet and a timestamp
+    if cache_method not in ["csv", "parquet"]:
+        raise NotImplementedError("Currently only working with parquet or csv")
+    # First check that the cache exists.  This will be a parquet/csv and a timestamp
     cache_path = f"{cache}/{function}.{cache_method}"
     time_cache_path = f"{cache}/{function}.timestamp"
     if Path(cache_path).exists() and Path(time_cache_path).exists():
@@ -178,12 +178,18 @@ def write_to_cache(function: str, data: DataFrame, cache_method: str) -> None:
         # Write the current date to a file called cache/function.timestamp
         with open(f"{cache}/{function}.timestamp", "w") as f:
             f.write(str(date.today()))
+    elif cache_method == "csv":
+        cache_path = f"{cache}/{function}.csv"
+        data.to_csv(cache_path)
+        # Write the current date to a file called cache/function.timestamp
+        with open(f"{cache}/{function}.timestamp", "w") as f:
+            f.write(str(date.today()))
     else:
         raise NotImplementedError
 
 
 def get_possibly_cached_data(
-    url: str, function: Optional[str] = None, cache_method: str = "parquet"
+    url: str, function: Optional[str] = None, cache_method: str = "csv"
 ) -> DataFrame:
     """
     Retrieve data from a given URL or from the cache if available and valid.
@@ -195,7 +201,7 @@ def get_possibly_cached_data(
     function : Optional[str], optional
         The name of the function for which data is being fetched or cached.
     cache_method : str, optional
-        The method used for caching the data (default is 'parquet').
+        The method used for caching the data (default is 'csv').
 
     Returns
     -------
@@ -204,12 +210,17 @@ def get_possibly_cached_data(
     """
     if cache_method == "parquet":
         cache_path = f"{cache}/{function}.parquet"
+    elif cache_method == "csv":
+        cache_path = f"{cache}/{function}.csv"
 
     use_cache = check_cache_exists_and_valid(
         function=function, cache_method=cache_method
     )
     if use_cache:
-        data = read_parquet(cache_path, engine="pyarrow")
+        if cache_method == "csv":
+            data = read_csv(cache_path)
+        elif cache_method == "parquet":
+            data = read_parquet(cache_path, engine="pyarrow")
     else:
         data = parse_url(url)
         write_to_cache(function=function, data=data, cache_method=cache_method)
