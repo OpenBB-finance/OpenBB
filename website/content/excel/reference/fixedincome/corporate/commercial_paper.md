@@ -31,7 +31,9 @@ Commercial Paper.  Commercial paper (CP) consists of short-term, promissory note
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER([provider];[start_date];[end_date];[maturity];[category];[grade])</span>```
+```excel wordwrap
+=OBB.FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER([start_date];[end_date];[maturity];[category];[grade];[provider])
+```
 
 ### Example
 
@@ -43,14 +45,14 @@ Commercial Paper.  Commercial paper (CP) consists of short-term, promissory note
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fred, defaults to fred. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
-| maturity | Text | The maturity. | True |
-| category | Text | The category. | True |
-| grade | Text | The grade. | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| maturity | Text | The maturity. | False |
+| category | Text | The category. | False |
+| grade | Text | The grade. | False |
+| provider | Text | Options: fred, defaults to fred. | False |
 
 ---
 

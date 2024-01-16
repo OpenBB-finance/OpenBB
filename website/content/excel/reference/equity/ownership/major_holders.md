@@ -41,7 +41,9 @@ Equity Ownership. Information about the company ownership.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.OWNERSHIP.MAJOR_HOLDERS(symbol;[provider];[date];[page])</span>```
+```excel wordwrap
+=OBB.EQUITY.OWNERSHIP.MAJOR_HOLDERS(symbol;[date];[page];[provider])
+```
 
 ### Example
 
@@ -53,12 +55,12 @@ Equity Ownership. Information about the company ownership.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, defaults to fmp. | True |
-| date | Text | A specific date to get data for. | True |
-| page | Number | Page number of the data to fetch. | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| date | Text | A specific date to get data for. | False |
+| page | Number | Page number of the data to fetch. | False |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 

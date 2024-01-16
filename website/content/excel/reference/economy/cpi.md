@@ -29,27 +29,29 @@ Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate 
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.ECONOMY.CPI(countries;[provider];[units];[frequency];[harmonized];[start_date];[end_date])</span>```
+```excel wordwrap
+=OBB.ECONOMY.CPI(countries;[units];[frequency];[harmonized];[start_date];[end_date];[provider])
+```
 
 ### Example
 
 ```excel wordwrap
-=OBB.ECONOMY.CPI("united_states,germany")
+=OBB.ECONOMY.CPI("united_states")
 ```
 
 ---
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **countries** | **Any** | **The country or countries to get data.** | **False** |
-| provider | Text | Options: fred, defaults to fred. | True |
-| units | Text | The unit of measurement for the data. Options: - `growth_previous`: Percent growth from the previous period. If monthly data, this is month-over-month, etc - `growth_same`: Percent growth from the same period in the previous year. If looking at monthly data, this would be year-over-year, etc. - `index_2015`: Rescaled index value, such that the value in 2015 is 100. | True |
-| frequency | Text | The frequency of the data. Options: `monthly`, `quarter`, and `annual`. | True |
-| harmonized | Boolean | Whether you wish to obtain harmonized data. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
+| **countries** | **Any** | **The country or countries to get data.** | **True** |
+| units | Text | The unit of measurement for the data. Options: - `growth_previous`: Percent growth from the previous period. If monthly data, this is month-over-month, etc - `growth_same`: Percent growth from the same period in the previous year. If looking at monthly data, this would be year-over-year, etc. - `index_2015`: Rescaled index value, such that the value in 2015 is 100. | False |
+| frequency | Text | The frequency of the data. Options: `monthly`, `quarter`, and `annual`. | False |
+| harmonized | Boolean | Whether you wish to obtain harmonized data. | False |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| provider | Text | Options: fred, defaults to fred. | False |
 
 ---
 

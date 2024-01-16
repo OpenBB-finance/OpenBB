@@ -24,7 +24,9 @@ Get lists of SEC XML schema files by year.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.REGULATORS.SEC.SCHEMA_FILES([provider];[query];[url])</span>```
+```excel wordwrap
+=OBB.REGULATORS.SEC.SCHEMA_FILES([query];[provider];[url])
+```
 
 ### Example
 
@@ -36,11 +38,11 @@ Get lists of SEC XML schema files by year.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: sec, defaults to sec. | True |
-| query | Text | Search query. | True |
-| url | Text | Enter an optional URL path to fetch the next level. (provider: sec) | True |
+| query | Text | Search query. | False |
+| provider | Text | Options: sec, defaults to sec. | False |
+| url | Text | Enter an optional URL path to fetch the next level. (provider: sec) | False |
 
 ---
 

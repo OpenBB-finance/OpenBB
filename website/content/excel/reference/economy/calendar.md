@@ -44,7 +44,9 @@ Economic Calendar.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.ECONOMY.CALENDAR([provider];[start_date];[end_date];[country];[importance];[group])</span>```
+```excel wordwrap
+=OBB.ECONOMY.CALENDAR([start_date];[end_date];[provider];[country];[importance];[group])
+```
 
 ### Example
 
@@ -56,14 +58,14 @@ Economic Calendar.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp, tradingeconomics, defaults to fmp. | True |
-| start_date | Text | Start date of the data, in YYYY-MM-DD format. | True |
-| end_date | Text | End date of the data, in YYYY-MM-DD format. | True |
-| country | Any | Country of the event (provider: tradingeconomics) | True |
-| importance | Text | Importance of the event. (provider: tradingeconomics) | True |
-| group | Text | Grouping of events (provider: tradingeconomics) | True |
+| start_date | Text | Start date of the data, in YYYY-MM-DD format. | False |
+| end_date | Text | End date of the data, in YYYY-MM-DD format. | False |
+| provider | Text | Options: fmp, tradingeconomics, defaults to fmp. | False |
+| country | Any | Country of the event (provider: tradingeconomics) | False |
+| importance | Text | Importance of the event. (provider: tradingeconomics) | False |
+| group | Text | Grouping of events (provider: tradingeconomics) | False |
 
 ---
 
@@ -89,4 +91,3 @@ Economic Calendar.
 | change_percent | Percentage change since previous. (provider: fmp) |
 | updated_at | Last updated timestamp. (provider: fmp) |
 | created_at | Created at timestamp. (provider: fmp) |
-| description | Event description. (provider: nasdaq) |

@@ -27,7 +27,9 @@ Search for ETFs.  An empty query returns the full list of ETFs from the provider
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.ETF.SEARCH([provider];[query];[exchange];[is_active])</span>```
+```excel wordwrap
+=OBB.ETF.SEARCH([query];[provider];[exchange];[is_active])
+```
 
 ### Example
 
@@ -39,12 +41,12 @@ Search for ETFs.  An empty query returns the full list of ETFs from the provider
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp, defaults to fmp. | True |
-| query | Text | Search query. | True |
-| exchange | Text | The exchange code the ETF trades on. (provider: fmp) | True |
-| is_active | Boolean | Whether the ETF is actively trading. (provider: fmp) | True |
+| query | Text | Search query. | False |
+| provider | Text | Options: fmp, defaults to fmp. | False |
+| exchange | Text | The exchange code the ETF trades on. (provider: fmp) | False |
+| is_active | Boolean | Whether the ETF is actively trading. (provider: fmp) | False |
 
 ---
 

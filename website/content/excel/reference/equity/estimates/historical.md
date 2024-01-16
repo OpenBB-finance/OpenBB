@@ -61,7 +61,9 @@ Historical Analyst Estimates. Analyst stock recommendations.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.ESTIMATES.HISTORICAL(symbol;[provider];[period];[limit])</span>```
+```excel wordwrap
+=OBB.EQUITY.ESTIMATES.HISTORICAL(symbol;[period];[limit];[provider])
+```
 
 ### Example
 
@@ -73,12 +75,12 @@ Historical Analyst Estimates. Analyst stock recommendations.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, defaults to fmp. | True |
-| period | Text | Time period of the data to return. | True |
-| limit | Number | The number of data entries to return. | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| period | Text | Time period of the data to return. | False |
+| limit | Number | The number of data entries to return. | False |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 

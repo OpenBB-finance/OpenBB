@@ -12,7 +12,9 @@ Equity Screen. Screen for companies meeting various criteria.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.SCREENER([provider];[mktcap_min];[mktcap_max];[price_min];[price_max];[beta_min];[beta_max];[volume_min];[volume_max];[dividend_min];[dividend_max];[is_etf];[is_active];[sector];[industry];[country];[exchange];[limit])</span>```
+```excel wordwrap
+=OBB.EQUITY.SCREENER([provider];[mktcap_min];[mktcap_max];[price_min];[price_max];[beta_min];[beta_max];[volume_min];[volume_max];[dividend_min];[dividend_max];[is_etf];[is_active];[sector];[industry];[country];[exchange];[limit])
+```
 
 ### Example
 
@@ -24,26 +26,26 @@ Equity Screen. Screen for companies meeting various criteria.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| provider | Text | Options: fmp, defaults to fmp. | True |
-| mktcap_min | Number | Filter by market cap greater than this value. (provider: fmp) | True |
-| mktcap_max | Number | Filter by market cap less than this value. (provider: fmp) | True |
-| price_min | Number | Filter by price greater than this value. (provider: fmp) | True |
-| price_max | Number | Filter by price less than this value. (provider: fmp) | True |
-| beta_min | Number | Filter by a beta greater than this value. (provider: fmp) | True |
-| beta_max | Number | Filter by a beta less than this value. (provider: fmp) | True |
-| volume_min | Number | Filter by volume greater than this value. (provider: fmp) | True |
-| volume_max | Number | Filter by volume less than this value. (provider: fmp) | True |
-| dividend_min | Number | Filter by dividend amount greater than this value. (provider: fmp) | True |
-| dividend_max | Number | Filter by dividend amount less than this value. (provider: fmp) | True |
-| is_etf | Boolean | If true, returns only ETFs. (provider: fmp) | True |
-| is_active | Boolean | If false, returns only inactive tickers. (provider: fmp) | True |
-| sector | Text | Filter by sector. (provider: fmp) | True |
-| industry | Text | Filter by industry. (provider: fmp) | True |
-| country | Text | Filter by country, as a two-letter country code. (provider: fmp) | True |
-| exchange | Text | Filter by exchange. (provider: fmp) | True |
-| limit | Number | Limit the number of results to return. (provider: fmp) | True |
+| provider | Text | Options: fmp, defaults to fmp. | False |
+| mktcap_min | Number | Filter by market cap greater than this value. (provider: fmp) | False |
+| mktcap_max | Number | Filter by market cap less than this value. (provider: fmp) | False |
+| price_min | Number | Filter by price greater than this value. (provider: fmp) | False |
+| price_max | Number | Filter by price less than this value. (provider: fmp) | False |
+| beta_min | Number | Filter by a beta greater than this value. (provider: fmp) | False |
+| beta_max | Number | Filter by a beta less than this value. (provider: fmp) | False |
+| volume_min | Number | Filter by volume greater than this value. (provider: fmp) | False |
+| volume_max | Number | Filter by volume less than this value. (provider: fmp) | False |
+| dividend_min | Number | Filter by dividend amount greater than this value. (provider: fmp) | False |
+| dividend_max | Number | Filter by dividend amount less than this value. (provider: fmp) | False |
+| is_etf | Boolean | If true, returns only ETFs. (provider: fmp) | False |
+| is_active | Boolean | If false, returns only inactive tickers. (provider: fmp) | False |
+| sector | Text | Filter by sector. (provider: fmp) | False |
+| industry | Text | Filter by industry. (provider: fmp) | False |
+| country | Text | Filter by country, as a two-letter country code. (provider: fmp) | False |
+| exchange | Text | Filter by exchange. (provider: fmp) | False |
+| limit | Number | Limit the number of results to return. (provider: fmp) | False |
 
 ---
 

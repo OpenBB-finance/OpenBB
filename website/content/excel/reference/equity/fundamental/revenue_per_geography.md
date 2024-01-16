@@ -33,7 +33,9 @@ Revenue Geographic. Geographic revenue data.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY(symbol;[provider];[period];[structure])</span>```
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY(symbol;[period];[structure];[provider])
+```
 
 ### Example
 
@@ -45,12 +47,12 @@ Revenue Geographic. Geographic revenue data.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, defaults to fmp. | True |
-| period | Text | Time period of the data to return. | True |
-| structure | Text | Structure of the returned data. | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| period | Text | Time period of the data to return. | False |
+| structure | Text | Structure of the returned data. | False |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 

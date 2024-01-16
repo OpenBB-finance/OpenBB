@@ -23,7 +23,9 @@ Key Executives. Key executives for a given company.
 
 ## Syntax
 
-```jsx<span style={color: 'red'}>=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT(symbol;[provider])</span>```
+```excel wordwrap
+=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT(symbol;[provider])
+```
 
 ### Example
 
@@ -35,10 +37,10 @@ Key Executives. Key executives for a given company.
 
 ## Parameters
 
-| Name | Type | Description | Optional |
+| Name | Type | Description | Required |
 | ---- | ---- | ----------- | -------- |
-| **symbol** | **Text** | **Symbol to get data for.** | **False** |
-| provider | Text | Options: fmp, defaults to fmp. | True |
+| **symbol** | **Text** | **Symbol to get data for.** | **True** |
+| provider | Text | Options: fmp, defaults to fmp. | False |
 
 ---
 
