@@ -36,8 +36,70 @@ class FMPFinancialRatiosData(FinancialRatiosData):
         "period_ending": "date",
         "fiscal_period": "period",
         "fiscal_year": "calendar_year",
+        "price_to_book": "price_to_book_ratio",
+        "price_to_sales": "price_sales_ratio",
+        "price_to_earnings": "price_earnings_ratio",
+        "price_to_cash_flow": "price_cash_flow_ratio",
+        "price_to_operating_cash_flow": "price_to_operating_cash_flows_ratio",
+        "price_to_free_cash_flow": "price_to_free_cash_flows_ratio",
+        "pe_to_growth": "price_earnings_to_growth_ratio",
+        "debt_to_equity": "debt_equity_ratio",
+        "cash_flow_to_debt": "cash_flow_to_debt_ratio",
+        "operating_cash_flow_to_sales": "operating_cash_flow_sales_ratio",
+        "free_cash_flow_to_operating_cash_flow": "free_cash_flow_operating_cash_flow_ratio",
+        "short_term_coverage_ratio": "short_term_coverage_ratios",
+        "cash_flow_coverage_ratio": "cash_flow_coverage_ratios",
+        "gross_margin": "gross_profit_margin",
+        "operating_margin": "operating_profit_margin",
+        "pre_tax_income_margin": "pretax_profit_margin",
+        "return_on_invested_capital": "return_on_capital_employed",
     }
 
+    dividend_yield: Optional[float] = Field(
+        default=None,
+        description="Dividend yield, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    dividend_per_share: Optional[float] = Field(
+        default=None, description="Dividend per share."
+    )
+    cash_per_share: Optional[float] = Field(default=None, description="Cash per share.")
+    operating_cash_flow_per_share: Optional[float] = Field(
+        default=None, description="Operating cash flow per share."
+    )
+    free_cash_flow_per_share: Optional[float] = Field(
+        default=None, description="Free cash flow per share."
+    )
+    enterprise_value_multiple: Optional[float] = Field(
+        default=None, description="Enterprise value multiple."
+    )
+    price_fair_value: Optional[float] = Field(
+        default=None, description="Price fair value."
+    )
+    price_to_book: Optional[float] = Field(
+        default=None, description="Price to book ratio."
+    )
+    price_to_sales: Optional[float] = Field(
+        default=None, description="Price to sales ratio."
+    )
+    price_to_earnings: Optional[float] = Field(
+        default=None, description="Price to earnings ratio."
+    )
+    price_to_operating_cash_flow: Optional[float] = Field(
+        default=None, description="Price to operating cash flows ratio."
+    )
+    price_to_cash_flow: Optional[float] = Field(
+        default=None, description="Price cash flow ratio."
+    )
+    price_to_free_cash_flow: Optional[float] = Field(
+        default=None, description="Price to free cash flow ratio."
+    )
+    price_to_sales: Optional[float] = Field(
+        default=None, description="Price sales ratio."
+    )
+    pe_to_growth: Optional[float] = Field(
+        default=None, description="PE to growth ratio."
+    )
     current_ratio: Optional[float] = Field(default=None, description="Current ratio.")
     quick_ratio: Optional[float] = Field(default=None, description="Quick ratio.")
     cash_ratio: Optional[float] = Field(default=None, description="Cash ratio.")
@@ -56,56 +118,6 @@ class FMPFinancialRatiosData(FinancialRatiosData):
     cash_conversion_cycle: Optional[float] = Field(
         default=None, description="Cash conversion cycle."
     )
-    gross_profit_margin: Optional[float] = Field(
-        default=None, description="Gross profit margin."
-    )
-    operating_profit_margin: Optional[float] = Field(
-        default=None, description="Operating profit margin."
-    )
-    pretax_profit_margin: Optional[float] = Field(
-        default=None, description="Pretax profit margin."
-    )
-    net_profit_margin: Optional[float] = Field(
-        default=None, description="Net profit margin."
-    )
-    effective_tax_rate: Optional[float] = Field(
-        default=None, description="Effective tax rate."
-    )
-    return_on_assets: Optional[float] = Field(
-        default=None, description="Return on assets."
-    )
-    return_on_equity: Optional[float] = Field(
-        default=None, description="Return on equity."
-    )
-    return_on_capital_employed: Optional[float] = Field(
-        default=None, description="Return on capital employed."
-    )
-    net_income_per_ebt: Optional[float] = Field(
-        default=None, description="Net income per EBT."
-    )
-    ebt_per_ebit: Optional[float] = Field(default=None, description="EBT per EBIT.")
-    ebit_per_revenue: Optional[float] = Field(
-        default=None, description="EBIT per revenue."
-    )
-    debt_ratio: Optional[float] = Field(default=None, description="Debt ratio.")
-    debt_equity_ratio: Optional[float] = Field(
-        default=None, description="Debt equity ratio."
-    )
-    long_term_debt_to_capitalization: Optional[float] = Field(
-        default=None, description="Long term debt to capitalization."
-    )
-    total_debt_to_capitalization: Optional[float] = Field(
-        default=None, description="Total debt to capitalization."
-    )
-    interest_coverage: Optional[float] = Field(
-        default=None, description="Interest coverage."
-    )
-    cash_flow_to_debt_ratio: Optional[float] = Field(
-        default=None, description="Cash flow to debt ratio."
-    )
-    company_equity_multiplier: Optional[float] = Field(
-        default=None, description="Company equity multiplier."
-    )
     receivables_turnover: Optional[float] = Field(
         default=None, description="Receivables turnover."
     )
@@ -119,25 +131,37 @@ class FMPFinancialRatiosData(FinancialRatiosData):
         default=None, description="Fixed asset turnover."
     )
     asset_turnover: Optional[float] = Field(default=None, description="Asset turnover.")
-    operating_cash_flow_per_share: Optional[float] = Field(
-        default=None, description="Operating cash flow per share."
+    debt_ratio: Optional[float] = Field(default=None, description="Debt ratio.")
+    debt_to_equity: Optional[float] = Field(
+        default=None, description="Debt equity ratio."
     )
-    free_cash_flow_per_share: Optional[float] = Field(
-        default=None, description="Free cash flow per share."
+    long_term_debt_to_capitalization: Optional[float] = Field(
+        default=None, description="Long term debt to capitalization."
     )
-    cash_per_share: Optional[float] = Field(default=None, description="Cash per share.")
-    payout_ratio: Optional[float] = Field(default=None, description="Payout ratio.")
-    operating_cash_flow_sales_ratio: Optional[float] = Field(
+    total_debt_to_capitalization: Optional[float] = Field(
+        default=None, description="Total debt to capitalization."
+    )
+    cash_flow_to_debt: Optional[float] = Field(
+        default=None, description="Cash flow to debt ratio."
+    )
+    ebit_per_revenue: Optional[float] = Field(
+        default=None, description="EBIT per revenue."
+    )
+    ebt_per_ebit: Optional[float] = Field(default=None, description="EBT per EBIT.")
+    net_income_per_ebt: Optional[float] = Field(
+        default=None, description="Net income per EBT."
+    )
+    operating_cash_flow_to_sales: Optional[float] = Field(
         default=None, description="Operating cash flow sales ratio."
     )
-    free_cash_flow_operating_cash_flow_ratio: Optional[float] = Field(
+    free_cash_flow_to_operating_cash_flow: Optional[float] = Field(
         default=None, description="Free cash flow operating cash flow ratio."
     )
-    cash_flow_coverage_ratios: Optional[float] = Field(
+    cash_flow_coverage_ratio: Optional[float] = Field(
         default=None, description="Cash flow coverage ratios."
     )
-    short_term_coverage_ratios: Optional[float] = Field(
-        default=None, description="Short term coverage ratios."
+    short_term_coverage_ratio: Optional[float] = Field(
+        default=None, description="Short term coverage ratio."
     )
     capital_expenditure_coverage_ratio: Optional[float] = Field(
         default=None, description="Capital expenditure coverage ratio."
@@ -145,49 +169,56 @@ class FMPFinancialRatiosData(FinancialRatiosData):
     dividend_paid_and_capex_coverage_ratio: Optional[float] = Field(
         default=None, description="Dividend paid and capex coverage ratio."
     )
+    interest_coverage: Optional[float] = Field(
+        default=None, description="Interest coverage."
+    )
+    gross_margin: Optional[float] = Field(
+        default=None,
+        description="Gross profit, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    operating_margin: Optional[float] = Field(
+        default=None,
+        description="Operating margin, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    pre_tax_income_margin: Optional[float] = Field(
+        default=None,
+        description="Pre tax income margin, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    net_profit_margin: Optional[float] = Field(
+        default=None,
+        description="Net profit margin, as a nomralized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    effective_tax_rate: Optional[float] = Field(
+        default=None,
+        description="Effective tax rate, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    return_on_assets: Optional[float] = Field(
+        default=None,
+        description="Return on assets, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    return_on_equity: Optional[float] = Field(
+        default=None,
+        description="Return on equity, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    return_on_invested_capital: Optional[float] = Field(
+        default=None,
+        description="Return on invested capital, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    company_equity_multiplier: Optional[float] = Field(
+        default=None, description="Company equity multiplier."
+    )
     dividend_payout_ratio: Optional[float] = Field(
         default=None, description="Dividend payout ratio."
     )
-    price_book_value_ratio: Optional[float] = Field(
-        default=None, description="Price book value ratio."
-    )
-    price_to_book_ratio: Optional[float] = Field(
-        default=None, description="Price to book ratio."
-    )
-    price_to_sales_ratio: Optional[float] = Field(
-        default=None, description="Price to sales ratio."
-    )
-    price_earnings_ratio: Optional[float] = Field(
-        default=None, description="Price earnings ratio."
-    )
-    price_to_free_cash_flows_ratio: Optional[float] = Field(
-        default=None, description="Price to free cash flows ratio."
-    )
-    price_to_operating_cash_flows_ratio: Optional[float] = Field(
-        default=None, description="Price to operating cash flows ratio."
-    )
-    price_cash_flow_ratio: Optional[float] = Field(
-        default=None, description="Price cash flow ratio."
-    )
-    price_earnings_to_growth_ratio: Optional[float] = Field(
-        default=None, description="Price earnings to growth ratio."
-    )
-    price_sales_ratio: Optional[float] = Field(
-        default=None, description="Price sales ratio."
-    )
-    dividend_yield: Optional[float] = Field(default=None, description="Dividend yield.")
-    dividend_yield_percentage: Optional[float] = Field(
-        default=None, description="Dividend yield percentage."
-    )
-    dividend_per_share: Optional[float] = Field(
-        default=None, description="Dividend per share."
-    )
-    enterprise_value_multiple: Optional[float] = Field(
-        default=None, description="Enterprise value multiple."
-    )
-    price_fair_value: Optional[float] = Field(
-        default=None, description="Price fair value."
-    )
+    payout_ratio: Optional[float] = Field(default=None, description="Payout ratio.")
 
     @model_validator(mode="before")
     @classmethod
@@ -246,6 +277,9 @@ class FMPFinancialRatiosFetcher(
                 {"period": "TTM", "date": datetime.now().date().strftime("%Y-%m-%d")}
             )
         for item in results:
+            # FMP duplicates quite a few fields for some reason.
             item.pop("symbol", None)
             item.pop("dividend_yiel_percentage", None)
+            item.pop("price_to_sales_ratio", None)
+            item.pop("price_book_value_ratio", None)
         return [FMPFinancialRatiosData.model_validate(d) for d in results]

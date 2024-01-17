@@ -46,9 +46,9 @@ class IntrinioFinancialRatiosData(FinancialRatiosData):
         "net_operating_profit_after_tax_margin": "nopatmargin",
         "invested_capital_turnover": "investedcapitalturnover",
         "book_value_per_share": "bookvaluepershare",
-        "tangible_book_value": "tangiblebookvaluepershare",
-        "price_to_book_ratio": "pricetobook",
-        "price_to_tangible_book_ratio": "pricetotangiblebook",
+        "tangible_book_value_per_share": "tangiblebookvaluepershare",
+        "price_to_book": "pricetobook",
+        "price_to_tangible_book": "pricetotangiblebook",
         "price_to_revenue": "pricetorevenue",
         "price_to_earnings": "pricetoearnings",
         "dividend_yield": "dividendyield",
@@ -65,7 +65,7 @@ class IntrinioFinancialRatiosData(FinancialRatiosData):
         "operating_margin": "operatingmargin",
         "ebit_margin": "ebitmargin",
         "net_profit_margin": "profitmargin",
-        "cost_of_rev_to_revenue": "costofrevtorevenue",
+        "cost_of_revenue_to_revenue": "costofrevtorevenue",
         "sga_expense_to_revenue": "sgaextorevenue",
         "rd_expense_to_revenue": "rdextorevenue",
         "op_expense_to_revenue": "opextorevenue",
@@ -84,14 +84,14 @@ class IntrinioFinancialRatiosData(FinancialRatiosData):
         "financial_leverage": "finleverage",
         "leverage_ratio": "leverageratio",
         "compound_leverage_factor": "compoundleveragefactor",
-        "long_term_debt_equity_ratio": "ltdebttoequity",
-        "debt_equity_ratio": "debttoequity",
+        "long_term_debt_to_equity": "ltdebttoequity",
+        "debt_to_equity": "debttoequity",
         "return_on_invested_capital": "roic",
         "net_non_operating_expense_percent": "nnep",
         "roic_nnep_spread": "roicnnepspread",
         "return_on_net_non_operating_assets": "rnnoa",
         "return_on_equity": "roe",
-        "cash_returned_on_invested_capitals": "croic",
+        "cash_returned_on_invested_capital": "croic",
         "operating_return_on_assets": "oroa",
         "return_on_assets": "roa",
         "non_controlling_interest_sharing_ratio": "noncontrollinginterestsharingratio",
@@ -103,17 +103,17 @@ class IntrinioFinancialRatiosData(FinancialRatiosData):
         "long_term_debt_to_capitalization": "ltdebttocap",
         "debt_to_capitalization": "debttototalcapital",
         "preferred_equity_to_capitalization": "preferredtocap",
-        "non_controlling_interests_to_capitalization": "noncontrolinttocap",
+        "non_controlling_interest_to_capitalization": "noncontrolinttocap",
         "equity_to_capitalization": "commontocap",
         "debt_to_ebitda": "debttoebitda",
         "net_debt_to_ebitda": "netdebttoebitda",
-        "long_term_debt_to_ebita": "ltdebttoebitda",
+        "long_term_debt_to_ebitda": "ltdebttoebitda",
         "debt_to_nopat": "debttonopat",
         "net_debt_to_nopat": "netdebttonopat",
         "long_term_debt_to_nopat": "ltdebttonopat",
         "altman_z_score": "altmanzscore",
         "ebit_to_interest_expense": "ebittointerestex",
-        "nopat_to_intersest_expense": "nopattointerestex",
+        "nopat_to_interest_expense": "nopattointerestex",
         "ebit_less_capex_to_interest_expense": "ebitlesscapextointerestex",
         "nopat_less_capex_to_interest_expense": "nopatlesscapextointex",
         "operating_cash_flow_to_interest_expense": "ocftointerestex",
@@ -121,16 +121,393 @@ class IntrinioFinancialRatiosData(FinancialRatiosData):
         "free_cash_flow_to_interest_expense": "fcfftointerestex",
         "current_ratio": "curratio",
         "quick_ratio": "quickratio",
-        "debt_free_cash_free_nwc_to_revenue": "dfcfnwctorev",
+        "debt_free_cash_and_free_nwc_to_revenue": "dfcfnwctorev",
         "debt_free_nwc_to_revenue": "dfnwctorev",
         "net_working_capital_to_revenue": "nwctorev",
         "normalized_nopat_margin": "normalizednopatmargin",
         "pre_tax_income_margin": "pretaxincomemargin",
         "adjusted_basic_eps": "adjbasiceps",
         "adjusted_diluted_eps": "adjdilutedeps",
-        "adjusted_basic_diluted_eps": "adjbasicdilutedeps",
+        "adjusted_basic_and_diluted_eps": "adjbasicdilutedeps",
         "return_on_equity_simple": "roe_simple",
     }
+
+    dividend_yield: Optional[float] = Field(
+        default=None,
+        description="Dividend yield, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    earnings_yield: Optional[float] = Field(
+        default=None,
+        description="Earnings yield, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    gross_margin: Optional[float] = Field(
+        default=None,
+        description="Gross margin, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    adjusted_basic_eps: Optional[float] = Field(
+        default=None,
+        description="Adjusted basic earnings per share",
+    )
+    adjusted_diluted_eps: Optional[float] = Field(
+        default=None,
+        description="Adjusted diluted earnings per share",
+    )
+    adjusted_basic_and_diluted_eps: Optional[float] = Field(
+        default=None,
+        description="Adjusted basic and diluted earnings per share",
+    )
+    book_value_per_share: Optional[float] = Field(
+        default=None,
+        description="Book value per share",
+    )
+    tangible_book_value_per_share: Optional[float] = Field(
+        default=None,
+        description="Tangible book value per share",
+    )
+    price_to_book: Optional[float] = Field(
+        default=None,
+    )
+    price_to_tangible_book: Optional[float] = Field(
+        default=None,
+        description="Price to tangible book ratio",
+    )
+    price_to_revenue: Optional[float] = Field(
+        default=None,
+        description="Price to revenue",
+    )
+    price_to_earnings: Optional[float] = Field(
+        default=None,
+        description="Price to earnings",
+    )
+    ev_to_sales: Optional[float] = Field(
+        default=None,
+        description="Enterprise value to sales ratio",
+    )
+    ev_to_invested_capital: Optional[float] = Field(
+        default=None,
+        description="Enterprise value to invested capital ratio",
+    )
+    current_ratio: Optional[float] = Field(
+        default=None,
+        description="Current ratio",
+    )
+    quick_ratio: Optional[float] = Field(
+        default=None,
+        description="Quick ratio",
+    )
+    cash_conversion_cycle: Optional[float] = Field(
+        default=None,
+        description="Cash conversion cycle",
+    )
+    debt_free_nwc_to_revenue: Optional[float] = Field(
+        default=None,
+        description="Debt free net working capital to revenue ratio.",
+    )
+    debt_free_cash_and_free_nwc_to_revenue: Optional[float] = Field(
+        default=None,
+        description="Debt free cash and free net working capital to revenue ratio.",
+    )
+    net_working_capital_to_revenue: Optional[float] = Field(
+        default=None,
+        description="Net working capital to revenue ratio.",
+    )
+    debt_free_cash_and_free_nwc_to_revenue: Optional[float] = Field(
+        default=None,
+        description="Debt free cash and free net working capital to revenue ratio.",
+    )
+    cost_of_revenue_to_revenue: Optional[float] = Field(
+        default=None,
+        description="Cost of revenue to revenue ratio.",
+    )
+    sga_expense_to_revenue: Optional[float] = Field(
+        default=None,
+        description="SGA expense to revenue ratio.",
+    )
+    rd_expense_to_revenue: Optional[float] = Field(
+        default=None,
+    )
+    op_expense_to_revenue: Optional[float] = Field(
+        default=None,
+    )
+    days_of_sales_outstanding: Optional[float] = Field(
+        default=None,
+        description="Days of sales outstanding",
+    )
+    days_of_inventory_outstanding: Optional[float] = Field(
+        default=None,
+        description="Days of inventory outstanding",
+    )
+    days_payable_outstanding: Optional[float] = Field(
+        default=None,
+        description="Days payable outstanding",
+    )
+    asset_turnover: Optional[float] = Field(
+        default=None,
+        description="Asset turnover",
+    )
+    inventory_turnover: Optional[float] = Field(
+        default=None,
+        description="Inventory turnover",
+    )
+    fixed_asset_turnover: Optional[float] = Field(
+        default=None,
+        description="Fixed asset turnover",
+    )
+    invested_capital_turnover: Optional[float] = Field(
+        default=None,
+        description="Invested capital turnover",
+    )
+    receivables_turnover: Optional[float] = Field(
+        default=None,
+        description="Receivables turnover",
+    )
+    payables_turnover: Optional[float] = Field(
+        default=None,
+        description="Payables turnover",
+    )
+    leverage_ratio: Optional[float] = Field(
+        default=None,
+        description="Leverage ratio",
+    )
+    financial_leverage: Optional[float] = Field(
+        default=None,
+        description="Financial leverage",
+    )
+    compound_leverage_factor: Optional[float] = Field(
+        default=None,
+        description="Compound leverage factor",
+    )
+    debt_to_equity: Optional[float] = Field(
+        default=None,
+        description="Debt to equity ratio",
+    )
+    long_term_debt_to_equity: Optional[float] = Field(
+        default=None,
+        description="Long term debt to equity ratio",
+    )
+    short_term_debt_to_capitalization: Optional[float] = Field(
+        default=None,
+        description="Short term debt to capitalization ratio",
+    )
+    long_term_debt_to_capitalization: Optional[float] = Field(
+        default=None,
+        description="Long term debt to capitalization ratio",
+    )
+    debt_to_capitalization: Optional[float] = Field(
+        default=None,
+        description="Debt to capitalization ratio",
+    )
+    debt_to_ebitda: Optional[float] = Field(
+        default=None,
+        description="Debt to EBITDA ratio",
+    )
+    long_term_debt_to_ebitda: Optional[float] = Field(
+        default=None,
+        description="Long term debt to EBITDA ratio",
+    )
+    net_debt_to_ebitda: Optional[float] = Field(
+        default=None,
+        description="Net debt to EBITDA ratio",
+    )
+    ebitda_margin: Optional[float] = Field(
+        default=None,
+        description="EBITDA margin, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    ev_to_ebitda: Optional[float] = Field(
+        default=None,
+        description="Enterprise value to EBITDA ratio",
+    )
+    ebit_margin: Optional[float] = Field(
+        default=None,
+        description="EBIT margin, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    ev_to_ebit: Optional[float] = Field(
+        default=None,
+        description="Enterprise value to EBIT ratio",
+    )
+    interest_burden_percent: Optional[float] = Field(
+        default=None,
+        description="Interest burden percent (normalized)",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    ebit_to_interest_expense: Optional[float] = Field(
+        default=None,
+        description="EBIT to interest expense ratio",
+    )
+    ebit_less_capex_to_interest_expense: Optional[float] = Field(
+        default=None,
+        description="EBIT less capital expenditure to interest expense ratio.",
+    )
+    pre_tax_income_margin: Optional[float] = Field(
+        default=None,
+        description="Pre tax income margin, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    tax_burden_percent: Optional[float] = Field(
+        default=None,
+        description="Tax burden percent (normalized)",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    effective_tax_rate: Optional[float] = Field(
+        default=None,
+        description="Effective tax rate, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    operating_margin: Optional[float] = Field(
+        default=None,
+        description="Operating margin, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    ev_to_operating_cash_flow: Optional[float] = Field(
+        default=None,
+        description="Enterprise value to operating cash flow ratio.",
+    )
+    ev_to_invested_capital: Optional[float] = Field(
+        default=None,
+        description="Enterprise value to invested capital ratio.",
+    )
+    operating_cash_flow_to_capex: Optional[float] = Field(
+        default=None,
+        description="Operating cash flow to capital expenditure ratio.",
+    )
+    operating_cash_flow_to_interest_expense: Optional[float] = Field(
+        default=None,
+        description="Operating cash flow to interest expense ratio.",
+    )
+    operating_cash_flow_less_capex_to_interest_expense: Optional[float] = Field(
+        default=None,
+        description="Operating cash flow less capital expenditure to interest expense ratio",
+    )
+    net_operating_profit_after_tax_margin: Optional[float] = Field(
+        default=None,
+        description="Net operating profit after tax margin, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    ev_to_nopat: Optional[float] = Field(
+        default=None,
+        description="Enterprise value to net operating profit after tax ratio",
+    )
+    debt_to_nopat: Optional[float] = Field(
+        default=None,
+        description="Debt to net operating profit after tax ratio",
+    )
+    long_term_debt_to_nopat: Optional[float] = Field(
+        default=None,
+        description="Long term debt to net operating profit after tax ratio",
+    )
+    net_debt_to_nopat: Optional[float] = Field(
+        default=None,
+        description="Net debt to net operating profit after tax ratio",
+    )
+    nopat_less_capex_to_interest_expense: Optional[float] = Field(
+        default=None,
+        description="Net operating profit after tax less capital expenditure to interest expense ratio",
+    )
+    nopat_to_interest_expense: Optional[float] = Field(
+        default=None,
+        description="Net operating profit after tax to interest expense ratio",
+    )
+    normalized_nopat_margin: Optional[float] = Field(
+        default=None,
+        description="Normalized net operating profit after tax margin, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    net_profit_margin: Optional[float] = Field(
+        default=None,
+        description="Net profit margin, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    free_cash_flow_to_interest_expense: Optional[float] = Field(
+        default=None,
+        description="Free cash flow to interest expense ratio.",
+    )
+    ev_to_free_cash_flow: Optional[float] = Field(
+        default=None,
+        description="Enterprise value to free cash flow ratio",
+    )
+    return_on_invested_capital: Optional[float] = Field(
+        default=None,
+        description="Return on invested capital, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    net_non_operating_expense_percent: Optional[float] = Field(
+        default=None,
+        description="Net non operating expense as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    roic_nnep_spread: Optional[float] = Field(
+        default=None,
+        description="The spread between ROIC and net non operating expense percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    return_on_net_non_operating_assets: Optional[float] = Field(
+        default=None,
+        description="Return on net non operating assets, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    operating_return_on_assets: Optional[float] = Field(
+        default=None,
+        description="Operating return on assets, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    return_on_assets: Optional[float] = Field(
+        default=None,
+        description="Return on assets, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    cash_returned_on_invested_capital: Optional[float] = Field(
+        default=None,
+        description="Cash returned on invested capital, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    return_on_equity_simple: Optional[float] = Field(
+        default=None,
+        description="Return on equity simple, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    return_on_common_equity: Optional[float] = Field(
+        default=None,
+        description="Return on common equity, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    return_on_equity: Optional[float] = Field(
+        default=None,
+        description="Return on equity, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    equity_to_capitalization: Optional[float] = Field(
+        default=None,
+        description="Equity to capitalization ratio",
+    )
+    preferred_equity_to_capitalization: Optional[float] = Field(
+        default=None,
+        description="Preferred equity to capitalization ratio",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    non_controlling_interest_to_capitalization: Optional[float] = Field(
+        default=None,
+        description="Non controlling interest to capitalization ratio",
+    )
+    non_controlling_interest_sharing_ratio: Optional[float] = Field(
+        default=None,
+        description="Non controlling interest sharing ratio",
+    )
+    dividend_payout_ratio: Optional[float] = Field(
+        default=None,
+        description="Dividend payout ratio",
+    )
+    augmented_payout_ratio: Optional[float] = Field(
+        default=None,
+        description="Augmented payout ratio",
+    )
+    altman_z_score: Optional[float] = Field(
+        default=None,
+    )
 
 
 class IntrinioFinancialRatiosFetcher(
