@@ -104,7 +104,7 @@ class IntrinioIncomeStatementData(IncomeStatementData):
         "short_term_borrowings_interest_expense": "shorttermborrowinginterestexpense",
         "cost_of_revenue": "totalcostofrevenue",
         "gross_profit": "totalgrossprofit",
-        "gross_profit_magin": "grossmargin",
+        "gross_profit_margin": "grossmargin",
         "total_interest_expense": "totalinterestexpense",
         "interest_and_investment_income": "totalinterestincome",
         "total_non_interest_expense": "totalnoninterestexpense",
