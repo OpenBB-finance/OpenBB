@@ -45,6 +45,7 @@ openbb-biztoc = { path = "./providers/biztoc", optional = true, develop = true }
 openbb-cboe = { path = "./providers/cboe", optional = true, develop = true }
 openbb-ecb = { path = "./providers/ecb", optional = true, develop = true }
 openbb-finra = { path = "./providers/finra", develop = true }
+openbb-government-us = { path = "./providers/government_us", develop = true }
 openbb-nasdaq = { path = "./providers/nasdaq", optional = true, develop = true }
 openbb-seeking-alpha = { path = "./providers/seeking_alpha", optional = true, develop = true }
 openbb-stockgrid = { path = "./providers/stockgrid" , optional = true,  develop = true }
