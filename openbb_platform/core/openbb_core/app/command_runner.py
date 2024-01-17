@@ -424,6 +424,7 @@ class CommandRunner:
     def user_settings(self, user_settings: UserSettings) -> None:
         self._user_settings = user_settings
 
+    # pylint: disable=W1113
     async def run(
         self,
         route: str,
@@ -444,6 +445,7 @@ class CommandRunner:
 
         return await StaticCommandRunner.run(execution_context, *args, **kwargs)
 
+    # pylint: disable=W1113
     def sync_run(
         self,
         route: str,
