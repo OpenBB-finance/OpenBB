@@ -62,12 +62,12 @@ class CboeIndexHistoricalFetcher(
 
     @staticmethod
     def extract_data(
-        query: CboeIndexHistoricalQueryParams,
+        query: CboeIndexHistoricalQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint."""
-        # Synbol directories are cached for seven days and are used for error handling and URL generation.
+        # Symbol directories are cached for seven days and are used for error handling and URL generation.
         INDEXES = get_cboe_index_directory().index.to_list()
         query.symbol = query.symbol.upper()
         data = pd.DataFrame()
@@ -175,18 +175,19 @@ class CboeIndexHistoricalFetcher(
             puts_volume: List[float] = []
             total_options_volume: List[float] = []
 
-            for i in range(0, len(data_list)):
-                date.append(data_list[i]["datetime"])
-                open_.append(data_list[i]["price"]["open"])
-                high.append(data_list[i]["price"]["high"])
-                low.append(data_list[i]["price"]["low"])
-                close.append(data_list[i]["price"]["close"])
-                volume.append(data_list[i]["volume"]["stock_volume"])
-                calls_volume.append(data_list[i]["volume"]["calls_volume"])
-                puts_volume.append(data_list[i]["volume"]["puts_volume"])
-                total_options_volume.append(
-                    data_list[i]["volume"]["total_options_volume"]
-                )
+            for data in data_list:
+                date.append(data["datetime"])
+                price = data["price"]
+                volume_data = data["volume"]
+                open_.append(price["open"])
+                high.append(price["high"])
+                low.append(price["low"])
+                close.append(price["close"])
+                volume.append(volume_data["stock_volume"])
+                calls_volume.append(volume_data["calls_volume"])
+                puts_volume.append(volume_data["puts_volume"])
+                total_options_volume.append(volume_data["total_options_volume"])
+
             data = pd.DataFrame()
             data["date"] = pd.to_datetime(date)
             data["open"] = open_

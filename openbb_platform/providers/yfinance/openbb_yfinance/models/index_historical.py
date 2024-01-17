@@ -86,7 +86,7 @@ class YFinanceIndexHistoricalFetcher(
 
     @staticmethod
     def extract_data(
-        query: YFinanceIndexHistoricalQueryParams,
+        query: YFinanceIndexHistoricalQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[dict]:
