@@ -613,7 +613,7 @@ class TerminalController(BaseController):
             PocPlatformEquityController,
         )
 
-        self.queue = self.load_class(PocPlatformEquityController, self.queue)
+        self.queue = self.load_class(PocPlatformEquityController, "equity", self.queue)
 
     def call_intro(self, _):
         """Process intro command."""
