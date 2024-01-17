@@ -306,10 +306,14 @@ class StaticCommandRunner:
         # commands.py and the function signature does not expect "chart"
         kwargs.pop("chart", None)
         # We also pop custom headers
+
+        model_headers = (
+            SystemService().system_settings.api_settings.custom_headers or {}
+        )
         custom_headers = {
-            h: kwargs.pop(h.replace("-", "_"), None)
-            for h in SystemService().system_settings.api_settings.custom_headers or {}
-        }
+            name: kwargs.pop(name.replace("-", "_"), default)
+            for name, default in model_headers.items() or {}
+        } or None
 
         try:
             obbject = await cls._command(

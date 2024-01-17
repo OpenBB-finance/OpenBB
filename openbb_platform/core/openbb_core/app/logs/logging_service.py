@@ -135,7 +135,11 @@ class LoggingService(metaclass=SingletonMeta):
 
         return handlers_manager
 
-    def _log_startup(self, route: Optional[str] = None) -> None:
+    def _log_startup(
+        self,
+        route: Optional[str] = None,
+        custom_headers: Optional[Dict[str, Any]] = None,
+    ) -> None:
         """
         Log startup information.
         """
@@ -165,6 +169,7 @@ class LoggingService(metaclass=SingletonMeta):
                         else {}
                     ),
                     "SYSTEM": self._system_settings,
+                    "custom_headers": custom_headers,
                 },
                 default=to_jsonable_python,
             ),
@@ -209,7 +214,7 @@ class LoggingService(metaclass=SingletonMeta):
         self._handlers_manager.update_handlers(self._logging_settings)
 
         if "login" in route:
-            self._log_startup(route)
+            self._log_startup(route, custom_headers)
         else:
             logger = logging.getLogger(__name__)
 
@@ -231,7 +236,7 @@ class LoggingService(metaclass=SingletonMeta):
                     "route": route,
                     "input": kwargs,
                     "error": str(openbb_error.original) if openbb_error else None,
-                    "custom_headers": str(custom_headers),
+                    "custom_headers": custom_headers,
                 },
                 default=to_jsonable_python,
             )

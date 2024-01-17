@@ -42,7 +42,7 @@ class FastAPISettings(BaseModel):
     servers: List[Servers] = Field(default_factory=lambda: [Servers()])
     cors: Cors = Field(default_factory=Cors)
     custom_headers: Optional[Dict[str, str]] = Field(
-        default=None, description="Custom headers and default."
+        default=None, description="Custom headers and respective default value."
     )
 
     @computed_field  # type: ignore[misc]
