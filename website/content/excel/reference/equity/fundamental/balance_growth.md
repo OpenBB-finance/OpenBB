@@ -49,7 +49,10 @@ keywords:
 - net debt
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.BALANCE_GROWTH | OpenBB Add-in for Excel Docs" />
 
 Balance Sheet Statement Growth. Information about the growth of the company balance sheet.
 

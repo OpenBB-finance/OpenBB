@@ -23,7 +23,10 @@ keywords:
 - Corporate Finance Office
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="REGULATORS.SEC.SIC_SEARCH | OpenBB Add-in for Excel Docs" />
 
 Search for Industry Titles, Reporting Office, and SIC Codes.
 

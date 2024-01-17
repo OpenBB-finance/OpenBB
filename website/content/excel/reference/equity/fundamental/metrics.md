@@ -74,7 +74,10 @@ keywords:
 - calendar year
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.METRICS | OpenBB Add-in for Excel Docs" />
 
 Key Metrics. Key metrics for a given company.
 

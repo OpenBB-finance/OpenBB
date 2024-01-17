@@ -48,7 +48,10 @@ keywords:
 - is_fund
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.OVERVIEW | OpenBB Add-in for Excel Docs" />
 
 Company Overview. General information about a company.
 

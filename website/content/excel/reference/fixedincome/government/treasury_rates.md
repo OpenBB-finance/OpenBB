@@ -7,7 +7,10 @@ keywords:
 - treasury_rates
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="FIXEDINCOME.GOVERNMENT.TREASURY_RATES | OpenBB Add-in for Excel Docs" />
 
 Government Treasury Rates.
 

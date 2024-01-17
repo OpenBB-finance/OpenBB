@@ -31,7 +31,10 @@ keywords:
 - ticker symbol
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.PRICE.PERFORMANCE | OpenBB Add-in for Excel Docs" />
 
 Price performance as a return, over different periods.
 

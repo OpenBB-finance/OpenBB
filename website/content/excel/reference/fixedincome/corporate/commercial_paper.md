@@ -25,7 +25,10 @@ keywords:
 - rate
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER | OpenBB Add-in for Excel Docs" />
 
 Commercial Paper.  Commercial paper (CP) consists of short-term, promissory notes issued primarily by corporations. Maturities range up to 270 days but average about 30 days. Many companies use CP to raise cash needed for current transactions, and many find it to be a lower-cost alternative to bank loans.
 

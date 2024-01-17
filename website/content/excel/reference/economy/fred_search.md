@@ -2,7 +2,10 @@
 title: FRED_SEARCH
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ECONOMY.FRED_SEARCH | OpenBB Add-in for Excel Docs" />
 
 Search for FRED series or economic releases by ID or string. This does not return the observation values, only the metadata. Use this function to find series IDs for `fred_series()`.
 

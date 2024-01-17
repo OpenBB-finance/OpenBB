@@ -6,7 +6,10 @@ keywords:
 - available
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="INDEX.AVAILABLE | OpenBB Add-in for Excel Docs" />
 
 Available Indices. Available indices for a given provider.
 

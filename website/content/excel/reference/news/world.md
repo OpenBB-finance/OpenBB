@@ -59,7 +59,10 @@ keywords:
 - dict
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="NEWS.WORLD | OpenBB Add-in for Excel Docs" />
 
 World News. Global news data.
 

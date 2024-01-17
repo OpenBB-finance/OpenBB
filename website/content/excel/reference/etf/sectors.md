@@ -22,7 +22,10 @@ keywords:
 - normalized percentage points
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ETF.SECTORS | OpenBB Add-in for Excel Docs" />
 
 ETF Sector weighting.
 

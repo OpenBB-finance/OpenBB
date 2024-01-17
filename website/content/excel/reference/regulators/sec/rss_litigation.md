@@ -23,7 +23,10 @@ keywords:
 - link
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="REGULATORS.SEC.RSS_LITIGATION | OpenBB Add-in for Excel Docs" />
 
 The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.
 

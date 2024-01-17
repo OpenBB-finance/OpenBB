@@ -7,7 +7,10 @@ keywords:
 - historical_eps
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.HISTORICAL_EPS | OpenBB Add-in for Excel Docs" />
 
 Historical earnings-per-share for a given company.
 

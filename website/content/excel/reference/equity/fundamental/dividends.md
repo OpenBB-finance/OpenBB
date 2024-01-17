@@ -24,7 +24,10 @@ keywords:
 - declaration_date
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.DIVIDENDS | OpenBB Add-in for Excel Docs" />
 
 Historical Dividends. Historical dividends data for a given company.
 

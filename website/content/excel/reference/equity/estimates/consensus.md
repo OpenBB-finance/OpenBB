@@ -20,7 +20,10 @@ keywords:
 - target_median column
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.ESTIMATES.CONSENSUS | OpenBB Add-in for Excel Docs" />
 
 Price Target Consensus. Price target consensus data.
 

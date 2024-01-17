@@ -37,7 +37,10 @@ keywords:
 - data
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.PRICE.NBBO | OpenBB Add-in for Excel Docs" />
 
 Equity NBBO. Load National Best Bid and Offer for a specific equity.
 

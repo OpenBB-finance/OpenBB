@@ -35,7 +35,10 @@ keywords:
 - industry data
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.OWNERSHIP.MAJOR_HOLDERS | OpenBB Add-in for Excel Docs" />
 
 Equity Ownership. Information about the company ownership.
 

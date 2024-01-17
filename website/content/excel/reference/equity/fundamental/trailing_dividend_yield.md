@@ -7,7 +7,10 @@ keywords:
 - trailing_dividend_yield
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD | OpenBB Add-in for Excel Docs" />
 
 Trailing 1yr dividend yield.
 

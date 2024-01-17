@@ -20,7 +20,10 @@ keywords:
 - rate
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE | OpenBB Add-in for Excel Docs" />
 
 US Yield Curve. Get United States yield curve.
 

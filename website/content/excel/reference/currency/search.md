@@ -42,7 +42,10 @@ keywords:
 - delisted utc
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="CURRENCY.SEARCH | OpenBB Add-in for Excel Docs" />
 
 Currency Search. Search available currency pairs.
 

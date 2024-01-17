@@ -17,7 +17,10 @@ keywords:
 - title since
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.MANAGEMENT | OpenBB Add-in for Excel Docs" />
 
 Key Executives. Key executives for a given company.
 

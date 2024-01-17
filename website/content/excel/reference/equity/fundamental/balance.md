@@ -13,7 +13,10 @@ keywords:
 - balance sheet data types
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.BALANCE | OpenBB Add-in for Excel Docs" />
 
 Balance Sheet. Balance sheet statement.
 

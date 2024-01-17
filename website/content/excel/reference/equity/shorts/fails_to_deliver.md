@@ -18,7 +18,10 @@ keywords:
 - Previous closing price
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.SHORTS.FAILS_TO_DELIVER | OpenBB Add-in for Excel Docs" />
 
 Get reported Fail-to-deliver (FTD) data.
 

@@ -19,7 +19,10 @@ keywords:
 - business line
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT | OpenBB Add-in for Excel Docs" />
 
 Revenue Business Line. Business line revenue data.
 

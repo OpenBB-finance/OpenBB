@@ -26,7 +26,10 @@ keywords:
 - data
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="FIXEDINCOME.SPREADS.TREASURY_EFFR | OpenBB Add-in for Excel Docs" />
 
 Select Treasury Bill.  Get Selected Treasury Bill Minus Federal Funds Rate. Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S. Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.
 

@@ -42,7 +42,10 @@ keywords:
 - transactions
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="INDEX.MARKET | OpenBB Add-in for Excel Docs" />
 
 Historical Market Indices.
 

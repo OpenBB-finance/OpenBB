@@ -23,7 +23,10 @@ keywords:
 - metadata info
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ECONOMY.CPI | OpenBB Add-in for Excel Docs" />
 
 Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate of change (inflation).
 

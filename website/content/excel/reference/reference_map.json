@@ -2,6 +2,7 @@
   "/crypto/price/historical": {
     "name": "historical",
     "description": "Cryptocurrency Historical Price. Cryptocurrency historical price data.",
+    "function": "CRYPTO.PRICE.HISTORICAL",
     "signature": "=OBB.CRYPTO.PRICE.HISTORICAL(symbol;[start_date];[end_date];[provider];[timeseries];[interval];[multiplier];[timespan];[sort];[limit];[adjusted];[exchanges])",
     "parameters": {
       "symbol": {
@@ -120,6 +121,7 @@
   "/crypto/search": {
     "name": "search",
     "description": "Cryptocurrency Search. Search available cryptocurrency pairs.",
+    "function": "CRYPTO.SEARCH",
     "signature": "=OBB.CRYPTO.SEARCH([query];[provider])",
     "parameters": {
       "query": {
@@ -158,6 +160,7 @@
   "/currency/price/historical": {
     "name": "historical",
     "description": "Currency Historical Price. Currency historical data.",
+    "function": "CURRENCY.PRICE.HISTORICAL",
     "signature": "=OBB.CURRENCY.PRICE.HISTORICAL(symbol;[start_date];[end_date];[provider];[interval];[multiplier];[timespan];[sort];[limit];[adjusted])",
     "parameters": {
       "symbol": {
@@ -263,6 +266,7 @@
   "/currency/search": {
     "name": "search",
     "description": "Currency Search. Search available currency pairs.",
+    "function": "CURRENCY.SEARCH",
     "signature": "=OBB.CURRENCY.SEARCH([provider];[symbol];[date];[search];[active];[order];[sort];[limit])",
     "parameters": {
       "provider": {
@@ -364,6 +368,7 @@
   "/derivatives/options/chains": {
     "name": "chains",
     "description": "Get the complete options chain for a ticker.",
+    "function": "DERIVATIVES.OPTIONS.CHAINS",
     "signature": "=OBB.DERIVATIVES.OPTIONS.CHAINS(symbol;[provider];[date])",
     "parameters": {
       "symbol": {
@@ -470,6 +475,7 @@
   "/derivatives/options/unusual": {
     "name": "unusual",
     "description": "Get the complete options chain for a ticker.",
+    "function": "DERIVATIVES.OPTIONS.UNUSUAL",
     "signature": "=OBB.DERIVATIVES.OPTIONS.UNUSUAL([symbol];[provider];[source])",
     "parameters": {
       "symbol": {
@@ -531,6 +537,7 @@
   "/economy/calendar": {
     "name": "calendar",
     "description": "Economic Calendar.",
+    "function": "ECONOMY.CALENDAR",
     "signature": "=OBB.ECONOMY.CALENDAR([start_date];[end_date];[provider];[country];[importance];[group])",
     "parameters": {
       "start_date": {
@@ -628,6 +635,7 @@
   "/economy/cpi": {
     "name": "cpi",
     "description": "Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate of change (inflation).",
+    "function": "ECONOMY.CPI",
     "signature": "=OBB.ECONOMY.CPI(countries;[units];[frequency];[harmonized];[start_date];[end_date];[provider])",
     "parameters": {
       "countries": {
@@ -679,6 +687,7 @@
   "/economy/fred_search": {
     "name": "fred_search",
     "description": "Search for FRED series or economic releases by ID or string. This does not return the observation values, only the metadata. Use this function to find series IDs for `fred_series()`.",
+    "function": "ECONOMY.FRED_SEARCH",
     "signature": "=OBB.ECONOMY.FRED_SEARCH([query];[provider];[is_release];[release_id];[limit];[offset];[filter_variable];[filter_value];[tag_names];[exclude_tag_names])",
     "parameters": {
       "query": {
@@ -796,6 +805,7 @@
   "/economy/fred_series": {
     "name": "fred_series",
     "description": "Get data by series ID from FRED.",
+    "function": "ECONOMY.FRED_SERIES",
     "signature": "=OBB.ECONOMY.FRED_SERIES(symbol;[start_date];[end_date];[limit];[provider];[frequency];[aggregation_method];[transform];[all_pages];[sleep])",
     "parameters": {
       "symbol": {
@@ -865,6 +875,7 @@
   "/economy/gdp/forecast": {
     "name": "forecast",
     "description": "Forecasted GDP Data.",
+    "function": "ECONOMY.GDP.FORECAST",
     "signature": "=OBB.ECONOMY.GDP.FORECAST([period];[start_date];[end_date];[type];[provider];[country])",
     "parameters": {
       "period": {
@@ -914,6 +925,7 @@
   "/economy/gdp/nominal": {
     "name": "nominal",
     "description": "Nominal GDP Data.",
+    "function": "ECONOMY.GDP.NOMINAL",
     "signature": "=OBB.ECONOMY.GDP.NOMINAL([units];[start_date];[end_date];[provider];[country])",
     "parameters": {
       "units": {
@@ -958,6 +970,7 @@
   "/economy/gdp/real": {
     "name": "real",
     "description": "Real GDP Data.",
+    "function": "ECONOMY.GDP.REAL",
     "signature": "=OBB.ECONOMY.GDP.REAL([units];[start_date];[end_date];[provider];[country])",
     "parameters": {
       "units": {
@@ -1002,6 +1015,7 @@
   "/economy/money_measures": {
     "name": "money_measures",
     "description": "Money Measures.",
+    "function": "ECONOMY.MONEY_MEASURES",
     "signature": "=OBB.ECONOMY.MONEY_MEASURES([start_date];[end_date];[adjusted];[provider])",
     "parameters": {
       "start_date": {
@@ -1059,6 +1073,7 @@
   "/economy/risk_premium": {
     "name": "risk_premium",
     "description": "Historical Market Risk Premium.",
+    "function": "ECONOMY.RISK_PREMIUM",
     "signature": "=OBB.ECONOMY.RISK_PREMIUM([provider])",
     "parameters": {
       "provider": {
@@ -1089,6 +1104,7 @@
   "/equity/calendar/dividend": {
     "name": "dividend",
     "description": "Upcoming and Historical Dividend Calendar.",
+    "function": "EQUITY.CALENDAR.DIVIDEND",
     "signature": "=OBB.EQUITY.CALENDAR.DIVIDEND([start_date];[end_date];[provider])",
     "parameters": {
       "start_date": {
@@ -1144,6 +1160,7 @@
   "/equity/calendar/earnings": {
     "name": "earnings",
     "description": "Upcoming and Historical earnings calendar.",
+    "function": "EQUITY.CALENDAR.EARNINGS",
     "signature": "=OBB.EQUITY.CALENDAR.EARNINGS([start_date];[end_date];[provider])",
     "parameters": {
       "start_date": {
@@ -1205,6 +1222,7 @@
   "/equity/calendar/ipo": {
     "name": "ipo",
     "description": "Upcoming and Historical IPO Calendar.",
+    "function": "EQUITY.CALENDAR.IPO",
     "signature": "=OBB.EQUITY.CALENDAR.IPO([symbol];[start_date];[end_date];[limit];[provider];[status];[offer_amount_greater_than];[offer_amount_less_than])",
     "parameters": {
       "symbol": {
@@ -1324,6 +1342,7 @@
   "/equity/calendar/splits": {
     "name": "splits",
     "description": "Calendar Splits. Show Stock Split Calendar.",
+    "function": "EQUITY.CALENDAR.SPLITS",
     "signature": "=OBB.EQUITY.CALENDAR.SPLITS([start_date];[end_date];[provider])",
     "parameters": {
       "start_date": {
@@ -1367,6 +1386,7 @@
   "/equity/compare/peers": {
     "name": "peers",
     "description": "Equity Peers. Company peers.",
+    "function": "EQUITY.COMPARE.PEERS",
     "signature": "=OBB.EQUITY.COMPARE.PEERS(symbol;[provider])",
     "parameters": {
       "symbol": {
@@ -1393,6 +1413,7 @@
   "/equity/discovery/filings": {
     "name": "filings",
     "description": "Get the most-recent filings submitted to the SEC.",
+    "function": "EQUITY.DISCOVERY.FILINGS",
     "signature": "=OBB.EQUITY.DISCOVERY.FILINGS([start_date];[end_date];[form_type];[limit];[provider];[isDone])",
     "parameters": {
       "start_date": {
@@ -1454,6 +1475,7 @@
   "/equity/estimates/consensus": {
     "name": "consensus",
     "description": "Price Target Consensus. Price target consensus data.",
+    "function": "EQUITY.ESTIMATES.CONSENSUS",
     "signature": "=OBB.EQUITY.ESTIMATES.CONSENSUS(symbol;[provider])",
     "parameters": {
       "symbol": {
@@ -1492,6 +1514,7 @@
   "/equity/estimates/historical": {
     "name": "historical",
     "description": "Historical Analyst Estimates. Analyst stock recommendations.",
+    "function": "EQUITY.ESTIMATES.HISTORICAL",
     "signature": "=OBB.EQUITY.ESTIMATES.HISTORICAL(symbol;[period];[limit];[provider])",
     "parameters": {
       "symbol": {
@@ -1591,6 +1614,7 @@
   "/equity/estimates/price_target": {
     "name": "price_target",
     "description": "Price Target. Price target data.",
+    "function": "EQUITY.ESTIMATES.PRICE_TARGET",
     "signature": "=OBB.EQUITY.ESTIMATES.PRICE_TARGET(symbol;[provider];[with_grade])",
     "parameters": {
       "symbol": {
@@ -1661,6 +1685,7 @@
   "/equity/fundamental/balance": {
     "name": "balance",
     "description": "Balance Sheet. Balance sheet statement.",
+    "function": "EQUITY.FUNDAMENTAL.BALANCE",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.BALANCE(symbol;[period];[limit];[provider];[fiscal_year];[filing_date];[filing_date_lt];[filing_date_lte];[filing_date_gt];[filing_date_gte];[period_of_report_date];[period_of_report_date_lt];[period_of_report_date_lte];[period_of_report_date_gt];[period_of_report_date_gte];[include_sources];[order];[sort])",
     "parameters": {
       "symbol": {
@@ -2148,6 +2173,7 @@
   "/equity/fundamental/balance_growth": {
     "name": "balance_growth",
     "description": "Balance Sheet Statement Growth. Information about the growth of the company balance sheet.",
+    "function": "EQUITY.FUNDAMENTAL.BALANCE_GROWTH",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.BALANCE_GROWTH(symbol;[limit];[provider])",
     "parameters": {
       "symbol": {
@@ -2302,6 +2328,7 @@
   "/equity/fundamental/cash": {
     "name": "cash",
     "description": "Cash Flow Statement. Information about the cash flow statement.",
+    "function": "EQUITY.FUNDAMENTAL.CASH",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.CASH(symbol;[period];[limit];[provider];[fiscal_year];[filing_date];[filing_date_lt];[filing_date_lte];[filing_date_gt];[filing_date_gte];[period_of_report_date];[period_of_report_date_lt];[period_of_report_date_lte];[period_of_report_date_gt];[period_of_report_date_gte];[include_sources];[order];[sort])",
     "parameters": {
       "symbol": {
@@ -2648,6 +2675,7 @@
   "/equity/fundamental/cash_growth": {
     "name": "cash_growth",
     "description": "Cash Flow Statement Growth. Information about the growth of the company cash flow statement.",
+    "function": "EQUITY.FUNDAMENTAL.CASH_GROWTH",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.CASH_GROWTH(symbol;[limit];[provider])",
     "parameters": {
       "symbol": {
@@ -2775,6 +2803,7 @@
   "/equity/fundamental/dividends": {
     "name": "dividends",
     "description": "Historical Dividends. Historical dividends data for a given company.",
+    "function": "EQUITY.FUNDAMENTAL.DIVIDENDS",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.DIVIDENDS(symbol;[provider];[page_size])",
     "parameters": {
       "symbol": {
@@ -2833,6 +2862,7 @@
   "/equity/fundamental/employee_count": {
     "name": "employee_count",
     "description": "Historical Employees. Historical number of employees.",
+    "function": "EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.EMPLOYEE_COUNT(symbol;[provider])",
     "parameters": {
       "symbol": {
@@ -2883,6 +2913,7 @@
   "/equity/fundamental/filings": {
     "name": "filings",
     "description": "Company Filings. Company filings data.",
+    "function": "EQUITY.FUNDAMENTAL.FILINGS",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.FILINGS([symbol];[provider];[form_type];[limit];[start_date];[end_date];[thea_enabled];[cik];[use_cache])",
     "parameters": {
       "symbol": {
@@ -3019,6 +3050,7 @@
   "/equity/fundamental/historical_attributes": {
     "name": "historical_attributes",
     "description": "Fetch the historical values of a data tag from Intrinio.",
+    "function": "EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES(symbol;tag;[start_date];[end_date];[frequency];[limit];[type];[sort];[provider])",
     "parameters": {
       "symbol": {
@@ -3083,6 +3115,7 @@
   "/equity/fundamental/historical_eps": {
     "name": "historical_eps",
     "description": "Historical earnings-per-share for a given company.",
+    "function": "EQUITY.FUNDAMENTAL.HISTORICAL_EPS",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_EPS(symbol;[provider];[limit])",
     "parameters": {
       "symbol": {
@@ -3141,6 +3174,7 @@
   "/equity/fundamental/historical_splits": {
     "name": "historical_splits",
     "description": "Historical Splits. Historical splits data.",
+    "function": "EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.HISTORICAL_SPLITS(symbol;[provider])",
     "parameters": {
       "symbol": {
@@ -3176,6 +3210,7 @@
   "/equity/fundamental/income": {
     "name": "income",
     "description": "Income Statement. Report on a company's financial performance.",
+    "function": "EQUITY.FUNDAMENTAL.INCOME",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.INCOME(symbol;[period];[limit];[provider];[fiscal_year];[filing_date];[filing_date_lt];[filing_date_lte];[filing_date_gt];[filing_date_gte];[period_of_report_date];[period_of_report_date_lt];[period_of_report_date_lte];[period_of_report_date_gt];[period_of_report_date_gte];[include_sources];[order];[sort])",
     "parameters": {
       "symbol": {
@@ -3648,6 +3683,7 @@
   "/equity/fundamental/income_growth": {
     "name": "income_growth",
     "description": "Income Statement Growth. Information about the growth of the company income statement.",
+    "function": "EQUITY.FUNDAMENTAL.INCOME_GROWTH",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.INCOME_GROWTH(symbol;[limit];[period];[provider])",
     "parameters": {
       "symbol": {
@@ -3768,6 +3804,7 @@
   "/equity/fundamental/latest_attributes": {
     "name": "latest_attributes",
     "description": "Fetch the latest value of a data tag from Intrinio.",
+    "function": "EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES(symbol;tag;[provider])",
     "parameters": {
       "symbol": {
@@ -3799,6 +3836,7 @@
   "/equity/fundamental/management": {
     "name": "management",
     "description": "Key Executives. Key executives for a given company.",
+    "function": "EQUITY.FUNDAMENTAL.MANAGEMENT",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT(symbol;[provider])",
     "parameters": {
       "symbol": {
@@ -3843,6 +3881,7 @@
   "/equity/fundamental/management_compensation": {
     "name": "management_compensation",
     "description": "Get Executive Compensation. Information about the executive compensation for a given company.",
+    "function": "EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION(symbol;[provider])",
     "parameters": {
       "symbol": {
@@ -3905,6 +3944,7 @@
   "/equity/fundamental/metrics": {
     "name": "metrics",
     "description": "Key Metrics. Key metrics for a given company.",
+    "function": "EQUITY.FUNDAMENTAL.METRICS",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.METRICS(symbol;[period];[limit];[provider];[with_ttm])",
     "parameters": {
       "symbol": {
@@ -4138,6 +4178,7 @@
   "/equity/fundamental/multiples": {
     "name": "multiples",
     "description": "Equity Valuation Multiples. Valuation multiples for a stock ticker.",
+    "function": "EQUITY.FUNDAMENTAL.MULTIPLES",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.MULTIPLES(symbol;[provider])",
     "parameters": {
       "symbol": {
@@ -4344,6 +4385,7 @@
   "/equity/fundamental/overview": {
     "name": "overview",
     "description": "Company Overview. General information about a company.",
+    "function": "EQUITY.FUNDAMENTAL.OVERVIEW",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.OVERVIEW(symbol;[provider])",
     "parameters": {
       "symbol": {
@@ -4475,6 +4517,7 @@
   "/equity/fundamental/ratios": {
     "name": "ratios",
     "description": "Extensive set of ratios over time. Financial ratios for a given company.",
+    "function": "EQUITY.FUNDAMENTAL.RATIOS",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.RATIOS(symbol;[period];[limit];[provider];[with_ttm];[fiscal_year])",
     "parameters": {
       "symbol": {
@@ -4695,6 +4738,7 @@
   "/equity/fundamental/reported_financials": {
     "name": "reported_financials",
     "description": "Financial statements, as-reported.",
+    "function": "EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.REPORTED_FINANCIALS(symbol;[period];[statement_type];[limit];[provider];[fiscal_year])",
     "parameters": {
       "symbol": {
@@ -4747,6 +4791,7 @@
   "/equity/fundamental/revenue_per_geography": {
     "name": "revenue_per_geography",
     "description": "Revenue Geographic. Geographic revenue data.",
+    "function": "EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY(symbol;[period];[structure];[provider])",
     "parameters": {
       "symbol": {
@@ -4801,6 +4846,7 @@
   "/equity/fundamental/revenue_per_segment": {
     "name": "revenue_per_segment",
     "description": "Revenue Business Line. Business line revenue data.",
+    "function": "EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.REVENUE_PER_SEGMENT(symbol;[period];[structure];[provider])",
     "parameters": {
       "symbol": {
@@ -4840,6 +4886,7 @@
   "/equity/fundamental/search_attributes": {
     "name": "search_attributes",
     "description": "Search Intrinio data tags.",
+    "function": "EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.SEARCH_ATTRIBUTES(query;[limit];[provider])",
     "parameters": {
       "query": {
@@ -4901,6 +4948,7 @@
   "/equity/fundamental/trailing_dividend_yield": {
     "name": "trailing_dividend_yield",
     "description": "Trailing 1yr dividend yield.",
+    "function": "EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.TRAILING_DIVIDEND_YIELD([symbol];[provider])",
     "parameters": {
       "symbol": {
@@ -4930,6 +4978,7 @@
   "/equity/fundamental/transcript": {
     "name": "transcript",
     "description": "Earnings Call Transcript. Earnings call transcript for a given company.",
+    "function": "EQUITY.FUNDAMENTAL.TRANSCRIPT",
     "signature": "=OBB.EQUITY.FUNDAMENTAL.TRANSCRIPT(symbol;year;[provider])",
     "parameters": {
       "symbol": {
@@ -4973,6 +5022,7 @@
   "/equity/market_snapshots": {
     "name": "market_snapshots",
     "description": "Get a current, complete, market snapshot.",
+    "function": "EQUITY.MARKET_SNAPSHOTS",
     "signature": "=OBB.EQUITY.MARKET_SNAPSHOTS([provider];[market])",
     "parameters": {
       "provider": {
@@ -5116,6 +5166,7 @@
   "/equity/ownership/insider_trading": {
     "name": "insider_trading",
     "description": "Insider Trading. Information about insider trading.",
+    "function": "EQUITY.OWNERSHIP.INSIDER_TRADING",
     "signature": "=OBB.EQUITY.OWNERSHIP.INSIDER_TRADING(symbol;[limit];[provider];[transactionType];[start_date];[end_date];[ownership_type];[sort_by])",
     "parameters": {
       "symbol": {
@@ -5256,6 +5307,7 @@
   "/equity/ownership/institutional": {
     "name": "institutional",
     "description": "Institutional Ownership. Institutional ownership data.",
+    "function": "EQUITY.OWNERSHIP.INSTITUTIONAL",
     "signature": "=OBB.EQUITY.OWNERSHIP.INSTITUTIONAL(symbol;[provider];[include_current_quarter];[date];[page_size])",
     "parameters": {
       "symbol": {
@@ -5429,6 +5481,7 @@
   "/equity/ownership/major_holders": {
     "name": "major_holders",
     "description": "Equity Ownership. Information about the company ownership.",
+    "function": "EQUITY.OWNERSHIP.MAJOR_HOLDERS",
     "signature": "=OBB.EQUITY.OWNERSHIP.MAJOR_HOLDERS(symbol;[date];[page];[provider])",
     "parameters": {
       "symbol": {
@@ -5579,6 +5632,7 @@
   "/equity/ownership/share_statistics": {
     "name": "share_statistics",
     "description": "Share Statistics. Share statistics for a given company.",
+    "function": "EQUITY.OWNERSHIP.SHARE_STATISTICS",
     "signature": "=OBB.EQUITY.OWNERSHIP.SHARE_STATISTICS(symbol;[provider])",
     "parameters": {
       "symbol": {
@@ -5626,6 +5680,7 @@
   "/equity/price/historical": {
     "name": "historical",
     "description": "Equity Historical price. Load stock data for a specific ticker.",
+    "function": "EQUITY.PRICE.HISTORICAL",
     "signature": "=OBB.EQUITY.PRICE.HISTORICAL(symbol;[interval];[start_date];[end_date];[provider];[limit];[sort];[start_time];[end_time];[timezone];[source];[sleep];[adjusted])",
     "parameters": {
       "symbol": {
@@ -5788,6 +5843,7 @@
   "/equity/price/nbbo": {
     "name": "nbbo",
     "description": "Equity NBBO. Load National Best Bid and Offer for a specific equity.",
+    "function": "EQUITY.PRICE.NBBO",
     "signature": "=OBB.EQUITY.PRICE.NBBO(symbol;[provider];[limit];[timestamp];[timestamp_lt];[timestamp_gt];[timestamp_lte];[timestamp_gte])",
     "parameters": {
       "symbol": {
@@ -5880,6 +5936,7 @@
   "/equity/price/performance": {
     "name": "performance",
     "description": "Price performance as a return, over different periods.",
+    "function": "EQUITY.PRICE.PERFORMANCE",
     "signature": "=OBB.EQUITY.PRICE.PERFORMANCE(symbol;[provider])",
     "parameters": {
       "symbol": {
@@ -5948,6 +6005,7 @@
   "/equity/price/quote": {
     "name": "quote",
     "description": "Equity Quote. Load stock data for a specific ticker.",
+    "function": "EQUITY.PRICE.QUOTE",
     "signature": "=OBB.EQUITY.PRICE.QUOTE(symbol;[provider];[source])",
     "parameters": {
       "symbol": {
@@ -6108,6 +6166,7 @@
   "/equity/profile": {
     "name": "profile",
     "description": "Equity Info. Get general price and performance metrics of a stock.",
+    "function": "EQUITY.PROFILE",
     "signature": "=OBB.EQUITY.PROFILE(symbol;[provider])",
     "parameters": {
       "symbol": {
@@ -6245,6 +6304,7 @@
   "/equity/screener": {
     "name": "screener",
     "description": "Equity Screen. Screen for companies meeting various criteria.",
+    "function": "EQUITY.SCREENER",
     "signature": "=OBB.EQUITY.SCREENER([provider];[mktcap_min];[mktcap_max];[price_min];[price_max];[beta_min];[beta_max];[volume_min];[volume_max];[dividend_min];[dividend_max];[is_etf];[is_active];[sector];[industry];[country];[exchange];[limit])",
     "parameters": {
       "provider": {
@@ -6390,6 +6450,7 @@
   "/equity/search": {
     "name": "search",
     "description": "Equity Search. Search for a company or stock ticker.",
+    "function": "EQUITY.SEARCH",
     "signature": "=OBB.EQUITY.SEARCH([query];[is_symbol];[provider];[active];[limit];[is_fund];[use_cache])",
     "parameters": {
       "query": {
@@ -6453,6 +6514,7 @@
   "/equity/shorts/fails_to_deliver": {
     "name": "fails_to_deliver",
     "description": "Get reported Fail-to-deliver (FTD) data.",
+    "function": "EQUITY.SHORTS.FAILS_TO_DELIVER",
     "signature": "=OBB.EQUITY.SHORTS.FAILS_TO_DELIVER(symbol;[provider];[limit];[skip_reports])",
     "parameters": {
       "symbol": {
@@ -6504,6 +6566,7 @@
   "/etf/countries": {
     "name": "countries",
     "description": "ETF Country weighting.",
+    "function": "ETF.COUNTRIES",
     "signature": "=OBB.ETF.COUNTRIES(symbol;[provider])",
     "parameters": {
       "symbol": {
@@ -6530,6 +6593,7 @@
   "/etf/holdings": {
     "name": "holdings",
     "description": "Get the holdings for an individual ETF.",
+    "function": "ETF.HOLDINGS",
     "signature": "=OBB.ETF.HOLDINGS(symbol;[provider];[date];[cik];[use_cache])",
     "parameters": {
       "symbol": {
@@ -6802,6 +6866,7 @@
   "/etf/holdings_date": {
     "name": "holdings_date",
     "description": "Get the holdings filing date for an individual ETF.",
+    "function": "ETF.HOLDINGS_DATE",
     "signature": "=OBB.ETF.HOLDINGS_DATE(symbol;[provider];[cik])",
     "parameters": {
       "symbol": {
@@ -6833,6 +6898,7 @@
   "/etf/holdings_performance": {
     "name": "holdings_performance",
     "description": "Get the ETF holdings performance.",
+    "function": "ETF.HOLDINGS_PERFORMANCE",
     "signature": "=OBB.ETF.HOLDINGS_PERFORMANCE(symbol;[provider])",
     "parameters": {
       "symbol": {
@@ -6901,6 +6967,7 @@
   "/etf/info": {
     "name": "info",
     "description": "ETF Information Overview.",
+    "function": "ETF.INFO",
     "signature": "=OBB.ETF.INFO(symbol;[provider])",
     "parameters": {
       "symbol": {
@@ -6972,6 +7039,7 @@
   "/etf/price_performance": {
     "name": "price_performance",
     "description": "Price performance as a return, over different periods.",
+    "function": "ETF.PRICE_PERFORMANCE",
     "signature": "=OBB.ETF.PRICE_PERFORMANCE(symbol;[provider])",
     "parameters": {
       "symbol": {
@@ -7040,6 +7108,7 @@
   "/etf/search": {
     "name": "search",
     "description": "Search for ETFs.  An empty query returns the full list of ETFs from the provider.",
+    "function": "ETF.SEARCH",
     "signature": "=OBB.ETF.SEARCH([query];[provider];[exchange];[is_active])",
     "parameters": {
       "query": {
@@ -7112,6 +7181,7 @@
   "/etf/sectors": {
     "name": "sectors",
     "description": "ETF Sector weighting.",
+    "function": "ETF.SECTORS",
     "signature": "=OBB.ETF.SECTORS(symbol;[provider])",
     "parameters": {
       "symbol": {
@@ -7141,6 +7211,7 @@
   "/fixedincome/corporate/commercial_paper": {
     "name": "commercial_paper",
     "description": "Commercial Paper.  Commercial paper (CP) consists of short-term, promissory notes issued primarily by corporations. Maturities range up to 270 days but average about 30 days. Many companies use CP to raise cash needed for current transactions, and many find it to be a lower-cost alternative to bank loans.",
+    "function": "FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER",
     "signature": "=OBB.FIXEDINCOME.CORPORATE.COMMERCIAL_PAPER([start_date];[end_date];[maturity];[category];[grade];[provider])",
     "parameters": {
       "start_date": {
@@ -7190,6 +7261,7 @@
   "/fixedincome/corporate/hqm": {
     "name": "hqm",
     "description": "High Quality Market Corporate Bond.  The HQM yield curve represents the high quality corporate bond market, i.e., corporate bonds rated AAA, AA, or A.  The HQM curve contains two regression terms. These terms are adjustment factors that blend AAA, AA, and A bonds into a single HQM yield curve that is the market-weighted average (MWA) quality of high quality bonds.",
+    "function": "FIXEDINCOME.CORPORATE.HQM",
     "signature": "=OBB.FIXEDINCOME.CORPORATE.HQM([date];[yield_curve];[provider])",
     "parameters": {
       "date": {
@@ -7233,6 +7305,7 @@
   "/fixedincome/corporate/ice_bofa": {
     "name": "ice_bofa",
     "description": "ICE BofA US Corporate Bond Indices.  The ICE BofA US Corporate Index tracks the performance of US dollar denominated investment grade corporate debt publicly issued in the US domestic market. Qualifying securities must have an investment grade rating (based on an average of Moody\u2019s, S&P and Fitch), at least 18 months to final maturity at the time of issuance, at least one year remaining term to final maturity as of the rebalance date, a fixed coupon schedule and a minimum amount outstanding of $250 million. The ICE BofA US Corporate Index is a component of the US Corporate Master Index.",
+    "function": "FIXEDINCOME.CORPORATE.ICE_BOFA",
     "signature": "=OBB.FIXEDINCOME.CORPORATE.ICE_BOFA([start_date];[end_date];[index_type];[provider];[category];[area];[grade];[options])",
     "parameters": {
       "start_date": {
@@ -7292,6 +7365,7 @@
   "/fixedincome/corporate/moody": {
     "name": "moody",
     "description": "Moody Corporate Bond Index.  Moody's Aaa and Baa are investment bonds that acts as an index of the performance of all bonds given an Aaa or Baa rating by Moody's Investors Service respectively. These corporate bonds often are used in macroeconomics as an alternative to the federal ten-year Treasury Bill as an indicator of the interest rate.",
+    "function": "FIXEDINCOME.CORPORATE.MOODY",
     "signature": "=OBB.FIXEDINCOME.CORPORATE.MOODY([start_date];[end_date];[index_type];[provider];[spread])",
     "parameters": {
       "start_date": {
@@ -7336,6 +7410,7 @@
   "/fixedincome/corporate/spot_rates": {
     "name": "spot_rates",
     "description": "Spot Rates.  The spot rates for any maturity is the yield on a bond that provides a single payment at that maturity. This is a zero coupon bond. Because each spot rate pertains to a single cashflow, it is the relevant interest rate concept for discounting a pension liability at the same maturity.",
+    "function": "FIXEDINCOME.CORPORATE.SPOT_RATES",
     "signature": "=OBB.FIXEDINCOME.CORPORATE.SPOT_RATES([start_date];[end_date];[maturity];[category];[provider])",
     "parameters": {
       "start_date": {
@@ -7380,6 +7455,7 @@
   "/fixedincome/government/treasury_rates": {
     "name": "treasury_rates",
     "description": "Government Treasury Rates.",
+    "function": "FIXEDINCOME.GOVERNMENT.TREASURY_RATES",
     "signature": "=OBB.FIXEDINCOME.GOVERNMENT.TREASURY_RATES([start_date];[end_date];[provider])",
     "parameters": {
       "start_date": {
@@ -7447,6 +7523,7 @@
   "/fixedincome/government/us_yield_curve": {
     "name": "us_yield_curve",
     "description": "US Yield Curve. Get United States yield curve.",
+    "function": "FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE",
     "signature": "=OBB.FIXEDINCOME.GOVERNMENT.US_YIELD_CURVE([date];[inflation_adjusted];[provider])",
     "parameters": {
       "date": {
@@ -7481,6 +7558,7 @@
   "/fixedincome/rate/ameribor": {
     "name": "ameribor",
     "description": "Ameribor.  Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of short-term interbank borrowing. This rate is based on transactions in overnight unsecured loans conducted on the American Financial Exchange (AFX).",
+    "function": "FIXEDINCOME.RATE.AMERIBOR",
     "signature": "=OBB.FIXEDINCOME.RATE.AMERIBOR([start_date];[end_date];[provider];[parameter])",
     "parameters": {
       "start_date": {
@@ -7520,6 +7598,7 @@
   "/fixedincome/rate/dpcredit": {
     "name": "dpcredit",
     "description": "Discount Window Primary Credit Rate.  A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.",
+    "function": "FIXEDINCOME.RATE.DPCREDIT",
     "signature": "=OBB.FIXEDINCOME.RATE.DPCREDIT([start_date];[end_date];[provider];[parameter])",
     "parameters": {
       "start_date": {
@@ -7559,6 +7638,7 @@
   "/fixedincome/rate/ecb": {
     "name": "ecb",
     "description": "European Central Bank Interest Rates.  The Governing Council of the ECB sets the key interest rates for the euro area:  - The interest rate on the main refinancing operations (MRO), which provide the bulk of liquidity to the banking system. - The rate on the deposit facility, which banks may use to make overnight deposits with the Eurosystem. - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.",
+    "function": "FIXEDINCOME.RATE.ECB",
     "signature": "=OBB.FIXEDINCOME.RATE.ECB([start_date];[end_date];[interest_rate_type];[provider])",
     "parameters": {
       "start_date": {
@@ -7598,6 +7678,7 @@
   "/fixedincome/rate/effr": {
     "name": "effr",
     "description": "Fed Funds Rate.  Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.",
+    "function": "FIXEDINCOME.RATE.EFFR",
     "signature": "=OBB.FIXEDINCOME.RATE.EFFR([start_date];[end_date];[provider];[parameter])",
     "parameters": {
       "start_date": {
@@ -7637,6 +7718,7 @@
   "/fixedincome/rate/effr_forecast": {
     "name": "effr_forecast",
     "description": "Fed Funds Rate Projections.  The projections for the federal funds rate are the value of the midpoint of the projected appropriate target range for the federal funds rate or the projected appropriate target level for the federal funds rate at the end of the specified calendar year or over the longer run.",
+    "function": "FIXEDINCOME.RATE.EFFR_FORECAST",
     "signature": "=OBB.FIXEDINCOME.RATE.EFFR_FORECAST([provider];[long_run])",
     "parameters": {
       "provider": {
@@ -7684,6 +7766,7 @@
   "/fixedincome/rate/estr": {
     "name": "estr",
     "description": "Euro Short-Term Rate.  The euro short-term rate (\u20acSTR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in the euro area. The \u20acSTR is published on each TARGET2 business day based on transactions conducted and settled on the previous TARGET2 business day (the reporting date \u201cT\u201d) with a maturity date of T+1 which are deemed to have been executed at arm\u2019s length and thus reflect market rates in an unbiased way.",
+    "function": "FIXEDINCOME.RATE.ESTR",
     "signature": "=OBB.FIXEDINCOME.RATE.ESTR([start_date];[end_date];[provider];[parameter])",
     "parameters": {
       "start_date": {
@@ -7723,6 +7806,7 @@
   "/fixedincome/rate/iorb": {
     "name": "iorb",
     "description": "Interest on Reserve Balances.  Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money. The rates central banks charge are set to stabilize the economy. In the United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.",
+    "function": "FIXEDINCOME.RATE.IORB",
     "signature": "=OBB.FIXEDINCOME.RATE.IORB([start_date];[end_date];[provider])",
     "parameters": {
       "start_date": {
@@ -7757,6 +7841,7 @@
   "/fixedincome/rate/sonia": {
     "name": "sonia",
     "description": "Sterling Overnight Index Average.  SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual transactions and reflects the average of the interest rates that banks pay to borrow sterling overnight from other financial institutions and other institutional investors.",
+    "function": "FIXEDINCOME.RATE.SONIA",
     "signature": "=OBB.FIXEDINCOME.RATE.SONIA([start_date];[end_date];[provider];[parameter])",
     "parameters": {
       "start_date": {
@@ -7796,6 +7881,7 @@
   "/fixedincome/sofr": {
     "name": "sofr",
     "description": "Secured Overnight Financing Rate.  The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of borrowing cash overnight collateralizing by Treasury securities.",
+    "function": "FIXEDINCOME.SOFR",
     "signature": "=OBB.FIXEDINCOME.SOFR([start_date];[end_date];[provider];[period])",
     "parameters": {
       "start_date": {
@@ -7835,6 +7921,7 @@
   "/fixedincome/spreads/tmc": {
     "name": "tmc",
     "description": "Treasury Constant Maturity.  Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity. Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S. Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.",
+    "function": "FIXEDINCOME.SPREADS.TMC",
     "signature": "=OBB.FIXEDINCOME.SPREADS.TMC([start_date];[end_date];[maturity];[provider])",
     "parameters": {
       "start_date": {
@@ -7874,6 +7961,7 @@
   "/fixedincome/spreads/tmc_effr": {
     "name": "tmc_effr",
     "description": "Select Treasury Constant Maturity.  Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S. Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.",
+    "function": "FIXEDINCOME.SPREADS.TMC_EFFR",
     "signature": "=OBB.FIXEDINCOME.SPREADS.TMC_EFFR([start_date];[end_date];[maturity];[provider])",
     "parameters": {
       "start_date": {
@@ -7913,6 +8001,7 @@
   "/fixedincome/spreads/treasury_effr": {
     "name": "treasury_effr",
     "description": "Select Treasury Bill.  Get Selected Treasury Bill Minus Federal Funds Rate. Constant maturity is the theoretical value of a U.S. Treasury that is based on recent values of auctioned U.S. Treasuries. The value is obtained by the U.S. Treasury on a daily basis through interpolation of the Treasury yield curve which, in turn, is based on closing bid-yields of actively-traded Treasury securities.",
+    "function": "FIXEDINCOME.SPREADS.TREASURY_EFFR",
     "signature": "=OBB.FIXEDINCOME.SPREADS.TREASURY_EFFR([start_date];[end_date];[maturity];[provider])",
     "parameters": {
       "start_date": {
@@ -7952,6 +8041,7 @@
   "/index/available": {
     "name": "available",
     "description": "Available Indices. Available indices for a given provider.",
+    "function": "INDEX.AVAILABLE",
     "signature": "=OBB.INDEX.AVAILABLE([provider])",
     "parameters": {
       "provider": {
@@ -7982,6 +8072,7 @@
   "/index/constituents": {
     "name": "constituents",
     "description": "Index Constituents. Constituents of an index.",
+    "function": "INDEX.CONSTITUENTS",
     "signature": "=OBB.INDEX.CONSTITUENTS([index];[provider])",
     "parameters": {
       "index": {
@@ -8029,6 +8120,7 @@
   "/index/market": {
     "name": "market",
     "description": "Historical Market Indices.",
+    "function": "INDEX.MARKET",
     "signature": "=OBB.INDEX.MARKET(symbol;[start_date];[end_date];[provider];[timeseries];[interval];[sort];[tag];[type];[limit];[sleep];[timespan];[adjusted];[multiplier])",
     "parameters": {
       "symbol": {
@@ -8151,6 +8243,7 @@
   "/news/company": {
     "name": "company",
     "description": "Company News. Get news for one or more companies.",
+    "function": "NEWS.COMPANY",
     "signature": "=OBB.NEWS.COMPANY(symbols;[limit];[provider];[display];[date];[start_date];[end_date];[updated_since];[published_since];[sort];[order];[isin];[cusip];[channels];[topics];[authors];[content_types];[page];[published_utc];[source])",
     "parameters": {
       "symbols": {
@@ -8327,6 +8420,7 @@
   "/news/world": {
     "name": "world",
     "description": "World News. Global news data.",
+    "function": "NEWS.WORLD",
     "signature": "=OBB.NEWS.WORLD([limit];[provider];[display];[date];[start_date];[end_date];[updated_since];[published_since];[sort];[order];[isin];[cusip];[channels];[topics];[authors];[content_types];[source])",
     "parameters": {
       "limit": {
@@ -8476,6 +8570,7 @@
   "/regulators/sec/cik_map": {
     "name": "cik_map",
     "description": "Get the CIK number corresponding to a ticker symbol.",
+    "function": "REGULATORS.SEC.CIK_MAP",
     "signature": "=OBB.REGULATORS.SEC.CIK_MAP(symbol;[provider])",
     "parameters": {
       "symbol": {
@@ -8502,6 +8597,7 @@
   "/regulators/sec/institutions_search": {
     "name": "institutions_search",
     "description": "Look up institutions regulated by the SEC.",
+    "function": "REGULATORS.SEC.INSTITUTIONS_SEARCH",
     "signature": "=OBB.REGULATORS.SEC.INSTITUTIONS_SEARCH([query];[provider];[use_cache])",
     "parameters": {
       "query": {
@@ -8536,6 +8632,7 @@
   "/regulators/sec/rss_litigation": {
     "name": "rss_litigation",
     "description": "The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.",
+    "function": "REGULATORS.SEC.RSS_LITIGATION",
     "signature": "=OBB.REGULATORS.SEC.RSS_LITIGATION([provider])",
     "parameters": {
       "provider": {
@@ -8569,6 +8666,7 @@
   "/regulators/sec/schema_files": {
     "name": "schema_files",
     "description": "Get lists of SEC XML schema files by year.",
+    "function": "REGULATORS.SEC.SCHEMA_FILES",
     "signature": "=OBB.REGULATORS.SEC.SCHEMA_FILES([query];[provider];[url])",
     "parameters": {
       "query": {
@@ -8600,6 +8698,7 @@
   "/regulators/sec/sic_search": {
     "name": "sic_search",
     "description": "Search for Industry Titles, Reporting Office, and SIC Codes.",
+    "function": "REGULATORS.SEC.SIC_SEARCH",
     "signature": "=OBB.REGULATORS.SEC.SIC_SEARCH([query];[provider];[use_cache])",
     "parameters": {
       "query": {
@@ -8637,6 +8736,7 @@
   "/regulators/sec/symbol_map": {
     "name": "symbol_map",
     "description": "Get the ticker symbol corresponding to a company's CIK.",
+    "function": "REGULATORS.SEC.SYMBOL_MAP",
     "signature": "=OBB.REGULATORS.SEC.SYMBOL_MAP([query];[provider])",
     "parameters": {
       "query": {

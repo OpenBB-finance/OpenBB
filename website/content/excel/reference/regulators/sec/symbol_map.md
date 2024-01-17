@@ -19,7 +19,10 @@ keywords:
 - entity
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="REGULATORS.SEC.SYMBOL_MAP | OpenBB Add-in for Excel Docs" />
 
 Get the ticker symbol corresponding to a company's CIK.
 

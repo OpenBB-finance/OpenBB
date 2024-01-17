@@ -22,7 +22,10 @@ keywords:
 - crypto exchange name
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="CRYPTO.SEARCH | OpenBB Add-in for Excel Docs" />
 
 Cryptocurrency Search. Search available cryptocurrency pairs.
 

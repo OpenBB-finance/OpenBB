@@ -66,7 +66,10 @@ keywords:
 - capital expenditures per share
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.MULTIPLES | OpenBB Add-in for Excel Docs" />
 
 Equity Valuation Multiples. Valuation multiples for a stock ticker.
 

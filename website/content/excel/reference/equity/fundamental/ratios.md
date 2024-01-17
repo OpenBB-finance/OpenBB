@@ -23,7 +23,10 @@ keywords:
 - dividend yield
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.RATIOS | OpenBB Add-in for Excel Docs" />
 
 Extensive set of ratios over time. Financial ratios for a given company.
 

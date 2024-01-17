@@ -16,7 +16,10 @@ keywords:
 - provider
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.TRANSCRIPT | OpenBB Add-in for Excel Docs" />
 
 Earnings Call Transcript. Earnings call transcript for a given company.
 

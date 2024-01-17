@@ -21,7 +21,10 @@ keywords:
 - news base URL
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.ESTIMATES.PRICE_TARGET | OpenBB Add-in for Excel Docs" />
 
 Price Target. Price target data.
 

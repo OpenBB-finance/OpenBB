@@ -16,7 +16,10 @@ keywords:
 - source
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.OWNERSHIP.SHARE_STATISTICS | OpenBB Add-in for Excel Docs" />
 
 Share Statistics. Share statistics for a given company.
 

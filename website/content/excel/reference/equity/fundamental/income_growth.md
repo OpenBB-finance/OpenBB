@@ -44,7 +44,10 @@ keywords:
 - weighted average shares outstanding
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.INCOME_GROWTH | OpenBB Add-in for Excel Docs" />
 
 Income Statement Growth. Information about the growth of the company income statement.
 

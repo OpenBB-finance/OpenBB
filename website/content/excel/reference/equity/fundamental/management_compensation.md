@@ -27,7 +27,10 @@ keywords:
 - URL
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.MANAGEMENT_COMPENSATION | OpenBB Add-in for Excel Docs" />
 
 Get Executive Compensation. Information about the executive compensation for a given company.
 

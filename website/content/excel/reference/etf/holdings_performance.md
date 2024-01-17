@@ -18,7 +18,10 @@ keywords:
 - etf performance chart
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="ETF.HOLDINGS_PERFORMANCE | OpenBB Add-in for Excel Docs" />
 
 Get the ETF holdings performance.
 

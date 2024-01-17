@@ -23,7 +23,10 @@ keywords:
 - cik attribute
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="REGULATORS.SEC.INSTITUTIONS_SEARCH | OpenBB Add-in for Excel Docs" />
 
 Look up institutions regulated by the SEC.
 

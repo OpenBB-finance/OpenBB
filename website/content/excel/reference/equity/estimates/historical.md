@@ -55,7 +55,10 @@ keywords:
 - number of analysts who estimated eps
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.ESTIMATES.HISTORICAL | OpenBB Add-in for Excel Docs" />
 
 Historical Analyst Estimates. Analyst stock recommendations.
 

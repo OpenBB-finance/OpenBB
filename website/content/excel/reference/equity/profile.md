@@ -47,7 +47,10 @@ keywords:
 - hv90
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.PROFILE | OpenBB Add-in for Excel Docs" />
 
 Equity Info. Get general price and performance metrics of a stock.
 

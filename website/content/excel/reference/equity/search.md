@@ -49,7 +49,10 @@ keywords:
 - cik
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.SEARCH | OpenBB Add-in for Excel Docs" />
 
 Equity Search. Search for a company or stock ticker.
 

@@ -25,7 +25,10 @@ keywords:
 - yfinance data columns
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.PRICE.HISTORICAL | OpenBB Add-in for Excel Docs" />
 
 Equity Historical price. Load stock data for a specific ticker.
 

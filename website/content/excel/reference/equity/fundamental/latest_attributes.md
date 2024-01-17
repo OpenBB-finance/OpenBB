@@ -2,7 +2,10 @@
 title: LATEST_ATTRIBUTES
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.LATEST_ATTRIBUTES | OpenBB Add-in for Excel Docs" />
 
 Fetch the latest value of a data tag from Intrinio.
 

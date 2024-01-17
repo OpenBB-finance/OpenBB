@@ -27,7 +27,10 @@ keywords:
 - timestamp
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="DERIVATIVES.OPTIONS.UNUSUAL | OpenBB Add-in for Excel Docs" />
 
 Get the complete options chain for a ticker.
 

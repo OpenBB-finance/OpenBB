@@ -28,7 +28,10 @@ keywords:
 - fiscal date ending
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.CALENDAR.EARNINGS | OpenBB Add-in for Excel Docs" />
 
 Upcoming and Historical earnings calendar.
 

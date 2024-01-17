@@ -61,7 +61,10 @@ keywords:
 - security
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.PRICE.QUOTE | OpenBB Add-in for Excel Docs" />
 
 Equity Quote. Load stock data for a specific ticker.
 

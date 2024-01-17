@@ -46,7 +46,10 @@ keywords:
 - free cash flow
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.CASH_GROWTH | OpenBB Add-in for Excel Docs" />
 
 Cash Flow Statement Growth. Information about the growth of the company cash flow statement.
 

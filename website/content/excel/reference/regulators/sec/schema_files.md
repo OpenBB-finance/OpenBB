@@ -18,7 +18,10 @@ keywords:
 - list of URLs to SEC Schema Files
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="REGULATORS.SEC.SCHEMA_FILES | OpenBB Add-in for Excel Docs" />
 
 Get lists of SEC XML schema files by year.
 

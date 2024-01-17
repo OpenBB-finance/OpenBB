@@ -43,7 +43,10 @@ keywords:
 - calendar year
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.INCOME | OpenBB Add-in for Excel Docs" />
 
 Income Statement. Report on a company's financial performance.
 

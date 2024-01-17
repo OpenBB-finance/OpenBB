@@ -32,7 +32,10 @@ keywords:
 - link
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.OWNERSHIP.INSIDER_TRADING | OpenBB Add-in for Excel Docs" />
 
 Insider Trading. Information about insider trading.
 

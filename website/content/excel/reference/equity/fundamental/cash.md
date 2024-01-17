@@ -49,7 +49,10 @@ keywords:
 - net change in cash
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.CASH | OpenBB Add-in for Excel Docs" />
 
 Cash Flow Statement. Information about the cash flow statement.
 

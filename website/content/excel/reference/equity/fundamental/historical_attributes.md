@@ -2,7 +2,10 @@
 title: HISTORICAL_ATTRIBUTES
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.HISTORICAL_ATTRIBUTES | OpenBB Add-in for Excel Docs" />
 
 Fetch the historical values of a data tag from Intrinio.
 

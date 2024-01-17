@@ -27,7 +27,10 @@ keywords:
 - Rest of Asia Pacific
 ---
 
-<!-- markdownlint-disable MD041 -->
+<!-- markdownlint-disable MD033 -->
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="EQUITY.FUNDAMENTAL.REVENUE_PER_GEOGRAPHY | OpenBB Add-in for Excel Docs" />
 
 Revenue Geographic. Geographic revenue data.
 
