@@ -1,6 +1,5 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-import datetime
 from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
@@ -14,8 +13,6 @@ from typing_extensions import Annotated
 class ROUTER_etf(Container):
     """/etf
     countries
-    /discovery
-    historical
     holdings
     holdings_date
     holdings_performance
@@ -82,102 +79,6 @@ class ROUTER_etf(Container):
                 },
                 standard_params={
                     "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                },
-                extra_params=kwargs,
-            )
-        )
-
-    @property
-    def discovery(self):
-        # pylint: disable=import-outside-toplevel
-        from . import etf_discovery
-
-        return etf_discovery.ROUTER_etf_discovery(command_runner=self._command_runner)
-
-    @validate
-    def historical(
-        self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
-        ],
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        provider: Optional[Literal["yfinance"]] = None,
-        **kwargs
-    ) -> OBBject:
-        """ETF Historical Market Price.
-
-        Parameters
-        ----------
-        symbol : str
-            Symbol to get data for. (ETF)
-        start_date : Optional[datetime.date]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
-            End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['yfinance']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'yfinance' if there is
-            no default.
-
-        Returns
-        -------
-        OBBject
-            results : List[EtfHistorical]
-                Serializable results.
-            provider : Optional[Literal['yfinance']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        EtfHistorical
-        -------------
-        date : date
-            The date of the data.
-        open : float
-            The open price.
-        high : float
-            The high price.
-        low : float
-            The low price.
-        close : float
-            The close price.
-        volume : Optional[Annotated[int, Ge(ge=0)]]
-            The trading volume.
-        adj_close : Optional[float]
-            The adjusted closing price of the ETF. (provider: yfinance)
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.etf.historical(symbol="AAPL")
-        """  # noqa: E501
-
-        return self._run(
-            "/etf/historical",
-            **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
-                standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                    "start_date": start_date,
-                    "end_date": end_date,
                 },
                 extra_params=kwargs,
             )
@@ -647,7 +548,7 @@ class ROUTER_etf(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["finviz", "fmp"]] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """Price performance as a return, over different periods.
@@ -656,9 +557,9 @@ class ROUTER_etf(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['finviz', 'fmp']]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'finviz' if there is
+            If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
 
         Returns
@@ -666,7 +567,7 @@ class ROUTER_etf(Container):
         OBBject
             results : List[PricePerformance]
                 Serializable results.
-            provider : Optional[Literal['finviz', 'fmp']]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -705,22 +606,8 @@ class ROUTER_etf(Container):
             Ten-year return.
         max : Optional[float]
             Return from the beginning of the time series.
-        volatility_week : Optional[float]
-            One-week realized volatility, as a normalized percent. (provider: finviz)
-        volatility_month : Optional[float]
-            One-month realized volatility, as a normalized percent. (provider: finviz)
-        price : Optional[float]
-            Last Price. (provider: finviz)
-        volume : Optional[float]
-            Current volume. (provider: finviz)
-        average_volume : Optional[float]
-            Average daily volume. (provider: finviz)
-        relative_volume : Optional[float]
-            Relative volume as a ratio of current volume to average volume. (provider: finviz)
-        analyst_score : Optional[float]
-            Aggregate analyst rating/action score from 1-5. (provider: finviz)
         symbol : Optional[str]
-            The ticker symbol. (provider: finviz, fmp)
+            The ticker symbol. (provider: fmp)
 
         Example
         -------

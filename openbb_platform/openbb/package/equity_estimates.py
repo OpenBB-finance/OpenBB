@@ -209,7 +209,7 @@ class ROUTER_equity_estimates(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["finviz", "fmp"]] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """Price Target. Price target data.
@@ -218,9 +218,9 @@ class ROUTER_equity_estimates(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['finviz', 'fmp']]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'finviz' if there is
+            If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         with_grade : bool
             Include upgrades and downgrades in the response. (provider: fmp)
@@ -230,7 +230,7 @@ class ROUTER_equity_estimates(Container):
         OBBject
             results : List[PriceTarget]
                 Serializable results.
-            provider : Optional[Literal['finviz', 'fmp']]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -263,10 +263,6 @@ class ROUTER_equity_estimates(Container):
             News publisher of the price target.
         news_base_url : Optional[str]
             News base URL of the price target.
-        status : Optional[str]
-            The action taken by the firm. This could be 'Upgrade', 'Downgrade', 'Reiterated', etc. (provider: finviz)
-        rating_change : Optional[str]
-            The rating given by the analyst. This could be 'Buy', 'Sell', 'Underweight', etc. If the rating is a revision, the change is indicated by '->' (provider: finviz)
         new_grade : Optional[str]
             New grade (provider: fmp)
         previous_grade : Optional[str]
