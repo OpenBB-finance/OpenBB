@@ -84,7 +84,7 @@ export default function DocSidebarItemCategory({
     "OpenBB Platform": "/platform",
     "OpenBB Bot": "/bot",
     "OpenBB Terminal Pro": "/pro",
-    "OpenBB Excel Add-in": "/excel",
+    "OpenBB Add-in for Excel": "/excel",
   };
   const newHref = labelToHrefMap[label] || href;
   const {
