@@ -54,8 +54,8 @@ export default function Root({ children }) {
 
   useEffect(() => {
     if (location.pathname.startsWith("/pro") || location.pathname.startsWith("/excel")) {
-      const cookie = document.cookie.split(";").find((c) => c.trim().startsWith("docs-login="));
-      const payload = decodeURIComponent(cookie.split('=')[1].split('.')[0]);
+      const cookie = document.cookie?.split(";").find((c) => c.trim().startsWith("docs-login="));
+      const payload = decodeURIComponent(cookie?.split('=')[1].split('.')[0]);
       if (isValidBase64(payload)) {
         const decodedPayload = atob(decodeURIComponent(payload));
         // decide what we want to do whether the user is logged in or not
