@@ -19750,16 +19750,16 @@
             "anyOf": [
               {
                 "items": {
-                  "additionalProperties": {
-                    "type": "string"
-                  },
-                  "type": "object"
+                  "type": "string"
                 },
                 "type": "array"
               },
               {
                 "items": {
-                  "type": "string"
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object"
                 },
                 "type": "array"
               }
