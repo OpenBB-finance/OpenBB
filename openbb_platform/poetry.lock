@@ -149,7 +149,7 @@ trio = ["trio (<0.22)"]
 name = "appdirs"
 version = "1.4.4"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
-optional = true
+optional = false
 python-versions = "*"
 files = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
@@ -251,7 +251,7 @@ files = [
 name = "beautifulsoup4"
 version = "4.12.3"
 description = "Screen-scraping library"
-optional = true
+optional = false
 python-versions = ">=3.6.0"
 files = [
     {file = "beautifulsoup4-4.12.3-py3-none-any.whl", hash = "sha256:b80878c9f40111313e55da8ba20bdba06d8fa3969fc68304167741bbf9e082ed"},
@@ -634,7 +634,7 @@ python-dateutil = ">=2.7"
 name = "frozendict"
 version = "2.4.0"
 description = "A simple immutable dictionary"
-optional = true
+optional = false
 python-versions = ">=3.6"
 files = [
     {file = "frozendict-2.4.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:475c65202a6f5421df8cacb8a2f29c5087134a0542b0540ae95fbf4db7af2ff9"},
@@ -1002,7 +1002,7 @@ statsmodels = ">=0.11"
 name = "lxml"
 version = "5.1.0"
 description = "Powerful and Pythonic XML processing library combining libxml2/libxslt with the ElementTree API."
-optional = true
+optional = false
 python-versions = ">=3.6"
 files = [
     {file = "lxml-5.1.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:704f5572ff473a5f897745abebc6df40f22d4133c1e0a1f124e4f2bd3330ff7e"},
@@ -1200,7 +1200,7 @@ files = [
 name = "multitasking"
 version = "0.0.11"
 description = "Non-blocking Python methods using decorators"
-optional = true
+optional = false
 python-versions = "*"
 files = [
     {file = "multitasking-0.0.11-py3-none-any.whl", hash = "sha256:1e5b37a5f8fc1e6cfaafd1a82b6b1cc6d2ed20037d3b89c25a84f499bd7b3dd4"},
@@ -1834,7 +1834,7 @@ openbb-core = ">=1.1.1,<2.0.0"
 name = "openbb-yfinance"
 version = "1.1.1"
 description = "yfinance extension for OpenBB"
-optional = true
+optional = false
 python-versions = ">=3.8,<4.0"
 files = [
     {file = "openbb_yfinance-1.1.1-py3-none-any.whl", hash = "sha256:8ca4b91d8b5bec57179804e55bd92e782de3412e6e3ed9ac63873ccd92e4c05c"},
@@ -1962,7 +1962,7 @@ test = ["pytest", "pytest-cov", "scipy"]
 name = "peewee"
 version = "3.17.0"
 description = "a little orm"
-optional = true
+optional = false
 python-versions = "*"
 files = [
     {file = "peewee-3.17.0.tar.gz", hash = "sha256:3a56967f28a43ca7a4287f4803752aeeb1a57a08dee2e839b99868181dfb5df8"},
@@ -2918,7 +2918,7 @@ files = [
 name = "soupsieve"
 version = "2.5"
 description = "A modern CSS selector implementation for Beautiful Soup."
-optional = true
+optional = false
 python-versions = ">=3.8"
 files = [
     {file = "soupsieve-2.5-py3-none-any.whl", hash = "sha256:eaa337ff55a1579b6549dc679565eac1e3d000563bcb1c8ab0d0fefbc0c2cdc7"},
@@ -3452,7 +3452,7 @@ multidict = ">=4.0"
 name = "yfinance"
 version = "0.2.35"
 description = "Download market data from Yahoo! Finance API"
-optional = true
+optional = false
 python-versions = "*"
 files = [
     {file = "yfinance-0.2.35-py2.py3-none-any.whl", hash = "sha256:f3d15cbf06fadd06c607520f70c54cbae4560a99675307ee2383d000232614f8"},
@@ -3492,7 +3492,7 @@ docs = ["furo", "jaraco.packaging (>=9.3)", "jaraco.tidelift (>=1.4)", "rst.link
 testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=2.2)", "pytest-ignore-flaky", "pytest-mypy (>=0.9.1)", "pytest-ruff"]
 
 [extras]
-all = ["openbb-alpha-vantage", "openbb-biztoc", "openbb-cboe", "openbb-charting", "openbb-ecb", "openbb-econometrics", "openbb-government-us", "openbb-nasdaq", "openbb-quantitative", "openbb-seeking-alpha", "openbb-stockgrid", "openbb-technical", "openbb-wsj", "openbb-yfinance"]
+all = ["openbb-alpha-vantage", "openbb-biztoc", "openbb-cboe", "openbb-charting", "openbb-ecb", "openbb-econometrics", "openbb-finra", "openbb-government-us", "openbb-nasdaq", "openbb-quantitative", "openbb-seeking-alpha", "openbb-stockgrid", "openbb-technical", "openbb-wsj"]
 alpha-vantage = ["openbb-alpha-vantage"]
 biztoc = ["openbb-biztoc"]
 cboe = ["openbb-cboe"]
@@ -3512,4 +3512,4 @@ yfinance = ["openbb-yfinance"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "ddb36f8eff24bfda5e52e723880d583c88b477d984cc2787eb6088c0a114ea03"
+content-hash = "36f08db3ed9518edaab6cb94f30f6ee2d7e1a97da26a9605548c3248b709fc22"

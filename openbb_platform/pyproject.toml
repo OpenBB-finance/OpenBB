@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "openbb"
-version = "4.1.1"
+version = "4.1.2"
 description = "OpenBB"
 authors = ["OpenBB Team <hello@openbb.co>"]
 readme = "README.md"
@@ -20,6 +20,7 @@ openbb-polygon = "^1.1.1"
 openbb-sec = "^1.1.1"
 openbb-tiingo = "^1.1.1"
 openbb-tradingeconomics = "^1.1.1"
+openbb-yfinance = "^1.1.1"
 
 openbb-crypto = "^1.1.1"
 openbb-currency = "^1.1.1"
@@ -43,7 +44,6 @@ openbb-nasdaq = { version = "^1.1.2", optional = true }
 openbb-seeking-alpha = { version = "^1.1.1", optional = true }
 openbb-stockgrid = { version = "^1.1.1", optional = true }
 openbb-wsj = { version = "^1.1.1", optional = true }
-openbb-yfinance = { version = "^1.1.1", optional = true }
 
 openbb-charting = { version = "^1.1.1", optional = true }
 openbb-econometrics = { version = "^1.1.1", optional = true }
@@ -82,8 +82,7 @@ all = [
     "openbb-seeking-alpha",
     "openbb-stockgrid",
     "openbb-technical",
-    "openbb-wsj",
-    "openbb-yfinance",
+    "openbb-wsj"
 ]
 
 [build-system]
