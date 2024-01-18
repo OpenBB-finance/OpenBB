@@ -34,7 +34,6 @@ openbb-economy = { path = "./extensions/economy", develop = true }
 openbb-equity = { path = "./extensions/equity", develop = true }
 openbb-etf = { path = "./extensions/etf", develop = true }
 openbb-fixedincome = { path = "./extensions/fixedincome", develop = true }
-openbb-government-us = { path = "./providers/government_us", develop = true }
 openbb-index = { path = "./extensions/index", develop = true }
 openbb-news = { path = "./extensions/news", develop = true }
 openbb-regulators = { path = "./extensions/regulators", develop = true }
