@@ -86,13 +86,16 @@ def test_log_startup(logging_service):
         )
         logging_service._system_settings = "your_system_settings"
 
-        logging_service._log_startup(route="test_route")
+        logging_service._log_startup(
+            route="test_route", custom_headers={"X-OpenBB-Test": "test"}
+        )
 
         expected_log_data = {
             "route": "test_route",
             "PREFERENCES": "your_preferences",
             "KEYS": {"username": "defined", "password": "defined"},
             "SYSTEM": "your_system_settings",
+            "custom_headers": {"X-OpenBB-Test": "test"},
         }
         mock_info.assert_called_once_with(
             "STARTUP: %s ",
@@ -102,7 +105,7 @@ def test_log_startup(logging_service):
 
 
 @pytest.mark.parametrize(
-    "user_settings, system_settings, route, func, kwargs, exec_info",
+    "user_settings, system_settings, route, func, kwargs, exec_info, custom_headers",
     [
         (
             "mock_settings",
@@ -110,6 +113,7 @@ def test_log_startup(logging_service):
             "mock_route",
             "mock_func",
             {},
+            None,
             None,
         ),
         (
@@ -119,6 +123,7 @@ def test_log_startup(logging_service):
             "mock_func",
             {},
             (OpenBBError, OpenBBError("mock_error")),
+            {"X-OpenBB-Test": "test"},
         ),
         (
             "mock_settings",
@@ -127,11 +132,19 @@ def test_log_startup(logging_service):
             "mock_func",
             {},
             None,
+            {"X-OpenBB-Test1": "test1", "X-OpenBB-Test2": "test2"},
         ),
     ],
 )
 def test_log(
-    logging_service, user_settings, system_settings, route, func, kwargs, exec_info
+    logging_service,
+    user_settings,
+    system_settings,
+    route,
+    func,
+    kwargs,
+    exec_info,
+    custom_headers,
 ):
     with patch(
         "openbb_core.app.logs.logging_service.LoggingSettings",
@@ -148,6 +161,7 @@ def test_log(
                     func=func,
                     kwargs=kwargs,
                     exec_info=exec_info,
+                    custom_headers=custom_headers,
                 )
                 assert mock_log_startup.assert_called_once
 
@@ -165,6 +179,7 @@ def test_log(
                 func=mock_callable,
                 kwargs=kwargs,
                 exec_info=exec_info,
+                custom_headers=custom_headers,
             )
 
             message_label = "ERROR" if exec_info else "CMD"
@@ -173,6 +188,7 @@ def test_log(
                     "route": route,
                     "input": kwargs,
                     "error": str(exec_info[1]) if exec_info else None,
+                    "custom_headers": custom_headers,
                 }
             )
             log_message = f"{message_label}: {log_message}"
