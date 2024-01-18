@@ -75,6 +75,7 @@ all = [
     "openbb-charting",
     "openbb-ecb",
     "openbb-econometrics",
+    "openbb-finra",
     "openbb-government-us",
     "openbb-nasdaq",
     "openbb-quantitative",
