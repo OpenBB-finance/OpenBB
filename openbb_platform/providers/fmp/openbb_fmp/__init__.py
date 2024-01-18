@@ -44,6 +44,7 @@ from openbb_fmp.models.historical_splits import FMPHistoricalSplitsFetcher
 from openbb_fmp.models.income_statement import FMPIncomeStatementFetcher
 from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFetcher
 from openbb_fmp.models.index_constituents import FMPIndexConstituentsFetcher
+from openbb_fmp.models.index_historical import FMPIndexHistoricalFetcher
 from openbb_fmp.models.insider_trading import FMPInsiderTradingFetcher
 from openbb_fmp.models.institutional_ownership import FMPInstitutionalOwnershipFetcher
 from openbb_fmp.models.key_executives import FMPKeyExecutivesFetcher
@@ -108,6 +109,7 @@ fmp_provider = Provider(
         "IncomeStatement": FMPIncomeStatementFetcher,
         "IncomeStatementGrowth": FMPIncomeStatementGrowthFetcher,
         "IndexConstituents": FMPIndexConstituentsFetcher,
+        "IndexHistorical": FMPIndexHistoricalFetcher,
         "InsiderTrading": FMPInsiderTradingFetcher,
         "InstitutionalOwnership": FMPInstitutionalOwnershipFetcher,
         "KeyExecutives": FMPKeyExecutivesFetcher,
