@@ -7,6 +7,9 @@ Publishing checklist:
 1. Ensure all unit tests pass: `pytest openbb_platform -m "not integration"`
 2. Ensure all integration tests pass: `pytest openbb_platform -m integration`
 3. Run `python -c "import openbb; openbb.build()"` to build the static assets. Make sure that only required extensions are installed.
+
+> **Note** Run `python -c "import openbb"` after building the static to check that no additional static is being built.
+
 4. Run the publishing script: `python build/pypi/openbb_platform/publish.py`
 
     Consider using the `--dry-run` flag to check if everything is correct before publishing.
@@ -42,8 +45,8 @@ Publishing checklist:
     >
     > Also, sometimes there might be some delay in the PyPI API, so it might be necessary to wait a few minutes before publishing the next package.
 
-4. Update poetry files: `python build/pypi/openbb_platform/poetry_update.py`
-5. Open a PR so that changes are reflected on the main branch
+5. Update poetry files: `python build/pypi/openbb_platform/poetry_update.py`
+6. Open a PR so that changes are reflected on the main branch
 
 Finally, check if everything works:
 
