@@ -94,3 +94,6 @@ website/content/sdk/reference/*
 
 # Markdown generated files for Pro
 website/content/pro/widgets-library/*
+
+# Markdown generated files for Terminal
+website/content/terminal/reference/*
