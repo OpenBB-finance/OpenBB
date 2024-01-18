@@ -16,6 +16,7 @@ class ROUTER_index(Container):
     available
     constituents
     market
+    /price
     """
 
     def __repr__(self) -> str:
@@ -255,6 +256,15 @@ class ROUTER_index(Container):
         >>> obb.index.market(symbol="SPX")
         """  # noqa: E501
 
+        from warnings import warn, simplefilter
+
+        simplefilter("always", DeprecationWarning)
+        warn(
+            "This endpoint will be deprecated in the future releases. Use '/index/price/historical' instead.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
+
         return self._run(
             "/index/market",
             **filter_inputs(
@@ -269,3 +279,10 @@ class ROUTER_index(Container):
                 extra_params=kwargs,
             )
         )
+
+    @property
+    def price(self):
+        # pylint: disable=import-outside-toplevel
+        from . import index_price
+
+        return index_price.ROUTER_index_price(command_runner=self._command_runner)

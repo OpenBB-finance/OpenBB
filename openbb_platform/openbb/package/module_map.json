@@ -116,6 +116,8 @@
     "index_available": "/index/available",
     "index_constituents": "/index/constituents",
     "index_market": "/index/market",
+    "index_price": "/index/price",
+    "index_price_historical": "/index/price/historical",
     "news": "/news",
     "news_company": "/news/company",
     "news_world": "/news/world",
