@@ -147,14 +147,18 @@ class BenzingaPriceTargetData(PriceTargetData):
     currency: Optional[str] = Field(
         default=None, description="Currency the data is denominated in."
     )
-    exchange: Optional[str] = Field(default=None, description="Exchange of the price target.")
+    exchange: Optional[str] = Field(
+        default=None, description="Exchange of the price target."
+    )
     id: Optional[str] = Field(default=None, description="Unique ID of this entry.")
     importance: Optional[Literal[0, 1, 2, 3, 4, 5]] = Field(
         default=None,
         description="Subjective Basis of How Important Event is to Market. 5 = High",
     )
     notes: Optional[str] = Field(default=None, description="Notes of the price target.")
-    pt_prior: Optional[str] = Field(default=None, description="Analyst's prior price target.")
+    pt_prior: Optional[str] = Field(
+        default=None, description="Analyst's prior price target."
+    )
     rating_current: Optional[str] = Field(
         default=None, description="The analyst's rating for the company."
     )
@@ -164,8 +168,12 @@ class BenzingaPriceTargetData(PriceTargetData):
     ratings_accuracy: Optional[str] = Field(
         default=None, description="Ratings accuracy of the price target."
     )
-    time: Optional[str] = Field(default=None, description="Last updated timestamp, UTC.")
-    updated: Optional[int] = Field(default=None, description="Last updated timestamp, UTC.")
+    time: Optional[str] = Field(
+        default=None, description="Last updated timestamp, UTC."
+    )
+    updated: Optional[int] = Field(
+        default=None, description="Last updated timestamp, UTC."
+    )
     url: str = Field(
         default=None,
         description="URL for analyst ratings page for this ticker on Benzinga.com.",
