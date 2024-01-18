@@ -8,6 +8,10 @@ keywords:
 - Formula Builder
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Formula Builder | OpenBB Add-in for Excel Docs" />
+
 You can use the formula builder to get more details about the available functions.
 
 <!-- markdownlint-disable MD033 -->
