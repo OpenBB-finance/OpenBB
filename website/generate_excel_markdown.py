@@ -132,7 +132,7 @@ class CommandLib:
         self.seo_metadata = self.read_seo_metadata()
 
     @staticmethod
-    def fetch_functions():
+    def fetch_xl_funcs():
         """Fetch the excel functions."""
         r = requests.get(XL_FUNCS_URL, timeout=10)
         with open(XL_FUNCS_PATH, "w") as f:
@@ -219,8 +219,7 @@ class CommandLib:
         def get_p_value(cmd, p_name) -> str:
             if cmd in self.EXAMPLE_PARAMS:
                 return self.EXAMPLE_PARAMS[cmd].get(p_name, "")
-            else:
-                return self.EXAMPLE_PARAMS.get(category, {}).get(p_name, "")
+            return self.EXAMPLE_PARAMS.get(category, {}).get(p_name, "")
 
         required_eg = sig
         for p_name, p_info in parameters.items():
@@ -250,6 +249,7 @@ class CommandLib:
             return {}
         description = self.xl_funcs[cmd].get("description", "").replace("\n", " ")
         parameters = self._get_parameters(cmd)
+        function = self.xl_funcs[cmd].get("name", "")
         signature_ = self._get_signature(cmd, parameters)
         data = self._get_data(cmd)
         return_ = self.xl_funcs[cmd].get("result", {}).get("dimensionality", "")
@@ -257,6 +257,7 @@ class CommandLib:
         return {
             "name": name,
             "description": description,
+            "function": function,
             "signature": signature_,
             "parameters": parameters,
             "data": data,
@@ -293,7 +294,7 @@ class Editor:
             header = ""
             metadata = self.cmd_lib.seo_metadata.get(cmd, {})
             if metadata:
-                title = metadata["title"]
+                title = metadata["title"].upper()
                 description = metadata["description"]
                 keywords = metadata["keywords"]
                 header = "---\n"
@@ -303,13 +304,19 @@ class Editor:
                 for kw in keywords:
                     header += f"- {kw}\n"
                 header += "---\n\n"
+            else:
+                title = cmd_info["name"].upper()
+                header = "---\n"
+                header += f"title: {title}\n"
+                header += "---\n\n"
             return header
 
-        def get_tab() -> str:
-            tab = "<!-- markdownlint-disable MD041 -->\n\n"
-            # tab += "import Tabs from '@theme/Tabs';\n"
-            # tab += "import TabItem from '@theme/TabItem';\n\n"
-            return tab
+        def get_head_title() -> str:
+            func = cmd_info["function"]
+            title = "<!-- markdownlint-disable MD033 -->\n"
+            title += "import HeadTitle from '@site/src/components/General/HeadTitle.tsx';\n\n"
+            title += f'<HeadTitle title="{func} | OpenBB Add-in for Excel Docs" />\n\n'
+            return title
 
         def get_description() -> str:
             description = cmd_info.get("description", "")
@@ -366,7 +373,7 @@ class Editor:
             return examples
 
         content = get_header()
-        content += get_tab()
+        content += get_head_title()
         content += get_description()
         content += get_syntax()
         content += get_examples()
@@ -411,7 +418,7 @@ class Editor:
                 content += OPEN_UL
                 for file in files:
                     t = file.stem
-                    title = t if t != self.main_folder else t.title()
+                    title = t.upper() if t != self.main_folder else t.title()
                     if command:
                         p = (
                             self.main_folder
@@ -439,7 +446,14 @@ class Editor:
         def get_index(path: Path, folder: str) -> str:
             """Generate the index.mdx file."""
 
-            content = f"# {folder}\n\n"
+            cmd_path = filter_path(
+                path.parts.index(self.main_folder) + 1, path
+            ).replace("/", ".")
+            head_title = (
+                cmd_path.title() if cmd_path == self.main_folder else cmd_path.upper()
+            )
+
+            content = f"# {head_title}\n\n"
             content += CARD
 
             ### Main folder
@@ -480,7 +494,7 @@ class Editor:
         def format_label(text: str):
             if text == self.main_folder:
                 return self.main_folder.title()
-            return text.lower()
+            return text.upper()
 
         def write_mdx_and_category(path: Path, folder: str, position: int):
             Editor.write(path=path / "index.mdx", content=get_index(path, folder))
@@ -534,7 +548,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--no-update":
         pass
     else:
-        CommandLib.fetch_functions()
+        CommandLib.fetch_xl_funcs()
         CommandLib.fetch_openapi()
 
     Editor(
