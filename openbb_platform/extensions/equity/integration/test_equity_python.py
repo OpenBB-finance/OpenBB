@@ -26,7 +26,7 @@ def obb(pytestconfig):
             {
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "period": "ttm",
+                "period": "quarter",
                 "fiscal_year": 2014,
                 "limit": 2,
             }
