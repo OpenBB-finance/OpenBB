@@ -6,7 +6,8 @@ Publishing checklist:
 
 1. Ensure all unit tests pass: `pytest openbb_platform -m "not integration"`
 2. Ensure all integration tests pass: `pytest openbb_platform -m integration`
-3. Run the publishing script: `python build/pypi/openbb_platform/publish.py`
+3. Run `python -c "import openbb; openbb.build()"` to build the static assets. Make sure that only required extensions are installed.
+4. Run the publishing script: `python build/pypi/openbb_platform/publish.py`
 
     Consider using the `--dry-run` flag to check if everything is correct before publishing.
     Also, it might be a good idea to run the script in batches to ensure that the packages are published correctly and the dependencies pick the correct versions.
