@@ -27,6 +27,7 @@ class MoodyCorporateBondIndexQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
 
+
 class MoodyCorporateBondIndexData(Data):
     """Moody Corporate Bond Index Data."""
 

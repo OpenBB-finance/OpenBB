@@ -10,7 +10,7 @@ from openbb_core.provider.standard_models.etf_holdings import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_fmp.utils.helpers import create_url, get_data_many
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class FMPEtfHoldingsQueryParams(EtfHoldingsQueryParams):
@@ -53,9 +53,10 @@ class FMPEtfHoldingsData(EtfHoldingsData):
         description="The value of the holding in USD.", alias="valUsd", default=None
     )
     weight: Optional[float] = Field(
-        description="The weight of the holding in ETF in %.",
+        description="The weight of the holding as a normalized percent.",
         alias="pctVal",
         default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     payoff_profile: Optional[str] = Field(
         description="The payoff profile of the holding.",
@@ -104,6 +105,12 @@ class FMPEtfHoldingsData(EtfHoldingsData):
         alias="acceptanceTime",
         default=None,
     )
+
+    @field_validator("weight", mode="before", check_fields=False)
+    @classmethod
+    def normalize_percent(cls, v):  # pylint: disable=E0213
+        """Normalize percent."""
+        return float(v) / 100 if v else None
 
 
 class FMPEtfHoldingsFetcher(

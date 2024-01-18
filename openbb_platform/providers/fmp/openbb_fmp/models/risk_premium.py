@@ -8,6 +8,7 @@ from openbb_core.provider.standard_models.risk_premium import (
     RiskPremiumQueryParams,
 )
 from openbb_fmp.utils.helpers import create_url, get_data_many
+from pydantic import field_validator
 
 
 class FMPRiskPremiumQueryParams(RiskPremiumQueryParams):
@@ -19,6 +20,17 @@ class FMPRiskPremiumQueryParams(RiskPremiumQueryParams):
 
 class FMPRiskPremiumData(RiskPremiumData):
     """FMP Risk Premium Data."""
+
+    @field_validator(
+        "total_equity_risk_premium",
+        "country_risk_premium",
+        mode="before",
+        check_fields=False,
+    )
+    @classmethod
+    def normalize_percent(cls, v):  # pylint: disable=E0213
+        """Normalize percent."""
+        return float(v) / 100 if v else None
 
 
 class FMPRiskPremiumFetcher(

@@ -15,6 +15,7 @@ from openbb_core.provider.utils.descriptions import (
 
 _warn = warnings.warn
 
+
 class CashFlowStatementGrowthQueryParams(QueryParams):
     """Cash Flow Statement Growth Query."""
 
@@ -42,8 +43,12 @@ class CashFlowStatementGrowthData(Data):
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
     period_ending: dateType = Field(description="Data for the fiscal period ending.")
-    fiscal_year: Optional[int] = Field(default= None, description="Fiscal year of the fiscal period.")
-    fiscal_period: Optional[str] = Field(default=None, description="Fiscal period of the fiscal year.")
+    fiscal_year: Optional[int] = Field(
+        default=None, description="Fiscal year of the fiscal period."
+    )
+    fiscal_period: Optional[str] = Field(
+        default=None, description="Fiscal period of the fiscal year."
+    )
     growth_net_income: Optional[float] = Field(
         default=None,
         description="Growth rate of net income.",

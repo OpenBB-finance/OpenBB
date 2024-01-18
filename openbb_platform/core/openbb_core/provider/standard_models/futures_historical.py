@@ -55,8 +55,8 @@ class FuturesHistoricalData(Data):
         default=None, description=DATA_DESCRIPTIONS.get("low", "")
     )
     close: float = Field(description=DATA_DESCRIPTIONS.get("close", ""))
-    volume: Optional[Union[int,float]] = Field(
-        default= None, description=DATA_DESCRIPTIONS.get("volume", "")
+    volume: Optional[Union[int, float]] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("volume", "")
     )
 
     @field_validator("date", mode="before", check_fields=False)

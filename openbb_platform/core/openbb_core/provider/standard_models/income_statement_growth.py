@@ -15,6 +15,7 @@ from openbb_core.provider.utils.descriptions import (
 
 _warn = warnings.warn
 
+
 class IncomeStatementGrowthQueryParams(QueryParams):
     """Income Statement Growth Query."""
 
@@ -42,10 +43,14 @@ class IncomeStatementGrowthData(Data):
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
     period_ending: dateType = Field(description="Data for the fiscal period ending.")
-    fiscal_year: Optional[int] = Field(default= None, description="Fiscal year of the fiscal period.")
-    fiscal_period: Optional[str] = Field(default=None, description="Fiscal period of the fiscal year.")
+    fiscal_year: Optional[int] = Field(
+        default=None, description="Fiscal year of the fiscal period."
+    )
+    fiscal_period: Optional[str] = Field(
+        default=None, description="Fiscal period of the fiscal year."
+    )
     growth_revenue: Optional[float] = Field(
-        default= None,
+        default=None,
         description="Growth rate of total revenue.",
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )

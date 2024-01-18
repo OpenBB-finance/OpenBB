@@ -33,6 +33,12 @@ class FMPShareStatisticsData(ShareStatisticsData):
             return v
         return datetime.strptime(v, "%Y-%m-%d %H:%M:%S").date()
 
+    @field_validator("free_float", mode="before", check_fields=False)
+    @classmethod
+    def normalize_percent(cls, v):  # pylint: disable=E0213
+        """Normalize percent."""
+        return float(v) / 100 if v else None
+
 
 class FMPShareStatisticsFetcher(
     Fetcher[

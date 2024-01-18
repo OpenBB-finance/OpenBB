@@ -15,6 +15,7 @@ from openbb_core.provider.utils.descriptions import (
 
 _warn = warnings.warn
 
+
 class BalanceSheetGrowthQueryParams(QueryParams):
     """Balance Sheet Statement Growth Query. All values are normalized percent changes from the previous period."""
 
@@ -42,8 +43,12 @@ class BalanceSheetGrowthData(Data):
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
     period_ending: dateType = Field(description="Data for the fiscal period ending.")
-    fiscal_year: Optional[int] = Field(default= None, description="Fiscal year of the fiscal period.")
-    fiscal_period: Optional[str] = Field(default=None, description="Fiscal period of the fiscal year.")
+    fiscal_year: Optional[int] = Field(
+        default=None, description="Fiscal year of the fiscal period."
+    )
+    fiscal_period: Optional[str] = Field(
+        default=None, description="Fiscal period of the fiscal year."
+    )
     growth_cash_and_cash_equivalents: Optional[float] = Field(
         default=None,
         description="Growth rate of cash and cash equivalents.",

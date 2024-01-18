@@ -9,7 +9,7 @@ from openbb_core.provider.standard_models.market_snapshots import (
 )
 from openbb_fmp.utils.definitions import MARKETS
 from openbb_fmp.utils.helpers import get_data
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class FMPMarketSnapshotsQueryParams(MarketSnapshotsQueryParams):
@@ -76,6 +76,12 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
     name: Optional[str] = Field(
         description="The name associated with the stock symbol.", default=None
     )
+
+    @field_validator("change_percent", mode="before", check_fields=False)
+    @classmethod
+    def normalize_percent(cls, v):  # pylint: disable=E0213
+        """Return the percent value as a normalized value."""
+        return float(v) / 100 if v else None
 
 
 class FMPMarketSnapshotsFetcher(

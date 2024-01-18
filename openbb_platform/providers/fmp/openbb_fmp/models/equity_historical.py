@@ -16,7 +16,7 @@ from openbb_core.provider.utils.helpers import (
     get_querystring,
 )
 from openbb_fmp.utils.helpers import get_interval
-from pydantic import Field, NonNegativeInt
+from pydantic import Field, NonNegativeInt, field_validator
 
 
 class FMPEquityHistoricalQueryParams(EquityHistoricalQueryParams):
@@ -40,9 +40,6 @@ class FMPEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 class FMPEquityHistoricalData(EquityHistoricalData):
     """FMP Equity Historical Price Data."""
 
-    label: Optional[str] = Field(
-        default=None, description="Human readable format of the date."
-    )
     adj_close: Optional[float] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("adj_close", "")
     )
@@ -54,12 +51,19 @@ class FMPEquityHistoricalData(EquityHistoricalData):
         description="Change in the price of the symbol from the previous day.",
     )
     change_percent: Optional[float] = Field(
-        default=None, description="Change % in the price of the symbol."
-    )
-    change_over_time: Optional[float] = Field(
         default=None,
-        description="Change % in the price of the symbol over a period of time.",
+        description="Change in price as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
+    label: Optional[str] = Field(
+        default=None, description="Human readable format of the date."
+    )
+
+    @field_validator("change_percent", mode="before", check_fields=False)
+    @classmethod
+    def normalize_percent(cls, v):  # pylint: disable=E0213
+        """Return the percent value as a normalized value."""
+        return float(v) / 100 if v else None
 
 
 class FMPEquityHistoricalFetcher(
@@ -131,4 +135,6 @@ class FMPEquityHistoricalFetcher(
         query: FMPEquityHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPEquityHistoricalData]:
         """Return the transformed data."""
+        # remove a duplicated fields.
+        [d.pop("changeOverTime", None) for d in data]
         return [FMPEquityHistoricalData.model_validate(d) for d in data]

@@ -98,9 +98,15 @@ class FMPKeyMetricsData(KeyMetricsData):
     ev_to_free_cash_flow: Optional[float] = Field(
         default=None, description="Enterprise value-to-free cash flow ratio"
     )
-    earnings_yield: Optional[float] = Field(default=None, description="Earnings yield")
+    earnings_yield: Optional[float] = Field(
+        default=None,
+        description="Earnings yield",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
     free_cash_flow_yield: Optional[float] = Field(
-        default=None, description="Free cash flow yield"
+        default=None,
+        description="Free cash flow yield",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     debt_to_equity: Optional[float] = Field(
         default=None, description="Debt-to-equity ratio"

@@ -8,7 +8,7 @@ from openbb_core.provider.standard_models.etf_info import (
     EtfInfoQueryParams,
 )
 from openbb_fmp.utils.helpers import create_url, get_data_many
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class FMPEtfInfoQueryParams(EtfInfoQueryParams):
@@ -32,7 +32,9 @@ class FMPEtfInfoData(EtfInfoData):
         alias="etfCompany", description="Company of the ETF."
     )
     expense_ratio: Optional[float] = Field(
-        alias="expenseRatio", description="Expense ratio of the ETF."
+        alias="expenseRatio",
+        description="Expense ratio of the ETF.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     isin: Optional[str] = Field(description="ISIN of the ETF.")
     nav: Optional[float] = Field(description="Net asset value of the ETF.")
@@ -43,6 +45,12 @@ class FMPEtfInfoData(EtfInfoData):
     holdings_count: Optional[int] = Field(
         alias="holdingsCount", description="Number of holdings in the ETF."
     )
+
+    @field_validator("expense_ratio", mode="before", check_fields=False)
+    @classmethod
+    def normalize_percent(cls, v):  # pylint: disable=E0213
+        """Normalize percent."""
+        return float(v) / 100 if v else None
 
 
 class FMPEtfInfoFetcher(
@@ -78,5 +86,6 @@ class FMPEtfInfoFetcher(
         """Return the transformed data."""
         # remove "sectorList" key from data. it's handled by the sectors
         for d in data:
-            d.pop("sectorList", None)
+            d.pop("sectorsList", None)
+            d["website"] = None if d["website"] == "" else d["website"]
         return [FMPEtfInfoData.model_validate(d) for d in data]
