@@ -12,6 +12,9 @@ from openbb_cboe.models.european_indices import (
     CboeEuropeanIndicesFetcher,
 )
 from openbb_cboe.models.futures_curve import CboeFuturesCurveFetcher
+from openbb_cboe.models.index_historical import (
+    CboeIndexHistoricalFetcher,
+)
 from openbb_cboe.models.index_search import CboeIndexSearchFetcher
 from openbb_cboe.models.index_snapshots import CboeIndexSnapshotsFetcher
 from openbb_cboe.models.market_indices import (
@@ -28,16 +31,17 @@ cboe_provider = Provider(
     around the world.""",
     credentials=None,
     fetcher_dict={
-        "EquitySearch": CboeEquitySearchFetcher,
-        "OptionsChains": CboeOptionsChainsFetcher,
+        "AvailableIndices": CboeAvailableIndicesFetcher,
         "EquityHistorical": CboeEquityHistoricalFetcher,
         "EquityInfo": CboeEquityInfoFetcher,
-        "FuturesCurve": CboeFuturesCurveFetcher,
-        "AvailableIndices": CboeAvailableIndicesFetcher,
+        "EquitySearch": CboeEquitySearchFetcher,
         "EuropeanIndexConstituents": CboeEuropeanIndexConstituentsFetcher,
         "EuropeanIndices": CboeEuropeanIndicesFetcher,
-        "MarketIndices": CboeMarketIndicesFetcher,
+        "FuturesCurve": CboeFuturesCurveFetcher,
+        "IndexHistorical": CboeIndexHistoricalFetcher,
         "IndexSearch": CboeIndexSearchFetcher,
         "IndexSnapshots": CboeIndexSnapshotsFetcher,
+        "MarketIndices": CboeMarketIndicesFetcher,
+        "OptionsChains": CboeOptionsChainsFetcher,
     },
 )

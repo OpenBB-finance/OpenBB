@@ -10,6 +10,10 @@ keywords:
 - Functions
 ---
 
+import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+
+<HeadTitle title="Basics | OpenBB Add-in for Excel Docs" />
+
 The OpenBB Excel Add-in provides direct access to the OpenBB platform, where each function implements the following pattern:
 
 - `OBB.[MENU].[SUB_MENU].[COMMAND]`
@@ -41,3 +45,15 @@ Examples:
 :::tip
 If you want to skip a parameter use semi-colon (or comma depending on your number separator) without any value. In example iii. we are skipping the first parameter (symbol).
 :::
+
+## Advanced
+
+<div style={{display: 'flex', justifyContent: 'center'}}>
+    <iframe
+        style={{width: '800px', height: '450px', display: 'block', margin: '0 auto'}}
+        src="https://www.youtube.com/embed/mk-NDjH8CDE?si=oL1Iqh1yJc24dh-K"
+        title="YouTube video player"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    />
+</div>
