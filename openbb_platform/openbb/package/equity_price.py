@@ -45,7 +45,9 @@ class ROUTER_equity_price(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "intrinio", "polygon", "tiingo"]] = None,
+        provider: Optional[
+            Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Equity Historical price. Load stock data for a specific ticker.
@@ -60,7 +62,7 @@ class ROUTER_equity_price(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo']]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinanc...
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -78,14 +80,21 @@ class ROUTER_equity_price(Container):
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
         adjusted : bool
-            Output time series is adjusted by historical split and dividend events. (provider: polygon)
+            Output time series is adjusted by historical split and dividend events. (provider: polygon);
+            Adjust all OHLC data automatically. (provider: yfinance)
+        prepost : bool
+            Include Pre and Post market data. (provider: yfinance)
+        include : bool
+            Include Dividends and Stock Splits in results. (provider: yfinance)
+        ignore_tz : bool
+            When combining from different timezones, ignore that part of datetime. (provider: yfinance)
 
         Returns
         -------
         OBBject
             results : List[EquityHistorical]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

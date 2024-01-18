@@ -40,7 +40,8 @@ Extensions:
     - polygon@1.1.1
     - sec@1.1.1
     - tiingo@1.1.1
-    - tradingeconomics@1.1.1    """
+    - tradingeconomics@1.1.1
+    - yfinance@1.1.1    """
     # fmt: on
 
     def __repr__(self) -> str:
