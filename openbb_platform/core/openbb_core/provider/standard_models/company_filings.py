@@ -26,8 +26,7 @@ class CompanyFilingsQueryParams(QueryParams):
     form_type: Optional[str] = Field(
         default=None,
         description=(
-            "Filter by form type. Visit https://www.sec.gov/forms "
-            "for a list of supported form types."
+            "Filter by form type. Check the data provider for available types."
         ),
     )
     limit: NonNegativeInt = Field(
