@@ -88,3 +88,6 @@ openbb_platform/openbb/package/*
 # Markdown generated files for Platform
 website/content/platform/reference/*
 website/content/platform/data_models/*
+
+# Markdown generated files for SDK
+website/content/sdk/reference/*
