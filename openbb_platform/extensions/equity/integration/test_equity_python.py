@@ -822,8 +822,8 @@ def test_equity_compare_peers(params, obb):
                 "limit": "30",
                 "provider": "fmp",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
+                "start_date": "2023-01-02",
+                "end_date": "2023-01-03",
                 "interval": "1m",
             }
         ),
