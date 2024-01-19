@@ -19,14 +19,12 @@ from openbb_cboe.models.equity_historical import CboeEquityHistoricalFetcher
 from openbb_cboe.models.equity_quote import CboeEquityQuoteFetcher
 from openbb_cboe.models.equity_search import CboeEquitySearchFetcher
 from openbb_cboe.models.futures_curve import CboeFuturesCurveFetcher
-from openbb_cboe.models.index_constituents import (
-    CboeIndexConstituentsFetcher,
+from openbb_cboe.models.index_constituents import CboeIndexConstituentsFetcher
+from openbb_cboe.models.index_historical import (
+    CboeIndexHistoricalFetcher,
 )
 from openbb_cboe.models.index_search import CboeIndexSearchFetcher
 from openbb_cboe.models.index_snapshots import CboeIndexSnapshotsFetcher
-from openbb_cboe.models.market_indices import (
-    CboeMarketIndicesFetcher,
-)
 from openbb_cboe.models.options_chains import CboeOptionsChainsFetcher
 from openbb_core.app.service.user_service import UserService
 
@@ -46,10 +44,10 @@ def vcr_config():
 
 
 @pytest.mark.record_http
-def test_cboe_market_indices_fetcher(credentials=test_credentials):
+def test_cboe_index_historical_fetcher(credentials=test_credentials):
     params = {"symbol": "AAVE10RP", "use_cache": False}
 
-    fetcher = CboeMarketIndicesFetcher()
+    fetcher = CboeIndexHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 

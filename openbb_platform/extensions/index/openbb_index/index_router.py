@@ -10,12 +10,19 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from pydantic import BaseModel
 
+from openbb_index.price.price_router import router as price_router
+
 router = Router(prefix="")
+router.include_router(price_router)
 
 # pylint: disable=unused-argument
 
 
-@router.command(model="MarketIndices")
+@router.command(
+    model="MarketIndices",
+    deprecated=True,
+    deprecation_message="This endpoint will be deprecated in the future releases. Use '/index/price/historical' instead.",
+)
 async def market(
     cc: CommandContext,
     provider_choices: ProviderChoices,

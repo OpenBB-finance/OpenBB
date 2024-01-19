@@ -38,19 +38,11 @@ def test_index_constituents(params, obb):
     [
         (
             {
-                "symbol": "AAVE100",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-            }
-        ),
-        (
-            {
                 "interval": "1m",
                 "provider": "cboe",
                 "symbol": "AAVE100",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "use_cache": False,
             }
         ),
         (
@@ -60,7 +52,6 @@ def test_index_constituents(params, obb):
                 "symbol": "AAVE100",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "use_cache": False,
             }
         ),
         (
@@ -138,8 +129,8 @@ def test_index_constituents(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_index_market(params, obb):
-    result = obb.index.market(**params)
+def test_index_price_historical(params, obb):
+    result = obb.index.price.historical(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -148,6 +139,7 @@ def test_index_market(params, obb):
 @parametrize(
     "params",
     [
+        ({}),
         ({"provider": "cboe", "use_cache": False}),
         ({"provider": "fmp"}),
         ({"provider": "yfinance"}),
@@ -164,7 +156,7 @@ def test_index_available(params, obb):
 @parametrize(
     "params",
     [
-        ({"query": "D", "is_symbol": True}),
+        ({"query": "D", "is_symbol": True, "use_cache": False, "provider": "cboe"}),
     ],
 )
 @pytest.mark.integration

@@ -22,6 +22,7 @@ from openbb_intrinio.models.historical_dividends import (
     IntrinioHistoricalDividendsFetcher,
 )
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
+from openbb_intrinio.models.index_historical import IntrinioIndexHistoricalFetcher
 from openbb_intrinio.models.insider_trading import IntrinioInsiderTradingFetcher
 from openbb_intrinio.models.institutional_ownership import (
     IntrinioInstitutionalOwnershipFetcher,
@@ -238,6 +239,20 @@ def test_intrinio_market_indices_fetcher(credentials=test_credentials):
     }
 
     fetcher = IntrinioMarketIndicesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_intrinio_index_historical_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "$DJI",
+        "tag": "level",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 6, 6),
+    }
+
+    fetcher = IntrinioIndexHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
