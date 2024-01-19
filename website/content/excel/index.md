@@ -1,7 +1,7 @@
 ---
 title: Overview
 sidebar_position: 0
-description: OpenBB Excel Add-in is a powerful tool that allows you to access financial data directly from Excel. With the OpenBB Excel Add-in, you can easily create financial models and perform financial analysis without leaving your spreadsheet.
+description: OpenBB Add-in for Excel is a powerful tool that allows you to access financial data directly from Excel. With the OpenBB Add-in for Excel, you can easily create financial models and perform financial analysis without leaving your spreadsheet.
 keywords:
 - investment research platform
 - microsoft excel
@@ -18,9 +18,22 @@ keywords:
 
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="OpenBB Excel Add-in Docs" />
+<HeadTitle title="OpenBB Add-in for Excel Docs" />
 
-OpenBB for Excel opens the gateway to a wealth of standardized financial data sourced from top-tier industry providers such as Polygon.io, Financial Modeling Prep, Benzinga, Intrinio, the Federal Reserve Bank of St. Louis, Trading Economics, and Ultima Insights, among others.
+OpenBB Add-in for Excel opens the gateway to a wealth of standardized financial data sourced from top-tier industry providers such as Polygon.io, Financial Modeling Prep, Benzinga, Intrinio, the Federal Reserve Bank of St. Louis, Trading Economics, and Ultima Insights, among others.
+
+Data standardization is at the core of OpenBB Add-in for Excel, offering you a consistent and reliable dataset from a diverse range of asset classes, from equity, fixed income, and cryptocurrency to macroeconomics. This seamless fetch of data means you can readily compare across providers and update it instantly, ensuring accuracy and saving you valuable time.
+
+<div className="flex-grow flex items-center justify-center mt-5">
+    <a href="https://my.openbb.co/app/pro">
+        <button
+            className="bg-grey-200 hover:bg-grey-400 dark:bg-[#303038] dark:hover:bg-grey-600 text-grey-900 dark:text-grey-200 text-sm font-medium py-2 px-4 rounded"
+        >
+            Join Add-In for Excel waitlist
+        </button>
+    </a>
+</div>
+
 
 Data standardization is at the core of OpenBB for Excel, offering you a consistent and reliable dataset from a diverse range of asset classes, from equity, fixed income, and cryptocurrency to macroeconomics. This seamless fetch of data means you can readily compare across providers and update it instantly, ensuring accuracy and saving you valuable time.
 
