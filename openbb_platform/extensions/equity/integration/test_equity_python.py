@@ -26,7 +26,7 @@ def obb(pytestconfig):
             {
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "period": "annual",
+                "period": "quarter",
                 "fiscal_year": 2014,
                 "limit": 2,
             }
@@ -837,8 +837,8 @@ def test_equity_compare_groups(params, obb):
                 "limit": "30",
                 "provider": "fmp",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
+                "start_date": "2023-01-02",
+                "end_date": "2023-01-03",
                 "interval": "1m",
             }
         ),
