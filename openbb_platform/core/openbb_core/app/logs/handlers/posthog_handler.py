@@ -40,6 +40,7 @@ class PosthogHandler(logging.Handler):
 
     @settings.setter
     def settings(self, settings: LoggingSettings) -> None:
+        """Set logging settings."""
         self._settings = settings
 
     def emit(self, record: logging.LogRecord):
