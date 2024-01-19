@@ -141,6 +141,26 @@ The helper function becomes plural, `amake_requests`, when fetching for a list o
 from openbb_core.provider.utils.helpers import amake_requests
 ```
 
+```python
+    Parameters
+    ----------
+    urls : Union[str, List[str]]
+        List of urls to make requests to
+    method : Literal["GET", "POST"], optional
+        HTTP method to use.  Can be "GET" or "POST", by default "GET"
+    timeout : int, optional
+        Timeout in seconds, by default 10.  Can be overwritten by user setting, request_timeout
+    response_callback : Callable[[ClientResponse, ClientSession], Awaitable[Union[dict, List[dict]]]], optional
+        Async callback with response and session as arguments that returns the json, by default None
+    session : ClientSession, optional
+        Custom session to use for requests, by default None
+
+    Returns
+    -------
+    Union[dict, List[dict]]
+        Response json
+```
+
 ### Custom Callback
 
 Customize the response parsing by creating a specific callback function. The example below is a method for converting CSV data to a dictionary and appending it to a list.
