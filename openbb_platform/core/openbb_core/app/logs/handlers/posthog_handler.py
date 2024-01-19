@@ -51,6 +51,29 @@ class PosthogHandler(logging.Handler):
             if Env().DEBUG_MODE:
                 raise e
 
+    def distinct_id(self) -> str:
+        """Get distinct id."""
+        return self._settings.user_id or self._settings.app_id
+
+    def identify(self) -> None:
+        """Identify user."""
+        if self.logged_in or not self._settings.user_id:
+            return
+
+        posthog.identify(
+            self._settings.user_id,
+            {
+                "email": self._settings.user_email,
+                "primaryUsage": self._settings.user_primary_usage,
+            },
+        )
+
+        if self._settings.sub_app_name == "pro":
+            return
+
+        self.logged_in = True
+        posthog.alias(self._settings.user_id, self._settings.app_id)
+
     def log_to_dict(self, log_info: str) -> dict:
         """Log to dict."""
         log_regex = r"(STARTUP|CMD|ERROR): (.*)"
@@ -83,22 +106,8 @@ class PosthogHandler(logging.Handler):
         if event_name not in [e.value for e in self.AllowedEvents]:
             return
 
-        if not self.logged_in and self._settings.user_id:
-            self.logged_in = True
-            posthog.identify(
-                self._settings.user_id,
-                {
-                    "email": self._settings.user_email,
-                    "primaryUsage": self._settings.user_primary_usage,
-                },
-            )
-            posthog.alias(self._settings.user_id, self._settings.app_id)
-
-        posthog.capture(
-            self._settings.app_id,
-            event_name,
-            properties=log_extra,
-        )
+        self.identify()
+        posthog.capture(self.distinct_id(), event_name, properties=log_extra)
 
     def extract_log_extra(self, record: logging.LogRecord) -> Dict[str, Any]:
         """Extract log extra from record."""
