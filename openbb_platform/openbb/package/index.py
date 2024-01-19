@@ -16,18 +16,21 @@ class ROUTER_index(Container):
     available
     constituents
     market
+    /price
     """
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
     @validate
-    def available(self, provider: Optional[Literal["fmp"]] = None, **kwargs) -> OBBject:
+    def available(
+        self, provider: Optional[Literal["fmp", "yfinance"]] = None, **kwargs
+    ) -> OBBject:
         """Available Indices. Available indices for a given provider.
 
         Parameters
         ----------
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -37,7 +40,7 @@ class ROUTER_index(Container):
         OBBject
             results : List[AvailableIndices]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -56,6 +59,10 @@ class ROUTER_index(Container):
             Stock exchange where the index is listed. (provider: fmp)
         exchange_short_name : Optional[str]
             Short name of the stock exchange where the index is listed. (provider: fmp)
+        code : Optional[str]
+            ID code for keying the index in the OpenBB Terminal. (provider: yfinance)
+        symbol : Optional[str]
+            Symbol for the index. (provider: yfinance)
 
         Example
         -------
@@ -168,7 +175,7 @@ class ROUTER_index(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
         """Historical Market Indices.
@@ -181,14 +188,14 @@ class ROUTER_index(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         timeseries : Optional[Annotated[int, Ge(ge=0)]]
             Number of days to look back. (provider: fmp)
-        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
-            Data granularity. (provider: fmp)
+        interval : Optional[Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
+            Data granularity. (provider: fmp, yfinance)
         sort : Literal['asc', 'desc']
             Sort the data in ascending or descending order. (provider: fmp);
             Sort order. (provider: intrinio);
@@ -205,13 +212,19 @@ class ROUTER_index(Container):
             Whether the data is adjusted. (provider: polygon)
         multiplier : int
             Multiplier of the timespan. (provider: polygon)
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Time period of the data to return. (provider: yfinance)
+        prepost : bool
+            Include Pre and Post market data. (provider: yfinance)
+        rounding : bool
+            Round prices to two decimals? (provider: yfinance)
 
         Returns
         -------
         OBBject
             results : List[MarketIndices]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -255,6 +268,15 @@ class ROUTER_index(Container):
         >>> obb.index.market(symbol="SPX")
         """  # noqa: E501
 
+        from warnings import warn, simplefilter
+
+        simplefilter("always", DeprecationWarning)
+        warn(
+            "This endpoint will be deprecated in the future releases. Use '/index/price/historical' instead.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
+
         return self._run(
             "/index/market",
             **filter_inputs(
@@ -269,3 +291,10 @@ class ROUTER_index(Container):
                 extra_params=kwargs,
             )
         )
+
+    @property
+    def price(self):
+        # pylint: disable=import-outside-toplevel
+        from . import index_price
+
+        return index_price.ROUTER_index_price(command_runner=self._command_runner)
