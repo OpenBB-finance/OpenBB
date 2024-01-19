@@ -40,7 +40,7 @@ class ROUTER_crypto_price(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "polygon", "tiingo"]] = None,
+        provider: Optional[Literal["fmp", "polygon", "tiingo", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
         """Cryptocurrency Historical Price. Cryptocurrency historical price data.
@@ -53,14 +53,14 @@ class ROUTER_crypto_price(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'polygon', 'tiingo']]
+        provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         timeseries : Optional[Annotated[int, Ge(ge=0)]]
             Number of days to look back. (provider: fmp)
-        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
-            Data granularity. (provider: fmp, tiingo)
+        interval : Optional[Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
+            Data granularity. (provider: fmp, tiingo, yfinance)
         multiplier : int
             Multiplier of the timespan. (provider: polygon)
         timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
@@ -73,13 +73,15 @@ class ROUTER_crypto_price(Container):
             Whether the data is adjusted. (provider: polygon)
         exchanges : Optional[List[str]]
             To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX'] (provider: tiingo)
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Time period of the data to return. (provider: yfinance)
 
         Returns
         -------
         OBBject
             results : List[CryptoHistorical]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon', 'tiingo']]
+            provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.

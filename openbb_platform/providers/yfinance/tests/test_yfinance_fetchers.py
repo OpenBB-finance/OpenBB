@@ -17,6 +17,9 @@ from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalF
 from openbb_yfinance.models.gainers import YFGainersFetcher
 from openbb_yfinance.models.growth_tech_equities import YFGrowthTechEquitiesFetcher
 from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
+from openbb_yfinance.models.index_historical import (
+    YFinanceIndexHistoricalFetcher,
+)
 from openbb_yfinance.models.losers import YFLosersFetcher
 from openbb_yfinance.models.market_indices import (
     YFinanceMarketIndicesFetcher,
@@ -25,8 +28,6 @@ from openbb_yfinance.models.undervalued_growth_equities import (
     YFUndervaluedGrowthEquitiesFetcher,
 )
 from openbb_yfinance.models.undervalued_large_caps import YFUndervaluedLargeCapsFetcher
-
-pytest.skip("yf cassettes bug the CI.", allow_module_level=True)
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
     mode="json"
@@ -57,6 +58,19 @@ def test_y_finance_market_indices_fetcher(credentials=test_credentials):
     }
 
     fetcher = YFinanceMarketIndicesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_y_finance_index_historical_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "^GSPC",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+    }
+
+    fetcher = YFinanceIndexHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -101,7 +115,7 @@ def test_y_finance_currency_historical_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_futures_historical_fetcher(credentials=test_credentials):
     params = {
-        "symbol": "ES",
+        "symbol": "ES=F",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 1, 10),
     }
@@ -111,6 +125,7 @@ def test_y_finance_futures_historical_fetcher(credentials=test_credentials):
     assert result is None
 
 
+@pytest.mark.skip("Unreliable amount of data while recording test.")
 @pytest.mark.record_http
 def test_y_finance_futures_curve_fetcher(credentials=test_credentials):
     params = {"symbol": "ES"}
@@ -167,7 +182,7 @@ def test_y_finance_available_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_y_finance_etf_historical_fetcher(credentials=test_credentials):
     params = {
-        "symbol": "IOO",
+        "symbol": "SPY",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 6, 6),
     }
@@ -178,7 +193,7 @@ def test_y_finance_etf_historical_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_yf_active_fetcher(credentials=test_credentials):
+def test_y_finance_active_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFActiveFetcher()
@@ -187,7 +202,7 @@ def test_yf_active_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_yf_gainers_fetcher(credentials=test_credentials):
+def test_y_finance_gainers_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFGainersFetcher()
@@ -196,7 +211,7 @@ def test_yf_gainers_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_yf_losers_fetcher(credentials=test_credentials):
+def test_y_finance_losers_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFLosersFetcher()
@@ -205,7 +220,7 @@ def test_yf_losers_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_yf_undervalued_large_caps_fetcher(credentials=test_credentials):
+def test_y_finance_undervalued_large_caps_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFUndervaluedLargeCapsFetcher()
@@ -214,7 +229,7 @@ def test_yf_undervalued_large_caps_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_yf_undervalued_growth_equities_fetcher(credentials=test_credentials):
+def test_y_finance_undervalued_growth_equities_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFUndervaluedGrowthEquitiesFetcher()
@@ -223,7 +238,7 @@ def test_yf_undervalued_growth_equities_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_yf_aggressive_small_caps_fetcher(credentials=test_credentials):
+def test_y_finance_aggressive_small_caps_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFAggressiveSmallCapsFetcher()
@@ -232,7 +247,7 @@ def test_yf_aggressive_small_caps_fetcher(credentials=test_credentials):
 
 
 @pytest.mark.record_http
-def test_yf_growth_tech_equities_fetcher(credentials=test_credentials):
+def test_y_finance_growth_tech_equities_fetcher(credentials=test_credentials):
     params = {}
 
     fetcher = YFGrowthTechEquitiesFetcher()

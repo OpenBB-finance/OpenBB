@@ -13,7 +13,6 @@ from typing_extensions import Annotated
 
 class ROUTER_economy(Container):
     """/economy
-    balance_of_payments
     calendar
     cpi
     fred_search
@@ -25,275 +24,6 @@ class ROUTER_economy(Container):
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
-
-    @validate
-    def balance_of_payments(
-        self, provider: Optional[Literal["ecb"]] = None, **kwargs
-    ) -> OBBject:
-        """Balance of Payments Reports.
-
-        Parameters
-        ----------
-        provider : Optional[Literal['ecb']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'ecb' if there is
-            no default.
-        report_type : Literal['main', 'summary', 'services', 'investment_income', 'direct_investment', 'portfolio_investment', 'other_investment']
-            The report type, the level of detail in the data. (provider: ecb)
-        frequency : Literal['monthly', 'quarterly']
-            The frequency of the data.  Monthly is valid only for ['main', 'summary']. (provider: ecb)
-        country : Literal['brazil', 'canada', 'china', 'eu_ex_euro_area', 'eu_institutions', 'india', 'japan', 'russia', 'switzerland', 'united_kingdom', 'united_states', 'total', None]
-            The country/region of the data.  This parameter will override the 'report_type' parameter. (provider: ecb)
-
-        Returns
-        -------
-        OBBject
-            results : List[BalanceOfPayments]
-                Serializable results.
-            provider : Optional[Literal['ecb']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        BalanceOfPayments
-        -----------------
-        period : Optional[date]
-            The date representing the beginning of the reporting period.
-        current_account : Optional[float]
-            Current Account Balance (Billions of EUR)
-        goods : Optional[float]
-            Goods Balance (Billions of EUR)
-        services : Optional[float]
-            Services Balance (Billions of EUR)
-        primary_income : Optional[float]
-            Primary Income Balance (Billions of EUR)
-        secondary_income : Optional[float]
-            Secondary Income Balance (Billions of EUR)
-        capital_account : Optional[float]
-            Capital Account Balance (Billions of EUR)
-        net_lending_to_rest_of_world : Optional[float]
-            Balance of net lending to the rest of the world (Billions of EUR)
-        financial_account : Optional[float]
-            Financial Account Balance (Billions of EUR)
-        direct_investment : Optional[float]
-            Direct Investment Balance (Billions of EUR)
-        portfolio_investment : Optional[float]
-            Portfolio Investment Balance (Billions of EUR)
-        financial_derivatives : Optional[float]
-            Financial Derivatives Balance (Billions of EUR)
-        other_investment : Optional[float]
-            Other Investment Balance (Billions of EUR)
-        reserve_assets : Optional[float]
-            Reserve Assets Balance (Billions of EUR)
-        errors_and_ommissions : Optional[float]
-            Errors and Omissions (Billions of EUR)
-        current_account_credit : Optional[float]
-            Current Account Credits (Billions of EUR)
-        current_account_debit : Optional[float]
-            Current Account Debits (Billions of EUR)
-        current_account_balance : Optional[float]
-            Current Account Balance (Billions of EUR)
-        goods_credit : Optional[float]
-            Goods Credits (Billions of EUR)
-        goods_debit : Optional[float]
-            Goods Debits (Billions of EUR)
-        services_credit : Optional[float]
-            Services Credits (Billions of EUR)
-        services_debit : Optional[float]
-            Services Debits (Billions of EUR)
-        primary_income_credit : Optional[float]
-            Primary Income Credits (Billions of EUR)
-        primary_income_employee_compensation_credit : Optional[float]
-            Primary Income Employee Compensation Credit (Billions of EUR)
-        primary_income_debit : Optional[float]
-            Primary Income Debits (Billions of EUR)
-        primary_income_employee_compensation_debit : Optional[float]
-            Primary Income Employee Compensation Debit (Billions of EUR)
-        secondary_income_credit : Optional[float]
-            Secondary Income Credits (Billions of EUR)
-        secondary_income_debit : Optional[float]
-            Secondary Income Debits (Billions of EUR)
-        capital_account_credit : Optional[float]
-            Capital Account Credits (Billions of EUR)
-        capital_account_debit : Optional[float]
-            Capital Account Debits (Billions of EUR)
-        services_total_credit : Optional[float]
-            Services Total Credit (Billions of EUR)
-        services_total_debit : Optional[float]
-            Services Total Debit (Billions of EUR)
-        transport_credit : Optional[float]
-            Transport Credit (Billions of EUR)
-        transport_debit : Optional[float]
-            Transport Debit (Billions of EUR)
-        travel_credit : Optional[float]
-            Travel Credit (Billions of EUR)
-        travel_debit : Optional[float]
-            Travel Debit (Billions of EUR)
-        financial_services_credit : Optional[float]
-            Financial Services Credit (Billions of EUR)
-        financial_services_debit : Optional[float]
-            Financial Services Debit (Billions of EUR)
-        communications_credit : Optional[float]
-            Communications Credit (Billions of EUR)
-        communications_debit : Optional[float]
-            Communications Debit (Billions of EUR)
-        other_business_services_credit : Optional[float]
-            Other Business Services Credit (Billions of EUR)
-        other_business_services_debit : Optional[float]
-            Other Business Services Debit (Billions of EUR)
-        other_services_credit : Optional[float]
-            Other Services Credit (Billions of EUR)
-        other_services_debit : Optional[float]
-            Other Services Debit (Billions of EUR)
-        investment_total_credit : Optional[float]
-            Investment Total Credit (Billions of EUR)
-        investment_total_debit : Optional[float]
-            Investment Total Debit (Billions of EUR)
-        equity_credit : Optional[float]
-            Equity Credit (Billions of EUR)
-        equity_reinvested_earnings_credit : Optional[float]
-            Equity Reinvested Earnings Credit (Billions of EUR)
-        equity_debit : Optional[float]
-            Equity Debit (Billions of EUR)
-        equity_reinvested_earnings_debit : Optional[float]
-            Equity Reinvested Earnings Debit (Billions of EUR)
-        debt_instruments_credit : Optional[float]
-            Debt Instruments Credit (Billions of EUR)
-        debt_instruments_debit : Optional[float]
-            Debt Instruments Debit (Billions of EUR)
-        portfolio_investment_equity_credit : Optional[float]
-            Portfolio Investment Equity Credit (Billions of EUR)
-        portfolio_investment_equity_debit : Optional[float]
-            Portfolio Investment Equity Debit (Billions of EUR)
-        portfolio_investment_debt_instruments_credit : Optional[float]
-            Portfolio Investment Debt Instruments Credit (Billions of EUR)
-        portofolio_investment_debt_instruments_debit : Optional[float]
-            Portfolio Investment Debt Instruments Debit (Billions of EUR)
-        other_investment_credit : Optional[float]
-            Other Investment Credit (Billions of EUR)
-        other_investment_debit : Optional[float]
-            Other Investment Debit (Billions of EUR)
-        reserve_assets_credit : Optional[float]
-            Reserve Assets Credit (Billions of EUR)
-        assets_total : Optional[float]
-            Assets Total (Billions of EUR)
-        assets_equity : Optional[float]
-            Assets Equity (Billions of EUR)
-        assets_debt_instruments : Optional[float]
-            Assets Debt Instruments (Billions of EUR)
-        assets_mfi : Optional[float]
-            Assets MFIs (Billions of EUR)
-        assets_non_mfi : Optional[float]
-            Assets Non MFIs (Billions of EUR)
-        assets_direct_investment_abroad : Optional[float]
-            Assets Direct Investment Abroad (Billions of EUR)
-        liabilities_total : Optional[float]
-            Liabilities Total (Billions of EUR)
-        liabilities_equity : Optional[float]
-            Liabilities Equity (Billions of EUR)
-        liabilities_debt_instruments : Optional[float]
-            Liabilities Debt Instruments (Billions of EUR)
-        liabilities_mfi : Optional[float]
-            Liabilities MFIs (Billions of EUR)
-        liabilities_non_mfi : Optional[float]
-            Liabilities Non MFIs (Billions of EUR)
-        liabilities_direct_investment_euro_area : Optional[float]
-            Liabilities Direct Investment in Euro Area (Billions of EUR)
-        assets_equity_and_fund_shares : Optional[float]
-            Assets Equity and Investment Fund Shares (Billions of EUR)
-        assets_equity_shares : Optional[float]
-            Assets Equity Shares (Billions of EUR)
-        assets_investment_fund_shares : Optional[float]
-            Assets Investment Fund Shares (Billions of EUR)
-        assets_debt_short_term : Optional[float]
-            Assets Debt Short Term (Billions of EUR)
-        assets_debt_long_term : Optional[float]
-            Assets Debt Long Term (Billions of EUR)
-        assets_resident_sector_eurosystem : Optional[float]
-            Assets Resident Sector Eurosystem (Billions of EUR)
-        assets_resident_sector_mfi_ex_eurosystem : Optional[float]
-            Assets Resident Sector MFIs outside Eurosystem (Billions of EUR)
-        assets_resident_sector_government : Optional[float]
-            Assets Resident Sector Government (Billions of EUR)
-        assets_resident_sector_other : Optional[float]
-            Assets Resident Sector Other (Billions of EUR)
-        liabilities_equity_and_fund_shares : Optional[float]
-            Liabilities Equity and Investment Fund Shares (Billions of EUR)
-        liabilities_investment_fund_shares : Optional[float]
-            Liabilities Investment Fund Shares (Billions of EUR)
-        liabilities_debt_short_term : Optional[float]
-            Liabilities Debt Short Term (Billions of EUR)
-        liabilities_debt_long_term : Optional[float]
-            Liabilities Debt Long Term (Billions of EUR)
-        liabilities_resident_sector_government : Optional[float]
-            Liabilities Resident Sector Government (Billions of EUR)
-        liabilities_resident_sector_other : Optional[float]
-            Liabilities Resident Sector Other (Billions of EUR)
-        assets_currency_and_deposits : Optional[float]
-            Assets Currency and Deposits (Billions of EUR)
-        assets_loans : Optional[float]
-            Assets Loans (Billions of EUR)
-        assets_trade_credit_and_advances : Optional[float]
-            Assets Trade Credits and Advances (Billions of EUR)
-        assets_eurosystem : Optional[float]
-            Assets Eurosystem (Billions of EUR)
-        assets_other_mfi_ex_eurosystem : Optional[float]
-            Assets Other MFIs outside Eurosystem (Billions of EUR)
-        assets_government : Optional[float]
-            Assets Government (Billions of EUR)
-        assets_other_sectors : Optional[float]
-            Assets Other Sectors (Billions of EUR)
-        liabilities_currency_and_deposits : Optional[float]
-            Liabilities Currency and Deposits (Billions of EUR)
-        liabilities_loans : Optional[float]
-            Liabilities Loans (Billions of EUR)
-        liabilities_trade_credit_and_advances : Optional[float]
-            Liabilities Trade Credits and Advances (Billions of EUR)
-        liabilities_eurosystem : Optional[float]
-            Liabilities Eurosystem (Billions of EUR)
-        liabilities_other_mfi_ex_eurosystem : Optional[float]
-            Liabilities Other MFIs outside Eurosystem (Billions of EUR)
-        liabilities_government : Optional[float]
-            Liabilities Government (Billions of EUR)
-        liabilities_other_sectors : Optional[float]
-            Liabilities Other Sectors (Billions of EUR)
-        goods_balance : Optional[float]
-            Goods Balance (Billions of EUR)
-        services_balance : Optional[float]
-            Services Balance (Billions of EUR)
-        primary_income_balance : Optional[float]
-            Primary Income Balance (Billions of EUR)
-        investment_income_balance : Optional[float]
-            Investment Income Balance (Billions of EUR)
-        investment_income_credit : Optional[float]
-            Investment Income Credits (Billions of EUR)
-        investment_income_debit : Optional[float]
-            Investment Income Debits (Billions of EUR)
-        secondary_income_balance : Optional[float]
-            Secondary Income Balance (Billions of EUR)
-        capital_account_balance : Optional[float]
-            Capital Account Balance (Billions of EUR)
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.economy.balance_of_payments()
-        """  # noqa: E501
-
-        return self._run(
-            "/economy/balance_of_payments",
-            **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
-                standard_params={},
-                extra_params=kwargs,
-            )
-        )
 
     @validate
     def calendar(
@@ -310,7 +40,7 @@ class ROUTER_economy(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "nasdaq", "tradingeconomics"]] = None,
+        provider: Optional[Literal["fmp", "tradingeconomics"]] = None,
         **kwargs
     ) -> OBBject:
         """Economic Calendar.
@@ -321,12 +51,12 @@ class ROUTER_economy(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'nasdaq', 'tradingeconomics']]
+        provider : Optional[Literal['fmp', 'tradingeconomics']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        country : Optional[Union[List[str], str]]
-            Country of the event (provider: nasdaq, tradingeconomics)
+        country : Optional[Union[str, List[str]]]
+            Country of the event (provider: tradingeconomics)
         importance : Optional[Literal['Low', 'Medium', 'High']]
             Importance of the event. (provider: tradingeconomics)
         group : Optional[Literal['interest rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']]
@@ -337,7 +67,7 @@ class ROUTER_economy(Container):
         OBBject
             results : List[EconomicCalendar]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'nasdaq', 'tradingeconomics']]
+            provider : Optional[Literal['fmp', 'tradingeconomics']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -384,8 +114,6 @@ class ROUTER_economy(Container):
             Last updated timestamp. (provider: fmp)
         created_at : Optional[datetime]
             Created at timestamp. (provider: fmp)
-        description : Optional[str]
-            Event description. (provider: nasdaq)
 
         Example
         -------
@@ -880,15 +608,15 @@ class ROUTER_economy(Container):
             Value of the M1 money supply in billions.
         M2 : float
             Value of the M2 money supply in billions.
-        currency : float
+        currency : Optional[float]
             Value of currency in circulation in billions.
-        demand_deposits : float
+        demand_deposits : Optional[float]
             Value of demand deposits in billions.
-        retail_money_market_funds : float
+        retail_money_market_funds : Optional[float]
             Value of retail money market funds in billions.
-        other_liquid_deposits : float
+        other_liquid_deposits : Optional[float]
             Value of other liquid deposits in billions.
-        small_denomination_time_deposits : float
+        small_denomination_time_deposits : Optional[float]
             Value of small denomination time deposits in billions.
 
         Example
