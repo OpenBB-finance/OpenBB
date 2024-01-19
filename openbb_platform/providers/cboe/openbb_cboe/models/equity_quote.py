@@ -36,7 +36,7 @@ class CboeEquityQuoteData(EquityQuoteData):
     """CBOE Equity Quote Data."""
 
     __alias_dict__ = {
-        "last_time": "last_trade_time",
+        "last_timestamp": "last_trade_time",
         "prev_close": "prev_day_close",
         "asset_type": "security_type",
         "last_price": "current_price",
