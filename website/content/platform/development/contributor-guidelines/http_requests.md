@@ -223,4 +223,4 @@ When a Fetcher is asynchronous, the `extract_data` static method needs to be def
     ) -> List[Dict]:
 ```
 
-These helper functions simplify and standardize the majority of HTTP requests. These helper functions are starting  points for building or modifying data provider extensions, and they can also be imported as a standalone utility within any Python session.
+These helper functions simplify and standardize the majority of HTTP requests. These helper functions are starting points for building or modifying data provider extensions, and they can also be imported as a standalone utility within any Python session.
