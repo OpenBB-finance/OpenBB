@@ -20,9 +20,7 @@ from openbb_cboe.models.equity_quote import CboeEquityQuoteFetcher
 from openbb_cboe.models.equity_search import CboeEquitySearchFetcher
 from openbb_cboe.models.futures_curve import CboeFuturesCurveFetcher
 from openbb_cboe.models.index_constituents import CboeIndexConstituentsFetcher
-from openbb_cboe.models.index_historical import (
-    CboeIndexHistoricalFetcher,
-)
+from openbb_cboe.models.index_historical import CboeIndexHistoricalFetcher
 from openbb_cboe.models.index_search import CboeIndexSearchFetcher
 from openbb_cboe.models.index_snapshots import CboeIndexSnapshotsFetcher
 from openbb_cboe.models.options_chains import CboeOptionsChainsFetcher
