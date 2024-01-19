@@ -34,7 +34,7 @@ class ROUTER_news(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 20,
         provider: Optional[
-            Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo"]
+            Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"]
         ] = None,
         **kwargs
     ) -> OBBject:
@@ -91,7 +91,7 @@ class ROUTER_news(Container):
         OBBject
             results : List[CompanyNews]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo']]
+            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -139,12 +139,18 @@ class ROUTER_news(Container):
             Image URL. (provider: polygon)
         keywords : Optional[List[str]]
             Keywords in the article (provider: polygon)
-        publisher : Optional[openbb_polygon.models.company_news.PolygonPublisher]
-            Publisher of the article. (provider: polygon)
+        publisher : Optional[Union[openbb_polygon.models.company_news.PolygonPublisher, str]]
+            Publisher of the article. (provider: polygon, yfinance)
         article_id : Optional[int]
             Unique ID of the news article. (provider: tiingo)
         crawl_date : Optional[datetime]
             Date the news article was crawled. (provider: tiingo)
+        uuid : Optional[str]
+            Unique identifier for the news article (provider: yfinance)
+        type : Optional[str]
+            Type of the news article (provider: yfinance)
+        thumbnail : Optional[List]
+            Thumbnail related data to the ticker news article. (provider: yfinance)
 
         Example
         -------
