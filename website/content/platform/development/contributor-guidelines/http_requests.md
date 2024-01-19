@@ -28,6 +28,39 @@ Any function fetching data requires making an outbound HTTP request. Utility fun
 
 Using the helpers will keep the codebase leaner and easier to maintain by eliminating duplicate processes. Anyone can build effective and efficient data fetchers, this guide outlines how to import and implement either type of request into any fetcher.
 
+## Generate Query String
+
+To pass parameters to a URL, they need to be formatted as a query string. The helper function, `get_querystring()`, converts a dictionary of parameters to a standard query URL string.
+
+```python
+from openbb_core.provider.utils.helpers import get_querystring
+```
+
+```python
+    Parameters
+    ----------
+    items: dict
+        The dictionary to be turned into a querystring.
+
+    exclude: List[str]
+        The keys to be excluded from the querystring.
+
+    Returns
+    -------
+    str
+        The querystring.
+```
+
+Within the context of the Fetcher, the "query" object is a Pydantic model. To pass the query parameters to the helper function, apply `model_dump()` to the query object. This removes any key:values where the value is `None`.
+
+There may be parameters that are not intended to be included in the parameters portion of the URL string. Pass those as a `List` to the `exclude` parameter of `get_querystring()`.
+
+```python
+query_string = get_querystring(query.model_dump(), ["interval"])
+```
+
+In the example above, the "base url" is dedicated to the "interval" of the OHLC data. We want to exclude `&interval=1d` from the parameters portion of the final URL. Or, daily/monthly/intraday levels are all different end points from the provider's API.
+
 ## Asynchronous vs Synchronous
 
 Every function in the router is asynchronous. This is the only place an asynchronous function *must* be used. Data-fetching router functions all follow the same format.
@@ -55,8 +88,6 @@ In the case of the former, dozens of requests, an asynchronous fetcher will dram
 Some data providers allow for bulk downloading from a list of symbols, while many do not. It might be desirable to enhance a data source by adding support for bulk downloading. Wrapping it as list of asynchronous tasks makes it an efficient process. The time to download one item should be the same as two because the tasks are carried out concurrently.
 
 Ultimately, the choice is at the discretion of the developer. OpenBB has made the implementation of both methods easy and fast, the next sections will elaborate.
-
-## Import Statements
 
 ### Synchronous - Requests
 
@@ -133,7 +164,7 @@ Absent `await`, the response is a coroutine - a task waiting to be executed.
 
 :::
 
-#### Multi-URL Requests
+### Multi-URL Requests
 
 The helper function becomes plural, `amake_requests`, when fetching for a list of URLs. Under the hood, it is using `asyncio.gather` to perform the tasks concurrently. The same default callback function from `amake_request` exists, only here it appends the expected `json` output to a `List[Dict]`.
 
