@@ -10,6 +10,7 @@ from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     amake_request,
+    amake_requests,
     get_querystring,
 )
 from pydantic import BaseModel
@@ -76,6 +77,11 @@ async def response_callback(
 async def get_data(url: str, **kwargs: Any) -> Union[list, dict]:
     """Get data from FMP endpoint."""
     return await amake_request(url, response_callback=response_callback, **kwargs)
+
+
+async def get_data_urls(urls: str, **kwargs: Any) -> Union[list, dict]:
+    """Get data from FMP for several urls."""
+    return await amake_requests(urls, response_callback=response_callback, **kwargs)
 
 
 def create_url(
