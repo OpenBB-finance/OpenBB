@@ -89,6 +89,12 @@ To install all extensions and providers (both officially supported and community
 pip install openbb[all]
 ```
 
+:::tip
+In a macOS `zsh` Terminal shell, add quotation marks around the library name.
+
+`"openbb[all]"`
+:::
+
 To install a single extension:
 
 ```console
