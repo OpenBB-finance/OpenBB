@@ -12,6 +12,7 @@ from openbb_yfinance.models.crypto_historical import YFinanceCryptoHistoricalFet
 from openbb_yfinance.models.currency_historical import YFinanceCurrencyHistoricalFetcher
 from openbb_yfinance.models.equity_historical import YFinanceEquityHistoricalFetcher
 from openbb_yfinance.models.equity_profile import YFinanceEquityProfileFetcher
+from openbb_yfinance.models.equity_quote import YFinanceEquityQuoteFetcher
 from openbb_yfinance.models.etf_historical import YFinanceEtfHistoricalFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
@@ -261,5 +262,14 @@ def test_y_finance_equity_profile_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = YFinanceEquityProfileFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_y_finance_equity_quote_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = YFinanceEquityQuoteFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
