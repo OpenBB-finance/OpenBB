@@ -15,8 +15,6 @@ class ROUTER_index(Container):
     """/index
     available
     constituents
-    european
-    european_constituents
     market
     /price
     """
@@ -34,12 +32,8 @@ class ROUTER_index(Container):
         ----------
         provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'cboe' if there is
+            If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        europe : bool
-            Filter for European indices. False for US indices. (provider: cboe)
-        use_cache : bool
-            Whether to use a cached request. Index data is from a single JSON file, updated each day after close. It is cached for one day. To bypass, set to False. (provider: tmx)
 
         Returns
         -------
@@ -61,28 +55,6 @@ class ROUTER_index(Container):
             Name of the index.
         currency : Optional[str]
             Currency the index is traded in.
-        isin : Optional[str]
-            ISIN code for the index. Valid only for European indices. (provider: cboe)
-        region : Optional[str]
-            Region for the index. Valid only for European indices (provider: cboe)
-        symbol : Optional[str]
-            Symbol for the index. (provider: cboe, tmx, yfinance)
-        description : Optional[str]
-            Description for the index. Valid only for US indices. (provider: cboe)
-        data_delay : Optional[int]
-            Data delay for the index. Valid only for US indices. (provider: cboe)
-        open_time : Optional[datetime.time]
-            Opening time for the index. Valid only for US indices. (provider: cboe)
-        close_time : Optional[datetime.time]
-            Closing time for the index. Valid only for US indices. (provider: cboe)
-        time_zone : Optional[str]
-            Time zone for the index. Valid only for US indices. (provider: cboe)
-        tick_days : Optional[str]
-            The trading days for the index. Valid only for US indices. (provider: cboe)
-        tick_frequency : Optional[str]
-            The frequency of the index ticks. Valid only for US indices. (provider: cboe)
-        tick_period : Optional[str]
-            The period of the index ticks. Valid only for US indices. (provider: cboe)
         stock_exchange : Optional[str]
             Stock exchange where the index is listed. (provider: fmp)
         exchange_short_name : Optional[str]
@@ -112,32 +84,32 @@ class ROUTER_index(Container):
     @validate
     def constituents(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        provider: Optional[Literal["fmp", "tmx"]] = None,
+        index: Annotated[
+            Literal["nasdaq", "sp500", "dowjones"],
+            OpenBBCustomParameter(
+                description="Index for which we want to fetch the constituents."
+            ),
+        ] = "dowjones",
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """Index Constituents. Constituents of an index.
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
-        provider : Optional[Literal['fmp', 'tmx']]
+        index : Literal['nasdaq', 'sp500', 'dowjones']
+            Index for which we want to fetch the constituents.
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        use_cache : bool
-            Whether to use a cached request. Index data is from a single JSON file, updated each day after close. It is cached for one day. To bypass, set to False. (provider: tmx)
 
         Returns
         -------
         OBBject
             results : List[IndexConstituents]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'tmx']]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -150,29 +122,25 @@ class ROUTER_index(Container):
         -----------------
         symbol : str
             Symbol representing the entity requested in the data.
-        name : Optional[str]
+        name : str
             Name of the constituent company in the index.
-        sector : Optional[str]
+        sector : str
             Sector the constituent company in the index belongs to.
-        weight : Optional[float]
-            The weight of the asset in the index, as a normalized percentage.
         sub_sector : Optional[str]
-            Sub-sector the constituent company in the index belongs to. (provider: fmp)
+            Sub-sector the constituent company in the index belongs to.
         headquarter : Optional[str]
-            Location of the headquarter of the constituent company in the index. (provider: fmp)
+            Location of the headquarter of the constituent company in the index.
         date_first_added : Optional[Union[str, date]]
-            Date the constituent company was added to the index. (provider: fmp)
-        cik : Optional[int]
-            Central Index Key (CIK) for the requested entity. (provider: fmp)
+            Date the constituent company was added to the index.
+        cik : int
+            Central Index Key (CIK) for the requested entity.
         founded : Optional[Union[str, date]]
-            Founding year of the constituent company in the index. (provider: fmp)
-        market_value : Optional[float]
-            The quoted market value of the asset. (provider: tmx)
+            Founding year of the constituent company in the index.
 
         Example
         -------
         >>> from openbb import obb
-        >>> obb.index.constituents(symbol="SPX")
+        >>> obb.index.constituents(index="dowjones")
         """  # noqa: E501
 
         return self._run(
@@ -182,183 +150,7 @@ class ROUTER_index(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                },
-                extra_params=kwargs,
-            )
-        )
-
-    @validate
-    def european(
-        self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        provider: Optional[Literal["cboe"]] = None,
-        **kwargs
-    ) -> OBBject:
-        """Historical European Indices.
-
-        Parameters
-        ----------
-        symbol : str
-            Symbol to get data for.
-        start_date : Optional[datetime.date]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
-            End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['cboe']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'cboe' if there is
-            no default.
-        interval : Literal['1d', '1m']
-            Data granularity. (provider: cboe)
-
-        Returns
-        -------
-        OBBject
-            results : List[EuropeanIndices]
-                Serializable results.
-            provider : Optional[Literal['cboe']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        EuropeanIndices
-        ---------------
-        date : datetime
-            The date of the data.
-        close : float
-            The close price.
-        open : Optional[float]
-            Opening price for the interval. Only valid when interval is 1m. (provider: cboe)
-        high : Optional[float]
-            High price for the interval. Only valid when interval is 1m. (provider: cboe)
-        low : Optional[float]
-            Low price for the interval. Only valid when interval is 1m. (provider: cboe)
-        utc_datetime : Optional[datetime]
-            UTC datetime. Only valid when interval is 1m. (provider: cboe)
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.index.european(symbol="BUKBUS")
-        """  # noqa: E501
-
-        return self._run(
-            "/index/european",
-            **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
-                standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                    "start_date": start_date,
-                    "end_date": end_date,
-                },
-                extra_params=kwargs,
-            )
-        )
-
-    @validate
-    def european_constituents(
-        self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
-        ],
-        provider: Optional[Literal["cboe"]] = None,
-        **kwargs
-    ) -> OBBject:
-        """European Index Constituents. Constituents of select european indices.
-
-        Parameters
-        ----------
-        symbol : str
-            Symbol to get data for.
-        provider : Optional[Literal['cboe']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'cboe' if there is
-            no default.
-
-        Returns
-        -------
-        OBBject
-            results : List[EuropeanIndexConstituents]
-                Serializable results.
-            provider : Optional[Literal['cboe']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
-
-        EuropeanIndexConstituents
-        -------------------------
-        symbol : str
-            Symbol representing the entity requested in the data. The symbol is the constituent company in the index.
-        price : float
-            Current price of the constituent company in the index.
-        open : float
-            The open price.
-        high : float
-            The high price.
-        low : float
-            The low price.
-        close : float
-            The close price.
-        volume : float
-            The trading volume.
-        prev_close : Optional[float]
-            Previous closing  price. (provider: cboe)
-        change : Optional[float]
-            Change in price. (provider: cboe)
-        change_percent : Optional[float]
-            Change in price as a percentage. (provider: cboe)
-        tick : Optional[str]
-            Whether the last sale was an up or down tick. (provider: cboe)
-        last_trade_timestamp : Optional[datetime]
-            Last trade timestamp for the symbol. (provider: cboe)
-        exchange_id : Optional[int]
-            The Exchange ID number. (provider: cboe)
-        seqno : Optional[int]
-            Sequence number of the last trade on the tape. (provider: cboe)
-        asset_type : Optional[str]
-            Type of asset. (provider: cboe)
-
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.index.european_constituents(symbol="BUKBUS")
-        """  # noqa: E501
-
-        return self._run(
-            "/index/european_constituents",
-            **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
-                standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "index": index,
                 },
                 extra_params=kwargs,
             )
@@ -398,12 +190,8 @@ class ROUTER_index(Container):
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'cboe' if there is
+            If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        interval : Optional[Union[Literal['1d', '1m'], Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
-            Use interval, 1m, for intraday prices during the most recent trading period. (provider: cboe);
-            Data granularity. (provider: fmp);
-            Data granularity. (provider: yfinance)
         timeseries : Optional[Annotated[int, Ge(ge=0)]]
             Number of days to look back. (provider: fmp)
         interval : Optional[Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
@@ -459,12 +247,6 @@ class ROUTER_index(Container):
             The close price.
         volume : Optional[int]
             The trading volume.
-        calls_volume : Optional[float]
-            Number of calls traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
-        puts_volume : Optional[float]
-            Number of puts traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
-        total_options_volume : Optional[float]
-            Total number of options traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
         adj_close : Optional[float]
             The adjusted close price. (provider: fmp)
         unadjusted_volume : Optional[float]

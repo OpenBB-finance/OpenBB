@@ -13,8 +13,8 @@ from datetime import (
 from io import StringIO
 from typing import Any, Dict, List, Literal, Optional
 
+import exchange_calendars as xcals
 import pandas as pd
-import pandas_market_calendars as mcal
 import pytz
 from aiohttp_client_cache import SQLiteBackend
 from aiohttp_client_cache.session import CachedSession
@@ -582,17 +582,16 @@ async def download_eod_chains(
 
     BASE_URL = "https://www.m-x.ca/en/trading/data/historical?symbol="
 
-    cal = mcal.get_calendar(name="TSX")
-    holidays = list(cal.regular_holidays.holidays().strftime("%Y-%m-%d"))  # type: ignore
+    cal = xcals.get_calendar("XTSE")
 
     if date is None:
         EOD_URL = BASE_URL + f"{symbol}" "&dnld=1#quotes"
     if date is not None:
         date = check_weekday(date)  # type: ignore
-        if date in holidays:
+        if cal.is_session(date) is False:
             date = (pd.to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore
         date = check_weekday(date)  # type: ignore
-        if date in holidays:
+        if cal.is_session(date=date) is False:
             date = (pd.to_datetime(date) + timedelta(days=1)).strftime("%Y-%m-%d")  # type: ignore
 
         EOD_URL = (

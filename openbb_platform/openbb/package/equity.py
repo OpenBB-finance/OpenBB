@@ -14,7 +14,6 @@ class ROUTER_equity(Container):
     """/equity
     /calendar
     /compare
-    /darkpool
     /discovery
     /estimates
     /fundamental
@@ -45,15 +44,6 @@ class ROUTER_equity(Container):
         from . import equity_compare
 
         return equity_compare.ROUTER_equity_compare(command_runner=self._command_runner)
-
-    @property
-    def darkpool(self):
-        # pylint: disable=import-outside-toplevel
-        from . import equity_darkpool
-
-        return equity_darkpool.ROUTER_equity_darkpool(
-            command_runner=self._command_runner
-        )
 
     @property
     def discovery(self):
@@ -234,7 +224,7 @@ class ROUTER_equity(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["cboe", "intrinio", "tmx"]] = None,
+        provider: Optional[Literal["intrinio"]] = None,
         **kwargs
     ) -> OBBject:
         """Equity Info. Get general price and performance metrics of a stock.
@@ -243,9 +233,9 @@ class ROUTER_equity(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['cboe', 'intrinio', 'tmx']]
+        provider : Optional[Literal['intrinio']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'cboe' if there is
+            If None, the provider specified in defaults is selected or 'intrinio' if there is
             no default.
 
         Returns
@@ -253,7 +243,7 @@ class ROUTER_equity(Container):
         OBBject
             results : List[EquityInfo]
                 Serializable results.
-            provider : Optional[Literal['cboe', 'intrinio', 'tmx']]
+            provider : Optional[Literal['intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -336,64 +326,10 @@ class ROUTER_equity(Container):
             Date of the company's first stock price.
         last_stock_price_date : Optional[date]
             Date of the company's last stock price.
-        type : Optional[str]
-            Type of asset. (provider: cboe)
-        exchange_id : Optional[int]
-            The Exchange ID number. (provider: cboe)
-        tick : Optional[str]
-            Whether the last sale was an up or down tick. (provider: cboe)
-        bid : Optional[float]
-            Current bid price. (provider: cboe)
-        bid_size : Optional[float]
-            Bid lot size. (provider: cboe)
-        ask : Optional[float]
-            Current ask price. (provider: cboe)
-        ask_size : Optional[float]
-            Ask lot size. (provider: cboe)
-        volume : Optional[float]
-            Stock volume for the current trading day. (provider: cboe)
-        iv30 : Optional[float]
-            The 30-day implied volatility of the stock. (provider: cboe)
-        iv30_change : Optional[float]
-            Change in 30-day implied volatility of the stock. (provider: cboe)
-        last_trade_timestamp : Optional[datetime]
-            Last trade timestamp for the stock. (provider: cboe)
-        iv30_annual_high : Optional[float]
-            The 1-year high of implied volatility. (provider: cboe)
-        hv30_annual_high : Optional[float]
-            The 1-year high of realized volatility. (provider: cboe)
-        iv30_annual_low : Optional[float]
-            The 1-year low of implied volatility. (provider: cboe)
-        hv30_annual_low : Optional[float]
-            The 1-year low of realized volatility. (provider: cboe)
-        iv60_annual_high : Optional[float]
-            The 60-day high of implied volatility. (provider: cboe)
-        hv60_annual_high : Optional[float]
-            The 60-day high of realized volatility. (provider: cboe)
-        iv60_annual_low : Optional[float]
-            The 60-day low of implied volatility. (provider: cboe)
-        hv60_annual_low : Optional[float]
-            The 60-day low of realized volatility. (provider: cboe)
-        iv90_annual_high : Optional[float]
-            The 90-day high of implied volatility. (provider: cboe)
-        hv90_annual_high : Optional[float]
-            The 90-day high of realized volatility. (provider: cboe)
         id : Optional[str]
             Intrinio ID for the company. (provider: intrinio)
         thea_enabled : Optional[bool]
             Whether the company has been enabled for Thea. (provider: intrinio)
-        email : Optional[str]
-            The email of the company. (provider: tmx)
-        issue_type : Optional[str]
-            The issuance type of the asset. (provider: tmx)
-        shares_outstanding : Optional[int]
-            The number of listed shares outstanding. (provider: tmx)
-        shares_escrow : Optional[int]
-            The number of shares held in escrow. (provider: tmx)
-        shares_total : Optional[int]
-            The total number of shares outstanding from all classes. (provider: tmx)
-        dividend_frequency : Optional[str]
-            The dividend frequency. (provider: tmx)
 
         Example
         -------
@@ -529,7 +465,7 @@ class ROUTER_equity(Container):
             bool,
             OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ] = False,
-        provider: Optional[Literal["cboe", "intrinio", "nasdaq", "sec", "tmx"]] = None,
+        provider: Optional[Literal["intrinio", "sec"]] = None,
         **kwargs
     ) -> OBBject:
         """Equity Search. Search for a company or stock ticker.
@@ -540,29 +476,25 @@ class ROUTER_equity(Container):
             Search query.
         is_symbol : bool
             Whether to search by ticker symbol.
-        provider : Optional[Literal['cboe', 'intrinio', 'nasdaq', 'sec', 'tmx']]
+        provider : Optional[Literal['intrinio', 'sec']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'cboe' if there is
+            If None, the provider specified in defaults is selected or 'intrinio' if there is
             no default.
         active : Optional[bool]
             When true, return companies that are actively traded (having stock prices within the past 14 days). When false, return companies that are not actively traded or never have been traded. (provider: intrinio)
         limit : Optional[int]
             The number of data entries to return. (provider: intrinio)
-        is_etf : Optional[bool]
-            If True, returns ETFs. (provider: nasdaq)
-        use_cache : Optional[bool]
-            If True, caches the symbol directory for one day. (provider: nasdaq);
-            Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec);
-            Whether to use a cached request. The list of companies is cached for two days. (provider: tmx)
         is_fund : bool
             Whether to direct the search to the list of mutual funds and ETFs. (provider: sec)
+        use_cache : bool
+            Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec)
 
         Returns
         -------
         OBBject
             results : List[EquitySearch]
                 Serializable results.
-            provider : Optional[Literal['cboe', 'intrinio', 'nasdaq', 'sec', 'tmx']]
+            provider : Optional[Literal['intrinio', 'sec']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -577,10 +509,6 @@ class ROUTER_equity(Container):
             Symbol representing the entity requested in the data.
         name : str
             Name of the company.
-        dpm_name : Optional[str]
-            Name of the primary market maker. (provider: cboe)
-        post_station : Optional[str]
-            Post and station location on the CBOE trading floor. (provider: cboe)
         cik : Optional[str]
             ;
             Central Index Key (provider: sec)
@@ -588,26 +516,6 @@ class ROUTER_equity(Container):
             The Legal Entity Identifier (LEI) of the company. (provider: intrinio)
         intrinio_id : Optional[str]
             The Intrinio ID of the company. (provider: intrinio)
-        nasdaq_traded : Optional[str]
-            Is Nasdaq traded? (provider: nasdaq)
-        exchange : Optional[str]
-            Primary Exchange (provider: nasdaq)
-        market_category : Optional[str]
-            Market Category (provider: nasdaq)
-        etf : Optional[str]
-            Is ETF? (provider: nasdaq)
-        round_lot_size : Optional[float]
-            Round Lot Size (provider: nasdaq)
-        test_issue : Optional[str]
-            Is test Issue? (provider: nasdaq)
-        financial_status : Optional[str]
-            Financial Status (provider: nasdaq)
-        cqs_symbol : Optional[str]
-            CQS Symbol (provider: nasdaq)
-        nasdaq_symbol : Optional[str]
-            NASDAQ Symbol (provider: nasdaq)
-        next_shares : Optional[str]
-            Is NextShares? (provider: nasdaq)
 
         Example
         -------
