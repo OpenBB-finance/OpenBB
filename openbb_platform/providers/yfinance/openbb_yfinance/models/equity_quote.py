@@ -2,7 +2,6 @@
 # pylint: disable=unused-argument
 import asyncio
 import warnings
-from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -10,7 +9,7 @@ from openbb_core.provider.standard_models.equity_quote import (
     EquityQuoteData,
     EquityQuoteQueryParams,
 )
-from pydantic import Field, field_validator
+from pydantic import Field
 from yfinance import Ticker
 
 _warn = warnings.warn
