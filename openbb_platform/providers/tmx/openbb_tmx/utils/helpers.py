@@ -626,7 +626,7 @@ async def download_eod_chains(
     )
 
     cols = [
-        "date",
+        "eod_date",
         "strike",
         "expiration",
         "closeBid",
@@ -652,15 +652,15 @@ async def download_eod_chains(
     data.columns = cols
 
     data["expiration"] = pd.to_datetime(data["expiration"], format="%Y-%m-%d")
-    data["date"] = pd.to_datetime(data["date"], format="%Y-%m-%d")
+    data["eod_date"] = pd.to_datetime(data["eod_date"], format="%Y-%m-%d")
     data["impliedVolatility"] = 0.01 * data["impliedVolatility"]
 
-    date_ = data["date"]
+    date_ = data["eod_date"]
     temp = pd.DatetimeIndex(data.expiration)
     temp_ = temp - date_  # type: ignore
     data["dte"] = [pd.Timedelta(_temp_).days for _temp_ in temp_]
     data = data.set_index(["expiration", "strike", "optionType"]).sort_index()
-    data["date"] = data["date"].astype(str)
+    data["eod_date"] = data["eod_date"].astype(str)
     underlying_price = data.iloc[-1]["lastTradePrice"]
     data["underlyingPrice"] = underlying_price
     data = data.reset_index()
