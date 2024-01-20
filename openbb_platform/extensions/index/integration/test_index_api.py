@@ -157,6 +157,121 @@ def test_index_market(params, headers):
     [
         (
             {
+                "symbol": "^DJI",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "provider": "fmp",
+                "sort": "desc",
+            }
+        ),
+        (
+            {
+                "interval": "1m",
+                "provider": "cboe",
+                "symbol": "AAVE100",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "interval": "1d",
+                "provider": "cboe",
+                "symbol": "AAVE100",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "interval": "1min",
+                "provider": "fmp",
+                "symbol": "^DJI",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "timeseries": 1,
+                "sort": "desc",
+            }
+        ),
+        (
+            {
+                "interval": "1day",
+                "provider": "fmp",
+                "symbol": "^DJI",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "timeseries": 1,
+                "sort": "desc",
+            }
+        ),
+        (
+            {
+                "timespan": "minute",
+                "sort": "desc",
+                "limit": 49999,
+                "adjusted": True,
+                "multiplier": 1,
+                "provider": "polygon",
+                "symbol": "NDX",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "timespan": "day",
+                "sort": "desc",
+                "limit": 49999,
+                "adjusted": True,
+                "multiplier": 1,
+                "provider": "polygon",
+                "symbol": "NDX",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "interval": "1d",
+                "period": "max",
+                "prepost": True,
+                "rounding": True,
+                "provider": "yfinance",
+                "symbol": "DJI",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "symbol": "$DJI",
+                "tag": "level",
+                "sort": "desc",
+                "limit": 100,
+                "type": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_index_price_historical(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/index/price/historical?{query_str}"
+    result = requests.get(url, headers=headers, timeout=20)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
                 "symbol": "BUKBUS",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",

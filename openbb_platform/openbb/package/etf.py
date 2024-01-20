@@ -14,7 +14,6 @@ from typing_extensions import Annotated
 class ROUTER_etf(Container):
     """/etf
     countries
-    /discovery
     historical
     holdings
     holdings_date
@@ -88,13 +87,6 @@ class ROUTER_etf(Container):
                 extra_params=kwargs,
             )
         )
-
-    @property
-    def discovery(self):
-        # pylint: disable=import-outside-toplevel
-        from . import etf_discovery
-
-        return etf_discovery.ROUTER_etf_discovery(command_runner=self._command_runner)
 
     @validate
     def historical(

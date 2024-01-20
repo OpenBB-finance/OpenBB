@@ -9,6 +9,9 @@ from openbb_polygon.models.currency_pairs import PolygonCurrencyPairsFetcher
 from openbb_polygon.models.equity_historical import PolygonEquityHistoricalFetcher
 from openbb_polygon.models.equity_nbbo import PolygonEquityNBBOFetcher
 from openbb_polygon.models.income_statement import PolygonIncomeStatementFetcher
+from openbb_polygon.models.index_historical import (
+    PolygonIndexHistoricalFetcher,
+)
 from openbb_polygon.models.market_indices import (
     PolygonMarketIndicesFetcher,
 )
@@ -31,6 +34,7 @@ polygon_provider = Provider(
         "EquityHistorical": PolygonEquityHistoricalFetcher,
         "EquityNBBO": PolygonEquityNBBOFetcher,
         "IncomeStatement": PolygonIncomeStatementFetcher,
+        "IndexHistorical": PolygonIndexHistoricalFetcher,
         "MarketIndices": PolygonMarketIndicesFetcher,
         "MarketSnapshots": PolygonMarketSnapshotsFetcher,
     },

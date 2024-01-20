@@ -35,16 +35,7 @@ class ROUTER_news(Container):
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 20,
         provider: Optional[
-            Literal[
-                "benzinga",
-                "fmp",
-                "intrinio",
-                "polygon",
-                "tiingo",
-                "tmx",
-                "ultima",
-                "yfinance",
-            ]
+            Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"]
         ] = None,
         **kwargs
     ) -> OBBject:
@@ -102,7 +93,7 @@ class ROUTER_news(Container):
         OBBject
             results : List[CompanyNews]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'tmx', 'ultima', 'yfinance']]
+            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -151,15 +142,11 @@ class ROUTER_news(Container):
         keywords : Optional[List[str]]
             Keywords in the article (provider: polygon)
         publisher : Optional[Union[openbb_polygon.models.company_news.PolygonPublisher, str]]
-            Publisher of the article. (provider: polygon, ultima, yfinance)
+            Publisher of the article. (provider: polygon, yfinance)
         article_id : Optional[int]
             Unique ID of the news article. (provider: tiingo)
         crawl_date : Optional[datetime]
             Date the news article was crawled. (provider: tiingo)
-        source : Optional[str]
-            Source of the news. (provider: tmx)
-        risk_category : Optional[str]
-            Risk category of the news. (provider: ultima)
         uuid : Optional[str]
             Unique identifier for the news article (provider: yfinance)
         type : Optional[str]

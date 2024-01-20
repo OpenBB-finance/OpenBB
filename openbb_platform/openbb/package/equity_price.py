@@ -45,18 +45,8 @@ class ROUTER_equity_price(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        chart: bool = False,
         provider: Optional[
-            Literal[
-                "alpha_vantage",
-                "cboe",
-                "fmp",
-                "intrinio",
-                "polygon",
-                "tiingo",
-                "tmx",
-                "yfinance",
-            ]
+            Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]
         ] = None,
         **kwargs
     ) -> OBBject:
@@ -72,9 +62,7 @@ class ROUTER_equity_price(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        chart : bool
-            Whether to create a chart or not, by default False.
-        provider : Optional[Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'pol...
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinanc...
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'alpha_vantage' if there is
             no default.
@@ -100,8 +88,9 @@ class ROUTER_equity_price(Container):
             The source of the data. (provider: intrinio)
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
-        adjustment : Literal['splits_only', 'splits_and_dividends', 'unadjusted']
-            The adjustment factor to apply. Only valid for daily data. (provider: tmx)
+        adjusted : bool
+            Output time series is adjusted by historical split and dividend events. (provider: polygon);
+            Adjust all OHLC data automatically. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
         include : bool
@@ -114,7 +103,7 @@ class ROUTER_equity_price(Container):
         OBBject
             results : List[EquityHistorical]
                 Serializable results.
-            provider : Optional[Literal['alpha_vantage', 'cboe', 'fmp', 'intrinio', 'polygon', 'tiingo', 'tmx', 'yfinance']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
