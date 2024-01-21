@@ -41,9 +41,16 @@ class YFinancePriceTargetConsensusData(PriceTargetConsensusData):
         default=None,
         description="Mean recommendation score where 1 is strong buy and 5 is strong sell.",
     )
+    number_of_analysts: Optional[int] = Field(
+        default=None, description="Number of analysts providing opinions."
+    )
     current_price: Optional[float] = Field(
         default=None,
         description="Current price of the stock.",
+    )
+    currency: Optional[str] = Field(
+        default=None,
+        description="Currency the stock is priced in.",
     )
 
 
@@ -74,6 +81,7 @@ class YFinancePriceTargetConsensusFetcher(
         fields = [
             "symbol",
             "currentPrice",
+            "currency",
             "targetHighPrice",
             "targetLowPrice",
             "targetMeanPrice",
@@ -95,7 +103,7 @@ class YFinancePriceTargetConsensusFetcher(
                 for field in fields:
                     if field in ticker:
                         result[field] = ticker.get(field, None)
-                if result:
+                if result and result.get("numberOfAnalystOpinions") is not None:
                     results.append(result)
 
         tasks = [get_one(symbol) for symbol in symbols]
