@@ -561,7 +561,10 @@ def test_equity_fundamental_metrics(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL"})],
+    [
+        ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL", "provider": "yfinance"}),
+    ],
 )
 @pytest.mark.integration
 def test_equity_fundamental_management(params, headers):
