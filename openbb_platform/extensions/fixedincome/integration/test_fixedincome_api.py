@@ -155,7 +155,7 @@ def test_fixedincome_rate_ameribor(params, headers):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "fred"}),
         (
             {
                 "parameter": "weekly",
