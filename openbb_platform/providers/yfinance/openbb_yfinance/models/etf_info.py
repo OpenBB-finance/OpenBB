@@ -76,12 +76,12 @@ class YFinanceEtfInfoData(EtfInfoData):
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
         alias="yield",
     )
-    trailing_annual_dividend_rate: Optional[float] = Field(
+    dividend_rate_ttm: Optional[float] = Field(
         default=None,
         description="The trailing twelve month annual dividend rate of the fund, in currency units.",
         alias="trailingAnnualDividendRate",
     )
-    trailing_annual_dividend_yield: Optional[float] = Field(
+    dividend_yield_ttm: Optional[float] = Field(
         default=None,
         description="The trailing twelve month annual dividend yield of the fund, as a normalized percent.",
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
