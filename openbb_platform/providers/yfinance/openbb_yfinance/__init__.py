@@ -23,6 +23,7 @@ from openbb_yfinance.models.index_historical import (
     YFinanceIndexHistoricalFetcher,
 )
 from openbb_yfinance.models.key_executives import YFinanceKeyExecutivesFetcher
+from openbb_yfinance.models.key_metrics import YFinanceKeyMetricsFetcher
 from openbb_yfinance.models.losers import YFLosersFetcher
 from openbb_yfinance.models.market_indices import (
     YFinanceMarketIndicesFetcher,
@@ -65,6 +66,7 @@ yfinance_provider = Provider(
         "IncomeStatement": YFinanceIncomeStatementFetcher,
         "IndexHistorical": YFinanceIndexHistoricalFetcher,
         "KeyExecutives": YFinanceKeyExecutivesFetcher,
+        "KeyMetrics": YFinanceKeyMetricsFetcher,
         "MarketIndices": YFinanceMarketIndicesFetcher,
         "PriceTargetConsensus": YFinancePriceTargetConsensusFetcher,
         "ShareStatistics": YFinanceShareStatisticsFetcher,

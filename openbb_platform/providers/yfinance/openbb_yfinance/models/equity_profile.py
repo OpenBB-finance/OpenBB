@@ -69,7 +69,8 @@ class YFinanceEquityProfileData(EquityInfoData):
         alias="floatShares",
     )
     shares_implied_outstanding: Optional[int] = Field(
-        description="The implied total number of shares outstanding.",
+        description="Implied Shares Outstanding of common equity,"
+        + " assuming the conversion of all convertible subsidiary equity into common.",
         default=None,
         alias="impliedSharesOutstanding",
     )

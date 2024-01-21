@@ -510,6 +510,7 @@ def test_equity_calendar_ipo(params, obb):
             }
         ),
         ({"provider": "intrinio", "symbol": "AAPL", "period": "annual", "limit": 100}),
+        ({"provider": "yfinance", "symbol": "AAPL"}),
     ],
 )
 @pytest.mark.integration

@@ -23,6 +23,7 @@ from openbb_yfinance.models.index_historical import (
     YFinanceIndexHistoricalFetcher,
 )
 from openbb_yfinance.models.key_executives import YFinanceKeyExecutivesFetcher
+from openbb_yfinance.models.key_metrics import YFinanceKeyMetricsFetcher
 from openbb_yfinance.models.losers import YFLosersFetcher
 from openbb_yfinance.models.market_indices import (
     YFinanceMarketIndicesFetcher,
@@ -303,5 +304,14 @@ def test_y_finance_key_executives_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = YFinanceKeyExecutivesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_y_finance_key_metrics_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = YFinanceKeyMetricsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

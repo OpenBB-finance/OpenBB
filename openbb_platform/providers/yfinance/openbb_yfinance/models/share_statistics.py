@@ -34,7 +34,8 @@ class YFinanceShareStatisticsData(ShareStatisticsData):
 
     implied_shares_outstanding: Optional[int] = Field(
         default=None,
-        description="Implied total number of shares outstanding.",
+        description="Implied Shares Outstanding of common equity,"
+        + " assuming the conversion of all convertible subsidiary equity into common.",
         alias="impliedSharesOutstanding",
     )
     short_interest: Optional[int] = Field(
