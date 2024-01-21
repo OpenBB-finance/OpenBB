@@ -205,6 +205,11 @@ class YFinanceKeyMetricsData(KeyMetricsData):
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
         alias="52WeekChange",
     )
+    currency: Optional[str] = Field(
+        default=None,
+        description="Currency in which the data is presented.",
+        alias="financialCurrency",
+    )
 
     @field_validator("dividend_yield_5y_avg")
     @classmethod
@@ -269,6 +274,7 @@ class YFinanceKeyMetricsFetcher(
             "shareHolderRightsRisk",
             "beta",
             "52WeekChange",
+            "financialCurrency",
         ]
 
         async def get_one(symbol):
