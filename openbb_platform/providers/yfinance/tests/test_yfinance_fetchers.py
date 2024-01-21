@@ -29,6 +29,7 @@ from openbb_yfinance.models.market_indices import (
 from openbb_yfinance.models.price_target_consensus import (
     YFinancePriceTargetConsensusFetcher,
 )
+from openbb_yfinance.models.share_statistics import YFinanceShareStatisticsFetcher
 from openbb_yfinance.models.undervalued_growth_equities import (
     YFUndervaluedGrowthEquitiesFetcher,
 )
@@ -283,5 +284,14 @@ def test_y_finance_price_target_consensus_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = YFinancePriceTargetConsensusFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_y_finance_share_statistics_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = YFinanceShareStatisticsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

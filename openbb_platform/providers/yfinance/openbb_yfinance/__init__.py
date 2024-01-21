@@ -29,6 +29,7 @@ from openbb_yfinance.models.market_indices import (
 from openbb_yfinance.models.price_target_consensus import (
     YFinancePriceTargetConsensusFetcher,
 )
+from openbb_yfinance.models.share_statistics import YFinanceShareStatisticsFetcher
 from openbb_yfinance.models.undervalued_growth_equities import (
     YFUndervaluedGrowthEquitiesFetcher,
 )
@@ -64,5 +65,6 @@ yfinance_provider = Provider(
         "IndexHistorical": YFinanceIndexHistoricalFetcher,
         "MarketIndices": YFinanceMarketIndicesFetcher,
         "PriceTargetConsensus": YFinancePriceTargetConsensusFetcher,
+        "ShareStatistics": YFinanceShareStatisticsFetcher,
     },
 )

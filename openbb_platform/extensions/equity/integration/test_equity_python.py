@@ -724,9 +724,9 @@ def test_equity_fundamental_filings(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL"}),
         ({"symbol": "AAPL", "provider": "fmp"}),
         ({"symbol": "AAPL", "provider": "intrinio"}),
+        ({"symbol": "AAPL", "provider": "yfinance"}),
     ],
 )
 @pytest.mark.integration
