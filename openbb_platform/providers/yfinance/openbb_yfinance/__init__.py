@@ -14,6 +14,7 @@ from openbb_yfinance.models.equity_historical import YFinanceEquityHistoricalFet
 from openbb_yfinance.models.equity_profile import YFinanceEquityProfileFetcher
 from openbb_yfinance.models.equity_quote import YFinanceEquityQuoteFetcher
 from openbb_yfinance.models.etf_historical import YFinanceEtfHistoricalFetcher
+from openbb_yfinance.models.etf_info import YFinanceEtfInfoFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
 from openbb_yfinance.models.gainers import YFGainersFetcher
@@ -60,6 +61,7 @@ yfinance_provider = Provider(
         "EquityUndervaluedGrowth": YFUndervaluedGrowthEquitiesFetcher,
         "EquityUndervaluedLargeCaps": YFUndervaluedLargeCapsFetcher,
         "EtfHistorical": YFinanceEtfHistoricalFetcher,
+        "EtfInfo": YFinanceEtfInfoFetcher,
         "FuturesCurve": YFinanceFuturesCurveFetcher,
         "FuturesHistorical": YFinanceFuturesHistoricalFetcher,
         "GrowthTechEquities": YFGrowthTechEquitiesFetcher,
