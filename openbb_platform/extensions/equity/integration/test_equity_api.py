@@ -312,6 +312,12 @@ def test_equity_fundamental_historical_splits(params, headers):
                 "provider": "fmp",
             }
         ),
+        (
+            {
+                "symbol": "AAPL",
+                "provider": "yfinance",
+            }
+        ),
     ],
 )
 @pytest.mark.integration

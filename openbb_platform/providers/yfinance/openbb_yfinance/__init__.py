@@ -19,6 +19,9 @@ from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
 from openbb_yfinance.models.gainers import YFGainersFetcher
 from openbb_yfinance.models.growth_tech_equities import YFGrowthTechEquitiesFetcher
+from openbb_yfinance.models.historical_dividends import (
+    YFinanceHistoricalDividendsFetcher,
+)
 from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
 from openbb_yfinance.models.index_historical import (
     YFinanceIndexHistoricalFetcher,
@@ -65,6 +68,7 @@ yfinance_provider = Provider(
         "FuturesCurve": YFinanceFuturesCurveFetcher,
         "FuturesHistorical": YFinanceFuturesHistoricalFetcher,
         "GrowthTechEquities": YFGrowthTechEquitiesFetcher,
+        "HistoricalDividends": YFinanceHistoricalDividendsFetcher,
         "IncomeStatement": YFinanceIncomeStatementFetcher,
         "IndexHistorical": YFinanceIndexHistoricalFetcher,
         "KeyExecutives": YFinanceKeyExecutivesFetcher,
