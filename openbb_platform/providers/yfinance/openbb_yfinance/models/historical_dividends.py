@@ -21,8 +21,6 @@ class YFinanceHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
 class YFinanceHistoricalDividendsData(HistoricalDividendsData):
     """YFinance Historical Dividends Data. All data is split-adjusted."""
 
-    __alias_dict__ = {}
-
 
 class YFinanceHistoricalDividendsFetcher(
     Fetcher[
@@ -54,10 +52,14 @@ class YFinanceHistoricalDividendsFetcher(
             ticker = Ticker(symbol).get_dividends()
         except Exception as e:
             raise RuntimeError(f"Error getting data for {symbol}: {e}") from e
-        if ticker.empty:
+        if ticker.empty:  # type: ignore
             raise ValueError(f"No dividend data found for {symbol}")
         ticker.index.name = "date"
         ticker.name = "dividend"  # type: ignore
+        if query.start_date is not None:
+            ticker = ticker[ticker.index.astype(str) >= query.start_date.strftime("%Y-%m-%d")]  # type: ignore
+        if query.end_date is not None:
+            ticker = ticker[ticker.index.astype(str) <= query.end_date.strftime("%Y-%m-%d")]  # type: ignore
         dividends = ticker.reset_index().to_dict("records")  # type: ignore
 
         return dividends
