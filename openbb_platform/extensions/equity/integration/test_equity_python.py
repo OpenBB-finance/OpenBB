@@ -26,7 +26,7 @@ def obb(pytestconfig):
             {
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "period": "ttm",
+                "period": "quarter",
                 "fiscal_year": 2014,
                 "limit": 2,
             }
@@ -822,8 +822,8 @@ def test_equity_compare_peers(params, obb):
                 "limit": "30",
                 "provider": "fmp",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
+                "start_date": "2023-01-02",
+                "end_date": "2023-01-03",
                 "interval": "1m",
             }
         ),
@@ -1092,6 +1092,7 @@ def test_equity_screener(params, obb):
         ({"symbol": "AAPL"}),
         ({"source": "iex", "provider": "intrinio", "symbol": "AAPL"}),
         ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL", "provider": "yfinance"}),
     ],
 )
 @pytest.mark.integration
@@ -1109,6 +1110,7 @@ def test_equity_price_quote(params, obb):
         ({"symbol": "MSFT", "provider": "intrinio"}),
         ({"symbol": "AAPL,MSFT", "provider": "cboe"}),
         ({"symbol": "AAPL,MSFT", "provider": "intrinio"}),
+        ({"symbol": "AAPL,MSFT", "provider": "yfinance"}),
     ],
 )
 @pytest.mark.integration

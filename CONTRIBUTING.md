@@ -68,7 +68,7 @@ We will be adding a function to get price targets from the Financial Modeling Pr
 ### Select Feature
 
 - Pick a feature you want to implement or a bug you want to fix from [our issues](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
-- Feel free to discuss what you'll be working on either directly on [the issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues) or on [our Discord](www.openbb.co/discord).
+- Feel free to discuss what you'll be working on either directly on [the issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues) or on [our Discord](https://openbb.co/discord).
   - This ensures someone from the team can help you and there isn't duplicated work.
 
 Before writing any code, it is good to understand what the data will look like.  In this case, we will be getting the price targets from the Financial Modeling Prep API, and the data will look like this:
