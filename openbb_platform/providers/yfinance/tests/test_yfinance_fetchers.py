@@ -63,6 +63,15 @@ def vcr_config():
 
 
 @pytest.mark.record_http
+def test_y_finance_historical_dividends_fetcher(credentials=test_credentials):
+    params = {"symbol": "IBM"}
+
+    fetcher = YFinanceHistoricalDividendsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
 def test_y_finance_market_indices_fetcher(credentials=test_credentials):
     params = {
         "symbol": "^GSPC",
@@ -327,14 +336,5 @@ def test_y_finance_etf_info_fetcher(credentials=test_credentials):
     params = {"symbol": "QQQ"}
 
     fetcher = YFinanceEtfInfoFetcher()
-    result = fetcher.test(params, credentials)
-    assert result is None
-
-
-@pytest.mark.record_http
-def test_y_finance_historical_dividends_fetcher(credentials=test_credentials):
-    params = {"symbol": "IBM"}
-
-    fetcher = YFinanceHistoricalDividendsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
