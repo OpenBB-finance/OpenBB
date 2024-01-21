@@ -52,6 +52,7 @@ def vcr_config():
         "filter_headers": [
             ("User-Agent", None),
             ("Cookie", "MOCK_COOKIE"),
+            ("crumb", "MOCK_CRUMB"),
         ],
         "filter_query_parameters": [
             ("period1", "MOCK_PERIOD_1"),
