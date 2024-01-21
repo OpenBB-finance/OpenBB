@@ -52,7 +52,7 @@ class YFinanceHistoricalDividendsFetcher(
             ticker = Ticker(symbol).get_dividends()
         except Exception as e:
             raise RuntimeError(f"Error getting data for {symbol}: {e}") from e
-        if ticker.empty:  # type: ignore
+        if ticker or ticker.empty:  # type: ignore
             raise ValueError(f"No dividend data found for {symbol}")
         ticker.index.name = "date"
         ticker.name = "dividend"  # type: ignore
