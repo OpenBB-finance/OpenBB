@@ -141,6 +141,116 @@ def test_index_price_historical(params, obb):
 @parametrize(
     "params",
     [
+        (
+            {
+                "symbol": "AAVE100",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "interval": "1m",
+                "provider": "cboe",
+                "symbol": "AAVE100",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "interval": "1d",
+                "provider": "cboe",
+                "symbol": "AAVE100",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "interval": "1min",
+                "provider": "fmp",
+                "symbol": "^DJI",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "timeseries": 1,
+                "sort": "desc",
+            }
+        ),
+        (
+            {
+                "interval": "1day",
+                "provider": "fmp",
+                "symbol": "^DJI",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "timeseries": 1,
+                "sort": "desc",
+            }
+        ),
+        (
+            {
+                "timespan": "minute",
+                "sort": "desc",
+                "limit": 49999,
+                "adjusted": True,
+                "multiplier": 1,
+                "provider": "polygon",
+                "symbol": "NDX",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "timespan": "day",
+                "sort": "desc",
+                "limit": 49999,
+                "adjusted": True,
+                "multiplier": 1,
+                "provider": "polygon",
+                "symbol": "NDX",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "interval": "1d",
+                "period": "max",
+                "prepost": True,
+                "rounding": True,
+                "provider": "yfinance",
+                "symbol": "DJI",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "symbol": "$DJI",
+                "tag": "level",
+                "sort": "desc",
+                "limit": 100,
+                "type": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_index_market(params, obb):
+    result = obb.index.market(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
         ({}),
         ({"provider": "cboe", "use_cache": False}),
         ({"provider": "fmp"}),

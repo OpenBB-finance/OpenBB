@@ -18,6 +18,21 @@ router.include_router(price_router)
 # pylint: disable=unused-argument
 
 
+@router.command(
+    model="MarketIndices",
+    deprecated=True,
+    deprecation_message="This endpoint will be deprecated in the future releases. Use '/index/price/historical' instead.",
+)
+async def market(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Historical Market Indices."""
+    return await OBBject.from_query(Query(**locals()))
+
+
 @router.command(model="IndexConstituents")
 async def constituents(
     cc: CommandContext,
