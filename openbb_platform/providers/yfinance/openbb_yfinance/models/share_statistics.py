@@ -132,7 +132,7 @@ class YFinanceShareStatisticsFetcher(
                 for field in fields:
                     if field in ticker:
                         result[field] = ticker.get(field, None)
-                if result:
+                if result and result.get("sharesOutstanding") is not None:
                     results.append(result)
 
         tasks = [get_one(symbol) for symbol in symbols]
