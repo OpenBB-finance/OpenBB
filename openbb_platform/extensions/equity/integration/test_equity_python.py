@@ -598,7 +598,10 @@ def test_equity_estimates_price_target(params, obb):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL"})],
+    [
+        ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL,AMZN,RELIANCE.NS", "provider": "yfinance"}),
+    ],
 )
 @pytest.mark.integration
 def test_equity_estimates_consensus(params, obb):

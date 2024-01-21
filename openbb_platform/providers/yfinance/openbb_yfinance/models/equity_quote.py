@@ -1,4 +1,4 @@
-"""YFinance Equity Quote fetcher"""
+"""YFinance Equity Quote Model"""
 # pylint: disable=unused-argument
 import asyncio
 import warnings
@@ -16,11 +16,11 @@ _warn = warnings.warn
 
 
 class YFinanceEquityQuoteQueryParams(EquityQuoteQueryParams):
-    """YFinance Equity Profile query params."""
+    """YFinance Equity Quote query params."""
 
 
 class YFinanceEquityQuoteData(EquityQuoteData):
-    """YFinance Equity Profile Data."""
+    """YFinance Equity Quote Data."""
 
     __alias_dict__ = {
         "name": "longName",
@@ -62,7 +62,7 @@ class YFinanceEquityQuoteData(EquityQuoteData):
 class YFinanceEquityQuoteFetcher(
     Fetcher[YFinanceEquityQuoteQueryParams, List[YFinanceEquityQuoteData]]
 ):
-    """YFinance Equity Profile fetcher."""
+    """YFinance Equity Quote fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceEquityQuoteQueryParams:
