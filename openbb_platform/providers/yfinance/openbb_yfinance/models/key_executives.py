@@ -30,6 +30,15 @@ class YFinanceKeyExecutivesData(KeyExecutivesData):
         "unexercised_value": "unexercisedValue",
     }
 
+    exercised_value: Optional[int] = Field(
+        default=None,
+        description="Value of shares exercised.",
+    )
+    unexercised_value: Optional[int] = Field(
+        default=None,
+        description="Value of shares not exercised.",
+    )
+
 
 class YFinanceKeyExecutivesFetcher(
     Fetcher[YFinanceKeyExecutivesQueryParams, List[YFinanceKeyExecutivesData]]
