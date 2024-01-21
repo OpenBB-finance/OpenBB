@@ -65,11 +65,11 @@ class YFinanceKeyExecutivesFetcher(
         try:
             ticker = Ticker(symbol).get_info()
         except Exception as e:
-            raise RuntimeError(f"Error getting data for {symbol}: {e}")
+            raise RuntimeError(f"Error getting data for {symbol}: {e}") from e
         if ticker.get("companyOfficers") is None:
             raise ValueError(f"No executive data found for {symbol}")
         officers_data = ticker.get("companyOfficers", [])
-        [d.pop("maxAge") for d in officers_data]
+        [d.pop("maxAge") for d in officers_data]  # pylint: disable=W0106
         return officers_data
 
     @staticmethod
