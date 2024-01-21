@@ -50,10 +50,10 @@ class YFinanceHistoricalDividendsFetcher(
             _warn(f"{QUERY_DESCRIPTIONS.get('symbol_list_warning', '')} {symbol}")
         try:
             ticker = Ticker(symbol).get_dividends()
+            if ticker.empty:  # type: ignore
+                raise ValueError(f"No dividend data found for {symbol}")
         except Exception as e:
             raise RuntimeError(f"Error getting data for {symbol}: {e}") from e
-        if ticker or ticker.empty:  # type: ignore
-            raise ValueError(f"No dividend data found for {symbol}")
         ticker.index.name = "date"
         ticker.name = "dividend"  # type: ignore
         if query.start_date is not None:
