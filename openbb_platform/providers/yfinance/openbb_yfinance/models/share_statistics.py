@@ -76,6 +76,17 @@ class YFinanceShareStatisticsData(ShareStatisticsData):
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
         alias="heldPercentInstitutions",
     )
+    institution_float_ownership: Optional[float] = Field(
+        default=None,
+        description="Percentage of float held by institutions, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        alias="institutionsFloatPercentHeld",
+    )
+    institutions_count: Optional[int] = Field(
+        default=None,
+        description="Number of institutions holding shares.",
+        alias="institutionsCount",
+    )
 
     @field_validator(
         "date", "short_interest_prev_date", mode="before", check_fields=False
@@ -119,6 +130,8 @@ class YFinanceShareStatisticsFetcher(
             "dateShortInterest",
             "heldPercentInsiders",
             "heldPercentInstitutions",
+            "institutionsFloatPercentHeld",
+            "institutionsCount",
         ]
 
         async def get_one(symbol):
@@ -126,7 +139,11 @@ class YFinanceShareStatisticsFetcher(
             result = {}
             ticker = {}
             try:
-                ticker = Ticker(symbol).get_info()
+                _ticker = Ticker(symbol)
+                ticker = _ticker.get_info()
+                major_holders = _ticker.get_major_holders(as_dict=True).get("Value")
+                if major_holders:
+                    ticker.update(major_holders)  # type: ignore
             except Exception as e:
                 _warn(f"Error getting data for {symbol}: {e}")
             if ticker:
