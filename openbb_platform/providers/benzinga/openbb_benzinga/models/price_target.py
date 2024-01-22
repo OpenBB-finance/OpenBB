@@ -128,53 +128,61 @@ class BenzingaPriceTargetData(PriceTargetData):
         "Firm Dissolved",
         "",
     ] = Field(
-        default=None,
+        default="",
         description="Description of the change in rating from firm's last rating."
         "Note that all of these terms are precisely defined.",
     )
     action_pt: Literal[
         "Announces", "Maintains", "Lowers", "Raises", "Removes", "Adjusts", ""
     ] = Field(
-        default=None,
+        default="",
         description="Description of the change in price target from firm's last price target.",
     )
-    adjusted_pt_prior: str = Field(
+    adjusted_pt_prior: Optional[str] = Field(
         default=None,
         description="Analyst's prior price target, adjusted to account for stock splits and stock dividends."
         " If none are applicable, the pt_prior value is used.",
     )
-    analyst_id: str = Field(default=None, description="Id of the analyst.")
-    currency: str = Field(
+    analyst_id: Optional[str] = Field(default=None, description="Id of the analyst.")
+    currency: Optional[str] = Field(
         default=None, description="Currency the data is denominated in."
     )
-    exchange: str = Field(default=None, description="Exchange of the price target.")
-    id: str = Field(default=None, description="Unique ID of this entry.")
-    importance: Literal[0, 1, 2, 3, 4, 5] = Field(
+    exchange: Optional[str] = Field(
+        default=None, description="Exchange of the price target."
+    )
+    id: Optional[str] = Field(default=None, description="Unique ID of this entry.")
+    importance: Optional[Literal[0, 1, 2, 3, 4, 5]] = Field(
         default=None,
         description="Subjective Basis of How Important Event is to Market. 5 = High",
     )
-    notes: str = Field(default=None, description="Notes of the price target.")
-    pt_prior: str = Field(default=None, description="Analyst's prior price target.")
-    rating_current: str = Field(
+    notes: Optional[str] = Field(default=None, description="Notes of the price target.")
+    pt_prior: Optional[str] = Field(
+        default=None, description="Analyst's prior price target."
+    )
+    rating_current: Optional[str] = Field(
         default=None, description="The analyst's rating for the company."
     )
-    rating_prior: str = Field(
+    rating_prior: Optional[str] = Field(
         default=None, description="Prior analyst rating for the company."
     )
-    ratings_accuracy: str = Field(
+    ratings_accuracy: Optional[str] = Field(
         default=None, description="Ratings accuracy of the price target."
     )
-    time: str = Field(default=None, description="Last updated timestamp, UTC.")
-    updated: int = Field(default=None, description="Last updated timestamp, UTC.")
+    time: Optional[str] = Field(
+        default=None, description="Last updated timestamp, UTC."
+    )
+    updated: Optional[int] = Field(
+        default=None, description="Last updated timestamp, UTC."
+    )
     url: str = Field(
         default=None,
         description="URL for analyst ratings page for this ticker on Benzinga.com.",
     )
-    url_calendar: str = Field(
+    url_calendar: Optional[str] = Field(
         default=None,
         description="URL for analyst ratings page for this ticker on Benzinga.com.",
     )
-    name: str = Field(
+    name: Optional[str] = Field(
         default=None, description="Name of company that is subject of rating."
     )
 

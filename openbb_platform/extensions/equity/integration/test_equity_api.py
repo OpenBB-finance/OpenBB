@@ -852,6 +852,7 @@ def test_equity_compare_peers(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-02",
                 "interval": "1m",
+                "use_cache": False,
             }
         ),
         (
@@ -861,6 +862,7 @@ def test_equity_compare_peers(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
+                "use_cache": False,
             }
         ),
         (
@@ -1087,7 +1089,7 @@ def test_equity_fundamental_latest_attributes(params, headers):
 @parametrize(
     "params",
     [
-        ({"query": "AAPl", "is_symbol": True, "provider": "cboe"}),
+        ({"query": "AAPl", "is_symbol": True, "provider": "cboe", "use_cache": False}),
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
         ({"query": "", "provider": "nasdaq", "use_cache": False, "is_etf": True}),
         ({"query": "gold", "provider": "intrinio", "active": True, "limit": 100}),
@@ -1147,6 +1149,8 @@ def test_equity_screener(params, headers):
     [
         ({"source": "iex", "provider": "intrinio", "symbol": "AAPL"}),
         ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL", "provider": "cboe", "use_cache": False}),
+        ({"symbol": "AAPL", "provider": "yfinance"}),
     ],
 )
 @pytest.mark.integration
@@ -1167,6 +1171,7 @@ def test_equity_price_quote(params, headers):
         ({"symbol": "MSFT", "provider": "intrinio"}),
         ({"symbol": "AAPL,MSFT", "provider": "cboe"}),
         ({"symbol": "AAPL,MSFT", "provider": "intrinio"}),
+        ({"symbol": "AAPL,MSFT", "provider": "yfinance"}),
     ],
 )
 @pytest.mark.integration
