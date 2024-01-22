@@ -769,7 +769,6 @@ def test_equity_compare_peers(params, obb):
     [({"group": "country", "metric": "overview", "provider": "finviz"})],
 )
 @pytest.mark.integration
-@pytest.mark.integration
 def test_equity_compare_groups(params, obb):
     result = obb.equity.compare.groups(**params)
     assert result
