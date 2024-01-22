@@ -143,7 +143,7 @@ class ROUTER_equity(Container):
             Price to earnings ratio. (provider: fmp)
         exchange : Optional[str]
             The exchange of the stock. (provider: fmp)
-        timestamp : Optional[Union[int, float]]
+        timestamp : Optional[Union[float, int]]
             The timestamp of the data. (provider: fmp)
         earnings_announcement : Optional[str]
             The earnings announcement of the stock. (provider: fmp)
@@ -224,7 +224,7 @@ class ROUTER_equity(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["intrinio"]] = None,
+        provider: Optional[Literal["intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
         """Equity Info. Get general price and performance metrics of a stock.
@@ -233,7 +233,7 @@ class ROUTER_equity(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['intrinio']]
+        provider : Optional[Literal['intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'intrinio' if there is
             no default.
@@ -243,7 +243,7 @@ class ROUTER_equity(Container):
         OBBject
             results : List[EquityInfo]
                 Serializable results.
-            provider : Optional[Literal['intrinio']]
+            provider : Optional[Literal['intrinio', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -330,6 +330,26 @@ class ROUTER_equity(Container):
             Intrinio ID for the company. (provider: intrinio)
         thea_enabled : Optional[bool]
             Whether the company has been enabled for Thea. (provider: intrinio)
+        exchange_timezone : Optional[str]
+            The timezone of the exchange. (provider: yfinance)
+        issue_type : Optional[str]
+            The issuance type of the asset. (provider: yfinance)
+        currency : Optional[str]
+            The currency in which the asset is traded. (provider: yfinance)
+        market_cap : Optional[int]
+            The market capitalization of the asset. (provider: yfinance)
+        shares_outstanding : Optional[int]
+            The number of listed shares outstanding. (provider: yfinance)
+        shares_float : Optional[int]
+            The number of shares in the public float. (provider: yfinance)
+        shares_implied_outstanding : Optional[int]
+            The implied total number of shares outstanding. (provider: yfinance)
+        shares_short : Optional[int]
+            The reported number of shares short. (provider: yfinance)
+        dividend_yield : Optional[float]
+            The dividend yield of the asset, as a normalized percent. (provider: yfinance)
+        beta : Optional[float]
+            The beta of the asset relative to the broad market. (provider: yfinance)
 
         Example
         -------
