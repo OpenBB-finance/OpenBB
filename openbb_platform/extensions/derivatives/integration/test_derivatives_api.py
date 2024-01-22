@@ -24,7 +24,7 @@ def headers():
     "params",
     [
         ({"provider": "intrinio", "symbol": "AAPL", "date": "2023-01-25"}),
-        ({"provider": "cboe", "symbol": "AAPL"}),
+        ({"provider": "cboe", "symbol": "AAPL", "use_cache": False}),
     ],
 )
 @pytest.mark.integration
@@ -86,7 +86,7 @@ def test_derivatives_futures_historical(params, headers):
 @parametrize(
     "params",
     [
-        ({"provider": "cboe", "symbol": "VX", "date": "2023-01-25"}),
+        ({"provider": "cboe", "symbol": "VX", "date": None}),
         ({"provider": "yfinance", "symbol": "ES", "date": "2023-08-01"}),
     ],
 )
