@@ -8,6 +8,7 @@ from openbb_core.provider.standard_models.recent_performance import (
     RecentPerformanceData,
     RecentPerformanceQueryParams,
 )
+from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 
 
@@ -98,6 +99,8 @@ class FinvizPricePerformanceFetcher(
         screen.set_filter(ticker=query.symbol)
         try:
             screen_df = screen.screener_view(verbose=0)
+            if screen_df is None:
+                raise EmptyDataError()
             screen_df.columns = screen_df.columns.str.strip()  # type: ignore
             screen_df = screen_df.fillna("N/A").replace("N/A", None)  # type: ignore
         except Exception as e:
