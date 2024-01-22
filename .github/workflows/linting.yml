@@ -31,8 +31,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4.1.1 # actions/checkout v3.0.2
         with:
-          ref: ${{ github.event.pull_request.head.ref || github.head_ref }}
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
           fetch-depth: 20
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Fetch base branch
         run: git fetch --no-tags --depth=20 origin ${{ github.base_ref }}
