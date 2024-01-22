@@ -67,7 +67,6 @@ seeking_alpha = ["openbb-seeking-alpha"]
 stockgrid = ["openbb-stockgrid"]
 technical = ["openbb-technical"]
 wsj = ["openbb-wsj"]
-yfinance = ["openbb-yfinance"]
 
 
 all = [
