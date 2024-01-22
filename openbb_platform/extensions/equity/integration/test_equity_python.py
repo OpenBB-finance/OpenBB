@@ -820,6 +820,7 @@ def test_equity_compare_groups(params, obb):
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-02",
                 "interval": "1m",
+                "use_cache": False,
             }
         ),
         (
@@ -829,6 +830,7 @@ def test_equity_compare_groups(params, obb):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
+                "use_cache": False,
             }
         ),
         (
@@ -1051,7 +1053,7 @@ def test_equity_fundamental_latest_attributes(params, obb):
 @parametrize(
     "params",
     [
-        ({"query": "AAPL", "is_symbol": True, "provider": "cboe"}),
+        ({"query": "AAPL", "is_symbol": True, "provider": "cboe", "use_cache": False}),
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
         ({"query": "", "provider": "nasdaq", "use_cache": False, "is_etf": True}),
         ({"query": "gold", "provider": "intrinio", "active": True, "limit": 100}),
@@ -1106,6 +1108,7 @@ def test_equity_screener(params, obb):
         ({"symbol": "AAPL"}),
         ({"source": "iex", "provider": "intrinio", "symbol": "AAPL"}),
         ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL", "provider": "cboe", "use_cache": False}),
         ({"symbol": "AAPL", "provider": "yfinance"}),
     ],
 )
