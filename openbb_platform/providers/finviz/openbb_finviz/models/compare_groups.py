@@ -1,7 +1,7 @@
 """Finviz Compare Groups Model."""
 # pylint: disable=unused-argument
 
-from typing import Any, Dict, List, Literal, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 from finvizfinance.group.overview import Overview
 from finvizfinance.group.performance import Performance
@@ -13,50 +13,9 @@ from openbb_core.provider.standard_models.compare_groups import (
     CompareGroupsQueryParams,
 )
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
+from openbb_finviz.utils.definitions import GROUPS, GROUPS_DICT, METRICS
 from pandas import DataFrame
 from pydantic import Field, field_validator
-
-GROUPS = Literal[
-    "sector",
-    "industry",
-    "country",
-    "capitalization",
-    "energy",
-    "materials",
-    "industrials",
-    "consumer_cyclical",
-    "consumer_defensive",
-    "healthcare",
-    "financial",
-    "technology",
-    "communication_services",
-    "utilities",
-    "real_estate",
-]
-
-GROUPS_DICT = {
-    "sector": "Sector",
-    "industry": "Industry",
-    "country": "Country (U.S. listed stocks only)",
-    "capitalization": "Capitalization",
-    "energy": "Industry (Energy)",
-    "materials": "Industry (Basic Materials)",
-    "industrials": "Industry (Industrials)",
-    "consumer_cyclical": "Industry (Consumer Cyclical)",
-    "consumer_defensive": "Industry (Consumer Defensive)",
-    "healthcare": "Industry (Healthcare)",
-    "financial": "Industry (Financial)",
-    "technology": "Industry (Technology)",
-    "communication_services": "Industry (Communication Services)",
-    "utilities": "Industry (Utilities)",
-    "real_estate": "Industry (Real Estate)",
-}
-
-METRICS = Literal[
-    "performance",
-    "valuation",
-    "overview",
-]
 
 
 class FinvizCompareGroupsQueryParams(CompareGroupsQueryParams):
