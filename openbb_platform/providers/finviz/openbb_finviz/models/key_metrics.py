@@ -142,9 +142,11 @@ class FinvizKeyMetricsFetcher(
                 {
                     "symbol": symbol,
                     "market_cap": int(mkt_cap) if mkt_cap is not None else None,
-                    "pe_ratio": fundament.get("P/E", None)
-                    if fundament.get("P/E", "-") != "-"
-                    else None,
+                    "pe_ratio": (
+                        fundament.get("P/E", None)
+                        if fundament.get("P/E", "-") != "-"
+                        else None
+                    ),
                     "eps": (
                         fundament.get("EPS (ttm)", None)
                         if fundament.get("EPS (ttm)", "-") != "-"
