@@ -155,6 +155,7 @@ def test_index_price_historical(params, obb):
                 "symbol": "AAVE100",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "use_cache": True,
             }
         ),
         (
@@ -164,6 +165,7 @@ def test_index_price_historical(params, obb):
                 "symbol": "AAVE100",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "use_cache": False,
             }
         ),
         (
