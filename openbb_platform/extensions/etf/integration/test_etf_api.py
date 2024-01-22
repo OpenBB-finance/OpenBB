@@ -172,12 +172,8 @@ def test_etf_holdings(params, headers):
 @parametrize(
     "params",
     [
-        (
-            {"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "fmp"}
-        ),
-        (
-            {"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "finviz"}
-        )
+        ({"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "fmp"}),
+        ({"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "finviz"}),
     ],
 )
 @pytest.mark.integration
