@@ -105,7 +105,7 @@ class ROUTER_equity_price(Container):
 
         EquityHistorical
         ----------------
-        date : datetime
+        date : Union[date, datetime]
             The date of the data.
         open : float
             The open price.
@@ -115,9 +115,9 @@ class ROUTER_equity_price(Container):
             The low price.
         close : float
             The close price.
-        volume : Union[float, int]
+        volume : Optional[Union[float, int]]
             The trading volume.
-        vwap : Optional[Annotated[float, Gt(gt=0)]]
+        vwap : Optional[float]
             Volume Weighted Average Price over the period.
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
@@ -408,7 +408,7 @@ class ROUTER_equity_price(Container):
                 description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas."
             ),
         ],
-        provider: Optional[Literal["fmp", "intrinio"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
         """Equity Quote. Load stock data for a specific ticker.
@@ -417,7 +417,7 @@ class ROUTER_equity_price(Container):
         ----------
         symbol : str
             Symbol to get data for. This endpoint will accept multiple symbols separated by commas.
-        provider : Optional[Literal['fmp', 'intrinio']]
+        provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -429,7 +429,7 @@ class ROUTER_equity_price(Container):
         OBBject
             results : List[EquityQuote]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -492,9 +492,9 @@ class ROUTER_equity_price(Container):
             The low price.
         close : Optional[float]
             The close price.
-        volume : Optional[Union[int, float]]
+        volume : Optional[Union[float, int]]
             The trading volume.
-        exchange_volume : Optional[Union[int, float]]
+        exchange_volume : Optional[Union[float, int]]
             Volume of shares exchanged during the trading day on the specific exchange.
         prev_close : Optional[float]
 
@@ -530,6 +530,16 @@ class ROUTER_equity_price(Container):
             Date and Time when the data was last updated. (provider: intrinio)
         security : Optional[openbb_intrinio.utils.references.IntrinioSecurity]
             Security details related to the quote. (provider: intrinio)
+        ma_50d : Optional[float]
+            50-day moving average price. (provider: yfinance)
+        ma_200d : Optional[float]
+            200-day moving average price. (provider: yfinance)
+        volume_average : Optional[float]
+            Average daily trading volume. (provider: yfinance)
+        volume_average_10d : Optional[float]
+            Average daily trading volume in the last 10 days. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price. (provider: yfinance)
 
         Example
         -------
