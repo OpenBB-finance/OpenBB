@@ -174,7 +174,7 @@ class AVEquityHistoricalFetcher(
         data = {}
 
         for symbol in query.symbol.split(","):
-            raw_data = await amake_request(f"{url}&symbol={symbol}")
+            raw_data = await amake_request(f"{url}&symbol={symbol}", **kwargs)
             dynamic_key = (set(raw_data.keys()) - {"Meta Data"}).pop()
             data[symbol] = raw_data[dynamic_key]
 
@@ -188,9 +188,13 @@ class AVEquityHistoricalFetcher(
         """Transform the data to the standard format."""
         transformed_data = []
         for symbol, content in data.items():
+            if not isinstance(content, dict):
+                # if the content isn't a dict, it means that the API returned an error
+                # most likely too many requests without premium account
+                raise Exception(content)
             d = [
                 {
-                    "symbol": symbol,
+                    **({"symbol": symbol} if "," in query.symbol else {}),
                     "date": date,
                     **{extract_key_name(k): v for k, v in values.items()},
                 }
