@@ -199,9 +199,9 @@ class YFinanceKeyMetricsData(KeyMetricsData):
         default=None,
         description="Beta relative to the broad market. (5-year monthly)",
     )
-    year_price_change: Optional[float] = Field(
+    price_return_1y: Optional[float] = Field(
         default=None,
-        description="One-year price change, as a normalized percent.",
+        description="One-year price return, as a normalized percent.",
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
         alias="52WeekChange",
     )
