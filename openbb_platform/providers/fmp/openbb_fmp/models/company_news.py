@@ -7,6 +7,7 @@ from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
+from openbb_core.provider.utils.helpers import filter_by_dates
 from openbb_fmp.utils.helpers import get_data_many
 from pydantic import Field
 
@@ -75,4 +76,7 @@ class FMPCompanyNewsFetcher(
         query: FMPCompanyNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPCompanyNewsData]:
         """Return the transformed data."""
-        return [FMPCompanyNewsData.model_validate(d) for d in data]
+        modeled_data = [FMPCompanyNewsData.model_validate(d) for d in data]
+        return filter_by_dates(
+            modeled_data, query.start_date, query.end_date, query.date
+        )

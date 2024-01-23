@@ -9,6 +9,7 @@ from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
+from openbb_core.provider.utils.helpers import filter_by_dates
 from openbb_ultima.utils.helpers import get_data
 from pydantic import Field
 
@@ -93,4 +94,4 @@ class UltimaCompanyNewsFetcher(
                     item["publisher"] = item["publisher"]
                     item["risk_category"] = item["riskCategory"]
                     results.append(UltimaCompanyNewsData.model_validate(item))
-        return results
+        return filter_by_dates(results, query.start_date, query.end_date, query.date)
