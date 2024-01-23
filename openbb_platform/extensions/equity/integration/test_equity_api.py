@@ -546,6 +546,7 @@ def test_equity_calendar_ipo(params, headers):
             }
         ),
         ({"provider": "intrinio", "symbol": "AAPL", "period": "annual", "limit": 100}),
+        ({"provider": "finviz", "symbol": "AAPL,GOOG"}),
     ],
 )
 @pytest.mark.integration
@@ -608,6 +609,7 @@ def test_equity_ownership_major_holders(params, headers):
     "params",
     [
         ({"symbol": "AAPL", "limit": 10, "provider": "fmp"}),
+        ({"symbol": "AAPL", "provider": "finviz"}),
         (
             {
                 "symbol": "AAPL",
@@ -802,6 +804,21 @@ def test_equity_compare_peers(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/equity/compare/peers?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [({"group": "country", "metric": "overview", "provider": "finviz"})],
+)
+@pytest.mark.integration
+def test_equity_compare_groups(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/compare/groups?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -1171,6 +1188,7 @@ def test_equity_price_quote(params, headers):
         ({"symbol": "MSFT", "provider": "intrinio"}),
         ({"symbol": "AAPL,MSFT", "provider": "cboe"}),
         ({"symbol": "AAPL,MSFT", "provider": "intrinio"}),
+        ({"symbol": "AAPL,MSFT", "provider": "finviz"}),
         ({"symbol": "AAPL,MSFT", "provider": "yfinance"}),
     ],
 )
@@ -1232,7 +1250,10 @@ def test_equity_discovery_active(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL", "provider": "fmp"})],
+    [
+        ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL,MSFT", "provider": "finviz"}),
+    ],
 )
 @pytest.mark.integration
 def test_equity_price_performance(params, headers):
