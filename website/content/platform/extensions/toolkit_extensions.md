@@ -130,6 +130,9 @@ The `openbb-econometrics` extension installs a new router path (`obb.econometric
 - linearmodels
 
 :::note
+
+Statsmodels requires a C compiler be present on the system. Follow the instructions [here](https://cython.readthedocs.io/en/latest/src/quickstart/install.html) for system-specific methods.
+
 This extension is not accessible via REST API because `statsmodels` is not serializable.
 :::
 
