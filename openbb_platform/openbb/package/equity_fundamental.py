@@ -2235,7 +2235,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        provider: Optional[Literal["finviz", "fmp", "intrinio"]] = None,
+        provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
         """Key Metrics. Key metrics for a given company.
@@ -2248,9 +2248,9 @@ class ROUTER_equity_fundamental(Container):
             Time period of the data to return.
         limit : Optional[int]
             The number of data entries to return.
-        provider : Optional[Literal['finviz', 'fmp', 'intrinio']]
+        provider : Optional[Literal['fmp', 'intrinio']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'finviz' if there is
+            If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         with_ttm : Optional[bool]
             Include trailing twelve months (TTM) data. (provider: fmp)
@@ -2260,7 +2260,7 @@ class ROUTER_equity_fundamental(Container):
         OBBject
             results : Union[List[KeyMetrics], KeyMetrics]
                 Serializable results.
-            provider : Optional[Literal['finviz', 'fmp', 'intrinio']]
+            provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2277,52 +2277,6 @@ class ROUTER_equity_fundamental(Container):
             Market capitalization
         pe_ratio : Optional[float]
             Price-to-earnings ratio (P/E ratio)
-        foward_pe : Optional[float]
-            Forward price-to-earnings ratio (forward P/E) (provider: finviz)
-        eps : Optional[float]
-            Earnings per share (EPS) (provider: finviz)
-        price_to_sales : Optional[float]
-            Price-to-sales ratio (P/S) (provider: finviz)
-        price_to_book : Optional[float]
-            Price-to-book ratio (P/B) (provider: finviz)
-        book_value_per_share : Optional[float]
-            Book value per share (Book/sh) (provider: finviz);
-            Book value per share (provider: fmp)
-        price_to_cash : Optional[float]
-            Price-to-cash ratio (P/C) (provider: finviz)
-        cash_per_share : Optional[float]
-            Cash per share (Cash/sh) (provider: finviz);
-            Cash per share (provider: fmp)
-        price_to_free_cash_flow : Optional[float]
-            Price-to-free cash flow ratio (P/FCF) (provider: finviz)
-        debt_to_equity : Optional[float]
-            Debt-to-equity ratio (Debt/Eq) (provider: finviz);
-            Debt-to-equity ratio (provider: fmp)
-        long_term_debt_to_equity : Optional[float]
-            Long-term debt-to-equity ratio (LT Debt/Eq) (provider: finviz)
-        quick_ratio : Optional[float]
-            Quick ratio (provider: finviz)
-        current_ratio : Optional[float]
-            Current ratio (provider: finviz, fmp)
-        gross_margin : Optional[float]
-            Gross margin, as a normalized percent. (provider: finviz)
-        profit_margin : Optional[float]
-            Profit margin, as a normalized percent. (provider: finviz)
-        operating_margin : Optional[float]
-            Operating margin, as a normalized percent. (provider: finviz)
-        return_on_assets : Optional[float]
-            Return on assets (ROA), as a normalized percent. (provider: finviz)
-        return_on_investment : Optional[float]
-            Return on investment (ROI), as a normalized percent. (provider: finviz)
-        return_on_equity : Optional[float]
-            Return on equity (ROE), as a normalized percent. (provider: finviz)
-        payout_ratio : Optional[float]
-            Payout ratio, as a normalized percent. (provider: finviz);
-            Payout ratio (provider: fmp)
-        dividend_yield : Optional[float]
-            Dividend yield, as a normalized percent. (provider: finviz);
-            Dividend yield (provider: fmp);
-            Dividend yield (provider: intrinio)
         date : Optional[date]
             The date of the data. (provider: fmp)
         period : Optional[str]
@@ -2337,6 +2291,10 @@ class ROUTER_equity_fundamental(Container):
             Operating cash flow per share (provider: fmp)
         free_cash_flow_per_share : Optional[float]
             Free cash flow per share (provider: fmp)
+        cash_per_share : Optional[float]
+            Cash per share (provider: fmp)
+        book_value_per_share : Optional[float]
+            Book value per share (provider: fmp)
         tangible_book_value_per_share : Optional[float]
             Tangible book value per share (provider: fmp)
         shareholders_equity_per_share : Optional[float]
@@ -2367,14 +2325,22 @@ class ROUTER_equity_fundamental(Container):
             Earnings yield (provider: fmp)
         free_cash_flow_yield : Optional[float]
             Free cash flow yield (provider: fmp)
+        debt_to_equity : Optional[float]
+            Debt-to-equity ratio (provider: fmp)
         debt_to_assets : Optional[float]
             Debt-to-assets ratio (provider: fmp)
         net_debt_to_ebitda : Optional[float]
             Net debt-to-EBITDA ratio (provider: fmp)
+        current_ratio : Optional[float]
+            Current ratio (provider: fmp)
         interest_coverage : Optional[float]
             Interest coverage (provider: fmp)
         income_quality : Optional[float]
             Income quality (provider: fmp)
+        dividend_yield : Optional[float]
+            Dividend yield (provider: fmp, intrinio)
+        payout_ratio : Optional[float]
+            Payout ratio (provider: fmp)
         sales_general_and_administrative_to_revenue : Optional[float]
             Sales general and administrative expenses-to-revenue ratio (provider: fmp)
         research_and_development_to_revenue : Optional[float]
@@ -2464,7 +2430,6 @@ class ROUTER_equity_fundamental(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        chart: bool = False,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -2474,8 +2439,6 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        chart : bool
-            Whether to create a chart or not, by default False.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2636,7 +2599,6 @@ class ROUTER_equity_fundamental(Container):
                     "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
                 },
                 extra_params=kwargs,
-                chart=chart,
             )
         )
 
