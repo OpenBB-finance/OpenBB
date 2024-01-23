@@ -26,8 +26,8 @@ def headers():
             {
                 "display": "full",
                 "date": None,
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": None,
+                "end_date": None,
                 "updated_since": None,
                 "published_since": None,
                 "sort": "created",
@@ -46,12 +46,18 @@ def headers():
             {
                 "provider": "fmp",
                 "limit": 30,
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
             {
                 "provider": "intrinio",
                 "limit": 20,
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -61,6 +67,9 @@ def headers():
                 "tag": "federalreserve",
                 "source": "bloomberg",
                 "term": "MSFT",
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -68,6 +77,9 @@ def headers():
                 "provider": "tiingo",
                 "limit": 30,
                 "source": "bloomberg.com",
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
     ],
@@ -86,7 +98,16 @@ def test_news_world(params, headers):
 @parametrize(
     "params",
     [
-        ({"symbols": "AAPL", "limit": 20, "provider": "benzinga"}),
+        (
+            {
+                "symbols": "AAPL",
+                "limit": 20,
+                "provider": "benzinga",
+                "date": "2023-01-01",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
         (
             {
                 "display": "full",
@@ -115,6 +136,9 @@ def test_news_world(params, headers):
                 "provider": "polygon",
                 "symbols": "AAPL",
                 "limit": 20,
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -123,6 +147,9 @@ def test_news_world(params, headers):
                 "symbols": "AAPL",
                 "limit": 20,
                 "page": 1,
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -130,6 +157,9 @@ def test_news_world(params, headers):
                 "provider": "yfinance",
                 "symbols": "AAPL",
                 "limit": 20,
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -137,6 +167,9 @@ def test_news_world(params, headers):
                 "provider": "intrinio",
                 "symbols": "AAPL",
                 "limit": 20,
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -145,14 +178,11 @@ def test_news_world(params, headers):
                 "symbols": "AAPL,MSFT",
                 "limit": 20,
                 "source": "bloomberg.com",
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
-        # (
-        #     {
-        #         "provider": "ultima",
-        #         "sectors": "Real Estate",
-        #     }
-        # ),
     ],
 )
 @pytest.mark.integration

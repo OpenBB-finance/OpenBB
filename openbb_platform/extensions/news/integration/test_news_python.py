@@ -45,12 +45,18 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
             {
                 "provider": "fmp",
                 "limit": 20,
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
             {
                 "provider": "intrinio",
                 "limit": 20,
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -60,6 +66,9 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
                 "tag": "federalreserve",
                 "source": "bloomberg",
                 "term": "MSFT",
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -67,6 +76,9 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
                 "provider": "tiingo",
                 "limit": 30,
                 "source": "bloomberg.com",
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
     ],
@@ -85,8 +97,8 @@ def test_news_world(params, obb):
             {
                 "display": "full",
                 "date": None,
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": None,
+                "end_date": None,
                 "updated_since": None,
                 "published_since": None,
                 "sort": "created",
@@ -104,11 +116,14 @@ def test_news_world(params, obb):
         ),
         (
             {
-                "published_utc": "2023-01-10",
+                "published_utc": "2024-01-10",
                 "order": "desc",
                 "provider": "polygon",
                 "symbols": "AAPL",
                 "limit": 20,
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -117,6 +132,9 @@ def test_news_world(params, obb):
                 "symbols": "AAPL",
                 "limit": 20,
                 "page": 1,
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -124,6 +142,9 @@ def test_news_world(params, obb):
                 "provider": "yfinance",
                 "symbols": "AAPL",
                 "limit": 20,
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -131,6 +152,9 @@ def test_news_world(params, obb):
                 "provider": "intrinio",
                 "symbols": "AAPL",
                 "limit": 20,
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -139,14 +163,11 @@ def test_news_world(params, obb):
                 "symbols": "AAPL,MSFT",
                 "limit": 20,
                 "source": "bloomberg.com",
+                "date": None,
+                "start_date": None,
+                "end_date": None,
             }
         ),
-        # (
-        #     {
-        #         "provider": "ultima",
-        #         "symbols": "AAPL,MSFT",
-        #     }
-        # ),
     ],
 )
 @pytest.mark.integration
