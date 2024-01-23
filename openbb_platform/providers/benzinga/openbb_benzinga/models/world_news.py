@@ -33,15 +33,6 @@ class BenzingaWorldNewsQueryParams(WorldNewsQueryParams):
         default="full",
         description="Specify headline only (headline), headline + teaser (abstract), or headline + full body (full).",
     )
-    date: Optional[str] = Field(
-        default=None, description="Date of the news to retrieve."
-    )
-    start_date: Optional[str] = Field(
-        default=None, description="Start date of the news to retrieve."
-    )
-    end_date: Optional[str] = Field(
-        default=None, description="End date of the news to retrieve."
-    )
     updated_since: Optional[int] = Field(
         default=None,
         description="Number of seconds since the news was updated.",

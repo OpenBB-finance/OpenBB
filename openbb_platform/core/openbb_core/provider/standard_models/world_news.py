@@ -1,10 +1,14 @@
 """World News Standard Model."""
 
 
-from datetime import datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Dict, List, Optional
 
-from pydantic import Field, NonNegativeInt
+from dateutil.relativedelta import relativedelta
+from pydantic import Field, NonNegativeInt, field_validator
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -22,6 +26,32 @@ class WorldNewsQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("limit", "")
         + " Here its the no. of articles to return.",
     )
+    date: Optional[str] = Field(
+        default=None, description="Date of the news to retrieve."
+    )
+    start_date: Optional[str] = Field(
+        default=None, description="Start date of the news to retrieve."
+    )
+    end_date: Optional[str] = Field(
+        default=None, description="End date of the news to retrieve."
+    )
+
+    @field_validator("start_date", mode="before")
+    @classmethod
+    def start_date_validate(cls, v) -> dateType:  # pylint: disable=E0213
+        """Populate start date if empty."""
+        if not v:
+            now = datetime.now().date()
+            v = now - relativedelta(years=1)
+        return v
+
+    @field_validator("end_date", mode="before")
+    @classmethod
+    def end_date_validate(cls, v) -> dateType:  # pylint: disable=E0213
+        """Populate end date if empty."""
+        if not v:
+            v = datetime.now().date()
+        return v
 
 
 class WorldNewsData(Data):
