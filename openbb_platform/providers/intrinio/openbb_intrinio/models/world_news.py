@@ -9,6 +9,7 @@ from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
+from openbb_core.provider.utils.helpers import filter_by_dates
 from openbb_intrinio.utils.helpers import get_data_many
 from pydantic import Field, field_validator
 
@@ -68,4 +69,7 @@ class IntrinioWorldNewsFetcher(
         query: IntrinioWorldNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioWorldNewsData]:
         """Return the transformed data."""
-        return [IntrinioWorldNewsData.model_validate(d) for d in data]
+        modeled_data = [IntrinioWorldNewsData.model_validate(d) for d in data]
+        return filter_by_dates(
+            modeled_data, query.start_date, query.end_date, query.date
+        )

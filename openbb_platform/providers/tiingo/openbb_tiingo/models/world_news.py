@@ -9,7 +9,7 @@ from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import filter_by_dates, get_querystring
 from pydantic import Field, field_validator
 
 from ..utils.helpers import get_data_many
@@ -94,4 +94,7 @@ class TiingoWorldNewsFetcher(
         query: TiingoWorldNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[TiingoWorldNewsData]:
         """Return the transformed data."""
-        return [TiingoWorldNewsData.model_validate(d) for d in data]
+        modeled_data = [TiingoWorldNewsData.model_validate(d) for d in data]
+        return filter_by_dates(
+            modeled_data, query.start_date, query.end_date, query.date
+        )
