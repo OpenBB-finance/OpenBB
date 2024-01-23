@@ -26,13 +26,13 @@ class WorldNewsQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("limit", "")
         + " Here its the no. of articles to return.",
     )
-    date: Optional[str] = Field(
+    date: Optional[dateType] = Field(
         default=None, description="Date of the news to retrieve."
     )
-    start_date: Optional[str] = Field(
+    start_date: Optional[dateType] = Field(
         default=None, description="Start date of the news to retrieve."
     )
-    end_date: Optional[str] = Field(
+    end_date: Optional[dateType] = Field(
         default=None, description="End date of the news to retrieve."
     )
 
