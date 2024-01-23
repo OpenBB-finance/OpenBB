@@ -516,6 +516,7 @@ class MethodDefinition:
             "data": DataProcessingSupportedTypes,
             "start_date": str,
             "end_date": str,
+            "date": str,
             "provider": None,
         }
 
