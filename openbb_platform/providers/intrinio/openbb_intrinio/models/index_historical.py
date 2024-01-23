@@ -10,6 +10,7 @@ from openbb_core.provider.standard_models.index_historical import (
     IndexHistoricalQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_requests, get_querystring
 from pydantic import Field, NonNegativeInt
 
@@ -89,6 +90,8 @@ class IntrinioIndexHistoricalFetcher(
 
         await amake_requests(urls, callback, **kwargs)
 
+        if len(results) == 0:
+            raise EmptyDataError()
         return results
 
     @staticmethod
