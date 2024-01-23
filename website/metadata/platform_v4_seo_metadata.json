@@ -2851,53 +2851,6 @@
       "index constituents founding year"
     ]
   },
-  "index.european": {
-    "title": "european",
-    "description": "Learn how to retrieve Historical European Indices data using the OBB\n  Python library. Understand the available parameters, return values, and data fields.",
-    "keywords": [
-      "Historical European Indices",
-      "python obb index european",
-      "symbol parameter",
-      "start_date parameter",
-      "end_date parameter",
-      "provider parameter",
-      "interval parameter",
-      "returns",
-      "data",
-      "date",
-      "close price",
-      "open price",
-      "high price",
-      "low price",
-      "utc datetime"
-    ]
-  },
-  "index.european_constituents": {
-    "title": "european_constituents",
-    "description": "Learn how to get the constituents of select European indices using the\n  `obb.index.european_constituents` function in Python. Explore the parameters, return\n  values, and data structure.",
-    "keywords": [
-      "European Index Constituents",
-      "European indices",
-      "python obb.index.european_constituents",
-      "symbol",
-      "provider",
-      "data",
-      "price",
-      "open",
-      "high",
-      "low",
-      "close",
-      "volume",
-      "prev_close",
-      "change",
-      "change percent",
-      "tick",
-      "last trade timestamp",
-      "exchange ID",
-      "seqno",
-      "asset type"
-    ]
-  },
   "index.fred": {
     "title": "fred",
     "description": "Learn how to retrieve Historical Fred Indices close values for selected\n  symbols using the OBB Python library. This documentation page provides details on\n  the required parameters, their types, and default values. It also explains the structure\n  of the returned data and its fields.",

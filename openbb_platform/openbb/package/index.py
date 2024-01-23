@@ -85,11 +85,9 @@ class ROUTER_index(Container):
     def constituents(
         self,
         index: Annotated[
-            Literal["nasdaq", "sp500", "dowjones"],
-            OpenBBCustomParameter(
-                description="Index for which we want to fetch the constituents."
-            ),
-        ] = "dowjones",
+            str,
+            OpenBBCustomParameter(description="Index to fetch the constituents of."),
+        ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -97,8 +95,8 @@ class ROUTER_index(Container):
 
         Parameters
         ----------
-        index : Literal['nasdaq', 'sp500', 'dowjones']
-            Index for which we want to fetch the constituents.
+        index : str
+            Index to fetch the constituents of.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -122,25 +120,25 @@ class ROUTER_index(Container):
         -----------------
         symbol : str
             Symbol representing the entity requested in the data.
-        name : str
+        name : Optional[str]
             Name of the constituent company in the index.
-        sector : str
-            Sector the constituent company in the index belongs to.
+        sector : Optional[str]
+            Sector the constituent company in the index belongs to. (provider: fmp)
         sub_sector : Optional[str]
-            Sub-sector the constituent company in the index belongs to.
+            Sub-sector the constituent company in the index belongs to. (provider: fmp)
         headquarter : Optional[str]
-            Location of the headquarter of the constituent company in the index.
+            Location of the headquarter of the constituent company in the index. (provider: fmp)
         date_first_added : Optional[Union[str, date]]
-            Date the constituent company was added to the index.
-        cik : int
-            Central Index Key (CIK) for the requested entity.
+            Date the constituent company was added to the index. (provider: fmp)
+        cik : Optional[int]
+            Central Index Key (CIK) for the requested entity. (provider: fmp)
         founded : Optional[Union[str, date]]
-            Founding year of the constituent company in the index.
+            Founding year of the constituent company in the index. (provider: fmp)
 
         Example
         -------
         >>> from openbb import obb
-        >>> obb.index.constituents(index="dowjones")
+        >>> obb.index.constituents(index="TEST_STRING")
         """  # noqa: E501
 
         return self._run(

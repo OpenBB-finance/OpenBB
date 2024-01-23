@@ -10,8 +10,7 @@ from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import get_querystring
-from openbb_tiingo.utils.helpers import get_data_many
+from openbb_core.provider.utils.helpers import amake_request, get_querystring
 from pydantic import Field, PrivateAttr, model_validator
 
 
@@ -115,7 +114,7 @@ class TiingoEquityHistoricalFetcher(
 
     # pylint: disable=protected-access
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: TiingoEquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -127,9 +126,18 @@ class TiingoEquityHistoricalFetcher(
         query_str = get_querystring(
             query.model_dump(by_alias=True), ["symbol", "interval"]
         )
-        url = f"{base_url}/{query.symbol}/prices?{query_str}&resampleFreq={query._frequency}&token={api_key}"
+        data: List[Dict] = []
+        for symbol in query.symbol.split(","):
+            url = f"{base_url}/{symbol}/prices?{query_str}&resampleFreq={query._frequency}&token={api_key}"
+            d = await amake_request(url, **kwargs)
 
-        return get_data_many(url)
+            if "," in query.symbol:
+                for item in d:
+                    item["symbol"] = symbol
+
+            data += d
+
+        return data
 
     # pylint: disable=unused-argument
     @staticmethod
