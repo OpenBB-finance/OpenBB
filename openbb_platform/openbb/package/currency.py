@@ -11,6 +11,7 @@ from openbb_core.app.static.utils.filters import filter_inputs
 class ROUTER_currency(Container):
     """/currency
     /price
+    reference_rates
     search
     """
 
@@ -23,6 +24,117 @@ class ROUTER_currency(Container):
         from . import currency_price
 
         return currency_price.ROUTER_currency_price(command_runner=self._command_runner)
+
+    @validate
+    def reference_rates(
+        self, provider: Optional[Literal["ecb"]] = None, **kwargs
+    ) -> OBBject:
+        """Current, official, currency reference rates.
+
+        Parameters
+        ----------
+        provider : Optional[Literal['ecb']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'ecb' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : CurrencyReferenceRates
+                Serializable results.
+            provider : Optional[Literal['ecb']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        CurrencyReferenceRates
+        ----------------------
+        date : date
+            The date of the data.
+        EUR : Optional[float]
+            Euro.
+        USD : Optional[float]
+            US Dollar.
+        JPY : Optional[float]
+            Japanese Yen.
+        BGN : Optional[float]
+            Bulgarian Lev.
+        CZK : Optional[float]
+            Czech Koruna.
+        DKK : Optional[float]
+            Danish Krone.
+        GBP : Optional[float]
+            Pound Sterling.
+        HUF : Optional[float]
+            Hungarian Forint.
+        PLN : Optional[float]
+            Polish Zloty.
+        RON : Optional[float]
+            Romanian Leu.
+        SEK : Optional[float]
+            Swedish Krona.
+        CHF : Optional[float]
+            Swiss Franc.
+        ISK : Optional[float]
+            Icelandic Krona.
+        NOK : Optional[float]
+            Norwegian Krone.
+        TRY : Optional[float]
+            Turkish Lira.
+        AUD : Optional[float]
+            Australian Dollar.
+        BRL : Optional[float]
+            Brazilian Real.
+        CAD : Optional[float]
+            Canadian Dollar.
+        CNY : Optional[float]
+            Chinese Yuan.
+        HKD : Optional[float]
+            Hong Kong Dollar.
+        IDR : Optional[float]
+            Indonesian Rupiah.
+        ILS : Optional[float]
+            Israeli Shekel.
+        INR : Optional[float]
+            Indian Rupee.
+        KRW : Optional[float]
+            South Korean Won.
+        MXN : Optional[float]
+            Mexican Peso.
+        MYR : Optional[float]
+            Malaysian Ringgit.
+        NZD : Optional[float]
+            New Zealand Dollar.
+        PHP : Optional[float]
+            Philippine Peso.
+        SGD : Optional[float]
+            Singapore Dollar.
+        THB : Optional[float]
+            Thai Baht.
+        ZAR : Optional[float]
+            South African Rand.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.currency.reference_rates()
+        """  # noqa: E501
+
+        return self._run(
+            "/currency/reference_rates",
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={},
+                extra_params=kwargs,
+            )
+        )
 
     @validate
     def search(

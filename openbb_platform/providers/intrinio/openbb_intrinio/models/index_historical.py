@@ -10,29 +10,24 @@ from openbb_core.provider.standard_models.index_historical import (
     IndexHistoricalQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import get_querystring
-from openbb_intrinio.utils.helpers import get_data_many
+from openbb_core.provider.utils.helpers import amake_requests, get_querystring
 from pydantic import Field, NonNegativeInt
 
 
 class IntrinioIndexHistoricalQueryParams(IndexHistoricalQueryParams):
     """Intrinio Index Historical Query.
 
-    Source: https://docs.intrinio.com/documentation/web_api/get_stock_market_index_historical_data_v2
+    Source:
+    https://docs.intrinio.com/documentation/web_api/get_stock_market_index_historical_data_v2
     """
 
-    tag: Optional[str] = Field(default="level", description="Index tag.")
-    type: Optional[str] = Field(
-        default=None,
-        description="Index type.",
-    )
     sort: Literal["asc", "desc"] = Field(
-        default="desc",
+        default="asc",
         description="Sort order.",
         alias="sort_order",
     )
     limit: NonNegativeInt = Field(
-        default=1000,
+        default=10000,
         description=QUERY_DESCRIPTIONS.get("limit", ""),
         alias="page_size",
     )
@@ -73,13 +68,28 @@ class IntrinioIndexHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
+        results = []
         api_key = credentials.get("intrinio_api_key") if credentials else ""
-
+        symbols = query.symbol.replace("$", "").replace("^", "").split(",")
         base_url = "https://api-v2.intrinio.com/indices/stock_market"
-        query_str = get_querystring(query.model_dump(by_alias=True), ["symbol", "tag"])
-        url = f"{base_url}/{query.symbol}/historical_data/{query.tag}?{query_str}&api_key={api_key}"
+        query_str = get_querystring(query.model_dump(by_alias=True), ["symbol"])
+        urls = [
+            f"{base_url}/${symbol}/historical_data/level?{query_str}&api_key={api_key}"
+            for symbol in symbols
+        ]
 
-        return await get_data_many(url, "historical_data", **kwargs)
+        async def callback(response, _) -> List[Dict]:
+            """Response callback."""
+            _response = await response.json()
+            data = _response.get("historical_data")
+            symbol = _response["index"].get("symbol").replace("$", "")
+            data = [d for d in data if d.get("value") is not None]
+            data = [{"symbol": symbol, **d} for d in data] if len(symbols) > 1 else data
+            return results.extend(data) if len(data) > 0 else results  # type: ignore
+
+        await amake_requests(urls, callback, **kwargs)
+
+        return results
 
     @staticmethod
     def transform_data(

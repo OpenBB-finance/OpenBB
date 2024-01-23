@@ -14,6 +14,7 @@ from typing_extensions import Annotated
 class ROUTER_etf(Container):
     """/etf
     countries
+    /discovery
     historical
     holdings
     holdings_date
@@ -85,6 +86,13 @@ class ROUTER_etf(Container):
                 extra_params=kwargs,
             )
         )
+
+    @property
+    def discovery(self):
+        # pylint: disable=import-outside-toplevel
+        from . import etf_discovery
+
+        return etf_discovery.ROUTER_etf_discovery(command_runner=self._command_runner)
 
     @validate
     def historical(
@@ -639,7 +647,7 @@ class ROUTER_etf(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Optional[Literal["finviz", "fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """Price performance as a return, over different periods.
@@ -648,9 +656,9 @@ class ROUTER_etf(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['finviz', 'fmp']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
+            If None, the provider specified in defaults is selected or 'finviz' if there is
             no default.
 
         Returns
@@ -658,7 +666,7 @@ class ROUTER_etf(Container):
         OBBject
             results : List[PricePerformance]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['finviz', 'fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -697,8 +705,22 @@ class ROUTER_etf(Container):
             Ten-year return.
         max : Optional[float]
             Return from the beginning of the time series.
+        volatility_week : Optional[float]
+            One-week realized volatility, as a normalized percent. (provider: finviz)
+        volatility_month : Optional[float]
+            One-month realized volatility, as a normalized percent. (provider: finviz)
+        price : Optional[float]
+            Last Price. (provider: finviz)
+        volume : Optional[float]
+            Current volume. (provider: finviz)
+        average_volume : Optional[float]
+            Average daily volume. (provider: finviz)
+        relative_volume : Optional[float]
+            Relative volume as a ratio of current volume to average volume. (provider: finviz)
+        analyst_recommendation : Optional[float]
+            The analyst consensus, on a scale of 1-5 where 1 is a buy and 5 is a sell. (provider: finviz)
         symbol : Optional[str]
-            The ticker symbol. (provider: fmp)
+            The ticker symbol. (provider: finviz, fmp)
 
         Example
         -------

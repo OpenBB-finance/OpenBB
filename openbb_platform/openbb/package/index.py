@@ -17,6 +17,9 @@ class ROUTER_index(Container):
     constituents
     market
     /price
+    search
+    snapshots
+    sp500_multiples
     """
 
     def __repr__(self) -> str:
@@ -24,23 +27,25 @@ class ROUTER_index(Container):
 
     @validate
     def available(
-        self, provider: Optional[Literal["fmp", "yfinance"]] = None, **kwargs
+        self, provider: Optional[Literal["cboe", "fmp", "yfinance"]] = None, **kwargs
     ) -> OBBject:
         """Available Indices. Available indices for a given provider.
 
         Parameters
         ----------
-        provider : Optional[Literal['fmp', 'yfinance']]
+        provider : Optional[Literal['cboe', 'fmp', 'yfinance']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
+            If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
+        use_cache : bool
+            When True, the Cboe Index directory will be cached for 24 hours. Set as False to bypass. (provider: cboe)
 
         Returns
         -------
         OBBject
             results : List[AvailableIndices]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'yfinance']]
+            provider : Optional[Literal['cboe', 'fmp', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -55,14 +60,30 @@ class ROUTER_index(Container):
             Name of the index.
         currency : Optional[str]
             Currency the index is traded in.
+        symbol : Optional[str]
+            Symbol for the index. (provider: cboe, yfinance)
+        description : Optional[str]
+            Description for the index. Valid only for US indices. (provider: cboe)
+        data_delay : Optional[int]
+            Data delay for the index. Valid only for US indices. (provider: cboe)
+        open_time : Optional[datetime.time]
+            Opening time for the index. Valid only for US indices. (provider: cboe)
+        close_time : Optional[datetime.time]
+            Closing time for the index. Valid only for US indices. (provider: cboe)
+        time_zone : Optional[str]
+            Time zone for the index. Valid only for US indices. (provider: cboe)
+        tick_days : Optional[str]
+            The trading days for the index. Valid only for US indices. (provider: cboe)
+        tick_frequency : Optional[str]
+            The frequency of the index ticks. Valid only for US indices. (provider: cboe)
+        tick_period : Optional[str]
+            The period of the index ticks. Valid only for US indices. (provider: cboe)
         stock_exchange : Optional[str]
             Stock exchange where the index is listed. (provider: fmp)
         exchange_short_name : Optional[str]
             Short name of the stock exchange where the index is listed. (provider: fmp)
         code : Optional[str]
             ID code for keying the index in the OpenBB Terminal. (provider: yfinance)
-        symbol : Optional[str]
-            Symbol for the index. (provider: yfinance)
 
         Example
         -------
@@ -88,7 +109,7 @@ class ROUTER_index(Container):
             str,
             OpenBBCustomParameter(description="Index to fetch the constituents of."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Optional[Literal["cboe", "fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """Index Constituents. Constituents of an index.
@@ -97,9 +118,9 @@ class ROUTER_index(Container):
         ----------
         index : str
             Index to fetch the constituents of.
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['cboe', 'fmp']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
+            If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
 
         Returns
@@ -107,7 +128,7 @@ class ROUTER_index(Container):
         OBBject
             results : List[IndexConstituents]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['cboe', 'fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -122,6 +143,32 @@ class ROUTER_index(Container):
             Symbol representing the entity requested in the data.
         name : Optional[str]
             Name of the constituent company in the index.
+        security_type : Optional[str]
+            The type of security represented. (provider: cboe)
+        last_price : Optional[float]
+            Last price for the symbol. (provider: cboe)
+        open : Optional[float]
+            The open price. (provider: cboe)
+        high : Optional[float]
+            The high price. (provider: cboe)
+        low : Optional[float]
+            The low price. (provider: cboe)
+        close : Optional[float]
+            The close price. (provider: cboe)
+        volume : Optional[int]
+            The trading volume. (provider: cboe)
+        prev_close : Optional[float]
+
+        change : Optional[float]
+            Change in price. (provider: cboe)
+        change_percent : Optional[float]
+            Change in price as a normalized percentage. (provider: cboe)
+        tick : Optional[str]
+            Whether the last sale was an up or down tick. (provider: cboe)
+        last_trade_time : Optional[datetime]
+            Last trade timestamp for the symbol. (provider: cboe)
+        asset_type : Optional[str]
+            Type of asset. (provider: cboe)
         sector : Optional[str]
             Sector the constituent company in the index belongs to. (provider: fmp)
         sub_sector : Optional[str]
@@ -173,7 +220,9 @@ class ROUTER_index(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
+        provider: Optional[
+            Literal["cboe", "fmp", "intrinio", "polygon", "yfinance"]
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Historical Market Indices.
@@ -186,14 +235,18 @@ class ROUTER_index(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
+        provider : Optional[Literal['cboe', 'fmp', 'intrinio', 'polygon', 'yfinance'...
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
+            If None, the provider specified in defaults is selected or 'cboe' if there is
             no default.
+        interval : Optional[Union[Literal['1m', '1d'], Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
+            Time interval of the data to return. The most recent trading day is not including in daily historical data. Intraday data is only available for the most recent trading day at 1 minute intervals. (provider: cboe);
+            Data granularity. (provider: fmp);
+            Data granularity. (provider: yfinance)
+        use_cache : bool
+            When True, the company directories will be cached for 24 hours and are used to validate symbols. The results of the function are not cached. Set as False to bypass. (provider: cboe)
         timeseries : Optional[Annotated[int, Ge(ge=0)]]
             Number of days to look back. (provider: fmp)
-        interval : Optional[Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
-            Data granularity. (provider: fmp, yfinance)
         sort : Literal['asc', 'desc']
             Sort the data in ascending or descending order. (provider: fmp);
             Sort order. (provider: intrinio);
@@ -222,7 +275,7 @@ class ROUTER_index(Container):
         OBBject
             results : List[MarketIndices]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
+            provider : Optional[Literal['cboe', 'fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -245,6 +298,12 @@ class ROUTER_index(Container):
             The close price.
         volume : Optional[int]
             The trading volume.
+        calls_volume : Optional[float]
+            Number of calls traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
+        puts_volume : Optional[float]
+            Number of puts traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
+        total_options_volume : Optional[float]
+            Total number of options traded during the most recent trading period. Only valid if interval is 1m. (provider: cboe)
         adj_close : Optional[float]
             The adjusted close price. (provider: fmp)
         unadjusted_volume : Optional[float]
@@ -296,3 +355,299 @@ class ROUTER_index(Container):
         from . import index_price
 
         return index_price.ROUTER_index_price(command_runner=self._command_runner)
+
+    @validate
+    def search(
+        self,
+        query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        is_symbol: Annotated[
+            bool,
+            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
+        ] = False,
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs
+    ) -> OBBject:
+        """Index Search. Search for indices.
+
+        Parameters
+        ----------
+        query : str
+            Search query.
+        is_symbol : bool
+            Whether to search by ticker symbol.
+        provider : Optional[Literal['cboe']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
+        use_cache : bool
+            When True, the Cboe Index directory will be cached for 24 hours. Set as False to bypass. (provider: cboe)
+
+        Returns
+        -------
+        OBBject
+            results : List[IndexSearch]
+                Serializable results.
+            provider : Optional[Literal['cboe']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        IndexSearch
+        -----------
+        symbol : str
+            Symbol representing the entity requested in the data.
+        name : str
+            Name of the index.
+        description : Optional[str]
+            Description for the index. (provider: cboe)
+        data_delay : Optional[int]
+            Data delay for the index. Valid only for US indices. (provider: cboe)
+        currency : Optional[str]
+            Currency for the index. (provider: cboe)
+        time_zone : Optional[str]
+            Time zone for the index. Valid only for US indices. (provider: cboe)
+        open_time : Optional[datetime.time]
+            Opening time for the index. Valid only for US indices. (provider: cboe)
+        close_time : Optional[datetime.time]
+            Closing time for the index. Valid only for US indices. (provider: cboe)
+        tick_days : Optional[str]
+            The trading days for the index. Valid only for US indices. (provider: cboe)
+        tick_frequency : Optional[str]
+            Tick frequency for the index. Valid only for US indices. (provider: cboe)
+        tick_period : Optional[str]
+            Tick period for the index. Valid only for US indices. (provider: cboe)
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.index.search()
+        """  # noqa: E501
+
+        return self._run(
+            "/index/search",
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "query": query,
+                    "is_symbol": is_symbol,
+                },
+                extra_params=kwargs,
+            )
+        )
+
+    @validate
+    def snapshots(
+        self,
+        region: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(
+                description="The region to return data for - i.e. 'us' or 'eu'."
+            ),
+        ] = None,
+        provider: Optional[Literal["cboe"]] = None,
+        **kwargs
+    ) -> OBBject:
+        """Index Snapshots. Current levels for all indices from a provider.
+
+        Parameters
+        ----------
+        region : Optional[str]
+            The region to return data for - i.e. 'us' or 'eu'.
+        provider : Optional[Literal['cboe']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'cboe' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[IndexSnapshots]
+                Serializable results.
+            provider : Optional[Literal['cboe']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        IndexSnapshots
+        --------------
+        symbol : str
+            Symbol representing the entity requested in the data.
+        name : Optional[str]
+            Name of the index.
+        currency : Optional[str]
+            Currency of the index.
+        price : Optional[float]
+            Current price of the index.
+        open : Optional[float]
+            The open price.
+        high : Optional[float]
+            The high price.
+        low : Optional[float]
+            The low price.
+        close : Optional[float]
+            The close price.
+        volume : Optional[int]
+            The trading volume.
+        prev_close : Optional[float]
+
+        change : Optional[float]
+            Change in value of the index.
+        change_percent : Optional[float]
+            Change, in normalized percentage points, of the index.
+        bid : Optional[float]
+            Current bid price. (provider: cboe)
+        ask : Optional[float]
+            Current ask price. (provider: cboe)
+        last_trade_time : Optional[datetime]
+            Last trade timestamp for the symbol. (provider: cboe)
+        status : Optional[str]
+            Status of the market, open or closed. (provider: cboe)
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.index.snapshots()
+        """  # noqa: E501
+
+        return self._run(
+            "/index/snapshots",
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "region": region,
+                },
+                extra_params=kwargs,
+            )
+        )
+
+    @validate
+    def sp500_multiples(
+        self,
+        series_name: Annotated[
+            Literal[
+                "Shiller PE Ratio by Month",
+                "Shiller PE Ratio by Year",
+                "PE Ratio by Year",
+                "PE Ratio by Month",
+                "Dividend by Year",
+                "Dividend by Month",
+                "Dividend Growth by Quarter",
+                "Dividend Growth by Year",
+                "Dividend Yield by Year",
+                "Dividend Yield by Month",
+                "Earnings by Year",
+                "Earnings by Month",
+                "Earnings Growth by Year",
+                "Earnings Growth by Quarter",
+                "Real Earnings Growth by Year",
+                "Real Earnings Growth by Quarter",
+                "Earnings Yield by Year",
+                "Earnings Yield by Month",
+                "Real Price by Year",
+                "Real Price by Month",
+                "Inflation Adjusted Price by Year",
+                "Inflation Adjusted Price by Month",
+                "Sales by Year",
+                "Sales by Quarter",
+                "Sales Growth by Year",
+                "Sales Growth by Quarter",
+                "Real Sales by Year",
+                "Real Sales by Quarter",
+                "Real Sales Growth by Year",
+                "Real Sales Growth by Quarter",
+                "Price to Sales Ratio by Year",
+                "Price to Sales Ratio by Quarter",
+                "Price to Book Value Ratio by Year",
+                "Price to Book Value Ratio by Quarter",
+                "Book Value per Share by Year",
+                "Book Value per Share by Quarter",
+            ],
+            OpenBBCustomParameter(
+                description="The name of the series. Defaults to 'PE Ratio by Month'."
+            ),
+        ] = "PE Ratio by Month",
+        start_date: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = "",
+        end_date: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = "",
+        provider: Optional[Literal["nasdaq"]] = None,
+        **kwargs
+    ) -> OBBject:
+        """S&P 500 Multiples. Historical S&P 500 multiples and Shiller PE ratios.
+
+        Parameters
+        ----------
+        series_name : Literal['Shiller PE Ratio by Month', 'Shiller PE Ratio by Year', 'PE Rat...
+            The name of the series. Defaults to 'PE Ratio by Month'.
+        start_date : Optional[str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Optional[str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['nasdaq']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'nasdaq' if there is
+            no default.
+        collapse : Optional[Literal['daily', 'weekly', 'monthly', 'quarterly', 'annual']]
+            Collapse the frequency of the time series. (provider: nasdaq)
+        transform : Optional[Literal['diff', 'rdiff', 'cumul', 'normalize']]
+            The transformation of the time series. (provider: nasdaq)
+
+        Returns
+        -------
+        OBBject
+            results : List[SP500Multiples]
+                Serializable results.
+            provider : Optional[Literal['nasdaq']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        SP500Multiples
+        --------------
+        date : date
+            The date of the data.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.index.sp500_multiples(series_name="PE Ratio by Month")
+        """  # noqa: E501
+
+        return self._run(
+            "/index/sp500_multiples",
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "series_name": series_name,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
+        )
