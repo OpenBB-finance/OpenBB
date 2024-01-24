@@ -10,7 +10,6 @@ from typing import Any, Callable, ContextManager, Dict, List, Optional, Tuple, U
 
 from pydantic import ConfigDict, create_model
 
-from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.logs.logging_service import LoggingService
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.warning import cast_warning
@@ -404,10 +403,6 @@ class CommandRunner:
         self._command_map = command_map or CommandMap()
         self._system_settings = system_settings or SystemService().system_settings
         self._user_settings = user_settings or UserService.read_default_user_settings()
-
-        self._charting_service = ChartingService(
-            system_settings=self._system_settings, user_settings=self._user_settings
-        )
 
     def init_logging_service(self) -> None:
         """Initialize the logging service."""
