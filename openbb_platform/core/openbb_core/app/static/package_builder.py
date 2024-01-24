@@ -912,6 +912,25 @@ class DocstringGenerator:
             description = description.replace("\n", "\n        ")
             return description
 
+        def pop_example_summary(summary: str, split_by: str) -> Tuple[str, str]:
+            """Pop the summary example from the summary string.
+
+            Parameters
+            ----------
+            summary : str
+                The summary string.
+
+            Returns
+            -------
+            Tuple[str, str]
+                The summary and the example.
+            """
+            split_summary = summary.split(split_by)
+            if len(split_summary) == 2:
+                example_summary = "    " + split_summary[1]
+                summary = split_summary[0]
+            return summary, example_summary
+
         standard_dict = params["standard"].__dataclass_fields__
         extra_dict = params["extra"].__dataclass_fields__
 
@@ -922,6 +941,12 @@ class DocstringGenerator:
         example_docstring = cls.generate_example(
             model_name=model_name, standard_params=obb_query_fields
         )
+        example_summary = None
+        example_marker = "Example\n    -------\n"
+        if example_marker in summary:
+            summary, example_summary = pop_example_summary(
+                summary=summary, split_by=example_marker
+            )
 
         docstring = summary
         docstring += "\n\n"
@@ -1012,6 +1037,9 @@ class DocstringGenerator:
             docstring += f"            {format_description(description)}\n"
 
         docstring += example_docstring
+        if example_summary:
+            docstring += example_summary
+
         return docstring
 
     @classmethod
