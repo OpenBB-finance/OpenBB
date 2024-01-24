@@ -60,7 +60,6 @@ class OBBject(Tagged, Generic[T]):
         default_factory=dict,
         description="Extra info.",
     )
-    _credentials: ClassVar[Optional[BaseModel]] = None
     _user_settings: ClassVar[Optional[BaseModel]] = None
     _system_settings: ClassVar[Optional[BaseModel]] = None
 
