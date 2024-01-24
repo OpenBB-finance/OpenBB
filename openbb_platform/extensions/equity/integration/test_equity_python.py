@@ -26,7 +26,7 @@ def obb(pytestconfig):
             {
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "period": "ttm",
+                "period": "quarter",
                 "fiscal_year": 2014,
                 "limit": 2,
             }
@@ -510,6 +510,7 @@ def test_equity_calendar_ipo(params, obb):
             }
         ),
         ({"provider": "intrinio", "symbol": "AAPL", "period": "annual", "limit": 100}),
+        ({"provider": "finviz", "symbol": "AAPL,GOOG"}),
     ],
 )
 @pytest.mark.integration
@@ -568,7 +569,25 @@ def test_equity_ownership_major_holders(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL", "limit": 10, "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "limit": 10,
+                "provider": "benzinga",
+                # optional provider params
+                "fields": None,
+                "date": None,
+                "date_from": None,
+                "date_to": None,
+                "importance": None,
+                "updated": None,
+                "action": None,
+                "analyst": None,
+                "firm": None,
+            }
+        ),
+        ({"symbol": "AAPL", "provider": "finviz"}),
     ],
 )
 @pytest.mark.integration
@@ -747,6 +766,18 @@ def test_equity_compare_peers(params, obb):
 
 @parametrize(
     "params",
+    [({"group": "country", "metric": "overview", "provider": "finviz"})],
+)
+@pytest.mark.integration
+def test_equity_compare_groups(params, obb):
+    result = obb.equity.compare.groups(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert result.results is not None
+
+
+@parametrize(
+    "params",
     [
         (
             {
@@ -789,6 +820,7 @@ def test_equity_compare_peers(params, obb):
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-02",
                 "interval": "1m",
+                "use_cache": False,
             }
         ),
         (
@@ -798,6 +830,7 @@ def test_equity_compare_peers(params, obb):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
+                "use_cache": False,
             }
         ),
         (
@@ -805,8 +838,8 @@ def test_equity_compare_peers(params, obb):
                 "limit": "30",
                 "provider": "fmp",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
+                "start_date": "2023-01-02",
+                "end_date": "2023-01-03",
                 "interval": "1m",
             }
         ),
@@ -1020,7 +1053,7 @@ def test_equity_fundamental_latest_attributes(params, obb):
 @parametrize(
     "params",
     [
-        ({"query": "AAPL", "is_symbol": True, "provider": "cboe"}),
+        ({"query": "AAPL", "is_symbol": True, "provider": "cboe", "use_cache": False}),
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
         ({"query": "", "provider": "nasdaq", "use_cache": False, "is_etf": True}),
         ({"query": "gold", "provider": "intrinio", "active": True, "limit": 100}),
@@ -1075,6 +1108,8 @@ def test_equity_screener(params, obb):
         ({"symbol": "AAPL"}),
         ({"source": "iex", "provider": "intrinio", "symbol": "AAPL"}),
         ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL", "provider": "cboe", "use_cache": False}),
+        ({"symbol": "AAPL", "provider": "yfinance"}),
     ],
 )
 @pytest.mark.integration
@@ -1092,6 +1127,8 @@ def test_equity_price_quote(params, obb):
         ({"symbol": "MSFT", "provider": "intrinio"}),
         ({"symbol": "AAPL,MSFT", "provider": "cboe"}),
         ({"symbol": "AAPL,MSFT", "provider": "intrinio"}),
+        ({"symbol": "AAPL,MSFT", "provider": "finviz"}),
+        ({"symbol": "AAPL,MSFT", "provider": "yfinance"}),
     ],
 )
 @pytest.mark.integration
@@ -1149,7 +1186,10 @@ def test_equity_discovery_active(params, obb):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL"})],
+    [
+        ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL,MSFT", "provider": "finviz"}),
+    ],
 )
 @pytest.mark.integration
 def test_equity_price_performance(params, obb):
