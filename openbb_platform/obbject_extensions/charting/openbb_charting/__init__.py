@@ -62,18 +62,14 @@ class Charting:
 
     def show(self, **kwargs):
         """Display chart and save it to the OBBject."""
-        # TODO: in order for this to perform, either metadata can't be a user preference
-        # or this need to be done differently, perhaps add the params and the route to
-        # OBBject private attributes at the CommandRunner level.
-
-        route = self._obbject.extra["metadata"].route
-        standard_params = self._obbject.extra["metadata"].arguments["standard_params"]
-
-        charting_function = self._get_chart_function(route)
-
+        charting_function = self._get_chart_function(
+            self._obbject._route  # pylint: disable=protected-access
+        )
         kwargs["obbject_item"] = self._obbject.results
         kwargs["charting_settings"] = self._charting_settings
-        kwargs["standard_params"] = standard_params
+        kwargs[
+            "standard_params"
+        ] = self._obbject._standard_params  # pylint: disable=protected-access
 
         fig, content = charting_function(**kwargs)
         self._obbject.chart = Chart(

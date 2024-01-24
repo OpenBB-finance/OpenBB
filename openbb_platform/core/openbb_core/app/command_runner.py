@@ -396,6 +396,10 @@ class StaticCommandRunner:
                 if Env().DEBUG_MODE:
                     raise OpenBBError(e) from e
 
+        # pylint: disable=protected-access
+        obbject._route = route
+        obbject._standard_params = kwargs.get("standard_params", None)
+
         return obbject
 
 

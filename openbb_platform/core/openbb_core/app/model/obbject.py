@@ -17,7 +17,7 @@ from typing import (
 
 import pandas as pd
 from numpy import ndarray
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, PrivateAttr
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.abstract.tagged import Tagged
@@ -40,6 +40,10 @@ T = TypeVar("T")
 class OBBject(Tagged, Generic[T]):
     """OpenBB object."""
 
+    accessors: ClassVar[Set[str]] = set()
+    _user_settings: ClassVar[Optional[BaseModel]] = None
+    _system_settings: ClassVar[Optional[BaseModel]] = None
+
     results: Optional[T] = Field(
         default=None,
         description="Serializable results.",
@@ -60,10 +64,12 @@ class OBBject(Tagged, Generic[T]):
         default_factory=dict,
         description="Extra info.",
     )
-    _user_settings: ClassVar[Optional[BaseModel]] = None
-    _system_settings: ClassVar[Optional[BaseModel]] = None
-
-    accessors: ClassVar[Set[str]] = set()
+    _route: Optional[str] = PrivateAttr(
+        default=None,
+    )
+    _standard_params: Optional[Dict[str, Any]] = PrivateAttr(
+        default_factory=dict,
+    )
 
     def __repr__(self) -> str:
         """Human readable representation of the object."""
