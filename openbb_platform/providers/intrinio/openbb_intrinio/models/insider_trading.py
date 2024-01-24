@@ -15,7 +15,7 @@ from openbb_core.provider.standard_models.insider_trading import (
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import get_querystring
 from openbb_intrinio.utils.helpers import get_data_many
-from pydantic import Field
+from pydantic import Field, model_validator
 
 
 class IntrinioInsiderTradingQueryParams(InsiderTradingQueryParams):
@@ -103,6 +103,12 @@ class IntrinioInsiderTradingData(InsiderTradingData):
         default=None, description="Report line number of the insider trading."
     )
     filing_url: Optional[str] = Field(default=None, description="URL of the filing.")
+
+    @model_validator(mode="before")
+    @classmethod
+    def empty_strings(cls, values):  # pylint: disable=no-self-argument
+        """Check for empty strings and replace with None."""
+        return {k: None if v == "" else v for k, v in values.items()}
 
 
 class IntrinioInsiderTradingFetcher(
