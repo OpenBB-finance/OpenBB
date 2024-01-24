@@ -9,6 +9,7 @@ from openbb_core.provider.standard_models.futures_curve import (
     FuturesCurveData,
     FuturesCurveQueryParams,
 )
+from openbb_core.provider.utils.errors import EmptyDataError
 from pydantic import Field
 
 
@@ -38,30 +39,28 @@ class CboeFuturesCurveFetcher(
         return CboeFuturesCurveQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: CboeFuturesCurveQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the CBOE endpoint."""
 
-        query.symbol = query.symbol.upper()
-        FUTURES = get_settlement_prices(settlement_date=query.date)
+        symbol = query.symbol.upper().split(",")[0]
+        FUTURES = await get_settlement_prices(**kwargs)
         if len(FUTURES) == 0:
-            return []
+            raise EmptyDataError()
 
-        if query.symbol not in FUTURES["product"].unique().tolist():
+        if symbol not in FUTURES["product"].unique().tolist():
             raise RuntimeError(
                 "The symbol, "
-                f"{query.symbol}"
+                f"{symbol}"
                 ", is not valid.  Chose from: "
                 f"{FUTURES['product'].unique().tolist()}"
             )
+        data = FUTURES[FUTURES["product"] == symbol][["expiration", "symbol", "price"]]
 
-        data = get_settlement_prices(settlement_date=query.date)
-        data = data[data["product"] == query.symbol]
-
-        return data[["expiration", "symbol", "price"]].to_dict("records")
+        return data.to_dict("records")
 
     @staticmethod
     def transform_data(
