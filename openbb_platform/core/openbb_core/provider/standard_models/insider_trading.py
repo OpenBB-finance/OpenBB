@@ -90,4 +90,5 @@ class InsiderTradingData(Data):
             filing_date = parser.isoparse(str(v))
             if filing_date.time() == time(0, 0):
                 return filing_date.date()
+            return filing_date
         return None
