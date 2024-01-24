@@ -12,7 +12,23 @@ ext = Extension(name="charting")
 
 @ext.obbject_accessor
 class Charting:
-    """Charting extension."""
+    """
+    Charting extension.
+
+    Methods
+    -------
+    show
+        Display chart and save it to the OBBject.
+    to_chart
+        Returns the plotly json representation of the chart.
+
+    Properties
+    ----------
+    indicators
+        Returns a list of the available indicators.
+
+
+    """
 
     def __init__(self, obbject):
         """Initialize Charting extension."""
@@ -28,6 +44,7 @@ class Charting:
 
     @property
     def indicators(self):
+        """Returns a list of the available indicators."""
         return ChartIndicators.get_available_indicators()
 
     def _handle_backend(self):
