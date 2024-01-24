@@ -63,7 +63,8 @@ class OBBject(Tagged, Generic[T]):
     _credentials: ClassVar[Optional[BaseModel]] = None
     _user_settings: ClassVar[Optional[BaseModel]] = None
     _system_settings: ClassVar[Optional[BaseModel]] = None
-    _accessors: ClassVar[Set[str]] = set()
+
+    accessors: ClassVar[Set[str]] = set()
 
     def __repr__(self) -> str:
         """Human readable representation of the object."""
