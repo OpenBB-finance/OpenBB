@@ -39,7 +39,8 @@ class Charting:
 
         self._obbject: OBBject = obbject
         self._charting_settings = ChartingSettings(
-            self._obbject._user_settings, self._obbject._system_settings
+            user_settings=self._obbject._user_settings,
+            system_settings=self._obbject._system_settings,
         )
         self._handle_backend()
 
