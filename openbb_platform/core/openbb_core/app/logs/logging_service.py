@@ -3,7 +3,7 @@ import json
 import logging
 from enum import Enum
 from types import TracebackType
-from typing import Any, Callable, Dict, Optional, Tuple, Union, cast
+from typing import Any, Callable, Dict, Optional, Tuple, Type, Union, cast
 
 from openbb_core.app.logs.formatters.formatter_with_exceptions import (
     FormatterWithExceptions,
@@ -183,7 +183,7 @@ class LoggingService(metaclass=SingletonMeta):
         func: Callable,
         kwargs: Dict[str, Any],
         exec_info: Union[
-            Tuple[type[BaseException], BaseException, TracebackType],
+            Tuple[Type[BaseException], BaseException, TracebackType],
             Tuple[None, None, None],
         ],
         custom_headers: Optional[Dict[str, Any]] = None,
