@@ -83,7 +83,7 @@ class TAIndicator:
         return output
 
     def get_argument_values(self, label: str) -> Union[List[Any], Any]:
-        """Returns arguments values by label."""
+        """Return arguments values by label."""
         output = []
         options = self.get_args(label)
         if options is not None:
@@ -106,7 +106,7 @@ class ChartIndicators:
         )
 
     def get_indicator(self, name: str) -> Union[TAIndicator, None]:
-        """Returns indicator with given name."""
+        """Return indicator with given name."""
         output = None
         for indicator in self.indicators:  # type: ignore
             if indicator.name == name:
@@ -114,7 +114,7 @@ class ChartIndicators:
         return output
 
     def get_indicator_args(self, name: str, label: str) -> Union[Arguments, None]:
-        """Returns argument values for given indicator and label."""
+        """Return argument values for given indicator and label."""
         output = None
         indicator = self.get_indicator(name)
         if indicator is not None:
@@ -131,18 +131,18 @@ class ChartIndicators:
         """Return dictionary of active indicators and their arguments."""
         output = {}
         if self.indicators:
-            output = {indicator.name: indicator for indicator in self.indicators}
+            output = {str(indicator.name): indicator for indicator in self.indicators}
         return output
 
     def get_active_ids(self) -> List[str]:
-        """Returns list of names of active indicators."""
+        """Return list of names of active indicators."""
         active_ids = []
         if self.indicators:
-            active_ids = [indicator.name for indicator in self.indicators]
+            active_ids = [str(indicator.name) for indicator in self.indicators]
         return active_ids
 
     def get_arg_names(self, name: str) -> List[str]:
-        """Returns list of argument labels for given indicator."""
+        """Return list of argument labels for given indicator."""
         output = []
         indicator = self.get_indicator(name)
         if indicator is not None:
@@ -151,7 +151,7 @@ class ChartIndicators:
         return output
 
     def get_options_dict(self, name: str) -> Dict[str, Optional[Arguments]]:
-        """Returns dictionary of argument labels and values for given indicator."""
+        """Return dictionary of argument labels and values for given indicator."""
         output = None
         options = self.get_arg_names(name)
         if options:
@@ -163,7 +163,7 @@ class ChartIndicators:
 
     @staticmethod
     def get_available_indicators() -> Tuple[str, ...]:
-        """Returns tuple of available indicators."""
+        """Return tuple of available indicators."""
         return TAIndicator.__annotations__["name"].__args__  # pylint: disable=E1101
 
     @classmethod
@@ -279,7 +279,7 @@ class TA_Data:
 
     def get_indicator_data(self, indicator: TAIndicator, **args) -> pd.DataFrame:
         """
-        Returns dataframe with indicator data.
+        Return dataframe with indicator data.
 
         Parameters
         ----------
@@ -288,7 +288,7 @@ class TA_Data:
         args : dict
             Arguments for given indicator
 
-        Returns
+        Return
         -------
         pd.DataFrame
             Dataframe with indicator data
@@ -341,7 +341,7 @@ class TA_Data:
         return output
 
     def to_dataframe(self) -> pd.DataFrame:
-        """Returns dataframe with all indicators."""
+        """Return dataframe with all indicators."""
         active_indicators = self.indicators.get_indicators()
 
         if not active_indicators:
