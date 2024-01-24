@@ -29,13 +29,13 @@ class CompanyNewsQueryParams(QueryParams):
         default=20, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
     date: Optional[dateType] = Field(
-        default=None, description="Date of the news to retrieve."
+        default=None, description=QUERY_DESCRIPTIONS.get("date", "")
     )
     start_date: Optional[dateType] = Field(
-        default=None, description="Start date of the news to retrieve."
+        default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
     )
     end_date: Optional[dateType] = Field(
-        default=None, description="End date of the news to retrieve."
+        default=None, description=QUERY_DESCRIPTIONS.get("end_date", "")
     )
 
     @field_validator("symbols", mode="before")
