@@ -263,22 +263,14 @@ class StaticCommandRunner:
     def _chart(
         cls,
         obbject: OBBject,
-        user_settings: UserSettings,
-        system_settings: SystemSettings,
-        route: str,
         **kwargs,
     ) -> None:
         """Create a chart from the command output."""
-        cs = ChartingService(
-            user_settings=user_settings, system_settings=system_settings
-        )
-        obbject.chart = cs.chart(
-            user_settings=user_settings,
-            system_settings=system_settings,
-            route=route,
-            obbject_item=obbject.results,
-            **kwargs,
-        )
+        if "charting" not in obbject.accessors:
+            raise OpenBBError(
+                "Charting is not installed. Please install `openbb-charting`."
+            )
+        obbject.charting.show(render=False, **kwargs)  # type: ignore
 
     @classmethod
     async def _execute_func(
@@ -328,13 +320,13 @@ class StaticCommandRunner:
                 func=func,
                 kwargs=kwargs,
             )
+            # pylint: disable=protected-access
+            obbject._route = route
+            obbject._standard_params = kwargs.get("standard_params", None)
 
             if chart and obbject.results:
                 cls._chart(
                     obbject=obbject,
-                    user_settings=user_settings,
-                    system_settings=system_settings,
-                    route=route,
                     **kwargs,
                 )
 
@@ -395,10 +387,6 @@ class StaticCommandRunner:
             except Exception as e:
                 if Env().DEBUG_MODE:
                     raise OpenBBError(e) from e
-
-        # pylint: disable=protected-access
-        obbject._route = route
-        obbject._standard_params = kwargs.get("standard_params", None)
 
         return obbject
 

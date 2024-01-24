@@ -64,7 +64,7 @@ class OBBject(Tagged, Generic[T]):
         default_factory=dict,
         description="Extra info.",
     )
-    _route: Optional[str] = PrivateAttr(
+    _route: str = PrivateAttr(
         default=None,
     )
     _standard_params: Optional[Dict[str, Any]] = PrivateAttr(

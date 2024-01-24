@@ -6,6 +6,7 @@ from openbb_core.app.model.extension import Extension
 
 from openbb_charting import charting_router
 from openbb_charting.core.to_chart import ChartIndicators, OpenBBFigure, to_chart
+from openbb_charting.utils.helpers import get_charting_functions
 
 ext = Extension(name="charting")
 
@@ -47,6 +48,11 @@ class Charting:
         """Returns a list of the available indicators."""
         return ChartIndicators.get_available_indicators()
 
+    @classmethod
+    def functions(cls):
+        """Returns a list of the available functions."""
+        return get_charting_functions()
+
     def _handle_backend(self):
         # pylint: disable=import-outside-toplevel
         from openbb_charting.core.backend import create_backend, get_backend
@@ -60,7 +66,7 @@ class Charting:
         adjusted_route = route.replace("/", "_")[1:]
         return getattr(charting_router, adjusted_route)
 
-    def show(self, **kwargs):
+    def show(self, render: bool = True, **kwargs):
         """Display chart and save it to the OBBject."""
         charting_function = self._get_chart_function(
             self._obbject._route  # pylint: disable=protected-access
@@ -69,13 +75,14 @@ class Charting:
         kwargs["charting_settings"] = self._charting_settings
         kwargs[
             "standard_params"
-        ] = self._obbject._standard_params  # pylint: disable=protected-access
+        ] = self._obbject._standard_params.__dict__  # pylint: disable=protected-access
 
         fig, content = charting_function(**kwargs)
         self._obbject.chart = Chart(
             fig=fig, content=content, format=charting_router.CHART_FORMAT
         )
-        fig.show()
+        if render:
+            fig.show()
 
     def to_chart(
         self,
