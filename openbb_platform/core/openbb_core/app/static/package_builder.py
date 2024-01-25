@@ -915,7 +915,8 @@ class DocstringGenerator:
             docstring += f"        {field.alias or name} : {field_type}\n"
             docstring += f"            {format_description(description)}\n"
 
-        docstring += example_docstring
+        if examples:
+            docstring += example_docstring
 
         return docstring
 
