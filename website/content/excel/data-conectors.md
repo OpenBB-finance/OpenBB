@@ -30,4 +30,7 @@ To access data from your own [backend](https://docs.openbb.co/pro/main-menu/data
 =OBB.BYOD("widget_name", "backend_name")
 ```
 
-> **Note:** If you are using the Excel Add-in on Mac or Office on the web with Safari browser you need to run your backend via HTTPS. Requests via HTTP will be blocked by the browser.
+#### Additional notes
+
+- Make sure your backend's CORS settings allow requests coming from <https://excel.openbb.co>.
+- If you are using the Excel Add-in on Mac or Office on the web with Safari browser you need to run your backend via HTTPS. Requests via HTTP will be blocked by Excel.
