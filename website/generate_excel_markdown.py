@@ -34,7 +34,7 @@ class CommandLib:
     # These examples will be generated in the core, but we keep them here meanwhile
     EXAMPLE_PARAMS: Dict[str, Dict] = {
         "/byod": {
-            "widget": '"your_widget"',
+            "widget": '"widget_name"',
         },
         "crypto": {
             "symbol": '"BTCUSD"',
