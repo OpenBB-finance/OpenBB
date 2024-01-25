@@ -236,16 +236,18 @@ class Router:
 
         examples = kwargs.pop("examples", [])
         if model:
-            example = ExampleGenerator.generate_example(
-                route=SignatureInspector.get_operation_id(func, sep="."),
-                standard_params=ProviderInterface().map[model]["openbb"]["QueryParams"][
-                    "fields"
-                ],
-            )
-            if example:
-                examples.insert(0, example)
-            kwargs["response_model_exclude_unset"] = True
-            kwargs["openapi_extra"]["model"] = model
+            pi_map = ProviderInterface().map
+            if model in pi_map:
+                example = ExampleGenerator.generate_example(
+                    route=SignatureInspector.get_operation_id(func, sep="."),
+                    standard_params=ProviderInterface().map[model]["openbb"][
+                        "QueryParams"
+                    ]["fields"],
+                )
+                if example:
+                    examples.insert(0, example)
+                kwargs["response_model_exclude_unset"] = True
+                kwargs["openapi_extra"]["model"] = model
 
         kwargs["openapi_extra"]["examples"] = examples
 
