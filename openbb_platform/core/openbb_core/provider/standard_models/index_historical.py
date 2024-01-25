@@ -40,7 +40,9 @@ class IndexHistoricalQueryParams(QueryParams):
 class IndexHistoricalData(Data):
     """Index Historical Data."""
 
-    date: datetime = Field(description=DATA_DESCRIPTIONS.get("date", ""))
+    date: Union[dateType, datetime] = Field(
+        description=DATA_DESCRIPTIONS.get("date", "")
+    )
     open: Optional[StrictFloat] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("open", "")
     )
@@ -58,6 +60,10 @@ class IndexHistoricalData(Data):
     )
 
     @field_validator("date", mode="before", check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def date_validate(cls, v):
         """Return formatted datetime."""
-        return parser.isoparse(str(v))
+        v = parser.isoparse(str(v))
+        if v.hour == 0 and v.minute == 0:
+            return v.date()
+        return v
