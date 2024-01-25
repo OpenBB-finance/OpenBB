@@ -67,7 +67,7 @@ def display_key(symbol: str, export: str = "", sheet_name: Optional[str] = None)
 
     print_rich_table(
         df_key,
-        headers=[""],
+        headers=[symbol],
         title=f"{symbol} Key Metrics",
         show_index=True,
         export=bool(export),
