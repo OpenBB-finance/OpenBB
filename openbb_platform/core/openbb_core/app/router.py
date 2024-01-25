@@ -444,6 +444,7 @@ class SignatureInspector:
         if doc:
             description = doc.split("    Parameters\n    ----------")[0]
             description = description.split("    Returns\n    -------")[0]
+            description = description.split("    Example\n    -------")[0]
             description = "\n".join([line.strip() for line in description.split("\n")])
 
             return description
