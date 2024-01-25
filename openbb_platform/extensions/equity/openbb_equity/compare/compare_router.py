@@ -24,3 +24,14 @@ async def peers(
 ) -> OBBject[BaseModel]:
     """Equity Peers. Company peers."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(model="CompareGroups")
+async def groups(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject[BaseModel]:
+    """Compare Equity Sector and Industry Groups."""
+    return await OBBject.from_query(Query(**locals()))
