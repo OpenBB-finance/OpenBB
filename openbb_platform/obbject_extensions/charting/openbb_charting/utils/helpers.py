@@ -10,7 +10,11 @@ def get_charting_functions() -> List[str]:
     implemented_functions = []
 
     for name, obj in getmembers(charting_router, isfunction):
-        if not name.startswith("_") and "NotImplementedError" not in getsource(obj):
+        if (
+            obj.__module__ == charting_router.__name__
+            and not name.startswith("_")
+            and "NotImplementedError" not in getsource(obj)
+        ):
             implemented_functions.append(name)
 
     return implemented_functions
