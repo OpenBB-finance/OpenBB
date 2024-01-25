@@ -81,7 +81,9 @@ def build_new_signature(path: str, func: Callable) -> Signature:
                     name.replace("-", "_"),
                     kind=Parameter.POSITIONAL_OR_KEYWORD,
                     default=default,
-                    annotation=Annotated[Optional[str], Header()],
+                    annotation=Annotated[
+                        Optional[str], Header(include_in_schema=False)
+                    ],
                 )
             )
 
