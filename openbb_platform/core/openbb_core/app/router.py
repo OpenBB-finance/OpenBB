@@ -23,6 +23,7 @@ from pydantic import BaseModel
 from pydantic.v1.validators import find_validators
 from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
+from openbb_core.app.example_generator import ExampleGenerator
 from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
@@ -231,10 +232,22 @@ class Router:
 
         model = kwargs.pop("model", "")
         deprecation_message = kwargs.pop("deprecation_message", None)
+        kwargs["openapi_extra"] = kwargs.get("openapi_extra", {})
 
+        examples = kwargs.pop("examples", [])
         if model:
+            example = ExampleGenerator.generate_example(
+                route=SignatureInspector.get_operation_id(func, sep="."),
+                standard_params=ProviderInterface().map[model]["openbb"]["QueryParams"][
+                    "fields"
+                ],
+            )
+            if example:
+                examples.insert(0, example)
             kwargs["response_model_exclude_unset"] = True
-            kwargs["openapi_extra"] = {"model": model}
+            kwargs["openapi_extra"]["model"] = model
+
+        kwargs["openapi_extra"]["examples"] = examples
 
         func = SignatureInspector.complete_signature(func, model)
 
@@ -451,13 +464,13 @@ class SignatureInspector:
         return ""
 
     @staticmethod
-    def get_operation_id(func: Callable) -> str:
+    def get_operation_id(func: Callable, sep: str = "_") -> str:
         """Get operation id."""
         operation_id = [
             t.replace("_router", "").replace("openbb_", "")
             for t in func.__module__.split(".") + [func.__name__]
         ]
-        cleaned_id = "_".join({c: "" for c in operation_id if c}.keys())
+        cleaned_id = sep.join({c: "" for c in operation_id if c}.keys())
         return cleaned_id
 
 
