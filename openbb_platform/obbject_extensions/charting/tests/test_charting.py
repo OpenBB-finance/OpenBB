@@ -45,7 +45,7 @@ def test_indicators(mock_get_available_indicators, obbject):
     obj = Charting(obbject)
 
     # Act
-    result = obj.indicators
+    result = obj.indicators()
 
     # Assert
     assert result == ["indicator1", "indicator2", "indicator3"]

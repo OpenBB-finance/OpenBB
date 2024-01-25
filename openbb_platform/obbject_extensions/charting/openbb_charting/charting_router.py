@@ -173,15 +173,3 @@ def technical_ema(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Exponential moving average chart."""
     ma_type = "ema"
     return _ta_ma(ma_type, **kwargs)
-
-
-# def equity_fundamental_multiples(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
-#     """Equity multiples chart."""
-#     data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
-#     standard_params = kwargs["standard_params"].__dict__
-#     columnwidth = standard_params.get("columnwidth", None)
-
-#     tbl_fig = OpenBBFigureTable(tabular_data=data, columnwidth=columnwidth)
-#     content = tbl_fig.to_table().show(external=True).to_plotly_json()
-
-#     return tbl_fig, content

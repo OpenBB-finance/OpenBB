@@ -44,8 +44,8 @@ class Charting:
         )
         self._handle_backend()
 
-    @property
-    def indicators(self):
+    @classmethod
+    def indicators(cls):
         """Returns a list of the available indicators."""
         return ChartIndicators.get_available_indicators()
 
