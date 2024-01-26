@@ -10,8 +10,12 @@ from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import get_querystring
-from openbb_intrinio.utils.helpers import get_data_one
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    ClientSession,
+    amake_requests,
+    get_querystring,
+)
 from pydantic import Field, PrivateAttr, model_validator
 
 
@@ -177,7 +181,7 @@ class IntrinioEquityHistoricalFetcher(
 
     # pylint: disable=protected-access
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: IntrinioEquityHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -186,6 +190,9 @@ class IntrinioEquityHistoricalFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = f"https://api-v2.intrinio.com/securities/{query.symbol}/prices"
+        query_str = get_querystring(
+            query.model_dump(by_alias=True), ["symbol", "interval"]
+        )
 
         if query._interval_size:
             base_url += f"/intervals?interval_size={query._interval_size}"
@@ -194,26 +201,25 @@ class IntrinioEquityHistoricalFetcher(
             base_url += f"?frequency={query._frequency}"
             data_key = "stock_prices"
 
-        query_str = get_querystring(
-            query.model_dump(by_alias=True), ["symbol", "interval"]
-        )
+        async def callback(response: ClientResponse, session: ClientSession) -> list:
+            """Return the response."""
+            init_response = await response.json()
+
+            all_data: list = init_response.get(data_key, [])
+
+            next_page = init_response.get("next_page", None)
+            while next_page:
+                url = response.url.update_query(next_page=next_page).human_repr()
+                response_data = await session.get_json(url)
+
+                all_data.extend(response_data.get(data_key, []))
+                next_page = response_data.get("next_page", None)
+
+            return all_data
+
         url = f"{base_url}&{query_str}&api_key={api_key}"
 
-        data = get_data_one(url, **kwargs)
-        next_page = data.get("next_page", None)
-        data = data.get(data_key, [])
-
-        while next_page:
-            query_str = get_querystring(
-                query.model_dump(by_alias=True), ["symbol", "interval"]
-            )
-            url = f"{base_url}&{query_str}&next_page={next_page}&api_key={api_key}"
-            temp_data = get_data_one(url, **kwargs)
-
-            next_page = temp_data.get("next_page", None)
-            data.extend(temp_data.get(data_key, []))
-
-        return data
+        return await amake_requests([url], callback, **kwargs)
 
     # pylint: disable=unused-argument
     @staticmethod

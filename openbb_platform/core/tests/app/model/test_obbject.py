@@ -16,7 +16,7 @@ def test_OBBject():
 
 def test_fields():
     """Smoke test."""
-    fields = OBBject.__fields__.keys()
+    fields = OBBject.model_fields.keys()
 
     assert "results" in fields
     assert "provider" in fields
@@ -216,6 +216,43 @@ def test_to_dataframe(results, expected_df):
             co.to_dataframe()
 
         assert str(exc_info.value) == str(expected_df)
+
+
+@pytest.mark.parametrize(
+    "results, index, sort_by",
+    [
+        # Test case 1: Normal results with "date" column
+        (
+            [{"date": "2023-07-30", "value": 10}, {"date": "2023-07-31", "value": 20}],
+            "date",
+            "value",
+        ),
+        # Test case 2: List of Data
+        (
+            [
+                MockData(x=0, y=2),
+                MockData(x=1, y=3),
+                MockData(x=2, y=0),
+                MockData(x=3, y=1),
+                MockData(x=4, y=6),
+            ],
+            "x",
+            "y",
+        ),
+    ],
+)
+def test_to_dataframe_w_args(results, index, sort_by):
+    """Test helper."""
+    # Arrange
+    co = OBBject(results=results)
+
+    # Act and Assert
+    result = co.to_dataframe(index=index, sort_by=sort_by)
+    assert isinstance(result, pd.DataFrame)
+    assert result.index.name == index
+
+    # check if dataframe is properly sorted
+    assert result[sort_by].is_monotonic_increasing
 
 
 @pytest.mark.parametrize(

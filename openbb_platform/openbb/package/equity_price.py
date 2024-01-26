@@ -6,9 +6,8 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -46,9 +45,11 @@ class ROUTER_equity_price(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "intrinio", "polygon", "tiingo"]] = None,
+        provider: Optional[
+            Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]
+        ] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Equity Historical price. Load stock data for a specific ticker.
 
         Parameters
@@ -61,7 +62,7 @@ class ROUTER_equity_price(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo']]
+        provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinanc...
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -79,14 +80,21 @@ class ROUTER_equity_price(Container):
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
         adjusted : bool
-            Output time series is adjusted by historical split and dividend events. (provider: polygon)
+            Output time series is adjusted by historical split and dividend events. (provider: polygon);
+            Adjust all OHLC data automatically. (provider: yfinance)
+        prepost : bool
+            Include Pre and Post market data. (provider: yfinance)
+        include : bool
+            Include Dividends and Stock Splits in results. (provider: yfinance)
+        ignore_tz : bool
+            When combining from different timezones, ignore that part of datetime. (provider: yfinance)
 
         Returns
         -------
         OBBject
             results : List[EquityHistorical]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo']]
+            provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -97,7 +105,7 @@ class ROUTER_equity_price(Container):
 
         EquityHistorical
         ----------------
-        date : datetime
+        date : Union[date, datetime]
             The date of the data.
         open : float
             The open price.
@@ -107,14 +115,14 @@ class ROUTER_equity_price(Container):
             The low price.
         close : float
             The close price.
-        volume : Union[float, int]
+        volume : Optional[Union[float, int]]
             The trading volume.
-        vwap : Optional[Annotated[float, Gt(gt=0)]]
+        vwap : Optional[float]
             Volume Weighted Average Price over the period.
         label : Optional[str]
             Human readable format of the date. (provider: fmp)
         adj_close : Optional[float]
-            Adjusted Close Price of the symbol. (provider: fmp);
+            The adjusted close price. (provider: fmp);
             Adjusted closing price during the period. (provider: intrinio);
             Adjusted closing price during the period. (provider: tiingo)
         unadjusted_volume : Optional[float]
@@ -162,22 +170,20 @@ class ROUTER_equity_price(Container):
         >>> obb.equity.price.historical(symbol="AAPL", interval="1d")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "interval": interval,
-                "start_date": start_date,
-                "end_date": end_date,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/price/historical",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "interval": interval,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -189,7 +195,7 @@ class ROUTER_equity_price(Container):
         ],
         provider: Optional[Literal["polygon"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Equity NBBO. Load National Best Bid and Offer for a specific equity.
 
         Parameters
@@ -293,19 +299,17 @@ class ROUTER_equity_price(Container):
         >>> obb.equity.price.nbbo(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/price/nbbo",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -317,7 +321,7 @@ class ROUTER_equity_price(Container):
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Price performance as a return, over different periods.
 
         Parameters
@@ -382,19 +386,17 @@ class ROUTER_equity_price(Container):
         >>> obb.equity.price.performance(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/price/performance",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -403,19 +405,19 @@ class ROUTER_equity_price(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. In this case, the comma separated list of symbols."
+                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas."
             ),
         ],
-        provider: Optional[Literal["fmp", "intrinio"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Equity Quote. Load stock data for a specific ticker.
 
         Parameters
         ----------
         symbol : str
-            Symbol to get data for. In this case, the comma separated list of symbols.
-        provider : Optional[Literal['fmp', 'intrinio']]
+            Symbol to get data for. This endpoint will accept multiple symbols separated by commas.
+        provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -427,7 +429,7 @@ class ROUTER_equity_price(Container):
         OBBject
             results : List[EquityQuote]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -438,94 +440,106 @@ class ROUTER_equity_price(Container):
 
         EquityQuote
         -----------
-        day_low : Optional[float]
-            Lowest price of the stock in the current trading day.
-        day_high : Optional[float]
-            Highest price of the stock in the current trading day.
-        date : Optional[datetime]
-            The date of the data.
-        symbol : Optional[str]
-            Symbol of the company. (provider: fmp)
+        symbol : str
+            Symbol representing the entity requested in the data.
+        asset_type : Optional[str]
+            Type of asset - i.e, stock, ETF, etc.
         name : Optional[str]
-            Name of the company. (provider: fmp)
-        price : Optional[float]
-            Current trading price of the equity. (provider: fmp)
-        changes_percentage : Optional[float]
-            Change percentage of the equity price. (provider: fmp)
+            Name of the company or asset.
+        exchange : Optional[str]
+            The name or symbol of the venue where the data is from.
+        bid : Optional[float]
+            Price of the top bid order.
+        bid_size : Optional[int]
+            This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+        bid_exchange : Optional[str]
+            The specific trading venue where the purchase order was placed.
+        ask : Optional[float]
+            Price of the top ask order.
+        ask_size : Optional[int]
+            This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price.
+        ask_exchange : Optional[str]
+            The specific trading venue where the sale order was placed.
+        quote_conditions : Optional[Union[str, int, List[str], List[int]]]
+            Conditions or condition codes applicable to the quote.
+        quote_indicators : Optional[Union[str, int, List[str], List[int]]]
+            Indicators or indicator codes applicable to the participant quote related to the price bands for the issue, or the affect the quote has on the NBBO.
+        sales_conditions : Optional[Union[str, int, List[str], List[int]]]
+            Conditions or condition codes applicable to the sale.
+        sequence_number : Optional[int]
+            The sequence number represents the sequence in which message events happened. These are increasing and unique per ticker symbol, but will not always be sequential (e.g., 1, 2, 6, 9, 10, 11).
+        market_center : Optional[str]
+            The ID of the UTP participant that originated the message.
+        participant_timestamp : Optional[datetime]
+            Timestamp for when the quote was generated by the exchange.
+        trf_timestamp : Optional[datetime]
+            Timestamp for when the TRF (Trade Reporting Facility) received the message.
+        sip_timestamp : Optional[datetime]
+            Timestamp for when the SIP (Security Information Processor) received the message from the exchange.
+        last_price : Optional[float]
+            Price of the last trade.
+        last_tick : Optional[str]
+            Whether the last sale was an up or down tick.
+        last_size : Optional[int]
+            Size of the last trade.
+        last_timestamp : Optional[datetime]
+            Date and Time when the last price was recorded.
+        open : Optional[float]
+            The open price.
+        high : Optional[float]
+            The high price.
+        low : Optional[float]
+            The low price.
+        close : Optional[float]
+            The close price.
+        volume : Optional[Union[float, int]]
+            The trading volume.
+        exchange_volume : Optional[Union[float, int]]
+            Volume of shares exchanged during the trading day on the specific exchange.
+        prev_close : Optional[float]
+
         change : Optional[float]
-            Change in the equity price. (provider: fmp)
+            Change in price from previous close.
+        change_percent : Optional[float]
+            Change in price as a normalized percentage.
         year_high : Optional[float]
-            Highest price of the equity in the last 52 weeks. (provider: fmp)
+            The one year high (52W High).
         year_low : Optional[float]
-            Lowest price of the equity in the last 52 weeks. (provider: fmp)
+            The one year low (52W Low).
+        price_avg50 : Optional[float]
+            50 day moving average price. (provider: fmp)
+        price_avg200 : Optional[float]
+            200 day moving average price. (provider: fmp)
+        avg_volume : Optional[int]
+            Average volume over the last 10 trading days. (provider: fmp)
         market_cap : Optional[float]
             Market cap of the company. (provider: fmp)
-        price_avg50 : Optional[float]
-            50 days average price of the equity. (provider: fmp)
-        price_avg200 : Optional[float]
-            200 days average price of the equity. (provider: fmp)
-        volume : Optional[int]
-            Volume of the equity in the current trading day. (provider: fmp)
-        avg_volume : Optional[int]
-            Average volume of the equity in the last 10 trading days. (provider: fmp)
-        exchange : Optional[str]
-            Exchange the equity is traded on. (provider: fmp)
-        open : Optional[float]
-            Opening price of the equity in the current trading day. (provider: fmp)
-        previous_close : Optional[float]
-            Previous closing price of the equity. (provider: fmp)
-        eps : Optional[float]
-            Earnings per share of the equity. (provider: fmp)
-        pe : Optional[float]
-            Price earnings ratio of the equity. (provider: fmp)
-        earnings_announcement : Optional[str]
-            Earnings announcement date of the equity. (provider: fmp)
         shares_outstanding : Optional[int]
-            Number of shares outstanding of the equity. (provider: fmp)
-        last_price : Optional[float]
-            Price of the last trade. (provider: intrinio)
-        last_time : Optional[datetime]
-            Date and Time when the last trade occurred. (provider: intrinio)
-        last_size : Optional[int]
-            Size of the last trade. (provider: intrinio)
-        bid_price : Optional[float]
-            Price of the top bid order. (provider: intrinio)
-        bid_size : Optional[int]
-            Size of the top bid order. (provider: intrinio)
-        ask_price : Optional[float]
-            Price of the top ask order. (provider: intrinio)
-        ask_size : Optional[int]
-            Size of the top ask order. (provider: intrinio)
-        open_price : Optional[float]
-            Open price for the trading day. (provider: intrinio)
-        close_price : Optional[float]
-            Closing price for the trading day (IEX source only). (provider: intrinio)
-        high_price : Optional[float]
-            High Price for the trading day. (provider: intrinio)
-        low_price : Optional[float]
-            Low Price for the trading day. (provider: intrinio)
-        exchange_volume : Optional[int]
-            Number of shares exchanged during the trading day on the exchange. (provider: intrinio)
-        market_volume : Optional[int]
-            Number of shares exchanged during the trading day for the whole market. (provider: intrinio)
-        updated_on : Optional[datetime]
-            Date and Time when the data was last updated. (provider: intrinio)
-        source : Optional[str]
-            Source of the data. (provider: intrinio)
-        listing_venue : Optional[str]
-            Listing venue where the trade took place (SIP source only). (provider: intrinio)
-        sales_conditions : Optional[str]
-            Indicates any sales condition modifiers associated with the trade. (provider: intrinio)
-        quote_conditions : Optional[str]
-            Indicates any quote condition modifiers associated with the trade. (provider: intrinio)
-        market_center_code : Optional[str]
-            Market center character code. (provider: intrinio)
+            Number of shares outstanding. (provider: fmp)
+        eps : Optional[float]
+            Earnings per share. (provider: fmp)
+        pe : Optional[float]
+            Price earnings ratio. (provider: fmp)
+        earnings_announcement : Optional[Union[datetime, str]]
+            Upcoming earnings announcement date. (provider: fmp)
         is_darkpool : Optional[bool]
             Whether or not the current trade is from a darkpool. (provider: intrinio)
-        messages : Optional[List[str]]
-            Messages associated with the endpoint. (provider: intrinio)
-        security : Optional[Dict[str, Any]]
+        source : Optional[str]
+            Source of the Intrinio data. (provider: intrinio)
+        updated_on : Optional[datetime]
+            Date and Time when the data was last updated. (provider: intrinio)
+        security : Optional[openbb_intrinio.utils.references.IntrinioSecurity]
             Security details related to the quote. (provider: intrinio)
+        ma_50d : Optional[float]
+            50-day moving average price. (provider: yfinance)
+        ma_200d : Optional[float]
+            200-day moving average price. (provider: yfinance)
+        volume_average : Optional[float]
+            Average daily trading volume. (provider: yfinance)
+        volume_average_10d : Optional[float]
+            Average daily trading volume in the last 10 days. (provider: yfinance)
+        currency : Optional[str]
+            Currency of the price. (provider: yfinance)
 
         Example
         -------
@@ -533,17 +547,15 @@ class ROUTER_equity_price(Container):
         >>> obb.equity.price.quote(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/price/quote",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )

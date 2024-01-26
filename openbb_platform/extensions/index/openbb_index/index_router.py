@@ -10,12 +10,19 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 from pydantic import BaseModel
 
+from openbb_index.price.price_router import router as price_router
+
 router = Router(prefix="")
+router.include_router(price_router)
 
 # pylint: disable=unused-argument
 
 
-@router.command(model="MarketIndices")
+@router.command(
+    model="MarketIndices",
+    deprecated=True,
+    deprecation_message="This endpoint will be deprecated in the future releases. Use '/index/price/historical' instead.",
+)
 async def market(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -23,17 +30,6 @@ async def market(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Historical Market Indices."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(model="EuropeanIndices")
-async def european(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Historical European Indices."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -45,17 +41,6 @@ async def constituents(
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
     """Index Constituents. Constituents of an index."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(model="EuropeanIndexConstituents")
-async def european_constituents(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """European Index Constituents. Constituents of select european indices."""
     return await OBBject.from_query(Query(**locals()))
 
 

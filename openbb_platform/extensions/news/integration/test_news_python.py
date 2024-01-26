@@ -1,6 +1,7 @@
 """Test news extension."""
 
 import pytest
+from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
 
 
@@ -17,7 +18,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 # pylint: disable=redefined-outer-name
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -77,7 +78,7 @@ def test_news_world(params, obb):
     assert isinstance(result, OBBject)
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -140,6 +141,12 @@ def test_news_world(params, obb):
                 "source": "bloomberg.com",
             }
         ),
+        # (
+        #     {
+        #         "provider": "ultima",
+        #         "symbols": "AAPL,MSFT",
+        #     }
+        # ),
     ],
 )
 @pytest.mark.integration
@@ -152,8 +159,18 @@ def test_news_company(params, obb):
     assert len(result.results) > 0
 
 
-@pytest.mark.skip(reason="Not providers implement this yet.")
-@pytest.mark.parametrize("params", [])
+@pytest.mark.skip("openbb-ultima is not installed on the CI.")
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "ultima",
+                "sectors": "Real Estate",
+            }
+        ),
+    ],
+)
 @pytest.mark.integration
 def test_news_sector(params, obb):
     params = {p: v for p, v in params.items() if v}

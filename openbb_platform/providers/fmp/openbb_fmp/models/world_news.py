@@ -9,7 +9,7 @@ from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
-from openbb_fmp.utils.helpers import get_data_many
+from openbb_core.provider.utils.helpers import amake_requests
 from pydantic import Field, field_validator
 
 
@@ -25,7 +25,7 @@ class FMPWorldNewsData(WorldNewsData):
 
     __alias_dict__ = {"date": "publishedDate", "images": "image"}
 
-    site: str = Field(description="Site of the news.")
+    site: str = Field(description="News source.")
 
     @field_validator("date", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
@@ -47,28 +47,26 @@ class FMPWorldNewsFetcher(
         return FMPWorldNewsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPWorldNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
+        pages = math.ceil(query.limit / 20)
 
         base_url = "https://financialmodelingprep.com/api/v4"
 
-        pages = math.ceil(query.limit / 20)
-        data = []
+        urls = [
+            f"{base_url}/general_news?page={page}&apikey={api_key}"
+            for page in range(pages)
+        ]
 
-        for page in range(pages):
-            url = f"{base_url}/general_news?page={page}&apikey={api_key}"
-            response = get_data_many(url, **kwargs)
-            data.extend(response)
+        response = await amake_requests(urls, **kwargs)
+        data = sorted(response, key=lambda x: x["publishedDate"], reverse=True)
 
-        data = sorted(data, key=lambda x: x["publishedDate"], reverse=True)
-        data = data[: query.limit]
-
-        return data
+        return data[: query.limit]
 
     @staticmethod
     def transform_data(

@@ -1,7 +1,6 @@
 """OpenBB Platform."""
 # flake8: noqa
 
-import os
 from pathlib import Path
 from typing import List, Optional, Union
 
@@ -9,12 +8,9 @@ from openbb_core.app.static.app_factory import (
     BaseApp as _BaseApp,
     create_app as _create_app,
 )
-from openbb_core.app.static.build_utils import (
-    auto_build as _auto_build,
-    build as _build,
-)
+from openbb_core.app.static.package_builder import PackageBuilder as _PackageBuilder
 
-_this_dir = Path(os.path.dirname(os.path.realpath(__file__)))
+_this_dir = Path(__file__).parent.resolve()
 
 
 def build(
@@ -35,10 +31,10 @@ def build(
     verbose : bool, optional
         Enable/disable verbose mode
     """
-    _build(directory=_this_dir, modules=modules, lint=lint, verbose=verbose)
+    _PackageBuilder(_this_dir, lint, verbose).build(modules)
 
 
-_auto_build(directory=_this_dir)
+_PackageBuilder(_this_dir).auto_build()
 
 try:
     # pylint: disable=import-outside-toplevel

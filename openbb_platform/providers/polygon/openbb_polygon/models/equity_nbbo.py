@@ -154,7 +154,7 @@ class PolygonEquityNBBOFetcher(
         return PolygonEquityNBBOQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: PolygonEquityNBBOQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -175,20 +175,20 @@ class PolygonEquityNBBOFetcher(
         query_str = query_str.replace("_", ".")
 
         url = f"{base_url}/quotes/{query.symbol}?{query_str}&apiKey={api_key}"
-        response = get_data_one(url, **kwargs)
+        response = await get_data_one(url, **kwargs)
         next_url = response.get("next_url", None)
         data.extend(response["results"])
         records = len(data)
 
         while records < query.limit and next_url:
             url = f"{next_url}&apiKey={api_key}"
-            response = get_data_one(url, **kwargs)
+            response = await get_data_one(url, **kwargs)
             next_url = response.get("next_url", None)
             data.extend(response["results"])
             records += len(data)
 
         exchanges_url = f"{base_url}/reference/exchanges?asset_class=stocks&locale=us&apiKey={api_key}"
-        exchanges = get_data_one(exchanges_url, **kwargs)
+        exchanges = await get_data_one(exchanges_url, **kwargs)
         exchanges = exchanges["results"]
         exchange_id_map = {e["id"]: e for e in exchanges}
 

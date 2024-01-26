@@ -2,6 +2,7 @@ import base64
 
 import pytest
 import requests
+from extensions.tests.conftest import parametrize
 from openbb_core.env import Env
 from openbb_core.provider.utils.helpers import get_querystring
 
@@ -18,7 +19,7 @@ def headers():
 # pylint: disable=redefined-outer-name
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -57,7 +58,7 @@ def test_economy_calendar(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -95,7 +96,7 @@ def test_economy_cpi(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [({"provider": "fmp"})],
 )
@@ -110,7 +111,7 @@ def test_economy_risk_premium(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -145,7 +146,7 @@ def test_economy_gdp_forecast(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -178,7 +179,7 @@ def test_economy_gdp_nominal(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -211,7 +212,7 @@ def test_economy_gdp_real(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -251,7 +252,7 @@ def test_economy_balance_of_payments(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -309,7 +310,7 @@ def test_economy_fred_search(params, headers):
     assert result.status_code == 200
 
 
-@pytest.mark.parametrize(
+@parametrize(
     "params",
     [
         (
@@ -343,6 +344,31 @@ def test_economy_fred_series(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/fred_series?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "adjusted": True}),
+        (
+            {
+                "provider": "federal_reserve",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+                "adjusted": True,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_money_measures(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/money_measures?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

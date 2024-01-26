@@ -50,7 +50,7 @@ class IntrinioWorldNewsFetcher(
         return IntrinioWorldNewsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: IntrinioWorldNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -61,7 +61,7 @@ class IntrinioWorldNewsFetcher(
         base_url = "https://api-v2.intrinio.com"
         url = f"{base_url}/companies/news?page_size={query.limit}&api_key={api_key}"
 
-        return get_data_many(url, "news", **kwargs)
+        return await get_data_many(url, "news", **kwargs)
 
     @staticmethod
     def transform_data(

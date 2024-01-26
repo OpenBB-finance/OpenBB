@@ -37,12 +37,12 @@ class FMPCalendarEarningsData(CalendarEarningsData):
         "eps_consensus": "epsEstimated",
     }
 
-    actual_eps: Optional[float] = Field(
+    eps_actual: Optional[float] = Field(
         default=None,
         description="The actual earnings per share announced.",
         alias="eps",
     )
-    actual_revenue: Optional[float] = Field(
+    revenue_actual: Optional[float] = Field(
         default=None,
         description="The actual reported revenue.",
         alias="revenue",
@@ -105,7 +105,7 @@ class FMPCalendarEarningsFetcher(
         return FMPCalendarEarningsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPCalendarEarningsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -115,7 +115,7 @@ class FMPCalendarEarningsFetcher(
 
         url = create_url(3, "earning_calendar", api_key, query, [])
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

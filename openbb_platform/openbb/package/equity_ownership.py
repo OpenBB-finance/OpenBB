@@ -6,9 +6,8 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.decorators import validate
-from openbb_core.app.static.filters import filter_inputs
-from openbb_core.provider.abstract.data import Data
+from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
 
@@ -36,7 +35,7 @@ class ROUTER_equity_ownership(Container):
         ] = 500,
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Insider Trading. Information about insider trading.
 
         Parameters
@@ -94,7 +93,7 @@ class ROUTER_equity_ownership(Container):
             Transaction type of the insider trading.
         acquisition_or_disposition : Optional[str]
             Acquisition or disposition of the insider trading.
-        security_type : str
+        security_type : Optional[str]
             Security type of the insider trading.
         securities_owned : Optional[float]
             Number of securities owned in the insider trading.
@@ -141,20 +140,18 @@ class ROUTER_equity_ownership(Container):
         >>> obb.equity.ownership.insider_trading(symbol="AAPL", limit=500)
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "limit": limit,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/ownership/insider_trading",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -166,7 +163,7 @@ class ROUTER_equity_ownership(Container):
         ],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Institutional Ownership. Institutional ownership data.
 
         Parameters
@@ -297,19 +294,17 @@ class ROUTER_equity_ownership(Container):
         >>> obb.equity.ownership.institutional(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/ownership/institutional",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -329,7 +324,7 @@ class ROUTER_equity_ownership(Container):
         ] = 0,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Equity Ownership. Information about the company ownership.
 
         Parameters
@@ -446,21 +441,19 @@ class ROUTER_equity_ownership(Container):
         >>> obb.equity.ownership.major_holders(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-                "date": date,
-                "page": page,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/ownership/major_holders",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "date": date,
+                    "page": page,
+                },
+                extra_params=kwargs,
+            )
         )
 
     @validate
@@ -472,7 +465,7 @@ class ROUTER_equity_ownership(Container):
         ],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
-    ) -> OBBject[List[Data]]:
+    ) -> OBBject:
         """Share Statistics. Share statistics for a given company.
 
         Parameters
@@ -523,17 +516,15 @@ class ROUTER_equity_ownership(Container):
         >>> obb.equity.ownership.share_statistics(symbol="AAPL")
         """  # noqa: E501
 
-        inputs = filter_inputs(
-            provider_choices={
-                "provider": provider,
-            },
-            standard_params={
-                "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
-            },
-            extra_params=kwargs,
-        )
-
         return self._run(
             "/equity/ownership/share_statistics",
-            **inputs,
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                },
+                extra_params=kwargs,
+            )
         )

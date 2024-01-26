@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "openbb-federal-reserve"
+version = "1.1.1"
+description = "US Federal Reserve Data Extension for OpenBB"
+authors = ["OpenBB <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_federal_reserve" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+openbb-core = "^1.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+federal_reserve = "openbb_federal_reserve:federal_reserve_provider"

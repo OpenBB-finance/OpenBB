@@ -48,7 +48,7 @@ class FMPShareStatisticsFetcher(
         return FMPShareStatisticsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: FMPShareStatisticsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -58,7 +58,7 @@ class FMPShareStatisticsFetcher(
 
         url = create_url(4, "shares_float", api_key, query)
 
-        return get_data_many(url, **kwargs)
+        return await get_data_many(url, **kwargs)
 
     @staticmethod
     def transform_data(

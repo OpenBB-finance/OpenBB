@@ -353,7 +353,7 @@ class Backend(PyWry):
     def get_kwargs(self, title: Optional[str] = "") -> dict:
         """Get the kwargs for the backend."""
         return {
-            "title": f"OpenBB - {title}",
+            "title": "OpenBB Platform" + (f" - {title}" if title else ""),
             "icon": self.get_window_icon(),
             "download_path": str(self.charting_settings.user_exports_directory),
         }

@@ -11,7 +11,12 @@ from openbb_core.provider.standard_models.fred_series import (
     SeriesQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_core.provider.utils.helpers import async_make_request, get_querystring
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    ClientSession,
+    amake_requests,
+    get_querystring,
+)
 from pydantic import Field
 
 _warn = warnings.warn
@@ -111,7 +116,7 @@ class FredSeriesFetcher(
         return FredSeriesQueryParams(**params)
 
     @staticmethod
-    async def extract_data(
+    async def aextract_data(
         query: FredSeriesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -119,66 +124,67 @@ class FredSeriesFetcher(
         """Extract data."""
 
         api_key = credentials.get("fred_api_key") if credentials else ""
-        base_url = "https://api.stlouisfed.org/fred/series/observations?"
+
+        base_url = "https://api.stlouisfed.org/fred/series/observations"
+        metadata_url = "https://api.stlouisfed.org/fred/series"
+
         querystring = get_querystring(query.model_dump(), ["series_id"])
-        results = {}
-        metadata = {}
         series_ids = query.symbol.split(",") if "," in query.symbol else [query.symbol]
 
         urls = [
-            f"{base_url}series_id={series_id}&{querystring}&file_type=json&api_key={api_key}"
-            for series_id in series_ids
-        ]
-        metadata_urls = [
-            f"https://api.stlouisfed.org/fred/series?series_id={series_id}&file_type=json&api_key={api_key}"
+            f"{base_url}?series_id={series_id}&{querystring}&file_type=json&api_key={api_key}"
             for series_id in series_ids
         ]
 
-        async def async_get_fred_data(url, metadata_url, series_id, **kwargs):
-            response = await async_make_request(url, timeout=5, **kwargs)
-            metadata_response = await async_make_request(
-                metadata_url, timeout=5, **kwargs
+        async def callback(response: ClientResponse, session: ClientSession) -> Dict:
+            observations_response = await response.json()
+            series_id = response.url.query.get("series_id")
+
+            metadata_response = await session.get_json(
+                f"{metadata_url}?series_id={series_id}&file_type=json&api_key={api_key}",
+                timeout=5,
             )
-            _metadata = metadata_response.get("seriess")[0]
-            data = response.get("observations")
+            _metadata = metadata_response.get("seriess", [{}])[0]
+
+            observations = observations_response.get("observations")
             try:
-                [d.pop("realtime_start") for d in data]
-                [d.pop("realtime_end") for d in data]
+                for d in observations:
+                    d.pop("realtime_start")
+                    d.pop("realtime_end")
+
                 data = (
-                    pd.DataFrame(data)
+                    pd.DataFrame(observations)
                     .replace(".", None)
                     .set_index("date")["value"]
                     .astype(float)
                     .dropna()
                     .to_dict()
                 )
-            except KeyError:
-                data = {}
-            except TypeError:
-                data = {}
-            if data != {}:
-                results.update({series_id: data})
-                metadata.update(
-                    {
-                        series_id: {
-                            "title": _metadata.get("title"),
-                            "units": _metadata.get("units"),
-                            "frequency": _metadata.get("frequency"),
-                            "seasonal_adjustment": _metadata.get("seasonal_adjustment"),
-                            "notes": _metadata.get("notes"),
-                        }
-                    }
-                )
-            return results
+            except (KeyError, TypeError):
+                return {}
 
-        for i in range(0, len(series_ids)):
-            await async_get_fred_data(
-                urls[i], metadata_urls[i], series_ids[i], **kwargs
-            )
+            return {
+                series_id: {
+                    "title": _metadata.get("title"),
+                    "units": _metadata.get("units"),
+                    "frequency": _metadata.get("frequency"),
+                    "seasonal_adjustment": _metadata.get("seasonal_adjustment"),
+                    "notes": _metadata.get("notes"),
+                    "data": data,
+                }
+            }
+
+        results = await amake_requests(urls, callback, timeout=5, **kwargs)
+
+        metadata, data = {}, {}
+        for item in results:
+            for series_id, result in item.items():
+                data[series_id] = result.pop("data")
+                metadata[series_id] = result
 
         _warn(json.dumps(metadata))
 
-        return results
+        return data
 
     @staticmethod
     def transform_data(

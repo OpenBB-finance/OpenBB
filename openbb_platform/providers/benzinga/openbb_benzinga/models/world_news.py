@@ -10,10 +10,8 @@ from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import amake_requests, get_querystring
 from pydantic import Field, field_validator
-
-from ..utils.helpers import get_data
 
 
 class BenzingaWorldNewsQueryParams(WorldNewsQueryParams):
@@ -83,7 +81,7 @@ class BenzingaWorldNewsData(WorldNewsData):
 
     __alias_dict__ = {"date": "created", "text": "body", "images": "image"}
 
-    id: str = Field(description="ID of the news.")
+    id: str = Field(description="Article ID.")
     author: Optional[str] = Field(default=None, description="Author of the news.")
     teaser: Optional[str] = Field(description="Teaser of the news.", default=None)
     channels: Optional[str] = Field(
@@ -134,7 +132,7 @@ class BenzingaWorldNewsFetcher(
         return BenzingaWorldNewsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
+    async def aextract_data(
         query: BenzingaWorldNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -147,16 +145,15 @@ class BenzingaWorldNewsFetcher(
         querystring = get_querystring(query.model_dump(by_alias=True), ["order"])
 
         pages = math.ceil(query.limit / 100)
-        data = []
 
-        for page in range(pages):
-            url = f"{base_url}?{querystring}&page={page}&token={token}"
-            response = get_data(url, **kwargs)
-            data.extend(response)
+        urls = [
+            f"{base_url}?{querystring}&page={page}&token={token}"
+            for page in range(pages)
+        ]
 
-        data = data[: query.limit]
+        data = await amake_requests(urls, **kwargs)
 
-        return data
+        return data[: query.limit]
 
     @staticmethod
     def transform_data(

@@ -45,6 +45,7 @@ for topfolder in [
     "bot",
     "terminal/usage",
     "terminal/menus",
+    "excel",
 ]:
     # Looping through each folder in the fold directory
     for folder in (Path(__file__).parent / topfolder).iterdir():
