@@ -17,6 +17,29 @@ def test_docstring_generator_init(example_generator):
     assert example_generator
 
 
+TEST_POOL = {
+    "crypto": {"symbol": "CRYPTO_SYMBOL"},
+    "crypto.search": {"symbol": "CRYPTO_SEARCH_SYMBOL"},
+    "crypto.price.historical": {"symbol": "CRYPTO_HISTORICAL_PRICE_SYMBOL"},
+}
+
+
+@pytest.mark.parametrize(
+    "route, param, expected",
+    [
+        ("", "", "VALUE_NOT_FOUND"),
+        ("random_route", "", "VALUE_NOT_FOUND"),
+        ("crypto", "symbol", "CRYPTO_SYMBOL"),
+        ("crypto.search", "symbol", "CRYPTO_SEARCH_SYMBOL"),
+        ("crypto.price.historical", "symbol", "CRYPTO_HISTORICAL_PRICE_SYMBOL"),
+        ("crypto.price.historical", "random_param", "VALUE_NOT_FOUND"),
+    ],
+)
+def test_get_value_from_pool(example_generator, route, param, expected):
+    """Test get value from pool."""
+    assert example_generator._get_value_from_pool(TEST_POOL, route, param) == expected
+
+
 @pytest.mark.parametrize(
     "route, model, expected",
     [

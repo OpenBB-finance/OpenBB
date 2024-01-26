@@ -24,7 +24,7 @@ class ExampleGenerator:
     """Generate examples for the API."""
 
     @staticmethod
-    def _get_value_from_pool(pool, key, param):
+    def _get_value_from_pool(pool: dict, route: str, param: str) -> str:
         """Get the value from the pool.
 
         The example parameters can be defined for:
@@ -37,11 +37,11 @@ class ExampleGenerator:
         - sub-router
         - router
         """
-        keys = key.split(".")
-        for i in range(len(keys), 0, -1):
-            partial_key = ".".join(keys[:i])
-            if partial_key in pool and param in pool[partial_key]:
-                return pool[partial_key][param]
+        parts = route.split(".")
+        for i in range(len(parts), 0, -1):
+            partial_route = ".".join(parts[:i])
+            if partial_route in pool and param in pool[partial_route]:
+                return pool[partial_route][param]
         return "VALUE_NOT_FOUND"
 
     @classmethod
