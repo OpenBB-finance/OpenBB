@@ -1,5 +1,7 @@
 """OpenBB Platform example generator."""
 
+import json
+from pathlib import Path
 from typing import (
     Any,
     Dict,
@@ -8,76 +10,14 @@ from typing import (
 from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
 
+from openbb_core.app.constants import ASSETS_DIRECTORY
 from openbb_core.app.provider_interface import ProviderInterface
 
-# The example parameters can be defined for:
-#
-# route:
-#   "crypto.historical.price": {
-#       "symbol": "CRYPTO_HISTORICAL_PRICE_SYMBOL",
-#   }
-#
-# router:
-#   "crypto": {
-#       "symbol": "CRYPTO_SYMBOL",
-#   }
-#
-#   "crypto.historical": {
-#       "symbol": "CRYPTO_HISTORICAL_SYMBOL",
-#   }
-#
-# The route has priority over the router.
-
-POOL = {
-    "crypto": {
-        "symbol": "BTCUSD",
-    },
-    "currency": {
-        "symbol": "EURUSD",
-    },
-    "derivatives": {
-        "symbol": "AAPL",
-    },
-    "economy": {
-        "country": "portugal",
-        "countries": ["portugal", "spain"],
-    },
-    "economy.fred_series": {
-        "symbol": "GFDGDPA188S",
-    },
-    "equity": {
-        "symbol": "AAPL",
-        "symbols": "AAPL,MSFT",
-        "query": "AAPL",
-    },
-    "equity.fundamental.historical_attributes": {
-        "tag": "ebitda",
-    },
-    "equity.fundamental.latest_attributes": {
-        "tag": "ceo",
-    },
-    "equity.fundamental.transcript": {
-        "year": 2020,
-    },
-    "etf": {
-        "symbol": "SPY",
-        "query": "Vanguard",
-    },
-    "futures": {
-        "symbol": "ES",
-    },
-    "index": {
-        "symbol": "SPX",
-        "index": "^IBEX",
-    },
-    "news": {
-        "symbols": "AAPL,MSFT",
-    },
-    "regulators": {
-        "symbol": "AAPL",
-        "query": "AAPL",
-    },
-}
+try:
+    with Path(ASSETS_DIRECTORY, "parameter_pool.json").open() as f:
+        PARAMETER_POOL = json.load(f)
+except Exception:
+    PARAMETER_POOL = {}
 
 
 class ExampleGenerator:
@@ -85,6 +25,18 @@ class ExampleGenerator:
 
     @staticmethod
     def _get_value_from_pool(pool, key, param):
+        """Get the value from the pool.
+
+        The example parameters can be defined for:
+        - route: "crypto.historical.price": {"symbol": "CRYPTO_HISTORICAL_PRICE_SYMBOL"}
+        - sub-router: "crypto.historical": {"symbol": "CRYPTO_HISTORICAL_SYMBOL"}
+        - router: "crypto": {"symbol": "CRYPTO_SYMBOL"}
+
+        The search for the 'key' is done in the following order:
+        - route
+        - sub-router
+        - router
+        """
         keys = key.split(".")
         for i in range(len(keys), 0, -1):
             partial_key = ".".join(keys[:i])
@@ -116,7 +68,7 @@ class ExampleGenerator:
                 if v.default is not PydanticUndefined and v.default != "":
                     eg_params[p] = v.default
                 else:
-                    eg_params[p] = cls._get_value_from_pool(POOL, route, p)
+                    eg_params[p] = cls._get_value_from_pool(PARAMETER_POOL, route, p)
 
         example = f"obb.{route}("
         for n, v in eg_params.items():
