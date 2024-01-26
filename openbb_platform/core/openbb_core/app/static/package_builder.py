@@ -304,6 +304,8 @@ class ImportDefinition:
         for child_path in child_path_list:
             route = PathHandler.get_route(path=child_path, route_map=route_map)
             if route:
+                if route.deprecated:
+                    hint_type_list.append(type(route.summary.metadata))
                 function_hint_type_list = cls.get_function_hint_type_list(func=route.endpoint)  # type: ignore
                 hint_type_list.extend(function_hint_type_list)
 
@@ -333,10 +335,11 @@ class ImportDefinition:
         code += "\nimport typing"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
         code += "\nfrom annotated_types import Ge, Le, Gt, Lt"
+        code += "\nfrom warnings import warn, simplefilter"
         if sys.version_info < (3, 9):
             code += "\nimport typing_extensions"
         else:
-            code += "\nfrom typing_extensions import Annotated"
+            code += "\nfrom typing_extensions import Annotated, deprecated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_core.app.static.utils.decorators import validate\n"
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
@@ -348,6 +351,15 @@ class ImportDefinition:
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
         module_list.sort()
+
+        specific_imports = {
+            hint_type.__module__: hint_type.__name__
+            for hint_type in hint_type_list
+            if getattr(hint_type, "__name__", None) is not None
+        }
+        code += "\n"
+        for module, name in specific_imports.items():
+            code += f"from {module} import {name}\n"
 
         code += "\n"
         for module in module_list:
@@ -636,6 +648,7 @@ class MethodDefinition:
         func_name: str,
         formatted_params: OrderedDict[str, Parameter],
         return_type: type,
+        path: str,
         model_name: Optional[str] = None,
     ) -> str:
         """Build the command method signature."""
@@ -650,7 +663,20 @@ class MethodDefinition:
             if "pandas.DataFrame" in func_params
             else ""
         )
-        code = f"\n    @validate{args}"
+
+        msg = ""
+        if MethodDefinition.is_deprecated_function(path):
+            deprecation_message = MethodDefinition.get_deprecation_message(path)
+            deprecation_type_class = type(
+                deprecation_message.metadata  # type: ignore
+            ).__name__
+
+            msg = "\n    @deprecated("
+            msg += f'\n        "{deprecation_message}",'
+            msg += f"\n        category={deprecation_type_class},"
+            msg += "\n    )"
+
+        code = f"\n    @validate{args}{msg}"
         code += f"\n    def {func_name}("
         code += f"\n        self,\n        {func_params}\n    ) -> {func_returns}:\n"
 
@@ -693,7 +719,7 @@ class MethodDefinition:
 
         if MethodDefinition.is_deprecated_function(path):
             deprecation_message = MethodDefinition.get_deprecation_message(path)
-            code += "        from warnings import warn, simplefilter; simplefilter('always', DeprecationWarning)\n"
+            code += "        simplefilter('always', DeprecationWarning)\n"
             code += f"""        warn("{deprecation_message}", category=DeprecationWarning, stacklevel=2)\n\n"""
 
         code += "        return self._run(\n"
@@ -739,6 +765,7 @@ class MethodDefinition:
             func_name=func_name,
             formatted_params=formatted_params,
             return_type=sig.return_annotation,
+            path=path,
             model_name=model_name,
         )
         code += cls.build_command_method_doc(
