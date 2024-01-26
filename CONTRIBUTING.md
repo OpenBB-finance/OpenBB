@@ -1381,7 +1381,7 @@ The way to interpret this file is by following the path to a data source, e.g.
 - `stocks/candle` does not rely on any data source. This means that it relies on data that has been loaded before.
 - `stocks/load` relies on `YahooFinance`, `AlphaVantage`, `Polygon` or `EODHD`.
   - **The order is important as the first data source is the one utilized by default.**
-- `stoks/options/unu` relies on `FDScanner`.
+- `stocks/options/unu` relies on `FDScanner`.
 - `stocks/options/exp` relies on `YahooFinance` by default but `Tradier` and `Nasdaq` sources are allowed.
 
 > Note: The default data sources can be changed directly in the [OpenBB Hub](https://my.openbb.co/) by the user and automatically synchronized with the terminal on login.
