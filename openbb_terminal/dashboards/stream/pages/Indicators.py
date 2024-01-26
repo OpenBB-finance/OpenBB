@@ -382,9 +382,9 @@ class Handler:
 
         for ticker in tickers:
             if ticker not in st.session_state["indicators_dfs"]:
-                st.session_state["indicators_dfs"][
-                    ticker
-                ] = await self.load_ticker_data(ticker, interval, start, end, source)
+                st.session_state["indicators_dfs"][ticker] = (
+                    await self.load_ticker_data(ticker, interval, start, end, source)
+                )
                 if st.session_state["indicators_dfs"][ticker].empty:
                     indicators_dfs = st.session_state["indicators_dfs"]
                     del indicators_dfs[ticker]

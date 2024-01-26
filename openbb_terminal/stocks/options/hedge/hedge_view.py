@@ -3,6 +3,7 @@
 __docformat__ = "numpy"
 
 import logging
+from typing import Optional
 
 import pandas as pd
 
@@ -63,23 +64,7 @@ def add_and_show_greeks(
 def show_calculated_hedge(
     portfolio_option_amount: float = 100,
     side: str = "Call",
-    greeks: dict = {
-        "Portfolio": {
-            "Delta": 1,
-            "Gamma": 9.1268e-05,
-            "Vega": 5.4661,
-        },
-        "Option A": {
-            "Delta": 1,
-            "Gamma": 9.1268e-05,
-            "Vega": 5.4661,
-        },
-        "Option B": {
-            "Delta": 1,
-            "Gamma": 9.1268e-05,
-            "Vega": 5.4661,
-        },
-    },
+    greeks: Optional[dict] = None,
     sign: int = 1,
 ):
     """Determine the hedge position and the weights within each option and
@@ -101,6 +86,24 @@ def show_calculated_hedge(
     -------
     A table with the neutral portfolio weights.
     """
+    if greeks is None:
+        greeks = {
+            "Portfolio": {
+                "Delta": 1,
+                "Gamma": 9.1268e-05,
+                "Vega": 5.4661,
+            },
+            "Option A": {
+                "Delta": 1,
+                "Gamma": 9.1268e-05,
+                "Vega": 5.4661,
+            },
+            "Option B": {
+                "Delta": 1,
+                "Gamma": 9.1268e-05,
+                "Vega": 5.4661,
+            },
+        }
     # Calculate hedge position
     (
         weight_option_a,
