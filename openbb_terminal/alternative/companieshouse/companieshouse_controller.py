@@ -307,7 +307,6 @@ class CompaniesHouseController(BaseController):
                     self.companyNo,
                     self.companyName,
                     ns_parser.transactionID,
-                    export=ns_parser.export,
                 )
         else:
             console.print("Must load a company prior to using this command")
