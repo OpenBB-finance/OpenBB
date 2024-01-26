@@ -138,7 +138,7 @@ class ROUTER_index(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.index.constituents(index="TEST_STRING")
+        >>> obb.index.constituents(index="^IBEX")
         """  # noqa: E501
 
         return self._run(
