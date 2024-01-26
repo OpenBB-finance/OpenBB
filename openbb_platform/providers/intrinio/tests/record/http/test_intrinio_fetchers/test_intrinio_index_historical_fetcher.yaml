@@ -3,36 +3,36 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://api-v2.intrinio.com/indices/stock_market/$DJI/historical_data/level?api_key=MOCK_API_KEY&end_date=2023-06-06&page_size=1000&sort_order=desc&start_date=2023-01-01
+    uri: https://api-v2.intrinio.com/indices/stock_market/$DJI/historical_data/level?api_key=MOCK_API_KEY&end_date=2023-06-06&page_size=10000&sort_order=asc&start_date=2023-01-01
   response:
     body:
       string: !!binary |
-        H4sIAGQlZWUAA3RYTW8bRwz9K4LQoz0YkvPpm4FckkMubS8tCmFjbRoB8iqVVm4cI/+93KRFlzPP
-        gA6W9oEzfOQj3/pl++lwmU/nw8Nw3O2Hedje/f6y1T/G7d2WPcutT/rZ3myfhuNVfxSJWRyXbzc9
-        LBpYYlcSgvEalhWWIYzWMJ/IxdzB4q2sYVx9cQxh3kQLemifQrzl+j9suh6PCGLI8FWcBARbk8E5
-        BZciggUDq9VVRjAxh8boIiGYoZZLchFlSXUNC5xcEgQrpp4SXUWHUrbRvMuoAmR5I3aEeCPTRBKK
-        65tDUSZR8d4lRBuRhVVMG3mbKDlBfPhq+5tcQdG8oS2RZlARzCSacnCCauXXDSLE2WVEmzcNEig4
-        hjDDWyrBRZjpmrfgI7m+ouGWi0HV4qivlcJMfxTtNgxLtlbKLjzUDhnxrvQZBKsrKTm6ng5Fmf4o
-        OjwqvJrpj6yyAt0WGlmVmp3v+yM0sqoZqi80sqolO+r7Q2E2Ub1bQLSRmFpxRU0ZGl2loAMEoajt
-        ogyDWVkt0wjR5leJwpkbmgUUSnSMDrSSCkWHPDzQUKZkIOWFRlJJG5J6MsQuIB3h4RXYmgwusTrf
-        V13MAtJglMH4E6s8lqpqR2ca5XEQdr5PVJodxJLRUBC7g5h8fOXQdQuxV4FSrwKx0uOYPE7UsMYh
-        oIUmVitUdDJXCEs2mjYkysCsICpaUeA8xCqPKaIRI1Z4VKiitSdWK1R1UyUEMyuIOQZkscSuIHUV
-        BV7NZ9uSOjpgMCs+3Y4BRjNykepdRazZDeS9YHLNBuK07Nr+UG6EkDSFPhg3OihFtdePD250UCgh
-        L8aNF6MoyBZx48V8iK8casYH6WCOELbqDzgkuVkYy54FI54bH5ZqcqUXAVsRBOLiPIStOQteqQX2
-        m5v1w0pG7UcMNxujpFeiWSOW1DSXXu7cGLEaKtrHbGUQKL7Cm5VBqeQ86g4rg6pVwIey4W1pItTf
-        jRGrjAwK2R2kVdBD+2jUvAQtywW0JDWGreaC1gY1hm2hN/SZUmPYchCkZGoMWxbBmVrxpUUuEGYy
-        lcX+oUytY/PLekHRrGNjlQy8W+PYyCNlkREglDI1chF1KAlRa9xaIBUfGLnU2LWqr++gJakRX/Zq
-        ZACqeQlaDApK0qolqQuAGRjHxlVhsNWsY2OdC+AVkxrtkSQnEMZNAf642R6m/fhle/eyPewVqd92
-        /PXp/dd7RV6eHz+cjvrrT2/evdXv0/C4RHtz+nvz7jSNl83baX+9zOfDcNzcP43n4c9RUQ+naT5M
-        4zQr9P3pPH/a3D+Oy79Zvj+7TvP5WZ/8Oh3mcb/5edYbXjanjyvQ9fNy7d3H8/jXdZweFvR+OByf
-        9dFxuMy7H8/3/+VFi9J+8XS3fLTC3v+myNOHy3h+GubDadpd5uE8f4fTv/AGME4mWth+02THL/Pu
-        85LSD6r+AQAA//8DAAVlFaAwEgAA
+        H4sIANIhsGUAA4SYT28bNxDFv4qw6NEhyOEM//hmIJfkkEvbS4tCUKxNI0BepdLKjWPku3c2Btod
+        8hm9WdIDyRm+38zQz8Pnw2U+nQ/3u+N2v5t3w+3vz4P+MQ63A3mKb3x442m4GR53x6t+OV2Px+83
+        vST+J4kxxORiRjJeyyhVl6FMVjKq0TtfkCytV0sqSwHJ6lomIbskQBb8WpY9O7RYCGtVzdF5KFul
+        LHIo1VUUaFinjaMnHEFI/3sBIZtzBe8KDLKYC6jJ1YRkJmWe2QmSkUlZzOK4IpkxR6L6ymrGHDlG
+        fDYSI+PoCiOZMUfl6hillmzecsFWi9Yc6iGPIo1rd7Avyfn+bKRKI6uEIiXDncpEEwJXM+mtlJAl
+        qaGl1OA8IVk2zpXkUh+pykqbXrypMVKq1ZU+vdSwV7QuUI8LNbgQi6sRydjewmuriYmU9Op7ZMjA
+        t4SQEFnUAFjolbytkYEoq8SUmLDgAlciy6ggS1IDX1hMhC7KwEclaGFA7jC4UNHU4k3X7qCkJuov
+        IFoMKKWASI4Wg+h9dAJXM4HG6lHJjQ0GHINjuKkNVCPgHtFoMaBci4OLrSkgEnYFLWYoCNVXl9Bq
+        hoJQQnUBysyNBhF4NANBKJlxcg0ERJyc9BBEC0EoeqO1xz3avqGr6aZQZvwhSfs7Uq3tQV6ngNAb
+        PFoOKHhxhCKwHFDMTvoSExsOOBJqG7HhQMvkK5safyzdBQVqepBaUtlDRzM9SFfTOabfkxtckg+v
+        yExTZp1QYh8o24ktciGX+/LBLXxFL6EvH2zgg0WSm44h2mkFbWjHtVTYZbShGddiWuyNVKb9eC3M
+        oMSzBS8WPRr3SHE7sZXsAsqsndhq1r7S3zo3E1upGfVjbia2rGdLKG22BRVf0IDCzcRWMiox3Axs
+        ooAWFIEd2KIasqC0UddnAzxaMXelhRnIpJ3EJIBGJU0HWlwEioI0SHFQ2vt8SINUoOwylJm0JeUY
+        kCfNIJZCQaaU9hG09NreH9Jipd0xokgtVlE7lcDVyMo8cpvYHrSUBVD+pJnDfCDU9qTBismjJ6Y0
+        WEkUNBZJgxUTpE+aWYyWaoTuys5iXlsyTJvtQVmHZjCLieWKcmL0rpWGK1+jiyhv6x4Ea640jyDP
+        WuRRlKYBUdXiAcbvZNGLXh0JJo/UsJeTbtq7IzW0iMrAiJWaBiT6fKfy/Y+b4TDtx6/D7fNw2Kta
+        P23p2+OHb3eqvjw9fDwd9duf3r5/p5+n3cOy4tvT35v3p2m8bN5N++tlPh92x83d43je/Tmq6v40
+        zYdpnGaVfjid58+bu4dx+TfLj9+u03x+0l9+nQ7zuN/8POspL5vTp5Xo+mU5+vbTefzrOk73i3q/
+        Oxyf9Kfj7jJvX37fv8TGL8/sX3y4DeF2eYx5/5sqTx8v4/lxNx9O0/Yy787zD3ngf1/la8E4mdVo
+        +K7Bjl/n7ZclpBdT/AMAAP//AwCMqInFMBIAAA==
     headers:
       Connection:
       - keep-alive
@@ -41,7 +41,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 27 Nov 2023 23:25:24 GMT
+      - Tue, 23 Jan 2024 20:30:10 GMT
       Transfer-Encoding:
       - chunked
       Vary:
