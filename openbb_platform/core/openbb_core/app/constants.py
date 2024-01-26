@@ -1,4 +1,5 @@
 """Constants for the OpenBB Platform."""
+
 from pathlib import Path
 
 ASSETS_DIRECTORY = Path(__file__).parent / "assets"

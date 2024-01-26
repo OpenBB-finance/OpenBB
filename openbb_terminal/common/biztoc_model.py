@@ -1,4 +1,5 @@
 """ BizToc Model """
+
 __docformat__ = "numpy"
 
 import os

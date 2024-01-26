@@ -1,4 +1,5 @@
 """Console module."""
+
 from openbb_core.env import Env
 
 

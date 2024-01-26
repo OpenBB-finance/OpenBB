@@ -1,4 +1,5 @@
 """Test crypto API endpoints."""
+
 import base64
 
 import pytest

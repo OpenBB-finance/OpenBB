@@ -1,4 +1,5 @@
 """Messari model"""
+
 __docformat__ = "numpy"
 # flake8: noqa
 # pylint: disable=C0301,C0302
@@ -743,11 +744,13 @@ def get_fundraising(
                     "Rewards/Airdrops [%]",
                 ],
                 "Value": [
-                    launch_data["initial_distribution"]["genesis_block_date"].split(
-                        "T"
-                    )[0]
-                    if launch_data["initial_distribution"]["genesis_block_date"]
-                    else "-",
+                    (
+                        launch_data["initial_distribution"]["genesis_block_date"].split(
+                            "T"
+                        )[0]
+                        if launch_data["initial_distribution"]["genesis_block_date"]
+                        else "-"
+                    ),
                     launch_type,
                     lambda_long_number_format(
                         launch_data["initial_distribution"]["initial_supply"]

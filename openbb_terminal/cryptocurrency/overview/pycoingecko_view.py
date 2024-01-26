@@ -1,4 +1,5 @@
 """CoinGecko view"""
+
 __docformat__ = "numpy"
 
 import logging
@@ -157,9 +158,7 @@ def display_crypto_heatmap(
     )
     fig.add_trace(treemap["data"][0], row=1, col=1)
 
-    fig.data[
-        0
-    ].texttemplate = (
+    fig.data[0].texttemplate = (
         "<br> <br> <b>%{label}<br>    %{customdata[0]:.2f}% <br> <br> <br><br><b>"
     )
     fig.data[0].insidetextfont = dict(

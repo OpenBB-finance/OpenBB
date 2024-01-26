@@ -1,4 +1,5 @@
 """ Government Controller Module """
+
 __docformat__ = "numpy"
 
 import argparse
@@ -131,9 +132,9 @@ class GovController(StockBaseController):
                 limit=ns_parser.past_transactions_days,
                 representative=ns_parser.representative,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -190,9 +191,9 @@ class GovController(StockBaseController):
                 limit=ns_parser.limit,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -249,9 +250,9 @@ class GovController(StockBaseController):
                 limit=ns_parser.limit,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -300,9 +301,9 @@ class GovController(StockBaseController):
                 limit=ns_parser.limit,
                 sum_contracts=ns_parser.sum,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -352,9 +353,9 @@ class GovController(StockBaseController):
                 limit=ns_parser.limit,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -436,9 +437,9 @@ class GovController(StockBaseController):
                     past_transactions_months=ns_parser.past_transactions_months,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("No ticker loaded. Use `load <ticker>` first.\n")
@@ -480,9 +481,9 @@ class GovController(StockBaseController):
                     past_transaction_days=ns_parser.past_transaction_days,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("No ticker loaded. Use `load <ticker>` first.\n")

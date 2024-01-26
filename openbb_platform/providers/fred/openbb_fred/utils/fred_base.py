@@ -1,4 +1,5 @@
 """Base class for Fred API."""
+
 from datetime import date
 from typing import Any, Optional
 from urllib.parse import urlencode

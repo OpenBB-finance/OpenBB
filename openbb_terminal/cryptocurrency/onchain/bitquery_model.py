@@ -1,4 +1,5 @@
 """BitQuery model"""
+
 __docformat__ = "numpy"
 
 import datetime

@@ -1,4 +1,5 @@
 """Command runner module."""
+
 import warnings
 from contextlib import nullcontext
 from copy import deepcopy
@@ -337,6 +338,14 @@ class StaticCommandRunner:
                     route=route,
                     **kwargs,
                 )
+
+            if obbject.results:
+                if isinstance(obbject.results, list):
+                    fields = obbject.results[0].model_dump().keys()
+                else:
+                    fields = obbject.results.model_dump().keys()
+
+                obbject.extra["field_order"] = list(fields)
 
         except Exception as e:
             raise OpenBBError(e) from e

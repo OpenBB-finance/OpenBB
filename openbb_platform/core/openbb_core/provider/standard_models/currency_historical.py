@@ -1,6 +1,5 @@
 """Currency Historical Price Standard Model."""
 
-
 from datetime import (
     date as dateType,
     datetime,

@@ -1,4 +1,5 @@
 """Avanza Model"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=E1101

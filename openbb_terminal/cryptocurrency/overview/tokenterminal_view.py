@@ -1,4 +1,5 @@
 """Token Terminal View"""
+
 import logging
 import os
 

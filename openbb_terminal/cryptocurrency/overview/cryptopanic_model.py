@@ -1,4 +1,5 @@
 """Cryptopanic model"""
+
 __docformat__ = "numpy"
 
 import logging
@@ -231,9 +232,9 @@ def get_news(
         try:
             df = pd.DataFrame(results)
             df["title"] = df["title"].apply(
-                lambda x: "\n".join(textwrap.wrap(x, width=66))
-                if isinstance(x, str)
-                else x
+                lambda x: (
+                    "\n".join(textwrap.wrap(x, width=66)) if isinstance(x, str) else x
+                )
             )
             df["published_at"] = pd.to_datetime(df["published_at"]).dt.date
             df = df.sort_values(by=sortby, ascending=ascend)

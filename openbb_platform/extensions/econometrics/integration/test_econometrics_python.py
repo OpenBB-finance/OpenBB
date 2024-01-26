@@ -1,4 +1,5 @@
 """Test econometrics extension."""
+
 import random
 from typing import Literal
 
