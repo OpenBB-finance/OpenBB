@@ -1,4 +1,5 @@
 """Trading Hours Controller."""
+
 __docformat__ = "numpy"
 
 import argparse
@@ -32,7 +33,6 @@ def end_date():
 
 
 class RealEstateController(BaseController):
-
     """Real Estate Controller class."""
 
     CHOICES_COMMANDS = ["sales", "townsales", "regionstats"]

@@ -1,4 +1,5 @@
 """Auth service."""
+
 import logging
 from importlib import import_module
 from types import ModuleType

@@ -1,4 +1,5 @@
 """ Futures Controller """
+
 __docformat__ = "numpy"
 
 # pylint:disable=too-many-lines
@@ -137,9 +138,9 @@ class FuturesController(BaseController):
                 exchange=ns_parser.exchange,
                 description=" ".join(ns_parser.description),
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -201,9 +202,9 @@ class FuturesController(BaseController):
                     end_date=ns_parser.end.strftime("%Y-%m-%d"),
                     raw=ns_parser.raw,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             if ns_parser.source == "DataBento":
                 databento_view.display_historical(
@@ -212,9 +213,9 @@ class FuturesController(BaseController):
                     end_date=ns_parser.end.strftime("%Y-%m-%d"),
                     raw=ns_parser.raw,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
     @log_start_end(log=logger)
@@ -262,16 +263,16 @@ class FuturesController(BaseController):
                     date=ns_parser.date.strftime("%Y-%m-%d"),
                     raw=ns_parser.raw,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 yfinance_view.display_curve(
                     symbol=ns_parser.ticker.upper(),
                     raw=ns_parser.raw,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )

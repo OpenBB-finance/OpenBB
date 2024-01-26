@@ -1,4 +1,5 @@
 """Test etf extension."""
+
 import pytest
 from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject

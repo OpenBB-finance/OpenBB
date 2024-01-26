@@ -1,4 +1,5 @@
 """Test qa extension."""
+
 import random
 from typing import Literal
 

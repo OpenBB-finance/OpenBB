@@ -1,4 +1,5 @@
 """Automatic Complex Exponential Smoothing View"""
+
 __docformat__ = "numpy"
 
 import logging

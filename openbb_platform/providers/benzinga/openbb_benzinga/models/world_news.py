@@ -1,6 +1,5 @@
 """Benzinga World News Model."""
 
-
 import math
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional

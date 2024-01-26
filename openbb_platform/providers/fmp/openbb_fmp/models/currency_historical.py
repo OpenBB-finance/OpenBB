@@ -1,6 +1,5 @@
 """FMP Currency Historical Price Model."""
 
-
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -23,9 +22,9 @@ class FMPCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
 
     __alias_dict__ = {"start_date": "from", "end_date": "to"}
 
-    interval: Literal[
-        "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
-    ] = Field(default="1day", description="Data granularity.")
+    interval: Literal["1min", "5min", "15min", "30min", "1hour", "4hour", "1day"] = (
+        Field(default="1day", description="Data granularity.")
+    )
 
 
 class FMPCurrencyHistoricalData(CurrencyHistoricalData):

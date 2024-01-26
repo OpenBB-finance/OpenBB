@@ -1,4 +1,5 @@
 """ETH Gas Station view"""
+
 import logging
 import os
 from typing import Optional
