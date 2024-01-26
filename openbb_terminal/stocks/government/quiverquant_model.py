@@ -1,4 +1,5 @@
 """Quiverquant Model"""
+
 __docformat__ = "numpy"
 
 # Provided by Quiverquant guys to GST users
@@ -259,20 +260,22 @@ def get_government_buys(
         lambda x: x.split("-")[0].strip("$").replace(",", "").strip()
     )
     df_gov["max"] = df_gov["Range"].apply(
-        lambda x: x.split("-")[1].replace(",", "").strip().strip("$")
-        if "-" in x
-        else x.strip("$").replace(",", "")
+        lambda x: (
+            x.split("-")[1].replace(",", "").strip().strip("$")
+            if "-" in x
+            else x.strip("$").replace(",", "")
+        )
     )
     df_gov["lower"] = df_gov[["min", "max", "Transaction"]].apply(
-        lambda x: float(x["min"])
-        if x["Transaction"] == "Purchase"
-        else -float(x["max"]),
+        lambda x: (
+            float(x["min"]) if x["Transaction"] == "Purchase" else -float(x["max"])
+        ),
         axis=1,
     )
     df_gov["upper"] = df_gov[["min", "max", "Transaction"]].apply(
-        lambda x: float(x["max"])
-        if x["Transaction"] == "Purchase"
-        else -float(x["min"]),
+        lambda x: (
+            float(x["max"]) if x["Transaction"] == "Purchase" else -float(x["min"])
+        ),
         axis=1,
     )
     df_gov = df_gov[df_gov.Transaction == "Purchase"]
@@ -324,26 +327,28 @@ def get_government_sells(
         .strip()
     )
     df_gov["max"] = df_gov["Range"].apply(
-        lambda x: x.split("-")[1]
-        .replace(",", "")
-        .strip()
-        .strip("$")
-        .replace(">$", "")
-        .strip()
-        if "-" in x
-        else x.strip("$").replace(",", "").replace(">$", "").strip()
+        lambda x: (
+            x.split("-")[1]
+            .replace(",", "")
+            .strip()
+            .strip("$")
+            .replace(">$", "")
+            .strip()
+            if "-" in x
+            else x.strip("$").replace(",", "").replace(">$", "").strip()
+        )
     )
 
     df_gov["lower"] = df_gov[["min", "max", "Transaction"]].apply(
-        lambda x: float(x["min"])
-        if x["Transaction"] == "Purchase"
-        else -float(x["max"]),
+        lambda x: (
+            float(x["min"]) if x["Transaction"] == "Purchase" else -float(x["max"])
+        ),
         axis=1,
     )
     df_gov["upper"] = df_gov[["min", "max", "Transaction"]].apply(
-        lambda x: float(x["max"])
-        if x["Transaction"] == "Purchase"
-        else -float(x["min"]),
+        lambda x: (
+            float(x["max"]) if x["Transaction"] == "Purchase" else -float(x["min"])
+        ),
         axis=1,
     )
 
@@ -457,21 +462,27 @@ def get_cleaned_government_trading(
         lambda x: x.split("-")[0].strip("$").replace(",", "").strip()
     )
     df_gov["max"] = df_gov["Range"].apply(
-        lambda x: x.split("-")[1].replace(",", "").strip().strip("$")
-        if "-" in x
-        else x.strip("$").replace(",", "").split("\n")[0]
+        lambda x: (
+            x.split("-")[1].replace(",", "").strip().strip("$")
+            if "-" in x
+            else x.strip("$").replace(",", "").split("\n")[0]
+        )
     )
 
     df_gov["lower"] = df_gov[["min", "max", "Transaction"]].apply(
-        lambda x: int(float(x["min"]))
-        if x["Transaction"] == "Purchase"
-        else -int(float(x["max"])),
+        lambda x: (
+            int(float(x["min"]))
+            if x["Transaction"] == "Purchase"
+            else -int(float(x["max"]))
+        ),
         axis=1,
     )
     df_gov["upper"] = df_gov[["min", "max", "Transaction"]].apply(
-        lambda x: int(float(x["max"]))
-        if x["Transaction"] == "Purchase"
-        else -1 * int(float(x["min"])),
+        lambda x: (
+            int(float(x["max"]))
+            if x["Transaction"] == "Purchase"
+            else -1 * int(float(x["min"]))
+        ),
         axis=1,
     )
 

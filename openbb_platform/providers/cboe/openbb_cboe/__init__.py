@@ -1,6 +1,5 @@
 """Cboe provider module."""
 
-
 from openbb_cboe.models.available_indices import CboeAvailableIndicesFetcher
 from openbb_cboe.models.equity_historical import CboeEquityHistoricalFetcher
 from openbb_cboe.models.equity_quote import CboeEquityQuoteFetcher

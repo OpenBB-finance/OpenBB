@@ -1,4 +1,5 @@
 """Business Insider Model"""
+
 __docformat__ = "numpy"
 
 import json
@@ -94,10 +95,10 @@ def get_management(symbol: str) -> pd.DataFrame:
     df_management = df_management.set_index("Name")
 
     for s_name in df_management.index:
-        df_management.loc[s_name][
-            "Info"
-        ] = f"http://www.google.com/search?q={s_name} {symbol.upper()}".replace(
-            " ", "%20"
+        df_management.loc[s_name]["Info"] = (
+            f"http://www.google.com/search?q={s_name} {symbol.upper()}".replace(
+                " ", "%20"
+            )
         )
 
     return df_management

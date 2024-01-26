@@ -1,4 +1,5 @@
 """Comparison Analysis Controller Module"""
+
 __docformat__ = "numpy"
 
 import argparse
@@ -510,9 +511,9 @@ class ComparisonAnalysisController(BaseController):
                     candle_type=ns_parser.type_candle,
                     normalize=ns_parser.normalize,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
             else:
@@ -577,9 +578,9 @@ class ComparisonAnalysisController(BaseController):
                     end_date=ns_parser.end.strftime("%Y-%m-%d"),
                     candle_type=ns_parser.type_candle,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                     display_full_matrix=ns_parser.display_full_matrix,
                     raw=ns_parser.raw,
                 )
@@ -625,9 +626,9 @@ class ComparisonAnalysisController(BaseController):
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -670,9 +671,9 @@ class ComparisonAnalysisController(BaseController):
                     start_date=ns_parser.start.strftime("%Y-%m-%d"),
                     end_date=ns_parser.end.strftime("%Y-%m-%d"),
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
             else:
@@ -715,9 +716,9 @@ class ComparisonAnalysisController(BaseController):
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -758,9 +759,9 @@ class ComparisonAnalysisController(BaseController):
                 timeframe=ns_parser.s_timeframe,
                 quarter=ns_parser.b_quarter,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -791,9 +792,9 @@ class ComparisonAnalysisController(BaseController):
                     similar=self.similar,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print(
@@ -828,9 +829,9 @@ class ComparisonAnalysisController(BaseController):
                     similar=self.similar,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("Please make sure there are similar tickers selected. \n")
@@ -855,9 +856,9 @@ class ComparisonAnalysisController(BaseController):
                     similar=self.similar,
                     data_type="overview",
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print(
@@ -884,9 +885,9 @@ class ComparisonAnalysisController(BaseController):
                     similar=self.similar,
                     data_type="valuation",
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print(
@@ -913,9 +914,9 @@ class ComparisonAnalysisController(BaseController):
                     similar=self.similar,
                     data_type="financial",
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print(
@@ -942,9 +943,9 @@ class ComparisonAnalysisController(BaseController):
                     similar=self.similar,
                     data_type="ownership",
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print(
@@ -971,9 +972,9 @@ class ComparisonAnalysisController(BaseController):
                     similar=self.similar,
                     data_type="performance",
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print(
@@ -1000,9 +1001,9 @@ class ComparisonAnalysisController(BaseController):
                     similar=self.similar,
                     data_type="technical",
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print(

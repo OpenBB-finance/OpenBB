@@ -49,9 +49,9 @@ class IntrinioEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     _interval_size: Literal["1m", "5m", "10m", "15m", "30m", "60m", "1h"] = PrivateAttr(
         default=None
     )
-    _frequency: Literal[
-        "daily", "weekly", "monthly", "quarterly", "yearly"
-    ] = PrivateAttr(default=None)
+    _frequency: Literal["daily", "weekly", "monthly", "quarterly", "yearly"] = (
+        PrivateAttr(default=None)
+    )
 
     # pylint: disable=protected-access
     @model_validator(mode="after")

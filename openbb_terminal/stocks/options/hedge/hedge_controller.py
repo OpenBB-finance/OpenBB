@@ -1,4 +1,5 @@
 """ Hedge Controller Module """
+
 __docformat__ = "numpy"
 
 import argparse

@@ -1,4 +1,5 @@
 """Test ta extension."""
+
 import random
 from typing import Literal
 

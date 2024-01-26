@@ -1,4 +1,5 @@
 """Reported Financials."""
+
 import warnings
 from datetime import date as dateType
 from typing import Optional

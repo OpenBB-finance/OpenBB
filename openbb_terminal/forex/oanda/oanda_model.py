@@ -1,4 +1,5 @@
 """Oanda Model."""
+
 __docformat__ = "numpy"
 
 import json

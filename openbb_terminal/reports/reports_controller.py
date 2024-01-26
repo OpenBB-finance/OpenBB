@@ -1,4 +1,5 @@
 """Reports Controller Module."""
+
 __docformat__ = "numpy"
 
 import argparse
@@ -73,9 +74,9 @@ class ReportController(BaseController):
                 self.choices[report_name] = {}
                 for arg in self.PARAMETERS_DICT[report_name]:
                     if report_name in reports_model.REPORT_CHOICES:
-                        self.choices[report_name][
-                            "--" + arg
-                        ] = reports_model.REPORT_CHOICES[report_name]["--" + arg]
+                        self.choices[report_name]["--" + arg] = (
+                            reports_model.REPORT_CHOICES[report_name]["--" + arg]
+                        )
 
             self.choices["support"] = self.SUPPORT_CHOICES
             self.choices["about"] = self.ABOUT_CHOICES

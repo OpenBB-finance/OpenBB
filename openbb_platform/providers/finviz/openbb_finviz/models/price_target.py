@@ -1,4 +1,5 @@
 """Finviz Price Target Model."""
+
 # pylint: disable=unused-argument
 
 import warnings
