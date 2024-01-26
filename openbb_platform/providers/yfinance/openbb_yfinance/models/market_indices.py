@@ -86,6 +86,7 @@ class YFinanceMarketIndicesFetcher(
 
         return YFinanceMarketIndicesQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: YFinanceMarketIndicesQueryParams,
