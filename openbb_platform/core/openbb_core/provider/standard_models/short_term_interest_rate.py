@@ -1,4 +1,5 @@
 """Short Term Interest Rates Standard Model."""
+
 from datetime import date as dateType
 from typing import Optional
 
