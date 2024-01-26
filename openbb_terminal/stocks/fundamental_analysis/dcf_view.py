@@ -1,4 +1,5 @@
 """ DCF View """
+
 __docformat__ = "numpy"
 
 import logging
@@ -987,9 +988,7 @@ class CreateExcelFA:
         df = (
             self.df["IS"]
             if title in self.df["IS"].index
-            else self.df["BS"]
-            if title in self.df["BS"].index
-            else self.df["CF"]
+            else self.df["BS"] if title in self.df["BS"].index else self.df["CF"]
         )
         ind = (
             df.index.get_loc(title)
@@ -997,9 +996,11 @@ class CreateExcelFA:
             + (
                 self.starts["IS"]
                 if title in self.df["IS"].index
-                else self.starts["BS"]
-                if title in self.df["BS"].index
-                else self.starts["CF"]
+                else (
+                    self.starts["BS"]
+                    if title in self.df["BS"].index
+                    else self.starts["CF"]
+                )
             )
         )
         return ind
@@ -1140,11 +1141,13 @@ class CreateExcelFA:
                     [11, dcf_model.frac(ap1, cogs1 / 365), 0],
                     [
                         12,
-                        "N/A"
-                        if sls1 == 0 or cogs1 == 0
-                        else dcf_model.frac(ar1, sls1 / 365)
-                        + dcf_model.frac(inv1, cogs1 / 365)
-                        - dcf_model.frac(ap1, cogs1 / 365),
+                        (
+                            "N/A"
+                            if sls1 == 0 or cogs1 == 0
+                            else dcf_model.frac(ar1, sls1 / 365)
+                            + dcf_model.frac(inv1, cogs1 / 365)
+                            - dcf_model.frac(ap1, cogs1 / 365)
+                        ),
                         0,
                     ],
                     [13, dcf_model.frac(sls1, (ta0 + ta1) / 2), 0],

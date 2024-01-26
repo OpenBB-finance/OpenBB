@@ -1,4 +1,5 @@
 """Finance Database view"""
+
 __docformat__ = "numpy"
 
 import logging

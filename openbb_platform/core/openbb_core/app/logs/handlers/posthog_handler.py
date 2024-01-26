@@ -1,4 +1,5 @@
 """Posthog Handler."""
+
 import json
 import logging
 import re

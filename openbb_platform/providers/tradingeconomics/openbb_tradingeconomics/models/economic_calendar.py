@@ -1,6 +1,5 @@
 """Trading Economics Economic Calendar Model."""
 
-
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional, Set, Union
 

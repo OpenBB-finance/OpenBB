@@ -1,4 +1,5 @@
 """Finbrain Crypto Sentiment Analysis"""
+
 __docformat__ = "numpy"
 
 import logging

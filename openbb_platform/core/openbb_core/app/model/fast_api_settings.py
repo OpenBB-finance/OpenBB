@@ -1,4 +1,5 @@
 """FastAPI configuration settings model."""
+
 from typing import Dict, List, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, computed_field

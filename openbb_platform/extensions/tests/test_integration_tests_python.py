@@ -1,4 +1,5 @@
 """Test the integration tests."""
+
 from typing import Literal
 
 from openbb_core.app.charting_service import ChartingService

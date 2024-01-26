@@ -1,4 +1,5 @@
 """Momentum technical indicators."""
+
 import warnings
 
 import numpy as np

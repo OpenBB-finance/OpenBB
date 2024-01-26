@@ -1,4 +1,5 @@
 """Custom pytest configuration for the extensions."""
+
 from typing import Dict, List
 
 import pytest

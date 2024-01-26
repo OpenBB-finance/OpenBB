@@ -1,4 +1,5 @@
 """High Quality Market Corporate Bond Standard Model."""
+
 from datetime import (
     date as dateType,
 )

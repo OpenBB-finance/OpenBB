@@ -1,4 +1,5 @@
 """Excel Model"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=abstract-class-instantiated

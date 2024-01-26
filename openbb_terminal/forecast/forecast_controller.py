@@ -1,4 +1,5 @@
 """Forecast Controller Module"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=C0302,too-many-branches,too-many-arguments,R0904,R0902,W0707
@@ -820,9 +821,9 @@ class ForecastController(BaseController):
                     file,
                     data_files=self.DATA_FILES,
                     data_examples={},
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
                 if not data.empty:
                     self.files_full.append([ns_parser.file, ns_parser.alias])
@@ -1061,9 +1062,9 @@ class ForecastController(BaseController):
                 df,
                 ns_parser.target_dataset,
                 ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)

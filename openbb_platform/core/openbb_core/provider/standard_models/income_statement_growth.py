@@ -1,6 +1,5 @@
 """Income Statement Growth Standard Model."""
 
-
 from datetime import date as dateType
 from typing import List, Literal, Optional, Set, Union
 

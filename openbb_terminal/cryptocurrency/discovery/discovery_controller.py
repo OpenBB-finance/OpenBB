@@ -1,4 +1,5 @@
 """Cryptocurrency Discovery Controller"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=R0904, C0302, W0622, C0201
@@ -255,9 +256,9 @@ class DiscoveryController(BaseController):
                     category=ns_parser.category,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                     ascend=ns_parser.reverse,
                 )
             elif ns_parser.source == "CoinMarketCap":
@@ -266,9 +267,9 @@ class DiscoveryController(BaseController):
                     sortby=ns_parser.sortby,
                     ascend=ns_parser.reverse,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
     @log_start_end(log=logger)
@@ -318,9 +319,9 @@ class DiscoveryController(BaseController):
                 page=ns_parser.page,
                 resultPerPage=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -340,9 +341,9 @@ class DiscoveryController(BaseController):
         if ns_parser:
             dappradar_view.display_dapp_categories(
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -362,9 +363,9 @@ class DiscoveryController(BaseController):
         if ns_parser:
             dappradar_view.display_dapp_chains(
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -414,9 +415,9 @@ class DiscoveryController(BaseController):
                 chain=ns_parser.chain,
                 time_range=ns_parser.time_range,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -486,9 +487,9 @@ class DiscoveryController(BaseController):
                 interval=ns_parser.interval,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
                 sortby=" ".join(ns_parser.sortby),
                 ascend=ns_parser.reverse,
             )
@@ -557,9 +558,9 @@ class DiscoveryController(BaseController):
                 interval=ns_parser.interval,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
                 sortby=" ".join(ns_parser.sortby),
                 ascend=ns_parser.reverse,
             )
@@ -583,9 +584,9 @@ class DiscoveryController(BaseController):
         if ns_parser:
             pycoingecko_view.display_trending(
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -662,9 +663,9 @@ class DiscoveryController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
                 query=" ".join(ns_parser.query),
                 category=ns_parser.category,
             )
@@ -688,9 +689,9 @@ class DiscoveryController(BaseController):
         if ns_parser:
             dappradar_view.display_nft_marketplace_chains(
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -712,9 +713,9 @@ class DiscoveryController(BaseController):
         if ns_parser:
             dappradar_view.display_defi_chains(
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -772,9 +773,9 @@ class DiscoveryController(BaseController):
                 chain=ns_parser.chain,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -795,7 +796,7 @@ class DiscoveryController(BaseController):
         if ns_parser:
             dappradar_view.display_token_chains(
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )

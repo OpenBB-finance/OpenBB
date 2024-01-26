@@ -1,4 +1,5 @@
 """Dataframe helpers"""
+
 __docformat__ = "numpy"
 
 import math

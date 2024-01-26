@@ -1,4 +1,5 @@
 """Yahoo Finance Futures Curve Model."""
+
 # ruff: noqa: SIM105
 
 from datetime import datetime
