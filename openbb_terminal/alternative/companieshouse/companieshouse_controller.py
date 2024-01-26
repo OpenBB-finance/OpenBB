@@ -154,9 +154,7 @@ class CompaniesHouseController(BaseController):
 
         if ns_parser and ns_parser.companyNo:
             self.companyNo = ns_parser.companyNo
-            company = companieshouse_view.display_company_info(
-                ns_parser.companyNo, export=ns_parser.export
-            )
+            company = companieshouse_view.display_company_info(ns_parser.companyNo)
             if company.dataAvailable():
                 self.companyName = company.name
                 self.filing_total_count = 0
