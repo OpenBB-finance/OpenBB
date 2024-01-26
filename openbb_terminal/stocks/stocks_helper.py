@@ -1,4 +1,5 @@
 """Main helper."""
+
 __docformat__ = "numpy"
 # pylint: disable=too-many-lines, unsupported-assignment-operation
 # pylint: disable=no-member, too-many-branches, too-many-arguments
@@ -420,9 +421,11 @@ def load(
                 s_date_start = s_start_dt.strftime("%Y-%m-%d")
                 df_stock_candidate = yf.download(
                     symbol,
-                    start=s_date_start
-                    if s_start_dt > start_date
-                    else start_date.strftime("%Y-%m-%d"),
+                    start=(
+                        s_date_start
+                        if s_start_dt > start_date
+                        else start_date.strftime("%Y-%m-%d")
+                    ),
                     progress=False,
                     interval=s_int,
                     prepost=prepost,

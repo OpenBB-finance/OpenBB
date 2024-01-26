@@ -155,10 +155,12 @@ def table_data(infos: dict):
     data["Ticker"] = [common_vars.STOCKS_CLEAN_ROW[x] for x in common_vars.STOCKS_ROWS]
     for ticker in list(infos):
         data[ticker] = [
-            st_helpers.STOCKS_CLEAN_DATA[x](infos[ticker].get(x, None))
-            if infos[ticker].get(x, None)
-            else st_helpers.STOCKS_CLEAN_DATA[x](
-                getattr(yf.Ticker(ticker).fast_info, x, None)
+            (
+                st_helpers.STOCKS_CLEAN_DATA[x](infos[ticker].get(x, None))
+                if infos[ticker].get(x, None)
+                else st_helpers.STOCKS_CLEAN_DATA[x](
+                    getattr(yf.Ticker(ticker).fast_info, x, None)
+                )
             )
             for x in common_vars.STOCKS_ROWS
         ]

@@ -1,4 +1,5 @@
 """FINRA provider module."""
+
 from openbb_core.provider.abstract.provider import Provider
 from openbb_finra.models.equity_short_interest import FinraShortInterestFetcher
 from openbb_finra.models.otc_aggregate import FinraOTCAggregateFetcher

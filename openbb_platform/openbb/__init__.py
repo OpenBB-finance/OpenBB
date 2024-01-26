@@ -1,4 +1,5 @@
 """OpenBB Platform."""
+
 # flake8: noqa
 
 from pathlib import Path

@@ -1,4 +1,5 @@
 """Reports Model Module."""
+
 __docformat__ = "numpy"
 
 import logging

@@ -1,6 +1,5 @@
 """Euro Area Yield Curve Model."""
 
-
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 

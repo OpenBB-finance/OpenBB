@@ -1,4 +1,5 @@
 """Test the coverate module."""
+
 import asyncio
 from unittest.mock import MagicMock
 

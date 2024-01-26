@@ -1,4 +1,5 @@
 """Tools Controller Module"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=C0302
@@ -122,9 +123,9 @@ class ToolsController(BaseController):
                 initial_pool_value=ns_parser.value,
                 narrative=ns_parser.narrative,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -181,7 +182,7 @@ class ToolsController(BaseController):
                 compounding_times=ns_parser.compounding,
                 narrative=ns_parser.narrative,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )

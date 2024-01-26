@@ -1,4 +1,5 @@
 """ UK Companies House View """
+
 __docformat__ = "numpy"
 
 import logging

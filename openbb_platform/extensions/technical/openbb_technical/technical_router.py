@@ -1,4 +1,5 @@
 """Technical Analysis Router."""
+
 from typing import List, Literal, Optional
 
 import pandas as pd

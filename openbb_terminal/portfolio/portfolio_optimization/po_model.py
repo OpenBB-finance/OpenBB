@@ -1,4 +1,5 @@
 """Optimization Model"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=R0913, C0302, E1101, line-too-long
@@ -1190,9 +1191,7 @@ def get_blacklitterman(
 
 
 @log_start_end(log=logger)
-def get_ef(
-    portfolio_engine: Optional[PoEngine] = None, **kwargs
-) -> Tuple[
+def get_ef(portfolio_engine: Optional[PoEngine] = None, **kwargs) -> Tuple[
     pd.DataFrame,
     pd.DataFrame,
     pd.DataFrame,

@@ -1,4 +1,5 @@
 """Hedge model"""
+
 __docformat__ = "numpy"
 
 import math

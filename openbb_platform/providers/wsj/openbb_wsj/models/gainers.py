@@ -99,8 +99,8 @@ class WSJGainersFetcher(Fetcher[WSJGainersQueryParams, List[WSJGainersData]]):
         data = data[: query.limit]
         data = sorted(
             data,
-            key=lambda x: x["percentChange"]
-            if query.sort == "asc"
-            else -x["percentChange"],
+            key=lambda x: (
+                x["percentChange"] if query.sort == "asc" else -x["percentChange"]
+            ),
         )
         return [WSJGainersData.model_validate(d) for d in data]

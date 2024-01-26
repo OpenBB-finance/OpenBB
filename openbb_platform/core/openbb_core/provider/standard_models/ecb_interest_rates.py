@@ -1,4 +1,5 @@
 """European Central Bank Interest Rates Standard Model."""
+
 from datetime import (
     date as dateType,
 )

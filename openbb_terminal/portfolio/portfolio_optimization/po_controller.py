@@ -1,4 +1,5 @@
 """ Portfolio Optimization Controller Module """
+
 __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines,too-many-instance-attributes
@@ -345,9 +346,11 @@ class PortfolioOptimizationController(BaseController):
             parser.add_argument(
                 "-rm",
                 "--risk-measure",
-                default=self.params["risk_measure"]
-                if "risk_measure" in self.params
-                else "MV",
+                default=(
+                    self.params["risk_measure"]
+                    if "risk_measure" in self.params
+                    else "MV"
+                ),
                 dest="risk_measure",
                 help="""Risk measure used to optimize the portfolio. Possible values are:
                         'MV' : Variance
@@ -370,9 +373,11 @@ class PortfolioOptimizationController(BaseController):
             parser.add_argument(
                 "-mt",
                 "--method",
-                default=self.params["nan_fill_method"]
-                if "nan_fill_method" in self.params
-                else "time",
+                default=(
+                    self.params["nan_fill_method"]
+                    if "nan_fill_method" in self.params
+                    else "time"
+                ),
                 dest="nan_fill_method",
                 help="""Method used to fill nan values in time series, by default time.
                         Possible values are:
@@ -400,9 +405,11 @@ class PortfolioOptimizationController(BaseController):
             parser.add_argument(
                 "-p",
                 "--period",
-                default=self.params["historic_period"]
-                if "historic_period" in self.params
-                else "3y",
+                default=(
+                    self.params["historic_period"]
+                    if "historic_period" in self.params
+                    else "3y"
+                ),
                 dest="historic_period",
                 help="""Period to get yfinance data from.
                         Possible frequency strings are:
@@ -419,9 +426,9 @@ class PortfolioOptimizationController(BaseController):
             parser.add_argument(
                 "-s",
                 "--start",
-                default=self.params["start_period"]
-                if "start_period" in self.params
-                else "",
+                default=(
+                    self.params["start_period"] if "start_period" in self.params else ""
+                ),
                 dest="start_period",
                 help="""Start date to get yfinance data from. Must be in
                         'YYYY-MM-DD' format""",
@@ -430,9 +437,9 @@ class PortfolioOptimizationController(BaseController):
             parser.add_argument(
                 "-e",
                 "--end",
-                default=self.params["end_period"]
-                if "end_period" in self.params
-                else "",
+                default=(
+                    self.params["end_period"] if "end_period" in self.params else ""
+                ),
                 dest="end_period",
                 help="""End date to get yfinance data from. Must be in
                         'YYYY-MM-DD' format""",
@@ -442,18 +449,22 @@ class PortfolioOptimizationController(BaseController):
                 "-lr",
                 "--log-returns",
                 action="store_true",
-                default=self.params["log_returns"]
-                if "log_returns" in self.params
-                else False,
+                default=(
+                    self.params["log_returns"]
+                    if "log_returns" in self.params
+                    else False
+                ),
                 dest="log_returns",
                 help="If use logarithmic or arithmetic returns to calculate returns",
             )
         if freq:
             parser.add_argument(
                 "--freq",
-                default=self.params["return_frequency"]
-                if "return_frequency" in self.params
-                else "d",
+                default=(
+                    self.params["return_frequency"]
+                    if "return_frequency" in self.params
+                    else "d"
+                ),
                 dest="return_frequency",
                 help="""Frequency used to calculate returns. Possible values are:
                         'd': for daily returns
@@ -477,9 +488,11 @@ class PortfolioOptimizationController(BaseController):
                 "-th",
                 "--threshold",
                 type=float,
-                default=self.params["threshold_value"]
-                if "threshold_value" in self.params
-                else 0.30,
+                default=(
+                    self.params["threshold_value"]
+                    if "threshold_value" in self.params
+                    else 0.30
+                ),
                 dest="threshold_value",
                 help="""Value used to replace outliers that are higher to threshold
                         in absolute value""",
@@ -490,9 +503,9 @@ class PortfolioOptimizationController(BaseController):
                 "--risk-free-rate",
                 type=float,
                 dest="risk_free",
-                default=self.params["risk_free"]
-                if "risk_free" in self.params
-                else get_rf(),
+                default=(
+                    self.params["risk_free"] if "risk_free" in self.params else get_rf()
+                ),
                 help="""Risk-free rate of borrowing/lending. The period of the
                     risk-free rate must be annual""",
             )
@@ -501,9 +514,11 @@ class PortfolioOptimizationController(BaseController):
                 "-a",
                 "--alpha",
                 type=float,
-                default=self.params["significance_level"]
-                if "significance_level" in self.params
-                else 0.05,
+                default=(
+                    self.params["significance_level"]
+                    if "significance_level" in self.params
+                    else 0.05
+                ),
                 dest="significance_level",
                 help="Significance level of CVaR, EVaR, CDaR and EDaR",
             )
@@ -511,9 +526,11 @@ class PortfolioOptimizationController(BaseController):
             parser.add_argument(
                 "-v",
                 "--value",
-                default=self.params["long_allocation"]
-                if "long_allocation" in self.params
-                else 1,
+                default=(
+                    self.params["long_allocation"]
+                    if "long_allocation" in self.params
+                    else 1
+                ),
                 type=float,
                 dest="long_allocation",
                 help="Amount to allocate to portfolio",
@@ -1053,9 +1070,9 @@ class PortfolioOptimizationController(BaseController):
             "-tr",
             "--target-return",
             dest="target_return",
-            default=self.params["target_return"]
-            if "target_return" in self.params
-            else -1,
+            default=(
+                self.params["target_return"] if "target_return" in self.params else -1
+            ),
             type=float,
             help="Constraint on minimum level of portfolio's return",
         )
@@ -1070,9 +1087,11 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-m",
             "--mean",
-            default=self.params["expected_return"]
-            if "expected_return" in self.params
-            else "hist",
+            default=(
+                self.params["expected_return"]
+                if "expected_return" in self.params
+                else "hist"
+            ),
             dest="expected_return",
             help="Method used to estimate the expected return vector",
             choices=statics.MEAN_CHOICES,
@@ -1080,9 +1099,9 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-cv",
             "--covariance",
-            default=self.params["covariance"]
-            if "covariance" in self.params
-            else "hist",
+            default=(
+                self.params["covariance"] if "covariance" in self.params else "hist"
+            ),
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
                     'hist': historical method
@@ -1103,9 +1122,11 @@ class PortfolioOptimizationController(BaseController):
             "-de",
             "--d-ewma",
             type=float,
-            default=self.params["smoothing_factor_ewma"]
-            if "smoothing_factor_ewma" in self.params
-            else 0.94,
+            default=(
+                self.params["smoothing_factor_ewma"]
+                if "smoothing_factor_ewma" in self.params
+                else 0.94
+            ),
             dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
@@ -1115,9 +1136,11 @@ class PortfolioOptimizationController(BaseController):
             dest="short_allocation",
             help="Amount to allocate to portfolio in short positions",
             type=float,
-            default=self.params["short_allocation"]
-            if "short_allocation" in self.params
-            else 0.0,
+            default=(
+                self.params["short_allocation"]
+                if "short_allocation" in self.params
+                else 0.0
+            ),
         )
 
         parser = self.po_parser(
@@ -1236,9 +1259,9 @@ class PortfolioOptimizationController(BaseController):
             "-tr",
             "--target-return",
             dest="target_return",
-            default=self.params["target_return"]
-            if "target_return" in self.params
-            else -1,
+            default=(
+                self.params["target_return"] if "target_return" in self.params else -1
+            ),
             type=float,
             help="Constraint on minimum level of portfolio's return",
         )
@@ -1253,9 +1276,11 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-m",
             "--mean",
-            default=self.params["expected_return"]
-            if "expected_return" in self.params
-            else "hist",
+            default=(
+                self.params["expected_return"]
+                if "expected_return" in self.params
+                else "hist"
+            ),
             dest="expected_return",
             help="Method used to estimate expected returns vector",
             choices=statics.MEAN_CHOICES,
@@ -1284,9 +1309,11 @@ class PortfolioOptimizationController(BaseController):
             "-de",
             "--d-ewma",
             type=float,
-            default=self.params["smoothing_factor_ewma"]
-            if "smoothing_factor_ewma" in self.params
-            else 0.94,
+            default=(
+                self.params["smoothing_factor_ewma"]
+                if "smoothing_factor_ewma" in self.params
+                else 0.94
+            ),
             dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
@@ -1294,9 +1321,11 @@ class PortfolioOptimizationController(BaseController):
             "-vs",
             "--value-short",
             type=float,
-            default=self.params["short_allocation"]
-            if "short_allocation" in self.params
-            else 0.0,
+            default=(
+                self.params["short_allocation"]
+                if "short_allocation" in self.params
+                else 0.0
+            ),
             dest="short_allocation",
             help="Amount to allocate to portfolio in short positions",
         )
@@ -1418,18 +1447,18 @@ class PortfolioOptimizationController(BaseController):
             "--risk-aversion",
             type=float,
             dest="risk_aversion",
-            default=self.params["risk_aversion"]
-            if "risk_aversion" in self.params
-            else 1,
+            default=(
+                self.params["risk_aversion"] if "risk_aversion" in self.params else 1
+            ),
             help="Risk aversion parameter",
         )
         parser.add_argument(
             "-tr",
             "--target-return",
             dest="target_return",
-            default=self.params["target_return"]
-            if "target_return" in self.params
-            else -1,
+            default=(
+                self.params["target_return"] if "target_return" in self.params else -1
+            ),
             type=float,
             help="Constraint on minimum level of portfolio's return",
         )
@@ -1444,9 +1473,11 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-m",
             "--mean",
-            default=self.params["expected_return"]
-            if "expected_return" in self.params
-            else "hist",
+            default=(
+                self.params["expected_return"]
+                if "expected_return" in self.params
+                else "hist"
+            ),
             dest="expected_return",
             help="Method used to estimate the expected return vector",
             choices=statics.MEAN_CHOICES,
@@ -1454,9 +1485,9 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-cv",
             "--covariance",
-            default=self.params["covariance"]
-            if "covariance" in self.params
-            else "hist",
+            default=(
+                self.params["covariance"] if "covariance" in self.params else "hist"
+            ),
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
                     'hist': historical method
@@ -1477,9 +1508,11 @@ class PortfolioOptimizationController(BaseController):
             "-de",
             "--d-ewma",
             type=float,
-            default=self.params["smoothing_factor_ewma"]
-            if "smoothing_factor_ewma" in self.params
-            else 0.94,
+            default=(
+                self.params["smoothing_factor_ewma"]
+                if "smoothing_factor_ewma" in self.params
+                else 0.94
+            ),
             dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
@@ -1489,9 +1522,11 @@ class PortfolioOptimizationController(BaseController):
             dest="short_allocation",
             help="Amount to allocate to portfolio in short positions",
             type=float,
-            default=self.params["short_allocation"]
-            if "short_allocation" in self.params
-            else 0.0,
+            default=(
+                self.params["short_allocation"]
+                if "short_allocation" in self.params
+                else 0.0
+            ),
         )
 
         parser = self.po_parser(
@@ -1612,9 +1647,9 @@ class PortfolioOptimizationController(BaseController):
             "-tr",
             "--target-return",
             dest="target_return",
-            default=self.params["target_return"]
-            if "target_return" in self.params
-            else -1,
+            default=(
+                self.params["target_return"] if "target_return" in self.params else -1
+            ),
             type=float,
             help="Constraint on minimum level of portfolio's return",
         )
@@ -1629,9 +1664,11 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-m",
             "--mean",
-            default=self.params["expected_return"]
-            if "expected_return" in self.params
-            else "hist",
+            default=(
+                self.params["expected_return"]
+                if "expected_return" in self.params
+                else "hist"
+            ),
             dest="expected_return",
             help="Method used to estimate the expected return vector",
             choices=statics.MEAN_CHOICES,
@@ -1639,9 +1676,9 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-cv",
             "--covariance",
-            default=self.params["covariance"]
-            if "covariance" in self.params
-            else "hist",
+            default=(
+                self.params["covariance"] if "covariance" in self.params else "hist"
+            ),
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
                     'hist': historical method
@@ -1662,9 +1699,11 @@ class PortfolioOptimizationController(BaseController):
             "-de",
             "--d-ewma",
             type=float,
-            default=self.params["smoothing_factor_ewma"]
-            if "smoothing_factor_ewma" in self.params
-            else 0.94,
+            default=(
+                self.params["smoothing_factor_ewma"]
+                if "smoothing_factor_ewma" in self.params
+                else 0.94
+            ),
             dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
@@ -1674,9 +1713,11 @@ class PortfolioOptimizationController(BaseController):
             dest="short_allocation",
             help="Amount to allocate to portfolio in short positions",
             type=float,
-            default=self.params["short_allocation"]
-            if "short_allocation" in self.params
-            else 0.0,
+            default=(
+                self.params["short_allocation"]
+                if "short_allocation" in self.params
+                else 0.0
+            ),
         )
 
         parser = self.po_parser(
@@ -1794,9 +1835,9 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-cv",
             "--covariance",
-            default=self.params["covariance"]
-            if "covariance" in self.params
-            else "hist",
+            default=(
+                self.params["covariance"] if "covariance" in self.params else "hist"
+            ),
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
                     'hist': historical method
@@ -1817,9 +1858,11 @@ class PortfolioOptimizationController(BaseController):
             "-de",
             "--d-ewma",
             type=float,
-            default=self.params["smoothing_factor_ewma"]
-            if "smoothing_factor_ewma" in self.params
-            else 0.94,
+            default=(
+                self.params["smoothing_factor_ewma"]
+                if "smoothing_factor_ewma" in self.params
+                else 0.94
+            ),
             dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
@@ -1829,9 +1872,11 @@ class PortfolioOptimizationController(BaseController):
             dest="short_allocation",
             help="Amount to allocate to portfolio in short positions",
             type=float,
-            default=self.params["short_allocation"]
-            if "short_allocation" in self.params
-            else 0.0,
+            default=(
+                self.params["short_allocation"]
+                if "short_allocation" in self.params
+                else 0.0
+            ),
         )
 
         parser = self.po_parser(
@@ -1934,9 +1979,9 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-cv",
             "--covariance",
-            default=self.params["covariance"]
-            if "covariance" in self.params
-            else "hist",
+            default=(
+                self.params["covariance"] if "covariance" in self.params else "hist"
+            ),
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
                     'hist': historical method
@@ -1957,9 +2002,11 @@ class PortfolioOptimizationController(BaseController):
             "-de",
             "--d-ewma",
             type=float,
-            default=self.params["smoothing_factor_ewma"]
-            if "smoothing_factor_ewma" in self.params
-            else 0.94,
+            default=(
+                self.params["smoothing_factor_ewma"]
+                if "smoothing_factor_ewma" in self.params
+                else 0.94
+            ),
             dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
@@ -1969,9 +2016,11 @@ class PortfolioOptimizationController(BaseController):
             dest="short_allocation",
             help="Amount to allocate to portfolio in short positions",
             type=float,
-            default=self.params["short_allocation"]
-            if "short_allocation" in self.params
-            else 0.0,
+            default=(
+                self.params["short_allocation"]
+                if "short_allocation" in self.params
+                else 0.0
+            ),
         )
 
         parser = self.po_parser(
@@ -2082,9 +2131,9 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-o",
             "--objective",
-            default=self.params["objective"]
-            if "objective" in self.params
-            else "Sharpe",
+            default=(
+                self.params["objective"] if "objective" in self.params else "Sharpe"
+            ),
             dest="objective",
             help="Objective function used to optimize the portfolio",
             choices=statics.OBJECTIVE_CHOICES,
@@ -2112,9 +2161,9 @@ class PortfolioOptimizationController(BaseController):
             "--risk-aversion",
             type=float,
             dest="risk_aversion",
-            default=self.params["risk_aversion"]
-            if "risk_aversion" in self.params
-            else 1,
+            default=(
+                self.params["risk_aversion"] if "risk_aversion" in self.params else 1
+            ),
             help="Risk aversion parameter",
         )
         parser.add_argument(
@@ -2129,9 +2178,9 @@ class PortfolioOptimizationController(BaseController):
             "-eq",
             "--equilibrium",
             action="store_true",
-            default=self.params["equilibrium"]
-            if "equilibrium" in self.params
-            else True,
+            default=(
+                self.params["equilibrium"] if "equilibrium" in self.params else True
+            ),
             dest="equilibrium",
             help="""If True excess returns are based on equilibrium market portfolio, if False
                 excess returns are calculated as historical returns minus risk free rate.
@@ -2151,9 +2200,11 @@ class PortfolioOptimizationController(BaseController):
             "-vs",
             "--value-short",
             type=float,
-            default=self.params["short_allocation"]
-            if "short_allocation" in self.params
-            else 0.0,
+            default=(
+                self.params["short_allocation"]
+                if "short_allocation" in self.params
+                else 0.0
+            ),
             dest="short_allocation",
             help="Amount to allocate to portfolio in short positions",
         )
@@ -2333,18 +2384,22 @@ class PortfolioOptimizationController(BaseController):
             dest="short_allocation",
             help="Amount to allocate to portfolio in short positions",
             type=float,
-            default=self.params["short_allocation"]
-            if "short_allocation" in self.params
-            else 0.0,
+            default=(
+                self.params["short_allocation"]
+                if "short_allocation" in self.params
+                else 0.0
+            ),
         )
         if other_args and "-" not in other_args[0][0]:
             other_args.insert(0, "-n")
         parser.add_argument(
             "-n",
             "--number-portfolios",
-            default=self.params["amount_portfolios"]
-            if "amount_portfolios" in self.params
-            else 100,
+            default=(
+                self.params["amount_portfolios"]
+                if "amount_portfolios" in self.params
+                else 100
+            ),
             type=check_non_negative,
             dest="amount_portfolios",
             help="Number of portfolios to simulate",
@@ -2430,9 +2485,9 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-rm",
             "--risk-measure",
-            default=self.params["risk_measure"]
-            if "risk_measure" in self.params
-            else "MV",
+            default=(
+                self.params["risk_measure"] if "risk_measure" in self.params else "MV"
+            ),
             dest="risk_measure",
             help="""Risk measure used to optimize the portfolio. Possible values are:
                     'MV' : Variance
@@ -2453,9 +2508,11 @@ class PortfolioOptimizationController(BaseController):
             "-rc",
             "--risk-cont",
             type=lambda s: [float(item) for item in s.split(",")],
-            default=self.params["risk_contribution"]
-            if "risk_contribution" in self.params
-            else None,
+            default=(
+                self.params["risk_contribution"]
+                if "risk_contribution" in self.params
+                else None
+            ),
             dest="risk_contribution",
             help="vector of risk contribution constraint",
         )
@@ -2463,9 +2520,9 @@ class PortfolioOptimizationController(BaseController):
             "-tr",
             "--target-return",
             dest="target_return",
-            default=self.params["target_return"]
-            if "target_return" in self.params
-            else -1,
+            default=(
+                self.params["target_return"] if "target_return" in self.params else -1
+            ),
             type=float,
             help="Constraint on minimum level of portfolio's return",
         )
@@ -2473,9 +2530,11 @@ class PortfolioOptimizationController(BaseController):
             "-de",
             "--d-ewma",
             type=float,
-            default=self.params["smoothing_factor_ewma"]
-            if "smoothing_factor_ewma" in self.params
-            else 0.94,
+            default=(
+                self.params["smoothing_factor_ewma"]
+                if "smoothing_factor_ewma" in self.params
+                else 0.94
+            ),
             dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
@@ -2587,9 +2646,11 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-ve",
             "--version",
-            default=self.params["risk_parity_model"]
-            if "risk_parity_model" in self.params
-            else "A",
+            default=(
+                self.params["risk_parity_model"]
+                if "risk_parity_model" in self.params
+                else "A"
+            ),
             dest="risk_parity_model",
             help="""version of relaxed risk parity model: Possible values are:
                 'A': risk parity without regularization and penalization constraints
@@ -2602,9 +2663,11 @@ class PortfolioOptimizationController(BaseController):
             "-rc",
             "--risk-cont",
             type=lambda s: [float(item) for item in s.split(",")],
-            default=self.params["risk_contribution"]
-            if "risk_contribution" in self.params
-            else None,
+            default=(
+                self.params["risk_contribution"]
+                if "risk_contribution" in self.params
+                else None
+            ),
             dest="risk_contribution",
             help="Vector of risk contribution constraints",
         )
@@ -2621,9 +2684,9 @@ class PortfolioOptimizationController(BaseController):
             "-tr",
             "--target-return",
             dest="target_return",
-            default=self.params["target_return"]
-            if "target_return" in self.params
-            else -1,
+            default=(
+                self.params["target_return"] if "target_return" in self.params else -1
+            ),
             type=float,
             help="Constraint on minimum level of portfolio's return",
         )
@@ -2631,9 +2694,11 @@ class PortfolioOptimizationController(BaseController):
             "-de",
             "--d-ewma",
             type=float,
-            default=self.params["smoothing_factor_ewma"]
-            if "smoothing_factor_ewma" in self.params
-            else 0.94,
+            default=(
+                self.params["smoothing_factor_ewma"]
+                if "smoothing_factor_ewma" in self.params
+                else 0.94
+            ),
             dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
@@ -2742,9 +2807,11 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-cd",
             "--codependence",
-            default=self.params["co_dependence"]
-            if "co_dependence" in self.params
-            else "pearson",
+            default=(
+                self.params["co_dependence"]
+                if "co_dependence" in self.params
+                else "pearson"
+            ),
             dest="co_dependence",
             help="""The codependence or similarity matrix used to build the
                 distance metric and clusters. Possible values are:
@@ -2760,9 +2827,9 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-cv",
             "--covariance",
-            default=self.params["covariance"]
-            if "covariance" in self.params
-            else "hist",
+            default=(
+                self.params["covariance"] if "covariance" in self.params else "hist"
+            ),
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
                     'hist': historical method
@@ -2782,9 +2849,9 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-rm",
             "--risk-measure",
-            default=self.params["risk_measure"]
-            if "risk_measure" in self.params
-            else "MV",
+            default=(
+                self.params["risk_measure"] if "risk_measure" in self.params else "MV"
+            ),
             dest="risk_measure",
             help="""Risk measure used to optimize the portfolio. Possible values are:
                     'MV' : Variance
@@ -2821,9 +2888,11 @@ class PortfolioOptimizationController(BaseController):
             "-as",
             "--a-sim",
             type=int,
-            default=self.params["cvar_simulations_losses"]
-            if "cvar_simulations_losses" in self.params
-            else 100,
+            default=(
+                self.params["cvar_simulations_losses"]
+                if "cvar_simulations_losses" in self.params
+                else 100
+            ),
             dest="cvar_simulations_losses",
             help="""Number of CVaRs used to approximate Tail Gini of losses.
                 The default is 100""",
@@ -2832,9 +2901,11 @@ class PortfolioOptimizationController(BaseController):
             "-b",
             "--beta",
             type=float,
-            default=self.params["cvar_significance"]
-            if "cvar_significance" in self.params
-            else None,
+            default=(
+                self.params["cvar_significance"]
+                if "cvar_significance" in self.params
+                else None
+            ),
             dest="cvar_significance",
             help="""Significance level of CVaR and Tail Gini of gains. If
                 empty it duplicates alpha""",
@@ -2843,9 +2914,11 @@ class PortfolioOptimizationController(BaseController):
             "-bs",
             "--b-sim",
             type=int,
-            default=self.params["cvar_simulations_gains"]
-            if "cvar_simulations_gains" in self.params
-            else None,
+            default=(
+                self.params["cvar_simulations_gains"]
+                if "cvar_simulations_gains" in self.params
+                else None
+            ),
             dest="cvar_simulations_gains",
             help="""Number of CVaRs used to approximate Tail Gini of gains.
                 If empty it duplicates a_sim value""",
@@ -2862,9 +2935,11 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-k",
             type=int,
-            default=self.params["amount_clusters"]
-            if "amount_clusters" in self.params
-            else None,
+            default=(
+                self.params["amount_clusters"]
+                if "amount_clusters" in self.params
+                else None
+            ),
             dest="amount_clusters",
             help="Number of clusters specified in advance",
         )
@@ -2872,9 +2947,9 @@ class PortfolioOptimizationController(BaseController):
             "-mk",
             "--max-k",
             type=int,
-            default=self.params["max_clusters"]
-            if "max_clusters" in self.params
-            else 10,
+            default=(
+                self.params["max_clusters"] if "max_clusters" in self.params else 10
+            ),
             dest="max_clusters",
             help="""Max number of clusters used by the two difference gap
             statistic to find the optimal number of clusters. If k is
@@ -2883,9 +2958,9 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-bi",
             "--bins-info",
-            default=self.params["amount_bins"]
-            if "amount_bins" in self.params
-            else "KN",
+            default=(
+                self.params["amount_bins"] if "amount_bins" in self.params else "KN"
+            ),
             dest="amount_bins",
             help="Number of bins used to calculate the variation of information",
             choices=statics.BINS_CHOICES,
@@ -2911,9 +2986,11 @@ class PortfolioOptimizationController(BaseController):
             "-de",
             "--d-ewma",
             type=float,
-            default=self.params["smoothing_factor_ewma"]
-            if "smoothing_factor_ewma" in self.params
-            else 0.94,
+            default=(
+                self.params["smoothing_factor_ewma"]
+                if "smoothing_factor_ewma" in self.params
+                else 0.94
+            ),
             dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
@@ -3060,9 +3137,9 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-cv",
             "--covariance",
-            default=self.params["covariance"]
-            if "covariance" in self.params
-            else "hist",
+            default=(
+                self.params["covariance"] if "covariance" in self.params else "hist"
+            ),
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
                     'hist': historical method
@@ -3082,9 +3159,9 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-rm",
             "--risk-measure",
-            default=self.params["risk_measure"]
-            if "risk_measure" in self.params
-            else "MV",
+            default=(
+                self.params["risk_measure"] if "risk_measure" in self.params else "MV"
+            ),
             dest="risk_measure",
             help="""Risk measure used to optimize the portfolio. Possible values are:
                     'MV' : Variance
@@ -3121,9 +3198,11 @@ class PortfolioOptimizationController(BaseController):
             "-as",
             "--a-sim",
             type=int,
-            default=self.params["cvar_simulations_losses"]
-            if "cvar_simulations_losses" in self.params
-            else 100,
+            default=(
+                self.params["cvar_simulations_losses"]
+                if "cvar_simulations_losses" in self.params
+                else 100
+            ),
             dest="cvar_simulations_losses",
             help="""Number of CVaRs used to approximate Tail Gini of losses.
                 The default is 100""",
@@ -3132,9 +3211,11 @@ class PortfolioOptimizationController(BaseController):
             "-b",
             "--beta",
             type=float,
-            default=self.params["cvar_significance"]
-            if "cvar_significance" in self.params
-            else None,
+            default=(
+                self.params["cvar_significance"]
+                if "cvar_significance" in self.params
+                else None
+            ),
             dest="cvar_significance",
             help="""Significance level of CVaR and Tail Gini of gains. If
                 empty it duplicates alpha""",
@@ -3143,9 +3224,11 @@ class PortfolioOptimizationController(BaseController):
             "-bs",
             "--b-sim",
             type=int,
-            default=self.params["cvar_simulations_gains"]
-            if "cvar_simulations_gains" in self.params
-            else None,
+            default=(
+                self.params["cvar_simulations_gains"]
+                if "cvar_simulations_gains" in self.params
+                else None
+            ),
             dest="cvar_simulations_gains",
             help="""Number of CVaRs used to approximate Tail Gini of gains.
                 If empty it duplicates a_sim value""",
@@ -3162,9 +3245,11 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-k",
             type=int,
-            default=self.params["amount_clusters"]
-            if "amount_clusters" in self.params
-            else None,
+            default=(
+                self.params["amount_clusters"]
+                if "amount_clusters" in self.params
+                else None
+            ),
             dest="amount_clusters",
             help="Number of clusters specified in advance",
         )
@@ -3172,9 +3257,9 @@ class PortfolioOptimizationController(BaseController):
             "-mk",
             "--max-k",
             type=int,
-            default=self.params["max_clusters"]
-            if "max_clusters" in self.params
-            else 10,
+            default=(
+                self.params["max_clusters"] if "max_clusters" in self.params else 10
+            ),
             dest="max_clusters",
             help="""Max number of clusters used by the two difference gap
             statistic to find the optimal number of clusters. If k is
@@ -3183,9 +3268,9 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-bi",
             "--bins-info",
-            default=self.params["amount_bins"]
-            if "amount_bins" in self.params
-            else "KN",
+            default=(
+                self.params["amount_bins"] if "amount_bins" in self.params else "KN"
+            ),
             dest="amount_bins",
             help="Number of bins used to calculate the variation of information",
             choices=statics.BINS_CHOICES,
@@ -3211,9 +3296,11 @@ class PortfolioOptimizationController(BaseController):
             "-de",
             "--d-ewma",
             type=float,
-            default=self.params["smoothing_factor_ewma"]
-            if "smoothing_factor_ewma" in self.params
-            else 0.94,
+            default=(
+                self.params["smoothing_factor_ewma"]
+                if "smoothing_factor_ewma" in self.params
+                else 0.94
+            ),
             dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )
@@ -3344,9 +3431,11 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-cd",
             "--codependence",
-            default=self.params["co_dependence"]
-            if "co_dependence" in self.params
-            else "pearson",
+            default=(
+                self.params["co_dependence"]
+                if "co_dependence" in self.params
+                else "pearson"
+            ),
             dest="co_dependence",
             help="""The codependence or similarity matrix used to build the
                 distance metric and clusters. Possible values are:
@@ -3362,9 +3451,9 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-cv",
             "--covariance",
-            default=self.params["covariance"]
-            if "covariance" in self.params
-            else "hist",
+            default=(
+                self.params["covariance"] if "covariance" in self.params else "hist"
+            ),
             dest="covariance",
             help="""Method used to estimate covariance matrix. Possible values are
                     'hist': historical method
@@ -3384,9 +3473,9 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-o",
             "--objective",
-            default=self.params["objective"]
-            if "objective" in self.params
-            else "MinRisk",
+            default=(
+                self.params["objective"] if "objective" in self.params else "MinRisk"
+            ),
             dest="objective",
             help="Objective function used to optimize the portfolio",
             choices=statics.NCO_OBJECTIVE_CHOICES,
@@ -3396,9 +3485,11 @@ class PortfolioOptimizationController(BaseController):
             "--risk-aversion",
             type=float,
             dest="risk_aversion",
-            default=self.params["long_allocation"]
-            if "long_allocation" in self.params
-            else 1,
+            default=(
+                self.params["long_allocation"]
+                if "long_allocation" in self.params
+                else 1
+            ),
             help="Risk aversion parameter",
         )
         parser.add_argument(
@@ -3413,9 +3504,11 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-k",
             type=int,
-            default=self.params["amount_clusters"]
-            if "amount_clusters" in self.params
-            else None,
+            default=(
+                self.params["amount_clusters"]
+                if "amount_clusters" in self.params
+                else None
+            ),
             dest="amount_clusters",
             help="Number of clusters specified in advance",
         )
@@ -3423,9 +3516,9 @@ class PortfolioOptimizationController(BaseController):
             "-mk",
             "--max-k",
             type=int,
-            default=self.params["max_clusters"]
-            if "max_clusters" in self.params
-            else 10,
+            default=(
+                self.params["max_clusters"] if "max_clusters" in self.params else 10
+            ),
             dest="max_clusters",
             help="""Max number of clusters used by the two difference gap
             statistic to find the optimal number of clusters. If k is
@@ -3434,9 +3527,9 @@ class PortfolioOptimizationController(BaseController):
         parser.add_argument(
             "-bi",
             "--bins-info",
-            default=self.params["amount_bins"]
-            if "amount_bins" in self.params
-            else "KN",
+            default=(
+                self.params["amount_bins"] if "amount_bins" in self.params else "KN"
+            ),
             dest="amount_bins",
             help="Number of bins used to calculate the variation of information",
             choices=statics.BINS_CHOICES,
@@ -3463,9 +3556,11 @@ class PortfolioOptimizationController(BaseController):
             "-de",
             "--d-ewma",
             type=float,
-            default=self.params["smoothing_factor_ewma"]
-            if "smoothing_factor_ewma" in self.params
-            else 0.94,
+            default=(
+                self.params["smoothing_factor_ewma"]
+                if "smoothing_factor_ewma" in self.params
+                else 0.94
+            ),
             dest="smoothing_factor_ewma",
             help="Smoothing factor for ewma estimators",
         )

@@ -1,4 +1,5 @@
 """DappRadar model"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=C0301,E1137

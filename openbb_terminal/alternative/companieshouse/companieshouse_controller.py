@@ -1,4 +1,5 @@
 """Companies House Controller."""
+
 __docformat__ = "numpy"
 
 import argparse
@@ -21,7 +22,6 @@ logger = logging.getLogger(__name__)
 
 
 class CompaniesHouseController(BaseController):
-
     """Companies House Controller class."""
 
     CHOICES_COMMANDS = [

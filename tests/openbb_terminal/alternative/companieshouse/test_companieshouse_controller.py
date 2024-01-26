@@ -1,4 +1,5 @@
 """Test the companieshouse controller."""
+
 import os
 
 import pytest

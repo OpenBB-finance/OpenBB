@@ -1,4 +1,5 @@
 """Automatic ETS (Error, Trend, Sesonality) View"""
+
 __docformat__ = "numpy"
 
 import logging

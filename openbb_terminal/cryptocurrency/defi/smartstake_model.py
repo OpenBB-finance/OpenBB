@@ -1,4 +1,5 @@
 """SmartStake Model"""
+
 __docformat__ = "numpy"
 
 from typing import Dict, Union

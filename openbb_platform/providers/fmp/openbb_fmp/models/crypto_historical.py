@@ -1,6 +1,5 @@
 """FMP Cryptos Historical Price Model."""
 
-
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -29,9 +28,9 @@ class FMPCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     timeseries: Optional[NonNegativeInt] = Field(
         default=None, description="Number of days to look back."
     )
-    interval: Literal[
-        "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
-    ] = Field(default="1day", description="Data granularity.")
+    interval: Literal["1min", "5min", "15min", "30min", "1hour", "4hour", "1day"] = (
+        Field(default="1day", description="Data granularity.")
+    )
 
 
 class FMPCryptoHistoricalData(CryptoHistoricalData):

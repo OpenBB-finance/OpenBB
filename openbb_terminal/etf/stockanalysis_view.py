@@ -1,4 +1,5 @@
 """StockAnalysis.com view functions"""
+
 __docformat__ = "numpy"
 
 import logging

@@ -1,6 +1,5 @@
 """SEC Schema Files List Model."""
 
-
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.data import Data

@@ -1,4 +1,5 @@
 """Abstract class for the fetcher."""
+
 # ruff: noqa: S101
 # pylint: disable=E1101
 

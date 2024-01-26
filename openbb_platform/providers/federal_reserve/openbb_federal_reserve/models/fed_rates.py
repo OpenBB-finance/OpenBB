@@ -1,4 +1,5 @@
 """Federal Reserve FED Model."""
+
 from datetime import datetime, timedelta
 from io import BytesIO
 from typing import Any, Dict, List, Optional

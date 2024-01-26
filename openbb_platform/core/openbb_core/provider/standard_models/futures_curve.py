@@ -1,6 +1,5 @@
 """Futures Curve Standard Model."""
 
-
 from datetime import date as dateType
 from typing import List, Optional, Set, Union
 

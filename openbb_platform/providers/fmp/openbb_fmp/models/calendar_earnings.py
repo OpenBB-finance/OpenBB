@@ -1,6 +1,5 @@
 """FMP Earnings Calendar Model."""
 
-
 from datetime import (
     date as dateType,
     datetime,

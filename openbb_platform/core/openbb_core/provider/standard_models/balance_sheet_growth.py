@@ -1,6 +1,5 @@
 """Balance Sheet Statement Growth Standard Model."""
 
-
 from datetime import date as dateType
 from typing import List, Optional, Set, Union
 

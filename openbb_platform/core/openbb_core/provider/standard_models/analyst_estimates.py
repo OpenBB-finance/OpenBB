@@ -1,6 +1,5 @@
 """Analyst Estimates Standard Model."""
 
-
 from datetime import date as dateType
 from typing import List, Literal, Set, Union
 

@@ -1,4 +1,5 @@
 """Yahoo Finance Market Indices Model."""
+
 # ruff: noqa: SIM105
 
 

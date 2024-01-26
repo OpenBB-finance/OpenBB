@@ -1,4 +1,5 @@
 """GitHub Model"""
+
 __docformat__ = "numpy"
 # pylint: disable=C0201,W1401
 

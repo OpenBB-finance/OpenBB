@@ -1,4 +1,5 @@
 """Coverage module."""
+
 from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 from openbb_core.api.router.helpers.coverage_helpers import get_route_schema_map
