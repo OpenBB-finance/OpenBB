@@ -1,4 +1,5 @@
 """Terminal helper"""
+
 __docformat__ = "numpy"
 
 import hashlib

@@ -1,4 +1,5 @@
 """Optimization View"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=R0913, R0914, C0302, too-many-branches, too-many-statements, line-too-long

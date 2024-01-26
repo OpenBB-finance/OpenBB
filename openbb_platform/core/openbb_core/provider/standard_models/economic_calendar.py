@@ -1,6 +1,5 @@
 """Economic Calendar Standard Model."""
 
-
 from datetime import (
     date as dateType,
     datetime,

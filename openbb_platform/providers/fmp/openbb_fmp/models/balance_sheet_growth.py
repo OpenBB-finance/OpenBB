@@ -1,6 +1,5 @@
 """FMP Balance Sheet Growth Model."""
 
-
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 

@@ -1,4 +1,5 @@
 """User service."""
+
 import json
 from functools import reduce
 from pathlib import Path

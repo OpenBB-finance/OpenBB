@@ -1,4 +1,5 @@
 """Settings Controller Module"""
+
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD

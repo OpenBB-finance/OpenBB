@@ -1,6 +1,5 @@
 """Index Constituents Standard Model."""
 
-
 from typing import List, Optional, Set, Union
 
 from pydantic import Field, field_validator

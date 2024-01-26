@@ -1,4 +1,5 @@
 """Parent Classes."""
+
 __docformat__ = "numpy"
 
 # pylint: disable=C0301,C0302,R0902,global-statement,too-many-boolean-expressions
@@ -339,9 +340,9 @@ class BaseController(metaclass=ABCMeta):
                                             showline=False,
                                             zeroline=False,
                                             automargin=True,
-                                            ticksuffix="       " * (i - 1)
-                                            if i > 1
-                                            else "",
+                                            ticksuffix=(
+                                                "       " * (i - 1) if i > 1 else ""
+                                            ),
                                             tickfont=dict(
                                                 size=18,
                                                 color=_TerminalStyle().get_colors()[i],
@@ -1695,9 +1696,9 @@ class StockBaseController(BaseController, metaclass=ABCMeta):
                     os.path.dirname(os.path.abspath(__file__)),
                     f"load_{self.ticker}",
                     self.stock.copy(),
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
 
@@ -1841,7 +1842,7 @@ class CryptoBaseController(BaseController, metaclass=ABCMeta):
                     os.path.dirname(os.path.abspath(__file__)),
                     "load",
                     self.current_df.copy(),
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )

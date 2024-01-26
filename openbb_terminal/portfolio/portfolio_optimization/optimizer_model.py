@@ -1,4 +1,5 @@
 """Optimization Model"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=R0913, C0302, E1101, line-too-long

@@ -1,6 +1,5 @@
 """FMP Cash Flow Statement Growth Model."""
 
-
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 

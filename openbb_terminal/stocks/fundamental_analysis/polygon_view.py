@@ -1,4 +1,5 @@
 """Polygon view"""
+
 __docformat__ = "numpy"
 import logging
 import os
@@ -121,9 +122,11 @@ def display_fundamentals(
         print_rich_table(
             fundamentals.applymap(lambda x: "-" if x == "nan" else x),
             show_index=True,
-            title=f"{symbol} {title_str}"
-            if not ratios
-            else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} {title_str}",
+            title=(
+                f"{symbol} {title_str}"
+                if not ratios
+                else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} {title_str}"
+            ),
             export=bool(export),
         )
 

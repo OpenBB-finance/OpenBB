@@ -1,4 +1,5 @@
 """SEC provider module."""
+
 from openbb_core.provider.abstract.provider import Provider
 from openbb_sec.models.cik_map import SecCikMapFetcher
 from openbb_sec.models.company_filings import SecCompanyFilingsFetcher

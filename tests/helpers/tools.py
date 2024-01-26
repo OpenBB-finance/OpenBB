@@ -1,4 +1,5 @@
 """ Test helper """
+
 __docformat__ = "numpy"
 
 import pathlib

@@ -1,4 +1,5 @@
 """Treasury Constant Maturity Model."""
+
 from datetime import (
     date as dateType,
 )

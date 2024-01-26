@@ -1,4 +1,5 @@
 """Ethplorer view"""
+
 __docformat__ = "numpy"
 
 import logging
@@ -47,9 +48,9 @@ def display_address_info(
     df = ethplorer_model.get_address_info(address, sortby=sortby, ascend=ascend)
     df_data = df.copy()
     df["balance"] = df["balance"].apply(
-        lambda x: lambda_very_long_number_formatter(x)
-        if x >= 10000
-        else round(float(x), 4)
+        lambda x: (
+            lambda_very_long_number_formatter(x) if x >= 10000 else round(float(x), 4)
+        )
     )
 
     print_rich_table(
@@ -195,9 +196,9 @@ def display_address_history(
     df = ethplorer_model.get_address_history(address, sortby, ascend)
     df_data = df.copy()
     df["value"] = df["value"].apply(
-        lambda x: lambda_very_long_number_formatter(x)
-        if x >= 10000
-        else round(float(x), 4)
+        lambda x: (
+            lambda_very_long_number_formatter(x) if x >= 10000 else round(float(x), 4)
+        )
     )
 
     print_rich_table(

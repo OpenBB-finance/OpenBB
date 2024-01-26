@@ -1,4 +1,5 @@
 """Reddit View."""
+
 __docformat__ = "numpy"
 
 import io

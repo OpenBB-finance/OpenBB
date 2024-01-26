@@ -1,4 +1,5 @@
 """FRED provider module."""
+
 from openbb_core.provider.abstract.provider import Provider
 from openbb_oecd.models.gdp_forecast import OECDGdpForecastFetcher
 from openbb_oecd.models.gdp_nominal import OECDGdpNominalFetcher

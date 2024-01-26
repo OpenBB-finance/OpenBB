@@ -1,4 +1,5 @@
 """Polygon provider module."""
+
 from openbb_core.provider.abstract.provider import Provider
 from openbb_polygon.models.balance_sheet import PolygonBalanceSheetFetcher
 from openbb_polygon.models.cash_flow import PolygonCashFlowStatementFetcher

@@ -1,4 +1,5 @@
 """Finviz Price Performance Model."""
+
 # pylint: disable=unused-argument
 from typing import Any, Dict, List, Optional
 

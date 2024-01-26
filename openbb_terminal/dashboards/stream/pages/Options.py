@@ -453,9 +453,11 @@ with st.sidebar:
                 if strategy_choice in ("Vertical Call", "Vertical Put"):
                     default_strike_price1 = get_nearest_call_strike(
                         df,
-                        strike_price=df.last_price + 5
-                        if strategy_choice == "Vertical Call"
-                        else df.last_price - 5,
+                        strike_price=(
+                            df.last_price + 5
+                            if strategy_choice == "Vertical Call"
+                            else df.last_price - 5
+                        ),
                     )
                     default_strike_price2 = get_nearest_call_strike(
                         df, strike_price=df.last_price
@@ -751,18 +753,20 @@ if analysis_type == "Charts" and chart_data_type == "Strikes" and ticker_good is
         x=price_data.index,
         y=price_data["Call"],
         mode="lines+markers",
-        name="Calls"
-        if strike_choice == "Single Strike"
-        else f"Calls @ ${_strikes['call']}",
+        name=(
+            "Calls"
+            if strike_choice == "Single Strike"
+            else f"Calls @ ${_strikes['call']}"
+        ),
         marker=dict(color="blue"),
     )
     fig_price_data.add_scatter(
         x=price_data.index,
         y=price_data["Put"],
         mode="lines+markers",
-        name="Puts"
-        if strike_choice == "Single Strike"
-        else f"Puts @ {_strikes['put']}",
+        name=(
+            "Puts" if strike_choice == "Single Strike" else f"Puts @ {_strikes['put']}"
+        ),
         marker=dict(color="red"),
     )
     fig_price_data.update_xaxes(type="category")
