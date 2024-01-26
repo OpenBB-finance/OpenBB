@@ -78,7 +78,7 @@ class OECDSTIRQueryParams(STIRQueryParams):
 
 
 class OECDSTIRData(STIRData):
-    """OECD Real GDP Data."""
+    """OECD Short Term Interest Rate Data."""
 
     @field_validator("date", mode="before")
     @classmethod

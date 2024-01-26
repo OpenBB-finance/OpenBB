@@ -88,7 +88,7 @@ class OECDUnemploymentQueryParams(UnemploymentQueryParams):
 
 
 class OECDUnemploymentData(UnemploymentData):
-    """OECD Real GDP Data."""
+    """OECD Unemployment Data."""
 
     @field_validator("date", mode="before")
     @classmethod

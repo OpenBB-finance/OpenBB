@@ -13,7 +13,7 @@ from openbb_core.provider.utils.descriptions import (
 
 
 class UnemploymentQueryParams(QueryParams):
-    """Real GDP Query."""
+    """Unemployment Query."""
 
     start_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")

@@ -49,7 +49,7 @@ class OECDCLIQueryParams(CLIQueryParams):
 
 
 class OECDCLIData(CLIData):
-    """OECD Real GDP Data."""
+    """OECD CLI Data."""
 
     @field_validator("date", mode="before")
     @classmethod

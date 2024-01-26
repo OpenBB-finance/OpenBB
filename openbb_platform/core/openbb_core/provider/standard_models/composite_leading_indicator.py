@@ -13,7 +13,7 @@ from openbb_core.provider.utils.descriptions import (
 
 
 class CLIQueryParams(QueryParams):
-    """Real GDP Query."""
+    """Composite Leading Indicator Query."""
 
     start_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date")
@@ -24,7 +24,7 @@ class CLIQueryParams(QueryParams):
 
 
 class CLIData(Data):
-    """CLI Data."""
+    """Composite Leading Indicator Data."""
 
     date: Optional[dateType] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("date")
