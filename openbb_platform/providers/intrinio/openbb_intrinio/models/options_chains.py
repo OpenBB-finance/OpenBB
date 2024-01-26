@@ -18,7 +18,6 @@ from openbb_core.provider.utils.helpers import (
     amake_requests,
 )
 from openbb_intrinio.utils.helpers import get_data_many, get_weekday
-from pandas import to_datetime
 from pydantic import Field, field_validator
 
 
@@ -115,13 +114,17 @@ class IntrinioOptionsChainsFetcher(
             return response_data.get("chain", [])
 
         date = datetime.now().date() if query.date is None else query.date
-        date = get_weekday(to_datetime(date))
+        date = get_weekday(date)
 
-        results = await amake_requests(await get_urls(date), callback, **kwargs)
+        results = await amake_requests(
+            await get_urls(date.strftime("%Y-%m-%d")), callback, **kwargs
+        )
 
         if not results:
-            urls = await get_urls(get_weekday(to_datetime(date) - timedelta(days=1)))
-            results = await amake_requests(urls, callback, **kwargs)
+            urls = await get_urls(
+                get_weekday(date - timedelta(days=1)).strftime("%Y-%m-%d")
+            )
+            results = await amake_requests(urls, response_callback=callback, **kwargs)
 
         return results
 
