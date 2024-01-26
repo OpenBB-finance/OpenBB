@@ -51,8 +51,7 @@ class SecSchemaFilesFetcher(Fetcher[SecSchemaFilesQueryParams, SecSchemaFilesDat
     # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        query: SecSchemaFilesQueryParams,
-        data: Dict,
-        **kwargs: Any) -> SecSchemaFilesData:
+        query: SecSchemaFilesQueryParams, data: Dict, **kwargs: Any
+    ) -> SecSchemaFilesData:
         """Transform the data to the standard format."""
         return SecSchemaFilesData.model_validate(data)
