@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 """OECD provider module."""
+=======
+"""FRED provider module."""
+>>>>>>> 13283fbfce (CI listing quick fix (#6002))
 
 from openbb_core.provider.abstract.provider import Provider
 from openbb_oecd.models.composite_leading_indicator import OECDCLIFetcher

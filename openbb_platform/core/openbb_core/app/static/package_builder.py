@@ -386,7 +386,10 @@ class ClassDefinition:
                         if route.openapi_extra
                         else None
                     ),
+<<<<<<< HEAD
                     examples=route.openapi_extra.get("examples", None),
+=======
+>>>>>>> 13283fbfce (CI listing quick fix (#6002))
                 )  # type: ignore
             else:
                 doc += "    /" if path else "    /"
