@@ -72,6 +72,7 @@ class WSJLosersFetcher(Fetcher[WSJLosersQueryParams, List[WSJLosersData]]):
         """Transform query params."""
         return WSJLosersQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: WSJLosersQueryParams,

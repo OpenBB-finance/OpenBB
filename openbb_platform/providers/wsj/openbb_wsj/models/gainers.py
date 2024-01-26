@@ -67,6 +67,7 @@ class WSJGainersData(ETFPerformanceData):
 class WSJGainersFetcher(Fetcher[WSJGainersQueryParams, List[WSJGainersData]]):
     """Transform the query, extract and transform the data from the WSJ endpoints."""
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> WSJGainersQueryParams:
         """Transform query params."""

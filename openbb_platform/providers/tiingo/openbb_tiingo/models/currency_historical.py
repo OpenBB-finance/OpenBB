@@ -57,7 +57,7 @@ class TiingoCurrencyHistoricalFetcher(
 
         return TiingoCurrencyHistoricalQueryParams(**transformed_params)
 
-    # pylint: disable=protected-access
+    # pylint: disable=protected-access,unused-argument
     @staticmethod
     def extract_data(
         query: TiingoCurrencyHistoricalQueryParams,
