@@ -331,6 +331,7 @@ def show_candles(
 
     logger.error("Data not found")
     console.print("[red]Data not found[/red]\n")
+    return None
 
 
 @log_start_end(log=logger)
