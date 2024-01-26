@@ -1,4 +1,5 @@
 """Stock Context Controller."""
+
 __docformat__ = "numpy"
 
 import argparse
@@ -634,9 +635,11 @@ class StocksController(StockBaseController):
                         sources=ns_parser.sources,
                         limit=ns_parser.limit,
                         export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
+                        sheet_name=(
+                            " ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None
+                        ),
                     )
             else:
                 console.print("Use 'load <ticker>' prior to this command!")

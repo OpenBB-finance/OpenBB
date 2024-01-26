@@ -1,4 +1,5 @@
 """Crypto DD SDK helper"""
+
 __docformat__ = "numpy"
 
 import pandas as pd

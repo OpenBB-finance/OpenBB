@@ -1,4 +1,5 @@
 """Portfolio Helper"""
+
 __docformat__ = "numpy"
 
 import csv

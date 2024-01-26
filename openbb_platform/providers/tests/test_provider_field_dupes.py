@@ -1,4 +1,5 @@
 """Test for common fields in the provider models that should be standard."""
+
 import glob
 import importlib
 import inspect

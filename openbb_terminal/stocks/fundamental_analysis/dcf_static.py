@@ -1,4 +1,5 @@
 """ DCF Static """
+
 __docformat__ = "numpy"
 from typing import Dict, List
 

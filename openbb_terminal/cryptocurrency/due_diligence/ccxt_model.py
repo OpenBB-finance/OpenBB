@@ -1,4 +1,5 @@
 """Ccxt model"""
+
 __docformat__ = "numpy"
 
 from typing import Any, Dict, List

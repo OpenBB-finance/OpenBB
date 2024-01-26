@@ -1,4 +1,5 @@
 """ Financial Modeling Prep Model"""
+
 __docformat__ = "numpy"
 import logging
 import warnings

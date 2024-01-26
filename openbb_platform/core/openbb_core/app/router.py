@@ -1,4 +1,5 @@
 """OpenBB Router."""
+
 import traceback
 import warnings
 from functools import lru_cache, partial

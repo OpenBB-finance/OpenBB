@@ -1,4 +1,5 @@
 """Test router.py file."""
+
 # pylint: disable=redefined-outer-name
 # pylint: disable=unused-argument
 

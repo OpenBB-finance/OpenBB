@@ -1,4 +1,5 @@
 """ETF Helper module."""
+
 __docformat__ = "numpy"
 
 import yfinance as yf

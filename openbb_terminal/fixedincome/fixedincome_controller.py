@@ -1,4 +1,5 @@
 """ Futures Controller """
+
 __docformat__ = "numpy"
 
 # pylint:disable=C0302
@@ -179,9 +180,9 @@ class FixedIncomeController(BaseController):
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             elif ns_parser.source == "ECB":
                 ecb_view.plot_estr(
@@ -189,9 +190,9 @@ class FixedIncomeController(BaseController):
                     start_date=ns_parser.start_date,
                     end_date=ns_parser.end_date,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
     @log_start_end(log=logger)
@@ -240,9 +241,9 @@ class FixedIncomeController(BaseController):
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -291,9 +292,9 @@ class FixedIncomeController(BaseController):
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -342,9 +343,9 @@ class FixedIncomeController(BaseController):
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -428,9 +429,9 @@ class FixedIncomeController(BaseController):
                     target=ns_parser.target,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
     @log_start_end(log=logger)
@@ -469,9 +470,9 @@ class FixedIncomeController(BaseController):
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -499,9 +500,9 @@ class FixedIncomeController(BaseController):
                 long_run=ns_parser.long_run,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -550,9 +551,9 @@ class FixedIncomeController(BaseController):
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -602,9 +603,9 @@ class FixedIncomeController(BaseController):
                 interest_type=ns_parser.type,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -684,9 +685,9 @@ class FixedIncomeController(BaseController):
                     end_date=ns_parser.end_date,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
     @log_start_end(log=logger)
@@ -736,9 +737,9 @@ class FixedIncomeController(BaseController):
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -788,9 +789,9 @@ class FixedIncomeController(BaseController):
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -847,9 +848,9 @@ class FixedIncomeController(BaseController):
                 inflation_adjusted=ns_parser.inflation_adjusted,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -923,9 +924,9 @@ class FixedIncomeController(BaseController):
                 any_rating=ns_parser.any_rating,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1010,9 +1011,9 @@ class FixedIncomeController(BaseController):
                     end_date=ns_parser.end_date,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
     @log_start_end(log=logger)
@@ -1115,9 +1116,9 @@ class FixedIncomeController(BaseController):
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1179,9 +1180,9 @@ class FixedIncomeController(BaseController):
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1275,9 +1276,9 @@ class FixedIncomeController(BaseController):
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1351,9 +1352,9 @@ class FixedIncomeController(BaseController):
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1396,9 +1397,9 @@ class FixedIncomeController(BaseController):
                 par=ns_parser.par,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1491,9 +1492,9 @@ class FixedIncomeController(BaseController):
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1539,7 +1540,7 @@ class FixedIncomeController(BaseController):
                 start_date=ns_parser.start_date,
                 end_date=ns_parser.end_date,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )

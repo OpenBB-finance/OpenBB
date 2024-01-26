@@ -1,4 +1,5 @@
 """ Alpha Vantage View """
+
 __docformat__ = "numpy"
 
 import logging
@@ -67,7 +68,7 @@ def display_key(symbol: str, export: str = "", sheet_name: Optional[str] = None)
 
     print_rich_table(
         df_key,
-        headers=[""],
+        headers=[symbol],
         title=f"{symbol} Key Metrics",
         show_index=True,
         export=bool(export),
@@ -163,9 +164,11 @@ def display_income_statement(
         print_rich_table(
             df_income,
             headers=list(df_income.columns),
-            title=f"{symbol} Income Statement"
-            if not ratios
-            else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} Income Statement",
+            title=(
+                f"{symbol} Income Statement"
+                if not ratios
+                else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} Income Statement"
+            ),
             show_index=True,
             export=bool(export),
         )
@@ -260,9 +263,11 @@ def display_balance_sheet(
         print_rich_table(
             df_balance,
             headers=list(df_balance.columns),
-            title=f"{symbol} Balance Sheet"
-            if not ratios
-            else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} Balance Sheet",
+            title=(
+                f"{symbol} Balance Sheet"
+                if not ratios
+                else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} Balance Sheet"
+            ),
             show_index=True,
             export=bool(export),
         )
@@ -355,9 +360,11 @@ def display_cash_flow(
         print_rich_table(
             df_cash,
             headers=list(df_cash.columns),
-            title=f"{symbol} Cash flow"
-            if not ratios
-            else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} Cash flow",
+            title=(
+                f"{symbol} Cash flow"
+                if not ratios
+                else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol} Cash flow"
+            ),
             show_index=True,
             export=bool(export),
         )

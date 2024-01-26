@@ -1,4 +1,5 @@
 """ Nasdaq Model """
+
 __docformat__ = "numpy"
 
 import logging

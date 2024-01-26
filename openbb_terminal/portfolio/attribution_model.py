@@ -1,4 +1,5 @@
 """Attribution Model"""
+
 __docformat__ = "numpy"
 
 import logging
@@ -382,16 +383,16 @@ def get_daily_sector_prices(start_date, end_date) -> dict:
         sector_ticker,
     ) in sp500_tickers.items():  # iterate thru the sectors
         # load the data required from yfinance
-        sp500_tickers_data[
-            sector
-        ] = {  # builds a dictionary entry for the sector with adj close data
-            "sector_data": yf.download(
-                sector_ticker,
-                start=start_date,
-                end=end_date,
-                progress=False,
-                ignore_tz=True,
-            )["Adj Close"]
-        }  # stores the data here
+        sp500_tickers_data[sector] = (
+            {  # builds a dictionary entry for the sector with adj close data
+                "sector_data": yf.download(
+                    sector_ticker,
+                    start=start_date,
+                    end=end_date,
+                    progress=False,
+                    ignore_tz=True,
+                )["Adj Close"]
+            }
+        )  # stores the data here
 
     return sp500_tickers_data

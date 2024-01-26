@@ -1,4 +1,5 @@
 """Yahoo Finance view"""
+
 __docformat__ = "numpy"
 
 import logging

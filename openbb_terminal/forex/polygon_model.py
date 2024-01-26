@@ -1,4 +1,5 @@
 """Polygon.io model"""
+
 __docformat__ = "numpy"
 
 from datetime import datetime
