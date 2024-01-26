@@ -53,6 +53,7 @@ class ECBEUYieldCurveFetcher(
         """Transform query."""
         return ECBEUYieldCurveQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: ECBEUYieldCurveQueryParams,

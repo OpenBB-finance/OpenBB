@@ -60,9 +60,9 @@ class Fetcher(Generic[Q, R]):
         """Transform the provider-specific data."""
         raise NotImplementedError
 
-    def __init_subclass__(cls):
+    def __init_subclass__(cls, *args, **kwargs):
         """Initialize the subclass."""
-        super().__init_subclass__()
+        super().__init_subclass__(*args, **kwargs)
 
         if cls.aextract_data != Fetcher.aextract_data:
             cls.extract_data = cls.aextract_data
