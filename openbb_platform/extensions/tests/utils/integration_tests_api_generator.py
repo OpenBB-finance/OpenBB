@@ -1,4 +1,5 @@
 """Generate API integration tests."""
+
 import argparse
 import os
 from pathlib import Path

@@ -1,4 +1,5 @@
 """Test the registry map."""
+
 # pylint: disable=W0621
 
 import pytest

@@ -1,4 +1,5 @@
 """CoinPaprika view"""
+
 __docformat__ = "numpy"
 
 import logging

@@ -1,4 +1,5 @@
 """SDK Helper Functions"""
+
 __docformat__ = "numpy"
 
 from typing import List, Optional, Union

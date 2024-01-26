@@ -1,4 +1,5 @@
 """Trend Indicators Technical Analysis Model"""
+
 __docformat__ = "numpy"
 
 import logging

@@ -1,4 +1,5 @@
 """Mutual Fund Controller"""
+
 __docformat__ = "numpy"
 
 import argparse

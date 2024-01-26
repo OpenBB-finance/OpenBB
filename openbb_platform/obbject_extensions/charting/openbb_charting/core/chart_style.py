@@ -1,4 +1,5 @@
 """Chart and style helpers for Plotly."""
+
 # pylint: disable=C0302,R0902,W3301
 import json
 import sys

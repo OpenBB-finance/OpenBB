@@ -1,4 +1,5 @@
 """Container class."""
+
 from typing import Any
 
 from openbb_core.app.command_runner import CommandRunner

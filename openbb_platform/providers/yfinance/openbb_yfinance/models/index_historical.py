@@ -1,4 +1,5 @@
 """Yahoo Finance Index Historical Model."""
+
 # ruff: noqa: SIM105
 
 from datetime import datetime, timedelta

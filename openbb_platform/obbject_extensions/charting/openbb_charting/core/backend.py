@@ -1,4 +1,5 @@
 """Backend for Plotly."""
+
 import asyncio
 import atexit
 import json

@@ -1,6 +1,5 @@
 """Ultima Helpers."""
 
-
 from typing import Any, Dict
 
 from openbb_core.provider import helpers

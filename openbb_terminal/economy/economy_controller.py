@@ -1,4 +1,5 @@
 """ Econ Controller """
+
 __docformat__ = "numpy"
 # pylint: disable=C0302 ,R1710,R0904,C0415,too-many-branches,unnecessary-dict-index-lookup
 
@@ -378,37 +379,37 @@ class EconomyController(BaseController):
             if not ns_parser.type:
                 wsj_view.display_overview(
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             elif ns_parser.type == "indices":
                 wsj_view.display_indices(
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             if ns_parser.type == "usbonds":
                 wsj_view.display_usbonds(
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             if ns_parser.type == "glbonds":
                 wsj_view.display_glbonds(
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             if ns_parser.type == "currencies":
                 wsj_view.display_currencies(
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
     @log_start_end(log=logger)
@@ -465,9 +466,11 @@ class EconomyController(BaseController):
                         sortby=ns_parser.sortby,
                         ascend=ns_parser.reverse,
                         export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
+                        sheet_name=(
+                            " ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None
+                        ),
                     )
                 else:
                     console.print(
@@ -478,9 +481,9 @@ class EconomyController(BaseController):
                     console.print("[red]Commodity flag valid with Finviz only.[/red]")
                 wsj_view.display_futures(
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
     @log_start_end(log=logger)
@@ -566,9 +569,9 @@ class EconomyController(BaseController):
                     country_codes=ns_parser.countries,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
     @log_start_end(log=logger)
@@ -638,9 +641,9 @@ class EconomyController(BaseController):
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -712,9 +715,9 @@ class EconomyController(BaseController):
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -795,9 +798,9 @@ class EconomyController(BaseController):
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -856,9 +859,9 @@ class EconomyController(BaseController):
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -920,9 +923,9 @@ class EconomyController(BaseController):
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -996,9 +999,9 @@ class EconomyController(BaseController):
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1097,9 +1100,9 @@ class EconomyController(BaseController):
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1158,9 +1161,9 @@ class EconomyController(BaseController):
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1313,9 +1316,11 @@ class EconomyController(BaseController):
                         symbol=ns_parser.currency,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
+                        sheet_name=(
+                            " ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None
+                        ),
                     )
 
                     self.update_runtime_choices()
@@ -1423,17 +1428,17 @@ class EconomyController(BaseController):
                     limit=ns_parser.limit,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                     get_data=True,
                 )
 
                 if not df.empty:
                     for series_id, data in detail.items():
-                        self.FRED_TITLES[
-                            series_id
-                        ] = f"{data['title']} ({data['units']})"
+                        self.FRED_TITLES[series_id] = (
+                            f"{data['title']} ({data['units']})"
+                        )
 
                         # Making data available at the class level
                         self.DATASETS["fred"][series_id] = df[series_id]
@@ -1600,9 +1605,9 @@ class EconomyController(BaseController):
                     column=ns_parser.column,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                     returns=ns_parser.returns,
                 )
 
@@ -1670,9 +1675,9 @@ class EconomyController(BaseController):
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
             if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
@@ -1775,9 +1780,9 @@ class EconomyController(BaseController):
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1863,9 +1868,9 @@ class EconomyController(BaseController):
                 end_date=ns_parser.end_date,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1970,9 +1975,9 @@ class EconomyController(BaseController):
                 end_date=end_date,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -2045,9 +2050,9 @@ class EconomyController(BaseController):
                     dataset_yaxis_1=dataset_yaxis1,
                     dataset_yaxis_2=dataset_yaxis2,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
     @log_start_end(log=logger)
@@ -2108,9 +2113,9 @@ class EconomyController(BaseController):
                 sortby=self.valuation_sort_cols_dict[ns_parser.sortby],
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -2169,9 +2174,9 @@ class EconomyController(BaseController):
                 sortby=self.performance_sort_dict[ns_parser.sortby],
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -2191,9 +2196,9 @@ class EconomyController(BaseController):
         if ns_parser:
             commodity_view.display_debt(
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
                 limit=ns_parser.limit,
             )
 
@@ -2237,9 +2242,9 @@ class EconomyController(BaseController):
                 show=ns_parser.show,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)

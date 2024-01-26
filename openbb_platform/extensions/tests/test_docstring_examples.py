@@ -1,4 +1,5 @@
 """Test utils."""
+
 import pytest
 
 from extensions.tests.utils.helpers import check_docstring_examples

@@ -150,9 +150,11 @@ class LoggingService(metaclass=SingletonMeta):
                 undefined = "undefined"
 
             return {
-                c: CredentialsDefinition.defined.value
-                if credentials[c]
-                else CredentialsDefinition.undefined.value
+                c: (
+                    CredentialsDefinition.defined.value
+                    if credentials[c]
+                    else CredentialsDefinition.undefined.value
+                )
                 for c in credentials
             }
 

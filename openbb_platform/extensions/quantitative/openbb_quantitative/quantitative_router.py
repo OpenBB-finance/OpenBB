@@ -1,4 +1,5 @@
 """Quantitative Analysis Router."""
+
 from typing import List, Literal
 
 import numpy as np

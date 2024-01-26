@@ -1,4 +1,5 @@
 """Test the integration tests."""
+
 from typing import Literal
 
 from openbb_charting import Charting

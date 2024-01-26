@@ -1,4 +1,5 @@
 """The OBBject."""
+
 from re import sub
 from typing import (
     TYPE_CHECKING,

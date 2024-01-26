@@ -1,4 +1,5 @@
 """Token Terminal Model"""
+
 import logging
 from typing import Dict, List
 
