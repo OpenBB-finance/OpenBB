@@ -232,9 +232,6 @@ class Router:
         api_router = self._api_router
 
         model = kwargs.pop("model", "")
-        # deprecation: Optional[OpenBBDeprecationWarning] = kwargs.pop(
-        #     "deprecation", None
-        # )
 
         if model:
             kwargs["response_model_exclude_unset"] = True
