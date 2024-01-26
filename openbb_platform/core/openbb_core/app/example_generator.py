@@ -14,16 +14,16 @@ from openbb_core.app.provider_interface import ProviderInterface
 #
 # route:
 #   "crypto.historical.price": {
-#       "symbol": "BTCUSD",
+#       "symbol": "CRYPTO_HISTORICAL_PRICE_SYMBOL",
 #   }
 #
 # router:
 #   "crypto": {
-#       "symbol": "ETHUSD",
+#       "symbol": "CRYPTO_SYMBOL",
 #   }
 #
 #   "crypto.historical": {
-#       "symbol": "ETHUSD",
+#       "symbol": "CRYPTO_HISTORICAL_SYMBOL",
 #   }
 #
 # The route has priority over the router.
@@ -88,9 +88,8 @@ class ExampleGenerator:
         keys = key.split(".")
         for i in range(len(keys), 0, -1):
             partial_key = ".".join(keys[:i])
-            if partial_key in pool:
-                if param in pool[partial_key]:
-                    return pool[partial_key][param]
+            if partial_key in pool and param in pool[partial_key]:
+                return pool[partial_key][param]
         return "VALUE_NOT_FOUND"
 
     @classmethod
