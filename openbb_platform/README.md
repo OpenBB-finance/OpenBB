@@ -144,3 +144,4 @@ How to install the platform in editable mode?
   1. Activate your virtual environment
   1. Navigate into the `openbb_platform` folder
   1. Run `python dev_install.py` to install the packages in editable mode
+  

@@ -31,6 +31,16 @@ template: |
 
   ## What's changed 🚀
   $CHANGES
+  categories:
+    - title: 🚀 OpenBB Platform
+      label: 
+        - 'platform'
+        - 'v4'
+    - title: 🐛 OpenBB Platform Bug Fixes
+      label: 
+        - 'bug'
+        - 'platform'
+        - 'v4'
 
   We are proud of our community contributors and staunch supporters of open-source ecosystems.
   Help us promote our community by tagging `@openbb_finance` on X with a link to your pull request,
