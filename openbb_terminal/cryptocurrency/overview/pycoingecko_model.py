@@ -1,4 +1,5 @@
 """CoinGecko model"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=C0301, E1101
@@ -123,9 +124,11 @@ def get_holdings_overview(endpoint: str = "bitcoin") -> List[Union[str, pd.DataF
 
     df.columns = list(
         map(
-            lambda x: lambda_replace_underscores_in_column_names(x)
-            if isinstance(x, str)
-            else x,
+            lambda x: (
+                lambda_replace_underscores_in_column_names(x)
+                if isinstance(x, str)
+                else x
+            ),
             df.columns,
         )
     )
@@ -171,9 +174,11 @@ def get_top_crypto_categories(sort_filter: str = SORT_VALUES[0]) -> pd.DataFrame
         del df["updated_at"]
         df["top_3_coins"] = df["top_3_coins"].apply(lambda_coin_formatter)
         df.columns = [
-            lambda_replace_underscores_in_column_names(col)
-            if isinstance(col, str)
-            else col
+            (
+                lambda_replace_underscores_in_column_names(col)
+                if isinstance(col, str)
+                else col
+            )
             for col in df.columns
         ]
         return df
@@ -468,9 +473,9 @@ def get_global_info() -> pd.DataFrame:
     df = pd.Series(results).reset_index()
     df.columns = ["Metric", "Value"]
     df["Metric"] = df["Metric"].apply(
-        lambda x: lambda_replace_underscores_in_column_names(x)
-        if isinstance(x, str)
-        else x
+        lambda x: (
+            lambda_replace_underscores_in_column_names(x) if isinstance(x, str) else x
+        )
     )
     return df
 
@@ -523,8 +528,8 @@ def get_global_defi_info() -> pd.DataFrame:
     df = pd.Series(results).reset_index()
     df.columns = ["Metric", "Value"]
     df["Metric"] = df["Metric"].apply(
-        lambda x: lambda_replace_underscores_in_column_names(x)
-        if isinstance(x, str)
-        else x
+        lambda x: (
+            lambda_replace_underscores_in_column_names(x) if isinstance(x, str) else x
+        )
     )
     return df

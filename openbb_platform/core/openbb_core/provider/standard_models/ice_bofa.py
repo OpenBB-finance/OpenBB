@@ -1,4 +1,5 @@
 """ICE BofA US Corporate Bond Indices Standard Model."""
+
 from datetime import (
     date as dateType,
 )

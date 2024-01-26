@@ -1,4 +1,5 @@
 """Finviz provider module."""
+
 from openbb_core.provider.abstract.provider import Provider
 from openbb_finviz.models.compare_groups import FinvizCompareGroupsFetcher
 from openbb_finviz.models.equity_profile import FinvizEquityProfileFetcher

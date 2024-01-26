@@ -1,4 +1,5 @@
 """ Nestedcompleter for completion of OpenBB hierarchical data structures. """
+
 from typing import (
     Any,
     Callable,

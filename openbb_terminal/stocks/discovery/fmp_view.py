@@ -1,4 +1,5 @@
 """ Financial Modeling Prep View """
+
 __docformat__ = "numpy"
 
 import datetime

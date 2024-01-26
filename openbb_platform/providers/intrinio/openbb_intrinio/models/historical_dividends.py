@@ -1,4 +1,5 @@
 """Intrinio Historical Dividends Model."""
+
 # pylint: disable=unused-argument
 from datetime import datetime
 from typing import Any, Dict, List, Optional

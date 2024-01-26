@@ -1,4 +1,5 @@
 """Helper to generate urls for Trading Economics API."""
+
 from datetime import date
 from typing import Dict, List
 from urllib.parse import quote, urlencode

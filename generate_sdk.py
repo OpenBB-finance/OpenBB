@@ -1,4 +1,5 @@
 """Generates the sdk files from the trailmaps."""
+
 import os
 import re
 import subprocess  # nosec: B404

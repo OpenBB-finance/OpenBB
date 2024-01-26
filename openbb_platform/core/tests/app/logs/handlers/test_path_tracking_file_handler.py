@@ -1,4 +1,5 @@
 """Test the path_tracking_file_handler.py file."""
+
 # pylint: disable=redefined-outer-name
 
 from pathlib import Path

@@ -1,4 +1,5 @@
 """Cboe Options Chains Model."""
+
 # pylint: disable=invalid-name, unused-argument
 
 from datetime import datetime
