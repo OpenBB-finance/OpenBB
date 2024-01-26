@@ -1,4 +1,5 @@
 """Test the example_generator.py file."""
+
 # pylint: disable=redefined-outer-name, protected-access
 
 

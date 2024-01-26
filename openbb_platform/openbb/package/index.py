@@ -266,7 +266,7 @@ class ROUTER_index(Container):
         >>> obb.index.market(symbol="SPX")
         """  # noqa: E501
 
-        from warnings import warn, simplefilter
+        from warnings import simplefilter, warn
 
         simplefilter("always", DeprecationWarning)
         warn(

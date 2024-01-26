@@ -381,9 +381,11 @@ class ClassDefinition:
                 methods += MethodDefinition.build_command_method(
                     path=route.path,
                     func=route.endpoint,
-                    model_name=route.openapi_extra.get("model", None)
-                    if route.openapi_extra
-                    else None,
+                    model_name=(
+                        route.openapi_extra.get("model", None)
+                        if route.openapi_extra
+                        else None
+                    ),
                     examples=route.openapi_extra.get("examples", None),
                 )  # type: ignore
             else:
