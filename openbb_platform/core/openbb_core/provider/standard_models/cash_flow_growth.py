@@ -20,6 +20,7 @@ class CashFlowStatementGrowthQueryParams(QueryParams):
     limit: int = Field(default=10, description=QUERY_DESCRIPTIONS.get("limit", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):
@@ -117,6 +118,7 @@ class CashFlowStatementGrowthData(Data):
     growth_free_cash_flow: float = Field(description="Growth rate of free cash flow.")
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

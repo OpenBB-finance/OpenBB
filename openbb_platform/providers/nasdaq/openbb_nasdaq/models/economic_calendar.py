@@ -91,6 +91,7 @@ class NasdaqEconomicCalendarFetcher(
 
         return NasdaqEconomicCalendarQueryParams(**transformed_params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: NasdaqEconomicCalendarQueryParams,
@@ -142,11 +143,12 @@ class NasdaqEconomicCalendarFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        query: NasdaqEconomicCalendarQueryParams,  # pylint: disable=unused-argument
+        query: NasdaqEconomicCalendarQueryParams,
         data: List[Dict],
-        **kwargs: Any,  # pylint: disable=unused-argument
+        **kwargs: Any,
     ) -> List[NasdaqEconomicCalendarData]:
         """Return the transformed data."""
         return [NasdaqEconomicCalendarData.model_validate(d) for d in data]

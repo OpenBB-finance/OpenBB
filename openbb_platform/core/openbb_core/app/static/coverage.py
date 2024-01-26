@@ -45,10 +45,8 @@ class Coverage:
     def command_model(self) -> Dict[str, Dict[str, Dict[str, Dict[str, Any]]]]:
         """Return command to model mapping."""
         return {
-            command: self._provider_interface.map[
-                self._command_map.commands_model[command]
-            ]
-            for command in self._command_map.commands_model
+            command: self._provider_interface.map[value]
+            for command, value in self._command_map.commands_model.items()
         }
 
     def command_schemas(self, filter_by_provider: Optional[str] = None):

@@ -23,6 +23,7 @@ class FuturesCurveQueryParams(QueryParams):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

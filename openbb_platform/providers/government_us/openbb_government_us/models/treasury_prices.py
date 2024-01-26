@@ -56,8 +56,9 @@ class GovernmentUSTreasuryPricesFetcher(
 
         return GovernmentUSTreasuryPricesQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
-    async def extract_data(
+    async def aextract_data(
         query: GovernmentUSTreasuryPricesQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
@@ -99,6 +100,7 @@ class GovernmentUSTreasuryPricesFetcher(
         loop = asyncio.get_running_loop()
         return await loop.run_in_executor(None, fetch_data)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: GovernmentUSTreasuryPricesQueryParams,
@@ -133,7 +135,7 @@ class GovernmentUSTreasuryPricesFetcher(
                 )
 
         except Exception as e:
-            raise RuntimeError("No data was returned: " + str(e))
+            raise RuntimeError("No data was returned: " + str(e)) from e
 
         if query.security_type is not None:
             results = results[

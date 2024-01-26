@@ -95,6 +95,7 @@ class ECBEUYieldCurveFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: ECBEUYieldCurveQueryParams, data: list, **kwargs: Any

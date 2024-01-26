@@ -17,6 +17,7 @@ router = Router(prefix="")
 router.include_router(price_router)
 
 
+# pylint: disable=unused-argument
 @router.command(model="CryptoSearch")
 async def search(
     cc: CommandContext,
