@@ -232,30 +232,23 @@ class Router:
 
         model = kwargs.pop("model", "")
         deprecation_message = kwargs.pop("deprecation_message", None)
-        kwargs["openapi_extra"] = kwargs.get("openapi_extra", {})
-
         examples = kwargs.pop("examples", [])
-        if model:
-            pi_map = ProviderInterface().map
-            if model in pi_map:
-                example = ExampleGenerator.generate_example(
-                    route=SignatureInspector.get_operation_id(func, sep="."),
-                    standard_params=ProviderInterface().map[model]["openbb"][
-                        "QueryParams"
-                    ]["fields"],
+        exclude_auto_examples = kwargs.pop("exclude_auto_examples", False)
+
+        if func := SignatureInspector.complete(func, model):
+            if not exclude_auto_examples:
+                examples.insert(
+                    0,
+                    ExampleGenerator.generate(
+                        route=SignatureInspector.get_operation_id(func, sep="."),
+                        model=model,
+                    ),
                 )
-                if example:
-                    examples.insert(0, example)
-                kwargs["response_model_exclude_unset"] = True
-                kwargs["openapi_extra"]["model"] = model
 
-        kwargs["openapi_extra"]["examples"] = examples
-
-        func = SignatureInspector.complete_signature(func, model)
-
-        if func:
-            CommandValidator.check(func=func, model=model)
-
+            kwargs["response_model_exclude_unset"] = True
+            kwargs["openapi_extra"] = kwargs.get("openapi_extra", {})
+            kwargs["openapi_extra"]["model"] = model
+            kwargs["openapi_extra"]["examples"] = examples
             kwargs["operation_id"] = kwargs.get(
                 "operation_id", SignatureInspector.get_operation_id(func)
             )
@@ -314,7 +307,7 @@ class SignatureInspector:
     """Inspect function signature."""
 
     @classmethod
-    def complete_signature(
+    def complete(
         cls, func: Callable[P, OBBject], model: str
     ) -> Optional[Callable[P, OBBject]]:
         """Complete function signature."""
@@ -335,7 +328,6 @@ class SignatureInspector:
                         category=OpenBBWarning,
                     )
                 return None
-
             cls.validate_signature(
                 func,
                 {
