@@ -3,8 +3,8 @@
 __docformat__ = "numpy"
 
 import math
-
 from typing import Optional
+
 import numpy as np
 from scipy.stats import norm
 
