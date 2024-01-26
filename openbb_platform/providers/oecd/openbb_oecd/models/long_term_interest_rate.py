@@ -139,7 +139,7 @@ class OECDLTIRFetcher(Fetcher[OECDLTIRQueryParams, List[OECDLTIRData]]):
         country = "" if query.country == "all" else country_to_code[query.country]
         url = "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_KEI@DF_KEI,4.0/..IRLT...."
         data = helpers.get_possibly_cached_data(
-            url, function="economy_short_term_interest_rate"
+            url, function="economy_long_term_interest_rate"
         )
         query = f"FREQ=='{frequency}'"
         query = query + f" & REF_AREA=='{country}'" if country else query
