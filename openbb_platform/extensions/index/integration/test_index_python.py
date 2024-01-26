@@ -121,11 +121,9 @@ def test_index_constituents(params, obb):
                 "provider": "intrinio",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "symbol": "$DJI",
-                "tag": "level",
+                "symbol": "DJI",
                 "sort": "desc",
                 "limit": 100,
-                "type": None,
             }
         ),
     ],
