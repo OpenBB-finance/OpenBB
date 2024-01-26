@@ -1,4 +1,5 @@
 """Hub manager class."""
+
 from typing import Optional
 
 from fastapi import HTTPException

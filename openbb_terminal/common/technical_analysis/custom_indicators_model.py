@@ -1,4 +1,5 @@
 """Custom Indicator Models"""
+
 __docformat__ = "numpy"
 
 import logging

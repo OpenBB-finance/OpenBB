@@ -1,4 +1,5 @@
 """Test static app factory."""
+
 # pylint: disable=redefined-outer-name
 
 import pytest

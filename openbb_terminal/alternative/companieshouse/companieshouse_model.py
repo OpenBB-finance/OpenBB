@@ -1,4 +1,5 @@
 """  UK Companies House Model """
+
 __docformat__ = "numpy"
 
 import logging
@@ -58,7 +59,7 @@ def get_search_results(searchStr: str, limit: int = 20) -> pd.DataFrame:
     )
     returned_data = r.json()
     company_data = []
-    for index, item in enumerate(returned_data["items"]):
+    for _, item in enumerate(returned_data["items"]):
         company_data.append(
             {
                 "Name": item["title"],
@@ -147,8 +148,8 @@ def get_company_info(company_number: str) -> Company:
 
         data = Company(company_name, pretty_address, pretty_accounts)
         return data
-    else:
-        return Company()
+
+    return Company()
 
 
 @log_start_end(log=logger)
@@ -184,7 +185,7 @@ def get_officers(company_number: str) -> pd.DataFrame:
 
     officers = []
     if returned_data.get("items"):
-        for index, item in enumerate(returned_data["items"]):
+        for _, item in enumerate(returned_data["items"]):
             officers.append(
                 {
                     "Officer Role": (item.get("officer_role") or " - "),
@@ -232,7 +233,7 @@ def get_persons_with_significant_control(company_number: str) -> pd.DataFrame:
 
     controllers = []
     if returned_data.get("items"):
-        for index, item in enumerate(returned_data["items"]):
+        for _, item in enumerate(returned_data["items"]):
             controllers.append(
                 {
                     "Kind": (item.get("kind") or " - "),
@@ -289,7 +290,7 @@ def get_filings(company_number: str, category: str = "", start_index=0) -> Filin
     returned_data = r.json()
 
     filings = []
-    for index, item in enumerate(returned_data["items"]):
+    for _, item in enumerate(returned_data["items"]):
         filings.append(
             {
                 "Category": (item.get("category") or " - "),
@@ -308,8 +309,7 @@ def get_filings(company_number: str, category: str = "", start_index=0) -> Filin
     start_index = int(returned_data.get("start_index"))
     total_count = int(returned_data.get("total_count"))
     end_index = start_index + 100
-    if end_index > total_count:
-        end_index = total_count
+    end_index = min(end_index, total_count)
     data = Filing_data(pd.DataFrame(filings), start_index, end_index, total_count)
 
     return data
@@ -389,10 +389,9 @@ def get_filing_document(company_number: str, transactionID: str) -> CompanyDocum
         return CompanyDocument(
             category, date, description, paper_filed, pages, transaction_id, content
         )
-    else:
-        return CompanyDocument(
-            category, date, description, paper_filed, pages, transaction_id, content
-        )
+    return CompanyDocument(
+        category, date, description, paper_filed, pages, transaction_id, content
+    )
 
 
 @log_start_end(log=logger)
@@ -410,11 +409,11 @@ def get_charges(company_number: str) -> pd.DataFrame:
     returned_data = r.json()
 
     charges = pd.DataFrame()
-    for index, item in enumerate(returned_data["items"]):
+    for _, item in enumerate(returned_data["items"]):
         url = item.get("links").get("self")
-        id = url[url.rfind("/") + 1 :]
+        id_ = url[url.rfind("/") + 1 :]
         charges = pd.concat(
-            [charges, get_charge(company_number, id)], ignore_index=True
+            [charges, get_charge(company_number, id_)], ignore_index=True
         )
 
     return charges

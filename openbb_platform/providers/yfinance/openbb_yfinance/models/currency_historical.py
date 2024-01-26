@@ -1,4 +1,5 @@
 """Yahoo Finance Currency Price Model."""
+
 # ruff: noqa: SIM105
 
 

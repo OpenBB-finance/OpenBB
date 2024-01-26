@@ -1,4 +1,5 @@
 """Fixed Income Router."""
+
 # pylint: disable=W0613:unused-argument
 
 from openbb_core.app.model.command_context import CommandContext

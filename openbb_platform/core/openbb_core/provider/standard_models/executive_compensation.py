@@ -1,6 +1,5 @@
 """Executive Compensation Standard Model."""
 
-
 from datetime import (
     date as dateType,
     datetime,

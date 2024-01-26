@@ -1,4 +1,5 @@
 """Linters for the package."""
+
 import shutil
 import subprocess
 from pathlib import Path

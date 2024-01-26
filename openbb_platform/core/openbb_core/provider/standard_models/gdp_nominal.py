@@ -1,4 +1,5 @@
 """Nominal GDP Standard Model."""
+
 from datetime import date as dateType
 from typing import Literal, Optional
 

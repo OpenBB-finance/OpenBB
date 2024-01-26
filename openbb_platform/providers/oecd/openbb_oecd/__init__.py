@@ -1,4 +1,5 @@
 """OECD provider module."""
+
 from openbb_core.provider.abstract.provider import Provider
 from openbb_oecd.models.composite_leading_indicator import OECDCLIFetcher
 from openbb_oecd.models.gdp_forecast import OECDGdpForecastFetcher

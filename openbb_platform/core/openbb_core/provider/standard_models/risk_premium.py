@@ -1,6 +1,5 @@
 """Risk Premium Standard Model."""
 
-
 from typing import Optional
 
 from pydantic import Field, NonNegativeFloat, PositiveFloat

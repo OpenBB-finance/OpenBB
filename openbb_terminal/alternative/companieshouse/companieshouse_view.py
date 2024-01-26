@@ -1,4 +1,5 @@
 """ UK Companies House View """
+
 __docformat__ = "numpy"
 
 import logging
@@ -56,7 +57,7 @@ def display_search(search_str: str, limit: int, export: str = "") -> None:
 
 
 @log_start_end(log=logger)
-def display_company_info(company_number: str, export: str = "") -> Company:
+def display_company_info(company_number: str) -> Company:
     """Display company search results.
 
     Parameters
@@ -186,7 +187,7 @@ def display_filings(
 
 
 def download_filing_document(
-    company_number: str, company_name: str, transactionID: str, export: str = ""
+    company_number: str, company_name: str, transactionID: str
 ) -> None:
     """Download company's filing document.
 

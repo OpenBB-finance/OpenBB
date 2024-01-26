@@ -1,4 +1,5 @@
 """ FRED view """
+
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD
@@ -271,9 +272,9 @@ def plot_sofr(
     )
 
     fig = OpenBBFigure(
-        yaxis_title="Yield (%)"
-        if series_id != "SOFRINDEX"
-        else "Index [Base = 04-2018]"
+        yaxis_title=(
+            "Yield (%)" if series_id != "SOFRINDEX" else "Index [Base = 04-2018]"
+        )
     )
     fig.set_title(ID_TO_NAME_SOFR[series_id])
 
@@ -1244,9 +1245,7 @@ def plot_icebofa(
     title = (
         ""
         if df.empty
-        else "ICE BofA Bond Benchmark Indices"
-        if len(df.columns) > 1
-        else df.columns[0]
+        else "ICE BofA Bond Benchmark Indices" if len(df.columns) > 1 else df.columns[0]
     )
 
     fig = OpenBBFigure(yaxis_title="Yield (%)" if units == "percent" else "Index")
