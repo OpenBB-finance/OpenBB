@@ -1,4 +1,5 @@
 """Quantitative Analysis Controller Module"""
+
 __docformat__ = "numpy"
 
 import argparse
@@ -241,9 +242,9 @@ class QaController(StockBaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -267,9 +268,9 @@ class QaController(StockBaseController):
             qa_view.display_summary(
                 data=self.stock,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -368,9 +369,9 @@ class QaController(StockBaseController):
                 symbol=self.ticker,
                 target=self.target,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -438,9 +439,9 @@ class QaController(StockBaseController):
                 target=self.target,
                 multiplicative=ns_parser.multiplicative,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -460,12 +461,14 @@ class QaController(StockBaseController):
             dest="threshold",
             type=float,
             default=(
-                max(self.stock[self.target].values)
-                - min(self.stock[self.target].values)
-            )
-            / 40
-            if not self.stock.empty
-            else 0,
+                (
+                    max(self.stock[self.target].values)
+                    - min(self.stock[self.target].values)
+                )
+                / 40
+                if not self.stock.empty
+                else 0
+            ),
             help="threshold",
         )
         parser.add_argument(
@@ -474,12 +477,14 @@ class QaController(StockBaseController):
             dest="drift",
             type=float,
             default=(
-                max(self.stock[self.target].values)
-                - min(self.stock[self.target].values)
-            )
-            / 80
-            if not self.stock.empty
-            else 0,
+                (
+                    max(self.stock[self.target].values)
+                    - min(self.stock[self.target].values)
+                )
+                / 80
+                if not self.stock.empty
+                else 0
+            ),
             help="drift",
         )
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
@@ -563,9 +568,9 @@ class QaController(StockBaseController):
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -600,9 +605,9 @@ class QaController(StockBaseController):
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -655,9 +660,9 @@ class QaController(StockBaseController):
                 window=ns_parser.n_window,
                 quantile=ns_parser.f_quantile,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -698,9 +703,9 @@ class QaController(StockBaseController):
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -741,9 +746,9 @@ class QaController(StockBaseController):
                 target=self.target,
                 window=ns_parser.n_window,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -830,9 +835,9 @@ class QaController(StockBaseController):
                 fuller_reg=ns_parser.fuller_reg,
                 kpss_reg=ns_parser.kpss_reg,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -892,9 +897,9 @@ class QaController(StockBaseController):
                 data=self.stock,
                 interval=interval,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)

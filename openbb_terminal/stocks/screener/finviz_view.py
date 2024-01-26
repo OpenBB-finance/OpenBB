@@ -1,4 +1,5 @@
 """ Finviz View """
+
 __docformat__ = "numpy"
 
 import difflib

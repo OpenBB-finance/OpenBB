@@ -1,4 +1,5 @@
 """App factory."""
+
 from typing import Optional, Type, TypeVar
 
 from openbb_core.app.command_runner import CommandRunner

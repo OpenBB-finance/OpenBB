@@ -1,6 +1,5 @@
 """Earnings Call Transcript Standard Model."""
 
-
 from datetime import datetime
 from typing import List, Set, Union
 

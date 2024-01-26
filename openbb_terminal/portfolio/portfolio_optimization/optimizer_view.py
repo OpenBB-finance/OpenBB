@@ -1,4 +1,5 @@
 """Optimization View"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=R0913, R0914, C0302, too-many-branches, too-many-statements, line-too-long
@@ -379,9 +380,11 @@ def display_weights_sa(weights: dict, weights_sa: dict):
         weight_df["value s.a."]
         .astype(str)
         .apply(
-            lambda s: " " * (len("value s.a.") - len(s)) + s
-            if len(s) < len("value s.a.")
-            else "" + s
+            lambda s: (
+                " " * (len("value s.a.") - len(s)) + s
+                if len(s) < len("value s.a.")
+                else "" + s
+            )
         )
     )
     weight_df["value vs value s.a."] = (weight_df["value vs value s.a."] * 100).apply(
@@ -391,9 +394,11 @@ def display_weights_sa(weights: dict, weights_sa: dict):
         weight_df["value vs value s.a."]
         .astype(str)
         .apply(
-            lambda s: " " * (len("value vs value s.a.") - len(s)) + s
-            if len(s) < len("value vs value s.a.")
-            else "" + s
+            lambda s: (
+                " " * (len("value vs value s.a.") - len(s)) + s
+                if len(s) < len("value vs value s.a.")
+                else "" + s
+            )
         )
     )
 
@@ -449,9 +454,11 @@ def display_categories(
         df["CURRENT_WEIGHTS"]
         .astype(str)
         .apply(
-            lambda s: " " * (len("CURRENT_WEIGHTS") - len(s)) + s
-            if len(s) < len("CURRENT_WEIGHTS")
-            else "" + s
+            lambda s: (
+                " " * (len("CURRENT_WEIGHTS") - len(s)) + s
+                if len(s) < len("CURRENT_WEIGHTS")
+                else "" + s
+            )
         )
     )
     df["CURRENT_INVESTED_AMOUNT"] = (
@@ -461,9 +468,11 @@ def display_categories(
         df["CURRENT_INVESTED_AMOUNT"]
         .astype(str)
         .apply(
-            lambda s: " " * (len("CURRENT_INVESTED_AMOUNT") - len(s)) + s
-            if len(s) < len("CURRENT_INVESTED_AMOUNT")
-            else "" + s
+            lambda s: (
+                " " * (len("CURRENT_INVESTED_AMOUNT") - len(s)) + s
+                if len(s) < len("CURRENT_INVESTED_AMOUNT")
+                else "" + s
+            )
         )
     )
 
@@ -554,9 +563,11 @@ def display_categories_sa(
         table_df["value s.a."]
         .astype(str)
         .apply(
-            lambda s: " " * (len("value s.a.") - len(s)) + s
-            if len(s) < len("value s.a.")
-            else "" + s
+            lambda s: (
+                " " * (len("value s.a.") - len(s)) + s
+                if len(s) < len("value s.a.")
+                else "" + s
+            )
         )
     )
     table_df["value vs value s.a."] = (table_df["value vs value s.a."] * 100).apply(
@@ -566,9 +577,11 @@ def display_categories_sa(
         table_df["value vs value s.a."]
         .astype(str)
         .apply(
-            lambda s: " " * (len("value vs value s.a.") - len(s)) + s
-            if len(s) < len("value vs value s.a.")
-            else "" + s
+            lambda s: (
+                " " * (len("value vs value s.a.") - len(s)) + s
+                if len(s) < len("value vs value s.a.")
+                else "" + s
+            )
         )
     )
     table_df["CURRENT_WEIGHTS"] = (table_df["CURRENT_WEIGHTS"] * 100).apply(
@@ -578,9 +591,11 @@ def display_categories_sa(
         table_df["CURRENT_WEIGHTS"]
         .astype(str)
         .apply(
-            lambda s: " " * (len("CURRENT_WEIGHTS") - len(s)) + s
-            if len(s) < len("CURRENT_WEIGHTS")
-            else "" + s
+            lambda s: (
+                " " * (len("CURRENT_WEIGHTS") - len(s)) + s
+                if len(s) < len("CURRENT_WEIGHTS")
+                else "" + s
+            )
         )
     )
     table_df["CURRENT_INVESTED_AMOUNT"] = (
@@ -590,9 +605,11 @@ def display_categories_sa(
         table_df["CURRENT_INVESTED_AMOUNT"]
         .astype(str)
         .apply(
-            lambda s: " " * (len("CURRENT_INVESTED_AMOUNT") - len(s)) + s
-            if len(s) < len("CURRENT_INVESTED_AMOUNT")
-            else "" + s
+            lambda s: (
+                " " * (len("CURRENT_INVESTED_AMOUNT") - len(s)) + s
+                if len(s) < len("CURRENT_INVESTED_AMOUNT")
+                else "" + s
+            )
         )
     )
 

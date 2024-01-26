@@ -1,4 +1,5 @@
 """ EconDB View """
+
 __docformat__ = "numpy"
 # pylint:disable=too-many-arguments,unused-argument
 import logging

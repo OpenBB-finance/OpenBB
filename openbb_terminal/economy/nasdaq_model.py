@@ -1,4 +1,5 @@
 """NASDAQ Data Link Model"""
+
 __docformat__ = "numpy"
 
 import argparse

@@ -1,4 +1,5 @@
 """User settings model."""
+
 from pydantic import Field
 
 from openbb_core.app.model.abstract.tagged import Tagged

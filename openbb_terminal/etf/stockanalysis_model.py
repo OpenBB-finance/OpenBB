@@ -1,4 +1,5 @@
 """Stockanalysis.com/etf Model"""
+
 __docformat__ = "numpy"
 
 import logging

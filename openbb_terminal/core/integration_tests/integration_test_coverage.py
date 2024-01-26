@@ -513,9 +513,11 @@ def display_uncovered_commands(
         df = pd.DataFrame()
         df["Command"] = missing_commands
         df["Missing params"] = [  # pylint: disable=unsupported-assignment-operation
-            "all params missing"
-            if command in untested_commands
-            else missing_params[command]
+            (
+                "all params missing"
+                if command in untested_commands
+                else missing_params[command]
+            )
             for command in missing_commands
         ]
         df["Coverage"] = [

@@ -1,6 +1,5 @@
 """Alpha Vantage Equity Historical Price Model."""
 
-
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 

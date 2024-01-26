@@ -1,4 +1,5 @@
 """Keys model"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines

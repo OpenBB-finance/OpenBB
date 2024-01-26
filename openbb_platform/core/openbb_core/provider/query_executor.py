@@ -1,4 +1,5 @@
 """Query executor module."""
+
 from typing import Any, Dict, Optional, Type
 
 from pydantic import SecretStr
