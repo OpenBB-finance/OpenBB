@@ -1,6 +1,5 @@
 """Euro Area Yield Curve Standard Model."""
 
-
 from datetime import date as dateType
 from typing import Literal, Optional
 
@@ -17,11 +16,11 @@ class EUYieldCurveQueryParams(QueryParams):
     date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("date", "")
     )
-    yield_curve_type: Literal[
-        "spot_rate", "instantaneous_forward", "par_yield"
-    ] = Field(
-        default="spot_rate",
-        description="The yield curve type.",
+    yield_curve_type: Literal["spot_rate", "instantaneous_forward", "par_yield"] = (
+        Field(
+            default="spot_rate",
+            description="The yield curve type.",
+        )
     )
 
 

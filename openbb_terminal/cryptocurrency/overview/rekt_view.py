@@ -1,4 +1,5 @@
 """Rekt view"""
+
 import logging
 import os
 from typing import Optional

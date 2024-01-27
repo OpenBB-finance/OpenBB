@@ -111,7 +111,8 @@ async def plot_indicators(
     for ticker in tickers:
         df_ticker = st.session_state["indicators_dfs"][ticker]
         df_ticker["% Change"] = df_ticker["Close"].apply(
-            lambda x: (x - df_ticker["Close"].iloc[0]) / df_ticker["Close"].iloc[0]
+            lambda x, df_ticker=df_ticker: (x - df_ticker["Close"].iloc[0])
+            / df_ticker["Close"].iloc[0]
         )
 
         fig.add_scatter(
@@ -160,9 +161,10 @@ async def plot_indicators(
         annotation.xshift += -5
 
     min_max = {"min": data["Low"].min(), "max": data["High"].max()}
-    for attr in min_max:
-        if hasattr(min_max[attr], attr):
-            min_max[attr] = getattr(min_max[attr], attr)()
+
+    for attr, val in min_max.items():
+        if hasattr(val, attr):
+            min_max[attr] = getattr(val, attr)()
 
     y_min, y_max = min_max["min"], min_max["max"]
     y_range = y_max - y_min
@@ -189,7 +191,7 @@ async def plot_indicators(
 
 
 class Handler:
-    def __init__(self, loop: asyncio.AbstractEventLoop):
+    def __init__(self, loop_: asyncio.AbstractEventLoop):
         default_args = {
             "last_tickers": "",
             "last_interval": "1d",
@@ -212,10 +214,10 @@ class Handler:
         for key, value in default_opts.items():
             load_state(key, value)
 
-        self.loop = loop
+        self.loop = loop_
 
-        global MAIN_LOOP  # noqa
-        MAIN_LOOP = loop
+        global MAIN_LOOP  # pylint: disable=W0603 # noqa: PLW0603
+        MAIN_LOOP = loop_
 
     # pylint: disable=R0913
     async def handle_changes(
@@ -326,7 +328,7 @@ class Handler:
         if interval == "1d":
             kwargs.update(dict(start_date=start, end_date=end))
         else:
-            end + timedelta(days=1)
+            end += timedelta(days=1)
             kwargs.update(dict(interval=int(interval.replace("m", ""))))  # type: ignore
 
         with patch.object(console, "print", special_st):
@@ -335,7 +337,8 @@ class Handler:
         if df.empty:
             with logger.container():
                 st.error(
-                    f"Could not load data for {ticker}. Is it a valid ticker?", icon="❗"
+                    f"Could not load data for {ticker}. Is it a valid ticker?",
+                    icon="❗",
                 )
                 await asyncio.sleep(2)
             return pd.DataFrame()
@@ -369,7 +372,7 @@ class Handler:
             ("indicators_last_source", source),
         ]
         new_params = any(
-            [st.session_state.get(key, None) != value for key, value in check_last]
+            st.session_state.get(key, None) != value for key, value in check_last
         )
         if new_params:
             st.session_state["indicators_dfs"] = {}
@@ -379,9 +382,9 @@ class Handler:
 
         for ticker in tickers:
             if ticker not in st.session_state["indicators_dfs"]:
-                st.session_state["indicators_dfs"][
-                    ticker
-                ] = await self.load_ticker_data(ticker, interval, start, end, source)
+                st.session_state["indicators_dfs"][ticker] = (
+                    await self.load_ticker_data(ticker, interval, start, end, source)
+                )
                 if st.session_state["indicators_dfs"][ticker].empty:
                     indicators_dfs = st.session_state["indicators_dfs"]
                     del indicators_dfs[ticker]
@@ -409,21 +412,20 @@ class Handler:
             if indicator not in indicators:
                 st.session_state["indicators_args"][indicator] = {}
 
-        if not indicators:
-            return None
-        with options_col.container().form("indicators_form", clear_on_submit=True):
-            st.write("Select window lengths:")
-            for indicator in indicators:
-                st.multiselect(
-                    f"{indicator.upper()} Lengths",
-                    options=[7, 10, 20, 50, 100, 200],
-                    key=f"{indicator}_length",
+        if indicators:
+            with options_col.container().form("indicators_form", clear_on_submit=True):
+                st.write("Select window lengths:")
+                for indicator in indicators:
+                    st.multiselect(
+                        f"{indicator.upper()} Lengths",
+                        options=[7, 10, 20, 50, 100, 200],
+                        key=f"{indicator}_length",
+                    )
+                st.form_submit_button(
+                    "Submit",
+                    on_click=self.on_length_submit,
+                    args=(indicators,),
                 )
-            st.form_submit_button(
-                "Submit",
-                on_click=self.on_length_submit,
-                args=(indicators,),
-            )
 
     def on_length_submit(self, indicators: list):
         """Handle the length submit"""

@@ -1,4 +1,5 @@
 """Cboe Equity Info Model."""
+
 # pylint: disable=invalid-name,too-many-locals, expression-not-assigned
 from typing import Any, Dict, List, Optional
 

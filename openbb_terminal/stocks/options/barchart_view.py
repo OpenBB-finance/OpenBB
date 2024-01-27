@@ -1,4 +1,5 @@
 """Helper functions for scraping options data"""
+
 __docformat__ = "numpy"
 
 import logging

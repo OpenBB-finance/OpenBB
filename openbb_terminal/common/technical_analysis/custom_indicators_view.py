@@ -1,4 +1,5 @@
 """Custom TA indicators"""
+
 __docformat__ = "numpy"
 
 import logging

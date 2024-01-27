@@ -1,4 +1,5 @@
 """CBOE Model Functions"""
+
 __docformat__ = "numpy"
 
 from typing import Tuple

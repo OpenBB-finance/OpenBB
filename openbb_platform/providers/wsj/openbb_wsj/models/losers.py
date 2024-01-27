@@ -78,6 +78,7 @@ class WSJLosersFetcher(Fetcher[WSJLosersQueryParams, List[WSJLosersData]]):
         """Transform query params."""
         return WSJLosersQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: WSJLosersQueryParams,
@@ -105,8 +106,8 @@ class WSJLosersFetcher(Fetcher[WSJLosersQueryParams, List[WSJLosersData]]):
         data = data[: query.limit]
         data = sorted(
             data,
-            key=lambda x: x["percentChange"]
-            if query.sort == "desc"
-            else -x["percentChange"],
+            key=lambda x: (
+                x["percentChange"] if query.sort == "desc" else -x["percentChange"]
+            ),
         )
         return [WSJLosersData.model_validate(d) for d in data]

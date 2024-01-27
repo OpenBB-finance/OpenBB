@@ -1,4 +1,5 @@
 """Federal Reserve FED Model."""
+
 from datetime import datetime, timedelta
 from io import BytesIO
 from typing import Any, Dict, List, Optional
@@ -38,6 +39,7 @@ class FederalReserveFEDFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FederalReserveFEDQueryParams:
+        """Transform query."""
         transformed_params = params
         now = datetime.now().date()
         if params.get("start_date") is None:
@@ -46,9 +48,9 @@ class FederalReserveFEDFetcher(
         if params.get("end_date") is None:
             transformed_params["end_date"] = now
 
-        """Transform query."""
         return FederalReserveFEDQueryParams(**transformed_params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: FederalReserveFEDQueryParams,
@@ -70,6 +72,7 @@ class FederalReserveFEDFetcher(
 
         return df.to_dict(orient="records")
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: FederalReserveFEDQueryParams, data: dict, **kwargs: Any

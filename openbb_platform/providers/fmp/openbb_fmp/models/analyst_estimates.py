@@ -1,6 +1,5 @@
 """FMP Analyst Estimates Model."""
 
-
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher

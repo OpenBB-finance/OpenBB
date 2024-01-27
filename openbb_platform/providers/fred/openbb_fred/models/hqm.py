@@ -1,6 +1,5 @@
 """FRED High Quality Market Corporate Bond Model."""
 
-
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 

@@ -1,4 +1,5 @@
 """Test the realestate controller."""
+
 import os
 
 import pytest

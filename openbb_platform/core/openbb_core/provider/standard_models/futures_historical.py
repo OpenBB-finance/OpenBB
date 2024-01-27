@@ -1,6 +1,5 @@
 """Futures Historical Price Standard Model."""
 
-
 from datetime import date, datetime
 from typing import List, Optional, Set, Union
 

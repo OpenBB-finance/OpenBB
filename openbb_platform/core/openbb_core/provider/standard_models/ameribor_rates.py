@@ -1,6 +1,5 @@
 """AMERIBOR Standard Model."""
 
-
 from datetime import date as dateType
 from typing import Optional
 

@@ -390,9 +390,11 @@ def display_stats(
             )
             fig.add_bar(
                 x=stats_df.index,
-                y=stats_df["% of Total Volume"]
-                if oi is False
-                else stats_df["% of Total OI"],
+                y=(
+                    stats_df["% of Total Volume"]
+                    if oi is False
+                    else stats_df["% of Total OI"]
+                ),
                 name=f"% of Total {stat_type}",
                 orientation="v",
             )

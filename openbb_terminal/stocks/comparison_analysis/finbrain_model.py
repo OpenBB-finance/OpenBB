@@ -1,4 +1,5 @@
 """ Comparison Analysis FinBrain Model """
+
 __docformat__ = "numpy"
 
 import logging

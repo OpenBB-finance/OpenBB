@@ -1,6 +1,5 @@
 """Polygon Crypto Historical Price Model."""
 
-
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -24,9 +23,9 @@ class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     multiplier: PositiveInt = Field(
         default=1, description="Multiplier of the timespan."
     )
-    timespan: Literal[
-        "minute", "hour", "day", "week", "month", "quarter", "year"
-    ] = Field(default="day", description="Timespan of the data.")
+    timespan: Literal["minute", "hour", "day", "week", "month", "quarter", "year"] = (
+        Field(default="day", description="Timespan of the data.")
+    )
     sort: Literal["asc", "desc"] = Field(
         default="desc", description="Sort order of the data."
     )

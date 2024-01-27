@@ -1,6 +1,5 @@
 """Price Target Standard Model."""
 
-
 from datetime import datetime
 from typing import List, Optional, Set, Union
 

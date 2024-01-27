@@ -1,4 +1,5 @@
 """Test the standard models."""
+
 # pylint: disable=W0401
 
 import inspect

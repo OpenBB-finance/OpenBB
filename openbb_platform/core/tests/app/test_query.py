@@ -1,4 +1,5 @@
 """Test the Query class."""
+
 # pylint: disable=redefined-outer-name
 
 from dataclasses import dataclass

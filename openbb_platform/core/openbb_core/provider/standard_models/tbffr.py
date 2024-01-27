@@ -1,4 +1,5 @@
 """Selected Treasury Bill Standard Model."""
+
 from datetime import (
     date as dateType,
 )

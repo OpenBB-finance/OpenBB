@@ -1,4 +1,5 @@
 """The BitQuery view"""
+
 __docformat__ = "numpy"
 
 import logging

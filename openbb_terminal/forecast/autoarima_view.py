@@ -1,4 +1,5 @@
 """Automatic ARIMA View"""
+
 __docformat__ = "numpy"
 
 import logging

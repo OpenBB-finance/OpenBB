@@ -1,4 +1,5 @@
 """Trading Hours Controller."""
+
 __docformat__ = "numpy"
 
 import argparse
@@ -34,7 +35,6 @@ logger = logging.getLogger(__name__)
 
 
 class TradingHoursController(BaseController):
-
     """Trading Hours Controller class."""
 
     CHOICES_COMMANDS = ["symbol", "open", "closed", "all", "exchange", "holidays"]

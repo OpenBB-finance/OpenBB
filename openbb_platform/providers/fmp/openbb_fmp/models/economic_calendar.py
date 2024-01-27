@@ -1,6 +1,5 @@
 """FMP Economic Calendar Model."""
 
-
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -94,8 +93,10 @@ class FMPEconomicCalendarFetcher(
 
         return await amake_request(url, **kwargs)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
+        query: FMPEconomicCalendarQueryParams,
         data: List[Dict],
         **kwargs: Any,
     ) -> List[FMPEconomicCalendarData]:

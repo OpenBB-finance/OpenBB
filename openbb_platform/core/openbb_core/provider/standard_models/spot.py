@@ -1,4 +1,5 @@
 """Spot Rate Standard Model."""
+
 from datetime import (
     date as dateType,
 )
