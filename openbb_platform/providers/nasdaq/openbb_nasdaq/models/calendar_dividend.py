@@ -26,7 +26,7 @@ class NasdaqCalendarDividendData(CalendarDividendData):
 
     __alias_dict__ = {
         "name": "companyName",
-        "date": "dividend_Ex_Date",
+        "ex_dividend_date": "dividend_Ex_Date",
         "payment_date": "payment_Date",
         "record_date": "record_Date",
         "declaration_date": "announcement_Date",
@@ -40,7 +40,7 @@ class NasdaqCalendarDividendData(CalendarDividendData):
     )
 
     @field_validator(
-        "date",
+        "ex_dividend_date",
         "record_date",
         "payment_date",
         "declaration_date",
@@ -115,4 +115,7 @@ class NasdaqCalendarDividendFetcher(
         **kwargs: Any,  # pylint: disable=unused-argument
     ) -> List[NasdaqCalendarDividendData]:
         """Return the transformed data."""
-        return [NasdaqCalendarDividendData.model_validate(d) for d in data]
+        return [
+            NasdaqCalendarDividendData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["dividend_Ex_Date"], reverse=True)
+        ]

@@ -27,6 +27,11 @@ class FMPHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
 class FMPHistoricalDividendsData(HistoricalDividendsData):
     """FMP Historical Dividends Data."""
 
+    __alias_dict__ = {
+        "ex_dividend_date": "date",
+        "amount": "dividend",
+    }
+
     label: str = Field(description="Label of the historical dividends.")
     adj_dividend: float = Field(
         description="Adjusted dividend of the historical dividends."
@@ -48,6 +53,7 @@ class FMPHistoricalDividendsData(HistoricalDividendsData):
         "declaration_date",
         "record_date",
         "payment_date",
+        "ex_dividend_date",
         mode="before",
         check_fields=False,
     )
