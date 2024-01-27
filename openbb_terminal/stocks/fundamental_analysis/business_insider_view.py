@@ -1,4 +1,5 @@
 """ Business Insider View """
+
 __docformat__ = "numpy"
 
 import logging
@@ -159,11 +160,11 @@ def display_price_target_from_analysts(
     )
 
     colors = df_analyst_plot["Rating"].apply(
-        lambda x: theme.up_color
-        if x == "BUY"
-        else theme.down_color
-        if x == "SELL"
-        else "#b3a8a8"
+        lambda x: (
+            theme.up_color
+            if x == "BUY"
+            else theme.down_color if x == "SELL" else "#b3a8a8"
+        )
     )
 
     fig.add_scatter(

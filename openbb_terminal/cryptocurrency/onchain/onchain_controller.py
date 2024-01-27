@@ -1,4 +1,5 @@
 """Onchain Controller Module"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=C0302
@@ -173,9 +174,9 @@ class OnchainController(BaseController):
                 start_date=ns_parser.since.strftime("%Y-%m-%d"),
                 end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -217,9 +218,9 @@ class OnchainController(BaseController):
                 start_date=ns_parser.since.strftime("%Y-%m-%d"),
                 end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -287,9 +288,9 @@ class OnchainController(BaseController):
                 start_date=ns_parser.since.strftime("%Y-%m-%d"),
                 end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -312,9 +313,9 @@ class OnchainController(BaseController):
         if ns_parser:
             ethgasstation_view.display_gwei_fees(
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -386,9 +387,9 @@ class OnchainController(BaseController):
                 ascend=ns_parser.reverse,
                 show_address=ns_parser.address,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -435,9 +436,9 @@ class OnchainController(BaseController):
                 org_slug=ns_parser.org_slug,
                 query_slug=ns_parser.query_slug,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -568,9 +569,9 @@ class OnchainController(BaseController):
                     ascend=ns_parser.reverse,
                     address=self.address,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("You need to set an ethereum address\n")
@@ -628,9 +629,9 @@ class OnchainController(BaseController):
                     ascend=ns_parser.reverse,
                     address=self.address,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("You need to set an ethereum address\n")
@@ -687,9 +688,9 @@ class OnchainController(BaseController):
                     ascend=ns_parser.reverse,
                     address=self.address,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("You need to set an ethereum address\n")
@@ -745,9 +746,9 @@ class OnchainController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -781,9 +782,9 @@ class OnchainController(BaseController):
                     social=ns_parser.social,
                     address=self.address,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("You need to set an ethereum address\n")
@@ -850,9 +851,9 @@ class OnchainController(BaseController):
                     ascend=ns_parser.reverse,
                     address=self.address,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("You need to set an ethereum address\n")
@@ -880,9 +881,9 @@ class OnchainController(BaseController):
                 ethplorer_view.display_tx_info(
                     tx_hash=self.address,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("You need to set an ethereum address\n")
@@ -939,9 +940,9 @@ class OnchainController(BaseController):
                     ascend=ns_parser.reverse,
                     address=self.address,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("You need to set an ethereum address\n")
@@ -1027,9 +1028,9 @@ class OnchainController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1107,9 +1108,9 @@ class OnchainController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1185,9 +1186,9 @@ class OnchainController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1259,9 +1260,9 @@ class OnchainController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1372,9 +1373,9 @@ class OnchainController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1453,9 +1454,11 @@ class OnchainController(BaseController):
                         sortby=ns_parser.sortby,
                         ascend=ns_parser.reverse,
                         export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
+                        sheet_name=(
+                            " ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None
+                        ),
                     )
 
                 else:
@@ -1480,9 +1483,11 @@ class OnchainController(BaseController):
                                     sortby=ns_parser.sortby,
                                     ascend=ns_parser.reverse,
                                     export=ns_parser.export,
-                                    sheet_name=" ".join(ns_parser.sheet_name)
-                                    if ns_parser.sheet_name
-                                    else None,
+                                    sheet_name=(
+                                        " ".join(ns_parser.sheet_name)
+                                        if ns_parser.sheet_name
+                                        else None
+                                    ),
                                 )
                         except Exception:
                             similar_cmd = difflib.get_close_matches(
@@ -1529,7 +1534,7 @@ class OnchainController(BaseController):
             blockchain_view.display_btc_single_block(
                 blockhash=ns_parser.blockhash,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )

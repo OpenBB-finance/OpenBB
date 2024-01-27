@@ -1,4 +1,5 @@
 """ Yahoo Finance Model """
+
 __docformat__ = "numpy"
 
 import logging

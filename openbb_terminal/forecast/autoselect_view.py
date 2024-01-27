@@ -1,4 +1,5 @@
 """Automatic Statistical Forecasting View"""
+
 __docformat__ = "numpy"
 
 import logging

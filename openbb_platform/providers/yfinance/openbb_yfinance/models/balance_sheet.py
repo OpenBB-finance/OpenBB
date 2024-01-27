@@ -1,6 +1,5 @@
 """Yahoo Finance Balance Sheet Model."""
 
-
 import json
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional

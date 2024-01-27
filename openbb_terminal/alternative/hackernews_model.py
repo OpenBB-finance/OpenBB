@@ -1,4 +1,5 @@
 """HackerNews Model"""
+
 __docformat__ = "numpy"
 
 

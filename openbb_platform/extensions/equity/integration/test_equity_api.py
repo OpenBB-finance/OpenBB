@@ -1,4 +1,5 @@
 """API integration tests for equity extension."""
+
 import base64
 from datetime import time
 
@@ -555,6 +556,7 @@ def test_equity_calendar_ipo(params, headers):
             }
         ),
         ({"provider": "intrinio", "symbol": "AAPL", "period": "annual", "limit": 100}),
+        ({"provider": "finviz", "symbol": "AAPL,GOOG"}),
     ],
 )
 @pytest.mark.integration
@@ -617,6 +619,7 @@ def test_equity_ownership_major_holders(params, headers):
     "params",
     [
         ({"symbol": "AAPL", "limit": 10, "provider": "fmp"}),
+        ({"symbol": "AAPL", "provider": "finviz"}),
         (
             {
                 "symbol": "AAPL",
@@ -831,6 +834,21 @@ def test_equity_compare_peers(params, headers):
 
 @parametrize(
     "params",
+    [({"group": "country", "metric": "overview", "provider": "finviz"})],
+)
+@pytest.mark.integration
+def test_equity_compare_groups(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/compare/groups?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
     [
         (
             {
@@ -874,6 +892,7 @@ def test_equity_compare_peers(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-02",
                 "interval": "1m",
+                "use_cache": False,
             }
         ),
         (
@@ -883,6 +902,7 @@ def test_equity_compare_peers(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
+                "use_cache": False,
             }
         ),
         (
@@ -1119,7 +1139,7 @@ def test_equity_fundamental_latest_attributes(params, headers):
 @parametrize(
     "params",
     [
-        ({"query": "AAPl", "is_symbol": True, "provider": "cboe"}),
+        ({"query": "AAPl", "is_symbol": True, "provider": "cboe", "use_cache": False}),
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
         ({"query": "", "provider": "nasdaq", "use_cache": False, "is_etf": True}),
         ({"query": "gold", "provider": "intrinio", "active": True, "limit": 100}),
@@ -1180,6 +1200,8 @@ def test_equity_screener(params, headers):
     [
         ({"source": "iex", "provider": "intrinio", "symbol": "AAPL"}),
         ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL", "provider": "cboe", "use_cache": False}),
+        ({"symbol": "AAPL", "provider": "yfinance"}),
         ({"symbol": "AAPL:US", "provider": "tmx"}),
     ],
 )
@@ -1201,6 +1223,8 @@ def test_equity_price_quote(params, headers):
         ({"symbol": "MSFT", "provider": "intrinio"}),
         ({"symbol": "AAPL,MSFT", "provider": "cboe"}),
         ({"symbol": "AAPL,MSFT", "provider": "intrinio"}),
+        ({"symbol": "AAPL,MSFT", "provider": "finviz"}),
+        ({"symbol": "AAPL,MSFT", "provider": "yfinance"}),
         ({"provider": "tmx", "symbol": "AAPL:US"}),
     ],
 )
@@ -1265,7 +1289,10 @@ def test_equity_discovery_active(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL", "provider": "fmp"})],
+    [
+        ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL,MSFT", "provider": "finviz"}),
+    ],
 )
 @pytest.mark.integration
 def test_equity_price_performance(params, headers):

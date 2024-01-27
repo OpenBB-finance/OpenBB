@@ -5,12 +5,18 @@ from datetime import (
     datetime,
 )
 from typing import Any, Dict, List, Literal, Optional, Union
+from datetime import (
+    date as dateType,
+    datetime,
+)
+from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.index_constituents import (
     IndexConstituentsData,
     IndexConstituentsQueryParams,
 )
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_fmp.utils.helpers import get_data_many
 from pydantic import Field, field_validator

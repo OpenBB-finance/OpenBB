@@ -1,4 +1,5 @@
 """Test etf extension."""
+
 import pytest
 from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
@@ -179,7 +180,10 @@ def test_etf_holdings(params, obb):
 
 @parametrize(
     "params",
-    [({"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "fmp"})],
+    [
+        ({"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "fmp"}),
+        ({"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "finviz"}),
+    ],
 )
 @pytest.mark.integration
 def test_etf_price_performance(params, obb):

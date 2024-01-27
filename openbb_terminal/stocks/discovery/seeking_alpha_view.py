@@ -1,4 +1,5 @@
 """ Seeking Alpha View """
+
 __docformat__ = "numpy"
 
 import logging

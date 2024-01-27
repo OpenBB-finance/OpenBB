@@ -115,7 +115,7 @@ def test_intrinio_equity_quote_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_options_chains_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL", "date": "2023-09-15"}
+    params = {"symbol": "AAPL", "date": date(2023, 9, 15)}
 
     fetcher = IntrinioOptionsChainsFetcher()
     result = fetcher.test(params, credentials)
@@ -246,8 +246,7 @@ def test_intrinio_market_indices_fetcher(credentials=test_credentials):
 @pytest.mark.record_http
 def test_intrinio_index_historical_fetcher(credentials=test_credentials):
     params = {
-        "symbol": "$DJI",
-        "tag": "level",
+        "symbol": "DJI",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 6, 6),
     }

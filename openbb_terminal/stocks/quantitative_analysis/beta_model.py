@@ -1,4 +1,5 @@
 """Beta model"""
+
 __docformat__ = "numpy"
 
 from typing import Optional, Tuple

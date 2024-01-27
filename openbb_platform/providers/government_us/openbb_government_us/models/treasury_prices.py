@@ -56,6 +56,7 @@ class GovernmentUSTreasuryPricesFetcher(
 
         return GovernmentUSTreasuryPricesQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     async def aextract_data(
         query: GovernmentUSTreasuryPricesQueryParams,
@@ -99,6 +100,7 @@ class GovernmentUSTreasuryPricesFetcher(
         loop = asyncio.get_running_loop()
         return await loop.run_in_executor(None, fetch_data)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: GovernmentUSTreasuryPricesQueryParams,
