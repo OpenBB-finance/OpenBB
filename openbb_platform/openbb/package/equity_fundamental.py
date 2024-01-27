@@ -1333,7 +1333,7 @@ class ROUTER_equity_fundamental(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.fundamental.historical_attributes(symbol="AAPL", tag="TEST_STRING", frequency="yearly", limit=1000, sort="desc")
+        >>> obb.equity.fundamental.historical_attributes(symbol="AAPL", tag="ebitda", frequency="yearly", limit=1000, sort="desc")
         """  # noqa: E501
 
         return self._run(
@@ -2031,7 +2031,7 @@ class ROUTER_equity_fundamental(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.fundamental.latest_attributes(symbol="AAPL", tag="TEST_STRING")
+        >>> obb.equity.fundamental.latest_attributes(symbol="AAPL", tag="ceo")
         """  # noqa: E501
 
         return self._run(
@@ -3240,7 +3240,7 @@ class ROUTER_equity_fundamental(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.fundamental.search_attributes(query="TEST_STRING", limit=1000)
+        >>> obb.equity.fundamental.search_attributes(query="AAPL", limit=1000)
         """  # noqa: E501
 
         return self._run(
@@ -3384,7 +3384,7 @@ class ROUTER_equity_fundamental(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.fundamental.transcript(symbol="AAPL", year=1)
+        >>> obb.equity.fundamental.transcript(symbol="AAPL", year=2020)
         """  # noqa: E501
 
         return self._run(
