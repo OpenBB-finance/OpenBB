@@ -33,6 +33,11 @@ class IntrinioHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
 class IntrinioHistoricalDividendsData(HistoricalDividendsData):
     """Intrinio Historical Dividends Data."""
 
+    __alias_dict__ = {
+        "ex_dividend_date": "date",
+        "amount": "dividend",
+    }
+
     factor: float = Field(
         description=(
             "factor by which to multiply stock prices before this date, "
