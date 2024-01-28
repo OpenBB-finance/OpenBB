@@ -36,18 +36,22 @@ class IntrinioHistoricalDividendsData(HistoricalDividendsData):
     __alias_dict__ = {
         "ex_dividend_date": "date",
         "amount": "dividend",
+        "currency": "dividend_currency",
     }
 
-    factor: float = Field(
+    factor: Optional[float] = Field(
+        default=None,
         description=(
             "factor by which to multiply stock prices before this date, "
             "in order to calculate historically-adjusted stock prices."
         ),
     )
-    dividend_currency: Optional[str] = Field(
-        default=None, description="The currency of the dividend."
+    currency: Optional[str] = Field(
+        default=None,
+        description="The currency in which the dividend is paid.",
     )
-    split_ratio: float = Field(
+    split_ratio: Optional[float] = Field(
+        default=None,
         description="The ratio of the stock split, if a stock split occurred.",
     )
 
