@@ -180,9 +180,11 @@ class TmxIndexSnapshotsFetcher(
                     {
                         "symbol": symbol,
                         "name": data["indices"][symbol].get("name_en", None),
-                        "currency": "USD"
-                        if "(USD)" in data["indices"][symbol]["name_en"]
-                        else "CAD",
+                        "currency": (
+                            "USD"
+                            if "(USD)" in data["indices"][symbol]["name_en"]
+                            else "CAD"
+                        ),
                         **performance,
                         **market_value,
                     }

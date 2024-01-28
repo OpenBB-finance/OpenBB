@@ -22,10 +22,8 @@ def headers():
 @parametrize(
     "params",
     [
-        
         ({"symbol": "dowjones", "provider": "fmp"}),
         ({"symbol": "^TX60", "provider": "tmx", "use_cache": False}),
-    ,
         ({"index": "BUKBUS", "provider": "cboe"}),
     ],
 )

@@ -270,7 +270,15 @@ def test_index_available(params, obb):
 @parametrize(
     "params",
     [
-        ({"query": "D", "is_symbol": True, "provider": "cboe", "use_cache": False, "provider": "cboe"}),
+        (
+            {
+                "query": "D",
+                "is_symbol": True,
+                "provider": "cboe",
+                "use_cache": False,
+                "provider": "cboe",
+            }
+        ),
     ],
 )
 @pytest.mark.integration

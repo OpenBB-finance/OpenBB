@@ -96,27 +96,35 @@ class TmxAvailableIndicesFetcher(
                 {
                     "symbol": symbol,
                     "name": data["indices"][symbol].get("name_en", None),
-                    "currency": "USD"
-                    if "(USD)" in data["indices"][symbol]["name_en"]
-                    else "CAD",
+                    "currency": (
+                        "USD"
+                        if "(USD)" in data["indices"][symbol]["name_en"]
+                        else "CAD"
+                    ),
                     "category": symbols[symbol],
-                    "market_value": data["indices"][symbol]["quotedmarketvalue"].get(
-                        "total", None
-                    )
-                    if data["indices"][symbol].get("quotedmarketvalue")
-                    else None,
+                    "market_value": (
+                        data["indices"][symbol]["quotedmarketvalue"].get("total", None)
+                        if data["indices"][symbol].get("quotedmarketvalue")
+                        else None
+                    ),
                     "num_constituents": data["indices"][symbol].get(
                         "nb_constituents", None
                     ),
-                    "overview": overview
-                    if data["indices"][symbol].get("overview") != ""
-                    else None,
-                    "methodology": data["indices"][symbol].get("methodology", None)
-                    if data["indices"][symbol].get("methodology") != ""
-                    else None,
-                    "factsheet": data["indices"][symbol].get("factsheet", None)
-                    if data["indices"][symbol].get("factsheet") != ""
-                    else None,
+                    "overview": (
+                        overview
+                        if data["indices"][symbol].get("overview") != ""
+                        else None
+                    ),
+                    "methodology": (
+                        data["indices"][symbol].get("methodology", None)
+                        if data["indices"][symbol].get("methodology") != ""
+                        else None
+                    ),
+                    "factsheet": (
+                        data["indices"][symbol].get("factsheet", None)
+                        if data["indices"][symbol].get("factsheet") != ""
+                        else None
+                    ),
                 }
             )
 
