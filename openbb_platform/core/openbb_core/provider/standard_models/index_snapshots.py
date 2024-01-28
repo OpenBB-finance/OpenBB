@@ -1,7 +1,6 @@
 """Index Snapshots Standard Model."""
 
 from typing import Optional
-from typing import Optional
 
 from pydantic import Field
 

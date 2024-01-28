@@ -5,18 +5,12 @@ from datetime import (
     datetime,
 )
 from typing import Any, Dict, List, Literal, Optional, Union
-from datetime import (
-    date as dateType,
-    datetime,
-)
-from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.index_constituents import (
     IndexConstituentsData,
     IndexConstituentsQueryParams,
 )
-from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_fmp.utils.helpers import get_data_many
 from pydantic import Field, field_validator
@@ -30,17 +24,23 @@ class FMPIndexConstituentsQueryParams(IndexConstituentsQueryParams):
             https://site.financialmodelingprep.com/developer/docs/list-of-nasdaq-companies-api/
     """
 
-    symbol: Literal["dowjones", "sp500", "nasdaq"] = Field(
+    index: Literal["dowjones", "sp500", "nasdaq"] = Field(
         default="dowjones",
-        description="The index to get constituents for. Either 'dowjones', 'sp500' or 'nasdaq'.",
     )
 
 
 class FMPIndexConstituentsData(IndexConstituentsData):
     """FMP Index Constituents Data."""
 
-    __alias_dict__ = {"headquarter": "headQuarter"}
+    __alias_dict__ = {
+        "headquarter": "headQuarter",
+        "date_first_added": "dateFirstAdded",
+        "sub_sector": "subSector",
+    }
 
+    sector: str = Field(
+        description="Sector the constituent company in the index belongs to."
+    )
     sub_sector: Optional[str] = Field(
         default=None,
         description="Sub-sector the constituent company in the index belongs to.",
@@ -52,8 +52,8 @@ class FMPIndexConstituentsData(IndexConstituentsData):
     date_first_added: Optional[Union[dateType, str]] = Field(
         default=None, description="Date the constituent company was added to the index."
     )
-    cik: int = Field(
-        description=DATA_DESCRIPTIONS.get("cik", ""),
+    cik: Optional[int] = Field(
+        description=DATA_DESCRIPTIONS.get("cik", ""), default=None
     )
     founded: Optional[Union[dateType, str]] = Field(
         default=None,
@@ -104,7 +104,7 @@ class FMPIndexConstituentsFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        url = f"{base_url}/{query.symbol}_constituent/?apikey={api_key}"
+        url = f"{base_url}/{query.index}_constituent/?apikey={api_key}"
 
         return await get_data_many(url, **kwargs)
 

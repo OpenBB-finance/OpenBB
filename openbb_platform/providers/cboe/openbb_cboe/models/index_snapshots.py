@@ -1,9 +1,6 @@
 """CBOE Index Snapshots Model."""
 
-# pylint: disable=unused-argument
-
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -24,9 +21,15 @@ class CboeIndexSnapshotsQueryParams(IndexSnapshotsQueryParams):
     Source: https://www.cboe.com/
     """
 
-    region: Optional[Literal["us", "eu"]] = Field(
-        description="The region to return. Choices are ['us', 'eu'].", default="us"
+    region: Literal[None, "us", "eu"] = Field(
+        default="us",
     )
+
+    @field_validator("region", mode="after", check_fields=False)
+    @classmethod
+    def validate_region(cls, v: str):
+        """Validate region."""
+        return "us" if v is None else v
 
 
 class CboeIndexSnapshotsData(IndexSnapshotsData):
@@ -92,73 +95,12 @@ class CboeIndexSnapshotsFetcher(
         """Return the raw data from the Cboe endpoint"""
 
         if query.region == "us":
-            r = make_request(
-                "https://cdn.cboe.com/api/global/delayed_quotes/quotes/all_us_indices.json"
-            )
-
-            if r.status_code != 200:
-                raise RuntimeError(r.status_code)
-
-            INDEXES = pd.concat(
-                [get_cboe_index_directory(), get_cboe_directory()], axis=0
-            )
-            data = pd.DataFrame.from_records(r.json()["data"])
-
-            data.rename(columns=US_INDEX_COLUMNS, inplace=True)
-            data["symbol"] = data["symbol"].str.replace("^", "")
-            data["name"] = ""
-            data = data.set_index("symbol")
-            for i in data.index:
-                if i in INDEXES.index:
-                    data.at[i, "name"] = INDEXES.at[i, "name"]
-
-            data["name"] = data["name"].astype(str)
-            data["currency"] = "USD"
-            data = data[
-                [
-                    "name",
-                    "price",
-                    "prev_close",
-                    "change",
-                    "change_percent",
-                    "open",
-                    "high",
-                    "low",
-                    "close",
-                    "currency",
-                    "last_trade_timestamp",
-                ]
-            ]
-
+            url = "https://cdn.cboe.com/api/global/delayed_quotes/quotes/all_us_indices.json"
         if query.region == "eu":
-            r = make_request(
-                "https://cdn.cboe.com/api/global/european_indices/index_quotes/all-indices.json"
-            )
+            url = "https://cdn.cboe.com/api/global/european_indices/index_quotes/all-indices.json"
 
-            if r.status_code != 200:
-                raise RuntimeError(r.status_code)
-
-            data = (
-                pd.DataFrame.from_records(r.json()["data"])
-                .drop(columns=["symbol"])
-                .rename(columns={"index": "symbol"})
-                .set_index("symbol")
-                .round(2)
-            )
-
-            INDEXES = pd.DataFrame(Europe.list_indices()).set_index("symbol")
-
-            for i in data.index:
-                data.loc[i, ("isin")] = INDEXES.at[i, "isin"]
-                data.loc[i, ("name")] = INDEXES.at[i, "name"]
-                data.loc[i, ("currency")] = INDEXES.at[i, "currency"]
-
-            data = data[list(EUR_INDEX_COLUMNS.keys())]
-            data.columns = list(EUR_INDEX_COLUMNS.values())
-
-        data["change_percent"] = data["change_percent"].fillna(0.0)
-
-        return data.reset_index().to_dict("records")
+        data = await amake_request(url, **kwargs)
+        return data.get("data")
 
     @staticmethod
     def transform_data(
