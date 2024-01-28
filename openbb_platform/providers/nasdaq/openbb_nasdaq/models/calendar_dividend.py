@@ -1,5 +1,6 @@
 """Nasdaq Dividend Calendar Model."""
 
+# pylint: disable=unused-argument
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
@@ -47,6 +48,7 @@ class NasdaqCalendarDividendData(CalendarDividendData):
         mode="before",
         check_fields=False,
     )
+    @classmethod
     def validate_date(cls, v: str):
         v = v.replace("N/A", "")
         return datetime.strptime(v, "%m/%d/%Y").date() if v else None
