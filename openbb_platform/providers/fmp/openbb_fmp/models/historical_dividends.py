@@ -105,7 +105,7 @@ class FMPHistoricalDividendsFetcher(
         query: FMPHistoricalDividendsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPHistoricalDividendsData]:
         """Return the transformed data."""
-        result = []
+        result: List[FMPHistoricalDividendsData] = []
         for d in data:
             if "date" in d:
                 dt = parser.parse(str(d["date"])).date()

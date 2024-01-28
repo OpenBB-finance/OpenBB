@@ -290,6 +290,14 @@ def test_equity_fundamental_historical_splits(params, obb):
                 "provider": "fmp",
             }
         ),
+        (
+            {
+                "symbol": "AAPL",
+                "start_date": "2021-01-01",
+                "end_date": "2023-06-06",
+                "provider": "nasdaq",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
