@@ -1,4 +1,5 @@
 """Nasdaq Historical Dividends Model."""
+
 # pylint: disable=unused-argument
 import asyncio
 import warnings
