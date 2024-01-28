@@ -22,7 +22,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
     "params",
     [
         ({"symbol": "dowjones", "provider": "fmp"}),
-        ({"index": "BUKBUS", "provider": "cboe", "provider": "fmp"}),
+        ({"index": "BUKBUS", "provider": "cboe"}),
         ({"symbol": "^TX60", "provider": "tmx", "use_cache": False}),
     ],
 )
@@ -276,7 +276,6 @@ def test_index_available(params, obb):
                 "is_symbol": True,
                 "provider": "cboe",
                 "use_cache": False,
-                "provider": "cboe",
             }
         ),
     ],
