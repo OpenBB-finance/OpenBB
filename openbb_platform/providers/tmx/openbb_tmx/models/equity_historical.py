@@ -1,4 +1,5 @@
 """TMX Equity Historical Model."""
+
 # pylint: disable=unused-argument
 import asyncio
 import warnings

@@ -1,4 +1,5 @@
 """Available Indices fetcher for TMX"""
+
 # pylint: disable=unused-argument
 import re
 from typing import Any, Dict, List, Optional

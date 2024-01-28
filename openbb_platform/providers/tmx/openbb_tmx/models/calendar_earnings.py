@@ -1,4 +1,5 @@
 """TMX Earnings Calendar Model"""
+
 # pylint: disable=unused-argument
 import asyncio
 import json

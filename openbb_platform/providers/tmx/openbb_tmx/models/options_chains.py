@@ -1,4 +1,5 @@
 """TMX Options Chains Model."""
+
 # pylint: disable=unused-argument
 from datetime import (
     date as dateType,

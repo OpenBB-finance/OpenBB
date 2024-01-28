@@ -1,4 +1,5 @@
 """TMX Stock Dividends Model"""
+
 # pylint: disable=unused-argument
 import json
 from datetime import date as dateType

@@ -1,4 +1,5 @@
 """TMX Index Constituents Model"""
+
 # pylint: disable=unused-argument
 from typing import Any, Dict, List, Optional
 

@@ -1,4 +1,5 @@
 """TMX Stock Analysts Model"""
+
 # pylint: disable=unused-argument
 import asyncio
 import json

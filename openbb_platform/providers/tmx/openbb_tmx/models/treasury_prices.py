@@ -1,4 +1,5 @@
 """TMX Treasury Prices Fetcher"""
+
 # pylint: disable=unused-argument
 from datetime import (
     date as dateType,

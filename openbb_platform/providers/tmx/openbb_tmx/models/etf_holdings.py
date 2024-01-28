@@ -1,4 +1,5 @@
 """TMX ETF Holdings fetcher."""
+
 # pylint: disable=unused-argument
 from typing import Any, Dict, List, Optional, Union
 

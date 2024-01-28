@@ -1,4 +1,5 @@
 """TMX ETF Sectors fetcher."""
+
 # pylint: disable=unused-argument
 import warnings
 from typing import Any, Dict, List, Optional
