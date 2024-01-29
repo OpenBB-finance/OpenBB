@@ -77,47 +77,47 @@ class ROUTER_equity_ownership(Container):
         --------------
         symbol : str
             Symbol representing the entity requested in the data.
-        company_cik : int
-            Company CIK of the insider trading.
-        filing_date : datetime
-            Filing date of the insider trading.
+        company_cik : Optional[Union[int, str]]
+            CIK number of the company.
+        filing_date : Optional[Union[date, datetime]]
+            Filing date of the trade.
         transaction_date : Optional[date]
-            Transaction date of the insider trading.
-        owner_cik : int
-            Reporting CIK of the insider trading.
-        owner_name : str
-            Reporting name of the insider trading.
+            Date of the transaction.
+        owner_cik : Optional[Union[int, str]]
+            Reporting individual's CIK.
+        owner_name : Optional[str]
+            Name of the reporting individual.
         owner_title : Optional[str]
-            Designation of owner of the insider trading.
-        transaction_type : str
-            Transaction type of the insider trading.
+            The title held by the reporting individual.
+        transaction_type : Optional[str]
+            Type of transaction being reported.
         acquisition_or_disposition : Optional[str]
-            Acquisition or disposition of the insider trading.
+            Acquisition or disposition of the shares.
         security_type : Optional[str]
-            Security type of the insider trading.
+            The type of security transacted.
         securities_owned : Optional[float]
-            Number of securities owned in the insider trading.
+            Number of securities owned by the reporting individual.
         securities_transacted : Optional[float]
-            Securities transacted of the insider trading.
+            Number of securities transacted by the reporting individual.
         transaction_price : Optional[float]
-            Price of the insider trading.
-        filing_url : str
-            Link of the insider trading.
+            The price of the transaction.
+        filing_url : Optional[str]
+            Link to the filing.
         form_type : Optional[str]
             Form type of the insider trading. (provider: fmp)
         company_name : Optional[str]
             Name of the company. (provider: intrinio)
         conversion_exercise_price : Optional[float]
-            Conversion/Exercise price of the insider trading. (provider: intrinio)
+            Conversion/Exercise price of the shares. (provider: intrinio)
         deemed_execution_date : Optional[date]
-            Deemed execution date of the insider trading. (provider: intrinio)
+            Deemed execution date of the trade. (provider: intrinio)
         exercise_date : Optional[date]
-            Exercise date of the insider trading. (provider: intrinio)
+            Exercise date of the trade. (provider: intrinio)
         expiration_date : Optional[date]
-            Expiration date of the insider trading. (provider: intrinio)
+            Expiration date of the derivative. (provider: intrinio)
         underlying_security_title : Optional[str]
             Name of the underlying non-derivative security related to this derivative transaction. (provider: intrinio)
-        underlying_shares : Optional[int]
+        underlying_shares : Optional[Union[float, int]]
             Number of underlying shares related to this derivative transaction. (provider: intrinio)
         nature_of_ownership : Optional[str]
             Nature of ownership of the insider trading. (provider: intrinio)
@@ -438,7 +438,7 @@ class ROUTER_equity_ownership(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.ownership.major_holders(symbol="AAPL")
+        >>> obb.equity.ownership.major_holders(symbol="AAPL", page=0)
         """  # noqa: E501
 
         return self._run(

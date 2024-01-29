@@ -31,7 +31,7 @@ class ROUTER_crypto(Container):
         self,
         query: Annotated[
             Optional[str], OpenBBCustomParameter(description="Search query.")
-        ] = "",
+        ] = None,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
