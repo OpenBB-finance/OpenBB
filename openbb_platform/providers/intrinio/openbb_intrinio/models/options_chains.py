@@ -1,5 +1,6 @@
 """Intrinio Options Chains Model."""
 
+# pylint: disable=unused-argument
 from datetime import (
     date as dateType,
     datetime,
@@ -116,11 +117,15 @@ class IntrinioOptionsChainsFetcher(
         date = datetime.now().date() if query.date is None else query.date
         date = get_weekday(date)
 
-        results = await amake_requests(await get_urls(date), callback, **kwargs)
+        results = await amake_requests(
+            await get_urls(date.strftime("%Y-%m-%d")), callback, **kwargs
+        )
 
         if not results:
-            urls = await get_urls(get_weekday(date - timedelta(days=1)))
-            results = await amake_requests(urls, callback, **kwargs)
+            urls = await get_urls(
+                get_weekday(date - timedelta(days=1)).strftime("%Y-%m-%d")
+            )
+            results = await amake_requests(urls, response_callback=callback, **kwargs)
 
         return results
 

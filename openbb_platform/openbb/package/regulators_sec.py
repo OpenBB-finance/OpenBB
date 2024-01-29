@@ -126,7 +126,7 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.institutions_search()
+        >>> obb.regulators.sec.institutions_search(query="AAPL")
         """  # noqa: E501
 
         return self._run(
@@ -241,7 +241,7 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.schema_files()
+        >>> obb.regulators.sec.schema_files(query="AAPL")
         """  # noqa: E501
 
         return self._run(
@@ -303,7 +303,7 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.sic_search()
+        >>> obb.regulators.sec.sic_search(query="AAPL")
         """  # noqa: E501
 
         return self._run(
@@ -359,7 +359,7 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.symbol_map()
+        >>> obb.regulators.sec.symbol_map(query="AAPL")
         """  # noqa: E501
 
         return self._run(
