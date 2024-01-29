@@ -1159,9 +1159,7 @@ def text_adjustment_justify(self, texts, max_len, mode="right"):
     justify = (
         str.ljust
         if (mode == "left")
-        else str.rjust
-        if (mode == "right")
-        else str.center
+        else str.rjust if (mode == "right") else str.center
     )
     out = []
     for s in texts:
