@@ -22,9 +22,9 @@ DWPCR_PARAMETER_TO_FRED_ID = {
 class FREDDiscountWindowPrimaryCreditRateParams(DiscountWindowPrimaryCreditRateParams):
     """FRED Discount Window Primary Credit Rate Query."""
 
-    parameter: Literal["daily_excl_weekend", "monthly", "weekly", "daily", "annual"] = (
-        Field(default="daily_excl_weekend", description="FRED series ID of DWPCR data.")
-    )
+    parameter: Literal[
+        "daily_excl_weekend", "monthly", "weekly", "daily", "annual"
+    ] = Field(default="daily_excl_weekend", description="FRED series ID of DWPCR data.")
 
 
 class FREDDiscountWindowPrimaryCreditRateData(DiscountWindowPrimaryCreditRateData):
