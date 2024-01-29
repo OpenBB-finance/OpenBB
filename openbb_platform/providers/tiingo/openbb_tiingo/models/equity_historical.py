@@ -28,9 +28,9 @@ class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     interval: Literal["1d", "1W", "1M", "1Y"] = Field(
         default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
     )
-    _frequency: Literal["daily", "weekly", "monthly", "quarterly", "yearly"] = (
-        PrivateAttr(default=None)
-    )
+    _frequency: Literal[
+        "daily", "weekly", "monthly", "quarterly", "yearly"
+    ] = PrivateAttr(default=None)
 
     # pylint: disable=protected-access
     @model_validator(mode="after")  # type: ignore[arg-type]

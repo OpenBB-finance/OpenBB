@@ -108,7 +108,6 @@ class CboeIndexHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Cboe endpoint."""
-
         symbols = query.symbol.split(",")
         INDEXES = await get_index_directory(use_cache=query.use_cache)
         INDEXES = INDEXES.set_index("index_symbol")
@@ -137,9 +136,7 @@ class CboeIndexHistoricalFetcher(
                 )
                 url += f"{symbol.replace('^', '')}.json"
             else:
-                base_url: str = (
-                    f"https://cdn.cboe.com/api/global/delayed_quotes/charts/{interval_type}"
-                )
+                base_url: str = f"https://cdn.cboe.com/api/global/delayed_quotes/charts/{interval_type}"
                 url = (
                     base_url + f"/_{symbol.replace('^', '')}.json"
                     if symbol.replace("^", "") in TICKER_EXCEPTIONS
