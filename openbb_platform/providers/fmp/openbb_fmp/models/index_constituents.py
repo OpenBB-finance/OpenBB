@@ -24,7 +24,7 @@ class FMPIndexConstituentsQueryParams(IndexConstituentsQueryParams):
             https://site.financialmodelingprep.com/developer/docs/list-of-nasdaq-companies-api/
     """
 
-    index: Literal["dowjones", "sp500", "nasdaq"] = Field(
+    symbol: Literal["dowjones", "sp500", "nasdaq"] = Field(
         default="dowjones",
     )
 
@@ -104,7 +104,7 @@ class FMPIndexConstituentsFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
 
         base_url = "https://financialmodelingprep.com/api/v3"
-        url = f"{base_url}/{query.index}_constituent/?apikey={api_key}"
+        url = f"{base_url}/{query.symbol}_constituent/?apikey={api_key}"
 
         return await get_data_many(url, **kwargs)
 

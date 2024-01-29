@@ -12,8 +12,8 @@ from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 class IndexConstituentsQueryParams(QueryParams):
     """Index Constituents Query."""
 
-    index: str = Field(
-        description="Index to fetch the constituents of.",
+    symbol: str = Field(
+        description="The symbol of the index to get constituents of.",
     )
 
 
@@ -24,11 +24,3 @@ class IndexConstituentsData(Data):
     name: Optional[str] = Field(
         default=None, description="Name of the constituent company in the index."
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
