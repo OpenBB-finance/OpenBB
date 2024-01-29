@@ -261,11 +261,13 @@ class PortfolioController(BaseController):
                         categories["COUNTRY"][transaction["Ticker"]] = transaction[
                             "Country"
                         ]
-                        categories["CURRENT_INVESTED_AMOUNT"][transaction["Ticker"]] = (
-                            transactions[
-                                transactions["Ticker"] == transaction["Ticker"]
-                            ]["Investment"].sum()
-                        )
+                        categories["CURRENT_INVESTED_AMOUNT"][
+                            transaction["Ticker"]
+                        ] = transactions[
+                            transactions["Ticker"] == transaction["Ticker"]
+                        ][
+                            "Investment"
+                        ].sum()
                         categories["CURRENCY"][transaction["Ticker"]] = transaction[
                             "Currency"
                         ]

@@ -1436,9 +1436,9 @@ class EconomyController(BaseController):
 
                 if not df.empty:
                     for series_id, data in detail.items():
-                        self.FRED_TITLES[series_id] = (
-                            f"{data['title']} ({data['units']})"
-                        )
+                        self.FRED_TITLES[
+                            series_id
+                        ] = f"{data['title']} ({data['units']})"
 
                         # Making data available at the class level
                         self.DATASETS["fred"][series_id] = df[series_id]

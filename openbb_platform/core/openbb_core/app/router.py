@@ -284,9 +284,9 @@ class Router:
                 if deprecation_message:
                     kwargs["summary"] = deprecation_message
                 else:
-                    kwargs["summary"] = (
-                        "This functionality will be deprecated in the future releases."
-                    )
+                    kwargs[
+                        "summary"
+                    ] = "This functionality will be deprecated in the future releases."
 
             api_router.add_api_route(**kwargs)
 

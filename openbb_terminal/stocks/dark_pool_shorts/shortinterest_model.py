@@ -58,9 +58,9 @@ def get_high_short_interest() -> DataFrame:
         shorted_stock_data = a_stock_txt.split("\n")
 
         if len(shorted_stock_data) == 8:
-            df_high_short_interest.loc[len(df_high_short_interest.index)] = (
-                shorted_stock_data[:-1]
-            )
+            df_high_short_interest.loc[
+                len(df_high_short_interest.index)
+            ] = shorted_stock_data[:-1]
 
         shorted_stock_data = []
 
