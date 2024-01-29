@@ -24,8 +24,8 @@ from pydantic import BaseModel
 from pydantic.v1.validators import find_validators
 from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
-from openbb_core.app.example_generator import ExampleGenerator
 from openbb_core.app.deprecation import OpenBBDeprecationWarning
+from openbb_core.app.example_generator import ExampleGenerator
 from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
