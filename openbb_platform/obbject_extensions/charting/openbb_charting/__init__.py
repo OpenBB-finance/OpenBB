@@ -27,13 +27,6 @@ class Charting:
         Returns a list of Platform commands with charting functions.
     indicators
         Returns a list of the available indicators to use with the `to_chart` method.
-
-    Properties
-    ----------
-    indicators
-        Returns a list of the available indicators.
-
-
     """
 
     def __init__(self, obbject):
