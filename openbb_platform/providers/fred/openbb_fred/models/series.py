@@ -122,7 +122,6 @@ class FredSeriesFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Extract data."""
-
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         base_url = "https://api.stlouisfed.org/fred/series/observations"
@@ -186,6 +185,7 @@ class FredSeriesFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: FredSeriesQueryParams, data: Dict, **kwargs: Any
