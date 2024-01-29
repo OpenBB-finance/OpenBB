@@ -27,9 +27,9 @@ class Preferences(BaseModel):
     field_order: bool = (
         False  # Whether to display the field order by which the data was defined
     )
-    output_type: Literal["OBBject", "dataframe", "polars", "numpy", "dict", "chart"] = (
-        Field(default="OBBject", description="Python default output type.")
-    )
+    output_type: Literal[
+        "OBBject", "dataframe", "polars", "numpy", "dict", "chart"
+    ] = Field(default="OBBject", description="Python default output type.")
 
     model_config = ConfigDict(validate_assignment=True)
 
