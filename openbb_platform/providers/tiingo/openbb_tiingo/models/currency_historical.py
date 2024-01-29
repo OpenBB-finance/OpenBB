@@ -26,9 +26,9 @@ class TiingoCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
         "end_date": "endDate",
     }
 
-    interval: Literal[
-        "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
-    ] = Field(default="1day", description="Data granularity.", alias="resampleFreq")
+    interval: Literal["1min", "5min", "15min", "30min", "1hour", "4hour", "1day"] = (
+        Field(default="1day", description="Data granularity.", alias="resampleFreq")
+    )
 
 
 class TiingoCurrencyHistoricalData(CurrencyHistoricalData):

@@ -265,9 +265,7 @@ def plot_cpi(
     title += (
         " Indices"
         if len(df.columns) > 1
-        else f" Index for {country}"
-        if country
-        else ""
+        else f" Index for {country}" if country else ""
     )
 
     fig = OpenBBFigure(yaxis_title=ylabel_dict.get(units, "Index (2015=100)"))
