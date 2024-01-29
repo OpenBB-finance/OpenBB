@@ -278,7 +278,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.cpi(countries=['portugal', 'spain'], units="growth_same", frequency="monthly")
+        >>> obb.economy.cpi(countries=['portugal', 'spain'], units="growth_same", frequency="monthly", harmonized=False)
         """  # noqa: E501
 
         return self._run(
@@ -324,7 +324,7 @@ class ROUTER_economy(Container):
                 no default.
             is_release : Optional[bool]
                 Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True. (provider: fred)
-            release_id : Optional[Union[str, int]]
+            release_id : Optional[Union[int, str]]
                 A specific release ID to target. (provider: fred)
             limit : Optional[int]
                 The number of data entries to return. (1-1000) (provider: fred)
@@ -355,7 +355,7 @@ class ROUTER_economy(Container):
 
             FredSearch
             ----------
-            release_id : Optional[Union[str, int]]
+            release_id : Optional[Union[int, str]]
                 The release ID for queries.
             series_id : Optional[str]
                 The series ID for the item in the release.
@@ -522,7 +522,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.fred_series(symbol="AAPL", limit=100000)
+        >>> obb.economy.fred_series(symbol="GFDGDPA188S", limit=100000)
         """  # noqa: E501
 
         return self._run(

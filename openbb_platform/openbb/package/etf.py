@@ -70,7 +70,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.countries(symbol="AAPL")
+        >>> obb.etf.countries(symbol="SPY")
         """  # noqa: E501
 
         return self._run(
@@ -157,7 +157,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.historical(symbol="AAPL")
+        >>> obb.etf.historical(symbol="SPY")
         """  # noqa: E501
 
         return self._run(
@@ -379,7 +379,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.holdings(symbol="AAPL")
+        >>> obb.etf.holdings(symbol="SPY")
         """  # noqa: E501
 
         return self._run(
@@ -440,7 +440,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.holdings_date(symbol="AAPL")
+        >>> obb.etf.holdings_date(symbol="SPY")
         """  # noqa: E501
 
         return self._run(
@@ -527,7 +527,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.holdings_performance(symbol="AAPL")
+        >>> obb.etf.holdings_performance(symbol="SPY")
         """  # noqa: E501
 
         return self._run(
@@ -616,7 +616,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.info(symbol="AAPL")
+        >>> obb.etf.info(symbol="SPY")
         """  # noqa: E501
 
         return self._run(
@@ -703,7 +703,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.price.performance(symbol="AAPL")
+        >>> obb.etf.price_performance(symbol="SPY")
         """  # noqa: E501
 
         return self._run(
@@ -792,7 +792,7 @@ class ROUTER_etf(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.etf.search()
+            >>> obb.etf.search(query="Vanguard")
         """  # noqa: E501
 
         return self._run(
@@ -853,7 +853,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.sectors(symbol="AAPL")
+        >>> obb.etf.sectors(symbol="SPY")
         """  # noqa: E501
 
         return self._run(
