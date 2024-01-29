@@ -26,9 +26,9 @@ class FMPMarketIndicesQueryParams(MarketIndicesQueryParams):
     timeseries: Optional[NonNegativeInt] = Field(
         default=None, description="Number of days to look back."
     )
-    interval: Literal[
-        "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
-    ] = Field(default="1day", description="Data granularity.")
+    interval: Literal["1min", "5min", "15min", "30min", "1hour", "4hour", "1day"] = (
+        Field(default="1day", description="Data granularity.")
+    )
     sort: Literal["asc", "desc"] = Field(
         default="desc", description="Sort the data in ascending or descending order."
     )
