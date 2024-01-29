@@ -1,6 +1,5 @@
 """World News Standard Model."""
 
-
 from datetime import (
     date as dateType,
     datetime,
