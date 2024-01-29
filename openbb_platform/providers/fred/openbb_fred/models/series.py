@@ -185,6 +185,7 @@ class FredSeriesFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: FredSeriesQueryParams, data: Dict, **kwargs: Any

@@ -78,6 +78,7 @@ class FREDDiscountWindowPrimaryCreditRateFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: FREDDiscountWindowPrimaryCreditRateParams, data: list, **kwargs: Any

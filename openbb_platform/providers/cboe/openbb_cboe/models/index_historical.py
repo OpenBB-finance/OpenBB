@@ -101,6 +101,7 @@ class CboeIndexHistoricalFetcher(
 
         return CboeIndexHistoricalQueryParams(**transformed_params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     async def aextract_data(
         query: CboeIndexHistoricalQueryParams,
@@ -153,6 +154,7 @@ class CboeIndexHistoricalFetcher(
 
         return await amake_requests(urls, **kwargs)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: CboeIndexHistoricalQueryParams, data: List[Dict], **kwargs: Any
