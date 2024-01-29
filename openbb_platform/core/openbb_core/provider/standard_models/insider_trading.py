@@ -40,8 +40,7 @@ class InsiderTradingData(Data):
     """Insider Trading Data."""
 
     symbol: Optional[str] = Field(
-        default=None,
-        description=DATA_DESCRIPTIONS.get("symbol", "")
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
     company_cik: Optional[Union[int, str]] = Field(
         default=None, description="CIK number of the company."
