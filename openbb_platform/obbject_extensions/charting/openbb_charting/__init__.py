@@ -23,6 +23,10 @@ class Charting:
         Display chart and save it to the OBBject.
     to_chart
         Returns the plotly json representation of the chart.
+    functions
+        Returns a list of Platform commands with charting functions.
+    indicators
+        Returns a list of the available indicators to use with the `to_chart` method.
 
     Properties
     ----------
@@ -75,9 +79,9 @@ class Charting:
         )
         kwargs["obbject_item"] = self._obbject.results
         kwargs["charting_settings"] = self._charting_settings
-        kwargs["standard_params"] = (
-            self._obbject._standard_params.__dict__
-        )  # pylint: disable=protected-access
+        kwargs[
+            "standard_params"
+        ] = self._obbject._standard_params.__dict__  # pylint: disable=protected-access
 
         fig, content = charting_function(**kwargs)
         self._obbject.chart = Chart(
