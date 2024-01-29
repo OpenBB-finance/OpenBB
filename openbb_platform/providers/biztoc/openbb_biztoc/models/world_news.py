@@ -17,9 +17,9 @@ from pydantic import Field, field_validator
 class BiztocWorldNewsQueryParams(WorldNewsQueryParams):
     """Biztoc World News Query."""
 
-    filter: Literal[
-        "crypto", "hot", "latest", "main", "media", "source", "tag"
-    ] = Field(default="latest", description="Filter by type of news.")
+    filter: Literal["crypto", "hot", "latest", "main", "media", "source", "tag"] = (
+        Field(default="latest", description="Filter by type of news.")
+    )
     source: str = Field(
         description="Filter by a specific publisher. Only valid when filter is set to source.",
         default="bloomberg",
