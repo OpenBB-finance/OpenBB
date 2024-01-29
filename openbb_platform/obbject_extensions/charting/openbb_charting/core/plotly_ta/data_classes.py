@@ -165,7 +165,9 @@ class ChartIndicators:
     @staticmethod
     def get_available_indicators() -> Tuple[str, ...]:
         """Return tuple of available indicators."""
-        return TAIndicator.__annotations__["name"].__args__  # pylint: disable=E1101
+        return list(
+            TAIndicator.__annotations__["name"].__args__  # pylint: disable=E1101
+        )
 
     @classmethod
     def from_dict(cls, indicators: Dict[str, Dict[str, Any]]) -> "ChartIndicators":
