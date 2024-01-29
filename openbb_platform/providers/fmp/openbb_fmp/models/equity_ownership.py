@@ -1,4 +1,5 @@
 """FMP Equity Ownership Model."""
+
 # pylint: disable=unused-argument
 from datetime import date as dateType
 from typing import Any, Dict, List, Optional

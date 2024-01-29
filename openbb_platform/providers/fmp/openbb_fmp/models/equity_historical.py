@@ -114,17 +114,19 @@ class FMPEquityHistoricalFetcher(
             kwargs.update({"preferences": {"request_timeout": 30}})
 
         async def callback(response: ClientResponse, _: Any) -> List[Dict]:
-            data: dict = await response.json()
+            """Callback function."""
+            result = []
+            data: Dict = await response.json()
             symbol = response.url.parts[-1]
 
-            if isinstance(data, dict):
-                data = data.get("historical", [])
+            if isinstance(data, Dict):
+                result = data.get("historical", [])
 
             if "," in query.symbol:
-                for d in data:
+                for d in result:
                     d["symbol"] = symbol
 
-            return data
+            return result
 
         urls = [get_url_params(symbol) for symbol in query.symbol.split(",")]
 
@@ -136,5 +138,8 @@ class FMPEquityHistoricalFetcher(
     ) -> List[FMPEquityHistoricalData]:
         """Return the transformed data."""
         # remove a duplicated fields.
-        [d.pop("changeOverTime", None) for d in data]
-        return [FMPEquityHistoricalData.model_validate(d) for d in data]
+        results: List[FMPEquityHistoricalData] = []
+        for d in data:
+            _ = d.pop("changeOverTime")
+            results.append(FMPEquityHistoricalData.model_validate(d))
+        return results

@@ -268,18 +268,19 @@ class FMPFinancialRatiosFetcher(
         query: FMPFinancialRatiosQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPFinancialRatiosData]:
         """Return the transformed data."""
-        results = [
-            {to_snake_case(k).replace("ttm", ""): v for k, v in item.items()}
-            for item in data
-        ]
+        results: List[FMPFinancialRatiosData] = []
+
         if query.period == "ttm":
-            results[0].update(
-                {"period": "TTM", "date": datetime.now().date().strftime("%Y-%m-%d")}
+            data[0].update(
+                {"period": "TTM", "date": datetime.now().date().strftime("%Y-%m-%d")},
             )
-        for item in results:
+        for item in data:
+            new_item = {to_snake_case(k).replace("ttm", ""): v for k, v in item.items()}
             # FMP duplicates quite a few fields for some reason.
-            item.pop("symbol", None)
-            item.pop("dividend_yiel_percentage", None)
-            item.pop("price_to_sales_ratio", None)
-            item.pop("price_book_value_ratio", None)
-        return [FMPFinancialRatiosData.model_validate(d) for d in results]
+            new_item.pop("symbol", None)
+            new_item.pop("dividend_yiel_percentage", None)
+            new_item.pop("price_to_sales_ratio", None)
+            new_item.pop("price_book_value_ratio", None)
+            results.append(FMPFinancialRatiosData.model_validate(new_item))
+
+        return results
