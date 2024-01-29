@@ -1,4 +1,5 @@
 """Keys Controller Module"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines
@@ -148,9 +149,9 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             keys_view.display_keys(
                 show=ns_parser.show,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)

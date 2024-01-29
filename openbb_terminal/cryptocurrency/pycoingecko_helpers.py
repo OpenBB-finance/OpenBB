@@ -1,4 +1,5 @@
 """CoinGecko helpers"""
+
 __docformat__ = "numpy"
 
 import datetime as dt

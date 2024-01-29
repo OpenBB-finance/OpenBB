@@ -1,6 +1,5 @@
 """ESG Risk Rating Standard Model."""
 
-
 from typing import List, Literal, Set, Union
 
 from pydantic import Field, field_validator

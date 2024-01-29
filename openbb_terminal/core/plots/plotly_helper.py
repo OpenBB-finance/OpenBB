@@ -1,4 +1,5 @@
 """Chart and style helpers for Plotly."""
+
 # pylint: disable=C0302,R0902,W3301
 import contextlib
 import json
@@ -1126,9 +1127,9 @@ class OpenBBFigure(go.Figure):
         # Set modebar style
         if plots_backend().isatty:
             self.update_layout(  # type: ignore
-                newshape_line_color="gold"
-                if theme.mapbox_style == "dark"
-                else "#0d0887",
+                newshape_line_color=(
+                    "gold" if theme.mapbox_style == "dark" else "#0d0887"
+                ),
                 modebar=dict(
                     orientation="v",
                     bgcolor="#2A2A2A" if theme.mapbox_style == "dark" else "gray",
@@ -1182,9 +1183,11 @@ class OpenBBFigure(go.Figure):
 
         self.update_layout(
             legend=dict(
-                orientation="v"
-                if not self.layout.legend.orientation
-                else self.layout.legend.orientation,
+                orientation=(
+                    "v"
+                    if not self.layout.legend.orientation
+                    else self.layout.legend.orientation
+                ),
             ),
             barmode="overlay",
             bargap=0,

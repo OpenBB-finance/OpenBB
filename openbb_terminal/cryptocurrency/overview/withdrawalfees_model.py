@@ -1,4 +1,5 @@
 """Withdrawal Fees model"""
+
 import logging
 import math
 from typing import Any, List
@@ -147,9 +148,11 @@ def get_overall_withdrawal_fees(limit: int = 100) -> pd.DataFrame:
 
     df["Coin"] = [ticker.text for ticker in tickers_html]
     df["Lowest"] = df["Lowest"].apply(
-        lambda x: f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})'
-        if "." in x and isinstance(x, str)
-        else x
+        lambda x: (
+            f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})'
+            if "." in x and isinstance(x, str)
+            else x
+        )
     )
 
     num_pages = int(math.ceil(limit / COINS_PER_PAGE))
@@ -167,9 +170,11 @@ def get_overall_withdrawal_fees(limit: int = 100) -> pd.DataFrame:
             if table is not None and tickers_html is not None:
                 new_df = pd.read_html(str(table))[0]
                 new_df["Highest"] = new_df["Highest"].apply(
-                    lambda x: f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})'
-                    if "." in x
-                    else x
+                    lambda x: (
+                        f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})'
+                        if "." in x
+                        else x
+                    )
                 )
                 new_df["Coin"] = [ticker.text for ticker in tickers_html]
                 df = df.append(new_df)
@@ -236,14 +241,18 @@ def get_crypto_withdrawal_fees(
         return ["", pd.DataFrame()]
     df = pd.read_html(str(table))[0]
     df["Withdrawal Fee"] = df["Withdrawal Fee"].apply(
-        lambda x: f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})'
-        if "." in x and isinstance(x, str)
-        else x
+        lambda x: (
+            f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})'
+            if "." in x and isinstance(x, str)
+            else x
+        )
     )
     df["Minimum Withdrawal Amount"] = df["Minimum Withdrawal Amount"].apply(
-        lambda x: f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})'
-        if isinstance(x, str) and "." in x
-        else x
+        lambda x: (
+            f'{x[:x.index(".")+3]} ({x[x.index(".")+3:]})'
+            if isinstance(x, str) and "." in x
+            else x
+        )
     )
     df = df.fillna("")
 

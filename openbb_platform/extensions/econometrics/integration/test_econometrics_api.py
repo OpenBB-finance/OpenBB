@@ -1,4 +1,5 @@
 """Test econometrics extension."""
+
 import base64
 import json
 import random

@@ -1,4 +1,5 @@
 """FinBrain View Module"""
+
 __docformat__ = "numpy"
 
 import logging

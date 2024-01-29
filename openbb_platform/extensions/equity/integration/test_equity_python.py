@@ -1,4 +1,5 @@
 """Python interface integration tests for the equity extension."""
+
 from datetime import time
 
 import pytest

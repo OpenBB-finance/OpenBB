@@ -1,4 +1,5 @@
 """Price router for Currency."""
+
 # pylint: disable=unused-argument
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject

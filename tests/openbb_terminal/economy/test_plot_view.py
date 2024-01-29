@@ -1,4 +1,5 @@
 """Test the plot view."""
+
 import pandas as pd
 import pytest
 

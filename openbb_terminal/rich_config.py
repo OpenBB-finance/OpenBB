@@ -1,4 +1,5 @@
 """Rich Module"""
+
 __docformat__ = "numpy"
 
 from typing import Iterable, List, Optional, Tuple, Union

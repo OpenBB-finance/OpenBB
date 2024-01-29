@@ -1,4 +1,5 @@
 """Test the coverage.py file."""
+
 # pylint: disable=redefined-outer-name
 
 import pytest

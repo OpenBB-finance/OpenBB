@@ -1,4 +1,5 @@
 """OpenBB Router."""
+
 import traceback
 import warnings
 from functools import lru_cache, partial
@@ -23,6 +24,7 @@ from pydantic import BaseModel
 from pydantic.v1.validators import find_validators
 from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
+from openbb_core.app.example_generator import ExampleGenerator
 from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
@@ -231,16 +233,23 @@ class Router:
 
         model = kwargs.pop("model", "")
         deprecation_message = kwargs.pop("deprecation_message", None)
+        examples = kwargs.pop("examples", [])
+        exclude_auto_examples = kwargs.pop("exclude_auto_examples", False)
 
-        if model:
+        if func := SignatureInspector.complete(func, model):
+            if not exclude_auto_examples:
+                examples.insert(
+                    0,
+                    ExampleGenerator.generate(
+                        route=SignatureInspector.get_operation_id(func, sep="."),
+                        model=model,
+                    ),
+                )
+
             kwargs["response_model_exclude_unset"] = True
-            kwargs["openapi_extra"] = {"model": model}
-
-        func = SignatureInspector.complete_signature(func, model)
-
-        if func:
-            CommandValidator.check(func=func, model=model)
-
+            kwargs["openapi_extra"] = kwargs.get("openapi_extra", {})
+            kwargs["openapi_extra"]["model"] = model
+            kwargs["openapi_extra"]["examples"] = examples
             kwargs["operation_id"] = kwargs.get(
                 "operation_id", SignatureInspector.get_operation_id(func)
             )
@@ -275,9 +284,9 @@ class Router:
                 if deprecation_message:
                     kwargs["summary"] = deprecation_message
                 else:
-                    kwargs[
-                        "summary"
-                    ] = "This functionality will be deprecated in the future releases."
+                    kwargs["summary"] = (
+                        "This functionality will be deprecated in the future releases."
+                    )
 
             api_router.add_api_route(**kwargs)
 
@@ -299,7 +308,7 @@ class SignatureInspector:
     """Inspect function signature."""
 
     @classmethod
-    def complete_signature(
+    def complete(
         cls, func: Callable[P, OBBject], model: str
     ) -> Optional[Callable[P, OBBject]]:
         """Complete function signature."""
@@ -320,7 +329,6 @@ class SignatureInspector:
                         category=OpenBBWarning,
                     )
                 return None
-
             cls.validate_signature(
                 func,
                 {
@@ -444,19 +452,20 @@ class SignatureInspector:
         if doc:
             description = doc.split("    Parameters\n    ----------")[0]
             description = description.split("    Returns\n    -------")[0]
+            description = description.split("    Example\n    -------")[0]
             description = "\n".join([line.strip() for line in description.split("\n")])
 
             return description
         return ""
 
     @staticmethod
-    def get_operation_id(func: Callable) -> str:
+    def get_operation_id(func: Callable, sep: str = "_") -> str:
         """Get operation id."""
         operation_id = [
             t.replace("_router", "").replace("openbb_", "")
             for t in func.__module__.split(".") + [func.__name__]
         ]
-        cleaned_id = "_".join({c: "" for c in operation_id if c}.keys())
+        cleaned_id = sep.join({c: "" for c in operation_id if c}.keys())
         return cleaned_id
 
 

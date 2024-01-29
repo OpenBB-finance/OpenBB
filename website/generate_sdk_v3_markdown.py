@@ -51,9 +51,9 @@ def get_function_meta(trailmap: Trailmap, trail_type: Literal["model", "view"]):
                 "name": param.arg_name,
                 "doc": param.description if param.description else "",
                 "type": param.type_name,
-                "default": arg_default
-                if arg_default is not inspect.Parameter.empty
-                else None,
+                "default": (
+                    arg_default if arg_default is not inspect.Parameter.empty else None
+                ),
                 "optional": bool(arg_default is not inspect.Parameter.empty)
                 or param.is_optional,
             }

@@ -1,4 +1,5 @@
 """AlphaVantage Forex View."""
+
 __docformat__ = "numpy"
 
 import logging

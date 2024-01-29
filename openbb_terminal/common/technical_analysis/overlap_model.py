@@ -1,4 +1,5 @@
 """Overlap Technical Analysis"""
+
 ___docformat__ = "numpy"
 
 import logging

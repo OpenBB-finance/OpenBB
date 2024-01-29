@@ -1,4 +1,5 @@
 """Forex SDK Helpers."""
+
 __docformat__ = "numpy"
 
 import pandas as pd
