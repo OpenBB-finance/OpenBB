@@ -61,7 +61,7 @@ jobs:
           restore-keys: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
 
       - run: |
-          pip install bandit black codespell mypy pylint ruff
+          pip install bandit black mypy pylint ruff codespell==2.2.5
           pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --diff --check .
