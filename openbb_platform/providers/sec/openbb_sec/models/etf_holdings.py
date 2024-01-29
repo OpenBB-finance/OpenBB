@@ -431,9 +431,9 @@ class SecEtfHoldingsFetcher(
                         option_swaption_warrant_deriv = derivative_info[
                             "optionSwaptionWarrantDeriv"
                         ]
-                        df.loc[i, "derivative_category"] = (
-                            option_swaption_warrant_deriv.get("@derivCat")
-                        )
+                        df.loc[
+                            i, "derivative_category"
+                        ] = option_swaption_warrant_deriv.get("@derivCat")
                         df.loc[i, "counterparty"] = option_swaption_warrant_deriv[
                             "counterparties"
                         ].get("counterpartyName")
@@ -461,21 +461,21 @@ class SecEtfHoldingsFetcher(
                         df.loc[i, "option_type"] = option_swaption_warrant_deriv.get(
                             "putOrCall"
                         )
-                        df.loc[i, "derivative_payoff"] = (
-                            option_swaption_warrant_deriv.get("writtenOrPur")
-                        )
+                        df.loc[
+                            i, "derivative_payoff"
+                        ] = option_swaption_warrant_deriv.get("writtenOrPur")
                         df.loc[i, "expiry_date"] = option_swaption_warrant_deriv.get(
                             "expDt"
                         )
                         df.loc[i, "exercise_price"] = option_swaption_warrant_deriv.get(
                             "exercisePrice"
                         )
-                        df.loc[i, "exercise_currency"] = (
-                            option_swaption_warrant_deriv.get("exercisePriceCurCd")
-                        )
-                        df.loc[i, "shares_per_contract"] = (
-                            option_swaption_warrant_deriv.get("shareNo")
-                        )
+                        df.loc[
+                            i, "exercise_currency"
+                        ] = option_swaption_warrant_deriv.get("exercisePriceCurCd")
+                        df.loc[
+                            i, "shares_per_contract"
+                        ] = option_swaption_warrant_deriv.get("shareNo")
                         if option_swaption_warrant_deriv.get("delta") != "XXXX":
                             df.loc[i, "delta"] = option_swaption_warrant_deriv.get(
                                 "delta"
