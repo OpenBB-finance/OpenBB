@@ -1,4 +1,4 @@
-const CONTENT = [
+[
 	{
 		title: "Install in Google Colab",
 		url: "https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/examples/googleColab.ipynb",
