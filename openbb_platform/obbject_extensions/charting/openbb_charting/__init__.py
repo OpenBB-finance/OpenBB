@@ -73,7 +73,7 @@ class Charting:
         kwargs["obbject_item"] = self._obbject.results
         kwargs["charting_settings"] = self._charting_settings
         kwargs["standard_params"] = (
-            self._obbject._standard_params.__dict__ # pylint: disable=protected-access
+            self._obbject._standard_params.__dict__  # pylint: disable=protected-access
         )
 
         fig, content = charting_function(**kwargs)
