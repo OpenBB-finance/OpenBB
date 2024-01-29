@@ -1,6 +1,6 @@
 """Index Router."""
 
-from openbb_core.app.deprecation import OpenBBDeprecatedSince41
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
@@ -23,8 +23,10 @@ router.include_router(price_router)
 @router.command(
     model="MarketIndices",
     deprecated=True,
-    deprecation=OpenBBDeprecatedSince41(
-        "This endpoint is deprecated; use `/index/price/historical` instead."
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint is deprecated; use `/index/price/historical` instead.",
+        since=(4, 1),
+        expected_removal=(4, 5),
     ),
 )
 async def market(

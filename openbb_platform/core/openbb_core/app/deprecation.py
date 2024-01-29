@@ -44,10 +44,3 @@ class OpenBBDeprecationWarning(DeprecationWarning):
     def __str__(self) -> str:
         """Return the warning message."""
         return self.long_message
-
-
-class OpenBBDeprecatedSince41(OpenBBDeprecationWarning):
-    """A specific `OpenBBDeprecationWarning` subclass defining functionality deprecated since OpenBB 4.1."""
-
-    def __init__(self, message: str, *args: object) -> None:
-        super().__init__(message, *args, since=(4, 1), expected_removal=(4, 5))
