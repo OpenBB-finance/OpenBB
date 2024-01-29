@@ -1,6 +1,5 @@
 """OpenBB Terminal SDK."""
 
-
 # ######### THIS FILE IS AUTO GENERATED - ANY CHANGES WILL BE VOID ######### #
 
 

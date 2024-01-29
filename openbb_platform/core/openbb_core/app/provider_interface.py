@@ -1,4 +1,5 @@
 """Provider Interface."""
+
 from dataclasses import dataclass, make_dataclass
 from difflib import SequenceMatcher
 from typing import Any, Callable, Dict, List, Literal, Optional, Tuple, Type, Union
@@ -252,12 +253,14 @@ class ProviderInterface(metaclass=SingletonMeta):
                 default=default or None,
                 title=provider_name,
                 description=description,
-                validation_alias=AliasChoices(
-                    field.alias,
-                    *list(set(alias_dict.get(name, []))),
-                )
-                if alias_dict.get(name, [])
-                else None,
+                validation_alias=(
+                    AliasChoices(
+                        field.alias,
+                        *list(set(alias_dict.get(name, []))),
+                    )
+                    if alias_dict.get(name, [])
+                    else None
+                ),
                 json_schema_extra=field.json_schema_extra,
             )
 

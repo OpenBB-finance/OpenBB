@@ -1,4 +1,5 @@
 """Helper functions."""
+
 __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines
@@ -423,13 +424,17 @@ def print_rich_table(  # noqa: PLR0912
             # remove hour/min/sec from timestamp index - Format: YYYY-MM-DD # make better
             row_idx = [str(idx)] if show_index else []
             row_idx += [
-                str(x)
-                if not isinstance(x, float) and not isinstance(x, np.float64)
-                else (
-                    f"{x:{floatfmt[idx]}}"
-                    if isinstance(floatfmt, list)
+                (
+                    str(x)
+                    if not isinstance(x, float) and not isinstance(x, np.float64)
                     else (
-                        f"{x:.2e}" if 0 < abs(float(x)) <= 0.0001 else f"{x:floatfmt}"
+                        f"{x:{floatfmt[idx]}}"
+                        if isinstance(floatfmt, list)
+                        else (
+                            f"{x:.2e}"
+                            if 0 < abs(float(x)) <= 0.0001
+                            else f"{x:floatfmt}"
+                        )
                     )
                 )
                 for idx, x in enumerate(values)
@@ -1154,9 +1159,7 @@ def text_adjustment_justify(self, texts, max_len, mode="right"):
     justify = (
         str.ljust
         if (mode == "left")
-        else str.rjust
-        if (mode == "right")
-        else str.center
+        else str.rjust if (mode == "right") else str.center
     )
     out = []
     for s in texts:

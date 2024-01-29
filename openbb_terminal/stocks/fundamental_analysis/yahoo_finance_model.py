@@ -1,4 +1,5 @@
 """Yahoo Finance Model"""
+
 __docformat__ = "numpy"
 
 import logging
@@ -292,9 +293,10 @@ def get_financials(symbol: str, statement: str, ratios: bool = False) -> pd.Data
     )
 
     # Making the website believe that you are accessing it using a Mozilla browser
-    req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    req = Request(url, headers={"User-Agent": "Mozilla/5.0"})  # noqa: S310
 
-    webpage = urlopen(req).read()  # pylint: disable= R1732 # noqa: S310
+    with urlopen(req) as response:  # noqa: S310
+        webpage = response.read()
     soup = BeautifulSoup(webpage, "html.parser")
 
     features = soup.find_all("div", class_="D(tbr)")

@@ -19,9 +19,9 @@ STOCKS_CLEAN_DATA = {
     "year_low": lambda x: "N/A" if x is None else f"${round(x,2)}",
     "floatShares": lambda x: "N/A" if x is None else big_num(x),
     "sharesShort": lambda x: "N/A" if x is None else big_num(x),
-    "exDividendDate": lambda x: "N/A"
-    if x is None
-    else datetime.fromtimestamp(x).strftime("%Y/%m/%d"),
+    "exDividendDate": lambda x: (
+        "N/A" if x is None else datetime.fromtimestamp(x).strftime("%Y/%m/%d")
+    ),
 }
 
 

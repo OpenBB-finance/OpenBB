@@ -1,4 +1,5 @@
 """Forecast Model"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=eval-used

@@ -1,4 +1,5 @@
 """Technical Analysis Controller Module"""
+
 __docformat__ = "numpy"
 # pylint:disable=too-many-lines
 # pylint:disable=R0904,C0201
@@ -188,9 +189,9 @@ class TechnicalAnalysisController(BaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -245,9 +246,9 @@ class TechnicalAnalysisController(BaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -299,9 +300,9 @@ class TechnicalAnalysisController(BaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -353,9 +354,9 @@ class TechnicalAnalysisController(BaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -410,9 +411,9 @@ class TechnicalAnalysisController(BaseController):
                 window=ns_parser.n_length,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -476,9 +477,9 @@ class TechnicalAnalysisController(BaseController):
                 offset=ns_parser.n_offset,
                 interval=interval_text,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -529,9 +530,9 @@ class TechnicalAnalysisController(BaseController):
                 window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -595,9 +596,9 @@ class TechnicalAnalysisController(BaseController):
                 n_slow=ns_parser.n_slow,
                 n_signal=ns_parser.n_signal,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -662,9 +663,9 @@ class TechnicalAnalysisController(BaseController):
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -727,9 +728,9 @@ class TechnicalAnalysisController(BaseController):
                 slowdperiod=ns_parser.n_slowdperiod,
                 slowkperiod=ns_parser.n_slowkperiod,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -771,9 +772,9 @@ class TechnicalAnalysisController(BaseController):
                 data=self.data,
                 window=ns_parser.n_length,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -815,9 +816,9 @@ class TechnicalAnalysisController(BaseController):
                 data=self.data["Adj Close"],
                 window=ns_parser.n_length,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -879,9 +880,9 @@ class TechnicalAnalysisController(BaseController):
                 scalar=ns_parser.n_scalar,
                 drift=ns_parser.n_drift,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -939,9 +940,9 @@ class TechnicalAnalysisController(BaseController):
                 window=ns_parser.n_length,
                 scalar=ns_parser.n_scalar,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1011,9 +1012,9 @@ class TechnicalAnalysisController(BaseController):
                 n_std=ns_parser.n_std,
                 mamode=ns_parser.s_mamode,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1065,9 +1066,9 @@ class TechnicalAnalysisController(BaseController):
                 upper_length=ns_parser.n_length_upper,
                 lower_length=ns_parser.n_length_lower,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1141,9 +1142,9 @@ class TechnicalAnalysisController(BaseController):
                 mamode=ns_parser.s_mamode,
                 offset=ns_parser.n_offset,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1183,9 +1184,9 @@ class TechnicalAnalysisController(BaseController):
                 data=self.data,
                 use_open=ns_parser.b_use_open,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1244,9 +1245,9 @@ class TechnicalAnalysisController(BaseController):
                 fast=ns_parser.n_length_fast,
                 slow=ns_parser.n_length_slow,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1275,9 +1276,9 @@ class TechnicalAnalysisController(BaseController):
                 symbol=self.ticker,
                 data=self.data,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1328,9 +1329,9 @@ class TechnicalAnalysisController(BaseController):
                 start_date=ns_parser.start,
                 end_date=ns_parser.end,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1395,9 +1396,9 @@ class TechnicalAnalysisController(BaseController):
                 self.ticker.upper(),
                 min_to_show=ns_parser.min_to_show,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)

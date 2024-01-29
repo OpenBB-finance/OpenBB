@@ -1,4 +1,5 @@
 """Ultima provider module."""
+
 import warnings
 from typing import Union
 

@@ -1,4 +1,5 @@
 """Keys model"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines
@@ -944,7 +945,7 @@ def check_finnhub_key(show_output: bool = False) -> str:
     if current_user.credentials.API_FINNHUB_KEY == "REPLACE_ME":
         status = KeyStatus.NOT_DEFINED
     else:
-        r = r = request(
+        r = request(
             f"https://finnhub.io/api/v1/quote?symbol=AAPL&token={current_user.credentials.API_FINNHUB_KEY}"
         )
         if r.status_code in [403, 401, 400]:

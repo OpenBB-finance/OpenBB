@@ -1,4 +1,5 @@
 """Optimization helpers"""
+
 __docformat__ = "numpy"
 
 from typing import Any, Optional

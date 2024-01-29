@@ -9,16 +9,6 @@ labels:
     files:
       - "openbb_platform/.*"
 
-  - label: "bug"
-    branch: "^hotfix/.*"
-    files:
-      - "openbb_platform/.*"
-
-  - label: "platform"
-    branch: "^hotfix/.*"
-    files:
-      - "openbb_platform/.*"
-
   - label: "enhancement"
     branch: "^feature/.*"
 
@@ -27,3 +17,7 @@ labels:
 
   - label: "docs"
     branch: "^docs/.*"
+
+  - label: "excel"
+    files:
+      - "website/content/excel/.*"

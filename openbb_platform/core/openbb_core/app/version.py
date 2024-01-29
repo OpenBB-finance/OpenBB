@@ -1,4 +1,5 @@
 """Version script for the OpenBB Platform."""
+
 import shutil
 import subprocess
 from pathlib import Path

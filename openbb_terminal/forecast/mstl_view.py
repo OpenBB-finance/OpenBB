@@ -1,4 +1,5 @@
 """Multiple Seasonalities and Trend using Loess (MSTL) View"""
+
 __docformat__ = "numpy"
 
 import logging

@@ -1,4 +1,5 @@
 """AlphaQuery View"""
+
 __docforma__ = "numpy"
 
 import logging

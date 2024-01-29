@@ -1,4 +1,5 @@
 """Extension class for OBBject extensions."""
+
 import warnings
 from typing import Callable, List, Optional
 

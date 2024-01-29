@@ -1,4 +1,5 @@
 """Yahoo Finance Futures Historical Price Model."""
+
 # pylint: disable=unused-argument
 # ruff: noqa: SIM105
 

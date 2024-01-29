@@ -213,20 +213,20 @@ def print_insider_filter(
                 new_df_insider["Trade Type"] == "S - Sale"
             ].apply(lambda_red_highlight)
         if not new_df_insider[new_df_insider["Trade Type"] == "S - Sale+OE"].empty:
-            new_df_insider[
-                new_df_insider["Trade Type"] == "S - Sale+OE"
-            ] = new_df_insider[new_df_insider["Trade Type"] == "S - Sale+OE"].apply(
-                lambda_yellow_highlight
+            new_df_insider[new_df_insider["Trade Type"] == "S - Sale+OE"] = (
+                new_df_insider[new_df_insider["Trade Type"] == "S - Sale+OE"].apply(
+                    lambda_yellow_highlight
+                )
             )
         if not new_df_insider[new_df_insider["Trade Type"] == "F - Tax"].empty:
             new_df_insider[new_df_insider["Trade Type"] == "F - Tax"] = new_df_insider[
                 new_df_insider["Trade Type"] == "F - Tax"
             ].apply(lambda_magenta_highlight)
         if not new_df_insider[new_df_insider["Trade Type"] == "P - Purchase"].empty:
-            new_df_insider[
-                new_df_insider["Trade Type"] == "P - Purchase"
-            ] = new_df_insider[new_df_insider["Trade Type"] == "P - Purchase"].apply(
-                lambda_green_highlight
+            new_df_insider[new_df_insider["Trade Type"] == "P - Purchase"] = (
+                new_df_insider[new_df_insider["Trade Type"] == "P - Purchase"].apply(
+                    lambda_green_highlight
+                )
             )
 
         patch_pandas_text_adjustment()

@@ -178,7 +178,7 @@ After installation, the Python interface will automatically rebuild on initializ
 
 ## Technical
 
-The `openbb-technical` extension is for performing technical analysis on time series data. It installs a new router path (`obb.techincal`) and some additional Python libraries:
+The `openbb-technical` extension is for performing technical analysis on time series data. It installs a new router path (`obb.technical`) and some additional Python libraries:
 
 - pandas-ta
 - scikit-learn
