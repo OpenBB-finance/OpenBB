@@ -135,7 +135,7 @@ class Charting:
         >    stoch=dict(length=14),
         >    ema=dict(length=[20,30,50]),
         > )
-        > res.to_chart(**{"indicators": indicators})
+        > res.charting.to_chart(**{"indicators": indicators})
 
         2) Get all the available indicators
         > from openbb_charting.core.plotly_ta.data_classes import ChartIndicators
