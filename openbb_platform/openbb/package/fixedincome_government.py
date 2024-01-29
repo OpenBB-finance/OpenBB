@@ -167,7 +167,7 @@ class ROUTER_fixedincome_government(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.government.us_yield_curve()
+        >>> obb.fixedincome.government.us_yield_curve(inflation_adjusted=False)
         """  # noqa: E501
 
         return self._run(
