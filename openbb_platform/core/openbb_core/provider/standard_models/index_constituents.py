@@ -1,20 +1,18 @@
 """Index Constituents Standard Model."""
 
-from typing import List, Optional, Set, Union
+from typing import Optional
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
-from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 
 
 class IndexConstituentsQueryParams(QueryParams):
     """Index Constituents Query."""
 
-    symbol: str = Field(
-        description="The symbol of the index to get constituents of.",
-    )
+    symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
 
 
 class IndexConstituentsData(Data):
