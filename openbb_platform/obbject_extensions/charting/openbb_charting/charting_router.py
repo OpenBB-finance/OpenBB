@@ -1,4 +1,5 @@
 """Charting router."""
+
 from typing import TYPE_CHECKING, Any, Dict, Tuple
 
 from openbb_core.app.model.charts.chart import ChartFormat

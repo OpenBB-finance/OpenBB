@@ -1,4 +1,5 @@
 """Dataclasses for the charting extension."""
+
 # pylint: disable=C0302,R0915,R0914,R0913,R0903,R0904
 
 import sys

@@ -1,4 +1,5 @@
 """Script used to create charting functions in charting_router.py."""
+
 from inspect import getmembers, isfunction
 from typing import List
 

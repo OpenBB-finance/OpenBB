@@ -1,4 +1,5 @@
 """Logging Service Module."""
+
 import json
 import logging
 from enum import Enum

@@ -1,4 +1,5 @@
 """OpenBB OBBject extension for charting."""
+
 from typing import Any, Callable, Dict, Optional, Tuple, Union
 
 from openbb_core.app.model.charts.chart import Chart
@@ -74,9 +75,9 @@ class Charting:
         )
         kwargs["obbject_item"] = self._obbject.results
         kwargs["charting_settings"] = self._charting_settings
-        kwargs[
-            "standard_params"
-        ] = self._obbject._standard_params.__dict__  # pylint: disable=protected-access
+        kwargs["standard_params"] = (
+            self._obbject._standard_params.__dict__
+        )  # pylint: disable=protected-access
 
         fig, content = charting_function(**kwargs)
         self._obbject.chart = Chart(

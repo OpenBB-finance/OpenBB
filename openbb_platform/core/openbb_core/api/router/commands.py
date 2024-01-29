@@ -1,4 +1,5 @@
 """Commands: generates the command map."""
+
 import inspect
 from functools import partial, wraps
 from inspect import Parameter, Signature, signature

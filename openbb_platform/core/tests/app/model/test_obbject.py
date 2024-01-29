@@ -1,4 +1,5 @@
 """Tests for the OBBject class."""
+
 from unittest.mock import MagicMock
 
 import pandas as pd

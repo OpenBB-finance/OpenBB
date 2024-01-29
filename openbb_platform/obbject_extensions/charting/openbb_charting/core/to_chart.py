@@ -1,4 +1,5 @@
 """Module containing the to_chart function."""
+
 from typing import Any, Dict, Optional, Tuple, Union
 
 import pandas as pd
