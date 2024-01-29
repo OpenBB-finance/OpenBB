@@ -1,4 +1,5 @@
 """YFinance Price Target Consensus Model"""
+
 # pylint: disable=unused-argument
 import asyncio
 import warnings

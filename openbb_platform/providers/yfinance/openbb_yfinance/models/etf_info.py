@@ -1,4 +1,5 @@
 """YFinance ETF Info fetcher"""
+
 # pylint: disable=unused-argument
 import asyncio
 import warnings

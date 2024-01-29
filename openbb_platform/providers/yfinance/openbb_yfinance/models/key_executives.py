@@ -1,4 +1,5 @@
 """YFinance Key Executives Model"""
+
 # pylint: disable=unused-argument
 import warnings
 from typing import Any, Dict, List, Optional

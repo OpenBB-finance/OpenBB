@@ -1,4 +1,5 @@
 """YFinance Share Statistics Model"""
+
 # pylint: disable=unused-argument
 import asyncio
 import warnings

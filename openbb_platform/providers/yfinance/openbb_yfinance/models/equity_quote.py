@@ -1,4 +1,5 @@
 """YFinance Equity Quote Model"""
+
 # pylint: disable=unused-argument
 import asyncio
 import warnings
