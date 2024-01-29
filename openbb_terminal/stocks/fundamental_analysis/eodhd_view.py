@@ -1,4 +1,5 @@
 """eodhd view"""
+
 __docformat__ = "numpy"
 import logging
 import os

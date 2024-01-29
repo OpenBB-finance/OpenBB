@@ -1,4 +1,5 @@
 """Volatility Technical Indicators"""
+
 __docformat__ = "numpy"
 
 import logging

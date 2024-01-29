@@ -1,4 +1,5 @@
 """bt view module"""
+
 __docformat__ = "numpy"
 
 import logging

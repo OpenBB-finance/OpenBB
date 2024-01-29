@@ -1,4 +1,5 @@
 """Logging Configuration"""
+
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD

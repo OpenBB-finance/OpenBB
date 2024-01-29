@@ -1,4 +1,5 @@
 """OpenBB Figure Class."""
+
 # pylint: disable=C0302,R0902,W3301
 import json
 import textwrap
@@ -880,16 +881,16 @@ class OpenBBFigure(go.Figure):
         # Set modebar style
         if self._backend.isatty:
             self.update_layout(  # type: ignore
-                newshape_line_color="gold"
-                if self._theme.mapbox_style == "dark"
-                else "#0d0887",
+                newshape_line_color=(
+                    "gold" if self._theme.mapbox_style == "dark" else "#0d0887"
+                ),
                 modebar=dict(
                     orientation="v",
                     bgcolor="#2A2A2A" if self._theme.mapbox_style == "dark" else "gray",
                     color="#FFFFFF" if self._theme.mapbox_style == "dark" else "black",
-                    activecolor="#d1030d"
-                    if self._theme.mapbox_style == "dark"
-                    else "blue",
+                    activecolor=(
+                        "#d1030d" if self._theme.mapbox_style == "dark" else "blue"
+                    ),
                 ),
                 spikedistance=2,
                 hoverdistance=2,
@@ -931,9 +932,11 @@ class OpenBBFigure(go.Figure):
 
         self.update_layout(
             legend=dict(
-                orientation="v"
-                if not self.layout.legend.orientation
-                else self.layout.legend.orientation,
+                orientation=(
+                    "v"
+                    if not self.layout.legend.orientation
+                    else self.layout.legend.orientation
+                ),
             ),
             barmode="overlay",
             bargap=0,

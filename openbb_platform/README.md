@@ -26,14 +26,15 @@ This will install the following data providers:
 |----------------|-------------|----------------------|------------------------------------|
 | openbb-benzinga | [Benzinga](https://www.benzinga.com/apis/en-ca/) data connector | pip install openbb-benzinga | Paid |
 | openbb-biztoc | [Biztoc](https://api.biztoc.com/#biztoc-default) News data connector | pip install openbb-biztoc | Free |
-| openbb-ecb | [ECB](https://data.ecb.europa.eu/) data connector | pip install openbb-ecb | None |
-| openbb-finra | [FINRA](https://www.finra.org/finra-data) data connector | pip install openbb-finra | None / Free |
+| openbb-ecb | [ECB](https://data.ecb.europa.eu/) data connector | pip install openbb-ecb | Free |
+| openbb-finra | [FINRA](https://www.finra.org/finra-data) data connector | pip install openbb-finra | Free |
+| openbb-finviz | [Finviz](https://finviz.com) data connector | pip install openbb-finra | Free |
 | openbb-fmp | [FMP](https://site.financialmodelingprep.com/developer/) data connector | pip install openbb-fmp | Free |
 | openbb-fred | [FRED](https://fred.stlouisfed.org/) data connector | pip install openbb-fred | Free |
 | openbb-intrinio | [Intrinio](https://intrinio.com/pricing) data connector | pip install openbb-intrinio | Paid |
 | openbb-oecd | [OECD](https://data.oecd.org/) data connector | pip install openbb-oecd | Free |
 | openbb-polygon | [Polygon](https://polygon.io/) data connector | pip install openbb-polygon | Free |
-| openbb-sec | [SEC](https://www.sec.gov/edgar/sec-api-documentation) data connector | pip install openbb-sec | None |
+| openbb-sec | [SEC](https://www.sec.gov/edgar/sec-api-documentation) data connector | pip install openbb-sec | Free |
 | openbb-tiingo | [Tiingo](https://www.tiingo.com/about/pricing) data connector | pip install openbb-tiingo | Free |
 | openbb-tradingeconomics | [TradingEconomics](https://tradingeconomics.com/api) data connector | pip install openbb-tradingeconomics | Paid |
 | openbb-ultima | [Ultima Insights](https://ultimainsights.ai/openbb) data connector | pip install openbb-ultima | Paid |

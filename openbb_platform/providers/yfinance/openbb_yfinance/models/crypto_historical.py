@@ -1,4 +1,5 @@
 """Yahoo Finance Crypto Historical Price Model."""
+
 # ruff: noqa: SIM105
 
 

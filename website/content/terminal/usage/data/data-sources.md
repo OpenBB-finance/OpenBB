@@ -47,7 +47,7 @@ OpenBB doesn't store any financial data in its servers. We aggregate access to m
 
 ## Changing the Data Source In-Command
 
-Many commands have multiple data sources associated with it. A great example is `/stocka/fa/income`, which allows you to select FinancialModelingPrep, Polygon, AlphaVantage, EODHD or YahooFinance. In order to specify the data vendor for that particular command, use the `--source` argument.
+Many commands have multiple data sources associated with it. A great example is `/stocks/fa/income`, which allows you to select FinancialModelingPrep, Polygon, AlphaVantage, EODHD or YahooFinance. In order to specify the data vendor for that particular command, use the `--source` argument.
 
 This also becomes clear from the help menu.
 

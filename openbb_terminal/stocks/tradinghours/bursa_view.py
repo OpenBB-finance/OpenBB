@@ -1,4 +1,5 @@
 """Stocks Trading Hours View."""
+
 __docformat__ = "numpy"
 
 import logging

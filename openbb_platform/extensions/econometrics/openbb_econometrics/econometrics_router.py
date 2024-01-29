@@ -1,4 +1,5 @@
 """Econometrics Router."""
+
 import re
 from itertools import combinations
 from typing import Dict, List, Literal

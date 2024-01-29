@@ -1,4 +1,5 @@
 """ETH Gas Station model"""
+
 import logging
 
 import pandas as pd
