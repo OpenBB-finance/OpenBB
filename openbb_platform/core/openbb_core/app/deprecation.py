@@ -3,6 +3,7 @@ OpenBB-specific deprecation warnings.
 
 This implementation was inspired from Pydantic's specific warnings and modified to suit OpenBB's needs.
 """
+
 from typing import Optional, Tuple
 
 

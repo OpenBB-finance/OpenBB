@@ -1,4 +1,5 @@
 """Index Router."""
+
 from openbb_core.app.deprecation import OpenBBDeprecatedSince41
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
