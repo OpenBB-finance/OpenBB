@@ -310,7 +310,6 @@ class SecEtfHoldingsFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the SEC endpoint."""
-
         filing_candidates = pd.DataFrame.from_records(
             get_nport_candidates(symbol=query.symbol, use_cache=query.use_cache)
         )
