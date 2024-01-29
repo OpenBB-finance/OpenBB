@@ -1,4 +1,5 @@
 """ Market Watch View """
+
 __docformat__ = "numpy"
 
 import logging

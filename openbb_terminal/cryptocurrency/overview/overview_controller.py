@@ -1,4 +1,5 @@
 """Cryptocurrency Overview Controller"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=R0904, C0302, W0622
@@ -306,9 +307,9 @@ class OverviewController(BaseController):
                 slug=ns_parser.slug,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
                 sortby=" ".join(ns_parser.sortby),
                 ascend=not ns_parser.reverse,
             )
@@ -349,9 +350,9 @@ class OverviewController(BaseController):
                 start_date=ns_parser.since.strftime("%Y-%m-%d"),
                 end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -410,9 +411,9 @@ class OverviewController(BaseController):
                 end_date=ns_parser.until.strftime("%Y-%m-%d"),
                 period=ns_parser.period,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -581,9 +582,9 @@ class OverviewController(BaseController):
             pycoingecko_view.display_holdings_overview(
                 symbol=ns_parser.coin,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
                 show_bar=ns_parser.bar,
                 limit=ns_parser.limit,
             )
@@ -640,9 +641,9 @@ class OverviewController(BaseController):
             pycoingecko_view.display_categories(
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
                 sortby=ns_parser.sortby,
                 pie=ns_parser.pie,
             )
@@ -713,9 +714,9 @@ class OverviewController(BaseController):
             pycoingecko_view.display_stablecoins(
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 pie=ns_parser.pie,
@@ -779,9 +780,9 @@ class OverviewController(BaseController):
                 platforms=ns_parser.platforms,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -857,9 +858,9 @@ class OverviewController(BaseController):
                 pycoingecko_view.display_exchanges(
                     limit=ns_parser.limit,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                     sortby=ns_parser.sortby,
                     ascend=ns_parser.reverse,
                     links=ns_parser.urls,
@@ -871,9 +872,9 @@ class OverviewController(BaseController):
                     ascend=ns_parser.reverse,
                     sortby=ns_parser.sortby,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
     @log_start_end(log=logger)
@@ -926,9 +927,9 @@ class OverviewController(BaseController):
                 limit=ns_parser.limit,
                 ascend=not ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -985,9 +986,9 @@ class OverviewController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1046,9 +1047,9 @@ class OverviewController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1076,17 +1077,17 @@ class OverviewController(BaseController):
             if ns_parser.source == "CoinGecko":
                 pycoingecko_view.display_global_market_info(
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                     pie=ns_parser.pie,
                 )
             elif ns_parser.source == "CoinPaprika":
                 coinpaprika_view.display_global_market(
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
     @log_start_end(log=logger)
@@ -1109,9 +1110,9 @@ class OverviewController(BaseController):
         if ns_parser:
             pycoingecko_view.display_global_defi_info(
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1176,9 +1177,9 @@ class OverviewController(BaseController):
                 limit=ns_parser.limit,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
                 sortby=ns_parser.sortby,
             )
 
@@ -1255,9 +1256,9 @@ class OverviewController(BaseController):
                 exchange=ns_parser.exchange,
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 links=ns_parser.urls,
@@ -1328,9 +1329,9 @@ class OverviewController(BaseController):
                 ascend=not ns_parser.reverse,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1349,9 +1350,9 @@ class OverviewController(BaseController):
         if ns_parser:
             coinpaprika_view.display_all_platforms(
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1424,9 +1425,9 @@ class OverviewController(BaseController):
                 ascend=not ns_parser.reverse,
                 sortby=ns_parser.sortby,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -1474,9 +1475,9 @@ class OverviewController(BaseController):
             coinbase_view.display_trading_pairs(
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
                 sortby=ns_parser.sortby,
                 ascend=not ns_parser.reverse,
             )
@@ -1562,9 +1563,9 @@ class OverviewController(BaseController):
             cryptopanic_view.display_news(
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 links=ns_parser.urls,

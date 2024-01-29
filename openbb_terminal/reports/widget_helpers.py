@@ -4,6 +4,7 @@ A library of `ipywidgets` wrappers for notebook based reports and voila dashboar
 The library includes both python code and html/css/js elements that can be found in the
 `./widgets` folder.
 """
+
 import base64
 import os
 from typing import List

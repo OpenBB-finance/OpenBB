@@ -1,4 +1,5 @@
 """Intrinio Equity Quote Model."""
+
 # pylint: disable=unused-argument
 import re
 import warnings

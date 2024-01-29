@@ -1,4 +1,5 @@
 """ thought_of_the_day.py tests """
+
 import unittest
 from unittest import mock
 

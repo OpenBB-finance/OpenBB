@@ -1,4 +1,5 @@
 """Finviz Compare Groups Model."""
+
 # pylint: disable=unused-argument
 
 from typing import Any, Dict, List, Optional, Union

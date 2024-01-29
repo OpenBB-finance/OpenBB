@@ -1,4 +1,5 @@
 """Coindix model"""
+
 __docformat__ = "numpy"
 
 import logging
@@ -164,9 +165,9 @@ def get_defi_vaults(
     if rich_config.USE_COLOR and not get_current_user().preferences.USE_INTERACTIVE_DF:
         df["tvl"] = df["tvl"].apply(lambda x: lambda_long_number_format(x))
         df["apy"] = df["apy"].apply(
-            lambda x: f"{str(round(x * 100, 2))} %"
-            if isinstance(x, (int, float))
-            else x
+            lambda x: (
+                f"{str(round(x * 100, 2))} %" if isinstance(x, (int, float)) else x
+            )
         )
 
     df.columns = [x.title() for x in df.columns]

@@ -1,4 +1,5 @@
 """TA Overlap View"""
+
 __docformat__ = "numpy"
 
 import logging

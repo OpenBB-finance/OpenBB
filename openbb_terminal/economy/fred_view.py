@@ -1,4 +1,5 @@
 """ Fred View """
+
 __docformat__ = "numpy"
 
 import logging
@@ -139,9 +140,9 @@ def display_fred_series(
             x=data_to_plot.index,
             y=data_to_plot,
             showlegend=len(series_ids) > 1,
-            name="<br>".join(textwrap.wrap(title, 80))
-            if len(series_ids) < 5
-            else title,
+            name=(
+                "<br>".join(textwrap.wrap(title, 80)) if len(series_ids) < 5 else title
+            ),
         )
         if len(series_ids) == 1:
             fig.set_title(title)
@@ -264,9 +265,7 @@ def plot_cpi(
     title += (
         " Indices"
         if len(df.columns) > 1
-        else f" Index for {country}"
-        if country
-        else ""
+        else f" Index for {country}" if country else ""
     )
 
     fig = OpenBBFigure(yaxis_title=ylabel_dict.get(units, "Index (2015=100)"))

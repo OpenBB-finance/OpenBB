@@ -1,4 +1,5 @@
 """Temporal Fusion Transformer View"""
+
 __docformat__ = "numpy"
 
 import logging

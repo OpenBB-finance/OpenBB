@@ -1,4 +1,5 @@
 """LoanScan Model"""
+
 import argparse
 import logging
 from typing import Any, Dict
