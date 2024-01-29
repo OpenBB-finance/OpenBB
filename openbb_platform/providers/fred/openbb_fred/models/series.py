@@ -78,11 +78,10 @@ class FredSeriesQueryParams(SeriesQueryParams):
             eop = End of Period
         """,
     )
-    transform: Literal[
-        None, "chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"
-    ] = Field(
-        default=None,
-        description="""
+    transform: Literal[None, "chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"] = (
+        Field(
+            default=None,
+            description="""
         Transformation type
             None = No transformation
             chg = Change
@@ -94,6 +93,7 @@ class FredSeriesQueryParams(SeriesQueryParams):
             cca = Continuously Compounded Annual Rate of Change
             log = Natural Log
         """,
+        )
     )
     limit: int = Field(description=QUERY_DESCRIPTIONS.get("limit", ""), default=100000)
 

@@ -15,11 +15,11 @@ from pydantic import Field
 class NasdaqSP500MultiplesQueryParams(SP500MultiplesQueryParams):
     """Nasdaq SP500 Multiples Query."""
 
-    collapse: Optional[
-        Literal["daily", "weekly", "monthly", "quarterly", "annual"]
-    ] = Field(
-        description="Collapse the frequency of the time series.",
-        default="monthly",
+    collapse: Optional[Literal["daily", "weekly", "monthly", "quarterly", "annual"]] = (
+        Field(
+            description="Collapse the frequency of the time series.",
+            default="monthly",
+        )
     )
     transform: Optional[Literal["diff", "rdiff", "cumul", "normalize"]] = Field(
         description="The transformation of the time series.",
