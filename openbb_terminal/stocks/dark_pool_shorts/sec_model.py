@@ -50,9 +50,9 @@ def catching_diff_url_formats(ftd_urls: list) -> list:
             ftd_url
             == "https://www.sec.gov/files/data/fails-deliver-data/cnsfails201910a.zip"
         ):
-            ftd_urls[i] = (
-                "https://www.sec.gov/files/data/fails-deliver-data/cnsfails201910a_0.zip"
-            )
+            ftd_urls[
+                i
+            ] = "https://www.sec.gov/files/data/fails-deliver-data/cnsfails201910a_0.zip"
 
     return ftd_urls
 

@@ -163,7 +163,9 @@ def display_price_target_from_analysts(
         lambda x: (
             theme.up_color
             if x == "BUY"
-            else theme.down_color if x == "SELL" else "#b3a8a8"
+            else theme.down_color
+            if x == "SELL"
+            else "#b3a8a8"
         )
     )
 

@@ -202,17 +202,17 @@ class TerminalStyle:
                 continue
 
             if stf.name.endswith(".mplstyle"):
-                self.mpl_styles_available[stf.name.replace(".mplstyle", "")] = (
-                    os.path.join(folder, stf)
-                )
+                self.mpl_styles_available[
+                    stf.name.replace(".mplstyle", "")
+                ] = os.path.join(folder, stf)
             elif stf.name.endswith(".mplrc.json"):
-                self.mpl_rcparams_available[stf.name.replace(".mplrc.json", "")] = (
-                    os.path.join(folder, stf)
-                )
+                self.mpl_rcparams_available[
+                    stf.name.replace(".mplrc.json", "")
+                ] = os.path.join(folder, stf)
             elif stf.name.endswith(".mpfstyle.json"):
-                self.mpf_styles_available[stf.name.replace(".mpfstyle.json", "")] = (
-                    os.path.join(folder, stf)
-                )
+                self.mpf_styles_available[
+                    stf.name.replace(".mpfstyle.json", "")
+                ] = os.path.join(folder, stf)
             elif stf.name.endswith(".richstyle.json"):
                 self.console_styles_available[
                     stf.name.replace(".richstyle.json", "")
