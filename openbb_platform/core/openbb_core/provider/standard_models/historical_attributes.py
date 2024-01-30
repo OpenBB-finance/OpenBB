@@ -1,9 +1,9 @@
 """Historical Attributes Standard Model."""
 
 from datetime import date as dateType
-from typing import Literal, Optional
+from typing import List, Literal, Optional, Set, Union
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -37,9 +37,20 @@ class HistoricalAttributesQueryParams(QueryParams):
         default="desc", description="Sort order."
     )
 
+    @field_validator("tag", mode="before", check_fields=False)
+    @classmethod
+    def multiple_tags(cls, v: Union[str, List[str], Set[str]]):
+        """Accept a comma-separated string or list of tags."""
+        if isinstance(v, str):
+            return v.lower()
+        return ",".join([symbol.lower() for symbol in list(v)])
+
 
 class HistoricalAttributesData(Data):
     """Historical Attributes Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
     value: Optional[float] = Field(default=None, description="The value of the data.")
+    tag: Optional[str] = Field(
+        default=None, description="Tag name for the fetched data."
+    )
