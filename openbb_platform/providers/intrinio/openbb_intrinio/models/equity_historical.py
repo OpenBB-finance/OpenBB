@@ -96,6 +96,11 @@ class IntrinioEquityHistoricalData(EquityHistoricalData):
         default=None,
         description="Change in the price of the symbol from the previous day.",
     )
+    change_percent: Optional[float] = Field(
+        default=None,
+        description="Percent change in the price of the symbol from the previous day.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
     intra_period: Optional[bool] = Field(
         default=None,
         description="If true, the equity price represents an unfinished period "
@@ -136,10 +141,6 @@ class IntrinioEquityHistoricalData(EquityHistoricalData):
     dividend: Optional[float] = Field(
         default=None,
         description="Dividend amount, if a dividend was paid.",
-    )
-    percent_change: Optional[float] = Field(
-        default=None,
-        description="Percent change in the price of the symbol from the previous day.",
     )
     fifty_two_week_high: Optional[float] = Field(
         default=None,
