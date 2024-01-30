@@ -31,7 +31,7 @@ class FederalReserveFEDData(FEDData):
 
 
 class FederalReserveFEDFetcher(
-    Fetcher[FederalReserveFEDQueryParams, List[Dict[str, List[FederalReserveFEDData]]]]
+    Fetcher[FederalReserveFEDQueryParams, List[FederalReserveFEDData]]
 ):
     """FederalReserve FED Model."""
 
@@ -76,7 +76,7 @@ class FederalReserveFEDFetcher(
     @staticmethod
     def transform_data(
         query: FederalReserveFEDQueryParams, data: dict, **kwargs: Any
-    ) -> List[Dict[str, List[FederalReserveFEDData]]]:
+    ) -> List[FederalReserveFEDData]:
         """Transform data."""
 
         return [FederalReserveFEDData.model_validate(d) for d in data]
