@@ -78,6 +78,7 @@ class FinvizEquityProfileData(EquityInfoData):
         description="The beta of the stock relative to the broad market.",
     )
 
+
 class FinvizEquityProfileFetcher(
     Fetcher[FinvizEquityProfileQueryParams, List[FinvizEquityProfileData]]
 ):
