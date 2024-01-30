@@ -205,7 +205,7 @@ async def management_compensation(
 @router.command(
     model="CompanyOverview",
     deprecated=True,
-    deprecation_message="This endpoint will be deprecated in the future releases. Use '/equity/profile' instead.",
+    deprecation_message="This endpoint will be deprecated in a future release. Use '/equity/profile' instead.",
 )
 async def overview(
     cc: CommandContext,
