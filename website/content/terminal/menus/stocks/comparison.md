@@ -73,7 +73,7 @@ add mu
 
 ### Technical
 
-With a list of similar companies populated, the `techincal` command will compare recent price performance metrics.
+With a list of similar companies populated, the `technical` command will compare recent price performance metrics.
 
 ```console
 technical
