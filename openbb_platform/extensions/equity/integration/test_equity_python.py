@@ -1130,6 +1130,7 @@ def test_equity_price_quote(params, obb):
         ({"symbol": "AAPL,MSFT", "provider": "intrinio"}),
         ({"symbol": "AAPL,MSFT", "provider": "finviz"}),
         ({"symbol": "AAPL,MSFT", "provider": "yfinance"}),
+        ({"symbol": "AAPL,MSFT", "provider": "fmp"}),
     ],
 )
 @pytest.mark.integration

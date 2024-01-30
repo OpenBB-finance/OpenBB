@@ -202,7 +202,11 @@ async def management_compensation(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="CompanyOverview")
+@router.command(
+    model="CompanyOverview",
+    deprecated=True,
+    deprecation_message="This endpoint will be deprecated in the future releases. Use '/equity/profile' instead.",
+)
 async def overview(
     cc: CommandContext,
     provider_choices: ProviderChoices,
