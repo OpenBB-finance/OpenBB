@@ -435,8 +435,8 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
     chart : Optional[Chart]
         Chart object.
 
-    metadata: Optional[Metadata]
-        Metadata info about the command execution."""
+    extra: Dict[str, Any]
+        Extra info."""
 
             meta_command["returns"] = {
                 "type": return_type.__name__,
