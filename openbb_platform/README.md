@@ -37,8 +37,6 @@ This will install the following data providers:
 | openbb-sec | [SEC](https://www.sec.gov/edgar/sec-api-documentation) data connector | pip install openbb-sec | Free |
 | openbb-tiingo | [Tiingo](https://www.tiingo.com/about/pricing) data connector | pip install openbb-tiingo | Free |
 | openbb-tradingeconomics | [TradingEconomics](https://tradingeconomics.com/api) data connector | pip install openbb-tradingeconomics | Paid |
-| openbb-ultima | [Ultima Insights](https://ultimainsights.ai/openbb) data connector | pip install openbb-ultima | Paid |
-
 
 To install extensions that expand the core functionalities specify the extension name or use `all` to install all.
 
@@ -48,9 +46,10 @@ pip install openbb[charting]
 pip install openbb-yfinance
 ```
 
-Alternatively, you can install all extensions at once.    
+Alternatively, you can install all extensions at once.
+
 ```bash
-pip install openbb[all] 
+pip install openbb[all]
 ```
 
 > Note: These instruction are specific to v4. For installation instructions and documentation for v3 go to our [website](https://docs.openbb.co/sdk).
@@ -83,7 +82,7 @@ To fully leverage the OpenBB Platform you need to get some API keys to connect w
 
 ### 1. OpenBB Hub
 
-Set your keys at [OpenBB Hub](https://my.openbb.co/app/sdk/api-keys) and get your personal access token from https://my.openbb.co/app/sdk/pat to connect with your account.
+Set your keys at [OpenBB Hub](https://my.openbb.co/app/sdk/api-keys) and get your personal access token from <https://my.openbb.co/app/sdk/pat> to connect with your account.
 
 ```python
 >>> from openbb import obb
