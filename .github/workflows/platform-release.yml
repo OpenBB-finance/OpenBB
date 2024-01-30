@@ -1,0 +1,56 @@
+name: Release on Specific Folder Changes
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - develop # Replace with your default branch
+
+jobs:
+  create-release:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Check for specific labels
+        id: label-check
+        run: |
+          LABELS=('platform' 'v4' 'bug')  # Define your labels here
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          LABEL_FOUND=false
+          for LABEL in "${LABELS[@]}"; do
+            if curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              "https://api.github.com/repos/${{ github.repository }}/issues/$PR_NUMBER/labels" | grep -q "\"name\": \"$LABEL\""; then
+              LABEL_FOUND=true
+              break
+            fi
+          done
+          echo "label-found=$LABEL_FOUND" >> $GITHUB_ENV
+
+      - name: Check for changes in specific folder
+        id: folder-check
+        run: |
+          FOLDER_PATH='/openbb_platform'  # Replace with your folder path
+          if git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -q "^$FOLDER_PATH/"; then
+            echo "folder-changed=true" >> $GITHUB_ENV
+          else
+            echo "folder-changed=false" >> $GITHUB_ENV
+
+      - name: Generate release notes
+        id: release-notes
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_BODY="${{ github.event.pull_request.body }}"
+          RELEASE_NOTES="### Changes:\n- $PR_TITLE\n\n### Description:\n$PR_BODY"
+          echo "notes=$RELEASE_NOTES" >> $GITHUB_ENV
+
+      - name: Create Release
+        if: env.label-found == 'true' && env.folder-changed == 'true'
+        run: |
+          RELEASE_NOTES="${{ env.notes }}"
+          TAG_NAME="v$(date +%Y.%m.%d.%H.%M.%S)"
+          gh release create "$TAG_NAME" --draft --title "$TAG_NAME" --notes "$RELEASE_NOTES"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
