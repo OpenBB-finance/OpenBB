@@ -1,4 +1,5 @@
 """Yahoo Finance Asset Performance Active Model."""
+
 # pylint: disable=unused-argument
 import re
 from typing import Any, Dict, List, Optional

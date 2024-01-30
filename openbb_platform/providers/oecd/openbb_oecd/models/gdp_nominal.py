@@ -1,4 +1,5 @@
 """OECD Nominal GDP Model."""
+
 # pylint: disable=unused-argument
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional, Union
@@ -27,6 +28,7 @@ class OECDGdpNominalQueryParams(GdpNominalQueryParams):
         description=QUERY_DESCRIPTIONS.get("units", "")
         + " Units to get nominal GDP in. Either usd or usd_cap indicating per capita.",
     )
+
 
 class OECDGdpNominalData(GdpNominalData):
     """OECD Nominal GDP Data."""
