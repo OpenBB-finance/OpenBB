@@ -9,9 +9,11 @@ from inspect import Parameter, _empty, isclass, signature
 from json import dumps, load
 from pathlib import Path
 from typing import (
+    Any,
     Callable,
     Dict,
     List,
+    Literal,
     Optional,
     OrderedDict,
     Set,
@@ -20,6 +22,7 @@ from typing import (
     TypeVar,
     Union,
     get_args,
+    get_origin,
     get_type_hints,
 )
 
@@ -35,7 +38,7 @@ from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
-from openbb_core.app.router import RouterLoader
+from openbb_core.app.router import CommandMap, RouterLoader
 from openbb_core.app.static.utils.console import Console
 from openbb_core.app.static.utils.linters import Linters
 from openbb_core.env import Env
@@ -983,6 +986,114 @@ class DocstringGenerator:
                 )
             return doc
         return doc
+
+    @staticmethod
+    def get_model_standard_params(param_fields: Dict[str, FieldInfo]) -> Dict[str, Any]:
+        """Get the test params for the fetcher based on the required standard params."""
+        test_params: Dict[str, Any] = {}
+        for field_name, field in param_fields.items():
+            if field.default and field.default is not PydanticUndefined:
+                test_params[field_name] = field.default
+            elif field.default and field.default is PydanticUndefined:
+                example_dict = {
+                    "symbol": "AAPL",
+                    "symbols": "AAPL,MSFT",
+                    "start_date": "2023-01-01",
+                    "end_date": "2023-06-06",
+                    "country": "Portugal",
+                    "date": "2023-01-01",
+                    "countries": ["portugal", "spain"],
+                }
+                if field_name in example_dict:
+                    test_params[field_name] = example_dict[field_name]
+                elif field.annotation == str:
+                    test_params[field_name] = "TEST_STRING"
+                elif field.annotation == int:
+                    test_params[field_name] = 1
+                elif field.annotation == float:
+                    test_params[field_name] = 1.0
+                elif field.annotation == bool:
+                    test_params[field_name] = True
+                elif get_origin(field.annotation) is Literal:  # type: ignore
+                    option = field.annotation.__args__[0]  # type: ignore
+                    if isinstance(option, str):
+                        test_params[field_name] = f'"{option}"'
+                    else:
+                        test_params[field_name] = option
+
+        return test_params
+
+    @staticmethod
+    def get_full_command_name(route: str) -> str:
+        """Get the full command name."""
+        cmd_parts = route.split("/")
+        del cmd_parts[0]
+
+        menu = cmd_parts[0]
+        command = cmd_parts[-1]
+        sub_menus = cmd_parts[1:-1]
+
+        sub_menu_str_cmd = f".{'.'.join(sub_menus)}" if sub_menus else ""
+
+        full_command = f"{menu}{sub_menu_str_cmd}.{command}"
+
+        return full_command
+
+    @classmethod
+    def generate_example(
+        cls,
+        model_name: str,
+        standard_params: Dict[str, FieldInfo],
+    ) -> str:
+        """Generate the example for the command."""
+        # find the model router here
+        cm = CommandMap()
+        commands_model = cm.commands_model
+        route = [k for k, v in commands_model.items() if v == model_name]
+
+        if not route:
+            return ""
+
+        full_command_name = cls.get_full_command_name(route=route[0])
+        example_params = cls.get_model_standard_params(param_fields=standard_params)
+
+        # Edge cases (might find more)
+        if "crypto" in route[0] and "symbol" in example_params:
+            example_params["symbol"] = "BTCUSD"
+        elif "currency" in route[0] and "symbol" in example_params:
+            example_params["symbol"] = "EURUSD"
+        elif (
+            "index" in route[0]
+            and "european" not in route[0]
+            and "symbol" in example_params
+        ):
+            example_params["symbol"] = "SPX"
+        elif (
+            "index" in route[0]
+            and "european" in route[0]
+            and "symbol" in example_params
+        ):
+            example_params["symbol"] = "BUKBUS"
+        elif (
+            "futures" in route[0] and "curve" in route[0] and "symbol" in example_params
+        ):
+            example_params["symbol"] = "VX"
+        elif "futures" in route[0] and "symbol" in example_params:
+            example_params["symbol"] = "ES"
+
+        example = "\n        Example\n        -------\n"
+        example += "        >>> from openbb import obb\n"
+        example += f"        >>> obb.{full_command_name}("
+        for param_name, param_value in example_params.items():
+            if isinstance(param_value, str):
+                param_value = f'"{param_value}"'  # noqa: PLW2901
+            example += f"{param_name}={param_value}, "
+        if example_params:
+            example = example[:-2] + ")\n"
+        else:
+            example += ")\n"
+
+        return example
 
 
 class PathHandler:
