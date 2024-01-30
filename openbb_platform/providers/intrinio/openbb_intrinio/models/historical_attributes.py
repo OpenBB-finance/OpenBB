@@ -67,12 +67,14 @@ class IntrinioHistoricalAttributesFetcher(
         query_str = get_querystring(query.model_dump(by_alias=True), ["symbol", "tag"])
 
         def generate_url(tag: str) -> str:
-            "Returns the url for the given tag."
+            """Returns the url for the given tag."""
             url_params = f"{query.symbol}/{tag}?{query_str}&api_key={api_key}"
             url = f"{base_url}/historical_data/{url_params}"
             return url
 
-        async def callback(response: ClientResponse, session: ClientSession) -> list:
+        async def callback(
+            response: ClientResponse, session: ClientSession
+        ) -> List[Dict]:
             """Return the response."""
             init_response = await response.json()
             tag = response.url.parts[-1]
