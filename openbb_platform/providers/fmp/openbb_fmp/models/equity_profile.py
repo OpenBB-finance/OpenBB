@@ -118,7 +118,7 @@ class FMPEquityProfileFetcher(
         symbols = query.symbol.split(",")
         base_url = "https://financialmodelingprep.com/api/v3"
         urls = [
-            f"{base_url}/profile/{query.symbol}?apikey={api_key}" for symbol in symbols
+            f"{base_url}/profile/{symbol}?apikey={api_key}" for symbol in symbols
         ]
 
         return await amake_requests(urls, **kwargs)
