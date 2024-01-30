@@ -9,8 +9,12 @@ from openbb_core.provider.standard_models.historical_attributes import (
     HistoricalAttributesData,
     HistoricalAttributesQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
-from openbb_intrinio.utils.helpers import get_data_many
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    ClientSession,
+    amake_requests,
+    get_querystring,
+)
 
 
 class IntrinioHistoricalAttributesQueryParams(HistoricalAttributesQueryParams):
@@ -62,8 +66,37 @@ class IntrinioHistoricalAttributesFetcher(
         base_url = "https://api-v2.intrinio.com"
         query_str = get_querystring(query.model_dump(by_alias=True), ["symbol", "tag"])
 
-        url = f"{base_url}/historical_data/{query.symbol}/{query.tag}?{query_str}&api_key={api_key}"
-        return await get_data_many(url, "historical_data")
+        def generate_url(tag: str) -> str:
+            "Returns the url for the given tag."
+            url_params = f"{query.symbol}/{tag}?{query_str}&api_key={api_key}"
+            url = f"{base_url}/historical_data/{url_params}"
+            return url
+
+        async def callback(response: ClientResponse, session: ClientSession) -> list:
+            """Return the response."""
+            init_response = await response.json()
+            tag = response.url.parts[-1]
+
+            all_data: list = init_response.get("historical_data", [])
+            all_data = [{**item, "tag": tag} for item in all_data]
+
+            next_page = init_response.get("next_page", None)
+            while next_page:
+                url = response.url.update_query(next_page=next_page).human_repr()
+                response_data = await session.get_json(url)
+                tag = response_data.url.parts[-1]
+
+                response_data = response_data.get("historical_data", [])
+                response_data = [{**item, "tag": tag} for item in response_data]
+
+                all_data.extend(response_data)
+                next_page = response_data.get("next_page", None)
+
+            return all_data
+
+        urls = [generate_url(tag) for tag in query.tag.split(",")]
+
+        return await amake_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(
