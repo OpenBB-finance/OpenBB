@@ -143,7 +143,9 @@ class IntrinioIncomeStatementData(IncomeStatementData):
         default=None, description="Total gross profit"
     )
     gross_profit_margin: Optional[float] = Field(
-        default=None, description="Gross margin ratio."
+        default=None,
+        description="Gross margin ratio.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     provision_for_credit_losses: Optional[float] = Field(
         default=None,
