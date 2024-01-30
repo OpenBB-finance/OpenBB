@@ -17,9 +17,10 @@ Publishing checklist:
 
     1. For the core package run: `python build/pypi/openbb_platform/publish.py --core`
     2. For the extension and provider packages run: `python build/pypi/openbb_platform/publish.py --extensions`
-    3. For the `openbb` package, do the following
+    3. For the `openbb` package - **which requires manual publishing** - do the following
          - Bump the dependency package versions
          - Re-build the static assets that are bundled with the package
+         - Run unit tests to double check the existence of deprecated endpoints
 
     > Note that, in order for packages to pick up the latest versions of dependencies, it might be necessary to clear the local cache of the dependencies:
     >
