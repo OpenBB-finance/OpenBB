@@ -1,5 +1,7 @@
 """FMP Equity Profile Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import (
     date as dateType,
 )
