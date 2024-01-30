@@ -70,9 +70,9 @@ class FMPEquityProfileData(EquityInfoData):
         description="Average daily trading volume.",
         alias="volAvg",
     )
-    last_dividend_amount: Optional[float] = Field(
+    annualized_dividend_amount: Optional[float] = Field(
         default=None,
-        description="The amount of the last dividend payment.",
+        description="The annualized dividend payment based on the most recent regular dividend payment.",
         alias="lastDiv",
     )
     beta: Optional[float] = Field(
@@ -117,9 +117,7 @@ class FMPEquityProfileFetcher(
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = query.symbol.split(",")
         base_url = "https://financialmodelingprep.com/api/v3"
-        urls = [
-            f"{base_url}/profile/{symbol}?apikey={api_key}" for symbol in symbols
-        ]
+        urls = [f"{base_url}/profile/{symbol}?apikey={api_key}" for symbol in symbols]
 
         return await amake_requests(urls, **kwargs)
 
