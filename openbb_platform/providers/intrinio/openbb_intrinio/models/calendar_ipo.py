@@ -124,25 +124,22 @@ class IntrinioCalendarIpoData(CalendarIpoData):
         default=None,
     )
     day_change: Optional[float] = Field(
-        description="""
-            The percentage change between the open price and the close price on the first trading day
-            (only available for priced IPOs).
-        """,
+        description="The percentage change between the open price and the close price"
+        + " on the first trading day (only available for priced IPOs).",
         default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     week_change: Optional[float] = Field(
-        description="""
-            The percentage change between the open price on the first trading day and the close price approximately
-            a week after the first trading day (only available for priced IPOs).
-        """,
+        description="The percentage change between the open price on the first trading day"
+        + " and the close price approximately a week after the first trading day (only available for priced IPOs)",
         default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     month_change: Optional[float] = Field(
-        description="""
-            The percentage change between the open price on the first trading day and the close price approximately
-            a month after the first trading day (only available for priced IPOs).
-        """,
+        description="The percentage change between the open price on the first trading day"
+        + " and the close price approximately a month after the first trading day (only available for priced IPOs)",
         default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     id: Optional[str] = Field(description="The Intrinio ID of the IPO.", default=None)
     company: Optional[IntrinioCompany] = Field(
