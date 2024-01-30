@@ -1061,6 +1061,32 @@ def test_equity_fundamental_search_attributes(params, headers):
                 "sort": "desc",
             }
         ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "tag": "ebit,marketcap",
+                "frequency": "yearly",
+                "limit": 1000,
+                "type": None,
+                "start_date": "2013-01-01",
+                "end_date": "2023-01-01",
+                "sort": "desc",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "tag": "ebit,ebitda,marketcap",
+                "frequency": "yearly",
+                "limit": 1000,
+                "type": None,
+                "start_date": "2013-01-01",
+                "end_date": "2023-01-01",
+                "sort": "desc",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1087,8 +1113,15 @@ def test_equity_fundamental_historical_attributes(params, headers):
         (
             {
                 "provider": "intrinio",
-                "symbol": "MSFT",
+                "symbol": "AAPL",
                 "tag": "ebitda",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "MSFT",
+                "tag": "ceo,ebitda",
             }
         ),
     ],
