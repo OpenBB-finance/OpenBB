@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Literal, Optional
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.estr_rates import ESTRData, ESTRQueryParams
 from openbb_fred.utils.fred_base import Fred
-from pydantic import Field, field_validator
+from pydantic import Field
 
 ESTR_PARAMETER_TO_ID = {
     "volume_weighted_trimmed_mean_rate": "ECBESTRVOLWGTTRMDMNRT",
@@ -35,22 +35,12 @@ class FREDESTRQueryParams(ESTRQueryParams):
 
 
 class FREDESTRData(ESTRData):
-    """FRED ESTR Data."""
+    """FRED ESTR Data. All rates are expressed as a normalized percent."""
 
     __alias_dict__ = {"rate": "value"}
 
-    @field_validator("rate", mode="before", check_fields=False)
-    @classmethod
-    def normalize_percent(cls, v):
-        """Normalize percent."""
-        if v and isinstance(v, str) and v == ".":
-            return None
-        return float(v) / 100 if v else None
 
-
-class FREDESTRFetcher(
-    Fetcher[FREDESTRQueryParams, List[Dict[str, List[FREDESTRData]]]]
-):
+class FREDESTRFetcher(Fetcher[FREDESTRQueryParams, List[FREDESTRData]]):
     """Transform the query, extract and transform the data from the FRED endpoints."""
 
     data_type = FREDESTRData
@@ -74,7 +64,27 @@ class FREDESTRFetcher(
     @staticmethod
     def transform_data(
         query: FREDESTRQueryParams, data: dict, **kwargs: Any
-    ) -> List[Dict[str, List[FREDESTRData]]]:
+    ) -> List[FREDESTRData]:
         """Transform data"""
-        keys = ["date", "value"]
-        return [FREDESTRData(**{k: x[k] for k in keys}) for x in data]
+        rates = [
+            "number_of_transactions",
+            "number_of_active_banks",
+            "total_volume",
+        ]
+        is_percent = query.parameter not in rates
+        print(is_percent)
+        lambda_keys = {
+            "date": lambda x: x["date"],
+            "value": lambda x: (
+                float(x["value"]) / 100 if is_percent is True else x["value"]
+            ),
+        }
+        results: List[FREDESTRData] = []
+
+        for x in data:
+            if x["value"] == ".":
+                continue
+
+            item = {k: lambda_keys[k](x) for k in lambda_keys}
+            results.append(FREDESTRData.model_validate(item))
+        return results

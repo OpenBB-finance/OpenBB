@@ -1,4 +1,5 @@
 """FRED AMERIBOR Model."""
+
 # pylint: disable=unused-argument
 from typing import Any, Dict, List, Literal, Optional
 
@@ -86,5 +87,8 @@ class FREDAMERIBORFetcher(Fetcher[FREDAMERIBORQueryParams, List[FREDAMERIBORData
     ) -> List[FREDAMERIBORData]:
         """Transform data."""
         keys = ["date", "value"]
-        new_data = [{k: x[k] for k in keys} for x in data if x["value"] != "."]
-        return [FREDAMERIBORData.model_validate(d) for d in new_data]
+        return [
+            FREDAMERIBORData.model_validate({k: x[k] for k in keys})
+            for x in data
+            if x["value"] != "."
+        ]

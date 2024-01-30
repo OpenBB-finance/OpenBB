@@ -8,7 +8,7 @@ from openbb_core.provider.standard_models.fed_rates import (
     FEDQueryParams,
 )
 from openbb_fred.utils.fred_base import Fred
-from pydantic import Field, field_validator
+from pydantic import Field
 
 FED_PARAMETER_TO_FRED_ID = {
     "monthly": "FEDFUNDS",
@@ -67,14 +67,19 @@ class FREDFEDFetcher(Fetcher[FREDFEDQueryParams, List[FREDFEDData]]):
         query: FREDFEDQueryParams, data: dict, **kwargs: Any
     ) -> List[FREDFEDData]:
         """Transform data."""
-        keys = ["date", "value"]
-        new_data = []
-        if query.parameter == "volume":
-            new_data = [{k: x[k] for k in keys} for x in data if x["value"] != "."]
-        if query.parameter != "volume":
-            new_data = [
-                {k: x[k] if k != "value" else float(x[k]) / 100 for k in keys}
-                for x in data
-                if x["value"] != "."
-            ]
-        return [FREDFEDData.model_validate(d) for d in new_data]
+        is_volume = query.parameter == "volume"
+        print(is_volume)
+        lambda_keys = {
+            "date": lambda x: x["date"],
+            "value": lambda x: float(x["value"]) / 100 if not is_volume else x["value"],
+        }
+
+        results: List[FREDFEDData] = []
+
+        for x in data:
+            if x["value"] == ".":
+                continue
+            item = {k: lambda_keys[k](x) for k in lambda_keys}
+            results.append(FREDFEDData.model_validate(item))
+
+        return results
