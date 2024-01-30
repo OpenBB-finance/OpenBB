@@ -304,7 +304,7 @@ class IntrinioCashFlowStatementFetcher(
 
             for sub_item in item["financials"]:
                 unit = sub_item["data_tag"].get("unit", "")
-                if unit and "share" not in unit:
+                if unit and "share" not in unit and len(unit) == 3:
                     units.append(unit)
                 field_name = sub_item["data_tag"]["tag"]
                 sub_dict[field_name] = (
