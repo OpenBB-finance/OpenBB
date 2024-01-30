@@ -24,17 +24,17 @@ exclude-contributors:
   - 'minhhoang1023'
 
 template: |
-  ## Thank you and welcome to our new contributors 🔥
+  ## What's Changed
+  $CHANGES
+  
+  ## New Contributors
+  We'd like to thank our new contributors to the OpenBB Platform! 🎉
   $CONTRIBUTORS
 
-  ## What's new 🎉
-
-  ## What's changed 🚀
-  $CHANGES
-
+  ## Stay Connected
   We are proud of our community contributors and staunch supporters of open-source ecosystems.
-  Help us promote our community by tagging `@openbb_finance` on X with a link to your pull request,
-  and join our Discord server to chat about your contribution! We want to hear about your experience!
+  Help us promote our community by tagging `@openbb_finance` on social media with a link to your pull request.
+  Join our Discord server to chat about your contribution! We want to hear about your experience!
 
   ### Links 🦋
-  [Website](https://openbb.co/), [Twitter](https://twitter.com/openbb_finance), [Linkedin](https://www.linkedin.com/company/openbb-finance), [Instagram](https://www.instagram.com/openbb.finance/), [Reddit](https://www.reddit.com/r/openbb/), [Discord](https://discord.com/invite/xPHTuHCmuV)
+  [Website](https://openbb.co/), [Twitter](https://twitter.com/openbb_finance), [LinkedIn](https://www.linkedin.com/company/openbb-finance), [Instagram](https://www.instagram.com/openbb.finance/), [Reddit](https://www.reddit.com/r/openbb/), [Discord](https://discord.com/invite/xPHTuHCmuV)
