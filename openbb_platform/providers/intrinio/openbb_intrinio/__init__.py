@@ -62,7 +62,7 @@ intrinio_provider = Provider(
         "IndexHistorical": IntrinioIndexHistoricalFetcher,
         "InsiderTrading": IntrinioInsiderTradingFetcher,
         "InstitutionalOwnership": IntrinioInstitutionalOwnershipFetcher,
-        "KeyMetrics": IntrinioKeyMetricsFetcher,
+        "KeyMetrics": IntrinioFinancialRatiosFetcher,
         "LatestAttributes": IntrinioLatestAttributesFetcher,
         "MarketIndices": IntrinioMarketIndicesFetcher,
         "OptionsChains": IntrinioOptionsChainsFetcher,
