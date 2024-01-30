@@ -72,7 +72,6 @@ class FREDESTRFetcher(Fetcher[FREDESTRQueryParams, List[FREDESTRData]]):
             "total_volume",
         ]
         is_percent = query.parameter not in rates
-        print(is_percent)
         lambda_keys = {
             "date": lambda x: x["date"],
             "value": lambda x: (
