@@ -26,6 +26,7 @@ class CustomHttpAdapter(requests.adapters.HTTPAdapter):
         self.ssl_context = ssl_context
         super().__init__(**kwargs)
 
+    # pylint: disable=arguments-differ
     def init_poolmanager(self, connections, maxsize, block=False):
         self.poolmanager = urllib3.poolmanager.PoolManager(  # pylint: disable=attribute-defined-outside-init
             num_pools=connections,
@@ -33,6 +34,9 @@ class CustomHttpAdapter(requests.adapters.HTTPAdapter):
             block=block,
             ssl_context=self.ssl_context,
         )
+
+
+# pylint: enable=arguments-differ
 
 
 def get_legacy_session():
