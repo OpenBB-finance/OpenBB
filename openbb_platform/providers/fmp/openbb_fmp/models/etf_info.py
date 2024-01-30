@@ -18,33 +18,31 @@ class FMPEtfInfoQueryParams(EtfInfoQueryParams):
 class FMPEtfInfoData(EtfInfoData):
     """FMP ETF Info Data."""
 
+    cusip: Optional[str] = Field(description="CUSIP of the ETF.")
+    isin: Optional[str] = Field(description="ISIN of the ETF.")
+    issuer: Optional[str] = Field(alias="etfCompany", description="Company of the ETF.")
+    domicile: Optional[str] = Field(description="Domicile of the ETF.")
     asset_class: Optional[str] = Field(
         alias="assetClass", description="Asset class of the ETF."
     )
-    aum: Optional[float] = Field(description="Assets under management.")
-    avg_volume: Optional[float] = Field(
-        alias="avgVolume", description="Average trading volume of the ETF."
+    holdings_count: Optional[int] = Field(
+        alias="holdingsCount", description="Number of holdings in the ETF."
     )
-    cusip: Optional[str] = Field(description="CUSIP of the ETF.")
-    description: Optional[str] = Field(description="Description of the ETF.")
-    domicile: Optional[str] = Field(description="Domicile of the ETF.")
-    etf_company: Optional[str] = Field(
-        alias="etfCompany", description="Company of the ETF."
+    aum: Optional[float] = Field(description="Assets under management.")
+    nav: Optional[float] = Field(description="Net asset value of the ETF.")
+    nav_currency: Optional[str] = Field(
+        alias="navCurrency", description="Currency of the ETF's net asset value."
     )
     expense_ratio: Optional[float] = Field(
         alias="expenseRatio",
         description="Expense ratio of the ETF.",
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    isin: Optional[str] = Field(description="ISIN of the ETF.")
-    nav: Optional[float] = Field(description="Net asset value of the ETF.")
-    nav_currency: Optional[str] = Field(
-        alias="navCurrency", description="Currency of the ETF's net asset value."
+    volume_avg: Optional[float] = Field(
+        alias="avgVolume", description="Average daily trading volume of the ETF."
     )
     website: Optional[str] = Field(description="Website link of the ETF.")
-    holdings_count: Optional[int] = Field(
-        alias="holdingsCount", description="Number of holdings in the ETF."
-    )
+    description: Optional[str] = Field(description="Description of the ETF.")
 
     @field_validator("expense_ratio", mode="before", check_fields=False)
     @classmethod
@@ -85,7 +83,9 @@ class FMPEtfInfoFetcher(
     ) -> List[FMPEtfInfoData]:
         """Return the transformed data."""
         # remove "sectorList" key from data. it's handled by the sectors
+        results: List[FMPEtfInfoData] = []
         for d in data:
             d.pop("sectorsList", None)
             d["website"] = None if d["website"] == "" else d["website"]
-        return [FMPEtfInfoData.model_validate(d) for d in data]
+            results.append(FMPEtfInfoData.model_validate(d))
+        return results
