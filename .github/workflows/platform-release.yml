@@ -13,36 +13,31 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-
-      - name: Get list of changed files
-        id: files
-        uses: tj-actions/changed-files@v16
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v42
         with:
           files: |
             openbb_platform/**
-        
-      - name: Check for platform labels
-        id: label-check
-        run: |
-          LABELS=('platform' 'v4' 'bug')  # Define your labels here
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          LABEL_FOUND=false
-          for LABEL in "${LABELS[@]}"; do
-            if curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              "https://api.github.com/repos/${{ github.repository }}/issues/$PR_NUMBER/labels" | grep -q "\"name\": \"$LABEL\""; then
-              LABEL_FOUND=true
-              break
-            fi
-          done
-          echo "label-found=$LABEL_FOUND" >> $GITHUB_ENV
 
-      - name: Check for changes in OpenBB Platform folder
-        id: folder-changed
-        run: |
-          if [[ "${{ steps.files.outputs.any_changed }}" == "true" ]]; then
-            echo "folder-changed=true" >> $GITHUB_ENV
-          else
-            echo "folder-changed=false" >> $GITHUB_ENV
+      - name: Get PR labels
+        id: pr-labels
+        uses: joerick/pr-labels-action@v1.0.8
+
+      # - name: Check for platform labels
+      #   id: label-check
+      #   run: |
+      #     LABELS=('platform' 'v4' 'bug')  # Define your labels here
+      #     PR_NUMBER=${{ github.event.pull_request.number }}
+      #     LABEL_FOUND=false
+      #     for LABEL in "${LABELS[@]}"; do
+      #       if curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+      #         "https://api.github.com/repos/${{ github.repository }}/issues/$PR_NUMBER/labels" | grep -q "\"name\": \"$LABEL\""; then
+      #         LABEL_FOUND=true
+      #         break
+      #       fi
+      #     done
+      #     echo "label-found=$LABEL_FOUND" >> $GITHUB_ENV
 
       - name: Generate release notes
         id: release-notes
@@ -53,7 +48,7 @@ jobs:
           echo "notes=$RELEASE_NOTES" >> $GITHUB_ENV
 
       - name: Create Release
-        if: env.label-found == 'true' && env.folder-changed == 'true'
+        if: contains(steps.pr-labels.outputs.labels, ' platform v4 bug enhancement')
         run: |
           RELEASE_NOTES="${{ env.notes }}"
           TAG_NAME="v$(date +%Y.%m.%d.%H.%M.%S)"
