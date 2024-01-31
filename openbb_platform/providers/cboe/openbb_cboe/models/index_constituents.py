@@ -67,7 +67,9 @@ class CboeIndexConstituentsData(IndexConstituentsData):
     )
     change: Optional[float] = Field(default=None, description="Change in price.")
     change_percent: Optional[float] = Field(
-        default=None, description="Change in price as a normalized percentage."
+        default=None,
+        description="Change in price as a normalized percentage.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     tick: Optional[str] = Field(
         default=None, description="Whether the last sale was an up or down tick."
@@ -121,11 +123,11 @@ class CboeIndexConstituentsFetcher(
         """Transform the data to the standard format."""
         if not data:
             raise EmptyDataError()
-        data = DataFrame(data)
-        data["price_change_percent"] = data["price_change_percent"] / 100
-        data = data.replace(0, None).dropna(how="all", axis=1)
-        data = data.drop(columns=["exchange_id"])
+        results = DataFrame(data)
+        results["price_change_percent"] = results["price_change_percent"] / 100
+        results = results.replace(0, None).dropna(how="all", axis=1)
+        results = results.drop(columns=["exchange_id"])
         return [
             CboeIndexConstituentsData.model_validate(d)
-            for d in data.to_dict(orient="records")
+            for d in results.to_dict(orient="records")
         ]
