@@ -44,7 +44,7 @@ class FederalReserveTreasuryRatesData(TreasuryRatesData):
     @model_validator(mode="before")
     @classmethod
     def validate(cls, values):  # pylint: disable=E0213
-        """Normlize percent values."""
+        """Normalize percent values."""
 
         for k, v in values.items():
             if k != "date" and v:

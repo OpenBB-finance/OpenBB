@@ -24,7 +24,7 @@ class RecentPerformanceQueryParams(QueryParams):
 
 
 class RecentPerformanceData(Data):
-    """Recent Performance Data. All values are returned as normlized percent values."""
+    """Recent Performance Data. All values are returned as normalized percent values."""
 
     one_day: Optional[float] = Field(
         description="One-day return.",

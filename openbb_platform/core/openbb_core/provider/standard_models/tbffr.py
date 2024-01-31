@@ -38,6 +38,6 @@ class SelectedTreasuryBillData(Data):
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     rate: Optional[float] = Field(
         default=None,
-        description="The rate, as a normailzed percent.",
+        description="The rate, as a normalized percent.",
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )

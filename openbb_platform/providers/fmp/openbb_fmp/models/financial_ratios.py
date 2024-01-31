@@ -189,7 +189,7 @@ class FMPFinancialRatiosData(FinancialRatiosData):
     )
     net_profit_margin: Optional[float] = Field(
         default=None,
-        description="Net profit margin, as a nomralized percent.",
+        description="Net profit margin, as a normalized percent.",
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     effective_tax_rate: Optional[float] = Field(
