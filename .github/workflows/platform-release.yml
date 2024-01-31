@@ -6,6 +6,10 @@ on:
     branches:
       - develop # Replace with your default branch
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   create-release:
     runs-on: ubuntu-latest
