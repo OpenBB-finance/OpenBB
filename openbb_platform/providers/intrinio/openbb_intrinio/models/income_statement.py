@@ -459,7 +459,6 @@ class IntrinioIncomeStatementFetcher(
             f"{base_url}/fundamentals/{intrinio_id}-{period}/standardized_financials?api_key={api_key}"
             for period in fiscal_periods
         ]
-        print(urls)
         return await amake_requests(urls, callback, **kwargs)
 
     @staticmethod

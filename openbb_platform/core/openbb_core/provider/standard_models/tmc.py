@@ -3,7 +3,7 @@
 from datetime import (
     date as dateType,
 )
-from typing import Literal, Optional
+from typing import Optional
 
 from pydantic import Field
 

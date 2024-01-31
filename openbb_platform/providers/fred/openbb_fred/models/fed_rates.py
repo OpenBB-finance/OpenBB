@@ -68,7 +68,6 @@ class FREDFEDFetcher(Fetcher[FREDFEDQueryParams, List[FREDFEDData]]):
     ) -> List[FREDFEDData]:
         """Transform data."""
         is_volume = query.parameter == "volume"
-        print(is_volume)
         lambda_keys = {
             "date": lambda x: x["date"],
             "value": lambda x: float(x["value"]) / 100 if not is_volume else x["value"],
