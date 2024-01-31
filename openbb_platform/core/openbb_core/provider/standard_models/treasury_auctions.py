@@ -137,15 +137,15 @@ class USTreasuryAuctionsData(Data):
     adjusted_price: Optional[float] = Field(
         default=None, description="Adjusted price.", alias="adjustedPrice"
     )
-    allocation_percentage: Optional[float] = Field(
+    allocation_percent: Optional[float] = Field(
         default=None,
-        description="Allocation percentage, as normalized percentage points.",
+        description="Allocation percent, as normalized percentage points.",
         alias="allocationPercentage",
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    allocation_percentage_decimals: Optional[float] = Field(
+    allocation_percent_decimals: Optional[float] = Field(
         default=None,
-        description="The number of decimals in the Allocation percentage.",
+        description="The number of decimals in the Allocation percent.",
         alias="allocationPercentageDecimals",
     )
     announced_cusip: Optional[str] = Field(
@@ -304,7 +304,6 @@ class USTreasuryAuctionsData(Data):
         default=None,
         description="Whether the security is a floating rate.",
         alias="floatingRate",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     frn_index_determination_date: Optional[dateType] = Field(
         default=None,

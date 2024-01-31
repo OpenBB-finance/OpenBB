@@ -10,6 +10,7 @@ from openbb_core.provider.standard_models.treasury_auctions import (
     USTreasuryAuctionsQueryParams,
 )
 from openbb_core.provider.utils.helpers import get_querystring
+from pydantic import field_validator
 
 
 class GovernmentUSTreasuryAuctionsQueryParams(USTreasuryAuctionsQueryParams):
@@ -29,6 +30,30 @@ class GovernmentUSTreasuryAuctionsQueryParams(USTreasuryAuctionsQueryParams):
 
 class GovernementUSTreasuryAuctionsData(USTreasuryAuctionsData):
     """US Government Treasury Auctions Data."""
+
+    @field_validator(
+        "allocation_percent",
+        "avg_median_discount_rate",
+        "avg_median_investment_rate",
+        "avg_median_discount_margin",
+        "avg_median_yield",
+        "frn_index_determination_rate",
+        "high_discount_rate",
+        "high_investment_rate",
+        "high_discount_margin",
+        "high_yield",
+        "interest_rate",
+        "low_discount_rate",
+        "low_investment_rate",
+        "low_discount_margin",
+        "low_yield",
+        mode="before",
+        check_fields=False,
+    )
+    @classmethod
+    def normalize_percent(cls, v):
+        """Normalize percent."""
+        return float(v) / 100 if v else None
 
 
 class GovernmentUSTreasuryAuctionsFetcher(
