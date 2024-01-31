@@ -114,6 +114,7 @@ class PolygonCompanyNewsFetcher(
 
         return await get_data_many(url, "results", **kwargs)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: PolygonCompanyNewsQueryParams,
@@ -122,6 +123,4 @@ class PolygonCompanyNewsFetcher(
     ) -> List[PolygonCompanyNewsData]:
         """Transform data."""
         modeled_data = [PolygonCompanyNewsData.model_validate(d) for d in data]
-        return filter_by_dates(
-            modeled_data, query.start_date, query.end_date, query.date
-        )
+        return filter_by_dates(modeled_data, query.start_date, query.end_date)

@@ -258,15 +258,10 @@ def filter_by_dates(
     data: List[Data],
     start_date: datetime,
     end_date: datetime,
-    date: Optional[datetime],
 ) -> List[Data]:
     """Filter data by dates."""
-    if not any([start_date, end_date, date]):
+    if not any([start_date, end_date]):
         return data
-
-    # If date is provided, ignore start_date and end_date
-    if date:
-        return [d for d in data if d.date.date() == date]
 
     return list(
         filter(

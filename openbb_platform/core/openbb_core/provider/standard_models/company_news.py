@@ -28,9 +28,6 @@ class CompanyNewsQueryParams(QueryParams):
     limit: Optional[NonNegativeInt] = Field(
         default=20, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
-    date: Optional[dateType] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("date", "")
-    )
     start_date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
     )

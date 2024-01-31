@@ -68,6 +68,7 @@ class FMPWorldNewsFetcher(
 
         return data[: query.limit]
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: FMPWorldNewsQueryParams, data: List[Dict], **kwargs: Any
@@ -78,6 +79,4 @@ class FMPWorldNewsFetcher(
                 d["image"] = [{"url": d["image"]}]
 
         modeled_data = [FMPWorldNewsData.model_validate(d) for d in data]
-        return filter_by_dates(
-            modeled_data, query.start_date, query.end_date, query.date
-        )
+        return filter_by_dates(modeled_data, query.start_date, query.end_date)

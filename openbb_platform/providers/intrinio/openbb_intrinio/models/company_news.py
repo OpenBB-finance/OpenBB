@@ -89,12 +89,11 @@ class IntrinioCompanyNewsFetcher(
 
         return await amake_requests(urls, callback, **kwargs)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: IntrinioCompanyNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioCompanyNewsData]:
         """Return the transformed data."""
         modeled_data = [IntrinioCompanyNewsData.model_validate(d) for d in data]
-        return filter_by_dates(
-            modeled_data, query.start_date, query.end_date, query.date
-        )
+        return filter_by_dates(modeled_data, query.start_date, query.end_date)

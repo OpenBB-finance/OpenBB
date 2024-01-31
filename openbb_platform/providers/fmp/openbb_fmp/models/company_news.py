@@ -71,12 +71,11 @@ class FMPCompanyNewsFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: FMPCompanyNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPCompanyNewsData]:
         """Return the transformed data."""
         modeled_data = [FMPCompanyNewsData.model_validate(d) for d in data]
-        return filter_by_dates(
-            modeled_data, query.start_date, query.end_date, query.date
-        )
+        return filter_by_dates(modeled_data, query.start_date, query.end_date)
