@@ -1,11 +1,10 @@
 import { DocSearchButton, useDocSearchKeyboardEvents } from "@docsearch/react";
-import { useLocation } from "@docusaurus/router";
 
 import BrowserOnly from "@docusaurus/BrowserOnly";
 import Head from "@docusaurus/Head";
 import Link from "@docusaurus/Link";
 import Translate from "@docusaurus/Translate";
-import { useHistory } from "@docusaurus/router";
+import { useHistory, useLocation } from "@docusaurus/router";
 import { isRegexpStringMatch } from "@docusaurus/theme-common";
 import {
   useAlgoliaContextualFacetFilters,
@@ -44,9 +43,9 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   const configFacetFilters = props.searchParameters?.facetFilters ?? [];
   const facetFilters = contextualSearch
     ? // Merge contextual search filters with config filters
-      mergeFacetFilters(contextualSearchFacetFilters, configFacetFilters)
+    mergeFacetFilters(contextualSearchFacetFilters, configFacetFilters)
     : // ... or use config facetFilters
-      configFacetFilters;
+    configFacetFilters;
   // We let user override default searchParameters if she wants to
   const searchParameters = {
     ...props.searchParameters,
@@ -106,18 +105,18 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
   const transformItems = useRef((items) =>
     (props.transformItems
       ? // Custom transformItems
-        props.transformItems(items)
+      props.transformItems(items)
       : // Default transformItems
-        items.map((item) => ({
-          ...item,
-          url: processSearchResultUrl(item.url),
-        }))).filter((item) => {
-          const firstPathSegment = location.pathname.split("/")[1];
-          return (
-            !firstPathSegment ? true :
+      items.map((item) => ({
+        ...item,
+        url: processSearchResultUrl(item.url),
+      }))).filter((item) => {
+        const firstPathSegment = location.pathname.split("/")[1];
+        return (
+          !firstPathSegment ? true :
             item.url.startsWith(`/${firstPathSegment}/`)
-          );
-        }
+        );
+      }
       )
   ).current;
   const resultsFooterComponent = useMemo(
@@ -167,29 +166,29 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
       />
 
       <BrowserOnly>
-      {() => isOpen &&
-        DocSearchModal &&
-        searchContainer.current &&
-        createPortal(
-          <DocSearchModal
-            onClose={onClose}
-            initialScrollY={window.scrollY}
-            initialQuery={initialQuery}
-            navigator={navigator}
-            transformItems={transformItems}
-            hitComponent={Hit}
-            transformSearchClient={transformSearchClient}
-            {...(props.searchPagePath && {
-              resultsFooterComponent,
-            })}
-            {...props}
-            searchParameters={searchParameters}
-            placeholder={translations.placeholder}
-            translations={translations.modal}
-          />,
-          searchContainer.current
-        )}
-        </BrowserOnly>
+        {() => isOpen &&
+          DocSearchModal &&
+          searchContainer.current &&
+          createPortal(
+            <DocSearchModal
+              onClose={onClose}
+              initialScrollY={window.scrollY}
+              initialQuery={initialQuery}
+              navigator={navigator}
+              transformItems={transformItems}
+              hitComponent={Hit}
+              transformSearchClient={transformSearchClient}
+              {...(props.searchPagePath && {
+                resultsFooterComponent,
+              })}
+              {...props}
+              searchParameters={searchParameters}
+              placeholder={translations.placeholder}
+              translations={translations.modal}
+            />,
+            searchContainer.current
+          )}
+      </BrowserOnly>
     </>
   );
 }
