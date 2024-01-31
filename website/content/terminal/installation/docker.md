@@ -226,6 +226,29 @@ If you are experiencing issues with charts - launch the container with the follo
 docker compose -f docker-compose.yaml -f docker-compose.x11.yaml run -e WEBKIT_DISABLE_COMPOSITING_MODE=1 openbb
 ```
 
+**Install from command line using scripts**
+
+:::note
+To install the Docker Engine from the command line follow [these instructions.](https://github.com/codeedu/wsl2-docker-quickstart/blob/main/README.en.md#1---install-docker-with-docker-engine-docker-native)
+
+Execute the following commands to download the scripts:
+
+```console
+curl -o docker-compose.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/docker-install
+curl -o docker-compose.x11.yaml https://raw.githubusercontent.com/OpenBB-finance/OpenBBTerminal/docker-run
+```
+
+Change permisions:
+
+```console
+chmod +x docker-install
+chmod +x docker-run
+```
+
+Run `./docker-install` one time, to build and start the container.
+
+Run `./docker-run` to enter the terminal again
+
 :::
 
 :::note

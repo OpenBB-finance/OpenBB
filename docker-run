@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Check if the container is already running
+if docker ps -q --filter "name=openbb-openbb-1" | grep -q .; then
+    # If running, start the container
+    docker start openbb-openbb-1
+    docker attach openbb-openbb-1
+else
+    # If not running, create and start the container
+    ./docker-install.sh
+fi
