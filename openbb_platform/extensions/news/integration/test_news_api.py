@@ -147,6 +147,13 @@ def test_news_world(params, headers):
                 "source": "bloomberg.com",
             }
         ),
+        (
+            {
+                "provider": "tmx",
+                "symbols": "RBC",
+                "limit": 20,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
