@@ -26,14 +26,15 @@ class ECBEUYieldCurveData(EUYieldCurveData):
 
     __alias_dict__ = {
         "rate": "OBS",
+        "date": "PERIOD",
     }
 
-    @field_validator("OBS", mode="before", check_fields=False)
+    @field_validator("rate", mode="before", check_fields=False)
     @classmethod
     def value_validate(cls, v):
         """Validate rate."""
         try:
-            return float(v)
+            return float(v) / 100 if v else None
         except ValueError:
             return None
 
@@ -59,7 +60,7 @@ class ECBEUYieldCurveFetcher(
         query: ECBEUYieldCurveQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> list:
+    ) -> List[Dict]:
         """Extract data."""
         # Check that the date is in the past
         today = datetime.today().date()
@@ -99,7 +100,7 @@ class ECBEUYieldCurveFetcher(
     # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        query: ECBEUYieldCurveQueryParams, data: list, **kwargs: Any
+        query: ECBEUYieldCurveQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[ECBEUYieldCurveData]:
         """Transform data."""
         return [ECBEUYieldCurveData.model_validate(d) for d in data]
