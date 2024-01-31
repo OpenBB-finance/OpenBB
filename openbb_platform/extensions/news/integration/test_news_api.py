@@ -46,7 +46,6 @@ def headers():
             {
                 "provider": "fmp",
                 "limit": 30,
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }
@@ -55,7 +54,6 @@ def headers():
             {
                 "provider": "intrinio",
                 "limit": 20,
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }
@@ -67,7 +65,6 @@ def headers():
                 "tag": "federalreserve",
                 "source": "bloomberg",
                 "term": "MSFT",
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }
@@ -77,7 +74,6 @@ def headers():
                 "provider": "tiingo",
                 "limit": 30,
                 "source": "bloomberg.com",
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }
@@ -136,7 +132,6 @@ def test_news_world(params, headers):
                 "provider": "polygon",
                 "symbols": "AAPL",
                 "limit": 20,
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }
@@ -147,7 +142,6 @@ def test_news_world(params, headers):
                 "symbols": "AAPL",
                 "limit": 20,
                 "page": 1,
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }
@@ -157,7 +151,6 @@ def test_news_world(params, headers):
                 "provider": "yfinance",
                 "symbols": "AAPL",
                 "limit": 20,
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }
@@ -167,7 +160,6 @@ def test_news_world(params, headers):
                 "provider": "intrinio",
                 "symbols": "AAPL",
                 "limit": 20,
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }
@@ -178,7 +170,6 @@ def test_news_world(params, headers):
                 "symbols": "AAPL,MSFT",
                 "limit": 20,
                 "source": "bloomberg.com",
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }

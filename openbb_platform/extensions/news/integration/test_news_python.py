@@ -45,7 +45,6 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
             {
                 "provider": "fmp",
                 "limit": 20,
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }
@@ -54,7 +53,6 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
             {
                 "provider": "intrinio",
                 "limit": 20,
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }
@@ -66,7 +64,6 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
                 "tag": "federalreserve",
                 "source": "bloomberg",
                 "term": "MSFT",
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }
@@ -76,7 +73,6 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
                 "provider": "tiingo",
                 "limit": 30,
                 "source": "bloomberg.com",
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }
@@ -121,7 +117,6 @@ def test_news_world(params, obb):
                 "provider": "polygon",
                 "symbols": "AAPL",
                 "limit": 20,
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }
@@ -132,7 +127,6 @@ def test_news_world(params, obb):
                 "symbols": "AAPL",
                 "limit": 20,
                 "page": 1,
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }
@@ -142,7 +136,6 @@ def test_news_world(params, obb):
                 "provider": "yfinance",
                 "symbols": "AAPL",
                 "limit": 20,
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }
@@ -152,7 +145,6 @@ def test_news_world(params, obb):
                 "provider": "intrinio",
                 "symbols": "AAPL",
                 "limit": 20,
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }
@@ -163,7 +155,6 @@ def test_news_world(params, obb):
                 "symbols": "AAPL,MSFT",
                 "limit": 20,
                 "source": "bloomberg.com",
-                "date": None,
                 "start_date": None,
                 "end_date": None,
             }
