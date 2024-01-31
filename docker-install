@@ -13,7 +13,7 @@ curl -o docker-compose.x11.yaml https://raw.githubusercontent.com/OpenBB-finance
 docker compose -f docker-compose.yaml -f docker-compose.x11.yaml -p openbb up -d
 
 # Change ownership of the current user /home folder
-sudo chown -R $CURRENT_USER:$CURRENT_GROUP $CURRENT_USER_HOME/OpenBBUserData/
-sudo chown -R $CURRENT_USER:$CURRENT_GROUP $CURRENT_USER_HOME/.openbb_terminal/
+sudo chown -R $CURRENT_USER:$CURRENT_GROUP /home/$CURRENT_USER_HOME/OpenBBUserData/
+sudo chown -R $CURRENT_USER:$CURRENT_GROUP /home/$CURRENT_USER_HOME/.openbb_terminal/
 
 docker attach openbb-openbb-1
