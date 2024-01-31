@@ -38,7 +38,7 @@ jobs:
           echo "label-found=$LABEL_FOUND" >> $GITHUB_ENV
 
       - name: Check for changes in OpenBB Platform folder
-        id: folder-check
+        id: folder-changed
         run: |
           if [[ "${{ steps.files.outputs.any_changed }}" == "true" ]]; then
             echo "folder-changed=true" >> $GITHUB_ENV
