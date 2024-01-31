@@ -34,10 +34,6 @@ class ROUTER_news(Container):
             Optional[Annotated[int, Ge(ge=0)]],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 20,
-        date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(description="A specific date to get data for."),
-        ] = None,
         start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
@@ -63,8 +59,6 @@ class ROUTER_news(Container):
              Here it is a separated list of symbols.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
-        date : Optional[datetime.date]
-            A specific date to get data for.
         start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
@@ -73,6 +67,8 @@ class ROUTER_news(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
+        date : Optional[datetime.date]
+            A specific date to get data for. (provider: benzinga)
         display : Literal['headline', 'abstract', 'full']
             Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)
         updated_since : Optional[int]
@@ -184,7 +180,6 @@ class ROUTER_news(Container):
                 standard_params={
                     "symbols": symbols,
                     "limit": limit,
-                    "date": date,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
@@ -201,10 +196,6 @@ class ROUTER_news(Container):
                 description="The number of data entries to return. Here its the no. of articles to return."
             ),
         ] = 20,
-        date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(description="A specific date to get data for."),
-        ] = None,
         start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
@@ -226,8 +217,6 @@ class ROUTER_news(Container):
         ----------
         limit : int
             The number of data entries to return. Here its the no. of articles to return.
-        date : Optional[datetime.date]
-            A specific date to get data for.
         start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
@@ -236,6 +225,8 @@ class ROUTER_news(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
+        date : Optional[datetime.date]
+            A specific date to get data for. (provider: benzinga)
         display : Literal['headline', 'abstract', 'full']
             Specify headline only (headline), headline + teaser (abstract), or headline + full body (full). (provider: benzinga)
         updated_since : Optional[int]
@@ -326,7 +317,6 @@ class ROUTER_news(Container):
                 },
                 standard_params={
                     "limit": limit,
-                    "date": date,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
