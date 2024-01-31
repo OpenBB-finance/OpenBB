@@ -3,6 +3,7 @@ import time
 import hashlib
 import json
 from abc import ABC, abstractmethod
+from datetime import date, datetime
 
 try:
     import redis
@@ -12,9 +13,17 @@ except ImportError:
     REDIS_AVAILABLE = False
 
 
+def jsonify_date(obj):
+    """JSON serializer for objects not serializable by default json code"""
+
+    if isinstance(obj, (datetime, date)):
+        return obj.isoformat()
+    raise TypeError(f"Type {type(obj)} not serializable")
+
+
 def generate_cache_key(*args, **kwargs):
     """Generate a unique key for a request."""
-    key = json.dumps((args, kwargs), sort_keys=True)
+    key = json.dumps((args, kwargs), sort_keys=True, default=jsonify_date)
     return hashlib.sha256(key.encode("utf-8")).hexdigest()
 
 
