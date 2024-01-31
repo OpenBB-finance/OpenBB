@@ -1,5 +1,7 @@
 """FINRA Equity Short Interest Model."""
 
+# pylint: disable=unused-argument
+
 import sqlite3
 from typing import Any, Dict, List, Optional
 
