@@ -194,26 +194,3 @@ def test_news_company(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
-
-
-@pytest.mark.skip("openbb-ultima is not installed on the CI.")
-@parametrize(
-    "params",
-    [
-        (
-            {
-                "provider": "ultima",
-                "sectors": "Real Estate",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_news_sector(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/news/sector?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200

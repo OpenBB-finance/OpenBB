@@ -178,25 +178,3 @@ def test_news_company(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
-
-
-@pytest.mark.skip("openbb-ultima is not installed on the CI.")
-@parametrize(
-    "params",
-    [
-        (
-            {
-                "provider": "ultima",
-                "sectors": "Real Estate",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_news_sector(params, obb):
-    params = {p: v for p, v in params.items() if v}
-
-    result = obb.news.sector(**params)
-    assert result
-    assert isinstance(result, OBBject)
-    assert len(result.results) > 0
