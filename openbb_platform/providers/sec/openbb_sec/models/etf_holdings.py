@@ -14,7 +14,7 @@ from openbb_core.provider.standard_models.etf_holdings import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_sec.utils.helpers import HEADERS, get_nport_candidates, sec_session_etf
-from pydantic import Field, model_validator
+from pydantic import Field, field_validator, model_validator
 
 _warn = warnings.warn
 
@@ -51,9 +51,10 @@ class SecEtfHoldingsData(EtfHoldingsData):
         description="The balance of the holding.", default=None
     )
     weight: Optional[float] = Field(
-        description="The weight of the holding in ETF in %.",
+        description="The weight of the holding in the portfolio, as a normalized percent.",
         alias="pctVal",
         default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     value: Optional[float] = Field(
         description="The value of the holding in USD.", alias="valUSD", default=None
@@ -127,7 +128,9 @@ class SecEtfHoldingsData(EtfHoldingsData):
         default=None,
     )
     annualized_return: Optional[float] = Field(
-        description="The annualized return on the debt security.", default=None
+        description="The annualized return on the debt security.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     is_default: Optional[str] = Field(
         description="If the debt security is defaulted.", default=None
@@ -280,6 +283,12 @@ class SecEtfHoldingsData(EtfHoldingsData):
     unrealized_gain: Optional[float] = Field(
         description="The unrealized gain or loss on the derivative.", default=None
     )
+
+    @field_validator("weight", "annualized_return", mode="before", check_fields=False)
+    @classmethod
+    def normalize_percent(cls, v):
+        """Normalize percent values."""
+        return float(v) / 100 if v else None
 
     @model_validator(mode="before")
     @classmethod
