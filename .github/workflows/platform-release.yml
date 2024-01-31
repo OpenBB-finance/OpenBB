@@ -1,8 +1,8 @@
-name: Release on Specific Folder Changes
+name: Platform Release
 
 on:
   pull_request:
-    types: [closed]
+    types: [opened, synchronize, reopened, closed, labeled, unlabeled]
     branches:
       - develop # Replace with your default branch
 
@@ -12,9 +12,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Check for specific labels
+
+      - name: Get list of changed files
+        id: files
+        uses: tj-actions/changed-files@v16
+        with:
+          files: |
+            openbb_platform/**
+        
+      - name: Check for platform labels
         id: label-check
         run: |
           LABELS=('platform' 'v4' 'bug')  # Define your labels here
@@ -29,11 +37,10 @@ jobs:
           done
           echo "label-found=$LABEL_FOUND" >> $GITHUB_ENV
 
-      - name: Check for changes in specific folder
+      - name: Check for changes in OpenBB Platform folder
         id: folder-check
         run: |
-          FOLDER_PATH='/openbb_platform'  # Replace with your folder path
-          if git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -q "^$FOLDER_PATH/"; then
+          if [[ "${{ steps.files.outputs.any_changed }}" == "true" ]]; then
             echo "folder-changed=true" >> $GITHUB_ENV
           else
             echo "folder-changed=false" >> $GITHUB_ENV
