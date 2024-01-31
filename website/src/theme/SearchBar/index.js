@@ -1,4 +1,6 @@
 import { DocSearchButton, useDocSearchKeyboardEvents } from "@docsearch/react";
+import { useLocation } from "@docusaurus/router";
+
 import BrowserOnly from "@docusaurus/BrowserOnly";
 import Head from "@docusaurus/Head";
 import Link from "@docusaurus/Link";
@@ -35,6 +37,7 @@ function mergeFacetFilters(f1, f2) {
   return [...normalize(f1), ...normalize(f2)];
 }
 function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
+  const location = useLocation();
   const { siteMetadata } = useDocusaurusContext();
   const processSearchResultUrl = useSearchResultUrlProcessor();
   const contextualSearchFacetFilters = useAlgoliaContextualFacetFilters();
@@ -101,14 +104,21 @@ function DocSearch({ contextualSearch, externalUrlRegex, ...props }) {
     },
   }).current;
   const transformItems = useRef((items) =>
-    props.transformItems
+    (props.transformItems
       ? // Custom transformItems
         props.transformItems(items)
       : // Default transformItems
         items.map((item) => ({
           ...item,
           url: processSearchResultUrl(item.url),
-        }))
+        }))).filter((item) => {
+          const firstPathSegment = location.pathname.split("/")[1];
+          return (
+            !firstPathSegment ? true :
+            item.url.startsWith(`/${firstPathSegment}/`)
+          );
+        }
+      )
   ).current;
   const resultsFooterComponent = useMemo(
     () =>
