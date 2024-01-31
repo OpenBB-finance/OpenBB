@@ -2,7 +2,7 @@ name: Platform Release
 
 on:
   pull_request:
-    types: [closed]
+    types: [opened, synchronize, reopened, closed, labeled, unlabeled]
     branches:
       - develop # Replace with your default branch
 
