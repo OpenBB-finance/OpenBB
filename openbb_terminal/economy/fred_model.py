@@ -1,4 +1,5 @@
 """ Fred Model """
+
 __docformat__ = "numpy"
 
 import logging
@@ -201,15 +202,15 @@ def get_series_notes(
 
         if "notes" in df_fred.columns:
             df_fred["notes"] = df_fred["notes"].apply(
-                lambda x: "\n".join(textwrap.wrap(x, width=100))
-                if isinstance(x, str)
-                else x
+                lambda x: (
+                    "\n".join(textwrap.wrap(x, width=100)) if isinstance(x, str) else x
+                )
             )
         if "title" in df_fred.columns:
             df_fred["title"] = df_fred["title"].apply(
-                lambda x: "\n".join(textwrap.wrap(x, width=50))
-                if isinstance(x, str)
-                else x
+                lambda x: (
+                    "\n".join(textwrap.wrap(x, width=50)) if isinstance(x, str) else x
+                )
             )
 
     return df_fred
@@ -373,10 +374,10 @@ def get_cpi(
     for series_id, country_value, frequency_value, unit_value in series[
         ["series_id", "country", "frequency", "units"]
     ].values:
-        series_dictionary[
-            f"{country_value}-{frequency_value}-{unit_value}"
-        ] = get_series_data(
-            series_id=series_id, start_date=start_date, end_date=end_date
+        series_dictionary[f"{country_value}-{frequency_value}-{unit_value}"] = (
+            get_series_data(
+                series_id=series_id, start_date=start_date, end_date=end_date
+            )
         )
 
     df = pd.DataFrame.from_dict(series_dictionary)

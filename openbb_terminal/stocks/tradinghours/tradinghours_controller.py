@@ -1,4 +1,5 @@
 """Trading Hours Controller."""
+
 __docformat__ = "numpy"
 
 import argparse
@@ -25,6 +26,7 @@ from openbb_terminal.stocks.tradinghours.pandas_market_cal_view import (
 from openbb_terminal.stocks.tradinghours.tradinghours_helper import (
     get_exchanges_short_names,
     get_fd_equities_list,
+    get_fd_etfs_list,
 )
 
 logger = logging.getLogger(__name__)
@@ -33,7 +35,6 @@ logger = logging.getLogger(__name__)
 
 
 class TradingHoursController(BaseController):
-
     """Trading Hours Controller class."""
 
     CHOICES_COMMANDS = ["symbol", "open", "closed", "all", "exchange", "holidays"]
@@ -46,6 +47,7 @@ class TradingHoursController(BaseController):
         super().__init__(queue)
 
         self.equities = get_fd_equities_list()
+        self.etfs = get_fd_etfs_list()
         self.equity_tickers = sorted(list(self.equities.keys()))
         short_names_df = get_exchanges_short_names()
         short_names_index = short_names_df.index.values
@@ -66,6 +68,15 @@ class TradingHoursController(BaseController):
                 self.symbol = ticker
                 self.symbol_name = self.equities.loc[ticker]["name"]
                 self.exchange = self.equities.loc[ticker]["exchange"]
+                open_ex = get_open()
+                if self.exchange in open_ex.index:
+                    self.symbol_market_open = True
+                else:
+                    self.symbol_market_open = False
+            elif ticker in self.etfs.index:
+                self.symbol = ticker
+                self.symbol_name = self.etfs.loc[ticker]["name"]
+                self.exchange = self.etfs.loc[ticker]["exchange"]
                 open_ex = get_open()
                 if self.exchange in open_ex.index:
                     self.symbol_market_open = True
@@ -132,6 +143,7 @@ class TradingHoursController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             self.symbol = ns_parser.symbol
+
             if ns_parser.symbol in self.equities.index:
                 self.symbol_name = self.equities.loc[self.symbol]["name"]
                 self.exchange = self.equities.loc[self.symbol]["exchange"]
@@ -141,6 +153,20 @@ class TradingHoursController(BaseController):
                 else:
                     self.symbol_market_open = False
                 # add currency
+                console.print(
+                    f"\nSelected symbol\nSymbol:        {self.symbol}\n"
+                    f"Name:          {self.symbol_name}\n"
+                    f"Market open:   {self.symbol_market_open}\n"
+                )
+            elif ns_parser.symbol in self.etfs.index:
+                self.symbol_name = self.etfs.loc[self.symbol]["name"]
+                self.exchange = self.etfs.loc[self.symbol]["exchange"]
+                open_ex = get_open()
+                if self.exchange in open_ex.index:
+                    self.symbol_market_open = True
+                else:
+                    self.symbol_market_open = False
+
                 console.print(
                     f"\nSelected symbol\nSymbol:        {self.symbol}\n"
                     f"Name:          {self.symbol_name}\n"

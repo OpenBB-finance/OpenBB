@@ -1,4 +1,5 @@
 """ETF Holdings Performance Standard Model."""
+
 from .recent_performance import (
     RecentPerformanceData,
     RecentPerformanceQueryParams,

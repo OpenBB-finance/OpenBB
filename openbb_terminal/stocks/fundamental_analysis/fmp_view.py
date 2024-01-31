@@ -1,4 +1,5 @@
 """ Financial Modeling Prep View """
+
 __docformat__ = "numpy"
 
 import logging
@@ -333,9 +334,11 @@ def display_income_statement(
             print_rich_table(
                 income.drop(index=["Final Link", "Link"]),
                 headers=list(income.columns),
-                title=f"{symbol.upper()} Income Statement"
-                if not ratios
-                else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol.upper()} Income Statement",
+                title=(
+                    f"{symbol.upper()} Income Statement"
+                    if not ratios
+                    else f"{'QoQ' if quarterly else 'YoY'} Change of {symbol.upper()} Income Statement"
+                ),
                 show_index=True,
                 export=bool(export),
             )

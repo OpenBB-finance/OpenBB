@@ -1,4 +1,5 @@
 """Statics"""
+
 __docformat__ = "numpy"
 
 BENCHMARK_CHOICES = {

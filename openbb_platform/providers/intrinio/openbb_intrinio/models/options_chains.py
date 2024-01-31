@@ -1,5 +1,6 @@
 """Intrinio Options Chains Model."""
 
+# pylint: disable=unused-argument
 from datetime import (
     date as dateType,
     datetime,
@@ -28,7 +29,7 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
     """
 
     date: Optional[dateType] = Field(
-        description="Date for which the options chains are returned."
+        default=None, description="The end-of-day date for options chains data."
     )
 
 
@@ -42,7 +43,19 @@ class IntrinioOptionsChainsData(OptionsChainsData):
         "option_type": "type",
     }
 
-    @field_validator("expiration", "date", mode="before", check_fields=False)
+    exercise_style: Optional[str] = Field(
+        default=None,
+        description="The exercise style of the option, American or European.",
+    )
+
+    @field_validator(
+        "date",
+        "close_time",
+        "close_ask_time",
+        "close_bid_time",
+        mode="before",
+        check_fields=False,
+    )
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the datetime object from the date string."""
@@ -60,15 +73,12 @@ class IntrinioOptionsChainsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> IntrinioOptionsChainsQueryParams:
         """Transform the query."""
-        transform_params = params
-
-        now = datetime.now().date()
-        if params.get("date") is None:
-            transform_params["date"] = (now - timedelta(days=1)).strftime("%Y-%m-%d")
-        elif isinstance(params["date"], dateType):
-            transform_params["date"] = params["date"].strftime("%Y-%m-%d")
-        else:
-            transform_params["date"] = parser.parse(params["date"]).date()
+        transform_params = params.copy()
+        if params.get("date") is not None:
+            if isinstance(params["date"], dateType):
+                transform_params["date"] = params["date"].strftime("%Y-%m-%d")
+            else:
+                transform_params["date"] = parser.parse(params["date"]).date()
 
         return IntrinioOptionsChainsQueryParams(**transform_params)
 
@@ -89,23 +99,33 @@ class IntrinioOptionsChainsFetcher(
                 f"{base_url}/expirations/{query.symbol}/eod?"
                 f"after={date}&api_key={api_key}"
             )
-            expiration = await get_data_many(url, "expirations", **kwargs)
-            return [
-                f"{base_url}/chain/{query.symbol}/{expiration}/eod?date={query.date}&api_key={api_key}"
-                for expiration in expiration
-            ]
+            expirations = await get_data_many(url, "expirations", **kwargs)
+
+            def generate_url(expiration) -> str:
+                url = f"{base_url}/chain/{query.symbol}/{expiration}/eod?date="
+                if query.date is not None:
+                    url += date
+                return url + f"&api_key={api_key}"
+
+            return [generate_url(expiration) for expiration in expirations]
 
         async def callback(response: ClientResponse, _: Any) -> list:
             """Return the response."""
             response_data = await response.json()
             return response_data.get("chain", [])
 
-        date = get_weekday(query.date)
-        results = await amake_requests(await get_urls(date), callback, **kwargs)
+        date = datetime.now().date() if query.date is None else query.date
+        date = get_weekday(date)
+
+        results = await amake_requests(
+            await get_urls(date.strftime("%Y-%m-%d")), callback, **kwargs
+        )
 
         if not results:
-            urls = await get_urls(get_weekday(date - timedelta(days=1)))
-            results = await amake_requests(urls, callback, **kwargs)
+            urls = await get_urls(
+                get_weekday(date - timedelta(days=1)).strftime("%Y-%m-%d")
+            )
+            results = await amake_requests(urls, response_callback=callback, **kwargs)
 
         return results
 
@@ -115,4 +135,7 @@ class IntrinioOptionsChainsFetcher(
     ) -> List[IntrinioOptionsChainsData]:
         """Return the transformed data."""
         data = [{**item["option"], **item["prices"]} for item in data]
+        data = sorted(
+            data, key=lambda x: (x["expiration"], x["strike"], x["type"]), reverse=False
+        )
         return [IntrinioOptionsChainsData.model_validate(d) for d in data]

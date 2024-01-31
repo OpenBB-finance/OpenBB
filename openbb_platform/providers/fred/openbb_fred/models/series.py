@@ -78,11 +78,10 @@ class FredSeriesQueryParams(SeriesQueryParams):
             eop = End of Period
         """,
     )
-    transform: Literal[
-        None, "chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"
-    ] = Field(
-        default=None,
-        description="""
+    transform: Literal[None, "chg", "ch1", "pch", "pc1", "pca", "cch", "cca", "log"] = (
+        Field(
+            default=None,
+            description="""
         Transformation type
             None = No transformation
             chg = Change
@@ -94,6 +93,7 @@ class FredSeriesQueryParams(SeriesQueryParams):
             cca = Continuously Compounded Annual Rate of Change
             log = Natural Log
         """,
+        )
     )
     limit: int = Field(description=QUERY_DESCRIPTIONS.get("limit", ""), default=100000)
 
@@ -122,7 +122,6 @@ class FredSeriesFetcher(
         **kwargs: Any,
     ) -> Dict:
         """Extract data."""
-
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         base_url = "https://api.stlouisfed.org/fred/series/observations"
@@ -186,6 +185,7 @@ class FredSeriesFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: FredSeriesQueryParams, data: Dict, **kwargs: Any

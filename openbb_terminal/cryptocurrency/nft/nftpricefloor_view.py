@@ -1,4 +1,5 @@
 """ NFT Price Floor View """
+
 __docformat__ = "numpy"
 
 # flake8: noqa

@@ -1,4 +1,5 @@
 """FRED provider module."""
+
 from openbb_core.provider.abstract.provider import Provider
 from openbb_fred.models.ameribor_rates import FREDAMERIBORFetcher
 from openbb_fred.models.cp import FREDCommercialPaperFetcher

@@ -1,4 +1,5 @@
 """Test currency API endpoints."""
+
 import base64
 
 import pytest

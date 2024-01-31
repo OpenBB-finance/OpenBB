@@ -1,4 +1,5 @@
 """Econometrics Controller Module"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=too-many-arguments,too-many-lines,too-many-branches,inconsistent-return-statements,R0904
@@ -428,9 +429,9 @@ class EconometricsController(BaseController):
                 file,
                 data_files=self.DATA_FILES,
                 data_examples=common_model.DATA_EXAMPLES,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
             if not data.empty:
@@ -491,9 +492,9 @@ class EconometricsController(BaseController):
                     os.path.dirname(os.path.abspath(__file__)),
                     ns_parser.name,
                     self.datasets[ns_parser.name],
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
         console.print()
@@ -1742,15 +1743,15 @@ class EconometricsController(BaseController):
                         self.regression[regression][
                             "independent"
                         ] = independent_variables
-                        self.regression[regression_name][
-                            "model"
-                        ] = regression_view.display_panel(
-                            regression_df[dependent_variable],
-                            regression_df[independent_variables],
-                            regression,
-                            ns_parser.entity_effects,
-                            ns_parser.time_effects,
-                            ns_parser.export,
+                        self.regression[regression_name]["model"] = (
+                            regression_view.display_panel(
+                                regression_df[dependent_variable],
+                                regression_df[independent_variables],
+                                regression,
+                                ns_parser.entity_effects,
+                                ns_parser.time_effects,
+                                ns_parser.export,
+                            )
                         )
             else:
                 console.print(
@@ -1774,9 +1775,9 @@ class EconometricsController(BaseController):
             regression_model.get_comparison(
                 self.regression,
                 ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
             console.print()
 
@@ -2116,9 +2117,9 @@ class EconometricsController(BaseController):
                     significant=ns_parser.significant,
                     plot=ns_parser.plot,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
             else:

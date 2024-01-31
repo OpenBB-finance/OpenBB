@@ -1,4 +1,5 @@
 """Whale Alert model"""
+
 __docformat__ = "numpy"
 
 import logging
@@ -133,15 +134,19 @@ def get_whales_transactions(
     )
 
     data["from"] = data.apply(
-        lambda x: x["from.owner"]
-        if x["from.owner"] not in [np.nan, None, np.NaN]
-        else x["from.owner_type"],
+        lambda x: (
+            x["from.owner"]
+            if x["from.owner"] not in [np.nan, None, np.NaN]
+            else x["from.owner_type"]
+        ),
         axis=1,
     )
     data["to"] = data.apply(
-        lambda x: x["to.owner"]
-        if x["to.owner"] not in [np.nan, None, np.NaN]
-        else x["to.owner_type"],
+        lambda x: (
+            x["to.owner"]
+            if x["to.owner"] not in [np.nan, None, np.NaN]
+            else x["to.owner_type"]
+        ),
         axis=1,
     )
     data.drop(

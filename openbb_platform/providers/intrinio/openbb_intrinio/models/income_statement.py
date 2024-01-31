@@ -1,4 +1,5 @@
 """Intrinio Income Statement Model."""
+
 # pylint: disable=unused-argument
 import warnings
 from typing import Any, Dict, List, Literal, Optional
@@ -104,7 +105,7 @@ class IntrinioIncomeStatementData(IncomeStatementData):
         "short_term_borrowings_interest_expense": "shorttermborrowinginterestexpense",
         "cost_of_revenue": "totalcostofrevenue",
         "gross_profit": "totalgrossprofit",
-        "gross_profit_magin": "grossmargin",
+        "gross_profit_margin": "grossmargin",
         "total_interest_expense": "totalinterestexpense",
         "interest_and_investment_income": "totalinterestincome",
         "total_non_interest_expense": "totalnoninterestexpense",
@@ -225,11 +226,11 @@ class IntrinioIncomeStatementData(IncomeStatementData):
     deposits_interest_expense: Optional[float] = Field(
         default=None, description="Deposits interest expense"
     )
-    federal_funds_purchased_and_securities_sold_interest_expense: Optional[
-        float
-    ] = Field(
-        default=None,
-        description="Federal funds purchased and securities sold interest expense",
+    federal_funds_purchased_and_securities_sold_interest_expense: Optional[float] = (
+        Field(
+            default=None,
+            description="Federal funds purchased and securities sold interest expense",
+        )
     )
     other_interest_expense: Optional[float] = Field(
         default=None, description="Other interest expense"

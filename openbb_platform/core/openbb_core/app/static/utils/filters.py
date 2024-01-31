@@ -1,6 +1,5 @@
 """OpenBB filters."""
 
-
 from openbb_core.app.utils import convert_to_basemodel
 
 

@@ -1,4 +1,5 @@
 """Economy helpers"""
+
 __docformat__ = "numpy"
 
 from typing import Dict

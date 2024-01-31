@@ -1,4 +1,5 @@
 """CoinGecko model"""
+
 __docformat__ = "numpy"
 # pylint:disable=unsupported-assignment-operation
 
@@ -405,9 +406,11 @@ class Coin:
         df = pd.Series(dev).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(
-            lambda x: lambda_replace_underscores_in_column_names(x)
-            if isinstance(x, str)
-            else x
+            lambda x: (
+                lambda_replace_underscores_in_column_names(x)
+                if isinstance(x, str)
+                else x
+            )
         )
 
         return df[df["Value"].notna()]
@@ -429,9 +432,11 @@ class Coin:
             df = pd.Series(dct).to_frame().reset_index()
             df.columns = ["Metric", "Value"]
             df["Metric"] = df["Metric"].apply(
-                lambda x: lambda_replace_underscores_in_column_names(x)
-                if isinstance(x, str)
-                else x
+                lambda x: (
+                    lambda_replace_underscores_in_column_names(x)
+                    if isinstance(x, str)
+                    else x
+                )
             )
             return df[df["Value"].notna()]
         return None
@@ -462,9 +467,11 @@ class Coin:
         df = pd.Series(dct).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(
-            lambda x: lambda_replace_underscores_in_column_names(x)
-            if isinstance(x, str)
-            else x
+            lambda x: (
+                lambda_replace_underscores_in_column_names(x)
+                if isinstance(x, str)
+                else x
+            )
         )
         return df[df["Value"].notna()]
 
@@ -488,9 +495,11 @@ class Coin:
         df.columns = ["Metric", "Value"]
         df["Value"] = df["Value"].apply(lambda x: ",".join(x))
         df["Metric"] = df["Metric"].apply(
-            lambda x: lambda_replace_underscores_in_column_names(x)
-            if isinstance(x, str)
-            else x
+            lambda x: (
+                lambda_replace_underscores_in_column_names(x)
+                if isinstance(x, str)
+                else x
+            )
         )
         return df[df["Value"].notna()]
 
@@ -556,9 +565,11 @@ class Coin:
         df = pd.Series(results).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(
-            lambda x: lambda_replace_underscores_in_column_names(x)
-            if isinstance(x, str)
-            else x
+            lambda x: (
+                lambda_replace_underscores_in_column_names(x)
+                if isinstance(x, str)
+                else x
+            )
         )
 
         return df[df["Value"].notna()]
@@ -614,9 +625,11 @@ class Coin:
         df = pd.Series(single_stats).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(
-            lambda x: lambda_replace_underscores_in_column_names(x)
-            if isinstance(x, str)
-            else x
+            lambda x: (
+                lambda_replace_underscores_in_column_names(x)
+                if isinstance(x, str)
+                else x
+            )
         )
         return df[df["Value"].notna()]
 
@@ -645,9 +658,11 @@ class Coin:
         df = pd.Series(results).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(
-            lambda x: lambda_replace_underscores_in_column_names(x)
-            if isinstance(x, str)
-            else x
+            lambda x: (
+                lambda_replace_underscores_in_column_names(x)
+                if isinstance(x, str)
+                else x
+            )
         )
         df["Metric"] = df["Metric"].apply(lambda x: x.replace("Ath", "All Time High"))
         df["Metric"] = df["Metric"] + f" {currency.upper()}"
@@ -678,9 +693,11 @@ class Coin:
         df = pd.Series(results).to_frame().reset_index()
         df.columns = ["Metric", "Value"]
         df["Metric"] = df["Metric"].apply(
-            lambda x: lambda_replace_underscores_in_column_names(x)
-            if isinstance(x, str)
-            else x
+            lambda x: (
+                lambda_replace_underscores_in_column_names(x)
+                if isinstance(x, str)
+                else x
+            )
         )
         df["Metric"] = df["Metric"].apply(lambda x: x.replace("Atl", "All Time Low"))
         df["Metric"] = df["Metric"] + f" {currency.upper()}"
@@ -725,9 +742,11 @@ class Coin:
 
         # pylint: disable=unsupported-assignment-operation
         df["Metric"] = df["Metric"].apply(
-            lambda x: lambda_replace_underscores_in_column_names(x)
-            if isinstance(x, str)
-            else x
+            lambda x: (
+                lambda_replace_underscores_in_column_names(x)
+                if isinstance(x, str)
+                else x
+            )
         )
         return df[df["Value"].notna()]
 
