@@ -146,6 +146,7 @@ def test_news_world(params, obb):
                 "provider": "tmx",
                 "symbols": "RBC",
                 "limit": 20,
+                "page": 1,
             }
         ),
     ],
