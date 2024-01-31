@@ -1,5 +1,7 @@
 """Nasdaq Top Retail Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -59,15 +61,14 @@ class NasdaqTopRetailFetcher(
         **kwargs: Any,
     ) -> List[NasdaqTopRetailData]:
         """Transform the data."""
-        transformed_data: List[Dict[str, Any]] = []
+        results: List[NasdaqTopRetailData] = []
         for row in data:
-            transformed_data.append(
-                {
-                    "date": row[0],
-                    "symbol": row[1],
-                    "activity": row[2],
-                    "sentiment": row[3],
-                }
-            )
+            d = {
+                "date": row[0],
+                "symbol": row[1],
+                "activity": row[2],
+                "sentiment": row[3],
+            }
+            results.append(NasdaqTopRetailData.model_validate(d))
 
-        return [NasdaqTopRetailData(**row) for row in transformed_data]
+        return results

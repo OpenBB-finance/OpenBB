@@ -1,5 +1,7 @@
 """Nasdaq Earnings Calendar Model."""
 
+# pylint: disable=unused-argument
+
 from concurrent.futures import ThreadPoolExecutor
 from datetime import (
     date as dateType,
@@ -42,6 +44,7 @@ class NasdaqCalendarEarningsData(CalendarEarningsData):
         default=None,
         description="The earnings surprise as normalized percentage points.",
         alias="surprise",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     num_estimates: Optional[int] = Field(
         default=None,

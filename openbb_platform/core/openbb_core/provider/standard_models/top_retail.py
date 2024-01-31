@@ -15,7 +15,7 @@ from openbb_core.provider.utils.descriptions import (
 class TopRetailQueryParams(QueryParams):
     """Top Retail Search Query."""
 
-    limit: int = Field(description=QUERY_DESCRIPTIONS.get("limit", ""), default=5)
+    limit: int = Field(description=QUERY_DESCRIPTIONS.get("limit", ""), default=10)
 
 
 class TopRetailData(Data):
