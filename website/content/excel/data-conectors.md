@@ -33,4 +33,4 @@ To access data from your own [backend](https://docs.openbb.co/pro/main-menu/data
 #### Additional notes
 
 - Make sure your backend's CORS settings allow requests coming from <https://excel.openbb.co>.
-- If you are using the Excel Add-in on Mac or Office on the web with Safari browser you need to run your backend via HTTPS. Requests via HTTP will be blocked by Excel.
+- Requests via HTTP will be blocked by Excel. So if you are using the Add-in for Excel on Mac or Office on the web with Safari browser you need to run your backend via HTTPS.
