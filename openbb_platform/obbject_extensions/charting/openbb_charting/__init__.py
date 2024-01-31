@@ -72,9 +72,9 @@ class Charting:
         )
         kwargs["obbject_item"] = self._obbject.results
         kwargs["charting_settings"] = self._charting_settings
-        kwargs["standard_params"] = (
-            self._obbject._standard_params.__dict__  # pylint: disable=protected-access
-        )
+        kwargs[
+            "standard_params"
+        ] = self._obbject._standard_params.__dict__  # pylint: disable=protected-access
 
         fig, content = charting_function(**kwargs)
         self._obbject.chart = Chart(
@@ -91,9 +91,10 @@ class Charting:
         volume: bool = True,
         prepost: bool = False,
         volume_ticks_x: int = 7,
+        render: bool = True,
     ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
         """
-        Returns the plotly json representation of the chart.
+        Creates a OpenBBFigure with user customizations (if any) and saves it to the OBBject.
 
         This function is used so it can be called at the module level and used out of the box,
         which allows some more flexibility, ease of use and doesn't require the user to know
@@ -115,11 +116,8 @@ class Charting:
             If True, prepost will be plotted, by default False
         volume_ticks_x : int, optional
             Volume ticks, by default 7
-
-        Returns
-        -------
-        OpenBBFigure - note that although it only returns the figure, the chart is also saved
-        to the OBBject.
+        render : bool, optional
+            If True, the chart will be rendered, by default True
 
         Examples
         --------
@@ -140,6 +138,9 @@ class Charting:
         2) Get all the available indicators
         > from openbb_charting.core.plotly_ta.data_classes import ChartIndicators
         > ChartIndicators.get_available_indicators()
+        or
+        > from openbb_charting import Charting
+        > Charting.indicators()
         """
         data = self._obbject.to_dataframe()
         fig, content = to_chart(
@@ -154,4 +155,5 @@ class Charting:
         self._obbject.chart = Chart(
             fig=fig, content=content, format=charting_router.CHART_FORMAT
         )
-        return fig
+        if render:
+            fig.show()
