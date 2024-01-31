@@ -1,5 +1,7 @@
 """OECD Long Term Interest Rate Rate Data."""
 
+# pylint: disable=unused-argument
+
 import re
 from datetime import date, timedelta
 from typing import Any, Dict, List, Literal, Optional, Union
@@ -80,6 +82,8 @@ class OECDLTIRQueryParams(LTIRQueryParams):
 class OECDLTIRData(LTIRData):
     """OECD Long Term Interest Rate Data."""
 
+    __alias_dict__ = {"rate": "value"}
+
     @field_validator("date", mode="before")
     @classmethod
     def date_validate(cls, in_date: Union[date, str]):  # pylint: disable=E0213
@@ -112,6 +116,12 @@ class OECDLTIRData(LTIRData):
             return date(in_date, 12, 31)
 
         return in_date
+
+    @field_validator("rate", mode="before", check_fields=False)
+    @classmethod
+    def normalize_percent(cls, v):
+        """Normalize percent values."""
+        return float(v) / 100 if v else None
 
 
 class OECDLTIRFetcher(Fetcher[OECDLTIRQueryParams, List[OECDLTIRData]]):

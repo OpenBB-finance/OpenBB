@@ -90,6 +90,8 @@ class OECDUnemploymentQueryParams(UnemploymentQueryParams):
 class OECDUnemploymentData(UnemploymentData):
     """OECD Unemployment Data."""
 
+    __alias_dict__ = {"rate": "value"}
+
     @field_validator("date", mode="before")
     @classmethod
     def date_validate(cls, in_date: Union[date, str]):  # pylint: disable=E0213
@@ -122,6 +124,12 @@ class OECDUnemploymentData(UnemploymentData):
             return date(in_date, 12, 31)
 
         return in_date
+
+    @field_validator("rate", mode="before", check_fields=False)
+    @classmethod
+    def normalize_percent(cls, v):
+        """Normalize percent values."""
+        return float(v) / 100 if v else None
 
 
 class OECDUnemploymentFetcher(
