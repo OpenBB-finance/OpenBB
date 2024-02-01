@@ -24,7 +24,7 @@ from pydantic import BaseModel
 from pydantic.v1.validators import find_validators
 from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
-from openbb_core.app.deprecation import OpenBBDeprecationWarning
+from openbb_core.app.deprecation import DeprecationSummary, OpenBBDeprecationWarning
 from openbb_core.app.example_generator import ExampleGenerator
 from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
@@ -282,12 +282,6 @@ class Router:
             # For custom deprecation
             if kwargs.get("deprecated", False):
                 deprecation: OpenBBDeprecationWarning = kwargs.pop("deprecation")
-
-                class DeprecationSummary(str):
-                    def __new__(cls, value, metadata):
-                        obj = str.__new__(cls, value)
-                        obj.metadata = metadata
-                        return obj
 
                 kwargs["summary"] = DeprecationSummary(
                     deprecation.long_message, deprecation

@@ -7,6 +7,16 @@ This implementation was inspired from Pydantic's specific warnings and modified 
 from typing import Optional, Tuple
 
 
+class DeprecationSummary(str):
+    """A string subclass that can be used to store deprecation metadata."""
+
+    def __new__(cls, value, metadata):
+        """Create a new instance of the class."""
+        obj = str.__new__(cls, value)
+        obj.metadata = metadata
+        return obj
+
+
 class OpenBBDeprecationWarning(DeprecationWarning):
     """
     A OpenBB specific deprecation warning.
