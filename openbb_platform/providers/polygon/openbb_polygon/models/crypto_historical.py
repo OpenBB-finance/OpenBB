@@ -13,7 +13,12 @@ from openbb_core.provider.standard_models.crypto_historical import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_polygon.utils.helpers import get_data_many
-from pydantic import Field, PositiveInt
+from pydantic import (
+    Field,
+    PositiveInt,
+    PrivateAttr,
+    model_validator,
+)
 from pytz import timezone
 
 
@@ -23,11 +28,8 @@ class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     Source: https://polygon.io/docs/crypto/get_v2_aggs_ticker__cryptoticker__range__multiplier___timespan___from___to
     """
 
-    multiplier: PositiveInt = Field(
-        default=1, description="Multiplier of the timespan."
-    )
-    timespan: Literal["minute", "hour", "day", "week", "month", "quarter", "year"] = (
-        Field(default="day", description="Timespan of the data.")
+    interval: str = Field(
+        default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
     )
     sort: Literal["asc", "desc"] = Field(
         default="desc", description="Sort order of the data."
@@ -35,7 +37,29 @@ class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     limit: PositiveInt = Field(
         default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
-    adjusted: bool = Field(default=True, description="Whether the data is adjusted.")
+    _multiplier: PositiveInt = PrivateAttr(default=None)
+    _timespan: str = PrivateAttr(default=None)
+
+    # pylint: disable=protected-access
+    @model_validator(mode="after")
+    @classmethod
+    def get_api_interval_params(cls, values: "PolygonCryptoHistoricalQueryParams"):
+        """Get the multiplier and timespan parameters for the Polygon API."""
+        intervals = {
+            "s": "second",
+            "m": "minute",
+            "h": "hour",
+            "d": "day",
+            "W": "week",
+            "M": "month",
+            "Q": "quarter",
+            "Y": "year",
+        }
+
+        values._multiplier = int(values.interval[:-1])
+        values._timespan = intervals[values.interval[-1]]
+
+        return values
 
 
 class PolygonCryptoHistoricalData(CryptoHistoricalData):
@@ -87,28 +111,28 @@ class PolygonCryptoHistoricalFetcher(
         query: PolygonCryptoHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
+    ) -> List[Dict]:
         """Extract raw data from the Polygon endpoint."""
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"X:{query.symbol}/range/{query.multiplier}/{query.timespan}/"
-            f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
+            f"X:{query.symbol}/range/{query._multiplier}/{query._timespan}/"
+            f"{query.start_date}/{query.end_date}?"
             f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
         data = await get_data_many(request_url, "results", **kwargs)
 
         for d in data:
             d["t"] = datetime.fromtimestamp(d["t"] / 1000, tz=timezone("UTC"))
-            if query.timespan not in ["minute", "hour"]:
+            if query._timespan not in ["minute", "hour"]:
                 d["t"] = d["t"].date()
 
         return data
 
     @staticmethod
     def transform_data(
-        query: PolygonCryptoHistoricalQueryParams, data: dict, **kwargs: Any
+        query: PolygonCryptoHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[PolygonCryptoHistoricalData]:
         """Transform the data."""
         return [PolygonCryptoHistoricalData.model_validate(d) for d in data]
