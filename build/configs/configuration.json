@@ -1,0 +1,26 @@
+{
+  "categories": [
+      {
+          "title": "## 🚀 Platform",
+          "labels": ["platform", "v4"]
+      },
+      {
+          "title": "## 🐛 Bug Fixes",
+          "labels": ["bug"]
+      },
+      {
+          "title": "## 🤖 Enhancements",
+          "labels": ["enhancement"]
+      },
+      {
+          "title": "## 💬 Other",
+          "labels": ["other"]
+      },
+      {
+          "title": "## 📦 Dependencies",
+          "labels": ["dependencies"]
+      }
+  ],
+  "max_pull_requests": 1000,
+  "max_back_track_time_days": 1000
+}
