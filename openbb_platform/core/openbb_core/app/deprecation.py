@@ -31,6 +31,12 @@ class OpenBBDeprecationWarning(DeprecationWarning):
         expected_removal: Version in what the corresponding functionality expected to be removed.
     """
 
+    # The choice to use class variables is based on the potential for extending the class in future developments.
+    # Example: launching Platform V5 and decide to create a subclimagine we areass named OpenBBDeprecatedSinceV4,
+    # which inherits from OpenBBDeprecationWarning. In this subclass, we would set since=4.X and expected_removal=5.0.
+    # It's important for these values to be defined at the class level, rather than just at the instance level,
+    # to ensure consistency and clarity in our deprecation warnings across the platform.
+
     message: str
     since: Tuple[int, int]
     expected_removal: Tuple[int, int]
