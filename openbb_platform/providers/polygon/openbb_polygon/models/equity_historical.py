@@ -1,5 +1,7 @@
 """Polygon Equity Historical Price Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -21,6 +23,7 @@ from pydantic import (
     PrivateAttr,
     model_validator,
 )
+from pytz import timezone
 
 
 class PolygonEquityHistoricalQueryParams(EquityHistoricalQueryParams):
@@ -143,7 +146,9 @@ class PolygonEquityHistoricalFetcher(
                 next_url = data.get("next_url", None)
 
             for r in results:
-                r["t"] = datetime.fromtimestamp(r["t"] / 1000)
+                r["t"] = datetime.fromtimestamp(
+                    r["t"] / 1000, tz=timezone("America/New_York")
+                )
                 if query._timespan not in ["second", "minute", "hour"]:
                     r["t"] = r["t"].date()
                 if "," in query.symbol:

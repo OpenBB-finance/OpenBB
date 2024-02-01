@@ -1,5 +1,7 @@
 """Polygon Currency Historical Price Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -12,6 +14,7 @@ from openbb_core.provider.standard_models.currency_historical import (
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_polygon.utils.helpers import get_data_many
 from pydantic import Field, PositiveInt
+from pytz import timezone
 
 
 class PolygonCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
@@ -94,7 +97,7 @@ class PolygonCurrencyHistoricalFetcher(
         data = await get_data_many(request_url, "results", **kwargs)
 
         for d in data:
-            d["t"] = datetime.fromtimestamp(d["t"] / 1000)
+            d["t"] = datetime.fromtimestamp(d["t"] / 1000, tz=timezone("UTC"))
             if query.timespan not in ["minute", "hour"]:
                 d["t"] = d["t"].date()
 
