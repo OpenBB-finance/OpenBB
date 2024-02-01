@@ -16,7 +16,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Deprecating Endpoints - Contributor Guidelines - Development | OpenBB Platform Docs" />
 
-Deprecating commands is a necessary part of maintaining the OpenBB Platform. This guide outlines the process for deprecating an endpoint.
+Deprecating commands is essential to maintaining the OpenBB Platform. This guide outlines the process for deprecating an endpoint.
 
 ## Deprecating an endpoint
 
