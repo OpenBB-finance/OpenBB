@@ -116,10 +116,10 @@ def test_to_chart(mock_to_chart, obbject):
     obj = Charting(obbject)
 
     # Act
-    result = obj.to_chart()
+    obj.to_chart()
 
     # Assert
-    assert result == mock_fig
+    assert obj._obbject.chart.fig == mock_fig
     mock_to_chart.assert_called_once_with(
         "mock_dataframe",
         indicators=None,
