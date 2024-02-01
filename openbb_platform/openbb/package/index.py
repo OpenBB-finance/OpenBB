@@ -274,7 +274,7 @@ class ROUTER_index(Container):
 
         simplefilter("always", DeprecationWarning)
         warn(
-            "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.5.",
+            "This endpoint is deprecated since v4.1 and will be removed in v4.3; Use `/index/price/historical` instead.",
             category=DeprecationWarning,
             stacklevel=2,
         )
