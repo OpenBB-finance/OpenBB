@@ -14,6 +14,138 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  test:
+    if: github.event_name  == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      # the below actions use the local state of the action. please replace `./` with `mikepenz/release-changelog-builder-action@{latest-release}`
+      # Showcases how to use the action without a prior checkout
+      # Since 3.2.0 the configuration can be provided within the `yml` file
+      - name: "Configuration without Checkout"
+        id: without_checkout
+        uses: mikepenz/release-changelog-builder-action@v4.1.1
+        with:
+          toTag: "v3.1.1"
+          configurationJson: |
+            {
+              "template": "#{{CHANGELOG}}\n\n<details>\n<summary>Uncategorized</summary>\n\n#{{UNCATEGORIZED}}\n</details>",
+              "categories": [
+                {
+                    "title": "## 🚀 Platform",
+                    "labels": ["platform", "v4"]
+                },
+                {
+                    "title": "## 🐛 Bug Fixes",
+                    "labels": ["bug"]
+                },
+                {
+                    "title": "## 🤖 Enhancements",
+                    "labels": ["enhancement"]
+                },
+                {
+                    "title": "## 💬 Other",
+                    "labels": ["other"]
+                },
+                {
+                    "title": "## 📦 Dependencies",
+                    "labels": ["dependencies"]
+                }
+              ]
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Echo Configuration without Checkout Changelog
+        env:
+          CHANGELOG: ${{ steps.without_checkout.outputs.changelog }}
+        run: echo "CHANGELOG"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+        # Showcase the most minimal configuration possible
+      - name: "Minimal Configuration"
+        id: minimal_release
+        uses: ./
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Echo Minimal Configuration Changelog
+        env:
+          CHANGELOG: ${{ steps.minimal_release.outputs.changelog }}
+        run: echo "$CHANGELOG"
+
+        # Showcases a more complex configuration, providing a configuration, and specifically referencing owner, repo, from and to tag
+      - name: "Complex Configuration"
+        id: complex_release
+        uses: ./
+        with:
+          configuration: "configs/configuration_complex.json"
+          owner: "mikepenz"
+          repo: "release-changelog-builder-action"
+          fromTag: "v4.0"
+          toTag: "v4.1.1"
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Echo Complex Configuration Changelog
+        env:
+          CHANGELOG: ${{ steps.complex_release.outputs.changelog }}
+        run: echo "CHANGELOG"
+
+        # Showcases the capability to generate the changelog for an external repository provided
+        # Showcase ability to only fetch data first, and then continue with exported data later
+      - name: "External Repo Configuration Collect Report"
+        id: external_changelog_collect
+        uses: ./
+        with:
+          owner: "mikepenz"
+          repo: "MaterialDrawer"
+          fromTag: "v8.1.0"
+          toTag: "v8.1.6"
+          token: ${{ secrets.PERSONAL_TOKEN }}
+          exportCache: true
+          exportOnly: true
+      
+      - name: "External Repo Configuration"
+        id: external_changelog
+        uses: ./
+        with:
+          configuration: "configs/configuration_complex.json"
+          owner: "mikepenz"
+          repo: "MaterialDrawer"
+          cache: ${{ steps.external_changelog_collect.outputs.cache }}
+
+      - name: "External Repo Configuration Second"
+        id: external_changelog_second
+        uses: ./
+        with:
+          configurationJson: |
+            {
+              "template": "#{{CHANGELOG}}",
+              "pr_template": "PR: ##{{NUMBER}}",
+              "categories": [
+                {
+                    "title": "## Everything",
+                    "labels": []
+                }
+              ]
+            }
+          owner: "mikepenz"
+          repo: "MaterialDrawer"
+          cache: ${{ steps.external_changelog_collect.outputs.cache }}
+
+      - name: Echo External Repo Configuration Changelog
+        env:
+          CHANGELOG: ${{ steps.external_changelog.outputs.changelog }}
+          CHANGELOG_SECOND: ${{ steps.external_changelog_second.outputs.changelog }}
+        run: |
+          echo "First:"
+          echo "$CHANGELOG"
+          echo "Second:"
+          echo "$CHANGELOG_SECOND"
+
   create-release:
     runs-on: ubuntu-latest
     steps:
