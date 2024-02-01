@@ -44,7 +44,7 @@ jobs:
         id: build_changelog
         uses: mikepenz/release-changelog-builder-action@v4.1.1
         with:
-          configurationJson: "build/configs/platform.json"
+          configurationJson: "build/configs/configuration_platform.json"
           path: "openbb_platform"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
