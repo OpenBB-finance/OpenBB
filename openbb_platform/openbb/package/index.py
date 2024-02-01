@@ -2,13 +2,15 @@
 
 import datetime
 from typing import List, Literal, Optional, Union
+from warnings import simplefilter, warn
 
+from openbb_core.app.deprecation import OpenBBDeprecatedSince41
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from typing_extensions import Annotated
+from typing_extensions import Annotated, deprecated
 
 
 class ROUTER_index(Container):
@@ -155,6 +157,10 @@ class ROUTER_index(Container):
         )
 
     @validate
+    @deprecated(
+        "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.5.",
+        category=OpenBBDeprecatedSince41,
+    )
     def market(
         self,
         symbol: Annotated[
@@ -266,11 +272,9 @@ class ROUTER_index(Container):
         >>> obb.index.market(symbol="SPX")
         """  # noqa: E501
 
-        from warnings import simplefilter, warn
-
         simplefilter("always", DeprecationWarning)
         warn(
-            "This endpoint will be deprecated in the future releases. Use '/index/price/historical' instead.",
+            "This endpoint is deprecated since v4.1 and will be removed in v4.3; Use `/index/price/historical` instead.",
             category=DeprecationWarning,
             stacklevel=2,
         )
