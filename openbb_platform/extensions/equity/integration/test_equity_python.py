@@ -510,7 +510,15 @@ def test_equity_calendar_ipo(params, obb):
                 "with_ttm": False,
             }
         ),
-        ({"provider": "intrinio", "symbol": "AAPL", "period": "annual", "limit": 100}),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "period": "annual",
+                "limit": 100,
+                "fiscal_year": None,
+            }
+        ),
         ({"provider": "finviz", "symbol": "AAPL,GOOG"}),
     ],
 )
