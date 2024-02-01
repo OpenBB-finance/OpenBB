@@ -27,8 +27,8 @@ jobs:
       - name: 🛒 Checkout repository
         uses: actions/checkout@v4
         with:
-          repository: 'OpenBB-finance/OpenBBTerminal'
-          ref: 'develop'
+          # repository: 'OpenBB-finance/OpenBBTerminal'
+          # ref: 'develop'
           fetch-depth: 0
 
       - name: 🗂️ Get changed files
@@ -46,6 +46,7 @@ jobs:
 
       - name: 🔄 Build changelog
         id: build_changelog
+        if: startsWith(github.ref, 'refs/tags/')
         uses: mikepenz/release-changelog-builder-action@v4.1.1
         with:
           configurationJson: "build/configs/configuration_platform.json"
