@@ -26,7 +26,7 @@ router.include_router(price_router)
     deprecation=OpenBBDeprecationWarning(
         message="This endpoint is deprecated; use `/index/price/historical` instead.",
         since=(4, 1),
-        expected_removal=(4, 5),
+        expected_removal=(4, 3),
     ),
 )
 async def market(
