@@ -84,6 +84,6 @@ class FREDESTRFetcher(Fetcher[FREDESTRQueryParams, List[FREDESTRData]]):
             if x["value"] == ".":
                 continue
 
-            item = {k: lambda_keys[k](x) for k in lambda_keys}
+            item = {k: lambda_keys[k](x) for k in lambda_keys}  # pylint: disable=C0206
             results.append(FREDESTRData.model_validate(item))
         return results

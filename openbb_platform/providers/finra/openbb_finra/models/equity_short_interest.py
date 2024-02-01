@@ -83,10 +83,13 @@ class FinraShortInterestFetcher(
             "changePreviousNumber",
             "settlementDate",
         ]
-        return [
-            {title: value for title, value in zip(titles, list(row)[1:])}
-            for row in result
-        ]
+        result_list = []
+        for row in result:
+            row_dict = {}
+            for title, value in zip(titles, list(row)[1:]):
+                row_dict[title] = value
+            result_list.append(row_dict)
+        return result_list
 
     @staticmethod
     def transform_data(
