@@ -1,5 +1,7 @@
 """US Government Treasury Auctions Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
