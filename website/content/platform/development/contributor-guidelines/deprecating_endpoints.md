@@ -52,6 +52,6 @@ Deprecating commands is essential to maintaining the OpenBB Platform. This guide
 
     ```
 
-3. Get approval from a OpenBB Platform maintainer: they will help you determine the appropriate version for the deprecation warning, and also know what to do in order to warn other OpenBB teams that might depend on the endpoint you are deprecating.
+3. Get approval from a OpenBB Platform maintainer: We will help you determine the appropriate version for the deprecation warning, and communicate the change(s) to the relevant personnel that might depend on the endpoint you are deprecating.
 
 4. Remove as we say - the endpoint will be removed in the version specified in the deprecation warning.
