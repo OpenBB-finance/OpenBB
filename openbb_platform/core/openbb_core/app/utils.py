@@ -1,4 +1,5 @@
 """Utility functions for the OpenBB Core app."""
+
 import ast
 import json
 from typing import Dict, Iterable, List, Optional, Union
