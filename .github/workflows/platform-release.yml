@@ -4,60 +4,54 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, closed, labeled, unlabeled]
     branches:
-      - develop # Replace with your default branch
+      - develop
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'patch'
+      tags:
+        description: 'Tag name'
+        required: false
+        default: 'v4'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   create-release:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: 🛒 Checkout repository
         uses: actions/checkout@v4
 
-
-      - name: Get list of changed files
-        id: files
-        uses: tj-actions/changed-files@v16
+      - name: 🗂️ Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v42
         with:
           files: |
             openbb_platform/**
-        
-      - name: Check for platform labels
-        id: label-check
-        run: |
-          LABELS=('platform' 'v4' 'bug')  # Define your labels here
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          LABEL_FOUND=false
-          for LABEL in "${LABELS[@]}"; do
-            if curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              "https://api.github.com/repos/${{ github.repository }}/issues/$PR_NUMBER/labels" | grep -q "\"name\": \"$LABEL\""; then
-              LABEL_FOUND=true
-              break
-            fi
-          done
-          echo "label-found=$LABEL_FOUND" >> $GITHUB_ENV
 
-      - name: Check for changes in OpenBB Platform folder
-        id: folder-check
-        run: |
-          if [[ "${{ steps.files.outputs.any_changed }}" == "true" ]]; then
-            echo "folder-changed=true" >> $GITHUB_ENV
-          else
-            echo "folder-changed=false" >> $GITHUB_ENV
+      - name: 🏷️ Get PR labels
+        id: pr-labels
+        uses: joerick/pr-labels-action@v1.0.8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate release notes
-        id: release-notes
-        run: |
-          PR_TITLE="${{ github.event.pull_request.title }}"
-          PR_BODY="${{ github.event.pull_request.body }}"
-          RELEASE_NOTES="### Changes:\n- $PR_TITLE\n\n### Description:\n$PR_BODY"
-          echo "notes=$RELEASE_NOTES" >> $GITHUB_ENV
+      - name: 🔄 Build changelog
+        id: build_changelog
+        uses: mikepenz/release-changelog-builder-action@v4.1.1
+        with:
+          configurationJson: "build/configs/platform.json"
+          path: "openbb_platform"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create Release
-        if: env.label-found == 'true' && env.folder-changed == 'true'
-        run: |
-          RELEASE_NOTES="${{ env.notes }}"
-          TAG_NAME="v$(date +%Y.%m.%d.%H.%M.%S)"
-          gh release create "$TAG_NAME" --draft --title "$TAG_NAME" --notes "$RELEASE_NOTES"
+      - name: 🛫 Create Release
+        uses: mikepenz/action-gh-release@v1
+        with:
+          body: ${{steps.github_release.outputs.changelog}}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
