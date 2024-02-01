@@ -1,5 +1,7 @@
 """ FRED helpers. """
 
+# pylint: disable=too-many-boolean-expressions
+
 import csv
 import os
 from pathlib import Path
