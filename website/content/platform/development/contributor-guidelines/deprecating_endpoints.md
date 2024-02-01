@@ -24,7 +24,7 @@ Deprecating commands is essential to maintaining the OpenBB Platform. This guide
 
 2. Add the deprecation warning
 
-    Navigate to the **router** where the endpoint you wish to deprecate lives and add the `deprecated=True` flag and `deprecation=OpenBBDeprecationWarning(…)`, to the `@command` decorator. Refer to the example below:
+    Navigate to the **router** where the endpoint to be deprecated exists. Set the `deprecated` flag to `True` and add `deprecation=OpenBBDeprecationWarning(…)` argument to the decorator. Refer to the example below:
 
     ```python
 
