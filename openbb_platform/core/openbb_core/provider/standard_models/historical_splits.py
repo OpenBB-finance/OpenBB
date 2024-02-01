@@ -31,7 +31,9 @@ class HistoricalSplitsData(Data):
     """Historical Splits Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", "") + " (Ex-date)")
-    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
+    symbol: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
+    )
     numerator: Optional[float] = Field(
         default=None, description="Numerator of the stock splits."
     )

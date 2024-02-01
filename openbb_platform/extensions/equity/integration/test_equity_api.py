@@ -86,7 +86,7 @@ def test_equity_fundamental_balance(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL", "limit": 10, "provider": "fmp"})],
+    [({"symbol": "AAPL", "limit": 10, "provider": "fmp", "period": "annual"})],
 )
 @pytest.mark.integration
 def test_equity_fundamental_balance_growth(params, headers):
@@ -216,7 +216,7 @@ def test_equity_fundamental_cash(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL", "limit": 10, "provider": "fmp"})],
+    [({"symbol": "AAPL", "limit": 10, "provider": "fmp", "period": "annual"})],
 )
 @pytest.mark.integration
 def test_equity_fundamental_cash_growth(params, headers):
