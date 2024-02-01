@@ -20,7 +20,7 @@ Deprecating commands is a necessary part of maintaining the OpenBB Platform. Thi
 
 ## Deprecating an endpoint
 
-1. Add new endpoint: the new endpoint that will replace the deprecated one.
+1. Add the new endpoint that will replace the deprecated one.
 
 2. Add the deprecation warning
 
