@@ -22,7 +22,7 @@ Deprecating commands is a necessary part of maintaining the OpenBB Platform. Thi
 
 1. Add new endpoint: the new endpoint that will replace the deprecated one.
 
-2. Add deprecation warning
+2. Add the deprecation warning
 
     Navigate to the **router** where the endpoint you wish to deprecate lives and add the `deprecated=True` flag and `deprecation=OpenBBDeprecationWarning(…)`, to the `@command` decorator. Refer to the example below:
 
