@@ -27,7 +27,8 @@ jobs:
       - name: 🛒 Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: upstream/develop
+          repository: 'OpenBB-finance/OpenBBTerminal'
+          ref: 'develop'
           fetch-depth: 0
 
       - name: 🗂️ Get changed files
