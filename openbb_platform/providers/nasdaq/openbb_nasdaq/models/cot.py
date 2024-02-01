@@ -1,4 +1,5 @@
 """Nasdaq CFTC Commitment of Traders Reports Model."""
+
 # pylint: disable=unused-argument
 
 from datetime import (

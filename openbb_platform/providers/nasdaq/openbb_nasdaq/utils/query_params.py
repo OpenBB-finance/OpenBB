@@ -22,9 +22,9 @@ class DataLinkQueryParams(QueryParams):
         description="Transform the data as difference, percent change, cumulative, or normalize.",
         default=None,
     )
-    collapse: Literal[
-        "daily", "weekly", "monthly", "quarterly", "annual", None
-    ] = Field(
-        description="Collapse the frequency of the time series.",
-        default=None,
+    collapse: Literal["daily", "weekly", "monthly", "quarterly", "annual", None] = (
+        Field(
+            description="Collapse the frequency of the time series.",
+            default=None,
+        )
     )

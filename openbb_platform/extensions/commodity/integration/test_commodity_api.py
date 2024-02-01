@@ -1,4 +1,5 @@
 """Test Commodity API endpoints."""
+
 import base64
 
 import pytest
