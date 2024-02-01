@@ -26,6 +26,9 @@ jobs:
     steps:
       - name: 🛒 Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: upstream/develop
+          fetch-depth: 0
 
       - name: 🗂️ Get changed files
         id: changed-files
