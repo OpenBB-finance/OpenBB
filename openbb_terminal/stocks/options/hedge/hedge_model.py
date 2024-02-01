@@ -1,7 +1,9 @@
 """Hedge model"""
+
 __docformat__ = "numpy"
 
 import math
+from typing import Optional
 
 import numpy as np
 from scipy.stats import norm
@@ -12,23 +14,7 @@ from scipy.stats import norm
 def calc_hedge(
     portfolio_option_amount: float = 100,
     side: str = "Call",
-    greeks: dict = {
-        "Portfolio": {
-            "Delta": 1,
-            "Gamma": 9.1268e-05,
-            "Vega": 5.4661,
-        },
-        "Option A": {
-            "Delta": 1,
-            "Gamma": 9.1268e-05,
-            "Vega": 5.4661,
-        },
-        "Option B": {
-            "Delta": 1,
-            "Gamma": 9.1268e-05,
-            "Vega": 5.4661,
-        },
-    },
+    greeks: Optional[dict] = None,
     sign: int = 1,
 ):
     """Determine the hedge position and the weights within each option and
@@ -53,6 +39,24 @@ def calc_hedge(
     portfolio weight: float
     is_singular: boolean
     """
+    if greeks is None:
+        greeks = {
+            "Portfolio": {
+                "Delta": 1,
+                "Gamma": 9.1268e-05,
+                "Vega": 5.4661,
+            },
+            "Option A": {
+                "Delta": 1,
+                "Gamma": 9.1268e-05,
+                "Vega": 5.4661,
+            },
+            "Option B": {
+                "Delta": 1,
+                "Gamma": 9.1268e-05,
+                "Vega": 5.4661,
+            },
+        }
     # Shortnames for delta, gamma and vega of portfolio
     portfolio_option_delta = greeks["Portfolio"]["Delta"]
     portfolio_option_gamma = greeks["Portfolio"]["Gamma"]

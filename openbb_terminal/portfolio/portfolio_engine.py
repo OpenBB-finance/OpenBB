@@ -1,4 +1,5 @@
 """Portfolio Engine"""
+
 __docformat__ = "numpy"
 
 import datetime
@@ -273,9 +274,11 @@ class PortfolioEngine:
 
             # 4. Translate side: ["deposit", "buy"] -> 1 and ["withdrawal", "sell"] -> -1
             self.__transactions["Signal"] = self.__transactions["Side"].map(
-                lambda x: 1
-                if x.lower() in ["deposit", "buy"]
-                else (-1 if x.lower() in ["withdrawal", "sell"] else 0)
+                lambda x: (
+                    1
+                    if x.lower() in ["deposit", "buy"]
+                    else (-1 if x.lower() in ["withdrawal", "sell"] else 0)
+                )
             )
 
             p_bar.n += 1

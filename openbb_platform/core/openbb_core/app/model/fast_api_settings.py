@@ -1,5 +1,6 @@
 """FastAPI configuration settings model."""
-from typing import List
+
+from typing import Dict, List, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, computed_field
 
@@ -41,6 +42,9 @@ class FastAPISettings(BaseModel):
     )
     servers: List[Servers] = Field(default_factory=lambda: [Servers()])
     cors: Cors = Field(default_factory=Cors)
+    custom_headers: Optional[Dict[str, str]] = Field(
+        default=None, description="Custom headers and respective default value."
+    )
 
     @computed_field  # type: ignore[misc]
     @property

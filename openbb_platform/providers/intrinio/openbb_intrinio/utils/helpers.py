@@ -123,11 +123,11 @@ async def get_data_one(url: str, **kwargs: Any) -> Dict[str, Any]:
     return data
 
 
-def get_weekday(date: dateType) -> str:
+def get_weekday(date: dateType) -> dateType:
     """Return the weekday date."""
     if date.weekday() in [5, 6]:
-        return (date - timedelta(days=date.weekday() - 4)).strftime("%Y-%m-%d")
-    return date.strftime("%Y-%m-%d")
+        return date - timedelta(days=date.weekday() - 4)
+    return date
 
 
 async def async_get_data_one(

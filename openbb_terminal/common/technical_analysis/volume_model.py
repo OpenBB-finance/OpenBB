@@ -1,4 +1,5 @@
 """Volume Technical Analysis"""
+
 __docformat__ = "numpy"
 
 import logging

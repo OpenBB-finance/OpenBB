@@ -1,4 +1,5 @@
 """App factory."""
+
 from typing import Optional, Type, TypeVar
 
 from openbb_core.app.command_runner import CommandRunner
@@ -24,6 +25,7 @@ class BaseApp:
     """Base app."""
 
     def __init__(self, command_runner: CommandRunner):
+        command_runner.init_logging_service()
         self._command_runner = command_runner
         self._account = Account(self)
         self._coverage = Coverage(self)

@@ -20,9 +20,8 @@ def obb(pytestconfig):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL"}),
         ({"provider": "intrinio", "symbol": "AAPL", "date": "2023-01-25"}),
-        ({"provider": "cboe", "symbol": "AAPL"}),
+        ({"provider": "cboe", "symbol": "AAPL", "use_cache": False}),
     ],
 )
 @pytest.mark.integration
@@ -54,24 +53,12 @@ def test_derivatives_options_unusual(params, obb):
     [
         (
             {
-                "symbol": "ES",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "expiration": "2024-06",
-            }
-        ),
-        (
-            {
                 "provider": "yfinance",
                 "interval": "1d",
-                "period": "max",
-                "prepost": True,
-                "adjust": True,
-                "back_adjust": True,
-                "symbol": "ES",
-                "start_date": "2023-05-05",
+                "symbol": "CL,BZ",
+                "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "expiration": "2024-06",
+                "expiration": "2025-12",
             }
         ),
     ],
@@ -87,7 +74,7 @@ def test_derivatives_futures_historical(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "VX", "date": "2023-01-25", "provider": "cboe"}),
+        ({"symbol": "VX", "provider": "cboe", "date": None}),
         ({"provider": "yfinance", "symbol": "ES", "date": "2023-08-01"}),
     ],
 )

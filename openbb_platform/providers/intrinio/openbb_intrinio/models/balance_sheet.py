@@ -1,4 +1,5 @@
 """Intrinio Balance Sheet Model."""
+
 # pylint: disable=unused-argument
 import warnings
 from typing import Any, Dict, List, Literal, Optional
@@ -139,253 +140,259 @@ class IntrinioBalanceSheetData(BalanceSheetData):
         description="The currency in which the balance sheet is reported.",
         default=None,
     )
-    cash_and_cash_equivalents: Optional[int] = Field(
+    cash_and_cash_equivalents: Optional[float] = Field(
         description="Cash and cash equivalents.", default=None
     )
-    cash_and_due_from_banks: Optional[int] = Field(
+    cash_and_due_from_banks: Optional[float] = Field(
         description="Cash and due from banks.", default=None
     )
-    restricted_cash: Optional[int] = Field(description="Restricted cash.", default=None)
-    short_term_investments: Optional[int] = Field(
+    restricted_cash: Optional[float] = Field(
+        description="Restricted cash.", default=None
+    )
+    short_term_investments: Optional[float] = Field(
         description="Short term investments.", default=None
     )
-    federal_funds_sold: Optional[int] = Field(
+    federal_funds_sold: Optional[float] = Field(
         description="Federal funds sold.", default=None
     )
-    accounts_receivable: Optional[int] = Field(
+    accounts_receivable: Optional[float] = Field(
         description="Accounts receivable.", default=None
     )
-    note_and_lease_receivable: Optional[int] = Field(
+    note_and_lease_receivable: Optional[float] = Field(
         description="Note and lease receivable. (Vendor non-trade receivables)",
         default=None,
     )
-    inventories: Optional[int] = Field(description="Net Inventories.", default=None)
-    customer_and_other_receivables: Optional[int] = Field(
+    inventories: Optional[float] = Field(description="Net Inventories.", default=None)
+    customer_and_other_receivables: Optional[float] = Field(
         description="Customer and other receivables.", default=None
     )
-    interest_bearing_deposits_at_other_banks: Optional[int] = Field(
+    interest_bearing_deposits_at_other_banks: Optional[float] = Field(
         description="Interest bearing deposits at other banks.", default=None
     )
-    time_deposits_placed_and_other_short_term_investments: Optional[int] = Field(
+    time_deposits_placed_and_other_short_term_investments: Optional[float] = Field(
         description="Time deposits placed and other short term investments.",
         default=None,
     )
-    trading_account_securities: Optional[int] = Field(
+    trading_account_securities: Optional[float] = Field(
         description="Trading account securities.", default=None
     )
-    loans_and_leases: Optional[int] = Field(
+    loans_and_leases: Optional[float] = Field(
         description="Loans and leases.", default=None
     )
-    allowance_for_loan_and_lease_losses: Optional[int] = Field(
+    allowance_for_loan_and_lease_losses: Optional[float] = Field(
         description="Allowance for loan and lease losses.", default=None
     )
-    current_deferred_refundable_income_taxes: Optional[int] = Field(
+    current_deferred_refundable_income_taxes: Optional[float] = Field(
         description="Current deferred refundable income taxes.", default=None
     )
-    other_current_assets: Optional[int] = Field(
+    other_current_assets: Optional[float] = Field(
         description="Other current assets.", default=None
     )
-    loans_and_leases_net_of_allowance: Optional[int] = Field(
+    loans_and_leases_net_of_allowance: Optional[float] = Field(
         description="Loans and leases net of allowance.", default=None
     )
-    accrued_investment_income: Optional[int] = Field(
+    accrued_investment_income: Optional[float] = Field(
         description="Accrued investment income.", default=None
     )
-    other_current_non_operating_assets: Optional[int] = Field(
+    other_current_non_operating_assets: Optional[float] = Field(
         description="Other current non-operating assets.", default=None
     )
-    loans_held_for_sale: Optional[int] = Field(
+    loans_held_for_sale: Optional[float] = Field(
         description="Loans held for sale.", default=None
     )
-    prepaid_expenses: Optional[int] = Field(
+    prepaid_expenses: Optional[float] = Field(
         description="Prepaid expenses.", default=None
     )
-    total_current_assets: Optional[int] = Field(
+    total_current_assets: Optional[float] = Field(
         description="Total current assets.", default=None
     )
-    plant_property_equipment_gross: Optional[int] = Field(
+    plant_property_equipment_gross: Optional[float] = Field(
         description="Plant property equipment gross.", default=None
     )
-    accumulated_depreciation: Optional[int] = Field(
+    accumulated_depreciation: Optional[float] = Field(
         description="Accumulated depreciation.", default=None
     )
-    premises_and_equipment_net: Optional[int] = Field(
+    premises_and_equipment_net: Optional[float] = Field(
         description="Net premises and equipment.", default=None
     )
-    plant_property_equipment_net: Optional[int] = Field(
+    plant_property_equipment_net: Optional[float] = Field(
         description="Net plant property equipment.", default=None
     )
-    long_term_investments: Optional[int] = Field(
+    long_term_investments: Optional[float] = Field(
         description="Long term investments.", default=None
     )
-    mortgage_servicing_rights: Optional[int] = Field(
+    mortgage_servicing_rights: Optional[float] = Field(
         description="Mortgage servicing rights.", default=None
     )
-    unearned_premiums_asset: Optional[int] = Field(
+    unearned_premiums_asset: Optional[float] = Field(
         description="Unearned premiums asset.", default=None
     )
-    non_current_note_lease_receivables: Optional[int] = Field(
+    non_current_note_lease_receivables: Optional[float] = Field(
         description="Non-current note lease receivables.", default=None
     )
-    deferred_acquisition_cost: Optional[int] = Field(
+    deferred_acquisition_cost: Optional[float] = Field(
         description="Deferred acquisition cost.", default=None
     )
-    goodwill: Optional[int] = Field(description="Goodwill.", default=None)
-    separate_account_business_assets: Optional[int] = Field(
+    goodwill: Optional[float] = Field(description="Goodwill.", default=None)
+    separate_account_business_assets: Optional[float] = Field(
         description="Separate account business assets.", default=None
     )
-    non_current_deferred_refundable_income_taxes: Optional[int] = Field(
+    non_current_deferred_refundable_income_taxes: Optional[float] = Field(
         description="Noncurrent deferred refundable income taxes.", default=None
     )
-    intangible_assets: Optional[int] = Field(
+    intangible_assets: Optional[float] = Field(
         description="Intangible assets.", default=None
     )
-    employee_benefit_assets: Optional[int] = Field(
+    employee_benefit_assets: Optional[float] = Field(
         description="Employee benefit assets.", default=None
     )
-    other_assets: Optional[int] = Field(description="Other assets.", default=None)
-    other_non_current_operating_assets: Optional[int] = Field(
+    other_assets: Optional[float] = Field(description="Other assets.", default=None)
+    other_non_current_operating_assets: Optional[float] = Field(
         description="Other noncurrent operating assets.", default=None
     )
-    other_non_current_non_operating_assets: Optional[int] = Field(
+    other_non_current_non_operating_assets: Optional[float] = Field(
         description="Other noncurrent non-operating assets.", default=None
     )
-    interest_bearing_deposits: Optional[int] = Field(
+    interest_bearing_deposits: Optional[float] = Field(
         description="Interest bearing deposits.", default=None
     )
-    total_non_current_assets: Optional[int] = Field(
+    total_non_current_assets: Optional[float] = Field(
         description="Total noncurrent assets.", default=None
     )
-    total_assets: Optional[int] = Field(description="Total assets.", default=None)
-    non_interest_bearing_deposits: Optional[int] = Field(
+    total_assets: Optional[float] = Field(description="Total assets.", default=None)
+    non_interest_bearing_deposits: Optional[float] = Field(
         description="Non interest bearing deposits.", default=None
     )
-    federal_funds_purchased_and_securities_sold: Optional[int] = Field(
+    federal_funds_purchased_and_securities_sold: Optional[float] = Field(
         description="Federal funds purchased and securities sold.", default=None
     )
-    bankers_acceptance_outstanding: Optional[int] = Field(
+    bankers_acceptance_outstanding: Optional[float] = Field(
         description="Bankers acceptance outstanding.", default=None
     )
-    short_term_debt: Optional[int] = Field(description="Short term debt.", default=None)
-    accounts_payable: Optional[int] = Field(
+    short_term_debt: Optional[float] = Field(
+        description="Short term debt.", default=None
+    )
+    accounts_payable: Optional[float] = Field(
         description="Accounts payable.", default=None
     )
-    current_deferred_revenue: Optional[int] = Field(
+    current_deferred_revenue: Optional[float] = Field(
         description="Current deferred revenue.", default=None
     )
-    current_deferred_payable_income_tax_liabilities: Optional[int] = Field(
+    current_deferred_payable_income_tax_liabilities: Optional[float] = Field(
         description="Current deferred payable income tax liabilities.", default=None
     )
-    accrued_interest_payable: Optional[int] = Field(
+    accrued_interest_payable: Optional[float] = Field(
         description="Accrued interest payable.", default=None
     )
-    accrued_expenses: Optional[int] = Field(
+    accrued_expenses: Optional[float] = Field(
         description="Accrued expenses.", default=None
     )
-    other_short_term_payables: Optional[int] = Field(
+    other_short_term_payables: Optional[float] = Field(
         description="Other short term payables.", default=None
     )
-    customer_deposits: Optional[int] = Field(
+    customer_deposits: Optional[float] = Field(
         description="Customer deposits.", default=None
     )
-    dividends_payable: Optional[int] = Field(
+    dividends_payable: Optional[float] = Field(
         description="Dividends payable.", default=None
     )
-    claims_and_claim_expense: Optional[int] = Field(
+    claims_and_claim_expense: Optional[float] = Field(
         description="Claims and claim expense.", default=None
     )
-    future_policy_benefits: Optional[int] = Field(
+    future_policy_benefits: Optional[float] = Field(
         description="Future policy benefits.", default=None
     )
-    current_employee_benefit_liabilities: Optional[int] = Field(
+    current_employee_benefit_liabilities: Optional[float] = Field(
         description="Current employee benefit liabilities.", default=None
     )
-    unearned_premiums_liability: Optional[int] = Field(
+    unearned_premiums_liability: Optional[float] = Field(
         description="Unearned premiums liability.", default=None
     )
-    other_taxes_payable: Optional[int] = Field(
+    other_taxes_payable: Optional[float] = Field(
         description="Other taxes payable.", default=None
     )
-    policy_holder_funds: Optional[int] = Field(
+    policy_holder_funds: Optional[float] = Field(
         description="Policy holder funds.", default=None
     )
-    other_current_liabilities: Optional[int] = Field(
+    other_current_liabilities: Optional[float] = Field(
         description="Other current liabilities.", default=None
     )
-    other_current_non_operating_liabilities: Optional[int] = Field(
+    other_current_non_operating_liabilities: Optional[float] = Field(
         description="Other current non-operating liabilities.", default=None
     )
-    separate_account_business_liabilities: Optional[int] = Field(
+    separate_account_business_liabilities: Optional[float] = Field(
         description="Separate account business liabilities.", default=None
     )
-    total_current_liabilities: Optional[int] = Field(
+    total_current_liabilities: Optional[float] = Field(
         description="Total current liabilities.", default=None
     )
-    long_term_debt: Optional[int] = Field(description="Long term debt.", default=None)
-    other_long_term_liabilities: Optional[int] = Field(
+    long_term_debt: Optional[float] = Field(description="Long term debt.", default=None)
+    other_long_term_liabilities: Optional[float] = Field(
         description="Other long term liabilities.", default=None
     )
-    non_current_deferred_revenue: Optional[int] = Field(
+    non_current_deferred_revenue: Optional[float] = Field(
         description="Non-current deferred revenue.", default=None
     )
-    non_current_deferred_payable_income_tax_liabilities: Optional[int] = Field(
+    non_current_deferred_payable_income_tax_liabilities: Optional[float] = Field(
         description="Non-current deferred payable income tax liabilities.", default=None
     )
-    non_current_employee_benefit_liabilities: Optional[int] = Field(
+    non_current_employee_benefit_liabilities: Optional[float] = Field(
         description="Non-current employee benefit liabilities.", default=None
     )
-    other_non_current_operating_liabilities: Optional[int] = Field(
+    other_non_current_operating_liabilities: Optional[float] = Field(
         description="Other non-current operating liabilities.", default=None
     )
-    other_non_current_non_operating_liabilities: Optional[int] = Field(
+    other_non_current_non_operating_liabilities: Optional[float] = Field(
         description="Other non-current, non-operating liabilities.", default=None
     )
-    total_non_current_liabilities: Optional[int] = Field(
+    total_non_current_liabilities: Optional[float] = Field(
         description="Total non-current liabilities.", default=None
     )
-    capital_lease_obligations: Optional[int] = Field(
+    capital_lease_obligations: Optional[float] = Field(
         description="Capital lease obligations.", default=None
     )
-    asset_retirement_reserve_litigation_obligation: Optional[int] = Field(
+    asset_retirement_reserve_litigation_obligation: Optional[float] = Field(
         description="Asset retirement reserve litigation obligation.", default=None
     )
-    total_liabilities: Optional[int] = Field(
+    total_liabilities: Optional[float] = Field(
         description="Total liabilities.", default=None
     )
-    commitments_contingencies: Optional[int] = Field(
+    commitments_contingencies: Optional[float] = Field(
         description="Commitments contingencies.", default=None
     )
-    redeemable_non_controlling_interest: Optional[int] = Field(
+    redeemable_non_controlling_interest: Optional[float] = Field(
         description="Redeemable non-controlling interest.", default=None
     )
-    preferred_stock: Optional[int] = Field(description="Preferred stock.", default=None)
-    common_stock: Optional[int] = Field(description="Common stock.", default=None)
-    retained_earnings: Optional[int] = Field(
+    preferred_stock: Optional[float] = Field(
+        description="Preferred stock.", default=None
+    )
+    common_stock: Optional[float] = Field(description="Common stock.", default=None)
+    retained_earnings: Optional[float] = Field(
         description="Retained earnings.", default=None
     )
-    treasury_stock: Optional[int] = Field(description="Treasury stock.", default=None)
-    accumulated_other_comprehensive_income: Optional[int] = Field(
+    treasury_stock: Optional[float] = Field(description="Treasury stock.", default=None)
+    accumulated_other_comprehensive_income: Optional[float] = Field(
         description="Accumulated other comprehensive income.", default=None
     )
-    participating_policy_holder_equity: Optional[int] = Field(
+    participating_policy_holder_equity: Optional[float] = Field(
         description="Participating policy holder equity.", default=None
     )
-    other_equity_adjustments: Optional[int] = Field(
+    other_equity_adjustments: Optional[float] = Field(
         description="Other equity adjustments.", default=None
     )
-    total_common_equity: Optional[int] = Field(
+    total_common_equity: Optional[float] = Field(
         description="Total common equity.", default=None
     )
-    total_preferred_common_equity: Optional[int] = Field(
+    total_preferred_common_equity: Optional[float] = Field(
         description="Total preferred common equity.", default=None
     )
-    non_controlling_interest: Optional[int] = Field(
+    non_controlling_interest: Optional[float] = Field(
         description="Non-controlling interest.", default=None
     )
-    total_equity_non_controlling_interests: Optional[int] = Field(
+    total_equity_non_controlling_interests: Optional[float] = Field(
         description="Total equity non-controlling interests.", default=None
     )
-    total_liabilities_shareholders_equity: Optional[int] = Field(
+    total_liabilities_shareholders_equity: Optional[float] = Field(
         description="Total liabilities and shareholders equity.", default=None
     )
 

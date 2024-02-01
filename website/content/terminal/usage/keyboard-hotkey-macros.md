@@ -27,7 +27,7 @@ import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
 <TutorialVideo
   youtubeLink="https://www.youtube.com/embed/cgeN3Ep2nEw?si=YR6l4AfhhJjxzH0H"
-  videoLegend="Long video on using VIA to configre my Keychron keyboard for OpenBB"
+  videoLegend="Long video on using VIA to configure my Keychron keyboard for OpenBB"
 />
 
 This document will explain how you can set hotkeys macros on your customizable keyboard which allow you to perform investment research in a few seconds.

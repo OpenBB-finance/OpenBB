@@ -1,4 +1,5 @@
 """Option helper functions"""
+
 __docformat__ = "numpy"
 
 import logging
@@ -660,7 +661,6 @@ class Options:  # pylint: disable=too-few-public-methods,too-many-instance-attri
 class PydanticOptions(  # type: ignore [call-arg]
     BaseModel, extra=Extra.allow
 ):  # pylint: disable=too-few-public-methods
-
     """Pydantic model for the Options data object.
 
     Returns

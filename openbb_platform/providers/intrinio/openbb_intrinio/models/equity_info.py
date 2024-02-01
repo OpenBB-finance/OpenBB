@@ -7,7 +7,10 @@ from openbb_core.provider.standard_models.equity_info import (
     EquityInfoData,
     EquityInfoQueryParams,
 )
-from openbb_intrinio.utils.helpers import get_data_one
+from openbb_core.provider.utils.helpers import (
+    amake_requests,
+)
+from openbb_intrinio.utils.helpers import response_callback
 from pydantic import Field
 
 
@@ -34,7 +37,7 @@ class IntrinioEquityInfoData(EquityInfoData):
 class IntrinioEquityInfoFetcher(
     Fetcher[
         IntrinioEquityInfoQueryParams,
-        IntrinioEquityInfoData,
+        List[IntrinioEquityInfoData],
     ]
 ):
     """Transform the query, extract and transform the data from the Intrinio endpoints."""
@@ -44,24 +47,30 @@ class IntrinioEquityInfoFetcher(
         """Transform the query."""
         return IntrinioEquityInfoQueryParams(**params)
 
+    # pylint: disable=W0613:unused-argument
     @staticmethod
     async def aextract_data(
-        query: IntrinioEquityInfoQueryParams,  # pylint: disable=unused-argument
+        query: IntrinioEquityInfoQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict:
         """Return the raw data from the Intrinio endpoint."""
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         base_url = "https://api-v2.intrinio.com"
-        url = f"{base_url}/companies/{query.symbol}?api_key={api_key}"
 
-        return await get_data_one(url, **kwargs)
+        urls = [
+            f"{base_url}/companies/{s.strip()}?api_key={api_key}"
+            for s in query.symbol.split(",")
+        ]
 
+        return await amake_requests(urls, response_callback, **kwargs)
+
+    # pylint: disable=W0613:unused-argument
     @staticmethod
     def transform_data(
         query: IntrinioEquityInfoQueryParams,
         data: List[Dict],
-        **kwargs: Any,  # pylint: disable=unused-argument
-    ) -> IntrinioEquityInfoData:
+        **kwargs: Any,
+    ) -> List[IntrinioEquityInfoData]:
         """Transforms the data."""
-        return IntrinioEquityInfoData.model_validate(data)
+        return [IntrinioEquityInfoData.model_validate(d) for d in data]

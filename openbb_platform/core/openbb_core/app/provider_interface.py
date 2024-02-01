@@ -1,4 +1,5 @@
 """Provider Interface."""
+
 from dataclasses import dataclass, make_dataclass
 from difflib import SequenceMatcher
 from typing import Any, Callable, Dict, List, Literal, Optional, Tuple, Type, Union
@@ -245,18 +246,22 @@ class ProviderInterface(metaclass=SingletonMeta):
                 title=provider_name,
                 description=description,
                 alias=field.alias or None,
+                json_schema_extra=field.json_schema_extra,
             )
         elif provider_name:
             default: FieldInfo = Field(
                 default=default or None,
                 title=provider_name,
                 description=description,
-                validation_alias=AliasChoices(
-                    field.alias,
-                    *list(set(alias_dict.get(name, []))),
-                )
-                if alias_dict.get(name, [])
-                else None,
+                validation_alias=(
+                    AliasChoices(
+                        field.alias,
+                        *list(set(alias_dict.get(name, []))),
+                    )
+                    if alias_dict.get(name, [])
+                    else None
+                ),
+                json_schema_extra=field.json_schema_extra,
             )
 
         return DataclassField(new_name, type_, default)
@@ -479,6 +484,7 @@ class ProviderInterface(metaclass=SingletonMeta):
             fields.update(extra.model_fields)
 
             fields_dict: Dict[str, Tuple[Any, Any]] = {}
+
             for name, field in fields.items():
                 fields_dict[name] = (
                     field.annotation,
@@ -488,6 +494,7 @@ class ProviderInterface(metaclass=SingletonMeta):
                         description=field.description,
                         alias=field.alias,
                         validation_alias=field.validation_alias,
+                        json_schema_extra=field.json_schema_extra,
                     ),
                 )
 

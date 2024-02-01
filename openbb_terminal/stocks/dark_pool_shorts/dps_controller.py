@@ -1,4 +1,5 @@
 """ Dark Pool and Shorts Controller Module """
+
 __docformat__ = "numpy"
 
 import argparse
@@ -128,9 +129,9 @@ class DarkPoolShortsController(StockBaseController):
             yahoofinance_view.display_most_shorted(
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -166,9 +167,9 @@ class DarkPoolShortsController(StockBaseController):
                 ibkr_view.display_cost_to_borrow(
                     limit=ns_parser.number,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             elif ns_parser.source == "Stocksera":
                 stocksera_view.cost_to_borrow(
@@ -206,9 +207,9 @@ class DarkPoolShortsController(StockBaseController):
             shortinterest_view.high_short_interest(
                 limit=ns_parser.limit,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -259,9 +260,9 @@ class DarkPoolShortsController(StockBaseController):
                 limit=ns_parser.limit,
                 tier=ns_parser.tier,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -314,9 +315,9 @@ class DarkPoolShortsController(StockBaseController):
                 sortby=ns_parser.sort_field,
                 ascend=ns_parser.reverse,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -354,9 +355,9 @@ class DarkPoolShortsController(StockBaseController):
                 limit=ns_parser.limit,
                 sortby=ns_parser.sort_field,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -376,9 +377,9 @@ class DarkPoolShortsController(StockBaseController):
                 finra_view.darkpool_ats_otc(
                     symbol=self.ticker,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("No ticker loaded.\n")
@@ -438,9 +439,9 @@ class DarkPoolShortsController(StockBaseController):
                     limit=ns_parser.n_num,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("No ticker loaded.\n")
@@ -479,9 +480,9 @@ class DarkPoolShortsController(StockBaseController):
                     limit=ns_parser.num,
                     raw=ns_parser.raw,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
             else:
                 console.print("No ticker loaded.\n")
@@ -517,9 +518,11 @@ class DarkPoolShortsController(StockBaseController):
                         limit=ns_parser.limit,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
+                        sheet_name=(
+                            " ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None
+                        ),
                     )
                 else:
                     stockgrid_view.short_interest_volume(
@@ -527,9 +530,11 @@ class DarkPoolShortsController(StockBaseController):
                         limit=ns_parser.limit,
                         raw=ns_parser.raw,
                         export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
+                        sheet_name=(
+                            " ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None
+                        ),
                     )
             else:
                 console.print("No ticker loaded.\n")

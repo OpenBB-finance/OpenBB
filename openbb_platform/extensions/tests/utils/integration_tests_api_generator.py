@@ -1,4 +1,5 @@
 """Generate API integration tests."""
+
 import argparse
 import os
 from typing import Dict, List, Literal, Type, get_type_hints

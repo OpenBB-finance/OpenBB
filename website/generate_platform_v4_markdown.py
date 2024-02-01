@@ -51,9 +51,11 @@ def get_docstring_meta(
             {
                 "name": param.arg_name,
                 "type": get_annotation_type(param.type_name),
-                "default": str(arg_default)
-                if arg_default is not inspect.Parameter.empty
-                else None,
+                "default": (
+                    str(arg_default)
+                    if arg_default is not inspect.Parameter.empty
+                    else None
+                ),
                 "cleaned_type": re.sub(
                     r"Literal\[([^\"\]]*)\]",
                     f"Literal[{type(arg_default).__name__}]",
@@ -325,6 +327,8 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
         "returns": {},
         "schema": {},
         "model": model_name,
+        "deprecated": route.deprecated or False,
+        "deprecation_message": route.summary if route.deprecated else "",
     }
 
     # Extract the full path from the 'path' variable, excluding the method name
@@ -344,7 +348,8 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
         ]
 
         meta_command["description"] += "\n\n" + DocstringGenerator.generate_example(
-            model_name, obb_query_fields
+            model_name=model_name,
+            standard_params=obb_query_fields,
         )
 
         available_fields = list(obb_query_fields.keys())
@@ -386,9 +391,11 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
                 {
                     "name": param.name,
                     "type": get_annotation_type(param_type),
-                    "default": str(default)
-                    if not isinstance(default, str) or not default
-                    else f'"{default}"',
+                    "default": (
+                        str(default)
+                        if not isinstance(default, str) or not default
+                        else f'"{default}"'
+                    ),
                     "cleaned_type": re.sub(
                         r"Literal\[([^\"\]]*)\]",
                         f"Literal[{type(default).__name__}]",
@@ -431,8 +438,8 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
     chart : Optional[Chart]
         Chart object.
 
-    metadata: Optional[Metadata]
-        Metadata info about the command execution."""
+    extra: Dict[str, Any]
+        Extra info."""
 
             meta_command["returns"] = {
                 "type": return_type.__name__,
@@ -508,6 +515,11 @@ def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="{'/'.join(title)} - Reference | OpenBB Platform Docs" />\n\n"""
+
+    if meta_command["deprecated"]:
+        meta_command[
+            "header"
+        ] += f":::caution Deprecated\n{meta_command['deprecation_message']}\n:::\n\n"
 
     return meta_command
 
@@ -660,9 +672,11 @@ def generate_platform_markdown() -> None:
 
             title = re.sub(
                 r"([A-Z]{1}[a-z]+)|([A-Z]{3}|[SP500]|[EU])([A-Z]{1}[a-z]+)|([A-Z]{5,})",  # noqa: W605
-                lambda m: f"{m.group(1) or m.group(4)} ".title()
-                if not any([m.group(2), m.group(3)])
-                else f"{m.group(2)} {m.group(3)} ",
+                lambda m: (
+                    f"{m.group(1) or m.group(4)} ".title()
+                    if not any([m.group(2), m.group(3)])
+                    else f"{m.group(2)} {m.group(3)} "
+                ),
                 data_model,
             ).strip()
 

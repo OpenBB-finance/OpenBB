@@ -1,4 +1,5 @@
 """Terra Money FCD model"""
+
 __docformat__ = "numpy"
 
 import logging

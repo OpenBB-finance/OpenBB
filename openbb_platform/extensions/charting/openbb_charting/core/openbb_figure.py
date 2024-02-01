@@ -1,4 +1,5 @@
 """OpenBB Figure Class."""
+
 # pylint: disable=C0302,R0902,W3301
 import json
 import textwrap
@@ -22,7 +23,7 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import plotly.io as pio
-from openbb_charting.core.backend import PLOTLYJS_PATH, get_backend
+from openbb_charting.core.backend import PLOTLYJS_PATH, create_backend, get_backend
 from openbb_charting.core.chart_style import ChartStyle
 from openbb_charting.core.config.openbb_styles import (
     PLT_TBL_ROW_COLORS,
@@ -99,6 +100,9 @@ class OpenBBFigure(go.Figure):
         self._export_image: Optional[Union[Path, str]] = ""
         self._subplot_xdates: Dict[int, Dict[int, List[Any]]] = {}
 
+        if kwargs.pop("create_backend", False):
+            create_backend(self._charting_settings)
+            get_backend().start(debug=self._charting_settings.debug_mode)
         self._theme = ChartStyle(
             self._charting_settings.chart_style,
             self._charting_settings.user_styles_directory,
@@ -161,7 +165,7 @@ class OpenBBFigure(go.Figure):
         self._cmd_xshift = value
 
     @classmethod
-    def create_subplots(  # noqa: PLR0913
+    def create_subplots(  # pylint: disable=too-many-arguments
         cls,
         rows: int = 1,
         cols: int = 1,
@@ -267,7 +271,7 @@ class OpenBBFigure(go.Figure):
         except Exception as e:
             raise ValueError(f"Error adding trend line: {e}") from e
 
-    def add_histplot(  # noqa: PLR0913, PLR0915
+    def add_histplot(  # pylint: disable=too-many-arguments
         self,
         dataset: Union[np.ndarray, pd.Series, TimeSeriesT],
         name: Optional[Union[str, List[str]]] = None,
@@ -309,7 +313,7 @@ class OpenBBFigure(go.Figure):
             Column of the subplot, by default 1
         """
 
-        from scipy import stats
+        from scipy import stats  # pylint: disable=import-outside-toplevel
 
         callback = stats.norm if curve == "normal" else stats.gaussian_kde
 
@@ -877,16 +881,16 @@ class OpenBBFigure(go.Figure):
         # Set modebar style
         if self._backend.isatty:
             self.update_layout(  # type: ignore
-                newshape_line_color="gold"
-                if self._theme.mapbox_style == "dark"
-                else "#0d0887",
+                newshape_line_color=(
+                    "gold" if self._theme.mapbox_style == "dark" else "#0d0887"
+                ),
                 modebar=dict(
                     orientation="v",
                     bgcolor="#2A2A2A" if self._theme.mapbox_style == "dark" else "gray",
                     color="#FFFFFF" if self._theme.mapbox_style == "dark" else "black",
-                    activecolor="#d1030d"
-                    if self._theme.mapbox_style == "dark"
-                    else "blue",
+                    activecolor=(
+                        "#d1030d" if self._theme.mapbox_style == "dark" else "blue"
+                    ),
                 ),
                 spikedistance=2,
                 hoverdistance=2,
@@ -928,9 +932,11 @@ class OpenBBFigure(go.Figure):
 
         self.update_layout(
             legend=dict(
-                orientation="v"
-                if not self.layout.legend.orientation
-                else self.layout.legend.orientation,
+                orientation=(
+                    "v"
+                    if not self.layout.legend.orientation
+                    else self.layout.legend.orientation
+                ),
             ),
             barmode="overlay",
             bargap=0,
@@ -1452,30 +1458,6 @@ class OpenBBFigure(go.Figure):
 
         self._margin_adjusted = True
 
-    def _set_watermark(self) -> None:
-        """Set the watermark for OpenBB Terminal."""
-        if (
-            not self._backend.isatty
-            or not self._charting_settings.plot_enable_pywry
-            or isinstance(self._export_image, Path)
-            and self._export_image.suffix in [".svg", ".pdf"]
-        ):
-            self.add_annotation(
-                yref="paper",
-                xref="paper",
-                x=1,
-                y=0,
-                showarrow=False,
-                text="OpenBB Terminal",
-                font_size=17,
-                font_color="gray",
-                opacity=0.5,
-                xanchor="right",
-                yanchor="bottom",
-                yshift=-80,
-                xshift=40,
-            )
-
     # pylint: disable=import-outside-toplevel
     def _add_cmd_source(self, command_location: Optional[str] = "") -> None:
         """Set the watermark for OpenBB Terminal."""
@@ -1525,7 +1507,6 @@ class OpenBBFigure(go.Figure):
             return
 
         self._add_cmd_source()
-        self._set_watermark()
 
         self._feature_flags_applied = True
 
@@ -1594,7 +1575,7 @@ class OpenBBFigure(go.Figure):
             ],
         )
 
-    def add_corr_plot(  # noqa: PLR0913
+    def add_corr_plot(  # pylint: disable=too-many-arguments
         self,
         series: pd.DataFrame,
         max_lag: int = 20,

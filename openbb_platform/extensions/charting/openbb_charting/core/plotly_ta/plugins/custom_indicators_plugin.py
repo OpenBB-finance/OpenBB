@@ -1,4 +1,5 @@
 """Custom technical indicators."""
+
 import warnings
 from datetime import datetime, timedelta
 

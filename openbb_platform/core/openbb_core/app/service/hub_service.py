@@ -1,4 +1,5 @@
 """Hub manager class."""
+
 from typing import Optional
 
 from fastapi import HTTPException
@@ -228,7 +229,6 @@ class HubService:
             intrinio_api_key=settings.features_keys.API_INTRINIO_KEY,
             polygon_api_key=settings.features_keys.API_POLYGON_KEY,
             nasdaq_api_key=settings.features_keys.API_KEY_QUANDL,
-            ultima_api_key=settings.features_keys.API_ULTIMA_KEY,
         )
         return credentials
 
@@ -248,7 +248,6 @@ class HubService:
             API_KEY_FINANCIALMODELINGPREP=get_cred("fmp_api_key"),
             API_POLYGON_KEY=get_cred("polygon_api_key"),
             API_KEY_QUANDL=get_cred("nasdaq_api_key"),
-            API_ULTIMA_KEY=get_cred("ultima_api_key"),
         )
         hub_user_settings = HubUserSettings(features_keys=features_keys)
         return hub_user_settings

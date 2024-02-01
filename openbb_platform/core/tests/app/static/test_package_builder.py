@@ -1,4 +1,5 @@
 """Test the package_builder.py file."""
+
 # pylint: disable=redefined-outer-name, protected-access
 
 from dataclasses import dataclass
@@ -260,8 +261,10 @@ def test_build_func_returns(method_definition, return_type, expected_output):
     assert output == expected_output
 
 
-def test_build_command_method_signature(method_definition):
+@patch("openbb_core.app.static.package_builder.MethodDefinition")
+def test_build_command_method_signature(mock_method_definitions, method_definition):
     """Test build command method signature."""
+    mock_method_definitions.is_deprecated_function.return_value = False
     formatted_params = {
         "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
         "param2": Parameter("int", kind=Parameter.POSITIONAL_OR_KEYWORD),
@@ -271,8 +274,29 @@ def test_build_command_method_signature(method_definition):
         func_name="test_func",
         formatted_params=formatted_params,
         return_type=return_type,
+        path="test_path",
     )
     assert output
+
+
+@patch("openbb_core.app.static.package_builder.MethodDefinition")
+def test_build_command_method_signature_deprecated(
+    mock_method_definitions, method_definition
+):
+    """Test build command method signature."""
+    mock_method_definitions.is_deprecated_function.return_value = True
+    formatted_params = {
+        "param1": Parameter("NoneType", kind=Parameter.POSITIONAL_OR_KEYWORD),
+        "param2": Parameter("int", kind=Parameter.POSITIONAL_OR_KEYWORD),
+    }
+    return_type = int
+    output = method_definition.build_command_method_signature(
+        func_name="test_func",
+        formatted_params=formatted_params,
+        return_type=return_type,
+        path="test_path",
+    )
+    assert "@deprecated" in output
 
 
 def test_build_command_method_doc(method_definition):
@@ -302,7 +326,10 @@ def test_build_command_method_body(method_definition):
 
     with patch(
         "openbb_core.app.static.package_builder.MethodDefinition.is_data_processing_function",
-        **{"return_value": False},
+        return_value=False,
+    ), patch(
+        "openbb_core.app.static.package_builder.MethodDefinition.is_deprecated_function",
+        return_value=False,
     ):
         output = method_definition.build_command_method_body(
             path="openbb_core.app.static.container.Container", func=some_func
@@ -321,7 +348,10 @@ def test_build_command_method(method_definition):
 
     with patch(
         "openbb_core.app.static.package_builder.MethodDefinition.is_data_processing_function",
-        **{"return_value": False},
+        return_value=False,
+    ), patch(
+        "openbb_core.app.static.package_builder.MethodDefinition.is_deprecated_function",
+        return_value=False,
     ):
         output = method_definition.build_command_method(
             path="openbb_core.app.static.container.Container",

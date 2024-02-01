@@ -1,6 +1,5 @@
 """Equity Short Interest Standard Model."""
 
-
 from datetime import date as dateType
 
 from pydantic import Field

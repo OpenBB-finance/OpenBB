@@ -1,4 +1,5 @@
 """Nasdaq provider module."""
+
 from openbb_core.provider.abstract.provider import Provider
 from openbb_nasdaq.models.calendar_dividend import NasdaqCalendarDividendFetcher
 from openbb_nasdaq.models.calendar_earnings import NasdaqCalendarEarningsFetcher

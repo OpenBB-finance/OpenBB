@@ -27,6 +27,7 @@ class NasdaqSP500MultiplesFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqSP500MultiplesQueryParams:
+        """Transform the query."""
         return NasdaqSP500MultiplesQueryParams(**params)
 
     @staticmethod
@@ -60,6 +61,7 @@ class NasdaqSP500MultiplesFetcher(
 
         return data.to_dict("records")
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: NasdaqSP500MultiplesQueryParams,

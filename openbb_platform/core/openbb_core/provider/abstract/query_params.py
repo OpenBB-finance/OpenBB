@@ -1,4 +1,5 @@
 """The OpenBB Standardized QueryParams Model that holds the query input parameters."""
+
 from typing import Dict
 
 from pydantic import BaseModel, ConfigDict
