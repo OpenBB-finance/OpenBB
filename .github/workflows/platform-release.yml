@@ -5,16 +5,16 @@ on:
     types: [opened, synchronize, reopened, closed, labeled, unlabeled]
     branches:
       - develop
-  # workflow_dispatch:
-  #   inputs:
-  #     release_type:
-  #       description: 'Release type'
-  #       required: true
-  #       default: 'patch'
-  #     tags:
-  #       description: 'Tag name'
-  #       required: false
-  #       default: 'v4'
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'patch'
+      tags:
+        description: 'Tag name'
+        required: false
+        default: 'v4'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
