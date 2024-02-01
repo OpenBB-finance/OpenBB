@@ -39,7 +39,7 @@ class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):
         "growth_weighted_average_diluted_shares": "growthWeightedAverageShsOutDil",
     }
 
-    @field_validator("date", mode="before", check_fields=False)
+    @field_validator("period_ending", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""

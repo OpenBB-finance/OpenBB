@@ -22,7 +22,17 @@ class FMPBalanceSheetGrowthQueryParams(BalanceSheetGrowthQueryParams):
 class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):
     """FMP Balance Sheet Growth Data."""
 
-    @field_validator("date", mode="before", check_fields=False)
+    __alias_dict__ = {
+        "period_ending": "date",
+        "fiscal_year": "calendarYear",
+        "fiscal_period": "period",
+        "growth_accumulated_other_comprehensive_income": "growthAccumulatedOtherComprehensiveIncomeLoss",
+        "growth_other_total_shareholders_equity": "growthOthertotalStockholdersEquity",
+        "growth_total_shareholders_equity": "growthTotalStockholdersEquity",
+        "growth_total_liabilities_and_shareholders_equity": "growthTotalLiabilitiesAndStockholdersEquity",
+    }
+
+    @field_validator("period_ending", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""

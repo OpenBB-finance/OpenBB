@@ -39,7 +39,9 @@ class KeyMetricsData(Data):
     symbol: Optional[str] = Field(
         default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
     )
-    period_ending: dateType = Field(description="Data for the fiscal period ending.")
+    period_ending: Optional[dateType] = Field(
+        default=None, description="Data for the fiscal period ending."
+    )
     fiscal_year: Optional[int] = Field(
         default=None, description="Fiscal year of the fiscal period."
     )

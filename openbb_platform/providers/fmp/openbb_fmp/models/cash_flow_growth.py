@@ -23,13 +23,16 @@ class FMPCashFlowStatementGrowthData(CashFlowStatementGrowthData):
     """FMP Cash Flow Statement Growth Data."""
 
     __alias_dict__ = {
+        "period_ending": "date",
+        "fiscal_year": "calendarYear",
+        "fiscal_period": "period",
         "growth_net_cash_provided_by_operating_activities": "growthNetCashProvidedByOperatingActivites",
         "growth_other_investing_activities": "growthOtherInvestingActivites",
         "growth_net_cash_used_for_investing_activities": "growthNetCashUsedForInvestingActivites",
         "growth_other_financing_activities": "growthOtherFinancingActivites",
     }
 
-    @field_validator("date", mode="before", check_fields=False)
+    @field_validator("period_ending", mode="before", check_fields=False)
     @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
