@@ -1,9 +1,21 @@
 """OpenBB OBBject extension for charting."""
 
-from typing import Any, Callable, Dict, Optional, Tuple, Union
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    List,
+    Optional,
+    Tuple,
+    Union,
+)
 
+import numpy as np
+import pandas as pd
 from openbb_core.app.model.charts.chart import Chart
 from openbb_core.app.model.extension import Extension
+from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
+from openbb_core.provider.abstract.data import Data
 
 from openbb_charting import charting_router
 from openbb_charting.core.to_chart import ChartIndicators, OpenBBFigure, to_chart
@@ -83,8 +95,21 @@ class Charting:
         if render:
             fig.show()
 
+    # pylint: disable=too-many-arguments
     def to_chart(
         self,
+        data: Optional[
+            Union[
+                list,
+                dict,
+                pd.DataFrame,
+                List[pd.DataFrame],
+                pd.Series,
+                List[pd.Series],
+                np.ndarray,
+                Data,
+            ]
+        ] = None,
         indicators: Optional[Union[ChartIndicators, Dict[str, Dict[str, Any]]]] = None,
         symbol: str = "",
         candles: bool = True,
@@ -142,9 +167,21 @@ class Charting:
         > from openbb_charting import Charting
         > Charting.indicators()
         """
-        data = self._obbject.to_dataframe()
+        has_data = (isinstance(data, (pd.DataFrame, pd.Series)) and not data.empty) or (
+            data
+        )
+        index = (
+            data.index.name
+            if has_data and isinstance(data, (pd.DataFrame, pd.Series))
+            else ""
+        )
+        data_as_df: pd.DataFrame = (
+            basemodel_to_df(convert_to_basemodel(data), index=index)
+            if has_data
+            else self._obbject.to_dataframe()
+        )
         fig, content = to_chart(
-            data,
+            data_as_df,
             indicators=indicators,
             symbol=symbol,
             candles=candles,
