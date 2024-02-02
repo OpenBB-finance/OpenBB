@@ -93,11 +93,9 @@ def test_index_constituents(params, headers):
         ),
         (
             {
-                "timespan": "minute",
                 "sort": "desc",
                 "limit": 49999,
-                "adjusted": True,
-                "multiplier": 1,
+                "interval": "1m",
                 "provider": "polygon",
                 "symbol": "NDX",
                 "start_date": "2023-01-01",
@@ -106,11 +104,9 @@ def test_index_constituents(params, headers):
         ),
         (
             {
-                "timespan": "day",
+                "interval": "1d",
                 "sort": "desc",
                 "limit": 49999,
-                "adjusted": True,
-                "multiplier": 1,
                 "provider": "polygon",
                 "symbol": "NDX",
                 "start_date": "2023-01-01",

@@ -1,6 +1,6 @@
 """Polygon Currency Historical Price Model."""
 
-# pylint: disable=unused-argument
+# pylint: disable=unused-argument,protected-access,line-too-long
 
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
@@ -13,7 +13,12 @@ from openbb_core.provider.standard_models.currency_historical import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_polygon.utils.helpers import get_data_many
-from pydantic import Field, PositiveInt
+from pydantic import (
+    Field,
+    PositiveInt,
+    PrivateAttr,
+    model_validator,
+)
 from pytz import timezone
 
 
@@ -23,11 +28,8 @@ class PolygonCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
     Source: https://polygon.io/docs/forex/get_v2_aggs_ticker__forexticker__range__multiplier___timespan___from___to
     """
 
-    multiplier: PositiveInt = Field(
-        default=1, description="Multiplier of the timespan."
-    )
-    timespan: Literal["minute", "hour", "day", "week", "month", "quarter", "year"] = (
-        Field(default="day", description="Timespan of the data.")
+    interval: str = Field(
+        default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
     )
     sort: Literal["asc", "desc"] = Field(
         default="desc", description="Sort order of the data."
@@ -35,7 +37,28 @@ class PolygonCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
     limit: PositiveInt = Field(
         default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
-    adjusted: bool = Field(default=True, description="Whether the data is adjusted.")
+    _multiplier: PositiveInt = PrivateAttr(default=None)
+    _timespan: str = PrivateAttr(default=None)
+
+    @model_validator(mode="after")
+    @classmethod
+    def get_api_interval_params(cls, values: "PolygonCurrencyHistoricalQueryParams"):
+        """Get the multiplier and timespan parameters for the Polygon API."""
+        intervals = {
+            "s": "second",
+            "m": "minute",
+            "h": "hour",
+            "d": "day",
+            "W": "week",
+            "M": "month",
+            "Q": "quarter",
+            "Y": "year",
+        }
+
+        values._multiplier = int(values.interval[:-1])
+        values._timespan = intervals[values.interval[-1]]
+
+        return values
 
 
 class PolygonCurrencyHistoricalData(CurrencyHistoricalData):
@@ -84,28 +107,29 @@ class PolygonCurrencyHistoricalFetcher(
         query: PolygonCurrencyHistoricalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> dict:
+    ) -> List[Dict]:
         """Return the raw data from the polygon endpoint."""
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
-            f"C:{query.symbol}/range/{query.multiplier}/{query.timespan}/"
-            f"{query.start_date}/{query.end_date}?adjusted={query.adjusted}"
-            f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
+            f"C:{query.symbol}/range/{query._multiplier}/{query._timespan}/"
+            f"{query.start_date}/{query.end_date}"
+            f"?sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
+
         data = await get_data_many(request_url, "results", **kwargs)
 
         for d in data:
             d["t"] = datetime.fromtimestamp(d["t"] / 1000, tz=timezone("UTC"))
-            if query.timespan not in ["minute", "hour"]:
+            if query._timespan not in ["minute", "hour"]:
                 d["t"] = d["t"].date()
 
         return data
 
     @staticmethod
     def transform_data(
-        query: PolygonCurrencyHistoricalQueryParams, data: dict, **kwargs: Any
+        query: PolygonCurrencyHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[PolygonCurrencyHistoricalData]:
         """Return the transformed data."""
         return [PolygonCurrencyHistoricalData.model_validate(d) for d in data]

@@ -117,8 +117,8 @@ class PolygonCryptoHistoricalFetcher(
         request_url = (
             f"https://api.polygon.io/v2/aggs/ticker/"
             f"X:{query.symbol}/range/{query._multiplier}/{query._timespan}/"
-            f"{query.start_date}/{query.end_date}?"
-            f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
+            f"{query.start_date}/{query.end_date}"
+            f"?sort={query.sort}&limit={query.limit}&apiKey={api_key}"
         )
         data = await get_data_many(request_url, "results", **kwargs)
 
