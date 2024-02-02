@@ -205,6 +205,7 @@ async def management_compensation(
 
 @router.command(
     model="CompanyOverview",
+    deprecated=True,
     deprecation=OpenBBDeprecationWarning(
         message="This endpoint is deprecated; use `/equity/profile` instead.",
         since=(4, 1),
