@@ -1,7 +1,9 @@
 """Intrinio Latest Attributes Model."""
 
+import warnings
 from typing import Any, Dict, List, Optional
 
+from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.latest_attributes import (
     LatestAttributesData,
@@ -49,19 +51,30 @@ class IntrinioLatestAttributesFetcher(
 
         base_url = "https://api-v2.intrinio.com/companies"
 
-        def generate_url(tag: str) -> str:
-            """Returns the url for the given tag."""
-            return f"{base_url}/{query.symbol}/data_point/{tag}?api_key={api_key}"
+        def generate_url(symbol: str, tag: str) -> str:
+            """Returns the url for the given symbol and tag."""
+            return f"{base_url}/{symbol}/data_point/{tag}?api_key={api_key}"
 
         async def callback(response: ClientResponse, _: Any) -> Dict:
             """Return the response."""
             response_data = await response.json()
+
+            if message := response_data.get("error") or response_data.get("message"):
+                warnings.warn(message=message, category=OpenBBWarning)
+                return {}
+            elif not response_data:
+                return []
+
             tag = response.url.parts[-1]
-            data = {"tag": tag, "value": response_data}
+            symbol = response.url.parts[-3]
 
-            return data
+            return {"symbol": symbol, "tag": tag, "value": response_data}
 
-        urls = [generate_url(tag) for tag in query.tag.split(",")]
+        urls = [
+            generate_url(symbol, tag)
+            for symbol in query.symbol.split(",")
+            for tag in query.tag.split(",")
+        ]
 
         return await amake_requests(urls, callback, **kwargs)
 
