@@ -61,7 +61,6 @@ class PolygonIndexHistoricalQueryParams(IndexHistoricalQueryParams):
         return values
 
 
-
 class PolygonIndexHistoricalData(IndexHistoricalData):
     """Polygon Index Historical Data."""
 
