@@ -62,7 +62,7 @@ class IntrinioLatestAttributesFetcher(
             if message := response_data.get("error") or response_data.get("message"):
                 warnings.warn(message=message, category=OpenBBWarning)
                 return {}
-            elif not response_data:
+            if not response_data:
                 return []
 
             tag = response.url.parts[-1]
