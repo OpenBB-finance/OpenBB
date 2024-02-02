@@ -4,7 +4,7 @@ import datetime
 from typing import List, Literal, Optional, Union
 from warnings import simplefilter, warn
 
-from openbb_core.app.deprecation import OpenBBDeprecatedSince41
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
@@ -158,8 +158,8 @@ class ROUTER_index(Container):
 
     @validate
     @deprecated(
-        "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.5.",
-        category=OpenBBDeprecatedSince41,
+        "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
+        category=OpenBBDeprecationWarning,
     )
     def market(
         self,
@@ -274,7 +274,7 @@ class ROUTER_index(Container):
 
         simplefilter("always", DeprecationWarning)
         warn(
-            "This endpoint is deprecated since v4.1 and will be removed in v4.3; Use `/index/price/historical` instead.",
+            "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
             category=DeprecationWarning,
             stacklevel=2,
         )
