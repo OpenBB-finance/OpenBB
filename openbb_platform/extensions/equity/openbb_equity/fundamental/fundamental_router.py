@@ -1,6 +1,7 @@
 # pylint: disable=W0613:unused-argument
 """Fundamental Analysis Router."""
 
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
@@ -202,7 +203,15 @@ async def management_compensation(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="CompanyOverview")
+@router.command(
+    model="CompanyOverview",
+    deprecated=True,
+    deprecation=OpenBBDeprecationWarning(
+        message="This endpoint is deprecated; use `/equity/profile` instead.",
+        since=(4, 1),
+        expected_removal=(4, 3),
+    ),
+)
 async def overview(
     cc: CommandContext,
     provider_choices: ProviderChoices,

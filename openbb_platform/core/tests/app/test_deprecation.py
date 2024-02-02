@@ -1,12 +1,7 @@
 import unittest
 
 from openbb_core.app.static.package_builder import PathHandler
-from openbb_core.app.version import VERSION
-
-
-def get_major_minor(version):
-    parts = version.split(".")
-    return (int(parts[0]), int(parts[1]))
+from openbb_core.app.version import VERSION, get_major_minor
 
 
 class DeprecatedCommandsTest(unittest.TestCase):
