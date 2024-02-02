@@ -144,9 +144,7 @@ class PolygonCryptoHistoricalFetcher(
                 next_url = data.get("next_url", None)
 
             for r in results:
-                r["t"] = datetime.fromtimestamp(
-                    r["t"] / 1000, tz=timezone("UTC")
-                )
+                r["t"] = datetime.fromtimestamp(r["t"] / 1000, tz=timezone("UTC"))
                 if query._timespan not in ["second", "minute", "hour"]:
                     r["t"] = r["t"].date()
                 else:
