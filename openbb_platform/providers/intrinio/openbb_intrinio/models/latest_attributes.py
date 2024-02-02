@@ -59,11 +59,16 @@ class IntrinioLatestAttributesFetcher(
             """Return the response."""
             response_data = await response.json()
 
-            if message := response_data.get("error") or response_data.get("message"):
-                warnings.warn(message=message, category=OpenBBWarning)
+            if isinstance(response_data, Dict) and (
+                "error" in response_data or "message" in response_data
+            ):
+                warnings.warn(
+                    message=response_data.get("error") or response_data.get("message"),
+                    category=OpenBBWarning,
+                )
                 return {}
             if not response_data:
-                return []
+                return {}
 
             tag = response.url.parts[-1]
             symbol = response.url.parts[-3]
