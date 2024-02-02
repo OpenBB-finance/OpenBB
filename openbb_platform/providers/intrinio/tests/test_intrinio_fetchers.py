@@ -192,11 +192,11 @@ def test_intrinio_search_attributes(credentials=test_credentials):
 def test_intrinio_historical_attributes(credentials=test_credentials):
     params = {
         "provider": "intrinio",
-        "symbol": "AAPL",
-        "tag": "ebit",
+        "symbol": "AAPL,MSFT",
+        "tag": "ebit,marketcap",
         "frequency": "yearly",
         "limit": 1000,
-        "type": None,
+        "tag_type": None,
         "start_date": date(2013, 1, 1),
         "end_date": date(2023, 1, 1),
         "sort": "desc",
@@ -211,8 +211,8 @@ def test_intrinio_historical_attributes(credentials=test_credentials):
 def test_intrinio_latest_attributes(credentials=test_credentials):
     params = {
         "provider": "intrinio",
-        "symbol": "AAPL",
-        "tag": "ceo",
+        "symbol": "AAPL,MSFT",
+        "tag": "ceo,marketcap",
     }
 
     fetcher = IntrinioLatestAttributesFetcher()

@@ -1275,7 +1275,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 1000,
-        type: Annotated[
+        tag_type: Annotated[
             Optional[str],
             OpenBBCustomParameter(description="Filter by type, when applicable."),
         ] = None,
@@ -1302,7 +1302,7 @@ class ROUTER_equity_fundamental(Container):
             The frequency of the data.
         limit : Optional[int]
             The number of data entries to return.
-        type : Optional[str]
+        tag_type : Optional[str]
             Filter by type, when applicable.
         sort : Optional[Literal['asc', 'desc']]
             Sort order.
@@ -1329,6 +1329,10 @@ class ROUTER_equity_fundamental(Container):
         --------------------
         date : date
             The date of the data.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        tag : Optional[str]
+            Tag name for the fetched data.
         value : Optional[float]
             The value of the data.
 
@@ -1351,7 +1355,7 @@ class ROUTER_equity_fundamental(Container):
                     "end_date": end_date,
                     "frequency": frequency,
                     "limit": limit,
-                    "type": type,
+                    "tag_type": tag_type,
                     "sort": sort,
                 },
                 extra_params=kwargs,
@@ -2014,7 +2018,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : LatestAttributes
+            results : List[LatestAttributes]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -2027,6 +2031,10 @@ class ROUTER_equity_fundamental(Container):
 
         LatestAttributes
         ----------------
+        symbol : str
+            Symbol representing the entity requested in the data.
+        tag : Optional[str]
+            Tag name for the fetched data.
         value : Optional[Union[str, float]]
             The value of the data.
 
