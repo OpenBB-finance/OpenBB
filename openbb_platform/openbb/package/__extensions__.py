@@ -12,18 +12,16 @@ Routers:
     /crypto
     /currency
     /derivatives
-    /econometrics
     /economy
     /equity
     /etf
     /fixedincome
     /index
     /news
-    /quantitative
     /regulators
-    /technical
 
 Extensions:
+    - commodity@1.0.0
     - crypto@1.1.1
     - currency@1.1.1
     - derivatives@1.1.1
