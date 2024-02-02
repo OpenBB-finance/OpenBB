@@ -12,7 +12,6 @@ from typing import (
     Mapping,
     Optional,
     Type,
-    Union,
     get_args,
     get_origin,
     get_type_hints,
@@ -37,7 +36,6 @@ from openbb_core.app.provider_interface import (
     StandardParams,
 )
 from openbb_core.env import Env
-
 
 P = ParamSpec("P")
 
@@ -251,15 +249,15 @@ class Router:
             kwargs["openapi_extra"] = kwargs.get("openapi_extra", {})
             kwargs["openapi_extra"]["model"] = model
             kwargs["openapi_extra"]["examples"] = examples
+            kwargs["openapi_extra"]["response_model"] = (
+                SignatureInspector.get_response_model(model)
+            )
             kwargs["operation_id"] = kwargs.get(
                 "operation_id", SignatureInspector.get_operation_id(func)
             )
             kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
             kwargs["endpoint"] = func
             kwargs["methods"] = kwargs.get("methods", ["GET"])
-            kwargs["response_model"] = kwargs.get(
-                "response_model", SignatureInspector.get_response_model(model)
-            )
             kwargs["response_model_by_alias"] = kwargs.get(
                 "response_model_by_alias", False
             )
@@ -307,9 +305,9 @@ class SignatureInspector:
     """Inspect function signature."""
 
     @classmethod
-    def get_response_model(cls, model: str) -> Dict[str, Dict[str, Any]]:
-        # Check if model is in the provider_interface
-        model_typing = ProviderInterface().return_map.get(model, {})
+    def get_response_model(cls, model: str) -> Optional[Dict]:
+        """Get response model."""
+        return ProviderInterface().return_map.get(model)
 
     @classmethod
     def complete(
@@ -359,8 +357,6 @@ class SignatureInspector:
                 arg="extra_params",
                 callable_=provider_interface.params[model]["extra"],
             )
-            # TODO: implement here
-            func = cls.get_response_model(model)
 
         else:
             func = cls.polish_return_schema(func)

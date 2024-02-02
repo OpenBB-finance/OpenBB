@@ -2,7 +2,7 @@
 
 from inspect import getfile, isclass
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Tuple, Union, get_origin
+from typing import Any, Dict, List, Literal, Optional, Tuple
 
 from pydantic import BaseModel
 
@@ -70,16 +70,15 @@ class RegistryMap:
         """Get list of available providers."""
         return sorted(list(registry.providers.keys()))
 
-    def _get_map(self, registry: Registry) -> Tuple[MapType, MapType]:
+    def _get_map(self, registry: Registry) -> Tuple[MapType, Dict[str, Dict]]:
         """Generate map for the provider package."""
         map_: MapType = {}
-        return_map: MapType = {}
-        union_return_map: MapType = {}
+        return_schemas: Dict[str, Dict] = {}
+
         for p in registry.providers:
             for model_name, fetcher in registry.providers[p].fetcher_dict.items():
                 standard_query, extra_query = self.extract_info(fetcher, "query_params")
                 standard_data, extra_data = self.extract_info(fetcher, "data")
-                return_type = self.extract_return_type(fetcher)
                 if model_name not in map_:
                     map_[model_name] = {}
                     map_[model_name]["openbb"] = {
@@ -90,11 +89,13 @@ class RegistryMap:
                     "QueryParams": extra_query,
                     "Data": extra_data,
                 }
-                in_return_map = union_return_map.get(model_name, return_type)
-                union_return_map[model_name] = Union[in_return_map, return_type]  # type: ignore
-        for model_name, union in union_return_map.items():
-            return_map[model_name] = union
-        return map_, return_map
+                if model_name not in return_schemas:
+                    return_schemas[model_name] = {}
+                return_schemas[model_name][p] = RegistryMap._get_model(
+                    fetcher, "data"
+                ).model_json_schema(by_alias=False)
+
+        return map_, return_schemas
 
     def _get_models(self, map_: MapType) -> List[str]:
         """Get available models."""
@@ -137,11 +138,6 @@ class RegistryMap:
                 extra_info["fields"][name] = field
 
         return standard_info, extra_info
-
-    @staticmethod
-    def extract_return_type(fetcher: Fetcher):
-        """Extract return info from fetcher."""
-        return getattr(fetcher, "return_type", None)
 
     @staticmethod
     def _get_model(
