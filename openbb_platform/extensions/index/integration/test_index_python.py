@@ -83,7 +83,6 @@ def test_index_constituents(params, obb):
                 "interval": "1m",
                 "sort": "desc",
                 "limit": 49999,
-                "multiplier": 1,
                 "provider": "polygon",
                 "symbol": "NDX",
                 "start_date": "2023-01-01",
