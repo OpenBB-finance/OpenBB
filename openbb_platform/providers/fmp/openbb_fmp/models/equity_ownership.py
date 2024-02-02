@@ -74,9 +74,9 @@ class FMPEquityOwnershipFetcher(
     def transform_query(params: Dict[str, Any]) -> FMPEquityOwnershipQueryParams:
         """Transform the query params."""
         params["date"] = (
-            most_recent_quarter().strftime("%Y-%m-%d")
+            most_recent_quarter()
             if params.get("date") is None
-            else most_recent_quarter(params.get("date")).strftime("%Y-%m-%d")
+            else most_recent_quarter(params.get("date"))
         )
         return FMPEquityOwnershipQueryParams(**params)
 
