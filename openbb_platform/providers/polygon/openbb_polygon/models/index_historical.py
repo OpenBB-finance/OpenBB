@@ -12,7 +12,11 @@ from openbb_core.provider.standard_models.index_historical import (
     IndexHistoricalQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-from openbb_polygon.utils.helpers import get_data_many
+from openbb_core.provider.utils.helpers import (
+    ClientResponse,
+    ClientSession,
+    amake_requests,
+)
 from pydantic import (
     Field,
     PositiveInt,
@@ -111,24 +115,45 @@ class PolygonIndexHistoricalFetcher(
         """Extract raw data from the Polygon endpoint."""
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
-        request_url = (
-            f"https://api.polygon.io/v2/aggs/ticker/"
-            f"I:{query.symbol}/range/{query._multiplier}/{query._timespan}/"
-            f"{query.start_date}/{query.end_date}?"
-            f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
-        )
-        data = await get_data_many(request_url, "results", **kwargs)
-
-        for d in data:
-            d["t"] = datetime.fromtimestamp(
-                d["t"] / 1000, tz=timezone("America/New_York")
+        urls = [
+            (
+                "https://api.polygon.io/v2/aggs/ticker/"
+                f"I:{symbol.upper()}/range/{query._multiplier}/{query._timespan}/"
+                f"{query.start_date}/{query.end_date}?"
+                f"&sort={query.sort}&limit={query.limit}&apiKey={api_key}"
             )
-            if query._timespan not in ["minute", "hour"]:
-                d["t"] = d["t"].date()
-            else:
-                d["t"] = d["t"].strftime("%Y-%m-%dT%H:%M:%S")
+            for symbol in query.symbol.split(",")
+        ]
 
-        return data
+        async def callback(
+            response: ClientResponse, session: ClientSession
+        ) -> List[Dict]:
+            data = await response.json()
+
+            symbol = response.url.parts[4]
+            next_url = data.get("next_url", None)
+            results: list = data.get("results", [])
+
+            while next_url:
+                url = f"{next_url}&apiKey={api_key}"
+                data = await session.get_json(url)
+                results.extend(data.get("results", []))
+                next_url = data.get("next_url", None)
+
+            for r in results:
+                r["t"] = datetime.fromtimestamp(
+                    r["t"] / 1000, tz=timezone("America/New_York")
+                )
+                if query._timespan not in ["second", "minute", "hour"]:
+                    r["t"] = r["t"].date()
+                else:
+                    r["t"] = r["t"].strftime("%Y-%m-%dT%H:%M:%S")
+                if "," in query.symbol:
+                    r["symbol"] = symbol
+
+            return results
+
+        return await amake_requests(urls, callback, **kwargs)
 
     @staticmethod
     def transform_data(
