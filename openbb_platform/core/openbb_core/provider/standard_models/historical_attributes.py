@@ -30,7 +30,7 @@ class HistoricalAttributesQueryParams(QueryParams):
     limit: Optional[int] = Field(
         default=1000, description=QUERY_DESCRIPTIONS.get("limit")
     )
-    type: Optional[str] = Field(
+    tag_type: Optional[str] = Field(
         default=None, description="Filter by type, when applicable."
     )
     sort: Optional[Literal["asc", "desc"]] = Field(
@@ -43,14 +43,23 @@ class HistoricalAttributesQueryParams(QueryParams):
         """Accept a comma-separated string or list of tags."""
         if isinstance(v, str):
             return v.lower()
-        return ",".join([symbol.lower() for symbol in list(v)])
+        return ",".join([tag.lower() for tag in list(v)])
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+        """Convert symbol to uppercase."""
+        if isinstance(v, str):
+            return v.upper()
+        return ",".join([symbol.upper() for symbol in list(v)])
 
 
 class HistoricalAttributesData(Data):
     """Historical Attributes Data."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date"))
-    value: Optional[float] = Field(default=None, description="The value of the data.")
+    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol"))
     tag: Optional[str] = Field(
         default=None, description="Tag name for the fetched data."
     )
+    value: Optional[float] = Field(default=None, description="The value of the data.")
