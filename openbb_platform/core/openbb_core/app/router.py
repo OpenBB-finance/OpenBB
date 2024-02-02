@@ -38,6 +38,7 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.env import Env
 
+
 P = ParamSpec("P")
 
 
@@ -257,8 +258,7 @@ class Router:
             kwargs["endpoint"] = func
             kwargs["methods"] = kwargs.get("methods", ["GET"])
             kwargs["response_model"] = kwargs.get(
-                "response_model",
-                func.__annotations__["return"],  # type: ignore
+                "response_model", SignatureInspector.get_response_model(model)
             )
             kwargs["response_model_by_alias"] = kwargs.get(
                 "response_model_by_alias", False
@@ -305,6 +305,11 @@ class Router:
 
 class SignatureInspector:
     """Inspect function signature."""
+
+    @classmethod
+    def get_response_model(cls, model: str) -> Dict[str, Dict[str, Any]]:
+        # Check if model is in the provider_interface
+        model_typing = ProviderInterface().return_map.get(model, {})
 
     @classmethod
     def complete(
@@ -354,12 +359,9 @@ class SignatureInspector:
                 arg="extra_params",
                 callable_=provider_interface.params[model]["extra"],
             )
+            # TODO: implement here
+            func = cls.get_response_model(model)
 
-            func = cls.inject_return_type(
-                func=func,
-                inner_type=provider_interface.return_schema[model],
-                outer_type=provider_interface.return_map[model],
-            )
         else:
             func = cls.polish_return_schema(func)
             if (
@@ -372,30 +374,6 @@ class SignatureInspector:
                     callable_=provider_interface.provider_choices,
                 )
 
-        return func
-
-    @staticmethod
-    def inject_return_type(
-        func: Callable[P, OBBject], inner_type: Any, outer_type: Any
-    ) -> Callable[P, OBBject]:
-        """
-        Inject full return model into the function.
-
-        Also updates __name__ and __doc__ for API schemas.
-        """
-        ReturnModel = inner_type
-        outer_type_origin = get_origin(outer_type)
-
-        if outer_type_origin == list:
-            ReturnModel = List[inner_type]  # type: ignore
-        elif outer_type_origin == Union:
-            ReturnModel = Union[List[inner_type], inner_type]  # type: ignore
-
-        return_type = OBBject[ReturnModel]  # type: ignore
-        return_type.__name__ = f"OBBject[{inner_type.__name__}]"
-        return_type.__doc__ = f"OBBject with results of type '{inner_type.__name__}'."
-
-        func.__annotations__["return"] = return_type
         return func
 
     @staticmethod

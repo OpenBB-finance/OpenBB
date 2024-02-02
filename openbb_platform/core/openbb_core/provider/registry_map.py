@@ -75,36 +75,25 @@ class RegistryMap:
         map_: MapType = {}
         return_map: MapType = {}
         union_return_map: MapType = {}
-
         for p in registry.providers:
             for model_name, fetcher in registry.providers[p].fetcher_dict.items():
                 standard_query, extra_query = self.extract_info(fetcher, "query_params")
                 standard_data, extra_data = self.extract_info(fetcher, "data")
                 return_type = self.extract_return_type(fetcher)
-
                 if model_name not in map_:
                     map_[model_name] = {}
                     map_[model_name]["openbb"] = {
                         "QueryParams": standard_query,
                         "Data": standard_data,
                     }
-
                 map_[model_name][p] = {
                     "QueryParams": extra_query,
                     "Data": extra_data,
                 }
-
-                in_return_map = return_map.get(model_name, return_type)
-                if union_return_map.get(model_name, None) is None and get_origin(
-                    return_type
-                ) != get_origin(in_return_map):
-                    union_return_map[model_name] = Union[in_return_map, return_type]  # type: ignore
-
-                return_map[model_name] = return_type
-
-        for model_name, return_type in union_return_map.items():
-            return_map[model_name] = return_type
-
+                in_return_map = union_return_map.get(model_name, return_type)
+                union_return_map[model_name] = Union[in_return_map, return_type]  # type: ignore
+        for model_name, union in union_return_map.items():
+            return_map[model_name] = union
         return map_, return_map
 
     def _get_models(self, map_: MapType) -> List[str]:
