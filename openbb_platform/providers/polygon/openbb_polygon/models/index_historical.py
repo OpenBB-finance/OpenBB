@@ -125,6 +125,8 @@ class PolygonIndexHistoricalFetcher(
             )
             if query._timespan not in ["minute", "hour"]:
                 d["t"] = d["t"].date()
+            else:
+                d["t"] = d["t"].strftime("%Y-%m-%dT%H:%M:%S")
 
         return data
 

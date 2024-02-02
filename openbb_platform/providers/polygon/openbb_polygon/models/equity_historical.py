@@ -151,6 +151,8 @@ class PolygonEquityHistoricalFetcher(
                 )
                 if query._timespan not in ["second", "minute", "hour"]:
                     r["t"] = r["t"].date()
+                else:
+                    r["t"] = r["t"].strftime("%Y-%m-%dT%H:%M:%S")
                 if "," in query.symbol:
                     r["symbol"] = symbol
 
