@@ -132,18 +132,19 @@ class FMPEquityProfileFetcher(
         """Return the transformed data."""
         results: List[FMPEquityProfileData] = []
         for d in data:
-            try:
-                # Clear out fields that don't belong and can be had elsewhere.
-                d.pop("exchangeShortName")
-                d.pop("defaultImage")
-                d.pop("dcf")
-                d.pop("dcfDiff")
-                d.pop("changes")
-                trading_range = d.pop("range").split("-")
-                d["year_low"] = trading_range[0]
-                d["year_high"] = trading_range[1]
-            except KeyError:
-                pass
-            if d:
-                results.append(FMPEquityProfileData.model_validate(d))
+            d["year_low"], d["year_high"] = d.get("range", "-").split("-")
+
+            # Clear out fields that don't belong and can be had elsewhere.
+            entries_to_remove = (
+                "exchangeShortName",
+                "defaultImage",
+                "dcf",
+                "dcfDiff",
+                "changes",
+                "range",
+            )
+            for key in entries_to_remove:
+                d.pop(key, None)
+
+            results.append(FMPEquityProfileData.model_validate(d))
         return results
