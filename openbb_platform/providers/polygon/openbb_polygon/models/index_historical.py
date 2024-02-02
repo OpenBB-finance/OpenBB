@@ -1,6 +1,6 @@
 """Polygon Index Historical Model."""
 
-# pylint: disable=unused-argument
+# pylint: disable=unused-argument,protected-access,line-too-long
 
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
