@@ -1065,7 +1065,7 @@ def test_equity_fundamental_search_attributes(params, headers):
             {
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "tag": "ebit,marketcap",
+                "tag": "ebit,ebitda,marketcap",
                 "frequency": "yearly",
                 "limit": 1000,
                 "type": None,
@@ -1078,7 +1078,33 @@ def test_equity_fundamental_search_attributes(params, headers):
             {
                 "provider": "intrinio",
                 "symbol": "AAPL",
+                "tag": ["ebit", "ebitda", "marketcap"],
+                "frequency": "yearly",
+                "limit": 1000,
+                "type": None,
+                "start_date": "2013-01-01",
+                "end_date": "2023-01-01",
+                "sort": "desc",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL,MSFT",
                 "tag": "ebit,ebitda,marketcap",
+                "frequency": "yearly",
+                "limit": 1000,
+                "type": None,
+                "start_date": "2013-01-01",
+                "end_date": "2023-01-01",
+                "sort": "desc",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": ["AAPL", "MSFT"],
+                "tag": ["ebit", "ebitda", "marketcap"],
                 "frequency": "yearly",
                 "limit": 1000,
                 "type": None,
@@ -1120,8 +1146,29 @@ def test_equity_fundamental_historical_attributes(params, headers):
         (
             {
                 "provider": "intrinio",
-                "symbol": "MSFT",
+                "symbol": "AAPL",
                 "tag": "ceo,ebitda",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "tag": ["ceo", "ebitda"],
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL,MSFT",
+                "tag": ["ceo", "ebitda"],
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": ["AAPL", "MSFT"],
+                "tag": ["ceo", "ebitda"],
             }
         ),
     ],
