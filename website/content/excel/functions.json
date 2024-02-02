@@ -1,6 +1,28 @@
 {
   "functions": [
     {
+      "description": "Bring Your Own Data features from OpenBB Terminal Pro.",
+      "helpUrl": "https://docs.openbb.co/excel/data-conectors",
+      "id": "BYOD",
+      "name": "BYOD",
+      "parameters": [
+        {
+          "description": "Name of the widget to get data for.",
+          "name": "widget",
+          "type": "string"
+        },
+        {
+          "description": "Name of the backend to use, required for widgets in custom backends.",
+          "name": "backend",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
       "description": "Cryptocurrency Historical Price. Cryptocurrency historical price data.",
       "helpUrl": "https://docs.openbb.co/excel/reference/crypto/price/historical",
       "id": "CRYPTO.PRICE.HISTORICAL",
@@ -1317,6 +1339,18 @@
           "type": "string"
         },
         {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
           "description": "Options: fmp, intrinio, defaults to fmp.",
           "name": "provider",
           "optional": true,
@@ -1324,7 +1358,7 @@
         },
         {
           "description": "The number of data entries to return. (provider: intrinio)",
-          "name": "page_size",
+          "name": "limit",
           "optional": true,
           "type": "number"
         }
@@ -1384,6 +1418,12 @@
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Sort the data in ascending or descending order. (provider: fmp)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Start date of the data, in YYYY-MM-DD format. (provider: intrinio)",
@@ -1746,6 +1786,18 @@
           "type": "string"
         },
         {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
           "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
@@ -2041,6 +2093,12 @@
           "type": "string"
         },
         {
+          "description": "The number of data entries to return. Default is 252, the number of trading days in a year.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
           "description": "Options: tiingo, defaults to tiingo.",
           "name": "provider",
           "optional": true,
@@ -2227,6 +2285,12 @@
           "name": "provider",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Include current quarter data. (provider: fmp)",
+          "name": "include_current_quarter",
+          "optional": true,
+          "type": "boolean"
         }
       ],
       "result": {
@@ -2430,7 +2494,7 @@
       "name": "EQUITY.PRICE.QUOTE",
       "parameters": [
         {
-          "description": "Symbol to get data for. In this case, the comma separated list of symbols.",
+          "description": "Symbol to get data for. This endpoint will accept multiple symbols separated by commas.",
           "name": "symbol",
           "type": "string"
         },
@@ -3723,7 +3787,7 @@
           "type": "number"
         },
         {
-          "description": "Options: benzinga, fmp, intrinio, polygon, tiingo, defaults to benzinga.",
+          "description": "Options: benzinga, fmp, intrinio, polygon, tiingo, ultima, defaults to benzinga.",
           "name": "provider",
           "optional": true,
           "type": "string"
@@ -3827,6 +3891,34 @@
         {
           "description": "A comma-separated list of the domains requested. (provider: tiingo)",
           "name": "source",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Sector News. Get news for one or more sectors.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/news/sector",
+      "id": "NEWS.SECTOR",
+      "name": "NEWS.SECTOR",
+      "parameters": [
+        {
+          "description": "A coma separated list of sectors.",
+          "name": "sectors",
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. Here it is the no. of articles to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Options: ultima, defaults to ultima.",
+          "name": "provider",
           "optional": true,
           "type": "string"
         }

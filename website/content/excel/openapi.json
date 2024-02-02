@@ -650,7 +650,7 @@
               ],
               "title": "polygon",
               "description": "A specific date to get data for. (provider: polygon)",
-              "default": "2024-01-06"
+              "default": "2024-02-02"
             },
             "description": "A specific date to get data for. (provider: polygon)"
           },
@@ -815,6 +815,79 @@
         "model": "CurrencyPairs"
       }
     },
+    "/api/v1/currency/reference_rates": {
+      "get": {
+        "tags": [
+          "currency"
+        ],
+        "summary": "Reference Rates",
+        "description": "Current, official, currency reference rates.",
+        "operationId": "currency_reference_rates",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "const": "ecb",
+              "default": "ecb",
+              "title": "Provider"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_CurrencyReferenceRates_"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "CurrencyReferenceRates"
+      }
+    },
     "/api/v1/derivatives/options/chains": {
       "get": {
         "tags": [
@@ -865,9 +938,9 @@
                 }
               ],
               "title": "intrinio",
-              "description": "Date for which the options chains are returned. (provider: intrinio)"
+              "description": "The end-of-day date for options chains data. (provider: intrinio)"
             },
-            "description": "Date for which the options chains are returned. (provider: intrinio)"
+            "description": "The end-of-day date for options chains data. (provider: intrinio)"
           }
         ],
         "responses": {
@@ -2107,6 +2180,141 @@
         "model": "RiskPremium"
       }
     },
+    "/api/v1/economy/balance_of_payments": {
+      "get": {
+        "tags": [
+          "economy"
+        ],
+        "summary": "Balance Of Payments",
+        "description": "Balance of Payments Reports.",
+        "operationId": "economy_balance_of_payments",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "const": "ecb",
+              "default": "ecb",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "report_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "main",
+                "summary",
+                "services",
+                "investment_income",
+                "direct_investment",
+                "portfolio_investment",
+                "other_investment"
+              ],
+              "type": "string",
+              "title": "ecb",
+              "description": "The report type, the level of detail in the data. (provider: ecb)",
+              "default": "main"
+            },
+            "description": "The report type, the level of detail in the data. (provider: ecb)"
+          },
+          {
+            "name": "frequency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "monthly",
+                "quarterly"
+              ],
+              "type": "string",
+              "title": "ecb",
+              "description": "The frequency of the data.  Monthly is valid only for ['main', 'summary']. (provider: ecb)",
+              "default": "monthly"
+            },
+            "description": "The frequency of the data.  Monthly is valid only for ['main', 'summary']. (provider: ecb)"
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "brazil",
+                "canada",
+                "china",
+                "eu_ex_euro_area",
+                "eu_institutions",
+                "india",
+                "japan",
+                "russia",
+                "switzerland",
+                "united_kingdom",
+                "united_states",
+                "total",
+                null
+              ],
+              "title": "ecb",
+              "description": "The country/region of the data.  This parameter will override the 'report_type' parameter. (provider: ecb)"
+            },
+            "description": "The country/region of the data.  This parameter will override the 'report_type' parameter. (provider: ecb)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_List_BalanceOfPayments__"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "BalanceOfPayments"
+      }
+    },
     "/api/v1/economy/fred_search": {
       "get": {
         "tags": [
@@ -2175,10 +2383,10 @@
             "schema": {
               "anyOf": [
                 {
-                  "type": "string"
+                  "type": "integer"
                 },
                 {
-                  "type": "integer"
+                  "type": "string"
                 },
                 {
                   "type": "null"
@@ -3364,10 +3572,13 @@
           {
             "name": "provider",
             "in": "query",
-            "required": false,
+            "required": true,
             "schema": {
-              "const": "fmp",
-              "default": "fmp",
+              "enum": [
+                "benzinga",
+                "fmp"
+              ],
+              "type": "string",
               "title": "Provider"
             }
           },
@@ -3381,6 +3592,199 @@
               "title": "Symbol"
             },
             "description": "Symbol to get data for."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "The number of data entries to return.",
+              "default": 100,
+              "title": "Limit"
+            },
+            "description": "The number of data entries to return."
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "benzinga",
+              "description": "Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. (provider: benzinga)"
+            },
+            "description": "Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. (provider: benzinga)"
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "benzinga",
+              "description": "Date for calendar data, shorthand for date_from and date_to. (provider: benzinga)",
+              "is_parameters": true
+            },
+            "description": "Date for calendar data, shorthand for date_from and date_to. (provider: benzinga)"
+          },
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "benzinga",
+              "description": "Date to query from point in time. (provider: benzinga)",
+              "is_parameters": true
+            },
+            "description": "Date to query from point in time. (provider: benzinga)"
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "benzinga",
+              "description": "Date to query to point in time. (provider: benzinga)",
+              "is_parameters": true
+            },
+            "description": "Date to query to point in time. (provider: benzinga)"
+          },
+          {
+            "name": "importance",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "benzinga",
+              "description": "Importance level to filter by. (provider: benzinga)",
+              "is_parameters": true
+            },
+            "description": "Importance level to filter by. (provider: benzinga)"
+          },
+          {
+            "name": "updated",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "benzinga",
+              "description": "Records last updated Unix timestamp (UTC). (provider: benzinga)",
+              "is_parameters": true
+            },
+            "description": "Records last updated Unix timestamp (UTC). (provider: benzinga)"
+          },
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "Downgrades",
+                    "Maintains",
+                    "Reinstates",
+                    "Reiterates",
+                    "Upgrades",
+                    "Assumes",
+                    "Initiates Coverage On",
+                    "Terminates Coverage On",
+                    "Removes",
+                    "Suspends",
+                    "Firm Dissolved"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "benzinga",
+              "description": "Filter by a specific action_company. (provider: benzinga)",
+              "is_parameters": true
+            },
+            "description": "Filter by a specific action_company. (provider: benzinga)"
+          },
+          {
+            "name": "analyst",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "benzinga",
+              "description": "Comma-separated list of analyst (person) IDs. (provider: benzinga)"
+            },
+            "description": "Comma-separated list of analyst (person) IDs. (provider: benzinga)"
+          },
+          {
+            "name": "firm",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "benzinga",
+              "description": "Comma-separated list of analyst firm IDs. (provider: benzinga)"
+            },
+            "description": "Comma-separated list of analyst firm IDs. (provider: benzinga)"
           },
           {
             "name": "with_grade",
@@ -3926,11 +4330,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "annual",
-                "quarter",
-                "ttm"
-              ],
               "type": "string",
               "description": "Time period of the data to return.",
               "default": "annual",
@@ -4411,12 +4810,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "annual",
-                "quarter",
-                "ttm",
-                "ytd"
-              ],
               "type": "string",
               "description": "Time period of the data to return.",
               "default": "annual",
@@ -4783,10 +5176,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "annual",
-                "quarter"
-              ],
               "type": "string",
               "description": "Time period of the data to return.",
               "default": "annual",
@@ -4799,11 +5188,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "balance",
-                "cash",
-                "income"
-              ],
               "type": "string",
               "description": "The type of financial statement - i.e, balance, income, cash.",
               "default": "balance",
@@ -5032,7 +5416,45 @@
             "description": "Symbol to get data for."
           },
           {
-            "name": "page_size",
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Start date of the data, in YYYY-MM-DD format.",
+              "title": "Start Date"
+            },
+            "description": "Start date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "End date of the data, in YYYY-MM-DD format.",
+              "title": "End Date"
+            },
+            "description": "End date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "limit",
             "in": "query",
             "required": false,
             "schema": {
@@ -5746,12 +6168,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "annual",
-                "quarter",
-                "ttm",
-                "ytd"
-              ],
               "type": "string",
               "description": "Time period of the data to return.",
               "default": "annual",
@@ -6253,18 +6669,11 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [
-                {
-                  "enum": [
-                    "annual",
-                    "quarter"
-                  ],
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
+              "enum": [
+                "annual",
+                "quarter"
               ],
+              "type": "string",
               "description": "Time period of the data to return.",
               "default": "annual",
               "title": "Period"
@@ -6476,6 +6885,44 @@
               "title": "Symbol"
             },
             "description": "Symbol to get data for."
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Start date of the data, in YYYY-MM-DD format.",
+              "title": "Start Date"
+            },
+            "description": "Start date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "End date of the data, in YYYY-MM-DD format.",
+              "title": "End Date"
+            },
+            "description": "End date of the data, in YYYY-MM-DD format."
           }
         ],
         "responses": {
@@ -6653,12 +7100,6 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "annual",
-                "quarter",
-                "ttm",
-                "ytd"
-              ],
               "type": "string",
               "description": "Time period of the data to return.",
               "default": "annual",
@@ -7437,6 +7878,22 @@
             "description": "The number of data entries to return."
           },
           {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string",
+              "title": "fmp",
+              "description": "Sort the data in ascending or descending order. (provider: fmp)",
+              "default": "desc"
+            },
+            "description": "Sort the data in ascending or descending order. (provider: fmp)"
+          },
+          {
             "name": "start_date",
             "in": "query",
             "required": false,
@@ -7787,6 +8244,25 @@
               "title": "Symbol"
             },
             "description": "Symbol to get data for."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "The number of data entries to return. Default is 252, the number of trading days in a year.",
+              "default": 252,
+              "title": "Limit"
+            },
+            "description": "The number of data entries to return. Default is 252, the number of trading days in a year."
           }
         ],
         "responses": {
@@ -7909,6 +8385,25 @@
               "title": "Page"
             },
             "description": "Page number of the data to fetch."
+          },
+          {
+            "name": "include_current_quarter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fmp",
+              "description": "Include current quarter data. (provider: fmp)",
+              "default": true
+            },
+            "description": "Include current quarter data. (provider: fmp)"
           }
         ],
         "responses": {
@@ -8012,7 +8507,7 @@
               ],
               "title": "fmp",
               "description": "Include current quarter data. (provider: fmp)",
-              "default": false
+              "default": true
             },
             "description": "Include current quarter data. (provider: fmp)"
           },
@@ -8436,10 +8931,10 @@
             "required": true,
             "schema": {
               "type": "string",
-              "description": "Symbol to get data for. In this case, the comma separated list of symbols.",
+              "description": "Symbol to get data for. This endpoint will accept multiple symbols separated by commas.",
               "title": "Symbol"
             },
-            "description": "Symbol to get data for. In this case, the comma separated list of symbols."
+            "description": "Symbol to get data for. This endpoint will accept multiple symbols separated by commas."
           },
           {
             "name": "source",
@@ -8763,21 +9258,6 @@
             "schema": {
               "anyOf": [
                 {
-                  "enum": [
-                    "1m",
-                    "5m",
-                    "10m",
-                    "15m",
-                    "30m",
-                    "60m",
-                    "1h",
-                    "4h",
-                    "1d",
-                    "1W",
-                    "1M",
-                    "1Q",
-                    "1Y"
-                  ],
                   "type": "string"
                 },
                 {
@@ -8837,6 +9317,9 @@
                 {
                   "type": "integer",
                   "minimum": 0
+                },
+                {
+                  "type": "integer"
                 },
                 {
                   "type": "null"
@@ -9875,7 +10358,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/OBBject_EquityInfo_"
+                  "$ref": "#/components/schemas/OBBject_List_EquityInfo__"
                 }
               }
             }
@@ -12371,6 +12854,131 @@
         "model": "USYieldCurve"
       }
     },
+    "/api/v1/fixedincome/government/eu_yield_curve": {
+      "get": {
+        "tags": [
+          "fixedincome"
+        ],
+        "summary": "Eu Yield Curve",
+        "description": "Euro Area Yield Curve.\n\nGets euro area yield curve data from ECB.\n\nThe graphic depiction of the relationship between the yield on bonds of the same credit quality but different\nmaturities is known as the yield curve. In the past, most market participants have constructed yield curves from\nthe observations of prices and yields in the Treasury market. Two reasons account for this tendency. First,\nTreasury securities are viewed as free of default risk, and differences in creditworthiness do not affect yield\nestimates. Second, as the most active bond market, the Treasury market offers the fewest problems of illiquidity\nor infrequent trading. The key function of the Treasury yield curve is to serve as a benchmark for pricing bonds\nand setting yields in other sectors of the debt market.\n\nIt is clear that the market\u2019s expectations of future rate changes are one important determinant of the\nyield-curve shape. For example, a steeply upward-sloping curve may indicate market expectations of near-term Fed\ntightening or of rising inflation. However, it may be too restrictive to assume that the yield differences across\nbonds with different maturities only reflect the market\u2019s rate expectations. The well-known pure expectations\nhypothesis has such an extreme implication. The pure expectations hypothesis asserts that all government bonds\nhave the same near-term expected return (as the nominally riskless short-term bond) because the return-seeking\nactivity of risk-neutral traders removes all expected return differentials across bonds.",
+        "operationId": "fixedincome_government_eu_yield_curve",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "const": "ecb",
+              "default": "ecb",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A specific date to get data for.",
+              "title": "Date"
+            },
+            "description": "A specific date to get data for."
+          },
+          {
+            "name": "yield_curve_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "spot_rate",
+                "instantaneous_forward",
+                "par_yield"
+              ],
+              "type": "string",
+              "description": "The yield curve type.",
+              "default": "spot_rate",
+              "title": "Yield Curve Type"
+            },
+            "description": "The yield curve type."
+          },
+          {
+            "name": "rating",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "A",
+                "C"
+              ],
+              "type": "string",
+              "title": "ecb",
+              "description": "The rating type. (provider: ecb)",
+              "default": "A"
+            },
+            "description": "The rating type. (provider: ecb)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_List_EUYieldCurve__"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "EUYieldCurve"
+      }
+    },
     "/api/v1/fixedincome/government/treasury_rates": {
       "get": {
         "tags": [
@@ -13392,14 +14000,254 @@
         "model": "SOFR"
       }
     },
+    "/api/v1/index/price/historical": {
+      "get": {
+        "tags": [
+          "index"
+        ],
+        "summary": "Historical",
+        "description": "Index Historical Price. Load stock data for a specific index.",
+        "operationId": "index_price_historical",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "enum": [
+                "fmp",
+                "intrinio",
+                "polygon"
+              ],
+              "type": "string",
+              "title": "Provider"
+            }
+          },
+          {
+            "name": "symbol",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Symbol to get data for.",
+              "title": "Symbol"
+            },
+            "description": "Symbol to get data for."
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Start date of the data, in YYYY-MM-DD format.",
+              "title": "Start Date"
+            },
+            "description": "Start date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "End date of the data, in YYYY-MM-DD format.",
+              "title": "End Date"
+            },
+            "description": "End date of the data, in YYYY-MM-DD format."
+          },
+          {
+            "name": "timeseries",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "fmp",
+              "description": "Number of days to look back. (provider: fmp)"
+            },
+            "description": "Number of days to look back. (provider: fmp)"
+          },
+          {
+            "name": "interval",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "1min",
+                "5min",
+                "15min",
+                "30min",
+                "1hour",
+                "4hour",
+                "1day"
+              ],
+              "type": "string",
+              "title": "fmp",
+              "description": "Data granularity. (provider: fmp)",
+              "default": "1day"
+            },
+            "description": "Data granularity. (provider: fmp)"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string",
+              "title": "fmp,intrinio,polygon",
+              "description": "Sort the data in ascending or descending order. (provider: fmp);\n    Sort order. (provider: intrinio);\n    Sort order of the data. (provider: polygon)",
+              "default": "desc"
+            },
+            "description": "Sort the data in ascending or descending order. (provider: fmp);\n    Sort order. (provider: intrinio);\n    Sort order of the data. (provider: polygon)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "intrinio,polygon",
+              "description": "The number of data entries to return. (provider: intrinio, polygon)",
+              "default": 10000
+            },
+            "description": "The number of data entries to return. (provider: intrinio, polygon)"
+          },
+          {
+            "name": "timespan",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "minute",
+                "hour",
+                "day",
+                "week",
+                "month",
+                "quarter",
+                "year"
+              ],
+              "type": "string",
+              "title": "polygon",
+              "description": "Timespan of the data. (provider: polygon)",
+              "default": "day"
+            },
+            "description": "Timespan of the data. (provider: polygon)"
+          },
+          {
+            "name": "adjusted",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "title": "polygon",
+              "description": "Whether the data is adjusted. (provider: polygon)",
+              "default": true
+            },
+            "description": "Whether the data is adjusted. (provider: polygon)"
+          },
+          {
+            "name": "multiplier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "title": "polygon",
+              "description": "Multiplier of the timespan. (provider: polygon)",
+              "default": 1
+            },
+            "description": "Multiplier of the timespan. (provider: polygon)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OBBject_List_IndexHistorical__"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "400": {
+            "description": "No Results Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenBBErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "model": "IndexHistorical"
+      }
+    },
     "/api/v1/index/market": {
       "get": {
         "tags": [
           "index"
         ],
-        "summary": "Market",
+        "summary": "This endpoint will be deprecated in the future releases. Use '/index/price/historical' instead.",
         "description": "Historical Market Indices.",
         "operationId": "index_market",
+        "deprecated": true,
         "security": [
           {
             "OAuth2PasswordBearer": []
@@ -13714,19 +14562,13 @@
           {
             "name": "index",
             "in": "query",
-            "required": false,
+            "required": true,
             "schema": {
-              "enum": [
-                "nasdaq",
-                "sp500",
-                "dowjones"
-              ],
               "type": "string",
-              "description": "Index for which we want to fetch the constituents.",
-              "default": "dowjones",
+              "description": "Index to fetch the constituents of.",
               "title": "Index"
             },
-            "description": "Index for which we want to fetch the constituents."
+            "description": "Index to fetch the constituents of."
           }
         ],
         "responses": {
@@ -14396,11 +15238,18 @@
             "in": "query",
             "required": false,
             "schema": {
-              "enum": [
-                "asc",
-                "desc"
+              "anyOf": [
+                {
+                  "enum": [
+                    "asc",
+                    "desc"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
               ],
-              "type": "string",
               "title": "benzinga,polygon",
               "description": "Order to sort the news by. (provider: benzinga);\n    Sort order of the articles. (provider: polygon)",
               "default": "desc"
@@ -15180,8 +16029,10 @@
                   "type": "null"
                 }
               ],
+              "description": "Get information on a symbol, or a comma separated list of symbols.",
               "title": "Q"
-            }
+            },
+            "description": "Get information on a symbol, or a comma separated list of symbols."
           },
           {
             "name": "type",
@@ -15203,8 +16054,34 @@
                   "type": "null"
                 }
               ],
+              "description": "Filter by type.",
               "title": "Type"
-            }
+            },
+            "description": "Filter by type."
+          },
+          {
+            "name": "ignore_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "stock",
+                    "etf",
+                    "index",
+                    "indices",
+                    null
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Comma separated list of types to ignore. (stock, etf, index, indices)",
+              "title": "Ignore Type"
+            },
+            "description": "Comma separated list of types to ignore. (stock, etf, index, indices)"
           }
         ],
         "responses": {
@@ -15253,8 +16130,10 @@
                   "type": "null"
                 }
               ],
+              "description": "Search fred indices.",
               "title": "Q"
-            }
+            },
+            "description": "Search fred indices."
           }
         ],
         "responses": {
@@ -15297,7 +16176,7 @@
           {
             "name": "symbol",
             "in": "query",
-            "required": true,
+            "required": false,
             "schema": {
               "anyOf": [
                 {
@@ -15307,8 +16186,10 @@
                   "type": "null"
                 }
               ],
+              "description": "Get UDF symbol.",
               "title": "Symbol"
-            }
+            },
+            "description": "Get UDF symbol."
           }
         ],
         "responses": {
@@ -15350,8 +16231,10 @@
             "required": true,
             "schema": {
               "type": "string",
+              "description": "Search UDF symbols.",
               "title": "Query"
-            }
+            },
+            "description": "Search UDF symbols."
           },
           {
             "name": "type",
@@ -15366,10 +16249,11 @@
                   "type": "null"
                 }
               ],
-              "nullable": true,
+              "description": "Symbol type.",
               "default": "stock",
               "title": "Type"
-            }
+            },
+            "description": "Symbol type."
           },
           {
             "name": "exchange",
@@ -15384,8 +16268,10 @@
                   "type": "null"
                 }
               ],
+              "description": "Symbol exchange.",
               "title": "Exchange"
-            }
+            },
+            "description": "Symbol exchange."
           },
           {
             "name": "limit",
@@ -15400,9 +16286,11 @@
                   "type": "null"
                 }
               ],
+              "description": "Limit the number of results.",
               "default": 15,
               "title": "Limit"
-            }
+            },
+            "description": "Limit the number of results."
           }
         ],
         "responses": {
@@ -15684,6 +16572,1303 @@
         "type": "object",
         "title": "AvailableIndices"
       },
+      "BalanceOfPayments": {
+        "properties": {
+          "period": {
+            "type": "string",
+            "format": "date",
+            "title": "openbb",
+            "description": "The date representing the beginning of the reporting period. "
+          },
+          "current_account": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Current Account Balance (Billions of EUR) "
+          },
+          "goods": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Goods Balance (Billions of EUR) "
+          },
+          "services": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Services Balance (Billions of EUR) "
+          },
+          "primary_income": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Primary Income Balance (Billions of EUR) "
+          },
+          "secondary_income": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Secondary Income Balance (Billions of EUR) "
+          },
+          "capital_account": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Capital Account Balance (Billions of EUR) "
+          },
+          "net_lending_to_rest_of_world": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Balance of net lending to the rest of the world (Billions of EUR) "
+          },
+          "financial_account": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Financial Account Balance (Billions of EUR) "
+          },
+          "direct_investment": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Direct Investment Balance (Billions of EUR) "
+          },
+          "portfolio_investment": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Portfolio Investment Balance (Billions of EUR) "
+          },
+          "financial_derivatives": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Financial Derivatives Balance (Billions of EUR) "
+          },
+          "other_investment": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Other Investment Balance (Billions of EUR) "
+          },
+          "reserve_assets": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Reserve Assets Balance (Billions of EUR) "
+          },
+          "errors_and_ommissions": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Errors and Omissions (Billions of EUR) "
+          },
+          "current_account_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Current Account Credits (Billions of EUR) "
+          },
+          "current_account_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Current Account Debits (Billions of EUR) "
+          },
+          "current_account_balance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Current Account Balance (Billions of EUR) "
+          },
+          "goods_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Goods Credits (Billions of EUR) "
+          },
+          "goods_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Goods Debits (Billions of EUR) "
+          },
+          "services_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Services Credits (Billions of EUR) "
+          },
+          "services_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Services Debits (Billions of EUR) "
+          },
+          "primary_income_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Primary Income Credits (Billions of EUR) "
+          },
+          "primary_income_employee_compensation_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Primary Income Employee Compensation Credit (Billions of EUR) "
+          },
+          "primary_income_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Primary Income Debits (Billions of EUR) "
+          },
+          "primary_income_employee_compensation_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Primary Income Employee Compensation Debit (Billions of EUR) "
+          },
+          "secondary_income_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Secondary Income Credits (Billions of EUR) "
+          },
+          "secondary_income_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Secondary Income Debits (Billions of EUR) "
+          },
+          "capital_account_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Capital Account Credits (Billions of EUR) "
+          },
+          "capital_account_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Capital Account Debits (Billions of EUR) "
+          },
+          "services_total_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Services Total Credit (Billions of EUR) "
+          },
+          "services_total_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Services Total Debit (Billions of EUR) "
+          },
+          "transport_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Transport Credit (Billions of EUR) "
+          },
+          "transport_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Transport Debit (Billions of EUR) "
+          },
+          "travel_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Travel Credit (Billions of EUR) "
+          },
+          "travel_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Travel Debit (Billions of EUR) "
+          },
+          "financial_services_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Financial Services Credit (Billions of EUR) "
+          },
+          "financial_services_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Financial Services Debit (Billions of EUR) "
+          },
+          "communications_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Communications Credit (Billions of EUR) "
+          },
+          "communications_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Communications Debit (Billions of EUR) "
+          },
+          "other_business_services_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Other Business Services Credit (Billions of EUR) "
+          },
+          "other_business_services_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Other Business Services Debit (Billions of EUR) "
+          },
+          "other_services_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Other Services Credit (Billions of EUR) "
+          },
+          "other_services_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Other Services Debit (Billions of EUR) "
+          },
+          "investment_total_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Investment Total Credit (Billions of EUR) "
+          },
+          "investment_total_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Investment Total Debit (Billions of EUR) "
+          },
+          "equity_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Equity Credit (Billions of EUR) "
+          },
+          "equity_reinvested_earnings_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Equity Reinvested Earnings Credit (Billions of EUR) "
+          },
+          "equity_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Equity Debit (Billions of EUR) "
+          },
+          "equity_reinvested_earnings_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Equity Reinvested Earnings Debit (Billions of EUR) "
+          },
+          "debt_instruments_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Debt Instruments Credit (Billions of EUR) "
+          },
+          "debt_instruments_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Debt Instruments Debit (Billions of EUR) "
+          },
+          "portfolio_investment_equity_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Portfolio Investment Equity Credit (Billions of EUR) "
+          },
+          "portfolio_investment_equity_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Portfolio Investment Equity Debit (Billions of EUR) "
+          },
+          "portfolio_investment_debt_instruments_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Portfolio Investment Debt Instruments Credit (Billions of EUR) "
+          },
+          "portofolio_investment_debt_instruments_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Portfolio Investment Debt Instruments Debit (Billions of EUR) "
+          },
+          "other_investment_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Other Investment Credit (Billions of EUR) "
+          },
+          "other_investment_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Other Investment Debit (Billions of EUR) "
+          },
+          "reserve_assets_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Reserve Assets Credit (Billions of EUR) "
+          },
+          "assets_total": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Total (Billions of EUR) "
+          },
+          "assets_equity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Equity (Billions of EUR) "
+          },
+          "assets_debt_instruments": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Debt Instruments (Billions of EUR) "
+          },
+          "assets_mfi": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets MFIs (Billions of EUR) "
+          },
+          "assets_non_mfi": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Non MFIs (Billions of EUR) "
+          },
+          "assets_direct_investment_abroad": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Direct Investment Abroad (Billions of EUR) "
+          },
+          "liabilities_total": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Total (Billions of EUR) "
+          },
+          "liabilities_equity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Equity (Billions of EUR) "
+          },
+          "liabilities_debt_instruments": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Debt Instruments (Billions of EUR) "
+          },
+          "liabilities_mfi": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities MFIs (Billions of EUR) "
+          },
+          "liabilities_non_mfi": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Non MFIs (Billions of EUR) "
+          },
+          "liabilities_direct_investment_euro_area": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Direct Investment in Euro Area (Billions of EUR) "
+          },
+          "assets_equity_and_fund_shares": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Equity and Investment Fund Shares (Billions of EUR) "
+          },
+          "assets_equity_shares": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Equity Shares (Billions of EUR) "
+          },
+          "assets_investment_fund_shares": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Investment Fund Shares (Billions of EUR) "
+          },
+          "assets_debt_short_term": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Debt Short Term (Billions of EUR) "
+          },
+          "assets_debt_long_term": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Debt Long Term (Billions of EUR) "
+          },
+          "assets_resident_sector_eurosystem": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Resident Sector Eurosystem (Billions of EUR) "
+          },
+          "assets_resident_sector_mfi_ex_eurosystem": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Resident Sector MFIs outside Eurosystem (Billions of EUR) "
+          },
+          "assets_resident_sector_government": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Resident Sector Government (Billions of EUR) "
+          },
+          "assets_resident_sector_other": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Resident Sector Other (Billions of EUR) "
+          },
+          "liabilities_equity_and_fund_shares": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Equity and Investment Fund Shares (Billions of EUR) "
+          },
+          "liabilities_investment_fund_shares": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Investment Fund Shares (Billions of EUR) "
+          },
+          "liabilities_debt_short_term": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Debt Short Term (Billions of EUR) "
+          },
+          "liabilities_debt_long_term": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Debt Long Term (Billions of EUR) "
+          },
+          "liabilities_resident_sector_government": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Resident Sector Government (Billions of EUR) "
+          },
+          "liabilities_resident_sector_other": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Resident Sector Other (Billions of EUR) "
+          },
+          "assets_currency_and_deposits": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Currency and Deposits (Billions of EUR) "
+          },
+          "assets_loans": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Loans (Billions of EUR) "
+          },
+          "assets_trade_credit_and_advances": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Trade Credits and Advances (Billions of EUR) "
+          },
+          "assets_eurosystem": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Eurosystem (Billions of EUR) "
+          },
+          "assets_other_mfi_ex_eurosystem": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Other MFIs outside Eurosystem (Billions of EUR) "
+          },
+          "assets_government": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Government (Billions of EUR) "
+          },
+          "assets_other_sectors": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Assets Other Sectors (Billions of EUR) "
+          },
+          "liabilities_currency_and_deposits": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Currency and Deposits (Billions of EUR) "
+          },
+          "liabilities_loans": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Loans (Billions of EUR) "
+          },
+          "liabilities_trade_credit_and_advances": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Trade Credits and Advances (Billions of EUR) "
+          },
+          "liabilities_eurosystem": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Eurosystem (Billions of EUR) "
+          },
+          "liabilities_other_mfi_ex_eurosystem": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Other MFIs outside Eurosystem (Billions of EUR) "
+          },
+          "liabilities_government": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Government (Billions of EUR) "
+          },
+          "liabilities_other_sectors": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Liabilities Other Sectors (Billions of EUR) "
+          },
+          "goods_balance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Goods Balance (Billions of EUR) "
+          },
+          "services_balance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Services Balance (Billions of EUR) "
+          },
+          "primary_income_balance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Primary Income Balance (Billions of EUR) "
+          },
+          "investment_income_balance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Investment Income Balance (Billions of EUR) "
+          },
+          "investment_income_credit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Investment Income Credits (Billions of EUR) "
+          },
+          "investment_income_debit": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Investment Income Debits (Billions of EUR) "
+          },
+          "secondary_income_balance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Secondary Income Balance (Billions of EUR) "
+          },
+          "capital_account_balance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Capital Account Balance (Billions of EUR) "
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "title": "BalanceOfPayments"
+      },
       "BalanceSheet": {
         "properties": {
           "symbol": {
@@ -15820,6 +18005,9 @@
                 "type": "number"
               },
               {
+                "type": "integer"
+              },
+              {
                 "type": "null"
               }
             ],
@@ -15832,6 +18020,9 @@
                 "type": "number"
               },
               {
+                "type": "integer"
+              },
+              {
                 "type": "null"
               }
             ],
@@ -15842,6 +18033,9 @@
             "anyOf": [
               {
                 "type": "number"
+              },
+              {
+                "type": "integer"
               },
               {
                 "type": "null"
@@ -15878,6 +18072,9 @@
             "anyOf": [
               {
                 "type": "number"
+              },
+              {
+                "type": "integer"
               },
               {
                 "type": "null"
@@ -15928,6 +18125,9 @@
                 "type": "number"
               },
               {
+                "type": "integer"
+              },
+              {
                 "type": "null"
               }
             ],
@@ -15964,6 +18164,9 @@
                 "type": "number"
               },
               {
+                "type": "integer"
+              },
+              {
                 "type": "null"
               }
             ],
@@ -15974,6 +18177,9 @@
             "anyOf": [
               {
                 "type": "number"
+              },
+              {
+                "type": "integer"
               },
               {
                 "type": "null"
@@ -16024,6 +18230,9 @@
                 "type": "number"
               },
               {
+                "type": "integer"
+              },
+              {
                 "type": "null"
               }
             ],
@@ -16036,6 +18245,9 @@
                 "type": "number"
               },
               {
+                "type": "integer"
+              },
+              {
                 "type": "null"
               }
             ],
@@ -16046,6 +18258,9 @@
             "anyOf": [
               {
                 "type": "number"
+              },
+              {
+                "type": "integer"
               },
               {
                 "type": "null"
@@ -16084,6 +18299,9 @@
                 "type": "number"
               },
               {
+                "type": "integer"
+              },
+              {
                 "type": "null"
               }
             ],
@@ -16094,6 +18312,9 @@
             "anyOf": [
               {
                 "type": "number"
+              },
+              {
+                "type": "integer"
               },
               {
                 "type": "null"
@@ -16132,6 +18353,9 @@
                 "type": "number"
               },
               {
+                "type": "integer"
+              },
+              {
                 "type": "null"
               }
             ],
@@ -16142,6 +18366,9 @@
             "anyOf": [
               {
                 "type": "number"
+              },
+              {
+                "type": "integer"
               },
               {
                 "type": "null"
@@ -16252,6 +18479,9 @@
                 "type": "number"
               },
               {
+                "type": "integer"
+              },
+              {
                 "type": "null"
               }
             ],
@@ -16333,7 +18563,7 @@
           "cash_and_due_from_banks": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16345,7 +18575,7 @@
           "restricted_cash": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16357,7 +18587,7 @@
           "federal_funds_sold": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16368,6 +18598,9 @@
           },
           "accounts_receivable": {
             "anyOf": [
+              {
+                "type": "number"
+              },
               {
                 "type": "integer"
               },
@@ -16381,7 +18614,7 @@
           "note_and_lease_receivable": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16393,7 +18626,7 @@
           "inventories": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16405,7 +18638,7 @@
           "customer_and_other_receivables": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16417,7 +18650,7 @@
           "interest_bearing_deposits_at_other_banks": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16429,7 +18662,7 @@
           "time_deposits_placed_and_other_short_term_investments": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16441,7 +18674,7 @@
           "trading_account_securities": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16453,7 +18686,7 @@
           "loans_and_leases": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16465,7 +18698,7 @@
           "allowance_for_loan_and_lease_losses": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16477,7 +18710,7 @@
           "current_deferred_refundable_income_taxes": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16489,7 +18722,7 @@
           "loans_and_leases_net_of_allowance": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16501,7 +18734,7 @@
           "accrued_investment_income": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16513,7 +18746,7 @@
           "other_current_non_operating_assets": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16525,7 +18758,7 @@
           "loans_held_for_sale": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16536,6 +18769,9 @@
           },
           "prepaid_expenses": {
             "anyOf": [
+              {
+                "type": "number"
+              },
               {
                 "type": "integer"
               },
@@ -16549,7 +18785,7 @@
           "plant_property_equipment_gross": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16561,7 +18797,7 @@
           "accumulated_depreciation": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16573,7 +18809,7 @@
           "premises_and_equipment_net": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16585,7 +18821,7 @@
           "mortgage_servicing_rights": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16597,7 +18833,7 @@
           "unearned_premiums_asset": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16609,7 +18845,7 @@
           "non_current_note_lease_receivables": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16621,7 +18857,7 @@
           "deferred_acquisition_cost": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16633,7 +18869,7 @@
           "separate_account_business_assets": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16645,7 +18881,7 @@
           "non_current_deferred_refundable_income_taxes": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16657,7 +18893,7 @@
           "employee_benefit_assets": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16669,7 +18905,7 @@
           "other_non_current_operating_assets": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16681,7 +18917,7 @@
           "other_non_current_non_operating_assets": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16693,7 +18929,7 @@
           "interest_bearing_deposits": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16704,6 +18940,9 @@
           },
           "total_non_current_assets": {
             "anyOf": [
+              {
+                "type": "number"
+              },
               {
                 "type": "integer"
               },
@@ -16717,7 +18956,7 @@
           "non_interest_bearing_deposits": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16729,7 +18968,7 @@
           "federal_funds_purchased_and_securities_sold": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16741,7 +18980,7 @@
           "bankers_acceptance_outstanding": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16753,7 +18992,7 @@
           "current_deferred_payable_income_tax_liabilities": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16765,7 +19004,7 @@
           "accrued_interest_payable": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16777,7 +19016,7 @@
           "accrued_expenses": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16789,7 +19028,7 @@
           "other_short_term_payables": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16801,7 +19040,7 @@
           "customer_deposits": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16813,7 +19052,7 @@
           "dividends_payable": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16825,7 +19064,7 @@
           "claims_and_claim_expense": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16837,7 +19076,7 @@
           "future_policy_benefits": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16849,7 +19088,7 @@
           "current_employee_benefit_liabilities": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16861,7 +19100,7 @@
           "unearned_premiums_liability": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16873,7 +19112,7 @@
           "other_taxes_payable": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16885,7 +19124,7 @@
           "policy_holder_funds": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16897,7 +19136,7 @@
           "other_current_non_operating_liabilities": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16909,7 +19148,7 @@
           "separate_account_business_liabilities": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16921,7 +19160,7 @@
           "other_long_term_liabilities": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16933,7 +19172,7 @@
           "non_current_deferred_revenue": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16945,7 +19184,7 @@
           "non_current_deferred_payable_income_tax_liabilities": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16957,7 +19196,7 @@
           "non_current_employee_benefit_liabilities": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16969,7 +19208,7 @@
           "other_non_current_operating_liabilities": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16981,7 +19220,7 @@
           "other_non_current_non_operating_liabilities": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -16993,7 +19232,7 @@
           "asset_retirement_reserve_litigation_obligation": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -17005,7 +19244,7 @@
           "commitments_contingencies": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -17016,6 +19255,9 @@
           },
           "redeemable_non_controlling_interest": {
             "anyOf": [
+              {
+                "type": "number"
+              },
               {
                 "type": "integer"
               },
@@ -17029,7 +19271,7 @@
           "treasury_stock": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -17041,7 +19283,7 @@
           "participating_policy_holder_equity": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -17053,7 +19295,7 @@
           "other_equity_adjustments": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -17065,7 +19307,7 @@
           "total_preferred_common_equity": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -17077,7 +19319,7 @@
           "non_controlling_interest": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -17089,7 +19331,7 @@
           "total_liabilities_shareholders_equity": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
                 "type": "null"
@@ -19343,6 +21585,25 @@
       },
       "CompanyFilings": {
         "properties": {
+          "filing_date": {
+            "type": "string",
+            "format": "date",
+            "title": "openbb",
+            "description": "The date of the filing. "
+          },
+          "accepted_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Accepted date of the filing. "
+          },
           "symbol": {
             "anyOf": [
               {
@@ -19367,32 +21628,34 @@
             "title": "openbb",
             "description": "Central Index Key (CIK) for the requested entity. "
           },
-          "filing_date": {
-            "type": "string",
-            "format": "date",
-            "title": "openbb",
-            "description": "Filing date of the SEC report. "
-          },
-          "accepted_date": {
-            "type": "string",
-            "format": "date-time",
-            "title": "openbb",
-            "description": "Accepted date of the SEC report. "
-          },
           "report_type": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "openbb",
-            "description": "Type of the SEC report. "
+            "description": "Type of filing. "
           },
           "filing_url": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "openbb",
-            "description": "URL to the filing page on the SEC site. "
+            "description": "URL to the filing page. "
           },
           "report_url": {
             "type": "string",
             "title": "openbb",
-            "description": "URL to the actual report on the SEC site. "
+            "description": "URL to the actual report. "
           },
           "id": {
             "anyOf": [
@@ -19653,9 +21916,6 @@
         "type": "object",
         "required": [
           "filing_date",
-          "accepted_date",
-          "report_type",
-          "filing_url",
           "report_url"
         ],
         "title": "CompanyFilings"
@@ -19681,10 +21941,7 @@
           "image": {
             "anyOf": [
               {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
+                "type": "string"
               },
               {
                 "type": "null"
@@ -19750,18 +22007,24 @@
             "anyOf": [
               {
                 "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "items": {
                   "additionalProperties": {
                     "type": "string"
                   },
                   "type": "object"
                 },
                 "type": "array"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "benzinga,fmp",
@@ -19911,8 +22174,7 @@
           "symbols",
           "date",
           "title",
-          "url",
-          "images"
+          "url"
         ],
         "title": "CompanyNews"
       },
@@ -20463,6 +22725,9 @@
                 "exclusiveMinimum": 0.0
               },
               {
+                "type": "integer"
+              },
+              {
                 "type": "null"
               }
             ],
@@ -20600,8 +22865,7 @@
           "vwap": {
             "anyOf": [
               {
-                "type": "number",
-                "exclusiveMinimum": 0.0
+                "type": "number"
               },
               {
                 "type": "null"
@@ -20904,6 +23168,394 @@
         ],
         "title": "CurrencyPairs"
       },
+      "CurrencyReferenceRates": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "openbb",
+            "description": "The date of the data. "
+          },
+          "EUR": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Euro. "
+          },
+          "USD": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "US Dollar. "
+          },
+          "JPY": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Japanese Yen. "
+          },
+          "BGN": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Bulgarian Lev. "
+          },
+          "CZK": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Czech Koruna. "
+          },
+          "DKK": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Danish Krone. "
+          },
+          "GBP": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Pound Sterling. "
+          },
+          "HUF": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Hungarian Forint. "
+          },
+          "PLN": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Polish Zloty. "
+          },
+          "RON": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Romanian Leu. "
+          },
+          "SEK": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Swedish Krona. "
+          },
+          "CHF": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Swiss Franc. "
+          },
+          "ISK": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Icelandic Krona. "
+          },
+          "NOK": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Norwegian Krone. "
+          },
+          "TRY": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Turkish Lira. "
+          },
+          "AUD": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Australian Dollar. "
+          },
+          "BRL": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Brazilian Real. "
+          },
+          "CAD": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Canadian Dollar. "
+          },
+          "CNY": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Chinese Yuan. "
+          },
+          "HKD": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Hong Kong Dollar. "
+          },
+          "IDR": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Indonesian Rupiah. "
+          },
+          "ILS": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Israeli Shekel. "
+          },
+          "INR": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Indian Rupee. "
+          },
+          "KRW": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "South Korean Won. "
+          },
+          "MXN": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Mexican Peso. "
+          },
+          "MYR": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Malaysian Ringgit. "
+          },
+          "NZD": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "New Zealand Dollar. "
+          },
+          "PHP": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Philippine Peso. "
+          },
+          "SGD": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Singapore Dollar. "
+          },
+          "THB": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Thai Baht. "
+          },
+          "ZAR": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "South African Rand. "
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "date"
+        ],
+        "title": "CurrencyReferenceRates"
+      },
       "DiscountWindowPrimaryCreditRate": {
         "properties": {
           "date": {
@@ -21007,6 +23659,33 @@
           "rate"
         ],
         "title": "ESTR"
+      },
+      "EUYieldCurve": {
+        "properties": {
+          "maturity": {
+            "type": "string",
+            "title": "openbb",
+            "description": "Yield curve rate maturity. "
+          },
+          "rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Yield curve rate. "
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "maturity"
+        ],
+        "title": "EUYieldCurve"
       },
       "EarningsCallTranscript": {
         "properties": {
@@ -21378,8 +24057,16 @@
       "EquityHistorical": {
         "properties": {
           "date": {
-            "type": "string",
-            "format": "date-time",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
             "title": "openbb",
             "description": "The date of the data. "
           },
@@ -21410,6 +24097,9 @@
               },
               {
                 "type": "integer"
+              },
+              {
+                "type": "null"
               }
             ],
             "title": "openbb",
@@ -21689,8 +24379,7 @@
           "open",
           "high",
           "low",
-          "close",
-          "volume"
+          "close"
         ],
         "title": "EquityHistorical"
       },
@@ -22562,44 +25251,12 @@
       },
       "EquityQuote": {
         "properties": {
-          "day_low": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "openbb",
-            "description": "Lowest price of the stock in the current trading day. "
-          },
-          "day_high": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "openbb",
-            "description": "Highest price of the stock in the current trading day. "
-          },
-          "date": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "date-time"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "openbb",
-            "description": "The date of the data. "
-          },
           "symbol": {
+            "type": "string",
+            "title": "openbb",
+            "description": "Symbol representing the entity requested in the data. "
+          },
+          "asset_type": {
             "anyOf": [
               {
                 "type": "string"
@@ -22608,8 +25265,8 @@
                 "type": "null"
               }
             ],
-            "title": "fmp",
-            "description": "Symbol of the company. (provider: fmp)"
+            "title": "openbb",
+            "description": "Type of asset - i.e, stock, ETF, etc. "
           },
           "name": {
             "anyOf": [
@@ -22620,10 +25277,22 @@
                 "type": "null"
               }
             ],
-            "title": "fmp",
-            "description": "Name of the company. (provider: fmp)"
+            "title": "openbb",
+            "description": "Name of the company or asset. "
           },
-          "price": {
+          "exchange": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The name or symbol of the venue where the data is from. "
+          },
+          "bid": {
             "anyOf": [
               {
                 "type": "number"
@@ -22632,10 +25301,34 @@
                 "type": "null"
               }
             ],
-            "title": "fmp",
-            "description": "Current trading price of the equity. (provider: fmp)"
+            "title": "openbb",
+            "description": "Price of the top bid order. "
           },
-          "changes_percentage": {
+          "bid_size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price. "
+          },
+          "bid_exchange": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The specific trading venue where the purchase order was placed. "
+          },
+          "ask": {
             "anyOf": [
               {
                 "type": "number"
@@ -22644,8 +25337,315 @@
                 "type": "null"
               }
             ],
-            "title": "fmp",
-            "description": "Change percentage of the equity price. (provider: fmp)"
+            "title": "openbb",
+            "description": "Price of the top ask order. "
+          },
+          "ask_size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "This represents the number of round lot orders at the given price. The normal round lot size is 100 shares. A size of 2 means there are 200 shares available at the given price. "
+          },
+          "ask_exchange": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The specific trading venue where the sale order was placed. "
+          },
+          "quote_conditions": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Conditions or condition codes applicable to the quote. "
+          },
+          "quote_indicators": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Indicators or indicator codes applicable to the participant quote related to the price bands for the issue, or the affect the quote has on the NBBO. "
+          },
+          "sales_conditions": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Conditions or condition codes applicable to the sale. "
+          },
+          "sequence_number": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The sequence number represents the sequence in which message events happened. These are increasing and unique per ticker symbol, but will not always be sequential (e.g., 1, 2, 6, 9, 10, 11). "
+          },
+          "market_center": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The ID of the UTP participant that originated the message. "
+          },
+          "participant_timestamp": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Timestamp for when the quote was generated by the exchange. "
+          },
+          "trf_timestamp": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Timestamp for when the TRF (Trade Reporting Facility) received the message. "
+          },
+          "sip_timestamp": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Timestamp for when the SIP (Security Information Processor) received the message from the exchange. "
+          },
+          "last_price": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Price of the last trade. "
+          },
+          "last_tick": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Whether the last sale was an up or down tick. "
+          },
+          "last_size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Size of the last trade. "
+          },
+          "last_timestamp": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Date and Time when the last price was recorded. "
+          },
+          "open": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The open price. "
+          },
+          "high": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The high price. "
+          },
+          "low": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The low price. "
+          },
+          "close": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The close price. "
+          },
+          "volume": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The trading volume. "
+          },
+          "exchange_volume": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Volume of shares exchanged during the trading day on the specific exchange. "
+          },
+          "prev_close": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": ""
           },
           "change": {
             "anyOf": [
@@ -22656,8 +25656,21 @@
                 "type": "null"
               }
             ],
-            "title": "fmp",
-            "description": "Change in the equity price. (provider: fmp)"
+            "title": "openbb",
+            "description": "Change in price from previous close. "
+          },
+          "change_percent": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Change in price as a normalized percentage. ",
+            "x-frontendmultiply": 100
           },
           "year_high": {
             "anyOf": [
@@ -22668,8 +25681,8 @@
                 "type": "null"
               }
             ],
-            "title": "fmp",
-            "description": "Highest price of the equity in the last 52 weeks. (provider: fmp)"
+            "title": "openbb",
+            "description": "The one year high (52W High). "
           },
           "year_low": {
             "anyOf": [
@@ -22680,8 +25693,44 @@
                 "type": "null"
               }
             ],
+            "title": "openbb",
+            "description": "The one year low (52W Low). "
+          },
+          "price_avg50": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "fmp",
-            "description": "Lowest price of the equity in the last 52 weeks. (provider: fmp)"
+            "description": "50 day moving average price. (provider: fmp)"
+          },
+          "price_avg200": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "fmp",
+            "description": "200 day moving average price. (provider: fmp)"
+          },
+          "avg_volume": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "fmp",
+            "description": "Average volume over the last 10 trading days. (provider: fmp)"
           },
           "market_cap": {
             "anyOf": [
@@ -22695,31 +25744,7 @@
             "title": "fmp",
             "description": "Market cap of the company. (provider: fmp)"
           },
-          "price_avg50": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "fmp",
-            "description": "50 days average price of the equity. (provider: fmp)"
-          },
-          "price_avg200": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "fmp",
-            "description": "200 days average price of the equity. (provider: fmp)"
-          },
-          "volume": {
+          "shares_outstanding": {
             "anyOf": [
               {
                 "type": "integer"
@@ -22729,55 +25754,7 @@
               }
             ],
             "title": "fmp",
-            "description": "Volume of the equity in the current trading day. (provider: fmp)"
-          },
-          "avg_volume": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "fmp",
-            "description": "Average volume of the equity in the last 10 trading days. (provider: fmp)"
-          },
-          "exchange": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "fmp",
-            "description": "Exchange the equity is traded on. (provider: fmp)"
-          },
-          "open": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "fmp",
-            "description": "Opening price of the equity in the current trading day. (provider: fmp)"
-          },
-          "previous_close": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "fmp",
-            "description": "Previous closing price of the equity. (provider: fmp)"
+            "description": "Number of shares outstanding. (provider: fmp)"
           },
           "eps": {
             "anyOf": [
@@ -22789,7 +25766,7 @@
               }
             ],
             "title": "fmp",
-            "description": "Earnings per share of the equity. (provider: fmp)"
+            "description": "Earnings per share. (provider: fmp)"
           },
           "pe": {
             "anyOf": [
@@ -22801,10 +25778,14 @@
               }
             ],
             "title": "fmp",
-            "description": "Price earnings ratio of the equity. (provider: fmp)"
+            "description": "Price earnings ratio. (provider: fmp)"
           },
           "earnings_announcement": {
             "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
               {
                 "type": "string"
               },
@@ -22813,176 +25794,31 @@
               }
             ],
             "title": "fmp",
-            "description": "Earnings announcement date of the equity. (provider: fmp)"
+            "description": "Upcoming earnings announcement date. (provider: fmp)"
           },
-          "shares_outstanding": {
+          "is_darkpool": {
             "anyOf": [
               {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "fmp",
-            "description": "Number of shares outstanding of the equity. (provider: fmp)"
-          },
-          "last_price": {
-            "anyOf": [
-              {
-                "type": "number"
+                "type": "boolean"
               },
               {
                 "type": "null"
               }
             ],
             "title": "intrinio",
-            "description": "Price of the last trade. (provider: intrinio)"
+            "description": "Whether or not the current trade is from a darkpool. (provider: intrinio)"
           },
-          "last_time": {
+          "source": {
             "anyOf": [
               {
-                "type": "string",
-                "format": "date-time"
+                "type": "string"
               },
               {
                 "type": "null"
               }
             ],
             "title": "intrinio",
-            "description": "Date and Time when the last trade occurred. (provider: intrinio)"
-          },
-          "last_size": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "Size of the last trade. (provider: intrinio)"
-          },
-          "bid_price": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "Price of the top bid order. (provider: intrinio)"
-          },
-          "bid_size": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "Size of the top bid order. (provider: intrinio)"
-          },
-          "ask_price": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "Price of the top ask order. (provider: intrinio)"
-          },
-          "ask_size": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "Size of the top ask order. (provider: intrinio)"
-          },
-          "open_price": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "Open price for the trading day. (provider: intrinio)"
-          },
-          "close_price": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "Closing price for the trading day (IEX source only). (provider: intrinio)"
-          },
-          "high_price": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "High Price for the trading day. (provider: intrinio)"
-          },
-          "low_price": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "Low Price for the trading day. (provider: intrinio)"
-          },
-          "exchange_volume": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "Number of shares exchanged during the trading day on the exchange. (provider: intrinio)"
-          },
-          "market_volume": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "Number of shares exchanged during the trading day for the whole market. (provider: intrinio)"
+            "description": "Source of the Intrinio data. (provider: intrinio)"
           },
           "updated_on": {
             "anyOf": [
@@ -22997,97 +25833,10 @@
             "title": "intrinio",
             "description": "Date and Time when the data was last updated. (provider: intrinio)"
           },
-          "source": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "Source of the data. (provider: intrinio)"
-          },
-          "listing_venue": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "Listing venue where the trade took place (SIP source only). (provider: intrinio)"
-          },
-          "sales_conditions": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "Indicates any sales condition modifiers associated with the trade. (provider: intrinio)"
-          },
-          "quote_conditions": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "Indicates any quote condition modifiers associated with the trade. (provider: intrinio)"
-          },
-          "market_center_code": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "Market center character code. (provider: intrinio)"
-          },
-          "is_darkpool": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "Whether or not the current trade is from a darkpool. (provider: intrinio)"
-          },
-          "messages": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "intrinio",
-            "description": "Messages associated with the endpoint. (provider: intrinio)"
-          },
           "security": {
             "anyOf": [
               {
-                "type": "object"
+                "$ref": "#/components/schemas/IntrinioSecurity"
               },
               {
                 "type": "null"
@@ -23099,6 +25848,9 @@
         },
         "additionalProperties": true,
         "type": "object",
+        "required": [
+          "symbol"
+        ],
         "title": "EquityQuote"
       },
       "EquityScreener": {
@@ -26701,10 +29453,10 @@
           "release_id": {
             "anyOf": [
               {
-                "type": "string"
+                "type": "integer"
               },
               {
-                "type": "integer"
+                "type": "string"
               },
               {
                 "type": "null"
@@ -29225,14 +31977,28 @@
             "description": "Symbol representing the entity requested in the data. "
           },
           "name": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "openbb",
             "description": "Name of the constituent company in the index. "
           },
           "sector": {
-            "type": "string",
-            "title": "openbb",
-            "description": "Sector the constituent company in the index belongs to. "
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "fmp",
+            "description": "Sector the constituent company in the index belongs to. (provider: fmp)"
           },
           "sub_sector": {
             "anyOf": [
@@ -29243,8 +32009,8 @@
                 "type": "null"
               }
             ],
-            "title": "openbb",
-            "description": "Sub-sector the constituent company in the index belongs to. "
+            "title": "fmp",
+            "description": "Sub-sector the constituent company in the index belongs to. (provider: fmp)"
           },
           "headquarter": {
             "anyOf": [
@@ -29255,8 +32021,8 @@
                 "type": "null"
               }
             ],
-            "title": "openbb",
-            "description": "Location of the headquarter of the constituent company in the index. "
+            "title": "fmp",
+            "description": "Location of the headquarter of the constituent company in the index. (provider: fmp)"
           },
           "date_first_added": {
             "anyOf": [
@@ -29271,13 +32037,20 @@
                 "type": "null"
               }
             ],
-            "title": "openbb",
-            "description": "Date the constituent company was added to the index. "
+            "title": "fmp",
+            "description": "Date the constituent company was added to the index. (provider: fmp)"
           },
           "cik": {
-            "type": "integer",
-            "title": "openbb",
-            "description": "Central Index Key (CIK) for the requested entity. "
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "fmp",
+            "description": "Central Index Key (CIK) for the requested entity. (provider: fmp)"
           },
           "founded": {
             "anyOf": [
@@ -29292,19 +32065,185 @@
                 "type": "null"
               }
             ],
-            "title": "openbb",
-            "description": "Founding year of the constituent company in the index. "
+            "title": "fmp",
+            "description": "Founding year of the constituent company in the index. (provider: fmp)"
           }
         },
         "additionalProperties": true,
         "type": "object",
         "required": [
-          "symbol",
-          "name",
-          "sector",
-          "cik"
+          "symbol"
         ],
         "title": "IndexConstituents"
+      },
+      "IndexHistorical": {
+        "properties": {
+          "date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "string",
+                "format": "date-time"
+              }
+            ],
+            "title": "openbb",
+            "description": "The date of the data. "
+          },
+          "open": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The open price. "
+          },
+          "high": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The high price. "
+          },
+          "low": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The low price. "
+          },
+          "close": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The close price. "
+          },
+          "volume": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The trading volume. "
+          },
+          "adj_close": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "fmp",
+            "description": "The adjusted close price. (provider: fmp)"
+          },
+          "unadjusted_volume": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "fmp",
+            "description": "Unadjusted volume of the symbol. (provider: fmp)"
+          },
+          "change": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "fmp",
+            "description": "Change in the price of the symbol from the previous day. (provider: fmp)"
+          },
+          "change_percent": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "fmp",
+            "description": "Change % in the price of the symbol. (provider: fmp)"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "fmp",
+            "description": "Human readable format of the date. (provider: fmp)"
+          },
+          "change_over_time": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "fmp",
+            "description": "Change % in the price of the symbol over a period of time. (provider: fmp)"
+          },
+          "transactions": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "polygon",
+            "description": "Number of transactions for the symbol in the time period. (provider: polygon)"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "date"
+        ],
+        "title": "IndexHistorical"
       },
       "InsiderTrading": {
         "properties": {
@@ -29314,15 +32253,36 @@
             "description": "Symbol representing the entity requested in the data. "
           },
           "company_cik": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "openbb",
-            "description": "Company CIK of the insider trading. "
+            "description": "CIK number of the company. "
           },
           "filing_date": {
-            "type": "string",
-            "format": "date-time",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "openbb",
-            "description": "Filing date of the insider trading. "
+            "description": "Filing date of the trade. "
           },
           "transaction_date": {
             "anyOf": [
@@ -29335,17 +32295,34 @@
               }
             ],
             "title": "openbb",
-            "description": "Transaction date of the insider trading. "
+            "description": "Date of the transaction. "
           },
           "owner_cik": {
-            "type": "integer",
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "openbb",
-            "description": "Reporting CIK of the insider trading. "
+            "description": "Reporting individual's CIK. "
           },
           "owner_name": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "openbb",
-            "description": "Reporting name of the insider trading. "
+            "description": "Name of the reporting individual. "
           },
           "owner_title": {
             "anyOf": [
@@ -29357,12 +32334,19 @@
               }
             ],
             "title": "openbb",
-            "description": "Designation of owner of the insider trading. "
+            "description": "The title held by the reporting individual. "
           },
           "transaction_type": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "openbb",
-            "description": "Transaction type of the insider trading. "
+            "description": "Type of transaction being reported. "
           },
           "acquisition_or_disposition": {
             "anyOf": [
@@ -29374,7 +32358,7 @@
               }
             ],
             "title": "openbb",
-            "description": "Acquisition or disposition of the insider trading. "
+            "description": "Acquisition or disposition of the shares. "
           },
           "security_type": {
             "anyOf": [
@@ -29386,7 +32370,7 @@
               }
             ],
             "title": "openbb",
-            "description": "Security type of the insider trading. "
+            "description": "The type of security transacted. "
           },
           "securities_owned": {
             "anyOf": [
@@ -29398,7 +32382,7 @@
               }
             ],
             "title": "openbb",
-            "description": "Number of securities owned in the insider trading. "
+            "description": "Number of securities owned by the reporting individual. "
           },
           "securities_transacted": {
             "anyOf": [
@@ -29410,7 +32394,7 @@
               }
             ],
             "title": "openbb",
-            "description": "Securities transacted of the insider trading. "
+            "description": "Number of securities transacted by the reporting individual. "
           },
           "transaction_price": {
             "anyOf": [
@@ -29422,12 +32406,19 @@
               }
             ],
             "title": "openbb",
-            "description": "Price of the insider trading. "
+            "description": "The price of the transaction. "
           },
           "filing_url": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "openbb",
-            "description": "Link of the insider trading. "
+            "description": "Link to the filing. "
           },
           "form_type": {
             "anyOf": [
@@ -29463,7 +32454,7 @@
               }
             ],
             "title": "intrinio",
-            "description": "Conversion/Exercise price of the insider trading. (provider: intrinio)"
+            "description": "Conversion/Exercise price of the shares. (provider: intrinio)"
           },
           "deemed_execution_date": {
             "anyOf": [
@@ -29476,7 +32467,7 @@
               }
             ],
             "title": "intrinio",
-            "description": "Deemed execution date of the insider trading. (provider: intrinio)"
+            "description": "Deemed execution date of the trade. (provider: intrinio)"
           },
           "exercise_date": {
             "anyOf": [
@@ -29489,7 +32480,7 @@
               }
             ],
             "title": "intrinio",
-            "description": "Exercise date of the insider trading. (provider: intrinio)"
+            "description": "Exercise date of the trade. (provider: intrinio)"
           },
           "expiration_date": {
             "anyOf": [
@@ -29502,7 +32493,7 @@
               }
             ],
             "title": "intrinio",
-            "description": "Expiration date of the insider trading. (provider: intrinio)"
+            "description": "Expiration date of the derivative. (provider: intrinio)"
           },
           "underlying_security_title": {
             "anyOf": [
@@ -29518,6 +32509,9 @@
           },
           "underlying_shares": {
             "anyOf": [
+              {
+                "type": "number"
+              },
               {
                 "type": "integer"
               },
@@ -29616,13 +32610,7 @@
         "additionalProperties": true,
         "type": "object",
         "required": [
-          "symbol",
-          "company_cik",
-          "filing_date",
-          "owner_cik",
-          "owner_name",
-          "transaction_type",
-          "filing_url"
+          "symbol"
         ],
         "title": "InsiderTrading"
       },
@@ -30373,8 +33361,7 @@
         "additionalProperties": true,
         "type": "object",
         "required": [
-          "id",
-          "shareClassFigi"
+          "id"
         ],
         "title": "IntrinioSecurity",
         "description": "Intrinio Security Data."
@@ -31669,10 +34656,10 @@
           "timestamp": {
             "anyOf": [
               {
-                "type": "integer"
+                "type": "number"
               },
               {
-                "type": "number"
+                "type": "integer"
               },
               {
                 "type": "null"
@@ -32128,7 +35115,7 @@
         "title": "OBBject[CompanyOverview]",
         "description": "OBBject with results of type 'CompanyOverview'."
       },
-      "OBBject_EquityInfo_": {
+      "OBBject_CurrencyReferenceRates_": {
         "properties": {
           "_id": {
             "type": "string",
@@ -32137,7 +35124,7 @@
           "results": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/EquityInfo"
+                "$ref": "#/components/schemas/CurrencyReferenceRates"
               },
               {
                 "type": "null"
@@ -32190,8 +35177,8 @@
           }
         },
         "type": "object",
-        "title": "OBBject[EquityInfo]",
-        "description": "OBBject with results of type 'EquityInfo'."
+        "title": "OBBject[CurrencyReferenceRates]",
+        "description": "OBBject with results of type 'CurrencyReferenceRates'."
       },
       "OBBject_EquityPeers_": {
         "properties": {
@@ -32529,6 +35516,75 @@
         "type": "object",
         "title": "OBBject[AvailableIndices]",
         "description": "OBBject with results of type 'AvailableIndices'."
+      },
+      "OBBject_List_BalanceOfPayments__": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/BalanceOfPayments"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject[BalanceOfPayments]",
+        "description": "OBBject with results of type 'BalanceOfPayments'."
       },
       "OBBject_List_BalanceSheetGrowth__": {
         "properties": {
@@ -33841,6 +36897,75 @@
         "title": "OBBject[ESTR]",
         "description": "OBBject with results of type 'ESTR'."
       },
+      "OBBject_List_EUYieldCurve__": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/EUYieldCurve"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject[EUYieldCurve]",
+        "description": "OBBject with results of type 'EUYieldCurve'."
+      },
       "OBBject_List_EarningsCallTranscript__": {
         "properties": {
           "_id": {
@@ -34116,6 +37241,75 @@
         "type": "object",
         "title": "OBBject[EquityHistorical]",
         "description": "OBBject with results of type 'EquityHistorical'."
+      },
+      "OBBject_List_EquityInfo__": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/EquityInfo"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject[EquityInfo]",
+        "description": "OBBject with results of type 'EquityInfo'."
       },
       "OBBject_List_EquityNBBO__": {
         "properties": {
@@ -36393,6 +39587,75 @@
         "type": "object",
         "title": "OBBject[IndexConstituents]",
         "description": "OBBject with results of type 'IndexConstituents'."
+      },
+      "OBBject_List_IndexHistorical__": {
+        "properties": {
+          "_id": {
+            "type": "string",
+            "title": " Id"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/IndexHistorical"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results",
+            "description": "Serializable results."
+          },
+          "provider": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider",
+            "description": "Provider name."
+          },
+          "warnings": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/Warning_"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warnings",
+            "description": "List of warnings."
+          },
+          "chart": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Chart"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Chart object."
+          },
+          "extra": {
+            "type": "object",
+            "title": "Extra",
+            "description": "Extra info."
+          }
+        },
+        "type": "object",
+        "title": "OBBject[IndexHistorical]",
+        "description": "OBBject with results of type 'IndexHistorical'."
       },
       "OBBject_List_InsiderTrading__": {
         "properties": {
@@ -38821,11 +42084,6 @@
       },
       "OptionsChains": {
         "properties": {
-          "contract_symbol": {
-            "type": "string",
-            "title": "openbb",
-            "description": "Contract symbol for the option. "
-          },
           "symbol": {
             "anyOf": [
               {
@@ -38836,7 +42094,25 @@
               }
             ],
             "title": "openbb",
-            "description": "Symbol representing the entity requested in the data. Here its the underlying symbol for the option. "
+            "description": "Symbol representing the entity requested in the data. Here, it is the underlying symbol for the option. "
+          },
+          "contract_symbol": {
+            "type": "string",
+            "title": "openbb",
+            "description": "Contract symbol for the option. "
+          },
+          "eod_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Date for which the options chains are returned. "
           },
           "expiration": {
             "type": "string",
@@ -38854,59 +42130,22 @@
             "title": "openbb",
             "description": "Call or Put. "
           },
-          "eod_date": {
+          "open_interest": {
             "anyOf": [
               {
-                "type": "string",
-                "format": "date"
+                "type": "integer"
               },
               {
                 "type": "null"
               }
             ],
             "title": "openbb",
-            "description": "Date for which the options chains are returned. "
-          },
-          "close": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "openbb",
-            "description": "The close price. "
-          },
-          "close_bid": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "openbb",
-            "description": "The closing bid price for the option that day. "
-          },
-          "close_ask": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "openbb",
-            "description": "The closing ask price for the option that day. "
+            "description": "Open interest on the contract. "
           },
           "volume": {
             "anyOf": [
               {
-                "type": "number"
+                "type": "integer"
               },
               {
                 "type": "null"
@@ -38914,6 +42153,102 @@
             ],
             "title": "openbb",
             "description": "The trading volume. "
+          },
+          "theoretical_price": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Theoretical value of the option. "
+          },
+          "last_trade_price": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Last trade price of the option. "
+          },
+          "tick": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Whether the last tick was up or down in price. "
+          },
+          "bid": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Current bid price for the option. "
+          },
+          "bid_size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Bid size for the option. "
+          },
+          "ask": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Current ask price for the option. "
+          },
+          "ask_size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Ask size for the option. "
+          },
+          "mark": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The mid-price between the latest bid and ask. "
           },
           "open": {
             "anyOf": [
@@ -38951,18 +42286,6 @@
             "title": "openbb",
             "description": "The opening ask price for the option that day. "
           },
-          "open_interest": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "openbb",
-            "description": "Open interest on the contract. "
-          },
           "high": {
             "anyOf": [
               {
@@ -38974,54 +42297,6 @@
             ],
             "title": "openbb",
             "description": "The high price. "
-          },
-          "low": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "openbb",
-            "description": "The low price. "
-          },
-          "mark": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "openbb",
-            "description": "The mid-price between the latest bid-ask spread. "
-          },
-          "ask_high": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "openbb",
-            "description": "The highest ask price for the option that day. "
-          },
-          "ask_low": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "openbb",
-            "description": "The lowest ask price for the option that day. "
           },
           "bid_high": {
             "anyOf": [
@@ -39035,6 +42310,30 @@
             "title": "openbb",
             "description": "The highest bid price for the option that day. "
           },
+          "ask_high": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The highest ask price for the option that day. "
+          },
+          "low": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The low price. "
+          },
           "bid_low": {
             "anyOf": [
               {
@@ -39046,6 +42345,165 @@
             ],
             "title": "openbb",
             "description": "The lowest bid price for the option that day. "
+          },
+          "ask_low": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The lowest ask price for the option that day. "
+          },
+          "close": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The close price. "
+          },
+          "close_size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The closing trade size for the option that day. "
+          },
+          "close_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The time of the closing price for the option that day. "
+          },
+          "close_bid": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The closing bid price for the option that day. "
+          },
+          "close_bid_size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The closing bid size for the option that day. "
+          },
+          "close_bid_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The time of the bid closing price for the option that day. "
+          },
+          "close_ask": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The closing ask price for the option that day. "
+          },
+          "close_ask_size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The closing ask size for the option that day. "
+          },
+          "close_ask_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The time of the ask closing price for the option that day. "
+          },
+          "prev_close": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": ""
+          },
+          "change": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The change in the price of the option. "
+          },
+          "change_percent": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Change, in normalizezd percentage points, of the option. "
           },
           "implied_volatility": {
             "anyOf": [
@@ -39106,6 +42564,30 @@
             ],
             "title": "openbb",
             "description": "Vega of the option. "
+          },
+          "rho": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "Rho of the option. "
+          },
+          "exercise_style": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "intrinio",
+            "description": "The exercise style of the option, American or European. (provider: intrinio)"
           }
         },
         "additionalProperties": true,
@@ -39705,6 +43187,232 @@
             "title": "openbb",
             "description": "News base URL of the price target. "
           },
+          "action_company": {
+            "type": "string",
+            "enum": [
+              "Downgrades",
+              "Maintains",
+              "Reinstates",
+              "Reiterates",
+              "Upgrades",
+              "Assumes",
+              "Initiates Coverage On",
+              "Terminates Coverage On",
+              "Removes",
+              "Suspends",
+              "Firm Dissolved",
+              ""
+            ],
+            "title": "benzinga",
+            "description": "Description of the change in rating from firm's last rating.Note that all of these terms are precisely defined. (provider: benzinga)"
+          },
+          "action_pt": {
+            "type": "string",
+            "enum": [
+              "Announces",
+              "Maintains",
+              "Lowers",
+              "Raises",
+              "Removes",
+              "Adjusts",
+              ""
+            ],
+            "title": "benzinga",
+            "description": "Description of the change in price target from firm's last price target. (provider: benzinga)"
+          },
+          "adjusted_pt_prior": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "benzinga",
+            "description": "Analyst's prior price target, adjusted to account for stock splits and stock dividends. If none are applicable, the pt_prior value is used. (provider: benzinga)"
+          },
+          "analyst_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "benzinga",
+            "description": "Id of the analyst. (provider: benzinga)"
+          },
+          "currency": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "benzinga",
+            "description": "Currency the data is denominated in. (provider: benzinga)"
+          },
+          "exchange": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "benzinga",
+            "description": "Exchange of the price target. (provider: benzinga)"
+          },
+          "id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "benzinga",
+            "description": "Unique ID of this entry. (provider: benzinga)"
+          },
+          "importance": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "benzinga",
+            "description": "Subjective Basis of How Important Event is to Market. 5 = High (provider: benzinga)"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "benzinga",
+            "description": "Notes of the price target. (provider: benzinga)"
+          },
+          "pt_prior": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "benzinga",
+            "description": "Analyst's prior price target. (provider: benzinga)"
+          },
+          "rating_current": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "benzinga",
+            "description": "The analyst's rating for the company. (provider: benzinga)"
+          },
+          "rating_prior": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "benzinga",
+            "description": "Prior analyst rating for the company. (provider: benzinga)"
+          },
+          "ratings_accuracy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "benzinga",
+            "description": "Ratings accuracy of the price target. (provider: benzinga)"
+          },
+          "time": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "benzinga",
+            "description": "Last updated timestamp, UTC. (provider: benzinga)"
+          },
+          "updated": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "benzinga",
+            "description": "Last updated timestamp, UTC. (provider: benzinga)"
+          },
+          "url": {
+            "type": "string",
+            "title": "benzinga",
+            "description": "URL for analyst ratings page for this ticker on Benzinga.com. (provider: benzinga)"
+          },
+          "url_calendar": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "benzinga",
+            "description": "URL for analyst ratings page for this ticker on Benzinga.com. (provider: benzinga)"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "benzinga",
+            "description": "Name of company that is subject of rating. (provider: benzinga)"
+          },
           "new_grade": {
             "anyOf": [
               {
@@ -39849,11 +43557,48 @@
       },
       "RevenueBusinessLine": {
         "properties": {
-          "date": {
+          "period_ending": {
             "type": "string",
             "format": "date",
             "title": "openbb",
-            "description": "The date of the data. "
+            "description": "The end date of the reporting period. "
+          },
+          "fiscal_period": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The fiscal period of the reporting period. "
+          },
+          "fiscal_year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The fiscal year of the reporting period. "
+          },
+          "filing_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The filing date of the report. "
           },
           "business_line": {
             "additionalProperties": {
@@ -39861,24 +43606,61 @@
             },
             "type": "object",
             "title": "openbb",
-            "description": "Day level data containing the revenue of the business line. "
+            "description": "Dictionary containing the revenue of the business line. "
           }
         },
         "additionalProperties": true,
         "type": "object",
         "required": [
-          "date",
+          "period_ending",
           "business_line"
         ],
         "title": "RevenueBusinessLine"
       },
       "RevenueGeographic": {
         "properties": {
-          "date": {
+          "period_ending": {
             "type": "string",
             "format": "date",
             "title": "openbb",
-            "description": "The date of the data. "
+            "description": "The end date of the reporting period. "
+          },
+          "fiscal_period": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The fiscal period of the reporting period. "
+          },
+          "fiscal_year": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The fiscal year of the reporting period. "
+          },
+          "filing_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "openbb",
+            "description": "The filing date of the report. "
           },
           "geographic_segment": {
             "additionalProperties": {
@@ -39886,73 +43668,13 @@
             },
             "type": "object",
             "title": "openbb",
-            "description": "Day level data containing the revenue of the geographic segment. "
-          },
-          "americas": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "openbb",
-            "description": "Revenue from the the American segment. "
-          },
-          "europe": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "openbb",
-            "description": "Revenue from the the European segment. "
-          },
-          "greater_china": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "openbb",
-            "description": "Revenue from the the Greater China segment. "
-          },
-          "japan": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "openbb",
-            "description": "Revenue from the the Japan segment. "
-          },
-          "rest_of_asia_pacific": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "openbb",
-            "description": "Revenue from the the Rest of Asia Pacific segment. "
+            "description": "Dictionary of the revenue by geographic segment. "
           }
         },
         "additionalProperties": true,
         "type": "object",
         "required": [
-          "date",
+          "period_ending",
           "geographic_segment"
         ],
         "title": "RevenueGeographic"
@@ -41289,13 +45011,20 @@
             "description": "Title of the news. "
           },
           "images": {
-            "items": {
-              "additionalProperties": {
-                "type": "string"
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object"
+                },
+                "type": "array"
               },
-              "type": "object"
-            },
-            "type": "array",
+              {
+                "type": "null"
+              }
+            ],
             "title": "openbb",
             "description": "Images associated with the news. "
           },
