@@ -8,7 +8,7 @@ Publishing checklist:
 2. Ensure all integration tests pass: `pytest openbb_platform -m integration`
 3. Run `python -c "import openbb; openbb.build()"` to build the static assets. Make sure that only required extensions are installed.
 
-> **Note** Run `python -c "import openbb"` after building the static to check that no additional static is being built.
+    > **Note** Run `python -c "import openbb"` after building the static to check that no additional static is being built.
 
 4. Run the following commands for publishing the packages to PyPI:
 
@@ -17,11 +17,13 @@ Publishing checklist:
 
     1. For the core package run: `python build/pypi/openbb_platform/publish.py --core`
     2. For the extension and provider packages run: `python build/pypi/openbb_platform/publish.py --extensions`
-    3. For the `openbb` package, do the following
+    3. For the `openbb` package - **which requires manual publishing** - do the following
          - Bump the dependency package versions
          - Re-build the static assets that are bundled with the package
+         - Run unit tests to validate the existence of deprecated endpoints
 
-    > Note that, in order for packages to pick up the latest versions of dependencies, it might be necessary to clear the local cache of the dependencies:
+    > [!TIP]
+    > Note that, in order for packages to pick up the latest versions of dependencies, it is advised to clear the local cache of the dependencies:
     >
     > We can do that with `pip cache purge` and `poetry cache clear pypi --all`
     >
