@@ -1,5 +1,4 @@
 # pylint: disable=W0613:unused-argument
-# ruff: noqa: F401
 """Commodity Futures Trading Commission (CFTC) Router."""
 
 from openbb_core.app.model.command_context import CommandContext
@@ -11,7 +10,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/cftc")
 
