@@ -1204,6 +1204,7 @@ def test_equity_price_quote(params, obb):
         ({"symbol": "AAPL,MSFT", "provider": "intrinio"}),
         ({"symbol": "AAPL,MSFT", "provider": "finviz"}),
         ({"symbol": "AAPL,MSFT", "provider": "yfinance"}),
+        ({"symbol": "AAPL,MSFT", "provider": "fmp"}),
     ],
 )
 @pytest.mark.integration
@@ -1368,7 +1369,7 @@ def test_equity_discovery_upcoming_release_days(params, obb):
                 "start_date": None,
                 "end_date": None,
                 "limit": 10,
-                "form_type": None,
+                "form_type": "1-A",
                 "is_done": None,
                 "provider": "fmp",
             }

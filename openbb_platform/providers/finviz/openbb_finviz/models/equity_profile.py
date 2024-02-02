@@ -26,13 +26,13 @@ class FinvizEquityProfileQueryParams(EquityInfoQueryParams):
 class FinvizEquityProfileData(EquityInfoData):
     """Finviz Equity Profile Data."""
 
+    __alias_dict__ = {
+        "stock_exchange": "exchange",
+    }
+
     index: Optional[str] = Field(
         default=None,
         description="Included in indices - i.e., Dow, Nasdaq, or S&P.",
-    )
-    beta: Optional[float] = Field(
-        default=None,
-        description="The beta of the stock relative to the broad market.",
     )
     optionable: Optional[str] = Field(
         default=None,
@@ -72,6 +72,10 @@ class FinvizEquityProfileData(EquityInfoData):
         default=None,
         description="The last, or next confirmed, earnings date and announcement time, as a string."
         + " The format is Nov 02 AMC - for after market close.",
+    )
+    beta: Optional[float] = Field(
+        default=None,
+        description="The beta of the stock relative to the broad market.",
     )
 
 
