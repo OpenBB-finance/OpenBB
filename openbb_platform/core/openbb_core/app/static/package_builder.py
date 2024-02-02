@@ -345,6 +345,7 @@ class ImportDefinition:
         code += "\nfrom openbb_core.app.static.utils.decorators import validate\n"
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
         code += "\nfrom openbb_core.provider.abstract.data import Data"
+        code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
         if path.startswith("/quantitative"):
             code += "\nfrom openbb_quantitative.models import "
             code += "(CAPMModel,NormalityModel,OmegaModel,SummaryModel,UnitRootModel)"
@@ -352,15 +353,6 @@ class ImportDefinition:
         module_list = [hint_type.__module__ for hint_type in hint_type_list]
         module_list = list(set(module_list))
         module_list.sort()
-
-        specific_imports = {
-            hint_type.__module__: hint_type.__name__
-            for hint_type in hint_type_list
-            if getattr(hint_type, "__name__", None) is not None
-        }
-        code += "\n"
-        for module, name in specific_imports.items():
-            code += f"from {module} import {name}\n"
 
         code += "\n"
         for module in module_list:
