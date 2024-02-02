@@ -10,7 +10,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/fundamental")
 
@@ -21,7 +20,7 @@ async def multiples(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Equity Valuation Multiples. Valuation multiples for a stock ticker."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -32,7 +31,7 @@ async def balance(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Balance Sheet. Balance sheet statement."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -43,7 +42,7 @@ async def balance_growth(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Balance Sheet Statement Growth. Information about the growth of the company balance sheet."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -54,7 +53,7 @@ async def cash(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Cash Flow Statement. Information about the cash flow statement."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -65,7 +64,7 @@ async def reported_financials(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Financial statements, as-reported."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -76,7 +75,7 @@ async def cash_growth(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Cash Flow Statement Growth. Information about the growth of the company cash flow statement."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -87,7 +86,7 @@ async def dividends(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Historical Dividends. Historical dividends data for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -98,7 +97,7 @@ async def historical_eps(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Historical earnings-per-share for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -109,7 +108,7 @@ async def employee_count(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Historical Employees. Historical number of employees."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -120,7 +119,7 @@ async def search_attributes(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Search Intrinio data tags."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -131,7 +130,7 @@ async def latest_attributes(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Fetch the latest value of a data tag from Intrinio."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -142,7 +141,7 @@ async def historical_attributes(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Fetch the historical values of a data tag from Intrinio."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -153,7 +152,7 @@ async def income(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Income Statement. Report on a company's financial performance."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -164,7 +163,7 @@ async def income_growth(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Income Statement Growth. Information about the growth of the company income statement."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -175,7 +174,7 @@ async def metrics(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Key Metrics. Key metrics for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -186,7 +185,7 @@ async def management(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Key Executives. Key executives for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -197,7 +196,7 @@ async def management_compensation(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get Executive Compensation. Information about the executive compensation for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -208,7 +207,7 @@ async def overview(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Company Overview. General information about a company."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -219,7 +218,7 @@ async def ratios(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Extensive set of ratios over time. Financial ratios for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -230,7 +229,7 @@ async def revenue_per_geography(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Revenue Geographic. Geographic revenue data."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -241,7 +240,7 @@ async def revenue_per_segment(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Revenue Business Line. Business line revenue data."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -252,7 +251,7 @@ async def filings(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Company Filings. Company filings data."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -263,7 +262,7 @@ async def historical_splits(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Historical Splits. Historical splits data."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -274,7 +273,7 @@ async def transcript(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Earnings Call Transcript. Earnings call transcript for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -285,6 +284,6 @@ async def trailing_dividend_yield(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Trailing 1yr dividend yield."""
     return await OBBject.from_query(Query(**locals()))

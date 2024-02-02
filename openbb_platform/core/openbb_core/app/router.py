@@ -185,7 +185,7 @@ class CommandValidator:
                 "    provider_choices: ProviderChoices,\n"
                 "    standard_params: StandardParams,\n"
                 "    extra_params: ExtraParams,\n"
-                ") -> OBBject[BaseModel]:\n"
+                ") -> OBBject:\n"
                 '    """World News. Global news data."""\n'
                 "    return await OBBject.from_query(Query(**locals()))\033[0m"
             )

@@ -9,7 +9,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/estimates")
 
@@ -22,7 +21,7 @@ async def price_target(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Price Target. Price target data."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -33,7 +32,7 @@ async def historical(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Historical Analyst Estimates. Analyst stock recommendations."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -44,6 +43,6 @@ async def consensus(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Price Target Consensus. Price target consensus data."""
     return await OBBject.from_query(Query(**locals()))

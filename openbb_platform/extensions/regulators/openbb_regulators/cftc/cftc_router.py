@@ -22,7 +22,7 @@ async def cot_search(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Curated Commitment of Traders Reports.
 
     Search a list of curated Commitment of Traders Reports series information.
@@ -36,6 +36,6 @@ async def cot(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Commitment of Traders Reports. Lookup Commitment of Traders Reports by series ID."""
     return await OBBject.from_query(Query(**locals()))

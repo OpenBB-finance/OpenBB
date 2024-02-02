@@ -228,7 +228,7 @@ def model_example(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Example Data."""
     return OBBject(results=Query(**locals()).execute())
 ```
