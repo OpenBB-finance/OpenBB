@@ -2,14 +2,16 @@
 
 import datetime
 from typing import List, Literal, Optional, Union
+from warnings import simplefilter, warn
 
 from annotated_types import Ge
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from typing_extensions import Annotated
+from typing_extensions import Annotated, deprecated
 
 
 class ROUTER_equity_fundamental(Container):
@@ -1273,7 +1275,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 1000,
-        type: Annotated[
+        tag_type: Annotated[
             Optional[str],
             OpenBBCustomParameter(description="Filter by type, when applicable."),
         ] = None,
@@ -1300,7 +1302,7 @@ class ROUTER_equity_fundamental(Container):
             The frequency of the data.
         limit : Optional[int]
             The number of data entries to return.
-        type : Optional[str]
+        tag_type : Optional[str]
             Filter by type, when applicable.
         sort : Optional[Literal['asc', 'desc']]
             Sort order.
@@ -1327,6 +1329,10 @@ class ROUTER_equity_fundamental(Container):
         --------------------
         date : date
             The date of the data.
+        symbol : str
+            Symbol representing the entity requested in the data.
+        tag : Optional[str]
+            Tag name for the fetched data.
         value : Optional[float]
             The value of the data.
 
@@ -1349,7 +1355,7 @@ class ROUTER_equity_fundamental(Container):
                     "end_date": end_date,
                     "frequency": frequency,
                     "limit": limit,
-                    "type": type,
+                    "tag_type": tag_type,
                     "sort": sort,
                 },
                 extra_params=kwargs,
@@ -2012,7 +2018,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : LatestAttributes
+            results : List[LatestAttributes]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -2025,6 +2031,10 @@ class ROUTER_equity_fundamental(Container):
 
         LatestAttributes
         ----------------
+        symbol : str
+            Symbol representing the entity requested in the data.
+        tag : Optional[str]
+            Tag name for the fetched data.
         value : Optional[Union[str, float]]
             The value of the data.
 
@@ -2603,6 +2613,10 @@ class ROUTER_equity_fundamental(Container):
         )
 
     @validate
+    @deprecated(
+        "This endpoint is deprecated; use `/equity/profile` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
+        category=OpenBBDeprecationWarning,
+    )
     def overview(
         self,
         symbol: Annotated[
@@ -2717,6 +2731,13 @@ class ROUTER_equity_fundamental(Container):
         >>> from openbb import obb
         >>> obb.equity.fundamental.overview(symbol="AAPL")
         """  # noqa: E501
+
+        simplefilter("always", DeprecationWarning)
+        warn(
+            "This endpoint is deprecated; use `/equity/profile` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
 
         return self._run(
             "/equity/fundamental/overview",
