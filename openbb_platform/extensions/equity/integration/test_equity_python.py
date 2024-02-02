@@ -1295,7 +1295,7 @@ def test_equity_discovery_upcoming_release_days(params, obb):
                 "start_date": None,
                 "end_date": None,
                 "limit": 10,
-                "form_type": None,
+                "form_type": "1-A",
                 "is_done": None,
                 "provider": "fmp",
             }
