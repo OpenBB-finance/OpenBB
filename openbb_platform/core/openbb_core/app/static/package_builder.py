@@ -9,9 +9,11 @@ from inspect import Parameter, _empty, isclass, signature
 from json import dumps, load
 from pathlib import Path
 from typing import (
+    Any,
     Callable,
     Dict,
     List,
+    Literal,
     Optional,
     OrderedDict,
     Set,
@@ -20,6 +22,7 @@ from typing import (
     TypeVar,
     Union,
     get_args,
+    get_origin,
     get_type_hints,
 )
 
@@ -35,7 +38,7 @@ from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
-from openbb_core.app.router import RouterLoader
+from openbb_core.app.router import CommandMap, RouterLoader
 from openbb_core.app.static.utils.console import Console
 from openbb_core.app.static.utils.linters import Linters
 from openbb_core.env import Env
@@ -302,6 +305,8 @@ class ImportDefinition:
         for child_path in child_path_list:
             route = PathHandler.get_route(path=child_path, route_map=route_map)
             if route:
+                if route.deprecated:
+                    hint_type_list.append(type(route.summary.metadata))
                 function_hint_type_list = cls.get_function_hint_type_list(func=route.endpoint)  # type: ignore
                 hint_type_list.extend(function_hint_type_list)
 
@@ -331,14 +336,16 @@ class ImportDefinition:
         code += "\nimport typing"
         code += "\nfrom typing import List, Dict, Union, Optional, Literal"
         code += "\nfrom annotated_types import Ge, Le, Gt, Lt"
+        code += "\nfrom warnings import warn, simplefilter"
         if sys.version_info < (3, 9):
             code += "\nimport typing_extensions"
         else:
-            code += "\nfrom typing_extensions import Annotated"
+            code += "\nfrom typing_extensions import Annotated, deprecated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
         code += "\nfrom openbb_core.app.static.utils.decorators import validate\n"
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
         code += "\nfrom openbb_core.provider.abstract.data import Data"
+        code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
         if path.startswith("/quantitative"):
             code += "\nfrom openbb_quantitative.models import "
             code += "(CAPMModel,NormalityModel,OmegaModel,SummaryModel,UnitRootModel)"
@@ -637,6 +644,7 @@ class MethodDefinition:
         func_name: str,
         formatted_params: OrderedDict[str, Parameter],
         return_type: type,
+        path: str,
         model_name: Optional[str] = None,
     ) -> str:
         """Build the command method signature."""
@@ -651,7 +659,20 @@ class MethodDefinition:
             if "pandas.DataFrame" in func_params
             else ""
         )
-        code = f"\n    @validate{args}"
+
+        msg = ""
+        if MethodDefinition.is_deprecated_function(path):
+            deprecation_message = MethodDefinition.get_deprecation_message(path)
+            deprecation_type_class = type(
+                deprecation_message.metadata  # type: ignore
+            ).__name__
+
+            msg = "\n    @deprecated("
+            msg += f'\n        "{deprecation_message}",'
+            msg += f"\n        category={deprecation_type_class},"
+            msg += "\n    )"
+
+        code = f"\n    @validate{args}{msg}"
         code += f"\n    def {func_name}("
         code += f"\n        self,\n        {func_params}\n    ) -> {func_returns}:\n"
 
@@ -698,7 +719,7 @@ class MethodDefinition:
 
         if MethodDefinition.is_deprecated_function(path):
             deprecation_message = MethodDefinition.get_deprecation_message(path)
-            code += "        from warnings import warn, simplefilter; simplefilter('always', DeprecationWarning)\n"
+            code += "        simplefilter('always', DeprecationWarning)\n"
             code += f"""        warn("{deprecation_message}", category=DeprecationWarning, stacklevel=2)\n\n"""
 
         code += "        return self._run(\n"
@@ -748,6 +769,7 @@ class MethodDefinition:
             func_name=func_name,
             formatted_params=formatted_params,
             return_type=sig.return_annotation,
+            path=path,
             model_name=model_name,
         )
         code += cls.build_command_method_doc(
@@ -956,6 +978,114 @@ class DocstringGenerator:
                 )
             return doc
         return doc
+
+    @staticmethod
+    def get_model_standard_params(param_fields: Dict[str, FieldInfo]) -> Dict[str, Any]:
+        """Get the test params for the fetcher based on the required standard params."""
+        test_params: Dict[str, Any] = {}
+        for field_name, field in param_fields.items():
+            if field.default and field.default is not PydanticUndefined:
+                test_params[field_name] = field.default
+            elif field.default and field.default is PydanticUndefined:
+                example_dict = {
+                    "symbol": "AAPL",
+                    "symbols": "AAPL,MSFT",
+                    "start_date": "2023-01-01",
+                    "end_date": "2023-06-06",
+                    "country": "Portugal",
+                    "date": "2023-01-01",
+                    "countries": ["portugal", "spain"],
+                }
+                if field_name in example_dict:
+                    test_params[field_name] = example_dict[field_name]
+                elif field.annotation == str:
+                    test_params[field_name] = "TEST_STRING"
+                elif field.annotation == int:
+                    test_params[field_name] = 1
+                elif field.annotation == float:
+                    test_params[field_name] = 1.0
+                elif field.annotation == bool:
+                    test_params[field_name] = True
+                elif get_origin(field.annotation) is Literal:  # type: ignore
+                    option = field.annotation.__args__[0]  # type: ignore
+                    if isinstance(option, str):
+                        test_params[field_name] = f'"{option}"'
+                    else:
+                        test_params[field_name] = option
+
+        return test_params
+
+    @staticmethod
+    def get_full_command_name(route: str) -> str:
+        """Get the full command name."""
+        cmd_parts = route.split("/")
+        del cmd_parts[0]
+
+        menu = cmd_parts[0]
+        command = cmd_parts[-1]
+        sub_menus = cmd_parts[1:-1]
+
+        sub_menu_str_cmd = f".{'.'.join(sub_menus)}" if sub_menus else ""
+
+        full_command = f"{menu}{sub_menu_str_cmd}.{command}"
+
+        return full_command
+
+    @classmethod
+    def generate_example(
+        cls,
+        model_name: str,
+        standard_params: Dict[str, FieldInfo],
+    ) -> str:
+        """Generate the example for the command."""
+        # find the model router here
+        cm = CommandMap()
+        commands_model = cm.commands_model
+        route = [k for k, v in commands_model.items() if v == model_name]
+
+        if not route:
+            return ""
+
+        full_command_name = cls.get_full_command_name(route=route[0])
+        example_params = cls.get_model_standard_params(param_fields=standard_params)
+
+        # Edge cases (might find more)
+        if "crypto" in route[0] and "symbol" in example_params:
+            example_params["symbol"] = "BTCUSD"
+        elif "currency" in route[0] and "symbol" in example_params:
+            example_params["symbol"] = "EURUSD"
+        elif (
+            "index" in route[0]
+            and "european" not in route[0]
+            and "symbol" in example_params
+        ):
+            example_params["symbol"] = "SPX"
+        elif (
+            "index" in route[0]
+            and "european" in route[0]
+            and "symbol" in example_params
+        ):
+            example_params["symbol"] = "BUKBUS"
+        elif (
+            "futures" in route[0] and "curve" in route[0] and "symbol" in example_params
+        ):
+            example_params["symbol"] = "VX"
+        elif "futures" in route[0] and "symbol" in example_params:
+            example_params["symbol"] = "ES"
+
+        example = "\n        Example\n        -------\n"
+        example += "        >>> from openbb import obb\n"
+        example += f"        >>> obb.{full_command_name}("
+        for param_name, param_value in example_params.items():
+            if isinstance(param_value, str):
+                param_value = f'"{param_value}"'  # noqa: PLW2901
+            example += f"{param_name}={param_value}, "
+        if example_params:
+            example = example[:-2] + ")\n"
+        else:
+            example += ")\n"
+
+        return example
 
 
 class PathHandler:

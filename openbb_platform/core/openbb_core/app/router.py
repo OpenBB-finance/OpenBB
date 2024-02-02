@@ -24,6 +24,7 @@ from pydantic import BaseModel
 from pydantic.v1.validators import find_validators
 from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
+from openbb_core.app.deprecation import DeprecationSummary, OpenBBDeprecationWarning
 from openbb_core.app.example_generator import ExampleGenerator
 from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
@@ -232,7 +233,6 @@ class Router:
         api_router = self._api_router
 
         model = kwargs.pop("model", "")
-        deprecation_message = kwargs.pop("deprecation_message", None)
         examples = kwargs.pop("examples", [])
         exclude_auto_examples = kwargs.pop("exclude_auto_examples", False)
 
@@ -279,14 +279,13 @@ class Router:
                 },
             )
 
-            # For custom deprecation messages
+            # For custom deprecation
             if kwargs.get("deprecated", False):
-                if deprecation_message:
-                    kwargs["summary"] = deprecation_message
-                else:
-                    kwargs["summary"] = (
-                        "This functionality will be deprecated in the future releases."
-                    )
+                deprecation: OpenBBDeprecationWarning = kwargs.pop("deprecation")
+
+                kwargs["summary"] = DeprecationSummary(
+                    deprecation.long_message, deprecation
+                )
 
             api_router.add_api_route(**kwargs)
 
