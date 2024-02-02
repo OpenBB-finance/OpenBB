@@ -2,6 +2,7 @@
 
 # pylint: disable=unused-argument,protected-access,line-too-long
 
+import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -12,6 +13,7 @@ from openbb_core.provider.standard_models.index_historical import (
     IndexHistoricalQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
@@ -24,6 +26,8 @@ from pydantic import (
     model_validator,
 )
 from pytz import timezone
+
+_warn = warnings.warn
 
 
 class PolygonIndexHistoricalQueryParams(IndexHistoricalQueryParams):
@@ -151,6 +155,9 @@ class PolygonIndexHistoricalFetcher(
                 if "," in query.symbol:
                     r["symbol"] = symbol
 
+            if results == []:
+                _warn(f"Symbol Error: No data found for {symbol.replace('I:', '')}")
+
             return results
 
         return await amake_requests(urls, callback, **kwargs)
@@ -162,4 +169,6 @@ class PolygonIndexHistoricalFetcher(
         **kwargs: Any,
     ) -> List[PolygonIndexHistoricalData]:
         """Transform the data."""
+        if not data:
+            raise EmptyDataError()
         return [PolygonIndexHistoricalData.model_validate(d) for d in data]

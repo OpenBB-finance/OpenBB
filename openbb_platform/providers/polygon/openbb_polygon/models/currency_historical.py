@@ -2,6 +2,7 @@
 
 # pylint: disable=unused-argument,protected-access,line-too-long
 
+import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -12,6 +13,7 @@ from openbb_core.provider.standard_models.currency_historical import (
     CurrencyHistoricalQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
@@ -24,6 +26,8 @@ from pydantic import (
     model_validator,
 )
 from pytz import timezone
+
+_warn = warnings.warn
 
 
 class PolygonCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
@@ -149,6 +153,9 @@ class PolygonCurrencyHistoricalFetcher(
                 if "," in query.symbol:
                     r["symbol"] = symbol
 
+            if results == []:
+                _warn(f"Symbol Error: No data found for {symbol.replace('C:', '')}")
+
             return results
 
         return await amake_requests(urls, callback, **kwargs)
@@ -158,4 +165,6 @@ class PolygonCurrencyHistoricalFetcher(
         query: PolygonCurrencyHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[PolygonCurrencyHistoricalData]:
         """Return the transformed data."""
+        if not data:
+            raise EmptyDataError()
         return [PolygonCurrencyHistoricalData.model_validate(d) for d in data]

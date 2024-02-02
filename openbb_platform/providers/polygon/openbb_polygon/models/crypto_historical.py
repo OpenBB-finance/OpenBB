@@ -2,6 +2,7 @@
 
 # pylint: disable=unused-argument,protected-access,line-too-long
 
+import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -12,6 +13,7 @@ from openbb_core.provider.standard_models.crypto_historical import (
     CryptoHistoricalQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
@@ -24,6 +26,8 @@ from pydantic import (
     model_validator,
 )
 from pytz import timezone
+
+_warn = warnings.warn
 
 
 class PolygonCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
@@ -150,7 +154,10 @@ class PolygonCryptoHistoricalFetcher(
                 else:
                     r["t"] = r["t"].strftime("%Y-%m-%dT%H:%M:%S%z")
                 if "," in query.symbol:
-                    r["symbol"] = symbol
+                    r["symbol"] = symbol.replace("X:", "")
+
+            if results == []:
+                _warn(f"Symbol Error: No data found for {symbol.replace('X:', '')}")
 
             return results
 
@@ -161,4 +168,6 @@ class PolygonCryptoHistoricalFetcher(
         query: PolygonCryptoHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[PolygonCryptoHistoricalData]:
         """Transform the data."""
+        if not data:
+            raise EmptyDataError()
         return [PolygonCryptoHistoricalData.model_validate(d) for d in data]

@@ -2,6 +2,7 @@
 
 # pylint: disable=unused-argument
 
+import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -12,6 +13,7 @@ from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
@@ -24,6 +26,8 @@ from pydantic import (
     model_validator,
 )
 from pytz import timezone
+
+_warn = warnings.warn
 
 
 class PolygonEquityHistoricalQueryParams(EquityHistoricalQueryParams):
@@ -156,6 +160,9 @@ class PolygonEquityHistoricalFetcher(
                 if "," in query.symbol:
                     r["symbol"] = symbol
 
+            if results == []:
+                _warn(f"Symbol Error: No data found for {symbol}")
+
             return results
 
         return await amake_requests(urls, callback, **kwargs)
@@ -167,4 +174,6 @@ class PolygonEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[PolygonEquityHistoricalData]:
         """Transform the data from the Polygon endpoint."""
+        if not data:
+            raise EmptyDataError()
         return [PolygonEquityHistoricalData.model_validate(d) for d in data]
