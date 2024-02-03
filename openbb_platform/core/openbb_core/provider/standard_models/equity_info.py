@@ -36,6 +36,12 @@ class EquityInfoData(Data):
         default=None,
         description=DATA_DESCRIPTIONS.get("cik", ""),
     )
+    cusip: Optional[str] = Field(
+        default=None, description="CUSIP identifier for the company."
+    )
+    isin: Optional[str] = Field(
+        default=None, description="International Securities Identification Number."
+    )
     lei: Optional[str] = Field(
         default=None, description="Legal Entity Identifier assigned to the company."
     )
