@@ -370,7 +370,7 @@ class ROUTER_equity(Container):
         shares_float : Optional[int]
             The number of shares in the public float. (provider: yfinance)
         shares_implied_outstanding : Optional[int]
-            The implied total number of shares outstanding. (provider: yfinance)
+            Implied shares outstanding of common equityassuming the conversion of all convertible subsidiary equity into common. (provider: yfinance)
         shares_short : Optional[int]
             The reported number of shares short. (provider: yfinance)
         dividend_yield : Optional[float]
