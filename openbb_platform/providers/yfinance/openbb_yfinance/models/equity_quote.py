@@ -1,4 +1,4 @@
-"""YFinance Equity Quote Model"""
+"""YFinance Equity Quote Model."""
 
 # pylint: disable=unused-argument
 import asyncio
@@ -17,7 +17,7 @@ _warn = warnings.warn
 
 
 class YFinanceEquityQuoteQueryParams(EquityQuoteQueryParams):
-    """YFinance Equity Quote query params."""
+    """YFinance Equity Quote Query."""
 
 
 class YFinanceEquityQuoteData(EquityQuoteData):
@@ -63,7 +63,7 @@ class YFinanceEquityQuoteData(EquityQuoteData):
 class YFinanceEquityQuoteFetcher(
     Fetcher[YFinanceEquityQuoteQueryParams, List[YFinanceEquityQuoteData]]
 ):
-    """YFinance Equity Quote fetcher."""
+    """YFinance Equity Quote Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceEquityQuoteQueryParams:
@@ -76,8 +76,7 @@ class YFinanceEquityQuoteFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Extract the raw data from YFinance"""
-
+        """Extract the raw data from YFinance."""
         symbols = query.symbol.split(",")
         results = []
         fields = [

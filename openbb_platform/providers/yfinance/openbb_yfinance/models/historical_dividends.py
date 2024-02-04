@@ -1,4 +1,4 @@
-"""YFinance Historical Dividends Model"""
+"""YFinance Historical Dividends Model."""
 
 # pylint: disable=unused-argument
 import warnings
@@ -16,7 +16,7 @@ _warn = warnings.warn
 
 
 class YFinanceHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
-    """YFinance Historical Dividends query params."""
+    """YFinance Historical Dividends Query."""
 
 
 class YFinanceHistoricalDividendsData(HistoricalDividendsData):
@@ -28,7 +28,7 @@ class YFinanceHistoricalDividendsFetcher(
         YFinanceHistoricalDividendsQueryParams, List[YFinanceHistoricalDividendsData]
     ]
 ):
-    """YFinance Historical Dividends fetcher."""
+    """YFinance Historical Dividends Fetcher."""
 
     @staticmethod
     def transform_query(
@@ -43,8 +43,7 @@ class YFinanceHistoricalDividendsFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Extract the raw data from YFinance"""
-
+        """Extract the raw data from YFinance."""
         symbols = query.symbol.split(",")
         symbol = symbols[0]
         if len(symbols) > 1:

@@ -1,4 +1,4 @@
-"""YFinance Share Statistics Model"""
+"""YFinance Share Statistics Model."""
 
 # pylint: disable=unused-argument
 import asyncio
@@ -21,7 +21,7 @@ _warn = warnings.warn
 
 
 class YFinanceShareStatisticsQueryParams(ShareStatisticsQueryParams):
-    """YFinance Share Statistics query params."""
+    """YFinance Share Statistics Query."""
 
 
 class YFinanceShareStatisticsData(ShareStatisticsData):
@@ -101,7 +101,7 @@ class YFinanceShareStatisticsData(ShareStatisticsData):
 class YFinanceShareStatisticsFetcher(
     Fetcher[YFinanceShareStatisticsQueryParams, List[YFinanceShareStatisticsData]]
 ):
-    """YFinance Share Statistics fetcher."""
+    """YFinance Share Statistics Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceShareStatisticsQueryParams:
@@ -114,8 +114,7 @@ class YFinanceShareStatisticsFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Extract the raw data from YFinance"""
-
+        """Extract the raw data from YFinance."""
         symbols = query.symbol.split(",")
         results = []
         fields = [

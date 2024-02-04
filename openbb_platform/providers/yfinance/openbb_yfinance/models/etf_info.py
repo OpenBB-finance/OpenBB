@@ -18,7 +18,7 @@ _warn = warnings.warn
 
 
 class YFinanceEtfInfoQueryParams(EtfInfoQueryParams):
-    """YFinance ETF Info query params."""
+    """YFinance ETF Info Query."""
 
 
 class YFinanceEtfInfoData(EtfInfoData):

@@ -17,7 +17,7 @@ _warn = warnings.warn
 
 
 class YFinanceKeyMetricsQueryParams(KeyMetricsQueryParams):
-    """YFinance Key Metrics query params."""
+    """YFinance Key Metrics Query."""
 
 
 class YFinanceKeyMetricsData(KeyMetricsData):

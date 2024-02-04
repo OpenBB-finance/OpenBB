@@ -1,4 +1,4 @@
-"""YFinance Price Target Consensus Model"""
+"""YFinance Price Target Consensus Model."""
 
 # pylint: disable=unused-argument
 import asyncio
@@ -17,7 +17,7 @@ _warn = warnings.warn
 
 
 class YFinancePriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
-    """YFinance Price Target Consensus query params."""
+    """YFinance Price Target Consensus Query."""
 
 
 class YFinancePriceTargetConsensusData(PriceTargetConsensusData):
@@ -60,7 +60,7 @@ class YFinancePriceTargetConsensusFetcher(
         YFinancePriceTargetConsensusQueryParams, List[YFinancePriceTargetConsensusData]
     ]
 ):
-    """YFinance Price Target Consensus fetcher."""
+    """YFinance Price Target Consensus Fetcher."""
 
     @staticmethod
     def transform_query(
@@ -75,8 +75,7 @@ class YFinancePriceTargetConsensusFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Extract the raw data from YFinance"""
-
+        """Extract the raw data from YFinance."""
         symbols = query.symbol.split(",")
         results = []
         fields = [

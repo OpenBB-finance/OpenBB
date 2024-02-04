@@ -1,4 +1,4 @@
-"""YFinance Key Executives Model"""
+"""YFinance Key Executives Model."""
 
 # pylint: disable=unused-argument
 import warnings
@@ -17,7 +17,7 @@ _warn = warnings.warn
 
 
 class YFinanceKeyExecutivesQueryParams(KeyExecutivesQueryParams):
-    """YFinance Key Executives query params."""
+    """YFinance Key Executives Query."""
 
 
 class YFinanceKeyExecutivesData(KeyExecutivesData):
@@ -44,7 +44,7 @@ class YFinanceKeyExecutivesData(KeyExecutivesData):
 class YFinanceKeyExecutivesFetcher(
     Fetcher[YFinanceKeyExecutivesQueryParams, List[YFinanceKeyExecutivesData]]
 ):
-    """YFinance Key Executives fetcher."""
+    """YFinance Key Executives Fetcher."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> YFinanceKeyExecutivesQueryParams:
@@ -57,8 +57,7 @@ class YFinanceKeyExecutivesFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Extract the raw data from YFinance"""
-
+        """Extract the raw data from YFinance."""
         symbols = query.symbol.split(",")
         symbol = symbols[0]
         if len(symbols) > 1:
