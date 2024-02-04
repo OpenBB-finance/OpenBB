@@ -35,14 +35,3 @@ async def company(
 ) -> OBBject[BaseModel]:
     """Company News. Get news for one or more companies."""
     return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(model="SectorNews")
-async def sector(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Sector News. Get news for one or more sectors."""
-    return await OBBject.from_query(Query(**locals()))
