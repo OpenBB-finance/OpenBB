@@ -955,7 +955,7 @@ class ROUTER_equity_fundamental(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "intrinio"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
         """Historical Dividends. Historical dividends data for a given company.
@@ -968,7 +968,7 @@ class ROUTER_equity_fundamental(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'intrinio']]
+        provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -980,7 +980,7 @@ class ROUTER_equity_fundamental(Container):
         OBBject
             results : List[HistoricalDividends]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2065,7 +2065,7 @@ class ROUTER_equity_fundamental(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
         """Key Executives. Key executives for a given company.
@@ -2074,7 +2074,7 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2084,7 +2084,7 @@ class ROUTER_equity_fundamental(Container):
         OBBject
             results : List[KeyExecutives]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2109,6 +2109,10 @@ class ROUTER_equity_fundamental(Container):
             Birth year of the key executive.
         title_since : Optional[int]
             Date the tile was held since.
+        exercised_value : Optional[int]
+            Value of shares exercised. (provider: yfinance)
+        unexercised_value : Optional[int]
+            Value of shares not exercised. (provider: yfinance)
 
         Example
         -------
@@ -2245,7 +2249,7 @@ class ROUTER_equity_fundamental(Container):
             Optional[int],
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        provider: Optional[Literal["fmp", "intrinio"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
         """Key Metrics. Key metrics for a given company.
@@ -2258,7 +2262,7 @@ class ROUTER_equity_fundamental(Container):
             Time period of the data to return.
         limit : Optional[int]
             The number of data entries to return.
-        provider : Optional[Literal['fmp', 'intrinio']]
+        provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -2270,7 +2274,7 @@ class ROUTER_equity_fundamental(Container):
         OBBject
             results : Union[List[KeyMetrics], KeyMetrics]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -2294,7 +2298,7 @@ class ROUTER_equity_fundamental(Container):
         calendar_year : Optional[int]
             Calendar year. (provider: fmp)
         revenue_per_share : Optional[float]
-            Revenue per share (provider: fmp)
+            Revenue per share (provider: fmp, yfinance)
         net_income_per_share : Optional[float]
             Net income per share (provider: fmp)
         operating_cash_flow_per_share : Optional[float]
@@ -2302,7 +2306,7 @@ class ROUTER_equity_fundamental(Container):
         free_cash_flow_per_share : Optional[float]
             Free cash flow per share (provider: fmp)
         cash_per_share : Optional[float]
-            Cash per share (provider: fmp)
+            Cash per share (provider: fmp, yfinance)
         book_value_per_share : Optional[float]
             Book value per share (provider: fmp)
         tangible_book_value_per_share : Optional[float]
@@ -2311,8 +2315,8 @@ class ROUTER_equity_fundamental(Container):
             Shareholders equity per share (provider: fmp)
         interest_debt_per_share : Optional[float]
             Interest debt per share (provider: fmp)
-        enterprise_value : Optional[float]
-            Enterprise value (provider: fmp)
+        enterprise_value : Optional[Union[float, int]]
+            Enterprise value (provider: fmp, yfinance)
         price_to_sales_ratio : Optional[float]
             Price-to-sales ratio (provider: fmp)
         pocf_ratio : Optional[float]
@@ -2336,21 +2340,21 @@ class ROUTER_equity_fundamental(Container):
         free_cash_flow_yield : Optional[float]
             Free cash flow yield (provider: fmp)
         debt_to_equity : Optional[float]
-            Debt-to-equity ratio (provider: fmp)
+            Debt-to-equity ratio (provider: fmp, yfinance)
         debt_to_assets : Optional[float]
             Debt-to-assets ratio (provider: fmp)
         net_debt_to_ebitda : Optional[float]
             Net debt-to-EBITDA ratio (provider: fmp)
         current_ratio : Optional[float]
-            Current ratio (provider: fmp)
+            Current ratio (provider: fmp, yfinance)
         interest_coverage : Optional[float]
             Interest coverage (provider: fmp)
         income_quality : Optional[float]
             Income quality (provider: fmp)
         dividend_yield : Optional[float]
-            Dividend yield (provider: fmp, intrinio)
+            Dividend yield, as a normalized percent. (provider: fmp, intrinio, yfinance)
         payout_ratio : Optional[float]
-            Payout ratio (provider: fmp)
+            Payout ratio (provider: fmp, yfinance)
         sales_general_and_administrative_to_revenue : Optional[float]
             Sales general and administrative expenses-to-revenue ratio (provider: fmp)
         research_and_development_to_revenue : Optional[float]
@@ -2404,13 +2408,68 @@ class ROUTER_equity_fundamental(Container):
         capex_per_share : Optional[float]
             Capital expenditures per share (provider: fmp)
         beta : Optional[float]
-            Beta (provider: intrinio)
+            Beta relative to the broad market calculated on a rolling three-year basis. (provider: intrinio);
+            Beta relative to the broad market (5-year monthly). (provider: yfinance)
         volume : Optional[float]
             Volume (provider: intrinio)
         fifty_two_week_high : Optional[float]
             52 week high (provider: intrinio)
         fifty_two_week_low : Optional[float]
             52 week low (provider: intrinio)
+        forward_pe : Optional[float]
+            Forward price-to-earnings ratio. (provider: yfinance)
+        peg_ratio : Optional[float]
+            PEG ratio (5-year expected). (provider: yfinance)
+        peg_ratio_ttm : Optional[float]
+            PEG ratio (TTM). (provider: yfinance)
+        eps_ttm : Optional[float]
+            Earnings per share (TTM). (provider: yfinance)
+        eps_forward : Optional[float]
+            Forward earnings per share. (provider: yfinance)
+        enterprise_to_ebitda : Optional[float]
+            Enterprise value to EBITDA ratio. (provider: yfinance)
+        earnings_growth : Optional[float]
+            Earnings growth (Year Over Year), as a normalized percent. (provider: yfinance)
+        earnings_growth_quarterly : Optional[float]
+            Quarterly earnings growth (Year Over Year), as a normalized percent. (provider: yfinance)
+        revenue_growth : Optional[float]
+            Revenue growth (Year Over Year), as a normalized percent. (provider: yfinance)
+        enterprise_to_revenue : Optional[float]
+            Enterprise value to revenue ratio. (provider: yfinance)
+        quick_ratio : Optional[float]
+            Quick ratio. (provider: yfinance)
+        gross_margin : Optional[float]
+            Gross margin, as a normalized percent. (provider: yfinance)
+        ebitda_margin : Optional[float]
+            EBITDA margin, as a normalized percent. (provider: yfinance)
+        operating_margin : Optional[float]
+            Operating margin, as a normalized percent. (provider: yfinance)
+        profit_margin : Optional[float]
+            Profit margin, as a normalized percent. (provider: yfinance)
+        return_on_assets : Optional[float]
+            Return on assets, as a normalized percent. (provider: yfinance)
+        return_on_equity : Optional[float]
+            Return on equity, as a normalized percent. (provider: yfinance)
+        dividend_yield_5y_avg : Optional[float]
+            5-year average dividend yield, as a normalized percent. (provider: yfinance)
+        book_value : Optional[float]
+            Book value per share. (provider: yfinance)
+        price_to_book : Optional[float]
+            Price-to-book ratio. (provider: yfinance)
+        overall_risk : Optional[float]
+            Overall risk score. (provider: yfinance)
+        audit_risk : Optional[float]
+            Audit risk score. (provider: yfinance)
+        board_risk : Optional[float]
+            Board risk score. (provider: yfinance)
+        compensation_risk : Optional[float]
+            Compensation risk score. (provider: yfinance)
+        shareholder_rights_risk : Optional[float]
+            Shareholder rights risk score. (provider: yfinance)
+        price_return_1y : Optional[float]
+            One-year price return, as a normalized percent. (provider: yfinance)
+        currency : Optional[str]
+            Currency in which the data is presented. (provider: yfinance)
 
         Example
         -------
