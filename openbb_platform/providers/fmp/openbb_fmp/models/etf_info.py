@@ -26,7 +26,6 @@ class FMPEtfInfoData(EtfInfoData):
         alias="avgVolume", description="Average trading volume of the ETF."
     )
     cusip: Optional[str] = Field(description="CUSIP of the ETF.")
-    description: Optional[str] = Field(description="Description of the ETF.")
     domicile: Optional[str] = Field(description="Domicile of the ETF.")
     etf_company: Optional[str] = Field(
         alias="etfCompany", description="Company of the ETF."

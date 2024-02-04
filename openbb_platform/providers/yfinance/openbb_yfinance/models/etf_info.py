@@ -1,4 +1,4 @@
-"""YFinance ETF Info fetcher"""
+"""YFinance ETF Info Model."""
 
 # pylint: disable=unused-argument
 import asyncio
@@ -27,6 +27,7 @@ class YFinanceEtfInfoData(EtfInfoData):
     __alias_dict__ = {
         "name": "longName",
         "inception_date": "fundInceptionDate",
+        "description": "longBusinessSummary",
     }
 
     fund_type: Optional[str] = Field(
@@ -182,11 +183,6 @@ class YFinanceEtfInfoData(EtfInfoData):
         description="The previous closing price.",
         alias="previousClose",
     )
-    description: Optional[str] = Field(
-        default=None,
-        description="The fund's description.",
-        alias="longBusinessSummary",
-    )
 
     @field_validator("inception_date", mode="before", check_fields=False)
     @classmethod
@@ -211,8 +207,7 @@ class YFinanceEtfInfoFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Extract the raw data from YFinance"""
-
+        """Extract the raw data from YFinance."""
         symbols = query.symbol.split(",")
         results = []
         fields = [
