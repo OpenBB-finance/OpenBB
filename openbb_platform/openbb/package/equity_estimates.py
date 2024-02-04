@@ -27,7 +27,7 @@ class ROUTER_equity_estimates(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
         """Price Target Consensus. Price target consensus data.
@@ -36,7 +36,7 @@ class ROUTER_equity_estimates(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -44,9 +44,9 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : PriceTargetConsensus
+            results : Union[List[PriceTargetConsensus], PriceTargetConsensus]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -67,6 +67,16 @@ class ROUTER_equity_estimates(Container):
             Consensus target of the price target consensus.
         target_median : Optional[float]
             Median target of the price target consensus.
+        recommendation : Optional[str]
+            Recommendation - buy, sell, etc. (provider: yfinance)
+        recommendation_mean : Optional[float]
+            Mean recommendation score where 1 is strong buy and 5 is strong sell. (provider: yfinance)
+        number_of_analysts : Optional[int]
+            Number of analysts providing opinions. (provider: yfinance)
+        current_price : Optional[float]
+            Current price of the stock. (provider: yfinance)
+        currency : Optional[str]
+            Currency the stock is priced in. (provider: yfinance)
 
         Example
         -------
