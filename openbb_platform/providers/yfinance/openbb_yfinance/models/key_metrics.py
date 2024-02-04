@@ -1,4 +1,4 @@
-"""YFinance Key Metrics Model"""
+"""YFinance Key Metrics Model."""
 
 # pylint: disable=unused-argument
 import asyncio
@@ -198,7 +198,7 @@ class YFinanceKeyMetricsData(KeyMetricsData):
     )
     beta: Optional[float] = Field(
         default=None,
-        description="Beta relative to the broad market. (5-year monthly)",
+        description="Beta relative to the broad market (5-year monthly).",
     )
     price_return_1y: Optional[float] = Field(
         default=None,
@@ -235,8 +235,7 @@ class YFinanceKeyMetricsFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Extract the raw data from YFinance"""
-
+        """Extract the raw data from YFinance."""
         symbols = query.symbol.split(",")
         results = []
         fields = [
