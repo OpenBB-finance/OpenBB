@@ -190,7 +190,9 @@ class HedgeController(BaseController):
     def call_add(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
-            add_help=False, prog="add", description="""Add options to the diagram.""",
+            add_help=False,
+            prog="add",
+            description="""Add options to the diagram.""",
         )
         parser.add_argument(
             "-p",
