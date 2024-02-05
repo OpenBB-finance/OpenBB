@@ -7,7 +7,6 @@ import os
 import unittest
 from typing import Dict, List, Type
 
-import pytest
 from openbb_core.provider import standard_models
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -159,7 +158,6 @@ def get_provider_modules():
 class ProviderFieldDupesTest(unittest.TestCase):
     """Test for common fields in the provider models that should be standard."""
 
-    @pytest.mark.skip(reason="Need to fix the duplicated fields first.")
     def test_provider_field_dupes(self):
         """Check for duplicate fields in the provider models.
 
@@ -196,7 +194,16 @@ class ProviderFieldDupesTest(unittest.TestCase):
 
         for std_cls in child_parent_dict:
             with self.subTest(i=std_cls):
-                providers_w_fields = child_parent_dict[std_cls]
+                providers_w_fields_raw = child_parent_dict[std_cls]
+
+                # remove duplicate keys
+                providers_w_fields = []
+                keys = []
+                for item in providers_w_fields_raw:
+                    k = list(item.keys())[0]
+                    if k not in keys:
+                        keys.append(k)
+                        providers_w_fields.append(item)
 
                 fields = []
                 provider_models = []
