@@ -247,8 +247,8 @@ def test_intrinio_market_indices_fetcher(credentials=test_credentials):
 def test_intrinio_index_historical_fetcher(credentials=test_credentials):
     params = {
         "symbol": "DJI",
-        "start_date": date(2023, 1, 1),
-        "end_date": date(2023, 6, 6),
+        "start_date": date(2024, 1, 1),
+        "end_date": date(2024, 2, 5),
     }
 
     fetcher = IntrinioIndexHistoricalFetcher()
