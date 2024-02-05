@@ -77,6 +77,7 @@ class Data(BaseModel):
     model_config = ConfigDict(
         extra="allow",
         populate_by_name=True,
+        alias_generator=alias_generators.to_camel,
         strict=False,
     )
 
@@ -87,9 +88,6 @@ class Data(BaseModel):
         # set the alias dict values keys
         aliases = {orig: alias for alias, orig in cls.__alias_dict__.items()}
         if aliases and isinstance(values, dict):
-            return {
-                aliases.get(k, alias_generators.to_camel(k)): v
-                for k, v in values.items()
-            }
+            return {aliases.get(k, k): v for k, v in values.items()}
 
         return values
