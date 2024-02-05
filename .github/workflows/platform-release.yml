@@ -8,6 +8,7 @@ on:
   push:
     tags:
       - '*'
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -34,8 +35,6 @@ jobs:
       - name: 🏷️ Get PR labels
         id: pr-labels
         uses: joerick/pr-labels-action@v1.0.8
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🔄 Build changelog
         id: build_changelog
