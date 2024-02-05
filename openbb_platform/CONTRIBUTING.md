@@ -488,7 +488,7 @@ async def model_example(    # create an async endpoint
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Example Data."""
     return await OBBject.from_query(Query(**locals()))
 ```
