@@ -550,7 +550,7 @@ class ROUTER_etf(Container):
             Union[str, List[str]],
             OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
         """ETF Information Overview.
@@ -559,7 +559,7 @@ class ROUTER_etf(Container):
         ----------
         symbol : str
             Symbol to get data for. (ETF)
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -569,7 +569,7 @@ class ROUTER_etf(Container):
         OBBject
             results : List[EtfInfo]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -584,6 +584,8 @@ class ROUTER_etf(Container):
             Symbol representing the entity requested in the data. (ETF)
         name : Optional[str]
             Name of the ETF.
+        description : Optional[str]
+            Description of the fund.
         inception_date : Optional[str]
             Inception date of the ETF.
         asset_class : Optional[str]
@@ -594,8 +596,6 @@ class ROUTER_etf(Container):
             Average trading volume of the ETF. (provider: fmp)
         cusip : Optional[str]
             CUSIP of the ETF. (provider: fmp)
-        description : Optional[str]
-            Description of the ETF. (provider: fmp)
         domicile : Optional[str]
             Domicile of the ETF. (provider: fmp)
         etf_company : Optional[str]
@@ -612,6 +612,68 @@ class ROUTER_etf(Container):
             Website link of the ETF. (provider: fmp)
         holdings_count : Optional[int]
             Number of holdings in the ETF. (provider: fmp)
+        fund_type : Optional[str]
+            The legal type of fund. (provider: yfinance)
+        fund_family : Optional[str]
+            The fund family. (provider: yfinance)
+        category : Optional[str]
+            The fund category. (provider: yfinance)
+        exchange : Optional[str]
+            The exchange the fund is listed on. (provider: yfinance)
+        exchange_timezone : Optional[str]
+            The timezone of the exchange. (provider: yfinance)
+        currency : Optional[str]
+            The currency in which the fund is listed. (provider: yfinance)
+        nav_price : Optional[float]
+            The net asset value per unit of the fund. (provider: yfinance)
+        total_assets : Optional[int]
+            The total value of assets held by the fund. (provider: yfinance)
+        trailing_pe : Optional[float]
+            The trailing twelve month P/E ratio of the fund's assets. (provider: yfinance)
+        dividend_yield : Optional[float]
+            The dividend yield of the fund, as a normalized percent. (provider: yfinance)
+        dividend_rate_ttm : Optional[float]
+            The trailing twelve month annual dividend rate of the fund, in currency units. (provider: yfinance)
+        dividend_yield_ttm : Optional[float]
+            The trailing twelve month annual dividend yield of the fund, as a normalized percent. (provider: yfinance)
+        year_high : Optional[float]
+            The fifty-two week high price. (provider: yfinance)
+        year_low : Optional[float]
+            The fifty-two week low price. (provider: yfinance)
+        ma_50d : Optional[float]
+            50-day moving average price. (provider: yfinance)
+        ma_200d : Optional[float]
+            200-day moving average price. (provider: yfinance)
+        return_ytd : Optional[float]
+            The year-to-date return of the fund, as a normalized percent. (provider: yfinance)
+        return_3y_avg : Optional[float]
+            The three year average return of the fund, as a normalized percent. (provider: yfinance)
+        return_5y_avg : Optional[float]
+            The five year average return of the fund, as a normalized percent. (provider: yfinance)
+        beta_3y_avg : Optional[float]
+            The three year average beta of the fund. (provider: yfinance)
+        volume_avg : Optional[float]
+            The average daily trading volume of the fund. (provider: yfinance)
+        volume_avg_10d : Optional[float]
+            The average daily trading volume of the fund over the past ten days. (provider: yfinance)
+        bid : Optional[float]
+            The current bid price. (provider: yfinance)
+        bid_size : Optional[float]
+            The current bid size. (provider: yfinance)
+        ask : Optional[float]
+            The current ask price. (provider: yfinance)
+        ask_size : Optional[float]
+            The current ask size. (provider: yfinance)
+        open : Optional[float]
+            The open price of the most recent trading session. (provider: yfinance)
+        high : Optional[float]
+            The highest price of the most recent trading session. (provider: yfinance)
+        low : Optional[float]
+            The lowest price of the most recent trading session. (provider: yfinance)
+        volume : Optional[int]
+            The trading volume of the most recent trading session. (provider: yfinance)
+        prev_close : Optional[float]
+            The previous closing price. (provider: yfinance)
 
         Example
         -------

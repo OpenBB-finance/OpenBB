@@ -156,6 +156,7 @@ def test_regulators_cftc_cot_search(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "transform": "diff",
+                "collapse": "weekly",
                 "provider": "nasdaq",
             }
         ),
