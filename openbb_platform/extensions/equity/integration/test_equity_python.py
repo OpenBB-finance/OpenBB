@@ -526,6 +526,7 @@ def test_equity_calendar_ipo(params, obb):
             }
         ),
         ({"provider": "finviz", "symbol": "AAPL,GOOG"}),
+        ({"provider": "yfinance", "symbol": "AAPL,GOOG"}),
     ],
 )
 @pytest.mark.integration
