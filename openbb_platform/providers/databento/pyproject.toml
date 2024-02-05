@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "openbb-databento"
+version = "1.1.1"
+description = "Databento extension for OpenBB"
+authors = ["OpenBB Team <hello@openbb.co>"]
+readme = "README.md"
+packages = [{ include = "openbb_databento" }]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+databento = "^0.28.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.plugins."openbb_provider_extension"]
+databento = "openbb_databento:databento_provider"
