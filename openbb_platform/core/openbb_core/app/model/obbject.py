@@ -310,4 +310,15 @@ class OBBject(Tagged, Generic[T]):
         OBBject[ResultsType]
             OBBject with results.
         """
-        return cls(results=await query.execute())
+        data: List[BaseModel] = await query.execute()
+
+        if isinstance(data, list) and data:
+            if isinstance(data[0], BaseModel):
+                data[0] = data[0].model_copy(update={"provider": query.provider})
+            if isinstance(data[0], dict):
+                data[0] = data[0].update({"provider": query.provider})
+
+        if isinstance(data, BaseModel):
+            data = data.model_copy(update={"provider": query.provider})
+
+        return cls(results=data)

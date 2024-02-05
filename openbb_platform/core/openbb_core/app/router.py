@@ -12,6 +12,7 @@ from typing import (
     Mapping,
     Optional,
     Type,
+    Union,
     get_args,
     get_origin,
     get_type_hints,
@@ -19,7 +20,7 @@ from typing import (
 )
 
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel
+from pydantic import BaseModel, Discriminator, Field, Tag, create_model
 from pydantic.v1.validators import find_validators
 from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
@@ -38,6 +39,17 @@ from openbb_core.app.provider_interface import (
 from openbb_core.env import Env
 
 P = ParamSpec("P")
+
+
+def model_t_discriminator(v: Any) -> str:
+    """Discriminator function for the results field."""
+    if isinstance(v, dict):
+        return v.get("provider", "openbb")
+
+    if isinstance(v, list):
+        return model_t_discriminator(v[0])
+
+    return getattr(v, "provider", "openbb")
 
 
 class OpenBBErrorResponse(BaseModel):
@@ -249,15 +261,16 @@ class Router:
             kwargs["openapi_extra"] = kwargs.get("openapi_extra", {})
             kwargs["openapi_extra"]["model"] = model
             kwargs["openapi_extra"]["examples"] = examples
-            kwargs["openapi_extra"]["response_model"] = (
-                SignatureInspector.get_response_model(model)
-            )
             kwargs["operation_id"] = kwargs.get(
                 "operation_id", SignatureInspector.get_operation_id(func)
             )
             kwargs["path"] = kwargs.get("path", f"/{func.__name__}")
             kwargs["endpoint"] = func
             kwargs["methods"] = kwargs.get("methods", ["GET"])
+            kwargs["response_model"] = kwargs.get(
+                "response_model",
+                func.__annotations__["return"],  # type: ignore
+            )
             kwargs["response_model_by_alias"] = kwargs.get(
                 "response_model_by_alias", False
             )
@@ -303,11 +316,6 @@ class Router:
 
 class SignatureInspector:
     """Inspect function signature."""
-
-    @classmethod
-    def get_response_model(cls, model: str) -> Optional[Dict]:
-        """Get response model."""
-        return ProviderInterface().return_map.get(model)
 
     @classmethod
     def complete(
@@ -358,6 +366,12 @@ class SignatureInspector:
                 callable_=provider_interface.params[model]["extra"],
             )
 
+            func = cls.inject_return_type(
+                func=func,
+                return_map=provider_interface.return_map.get(model),
+                model=model,
+            )
+
         else:
             func = cls.polish_return_schema(func)
             if (
@@ -370,6 +384,47 @@ class SignatureInspector:
                     callable_=provider_interface.provider_choices,
                 )
 
+        return func
+
+    @staticmethod
+    def inject_return_type(
+        func: Callable[P, OBBject],
+        return_map: Dict[str, Any],
+        model: str,
+    ) -> Callable[P, OBBject]:
+        """
+        Inject full return model into the function.
+        Also updates __name__ and __doc__ for API schemas.
+        """
+
+        union_models = [Annotated[None, Tag("openbb")]]
+
+        for provider, return_type in return_map.items():
+            union_models.append(Annotated[return_type, Tag(provider)])
+
+        obbject = create_model(
+            f"OBBject_[{model}]",
+            __base__=OBBject,
+            results=(
+                Annotated[
+                    Union[tuple(union_models)],  # type: ignore
+                    Field(
+                        ...,
+                        description="Serializable results.",
+                        discriminator=Discriminator(model_t_discriminator),
+                    ),
+                ],
+                Field(..., description="Serializable results."),
+            ),
+        )
+
+        return_type = obbject  # type: ignore
+        return_type.__name__ = f"OBBject[{model.replace('Data', '')}]"
+        return_type.__doc__ = (
+            f"OBBject with results of type {model.replace('Data', '')}"
+        )
+
+        func.__annotations__["return"] = return_type
         return func
 
     @staticmethod
