@@ -9,7 +9,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/gdp")
 
@@ -22,7 +21,7 @@ async def forecast(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Forecasted GDP Data."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -33,7 +32,7 @@ async def nominal(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Nominal GDP Data."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -44,6 +43,6 @@ async def real(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Real GDP Data."""
     return await OBBject.from_query(Query(**locals()))

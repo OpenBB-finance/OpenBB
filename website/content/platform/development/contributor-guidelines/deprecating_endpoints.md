@@ -46,7 +46,7 @@ Deprecating commands is essential to maintaining the OpenBB Platform. This guide
             provider_choices: ProviderChoices,
             standard_params: StandardParams,
             extra_params: ExtraParams,
-        ) -> OBBject[BaseModel]:
+        ) -> OBBject:
             """Historical Market Indices."""
         return await OBBject.from_query(Query(**locals()))
 

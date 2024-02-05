@@ -9,7 +9,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/corporate")
 
@@ -22,7 +21,7 @@ async def ice_bofa(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """ICE BofA US Corporate Bond Indices.
 
     The ICE BofA US Corporate Index tracks the performance of US dollar denominated investment grade corporate debt
@@ -40,7 +39,7 @@ async def moody(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Moody Corporate Bond Index.
 
     Moody's Aaa and Baa are investment bonds that acts as an index of
@@ -57,7 +56,7 @@ async def hqm(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """High Quality Market Corporate Bond.
 
     The HQM yield curve represents the high quality corporate bond market, i.e.,
@@ -74,7 +73,7 @@ async def spot_rates(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Spot Rates.
 
     The spot rates for any maturity is the yield on a bond that provides a single payment at that maturity.
@@ -91,7 +90,7 @@ async def commercial_paper(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Commercial Paper.
 
     Commercial paper (CP) consists of short-term, promissory notes issued primarily by corporations.
