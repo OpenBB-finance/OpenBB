@@ -1,5 +1,6 @@
 """Databento Helper Utility Functions"""
 import datetime
+
 import databento as db
 import pandas as pd
 
@@ -56,4 +57,36 @@ def get_futures_curve(symbol, date, key):
 
     # Convert the 'expiration' column back to string format
     df["expiration"] = df["expiration"].dt.strftime("%b-%Y")
+    return df
+
+
+def parse_symbol(symbol):
+    ticker = symbol[:6].strip()
+    expiration = symbol[6:12]
+    type = "call" if "C" in symbol else "put"
+    strike = int(symbol[13:]) / 1000
+    expiration_date = datetime.datetime.strptime(expiration, "%y%m%d").strftime(
+        "%Y-%m-%d"
+    )
+
+    return ticker, expiration_date, type, strike
+
+
+def get_options_chain(symbol, date, key):
+    client = db.Historical(key)
+    data = client.timeseries.get_range(
+        dataset="OPRA.PILLAR",
+        symbols=[f"{symbol}.OPT"],
+        stype_in="parent",
+        start=f"{date}T00:00:00",
+        end=f"{date}T23:59:59",
+        schema="ohlcv-1d",
+    )
+    df = data.to_df()
+    df[["ticker", "expiration", "type", "strike"]] = df.apply(
+        lambda row: parse_symbol(row["symbol"]), axis=1, result_type="expand"
+    )
+    df = df.reset_index(drop=False)
+    df["eod_date"] = df["ts_event"].dt.strftime("%Y-%m-%d")
+    df = df.drop(columns=["rtype", "publisher_id", "ts_event"])
     return df
