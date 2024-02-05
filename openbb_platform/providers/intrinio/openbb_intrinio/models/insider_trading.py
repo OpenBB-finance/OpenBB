@@ -108,7 +108,11 @@ class IntrinioInsiderTradingData(InsiderTradingData):
     @classmethod
     def empty_strings(cls, values):  # pylint: disable=no-self-argument
         """Check for empty strings and replace with None."""
-        return {k: None if v == "" else v for k, v in values.items()}
+        return (
+            {k: None if v == "" else v for k, v in values.items()}
+            if isinstance(values, dict)
+            else values
+        )
 
 
 class IntrinioInsiderTradingFetcher(

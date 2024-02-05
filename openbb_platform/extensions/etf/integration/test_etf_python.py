@@ -70,6 +70,7 @@ def test_etf_historical(params, obb):
     [
         ({"symbol": "IOO", "provider": "fmp"}),
         ({"symbol": "MISL", "provider": "fmp"}),
+        ({"symbol": "QQQ", "provider": "yfinance"}),
     ],
 )
 @pytest.mark.integration

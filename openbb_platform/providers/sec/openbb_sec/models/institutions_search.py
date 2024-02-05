@@ -15,11 +15,6 @@ class SecInstitutionsSearchQueryParams(CotSearchQueryParams):
     Source: https://sec.gov/
     """
 
-    use_cache: bool = Field(
-        default=True,
-        description="Whether or not to use cache. If True, cache will store for seven days.",
-    )
-
 
 class SecInstitutionsSearchData(Data):
     """SEC Institutions Search Data."""
@@ -45,6 +40,7 @@ class SecInstitutionsSearchFetcher(
         """Transform the query."""
         return SecInstitutionsSearchQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: SecInstitutionsSearchQueryParams,
@@ -56,9 +52,10 @@ class SecInstitutionsSearchFetcher(
         hp = institutions["Institution"].str.contains(query.query, case=False)
         return institutions[hp].astype(str).to_dict("records")
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        data: List[Dict], **kwargs: Any
+        query: SecInstitutionsSearchQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[SecInstitutionsSearchData]:
         """Transform the data to the standard format."""
         return [SecInstitutionsSearchData.model_validate(d) for d in data]

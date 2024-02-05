@@ -9,7 +9,7 @@ from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import filter_by_dates, get_querystring
 from openbb_tiingo.utils.helpers import get_data_many
 from pydantic import Field, field_validator
 
@@ -88,9 +88,11 @@ class TiingoCompanyNewsFetcher(
 
         return get_data_many(url)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: TiingoCompanyNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[TiingoCompanyNewsData]:
         """Return the transformed data."""
-        return [TiingoCompanyNewsData.model_validate(d) for d in data]
+        modeled_data = [TiingoCompanyNewsData.model_validate(d) for d in data]
+        return filter_by_dates(modeled_data, query.start_date, query.end_date)

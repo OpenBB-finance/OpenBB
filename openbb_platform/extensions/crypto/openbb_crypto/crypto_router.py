@@ -9,7 +9,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 from openbb_crypto.price.price_router import router as price_router
 
@@ -24,6 +23,6 @@ async def search(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Cryptocurrency Search. Search available cryptocurrency pairs."""
     return await OBBject.from_query(Query(**locals()))
