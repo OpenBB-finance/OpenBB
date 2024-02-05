@@ -40,7 +40,7 @@ def test_regulators_sec_cik_map(params, headers):
 @parametrize(
     "params",
     [
-        ({"query": "berkshire hathaway", "provider": "sec"}),
+        ({"query": "berkshire hathaway", "provider": "sec", "use_cache": None}),
     ],
 )
 @pytest.mark.integration
@@ -129,7 +129,7 @@ def test_regulators_sec_sic_search(params, headers):
 @parametrize(
     "params",
     [
-        ({"query": "grain", "provider": "nasdaq"}),
+        ({"query": "grain", "provider": "nasdaq", "use_cache": None}),
     ],
 )
 @pytest.mark.integration
