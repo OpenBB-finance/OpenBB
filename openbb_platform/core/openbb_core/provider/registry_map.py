@@ -2,9 +2,9 @@
 
 from inspect import getfile, isclass
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Tuple
+from typing import Any, Dict, List, Literal, Optional, Tuple, get_origin
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, create_model
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -89,11 +89,13 @@ class RegistryMap:
                     "QueryParams": extra_query,
                     "Data": extra_data,
                 }
-                if model_name not in return_schemas:
-                    return_schemas[model_name] = {}
-                return_schemas[model_name][p] = RegistryMap._get_model(
-                    fetcher, "data"
-                ).model_json_schema(by_alias=False)
+
+                if provider_model := self.extract_data_model(fetcher, p):
+                    is_list = get_origin(self.extract_return_type(fetcher)) == list
+
+                    return_schemas.setdefault(model_name, {}).update(
+                        {p: List[provider_model] if is_list else provider_model}
+                    )
 
         return map_, return_schemas
 
@@ -102,11 +104,57 @@ class RegistryMap:
         return list(map_.keys())
 
     @staticmethod
+    def extract_return_type(fetcher: Fetcher):
+        """Extract return info from fetcher."""
+        return getattr(fetcher, "return_type", None)
+
+    @staticmethod
+    def extract_data_model(fetcher: Fetcher, provider: str) -> BaseModel:
+        """Extract info (fields and docstring) from fetcher query params or data."""
+        model: BaseModel = RegistryMap._get_model(fetcher, "data")
+
+        provider_model = create_model(
+            model.__name__,
+            __base__=model,
+            __module__=model.__module__,
+            provider=(
+                Literal[provider],  # type: ignore
+                Field(
+                    default=provider,
+                    description="The data provider for the data.",
+                    exclude=True,
+                ),
+            ),
+        )
+
+        return provider_model
+
+    @staticmethod
+    def extract_query_model(fetcher: Fetcher, provider: str) -> BaseModel:
+        """Extract info (fields and docstring) from fetcher query params or data."""
+        model: BaseModel = RegistryMap._get_model(fetcher, "query_params")
+
+        provider_model = create_model(
+            model.__name__,
+            __base__=model,
+            __module__=model.__module__,
+            provider=(
+                Literal[provider],  # type: ignore
+                Field(
+                    default=provider,
+                    description="The data provider for the data.",
+                    exclude=True,
+                ),
+            ),
+        )
+
+        return provider_model
+
+    @staticmethod
     def extract_info(fetcher: Fetcher, type_: Literal["query_params", "data"]) -> tuple:
         """Extract info (fields and docstring) from fetcher query params or data."""
         model: BaseModel = RegistryMap._get_model(fetcher, type_)
         all_fields = {}
-        alias_dict: Dict[str, List[str]] = {}
         standard_info: Dict[str, Any] = {"fields": {}, "docstring": None}
         found_top_level = False
 
@@ -123,13 +171,10 @@ class RegistryMap:
                 standard_info["fields"].update(c.model_fields)
             else:
                 all_fields.update(c.model_fields)
-                for name, alias in getattr(c, "__alias_dict__", {}).items():
-                    alias_dict.setdefault(name, []).append(alias)
 
         extra_info: Dict[str, Any] = {
             "fields": {},
             "docstring": model.__doc__,
-            "alias_dict": alias_dict,
         }
 
         # We ignore fields that are already in the standard model
