@@ -49,26 +49,40 @@ class HedgeController(BaseController):
 
         self.underlying_asset_position: str = ""
         self.chain = get_option_chain(ticker, expiration)
-        self.calls = list(
-            zip(
-                self.chain.calls["strike"].tolist(),
-                self.chain.calls["impliedVolatility"].tolist(),
-                self.chain.calls["lastPrice"].tolist(),
-                self.chain.calls["currency"].tolist(),
+        self.calls = (
+            list(
+                zip(
+                    self.chain.calls["strike"].tolist(),
+                    self.chain.calls["impliedVolatility"].tolist(),
+                    self.chain.calls["lastPrice"].tolist(),
+                    self.chain.calls["currency"].tolist(),
+                )
             )
+            if "calls" in self.chain.columns
+            else []
         )
-        self.puts = list(
-            zip(
-                self.chain.puts["strike"].tolist(),
-                self.chain.puts["impliedVolatility"].tolist(),
-                self.chain.puts["lastPrice"].tolist(),
-                self.chain.calls["currency"].tolist(),
+        self.puts = (
+            list(
+                zip(
+                    self.chain.puts["strike"].tolist(),
+                    self.chain.puts["impliedVolatility"].tolist(),
+                    self.chain.puts["lastPrice"].tolist(),
+                    self.chain.calls["currency"].tolist(),
+                )
             )
+            if "puts" in self.chain.columns
+            else []
         )
+
+        start = self.calls[0] if self.calls else 0
+        end = self.calls[-1] if self.calls else 0
+
+        start = int(start[0]) if isinstance(start, list) and start else 0
+        end = int(end[0]) if isinstance(end, list) and end else 0
 
         self.PICK_CHOICES = [
             f"{strike} {position} {side}"
-            for strike in range(int(self.calls[0][0]), int(self.calls[-1][0]), 5)
+            for strike in range(start, end, 5)
             for position in ["Long", "Short"]
             for side in ["Call", "Put"]
         ]
@@ -172,9 +186,7 @@ class HedgeController(BaseController):
     def call_add(self, other_args: List[str]):
         """Process add command"""
         parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="add",
-            description="""Add options to the diagram.""",
+            add_help=False, prog="add", description="""Add options to the diagram.""",
         )
         parser.add_argument(
             "-p",
