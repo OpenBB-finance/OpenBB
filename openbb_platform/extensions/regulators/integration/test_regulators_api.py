@@ -57,12 +57,13 @@ def test_regulators_sec_institutions_search(params, headers):
 @parametrize(
     "params",
     [
-        ({"query": "2022", "provider": "sec", "url": ""}),
+        ({"query": "2022", "provider": "sec", "url": "", "use_cache": None}),
         (
             {
                 "query": "",
                 "provider": "sec",
                 "url": "https://xbrl.fasb.org/us-gaap/2014/entire/",
+                "use_cache": None,
             }
         ),
     ],
