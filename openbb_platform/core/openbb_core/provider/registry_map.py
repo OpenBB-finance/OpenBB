@@ -4,7 +4,7 @@ from inspect import getfile, isclass
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Tuple, get_origin
 
-from pydantic import BaseModel, Field, create_model
+from pydantic import BaseModel, ConfigDict, Field, alias_generators, create_model
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -109,25 +109,22 @@ class RegistryMap:
         return getattr(fetcher, "return_type", None)
 
     @staticmethod
-    def extract_data_model(fetcher: Fetcher, provider: str) -> BaseModel:
+    def extract_data_model(fetcher: Fetcher, provider_str: str) -> BaseModel:
         """Extract info (fields and docstring) from fetcher query params or data."""
         model: BaseModel = RegistryMap._get_model(fetcher, "data")
 
-        provider_model = create_model(
-            model.__name__,
-            __base__=model,
-            __module__=model.__module__,
-            provider=(
-                Literal[provider],  # type: ignore
-                Field(
-                    default=provider,
-                    description="The data provider for the data.",
-                    exclude=True,
-                ),
-            ),
-        )
+        class DataModel(model):
+            model_config = ConfigDict(alias_generator=alias_generators.to_snake)
 
-        return provider_model
+            provider: Literal[provider_str, "openbb"] = Field(  # type: ignore
+                default=provider_str,
+                description="The data provider for the data.",
+                exclude=True,
+            )
+
+        return create_model(
+            model.__name__, __base__=DataModel, __module__=model.__module__
+        )
 
     @staticmethod
     def extract_query_model(fetcher: Fetcher, provider: str) -> BaseModel:
