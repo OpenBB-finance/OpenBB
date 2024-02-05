@@ -2,6 +2,7 @@
 
 import asyncio
 import re
+from datetime import datetime
 from functools import partial
 from inspect import iscoroutinefunction
 from typing import Awaitable, Callable, List, Literal, Optional, TypeVar, Union, cast
@@ -10,6 +11,7 @@ import requests
 from anyio import start_blocking_portal
 from typing_extensions import ParamSpec
 
+from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.utils.client import (
     ClientResponse,
     ClientSession,
@@ -63,8 +65,8 @@ async def amake_request(
     ] = None,
     **kwargs,
 ) -> Union[dict, List[dict]]:
-    """Abstract helper to make requests from a url with potential headers and params.
-
+    """
+    Abstract helper to make requests from a url with potential headers and params.
 
     Parameters
     ----------
@@ -232,7 +234,6 @@ async def maybe_coroutine(
     func: Callable[P, Union[T, Awaitable[T]]], /, *args: P.args, **kwargs: P.kwargs
 ) -> T:
     """Check if a function is a coroutine and run it accordingly."""
-
     if not iscoroutinefunction(func):
         return cast(T, func(*args, **kwargs))
 
@@ -243,7 +244,6 @@ def run_async(
     func: Callable[P, Awaitable[T]], /, *args: P.args, **kwargs: P.kwargs
 ) -> T:
     """Run a coroutine function in a blocking context."""
-
     if not iscoroutinefunction(func):
         return cast(T, func(*args, **kwargs))
 
@@ -252,3 +252,20 @@ def run_async(
             return portal.call(partial(func, *args, **kwargs))
         finally:
             portal.call(portal.stop)
+
+
+def filter_by_dates(
+    data: List[Data],
+    start_date: datetime,
+    end_date: datetime,
+) -> List[Data]:
+    """Filter data by dates."""
+    if not any([start_date, end_date]):
+        return data
+
+    return list(
+        filter(
+            lambda d: start_date <= d.date.date() <= end_date,
+            data,
+        )
+    )

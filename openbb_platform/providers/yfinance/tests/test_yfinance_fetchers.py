@@ -14,18 +14,28 @@ from openbb_yfinance.models.equity_historical import YFinanceEquityHistoricalFet
 from openbb_yfinance.models.equity_profile import YFinanceEquityProfileFetcher
 from openbb_yfinance.models.equity_quote import YFinanceEquityQuoteFetcher
 from openbb_yfinance.models.etf_historical import YFinanceEtfHistoricalFetcher
+from openbb_yfinance.models.etf_info import YFinanceEtfInfoFetcher
 from openbb_yfinance.models.futures_curve import YFinanceFuturesCurveFetcher
 from openbb_yfinance.models.futures_historical import YFinanceFuturesHistoricalFetcher
 from openbb_yfinance.models.gainers import YFGainersFetcher
 from openbb_yfinance.models.growth_tech_equities import YFGrowthTechEquitiesFetcher
+from openbb_yfinance.models.historical_dividends import (
+    YFinanceHistoricalDividendsFetcher,
+)
 from openbb_yfinance.models.income_statement import YFinanceIncomeStatementFetcher
 from openbb_yfinance.models.index_historical import (
     YFinanceIndexHistoricalFetcher,
 )
+from openbb_yfinance.models.key_executives import YFinanceKeyExecutivesFetcher
+from openbb_yfinance.models.key_metrics import YFinanceKeyMetricsFetcher
 from openbb_yfinance.models.losers import YFLosersFetcher
 from openbb_yfinance.models.market_indices import (
     YFinanceMarketIndicesFetcher,
 )
+from openbb_yfinance.models.price_target_consensus import (
+    YFinancePriceTargetConsensusFetcher,
+)
+from openbb_yfinance.models.share_statistics import YFinanceShareStatisticsFetcher
 from openbb_yfinance.models.undervalued_growth_equities import (
     YFUndervaluedGrowthEquitiesFetcher,
 )
@@ -42,6 +52,7 @@ def vcr_config():
         "filter_headers": [
             ("User-Agent", None),
             ("Cookie", "MOCK_COOKIE"),
+            ("crumb", "MOCK_CRUMB"),
         ],
         "filter_query_parameters": [
             ("period1", "MOCK_PERIOD_1"),
@@ -49,6 +60,15 @@ def vcr_config():
             ("crumb", "MOCK_CRUMB"),
         ],
     }
+
+
+@pytest.mark.record_http
+def test_y_finance_historical_dividends_fetcher(credentials=test_credentials):
+    params = {"symbol": "IBM"}
+
+    fetcher = YFinanceHistoricalDividendsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
 
 
 @pytest.mark.record_http
@@ -271,5 +291,50 @@ def test_y_finance_equity_quote_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = YFinanceEquityQuoteFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_y_finance_price_target_consensus_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = YFinancePriceTargetConsensusFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_y_finance_share_statistics_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = YFinanceShareStatisticsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_y_finance_key_executives_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = YFinanceKeyExecutivesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_y_finance_key_metrics_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = YFinanceKeyMetricsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_y_finance_etf_info_fetcher(credentials=test_credentials):
+    params = {"symbol": "QQQ"}
+
+    fetcher = YFinanceEtfInfoFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

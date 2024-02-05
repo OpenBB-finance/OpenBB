@@ -10,7 +10,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/sec")
 
@@ -21,7 +20,7 @@ async def cik_map(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get the CIK number corresponding to a ticker symbol."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -32,7 +31,7 @@ async def institutions_search(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Look up institutions regulated by the SEC."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -43,7 +42,7 @@ async def schema_files(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get lists of SEC XML schema files by year."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -54,7 +53,7 @@ async def symbol_map(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get the ticker symbol corresponding to a company's CIK."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -65,8 +64,8 @@ async def rss_litigation(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court."""  # noqa: E501
+) -> OBBject:
+    """The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court."""  # noqa: E501 pylint: disable=C0301
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -76,6 +75,6 @@ async def sic_search(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Search for Industry Titles, Reporting Office, and SIC Codes."""
     return await OBBject.from_query(Query(**locals()))

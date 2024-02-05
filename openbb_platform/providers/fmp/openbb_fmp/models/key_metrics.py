@@ -126,7 +126,7 @@ class FMPKeyMetricsData(KeyMetricsData):
     income_quality: Optional[float] = Field(default=None, description="Income quality")
     dividend_yield: Optional[float] = Field(
         default=None,
-        description="Dividend yield",
+        description="Dividend yield, as a normalized percent.",
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     payout_ratio: Optional[float] = Field(default=None, description="Payout ratio")

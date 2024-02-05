@@ -9,7 +9,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/ownership")
 
@@ -22,7 +21,7 @@ async def major_holders(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Equity Ownership. Information about the company ownership."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -33,7 +32,7 @@ async def institutional(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Institutional Ownership. Institutional ownership data."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -44,7 +43,7 @@ async def insider_trading(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Insider Trading. Information about insider trading."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -55,6 +54,6 @@ async def share_statistics(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Share Statistics. Share statistics for a given company."""
     return await OBBject.from_query(Query(**locals()))

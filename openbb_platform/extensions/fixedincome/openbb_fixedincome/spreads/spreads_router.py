@@ -9,7 +9,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/spreads")
 
@@ -22,7 +21,7 @@ async def tmc(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Treasury Constant Maturity.
 
     Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.
@@ -39,7 +38,7 @@ async def tmc_effr(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Select Treasury Constant Maturity.
 
     Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate
@@ -56,7 +55,7 @@ async def treasury_effr(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Select Treasury Bill.
 
     Get Selected Treasury Bill Minus Federal Funds Rate.

@@ -20,7 +20,7 @@ from typing import (
 )
 
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel
+from pydantic import BaseModel, Discriminator, Field, Tag, create_model
 from pydantic.v1.validators import find_validators
 from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
@@ -39,6 +39,17 @@ from openbb_core.app.provider_interface import (
 from openbb_core.env import Env
 
 P = ParamSpec("P")
+
+
+def model_t_discriminator(v: Any) -> str:
+    """Discriminator function for the results field."""
+    if isinstance(v, dict):
+        return v.get("provider", "openbb")
+
+    if isinstance(v, list):
+        return model_t_discriminator(v[0])
+
+    return getattr(v, "provider", "openbb")
 
 
 class OpenBBErrorResponse(BaseModel):
@@ -186,7 +197,7 @@ class CommandValidator:
                 "    provider_choices: ProviderChoices,\n"
                 "    standard_params: StandardParams,\n"
                 "    extra_params: ExtraParams,\n"
-                ") -> OBBject[BaseModel]:\n"
+                ") -> OBBject:\n"
                 '    """World News. Global news data."""\n'
                 "    return await OBBject.from_query(Query(**locals()))\033[0m"
             )
@@ -357,9 +368,10 @@ class SignatureInspector:
 
             func = cls.inject_return_type(
                 func=func,
-                inner_type=provider_interface.return_schema[model],
-                outer_type=provider_interface.return_map[model],
+                return_map=provider_interface.return_map.get(model),
+                model=model,
             )
+
         else:
             func = cls.polish_return_schema(func)
             if (
@@ -376,24 +388,40 @@ class SignatureInspector:
 
     @staticmethod
     def inject_return_type(
-        func: Callable[P, OBBject], inner_type: Any, outer_type: Any
+        func: Callable[P, OBBject],
+        return_map: Dict[str, Any],
+        model: str,
     ) -> Callable[P, OBBject]:
         """
         Inject full return model into the function.
-
         Also updates __name__ and __doc__ for API schemas.
         """
-        ReturnModel = inner_type
-        outer_type_origin = get_origin(outer_type)
 
-        if outer_type_origin == list:
-            ReturnModel = List[inner_type]  # type: ignore
-        elif outer_type_origin == Union:
-            ReturnModel = Union[List[inner_type], inner_type]  # type: ignore
+        union_models = [Annotated[None, Tag("openbb")]]
 
-        return_type = OBBject[ReturnModel]  # type: ignore
-        return_type.__name__ = f"OBBject[{inner_type.__name__}]"
-        return_type.__doc__ = f"OBBject with results of type '{inner_type.__name__}'."
+        for provider, return_type in return_map.items():
+            union_models.append(Annotated[return_type, Tag(provider)])
+
+        return_type = create_model(
+            f"OBBject_{model}",
+            __base__=OBBject,
+            results=(
+                Annotated[
+                    Union[tuple(union_models)],  # type: ignore
+                    Field(
+                        ...,
+                        description="Serializable results.",
+                        discriminator=Discriminator(model_t_discriminator),
+                    ),
+                ],
+                Field(..., description="Serializable results."),
+            ),
+        )
+
+        return_type.__name__ = f"OBBject_{model.replace('Data', '')}"
+        return_type.__doc__ = (
+            f"OBBject with results of type {model.replace('Data', '')}"
+        )
 
         func.__annotations__["return"] = return_type
         return func

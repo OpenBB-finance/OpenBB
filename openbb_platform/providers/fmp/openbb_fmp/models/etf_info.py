@@ -18,31 +18,35 @@ class FMPEtfInfoQueryParams(EtfInfoQueryParams):
 class FMPEtfInfoData(EtfInfoData):
     """FMP ETF Info Data."""
 
-    cusip: Optional[str] = Field(description="CUSIP of the ETF.")
-    isin: Optional[str] = Field(description="ISIN of the ETF.")
-    issuer: Optional[str] = Field(alias="etfCompany", description="Company of the ETF.")
-    domicile: Optional[str] = Field(description="Domicile of the ETF.")
+    cusip: Optional[str] = Field(description="CUSIP of the ETF.", default=None)
+    isin: Optional[str] = Field(description="ISIN of the ETF.", default=None)
+    issuer: Optional[str] = Field(alias="etfCompany", description="Company of the ETF.", default=None)
+    domicile: Optional[str] = Field(description="Domicile of the ETF.", default=None)
     asset_class: Optional[str] = Field(
-        alias="assetClass", description="Asset class of the ETF."
+        alias="assetClass", description="Asset class of the ETF.", default=None
     )
     holdings_count: Optional[int] = Field(
-        alias="holdingsCount", description="Number of holdings in the ETF."
+        alias="holdingsCount", description="Number of holdings in the ETF.", default=None
     )
-    aum: Optional[float] = Field(description="Assets under management.")
-    nav: Optional[float] = Field(description="Net asset value of the ETF.")
-    nav_currency: Optional[str] = Field(
-        alias="navCurrency", description="Currency of the ETF's net asset value."
+    aum: Optional[float] = Field(description="Assets under management.", default=None)
+    expense_ratio: Optional[float] = Field(
+        alias="expenseRatio", description="Expense ratio of the ETF.", default=None
+    )
+    nav: Optional[float] = Field(description="Net asset value of the ETF.", default=None)
+    currency: Optional[str] = Field(
+        alias="navCurrency", description="Currency of the ETF's net asset value.", default=None
     )
     expense_ratio: Optional[float] = Field(
+        default=None,
         alias="expenseRatio",
         description="Expense ratio of the ETF.",
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     volume_avg: Optional[float] = Field(
-        alias="avgVolume", description="Average daily trading volume of the ETF."
+        alias="avgVolume", description="Average daily trading volume of the ETF.", default=None
     )
-    website: Optional[str] = Field(description="Website link of the ETF.")
-    description: Optional[str] = Field(description="Description of the ETF.")
+    website: Optional[str] = Field(description="Website link of the ETF.", default=None)
+    description: Optional[str] = Field(description="Description of the ETF.", default=None)
 
     @field_validator("expense_ratio", mode="before", check_fields=False)
     @classmethod

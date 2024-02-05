@@ -9,7 +9,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/discovery")
 
@@ -22,7 +21,7 @@ async def gainers(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get the top ETF gainers."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -33,7 +32,7 @@ async def losers(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get the top ETF losers."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -44,6 +43,6 @@ async def active(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get the most active ETFs."""
     return await OBBject.from_query(Query(**locals()))

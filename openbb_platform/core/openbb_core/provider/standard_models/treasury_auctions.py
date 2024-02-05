@@ -50,6 +50,9 @@ class USTreasuryAuctionsQueryParams(QueryParams):
     @classmethod
     def validate_dates(cls, values) -> dict:
         """Validate the query parameters."""
+        if not isinstance(values, dict):
+            return values
+
         if values.get("start_date") is None:
             values["start_date"] = (datetime.now() - timedelta(days=90)).strftime(
                 "%Y-%m-%d"

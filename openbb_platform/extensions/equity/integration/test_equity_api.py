@@ -313,6 +313,12 @@ def test_equity_fundamental_historical_splits(params, headers):
                 "provider": "fmp",
             }
         ),
+        (
+            {
+                "symbol": "AAPL",
+                "provider": "yfinance",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -571,7 +577,10 @@ def test_equity_fundamental_metrics(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL"})],
+    [
+        ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL", "provider": "yfinance"}),
+    ],
 )
 @pytest.mark.integration
 def test_equity_fundamental_management(params, headers):
@@ -651,7 +660,10 @@ def test_equity_estimates_price_target(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL"})],
+    [
+        ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL,AMZN,RELIANCE.NS", "provider": "yfinance"}),
+    ],
 )
 @pytest.mark.integration
 def test_equity_estimates_consensus(params, headers):
@@ -775,6 +787,7 @@ def test_equity_fundamental_filings(params, headers):
     [
         ({"symbol": "AAPL", "provider": "fmp"}),
         ({"symbol": "AAPL", "provider": "intrinio"}),
+        ({"symbol": "AAPL", "provider": "yfinance"}),
     ],
 )
 @pytest.mark.integration

@@ -10,7 +10,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/price")
 
@@ -22,6 +21,6 @@ async def historical(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Currency Historical Price. Currency historical data."""
     return await OBBject.from_query(Query(**locals()))
