@@ -14,7 +14,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Basics | OpenBB Add-in for Excel Docs" />
 
-The OpenBB Excel Add-in provides direct access to the OpenBB platform, where each function implements the following pattern:
+The OpenBB Add-in for Excel provides direct access to the OpenBB platform, where each function implements the following pattern:
 
 - `OBB.[MENU].[SUB_MENU].[COMMAND]`
 
