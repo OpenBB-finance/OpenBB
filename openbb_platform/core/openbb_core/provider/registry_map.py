@@ -94,7 +94,7 @@ class RegistryMap:
                     is_list = get_origin(self.extract_return_type(fetcher)) == list
 
                     return_schemas.setdefault(model_name, {}).update(
-                        {p: provider_model if not is_list else List[provider_model]}
+                        {p: List[provider_model] if is_list else provider_model}
                     )
 
         return map_, return_schemas
