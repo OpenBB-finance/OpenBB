@@ -5,7 +5,12 @@ import databento as db
 import pandas as pd
 
 
-def get_expiration_date(symbol, base_symbol):
+def get_expiration_date(symbol: str, base_symbol: str):
+    """Parse GLOBEX futures symbol to get the expiration date.
+
+    The base symbol is required so that underlying symbols ending in
+    numbers are handled correctly.
+    """
     # Month codes to month numbers
     month_codes = {
         "F": 1,
@@ -36,7 +41,22 @@ def get_expiration_date(symbol, base_symbol):
     return date.strftime("%b-%Y")
 
 
-def get_futures_curve(symbol, date, key):
+def get_futures_curve(symbol: str, date: str, key: str) -> pd.DataFrame:
+    """Gets the end of day futures prices for the underlying symbol.
+
+    Parameters
+    ----------
+    symbol: str
+        Underlying symbol to get chains for
+    date: str
+        Day to get chains for in YYYY-MM-DD format
+    key: str
+        API key from the fetcher
+
+    Returns
+    -------
+    pd.DataFrame
+    """
     client = db.Historical(key)
     data = client.timeseries.get_range(
         dataset="GLBX.MDP3",
@@ -60,7 +80,8 @@ def get_futures_curve(symbol, date, key):
     return df
 
 
-def parse_symbol(symbol):
+def parse_symbol(symbol: str) -> tuple:
+    """Parse OCC symbol into ticker, expiry, type, and strike."""
     ticker = symbol[:6].strip()
     expiration = symbol[6:12]
     type = "call" if "C" in symbol else "put"
@@ -72,7 +93,22 @@ def parse_symbol(symbol):
     return ticker, expiration_date, type, strike
 
 
-def get_options_chain(symbol, date, key):
+def get_options_chain(symbol: str, date: str, key: str) -> pd.DataFrame:
+    """
+    Gets the end of day options chain for a given symbol and date.
+    Parameters
+    ----------
+    symbol: str
+        Underlying symbol to get chains for
+    date: str
+        Day to get chains for in YYYY-MM-DD format
+    key: str
+        API key from the fetcher
+
+    Returns
+    -------
+    pd.DataFrame
+    """
     client = db.Historical(key)
     data = client.timeseries.get_range(
         dataset="OPRA.PILLAR",
@@ -90,3 +126,11 @@ def get_options_chain(symbol, date, key):
     df["eod_date"] = df["ts_event"].dt.strftime("%Y-%m-%d")
     df = df.drop(columns=["rtype", "publisher_id", "ts_event"])
     return df
+
+
+def last_business_day(date):
+    """A chatgpt helper to get the last business day so this works out of the box"""
+    while True:
+        date -= pd.Timedelta(days=1)
+        if len(pd.bdate_range(date, date)) == 1:
+            return date

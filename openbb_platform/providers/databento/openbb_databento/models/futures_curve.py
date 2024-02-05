@@ -11,18 +11,15 @@ from openbb_core.provider.standard_models.futures_curve import (
     FuturesCurveQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_databento.utils.helpers import get_futures_curve
+from openbb_databento.utils.helpers import get_futures_curve, last_business_day
 
 
 class DatabentoFuturesCurveQueryParams(FuturesCurveQueryParams):
-    """Yahoo Finance Futures Curve Query.
-
-    Source: https://finance.yahoo.com/crypto/
-    """
+    """Databento Futures Curve Query."""
 
 
 class DatabentoFuturesCurveData(FuturesCurveData):
-    """Yahoo Finance Futures Curve Data."""
+    """Databento Futures Curve Data."""
 
 
 class DatabentoFuturesCurveFetcher(
@@ -31,7 +28,7 @@ class DatabentoFuturesCurveFetcher(
         List[DatabentoFuturesCurveData],
     ]
 ):
-    """Transform the query, extract and transform the data from the Yahoo Finance endpoints."""
+    """Transform the query, extract and transform the data from the Databento endpoints."""
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> DatabentoFuturesCurveQueryParams:
@@ -40,7 +37,7 @@ class DatabentoFuturesCurveFetcher(
 
         now = datetime.now().date()
         if params.get("date") is None:
-            transformed_params["date"] = now - timedelta(days=1)
+            transformed_params["date"] = last_business_day(now)
 
         return DatabentoFuturesCurveQueryParams(**transformed_params)
 

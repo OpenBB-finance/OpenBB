@@ -3,6 +3,7 @@
 # pylint: disable=unused-argument
 from datetime import (
     date as dateType,
+    datetime,
 )
 from typing import Any, Dict, List, Optional
 
@@ -13,7 +14,7 @@ from openbb_core.provider.standard_models.options_chains import (
     OptionsChainsQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from openbb_databento.utils.helpers import get_options_chain
+from openbb_databento.utils.helpers import get_options_chain, last_business_day
 from pydantic import Field, field_validator
 
 
@@ -58,12 +59,9 @@ class DatabentoOptionsChainsFetcher(
     def transform_query(params: Dict[str, Any]) -> DatabentoOptionsChainsQueryParams:
         """Transform the query."""
         transform_params = params.copy()
-        if params.get("date") is not None:
-            if isinstance(params["date"], dateType):
-                transform_params["date"] = params["date"].strftime("%Y-%m-%d")
-            else:
-                transform_params["date"] = parser.parse(params["date"]).date()
-
+        now = datetime.now().date()
+        if params.get("date") is None:
+            transform_params["date"] = last_business_day(now)
         return DatabentoOptionsChainsQueryParams(**transform_params)
 
     @staticmethod
