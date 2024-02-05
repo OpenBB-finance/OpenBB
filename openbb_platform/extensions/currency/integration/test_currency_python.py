@@ -76,11 +76,9 @@ def test_currency_search(params, obb):
         ),
         (
             {
-                "multiplier": 1,
-                "timespan": "minute",
+                "interval": "1m",
                 "sort": "desc",
                 "limit": 49999,
-                "adjusted": True,
                 "provider": "polygon",
                 "symbol": "EURUSD",
                 "start_date": "2023-01-01",
@@ -89,11 +87,9 @@ def test_currency_search(params, obb):
         ),
         (
             {
-                "multiplier": 1,
-                "timespan": "day",
+                "interval": "1d",
                 "sort": "desc",
                 "limit": 49999,
-                "adjusted": True,
                 "provider": "polygon",
                 "symbol": "EURUSD",
                 "start_date": "2023-01-01",
