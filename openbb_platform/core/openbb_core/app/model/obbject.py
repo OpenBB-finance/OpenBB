@@ -75,6 +75,19 @@ class OBBject(Tagged, Generic[T]):
         """Return the results type name."""
         type_ = params[0] if params else cls.model_fields["results"].annotation
         name = type_.__name__ if hasattr(type_, "__name__") else str(type_)
+
+        if "Annotated" in str(type_):
+            annotated_inners = []
+            for inner in cls.model_fields["results"].annotation.__args__:
+                if hasattr(inner, "__args__") and inner.__args__[0] == type(None):
+                    continue
+
+                annotated_inners.append(
+                    inner.__args__[0] if hasattr(inner, "__args__") else inner
+                )
+
+            type_ = Union[tuple(annotated_inners)] if len(annotated_inners) > 1 else annotated_inners[0]  # type: ignore
+
         if "typing." in str(type_):
             unpack_optional = sub(r"Optional\[(.*)\]", r"\1", str(type_))
             name = sub(
