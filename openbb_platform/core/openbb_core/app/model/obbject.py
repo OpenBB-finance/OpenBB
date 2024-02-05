@@ -266,13 +266,13 @@ class OBBject(Tagged, Generic[T]):
             del results["index"]
         return results
 
-    def show(self):
+    def show(self, **kwargs: Any) -> None:
         """Display chart."""
         # pylint: disable=no-member
         if not self.chart or not self.chart.fig:
             raise OpenBBError("Chart not found.")
         show_function: Callable = getattr(self.chart.fig, "show")
-        show_function()
+        show_function(**kwargs)
 
     @classmethod
     async def from_query(cls, query: "Query") -> "OBBject":

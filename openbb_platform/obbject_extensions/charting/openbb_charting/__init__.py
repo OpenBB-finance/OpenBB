@@ -93,7 +93,7 @@ class Charting:
             fig=fig, content=content, format=charting_router.CHART_FORMAT
         )
         if render:
-            fig.show()
+            fig.show(**kwargs)
 
     # pylint: disable=too-many-arguments
     def to_chart(
@@ -117,6 +117,7 @@ class Charting:
         prepost: bool = False,
         volume_ticks_x: int = 7,
         render: bool = True,
+        **kwargs,
     ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
         """
         Creates a OpenBBFigure with user customizations (if any) and saves it to the OBBject.
@@ -193,4 +194,4 @@ class Charting:
             fig=fig, content=content, format=charting_router.CHART_FORMAT
         )
         if render:
-            fig.show()
+            fig.show(**kwargs)
