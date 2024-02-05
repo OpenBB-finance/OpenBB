@@ -10,7 +10,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 from openbb_index.price.price_router import router as price_router
 
@@ -34,7 +33,7 @@ async def market(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Historical Market Indices."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -45,7 +44,7 @@ async def constituents(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Index Constituents. Constituents of an index."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -56,7 +55,7 @@ async def snapshots(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Index Snapshots. Current levels for all indices from a provider."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -67,7 +66,7 @@ async def available(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Available Indices. Available indices for a given provider."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -78,7 +77,7 @@ async def search(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Index Search. Search for indices."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -89,6 +88,6 @@ async def sp500_multiples(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """S&P 500 Multiples. Historical S&P 500 multiples and Shiller PE ratios."""
     return await OBBject.from_query(Query(**locals()))

@@ -11,6 +11,7 @@ from openbb_core.provider.standard_models.company_news import (
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     amake_requests,
+    filter_by_dates,
     get_querystring,
 )
 from pydantic import Field, field_validator
@@ -88,9 +89,11 @@ class IntrinioCompanyNewsFetcher(
 
         return await amake_requests(urls, callback, **kwargs)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: IntrinioCompanyNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[IntrinioCompanyNewsData]:
         """Return the transformed data."""
-        return [IntrinioCompanyNewsData.model_validate(d) for d in data]
+        modeled_data = [IntrinioCompanyNewsData.model_validate(d) for d in data]
+        return filter_by_dates(modeled_data, query.start_date, query.end_date)
