@@ -8,6 +8,7 @@ class Extensions(Container):
     # fmt: off
     """
 Routers:
+    /commodity
     /crypto
     /currency
     /derivatives
@@ -20,6 +21,7 @@ Routers:
     /regulators
 
 Extensions:
+    - commodity@1.0.0
     - crypto@1.1.1
     - currency@1.1.1
     - derivatives@1.1.1
@@ -48,8 +50,13 @@ Extensions:
         return self.__doc__ or ""
 
     @property
-    def crypto(self):
-        # pylint: disable=import-outside-toplevel
+    def commodity(self):  # route = "/commodity"
+        from . import commodity
+
+        return commodity.ROUTER_commodity(command_runner=self._command_runner)
+
+    @property
+    def crypto(self):  # route = "/crypto"
         from . import crypto
 
         return crypto.ROUTER_crypto(command_runner=self._command_runner)
@@ -69,8 +76,13 @@ Extensions:
         return derivatives.ROUTER_derivatives(command_runner=self._command_runner)
 
     @property
-    def economy(self):
-        # pylint: disable=import-outside-toplevel
+    def econometrics(self):  # route = "/econometrics"
+        from . import econometrics
+
+        return econometrics.ROUTER_econometrics(command_runner=self._command_runner)
+
+    @property
+    def economy(self):  # route = "/economy"
         from . import economy
 
         return economy.ROUTER_economy(command_runner=self._command_runner)
@@ -111,8 +123,19 @@ Extensions:
         return news.ROUTER_news(command_runner=self._command_runner)
 
     @property
-    def regulators(self):
-        # pylint: disable=import-outside-toplevel
+    def quantitative(self):  # route = "/quantitative"
+        from . import quantitative
+
+        return quantitative.ROUTER_quantitative(command_runner=self._command_runner)
+
+    @property
+    def regulators(self):  # route = "/regulators"
         from . import regulators
 
         return regulators.ROUTER_regulators(command_runner=self._command_runner)
+
+    @property
+    def technical(self):  # route = "/technical"
+        from . import technical
+
+        return technical.ROUTER_technical(command_runner=self._command_runner)

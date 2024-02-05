@@ -22,6 +22,7 @@ openbb-tiingo = "^1.1.1"
 openbb-tradingeconomics = "^1.1.1"
 openbb-yfinance = "^1.1.1"
 
+openbb-commodity = "^1.0.0"
 openbb-crypto = "^1.1.1"
 openbb-currency = "^1.1.1"
 openbb-derivatives = "^1.1.1"

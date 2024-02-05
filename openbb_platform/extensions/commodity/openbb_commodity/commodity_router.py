@@ -1,5 +1,4 @@
-# pylint: disable=import-outside-toplevel, W0613:unused-argument
-"""News Router."""
+"""The Commodity router."""
 
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
@@ -15,23 +14,13 @@ from pydantic import BaseModel
 router = Router(prefix="")
 
 
-@router.command(model="WorldNews")
-async def world(
+# pylint: disable=unused-argument
+@router.command(model="LbmaFixing")
+async def lbma_fixing(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject[BaseModel]:
-    """World News. Global news data."""
-    return await OBBject.from_query(Query(**locals()))
-
-
-@router.command(model="CompanyNews")
-async def company(
-    cc: CommandContext,
-    provider_choices: ProviderChoices,
-    standard_params: StandardParams,
-    extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
-    """Company News. Get news for one or more companies."""
+    """Daily LBMA Fixing Prices in USD/EUR/GBP."""
     return await OBBject.from_query(Query(**locals()))
