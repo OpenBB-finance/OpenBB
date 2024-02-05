@@ -2,13 +2,18 @@ name: Platform Release
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, closed, labeled, unlabeled]
+    types: [closed]
     branches:
       - develop
   push:
     tags:
       - '*'
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag for release (manual input)'
+        required: true
+        default: ''
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -42,13 +47,13 @@ jobs:
         uses: mikepenz/release-changelog-builder-action@v4.1.1
         with:
           configurationJson: "build/configs/configuration_platform.json"
-          path: "openbb_platform"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🛫 Create Release
         uses: mikepenz/action-gh-release@v1
         with:
-          body: ${{steps.build_changelog.outputs.changelog}}
+          # body: ${{steps.build_changelog.outputs.changelog}}
+          body_path: "openbb_platform/CHANGELOG.md"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
