@@ -402,8 +402,8 @@ class SignatureInspector:
         for provider, return_type in return_map.items():
             union_models.append(Annotated[return_type, Tag(provider)])
 
-        obbject = create_model(
-            f"OBBject_[{model}]",
+        return_type = create_model(
+            f"OBBject_{model}",
             __base__=OBBject,
             results=(
                 Annotated[
@@ -418,8 +418,7 @@ class SignatureInspector:
             ),
         )
 
-        return_type = obbject  # type: ignore
-        return_type.__name__ = f"OBBject[{model.replace('Data', '')}]"
+        return_type.__name__ = f"OBBject_{model.replace('Data', '')}"
         return_type.__doc__ = (
             f"OBBject with results of type {model.replace('Data', '')}"
         )
