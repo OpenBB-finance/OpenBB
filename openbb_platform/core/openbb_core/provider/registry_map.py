@@ -113,17 +113,30 @@ class RegistryMap:
         """Extract info (fields and docstring) from fetcher query params or data."""
         model: BaseModel = RegistryMap._get_model(fetcher, "data")
 
-        class DataModel(model):
-            model_config = ConfigDict(alias_generator=alias_generators.to_snake)
+        fields = {}
+        for field_name, field in model.model_fields.items():
+            field.alias_priority = None
+            fields[field_name] = (field.annotation, field)
 
-            provider: Literal[provider_str, "openbb"] = Field(  # type: ignore
-                default=provider_str,
-                description="The data provider for the data.",
-                exclude=True,
-            )
+        fields.pop("provider", None)
 
         return create_model(
-            model.__name__, __base__=DataModel, __module__=model.__module__
+            model.__name__.replace("Data", ""),
+            __doc__=model.__doc__,
+            __config__=ConfigDict(
+                extra="allow",
+                alias_generator=alias_generators.to_snake,
+                populate_by_name=True,
+            ),
+            provider=(
+                Literal[provider_str, "openbb"],  # type: ignore
+                Field(
+                    default=provider_str,
+                    description="The data provider for the data.",
+                    exclude=True,
+                ),
+            ),
+            **fields,
         )
 
     @staticmethod
