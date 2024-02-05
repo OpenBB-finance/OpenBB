@@ -1,5 +1,8 @@
 """Polygon Equity Historical Price Model."""
 
+# pylint: disable=unused-argument
+
+import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -10,6 +13,7 @@ from openbb_core.provider.standard_models.equity_historical import (
     EquityHistoricalQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     ClientSession,
@@ -21,6 +25,9 @@ from pydantic import (
     PrivateAttr,
     model_validator,
 )
+from pytz import timezone
+
+_warn = warnings.warn
 
 
 class PolygonEquityHistoricalQueryParams(EquityHistoricalQueryParams):
@@ -143,11 +150,18 @@ class PolygonEquityHistoricalFetcher(
                 next_url = data.get("next_url", None)
 
             for r in results:
-                r["t"] = datetime.fromtimestamp(r["t"] / 1000)
+                r["t"] = datetime.fromtimestamp(
+                    r["t"] / 1000, tz=timezone("America/New_York")
+                )
                 if query._timespan not in ["second", "minute", "hour"]:
                     r["t"] = r["t"].date()
+                else:
+                    r["t"] = r["t"].strftime("%Y-%m-%dT%H:%M:%S")
                 if "," in query.symbol:
                     r["symbol"] = symbol
+
+            if results == []:
+                _warn(f"Symbol Error: No data found for {symbol}")
 
             return results
 
@@ -160,4 +174,6 @@ class PolygonEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[PolygonEquityHistoricalData]:
         """Transform the data from the Polygon endpoint."""
+        if not data:
+            raise EmptyDataError()
         return [PolygonEquityHistoricalData.model_validate(d) for d in data]
