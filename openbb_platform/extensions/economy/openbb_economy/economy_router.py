@@ -9,7 +9,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 from openbb_economy.gdp.gdp_router import router as gdp_router
 
@@ -25,7 +24,7 @@ async def calendar(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Economic Calendar."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -36,7 +35,7 @@ async def cpi(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Consumer Price Index (CPI).  Returns either the rescaled index value, or a rate of change (inflation)."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -47,7 +46,7 @@ async def risk_premium(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Historical Market Risk Premium."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -58,7 +57,7 @@ async def balance_of_payments(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Balance of Payments Reports."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -69,7 +68,7 @@ async def fred_search(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """
     Search for FRED series or economic releases by ID or string.
     This does not return the observation values, only the metadata.
@@ -84,7 +83,7 @@ async def fred_series(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get data by series ID from FRED."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -95,7 +94,7 @@ async def money_measures(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Money Measures (M1/M2 and components)."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -106,7 +105,7 @@ async def unemployment(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Global unemployment data."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -117,7 +116,7 @@ async def composite_leading_indicator(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """The composite leading indicator (CLI) is designed to provide early signals of turning points
     in business cycles showing fluctuation of the economic activity around its long term potential level.
     CLIs show short-term economic movements in qualitative rather than quantitative terms.
@@ -131,7 +130,7 @@ async def short_term_interest_rate(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """
     Short-term interest rates are the rates at which short-term borrowings are effected between
     financial institutions or the rate at which short-term government paper is issued or traded in the market.
@@ -148,7 +147,7 @@ async def long_term_interest_rate(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """
     Long-term interest rates refer to government bonds maturing in ten years.
     Rates are mainly determined by the price charged by the lender, the risk from the borrower and the
