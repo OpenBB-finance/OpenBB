@@ -9,6 +9,7 @@ from openbb_nasdaq.models.cot import NasdaqCotFetcher
 from openbb_nasdaq.models.cot_search import NasdaqCotSearchFetcher
 from openbb_nasdaq.models.economic_calendar import NasdaqEconomicCalendarFetcher
 from openbb_nasdaq.models.equity_search import NasdaqEquitySearchFetcher
+from openbb_nasdaq.models.historical_dividends import NasdaqHistoricalDividendsFetcher
 from openbb_nasdaq.models.lbma_fixing import NasdaqLbmaFixingFetcher
 from openbb_nasdaq.models.sp500_multiples import NasdaqSP500MultiplesFetcher
 from openbb_nasdaq.models.top_retail import NasdaqTopRetailFetcher
@@ -122,6 +123,15 @@ def test_nasdaq_calendar_earnings_fetcher(credentials=test_credentials):
     }
 
     fetcher = NasdaqCalendarEarningsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_nasdaq_historical_dividends_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = NasdaqHistoricalDividendsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
