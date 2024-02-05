@@ -1,11 +1,12 @@
 """The OpenBB Standardized Data Model."""
 
-from typing import Dict
+from typing import Dict, Literal
 
 from pydantic import (
     BaseModel,
     BeforeValidator,
     ConfigDict,
+    Field,
     alias_generators,
     model_validator,
 )
@@ -69,6 +70,11 @@ class Data(BaseModel):
     """
 
     __alias_dict__: Dict[str, str] = {}
+    provider: Literal["openbb"] = Field(
+        "openbb",
+        description="The data provider for the data.",
+        exclude=True,
+    )
 
     def __repr__(self):
         """Return a string representation of the object."""
@@ -87,7 +93,7 @@ class Data(BaseModel):
         """Use alias for error locs."""
         # set the alias dict values keys
         aliases = {orig: alias for alias, orig in cls.__alias_dict__.items()}
-        if aliases:
+        if aliases and isinstance(values, dict):
             return {aliases.get(k, k): v for k, v in values.items()}
 
         return values

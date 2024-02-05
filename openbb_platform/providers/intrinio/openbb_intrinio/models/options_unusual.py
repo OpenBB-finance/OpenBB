@@ -34,7 +34,7 @@ class IntrinioOptionsUnusualData(OptionsUnusualData):
 
     @field_validator("contract_symbol", mode="before", check_fields=False)
     @classmethod
-    def contract_symbol(cls, v):
+    def validate_contract_symbol(cls, v: str):  # pylint: disable=E0213
         """Return the symbol as the OCC standard format."""
         return v.replace("_", "") if v else None
 
