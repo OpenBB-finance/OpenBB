@@ -55,4 +55,3 @@ The language-agnostic API approach offers flexibility by allowing you to use the
 ### Quick Start with Python and FastAPI
 
 Our team has created several examples that you can use to quickly get started with Python and FastAPI. For more information, check [this open source repository](https://github.com/OpenBB-finance/backend-for-terminal-pro/tree/main) for examples.
-e

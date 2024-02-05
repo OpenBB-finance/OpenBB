@@ -9,7 +9,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/shorts")
 
@@ -22,7 +21,7 @@ async def fails_to_deliver(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get reported Fail-to-deliver (FTD) data."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -33,7 +32,7 @@ async def short_volume(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get reported Fail-to-deliver (FTD) data."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -44,6 +43,6 @@ async def short_interest(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get reported Short Volume and Days to Cover data."""
     return await OBBject.from_query(Query(**locals()))

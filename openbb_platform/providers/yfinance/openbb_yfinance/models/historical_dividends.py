@@ -54,8 +54,8 @@ class YFinanceHistoricalDividendsFetcher(
                 raise ValueError(f"No dividend data found for {symbol}")
         except Exception as e:
             raise RuntimeError(f"Error getting data for {symbol}: {e}") from e
-        ticker.index.name = "date"
-        ticker.name = "dividend"  # type: ignore
+        ticker.index.name = "ex_dividend_date"
+        ticker.name = "amount"  # type: ignore
         if query.start_date is not None:
             ticker = ticker[ticker.index.astype(str) >= query.start_date.strftime("%Y-%m-%d")]  # type: ignore
         if query.end_date is not None:
