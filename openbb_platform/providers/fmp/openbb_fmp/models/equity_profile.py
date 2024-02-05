@@ -93,7 +93,11 @@ class FMPEquityProfileData(EquityInfoData):
     @classmethod
     def replace_empty_strings(cls, values):
         """Check for empty strings and replace with None."""
-        return {k: None if v in ("", "NA") else v for k, v in values.items()}
+        return (
+            {k: None if v in ("", "NA") else v for k, v in values.items()}
+            if isinstance(values, dict)
+            else values
+        )
 
 
 class FMPEquityProfileFetcher(
