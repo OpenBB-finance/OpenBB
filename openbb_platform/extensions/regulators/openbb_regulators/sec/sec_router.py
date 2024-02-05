@@ -65,7 +65,7 @@ async def rss_litigation(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court."""  # noqa: E501
+    """The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court."""  # noqa: E501 pylint: disable=C0301
     return await OBBject.from_query(Query(**locals()))
 
 
