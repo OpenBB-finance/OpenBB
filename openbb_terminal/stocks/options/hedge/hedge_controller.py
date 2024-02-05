@@ -90,7 +90,11 @@ class HedgeController(BaseController):
         self.ticker = ticker
         self.current_price: float = get_price(ticker)
         self.expiration = expiration
-        self.implied_volatility = self.chain.calls["impliedVolatility"]
+        self.implied_volatility = (
+            self.chain.calls.get("impliedVolatility", 0.0)
+            if "calls" in self.chain.columns
+            else 0.0
+        )
         self.options: Dict = {"Portfolio": {}, "Option A": {}, "Option B": {}}
         self.underlying = 0.0
         self.side: str = ""
