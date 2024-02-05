@@ -4,7 +4,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Optional
+from typing import Literal, Optional
 
 from pydantic import Field, field_validator
 
@@ -18,12 +18,12 @@ from openbb_core.provider.utils.descriptions import (
 
 class LbmaFixingQueryParams(QueryParams):
     """
-    LBMA Fixing Query Params.
+    LBMA Fixing Query.
 
     Source: https://www.lbma.org.uk/prices-and-data/precious-metal-prices#/table
     """
 
-    asset: str = Field(
+    asset: Literal["gold", "silver"] = Field(
         description="The metal to get price fixing rates for.",
         default="gold",
     )
@@ -38,9 +38,7 @@ class LbmaFixingQueryParams(QueryParams):
 
 
 class LbmaFixingData(Data):
-    """
-    LBMA Fixing Data.  Historical fixing prices in USD, GBP and EUR.
-    """
+    """LBMA Fixing Data.  Historical fixing prices in USD, GBP and EUR."""
 
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     usd_am: Optional[float] = Field(

@@ -1,7 +1,7 @@
 """Nasdaq LBMA Fixing Model."""
 
 # pylint: disable=unused-argument
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Optional
 
 import nasdaqdatalink
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -10,19 +10,17 @@ from openbb_core.provider.standard_models.lbma_fixing import (
     LbmaFixingQueryParams,
 )
 from openbb_nasdaq.utils.query_params import DataLinkQueryParams
-from pydantic import Field
 
 
 class NasdaqLbmaFixingQueryParams(LbmaFixingQueryParams, DataLinkQueryParams):
-    """Get LBMA Fixing Data from Nasdaq Data Link."""
+    """Nasdaq Data Link LBMA Fixing Query.
 
-    asset: Literal["gold", "silver"] = Field(
-        description="The LBMA fixing asset.",
-    )
+    Source: https://data.nasdaq.com/data/LBMA-london-bullion-market-association/documentation
+    """
 
 
 class NasdaqLbmaFixingData(LbmaFixingData):
-    """Nasdaq LBMA Fixing Data."""
+    """Nasdaq Data Link LBMA Fixing Data."""
 
     __alias_dict__ = {
         "date": "Date",
@@ -45,6 +43,7 @@ class NasdaqLbmaFixingFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqLbmaFixingQueryParams:
+        """Transform the query params."""
         return NasdaqLbmaFixingQueryParams(**params)
 
     @staticmethod
