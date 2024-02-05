@@ -82,8 +82,8 @@ def test_regulators_sec_schema_files(params, headers):
 @parametrize(
     "params",
     [
-        ({"query": "0000909832", "provider": "sec"}),
-        ({"query": "0001067983", "provider": "sec"}),
+        ({"query": "0000909832", "provider": "sec", "use_cache": None}),
+        ({"query": "0001067983", "provider": "sec", "use_cache": None}),
     ],
 )
 @pytest.mark.integration
