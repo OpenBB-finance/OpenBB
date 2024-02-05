@@ -13,6 +13,10 @@ class CotSearchQueryParams(QueryParams):
     """Commitment of Traders Reports Search Query."""
 
     query: str = Field(description="Search query.", default="")
+    use_cache: Optional[bool] = Field(
+        default=True,
+        description="Whether or not to use cache. If True, cache will store for seven days.",
+    )
 
 
 class CotSearchData(Data):

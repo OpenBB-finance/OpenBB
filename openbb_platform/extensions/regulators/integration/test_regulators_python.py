@@ -38,7 +38,7 @@ def test_regulators_sec_cik_map(params, obb):
 @parametrize(
     "params",
     [
-        ({"query": "berkshire hathaway", "provider": "sec"}),
+        ({"query": "berkshire hathaway", "provider": "sec", "use_cache": None}),
     ],
 )
 @pytest.mark.integration
@@ -52,12 +52,20 @@ def test_regulators_sec_institutions_search(params, obb):
 @parametrize(
     "params",
     [
-        ({"query": "2022", "provider": "sec", "url": None}),
+        (
+            {
+                "query": "2022",
+                "provider": "sec",
+                "url": None,
+                "use_cache": None,
+            }
+        ),
         (
             {
                 "query": "",
                 "provider": "sec",
                 "url": "https://xbrl.fasb.org/us-gaap/2014/entire/",
+                "use_cache": None,
             }
         ),
     ],
@@ -73,8 +81,8 @@ def test_regulators_sec_schema_files(params, obb):
 @parametrize(
     "params",
     [
-        ({"query": "0000909832", "provider": "sec"}),
-        ({"query": "0001067983", "provider": "sec"}),
+        ({"query": "0000909832", "provider": "sec", "use_cache": None}),
+        ({"query": "0001067983", "provider": "sec", "use_cache": None}),
     ],
 )
 @pytest.mark.integration
@@ -113,7 +121,7 @@ def test_regulators_sec_sic_search(params, obb):
 @parametrize(
     "params",
     [
-        ({"query": "grain", "provider": "nasdaq"}),
+        ({"query": "grain", "provider": "nasdaq", "use_cache": None}),
     ],
 )
 @pytest.mark.integration
