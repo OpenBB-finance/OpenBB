@@ -9,6 +9,7 @@ from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
+from openbb_core.provider.utils.helpers import filter_by_dates
 from pydantic import Field, field_validator
 from yfinance import Ticker  # type: ignore
 
@@ -74,6 +75,7 @@ class YFinanceCompanyNewsFetcher(
         """Transform query params."""
         return YFinanceCompanyNewsQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(  # pylint: disable=unused-argument
         query: YFinanceCompanyNewsQueryParams,
@@ -86,6 +88,7 @@ class YFinanceCompanyNewsFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: YFinanceCompanyNewsQueryParams,
@@ -93,4 +96,5 @@ class YFinanceCompanyNewsFetcher(
         **kwargs: Any,
     ) -> List[YFinanceCompanyNewsData]:
         """Transform data."""
-        return [YFinanceCompanyNewsData.model_validate(d) for d in data]
+        modeled_data = [YFinanceCompanyNewsData.model_validate(d) for d in data]
+        return filter_by_dates(modeled_data, query.start_date, query.end_date)

@@ -41,9 +41,11 @@ def test_index_constituents(params, obb):
                 "interval": "1m",
                 "provider": "cboe",
                 "symbol": "AAVE100",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": "2024-01-01",
+                "end_date": "2024-02-05",
                 "use_cache": False,
+                "sort": None,
+                "limit": None,
             }
         ),
         (
@@ -54,6 +56,8 @@ def test_index_constituents(params, obb):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "use_cache": False,
+                "sort": None,
+                "limit": None,
             }
         ),
         (
@@ -61,10 +65,11 @@ def test_index_constituents(params, obb):
                 "interval": "1min",
                 "provider": "fmp",
                 "symbol": "^DJI",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": "2024-01-01",
+                "end_date": "2024-02-05",
                 "timeseries": 1,
                 "sort": "desc",
+                "limit": None,
             }
         ),
         (
@@ -76,6 +81,7 @@ def test_index_constituents(params, obb):
                 "end_date": "2023-06-06",
                 "timeseries": 1,
                 "sort": "desc",
+                "limit": None,
             }
         ),
         (
@@ -87,6 +93,7 @@ def test_index_constituents(params, obb):
                 "symbol": "NDX",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "interval": None,
             }
         ),
         (
@@ -98,6 +105,7 @@ def test_index_constituents(params, obb):
                 "symbol": "NDX",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "interval": None,
             }
         ),
         (
@@ -110,10 +118,13 @@ def test_index_constituents(params, obb):
                 "symbol": "DJI",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "sort": None,
+                "limit": None,
             }
         ),
         (
             {
+                "interval": "1d",
                 "provider": "intrinio",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
@@ -137,9 +148,13 @@ def test_index_price_historical(params, obb):
     [
         (
             {
-                "symbol": "AAVE100",
+                "symbol": "^DJI",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "provider": "fmp",
+                "sort": "desc",
+                "interval": None,
+                "limit": None,
             }
         ),
         (
@@ -150,6 +165,8 @@ def test_index_price_historical(params, obb):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "use_cache": True,
+                "limit": None,
+                "sort": None,
             }
         ),
         (
@@ -160,6 +177,8 @@ def test_index_price_historical(params, obb):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "use_cache": False,
+                "limit": None,
+                "sort": None,
             }
         ),
         (
@@ -171,6 +190,7 @@ def test_index_price_historical(params, obb):
                 "end_date": "2023-06-06",
                 "timeseries": 1,
                 "sort": "desc",
+                "limit": None,
             }
         ),
         (
@@ -182,6 +202,7 @@ def test_index_price_historical(params, obb):
                 "end_date": "2023-06-06",
                 "timeseries": 1,
                 "sort": "desc",
+                "limit": None,
             }
         ),
         (
@@ -195,6 +216,7 @@ def test_index_price_historical(params, obb):
                 "symbol": "NDX",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "interval": None,
             }
         ),
         (
@@ -208,6 +230,7 @@ def test_index_price_historical(params, obb):
                 "symbol": "NDX",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "interval": None,
             }
         ),
         (
@@ -220,6 +243,8 @@ def test_index_price_historical(params, obb):
                 "symbol": "DJI",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
+                "limit": None,
+                "sort": None,
             }
         ),
         (
@@ -232,6 +257,7 @@ def test_index_price_historical(params, obb):
                 "sort": "desc",
                 "limit": 100,
                 "type": None,
+                "interval": None,
             }
         ),
     ],

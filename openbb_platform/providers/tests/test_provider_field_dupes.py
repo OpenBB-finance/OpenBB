@@ -196,7 +196,16 @@ class ProviderFieldDupesTest(unittest.TestCase):
 
         for std_cls in child_parent_dict:
             with self.subTest(i=std_cls):
-                providers_w_fields = child_parent_dict[std_cls]
+                providers_w_fields_raw = child_parent_dict[std_cls]
+
+                # remove duplicate keys
+                providers_w_fields = []
+                keys = []
+                for item in providers_w_fields_raw:
+                    k = list(item.keys())[0]
+                    if k not in keys:
+                        keys.append(k)
+                        providers_w_fields.append(item)
 
                 fields = []
                 provider_models = []
