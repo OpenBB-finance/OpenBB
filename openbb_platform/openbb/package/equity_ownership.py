@@ -315,7 +315,7 @@ class ROUTER_equity_ownership(Container):
             OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         date: Annotated[
-            Optional[datetime.date],
+            Union[datetime.date, None, str],
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
         page: Annotated[

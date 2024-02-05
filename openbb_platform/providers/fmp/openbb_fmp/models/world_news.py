@@ -9,7 +9,7 @@ from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_requests
+from openbb_core.provider.utils.helpers import amake_requests, filter_by_dates
 from pydantic import Field, field_validator
 
 
@@ -68,6 +68,7 @@ class FMPWorldNewsFetcher(
 
         return data[: query.limit]
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: FMPWorldNewsQueryParams, data: List[Dict], **kwargs: Any
@@ -77,4 +78,5 @@ class FMPWorldNewsFetcher(
             if isinstance(d["image"], str):
                 d["image"] = [{"url": d["image"]}]
 
-        return [FMPWorldNewsData.model_validate(d) for d in data]
+        modeled_data = [FMPWorldNewsData.model_validate(d) for d in data]
+        return filter_by_dates(modeled_data, query.start_date, query.end_date)

@@ -1,8 +1,12 @@
 """Company News Standard Model."""
 
-from datetime import datetime
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Optional
 
+from dateutil.relativedelta import relativedelta
 from pydantic import Field, NonNegativeInt, field_validator
 
 from openbb_core.provider.abstract.data import Data
@@ -24,12 +28,35 @@ class CompanyNewsQueryParams(QueryParams):
     limit: Optional[NonNegativeInt] = Field(
         default=20, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
+    start_date: Optional[dateType] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("start_date", "")
+    )
+    end_date: Optional[dateType] = Field(
+        default=None, description=QUERY_DESCRIPTIONS.get("end_date", "")
+    )
 
     @field_validator("symbols", mode="before")
     @classmethod
-    def symbols_validate(cls, v: str):  # pylint: disable=E0213
+    def symbols_validate(cls, v: str) -> str:  # pylint: disable=E0213
         """Validate the symbols."""
         return v.upper()
+
+    @field_validator("start_date", mode="before")
+    @classmethod
+    def start_date_validate(cls, v) -> dateType:  # pylint: disable=E0213
+        """Populate start date if empty."""
+        if not v:
+            now = datetime.now().date()
+            v = now - relativedelta(years=1)
+        return v
+
+    @field_validator("end_date", mode="before")
+    @classmethod
+    def end_date_validate(cls, v) -> dateType:  # pylint: disable=E0213
+        """Populate end date if empty."""
+        if not v:
+            v = datetime.now().date()
+        return v
 
 
 class CompanyNewsData(Data):
