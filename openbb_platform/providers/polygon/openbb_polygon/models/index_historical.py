@@ -9,7 +9,6 @@ from openbb_core.provider.standard_models.index_historical import (
     IndexHistoricalData,
     IndexHistoricalQueryParams,
 )
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_polygon.utils.helpers import get_data_many
 from pydantic import Field, PositiveInt
 
@@ -22,12 +21,6 @@ class PolygonIndexHistoricalQueryParams(IndexHistoricalQueryParams):
 
     timespan: Literal["minute", "hour", "day", "week", "month", "quarter", "year"] = (
         Field(default="day", description="Timespan of the data.")
-    )
-    sort: Literal["asc", "desc"] = Field(
-        default="desc", description="Sort order of the data."
-    )
-    limit: PositiveInt = Field(
-        default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
     )
     adjusted: bool = Field(default=True, description="Whether the data is adjusted.")
     multiplier: PositiveInt = Field(
