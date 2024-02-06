@@ -11,7 +11,6 @@ import importlib_metadata
 import matplotlib
 import pandas as pd
 import pytest
-import yfinance.utils
 from _pytest.capture import MultiCapture, SysCapture
 from _pytest.config import Config
 from _pytest.config.argparsing import Parser
