@@ -20,7 +20,7 @@ router = Router(prefix="/options")
     exclude_auto_examples=True,
     examples=[
         'chains = obb.derivatives.options.chains(symbol="AAPL", provider="intrinio").to_df()',
-        '#### Use the "date" parameter to get the end-of-day-data for a specific date, where supported. ####'
+        '#### Use the "date" parameter to get the end-of-day-data for a specific date, where supported. ####',
         'eod_chains = obb.derivatives.options.chains(symbol="AAPL", date="2023-01-25", provider="intrinio").to_df()',
     ],
 )
@@ -39,7 +39,7 @@ async def chains(
     exclude_auto_examples=True,
     examples=[
         "options = obb.derivatives.options.unusual().to_df()",
-        '#### Use the "symbol" parameter to get the most recent activity for a specific symbol. ####'
+        '#### Use the "symbol" parameter to get the most recent activity for a specific symbol. ####',
         'options = obb.derivatives.options.unusual(symbol="TSLA").to_df()',
     ],
 )
