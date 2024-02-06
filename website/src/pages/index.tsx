@@ -53,10 +53,10 @@ export default function Home(): JSX.Element {
               className="!bg-grey-900 bg-[url('/img/excelbg.png')] bg-no-repeat shadow-sm group !no-underline text-white dark:hover:border-white hover:border-grey-600/80 relative w-full h-[238px] max-w-full p-8 rounded flex flex-col items-start justify-start border border-grey-300 hover:!text-white"
             >
               <h3 className="uppercase tracking-widest font-bold mb-0 mt-0 text-white">
-                OpenBB Excel Add-In
+                OpenBB Add-In for Excel
               </h3>
               <p className="text-sm lg:text-base text-grey-300">
-                The OpenBB Excel Add-In allows access to the same data as the OpenBB Terminal Pro, but through Excel.
+                The OpenBB Add-In for Excel allows access to the same data as the OpenBB Terminal Pro, but through Excel.
               </p>
               <p
                 className={clsx(
