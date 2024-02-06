@@ -31,7 +31,7 @@ jobs:
 
       - name: 🧬 Process Changelog
         run: |
-          python process_changelog.py ${{ github.event.inputs.release_pr_number }}
+          python process_changelog.py CHANGELOG.md ${{ github.event.inputs.release_pr_number }}
 
       - name: 🛫 Create Release
         uses: mikepenz/action-gh-release@v1
