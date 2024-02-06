@@ -1,5 +1,7 @@
 """FMP ETF Holdings Model."""
 
+# pylint: disable=unused-argument
+
 import warnings
 from datetime import (
     date as dateType,
@@ -140,6 +142,7 @@ class FMPEtfHoldingsData(EtfHoldingsData):
             return v if v not in ("", "0") else None
         if isinstance(v, (float, int)):
             return v if v and v not in (0.0, 0) else None
+        return v if v else None
 
 
 class FMPEtfHoldingsFetcher(
