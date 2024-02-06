@@ -86,30 +86,24 @@ def test_index_constituents(params, obb):
         ),
         (
             {
-                "timespan": "minute",
+                "interval": "1m",
                 "sort": "desc",
                 "limit": 49999,
-                "adjusted": True,
-                "multiplier": 1,
                 "provider": "polygon",
                 "symbol": "NDX",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "interval": None,
             }
         ),
         (
             {
-                "timespan": "day",
+                "interval": "1d",
                 "sort": "desc",
                 "limit": 49999,
-                "adjusted": True,
-                "multiplier": 1,
                 "provider": "polygon",
                 "symbol": "NDX",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "interval": None,
             }
         ),
         (

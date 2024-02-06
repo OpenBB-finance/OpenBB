@@ -1,5 +1,6 @@
 """Nasdaq Dividend Calendar Model."""
 
+# pylint: disable=unused-argument
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
@@ -26,7 +27,7 @@ class NasdaqCalendarDividendData(CalendarDividendData):
 
     __alias_dict__ = {
         "name": "companyName",
-        "date": "dividend_Ex_Date",
+        "ex_dividend_date": "dividend_Ex_Date",
         "payment_date": "payment_Date",
         "record_date": "record_Date",
         "declaration_date": "announcement_Date",
@@ -40,13 +41,14 @@ class NasdaqCalendarDividendData(CalendarDividendData):
     )
 
     @field_validator(
-        "date",
+        "ex_dividend_date",
         "record_date",
         "payment_date",
         "declaration_date",
         mode="before",
         check_fields=False,
     )
+    @classmethod
     def validate_date(cls, v: str):
         v = v.replace("N/A", "")
         return datetime.strptime(v, "%m/%d/%Y").date() if v else None
@@ -115,4 +117,7 @@ class NasdaqCalendarDividendFetcher(
         **kwargs: Any,  # pylint: disable=unused-argument
     ) -> List[NasdaqCalendarDividendData]:
         """Return the transformed data."""
-        return [NasdaqCalendarDividendData.model_validate(d) for d in data]
+        return [
+            NasdaqCalendarDividendData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["dividend_Ex_Date"], reverse=True)
+        ]

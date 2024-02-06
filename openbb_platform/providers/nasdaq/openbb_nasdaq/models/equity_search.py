@@ -33,10 +33,6 @@ class NasdaqEquitySearchQueryParams(EquitySearchQueryParams):
         default=None,
         description="If True, returns ETFs.",
     )
-    use_cache: Optional[bool] = Field(
-        default=True,
-        description="If True, caches the symbol directory for one day.",
-    )
 
 
 class NasdaqEquitySearchData(EquitySearchData):
@@ -108,16 +104,17 @@ class NasdaqEquitySearchFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqEquitySearchQueryParams:
+        """Transform the query parameters."""
         return NasdaqEquitySearchQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
-    async def extract_data(
+    async def aextract_data(
         query: NasdaqEquitySearchQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> str:
         """Extract data from Nasdaq."""
-
         url = "https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqtraded.txt"
 
         def fetch_data():
@@ -133,6 +130,7 @@ class NasdaqEquitySearchFetcher(
         loop = asyncio.get_running_loop()
         return await loop.run_in_executor(None, fetch_data)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: NasdaqEquitySearchQueryParams,
@@ -140,7 +138,6 @@ class NasdaqEquitySearchFetcher(
         **kwargs: Any,
     ) -> List[NasdaqEquitySearchData]:
         """Transform the data and filter the results."""
-
         directory = read_csv(StringIO(data), sep="|").iloc[:-1]
 
         if query.is_etf is True:

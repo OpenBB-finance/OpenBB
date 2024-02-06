@@ -17,12 +17,6 @@ class CboeEquitySearchQueryParams(EquitySearchQueryParams):
     Source: https://www.cboe.com/
     """
 
-    use_cache: bool = Field(
-        default=True,
-        description="When True, the company directory of optionable tickers will be cached for 24 hours."
-        + " Set as False to bypass.",
-    )
-
 
 class CboeEquitySearchData(EquitySearchData):
     """CBOE Equity Search Data."""
