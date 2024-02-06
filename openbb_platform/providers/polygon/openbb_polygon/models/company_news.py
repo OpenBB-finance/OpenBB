@@ -7,7 +7,7 @@ from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.helpers import filter_by_dates, get_querystring
 from openbb_polygon.utils.helpers import get_data_many, get_date_condition
 from pydantic import BaseModel, Field, field_validator
 
@@ -114,6 +114,7 @@ class PolygonCompanyNewsFetcher(
 
         return await get_data_many(url, "results", **kwargs)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: PolygonCompanyNewsQueryParams,
@@ -121,4 +122,5 @@ class PolygonCompanyNewsFetcher(
         **kwargs: Any,
     ) -> List[PolygonCompanyNewsData]:
         """Transform data."""
-        return [PolygonCompanyNewsData.model_validate(d) for d in data]
+        modeled_data = [PolygonCompanyNewsData.model_validate(d) for d in data]
+        return filter_by_dates(modeled_data, query.start_date, query.end_date)

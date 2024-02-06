@@ -9,7 +9,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/rate")
 
@@ -22,7 +21,7 @@ async def ameribor(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:  # type: ignore
+) -> OBBject:  # type: ignore
     """Ameribor.
 
     Ameribor (short for the American interbank offered rate) is a benchmark interest rate that reflects the true cost of
@@ -38,7 +37,7 @@ async def sonia(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:  # type: ignore
+) -> OBBject:  # type: ignore
     """Sterling Overnight Index Average.
 
     SONIA (Sterling Overnight Index Average) is an important interest rate benchmark. SONIA is based on actual
@@ -54,7 +53,7 @@ async def iorb(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:  # type: ignore
+) -> OBBject:  # type: ignore
     """Interest on Reserve Balances.
 
     Get Interest Rate on Reserve Balances data A bank rate is the interest rate a nation's central bank charges to its
@@ -70,7 +69,7 @@ async def effr(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:  # type: ignore
+) -> OBBject:  # type: ignore
     """Fed Funds Rate.
 
     Get Effective Federal Funds Rate data. A bank rate is the interest rate a nation's central bank charges to its
@@ -86,7 +85,7 @@ async def effr_forecast(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:  # type: ignore
+) -> OBBject:  # type: ignore
     """Fed Funds Rate Projections.
 
     The projections for the federal funds rate are the value of the midpoint of the
@@ -103,7 +102,7 @@ async def estr(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:  # type: ignore
+) -> OBBject:  # type: ignore
     """Euro Short-Term Rate.
 
     The euro short-term rate (€STR) reflects the wholesale euro unsecured overnight borrowing costs of banks located in
@@ -120,7 +119,7 @@ async def ecb(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """European Central Bank Interest Rates.
 
     The Governing Council of the ECB sets the key interest rates for the euro area:
@@ -139,7 +138,7 @@ async def dpcredit(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Discount Window Primary Credit Rate.
 
     A bank rate is the interest rate a nation's central bank charges to its domestic banks to borrow money.
