@@ -12,7 +12,7 @@ from openbb_core.provider.standard_models.index_historical import (
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import get_querystring
 from openbb_fmp.utils.helpers import get_data_many
-from pydantic import Field, NonNegativeInt, validator
+from pydantic import Field, NonNegativeInt, field_validator
 
 
 class FMPIndexHistoricalQueryParams(IndexHistoricalQueryParams):
@@ -30,7 +30,7 @@ class FMPIndexHistoricalQueryParams(IndexHistoricalQueryParams):
         Field(default="1day", description="Data granularity.")
     )
 
-    @validator("interval")
+    @field_validator("interval")
     @classmethod
     def map_interval(cls, v):
         """Map the interval from standard to the FMP format."""
