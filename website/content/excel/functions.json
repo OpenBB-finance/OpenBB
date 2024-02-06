@@ -16,6 +16,25 @@
           "name": "backend",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Symbol to get data for, if applicable.",
+          "name": "symbol",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Date to get data for, if applicable.",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Optional parameters as (n rows by 2 columns) range selection or array constant (e.g. {\"key1\",\"value1\"}; {\"key2\",\"value2\"}).",
+          "dimensionality": "matrix",
+          "name": "optional",
+          "optional": true,
+          "type": "any"
         }
       ],
       "result": {
