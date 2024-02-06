@@ -348,10 +348,10 @@ def test_fixedincome_corporate_hqm(params, obb):
     [({"start_date": "2023-01-01", "end_date": "2023-06-06", "maturity": "3m"})],
 )
 @pytest.mark.integration
-def test_fixedincome_spreads_tmc(params, obb):
+def test_fixedincome_spreads_tcm(params, obb):
     params = {p: v for p, v in params.items() if v}
 
-    result = obb.fixedincome.spreads.tmc(**params)
+    result = obb.fixedincome.spreads.tcm(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -371,10 +371,10 @@ def test_fixedincome_spreads_tmc(params, obb):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_spreads_tmc_effr(params, obb):
+def test_fixedincome_spreads_tcm_effr(params, obb):
     params = {p: v for p, v in params.items() if v}
 
-    result = obb.fixedincome.spreads.tmc_effr(**params)
+    result = obb.fixedincome.spreads.tcm_effr(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

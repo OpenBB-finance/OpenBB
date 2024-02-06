@@ -15,7 +15,13 @@ router = Router(prefix="/rate")
 # pylint: disable=unused-argument
 
 
-@router.command(model="AMERIBOR")
+@router.command(
+    model="AMERIBOR",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.fixedincome.rate.ameribor(parameter="30_day_ma").to_df()',
+    ],
+)
 async def ameribor(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -31,7 +37,13 @@ async def ameribor(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="SONIA")
+@router.command(
+    model="SONIA",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.fixedincome.rate.sonia(parameter="total_nominal_value")',
+    ],
+)
 async def sonia(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -47,7 +59,13 @@ async def sonia(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="IORB")
+@router.command(
+    model="IORB",
+    exclude_auto_examples=True,
+    examples=[
+        "obb.fixedincome.rate.iorb()",
+    ],
+)
 async def iorb(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -63,7 +81,13 @@ async def iorb(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="FEDFUNDS")
+@router.command(
+    model="FEDFUNDS",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.fixedincome.rate.effr(parameter="daily", provider="fred").to_df()',
+    ],
+)
 async def effr(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -79,7 +103,13 @@ async def effr(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="PROJECTIONS")
+@router.command(
+    model="PROJECTIONS",
+    exclude_auto_examples=True,
+    examples=[
+        "obb.fixedincome.rate.effr_forecast(long_run=True)",
+    ],
+)
 async def effr_forecast(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -96,7 +126,13 @@ async def effr_forecast(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="ESTR")
+@router.command(
+    model="ESTR",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.fixedincome.rate.estr(parameter="number_of_active_banks")',
+    ],
+)
 async def estr(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -113,7 +149,13 @@ async def estr(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EuropeanCentralBankInterestRates")
+@router.command(
+    model="EuropeanCentralBankInterestRates",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.fixedincome.rate.ecb(interest_rate_type="refinancing")',
+    ],
+)
 async def ecb(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -132,7 +174,13 @@ async def ecb(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="DiscountWindowPrimaryCreditRate")
+@router.command(
+    model="DiscountWindowPrimaryCreditRate",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.fixedincome.rate.dpcredit(start_date="2023-02-01", end_date="2023-05-01").to_df()',
+    ],
+)
 async def dpcredit(
     cc: CommandContext,
     provider_choices: ProviderChoices,
