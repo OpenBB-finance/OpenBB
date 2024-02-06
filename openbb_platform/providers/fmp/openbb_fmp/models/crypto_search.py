@@ -21,7 +21,9 @@ class FMPCryptoSearchQueryParams(CryptoSearchQueryParams):
     @field_validator("query", mode="after", check_fields=False)
     def validate_query(cls, v: str) -> str:  # pylint: disable=no-self-argument
         """Return the query."""
-        return v.replace("-", "") if "-" in v else v
+        if isinstance(v, str):
+            return v.replace("-", "") if "-" in v else v
+        return None
 
 
 class FMPCryptoSearchData(CryptoSearchData):
