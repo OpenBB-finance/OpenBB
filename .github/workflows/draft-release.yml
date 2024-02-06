@@ -27,7 +27,7 @@ jobs:
 
       - name: 💾 Save Changelog
         run: |
-          echo '${{ steps.release-drafter.outputs.body }}' > CHANGELOG.md
+          printf '%s\n' "${{ steps.release-drafter.outputs.body }}" > CHANGELOG.md
           cat CHANGELOG.md
 
       # - name: 🧬 Process Changelog
