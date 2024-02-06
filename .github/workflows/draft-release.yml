@@ -12,6 +12,9 @@ jobs:
   update_release_draft:
     runs-on: ubuntu-latest
     steps:
+      - name: 📟 Checkout code
+        uses: actions/checkout@v4
+
       - name: 📝 Release Drafter
         id: release-drafter
         uses: release-drafter/release-drafter@v5.21.0

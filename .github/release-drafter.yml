@@ -2,12 +2,15 @@ name-template: 'OpenBB Platform v$NEXT_MINOR_VERSION'
 tag-template: 'v$NEXT_MINOR_VERSION'
 categories:
   - title: 🦋 OpenBB Platform Enhancements
+    collapse-after: 5
     labels:
       - 'platform'
       - 'v4'
   - title: 🐛 OpenBB Platform Bug Fixes
+    collapse-after: 5
     labels:
       - 'bug'
+
 exclude-contributors:
   - 'jmaslek'
   - 'DidierRLopes'
