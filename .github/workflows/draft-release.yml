@@ -27,19 +27,19 @@ jobs:
 
       - name: 💾 Save Changelog
         run: |
-          python -c "open('CHANGELOG.md', 'w').write(r'''${{ steps.release-drafter.outputs.body }}''')"
+          python -c "content = r'''${{ steps.release-drafter.outputs.body }}'''; open('CHANGELOG.md', 'w').write(content)"
           cat CHANGELOG.md
 
-      - name: 🧬 Process Changelog
-        run: |
-          python process_changelog.py CHANGELOG.md ${{ github.event.inputs.release_pr_number }}
+      # - name: 🧬 Process Changelog
+      #   run: |
+      #     python process_changelog.py CHANGELOG.md ${{ github.event.inputs.release_pr_number }}
 
-      - name: 🛫 Create Release
-        uses: mikepenz/action-gh-release@v1
-        with:
-          body_path: "CHANGELOG.md"
-          tag_name: ${{ github.event.inputs.tag }}
-          prerelease: false
-          draft: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: 🛫 Create Release
+      #   uses: mikepenz/action-gh-release@v1
+      #   with:
+      #     body_path: "CHANGELOG.md"
+      #     tag_name: ${{ github.event.inputs.tag }}
+      #     prerelease: false
+      #     draft: true
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
