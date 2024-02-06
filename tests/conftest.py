@@ -400,13 +400,6 @@ def mock_plotly(mocker):
 
 
 # pylint: disable=protected-access
-@pytest.fixture(autouse=True)
-def mock_yfinance_tzcache(mocker):
-    mocker.patch.object(
-        target=yfinance.utils,
-        attribute="_TzCache",
-        new=yfinance.utils._TzCacheDummy,
-    )
 
 
 @pytest.fixture
