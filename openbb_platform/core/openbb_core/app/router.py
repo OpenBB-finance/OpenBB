@@ -46,7 +46,7 @@ def model_t_discriminator(v: Any) -> str:
     if isinstance(v, dict):
         return v.get("provider", "openbb")
 
-    if isinstance(v, list):
+    if isinstance(v, list) and v:
         return model_t_discriminator(v[0])
 
     return getattr(v, "provider", "openbb")
@@ -397,7 +397,7 @@ class SignatureInspector:
         Also updates __name__ and __doc__ for API schemas.
         """
 
-        union_models = [Annotated[None, Tag("openbb")]]
+        union_models = [Annotated[Union[list, dict], Tag("openbb")]]
 
         for provider, return_type in return_map.items():
             union_models.append(Annotated[return_type, Tag(provider)])
@@ -406,15 +406,17 @@ class SignatureInspector:
             f"OBBject_{model}",
             __base__=OBBject,
             results=(
-                Annotated[
-                    Union[tuple(union_models)],  # type: ignore
-                    Field(
-                        ...,
-                        description="Serializable results.",
-                        discriminator=Discriminator(model_t_discriminator),
-                    ),
+                Optional[
+                    Annotated[
+                        Union[tuple(union_models)],  # type: ignore
+                        Field(
+                            None,
+                            description="Serializable results.",
+                            discriminator=Discriminator(model_t_discriminator),
+                        ),
+                    ]
                 ],
-                Field(..., description="Serializable results."),
+                Field(None, description="Serializable results."),
             ),
         )
 
