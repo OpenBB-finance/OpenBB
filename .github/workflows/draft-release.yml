@@ -1,11 +1,27 @@
 name: Release Drafter
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      release_pr_number:
+        description: 'Release PR Number'
+        required: true
+        default: ''
 
 jobs:
   update_release_draft:
     runs-on: ubuntu-latest
     steps:
-      - uses: release-drafter/release-drafter@v5.21.0
+      - name: 📝 Release Drafter
+        id: release-drafter
+        uses: release-drafter/release-drafter@v5.21.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 💾 Save Changelog
+        run: |
+          echo "${{ steps.release-drafter.outputs.body }}" > CHANGELOG.md
+
+      - name: 🧬 Process Changelog
+        run: |
+          python process_changelog.py ${{ github.event.inputs.release_pr_number }}
