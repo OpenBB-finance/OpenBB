@@ -14,7 +14,8 @@ categories:
     collapse-after: 5
     labels:
       - 'docs'
-
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
+change-title-escapes: '\<*_&'
 exclude-contributors:
   - 'jmaslek'
   - 'DidierRLopes'

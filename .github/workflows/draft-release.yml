@@ -21,13 +21,14 @@ jobs:
 
       - name: 📝 Release Drafter
         id: release-drafter
-        uses: release-drafter/release-drafter@v5.21.0
+        uses: release-drafter/release-drafter@v6.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 💾 Save Changelog
         run: |
           echo "${{ steps.release-drafter.outputs.body }}" > CHANGELOG.md
+          cat CHANGELOG.md
 
       - name: 🧬 Process Changelog
         run: |
