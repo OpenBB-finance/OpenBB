@@ -10,6 +10,10 @@ categories:
     collapse-after: 5
     labels:
       - 'bug'
+  - title: 📚 OpenBB Documentation Changes
+    collapse-after: 5
+    labels:
+      - 'docs'
 
 exclude-contributors:
   - 'jmaslek'

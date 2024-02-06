@@ -7,6 +7,10 @@ on:
         description: 'Release PR Number'
         required: true
         default: ''
+      tag:
+        description: 'Tag for release (manual input)'
+        required: true
+        default: ''
 
 jobs:
   update_release_draft:
@@ -28,3 +32,13 @@ jobs:
       - name: 🧬 Process Changelog
         run: |
           python process_changelog.py ${{ github.event.inputs.release_pr_number }}
+
+      - name: 🛫 Create Release
+        uses: mikepenz/action-gh-release@v1
+        with:
+          body_path: "CHANGELOG.md"
+          tag_name: ${{ github.event.inputs.tag }}
+          prerelease: false
+          draft: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

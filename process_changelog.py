@@ -30,10 +30,11 @@ def process_changelog(file_path, release_pr_number):
     except IOError as e:
         print(f"Failed to write to file: {e}")
 
-if __name__ == '__main__':
-    if len(sys.argv) != 3:
+if __name__ == "__main__":
+    if len(sys.argv) < 3:
         print("Usage: python process_changelog.py <changelog_file> <release_pr_number>")
         sys.exit(1)
 
-    release_pr_number = int(sys.argv[1])
-    process_changelog('CHANGELOG.md', release_pr_number)
+    file_path = sys.argv[1]
+    release_pr_number = int(sys.argv[2])
+    process_changelog(file_path, release_pr_number)
