@@ -14,7 +14,17 @@ router = Router(prefix="/futures")
 
 
 # pylint: disable=unused-argument
-@router.command(model="FuturesHistorical")
+@router.command(
+    model="FuturesHistorical",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.derivatives.futures.historical("ES", provider="yfinance")',
+        '#### Enter expiration dates as "YYYY-MM" ####',
+        'obb.derivatives.futures.historical("ES", provider="yfinance", expiration="2025-12")',
+        "#### Enter multiple symbols as a list. ####",
+        'obb.derivatives.futures.historical(["ES", "NQ", "ESZ24.CME", "NQZ24.CME"], provider="yfinance")',
+    ],
+)
 async def historical(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -25,12 +35,20 @@ async def historical(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="FuturesCurve")
+@router.command(
+    model="FuturesCurve",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.derivatives.futures.curve("NG", provider="yfinance")',
+        "#### Enter a date to get the term structure from a historical date. ####",
+        'obb.derivatives.futures.curve("NG", provider="yfinance", date="2023-01-01")',
+    ],
+)
 async def curve(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Futures Historical Price. Futures historical data."""
+    """Futures Term Structure. Futures historical data."""
     return await OBBject.from_query(Query(**locals()))
