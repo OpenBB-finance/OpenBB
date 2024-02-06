@@ -27,7 +27,7 @@ To access data from a [single widget](https://docs.openbb.co/pro/main-menu/data-
 To access data from your own [backend](https://docs.openbb.co/pro/main-menu/data-connectors/integrate-your-own-backend) use:
 
 ```excel
-=OBB.BYOD("widget_name", "backend_name")
+=OBB.BYOD("widget_name","backend_name")
 ```
 
 #### Additional notes
