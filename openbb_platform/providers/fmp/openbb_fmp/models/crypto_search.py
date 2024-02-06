@@ -9,11 +9,19 @@ from openbb_core.provider.standard_models.crypto_search import (
     CryptoSearchQueryParams,
 )
 from openbb_fmp.utils.helpers import create_url, get_data_many
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class FMPCryptoSearchQueryParams(CryptoSearchQueryParams):
-    """FMP Crypto Search Query."""
+    """FMP Crypto Search Query.
+
+    Source: https://site.financialmodelingprep.com/developer/docs/cryptocurrency-historical-data-api
+    """
+
+    @field_validator("query", mode="after", check_fields=False)
+    def validate_query(cls, v: str) -> str:  # pylint: disable=no-self-argument
+        """Return the query."""
+        return v.replace("-", "") if "-" in v else v
 
 
 class FMPCryptoSearchData(CryptoSearchData):
