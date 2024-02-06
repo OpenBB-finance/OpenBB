@@ -25,9 +25,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Encode and Save Changelog to Base64
+        run: |
+          echo "${{ steps.release-drafter.outputs.body }}" | base64 > CHANGELOG.base64
+        
       - name: 💾 Save Changelog
         run: |
-          python -c "content = r'''${{ steps.release-drafter.outputs.body }}'''; open('CHANGELOG.md', 'w').write(content)"
+          python -c "import base64; content = base64.b64decode(open('CHANGELOG.base64', 'rb').read()).decode('utf-8'); open('CHANGELOG.md', 'w').write(content)"
           cat CHANGELOG.md
 
       # - name: 🧬 Process Changelog
