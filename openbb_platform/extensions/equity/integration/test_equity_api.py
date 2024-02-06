@@ -316,6 +316,14 @@ def test_equity_fundamental_historical_splits(params, headers):
         (
             {
                 "symbol": "AAPL",
+                "start_date": "2021-01-01",
+                "end_date": "2023-06-06",
+                "provider": "nasdaq",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
                 "provider": "yfinance",
             }
         ),
@@ -1204,7 +1212,15 @@ def test_equity_fundamental_latest_attributes(params, headers):
         ({"query": "AAPl", "is_symbol": True, "provider": "cboe", "use_cache": False}),
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
         ({"query": "", "provider": "nasdaq", "use_cache": False, "is_etf": True}),
-        ({"query": "gold", "provider": "intrinio", "active": True, "limit": 100}),
+        (
+            {
+                "query": "gold",
+                "provider": "intrinio",
+                "active": True,
+                "limit": 100,
+                "use_cache": None,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
