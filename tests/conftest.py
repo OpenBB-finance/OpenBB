@@ -11,7 +11,6 @@ import importlib_metadata
 import matplotlib
 import pandas as pd
 import pytest
-import yfinance.utils
 from _pytest.capture import MultiCapture, SysCapture
 from _pytest.config import Config
 from _pytest.config.argparsing import Parser
@@ -400,13 +399,6 @@ def mock_plotly(mocker):
 
 
 # pylint: disable=protected-access
-@pytest.fixture(autouse=True)
-def mock_yfinance_tzcache(mocker):
-    mocker.patch.object(
-        target=yfinance.utils,
-        attribute="_TzCache",
-        new=yfinance.utils._TzCacheDummy,
-    )
 
 
 @pytest.fixture
