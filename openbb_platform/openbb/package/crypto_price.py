@@ -73,7 +73,7 @@ class ROUTER_crypto_price(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCryptoHistorical], Tag(tag='fmp')], Annotated[List[PolygonCryptoHistorical], Tag(tag='polygon')], Annotated[List[TiingoCryptoHistorical], Tag(tag='tiingo')], Annotated[List[YFinanceCryptoHistorical], Tag(tag='yfinance')]]
+            results : List[CryptoHistorical]
                 Serializable results.
             provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
