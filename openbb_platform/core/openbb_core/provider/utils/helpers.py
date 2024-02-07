@@ -3,6 +3,7 @@
 import asyncio
 import re
 from datetime import datetime
+from difflib import SequenceMatcher
 from functools import partial
 from inspect import iscoroutinefunction
 from typing import Awaitable, Callable, List, Literal, Optional, TypeVar, Union, cast
@@ -20,6 +21,33 @@ from openbb_core.provider.utils.client import (
 
 T = TypeVar("T")
 P = ParamSpec("P")
+
+
+def check_item(item: str, allowed: List[str], threshold: float = 0.75) -> None:
+    """Check if an item is in a list of allowed items and raise an error if not.
+
+    Parameters
+    ----------
+    item : str
+        The item to check.
+    allowed : List[str]
+        The list of allowed items.
+    threshold : float, optional
+        The similarity threshold for the error message, by default 0.75
+
+    Raises
+    ------
+    ValueError
+        If the item is not in the allowed list.
+    """
+    if item not in allowed:
+        similarities = map(
+            lambda c: (c, SequenceMatcher(None, item, c.lower()).ratio()), allowed
+        )
+        similar, score = max(similarities, key=lambda x: x[1])
+        if score > threshold:
+            raise ValueError(f"'{item}' is not available. Did you mean '{similar}'?")
+        raise ValueError(f"'{item}' is not available.")
 
 
 def get_querystring(items: dict, exclude: List[str]) -> str:
