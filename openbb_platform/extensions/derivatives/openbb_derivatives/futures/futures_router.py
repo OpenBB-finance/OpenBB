@@ -31,7 +31,7 @@ async def historical(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Futures Historical Price. Futures historical data."""
+    """Historical futures prices."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -50,5 +50,5 @@ async def curve(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Futures Term Structure. Futures historical data."""
+    """Futures Term Structure, current or historical."""
     return await OBBject.from_query(Query(**locals()))
