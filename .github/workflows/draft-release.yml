@@ -30,17 +30,17 @@ jobs:
           cat << 'EOF' > CHANGELOG.md
           ${{ steps.release-drafter.outputs.body }}
           EOF
-          
-      # - name: 🧬 Process Changelog
-      #   run: |
-      #     python process_changelog.py CHANGELOG.md ${{ github.event.inputs.release_pr_number }}
 
-      # - name: 🛫 Create Release
-      #   uses: mikepenz/action-gh-release@v1
-      #   with:
-      #     body_path: "CHANGELOG.md"
-      #     tag_name: ${{ github.event.inputs.tag }}
-      #     prerelease: false
-      #     draft: true
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 🧬 Process Changelog
+        run: |
+          python process_changelog.py CHANGELOG.md ${{ github.event.inputs.release_pr_number }}
+
+      - name: 🛫 Create Release
+        uses: mikepenz/action-gh-release@v1
+        with:
+          body_path: "CHANGELOG.md"
+          tag_name: ${{ github.event.inputs.tag }}
+          prerelease: false
+          draft: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
