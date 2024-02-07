@@ -40,7 +40,7 @@ class ROUTER_index(Container):
         Returns
         -------
         OBBject
-            results : List[AvailableIndices]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPAvailableIndices], Tag(tag='fmp')], Annotated[List[YFinanceAvailableIndices], Tag(tag='yfinance')]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
@@ -107,7 +107,7 @@ class ROUTER_index(Container):
         Returns
         -------
         OBBject
-            results : List[IndexConstituents]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPIndexConstituents], Tag(tag='fmp')]]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -226,7 +226,7 @@ class ROUTER_index(Container):
         Returns
         -------
         OBBject
-            results : List[MarketIndices]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPMarketIndices], Tag(tag='fmp')], Annotated[List[IntrinioMarketIndices], Tag(tag='intrinio')], Annotated[List[PolygonMarketIndices], Tag(tag='polygon')], Annotated[List[YFinanceMarketIndices], Tag(tag='yfinance')]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
