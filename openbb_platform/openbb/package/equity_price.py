@@ -92,7 +92,7 @@ class ROUTER_equity_price(Container):
         Returns
         -------
         OBBject
-            results : List[EquityHistorical]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEquityHistorical], Tag(tag='fmp')], Annotated[List[IntrinioEquityHistorical], Tag(tag='intrinio')], Annotated[List[PolygonEquityHistorical], Tag(tag='polygon')], Annotated[List[TiingoEquityHistorical], Tag(tag='tiingo')], Annotated[List[YFinanceEquityHistorical], Tag(tag='yfinance')]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
@@ -236,7 +236,7 @@ class ROUTER_equity_price(Container):
         Returns
         -------
         OBBject
-            results : List[EquityNBBO]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[PolygonEquityNBBO], Tag(tag='polygon')]]
                 Serializable results.
             provider : Optional[Literal['polygon']]
                 Provider name.
@@ -336,7 +336,7 @@ class ROUTER_equity_price(Container):
         Returns
         -------
         OBBject
-            results : List[PricePerformance]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPPricePerformance], Tag(tag='fmp')]]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -427,7 +427,7 @@ class ROUTER_equity_price(Container):
         Returns
         -------
         OBBject
-            results : List[EquityQuote]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEquityQuote], Tag(tag='fmp')], Annotated[List[IntrinioEquityQuote], Tag(tag='intrinio')], Annotated[List[YFinanceEquityQuote], Tag(tag='yfinance')]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.

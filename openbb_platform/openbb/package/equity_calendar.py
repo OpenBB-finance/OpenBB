@@ -56,7 +56,7 @@ class ROUTER_equity_calendar(Container):
         Returns
         -------
         OBBject
-            results : List[CalendarDividend]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCalendarDividend], Tag(tag='fmp')]]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -69,12 +69,12 @@ class ROUTER_equity_calendar(Container):
 
         CalendarDividend
         ----------------
-        date : date
-            The date of the data. (Ex-Dividend)
+        ex_dividend_date : date
+            The ex-dividend date - the date on which the stock begins trading without rights to the dividend.
         symbol : str
             Symbol representing the entity requested in the data.
         amount : Optional[float]
-            Dividend amount, per-share.
+            The dividend amount per share.
         name : Optional[str]
             Name of the entity.
         record_date : Optional[date]
@@ -142,7 +142,7 @@ class ROUTER_equity_calendar(Container):
         Returns
         -------
         OBBject
-            results : List[CalendarEarnings]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCalendarEarnings], Tag(tag='fmp')]]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -250,7 +250,7 @@ class ROUTER_equity_calendar(Container):
         Returns
         -------
         OBBject
-            results : List[CalendarIpo]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[IntrinioCalendarIpo], Tag(tag='intrinio')]]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -399,7 +399,7 @@ class ROUTER_equity_calendar(Container):
         Returns
         -------
         OBBject
-            results : List[CalendarSplits]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCalendarSplits], Tag(tag='fmp')]]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.

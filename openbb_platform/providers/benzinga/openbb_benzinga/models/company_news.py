@@ -54,12 +54,8 @@ class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
     order: Literal["asc", "desc"] = Field(
         default="desc", description="Order to sort the news by."
     )
-    isin: Optional[str] = Field(
-        default=None, description="The ISIN of the news to retrieve."
-    )
-    cusip: Optional[str] = Field(
-        default=None, description="The CUSIP of the news to retrieve."
-    )
+    isin: Optional[str] = Field(default=None, description="The company's ISIN.")
+    cusip: Optional[str] = Field(default=None, description="The company's CUSIP.")
     channels: Optional[str] = Field(
         default=None, description="Channels of the news to retrieve."
     )
