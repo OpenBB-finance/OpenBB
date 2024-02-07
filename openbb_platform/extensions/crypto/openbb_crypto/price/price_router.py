@@ -19,8 +19,8 @@ router = Router(prefix="/price")
     model="CryptoHistorical",
     examples=[
         'obb.crypto.price.historical("BTCUSD", start_date="2024-01-01", end_date="2024-01-31")',
-        'obb.crypto.price.historical("ETH-USD", provider="yfinance", interval="1mo", start_date="2024-01-01", end_date="2024-12-31")',
-        'obb.crypto.price.historical("BTCUSD,ETH-USD", provider="yfinance", interval="1d", start_date="2024-01-01", end_date="2024-01-31")',
+        'obb.crypto.price.historical("ETH-USD", provider="yfinance", interval="1mo", start_date="2024-01-01", end_date="2024-12-31")',  # noqa: E501
+        'obb.crypto.price.historical("BTCUSD,ETH-USD", provider="yfinance", interval="1d", start_date="2024-01-01", end_date="2024-01-31")',  # noqa: E501
         'obb.crypto.price.historical(["BTCUSD", "ETH-USD"], start_date="2024-01-01", end_date="2024-01-31")',
     ],
 )
