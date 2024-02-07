@@ -14,7 +14,7 @@ from openbb_core.app.router import Router
 router = Router(prefix="/price")
 
 
-# pylint: disable=unused-argument
+# pylint: disable=unused-argument,line-too-long
 @router.command(
     model="CryptoHistorical",
     examples=[

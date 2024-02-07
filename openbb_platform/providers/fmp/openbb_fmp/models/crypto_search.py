@@ -59,7 +59,7 @@ class FMPCryptoSearchFetcher(
 
     @staticmethod
     async def aextract_data(
-        query: FMPCryptoSearchQueryParams,
+        query: FMPCryptoSearchQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -76,7 +76,9 @@ class FMPCryptoSearchFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPCryptoSearchQueryParams, data: List[Dict], **kwargs: Any
+        query: FMPCryptoSearchQueryParams,  # pylint: disable=unused-argument
+        data: List[Dict],
+        **kwargs: Any,
     ) -> List[FMPCryptoSearchData]:
         """Return the transformed data."""
         cryptos = pd.DataFrame(data)
