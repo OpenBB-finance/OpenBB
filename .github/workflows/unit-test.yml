@@ -15,7 +15,7 @@ on:
     branches:
       - develop
       - main
-    types: [opened, synchronize, edited, closed]
+    types: [opened, synchronize, edited, closed, labeled, unlabeled]
   push:
     branches:
       - release/*
@@ -61,7 +61,7 @@ jobs:
     name: Base Tests - Ubuntu-latest - Python 3.9
     needs: [check-files-changed]
     runs-on: ubuntu-latest
-    if: needs.check-files-changed.outputs.check-changes == 'true' && github.event.pull_request.base.ref == 'develop'
+    if: needs.check-files-changed.outputs.check-changes == 'true' && github.event.pull_request.base.ref == 'develop' && !contains(github.event.pull_request.labels.*.name, 'v4')
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
