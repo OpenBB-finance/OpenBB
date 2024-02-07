@@ -2,9 +2,10 @@
 import re
 import sys
 
+
 def process_changelog(file_path, release_pr_number):
     try:
-        with open(file_path, 'r') as file:
+        with open(file_path, "r") as file:
             lines = file.readlines()
     except IOError as e:
         print(f"Failed to open or read file: {e}")
@@ -14,7 +15,7 @@ def process_changelog(file_path, release_pr_number):
 
     # First pass: Collect all occurrences of PR numbers
     for i, line in enumerate(lines):
-        match = re.search(r'\(#(\d+)\)', line)
+        match = re.search(r"\(#(\d+)\)", line)
         if match:
             pr_number = int(match.group(1))
             if pr_number not in pr_occurrences:
@@ -22,9 +23,19 @@ def process_changelog(file_path, release_pr_number):
             pr_occurrences[pr_number].append(i)
 
     # Determine lines to remove: all but the last occurrence for each PR number
-    to_remove = {i for pr, indices in pr_occurrences.items() if len(indices) > 1 for i in indices[:-1]}
+    to_remove = {
+        i
+        for pr, indices in pr_occurrences.items()
+        if len(indices) > 1
+        for i in indices[:-1]
+    }
     # Remove entries for PR numbers less than or equal to release_pr_number
-    to_remove.update(i for pr, indices in pr_occurrences.items() for i in indices if pr <= release_pr_number)
+    to_remove.update(
+        i
+        for pr, indices in pr_occurrences.items()
+        for i in indices
+        if pr <= release_pr_number
+    )
 
     processed_lines = [line for i, line in enumerate(lines) if i not in to_remove]
 
@@ -32,7 +43,7 @@ def process_changelog(file_path, release_pr_number):
     final_lines = []
     seen_pr_numbers = set()
     for line in reversed(processed_lines):  # Reverse to start from the last occurrence
-        match = re.search(r'\(#(\d+)\)', line)
+        match = re.search(r"\(#(\d+)\)", line)
         if match:
             pr_number = int(match.group(1))
             if pr_number in seen_pr_numbers:
@@ -43,10 +54,11 @@ def process_changelog(file_path, release_pr_number):
     final_lines.reverse()  # Reverse back to original order
 
     try:
-        with open(file_path, 'w') as file:
+        with open(file_path, "w") as file:
             file.writelines(final_lines)
     except IOError as e:
         print(f"Failed to write to file: {e}")
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
