@@ -176,7 +176,7 @@ class CommandLib:
         """Get the func of the command."""
         return self.xl_funcs.get(cmd, {}).get("name", ".").split(".")[-1].lower()
 
-    def _get_signature(self, cmd: str, parameters: dict) -> str:
+    def _get_signature(self, cmd: str, parameters: dict, sep: str = ",") -> str:
         """Get the signature of the command."""
         sig = "=OBB." + self.xl_funcs[cmd].get("name", "")
         sig += "("
@@ -185,8 +185,8 @@ class CommandLib:
                 sig += f"{p_name}"
             else:
                 sig += f"[{p_name}]"
-            sig += ";"
-        sig = sig.strip("; ") + ")"
+            sig += sep
+        sig = sig.strip(f"{sep} ") + ")"
         return sig
 
     def _get_parameters(self, cmd: str) -> dict:
@@ -219,7 +219,9 @@ class CommandLib:
             return data
         return {}
 
-    def _get_examples(self, cmd: str, signature_: str, parameters: dict) -> dict:
+    def _get_examples(
+        self, cmd: str, signature_: str, parameters: dict, sep: str = ","
+    ) -> dict:
         """Get the examples of the command."""
         sig = signature_.split("(")[0] + "("
         category = signature_.split(".")[1].lower()
@@ -233,16 +235,16 @@ class CommandLib:
         for p_name, p_info in parameters.items():
             if p_info["required"]:
                 p_value = get_p_value(cmd, p_name)
-                required_eg += f"{p_value};"
-        required_eg = required_eg.strip("; ") + ")"
+                required_eg += f"{p_value}{sep}"
+        required_eg = required_eg.strip(f"{sep} ") + ")"
 
         standard_eg = sig
         for p_name, p_info in parameters.items():
             if p_name == "provider":
                 break
             p_value = get_p_value(cmd, p_name)
-            standard_eg += f"{p_value};"
-        standard_eg = standard_eg.strip("; ") + ")"
+            standard_eg += f"{p_value}{sep}"
+        standard_eg = standard_eg.strip(f"{sep} ") + ")"
 
         if required_eg == standard_eg:
             return {"A. Required": required_eg}
