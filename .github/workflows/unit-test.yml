@@ -15,14 +15,12 @@ on:
     branches:
       - develop
       - main
-    types: [opened, synchronize, edited, closed]
+    types: [opened, synchronize, edited, closed, labeled, unlabeled]
   push:
     branches:
       - release/*
   merge_group:
     types: [checks_requested]
-  label:
-    types: [created, edited, deleted]
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
