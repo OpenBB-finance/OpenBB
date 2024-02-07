@@ -75,7 +75,6 @@ class RegistryMap:
         """Generate map for the provider package."""
         map_: MapType = {}
         return_schemas: Dict[str, Dict] = {}
-        model_list = []
 
         for p in registry.providers:
             for model_name, fetcher in registry.providers[p].fetcher_dict.items():
@@ -98,18 +97,7 @@ class RegistryMap:
                     return_schemas.setdefault(model_name, {}).update(
                         {p: {"model": provider_model, "is_list": is_list}}
                     )
-                    model_list.append(provider_model)
 
-        # Replace the provider models in the modules with the new models we created
-        # To make sure provider field is defined to be the provider string
-        for module in sys.modules.values():
-            for model in model_list:
-                model_name = f"{model.__name__}Data"
-                if module and hasattr(module, model_name):
-                    setattr(module, model_name, model)
-                    break
-
-        del model_list
         return map_, return_schemas
 
     def _get_models(self, map_: MapType) -> List[str]:
@@ -139,6 +127,10 @@ class RegistryMap:
                 ),
             ),
         )
+
+        # Replace the provider models in the modules with the new models we created
+        # To make sure provider field is defined to be the provider string
+        setattr(sys.modules[model.__module__], model.__name__, provider_model)
 
         return provider_model
 
