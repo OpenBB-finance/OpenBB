@@ -67,7 +67,7 @@ class ROUTER_fixedincome_spreads(Container):
             Returns
             -------
             OBBject
-                results : List[TreasuryConstantMaturity]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDTreasuryConstantMaturity], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -152,7 +152,7 @@ class ROUTER_fixedincome_spreads(Container):
             Returns
             -------
             OBBject
-                results : List[SelectedTreasuryConstantMaturity]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDSelectedTreasuryConstantMaturity], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -238,7 +238,7 @@ class ROUTER_fixedincome_spreads(Container):
             Returns
             -------
             OBBject
-                results : List[SelectedTreasuryBill]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDSelectedTreasuryBill], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
