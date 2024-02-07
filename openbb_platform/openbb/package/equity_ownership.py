@@ -62,7 +62,7 @@ class ROUTER_equity_ownership(Container):
         Returns
         -------
         OBBject
-            results : List[InsiderTrading]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPInsiderTrading], Tag(tag='fmp')], Annotated[List[IntrinioInsiderTrading], Tag(tag='intrinio')]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
@@ -184,7 +184,7 @@ class ROUTER_equity_ownership(Container):
         Returns
         -------
         OBBject
-            results : List[InstitutionalOwnership]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPInstitutionalOwnership], Tag(tag='fmp')], Annotated[List[IntrinioInstitutionalOwnership], Tag(tag='intrinio')]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
@@ -343,7 +343,7 @@ class ROUTER_equity_ownership(Container):
         Returns
         -------
         OBBject
-            results : List[EquityOwnership]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEquityOwnership], Tag(tag='fmp')]]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -480,7 +480,7 @@ class ROUTER_equity_ownership(Container):
         Returns
         -------
         OBBject
-            results : List[ShareStatistics]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPShareStatistics], Tag(tag='fmp')], Annotated[List[IntrinioShareStatistics], Tag(tag='intrinio')], Annotated[List[YFinanceShareStatistics], Tag(tag='yfinance')]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.

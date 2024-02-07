@@ -49,7 +49,7 @@ class ROUTER_crypto(Container):
         Returns
         -------
         OBBject
-            results : List[CryptoSearch]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCryptoSearch], Tag(tag='fmp')]]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
