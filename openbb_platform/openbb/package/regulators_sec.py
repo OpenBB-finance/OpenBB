@@ -33,7 +33,7 @@ class ROUTER_regulators_sec(Container):
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the CIK number corresponding to a ticker symbol.
+        """Map a ticker symbol to a CIK number.
 
         Parameters
         ----------
@@ -66,7 +66,8 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.cik_map(symbol="AAPL")
+        >>> obb.regulators.sec.cik_map(symbol="MSFT").results.cik
+        >>>     0000789019
         """  # noqa: E501
 
         return self._run(
@@ -95,7 +96,7 @@ class ROUTER_regulators_sec(Container):
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
-        """Look up institutions regulated by the SEC.
+        """Search SEC-regulated institutions by name and return a list of results with CIK numbers.
 
         Parameters
         ----------
@@ -132,7 +133,7 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.institutions_search(query="AAPL", use_cache=True)
+        >>> obb.regulators.sec.institutions_search(query="blackstone real estate").to_df()
         """  # noqa: E501
 
         return self._run(
@@ -192,7 +193,7 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.rss_litigation()
+        >>> obb.regulators.sec.rss_litigation().to_dict("records")[0]
         """  # noqa: E501
 
         return self._run(
@@ -219,7 +220,7 @@ class ROUTER_regulators_sec(Container):
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get lists of SEC XML schema files by year.
+        """A tool for navigating the directory of SEC XML schema files by year.
 
         Parameters
         ----------
@@ -256,7 +257,23 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.schema_files(query="AAPL", use_cache=True)
+        >>> data = obb.regulators.sec.schema_files()
+        >>> data.files[0]
+        >>>     https://xbrl.fasb.org/us-gaap/
+        >>> #### The directory structure can be navigated by constructing a URL from the 'results' list. ####
+        >>> url = data.files[0]+data.files[-1]
+        >>> #### The URL base will always be the 0 position in the list, feed  the URL back in as a parameter. ####
+        >>> obb.regulators.sec.schema_files(url=url).results.files
+        >>>     ['https://xbrl.fasb.org/us-gaap/2024/',
+        >>>     'USGAAP2024FileList.xml'
+        >>>     'dis/'
+        >>>     'dqcrules/'
+        >>>    'ebp/'
+        >>>    'elts/'
+        >>>    'entire/'
+        >>>    'meta/'
+        >>>    'stm/'
+        >>>    'us-gaap-2024.zip']
         """  # noqa: E501
 
         return self._run(
@@ -286,7 +303,7 @@ class ROUTER_regulators_sec(Container):
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
-        """Search for Industry Titles, Reporting Office, and SIC Codes.
+        """Search for Industry Titles, Reporting Office, and SIC Codes. An empty query string returns all results.
 
         Parameters
         ----------
@@ -325,7 +342,7 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.sic_search(query="AAPL", use_cache=True)
+        >>> obb.regulators.sec.sic_search("real estate investment trusts").results
         """  # noqa: E501
 
         return self._run(
@@ -355,7 +372,7 @@ class ROUTER_regulators_sec(Container):
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the ticker symbol corresponding to a company's CIK.
+        """Map a CIK number to a ticker symbol, leading 0s can be omitted or included.
 
         Parameters
         ----------
@@ -390,7 +407,8 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.symbol_map(query="AAPL", use_cache=True)
+        >>> obb.regulators.sec.symbol_map("0000789019").results.symbol
+        >>>     MSFT
         """  # noqa: E501
 
         return self._run(
