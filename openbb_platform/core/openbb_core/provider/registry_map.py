@@ -5,11 +5,7 @@ from inspect import getfile, isclass
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Tuple, get_origin
 
-from pydantic import (
-    BaseModel,
-    Field,
-    create_model,
-)
+from pydantic import BaseModel, Field, create_model
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
