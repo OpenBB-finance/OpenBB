@@ -90,7 +90,7 @@ class ROUTER_fixedincome(Container):
             Returns
             -------
             OBBject
-                results : List[SOFR]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDSOFR], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
