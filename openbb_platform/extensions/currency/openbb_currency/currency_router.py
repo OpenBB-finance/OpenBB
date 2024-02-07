@@ -38,7 +38,8 @@ async def search(
     Currency Search.
 
     Search available currency pairs.
-    Currency pairs are the national currencies from two countries coupled for trading on the foreign exchange (FX) marketplace.
+    Currency pairs are the national currencies from two countries coupled for trading on
+    the foreign exchange (FX) marketplace.
     Both currencies will have exchange rates on which the trade will have its position basis.
     All trading within the forex market, whether selling, buying, or trading, will take place through currency pairs.
     (ref: Investopedia)
@@ -54,5 +55,14 @@ async def reference_rates(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Current, official, currency reference rates."""
+    """Current, official, currency reference rates.
+
+    Foreign exchange reference rates are the exchange rates set by a major financial institution or regulatory body,
+    serving as a benchmark for the value of currencies around the world.
+    These rates are used as a standard to facilitate international trade and financial transactions,
+    ensuring consistency and reliability in currency conversion.
+    They are typically updated on a daily basis and reflect the market conditions at a specific time.
+    Central banks and financial institutions often use these rates to guide their own exchange rates,
+    impacting global trade, loans, and investments.
+    """
     return await OBBject.from_query(Query(**locals()))
