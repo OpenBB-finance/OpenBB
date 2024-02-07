@@ -30,7 +30,7 @@ jobs:
     name: Check for changes
     runs-on: ubuntu-latest
     # Run this job only if the PR is not merged, PR != draft and the event is not a push
-    if: github.event.pull_request.merged == false && github.event_name != 'push' && github.event.pull_request.draft == false
+    if: github.event.pull_request.merged == false && github.event_name != 'push' && github.event.pull_request.draft == false && !contains(github.event.pull_request.labels.*.name, 'v4')
     outputs:
       check-changes: ${{ steps.check-changes.outputs.check-changes }}
     steps:
