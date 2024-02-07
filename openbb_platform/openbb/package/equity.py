@@ -90,7 +90,7 @@ class ROUTER_equity(Container):
         Returns
         -------
         OBBject
-            results : List[MarketSnapshots]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPMarketSnapshots], Tag(tag='fmp')], Annotated[List[PolygonMarketSnapshots], Tag(tag='polygon')]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'polygon']]
                 Provider name.
@@ -241,7 +241,7 @@ class ROUTER_equity(Container):
         Returns
         -------
         OBBject
-            results : List[EquityInfo]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEquityProfile], Tag(tag='fmp')], Annotated[List[IntrinioEquityInfo], Tag(tag='intrinio')], Annotated[List[YFinanceEquityProfile], Tag(tag='yfinance')]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.
@@ -443,7 +443,7 @@ class ROUTER_equity(Container):
         Returns
         -------
         OBBject
-            results : List[EquityScreener]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEquityScreener], Tag(tag='fmp')]]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -510,6 +510,10 @@ class ROUTER_equity(Container):
             bool,
             OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ] = False,
+        use_cache: Annotated[
+            Optional[bool],
+            OpenBBCustomParameter(description="Whether to use the cache or not."),
+        ] = True,
         provider: Optional[Literal["intrinio", "sec"]] = None,
         **kwargs
     ) -> OBBject:
@@ -521,6 +525,8 @@ class ROUTER_equity(Container):
             Search query.
         is_symbol : bool
             Whether to search by ticker symbol.
+        use_cache : Optional[bool]
+            Whether to use the cache or not.
         provider : Optional[Literal['intrinio', 'sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'intrinio' if there is
@@ -531,13 +537,11 @@ class ROUTER_equity(Container):
             The number of data entries to return. (provider: intrinio)
         is_fund : bool
             Whether to direct the search to the list of mutual funds and ETFs. (provider: sec)
-        use_cache : bool
-            Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec)
 
         Returns
         -------
         OBBject
-            results : List[EquitySearch]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[IntrinioEquitySearch], Tag(tag='intrinio')], Annotated[List[SecEquitySearch], Tag(tag='sec')]]
                 Serializable results.
             provider : Optional[Literal['intrinio', 'sec']]
                 Provider name.
@@ -565,7 +569,7 @@ class ROUTER_equity(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.search(query="AAPL", is_symbol=False)
+        >>> obb.equity.search(query="AAPL", is_symbol=False, use_cache=True)
         """  # noqa: E501
 
         return self._run(
@@ -577,6 +581,7 @@ class ROUTER_equity(Container):
                 standard_params={
                     "query": query,
                     "is_symbol": is_symbol,
+                    "use_cache": use_cache,
                 },
                 extra_params=kwargs,
             )

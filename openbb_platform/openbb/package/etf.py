@@ -51,7 +51,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : List[EtfCountries]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEtfCountries], Tag(tag='fmp')]]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -126,7 +126,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : List[EtfHistorical]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[YFinanceEtfHistorical], Tag(tag='yfinance')]]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.
@@ -206,7 +206,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : List[EtfHoldings]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEtfHoldings], Tag(tag='fmp')], Annotated[List[SecEtfHoldings], Tag(tag='sec')]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'sec']]
                 Provider name.
@@ -421,7 +421,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : List[EtfHoldingsDate]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEtfHoldingsDate], Tag(tag='fmp')]]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -480,7 +480,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : List[EtfHoldingsPerformance]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEtfHoldingsPerformance], Tag(tag='fmp')]]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -567,7 +567,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : List[EtfInfo]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEtfInfo], Tag(tag='fmp')], Annotated[List[YFinanceEtfInfo], Tag(tag='yfinance')]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
@@ -718,7 +718,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : List[PricePerformance]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPPricePerformance], Tag(tag='fmp')]]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -811,7 +811,7 @@ class ROUTER_etf(Container):
             Returns
             -------
             OBBject
-                results : List[EtfSearch]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEtfSearch], Tag(tag='fmp')]]
                     Serializable results.
                 provider : Optional[Literal['fmp']]
                     Provider name.
@@ -894,7 +894,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : List[EtfSectors]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEtfSectors], Tag(tag='fmp')]]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
