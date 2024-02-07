@@ -9,11 +9,21 @@ from openbb_core.provider.standard_models.crypto_search import (
     CryptoSearchQueryParams,
 )
 from openbb_fmp.utils.helpers import create_url, get_data_many
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class FMPCryptoSearchQueryParams(CryptoSearchQueryParams):
-    """FMP Crypto Search Query."""
+    """FMP Crypto Search Query.
+
+    Source: https://site.financialmodelingprep.com/developer/docs/cryptocurrency-historical-data-api
+    """
+
+    @field_validator("query", mode="after", check_fields=False)
+    def validate_query(cls, v: str) -> str:  # pylint: disable=no-self-argument
+        """Return the query."""
+        if isinstance(v, str):
+            return v.replace("-", "") if "-" in v else v
+        return None
 
 
 class FMPCryptoSearchData(CryptoSearchData):
@@ -49,7 +59,7 @@ class FMPCryptoSearchFetcher(
 
     @staticmethod
     async def aextract_data(
-        query: FMPCryptoSearchQueryParams,
+        query: FMPCryptoSearchQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -66,7 +76,9 @@ class FMPCryptoSearchFetcher(
 
     @staticmethod
     def transform_data(
-        query: FMPCryptoSearchQueryParams, data: List[Dict], **kwargs: Any
+        query: FMPCryptoSearchQueryParams,  # pylint: disable=unused-argument
+        data: List[Dict],
+        **kwargs: Any,
     ) -> List[FMPCryptoSearchData]:
         """Return the transformed data."""
         cryptos = pd.DataFrame(data)
