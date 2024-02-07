@@ -73,7 +73,7 @@ class ROUTER_economy_gdp(Container):
         Returns
         -------
         OBBject
-            results : List[GdpForecast]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[OECDGdpForecast], Tag(tag='oecd')]]
                 Serializable results.
             provider : Optional[Literal['oecd']]
                 Provider name.
@@ -157,7 +157,7 @@ class ROUTER_economy_gdp(Container):
         Returns
         -------
         OBBject
-            results : List[GdpNominal]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[OECDGdpNominal], Tag(tag='oecd')]]
                 Serializable results.
             provider : Optional[Literal['oecd']]
                 Provider name.
@@ -240,7 +240,7 @@ class ROUTER_economy_gdp(Container):
         Returns
         -------
         OBBject
-            results : List[GdpReal]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[OECDGdpReal], Tag(tag='oecd')]]
                 Serializable results.
             provider : Optional[Literal['oecd']]
                 Provider name.

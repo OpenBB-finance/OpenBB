@@ -54,7 +54,7 @@ class ROUTER_currency(Container):
         Returns
         -------
         OBBject
-            results : List[CurrencyPairs]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCurrencyPairs], Tag(tag='fmp')], Annotated[List[IntrinioCurrencyPairs], Tag(tag='intrinio')], Annotated[List[PolygonCurrencyPairs], Tag(tag='polygon')]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'polygon']]
                 Provider name.

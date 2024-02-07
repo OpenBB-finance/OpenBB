@@ -51,7 +51,7 @@ class ROUTER_equity_shorts(Container):
         Returns
         -------
         OBBject
-            results : List[EquityFTD]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[SecEquityFtd], Tag(tag='sec')]]
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.

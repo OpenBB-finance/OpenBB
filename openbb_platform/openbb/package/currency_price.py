@@ -57,25 +57,19 @@ class ROUTER_currency_price(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        interval : Optional[Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
-            Data granularity. (provider: fmp, tiingo, yfinance)
-        multiplier : int
-            Multiplier of the timespan. (provider: polygon)
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            Timespan of the data. (provider: polygon)
+        interval : Optional[Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], str, Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
+            Data granularity. (provider: fmp, polygon, tiingo, yfinance)
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
         limit : int
             The number of data entries to return. (provider: polygon)
-        adjusted : bool
-            Whether the data is adjusted. (provider: polygon)
         period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
             Time period of the data to return. (provider: yfinance)
 
         Returns
         -------
         OBBject
-            results : List[CurrencyHistorical]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCurrencyHistorical], Tag(tag='fmp')], Annotated[List[PolygonCurrencyHistorical], Tag(tag='polygon')], Annotated[List[TiingoCurrencyHistorical], Tag(tag='tiingo')], Annotated[List[YFinanceCurrencyHistorical], Tag(tag='yfinance')]]
                 Serializable results.
             provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.

@@ -80,7 +80,7 @@ class ROUTER_fixedincome_corporate(Container):
             Returns
             -------
             OBBject
-                results : List[CommercialPaper]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDCommercialPaper], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -157,7 +157,7 @@ class ROUTER_fixedincome_corporate(Container):
             Returns
             -------
             OBBject
-                results : List[HighQualityMarketCorporateBond]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDHighQualityMarketCorporateBond], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -256,7 +256,7 @@ class ROUTER_fixedincome_corporate(Container):
             Returns
             -------
             OBBject
-                results : List[ICEBofA]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDICEBofA], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -343,7 +343,7 @@ class ROUTER_fixedincome_corporate(Container):
             Returns
             -------
             OBBject
-                results : List[MoodyCorporateBondIndex]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDMoodyCorporateBondIndex], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -433,7 +433,7 @@ class ROUTER_fixedincome_corporate(Container):
             Returns
             -------
             OBBject
-                results : List[SpotRate]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDSpotRate], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
