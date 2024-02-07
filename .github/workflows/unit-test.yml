@@ -21,6 +21,8 @@ on:
       - release/*
   merge_group:
     types: [checks_requested]
+  label:
+    types: [created, edited, deleted]
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
