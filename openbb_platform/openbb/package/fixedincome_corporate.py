@@ -80,7 +80,7 @@ class ROUTER_fixedincome_corporate(Container):
             Returns
             -------
             OBBject
-                results : List[CommercialPaper]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDCommercialPaper], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -101,7 +101,7 @@ class ROUTER_fixedincome_corporate(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.corporate.commercial_paper(maturity="30d", category="financial", grade="aa")
+            >>> obb.fixedincome.corporate.commercial_paper(maturity="15d")
         """  # noqa: E501
 
         return self._run(
@@ -157,7 +157,7 @@ class ROUTER_fixedincome_corporate(Container):
             Returns
             -------
             OBBject
-                results : List[HighQualityMarketCorporateBond]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDHighQualityMarketCorporateBond], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -184,7 +184,7 @@ class ROUTER_fixedincome_corporate(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.corporate.hqm(yield_curve="spot")
+            >>> obb.fixedincome.corporate.hqm(yield_curve="par")
         """  # noqa: E501
 
         return self._run(
@@ -256,7 +256,7 @@ class ROUTER_fixedincome_corporate(Container):
             Returns
             -------
             OBBject
-                results : List[ICEBofA]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDICEBofA], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -277,7 +277,7 @@ class ROUTER_fixedincome_corporate(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.corporate.ice_bofa(index_type="yield")
+            >>> obb.fixedincome.corporate.ice_bofa(index_type="yield_to_worst")
         """  # noqa: E501
 
         return self._run(
@@ -343,7 +343,7 @@ class ROUTER_fixedincome_corporate(Container):
             Returns
             -------
             OBBject
-                results : List[MoodyCorporateBondIndex]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDMoodyCorporateBondIndex], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -364,7 +364,7 @@ class ROUTER_fixedincome_corporate(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.corporate.moody(index_type="aaa")
+            >>> obb.fixedincome.corporate.moody(index_type="baa")
         """  # noqa: E501
 
         return self._run(
@@ -433,7 +433,7 @@ class ROUTER_fixedincome_corporate(Container):
             Returns
             -------
             OBBject
-                results : List[SpotRate]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDSpotRate], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -454,7 +454,7 @@ class ROUTER_fixedincome_corporate(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.corporate.spot_rates(maturity=[10.0], category=['spot_rate'])
+            >>> obb.fixedincome.corporate.spot_rates(maturity=[10,20,30,50])
         """  # noqa: E501
 
         return self._run(

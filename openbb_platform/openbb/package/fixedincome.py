@@ -90,7 +90,7 @@ class ROUTER_fixedincome(Container):
             Returns
             -------
             OBBject
-                results : List[SOFR]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDSOFR], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -111,7 +111,7 @@ class ROUTER_fixedincome(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.sofr()
+            >>> obb.fixedincome.fixedincome.sofr(period="overnight")
         """  # noqa: E501
 
         return self._run(

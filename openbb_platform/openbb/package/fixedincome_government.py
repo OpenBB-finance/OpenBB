@@ -54,7 +54,7 @@ class ROUTER_fixedincome_government(Container):
         Returns
         -------
         OBBject
-            results : List[TreasuryRates]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FederalReserveTreasuryRates], Tag(tag='federal_reserve')], Annotated[List[FMPTreasuryRates], Tag(tag='fmp')]]
                 Serializable results.
             provider : Optional[Literal['federal_reserve', 'fmp']]
                 Provider name.
@@ -97,7 +97,7 @@ class ROUTER_fixedincome_government(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.government.treasury_rates()
+        >>> obb.fixedincome.government.treasury_rates(provider="federal_reserve")
         """  # noqa: E501
 
         return self._run(
@@ -146,7 +146,7 @@ class ROUTER_fixedincome_government(Container):
         Returns
         -------
         OBBject
-            results : List[USYieldCurve]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDYieldCurve], Tag(tag='fred')]]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -167,7 +167,7 @@ class ROUTER_fixedincome_government(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.government.us_yield_curve(inflation_adjusted=False)
+        >>> obb.fixedincome.government.us_yield_curve(inflation_adjusted=True)
         """  # noqa: E501
 
         return self._run(

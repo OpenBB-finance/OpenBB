@@ -67,7 +67,7 @@ class ROUTER_fixedincome_rate(Container):
             Returns
             -------
             OBBject
-                results : List[AMERIBOR]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDAMERIBOR], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -88,7 +88,7 @@ class ROUTER_fixedincome_rate(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.rate.ameribor()
+            >>> obb.fixedincome.rate.ameribor(parameter="30_day_ma").to_df()
         """  # noqa: E501
 
         return self._run(
@@ -147,7 +147,7 @@ class ROUTER_fixedincome_rate(Container):
             Returns
             -------
             OBBject
-                results : List[DiscountWindowPrimaryCreditRate]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDDiscountWindowPrimaryCreditRate], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -168,7 +168,7 @@ class ROUTER_fixedincome_rate(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.rate.dpcredit()
+            >>> obb.fixedincome.rate.dpcredit(start_date="2023-02-01", end_date="2023-05-01").to_df()
         """  # noqa: E501
 
         return self._run(
@@ -233,7 +233,7 @@ class ROUTER_fixedincome_rate(Container):
             Returns
             -------
             OBBject
-                results : List[EuropeanCentralBankInterestRates]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDEuropeanCentralBankInterestRates], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -254,7 +254,7 @@ class ROUTER_fixedincome_rate(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.rate.ecb(interest_rate_type="lending")
+            >>> obb.fixedincome.rate.ecb(interest_rate_type="refinancing")
         """  # noqa: E501
 
         return self._run(
@@ -313,7 +313,7 @@ class ROUTER_fixedincome_rate(Container):
             Returns
             -------
             OBBject
-                results : List[FEDFUNDS]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FederalReserveFED], Tag(tag='federal_reserve')], Annotated[List[FREDFED], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['federal_reserve', 'fred']]
                     Provider name.
@@ -334,7 +334,7 @@ class ROUTER_fixedincome_rate(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.rate.effr()
+            >>> obb.fixedincome.rate.effr(parameter="daily", provider="fred").to_df()
         """  # noqa: E501
 
         return self._run(
@@ -375,7 +375,7 @@ class ROUTER_fixedincome_rate(Container):
             Returns
             -------
             OBBject
-                results : List[PROJECTIONS]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDPROJECTION], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -408,7 +408,7 @@ class ROUTER_fixedincome_rate(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.rate.effr_forecast()
+            >>> obb.fixedincome.rate.effr_forecast(long_run=True)
         """  # noqa: E501
 
         return self._run(
@@ -464,7 +464,7 @@ class ROUTER_fixedincome_rate(Container):
             Returns
             -------
             OBBject
-                results : List[ESTR]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDESTR], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -485,7 +485,7 @@ class ROUTER_fixedincome_rate(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.rate.estr()
+            >>> obb.fixedincome.rate.estr(parameter="number_of_active_banks")
         """  # noqa: E501
 
         return self._run(
@@ -541,7 +541,7 @@ class ROUTER_fixedincome_rate(Container):
             Returns
             -------
             OBBject
-                results : List[IORB]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDIORB], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -620,7 +620,7 @@ class ROUTER_fixedincome_rate(Container):
             Returns
             -------
             OBBject
-                results : List[SONIA]
+                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDSONIA], Tag(tag='fred')]]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -641,7 +641,7 @@ class ROUTER_fixedincome_rate(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.rate.sonia()
+            >>> obb.fixedincome.rate.sonia(parameter="total_nominal_value")
         """  # noqa: E501
 
         return self._run(
