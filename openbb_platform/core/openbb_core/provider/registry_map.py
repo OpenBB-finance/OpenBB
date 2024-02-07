@@ -114,9 +114,15 @@ class RegistryMap:
         """Extract info (fields and docstring) from fetcher query params or data."""
         model: BaseModel = RegistryMap._get_model(fetcher, "data")
 
+        fields = {}
+        for field_name, field in model.model_fields.items():
+            field.alias_priority = None
+            fields[field_name] = (field.annotation, field)
+
         provider_model = create_model(
             model.__name__.replace("Data", ""),
             __base__=model,
+            __doc__=model.__doc__,
             __module__=model.__module__,
             provider=(
                 Literal[provider_str],  # type: ignore
@@ -126,6 +132,7 @@ class RegistryMap:
                     exclude=True,
                 ),
             ),
+            **fields,
         )
 
         # Replace the provider models in the modules with the new models we created
