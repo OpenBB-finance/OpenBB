@@ -734,9 +734,6 @@ class MethodDefinition:
                 value = {k: k for k in fields}
                 code += f"                {name}={{\n"
                 for k, v in value.items():
-                    if k == "symbol":
-                        code += f'                    "{k}": ",".join(symbol) if isinstance(symbol, list) else symbol, \n'
-                        continue
                     code += f'                    "{k}": {v},\n'
                 code += "                },\n"
             else:

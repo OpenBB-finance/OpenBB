@@ -221,60 +221,8 @@ class ROUTER_economy(Container):
     @validate
     def cpi(
         self,
-        countries: Annotated[
-            List[
-                Literal[
-                    "australia",
-                    "austria",
-                    "belgium",
-                    "brazil",
-                    "bulgaria",
-                    "canada",
-                    "chile",
-                    "china",
-                    "croatia",
-                    "cyprus",
-                    "czech_republic",
-                    "denmark",
-                    "estonia",
-                    "euro_area",
-                    "finland",
-                    "france",
-                    "germany",
-                    "greece",
-                    "hungary",
-                    "iceland",
-                    "india",
-                    "indonesia",
-                    "ireland",
-                    "israel",
-                    "italy",
-                    "japan",
-                    "korea",
-                    "latvia",
-                    "lithuania",
-                    "luxembourg",
-                    "malta",
-                    "mexico",
-                    "netherlands",
-                    "new_zealand",
-                    "norway",
-                    "poland",
-                    "portugal",
-                    "romania",
-                    "russian_federation",
-                    "slovak_republic",
-                    "slovakia",
-                    "slovenia",
-                    "south_africa",
-                    "spain",
-                    "sweden",
-                    "switzerland",
-                    "turkey",
-                    "united_kingdom",
-                    "united_states",
-                ]
-            ],
+        country: Annotated[
+            str,
             OpenBBCustomParameter(description="The country or countries to get data."),
         ],
         units: Annotated[
@@ -314,7 +262,7 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        countries : List[Literal['australia', 'austria', 'belgium', 'brazil', 'bulgar...
+        country : str
             The country or countries to get data.
         units : Literal['growth_previous', 'growth_same', 'index_2015']
             The unit of measurement for the data.
@@ -360,7 +308,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.cpi(countries=['portugal', 'spain'], units="growth_same", frequency="monthly", harmonized=False)
+        >>> obb.economy.cpi(country="portugal", units="growth_same", frequency="monthly", harmonized=False)
         """  # noqa: E501
 
         return self._run(
@@ -370,7 +318,7 @@ class ROUTER_economy(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "countries": countries,
+                    "country": country,
                     "units": units,
                     "frequency": frequency,
                     "harmonized": harmonized,
@@ -614,7 +562,7 @@ class ROUTER_economy(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                     "limit": limit,
