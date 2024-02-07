@@ -54,7 +54,7 @@ class ROUTER_fixedincome_government(Container):
         Returns
         -------
         OBBject
-            results : List[TreasuryRates]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FederalReserveTreasuryRates], Tag(tag='federal_reserve')], Annotated[List[FMPTreasuryRates], Tag(tag='fmp')]]
                 Serializable results.
             provider : Optional[Literal['federal_reserve', 'fmp']]
                 Provider name.
@@ -146,7 +146,7 @@ class ROUTER_fixedincome_government(Container):
         Returns
         -------
         OBBject
-            results : List[USYieldCurve]
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDYieldCurve], Tag(tag='fred')]]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.

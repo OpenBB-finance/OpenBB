@@ -42,7 +42,7 @@ class ROUTER_equity_compare(Container):
         Returns
         -------
         OBBject
-            results : EquityPeers
+            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[FMPEquityPeers, Tag(tag='fmp')]]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
