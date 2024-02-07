@@ -72,7 +72,7 @@ class DatabentoOptionsChainsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the Databento endpoint."""
         key = credentials.get("databento_api_key") if credentials else ""
-        data = get_options_chain(query.symbol, query.date, key).to_dict(
+        data = get_options_chain(query.symbol, "2024-02-05", key).to_dict(
             orient="records"
         )
 

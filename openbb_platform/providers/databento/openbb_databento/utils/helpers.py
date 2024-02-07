@@ -1,4 +1,5 @@
 """Databento Helper Utility Functions"""
+
 import datetime
 
 import databento as db
