@@ -27,9 +27,10 @@ jobs:
 
       - name: 💾 Save Changelog
         run: |
-          printf '%s\n' "${{ steps.release-drafter.outputs.body }}" > CHANGELOG.md
-          cat CHANGELOG.md
-
+          cat << 'EOF' > CHANGELOG.md
+          ${{ steps.release-drafter.outputs.body }}
+          EOF
+          
       # - name: 🧬 Process Changelog
       #   run: |
       #     python process_changelog.py CHANGELOG.md ${{ github.event.inputs.release_pr_number }}
