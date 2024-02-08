@@ -42,7 +42,7 @@ def check_item(item: str, allowed: List[str], threshold: float = 0.75) -> None:
     """
     if item not in allowed:
         similarities = map(
-            lambda c: (c, SequenceMatcher(None, item, c.lower()).ratio()), allowed
+            lambda c: (c, SequenceMatcher(None, item, c).ratio()), allowed
         )
         similar, score = max(similarities, key=lambda x: x[1])
         if score > threshold:
