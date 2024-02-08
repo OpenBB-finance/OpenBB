@@ -1,10 +1,11 @@
 """Provider registry map."""
 
+import sys
 from inspect import getfile, isclass
 from pathlib import Path
 from typing import Any, Dict, List, Literal, Optional, Tuple, get_origin
 
-from pydantic import BaseModel, ConfigDict, Field, alias_generators, create_model
+from pydantic import BaseModel, Field, create_model
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -94,7 +95,7 @@ class RegistryMap:
                     is_list = get_origin(self.extract_return_type(fetcher)) == list
 
                     return_schemas.setdefault(model_name, {}).update(
-                        {p: List[provider_model] if is_list else provider_model}
+                        {p: {"model": provider_model, "is_list": is_list}}
                     )
 
         return map_, return_schemas
@@ -115,48 +116,29 @@ class RegistryMap:
 
         fields = {}
         for field_name, field in model.model_fields.items():
-            field.alias_priority = None
+            field.serialization_alias = field_name
             fields[field_name] = (field.annotation, field)
 
-        fields.pop("provider", None)
+        fields["provider"] = (
+            Literal[provider_str],  # type: ignore
+            Field(
+                default=provider_str,
+                description="The data provider for the data.",
+                exclude=True,
+            ),
+        )
 
-        return create_model(
+        provider_model = create_model(
             model.__name__.replace("Data", ""),
+            __base__=model,
             __doc__=model.__doc__,
-            __config__=ConfigDict(
-                extra="allow",
-                alias_generator=alias_generators.to_snake,
-                populate_by_name=True,
-            ),
-            provider=(
-                Literal[provider_str, "openbb"],  # type: ignore
-                Field(
-                    default=provider_str,
-                    description="The data provider for the data.",
-                    exclude=True,
-                ),
-            ),
+            __module__=model.__module__,
             **fields,
         )
 
-    @staticmethod
-    def extract_query_model(fetcher: Fetcher, provider: str) -> BaseModel:
-        """Extract info (fields and docstring) from fetcher query params or data."""
-        model: BaseModel = RegistryMap._get_model(fetcher, "query_params")
-
-        provider_model = create_model(
-            model.__name__,
-            __base__=model,
-            __module__=model.__module__,
-            provider=(
-                Literal[provider],  # type: ignore
-                Field(
-                    default=provider,
-                    description="The data provider for the data.",
-                    exclude=True,
-                ),
-            ),
-        )
+        # Replace the provider models in the modules with the new models we created
+        # To make sure provider field is defined to be the provider string
+        setattr(sys.modules[model.__module__], model.__name__, provider_model)
 
         return provider_model
 

@@ -43,7 +43,7 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[FMPPriceTargetConsensus, Tag(tag='fmp')], Annotated[List[YFinancePriceTargetConsensus], Tag(tag='yfinance')]]
+            results : Union[List[PriceTargetConsensus], PriceTargetConsensus]
                 Serializable results.
             provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
@@ -131,7 +131,7 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPAnalystEstimates], Tag(tag='fmp')]]
+            results : List[AnalystEstimates]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -259,7 +259,7 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[BenzingaPriceTarget], Tag(tag='benzinga')], Annotated[List[FMPPriceTarget], Tag(tag='fmp')]]
+            results : List[PriceTarget]
                 Serializable results.
             provider : Optional[Literal['benzinga', 'fmp']]
                 Provider name.

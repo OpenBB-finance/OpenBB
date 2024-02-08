@@ -56,7 +56,7 @@ class ROUTER_equity_calendar(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCalendarDividend], Tag(tag='fmp')]]
+            results : List[CalendarDividend]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -142,7 +142,7 @@ class ROUTER_equity_calendar(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCalendarEarnings], Tag(tag='fmp')]]
+            results : List[CalendarEarnings]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -249,7 +249,7 @@ class ROUTER_equity_calendar(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[IntrinioCalendarIpo], Tag(tag='intrinio')]]
+            results : List[CalendarIpo]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -398,7 +398,7 @@ class ROUTER_equity_calendar(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCalendarSplits], Tag(tag='fmp')]]
+            results : List[CalendarSplits]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.

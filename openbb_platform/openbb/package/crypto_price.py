@@ -43,7 +43,7 @@ class ROUTER_crypto_price(Container):
         provider: Optional[Literal["fmp", "polygon", "tiingo", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Cryptocurrency Historical Price. Cryptocurrency historical price data.
+        """Get historical price data for cryptocurrency pair(s) within a provider.
 
         Parameters
         ----------
@@ -73,7 +73,7 @@ class ROUTER_crypto_price(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCryptoHistorical], Tag(tag='fmp')], Annotated[List[PolygonCryptoHistorical], Tag(tag='polygon')], Annotated[List[TiingoCryptoHistorical], Tag(tag='tiingo')], Annotated[List[YFinanceCryptoHistorical], Tag(tag='yfinance')]]
+            results : List[CryptoHistorical]
                 Serializable results.
             provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
@@ -121,6 +121,10 @@ class ROUTER_crypto_price(Container):
         -------
         >>> from openbb import obb
         >>> obb.crypto.price.historical(symbol="BTCUSD")
+        >>> obb.crypto.price.historical("BTCUSD", start_date="2024-01-01", end_date="2024-01-31")
+        >>> obb.crypto.price.historical("ETH-USD", provider="yfinance", interval="1mo", start_date="2024-01-01", end_date="2024-12-31")
+        >>> obb.crypto.price.historical("BTCUSD,ETH-USD", provider="yfinance", interval="1d", start_date="2024-01-01", end_date="2024-01-31")
+        >>> obb.crypto.price.historical(["BTCUSD", "ETH-USD"], start_date="2024-01-01", end_date="2024-01-31")
         """  # noqa: E501
 
         return self._run(

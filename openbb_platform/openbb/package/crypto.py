@@ -35,7 +35,7 @@ class ROUTER_crypto(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Cryptocurrency Search. Search available cryptocurrency pairs.
+        """Search available cryptocurrency pairs within a provider.
 
         Parameters
         ----------
@@ -49,7 +49,7 @@ class ROUTER_crypto(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCryptoSearch], Tag(tag='fmp')]]
+            results : List[CryptoSearch]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -77,6 +77,8 @@ class ROUTER_crypto(Container):
         -------
         >>> from openbb import obb
         >>> obb.crypto.search()
+        >>> obb.crypto.search("BTCUSD")
+        >>> obb.crypto.search("ETH-USD")
         """  # noqa: E501
 
         return self._run(

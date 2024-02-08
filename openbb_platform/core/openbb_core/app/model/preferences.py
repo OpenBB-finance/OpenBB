@@ -30,6 +30,7 @@ class Preferences(BaseModel):
     output_type: Literal["OBBject", "dataframe", "polars", "numpy", "dict", "chart"] = (
         Field(default="OBBject", description="Python default output type.")
     )
+    show_warnings: bool = True
 
     model_config = ConfigDict(validate_assignment=True)
 

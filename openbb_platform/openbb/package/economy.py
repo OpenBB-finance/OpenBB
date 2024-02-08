@@ -69,7 +69,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEconomicCalendar], Tag(tag='fmp')], Annotated[List[TEEconomicCalendar], Tag(tag='tradingeconomics')]]
+            results : List[EconomicCalendar]
                 Serializable results.
             provider : Optional[Literal['fmp', 'tradingeconomics']]
                 Provider name.
@@ -178,7 +178,7 @@ class ROUTER_economy(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[OECDCLI], Tag(tag='oecd')]]
+                results : List[CLI]
                     Serializable results.
                 provider : Optional[Literal['oecd']]
                     Provider name.
@@ -288,7 +288,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDConsumerPriceIndex], Tag(tag='fred')]]
+            results : List[ConsumerPriceIndex]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -371,7 +371,7 @@ class ROUTER_economy(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FredSearch], Tag(tag='fred')]]
+                results : List[FredSearch]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -529,7 +529,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FredSeries], Tag(tag='fred')], Annotated[List[IntrinioFredSeries], Tag(tag='intrinio')]]
+            results : List[FredSeries]
                 Serializable results.
             provider : Optional[Literal['fred', 'intrinio']]
                 Provider name.
@@ -623,7 +623,7 @@ class ROUTER_economy(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[OECDSTIR], Tag(tag='oecd')]]
+                results : List[STIR]
                     Serializable results.
                 provider : Optional[Literal['oecd']]
                     Provider name.
@@ -705,7 +705,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FederalReserveMoneyMeasures], Tag(tag='federal_reserve')]]
+            results : List[MoneyMeasures]
                 Serializable results.
             provider : Optional[Literal['federal_reserve']]
                 Provider name.
@@ -772,7 +772,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPRiskPremium], Tag(tag='fmp')]]
+            results : List[RiskPremium]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -855,7 +855,7 @@ class ROUTER_economy(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[OECDSTIR], Tag(tag='oecd')]]
+                results : List[STIR]
                     Serializable results.
                 provider : Optional[Literal['oecd']]
                     Provider name.
@@ -939,7 +939,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[OECDUnemployment], Tag(tag='oecd')]]
+            results : List[Unemployment]
                 Serializable results.
             provider : Optional[Literal['oecd']]
                 Provider name.

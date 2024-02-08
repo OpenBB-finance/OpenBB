@@ -44,7 +44,7 @@ class ROUTER_derivatives_options(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[IntrinioOptionsChains], Tag(tag='intrinio')]]
+            results : List[OptionsChains]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -193,7 +193,7 @@ class ROUTER_derivatives_options(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[IntrinioOptionsUnusual], Tag(tag='intrinio')]]
+            results : List[OptionsUnusual]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.

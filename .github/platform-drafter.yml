@@ -11,6 +11,9 @@ categories:
   - title: 📚 OpenBB Documentation Changes
     labels:
       - 'docs'
+include-labels:
+  - 'platform'
+  - 'v4'
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 change-title-escapes: '\<*_&'
 exclude-contributors:
