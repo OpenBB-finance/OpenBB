@@ -59,8 +59,8 @@ class ROUTER_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        country : Optional[Union[str, List[str]]]
-            Country of the event (provider: tradingeconomics)
+        country : Optional[str]
+            Country of the event. (provider: tradingeconomics)
         importance : Optional[Literal['Low', 'Medium', 'High']]
             Importance of the event. (provider: tradingeconomics)
         group : Optional[Literal['interest rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']]
@@ -69,7 +69,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : List[EconomicCalendar]
+            results : EconomicCalendar
                 Serializable results.
             provider : Optional[Literal['fmp', 'tradingeconomics']]
                 Provider name.
