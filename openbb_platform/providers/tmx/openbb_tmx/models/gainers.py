@@ -58,7 +58,7 @@ class TmxGainersData(EquityPerformanceData):
     __alias_dict__ = {
         "name": "longName",
         "change": "priceChange",
-        "change_percent": "percentChange",
+        "percent_change": "percentChange",
         "thirty_day_price_change": "30 Day Price Change",
         "dividend_yield": "Dividend Yield",
         "year_high": "52 Week High",
@@ -67,7 +67,7 @@ class TmxGainersData(EquityPerformanceData):
     }
     rank: int = Field(description="The rank of the stock in the list.")
 
-    @field_validator("change_percent", mode="after", check_fields=False)
+    @field_validator("percent_change", mode="after", check_fields=False)
     @classmethod
     def normalize_percent(cls, v):
         """Return percents as normalized percentage points."""
