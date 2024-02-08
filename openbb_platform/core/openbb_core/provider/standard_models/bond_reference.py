@@ -16,7 +16,7 @@ class BondReferenceQueryParams(QueryParams):
 
     country: Optional[str] = Field(
         default=None,
-        description="Country of the bond issuer. Matches partial name.",
+        description="The country to get data. Matches partial name.",
     )
     issuer_name: Optional[str] = Field(
         default=None,
