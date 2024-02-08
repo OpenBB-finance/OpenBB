@@ -224,11 +224,9 @@ country_dict = {
 }
 
 COUNTRIES = list(
-    set(
-        [
-            item.lower().replace(" ", "_")
-            for sublist in country_dict.values()
-            for item in sublist
-        ]
-    )
+    {
+        item.lower().replace(" ", "_")
+        for sublist in country_dict.values()
+        for item in sublist
+    }
 )
