@@ -23,8 +23,7 @@ class TmxHistoricalDividendsData(HistoricalDividendsData):
     """TMX Historical Dividends Data"""
 
     __alias_dict__ = {
-        "date": "exDate",
-        "dividend": "amount",
+        "ex_dividend_date": "exDate",
         "record_date": "recordDate",
         "payment_date": "payableDate",
         "declaration_date": "declarationDate",
