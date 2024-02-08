@@ -52,7 +52,7 @@ class ROUTER_equity_discovery(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[YFActive], Tag(tag='yfinance')]]
+            results : List[EquityActive]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.
@@ -129,7 +129,7 @@ class ROUTER_equity_discovery(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[YFAggressiveSmallCaps], Tag(tag='yfinance')]]
+            results : List[EquityAggressiveSmallCaps]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.
@@ -230,7 +230,7 @@ class ROUTER_equity_discovery(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPDiscoveryFilings], Tag(tag='fmp')]]
+            results : List[DiscoveryFilings]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -304,7 +304,7 @@ class ROUTER_equity_discovery(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[YFGainers], Tag(tag='yfinance')]]
+            results : List[EquityGainers]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.
@@ -381,7 +381,7 @@ class ROUTER_equity_discovery(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[YFGrowthTechEquities], Tag(tag='yfinance')]]
+            results : List[GrowthTechEquities]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.
@@ -458,7 +458,7 @@ class ROUTER_equity_discovery(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[YFLosers], Tag(tag='yfinance')]]
+            results : List[EquityLosers]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.
@@ -535,7 +535,7 @@ class ROUTER_equity_discovery(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[YFUndervaluedGrowthEquities], Tag(tag='yfinance')]]
+            results : List[EquityUndervaluedGrowth]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.
@@ -612,7 +612,7 @@ class ROUTER_equity_discovery(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[YFUndervaluedLargeCaps], Tag(tag='yfinance')]]
+            results : List[EquityUndervaluedLargeCaps]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.

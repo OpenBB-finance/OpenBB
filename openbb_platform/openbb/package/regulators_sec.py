@@ -47,7 +47,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[SecCikMap, Tag(tag='sec')]]
+            results : CikMap
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.
@@ -112,7 +112,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[SecInstitutionsSearch], Tag(tag='sec')]]
+            results : List[InstitutionsSearch]
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.
@@ -166,7 +166,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[SecRssLitigation], Tag(tag='sec')]]
+            results : List[RssLitigation]
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.
@@ -238,7 +238,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[SecSchemaFiles, Tag(tag='sec')]]
+            results : SchemaFiles
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.
@@ -319,7 +319,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[SecSicSearch], Tag(tag='sec')]]
+            results : List[SicSearch]
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.
@@ -388,7 +388,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[SecSymbolMap, Tag(tag='sec')]]
+            results : SymbolMap
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.

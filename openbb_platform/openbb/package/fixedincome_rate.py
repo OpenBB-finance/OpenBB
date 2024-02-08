@@ -67,7 +67,7 @@ class ROUTER_fixedincome_rate(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDAMERIBOR], Tag(tag='fred')]]
+                results : List[AMERIBOR]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -147,7 +147,7 @@ class ROUTER_fixedincome_rate(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDDiscountWindowPrimaryCreditRate], Tag(tag='fred')]]
+                results : List[DiscountWindowPrimaryCreditRate]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -233,7 +233,7 @@ class ROUTER_fixedincome_rate(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDEuropeanCentralBankInterestRates], Tag(tag='fred')]]
+                results : List[EuropeanCentralBankInterestRates]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -313,7 +313,7 @@ class ROUTER_fixedincome_rate(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FederalReserveFED], Tag(tag='federal_reserve')], Annotated[List[FREDFED], Tag(tag='fred')]]
+                results : List[FEDFUNDS]
                     Serializable results.
                 provider : Optional[Literal['federal_reserve', 'fred']]
                     Provider name.
@@ -375,7 +375,7 @@ class ROUTER_fixedincome_rate(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDPROJECTION], Tag(tag='fred')]]
+                results : List[PROJECTIONS]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -464,7 +464,7 @@ class ROUTER_fixedincome_rate(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDESTR], Tag(tag='fred')]]
+                results : List[ESTR]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -541,7 +541,7 @@ class ROUTER_fixedincome_rate(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDIORB], Tag(tag='fred')]]
+                results : List[IORB]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -620,7 +620,7 @@ class ROUTER_fixedincome_rate(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDSONIA], Tag(tag='fred')]]
+                results : List[SONIA]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
