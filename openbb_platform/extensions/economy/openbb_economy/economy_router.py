@@ -18,18 +18,34 @@ router.include_router(gdp_router)
 # pylint: disable=unused-argument
 
 
-@router.command(model="EconomicCalendar")
+@router.command(
+    model="EconomicCalendar",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.economy.calendar(provider="fmp", start_date="2020-03-01", end_date="2020-03-31")',
+        "#### By default, the calendar will be forward-looking. ####",
+        'obb.economy.calendar(provider="nasdaq")',
+    ],
+)
 async def calendar(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Economic Calendar."""
+    """Get the upcoming, or historical, economic calendar of global events."""
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="ConsumerPriceIndex")
+@router.command(
+    model="ConsumerPriceIndex",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.economy.cpi(countries=["japan", "china", "turkey"]).to_df()',
+        "#### Use the `units` parameter to define the reference period for the change in values. ####",
+        'obb.economy.cpi(countries=["united_states", "united_kingdom"], units="growth_previous").to_df()',
+    ],
+)
 async def cpi(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -40,18 +56,30 @@ async def cpi(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="RiskPremium")
+@router.command(
+    model="RiskPremium",
+    exclude_auto_examples=True,
+    examples=["obb.economy.risk_premium().to_df()"],
+)
 async def risk_premium(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Historical Market Risk Premium."""
+    """Market Risk Premium by country."""
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="BalanceOfPayments")
+@router.command(
+    model="BalanceOfPayments",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.economy.balance_of_payments(report_type="summary").to_df().set_index("period").T',
+        "#### The `country` parameter will override the `report_type`. ####",
+        'obb.economy.balance_of_payments(country="united_states", provider="ecb").to_df().set_index("period").T',
+    ],
+)
 async def balance_of_payments(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -77,7 +105,17 @@ async def fred_search(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="FredSeries")
+@router.command(
+    model="FredSeries",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.economy.fred_series("NFCI").to_df()',
+        "#### Multiple series can be passed in as a list. ####",
+        'obb.economy.fred_series(["NFCI","STLFSI4"]).to_df()',
+        "#### Use the `transform` parameter to transform the data as change, log, or percent change. ####",
+        'obb.economy.fred_series("CBBTCUSD", transform="pc1").to_df()',
+    ],
+)
 async def fred_series(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -88,18 +126,34 @@ async def fred_series(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="MoneyMeasures")
+@router.command(
+    model="MoneyMeasures",
+    exclude_auto_examples=True,
+    examples=[
+        "obb.economy.money_measures(adjusted=False).to_df()",
+    ],
+)
 async def money_measures(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Money Measures (M1/M2 and components)."""
+    """Money Measures (M1/M2 and components). The Federal Reserve publishes as part of the H.6 Release."""
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="Unemployment")
+@router.command(
+    model="Unemployment",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.economy.unemployment(country="all", frequency="quarterly")',
+        "#### Demographics for the statistics are selected with the `age` and `sex` parameters. ####",
+        "obb.economy.unemployment(",
+        'country="all", frequency="quarterly", age="25-54"',
+        ').to_df().pivot(columns="country", values="value")',
+    ],
+)
 async def unemployment(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -110,7 +164,13 @@ async def unemployment(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="CLI")
+@router.command(
+    model="CLI",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.economy.composite_leading_indicator(country="all").to_df()',
+    ],
+)
 async def composite_leading_indicator(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -124,7 +184,13 @@ async def composite_leading_indicator(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="STIR")
+@router.command(
+    model="STIR",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.economy.short_term_interest_rate(country="all", frequency="quarterly").to_df()',
+    ],
+)
 async def short_term_interest_rate(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -141,7 +207,13 @@ async def short_term_interest_rate(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="STIR")
+@router.command(
+    model="STIR",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.economy.long_term_interest_rate(country="all", frequency="quarterly").to_df()',
+    ],
+)
 async def long_term_interest_rate(
     cc: CommandContext,
     provider_choices: ProviderChoices,
