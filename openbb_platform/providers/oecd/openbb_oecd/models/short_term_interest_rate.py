@@ -1,5 +1,7 @@
 """OECD Short Term Interest Rate Rate Data."""
 
+# pylint: disable=unused-argument
+
 import re
 from datetime import date, timedelta
 from typing import Any, Dict, List, Literal, Optional, Union
