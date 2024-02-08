@@ -152,7 +152,7 @@ class OECDLTIRFetcher(Fetcher[OECDLTIRQueryParams, List[OECDLTIRData]]):
             )
         )
         data["country"] = data["country"].map(ltir_mapping)
-
+        data = data.fillna("N/A").replace("N/A", None)
         return data.to_dict(orient="records")
 
     @staticmethod

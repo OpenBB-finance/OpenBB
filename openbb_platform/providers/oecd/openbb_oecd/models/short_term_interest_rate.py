@@ -152,7 +152,7 @@ class OECDSTIRFetcher(Fetcher[OECDSTIRQueryParams, List[OECDSTIRData]]):
             )
         )
         data["country"] = data["country"].map(stir_mapping)
-
+        data = data.fillna("N/A").replace("N/A", None)
         return data.to_dict(orient="records")
 
     @staticmethod
