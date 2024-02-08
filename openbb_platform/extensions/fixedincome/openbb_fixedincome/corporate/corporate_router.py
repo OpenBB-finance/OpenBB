@@ -107,6 +107,6 @@ async def bond_prices(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Corporate Bond Prices."""
     return await OBBject.from_query(Query(**locals()))
