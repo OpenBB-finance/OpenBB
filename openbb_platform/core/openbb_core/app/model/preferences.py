@@ -24,9 +24,6 @@ class Preferences(BaseModel):
     table_style: Literal["dark", "light"] = "dark"
     request_timeout: PositiveInt = 15
     metadata: bool = True
-    field_order: bool = (
-        False  # Whether to display the field order by which the data was defined
-    )
     output_type: Literal["OBBject", "dataframe", "polars", "numpy", "dict", "chart"] = (
         Field(default="OBBject", description="Python default output type.")
     )
