@@ -95,7 +95,9 @@ class TmxEquityHistoricalData(EquityHistoricalData):
     )
     change: Optional[float] = Field(description="Change in price.", default=None)
     change_percent: Optional[float] = Field(
-        description="Change in price, as a normalized percentage.", default=None
+        description="Change in price, as a normalized percentage.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     transactions: Optional[int] = Field(
         description="Total number of transactions recorded.", default=None

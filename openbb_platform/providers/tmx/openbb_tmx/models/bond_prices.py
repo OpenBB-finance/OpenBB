@@ -62,8 +62,10 @@ class TmxBondPricesData(BondReferenceData):
         description="Yield to maturity (YTM) is the rate of return anticipated on a bond"
         + " if it is held until the maturity date. It takes into account"
         + " the current market price, par value, coupon rate and time to maturity. It is assumed that all"
-        + " coupons are reinvested at the same rate.",
+        + " coupons are reinvested at the same rate."
+        + " Values are returned as a normalized percent.",
         alias="lastYield",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     price: Optional[float] = Field(
         default=None,
@@ -115,7 +117,7 @@ class TmxBondPricesData(BondReferenceData):
     @classmethod
     def normalize_percent(cls, v):
         """Return percents as normalized percentage points."""
-        return round(float(v) / 100, 6) if v else None
+        return float(v) / 100 if v else None
 
 
 class TmxBondPricesFetcher(

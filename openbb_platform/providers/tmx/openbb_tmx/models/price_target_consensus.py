@@ -30,7 +30,9 @@ class TmxPriceTargetConsensusData(PriceTargetConsensusData):
     }
 
     target_upside: Optional[float] = Field(
-        default=None, description="Percent of upside, as a normalized percent."
+        default=None,
+        description="Percent of upside, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     total_analysts: Optional[int] = Field(
         default=None, description="Total number of analyst."
@@ -52,7 +54,7 @@ class TmxPriceTargetConsensusData(PriceTargetConsensusData):
     @classmethod
     def normalize_percent(cls, v):
         """Return percents as normalized percentage points."""
-        return round(float(v) / 100, 6) if v else None
+        return float(v) / 100 if v else None
 
     @field_validator(
         "target_consensus",

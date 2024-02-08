@@ -84,7 +84,7 @@ class TmxTreasuryPricesData(TreasuryPricesData):
     @classmethod
     def normalize_percent(cls, v):
         """Return percents as normalized percentage points."""
-        return round(float(v) / 100, 6) if v else None
+        return float(v) / 100 if v else None
 
 
 class TmxTreasuryPricesFetcher(

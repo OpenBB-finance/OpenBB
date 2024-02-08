@@ -63,15 +63,18 @@ class TmxIndexSnapshotsData(IndexSnapshotsData):
     )
     return_mtd: Optional[float] = Field(
         default=None,
-        description="The month-to-date return of the index as a normalized percentage.",
+        description="The month-to-date return of the index, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     return_qtd: Optional[float] = Field(
         default=None,
-        description="The quarter-to-date return of the index as a normalized percentage.",
+        description="The quarter-to-date return of the index, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     return_ytd: Optional[float] = Field(
         default=None,
-        description="The year-to-date return of the index as a normalized percentage.",
+        description="The year-to-date return of the index, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     total_market_value: Optional[float] = Field(
         default=None,
@@ -99,7 +102,8 @@ class TmxIndexSnapshotsData(IndexSnapshotsData):
     )
     constituent_largest_weight: Optional[float] = Field(
         default=None,
-        description="The largest weight of the index constituents, as a normalized percentage.",
+        description="The largest weight of the index constituents, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     constituent_smallest_market_value: Optional[float] = Field(
         default=None,
@@ -107,7 +111,8 @@ class TmxIndexSnapshotsData(IndexSnapshotsData):
     )
     constituent_smallest_weight: Optional[float] = Field(
         default=None,
-        description="The smallest weight of the index constituents, as a normalized percentage.",
+        description="The smallest weight of the index constituents, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
 
     @field_validator(

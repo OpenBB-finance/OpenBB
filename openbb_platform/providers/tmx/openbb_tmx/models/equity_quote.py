@@ -93,6 +93,7 @@ class TmxEquityQuoteData(EquityQuoteData):
     change_percent: Optional[float] = Field(
         default=None,
         description="The change in price as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     year_high: Optional[float] = Field(
         description="Fifty-two week high.", default=None, alias="weeks52high"
@@ -144,6 +145,7 @@ class TmxEquityQuoteData(EquityQuoteData):
         description="The dividend yield as a normalized percentage.",
         default=None,
         alias="dividendYield",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     div_freq: Optional[str] = Field(
         description="The frequency of dividend payments.",
@@ -162,11 +164,13 @@ class TmxEquityQuoteData(EquityQuoteData):
         description="The three year dividend growth as a normalized percentage.",
         default=None,
         alias="dividend3Years",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     div_growth_5y: Optional[Union[float, str]] = Field(
         description="The five year dividend growth as a normalized percentage.",
         default=None,
         alias="dividend5Years",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     pe: Optional[Union[float, str]] = Field(
         description="The price to earnings ratio.", default=None, alias="peRatio"
@@ -189,11 +193,13 @@ class TmxEquityQuoteData(EquityQuoteData):
         description="The return on equity, as a normalized percentage.",
         default=None,
         alias="returnOnEquity",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     return_on_assets: Optional[Union[float, str]] = Field(
         description="The return on assets, as a normalized percentage.",
         default=None,
         alias="returnOnAssets",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     beta: Optional[Union[float, str]] = Field(
         description="The beta relative to the TSX Composite.", default=None

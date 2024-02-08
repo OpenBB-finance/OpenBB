@@ -44,31 +44,49 @@ class TmxEtfInfoData(EtfInfoData):
         description="The previous closing price of the ETF.", default=None
     )
     return_1m: Optional[float] = Field(
-        description="The one-month return of the ETF.", default=None
+        description="The one-month return of the ETF, as a normalized percent",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     return_3m: Optional[float] = Field(
-        description="The three-month return of the ETF.", default=None
+        description="The three-month return of the ETF, as a normalized percent.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     return_6m: Optional[float] = Field(
-        description="The six-month return of the ETF.", default=None
+        description="The six-month return of the ETF, as a normalized percent.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     return_ytd: Optional[float] = Field(
-        description="The year-to-date return of the ETF.", default=None
+        description="The year-to-date return of the ETF, as a normalized percent.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     return_1y: Optional[float] = Field(
-        description="The one-year return of the ETF.", default=None
+        description="The one-year return of the ETF, as a normalized percent.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     return_3y: Optional[float] = Field(
-        description="The three-year return of the ETF.", default=None
+        description="The three-year return of the ETF, as a normalized percent.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     return_5y: Optional[float] = Field(
-        description="The five-year return of the ETF.", default=None
+        description="The five-year return of the ETF, as a normalized percent.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     return_10y: Optional[float] = Field(
-        description="The ten-year return of the ETF.", default=None
+        description="The ten-year return of the ETF, as a normalized percent.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     return_from_inception: Optional[float] = Field(
-        description="The return from inception of the ETF.", default=None
+        description="The return from inception of the ETF, as a normalized percent.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     avg_volume: Optional[int] = Field(
         description="The average daily volume of the ETF.",
@@ -88,13 +106,19 @@ class TmxEtfInfoData(EtfInfoData):
         description="The price-to-book ratio of the ETF.", default=None
     )
     management_fee: Optional[float] = Field(
-        description="The management fee of the ETF.", default=None
+        description="The management fee of the ETF, as a normalized percent.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     mer: Optional[float] = Field(
-        description="The management expense ratio of the ETF.", default=None
+        description="The management expense ratio of the ETF, as a normalized percent.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     distribution_yield: Optional[float] = Field(
-        description="The distribution yield of the ETF.", default=None
+        description="The distribution yield of the ETF, as a normalized percent.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
     dividend_frequency: Optional[str] = Field(
         description="The dividend payment frequency of the ETF.", default=None
@@ -125,7 +149,7 @@ class TmxEtfInfoData(EtfInfoData):
     @classmethod
     def normalize_percent(cls, v):
         """Return percents as normalized percentage points."""
-        return round(float(v) / 100, 6) if v else None
+        return float(v) / 100 if v else None
 
 
 class TmxEtfInfoFetcher(

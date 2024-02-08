@@ -58,7 +58,7 @@ class TmxGainersData(EquityPerformanceData):
     __alias_dict__ = {
         "name": "longName",
         "change": "priceChange",
-        "percent_change": "percentChange",
+        "change_percent": "percentChange",
         "thirty_day_price_change": "30 Day Price Change",
         "dividend_yield": "Dividend Yield",
         "year_high": "52 Week High",
@@ -67,11 +67,11 @@ class TmxGainersData(EquityPerformanceData):
     }
     rank: int = Field(description="The rank of the stock in the list.")
 
-    @field_validator("percent_change", mode="after", check_fields=False)
+    @field_validator("change_percent", mode="after", check_fields=False)
     @classmethod
     def normalize_percent(cls, v):
         """Return percents as normalized percentage points."""
-        return round(float(v) / 100, 6) if v else 0
+        return float(v) / 100 if v else 0
 
     @model_validator(mode="before")
     @classmethod
@@ -80,7 +80,7 @@ class TmxGainersData(EquityPerformanceData):
             if v is None or v == "-":
                 values[k] = 0
             if k in ["Dividend Yield"]:
-                values[k] = round(float(v) / 100, 6) if v else None
+                values[k] = float(v) / 100 if v else None
         return values
 
 
@@ -142,4 +142,4 @@ class TmxGainersFetcher(
         **kwargs: Any,
     ) -> List[TmxGainersData]:
         """Transform the data to the model."""
-        return [TmxGainersData(**d) for d in data]
+        return [TmxGainersData.model_validate(d) for d in data]
