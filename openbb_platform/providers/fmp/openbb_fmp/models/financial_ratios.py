@@ -193,7 +193,11 @@ class FMPFinancialRatiosData(FinancialRatiosData):
     @classmethod
     def replace_zero(cls, values):  # pylint: disable=no-self-argument
         """Check for zero values and replace with None."""
-        return {k: None if v == 0 else v for k, v in values.items()}
+        return (
+            {k: None if v == 0 else v for k, v in values.items()}
+            if isinstance(values, dict)
+            else values
+        )
 
 
 class FMPFinancialRatiosFetcher(

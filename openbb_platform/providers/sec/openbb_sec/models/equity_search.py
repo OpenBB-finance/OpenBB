@@ -25,10 +25,6 @@ class SecEquitySearchQueryParams(EquitySearchQueryParams):
         default=False,
         description="Whether to direct the search to the list of mutual funds and ETFs.",
     )
-    use_cache: bool = Field(
-        default=True,
-        description="Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days.",
-    )
 
 
 class SecEquitySearchData(EquitySearchData):

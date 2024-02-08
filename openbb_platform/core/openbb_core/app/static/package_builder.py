@@ -520,10 +520,10 @@ class MethodDefinition:
         # Be careful, if the type is not coercible by pydantic to the original type, you
         # will need to add some conversion code in the input filter.
         TYPE_EXPANSION = {
-            "symbol": List[str],
             "data": DataProcessingSupportedTypes,
             "start_date": str,
             "end_date": str,
+            "date": str,
             "provider": None,
         }
 
@@ -733,9 +733,6 @@ class MethodDefinition:
                 value = {k: k for k in fields}
                 code += f"                {name}={{\n"
                 for k, v in value.items():
-                    if k == "symbol":
-                        code += f'                    "{k}": ",".join(symbol) if isinstance(symbol, list) else symbol, \n'
-                        continue
                     code += f'                    "{k}": {v},\n'
                 code += "                },\n"
             else:

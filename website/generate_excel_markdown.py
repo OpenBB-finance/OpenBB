@@ -33,6 +33,9 @@ class CommandLib:
 
     # These examples will be generated in the core, but we keep them here meanwhile
     EXAMPLE_PARAMS: Dict[str, Dict] = {
+        "/byod": {
+            "widget": '"widget_name"',
+        },
         "crypto": {
             "symbol": '"BTCUSD"',
             "start_date": '"2023-01-01"',
@@ -173,7 +176,7 @@ class CommandLib:
         """Get the func of the command."""
         return self.xl_funcs.get(cmd, {}).get("name", ".").split(".")[-1].lower()
 
-    def _get_signature(self, cmd: str, parameters: dict) -> str:
+    def _get_signature(self, cmd: str, parameters: dict, sep: str = ",") -> str:
         """Get the signature of the command."""
         sig = "=OBB." + self.xl_funcs[cmd].get("name", "")
         sig += "("
@@ -182,8 +185,8 @@ class CommandLib:
                 sig += f"{p_name}"
             else:
                 sig += f"[{p_name}]"
-            sig += ";"
-        sig = sig.strip("; ") + ")"
+            sig += sep
+        sig = sig.strip(f"{sep} ") + ")"
         return sig
 
     def _get_parameters(self, cmd: str) -> dict:
@@ -200,7 +203,12 @@ class CommandLib:
 
     def _get_data(self, cmd: str) -> dict:
         """Get the data of the command from the openapi."""
-        model = self.openapi["paths"][f"/api/v1{cmd}"]["get"]["model"]
+        model = (
+            self.openapi.get("paths", {})
+            .get(f"/api/v1{cmd}", {})
+            .get("get", {})
+            .get("model")
+        )
         if model:
             schema = self.openapi["components"]["schemas"][model]["properties"]
             data = {}
@@ -211,7 +219,9 @@ class CommandLib:
             return data
         return {}
 
-    def _get_examples(self, cmd: str, signature_: str, parameters: dict) -> dict:
+    def _get_examples(
+        self, cmd: str, signature_: str, parameters: dict, sep: str = ","
+    ) -> dict:
         """Get the examples of the command."""
         sig = signature_.split("(")[0] + "("
         category = signature_.split(".")[1].lower()
@@ -225,16 +235,16 @@ class CommandLib:
         for p_name, p_info in parameters.items():
             if p_info["required"]:
                 p_value = get_p_value(cmd, p_name)
-                required_eg += f"{p_value};"
-        required_eg = required_eg.strip("; ") + ")"
+                required_eg += f"{p_value}{sep}"
+        required_eg = required_eg.strip(f"{sep} ") + ")"
 
         standard_eg = sig
         for p_name, p_info in parameters.items():
             if p_name == "provider":
                 break
             p_value = get_p_value(cmd, p_name)
-            standard_eg += f"{p_value};"
-        standard_eg = standard_eg.strip("; ") + ")"
+            standard_eg += f"{p_value}{sep}"
+        standard_eg = standard_eg.strip(f"{sep} ") + ")"
 
         if required_eg == standard_eg:
             return {"A. Required": required_eg}
@@ -324,53 +334,58 @@ class Editor:
             return description
 
         def get_syntax() -> str:
-            sig = cmd_info["signature"]
-            syntax = "## Syntax\n\n"
-            syntax += f"```{self.interface} wordwrap\n"
-            syntax += f"{sig}\n"
-            syntax += "```\n\n"
-            return syntax
+            if sig := cmd_info["signature"]:
+                syntax = "## Syntax\n\n"
+                syntax += f"```{self.interface} wordwrap\n"
+                syntax += f"{sig}\n"
+                syntax += "```\n\n"
+                return syntax
+            return ""
 
         def get_parameters() -> str:
-            parameters = "## Parameters\n\n"
-            parameters += "| Name | Type | Description | Required |\n"
-            parameters += "| ---- | ---- | ----------- | -------- |\n"
-            for field_name, field_info in cmd_info["parameters"].items():
-                name = field_name
-                type_ = field_info["type"]
-                description = field_info["description"]
-                required = field_info["required"]
-                required_str = str(required).title()
-                if required:
-                    parameters += f"| **{name}** | **{type_}** | **{description}** | **{required_str}** |\n"
-                else:
-                    parameters += (
-                        f"| {name} | {type_} | {description} | {required_str} |\n"
-                    )
-
-            parameters += "\n"
-            return parameters
+            if parameter_schema := cmd_info["parameters"]:
+                parameters = "## Parameters\n\n"
+                parameters += "| Name | Type | Description | Required |\n"
+                parameters += "| ---- | ---- | ----------- | -------- |\n"
+                for field_name, field_info in parameter_schema.items():
+                    name = field_name
+                    type_ = field_info["type"]
+                    description = field_info["description"]
+                    required = field_info["required"]
+                    required_str = str(required).title()
+                    if required:
+                        parameters += f"| **{name}** | **{type_}** | **{description}** | **{required_str}** |\n"
+                    else:
+                        parameters += (
+                            f"| {name} | {type_} | {description} | {required_str} |\n"
+                        )
+                parameters += "\n"
+                return parameters
+            return ""
 
         def get_return_data() -> str:
-            data = "## Return Data\n\n"
-            data += "| Name | Description |\n"
-            data += "| ---- | ----------- |\n"
-            for field_name, field_info in cmd_info["data"].items():
-                name = field_name
-                description = field_info["description"]
-                data += f"| {name} | {description} |\n"
-            return data
+            if data_schema := cmd_info["data"]:
+                data = "## Return Data\n\n"
+                data += "| Name | Description |\n"
+                data += "| ---- | ----------- |\n"
+                for field_name, field_info in data_schema.items():
+                    name = field_name
+                    description = field_info["description"]
+                    data += f"| {name} | {description} |\n"
+                return data
+            return ""
 
         def get_examples() -> str:
-            examples = "### Example\n\n"
+            if cmd_examples := cmd_info["examples"]:
+                examples = "### Example\n\n"
+                for _, v in cmd_examples.items():
+                    # examples += f"### {k}\n\n"
+                    examples += f"```{self.interface} wordwrap\n"
+                    examples += f"{v}\n"
+                    examples += "```\n\n"
 
-            for _, v in cmd_info["examples"].items():
-                # examples += f"### {k}\n\n"
-                examples += f"```{self.interface} wordwrap\n"
-                examples += f"{v}\n"
-                examples += "```\n\n"
-
-            return examples
+                return examples
+            return ""
 
         content = get_header()
         content += get_head_title()

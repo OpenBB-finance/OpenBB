@@ -118,7 +118,7 @@ class ROUTER_fixedincome_government(Container):
     def us_yield_curve(
         self,
         date: Annotated[
-            Optional[datetime.date],
+            Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="A specific date to get data for. Defaults to the most recent FRED entry."
             ),

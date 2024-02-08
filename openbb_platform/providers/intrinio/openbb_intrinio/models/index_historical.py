@@ -1,7 +1,7 @@
 """Intrinio Index Historical Model."""
 
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -9,10 +9,8 @@ from openbb_core.provider.standard_models.index_historical import (
     IndexHistoricalData,
     IndexHistoricalQueryParams,
 )
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_requests, get_querystring
-from pydantic import Field, NonNegativeInt
 
 
 class IntrinioIndexHistoricalQueryParams(IndexHistoricalQueryParams):
@@ -22,16 +20,7 @@ class IntrinioIndexHistoricalQueryParams(IndexHistoricalQueryParams):
     https://docs.intrinio.com/documentation/web_api/get_stock_market_index_historical_data_v2
     """
 
-    sort: Literal["asc", "desc"] = Field(
-        default="asc",
-        description="Sort order.",
-        alias="sort_order",
-    )
-    limit: NonNegativeInt = Field(
-        default=10000,
-        description=QUERY_DESCRIPTIONS.get("limit", ""),
-        alias="page_size",
-    )
+    __alias_dict__ = {"limit": "page_size", "sort": "sort_order"}
 
 
 class IntrinioIndexHistoricalData(IndexHistoricalData):

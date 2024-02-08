@@ -9,7 +9,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 from openbb_etf.discovery.discovery_router import router as discovery_router
 
@@ -25,7 +24,7 @@ async def search(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Search for ETFs.
 
     An empty query returns the full list of ETFs from the provider.
@@ -39,7 +38,7 @@ async def historical(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """ETF Historical Market Price."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -50,7 +49,7 @@ async def info(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """ETF Information Overview."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -61,7 +60,7 @@ async def sectors(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """ETF Sector weighting."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -72,7 +71,7 @@ async def countries(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """ETF Country weighting."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -83,7 +82,7 @@ async def price_performance(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Price performance as a return, over different periods."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -94,7 +93,7 @@ async def holdings(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get the holdings for an individual ETF."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -105,7 +104,7 @@ async def holdings_date(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get the holdings filing date for an individual ETF."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -116,6 +115,6 @@ async def holdings_performance(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get the ETF holdings performance."""
     return await OBBject.from_query(Query(**locals()))
