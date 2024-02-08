@@ -15,6 +15,9 @@ labels:
   - label: "bug"
     branch: "^hotfix/.*"
 
+  - label: "bug"
+    branch: "^bugfix/.*"
+
   - label: "docs"
     branch: "^docs/.*"
 
