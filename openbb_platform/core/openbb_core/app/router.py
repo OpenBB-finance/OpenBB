@@ -20,7 +20,7 @@ from typing import (
 )
 
 from fastapi import APIRouter, Depends
-from pydantic import BaseModel, Discriminator, Field, Tag, create_model
+from pydantic import BaseModel, Field, SerializeAsAny, Tag, create_model
 from pydantic.v1.validators import find_validators
 from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
@@ -39,17 +39,6 @@ from openbb_core.app.provider_interface import (
 from openbb_core.env import Env
 
 P = ParamSpec("P")
-
-
-def model_t_discriminator(v: Any) -> str:
-    """Discriminator function for the results field."""
-    if isinstance(v, dict):
-        return v.get("provider", "openbb")
-
-    if isinstance(v, list) and v:
-        return model_t_discriminator(v[0])
-
-    return getattr(v, "provider", "openbb")
 
 
 class OpenBBErrorResponse(BaseModel):
@@ -389,7 +378,7 @@ class SignatureInspector:
     @staticmethod
     def inject_return_type(
         func: Callable[P, OBBject],
-        return_map: Dict[str, Any],
+        return_map: Dict[str, dict],
         model: str,
     ) -> Callable[P, OBBject]:
         """
@@ -397,32 +386,48 @@ class SignatureInspector:
         Also updates __name__ and __doc__ for API schemas.
         """
 
-        union_models = [Annotated[Union[list, dict], Tag("openbb")]]
+        results: Dict[str, Any] = {"list_type": [], "dict_type": []}
 
-        for provider, return_type in return_map.items():
-            union_models.append(Annotated[return_type, Tag(provider)])
+        for provider, return_data in return_map.items():
+            if return_data["is_list"]:
+                results["list_type"].append(
+                    Annotated[return_data["model"], Tag(provider)]
+                )
+                continue
+
+            results["dict_type"].append(Annotated[return_data["model"], Tag(provider)])
+
+        list_models, union_models = results.values()
+
+        return_types = []
+        for t, v in results.items():
+            if not v:
+                continue
+
+            inner_type = SerializeAsAny[
+                Annotated[
+                    Union[tuple(v)],  # type: ignore
+                    Field(discriminator="provider"),
+                ]
+            ]
+            return_types.append(List[inner_type] if t == "list_type" else inner_type)
 
         return_type = create_model(
             f"OBBject_{model}",
             __base__=OBBject,
+            __doc__=f"OBBject with results of type {model}",
             results=(
-                Optional[
-                    Annotated[
-                        Union[tuple(union_models)],  # type: ignore
-                        Field(
-                            None,
-                            description="Serializable results.",
-                            discriminator=Discriminator(model_t_discriminator),
-                        ),
-                    ]
-                ],
-                Field(None, description="Serializable results."),
+                Optional[Union[tuple(return_types)]],  # type: ignore
+                Field(
+                    None,
+                    description="Serializable results.",
+                    json_schema_extra={
+                        "model": model,
+                        "has_list": bool(len(list_models) > 0),
+                        "is_union": bool(list_models and union_models),
+                    },
+                ),
             ),
-        )
-
-        return_type.__name__ = f"OBBject_{model.replace('Data', '')}"
-        return_type.__doc__ = (
-            f"OBBject with results of type {model.replace('Data', '')}"
         )
 
         func.__annotations__["return"] = return_type

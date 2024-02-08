@@ -102,7 +102,7 @@ class ROUTER_news(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[BenzingaCompanyNews], Tag(tag='benzinga')], Annotated[List[FMPCompanyNews], Tag(tag='fmp')], Annotated[List[IntrinioCompanyNews], Tag(tag='intrinio')], Annotated[List[PolygonCompanyNews], Tag(tag='polygon')], Annotated[List[TiingoCompanyNews], Tag(tag='tiingo')], Annotated[List[YFinanceCompanyNews], Tag(tag='yfinance')]]
+            results : List[CompanyNews]
                 Serializable results.
             provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
@@ -263,7 +263,7 @@ class ROUTER_news(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[BenzingaWorldNews], Tag(tag='benzinga')], Annotated[List[FMPWorldNews], Tag(tag='fmp')], Annotated[List[IntrinioWorldNews], Tag(tag='intrinio')], Annotated[List[TiingoWorldNews], Tag(tag='tiingo')]]
+            results : List[WorldNews]
                 Serializable results.
             provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'tiingo']]
                 Provider name.
