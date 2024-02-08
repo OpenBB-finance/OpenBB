@@ -1,4 +1,5 @@
 """Platform Equity Controller."""
+
 __docformat__ = "numpy"
 
 import logging
@@ -37,8 +38,6 @@ class PocPlatformEquityController(PlatformController):
     def __init__(self, name: str, queue: Optional[List[str]] = None):
         """Construct Data."""
         super().__init__(name, queue)
-
-        self._slave_controllers = {}
 
         self._handle_paths(paths=equity.paths)
         self._generate_commands(translators=equity.translators)
