@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -27,8 +27,7 @@ class ROUTER_regulators_sec(Container):
     def cik_map(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["sec"]] = None,
         **kwargs
@@ -47,7 +46,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[SecCikMap, Tag(tag='sec')]]
+            results : CikMap
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.
@@ -76,7 +75,7 @@ class ROUTER_regulators_sec(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -111,7 +110,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[SecInstitutionsSearch], Tag(tag='sec')]]
+            results : List[InstitutionsSearch]
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.
@@ -165,7 +164,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[SecRssLitigation], Tag(tag='sec')]]
+            results : List[RssLitigation]
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.
@@ -237,7 +236,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[SecSchemaFiles, Tag(tag='sec')]]
+            results : SchemaFiles
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.
@@ -302,7 +301,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[SecSicSearch], Tag(tag='sec')]]
+            results : List[SicSearch]
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.
@@ -371,7 +370,7 @@ class ROUTER_regulators_sec(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[SecSymbolMap, Tag(tag='sec')]]
+            results : SymbolMap
                 Serializable results.
             provider : Optional[Literal['sec']]
                 Provider name.

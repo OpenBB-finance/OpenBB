@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 from warnings import simplefilter, warn
 
 from openbb_core.app.deprecation import OpenBBDeprecationWarning
@@ -40,7 +40,7 @@ class ROUTER_index(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPAvailableIndices], Tag(tag='fmp')], Annotated[List[YFinanceAvailableIndices], Tag(tag='yfinance')]]
+            results : List[AvailableIndices]
                 Serializable results.
             provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
@@ -107,7 +107,7 @@ class ROUTER_index(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPIndexConstituents], Tag(tag='fmp')]]
+            results : List[IndexConstituents]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -164,8 +164,7 @@ class ROUTER_index(Container):
     def market(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -226,7 +225,7 @@ class ROUTER_index(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPMarketIndices], Tag(tag='fmp')], Annotated[List[IntrinioMarketIndices], Tag(tag='intrinio')], Annotated[List[PolygonMarketIndices], Tag(tag='polygon')], Annotated[List[YFinanceMarketIndices], Tag(tag='yfinance')]]
+            results : List[MarketIndices]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
@@ -286,7 +285,7 @@ class ROUTER_index(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                 },

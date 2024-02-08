@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 from warnings import simplefilter, warn
 
 from annotated_types import Ge
@@ -50,8 +50,7 @@ class ROUTER_equity_fundamental(Container):
     def balance(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             str, OpenBBCustomParameter(description="Time period of the data to return.")
@@ -109,7 +108,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPBalanceSheet], Tag(tag='fmp')], Annotated[List[IntrinioBalanceSheet], Tag(tag='intrinio')], Annotated[List[PolygonBalanceSheet], Tag(tag='polygon')], Annotated[List[YFinanceBalanceSheet], Tag(tag='yfinance')]]
+            results : List[BalanceSheet]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
@@ -390,7 +389,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "period": period,
                     "limit": limit,
                 },
@@ -402,8 +401,7 @@ class ROUTER_equity_fundamental(Container):
     def balance_growth(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         limit: Annotated[
             int,
@@ -428,7 +426,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPBalanceSheetGrowth], Tag(tag='fmp')]]
+            results : List[BalanceSheetGrowth]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -539,7 +537,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "limit": limit,
                 },
                 extra_params=kwargs,
@@ -550,8 +548,7 @@ class ROUTER_equity_fundamental(Container):
     def cash(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             str, OpenBBCustomParameter(description="Time period of the data to return.")
@@ -609,7 +606,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCashFlowStatement], Tag(tag='fmp')], Annotated[List[IntrinioCashFlowStatement], Tag(tag='intrinio')], Annotated[List[PolygonCashFlowStatement], Tag(tag='polygon')], Annotated[List[YFinanceCashFlowStatement], Tag(tag='yfinance')]]
+            results : List[CashFlowStatement]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
@@ -798,7 +795,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "period": period,
                     "limit": limit,
                 },
@@ -810,8 +807,7 @@ class ROUTER_equity_fundamental(Container):
     def cash_growth(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         limit: Annotated[
             int,
@@ -836,7 +832,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCashFlowStatementGrowth], Tag(tag='fmp')]]
+            results : List[CashFlowStatementGrowth]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -929,7 +925,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "limit": limit,
                 },
                 extra_params=kwargs,
@@ -940,8 +936,7 @@ class ROUTER_equity_fundamental(Container):
     def dividends(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -978,7 +973,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPHistoricalDividends], Tag(tag='fmp')], Annotated[List[IntrinioHistoricalDividends], Tag(tag='intrinio')], Annotated[List[YFinanceHistoricalDividends], Tag(tag='yfinance')]]
+            results : List[HistoricalDividends]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.
@@ -1025,7 +1020,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
@@ -1037,8 +1032,7 @@ class ROUTER_equity_fundamental(Container):
     def employee_count(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -1057,7 +1051,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPHistoricalEmployees], Tag(tag='fmp')]]
+            results : List[HistoricalEmployees]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -1102,7 +1096,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -1112,8 +1106,7 @@ class ROUTER_equity_fundamental(Container):
     def filings(
         self,
         symbol: Annotated[
-            Union[str, None, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            Optional[str], OpenBBCustomParameter(description="Symbol to get data for.")
         ] = None,
         form_type: Annotated[
             Optional[str],
@@ -1158,7 +1151,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCompanyFilings], Tag(tag='fmp')], Annotated[List[IntrinioCompanyFilings], Tag(tag='intrinio')], Annotated[List[SecCompanyFilings], Tag(tag='sec')]]
+            results : List[CompanyFilings]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'sec']]
                 Provider name.
@@ -1237,7 +1230,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "form_type": form_type,
                     "limit": limit,
                 },
@@ -1249,8 +1242,7 @@ class ROUTER_equity_fundamental(Container):
     def historical_attributes(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         tag: Annotated[
             str, OpenBBCustomParameter(description="Intrinio data tag ID or code.")
@@ -1314,7 +1306,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[IntrinioHistoricalAttributes], Tag(tag='intrinio')]]
+            results : List[HistoricalAttributes]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -1349,7 +1341,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "tag": tag,
                     "start_date": start_date,
                     "end_date": end_date,
@@ -1366,8 +1358,7 @@ class ROUTER_equity_fundamental(Container):
     def historical_eps(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -1388,7 +1379,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPHistoricalEps], Tag(tag='fmp')]]
+            results : List[HistoricalEps]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -1435,7 +1426,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -1445,8 +1436,7 @@ class ROUTER_equity_fundamental(Container):
     def historical_splits(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -1465,7 +1455,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPHistoricalSplits], Tag(tag='fmp')]]
+            results : List[HistoricalSplits]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -1500,7 +1490,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -1510,8 +1500,7 @@ class ROUTER_equity_fundamental(Container):
     def income(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             str, OpenBBCustomParameter(description="Time period of the data to return.")
@@ -1569,7 +1558,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPIncomeStatement], Tag(tag='fmp')], Annotated[List[IntrinioIncomeStatement], Tag(tag='intrinio')], Annotated[List[PolygonIncomeStatement], Tag(tag='polygon')], Annotated[List[YFinanceIncomeStatement], Tag(tag='yfinance')]]
+            results : List[IncomeStatement]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
                 Provider name.
@@ -1852,7 +1841,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "period": period,
                     "limit": limit,
                 },
@@ -1864,8 +1853,7 @@ class ROUTER_equity_fundamental(Container):
     def income_growth(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         limit: Annotated[
             int,
@@ -1896,7 +1884,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPIncomeStatementGrowth], Tag(tag='fmp')]]
+            results : List[IncomeStatementGrowth]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -1981,7 +1969,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "limit": limit,
                     "period": period,
                 },
@@ -1993,8 +1981,7 @@ class ROUTER_equity_fundamental(Container):
     def latest_attributes(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         tag: Annotated[
             str, OpenBBCustomParameter(description="Intrinio data tag ID or code.")
@@ -2018,7 +2005,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[IntrinioLatestAttributes], Tag(tag='intrinio')]]
+            results : List[LatestAttributes]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -2051,7 +2038,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "tag": tag,
                 },
                 extra_params=kwargs,
@@ -2062,8 +2049,7 @@ class ROUTER_equity_fundamental(Container):
     def management(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
@@ -2082,7 +2068,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPKeyExecutives], Tag(tag='fmp')], Annotated[List[YFinanceKeyExecutives], Tag(tag='yfinance')]]
+            results : List[KeyExecutives]
                 Serializable results.
             provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
@@ -2127,7 +2113,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -2137,8 +2123,7 @@ class ROUTER_equity_fundamental(Container):
     def management_compensation(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -2173,7 +2158,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPExecutiveCompensation], Tag(tag='fmp')]]
+            results : List[ExecutiveCompensation]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -2226,7 +2211,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
@@ -2238,8 +2223,7 @@ class ROUTER_equity_fundamental(Container):
     def metrics(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             Optional[Literal["annual", "quarter"]],
@@ -2272,7 +2256,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPKeyMetrics], Tag(tag='fmp')], Annotated[IntrinioKeyMetrics, Tag(tag='intrinio')], Annotated[List[YFinanceKeyMetrics], Tag(tag='yfinance')]]
+            results : Union[List[KeyMetrics], KeyMetrics]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.
@@ -2484,7 +2468,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "period": period,
                     "limit": limit,
                 },
@@ -2496,8 +2480,7 @@ class ROUTER_equity_fundamental(Container):
     def multiples(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -2516,7 +2499,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEquityValuationMultiples], Tag(tag='fmp')]]
+            results : List[EquityValuationMultiples]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -2665,7 +2648,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -2679,8 +2662,7 @@ class ROUTER_equity_fundamental(Container):
     def overview(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -2699,7 +2681,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[FMPCompanyOverview, Tag(tag='fmp')]]
+            results : CompanyOverview
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -2805,7 +2787,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -2815,8 +2797,7 @@ class ROUTER_equity_fundamental(Container):
     def ratios(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             str, OpenBBCustomParameter(description="Time period of the data to return.")
@@ -2848,7 +2829,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPFinancialRatios], Tag(tag='fmp')], Annotated[List[IntrinioFinancialRatios], Tag(tag='intrinio')]]
+            results : List[FinancialRatios]
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
@@ -2993,7 +2974,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "period": period,
                     "limit": limit,
                 },
@@ -3005,8 +2986,7 @@ class ROUTER_equity_fundamental(Container):
     def reported_financials(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             str, OpenBBCustomParameter(description="Time period of the data to return.")
@@ -3048,7 +3028,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[IntrinioReportedFinancials], Tag(tag='intrinio')]]
+            results : List[ReportedFinancials]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -3081,7 +3061,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "period": period,
                     "statement_type": statement_type,
                     "limit": limit,
@@ -3094,8 +3074,7 @@ class ROUTER_equity_fundamental(Container):
     def revenue_per_geography(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             Literal["quarter", "annual"],
@@ -3126,7 +3105,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPRevenueGeographic], Tag(tag='fmp')]]
+            results : List[RevenueGeographic]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -3163,7 +3142,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "period": period,
                     "structure": structure,
                 },
@@ -3175,8 +3154,7 @@ class ROUTER_equity_fundamental(Container):
     def revenue_per_segment(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             Literal["quarter", "annual"],
@@ -3207,7 +3185,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPRevenueBusinessLine], Tag(tag='fmp')]]
+            results : List[RevenueBusinessLine]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -3244,7 +3222,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "period": period,
                     "structure": structure,
                 },
@@ -3281,7 +3259,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[IntrinioSearchAttributes], Tag(tag='intrinio')]]
+            results : List[SearchAttributes]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -3341,8 +3319,7 @@ class ROUTER_equity_fundamental(Container):
     def trailing_dividend_yield(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ] = None,
         limit: Annotated[
             Optional[int],
@@ -3369,7 +3346,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[TiingoTrailingDivYield], Tag(tag='tiingo')]]
+            results : List[TrailingDividendYield]
                 Serializable results.
             provider : Optional[Literal['tiingo']]
                 Provider name.
@@ -3400,7 +3377,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "limit": limit,
                 },
                 extra_params=kwargs,
@@ -3411,8 +3388,7 @@ class ROUTER_equity_fundamental(Container):
     def transcript(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         year: Annotated[
             int,
@@ -3437,7 +3413,7 @@ class ROUTER_equity_fundamental(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEarningsCallTranscript], Tag(tag='fmp')]]
+            results : List[EarningsCallTranscript]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -3474,7 +3450,7 @@ class ROUTER_equity_fundamental(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "year": year,
                 },
                 extra_params=kwargs,

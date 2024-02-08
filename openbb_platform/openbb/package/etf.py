@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -31,8 +31,7 @@ class ROUTER_etf(Container):
     def countries(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -51,7 +50,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEtfCountries], Tag(tag='fmp')]]
+            results : List[EtfCountries]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -80,7 +79,7 @@ class ROUTER_etf(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -90,8 +89,7 @@ class ROUTER_etf(Container):
     def historical(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -126,7 +124,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[YFinanceEtfHistorical], Tag(tag='yfinance')]]
+            results : List[EtfHistorical]
                 Serializable results.
             provider : Optional[Literal['yfinance']]
                 Provider name.
@@ -167,7 +165,7 @@ class ROUTER_etf(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
@@ -179,8 +177,7 @@ class ROUTER_etf(Container):
     def holdings(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Optional[Literal["fmp", "sec"]] = None,
         **kwargs
@@ -206,7 +203,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEtfHoldings], Tag(tag='fmp')], Annotated[List[SecEtfHoldings], Tag(tag='sec')]]
+            results : List[EtfHoldings]
                 Serializable results.
             provider : Optional[Literal['fmp', 'sec']]
                 Provider name.
@@ -389,7 +386,7 @@ class ROUTER_etf(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -399,8 +396,7 @@ class ROUTER_etf(Container):
     def holdings_date(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -421,7 +417,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEtfHoldingsDate], Tag(tag='fmp')]]
+            results : List[EtfHoldingsDate]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -450,7 +446,7 @@ class ROUTER_etf(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -460,8 +456,7 @@ class ROUTER_etf(Container):
     def holdings_performance(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -480,7 +475,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEtfHoldingsPerformance], Tag(tag='fmp')]]
+            results : List[EtfHoldingsPerformance]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -537,7 +532,7 @@ class ROUTER_etf(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -547,8 +542,7 @@ class ROUTER_etf(Container):
     def info(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
@@ -567,7 +561,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEtfInfo], Tag(tag='fmp')], Annotated[List[YFinanceEtfInfo], Tag(tag='yfinance')]]
+            results : List[EtfInfo]
                 Serializable results.
             provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
@@ -688,7 +682,7 @@ class ROUTER_etf(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -698,8 +692,7 @@ class ROUTER_etf(Container):
     def price_performance(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -718,7 +711,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPPricePerformance], Tag(tag='fmp')]]
+            results : List[PricePerformance]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -775,7 +768,7 @@ class ROUTER_etf(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -811,7 +804,7 @@ class ROUTER_etf(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEtfSearch], Tag(tag='fmp')]]
+                results : List[EtfSearch]
                     Serializable results.
                 provider : Optional[Literal['fmp']]
                     Provider name.
@@ -874,8 +867,7 @@ class ROUTER_etf(Container):
     def sectors(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -894,7 +886,7 @@ class ROUTER_etf(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEtfSectors], Tag(tag='fmp')]]
+            results : List[EtfSectors]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -925,7 +917,7 @@ class ROUTER_etf(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )

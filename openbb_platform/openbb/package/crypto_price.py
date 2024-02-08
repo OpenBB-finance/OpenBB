@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -23,7 +23,7 @@ class ROUTER_crypto_price(Container):
     def historical(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            str,
             OpenBBCustomParameter(
                 description="Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format."
             ),
@@ -73,7 +73,7 @@ class ROUTER_crypto_price(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCryptoHistorical], Tag(tag='fmp')], Annotated[List[PolygonCryptoHistorical], Tag(tag='polygon')], Annotated[List[TiingoCryptoHistorical], Tag(tag='tiingo')], Annotated[List[YFinanceCryptoHistorical], Tag(tag='yfinance')]]
+            results : List[CryptoHistorical]
                 Serializable results.
             provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
@@ -134,7 +134,7 @@ class ROUTER_crypto_price(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                 },

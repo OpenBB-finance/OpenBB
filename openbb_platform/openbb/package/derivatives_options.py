@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -23,8 +23,7 @@ class ROUTER_derivatives_options(Container):
     def chains(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
@@ -45,7 +44,7 @@ class ROUTER_derivatives_options(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[IntrinioOptionsChains], Tag(tag='intrinio')]]
+            results : List[OptionsChains]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -160,7 +159,7 @@ class ROUTER_derivatives_options(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -170,7 +169,7 @@ class ROUTER_derivatives_options(Container):
     def unusual(
         self,
         symbol: Annotated[
-            Union[str, None, List[str]],
+            Optional[str],
             OpenBBCustomParameter(
                 description="Symbol to get data for. (the underlying symbol)"
             ),
@@ -194,7 +193,7 @@ class ROUTER_derivatives_options(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[IntrinioOptionsUnusual], Tag(tag='intrinio')]]
+            results : List[OptionsUnusual]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -243,7 +242,7 @@ class ROUTER_derivatives_options(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )

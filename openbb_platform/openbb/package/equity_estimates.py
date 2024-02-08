@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -24,8 +24,7 @@ class ROUTER_equity_estimates(Container):
     def consensus(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
@@ -44,7 +43,7 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[FMPPriceTargetConsensus, Tag(tag='fmp')], Annotated[List[YFinancePriceTargetConsensus], Tag(tag='yfinance')]]
+            results : Union[List[PriceTargetConsensus], PriceTargetConsensus]
                 Serializable results.
             provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
@@ -91,7 +90,7 @@ class ROUTER_equity_estimates(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -101,8 +100,7 @@ class ROUTER_equity_estimates(Container):
     def historical(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             Literal["quarter", "annual"],
@@ -133,7 +131,7 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPAnalystEstimates], Tag(tag='fmp')]]
+            results : List[AnalystEstimates]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -204,7 +202,7 @@ class ROUTER_equity_estimates(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "period": period,
                     "limit": limit,
                 },
@@ -216,8 +214,7 @@ class ROUTER_equity_estimates(Container):
     def price_target(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         limit: Annotated[
             int,
@@ -262,7 +259,7 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[BenzingaPriceTarget], Tag(tag='benzinga')], Annotated[List[FMPPriceTarget], Tag(tag='fmp')]]
+            results : List[PriceTarget]
                 Serializable results.
             provider : Optional[Literal['benzinga', 'fmp']]
                 Provider name.
@@ -353,7 +350,7 @@ class ROUTER_equity_estimates(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "limit": limit,
                 },
                 extra_params=kwargs,

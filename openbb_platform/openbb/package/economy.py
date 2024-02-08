@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -69,7 +69,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPEconomicCalendar], Tag(tag='fmp')], Annotated[List[TEEconomicCalendar], Tag(tag='tradingeconomics')]]
+            results : List[EconomicCalendar]
                 Serializable results.
             provider : Optional[Literal['fmp', 'tradingeconomics']]
                 Provider name.
@@ -178,7 +178,7 @@ class ROUTER_economy(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[OECDCLI], Tag(tag='oecd')]]
+                results : List[CLI]
                     Serializable results.
                 provider : Optional[Literal['oecd']]
                     Provider name.
@@ -221,61 +221,8 @@ class ROUTER_economy(Container):
     @validate
     def cpi(
         self,
-        countries: Annotated[
-            List[
-                Literal[
-                    "australia",
-                    "austria",
-                    "belgium",
-                    "brazil",
-                    "bulgaria",
-                    "canada",
-                    "chile",
-                    "china",
-                    "croatia",
-                    "cyprus",
-                    "czech_republic",
-                    "denmark",
-                    "estonia",
-                    "euro_area",
-                    "finland",
-                    "france",
-                    "germany",
-                    "greece",
-                    "hungary",
-                    "iceland",
-                    "india",
-                    "indonesia",
-                    "ireland",
-                    "israel",
-                    "italy",
-                    "japan",
-                    "korea",
-                    "latvia",
-                    "lithuania",
-                    "luxembourg",
-                    "malta",
-                    "mexico",
-                    "netherlands",
-                    "new_zealand",
-                    "norway",
-                    "poland",
-                    "portugal",
-                    "romania",
-                    "russian_federation",
-                    "slovak_republic",
-                    "slovakia",
-                    "slovenia",
-                    "south_africa",
-                    "spain",
-                    "sweden",
-                    "switzerland",
-                    "turkey",
-                    "united_kingdom",
-                    "united_states",
-                ]
-            ],
-            OpenBBCustomParameter(description="The country or countries to get data."),
+        country: Annotated[
+            str, OpenBBCustomParameter(description="The country to get data.")
         ],
         units: Annotated[
             Literal["growth_previous", "growth_same", "index_2015"],
@@ -314,8 +261,8 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        countries : List[Literal['australia', 'austria', 'belgium', 'brazil', 'bulgar...
-            The country or countries to get data.
+        country : str
+            The country to get data.
         units : Literal['growth_previous', 'growth_same', 'index_2015']
             The unit of measurement for the data.
             Options:
@@ -341,7 +288,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FREDConsumerPriceIndex], Tag(tag='fred')]]
+            results : List[ConsumerPriceIndex]
                 Serializable results.
             provider : Optional[Literal['fred']]
                 Provider name.
@@ -360,7 +307,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.cpi(countries=['portugal', 'spain'], units="growth_same", frequency="monthly", harmonized=False)
+        >>> obb.economy.cpi(country="portugal", units="growth_same", frequency="monthly", harmonized=False)
         """  # noqa: E501
 
         return self._run(
@@ -370,7 +317,7 @@ class ROUTER_economy(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "countries": countries,
+                    "country": country,
                     "units": units,
                     "frequency": frequency,
                     "harmonized": harmonized,
@@ -424,7 +371,7 @@ class ROUTER_economy(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FredSearch], Tag(tag='fred')]]
+                results : List[FredSearch]
                     Serializable results.
                 provider : Optional[Literal['fred']]
                     Provider name.
@@ -497,8 +444,7 @@ class ROUTER_economy(Container):
     def fred_series(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -583,7 +529,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FredSeries], Tag(tag='fred')], Annotated[List[IntrinioFredSeries], Tag(tag='intrinio')]]
+            results : List[FredSeries]
                 Serializable results.
             provider : Optional[Literal['fred', 'intrinio']]
                 Provider name.
@@ -614,7 +560,7 @@ class ROUTER_economy(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                     "limit": limit,
@@ -677,7 +623,7 @@ class ROUTER_economy(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[OECDSTIR], Tag(tag='oecd')]]
+                results : List[STIR]
                     Serializable results.
                 provider : Optional[Literal['oecd']]
                     Provider name.
@@ -759,7 +705,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FederalReserveMoneyMeasures], Tag(tag='federal_reserve')]]
+            results : List[MoneyMeasures]
                 Serializable results.
             provider : Optional[Literal['federal_reserve']]
                 Provider name.
@@ -826,7 +772,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPRiskPremium], Tag(tag='fmp')]]
+            results : List[RiskPremium]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -909,7 +855,7 @@ class ROUTER_economy(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[OECDSTIR], Tag(tag='oecd')]]
+                results : List[STIR]
                     Serializable results.
                 provider : Optional[Literal['oecd']]
                     Provider name.
@@ -993,7 +939,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[OECDUnemployment], Tag(tag='oecd')]]
+            results : List[Unemployment]
                 Serializable results.
             provider : Optional[Literal['oecd']]
                 Provider name.

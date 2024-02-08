@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -56,7 +56,7 @@ class ROUTER_equity_calendar(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCalendarDividend], Tag(tag='fmp')]]
+            results : List[CalendarDividend]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -142,7 +142,7 @@ class ROUTER_equity_calendar(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCalendarEarnings], Tag(tag='fmp')]]
+            results : List[CalendarEarnings]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -202,8 +202,7 @@ class ROUTER_equity_calendar(Container):
     def ipo(
         self,
         symbol: Annotated[
-            Union[str, None, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            Optional[str], OpenBBCustomParameter(description="Symbol to get data for.")
         ] = None,
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -250,7 +249,7 @@ class ROUTER_equity_calendar(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[IntrinioCalendarIpo], Tag(tag='intrinio')]]
+            results : List[CalendarIpo]
                 Serializable results.
             provider : Optional[Literal['intrinio']]
                 Provider name.
@@ -356,7 +355,7 @@ class ROUTER_equity_calendar(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                     "limit": limit,
@@ -399,7 +398,7 @@ class ROUTER_equity_calendar(Container):
         Returns
         -------
         OBBject
-            results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCalendarSplits], Tag(tag='fmp')]]
+            results : List[CalendarSplits]
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
