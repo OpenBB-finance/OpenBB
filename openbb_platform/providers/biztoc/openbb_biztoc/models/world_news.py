@@ -9,6 +9,7 @@ from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
+from openbb_core.provider.utils.helpers import filter_by_dates
 from pandas import to_datetime
 from pydantic import Field, field_validator
 
@@ -97,9 +98,11 @@ class BiztocWorldNewsFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: BiztocWorldNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[BiztocWorldNewsData]:
         """Transform the data to the standard format."""
-        return [BiztocWorldNewsData.model_validate(d) for d in data]
+        modeled_data = [BiztocWorldNewsData.model_validate(d) for d in data]
+        return filter_by_dates(modeled_data, query.start_date, query.end_date)

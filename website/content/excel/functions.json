@@ -1,6 +1,47 @@
 {
   "functions": [
     {
+      "description": "Bring Your Own Data features from OpenBB Terminal Pro.",
+      "helpUrl": "https://docs.openbb.co/excel/data-connectors",
+      "id": "BYOD",
+      "name": "BYOD",
+      "parameters": [
+        {
+          "description": "Name of the widget to get data for.",
+          "name": "widget",
+          "type": "string"
+        },
+        {
+          "description": "Name of the backend to use, required for widgets in custom backends.",
+          "name": "backend",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Symbol to get data for, if applicable.",
+          "name": "symbol",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Date to get data for, if applicable.",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Optional parameters as (n rows by 2 columns) range selection or array constant (e.g. {\"key1\",\"value1\"}; {\"key2\",\"value2\"}).",
+          "dimensionality": "matrix",
+          "name": "optional",
+          "optional": true,
+          "type": "any"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
       "description": "Cryptocurrency Historical Price. Cryptocurrency historical price data.",
       "helpUrl": "https://docs.openbb.co/excel/reference/crypto/price/historical",
       "id": "CRYPTO.PRICE.HISTORICAL",
@@ -177,6 +218,23 @@
       }
     },
     {
+      "description": "Current, official, currency reference rates.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/currency/reference_rates",
+      "id": "CURRENCY.REFERENCE_RATES",
+      "name": "CURRENCY.REFERENCE_RATES",
+      "parameters": [
+        {
+          "description": "Options: ecb, defaults to ecb.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
       "description": "Currency Search. Search available currency pairs.",
       "helpUrl": "https://docs.openbb.co/excel/reference/currency/search",
       "id": "CURRENCY.SEARCH",
@@ -253,7 +311,7 @@
           "type": "string"
         },
         {
-          "description": "Date for which the options chains are returned. (provider: intrinio)",
+          "description": "The end-of-day date for options chains data. (provider: intrinio)",
           "name": "date",
           "optional": true,
           "type": "string"
@@ -286,6 +344,41 @@
           "name": "source",
           "optional": true,
           "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Balance of Payments Reports.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/economy/balance_of_payments",
+      "id": "ECONOMY.BALANCE_OF_PAYMENTS",
+      "name": "ECONOMY.BALANCE_OF_PAYMENTS",
+      "parameters": [
+        {
+          "description": "Options: ecb, defaults to ecb.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The report type, the level of detail in the data. (provider: ecb)",
+          "name": "report_type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The frequency of the data.  Monthly is valid only for ['main', 'summary']. (provider: ecb)",
+          "name": "frequency",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The country/region of the data.  This parameter will override the 'report_type' parameter. (provider: ecb)",
+          "name": "country",
+          "optional": true,
+          "type": "any"
         }
       ],
       "result": {
@@ -997,8 +1090,68 @@
           "type": "string"
         },
         {
-          "description": "Options: fmp, defaults to fmp.",
+          "description": "The number of data entries to return.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Options: benzinga, fmp, defaults to benzinga.",
           "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. (provider: benzinga)",
+          "name": "fields",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Date for calendar data, shorthand for date_from and date_to. (provider: benzinga)",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Date to query from point in time. (provider: benzinga)",
+          "name": "date_from",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Date to query to point in time. (provider: benzinga)",
+          "name": "date_to",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Importance level to filter by. (provider: benzinga)",
+          "name": "importance",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Records last updated Unix timestamp (UTC). (provider: benzinga)",
+          "name": "updated",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Filter by a specific action_company. (provider: benzinga)",
+          "name": "action",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Comma-separated list of analyst (person) IDs. (provider: benzinga)",
+          "name": "analyst",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Comma-separated list of analyst firm IDs. (provider: benzinga)",
+          "name": "firm",
           "optional": true,
           "type": "string"
         },
@@ -1317,6 +1470,18 @@
           "type": "string"
         },
         {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
           "description": "Options: fmp, intrinio, defaults to fmp.",
           "name": "provider",
           "optional": true,
@@ -1324,7 +1489,7 @@
         },
         {
           "description": "The number of data entries to return. (provider: intrinio)",
-          "name": "page_size",
+          "name": "limit",
           "optional": true,
           "type": "number"
         }
@@ -1384,6 +1549,12 @@
           "name": "limit",
           "optional": true,
           "type": "number"
+        },
+        {
+          "description": "Sort the data in ascending or descending order. (provider: fmp)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
         },
         {
           "description": "Start date of the data, in YYYY-MM-DD format. (provider: intrinio)",
@@ -1746,6 +1917,18 @@
           "type": "string"
         },
         {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
           "description": "Options: fmp, defaults to fmp.",
           "name": "provider",
           "optional": true,
@@ -2041,6 +2224,12 @@
           "type": "string"
         },
         {
+          "description": "The number of data entries to return. Default is 252, the number of trading days in a year.",
+          "name": "limit",
+          "optional": true,
+          "type": "number"
+        },
+        {
           "description": "Options: tiingo, defaults to tiingo.",
           "name": "provider",
           "optional": true,
@@ -2227,6 +2416,12 @@
           "name": "provider",
           "optional": true,
           "type": "string"
+        },
+        {
+          "description": "Include current quarter data. (provider: fmp)",
+          "name": "include_current_quarter",
+          "optional": true,
+          "type": "boolean"
         }
       ],
       "result": {
@@ -2430,7 +2625,7 @@
       "name": "EQUITY.PRICE.QUOTE",
       "parameters": [
         {
-          "description": "Symbol to get data for. In this case, the comma separated list of symbols.",
+          "description": "Symbol to get data for. This endpoint will accept multiple symbols separated by commas.",
           "name": "symbol",
           "type": "string"
         },
@@ -3112,6 +3307,41 @@
       }
     },
     {
+      "description": "Euro Area Yield Curve.\n\nGets euro area yield curve data from ECB.\n\nThe graphic depiction of the relationship between the yield on bonds of the same credit quality but different\nmaturities is known as the yield curve. In the past, most market participants have constructed yield curves from\nthe observations of prices and yields in the Treasury market. Two reasons account for this tendency. First,\nTreasury securities are viewed as free of default risk, and differences in creditworthiness do not affect yield\nestimates. Second, as the most active bond market, the Treasury market offers the fewest problems of illiquidity\nor infrequent trading. The key function of the Treasury yield curve is to serve as a benchmark for pricing bonds\nand setting yields in other sectors of the debt market.\n\nIt is clear that the market\u2019s expectations of future rate changes are one important determinant of the\nyield-curve shape. For example, a steeply upward-sloping curve may indicate market expectations of near-term Fed\ntightening or of rising inflation. However, it may be too restrictive to assume that the yield differences across\nbonds with different maturities only reflect the market\u2019s rate expectations. The well-known pure expectations\nhypothesis has such an extreme implication. The pure expectations hypothesis asserts that all government bonds\nhave the same near-term expected return (as the nominally riskless short-term bond) because the return-seeking\nactivity of risk-neutral traders removes all expected return differentials across bonds.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/government/eu_yield_curve",
+      "id": "FIXEDINCOME.GOVERNMENT.EU_YIELD_CURVE",
+      "name": "FIXEDINCOME.GOVERNMENT.EU_YIELD_CURVE",
+      "parameters": [
+        {
+          "description": "A specific date to get data for.",
+          "name": "date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The yield curve type.",
+          "name": "yield_curve_type",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: ecb, defaults to ecb.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The rating type. (provider: ecb)",
+          "name": "rating",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
       "description": "Government Treasury Rates.",
       "helpUrl": "https://docs.openbb.co/excel/reference/fixedincome/government/treasury_rates",
       "id": "FIXEDINCOME.GOVERNMENT.TREASURY_RATES",
@@ -3595,9 +3825,8 @@
       "name": "INDEX.CONSTITUENTS",
       "parameters": [
         {
-          "description": "Index for which we want to fetch the constituents.",
+          "description": "Index to fetch the constituents of.",
           "name": "index",
-          "optional": true,
           "type": "string"
         },
         {
@@ -3679,6 +3908,82 @@
         {
           "description": "Time to sleep between requests to avoid rate limiting. (provider: intrinio)",
           "name": "sleep",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Timespan of the data. (provider: polygon)",
+          "name": "timespan",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Whether the data is adjusted. (provider: polygon)",
+          "name": "adjusted",
+          "optional": true,
+          "type": "boolean"
+        },
+        {
+          "description": "Multiplier of the timespan. (provider: polygon)",
+          "name": "multiplier",
+          "optional": true,
+          "type": "number"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
+      "description": "Index Historical Price. Load stock data for a specific index.",
+      "helpUrl": "https://docs.openbb.co/excel/reference/index/price/historical",
+      "id": "INDEX.PRICE.HISTORICAL",
+      "name": "INDEX.PRICE.HISTORICAL",
+      "parameters": [
+        {
+          "description": "Symbol to get data for.",
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "description": "Start date of the data, in YYYY-MM-DD format.",
+          "name": "start_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "End date of the data, in YYYY-MM-DD format.",
+          "name": "end_date",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Options: fmp, intrinio, polygon, defaults to fmp.",
+          "name": "provider",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Number of days to look back. (provider: fmp)",
+          "name": "timeseries",
+          "optional": true,
+          "type": "number"
+        },
+        {
+          "description": "Data granularity. (provider: fmp)",
+          "name": "interval",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "Sort the data in ascending or descending order. (provider: fmp);\nSort order. (provider: intrinio);\nSort order of the data. (provider: polygon)",
+          "name": "sort",
+          "optional": true,
+          "type": "string"
+        },
+        {
+          "description": "The number of data entries to return. (provider: intrinio, polygon)",
+          "name": "limit",
           "optional": true,
           "type": "number"
         },

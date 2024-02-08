@@ -1,4 +1,4 @@
-"""YFinance Equity Profile fetcher"""
+"""YFinance Equity Profile Model."""
 
 # pylint: disable=unused-argument
 import asyncio
@@ -18,7 +18,7 @@ _warn = warnings.warn
 
 
 class YFinanceEquityProfileQueryParams(EquityInfoQueryParams):
-    """YFinance Equity Profile query params."""
+    """YFinance Equity Profile Query."""
 
 
 class YFinanceEquityProfileData(EquityInfoData):
@@ -70,7 +70,10 @@ class YFinanceEquityProfileData(EquityInfoData):
         alias="floatShares",
     )
     shares_implied_outstanding: Optional[int] = Field(
-        description="The implied total number of shares outstanding.",
+        description=(
+            "Implied shares outstanding of common equity"
+            "assuming the conversion of all convertible subsidiary equity into common."
+        ),
         default=None,
         alias="impliedSharesOutstanding",
     )
@@ -113,8 +116,7 @@ class YFinanceEquityProfileFetcher(
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
-        """Extract the raw data from YFinance"""
-
+        """Extract the raw data from YFinance."""
         symbols = query.symbol.split(",")
         results = []
         fields = [

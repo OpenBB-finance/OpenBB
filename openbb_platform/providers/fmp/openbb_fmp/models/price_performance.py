@@ -40,9 +40,10 @@ class FMPPricePerformanceData(RecentPerformanceData):
     @classmethod
     def replace_zero(cls, values):  # pylint: disable=no-self-argument
         """Replace zero with None and convert percents to normalized values."""
-        for k, v in values.items():
-            if k != "symbol":
-                values[k] = None if v == 0 else float(v) / 100
+        if isinstance(values, dict):
+            for k, v in values.items():
+                if k != "symbol":
+                    values[k] = None if v == 0 else float(v) / 100
         return values
 
 

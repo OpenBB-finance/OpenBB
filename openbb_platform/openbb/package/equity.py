@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -221,8 +221,7 @@ class ROUTER_equity(Container):
     def profile(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
@@ -370,7 +369,7 @@ class ROUTER_equity(Container):
         shares_float : Optional[int]
             The number of shares in the public float. (provider: yfinance)
         shares_implied_outstanding : Optional[int]
-            The implied total number of shares outstanding. (provider: yfinance)
+            Implied shares outstanding of common equityassuming the conversion of all convertible subsidiary equity into common. (provider: yfinance)
         shares_short : Optional[int]
             The reported number of shares short. (provider: yfinance)
         dividend_yield : Optional[float]
@@ -389,7 +388,7 @@ class ROUTER_equity(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -510,6 +509,10 @@ class ROUTER_equity(Container):
             bool,
             OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ] = False,
+        use_cache: Annotated[
+            Optional[bool],
+            OpenBBCustomParameter(description="Whether to use the cache or not."),
+        ] = True,
         provider: Optional[Literal["intrinio", "sec"]] = None,
         **kwargs
     ) -> OBBject:
@@ -521,6 +524,8 @@ class ROUTER_equity(Container):
             Search query.
         is_symbol : bool
             Whether to search by ticker symbol.
+        use_cache : Optional[bool]
+            Whether to use the cache or not.
         provider : Optional[Literal['intrinio', 'sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'intrinio' if there is
@@ -531,8 +536,6 @@ class ROUTER_equity(Container):
             The number of data entries to return. (provider: intrinio)
         is_fund : bool
             Whether to direct the search to the list of mutual funds and ETFs. (provider: sec)
-        use_cache : bool
-            Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec)
 
         Returns
         -------
@@ -565,7 +568,7 @@ class ROUTER_equity(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.search(query="AAPL", is_symbol=False)
+        >>> obb.equity.search(query="AAPL", is_symbol=False, use_cache=True)
         """  # noqa: E501
 
         return self._run(
@@ -577,6 +580,7 @@ class ROUTER_equity(Container):
                 standard_params={
                     "query": query,
                     "is_symbol": is_symbol,
+                    "use_cache": use_cache,
                 },
                 extra_params=kwargs,
             )

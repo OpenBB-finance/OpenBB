@@ -29,6 +29,7 @@ openbb-tiingo = { path = "./providers/tiingo", develop = true }
 openbb-tradingeconomics = { path = "./providers/tradingeconomics", develop = true }
 openbb-yfinance = { path = "./providers/yfinance", develop = true }
 
+openbb-commodity = { path = "./extensions/commodity", develop = true }
 openbb-crypto = { path = "./extensions/crypto", develop = true }
 openbb-currency = { path = "./extensions/currency", develop = true }
 openbb-derivatives = { path = "./extensions/derivatives", develop = true }

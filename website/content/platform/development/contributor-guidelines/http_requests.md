@@ -72,7 +72,7 @@ async def market_snapshots(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get a current, complete, market snapshot."""
     return await OBBject.from_query(Query(**locals()))
 ```

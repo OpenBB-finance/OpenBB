@@ -19,29 +19,28 @@ class FMPEtfInfoData(EtfInfoData):
     """FMP ETF Info Data."""
 
     asset_class: Optional[str] = Field(
-        alias="assetClass", description="Asset class of the ETF."
+        default=None, description="Asset class of the ETF."
     )
-    aum: Optional[float] = Field(description="Assets under management.")
+    aum: Optional[float] = Field(default=None, description="Assets under management.")
     avg_volume: Optional[float] = Field(
-        alias="avgVolume", description="Average trading volume of the ETF."
+        default=None, description="Average trading volume of the ETF."
     )
-    cusip: Optional[str] = Field(description="CUSIP of the ETF.")
-    description: Optional[str] = Field(description="Description of the ETF.")
-    domicile: Optional[str] = Field(description="Domicile of the ETF.")
-    etf_company: Optional[str] = Field(
-        alias="etfCompany", description="Company of the ETF."
-    )
+    cusip: Optional[str] = Field(default=None, description="CUSIP of the ETF.")
+    domicile: Optional[str] = Field(default=None, description="Domicile of the ETF.")
+    etf_company: Optional[str] = Field(default=None, description="Company of the ETF.")
     expense_ratio: Optional[float] = Field(
-        alias="expenseRatio", description="Expense ratio of the ETF."
+        default=None, description="Expense ratio of the ETF."
     )
-    isin: Optional[str] = Field(description="ISIN of the ETF.")
-    nav: Optional[float] = Field(description="Net asset value of the ETF.")
+    isin: Optional[str] = Field(default=None, description="ISIN of the ETF.")
+    nav: Optional[float] = Field(
+        default=None, description="Net asset value of the ETF."
+    )
     nav_currency: Optional[str] = Field(
-        alias="navCurrency", description="Currency of the ETF's net asset value."
+        default=None, description="Currency of the ETF's net asset value."
     )
-    website: Optional[str] = Field(description="Website link of the ETF.")
+    website: Optional[str] = Field(default=None, description="Website link of the ETF.")
     holdings_count: Optional[int] = Field(
-        alias="holdingsCount", description="Number of holdings in the ETF."
+        adefault=None, description="Number of holdings in the ETF."
     )
 
 
