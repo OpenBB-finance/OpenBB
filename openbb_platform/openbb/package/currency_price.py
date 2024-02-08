@@ -77,7 +77,7 @@ class ROUTER_currency_price(Container):
             Returns
             -------
             OBBject
-                results : Union[Annotated[Union[list, dict], Tag(tag='openbb')], Annotated[List[FMPCurrencyHistorical], Tag(tag='fmp')], Annotated[List[PolygonCurrencyHistorical], Tag(tag='polygon')], Annotated[List[TiingoCurrencyHistorical], Tag(tag='tiingo')], Annotated[List[YFinanceCurrencyHistorical], Tag(tag='yfinance')]]
+                results : List[CurrencyHistorical]
                     Serializable results.
                 provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
                     Provider name.
