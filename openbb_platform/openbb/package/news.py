@@ -81,9 +81,9 @@ class ROUTER_news(Container):
             Order to sort the news by. (provider: benzinga);
             Sort order of the articles. (provider: polygon)
         isin : Optional[str]
-            The ISIN of the news to retrieve. (provider: benzinga)
+            The company's ISIN. (provider: benzinga)
         cusip : Optional[str]
-            The CUSIP of the news to retrieve. (provider: benzinga)
+            The company's CUSIP. (provider: benzinga)
         channels : Optional[str]
             Channels of the news to retrieve. (provider: benzinga)
         topics : Optional[str]
@@ -169,6 +169,14 @@ class ROUTER_news(Container):
         -------
         >>> from openbb import obb
         >>> obb.news.company(symbols="AAPL,MSFT", limit=20)
+        >>> # Get news on the specified dates.
+        >>> obb.news.company(symbols='AAPL', start_date='2024-02-01', end_date='2024-02-07')
+        >>> # Display the headlines of the news.
+        >>> obb.news.company(symbols='AAPL', display='headline', provider='benzinga')
+        >>> # Get news for multiple symbols.
+        >>> obb.news.company(symbols='aapl,tsla')
+        >>> # Get news company's ISIN.
+        >>> obb.news.company(symbols='NVDA', isin='US0378331005')
         """  # noqa: E501
 
         return self._run(
@@ -307,6 +315,16 @@ class ROUTER_news(Container):
         -------
         >>> from openbb import obb
         >>> obb.news.world(limit=20)
+        >>> # Get news on the specified dates.
+        >>> obb.news.world(start_date='2024-02-01', end_date='2024-02-07')
+        >>> # Display the headlines of the news.
+        >>> obb.news.world(display='headline', provider='benzinga')
+        >>> # Get news by topics.
+        >>> obb.news.world(topics='finance', provider='benzinga')
+        >>> # Get news by source using 'tingo' as provider.
+        >>> obb.news.world(provider='tiingo', source='bloomberg')
+        >>> # Filter aticles by term using 'biztoc' as provider.
+        >>> obb.news.world(provider='biztoc', term='apple')
         """  # noqa: E501
 
         return self._run(

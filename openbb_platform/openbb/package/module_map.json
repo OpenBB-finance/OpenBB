@@ -1,6 +1,5 @@
 {
     "__extensions__": "",
-    "commodity": "/commodity",
     "crypto": "/crypto",
     "crypto_price": "/crypto/price",
     "crypto_price_historical": "/crypto/price/historical",

@@ -991,10 +991,10 @@ class ROUTER_equity_fundamental(Container):
 
         HistoricalDividends
         -------------------
-        date : date
-            The date of the data.
-        dividend : float
-            Dividend of the historical dividends.
+        ex_dividend_date : date
+            The ex-dividend date - the date on which the stock begins trading without rights to the dividend.
+        amount : float
+            The dividend amount per share.
         label : Optional[str]
             Label of the historical dividends. (provider: fmp)
         adj_dividend : Optional[float]
@@ -1007,8 +1007,8 @@ class ROUTER_equity_fundamental(Container):
             Declaration date of the historical dividends. (provider: fmp)
         factor : Optional[float]
             factor by which to multiply stock prices before this date, in order to calculate historically-adjusted stock prices. (provider: intrinio)
-        dividend_currency : Optional[str]
-            The currency of the dividend. (provider: intrinio)
+        currency : Optional[str]
+            The currency in which the dividend is paid. (provider: intrinio)
         split_ratio : Optional[float]
             The ratio of the stock split, if a stock split occurred. (provider: intrinio)
 

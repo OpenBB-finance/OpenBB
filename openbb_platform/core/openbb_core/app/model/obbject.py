@@ -83,20 +83,19 @@ class OBBject(Tagged, Generic[T]):
     @classmethod
     def results_type_repr(cls, params: Optional[Any] = None) -> str:
         """Return the results type name."""
-        type_ = params[0] if params else cls.model_fields["results"].annotation
+        results_field = cls.model_fields.get("results")
+        type_ = params[0] if params else results_field.annotation
         name = type_.__name__ if hasattr(type_, "__name__") else str(type_)
 
-        if "Annotated" in str(type_):
-            annotated_inners = []
-            for inner in cls.model_fields["results"].annotation.__args__:
-                if hasattr(inner, "__args__") and inner.__args__[0] == type(None):
-                    continue
+        if (json_schema_extra := results_field.json_schema_extra) is not None:
+            model = json_schema_extra.get("model")
 
-                annotated_inners.append(
-                    inner.__args__[0] if hasattr(inner, "__args__") else inner
-                )
+            if json_schema_extra.get("is_union"):
+                return f"Union[List[{model}], {model}]"
+            if json_schema_extra.get("has_list"):
+                return f"List[{model}]"
 
-            type_ = Union[tuple(annotated_inners)] if len(annotated_inners) > 1 else annotated_inners[0]  # type: ignore
+            return model
 
         if "typing." in str(type_):
             unpack_optional = sub(r"Optional\[(.*)\]", r"\1", str(type_))
@@ -301,15 +300,4 @@ class OBBject(Tagged, Generic[T]):
         OBBject[ResultsType]
             OBBject with results.
         """
-        data: List[BaseModel] = await query.execute()
-
-        if isinstance(data, list) and data:
-            if isinstance(data[0], BaseModel):
-                data[0] = data[0].model_copy(update={"provider": query.provider})
-            if isinstance(data[0], dict):
-                data[0] = data[0].update({"provider": query.provider})
-
-        if isinstance(data, BaseModel):
-            data = data.model_copy(update={"provider": query.provider})
-
-        return cls(results=data)
+        return cls(results=await query.execute())

@@ -69,12 +69,12 @@ class ROUTER_equity_calendar(Container):
 
         CalendarDividend
         ----------------
-        date : date
-            The date of the data. (Ex-Dividend)
+        ex_dividend_date : date
+            The ex-dividend date - the date on which the stock begins trading without rights to the dividend.
         symbol : str
             Symbol representing the entity requested in the data.
         amount : Optional[float]
-            Dividend amount, per-share.
+            The dividend amount per share.
         name : Optional[str]
             Name of the entity.
         record_date : Optional[date]
