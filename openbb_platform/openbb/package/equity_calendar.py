@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -202,8 +202,7 @@ class ROUTER_equity_calendar(Container):
     def ipo(
         self,
         symbol: Annotated[
-            Union[str, None, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            Optional[str], OpenBBCustomParameter(description="Symbol to get data for.")
         ] = None,
         start_date: Annotated[
             Union[datetime.date, None, str],

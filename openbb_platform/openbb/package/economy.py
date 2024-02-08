@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -222,8 +222,7 @@ class ROUTER_economy(Container):
     def cpi(
         self,
         country: Annotated[
-            str,
-            OpenBBCustomParameter(description="The country or countries to get data."),
+            str, OpenBBCustomParameter(description="The country to get data.")
         ],
         units: Annotated[
             Literal["growth_previous", "growth_same", "index_2015"],
@@ -263,7 +262,7 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         country : str
-            The country or countries to get data.
+            The country to get data.
         units : Literal['growth_previous', 'growth_same', 'index_2015']
             The unit of measurement for the data.
             Options:
@@ -445,8 +444,7 @@ class ROUTER_economy(Container):
     def fred_series(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],

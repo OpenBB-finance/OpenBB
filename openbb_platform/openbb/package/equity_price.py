@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -26,8 +26,7 @@ class ROUTER_equity_price(Container):
     def historical(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         interval: Annotated[
             Optional[str],
@@ -190,8 +189,7 @@ class ROUTER_equity_price(Container):
     def nbbo(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["polygon"]] = None,
         **kwargs
@@ -316,8 +314,7 @@ class ROUTER_equity_price(Container):
     def performance(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -403,7 +400,7 @@ class ROUTER_equity_price(Container):
     def quote(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            str,
             OpenBBCustomParameter(
                 description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas."
             ),

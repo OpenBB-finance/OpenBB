@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 from warnings import simplefilter, warn
 
 from annotated_types import Ge
@@ -50,8 +50,7 @@ class ROUTER_equity_fundamental(Container):
     def balance(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             str, OpenBBCustomParameter(description="Time period of the data to return.")
@@ -402,8 +401,7 @@ class ROUTER_equity_fundamental(Container):
     def balance_growth(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         limit: Annotated[
             int,
@@ -550,8 +548,7 @@ class ROUTER_equity_fundamental(Container):
     def cash(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             str, OpenBBCustomParameter(description="Time period of the data to return.")
@@ -810,8 +807,7 @@ class ROUTER_equity_fundamental(Container):
     def cash_growth(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         limit: Annotated[
             int,
@@ -940,8 +936,7 @@ class ROUTER_equity_fundamental(Container):
     def dividends(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -1037,8 +1032,7 @@ class ROUTER_equity_fundamental(Container):
     def employee_count(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -1112,8 +1106,7 @@ class ROUTER_equity_fundamental(Container):
     def filings(
         self,
         symbol: Annotated[
-            Union[str, None, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            Optional[str], OpenBBCustomParameter(description="Symbol to get data for.")
         ] = None,
         form_type: Annotated[
             Optional[str],
@@ -1249,8 +1242,7 @@ class ROUTER_equity_fundamental(Container):
     def historical_attributes(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         tag: Annotated[
             str, OpenBBCustomParameter(description="Intrinio data tag ID or code.")
@@ -1366,8 +1358,7 @@ class ROUTER_equity_fundamental(Container):
     def historical_eps(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -1445,8 +1436,7 @@ class ROUTER_equity_fundamental(Container):
     def historical_splits(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -1510,8 +1500,7 @@ class ROUTER_equity_fundamental(Container):
     def income(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             str, OpenBBCustomParameter(description="Time period of the data to return.")
@@ -1864,8 +1853,7 @@ class ROUTER_equity_fundamental(Container):
     def income_growth(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         limit: Annotated[
             int,
@@ -1993,8 +1981,7 @@ class ROUTER_equity_fundamental(Container):
     def latest_attributes(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         tag: Annotated[
             str, OpenBBCustomParameter(description="Intrinio data tag ID or code.")
@@ -2062,8 +2049,7 @@ class ROUTER_equity_fundamental(Container):
     def management(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
@@ -2137,8 +2123,7 @@ class ROUTER_equity_fundamental(Container):
     def management_compensation(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -2238,8 +2223,7 @@ class ROUTER_equity_fundamental(Container):
     def metrics(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             Optional[Literal["annual", "quarter"]],
@@ -2496,8 +2480,7 @@ class ROUTER_equity_fundamental(Container):
     def multiples(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -2679,8 +2662,7 @@ class ROUTER_equity_fundamental(Container):
     def overview(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -2815,8 +2797,7 @@ class ROUTER_equity_fundamental(Container):
     def ratios(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             str, OpenBBCustomParameter(description="Time period of the data to return.")
@@ -3005,8 +2986,7 @@ class ROUTER_equity_fundamental(Container):
     def reported_financials(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             str, OpenBBCustomParameter(description="Time period of the data to return.")
@@ -3094,8 +3074,7 @@ class ROUTER_equity_fundamental(Container):
     def revenue_per_geography(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             Literal["quarter", "annual"],
@@ -3175,8 +3154,7 @@ class ROUTER_equity_fundamental(Container):
     def revenue_per_segment(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             Literal["quarter", "annual"],
@@ -3341,8 +3319,7 @@ class ROUTER_equity_fundamental(Container):
     def trailing_dividend_yield(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ] = None,
         limit: Annotated[
             Optional[int],
@@ -3411,8 +3388,7 @@ class ROUTER_equity_fundamental(Container):
     def transcript(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         year: Annotated[
             int,
