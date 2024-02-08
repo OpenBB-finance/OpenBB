@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -31,8 +31,7 @@ class ROUTER_etf(Container):
     def countries(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -80,7 +79,7 @@ class ROUTER_etf(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -90,8 +89,7 @@ class ROUTER_etf(Container):
     def historical(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -167,7 +165,7 @@ class ROUTER_etf(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                 },
@@ -179,8 +177,7 @@ class ROUTER_etf(Container):
     def holdings(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Optional[Literal["fmp", "sec"]] = None,
         **kwargs
@@ -389,7 +386,7 @@ class ROUTER_etf(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -399,8 +396,7 @@ class ROUTER_etf(Container):
     def holdings_date(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -450,7 +446,7 @@ class ROUTER_etf(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -460,8 +456,7 @@ class ROUTER_etf(Container):
     def holdings_performance(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -537,7 +532,7 @@ class ROUTER_etf(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -547,8 +542,7 @@ class ROUTER_etf(Container):
     def info(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
@@ -688,7 +682,7 @@ class ROUTER_etf(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -698,8 +692,7 @@ class ROUTER_etf(Container):
     def price_performance(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -775,7 +768,7 @@ class ROUTER_etf(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -874,8 +867,7 @@ class ROUTER_etf(Container):
     def sectors(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -925,7 +917,7 @@ class ROUTER_etf(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )

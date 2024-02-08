@@ -40,7 +40,7 @@ class FREDConsumerPriceIndexFetcher(
 
         all_options = all_cpi_options(query.harmonized)
 
-        step_1 = [x for x in all_options if x["country"] in query.countries]
+        step_1 = [x for x in all_options if x["country"] in query.country]
         step_2 = [x for x in step_1 if x["units"] == query.units]
         step_3 = [x for x in step_2 if x["frequency"] == query.frequency]
 

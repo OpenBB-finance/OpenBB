@@ -63,7 +63,7 @@ def test_economy_calendar(params, headers):
     [
         (
             {
-                "countries": "spain",
+                "country": "spain",
                 "units": "growth_same",
                 "frequency": "monthly",
                 "harmonized": True,
@@ -74,7 +74,7 @@ def test_economy_calendar(params, headers):
         ),
         (
             {
-                "countries": ["portugal", "spain"],
+                "country": "portugal,spain",
                 "units": "growth_same",
                 "frequency": "monthly",
                 "harmonized": True,
