@@ -145,7 +145,8 @@ HTTP_PROXY="http://10.10.10.10:8000"
 | table_style           | dark                             | ["dark", "light"]         | "The default color style to use with the OpenBB Charting Extension tables. Options are "dark" and "light""   |
 | request_timeout       | 15                               | Any positive integer.  | Specifies the timeout duration for HTTP requests.  |
 | metadata              | True                             | [True, False]        | Enables or disables the collection of metadata  which provides information about operations  including arguments  duration  route  and timestamp. Disabling this feature may improve performance in cases where contextual information is not needed or when the additional computation time and storage space are a concern.  |
-| output_type           | OBBject                          | ["OBBject", "dataframe", "numpy", "dict", "chart", "polars"] | Specifies the type of data the application will output when a command or endpoint is accessed. Note that choosing data formats only available in Python  such as `dataframe` | `numpy` or `polars` will render the application's API non-functional. |
+| output_type           | OBBject                          | ["OBBject", "dataframe", "numpy", "dict", "chart", "polars"] | Specifies the type of data the application will output when a command or endpoint is accessed. Note that choosing data formats only available in Python  such as `dataframe`, `numpy` or `polars` will render the application's API non-functional. |
+| show_warnings         | True                             | [True, False]        | Enables or disables the display of warnings.  |
 
 User settings can be set from the Python interface directly.
 

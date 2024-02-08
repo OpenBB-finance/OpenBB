@@ -31,4 +31,7 @@ class EtfInfoData(Data):
 
     symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", "") + " (ETF)")
     name: Optional[str] = Field(description="Name of the ETF.")
+    description: Optional[str] = Field(
+        default=None, description="Description of the fund."
+    )
     inception_date: Optional[str] = Field(description="Inception date of the ETF.")

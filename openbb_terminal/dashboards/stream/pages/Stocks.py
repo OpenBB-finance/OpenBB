@@ -155,10 +155,12 @@ def table_data(infos: dict):
     data["Ticker"] = [common_vars.STOCKS_CLEAN_ROW[x] for x in common_vars.STOCKS_ROWS]
     for ticker in list(infos):
         data[ticker] = [
-            st_helpers.STOCKS_CLEAN_DATA[x](infos[ticker].get(x, None))
-            if infos[ticker].get(x, None)
-            else st_helpers.STOCKS_CLEAN_DATA[x](
-                getattr(yf.Ticker(ticker).fast_info, x, None)
+            (
+                st_helpers.STOCKS_CLEAN_DATA[x](infos[ticker].get(x, None))
+                if infos[ticker].get(x, None)
+                else st_helpers.STOCKS_CLEAN_DATA[x](
+                    getattr(yf.Ticker(ticker).fast_info, x, None)
+                )
             )
             for x in common_vars.STOCKS_ROWS
         ]
@@ -209,9 +211,11 @@ def volume_data(infos: dict, start: datetime, end: datetime, interval: str) -> d
 
 
 class Chart:
-    def __init__(self, loop: asyncio.AbstractEventLoop):
+    # pylint: disable=too-many-instance-attributes
+    def __init__(self, loop_: asyncio.AbstractEventLoop):
         self.df: pd.DataFrame = st_helpers.load_state("df", pd.DataFrame())
         self.tickers: str = st_helpers.load_state("tickers", "TSLA")
+        self.interval: str = st_helpers.load_state("interval", "")
         self.last_tickers: str = st_helpers.load_state("last_tickers", "")
         self.last_interval: str = st_helpers.load_state("last_interval", "")
         self.infos: dict = st_helpers.load_state("infos", {})
@@ -224,15 +228,15 @@ class Chart:
         self.rolling: int = st_helpers.load_state("rolling", 60)
         self.chart: str = st_helpers.load_state("chart", "line")
 
-        self.loop = loop
+        self.loop = loop_
 
-        global MAIN_LOOP  # noqa
-        MAIN_LOOP = loop
+        global MAIN_LOOP  # pylint: disable=W0603 # noqa: PLW0603
+        MAIN_LOOP = loop_
 
     def create_stock(self):
         self.tickers = self.tickers.split(",")
         if not self.tickers:
-            return st.error("Missing Tickers")
+            st.error("Missing Tickers")
         if self.tickers:
             if self.tickers != self.last_tickers or self.interval != self.last_interval:
                 # get stock data
@@ -295,7 +299,6 @@ class Chart:
                     self.infos[ticker] = yf.Ticker(ticker).info
                 except Exception:
                     self.infos[ticker] = {}
-                    pass
         delete = [ticker for ticker in self.infos if ticker not in self.tickers]
         for ticker in delete:
             self.infos.pop(ticker)
@@ -320,7 +323,7 @@ class Chart:
             ("last_interval", interval),
         ]
         new_params = any(
-            [st.session_state.get(key, None) != value for key, value in check_last]
+            st.session_state.get(key, None) != value for key, value in check_last
         )
         if new_params:
             for key, value in check_last:

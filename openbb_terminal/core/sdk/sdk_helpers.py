@@ -1,6 +1,5 @@
 """OpenBB Terminal SDK Helpers."""
 
-
 import json
 from inspect import signature
 from logging import Logger, getLogger
@@ -49,9 +48,7 @@ def clean_attr_desc(attr: Optional[Any] = None) -> Optional[str]:
     return (
         attr.__doc__.splitlines()[1].lstrip()
         if not attr.__doc__.splitlines()[0]
-        else attr.__doc__.splitlines()[0].lstrip()
-        if attr.__doc__
-        else ""
+        else attr.__doc__.splitlines()[0].lstrip() if attr.__doc__ else ""
     )
 
 
@@ -123,7 +120,6 @@ class Operation:
 
 
 class Category:
-
     """The base class that all categories must inherit from."""
 
     _location_path: str = ""

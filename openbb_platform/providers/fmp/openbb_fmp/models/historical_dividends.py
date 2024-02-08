@@ -1,8 +1,13 @@
 """FMP Historical Dividends Model."""
 
-from datetime import date as dateType
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Any, Dict, List, Optional
 
+from dateutil import parser
+from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.historical_dividends import (
     HistoricalDividendsData,
@@ -21,6 +26,11 @@ class FMPHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
 
 class FMPHistoricalDividendsData(HistoricalDividendsData):
     """FMP Historical Dividends Data."""
+
+    __alias_dict__ = {
+        "ex_dividend_date": "date",
+        "amount": "dividend",
+    }
 
     label: str = Field(description="Label of the historical dividends.")
     adj_dividend: float = Field(
@@ -43,6 +53,7 @@ class FMPHistoricalDividendsData(HistoricalDividendsData):
         "declaration_date",
         "record_date",
         "payment_date",
+        "ex_dividend_date",
         mode="before",
         check_fields=False,
     )
@@ -65,6 +76,14 @@ class FMPHistoricalDividendsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPHistoricalDividendsQueryParams:
         """Transform the query params."""
+        transformed_params = params
+
+        now = datetime.now().date()
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - relativedelta(year=1)
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+
         return FMPHistoricalDividendsQueryParams(**params)
 
     @staticmethod
@@ -86,4 +105,13 @@ class FMPHistoricalDividendsFetcher(
         query: FMPHistoricalDividendsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPHistoricalDividendsData]:
         """Return the transformed data."""
-        return [FMPHistoricalDividendsData.model_validate(d) for d in data]
+        result: List[FMPHistoricalDividendsData] = []
+        for d in data:
+            if "date" in d:
+                dt = parser.parse(str(d["date"])).date()
+
+                if query.start_date <= dt <= query.end_date:
+                    result.append(FMPHistoricalDividendsData(**d))
+            else:
+                result.append(FMPHistoricalDividendsData(**d))
+        return result

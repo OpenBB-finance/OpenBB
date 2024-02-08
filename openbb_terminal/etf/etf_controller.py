@@ -1,4 +1,5 @@
 """ETF Controller"""
+
 __docformat__ = "numpy"
 
 import argparse
@@ -172,18 +173,22 @@ class ETFController(BaseController):
                         name=name_to_search,
                         limit=ns_parser.limit,
                         export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
+                        sheet_name=(
+                            " ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None
+                        ),
                     )
                 elif ns_parser.source == "StockAnalysis":
                     stockanalysis_view.display_etf_by_name(
                         name=name_to_search,
                         limit=ns_parser.limit,
                         export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
+                        sheet_name=(
+                            " ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None
+                        ),
                     )
                 else:
                     console.print("Wrong source choice!\n")
@@ -193,9 +198,9 @@ class ETFController(BaseController):
                     description=description_to_search,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
 
     @log_start_end(log=logger)
@@ -290,9 +295,9 @@ class ETFController(BaseController):
             stockanalysis_view.view_overview(
                 symbol=self.etf_name,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -324,9 +329,9 @@ class ETFController(BaseController):
                     symbol=self.etf_name,
                     limit=ns_parser.limit,
                     export=ns_parser.export,
-                    sheet_name=" ".join(ns_parser.sheet_name)
-                    if ns_parser.sheet_name
-                    else None,
+                    sheet_name=(
+                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                    ),
                 )
                 console.print()
             else:
@@ -549,9 +554,9 @@ class ETFController(BaseController):
                 name=self.etf_name,
                 raw=ns_parser.raw,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)
@@ -636,9 +641,9 @@ class ETFController(BaseController):
             stockanalysis_view.view_comparisons(
                 etf_list,
                 export=ns_parser.export,
-                sheet_name=" ".join(ns_parser.sheet_name)
-                if ns_parser.sheet_name
-                else None,
+                sheet_name=(
+                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
+                ),
             )
 
     @log_start_end(log=logger)

@@ -1,4 +1,5 @@
 """Due Diligence API."""
+
 import os
 
 from openbb_terminal.helper_classes import ModelsNamespace as _models

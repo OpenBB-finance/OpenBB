@@ -1,5 +1,6 @@
 """Unit tests for FMP provider modules."""
 
+import re
 from datetime import date
 
 import pytest
@@ -26,6 +27,7 @@ from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
 from openbb_fmp.models.equity_historical import FMPEquityHistoricalFetcher
 from openbb_fmp.models.equity_ownership import FMPEquityOwnershipFetcher
 from openbb_fmp.models.equity_peers import FMPEquityPeersFetcher
+from openbb_fmp.models.equity_profile import FMPEquityProfileFetcher
 from openbb_fmp.models.equity_quote import FMPEquityQuoteFetcher
 from openbb_fmp.models.equity_screener import FMPEquityScreenerFetcher
 from openbb_fmp.models.equity_valuation_multiples import (
@@ -49,6 +51,7 @@ from openbb_fmp.models.income_statement_growth import FMPIncomeStatementGrowthFe
 from openbb_fmp.models.index_constituents import (
     FMPIndexConstituentsFetcher,
 )
+from openbb_fmp.models.index_historical import FMPIndexHistoricalFetcher
 from openbb_fmp.models.insider_trading import FMPInsiderTradingFetcher
 from openbb_fmp.models.institutional_ownership import FMPInstitutionalOwnershipFetcher
 from openbb_fmp.models.key_executives import FMPKeyExecutivesFetcher
@@ -70,6 +73,15 @@ test_credentials = UserService().default_user_settings.credentials.model_dump(
 )
 
 
+def response_filter(response):
+    if "Location" in response["headers"]:
+        response["headers"]["Location"] = [
+            re.sub(r"apikey=[^&]+", "apikey=MOCK_API_KEY", x)
+            for x in response["headers"]["Location"]
+        ]
+    return response
+
+
 @pytest.fixture(scope="module")
 def vcr_config():
     return {
@@ -77,6 +89,7 @@ def vcr_config():
         "filter_query_parameters": [
             ("apikey", "MOCK_API_KEY"),
         ],
+        "before_record_response": response_filter,
     }
 
 
@@ -124,6 +137,19 @@ def test_fmp_market_indices_fetcher(credentials=test_credentials):
     }
 
     fetcher = FMPMarketIndicesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_index_historical_fetcher(credentials=test_credentials):
+    params = {
+        "symbol": "^DJI",
+        "start_date": date(2023, 1, 1),
+        "end_date": date(2023, 1, 10),
+    }
+
+    fetcher = FMPIndexHistoricalFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
 
@@ -607,5 +633,14 @@ def test_fmp_calendar_earnings_fetcher(credentials=test_credentials):
         "end_date": date(2023, 1, 10),
     }
     fetcher = FMPCalendarEarningsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_equity_profile_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = FMPEquityProfileFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

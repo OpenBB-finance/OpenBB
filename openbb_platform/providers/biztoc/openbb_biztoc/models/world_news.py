@@ -1,4 +1,5 @@
 """Biztoc World News Model."""
+
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
@@ -8,6 +9,7 @@ from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
+from openbb_core.provider.utils.helpers import filter_by_dates
 from pandas import to_datetime
 from pydantic import Field, field_validator
 
@@ -15,9 +17,9 @@ from pydantic import Field, field_validator
 class BiztocWorldNewsQueryParams(WorldNewsQueryParams):
     """Biztoc World News Query."""
 
-    filter: Literal[
-        "crypto", "hot", "latest", "main", "media", "source", "tag"
-    ] = Field(default="latest", description="Filter by type of news.")
+    filter: Literal["crypto", "hot", "latest", "main", "media", "source", "tag"] = (
+        Field(default="latest", description="Filter by type of news.")
+    )
     source: str = Field(
         description="Filter by a specific publisher. Only valid when filter is set to source.",
         default="bloomberg",
@@ -96,9 +98,11 @@ class BiztocWorldNewsFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: BiztocWorldNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[BiztocWorldNewsData]:
         """Transform the data to the standard format."""
-        return [BiztocWorldNewsData.model_validate(d) for d in data]
+        modeled_data = [BiztocWorldNewsData.model_validate(d) for d in data]
+        return filter_by_dates(modeled_data, query.start_date, query.end_date)

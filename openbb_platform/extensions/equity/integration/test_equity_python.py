@@ -1,4 +1,5 @@
 """Python interface integration tests for the equity extension."""
+
 from datetime import time
 
 import pytest
@@ -26,7 +27,7 @@ def obb(pytestconfig):
             {
                 "provider": "intrinio",
                 "symbol": "AAPL",
-                "period": "ttm",
+                "period": "quarter",
                 "fiscal_year": 2014,
                 "limit": 2,
             }
@@ -212,7 +213,26 @@ def test_equity_fundamental_cash_growth(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "start_date": "2020-01-01",
+                "end_date": "2021-01-01",
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL,MSFT",
+                "provider": "fmp",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -240,13 +260,48 @@ def test_equity_fundamental_historical_splits(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL"}),
-        ({"symbol": "AAPL", "provider": "fmp"}),
         (
             {
                 "symbol": "AAPL",
+                "start_date": "2021-01-01",
+                "end_date": "2023-06-06",
                 "limit": 100,
                 "provider": "intrinio",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "start_date": "2021-01-01",
+                "end_date": "2023-06-06",
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "limit": 3,
+                "provider": "intrinio",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "provider": "fmp",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "start_date": "2021-01-01",
+                "end_date": "2023-06-06",
+                "provider": "nasdaq",
+            }
+        ),
+        (
+            {
+                "symbol": "AAPL",
+                "provider": "yfinance",
             }
         ),
     ],
@@ -470,6 +525,8 @@ def test_equity_calendar_ipo(params, obb):
             }
         ),
         ({"provider": "intrinio", "symbol": "AAPL", "period": "annual", "limit": 100}),
+        ({"provider": "yfinance", "symbol": "AAPL"}),
+        ({"provider": "finviz", "symbol": "AAPL,GOOG"}),
     ],
 )
 @pytest.mark.integration
@@ -486,7 +543,8 @@ def test_equity_fundamental_metrics(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL"}),
+        ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL", "provider": "yfinance"}),
     ],
 )
 @pytest.mark.integration
@@ -528,7 +586,25 @@ def test_equity_ownership_major_holders(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL", "limit": 10, "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "limit": 10,
+                "provider": "benzinga",
+                # optional provider params
+                "fields": None,
+                "date": None,
+                "date_from": None,
+                "date_to": None,
+                "importance": None,
+                "updated": None,
+                "action": None,
+                "analyst": None,
+                "firm": None,
+            }
+        ),
+        ({"symbol": "AAPL", "provider": "finviz"}),
     ],
 )
 @pytest.mark.integration
@@ -541,7 +617,10 @@ def test_equity_estimates_price_target(params, obb):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL"})],
+    [
+        ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL,AMZN,RELIANCE.NS", "provider": "yfinance"}),
+    ],
 )
 @pytest.mark.integration
 def test_equity_estimates_consensus(params, obb):
@@ -664,9 +743,9 @@ def test_equity_fundamental_filings(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL"}),
         ({"symbol": "AAPL", "provider": "fmp"}),
         ({"symbol": "AAPL", "provider": "intrinio"}),
+        ({"symbol": "AAPL", "provider": "yfinance"}),
     ],
 )
 @pytest.mark.integration
@@ -700,6 +779,18 @@ def test_equity_fundamental_transcript(params, obb):
 @pytest.mark.integration
 def test_equity_compare_peers(params, obb):
     result = obb.equity.compare.peers(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert result.results is not None
+
+
+@parametrize(
+    "params",
+    [({"group": "country", "metric": "overview", "provider": "finviz"})],
+)
+@pytest.mark.integration
+def test_equity_compare_groups(params, obb):
+    result = obb.equity.compare.groups(**params)
     assert result
     assert isinstance(result, OBBject)
     assert result.results is not None
@@ -749,6 +840,7 @@ def test_equity_compare_peers(params, obb):
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-02",
                 "interval": "1m",
+                "use_cache": False,
             }
         ),
         (
@@ -758,6 +850,7 @@ def test_equity_compare_peers(params, obb):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
+                "use_cache": False,
             }
         ),
         (
@@ -765,8 +858,8 @@ def test_equity_compare_peers(params, obb):
                 "limit": "30",
                 "provider": "fmp",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
+                "start_date": "2023-01-02",
+                "end_date": "2023-01-03",
                 "interval": "1m",
             }
         ),
@@ -925,7 +1018,59 @@ def test_equity_fundamental_search_attributes(params, obb):
                 "tag": "ebit",
                 "frequency": "yearly",
                 "limit": 1000,
-                "type": None,
+                "tag_type": None,
+                "start_date": "2013-01-01",
+                "end_date": "2023-01-01",
+                "sort": "desc",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "tag": "ebit,ebitda,marketcap",
+                "frequency": "yearly",
+                "limit": 1000,
+                "tag_type": None,
+                "start_date": "2013-01-01",
+                "end_date": "2023-01-01",
+                "sort": "desc",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "tag": ["ebit", "ebitda", "marketcap"],
+                "frequency": "yearly",
+                "limit": 1000,
+                "tag_type": None,
+                "start_date": "2013-01-01",
+                "end_date": "2023-01-01",
+                "sort": "desc",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL,MSFT",
+                "tag": "ebit,ebitda,marketcap",
+                "frequency": "yearly",
+                "limit": 1000,
+                "tag_type": None,
+                "start_date": "2013-01-01",
+                "end_date": "2023-01-01",
+                "sort": "desc",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": ["AAPL", "MSFT"],
+                "tag": ["ebit", "ebitda", "marketcap"],
+                "frequency": "yearly",
+                "limit": 1000,
+                "tag_type": None,
                 "start_date": "2013-01-01",
                 "end_date": "2023-01-01",
                 "sort": "desc",
@@ -946,12 +1091,6 @@ def test_equity_fundamental_historical_attributes(params, obb):
     [
         (
             {
-                "symbol": "AAPL",
-                "tag": "ceo",
-            }
-        ),
-        (
-            {
                 "provider": "intrinio",
                 "symbol": "AAPL",
                 "tag": "ceo",
@@ -960,8 +1099,36 @@ def test_equity_fundamental_historical_attributes(params, obb):
         (
             {
                 "provider": "intrinio",
-                "symbol": "MSFT",
+                "symbol": "AAPL",
                 "tag": "ebitda",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "tag": "ceo,ebitda",
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL",
+                "tag": ["ceo", "ebitda"],
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": "AAPL,MSFT",
+                "tag": ["ceo", "ebitda"],
+            }
+        ),
+        (
+            {
+                "provider": "intrinio",
+                "symbol": ["AAPL", "MSFT"],
+                "tag": ["ceo", "ebitda"],
             }
         ),
     ],
@@ -980,10 +1147,18 @@ def test_equity_fundamental_latest_attributes(params, obb):
 @parametrize(
     "params",
     [
-        ({"query": "AAPL", "is_symbol": True, "provider": "cboe"}),
+        ({"query": "AAPL", "is_symbol": True, "provider": "cboe", "use_cache": False}),
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
         ({"query": "", "provider": "nasdaq", "use_cache": False, "is_etf": True}),
-        ({"query": "gold", "provider": "intrinio", "active": True, "limit": 100}),
+        (
+            {
+                "query": "gold",
+                "provider": "intrinio",
+                "active": True,
+                "limit": 100,
+                "use_cache": None,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1035,6 +1210,8 @@ def test_equity_screener(params, obb):
         ({"symbol": "AAPL"}),
         ({"source": "iex", "provider": "intrinio", "symbol": "AAPL"}),
         ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL", "provider": "cboe", "use_cache": False}),
+        ({"symbol": "AAPL", "provider": "yfinance"}),
     ],
 )
 @pytest.mark.integration
@@ -1049,7 +1226,12 @@ def test_equity_price_quote(params, obb):
     "params",
     [
         ({"symbol": "AAPL", "provider": "cboe"}),
-        ({"provider": "intrinio", "symbol": "AAPL"}),
+        ({"symbol": "MSFT", "provider": "intrinio"}),
+        ({"symbol": "AAPL,MSFT", "provider": "cboe"}),
+        ({"symbol": "AAPL,MSFT", "provider": "intrinio"}),
+        ({"symbol": "AAPL,MSFT", "provider": "finviz"}),
+        ({"symbol": "AAPL,MSFT", "provider": "yfinance"}),
+        ({"symbol": "AAPL,MSFT", "provider": "fmp"}),
     ],
 )
 @pytest.mark.integration
@@ -1107,7 +1289,10 @@ def test_equity_discovery_active(params, obb):
 
 @parametrize(
     "params",
-    [({"symbol": "AAPL"})],
+    [
+        ({"symbol": "AAPL", "provider": "fmp"}),
+        ({"symbol": "AAPL,MSFT", "provider": "finviz"}),
+    ],
 )
 @pytest.mark.integration
 def test_equity_price_performance(params, obb):
@@ -1211,7 +1396,7 @@ def test_equity_discovery_upcoming_release_days(params, obb):
                 "start_date": None,
                 "end_date": None,
                 "limit": 10,
-                "form_type": None,
+                "form_type": "1-A",
                 "is_done": None,
                 "provider": "fmp",
             }
@@ -1361,7 +1546,7 @@ def test_equity_fundamental_historical_eps(params, obb):
 
 @parametrize(
     "params",
-    [({"provider": "tiingo", "symbol": "AAPL"})],
+    [({"provider": "tiingo", "symbol": "AAPL", "limit": 10})],
 )
 @pytest.mark.integration
 def test_equity_fundamental_trailing_dividend_yield(params, obb):

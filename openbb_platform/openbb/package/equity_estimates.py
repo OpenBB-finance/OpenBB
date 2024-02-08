@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -24,10 +24,9 @@ class ROUTER_equity_estimates(Container):
     def consensus(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
         """Price Target Consensus. Price target consensus data.
@@ -36,7 +35,7 @@ class ROUTER_equity_estimates(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -44,9 +43,9 @@ class ROUTER_equity_estimates(Container):
         Returns
         -------
         OBBject
-            results : PriceTargetConsensus
+            results : Union[List[PriceTargetConsensus], PriceTargetConsensus]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['fmp', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -67,6 +66,16 @@ class ROUTER_equity_estimates(Container):
             Consensus target of the price target consensus.
         target_median : Optional[float]
             Median target of the price target consensus.
+        recommendation : Optional[str]
+            Recommendation - buy, sell, etc. (provider: yfinance)
+        recommendation_mean : Optional[float]
+            Mean recommendation score where 1 is strong buy and 5 is strong sell. (provider: yfinance)
+        number_of_analysts : Optional[int]
+            Number of analysts providing opinions. (provider: yfinance)
+        current_price : Optional[float]
+            Current price of the stock. (provider: yfinance)
+        currency : Optional[str]
+            Currency the stock is priced in. (provider: yfinance)
 
         Example
         -------
@@ -81,7 +90,7 @@ class ROUTER_equity_estimates(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -91,8 +100,7 @@ class ROUTER_equity_estimates(Container):
     def historical(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         period: Annotated[
             Literal["quarter", "annual"],
@@ -194,7 +202,7 @@ class ROUTER_equity_estimates(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "period": period,
                     "limit": limit,
                 },
@@ -206,10 +214,13 @@ class ROUTER_equity_estimates(Container):
     def price_target(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["fmp"]] = None,
+        limit: Annotated[
+            int,
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 100,
+        provider: Optional[Literal["benzinga", "fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """Price Target. Price target data.
@@ -218,10 +229,30 @@ class ROUTER_equity_estimates(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp']]
+        limit : int
+            The number of data entries to return.
+        provider : Optional[Literal['benzinga', 'fmp']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
+            If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
+        fields : Optional[str]
+            Comma-separated list of fields to include in the response. See https://docs.benzinga.io/benzinga-apis/calendar/get-ratings to learn about the available fields. (provider: benzinga)
+        date : Optional[str]
+            Date for calendar data, shorthand for date_from and date_to. (provider: benzinga)
+        date_from : Optional[str]
+            Date to query from point in time. (provider: benzinga)
+        date_to : Optional[str]
+            Date to query to point in time. (provider: benzinga)
+        importance : Optional[int]
+            Importance level to filter by. (provider: benzinga)
+        updated : Optional[int]
+            Records last updated Unix timestamp (UTC). (provider: benzinga)
+        action : Optional[Literal['Downgrades', 'Maintains', 'Reinstates', 'Reiterates', 'Upgrades', 'Assumes', 'Initiates Coverage On', 'Terminates Coverage On', 'Removes', 'Suspends', 'Firm Dissolved']]
+            Filter by a specific action_company. (provider: benzinga)
+        analyst : Optional[str]
+            Comma-separated list of analyst (person) IDs. (provider: benzinga)
+        firm : Optional[str]
+            Comma-separated list of analyst firm IDs. (provider: benzinga)
         with_grade : bool
             Include upgrades and downgrades in the response. (provider: fmp)
 
@@ -230,7 +261,7 @@ class ROUTER_equity_estimates(Container):
         OBBject
             results : List[PriceTarget]
                 Serializable results.
-            provider : Optional[Literal['fmp']]
+            provider : Optional[Literal['benzinga', 'fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -263,6 +294,42 @@ class ROUTER_equity_estimates(Container):
             News publisher of the price target.
         news_base_url : Optional[str]
             News base URL of the price target.
+        action_company : Optional[Literal['Downgrades', 'Maintains', 'Reinstates', 'Reiterates', 'Upgrades', 'Assumes', 'Initiates Coverage On', 'Terminates Coverage On', 'Removes', 'Suspends', 'Firm Dissolved', '']]
+            Description of the change in rating from firm's last rating.Note that all of these terms are precisely defined. (provider: benzinga)
+        action_pt : Optional[Literal['Announces', 'Maintains', 'Lowers', 'Raises', 'Removes', 'Adjusts', '']]
+            Description of the change in price target from firm's last price target. (provider: benzinga)
+        adjusted_pt_prior : Optional[str]
+            Analyst's prior price target, adjusted to account for stock splits and stock dividends. If none are applicable, the pt_prior value is used. (provider: benzinga)
+        analyst_id : Optional[str]
+            Id of the analyst. (provider: benzinga)
+        currency : Optional[str]
+            Currency the data is denominated in. (provider: benzinga)
+        exchange : Optional[str]
+            Exchange of the price target. (provider: benzinga)
+        id : Optional[str]
+            Unique ID of this entry. (provider: benzinga)
+        importance : Optional[Literal[0, 1, 2, 3, 4, 5]]
+            Subjective Basis of How Important Event is to Market. 5 = High (provider: benzinga)
+        notes : Optional[str]
+            Notes of the price target. (provider: benzinga)
+        pt_prior : Optional[str]
+            Analyst's prior price target. (provider: benzinga)
+        rating_current : Optional[str]
+            The analyst's rating for the company. (provider: benzinga)
+        rating_prior : Optional[str]
+            Prior analyst rating for the company. (provider: benzinga)
+        ratings_accuracy : Optional[str]
+            Ratings accuracy of the price target. (provider: benzinga)
+        time : Optional[str]
+            Last updated timestamp, UTC. (provider: benzinga)
+        updated : Optional[int]
+            Last updated timestamp, UTC. (provider: benzinga)
+        url : Optional[str]
+            URL for analyst ratings page for this ticker on Benzinga.com. (provider: benzinga)
+        url_calendar : Optional[str]
+            URL for analyst ratings page for this ticker on Benzinga.com. (provider: benzinga)
+        name : Optional[str]
+            Name of company that is subject of rating. (provider: benzinga)
         new_grade : Optional[str]
             New grade (provider: fmp)
         previous_grade : Optional[str]
@@ -273,7 +340,7 @@ class ROUTER_equity_estimates(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.estimates.price_target(symbol="AAPL")
+        >>> obb.equity.estimates.price_target(symbol="AAPL", limit=100)
         """  # noqa: E501
 
         return self._run(
@@ -283,7 +350,8 @@ class ROUTER_equity_estimates(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
+                    "limit": limit,
                 },
                 extra_params=kwargs,
             )

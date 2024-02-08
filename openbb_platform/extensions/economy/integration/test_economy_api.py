@@ -63,7 +63,7 @@ def test_economy_calendar(params, headers):
     [
         (
             {
-                "countries": "spain",
+                "country": "spain",
                 "units": "growth_same",
                 "frequency": "monthly",
                 "harmonized": True,
@@ -74,7 +74,7 @@ def test_economy_calendar(params, headers):
         ),
         (
             {
-                "countries": ["portugal", "spain"],
+                "country": "portugal,spain",
                 "units": "growth_same",
                 "frequency": "monthly",
                 "harmonized": True,
@@ -369,6 +369,112 @@ def test_economy_money_measures(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/money_measures?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "country": "united_states",
+                "sex": "total",
+                "frequency": "monthly",
+                "age": "total",
+                "seasonal_adjustment": True,
+                "provider": "oecd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_unemployment(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/unemployment?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "country": "united_states",
+                "provider": "oecd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_composite_leading_indicator(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/composite_leading_indicator?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "country": "united_states",
+                "frequency": "monthly",
+                "provider": "oecd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_short_term_interest_rate(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/short_term_interest_rate?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        (
+            {
+                "country": "united_states",
+                "frequency": "monthly",
+                "provider": "oecd",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_economy_long_term_interest_rate(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/economy/long_term_interest_rate?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

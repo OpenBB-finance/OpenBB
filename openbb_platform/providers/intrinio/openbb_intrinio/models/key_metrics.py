@@ -34,11 +34,18 @@ class IntrinioKeyMetricsData(KeyMetricsData):
         "pe_ratio": "pricetoearnings",
     }
 
-    beta: float = Field(description="Beta")
+    beta: float = Field(
+        description="Beta relative to the broad market calculated on a rolling three-year basis."
+    )
     volume: float = Field(description="Volume")
     fifty_two_week_high: float = Field(description="52 week high", alias="52_week_high")
     fifty_two_week_low: float = Field(description="52 week low", alias="52_week_low")
-    dividend_yield: float = Field(description="Dividend yield", alias="dividendyield")
+    dividend_yield: float = Field(
+        default=None,
+        description="Dividend yield, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        alias="dividendyield",
+    )
 
 
 class IntrinioKeyMetricsFetcher(

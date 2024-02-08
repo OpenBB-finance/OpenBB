@@ -1,4 +1,5 @@
 """Stock Context Controller."""
+
 __docformat__ = "numpy"
 
 import argparse
@@ -27,7 +28,7 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import StockBaseController
-from openbb_terminal.rich_config import MenuText, console
+from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sources
 from openbb_terminal.stocks import cboe_view, stocks_helper, stocks_view
 from openbb_terminal.terminal_helper import suppress_stdout
 
@@ -340,6 +341,15 @@ class StocksController(StockBaseController):
             default=self.ticker,
             help="Get a quote for a specific ticker, or comma-separated list of tickers.",
         )
+        parser.add_argument(
+            "--load_source",
+            action="store",
+            dest="load_source",
+            required=False,
+            default=None,
+            choices=get_ordered_list_sources(f"{self.PATH}load"),
+            help=argparse.SUPPRESS,
+        )
 
         # For the case where a user uses: 'quote BB'
         if other_args and "-" not in other_args[0][0]:
@@ -351,7 +361,8 @@ class StocksController(StockBaseController):
             tickers = ns_parser.s_ticker.split(",")
             if ns_parser.s_ticker and len(tickers) == 1:
                 self.ticker = ns_parser.s_ticker
-                self.custom_load_wrapper([self.ticker])
+                load_other_args = [self.ticker, "--source", ns_parser.load_source]
+                self.custom_load_wrapper(load_other_args)
 
             stocks_view.display_quote(
                 tickers,
@@ -624,9 +635,11 @@ class StocksController(StockBaseController):
                         sources=ns_parser.sources,
                         limit=ns_parser.limit,
                         export=ns_parser.export,
-                        sheet_name=" ".join(ns_parser.sheet_name)
-                        if ns_parser.sheet_name
-                        else None,
+                        sheet_name=(
+                            " ".join(ns_parser.sheet_name)
+                            if ns_parser.sheet_name
+                            else None
+                        ),
                     )
             else:
                 console.print("Use 'load <ticker>' prior to this command!")

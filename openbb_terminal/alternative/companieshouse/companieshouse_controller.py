@@ -1,4 +1,5 @@
 """Companies House Controller."""
+
 __docformat__ = "numpy"
 
 import argparse
@@ -21,7 +22,6 @@ logger = logging.getLogger(__name__)
 
 
 class CompaniesHouseController(BaseController):
-
     """Companies House Controller class."""
 
     CHOICES_COMMANDS = [
@@ -154,9 +154,7 @@ class CompaniesHouseController(BaseController):
 
         if ns_parser and ns_parser.companyNo:
             self.companyNo = ns_parser.companyNo
-            company = companieshouse_view.display_company_info(
-                ns_parser.companyNo, export=ns_parser.export
-            )
+            company = companieshouse_view.display_company_info(ns_parser.companyNo)
             if company.dataAvailable():
                 self.companyName = company.name
                 self.filing_total_count = 0
@@ -309,7 +307,6 @@ class CompaniesHouseController(BaseController):
                     self.companyNo,
                     self.companyName,
                     ns_parser.transactionID,
-                    export=ns_parser.export,
                 )
         else:
             console.print("Must load a company prior to using this command")

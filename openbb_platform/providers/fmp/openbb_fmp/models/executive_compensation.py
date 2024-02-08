@@ -1,6 +1,6 @@
 """FMP Executive Compensation Model."""
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -8,7 +8,8 @@ from openbb_core.provider.standard_models.executive_compensation import (
     ExecutiveCompensationData,
     ExecutiveCompensationQueryParams,
 )
-from openbb_fmp.utils.helpers import create_url, get_data_many
+from openbb_core.provider.utils.helpers import amake_requests
+from openbb_fmp.utils.helpers import response_callback
 from pydantic import field_validator
 
 
@@ -46,7 +47,15 @@ class FMPExecutiveCompensationFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPExecutiveCompensationQueryParams:
         """Transform the query params."""
-        return FMPExecutiveCompensationQueryParams(**params)
+        transformed_params = params
+        now = datetime.now().date()
+        if params.get("start_date") is None:
+            transformed_params["start_date"] = now - timedelta(days=10 * 365)
+
+        if params.get("end_date") is None:
+            transformed_params["end_date"] = now
+
+        return FMPExecutiveCompensationQueryParams(**transformed_params)
 
     @staticmethod
     async def aextract_data(
@@ -56,14 +65,26 @@ class FMPExecutiveCompensationFetcher(
     ) -> List[Dict]:
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
-
-        url = create_url(4, "governance/executive_compensation", api_key, query)
-
-        return await get_data_many(url, **kwargs)
+        base_url = "https://financialmodelingprep.com/api/v4/"
+        urls = [
+            f"{base_url}/governance/executive_compensation?symbol={s.strip()}&apikey={api_key}"
+            for s in query.symbol.split(",")
+        ]
+        return await amake_requests(urls, response_callback, **kwargs)
 
     @staticmethod
     def transform_data(
         query: FMPExecutiveCompensationQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPExecutiveCompensationData]:
         """Return the transformed data."""
-        return [FMPExecutiveCompensationData.model_validate(d) for d in data]
+        result = []
+        for d in data:
+            if "year" in d:
+                if (
+                    d["year"] >= query.start_date.year
+                    and d["year"] <= query.end_date.year
+                ):
+                    result.append(FMPExecutiveCompensationData(**d))
+            else:
+                result.append(FMPExecutiveCompensationData(**d))
+        return result

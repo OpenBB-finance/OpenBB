@@ -1,4 +1,5 @@
 """Runa Model"""
+
 import logging
 from typing import Union
 

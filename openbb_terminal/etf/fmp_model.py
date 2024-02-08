@@ -1,4 +1,5 @@
 """FinancialModelingPrep model"""
+
 __docformat__ = "numpy"
 
 import json

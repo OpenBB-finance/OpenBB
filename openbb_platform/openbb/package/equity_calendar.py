@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -69,12 +69,12 @@ class ROUTER_equity_calendar(Container):
 
         CalendarDividend
         ----------------
-        date : date
-            The date of the data. (Ex-Dividend)
+        ex_dividend_date : date
+            The ex-dividend date - the date on which the stock begins trading without rights to the dividend.
         symbol : str
             Symbol representing the entity requested in the data.
         amount : Optional[float]
-            Dividend amount, per-share.
+            The dividend amount per share.
         name : Optional[str]
             Name of the entity.
         record_date : Optional[date]
@@ -202,8 +202,7 @@ class ROUTER_equity_calendar(Container):
     def ipo(
         self,
         symbol: Annotated[
-            Union[str, None, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            Optional[str], OpenBBCustomParameter(description="Symbol to get data for.")
         ] = None,
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -356,7 +355,7 @@ class ROUTER_equity_calendar(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                     "limit": limit,

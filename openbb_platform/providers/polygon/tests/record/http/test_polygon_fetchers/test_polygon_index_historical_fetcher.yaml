@@ -1,0 +1,79 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://api.polygon.io/v2/aggs/ticker/I:NDX/range/1/day/2023-01-01/2023-05-10?apiKey=MOCK_API_KEY&limit=49999&sort=desc
+  response:
+    body:
+      string: !!binary |
+        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
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 02 Feb 2024 00:35:30 GMT
+      Server:
+      - nginx/1.19.2
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+      X-Request-Id:
+      - 1ab70490ebcfe654deb56d619924d97d
+    status:
+      code: 200
+      message: OK
+version: 1

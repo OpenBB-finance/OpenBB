@@ -1,11 +1,11 @@
 """Provider Interface."""
+
 from dataclasses import dataclass, make_dataclass
 from difflib import SequenceMatcher
 from typing import Any, Callable, Dict, List, Literal, Optional, Tuple, Type, Union
 
 from fastapi import Query
 from pydantic import (
-    AliasChoices,
     BaseModel,
     ConfigDict,
     Field,
@@ -211,9 +211,7 @@ class ProviderInterface(metaclass=SingletonMeta):
         provider_name: Optional[str] = None,
         query: bool = False,
         force_optional: bool = False,
-        alias_dict: Optional[Dict[str, List[str]]] = None,
     ) -> DataclassField:
-        alias_dict = alias_dict or {}
         new_name = name.replace(".", "_")
         # field.type_ don't work for nested types
         # field.outer_type_ don't work for Optional nested types
@@ -245,18 +243,14 @@ class ProviderInterface(metaclass=SingletonMeta):
                 title=provider_name,
                 description=description,
                 alias=field.alias or None,
+                json_schema_extra=field.json_schema_extra,
             )
         elif provider_name:
             default: FieldInfo = Field(
                 default=default or None,
                 title=provider_name,
                 description=description,
-                validation_alias=AliasChoices(
-                    field.alias,
-                    *list(set(alias_dict.get(name, []))),
-                )
-                if alias_dict.get(name, [])
-                else None,
+                json_schema_extra=field.json_schema_extra,
             )
 
         return DataclassField(new_name, type_, default)
@@ -317,6 +311,11 @@ class ProviderInterface(metaclass=SingletonMeta):
         for provider_name, model_details in providers.items():
             if provider_name == "openbb":
                 for name, field in model_details["Data"]["fields"].items():
+                    if (
+                        name == "provider"
+                        and field.description == "The data provider for the data."
+                    ):  # noqa
+                        continue
                     incoming = cls._create_field(name, field, "openbb")
 
                     standard[incoming.name] = (
@@ -325,15 +324,18 @@ class ProviderInterface(metaclass=SingletonMeta):
                         incoming.default,
                     )
             else:
-                alias_dict = model_details.get("Data", {}).get("alias_dict", {})
                 for name, field in model_details["Data"]["fields"].items():
                     if name not in providers["openbb"]["Data"]["fields"]:
+                        if (
+                            name == "provider"
+                            and field.description == "The data provider for the data."
+                        ):  # noqa
+                            continue
                         incoming = cls._create_field(
                             to_snake_case(name),
                             field,
                             provider_name,
                             force_optional=True,
-                            alias_dict=alias_dict,
                         )
 
                         if incoming.name in extra:
@@ -479,6 +481,7 @@ class ProviderInterface(metaclass=SingletonMeta):
             fields.update(extra.model_fields)
 
             fields_dict: Dict[str, Tuple[Any, Any]] = {}
+
             for name, field in fields.items():
                 fields_dict[name] = (
                     field.annotation,
@@ -487,7 +490,7 @@ class ProviderInterface(metaclass=SingletonMeta):
                         title=field.title,
                         description=field.description,
                         alias=field.alias,
-                        validation_alias=field.validation_alias,
+                        json_schema_extra=field.json_schema_extra,
                     ),
                 )
 

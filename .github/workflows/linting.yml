@@ -29,10 +29,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b # actions/checkout v3.0.2
+        uses: actions/checkout@v4.1.1 # actions/checkout v3.0.2
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
           fetch-depth: 20
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Fetch base branch
         run: git fetch --no-tags --depth=20 origin ${{ github.base_ref }}
@@ -59,7 +61,7 @@ jobs:
           restore-keys: ${{ runner.os }}-linting-${{ hashFiles('**/poetry.lock') }}
 
       - run: |
-          pip install bandit black codespell==2.2.5 mypy==1.5.1 pylint==2.17.0 ruff==0.0.285
+          pip install openbb-devtools
           pip install types-pytz types-requests types-termcolor types-tabulate types-PyYAML types-python-dateutil types-setuptools types-six
       - run: bandit -x ./tests -r . || true
       - run: black --diff --check .

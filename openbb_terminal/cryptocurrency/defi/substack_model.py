@@ -1,4 +1,5 @@
 """Substack model"""
+
 __docformat__ = "numpy"
 
 import concurrent.futures

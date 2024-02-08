@@ -1,4 +1,5 @@
 """ Hedge Controller Module """
+
 __docformat__ = "numpy"
 
 import argparse
@@ -48,26 +49,40 @@ class HedgeController(BaseController):
 
         self.underlying_asset_position: str = ""
         self.chain = get_option_chain(ticker, expiration)
-        self.calls = list(
-            zip(
-                self.chain.calls["strike"].tolist(),
-                self.chain.calls["impliedVolatility"].tolist(),
-                self.chain.calls["lastPrice"].tolist(),
-                self.chain.calls["currency"].tolist(),
+        self.calls = (
+            list(
+                zip(
+                    self.chain.calls["strike"].tolist(),
+                    self.chain.calls["impliedVolatility"].tolist(),
+                    self.chain.calls["lastPrice"].tolist(),
+                    self.chain.calls["currency"].tolist(),
+                )
             )
+            if "calls" in self.chain.columns
+            else []
         )
-        self.puts = list(
-            zip(
-                self.chain.puts["strike"].tolist(),
-                self.chain.puts["impliedVolatility"].tolist(),
-                self.chain.puts["lastPrice"].tolist(),
-                self.chain.calls["currency"].tolist(),
+        self.puts = (
+            list(
+                zip(
+                    self.chain.puts["strike"].tolist(),
+                    self.chain.puts["impliedVolatility"].tolist(),
+                    self.chain.puts["lastPrice"].tolist(),
+                    self.chain.calls["currency"].tolist(),
+                )
             )
+            if "puts" in self.chain.columns
+            else []
         )
+
+        start = self.calls[0] if self.calls else 0
+        end = self.calls[-1] if self.calls else 0
+
+        start = int(start[0]) if isinstance(start, list) and start else 0
+        end = int(end[0]) if isinstance(end, list) and end else 0
 
         self.PICK_CHOICES = [
             f"{strike} {position} {side}"
-            for strike in range(int(self.calls[0][0]), int(self.calls[-1][0]), 5)
+            for strike in range(start, end, 5)
             for position in ["Long", "Short"]
             for side in ["Call", "Put"]
         ]
@@ -75,7 +90,11 @@ class HedgeController(BaseController):
         self.ticker = ticker
         self.current_price: float = get_price(ticker)
         self.expiration = expiration
-        self.implied_volatility = self.chain.calls["impliedVolatility"]
+        self.implied_volatility = (
+            self.chain.calls.get("impliedVolatility", 0.0)
+            if "calls" in self.chain.columns
+            else 0.0
+        )
         self.options: Dict = {"Portfolio": {}, "Option A": {}, "Option B": {}}
         self.underlying = 0.0
         self.side: str = ""

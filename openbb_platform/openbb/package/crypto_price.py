@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -23,7 +23,7 @@ class ROUTER_crypto_price(Container):
     def historical(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            str,
             OpenBBCustomParameter(
                 description="Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format."
             ),
@@ -40,10 +40,10 @@ class ROUTER_crypto_price(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[Literal["fmp", "polygon", "tiingo"]] = None,
+        provider: Optional[Literal["fmp", "polygon", "tiingo", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Cryptocurrency Historical Price. Cryptocurrency historical price data.
+        """Get historical price data for cryptocurrency pair(s) within a provider.
 
         Parameters
         ----------
@@ -53,33 +53,29 @@ class ROUTER_crypto_price(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fmp', 'polygon', 'tiingo']]
+        provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         timeseries : Optional[Annotated[int, Ge(ge=0)]]
             Number of days to look back. (provider: fmp)
-        interval : Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day']
-            Data granularity. (provider: fmp, tiingo)
-        multiplier : int
-            Multiplier of the timespan. (provider: polygon)
-        timespan : Literal['minute', 'hour', 'day', 'week', 'month', 'quarter', 'year']
-            Timespan of the data. (provider: polygon)
+        interval : Optional[Union[Literal['1min', '5min', '15min', '30min', '1hour', '4hour', '1day'], str, Literal['1m', '2m', '5m', '15m', '30m', '60m', '90m', '1h', '1d', '5d', '1wk', '1mo', '3mo']]]
+            Data granularity. (provider: fmp, polygon, tiingo, yfinance)
         sort : Literal['asc', 'desc']
             Sort order of the data. (provider: polygon)
         limit : int
             The number of data entries to return. (provider: polygon)
-        adjusted : bool
-            Whether the data is adjusted. (provider: polygon)
         exchanges : Optional[List[str]]
             To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX'] (provider: tiingo)
+        period : Optional[Literal['1d', '5d', '1mo', '3mo', '6mo', '1y', '2y', '5y', '10y', 'ytd', 'max']]
+            Time period of the data to return. (provider: yfinance)
 
         Returns
         -------
         OBBject
             results : List[CryptoHistorical]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'polygon', 'tiingo']]
+            provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -125,6 +121,10 @@ class ROUTER_crypto_price(Container):
         -------
         >>> from openbb import obb
         >>> obb.crypto.price.historical(symbol="BTCUSD")
+        >>> obb.crypto.price.historical("BTCUSD", start_date="2024-01-01", end_date="2024-01-31")
+        >>> obb.crypto.price.historical("ETH-USD", provider="yfinance", interval="1mo", start_date="2024-01-01", end_date="2024-12-31")
+        >>> obb.crypto.price.historical("BTCUSD,ETH-USD", provider="yfinance", interval="1d", start_date="2024-01-01", end_date="2024-01-31")
+        >>> obb.crypto.price.historical(["BTCUSD", "ETH-USD"], start_date="2024-01-01", end_date="2024-01-31")
         """  # noqa: E501
 
         return self._run(
@@ -134,7 +134,7 @@ class ROUTER_crypto_price(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                 },

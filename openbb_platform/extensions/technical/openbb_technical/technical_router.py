@@ -1,4 +1,6 @@
 """Technical Analysis Router."""
+
+# pylint: disable=too-many-lines
 from typing import List, Literal, Optional
 
 import pandas as pd
@@ -17,10 +19,6 @@ from pydantic import NonNegativeFloat, NonNegativeInt, PositiveFloat, PositiveIn
 from . import helpers
 
 # TODO: Split this into multiple files
-
-# pylint: disable=too-many-lines
-
-
 router = Router(prefix="")
 
 
@@ -33,9 +31,15 @@ def atr(
     drift: NonNegativeInt = 1,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """Average True Range.
+    """Calculate the Average True Range.
 
     Used to measure volatility, especially volatility caused by gaps or limit moves.
+    The ATR metric helps understand how much the values in your data change on average,
+    giving insights into the stability or unpredictability during a certain period.
+    It's particularly useful for spotting trends of increase or decrease in variations,
+    without getting into technical trading details.
+    The method considers not just the day-to-day changes but also accounts for any
+    sudden jumps or drops, ensuring you get a comprehensive view of movement.
 
     Parameters
     ----------
@@ -85,6 +89,12 @@ def fib(
     end_date: Optional[str] = None,
 ) -> OBBject[List[Data]]:
     """Create Fibonacci Retracement Levels.
+
+    This method draws from a classic technique to pinpoint significant price levels
+    that often indicate where the market might find support or resistance.
+    It's a tool used to gauge potential turning points in the data by applying a
+    mathematical approach rooted in nature's patterns. Is used to get insights into
+    where prices could head next, based on historical movements.
 
     Parameters
     ----------
@@ -140,7 +150,7 @@ def obv(
     index: str = "date",
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """On Balance Volume (OBV).
+    """Calculate the On Balance Volume (OBV).
 
     Is a cumulative total of the up and down volume. When the close is higher than the
     previous close, the volume is added to the running total, and when the close is
@@ -188,7 +198,7 @@ def fisher(
     length: PositiveInt = 14,
     signal: PositiveInt = 1,
 ) -> OBBject[List[Data]]:
-    """Fisher Transform.
+    """Perform the Fisher Transform.
 
     A technical indicator created by John F. Ehlers that converts prices into a Gaussian
     normal distribution. The indicator highlights when prices have moved to an extreme,
@@ -236,7 +246,7 @@ def adosc(
     slow: PositiveInt = 10,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """Accumulation/Distribution Oscillator.
+    """Calculate the Accumulation/Distribution Oscillator.
 
     Also known as the Chaikin Oscillator.
 
@@ -288,7 +298,7 @@ def bbands(
     mamode: Literal["sma", "ema", "wma", "rma"] = "sma",
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """Bollinger Bands.
+    """Calculate the Bollinger Bands.
 
     Consist of three lines. The middle band is a simple moving average (generally 20
     periods) of the typical price (TP). The upper and lower bands are F standard
@@ -360,7 +370,7 @@ def zlma(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """The zero lag exponential moving average (ZLEMA).
+    """Calculate the zero lag exponential moving average (ZLEMA).
 
     Created by John Ehlers and Ric Way. The idea is do a
     regular exponential moving average (EMA) calculation but
@@ -417,7 +427,7 @@ def aroon(
     length: int = 25,
     scalar: int = 100,
 ) -> OBBject[List[Data]]:
-    """Aroon Indicator.
+    """Calculate the Aroon Indicator.
 
     The word aroon is Sanskrit for "dawn's early light." The Aroon
     indicator attempts to show when a new trend is dawning. The indicator consists
@@ -471,7 +481,7 @@ def sma(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """Simple Moving Average.
+    """Calculate the Simple Moving Average (SMA).
 
     Moving Averages are used to smooth the data in an array to
     help eliminate noise and identify trends. The Simple Moving Average is literally
@@ -503,7 +513,7 @@ def sma(
     --------
     >>> from openbb import obb
     >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> sma_data = obb.technical.sma(data=stock_data.results,target="close",length=50,offset=0)
+    >>> sma_data = obb.technical.sma(data=stock_data.results,target="close", length=50, offset=0)
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
@@ -531,7 +541,13 @@ def demark(
     asint: bool = True,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """Demark sequential indicator.
+    """Calculate the Demark sequential indicator.
+
+    This indicator offers a strategic way to spot potential reversals in market trends.
+    It's designed to highlight moments when the current trend may be running out of steam,
+    suggesting a possible shift in direction. By focusing on specific patterns in price movements, it provides
+    valuable insights for making informed decisions on future changes and identifies trend exhaustion points
+    with precision.
 
     Parameters
     ----------
@@ -557,7 +573,7 @@ def demark(
     --------
     >>> from openbb import obb
     >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> demark_data = obb.technical.demark(data=stock_data.results,offset=0)
+    >>> demark_data = obb.technical.demark(data=stock_data.results, offset=0)
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
@@ -577,10 +593,12 @@ def vwap(
     anchor: str = "D",
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """The Volume Weighted Average Price.
+    """Calculate the Volume Weighted Average Price (VWAP).
 
     Measures the average typical price by volume.
     It is typically used with intraday charts to identify general direction.
+    It helps to understand the true average price factoring in the volume of transactions,
+    and serves as a benchmark for assessing the market's direction over short periods, such as a single trading day.
 
     Parameters
     ----------
@@ -604,7 +622,7 @@ def vwap(
     --------
     >>> from openbb import obb
     >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> vwap_data = obb.technical.vwap(data=stock_data.results,anchor="D",offset=0)
+    >>> vwap_data = obb.technical.vwap(data=stock_data.results, anchor="D", offset=0)
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume"])
@@ -625,7 +643,7 @@ def macd(
     slow: int = 26,
     signal: int = 9,
 ) -> OBBject[List[Data]]:
-    """The Moving Average Convergence Divergence (MACD).
+    """Calculate the Moving Average Convergence Divergence (MACD).
 
     Difference between two Exponential Moving Averages. The Signal line is an
     Exponential Moving Average of the MACD.
@@ -660,7 +678,7 @@ def macd(
     --------
     >>> from openbb import obb
     >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> macd_data = obb.technical.macd(data=stock_data.results,target="close",fast=12,slow=26,signal=9)
+    >>> macd_data = obb.technical.macd(data=stock_data.results,target="close", fast=12, slow=26, signal=9)
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
@@ -687,7 +705,7 @@ def hma(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """The Hull Moving Average.
+    """Calculate the Hull Moving Average (HMA).
 
     Solves the age old dilemma of making a moving average more responsive to current
     price activity whilst maintaining curve smoothness.
@@ -716,7 +734,7 @@ def hma(
     --------
     >>> from openbb import obb
     >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> hma_data = obb.technical.hma(data=stock_data.results,target="close",length=50,offset=0)
+    >>> hma_data = obb.technical.hma(data=stock_data.results, target="close", length=50, offset=0)
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()
@@ -743,7 +761,7 @@ def donchian(
     upper_length: PositiveInt = 20,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """Donchian Channels.
+    """Calculate the Donchian Channels.
 
     Three lines generated by moving average calculations that comprise an indicator
     formed by upper and lower bands around a midrange or median band. The upper band
@@ -773,7 +791,7 @@ def donchian(
     --------
     >>> from openbb import obb
     >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> donchian_data = obb.technical.donchian(data=stock_data.results,lower_length=20,upper_length=20,offset=0)
+    >>> donchian_data = obb.technical.donchian(data=stock_data.results, lower_length=20, upper_length=20, offset=0)
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low"])
@@ -799,7 +817,7 @@ def ichimoku(
     offset: PositiveInt = 26,
     lookahead: bool = False,
 ) -> OBBject[List[Data]]:
-    """The Ichimoku Cloud.
+    """Calculate the Ichimoku Cloud.
 
     Also known as Ichimoku Kinko Hyo, is a versatile indicator that defines support and
     resistance, identifies trend direction, gauges momentum and provides trading
@@ -823,6 +841,17 @@ def ichimoku(
         Number of periods for the offset, by default 26.
     lookahead : bool, optional
         drops the Chikou Span Column to prevent potential data leak
+
+    Returns
+    -------
+    OBBject[List[Data]]
+        The calculated data.
+
+    Examples
+    --------
+    >>> from openbb import obb
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> ichimoku_data = obb.technical.ichimoku(data=stock_data.results, conversion=9, base=26, lookahead=False)
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close"])
@@ -849,7 +878,11 @@ def clenow(
     target: str = "close",
     period: PositiveInt = 90,
 ) -> OBBject[List[Data]]:
-    """Clenow Volatility Adjusted Momentum.
+    """Calculate the Clenow Volatility Adjusted Momentum.
+
+    The Clenow Volatility Adjusted Momentum is a sophisticated approach to understanding market momentum with a twist.
+    It adjusts for volatility, offering a clearer picture of true momentum by considering how price movements are
+    influenced by their volatility over a set period. It helps in identifying stronger, more reliable trends.
 
     Parameters
     ----------
@@ -871,7 +904,7 @@ def clenow(
     --------
     >>> from openbb import obb
     >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> clenow_data = obb.technical.clenow(data=stock_data.results,period=90)
+    >>> clenow_data = obb.technical.clenow(data=stock_data.results, period=90)
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target)
@@ -895,7 +928,7 @@ def clenow(
 
 @router.command(methods=["POST"])
 def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[Data]]:
-    """The Accumulation/Distribution Line.
+    """Calculate the Accumulation/Distribution Line.
 
     Similar to the On Balance Volume (OBV).
     Sums the volume times +1/-1 based on whether the close is higher than the previous
@@ -927,7 +960,7 @@ def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[D
     --------
     >>> from openbb import obb
     >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> ad_data = obb.technical.ad(data=stock_data.results,offset=0)
+    >>> ad_data = obb.technical.ad(data=stock_data.results, offset=0)
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["high", "low", "close", "volume"])
@@ -947,7 +980,7 @@ def adx(
     scalar: float = 100.0,
     drift: int = 1,
 ) -> OBBject[List[Data]]:
-    """ADX.
+    """Calculate the Average Directional Index (ADX).
 
     The ADX is a Welles Wilder style moving average of the Directional Movement Index (DX).
     The values range from 0 to 100, but rarely get above 60. To interpret the ADX, consider
@@ -975,7 +1008,7 @@ def adx(
     --------
     >>> from openbb import obb
     >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> adx_data = obb.technical.adx(data=stock_data.results,length=50,scalar=100.0,drift=1)
+    >>> adx_data = obb.technical.adx(data=stock_data.results, length=50, scalar=100.0, drift=1)
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "high", "low"])
@@ -997,7 +1030,7 @@ def wma(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """Weighted Moving Average.
+    """Calculate the Weighted Moving Average (WMA).
 
     A Weighted Moving Average puts more weight on recent data and less on past data.
     This is done by multiplying each bar's price by a weighting factor. Because of its
@@ -1052,7 +1085,7 @@ def cci(
     length: PositiveInt = 14,
     scalar: PositiveFloat = 0.015,
 ) -> OBBject[List[Data]]:
-    """Commodity Channel Index (CCI).
+    """Calculate the Commodity Channel Index (CCI).
 
     The CCI is designed to detect beginning and ending market trends.
     The range of 100 to -100 is the normal trading range. CCI values outside of this
@@ -1075,6 +1108,12 @@ def cci(
     -------
     OBBject[List[Data]]
         The CCI data.
+
+    Examples
+    --------
+    >>> from openbb import obb
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> cci_data = obb.technical.cci(data=stock_data.results, length=14, scalar=0.015)
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_columns(df, ["close", "high", "low"])
@@ -1095,7 +1134,7 @@ def rsi(
     scalar: float = 100.0,
     drift: int = 1,
 ) -> OBBject[List[Data]]:
-    """Relative Strength Index (RSI).
+    """Calculate the Relative Strength Index (RSI).
 
     RSI calculates a ratio of the recent upward price movements to the absolute price
     movement. The RSI ranges from 0 to 100.
@@ -1155,7 +1194,7 @@ def stoch(
     slow_d_period: NonNegativeInt = 3,
     slow_k_period: NonNegativeInt = 3,
 ) -> OBBject[List[Data]]:
-    """Stochastic Oscillator.
+    """Calculate the Stochastic Oscillator.
 
     The Stochastic Oscillator measures where the close is in relation
     to the recent trading range. The values range from zero to 100. %D values over 75
@@ -1213,7 +1252,7 @@ def kc(
     mamode: Literal["ema", "sma", "wma", "hma", "zlma"] = "ema",
     offset: NonNegativeInt = 0,
 ) -> OBBject[List[Data]]:
-    """Keltner Channels.
+    """Calculate the Keltner Channels.
 
     Keltner Channels are volatility-based bands that are placed
     on either side of an asset's price and can aid in determining
@@ -1267,7 +1306,7 @@ def kc(
 def cg(
     data: List[Data], index: str = "date", length: PositiveInt = 14
 ) -> OBBject[List[Data]]:
-    """Center of Gravity.
+    """Calculate the Center of Gravity.
 
     The Center of Gravity indicator, in short, is used to anticipate future price movements
     and to trade on price reversals as soon as they happen. However, just like other oscillators,
@@ -1324,7 +1363,19 @@ def cones(
 ) -> OBBject[List[Data]]:
     """Calculate the realized volatility quantiles over rolling windows of time.
 
-    The model for calculating volatility is selectable.
+    The cones indicator is designed to map out the ebb and flow of price movements through a detailed analysis of
+    volatility quantiles. By examining the range of volatility within specific time frames, it offers a nuanced view of
+    market behavior, highlighting periods of stability and turbulence.
+
+    The model for calculating volatility is selectable and can be one of the following:
+    - Standard deviation
+    - Parkinson
+    - Garman-Klass
+    - Hodges-Tompkins
+    - Rogers-Satchell
+    - Yang-Zhang
+
+    Read more about it in the model parameter description.
 
     Parameters
     ----------
@@ -1362,6 +1413,7 @@ def cones(
         Whether the data is crypto or not. If True, volatility is calculated for 365 days instead of 252
     trading_periods : Optional[int] [default: 252]
         Number of trading periods in a year.
+
     Returns
     -------
     OBBject[List[Data]]
@@ -1399,7 +1451,7 @@ def ema(
     length: int = 50,
     offset: int = 0,
 ) -> OBBject[List[Data]]:
-    """Exponential Moving Average.
+    """Calculate the Exponential Moving Average (EMA).
 
     EMA is a cumulative calculation, including all data. Past values have
     a diminishing contribution to the average, while more recent values have a greater
@@ -1428,8 +1480,7 @@ def ema(
     --------
     >>> from openbb import obb
     >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> ema_data = obb.technical.ema(data=stock_data.results,target="close",length=50,offset=0)
-
+    >>> ema_data = obb.technical.ema(data=stock_data.results, target="close", length=50, offset=0)
     """
     df = basemodel_to_df(data, index=index)
     df_target = get_target_column(df, target).to_frame()

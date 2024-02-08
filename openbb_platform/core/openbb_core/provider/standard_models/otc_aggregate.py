@@ -1,6 +1,5 @@
 """OTC Aggregate Standard Model."""
 
-
 from datetime import date as dateType
 
 from pydantic import Field

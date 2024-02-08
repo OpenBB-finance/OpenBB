@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -26,8 +26,7 @@ class ROUTER_equity_ownership(Container):
     def insider_trading(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         limit: Annotated[
             int,
@@ -77,47 +76,47 @@ class ROUTER_equity_ownership(Container):
         --------------
         symbol : str
             Symbol representing the entity requested in the data.
-        company_cik : int
-            Company CIK of the insider trading.
-        filing_date : datetime
-            Filing date of the insider trading.
+        company_cik : Optional[Union[int, str]]
+            CIK number of the company.
+        filing_date : Optional[Union[date, datetime]]
+            Filing date of the trade.
         transaction_date : Optional[date]
-            Transaction date of the insider trading.
-        owner_cik : int
-            Reporting CIK of the insider trading.
-        owner_name : str
-            Reporting name of the insider trading.
+            Date of the transaction.
+        owner_cik : Optional[Union[int, str]]
+            Reporting individual's CIK.
+        owner_name : Optional[str]
+            Name of the reporting individual.
         owner_title : Optional[str]
-            Designation of owner of the insider trading.
-        transaction_type : str
-            Transaction type of the insider trading.
+            The title held by the reporting individual.
+        transaction_type : Optional[str]
+            Type of transaction being reported.
         acquisition_or_disposition : Optional[str]
-            Acquisition or disposition of the insider trading.
+            Acquisition or disposition of the shares.
         security_type : Optional[str]
-            Security type of the insider trading.
+            The type of security transacted.
         securities_owned : Optional[float]
-            Number of securities owned in the insider trading.
+            Number of securities owned by the reporting individual.
         securities_transacted : Optional[float]
-            Securities transacted of the insider trading.
+            Number of securities transacted by the reporting individual.
         transaction_price : Optional[float]
-            Price of the insider trading.
-        filing_url : str
-            Link of the insider trading.
+            The price of the transaction.
+        filing_url : Optional[str]
+            Link to the filing.
         form_type : Optional[str]
             Form type of the insider trading. (provider: fmp)
         company_name : Optional[str]
             Name of the company. (provider: intrinio)
         conversion_exercise_price : Optional[float]
-            Conversion/Exercise price of the insider trading. (provider: intrinio)
+            Conversion/Exercise price of the shares. (provider: intrinio)
         deemed_execution_date : Optional[date]
-            Deemed execution date of the insider trading. (provider: intrinio)
+            Deemed execution date of the trade. (provider: intrinio)
         exercise_date : Optional[date]
-            Exercise date of the insider trading. (provider: intrinio)
+            Exercise date of the trade. (provider: intrinio)
         expiration_date : Optional[date]
-            Expiration date of the insider trading. (provider: intrinio)
+            Expiration date of the derivative. (provider: intrinio)
         underlying_security_title : Optional[str]
             Name of the underlying non-derivative security related to this derivative transaction. (provider: intrinio)
-        underlying_shares : Optional[int]
+        underlying_shares : Optional[Union[float, int]]
             Number of underlying shares related to this derivative transaction. (provider: intrinio)
         nature_of_ownership : Optional[str]
             Nature of ownership of the insider trading. (provider: intrinio)
@@ -147,7 +146,7 @@ class ROUTER_equity_ownership(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "limit": limit,
                 },
                 extra_params=kwargs,
@@ -158,8 +157,7 @@ class ROUTER_equity_ownership(Container):
     def institutional(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
@@ -301,7 +299,7 @@ class ROUTER_equity_ownership(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -311,11 +309,10 @@ class ROUTER_equity_ownership(Container):
     def major_holders(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         date: Annotated[
-            Optional[datetime.date],
+            Union[datetime.date, None, str],
             OpenBBCustomParameter(description="A specific date to get data for."),
         ] = None,
         page: Annotated[
@@ -438,7 +435,7 @@ class ROUTER_equity_ownership(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.ownership.major_holders(symbol="AAPL")
+        >>> obb.equity.ownership.major_holders(symbol="AAPL", page=0)
         """  # noqa: E501
 
         return self._run(
@@ -448,7 +445,7 @@ class ROUTER_equity_ownership(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "date": date,
                     "page": page,
                 },
@@ -460,10 +457,9 @@ class ROUTER_equity_ownership(Container):
     def share_statistics(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["fmp", "intrinio"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
         """Share Statistics. Share statistics for a given company.
@@ -472,7 +468,7 @@ class ROUTER_equity_ownership(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp', 'intrinio']]
+        provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -482,7 +478,7 @@ class ROUTER_equity_ownership(Container):
         OBBject
             results : List[ShareStatistics]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -509,6 +505,26 @@ class ROUTER_equity_ownership(Container):
             Total number of shares of a publicly-traded company, adjusted for splits. (provider: intrinio)
         public_float : Optional[float]
             Aggregate market value of the shares of a publicly-traded company. (provider: intrinio)
+        implied_shares_outstanding : Optional[int]
+            Implied Shares Outstanding of common equity, assuming the conversion of all convertible subsidiary equity into common. (provider: yfinance)
+        short_interest : Optional[int]
+            Number of shares that are reported short. (provider: yfinance)
+        short_percent_of_float : Optional[float]
+            Percentage of shares that are reported short, as a normalized percent. (provider: yfinance)
+        days_to_cover : Optional[float]
+            Number of days to repurchase the shares as a ratio of average daily volume (provider: yfinance)
+        short_interest_prev_month : Optional[int]
+            Number of shares that were reported short in the previous month. (provider: yfinance)
+        short_interest_prev_date : Optional[date]
+            Date of the previous month's report. (provider: yfinance)
+        insider_ownership : Optional[float]
+            Percentage of shares held by insiders, as a normalized percent. (provider: yfinance)
+        institution_ownership : Optional[float]
+            Percentage of shares held by institutions, as a normalized percent. (provider: yfinance)
+        institution_float_ownership : Optional[float]
+            Percentage of float held by institutions, as a normalized percent. (provider: yfinance)
+        institutions_count : Optional[int]
+            Number of institutions holding shares. (provider: yfinance)
 
         Example
         -------
@@ -523,7 +539,7 @@ class ROUTER_equity_ownership(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )

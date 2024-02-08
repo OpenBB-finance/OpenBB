@@ -1,4 +1,5 @@
 """Fixed Income Government Router."""
+
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
@@ -8,7 +9,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/government")
 
@@ -21,7 +21,7 @@ async def us_yield_curve(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:  # type: ignore
+) -> OBBject:  # type: ignore
     """US Yield Curve. Get United States yield curve."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -62,7 +62,7 @@ async def treasury_rates(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Government Treasury Rates."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -73,7 +73,7 @@ async def treasury_auctions(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Government Treasury Auctions."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -84,6 +84,6 @@ async def treasury_prices(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Government Treasury Prices by date."""
     return await OBBject.from_query(Query(**locals()))

@@ -1,4 +1,5 @@
 """Test fixed income extension."""
+
 import pytest
 from extensions.tests.conftest import parametrize
 from openbb_core.app.model.obbject import OBBject
@@ -476,7 +477,7 @@ def test_fixedincome_government_treasury_auctions(params, obb):
         ),
         (
             {
-                "date": None,
+                "date": "2023-11-16",
                 "cusip": None,
                 "security_type": "bill",
                 "provider": "government_us",

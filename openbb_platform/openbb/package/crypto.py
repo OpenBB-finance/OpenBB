@@ -31,11 +31,11 @@ class ROUTER_crypto(Container):
         self,
         query: Annotated[
             Optional[str], OpenBBCustomParameter(description="Search query.")
-        ] = "",
+        ] = None,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Cryptocurrency Search. Search available cryptocurrency pairs.
+        """Search available cryptocurrency pairs within a provider.
 
         Parameters
         ----------
@@ -77,6 +77,8 @@ class ROUTER_crypto(Container):
         -------
         >>> from openbb import obb
         >>> obb.crypto.search()
+        >>> obb.crypto.search("BTCUSD")
+        >>> obb.crypto.search("ETH-USD")
         """  # noqa: E501
 
         return self._run(

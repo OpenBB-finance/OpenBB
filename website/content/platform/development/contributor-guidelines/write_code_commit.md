@@ -1,6 +1,6 @@
 ---
 title: Write Code and Commit
-sidebar_position: 5
+sidebar_position: 6
 description: This guide provides detailed instructions on how to write code and commit changes for the OpenBB Platform. It covers the process of creating a PR, branch naming conventions, and important guidelines to follow when committing changes.
 keywords:
 - OpenBB code writing
