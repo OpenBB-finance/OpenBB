@@ -9,7 +9,6 @@ from openbb_core.provider.standard_models.key_executives import (
     KeyExecutivesData,
     KeyExecutivesQueryParams,
 )
-from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from pydantic import Field
 from yfinance import Ticker
 
@@ -61,7 +60,10 @@ class YFinanceKeyExecutivesFetcher(
         symbols = query.symbol.split(",")
         symbol = symbols[0]
         if len(symbols) > 1:
-            _warn(f"{QUERY_DESCRIPTIONS.get('symbol_list_warning', '')} {symbol}")
+            _warn(
+                "Lists of symbols are not allowed for this function. "
+                f"Multiple symbols will be ignored in favour of the first symbol. {symbol}"
+            )
         try:
             ticker = Ticker(symbol).get_info()
         except Exception as e:
