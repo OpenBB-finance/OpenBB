@@ -13,8 +13,7 @@ from openbb_core.provider.utils.helpers import (
     amake_requests,
     to_snake_case,
 )
-from openbb_core.provider.utils.validators import check_single
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, model_validator
 
 
 class FMPFinancialRatiosQueryParams(FinancialRatiosQueryParams):
@@ -23,14 +22,11 @@ class FMPFinancialRatiosQueryParams(FinancialRatiosQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Company-Financial-Ratios
     """
 
+    __validator_dict__ = {"check_single": ("symbol",)}
+
     period: Literal["annual", "quarter", "ttm"] = Field(
         default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def validate_symbol(cls, v: str) -> str:
-        return check_single(v)
 
 
 class FMPFinancialRatiosData(FinancialRatiosData):

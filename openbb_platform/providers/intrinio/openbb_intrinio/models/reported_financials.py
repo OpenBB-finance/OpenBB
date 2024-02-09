@@ -13,10 +13,9 @@ from openbb_core.provider.utils.helpers import (
     amake_requests,
     to_snake_case,
 )
-from openbb_core.provider.utils.validators import check_single
 from openbb_intrinio.utils.helpers import get_data_one
 from pandas import DataFrame
-from pydantic import Field, field_validator
+from pydantic import Field
 
 _warn = warnings.warn
 
@@ -34,6 +33,8 @@ class IntrinioReportedFinancialsQueryParams(ReportedFinancialsQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_reported_financials_v2
     """
 
+    __validator_dict__ = {"check_single": ("symbol",)}
+
     statement_type: Literal["balance", "income", "cash"] = Field(
         default="income",
         description="Cash flow statements are reported as YTD, Q4 is the same as FY.",
@@ -43,11 +44,6 @@ class IntrinioReportedFinancialsQueryParams(ReportedFinancialsQueryParams):
         default=None,
         description="The specific fiscal year.  Reports do not go beyond 2008.",
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def validate_symbol(cls, v: str) -> str:
-        return check_single(v)
 
 
 class IntrinioReportedFinancialsData(ReportedFinancialsData):

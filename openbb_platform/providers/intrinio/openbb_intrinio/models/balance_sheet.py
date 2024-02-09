@@ -10,7 +10,6 @@ from openbb_core.provider.standard_models.balance_sheet import (
     BalanceSheetQueryParams,
 )
 from openbb_core.provider.utils.helpers import ClientResponse, amake_requests
-from openbb_core.provider.utils.validators import check_single
 from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import Field, field_validator, model_validator
 
@@ -24,6 +23,8 @@ class IntrinioBalanceSheetQueryParams(BalanceSheetQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
 
+    __validator_dict__ = {"check_single": ("symbol",)}
+
     period: Literal["annual", "quarter"] = Field(default="annual")
     fiscal_year: Optional[int] = Field(
         default=None,
@@ -36,11 +37,6 @@ class IntrinioBalanceSheetQueryParams(BalanceSheetQueryParams):
         """Validate period."""
         v = "FY" if v == "annual" else "QTR"
         return v
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def validate_symbol(cls, v: str) -> str:
-        return check_single(v)
 
     @field_validator("symbol", mode="after", check_fields=False)
     @classmethod

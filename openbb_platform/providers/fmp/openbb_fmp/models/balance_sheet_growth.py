@@ -8,7 +8,6 @@ from openbb_core.provider.standard_models.balance_sheet_growth import (
     BalanceSheetGrowthData,
     BalanceSheetGrowthQueryParams,
 )
-from openbb_core.provider.utils.validators import check_single
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from pydantic import field_validator
 
@@ -19,10 +18,7 @@ class FMPBalanceSheetGrowthQueryParams(BalanceSheetGrowthQueryParams):
     Source:  https://site.financialmodelingprep.com/developer/docs/#Financial-Statements-Growth
     """
 
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def validate_symbol(cls, v: str) -> str:
-        return check_single(v)
+    __validator_dict__ = {"check_single": ("symbol",)}
 
 
 class FMPBalanceSheetGrowthData(BalanceSheetGrowthData):

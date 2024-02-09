@@ -12,9 +12,8 @@ from openbb_core.provider.standard_models.income_statement import (
     IncomeStatementData,
     IncomeStatementQueryParams,
 )
-from openbb_core.provider.utils.validators import check_single
 from openbb_fmp.utils.helpers import get_data_many
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, model_validator
 
 
 class FMPIncomeStatementQueryParams(IncomeStatementQueryParams):
@@ -23,12 +22,9 @@ class FMPIncomeStatementQueryParams(IncomeStatementQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Income-Statement
     """
 
-    period: Optional[Literal["annual", "quarter"]] = Field(default="annual")
+    __validator_dict__ = {"check_single": ("symbol",)}
 
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def validate_symbol(cls, v: str) -> str:
-        return check_single(v)
+    period: Optional[Literal["annual", "quarter"]] = Field(default="annual")
 
 
 class FMPIncomeStatementData(IncomeStatementData):

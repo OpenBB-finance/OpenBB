@@ -11,7 +11,6 @@ from openbb_core.provider.standard_models.income_statement import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import to_snake_case
-from openbb_core.provider.utils.validators import check_single
 from pydantic import Field, field_validator
 from yfinance import Ticker
 
@@ -38,6 +37,7 @@ class YFinanceIncomeStatementData(IncomeStatementData):
         "basic_earnings_per_share": "basic_eps",
         "diluted_earnings_per_share": "diluted_eps",
     }
+    __validator_dict__ = {"check_single": ("symbol",)}
 
     @field_validator("period_ending", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213
@@ -45,11 +45,6 @@ class YFinanceIncomeStatementData(IncomeStatementData):
         if isinstance(v, str):
             return datetime.strptime(v, "%Y-%m-%d %H:%M:%S").date()
         return v
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def validate_symbol(cls, v: str) -> str:
-        return check_single(v)
 
 
 class YFinanceIncomeStatementFetcher(

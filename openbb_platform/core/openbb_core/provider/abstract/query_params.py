@@ -2,7 +2,9 @@
 
 from typing import Dict
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, model_validator
+
+from openbb_core.provider.utils.validators import VALIDATORS
 
 
 class QueryParams(BaseModel):
@@ -15,6 +17,15 @@ class QueryParams(BaseModel):
         return f"{self.__class__.__name__}({', '.join([f'{k}={v}' for k, v in self.model_dump().items()])})"
 
     model_config = ConfigDict(extra="allow", populate_by_name=True)
+
+    @model_validator(mode="before")
+    @classmethod
+    def _apply_validators(cls, values):
+        for v, fields in cls.__validator_dict__.items():
+            for f in fields:
+                if f in values and (func := VALIDATORS.get(v)):
+                    values[f] = func(values[f])
+        return values
 
     def model_dump(self, *args, **kwargs):
         """Dump the model."""

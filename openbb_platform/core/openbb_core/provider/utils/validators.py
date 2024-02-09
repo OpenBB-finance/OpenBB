@@ -8,3 +8,6 @@ def check_single(v: Optional[str]) -> Optional[str]:
     if v and "," in v:
         raise ValueError("multiple values are not allowed")
     return v
+
+
+VALIDATORS = {"check_single": check_single}

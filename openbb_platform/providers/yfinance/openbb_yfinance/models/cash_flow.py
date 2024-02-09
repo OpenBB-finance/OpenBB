@@ -11,7 +11,6 @@ from openbb_core.provider.standard_models.cash_flow import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import to_snake_case
-from openbb_core.provider.utils.validators import check_single
 from pydantic import Field, field_validator
 from yfinance import Ticker
 
@@ -22,12 +21,9 @@ class YFinanceCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     Source: https://finance.yahoo.com/
     """
 
-    period: Optional[Literal["annual", "quarter"]] = Field(default="annual")
+    __validator_dict__ = {"check_single": ("symbol",)}
 
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def validate_symbol(cls, v: str) -> str:
-        return check_single(v)
+    period: Optional[Literal["annual", "quarter"]] = Field(default="annual")
 
 
 class YFinanceCashFlowStatementData(CashFlowStatementData):

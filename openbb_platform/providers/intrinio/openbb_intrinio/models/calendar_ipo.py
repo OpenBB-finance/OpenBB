@@ -8,10 +8,9 @@ from openbb_core.provider.standard_models.calendar_ipo import (
     CalendarIpoQueryParams,
 )
 from openbb_core.provider.utils.helpers import get_querystring
-from openbb_core.provider.utils.validators import check_single
 from openbb_intrinio.utils.helpers import get_data_one
 from openbb_intrinio.utils.references import IntrinioCompany, IntrinioSecurity
-from pydantic import Field, field_validator
+from pydantic import Field
 
 
 class IntrinioCalendarIpoQueryParams(CalendarIpoQueryParams):
@@ -24,6 +23,7 @@ class IntrinioCalendarIpoQueryParams(CalendarIpoQueryParams):
         "symbol": "ticker",
         "limit": "page_size",
     }
+    __validator_dict__ = {"check_single": ("symbol",)}
 
     status: Optional[Literal["upcoming", "priced", "withdrawn"]] = Field(
         description="Status of the IPO. [upcoming, priced, or withdrawn]", default=None
@@ -38,11 +38,6 @@ class IntrinioCalendarIpoQueryParams(CalendarIpoQueryParams):
         default=None,
         alias="offer_amount_less_than",
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def validate_symbol(cls, v: str) -> str:
-        return check_single(v)
 
 
 class IntrinioCalendarIpoData(CalendarIpoData):

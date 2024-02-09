@@ -9,9 +9,8 @@ from openbb_core.provider.standard_models.balance_sheet import (
     BalanceSheetQueryParams,
 )
 from openbb_core.provider.utils.helpers import get_querystring
-from openbb_core.provider.utils.validators import check_single
 from openbb_polygon.utils.helpers import get_data_many
-from pydantic import Field, field_validator
+from pydantic import Field
 
 
 class PolygonBalanceSheetQueryParams(BalanceSheetQueryParams):
@@ -21,6 +20,7 @@ class PolygonBalanceSheetQueryParams(BalanceSheetQueryParams):
     """
 
     __alias_dict__ = {"symbol": "ticker", "period": "timeframe"}
+    __validator_dict__ = {"check_single": ("symbol",)}
 
     period: Literal["annual", "quarter", "ttm"] = Field(default="annual")
     filing_date: Optional[date] = Field(
@@ -70,11 +70,6 @@ class PolygonBalanceSheetQueryParams(BalanceSheetQueryParams):
     sort: Optional[Literal["filing_date", "period_of_report_date"]] = Field(
         default=None, description="Sort of the financial statement."
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def validate_symbol(cls, v: str) -> str:
-        return check_single(v)
 
 
 class PolygonBalanceSheetData(BalanceSheetData):
