@@ -83,7 +83,7 @@ class YFinanceCompanyNewsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract data."""
-        data = Ticker(query.symbols).get_news()
+        data = Ticker(query.symbol).get_news()
         data = json.loads(json.dumps(data))
 
         return data

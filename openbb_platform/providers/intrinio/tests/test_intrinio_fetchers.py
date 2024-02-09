@@ -88,7 +88,7 @@ def test_intrinio_currency_pairs_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_company_news_fetcher(credentials=test_credentials):
-    params = {"symbols": "AAPL"}
+    params = {"symbol": "AAPL"}
 
     fetcher = IntrinioCompanyNewsFetcher()
     result = fetcher.test(params, credentials)
@@ -106,7 +106,7 @@ def test_intrinio_world_news_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_equity_quote_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL"}
+    params = {"symbols": "AAPL"}
 
     fetcher = IntrinioEquityQuoteFetcher()
     result = fetcher.test(params, credentials)
