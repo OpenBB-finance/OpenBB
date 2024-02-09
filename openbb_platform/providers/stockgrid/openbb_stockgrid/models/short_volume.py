@@ -18,11 +18,14 @@ class StockgridShortVolumeQueryParams(ShortVolumeQueryParams):
     Source: https://www.stockgrid.io/
     """
 
+    __validator_dict__ = {"check_single": ("symbol",)}
+
 
 class StockgridShortVolumeData(ShortVolumeData):
     """Stockgrid Short Volume Data."""
 
     __alias_dict__ = {"short_volume_percent": "short_volume%", "symbol": "ticker"}
+
     close: Optional[float] = Field(
         default=None, description="Closing price of the stock on the date."
     )
