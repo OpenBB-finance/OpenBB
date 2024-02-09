@@ -9,6 +9,7 @@ from openbb_core.provider.standard_models.revenue_geographic import (
     RevenueGeographicData,
     RevenueGeographicQueryParams,
 )
+from openbb_core.provider.utils.validators import check_single
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from pydantic import field_validator
@@ -29,6 +30,11 @@ class FMPRevenueGeographicData(RevenueGeographicData):
     def date_validate(cls, v):  # pylint: disable=E0213
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%Y-%m-%d") if v else None
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def validate_symbol(cls, v: str) -> str:
+        return check_single(v)
 
 
 class FMPRevenueGeographicFetcher(
