@@ -1,8 +1,10 @@
 """Field validators"""
 
+from typing import Optional
 
-def check_single(v: str) -> str:
+
+def check_single(v: Optional[str]) -> Optional[str]:
     """Check that string is not comma-separated string"""
-    if "," in v:
+    if v and "," in v:
         raise ValueError("multiple values are not allowed")
     return v
