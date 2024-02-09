@@ -16,6 +16,8 @@ class TiingoTrailingDivYieldQueryParams(TrailingDivYieldQueryParams):
     Source: https://www.tiingo.com/documentation/end-of-day
     """
 
+    __validator_dict__ = {"check_single": ("symbol",)}
+
 
 class TiingoTrailingDivYieldData(TrailingDivYieldData):
     """Tiingo Trailing Dividend Yield Data."""
