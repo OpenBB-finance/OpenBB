@@ -40,12 +40,12 @@ async def market(
 
 @router.command(
     model="IndexConstituents",
-    exclude_auto_examples = True,
+    exclude_auto_examples=True,
     examples=[
         'obb.index.constituents("dowjones", provider="fmp").to_df()',
         "#### Providers other than FMP will use the ticker symbol. ####",
         'obb.index.constituents("BEP50P", provider="cboe").to_df()',
-    ]
+    ],
 )
 async def constituents(
     cc: CommandContext,
@@ -59,10 +59,10 @@ async def constituents(
 
 @router.command(
     model="IndexSnapshots",
-    exclude_auto_examples = True,
+    exclude_auto_examples=True,
     examples=[
         'obb.index.snapshots(region="us",provider="cboe").to_df()',
-    ]
+    ],
 )
 async def snapshots(
     cc: CommandContext,
@@ -76,10 +76,10 @@ async def snapshots(
 
 @router.command(
     model="AvailableIndices",
-    exclude_auto_examples = True,
+    exclude_auto_examples=True,
     examples=[
         'obb.index.available(provider="yfinance").to_df()',
-    ]
+    ],
 )
 async def available(
     cc: CommandContext,
@@ -93,10 +93,10 @@ async def available(
 
 @router.command(
     model="IndexSearch",
-    exclude_auto_examples = True,
+    exclude_auto_examples=True,
     examples=[
         "obb.index.search(query='SPX', provider='cboe').to_df()",
-    ]
+    ],
 )
 async def search(
     cc: CommandContext,
@@ -110,10 +110,10 @@ async def search(
 
 @router.command(
     model="SP500Multiples",
-    exclude_auto_examples = True,
+    exclude_auto_examples=True,
     examples=[
         'obb.index.sp500_multiples(series_name="shiller_pe_year", provider="nasdaq").to_df()',
-    ]
+    ],
 )
 async def sp500_multiples(
     cc: CommandContext,
