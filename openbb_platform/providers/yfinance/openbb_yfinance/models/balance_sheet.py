@@ -11,6 +11,7 @@ from openbb_core.provider.standard_models.balance_sheet import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import to_snake_case
+from openbb_core.provider.utils.validators import check_single
 from pydantic import Field, field_validator
 from yfinance import Ticker
 
@@ -37,6 +38,11 @@ class YFinanceBalanceSheetData(BalanceSheetData):
         "total_common_equity": "stockholders_equity",
         "total_equity_non_controlling_interests": "total_equity_gross_minority_interest",
     }
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def validate_symbol(cls, v: str) -> str:
+        return check_single(v)
 
     @field_validator("period_ending", mode="before", check_fields=False)
     @classmethod
