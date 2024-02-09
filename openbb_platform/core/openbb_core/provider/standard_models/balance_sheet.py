@@ -30,7 +30,7 @@ class BalanceSheetQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def upper_symbol(cls, v: str):
-        return v
+        return v.upper()
 
 
 class BalanceSheetData(Data):
