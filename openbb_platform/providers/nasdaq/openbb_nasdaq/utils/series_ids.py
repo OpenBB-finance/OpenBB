@@ -1,5 +1,7 @@
 """Nasdaq Data Link Series ID Dictionaries."""
 
+# pylint: disable=too-many-lines, line-too-long
+
 SP500MULTIPLES = {
     "shiller_pe_month": "MULTPL/SHILLER_PE_RATIO_MONTH",
     "shiller_pe_year": "MULTPL/SHILLER_PE_RATIO_YEAR",
