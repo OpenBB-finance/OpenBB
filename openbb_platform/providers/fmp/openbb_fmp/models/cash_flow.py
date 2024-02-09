@@ -13,8 +13,9 @@ from openbb_core.provider.standard_models.cash_flow import (
     CashFlowStatementData,
     CashFlowStatementQueryParams,
 )
+from openbb_core.provider.utils.validators import check_single
 from openbb_fmp.utils.helpers import create_url, get_data_many
-from pydantic import Field, model_validator
+from pydantic import Field, field_validator, model_validator
 
 
 class FMPCashFlowStatementQueryParams(CashFlowStatementQueryParams):
@@ -24,6 +25,11 @@ class FMPCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     """
 
     period: Optional[Literal["annual", "quarter"]] = Field(default="annual")
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def validate_symbol(cls, v: str) -> str:
+        return check_single(v)
 
 
 class FMPCashFlowStatementData(CashFlowStatementData):

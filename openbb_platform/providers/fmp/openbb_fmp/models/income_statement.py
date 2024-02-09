@@ -30,6 +30,7 @@ class FMPIncomeStatementQueryParams(IncomeStatementQueryParams):
     def validate_symbol(cls, v: str) -> str:
         return check_single(v)
 
+
 class FMPIncomeStatementData(IncomeStatementData):
     """FMP Income Statement Data."""
 

@@ -51,6 +51,7 @@ class YFinanceIncomeStatementData(IncomeStatementData):
     def validate_symbol(cls, v: str) -> str:
         return check_single(v)
 
+
 class YFinanceIncomeStatementFetcher(
     Fetcher[
         YFinanceIncomeStatementQueryParams,

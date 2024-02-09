@@ -77,6 +77,7 @@ class PolygonIncomeStatementQueryParams(IncomeStatementQueryParams):
     def validate_symbol(cls, v: str) -> str:
         return check_single(v)
 
+
 class PolygonIncomeStatementData(IncomeStatementData):
     """Polygon Income Statement Data."""
 

@@ -9,8 +9,9 @@ from openbb_core.provider.standard_models.cash_flow import (
     CashFlowStatementQueryParams,
 )
 from openbb_core.provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.validators import check_single
 from openbb_polygon.utils.helpers import get_data_many
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class PolygonCashFlowStatementQueryParams(CashFlowStatementQueryParams):
@@ -70,6 +71,11 @@ class PolygonCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     sort: Literal[None, "filing_date", "period_of_report_date"] = Field(
         default=None, description="Sort of the financial statement."
     )
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def validate_symbol(cls, v: str) -> str:
+        return check_single(v)
 
 
 class PolygonCashFlowStatementData(CashFlowStatementData):
