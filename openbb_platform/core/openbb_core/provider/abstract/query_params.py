@@ -11,6 +11,7 @@ class QueryParams(BaseModel):
     """The OpenBB Standardized QueryParams Model that holds the query input parameters."""
 
     __alias_dict__: Dict[str, str] = {}
+    __validator_dict__: Dict[str, tuple] = {}
 
     def __repr__(self):
         """Return the string representation of the QueryParams object."""
