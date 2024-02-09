@@ -208,7 +208,7 @@ async def short_term_interest_rate(
 
 
 @router.command(
-    model="STIR",
+    model="LTIR",
     exclude_auto_examples=True,
     examples=[
         'obb.economy.long_term_interest_rate(country="all", frequency="quarterly").to_df()',

@@ -1,5 +1,7 @@
 """OECD Long Term Interest Rate Rate Data."""
 
+# pylint: disable=unused-argument
+
 import re
 from datetime import date, timedelta
 from typing import Any, Dict, List, Literal, Optional, Union
@@ -152,7 +154,7 @@ class OECDLTIRFetcher(Fetcher[OECDLTIRQueryParams, List[OECDLTIRData]]):
             )
         )
         data["country"] = data["country"].map(ltir_mapping)
-
+        data = data.fillna("N/A").replace("N/A", None)
         return data.to_dict(orient="records")
 
     @staticmethod
