@@ -106,7 +106,7 @@ def test_intrinio_world_news_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_intrinio_equity_quote_fetcher(credentials=test_credentials):
-    params = {"symbols": "AAPL"}
+    params = {"symbol": "AAPL"}
 
     fetcher = IntrinioEquityQuoteFetcher()
     result = fetcher.test(params, credentials)
