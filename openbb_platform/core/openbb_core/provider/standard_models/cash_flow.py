@@ -1,6 +1,5 @@
 """Cash Flow Statement Standard Model."""
 
-import warnings
 from datetime import date as dateType
 from typing import Optional
 
@@ -9,8 +8,6 @@ from pydantic import Field, NonNegativeInt, field_validator
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
-
-_warn = warnings.warn
 
 
 class CashFlowStatementQueryParams(QueryParams):

@@ -1,6 +1,5 @@
 """Financial Ratios Standard Model."""
 
-import warnings
 from typing import Optional
 
 from pydantic import Field, NonNegativeInt, field_validator
@@ -11,8 +10,6 @@ from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-
-_warn = warnings.warn
 
 
 class FinancialRatiosQueryParams(QueryParams):
