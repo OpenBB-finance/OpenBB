@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -26,8 +26,7 @@ class ROUTER_equity_ownership(Container):
     def insider_trading(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         limit: Annotated[
             int,
@@ -147,7 +146,7 @@ class ROUTER_equity_ownership(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "limit": limit,
                 },
                 extra_params=kwargs,
@@ -158,8 +157,7 @@ class ROUTER_equity_ownership(Container):
     def institutional(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
@@ -301,7 +299,7 @@ class ROUTER_equity_ownership(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -311,8 +309,7 @@ class ROUTER_equity_ownership(Container):
     def major_holders(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         date: Annotated[
             Union[datetime.date, None, str],
@@ -448,7 +445,7 @@ class ROUTER_equity_ownership(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "date": date,
                     "page": page,
                 },
@@ -460,8 +457,7 @@ class ROUTER_equity_ownership(Container):
     def share_statistics(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
@@ -543,7 +539,7 @@ class ROUTER_equity_ownership(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
