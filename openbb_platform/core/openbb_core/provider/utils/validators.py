@@ -4,9 +4,12 @@ from typing import Optional
 
 
 def check_single(v: Optional[str]) -> Optional[str]:
-    """Check that string is not comma-separated string"""
-    if v and "," in v:
-        raise ValueError("comma-separated values are not allowed")
+    """Check that string is a single value."""
+    if v:
+        if "," in v:
+            raise ValueError("comma-separated values are not allowed")
+        if ";" in v:
+            raise ValueError("semicolon-separated values are not allowed")
     return v
 
 

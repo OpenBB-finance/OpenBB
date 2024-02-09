@@ -23,6 +23,8 @@ class IntrinioShareStatisticsQueryParams(ShareStatisticsQueryParams):
             https://data.intrinio.com/data-tag/public_float
     """
 
+    __validator_dict__ = {"check_single": ("symbol",)}
+
 
 class IntrinioShareStatisticsData(ShareStatisticsData):
     """Intrinio Share Statistics Data."""
