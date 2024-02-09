@@ -13,9 +13,10 @@ from openbb_core.provider.utils.helpers import (
     amake_requests,
     to_snake_case,
 )
+from openbb_core.provider.utils.validators import check_single
 from openbb_intrinio.utils.helpers import get_data_one
 from pandas import DataFrame
-from pydantic import Field
+from pydantic import Field, field_validator
 
 _warn = warnings.warn
 
@@ -42,6 +43,11 @@ class IntrinioReportedFinancialsQueryParams(ReportedFinancialsQueryParams):
         default=None,
         description="The specific fiscal year.  Reports do not go beyond 2008.",
     )
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def validate_symbol(cls, v: str) -> str:
+        return check_single(v)
 
 
 class IntrinioReportedFinancialsData(ReportedFinancialsData):
