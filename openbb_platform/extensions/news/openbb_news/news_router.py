@@ -46,7 +46,7 @@ async def world(
         "obb.news.company(symbol='AAPL', start_date='2024-02-01', end_date='2024-02-07')",
         "# Display the headlines of the news.",
         "obb.news.company(symbol='AAPL', display='headline', provider='benzinga')",
-        "# Get news for multiple symbol.",
+        "# Get news for multiple symbols.",
         "obb.news.company(symbol='aapl,tsla')",
         "# Get news company's ISIN.",
         "obb.news.company(symbol='NVDA', isin='US0378331005')",
