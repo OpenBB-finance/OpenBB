@@ -8,6 +8,7 @@ from openbb_core.provider.standard_models.cash_flow_growth import (
     CashFlowStatementGrowthData,
     CashFlowStatementGrowthQueryParams,
 )
+from openbb_core.provider.utils.validators import check_single
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from pydantic import field_validator
 
@@ -17,6 +18,11 @@ class FMPCashFlowStatementGrowthQueryParams(CashFlowStatementGrowthQueryParams):
 
     Source: https://site.financialmodelingprep.com/developer/docs/financial-statements-growth-api/
     """
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def validate_symbol(cls, v: str) -> str:
+        return check_single(v)
 
 
 class FMPCashFlowStatementGrowthData(CashFlowStatementGrowthData):
