@@ -1,6 +1,7 @@
 """FMP World News Model."""
 
 import math
+import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -11,7 +12,6 @@ from openbb_core.provider.standard_models.world_news import (
 )
 from openbb_core.provider.utils.helpers import amake_requests
 from pydantic import Field, field_validator
-import warnings
 
 _warn = warnings.warn
 

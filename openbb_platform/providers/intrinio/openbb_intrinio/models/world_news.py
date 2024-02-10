@@ -1,5 +1,6 @@
 """Intrinio World News Model."""
 
+import warnings
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -10,7 +11,6 @@ from openbb_core.provider.standard_models.world_news import (
 )
 from openbb_intrinio.utils.helpers import get_data_many
 from pydantic import Field, field_validator
-import warnings
 
 _warn = warnings.warn
 

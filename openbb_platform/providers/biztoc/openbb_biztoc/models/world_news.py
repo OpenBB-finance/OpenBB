@@ -1,5 +1,6 @@
 """Biztoc World News Model."""
 
+import warnings
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
@@ -11,7 +12,6 @@ from openbb_core.provider.standard_models.world_news import (
 )
 from pandas import to_datetime
 from pydantic import Field, field_validator
-import warnings
 
 _warn = warnings.warn
 
