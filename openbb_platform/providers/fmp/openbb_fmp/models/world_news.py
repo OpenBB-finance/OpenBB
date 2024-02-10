@@ -54,7 +54,7 @@ class FMPWorldNewsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> FMPWorldNewsQueryParams:
         """Transform the query params."""
-        if params in ["start_date", "end_date"]:
+        if params.get("start_date") or params.get("end_date"):
             _warn("start_date and end_date are not supported for this endpoint.")
         return FMPWorldNewsQueryParams(**params)
 
