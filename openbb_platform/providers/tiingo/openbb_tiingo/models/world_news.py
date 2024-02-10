@@ -9,7 +9,7 @@ from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import  get_querystring
+from openbb_core.provider.utils.helpers import get_querystring
 from openbb_tiingo.utils.helpers import get_data_many
 from pydantic import Field, field_validator
 
