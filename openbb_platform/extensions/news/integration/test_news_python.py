@@ -75,6 +75,7 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
                 "source": "bloomberg.com",
                 "start_date": None,
                 "end_date": None,
+                "offset": 0,
             }
         ),
     ],
