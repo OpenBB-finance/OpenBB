@@ -120,7 +120,7 @@ class BenzingaWorldNewsData(WorldNewsData):
     @field_validator("images", mode="before", check_fields=False)
     @classmethod
     def empty_list(cls, v):
-        """Return None istead of []"""
+        """Return None instead of []"""
         return None if v == [] else v
 
 
