@@ -111,11 +111,13 @@ class BenzingaWorldNewsData(WorldNewsData):
         v = ",".join([item.get("name", None) for item in v if item.get("name", None)])
         return v if v != "" else None
 
-    @field_validator("id", mode="before", check_fields=False)
+    @field_validator(
+        "id", "text", "teaser", "title", "author", mode="before", check_fields=False
+    )
     @classmethod
     def id_validate(cls, v):
-        """Return the id as a string."""
-        return str(v)
+        """Return the a string if the field is not empty."""
+        return str(v) if v else None
 
     @field_validator("images", mode="before", check_fields=False)
     @classmethod
