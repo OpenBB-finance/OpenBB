@@ -15,8 +15,14 @@ router = Router(prefix="/spreads")
 # pylint: disable=unused-argument
 
 
-@router.command(model="TreasuryConstantMaturity")
-async def tmc(
+@router.command(
+    model="TreasuryConstantMaturity",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.fixedincome.fixedincome.spreads.tcm(maturity="2y")',
+    ],
+)
+async def tcm(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -32,8 +38,14 @@ async def tmc(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="SelectedTreasuryConstantMaturity")
-async def tmc_effr(
+@router.command(
+    model="SelectedTreasuryConstantMaturity",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.fixedincome.fixedincome.spreads.tcm_effr(maturity="10y")',
+    ],
+)
+async def tcm_effr(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
@@ -49,7 +61,13 @@ async def tmc_effr(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="SelectedTreasuryBill")
+@router.command(
+    model="SelectedTreasuryBill",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.fixedincome.fixedincome.spreads.treasury_effr(maturity="6m")',
+    ],
+)
 async def treasury_effr(
     cc: CommandContext,
     provider_choices: ProviderChoices,
