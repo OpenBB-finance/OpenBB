@@ -97,7 +97,7 @@ class ROUTER_fixedincome_government(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.government.treasury_rates()
+        >>> obb.fixedincome.government.treasury_rates(provider="federal_reserve")
         """  # noqa: E501
 
         return self._run(
@@ -167,7 +167,7 @@ class ROUTER_fixedincome_government(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.government.us_yield_curve(inflation_adjusted=False)
+        >>> obb.fixedincome.government.us_yield_curve(inflation_adjusted=True)
         """  # noqa: E501
 
         return self._run(

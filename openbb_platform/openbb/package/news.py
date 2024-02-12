@@ -24,10 +24,10 @@ class ROUTER_news(Container):
     @validate
     def company(
         self,
-        symbols: Annotated[
+        symbol: Annotated[
             str,
             OpenBBCustomParameter(
-                description=" Here it is a separated list of symbols."
+                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas."
             ),
         ],
         limit: Annotated[
@@ -55,8 +55,8 @@ class ROUTER_news(Container):
 
         Parameters
         ----------
-        symbols : str
-             Here it is a separated list of symbols.
+        symbol : str
+            Symbol to get data for. This endpoint will accept multiple symbols separated by commas.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
         start_date : Optional[datetime.date]
@@ -168,15 +168,15 @@ class ROUTER_news(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.news.company(symbols="AAPL,MSFT", limit=20)
+        >>> obb.news.company(symbol="AAPL", limit=20)
         >>> # Get news on the specified dates.
-        >>> obb.news.company(symbols='AAPL', start_date='2024-02-01', end_date='2024-02-07')
+        >>> obb.news.company(symbol='AAPL', start_date='2024-02-01', end_date='2024-02-07')
         >>> # Display the headlines of the news.
-        >>> obb.news.company(symbols='AAPL', display='headline', provider='benzinga')
+        >>> obb.news.company(symbol='AAPL', display='headline', provider='benzinga')
         >>> # Get news for multiple symbols.
-        >>> obb.news.company(symbols='aapl,tsla')
+        >>> obb.news.company(symbol='aapl,tsla')
         >>> # Get news company's ISIN.
-        >>> obb.news.company(symbols='NVDA', isin='US0378331005')
+        >>> obb.news.company(symbol='NVDA', isin='US0378331005')
         """  # noqa: E501
 
         return self._run(
@@ -186,7 +186,7 @@ class ROUTER_news(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbols": symbols,
+                    "symbol": symbol,
                     "limit": limit,
                     "start_date": start_date,
                     "end_date": end_date,

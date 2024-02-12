@@ -43,13 +43,13 @@ async def world(
     model="CompanyNews",
     examples=[
         "# Get news on the specified dates.",
-        "obb.news.company(symbols='AAPL', start_date='2024-02-01', end_date='2024-02-07')",
+        "obb.news.company(symbol='AAPL', start_date='2024-02-01', end_date='2024-02-07')",
         "# Display the headlines of the news.",
-        "obb.news.company(symbols='AAPL', display='headline', provider='benzinga')",
+        "obb.news.company(symbol='AAPL', display='headline', provider='benzinga')",
         "# Get news for multiple symbols.",
-        "obb.news.company(symbols='aapl,tsla')",
+        "obb.news.company(symbol='aapl,tsla')",
         "# Get news company's ISIN.",
-        "obb.news.company(symbols='NVDA', isin='US0378331005')",
+        "obb.news.company(symbol='NVDA', isin='US0378331005')",
     ],
 )
 async def company(
