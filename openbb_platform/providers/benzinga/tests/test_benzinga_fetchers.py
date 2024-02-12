@@ -21,7 +21,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_benzinga_world_news_fetcher(credentials=test_credentials):
-    params = {}
+    params = {"limit": 20}
 
     fetcher = BenzingaWorldNewsFetcher()
     result = fetcher.test(params, credentials)

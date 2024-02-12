@@ -1,5 +1,7 @@
 """Benzinga World News Model."""
 
+# pylint: disable=unused-argument
+
 import math
 from datetime import (
     date as dateType,
@@ -97,21 +99,31 @@ class BenzingaWorldNewsData(WorldNewsData):
     )
 
     @field_validator("date", "updated", mode="before", check_fields=False)
-    def date_validate(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def date_validate(cls, v):
         """Return the date as a datetime object."""
         return datetime.strptime(v, "%a, %d %b %Y %H:%M:%S %z")
 
     @field_validator("stocks", "channels", "tags", mode="before", check_fields=False)
-    def list_validate(cls, v):  # pylint: disable=E0213
+    @classmethod
+    def list_validate(cls, v):
         """Return the list as a string."""
-        return ",".join(
-            [item.get("name", None) for item in v if item.get("name", None)]
-        )
+        v = ",".join([item.get("name", None) for item in v if item.get("name", None)])
+        return v if v != "" else None
 
-    @field_validator("id", mode="before", check_fields=False)
-    def id_validate(cls, v):  # pylint: disable=E0213
-        """Return the id as a string."""
-        return str(v)
+    @field_validator(
+        "id", "text", "teaser", "title", "author", mode="before", check_fields=False
+    )
+    @classmethod
+    def id_validate(cls, v):
+        """Return the a string if the field is not empty."""
+        return str(v) if v else None
+
+    @field_validator("images", mode="before", check_fields=False)
+    @classmethod
+    def empty_list(cls, v):
+        """Return None instead of []"""
+        return None if v == [] else v
 
 
 class BenzingaWorldNewsFetcher(
@@ -132,7 +144,7 @@ class BenzingaWorldNewsFetcher(
         query: BenzingaWorldNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> List[dict]:
+    ) -> List[Dict]:
         """Extract the data."""
         token = credentials.get("benzinga_api_key") if credentials else ""
         base_url = "https://api.benzinga.com/api/v2/news"
@@ -151,11 +163,10 @@ class BenzingaWorldNewsFetcher(
 
         return data[: query.limit]
 
-    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: BenzingaWorldNewsQueryParams,
-        data: List[dict],
+        data: List[Dict],
         **kwargs: Any,
     ) -> List[BenzingaWorldNewsData]:
         """Transform the data."""
