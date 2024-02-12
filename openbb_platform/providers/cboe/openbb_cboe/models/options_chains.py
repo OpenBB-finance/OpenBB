@@ -27,6 +27,8 @@ class CboeOptionsChainsQueryParams(OptionsChainsQueryParams):
     Source: https://www.cboe.com/
     """
 
+    __validator_dict__ = {"check_single": ("symbol",)}
+
     use_cache: bool = Field(
         default=True,
         description="When True, the company directories will be cached for"

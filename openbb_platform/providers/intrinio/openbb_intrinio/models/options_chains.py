@@ -28,6 +28,8 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
     source: https://docs.intrinio.com/documentation/web_api/get_options_chain_eod_v2
     """
 
+    __validator_dict__ = {"check_single": ("symbol",)}
+
     date: Optional[dateType] = Field(
         default=None, description="The end-of-day date for options chains data."
     )
