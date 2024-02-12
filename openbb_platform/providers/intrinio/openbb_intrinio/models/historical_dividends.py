@@ -23,6 +23,7 @@ class IntrinioHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
     """
 
     __alias_dict__ = {"limit": "page_size"}
+    __validator_dict__ = {"check_single": ("symbol",)}
 
     limit: Optional[int] = Field(
         default=100,

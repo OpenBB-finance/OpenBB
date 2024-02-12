@@ -17,6 +17,8 @@ _warn = warnings.warn
 class YFinanceHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
     """YFinance Historical Dividends Query."""
 
+    __validator_dict__ = {"check_single": ("symbol",)}
+
 
 class YFinanceHistoricalDividendsData(HistoricalDividendsData):
     """YFinance Historical Dividends Data. All data is split-adjusted."""
@@ -43,19 +45,12 @@ class YFinanceHistoricalDividendsFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from YFinance."""
-        symbols = query.symbol.split(",")
-        symbol = symbols[0]
-        if len(symbols) > 1:
-            _warn(
-                "Lists of symbols are not allowed for this function. "
-                f"Multiple symbols will be ignored in favour of the first symbol. {symbol}"
-            )
         try:
-            ticker = Ticker(symbol).get_dividends()
+            ticker = Ticker(query.symbol).get_dividends()
             if isinstance(ticker, List) and not ticker or ticker.empty:  # type: ignore
-                raise ValueError(f"No dividend data found for {symbol}")
+                raise ValueError(f"No dividend data found for {query.symbol}")
         except Exception as e:
-            raise RuntimeError(f"Error getting data for {symbol}: {e}") from e
+            raise RuntimeError(f"Error getting data for {query.symbol}: {e}") from e
         ticker.index.name = "ex_dividend_date"
         ticker.name = "amount"  # type: ignore
         if query.start_date is not None:
