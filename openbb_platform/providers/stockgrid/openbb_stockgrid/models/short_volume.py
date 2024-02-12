@@ -51,6 +51,7 @@ class StockgridShortVolumeFetcher(
         """Transform query params."""
         return StockgridShortVolumeQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: StockgridShortVolumeQueryParams,

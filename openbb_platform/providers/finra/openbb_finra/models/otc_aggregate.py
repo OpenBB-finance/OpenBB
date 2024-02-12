@@ -46,6 +46,7 @@ class FinraOTCAggregateFetcher(
         """Transform query params."""
         return FinraOTCAggregateQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: FinraOTCAggregateQueryParams,
