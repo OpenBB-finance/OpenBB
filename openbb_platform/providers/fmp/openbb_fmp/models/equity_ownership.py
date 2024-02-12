@@ -21,6 +21,8 @@ class FMPEquityOwnershipQueryParams(EquityOwnershipQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Ownership-by-Holders
     """
 
+    __validator_dict__ = {"check_single_value": ("symbol",)}
+
     @field_validator("date", mode="before", check_fields=True)
     @classmethod
     def time_validate(cls, v: str):
