@@ -1,6 +1,6 @@
 """The OpenBB Standardized QueryParams Model that holds the query input parameters."""
 
-from typing import Dict
+from typing import Dict, Optional
 
 from pydantic import BaseModel, ConfigDict, model_validator
 
@@ -24,8 +24,8 @@ class QueryParams(BaseModel):
     def _apply_validators(cls, values):
         for v, fields in cls.__validator_dict__.items():
             for f in fields:
-                func: validators.V
-                if f in values and (func := getattr(validators, v)):
+                func: Optional[validators.V]
+                if f in values and (func := getattr(validators, v, None)):
                     values[f] = func(f, values[f])
         return values
 
