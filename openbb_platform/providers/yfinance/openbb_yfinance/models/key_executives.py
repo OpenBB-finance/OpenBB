@@ -28,7 +28,6 @@ class YFinanceKeyExecutivesData(KeyExecutivesData):
         "exercised_value": "exercisedValue",
         "unexercised_value": "unexercisedValue",
     }
-    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     exercised_value: Optional[int] = Field(
         default=None,
