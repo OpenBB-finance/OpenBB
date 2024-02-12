@@ -20,10 +20,10 @@ from openbb_core.provider.utils.descriptions import (
 class CompanyNewsQueryParams(QueryParams):
     """Company news Query."""
 
-    symbols: str = Field(
+    symbol: str = Field(
         min_length=1,
-        description=QUERY_DESCRIPTIONS.get("symbols", "")
-        + " Here it is a separated list of symbols.",
+        description=QUERY_DESCRIPTIONS.get("symbol", "")
+        + " This endpoint will accept multiple symbols separated by commas.",
     )
     limit: Optional[NonNegativeInt] = Field(
         default=20, description=QUERY_DESCRIPTIONS.get("limit", "")
@@ -35,7 +35,7 @@ class CompanyNewsQueryParams(QueryParams):
         default=None, description=QUERY_DESCRIPTIONS.get("end_date", "")
     )
 
-    @field_validator("symbols", mode="before")
+    @field_validator("symbol", mode="before")
     @classmethod
     def symbols_validate(cls, v: str) -> str:  # pylint: disable=E0213
         """Validate the symbols."""
