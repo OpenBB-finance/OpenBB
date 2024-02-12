@@ -20,7 +20,7 @@ class TiingoCompanyNewsQueryParams(CompanyNewsQueryParams):
     Source: https://www.tiingo.com/documentation/news
     """
 
-    __alias_dict__ = {"symbols": "tickers"}
+    __alias_dict__ = {"symbol": "tickers"}
 
     source: Optional[str] = Field(
         default=None, description="A comma-separated list of the domains requested."

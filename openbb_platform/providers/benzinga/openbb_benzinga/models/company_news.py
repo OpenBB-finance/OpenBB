@@ -24,7 +24,7 @@ class BenzingaCompanyNewsQueryParams(CompanyNewsQueryParams):
     """
 
     __alias_dict__ = {
-        "symbols": "tickers",
+        "symbol": "tickers",
         "display": "displayOutput",
         "limit": "pageSize",
         "start_date": "dateFrom",
