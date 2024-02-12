@@ -116,6 +116,7 @@ class CommandLib:
             "index": '"sp500"',
         },
         "news": {
+            "symbol": '"AAPL"',
             "symbols": '"AAPL,MSFT"',
             "start_date": '"2023-01-01"',
             "end_date": '"2023-12-31"',
