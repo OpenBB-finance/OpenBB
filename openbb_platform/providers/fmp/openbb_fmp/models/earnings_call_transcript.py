@@ -18,7 +18,7 @@ class FMPEarningsCallTranscriptQueryParams(EarningsCallTranscriptQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/earning-call-transcript-api/
     """
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     @field_validator("year", mode="before", check_fields=False)
     @classmethod

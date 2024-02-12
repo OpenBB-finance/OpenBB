@@ -21,7 +21,7 @@ class FMPShareStatisticsQueryParams(ShareStatisticsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/shares-float-api/
     """
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
 
 class FMPShareStatisticsData(ShareStatisticsData):

@@ -21,7 +21,7 @@ class IntrinioInstitutionalOwnershipQueryParams(InstitutionalOwnershipQueryParam
             https://docs.intrinio.com/documentation/web_api/get_owner_by_id_v2
     """
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     limit: Optional[int] = Field(
         default=100, description=QUERY_DESCRIPTIONS.get("limit", ""), alias="page_size"

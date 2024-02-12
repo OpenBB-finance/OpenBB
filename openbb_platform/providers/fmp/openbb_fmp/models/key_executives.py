@@ -18,7 +18,7 @@ class FMPKeyExecutivesQueryParams(KeyExecutivesQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Key-Executives
     """
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
 
 class FMPKeyExecutivesData(KeyExecutivesData):

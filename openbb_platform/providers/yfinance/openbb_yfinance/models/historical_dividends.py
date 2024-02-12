@@ -14,7 +14,7 @@ from yfinance import Ticker
 class YFinanceHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
     """YFinance Historical Dividends Query."""
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
 
 class YFinanceHistoricalDividendsData(HistoricalDividendsData):

@@ -14,7 +14,7 @@ from pydantic import Field
 class FinraOTCAggregateQueryParams(OTCAggregateQueryParams):
     """FINRA OTC Aggregate Query."""
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     tier: Literal["T1", "T2", "OTCE"] = Field(
         default="T1",

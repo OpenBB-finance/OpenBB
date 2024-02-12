@@ -23,7 +23,7 @@ class IntrinioCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     period: Literal["annual", "quarter", "ttm", "ytd"] = Field(default="annual")
     fiscal_year: Optional[int] = Field(

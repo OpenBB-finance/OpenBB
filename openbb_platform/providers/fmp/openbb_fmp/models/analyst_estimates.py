@@ -16,7 +16,7 @@ class FMPAnalystEstimatesQueryParams(AnalystEstimatesQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/analyst-estimates-api/
     """
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
 
 class FMPAnalystEstimatesData(AnalystEstimatesData):

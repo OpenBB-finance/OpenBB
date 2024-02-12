@@ -22,7 +22,7 @@ class FMPFinancialRatiosQueryParams(FinancialRatiosQueryParams):
     Source: https://financialmodelingprep.com/developer/docs/#Company-Financial-Ratios
     """
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     period: Literal["annual", "quarter", "ttm"] = Field(
         default="annual", description=QUERY_DESCRIPTIONS.get("period", "")

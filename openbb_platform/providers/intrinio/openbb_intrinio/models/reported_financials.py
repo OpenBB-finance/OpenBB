@@ -33,7 +33,7 @@ class IntrinioReportedFinancialsQueryParams(ReportedFinancialsQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_reported_financials_v2
     """
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     statement_type: Literal["balance", "income", "cash"] = Field(
         default="income",

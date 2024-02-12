@@ -18,7 +18,7 @@ class FMPIncomeStatementGrowthQueryParams(IncomeStatementGrowthQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/financial-statements-growth-api/
     """
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
 
 class FMPIncomeStatementGrowthData(IncomeStatementGrowthData):

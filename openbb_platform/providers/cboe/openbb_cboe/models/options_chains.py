@@ -27,7 +27,7 @@ class CboeOptionsChainsQueryParams(OptionsChainsQueryParams):
     Source: https://www.cboe.com/
     """
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     use_cache: bool = Field(
         default=True,

@@ -23,7 +23,7 @@ class FMPHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Historical-Dividends
     """
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
 
 class FMPHistoricalDividendsData(HistoricalDividendsData):

@@ -19,7 +19,7 @@ class CboeFuturesCurveQueryParams(FuturesCurveQueryParams):
     Source: https://www.cboe.com/
     """
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
 
 class CboeFuturesCurveData(FuturesCurveData):

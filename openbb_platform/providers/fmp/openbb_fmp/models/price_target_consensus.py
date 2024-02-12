@@ -16,7 +16,7 @@ class FMPPriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/price-target-consensus-api/
     """
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
 
 class FMPPriceTargetConsensusData(PriceTargetConsensusData):

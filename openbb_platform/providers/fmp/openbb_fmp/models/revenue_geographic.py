@@ -24,7 +24,7 @@ class FMPRevenueGeographicQueryParams(RevenueGeographicQueryParams):
 class FMPRevenueGeographicData(RevenueGeographicData):
     """FMP Revenue Geographic Data."""
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     @field_validator("period_ending", "filing_date", mode="before", check_fields=False)
     @classmethod

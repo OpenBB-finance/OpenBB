@@ -21,7 +21,7 @@ class YFinanceCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     Source: https://finance.yahoo.com/
     """
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     period: Optional[Literal["annual", "quarter"]] = Field(default="annual")
 

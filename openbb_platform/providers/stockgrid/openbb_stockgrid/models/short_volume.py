@@ -18,7 +18,7 @@ class StockgridShortVolumeQueryParams(ShortVolumeQueryParams):
     Source: https://www.stockgrid.io/
     """
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
 
 class StockgridShortVolumeData(ShortVolumeData):

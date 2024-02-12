@@ -37,7 +37,7 @@ class YFinanceIncomeStatementData(IncomeStatementData):
         "basic_earnings_per_share": "basic_eps",
         "diluted_earnings_per_share": "diluted_eps",
     }
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     @field_validator("period_ending", mode="before", check_fields=False)
     def date_validate(cls, v):  # pylint: disable=E0213

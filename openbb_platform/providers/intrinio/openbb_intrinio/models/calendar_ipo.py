@@ -23,7 +23,7 @@ class IntrinioCalendarIpoQueryParams(CalendarIpoQueryParams):
         "symbol": "ticker",
         "limit": "page_size",
     }
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     status: Optional[Literal["upcoming", "priced", "withdrawn"]] = Field(
         description="Status of the IPO. [upcoming, priced, or withdrawn]", default=None

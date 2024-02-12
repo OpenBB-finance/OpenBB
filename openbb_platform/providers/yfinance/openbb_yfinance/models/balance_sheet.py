@@ -37,7 +37,7 @@ class YFinanceBalanceSheetData(BalanceSheetData):
         "total_common_equity": "stockholders_equity",
         "total_equity_non_controlling_interests": "total_equity_gross_minority_interest",
     }
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     @field_validator("period_ending", mode="before", check_fields=False)
     @classmethod

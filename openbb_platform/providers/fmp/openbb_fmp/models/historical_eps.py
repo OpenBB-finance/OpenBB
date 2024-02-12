@@ -22,7 +22,7 @@ class FMPHistoricalEpsQueryParams(HistoricalEpsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/earnings-calendar-api/
     """
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     limit: Optional[int] = Field(
         default=None,

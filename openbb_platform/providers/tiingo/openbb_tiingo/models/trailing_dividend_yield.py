@@ -16,7 +16,7 @@ class TiingoTrailingDivYieldQueryParams(TrailingDivYieldQueryParams):
     Source: https://www.tiingo.com/documentation/end-of-day
     """
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
 
 class TiingoTrailingDivYieldData(TrailingDivYieldData):

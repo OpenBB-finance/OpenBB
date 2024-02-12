@@ -20,7 +20,7 @@ class PolygonCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     """
 
     __alias_dict__ = {"symbol": "ticker", "period": "timeframe"}
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     period: Literal["annual", "quarter"] = Field(default="annual")
 

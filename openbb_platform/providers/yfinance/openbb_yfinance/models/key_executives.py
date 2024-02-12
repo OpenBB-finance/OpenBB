@@ -15,7 +15,7 @@ from yfinance import Ticker
 class YFinanceKeyExecutivesQueryParams(KeyExecutivesQueryParams):
     """YFinance Key Executives Query."""
 
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
 
 class YFinanceKeyExecutivesData(KeyExecutivesData):
@@ -28,7 +28,7 @@ class YFinanceKeyExecutivesData(KeyExecutivesData):
         "exercised_value": "exercisedValue",
         "unexercised_value": "unexercisedValue",
     }
-    __validator_dict__ = {"check_single": ("symbol",)}
+    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     exercised_value: Optional[int] = Field(
         default=None,
