@@ -25,7 +25,7 @@ class QueryParams(BaseModel):
         for v, fields in cls.__validator_dict__.items():
             for f in fields:
                 if f in values and (func := VALIDATORS.get(v)):
-                    values[f] = func(values[f])
+                    values[f] = func(f, values[f])
         return values
 
     def model_dump(self, *args, **kwargs):

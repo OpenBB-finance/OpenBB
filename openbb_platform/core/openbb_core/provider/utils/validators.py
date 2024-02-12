@@ -3,12 +3,12 @@
 from typing import Optional
 
 
-def check_single(v: Optional[str]) -> Optional[str]:
+def check_single(field: str, value: Optional[str]) -> Optional[str]:
     """Check that string is a single value."""
-    if v:
-        if "," in v or ";" in v:
-            raise ValueError("multiple values not allowed")
-    return v
+    if value:
+        if "," in value or ";" in value:
+            raise ValueError(f"multiple values not allowed for field '{field}'")
+    return value
 
 
 VALIDATORS = {"check_single": check_single}
