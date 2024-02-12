@@ -15,7 +15,7 @@ from openbb_core.provider.utils.validators import check_single_value
     ],
 )
 def test_check_single_value(field, value, expected):
-    if expected == ValueError:
+    if expected is ValueError:
         with pytest.raises(ValueError):
             check_single_value(field, value)
     else:
