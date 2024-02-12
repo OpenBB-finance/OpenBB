@@ -92,7 +92,7 @@ def test_tmx_company_filings_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_tmx_company_news_fetcher(credentials=test_credentials):
-    params = {"symbols": "SHOP", "limit": 5}
+    params = {"symbol": "SHOP", "limit": 5}
 
     fetcher = TmxCompanyNewsFetcher()
     result = fetcher.test(params, credentials)
