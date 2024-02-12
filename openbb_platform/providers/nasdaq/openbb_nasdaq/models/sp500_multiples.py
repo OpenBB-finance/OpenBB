@@ -1,5 +1,7 @@
 """Nasdaq SP500 Multiples Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
 import nasdaqdatalink
@@ -10,6 +12,7 @@ from openbb_core.provider.standard_models.sp500_multiples import (
 )
 from openbb_nasdaq.utils.query_params import DataLinkQueryParams
 from openbb_nasdaq.utils.series_ids import SP500MULTIPLES
+from pydantic import model_validator
 
 
 class NasdaqSP500MultiplesQueryParams(SP500MultiplesQueryParams, DataLinkQueryParams):
@@ -18,6 +21,15 @@ class NasdaqSP500MultiplesQueryParams(SP500MultiplesQueryParams, DataLinkQueryPa
 
 class NasdaqSP500MultiplesData(SP500MultiplesData):
     """Nasdaq SP500 Multiples Data."""
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_percent(cls, values):
+        """Normalize percent values."""
+        for k, v in values.items():
+            if any(x in k for x in ["yield", "growth"]):
+                values[k] = float(v) / 100
+        return values
 
 
 class NasdaqSP500MultiplesFetcher(
@@ -68,5 +80,5 @@ class NasdaqSP500MultiplesFetcher(
         data: List[Dict],
         **kwargs: Any,
     ) -> List[NasdaqSP500MultiplesData]:
-        """Parse data into the NasdaqSP500MultiplesData format."""
+        """Transform the data to the model."""
         return [NasdaqSP500MultiplesData.model_validate(d) for d in data]
