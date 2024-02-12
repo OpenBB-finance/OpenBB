@@ -1,7 +1,6 @@
 """YFinance Key Executives Model."""
 
 # pylint: disable=unused-argument
-import warnings
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -12,11 +11,11 @@ from openbb_core.provider.standard_models.key_executives import (
 from pydantic import Field
 from yfinance import Ticker
 
-_warn = warnings.warn
-
 
 class YFinanceKeyExecutivesQueryParams(KeyExecutivesQueryParams):
     """YFinance Key Executives Query."""
+
+    __validator_dict__ = {"check_single": ("symbol",)}
 
 
 class YFinanceKeyExecutivesData(KeyExecutivesData):
@@ -29,6 +28,7 @@ class YFinanceKeyExecutivesData(KeyExecutivesData):
         "exercised_value": "exercisedValue",
         "unexercised_value": "unexercisedValue",
     }
+    __validator_dict__ = {"check_single": ("symbol",)}
 
     exercised_value: Optional[int] = Field(
         default=None,
@@ -57,19 +57,12 @@ class YFinanceKeyExecutivesFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Extract the raw data from YFinance."""
-        symbols = query.symbol.split(",")
-        symbol = symbols[0]
-        if len(symbols) > 1:
-            _warn(
-                "Lists of symbols are not allowed for this function. "
-                f"Multiple symbols will be ignored in favour of the first symbol. {symbol}"
-            )
         try:
-            ticker = Ticker(symbol).get_info()
+            ticker = Ticker(query.symbol).get_info()
         except Exception as e:
-            raise RuntimeError(f"Error getting data for {symbol}: {e}") from e
+            raise RuntimeError(f"Error getting data for {query.symbol}: {e}") from e
         if ticker.get("companyOfficers") is None:
-            raise ValueError(f"No executive data found for {symbol}")
+            raise ValueError(f"No executive data found for {query.symbol}")
         officers_data = ticker.get("companyOfficers", [])
         [d.pop("maxAge") for d in officers_data]  # pylint: disable=W0106
         return officers_data

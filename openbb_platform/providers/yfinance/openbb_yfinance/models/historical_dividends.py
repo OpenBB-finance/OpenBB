@@ -1,7 +1,6 @@
 """YFinance Historical Dividends Model."""
 
 # pylint: disable=unused-argument
-import warnings
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -10,8 +9,6 @@ from openbb_core.provider.standard_models.historical_dividends import (
     HistoricalDividendsQueryParams,
 )
 from yfinance import Ticker
-
-_warn = warnings.warn
 
 
 class YFinanceHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
