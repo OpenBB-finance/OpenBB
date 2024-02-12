@@ -187,7 +187,6 @@ class IntrinioEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
-
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = f"https://api-v2.intrinio.com/securities/{query.symbol}/prices"
