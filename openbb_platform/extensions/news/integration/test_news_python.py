@@ -106,7 +106,7 @@ def test_news_world(params, obb):
                 "authors": None,
                 "content_types": "headline",
                 "provider": "benzinga",
-                "symbols": "AAPL,MSFT",
+                "symbol": "AAPL,MSFT",
                 "limit": 20,
             }
         ),
@@ -115,7 +115,7 @@ def test_news_world(params, obb):
                 "published_utc": "2024-01-10",
                 "order": "desc",
                 "provider": "polygon",
-                "symbols": "AAPL",
+                "symbol": "AAPL",
                 "limit": 20,
                 "start_date": None,
                 "end_date": None,
@@ -124,7 +124,7 @@ def test_news_world(params, obb):
         (
             {
                 "provider": "fmp",
-                "symbols": "AAPL",
+                "symbol": "AAPL",
                 "limit": 20,
                 "page": 1,
                 "start_date": None,
@@ -134,7 +134,7 @@ def test_news_world(params, obb):
         (
             {
                 "provider": "yfinance",
-                "symbols": "AAPL",
+                "symbol": "AAPL",
                 "limit": 20,
                 "start_date": None,
                 "end_date": None,
@@ -143,7 +143,7 @@ def test_news_world(params, obb):
         (
             {
                 "provider": "intrinio",
-                "symbols": "AAPL",
+                "symbol": "AAPL",
                 "limit": 20,
                 "start_date": None,
                 "end_date": None,
@@ -152,7 +152,7 @@ def test_news_world(params, obb):
         (
             {
                 "provider": "tiingo",
-                "symbols": "AAPL,MSFT",
+                "symbol": "AAPL,MSFT",
                 "limit": 20,
                 "source": "bloomberg.com",
                 "start_date": None,

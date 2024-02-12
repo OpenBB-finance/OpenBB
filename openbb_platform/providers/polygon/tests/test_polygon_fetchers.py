@@ -76,7 +76,7 @@ def test_polygon_index_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_polygon_company_news_fetcher(credentials=test_credentials):
-    params = {"symbols": "AAPL"}
+    params = {"symbol": "AAPL"}
 
     fetcher = PolygonCompanyNewsFetcher()
     result = fetcher.test(params, credentials)

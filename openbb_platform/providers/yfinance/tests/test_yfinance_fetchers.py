@@ -159,7 +159,7 @@ def test_y_finance_futures_curve_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_y_finance_company_news_fetcher(credentials=test_credentials):
-    params = {"symbols": "AAPL,MSFT"}
+    params = {"symbol": "AAPL,MSFT"}
 
     fetcher = YFinanceCompanyNewsFetcher()
     result = fetcher.test(params, credentials)
