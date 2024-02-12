@@ -1,6 +1,5 @@
 """ETF Countries Standard Model."""
 
-
 from pydantic import Field, field_validator
 
 from openbb_core.provider.abstract.data import Data
