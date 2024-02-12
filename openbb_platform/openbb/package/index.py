@@ -28,7 +28,7 @@ class ROUTER_index(Container):
     def available(
         self, provider: Optional[Literal["fmp", "yfinance"]] = None, **kwargs
     ) -> OBBject:
-        """Available Indices. Available indices for a given provider.
+        """All indices available from a given provider.
 
         Parameters
         ----------
@@ -69,7 +69,7 @@ class ROUTER_index(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.index.available()
+        >>> obb.index.available(provider="yfinance").to_df()
         """  # noqa: E501
 
         return self._run(
@@ -93,7 +93,7 @@ class ROUTER_index(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Index Constituents. Constituents of an index.
+        """Index Constituents.
 
         Parameters
         ----------
@@ -140,7 +140,9 @@ class ROUTER_index(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.index.constituents(index="^IBEX")
+        >>> obb.index.constituents("dowjones", provider="fmp").to_df()
+        >>> #### Providers other than FMP will use the ticker symbol. ####
+        >>> obb.index.constituents("BEP50P", provider="cboe").to_df()
         """  # noqa: E501
 
         return self._run(

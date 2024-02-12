@@ -41,7 +41,7 @@
         "index": "^IBEX"
     },
     "news": {
-        "symbols": "AAPL,MSFT"
+        "symbol": "AAPL"
     },
     "regulators": {
         "symbol": "AAPL",
