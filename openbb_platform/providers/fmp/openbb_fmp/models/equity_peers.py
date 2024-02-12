@@ -16,6 +16,8 @@ class FMPEquityPeersQueryParams(EquityPeersQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Peers
     """
 
+    __validator_dict__ = {"check_single": ("symbol",)}
+
 
 class FMPEquityPeersData(EquityPeersData):
     """FMP Equity Peers Data."""
@@ -51,5 +53,5 @@ class FMPEquityPeersFetcher(
         query: FMPEquityPeersQueryParams, data: dict, **kwargs: Any
     ) -> FMPEquityPeersData:
         """Return the transformed data."""
-        data.pop("symbol")
+        data.pop("symbol", None)
         return FMPEquityPeersData.model_validate(data)

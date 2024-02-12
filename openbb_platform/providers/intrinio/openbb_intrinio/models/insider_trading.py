@@ -25,6 +25,7 @@ class IntrinioInsiderTradingQueryParams(InsiderTradingQueryParams):
     """
 
     __alias_dict__ = {"limit": "page_size"}
+    __validator_dict__ = {"check_single": ("symbol",)}
 
     start_date: Optional[dateType] = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", "")

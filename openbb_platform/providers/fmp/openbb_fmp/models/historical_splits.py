@@ -18,6 +18,8 @@ class FMPHistoricalSplitsQueryParams(HistoricalSplitsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/historical-stock-splits-api/
     """
 
+    __validator_dict__ = {"check_single": ("symbol",)}
+
 
 class FMPHistoricalSplitsData(HistoricalSplitsData):
     """FMP Historical Splits Data."""

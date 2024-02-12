@@ -22,6 +22,8 @@ class FMPHistoricalEpsQueryParams(HistoricalEpsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/earnings-calendar-api/
     """
 
+    __validator_dict__ = {"check_single": ("symbol",)}
+
     limit: Optional[int] = Field(
         default=None,
         description=QUERY_DESCRIPTIONS.get("limit", ""),

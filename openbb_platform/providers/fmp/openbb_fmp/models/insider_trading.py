@@ -19,6 +19,8 @@ class FMPInsiderTradingQueryParams(InsiderTradingQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Insider-Trading
     """
 
+    __validator_dict__ = {"check_single": ("symbol",)}
+
     transaction_type: TRANSACTION_TYPES = Field(
         default=None,
         description="Type of the transaction.",

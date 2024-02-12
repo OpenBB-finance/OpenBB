@@ -19,6 +19,8 @@ class FMPInstitutionalOwnershipQueryParams(InstitutionalOwnershipQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/institutional-stock-ownership-api/
     """
 
+    __validator_dict__ = {"check_single": ("symbol",)}
+
     include_current_quarter: Optional[bool] = Field(
         default=False, description="Include current quarter data."
     )

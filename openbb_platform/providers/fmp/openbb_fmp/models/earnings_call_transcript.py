@@ -18,6 +18,8 @@ class FMPEarningsCallTranscriptQueryParams(EarningsCallTranscriptQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/earning-call-transcript-api/
     """
 
+    __validator_dict__ = {"check_single": ("symbol",)}
+
     @field_validator("year", mode="before", check_fields=False)
     @classmethod
     def time_validate(cls, v: int):  # pylint: disable=E0213
