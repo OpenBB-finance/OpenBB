@@ -4,7 +4,7 @@ from typing import Dict
 
 from pydantic import BaseModel, ConfigDict, model_validator
 
-from openbb_core.provider.utils.validators import VALIDATORS
+from openbb_core.provider.utils import validators
 
 
 class QueryParams(BaseModel):
@@ -24,7 +24,7 @@ class QueryParams(BaseModel):
     def _apply_validators(cls, values):
         for v, fields in cls.__validator_dict__.items():
             for f in fields:
-                if f in values and (func := VALIDATORS.get(v)):
+                if f in values and (func := getattr(validators, v)):
                     values[f] = func(f, values[f])
         return values
 
