@@ -24,6 +24,7 @@ class QueryParams(BaseModel):
     def _apply_validators(cls, values):
         for v, fields in cls.__validator_dict__.items():
             for f in fields:
+                func: validators.V
                 if f in values and (func := getattr(validators, v)):
                     values[f] = func(f, values[f])
         return values

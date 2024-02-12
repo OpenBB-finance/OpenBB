@@ -1,6 +1,8 @@
 """Field validators"""
 
-from typing import Optional
+from typing import Any, Callable, Optional, TypeVar
+
+V = TypeVar("V", Callable[[str, Any], Any])
 
 
 def check_single(field: str, value: Optional[str]) -> Optional[str]:
