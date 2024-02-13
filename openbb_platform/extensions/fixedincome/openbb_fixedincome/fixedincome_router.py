@@ -24,7 +24,13 @@ router.include_router(government_router)
 router.include_router(corporate_router)
 
 
-@router.command(model="SOFR")
+@router.command(
+    model="SOFR",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.fixedincome.fixedincome.sofr(period="overnight")',
+    ],
+)
 async def sofr(
     cc: CommandContext,
     provider_choices: ProviderChoices,

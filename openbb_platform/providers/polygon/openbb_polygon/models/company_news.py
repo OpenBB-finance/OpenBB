@@ -18,7 +18,7 @@ class PolygonCompanyNewsQueryParams(CompanyNewsQueryParams):
     Source: https://polygon.io/docs/stocks/get_v2_reference_news
     """
 
-    __alias_dict__ = {"symbols": "ticker"}
+    __alias_dict__ = {"symbol": "ticker"}
 
     published_utc: Optional[str] = Field(
         default=None,

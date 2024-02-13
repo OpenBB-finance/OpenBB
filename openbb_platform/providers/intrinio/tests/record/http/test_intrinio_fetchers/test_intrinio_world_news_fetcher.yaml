@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api-v2.intrinio.com/companies/news?api_key=MOCK_API_KEY&page_size=20
+    uri: https://api-v2.intrinio.com/companies/news?page_size=2500&api_key=MOCK_API_KEY
   response:
     body:
       string: !!binary |

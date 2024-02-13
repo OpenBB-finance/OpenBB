@@ -14,7 +14,13 @@ from openbb_core.app.router import Router
 router = Router(prefix="/cftc")
 
 
-@router.command(model="COTSearch")
+@router.command(
+    model="COTSearch",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.regulators.cftc.cot_search(query="gold")',
+    ],
+)
 async def cot_search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -28,12 +34,22 @@ async def cot_search(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="COT")
+@router.command(
+    model="COT",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.regulators.cftc.cot(series_id="GC=F").to_df()',
+        "#### Enter the report ID by the Nasdaq Data Link Code. ####",
+        'obb.regulators.cftc.cot(series_id="088691").to_df()',
+        "### Get the report for futures only. ####",
+        'obb.regulators.cftc.cot(series_id="088691", data_type="F").to_df()',
+    ],
+)
 async def cot(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Commitment of Traders Reports. Lookup Commitment of Traders Reports by series ID."""
+    """Commitment of Traders Reports."""
     return await OBBject.from_query(Query(**locals()))
