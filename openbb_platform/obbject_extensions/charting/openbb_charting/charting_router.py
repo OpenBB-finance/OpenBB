@@ -45,7 +45,7 @@ def equity_price_historical(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
 
 def _ta_ma(ma_type: str, **kwargs):
     """Plot moving average helper."""
-    data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
+    data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
     window = kwargs.get("window", 50)
     offset = kwargs.get("offset", 0)
     symbol = kwargs.get("symbol", "")
@@ -71,7 +71,7 @@ def technical_zlma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
 
 def technical_aroon(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Aroon chart."""
-    data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
+    data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
     length = kwargs.get("length", 25)
     scalar = kwargs.get("scalar", 100)
     symbol = kwargs.get("symbol", "")
@@ -97,7 +97,7 @@ def technical_sma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
 
 def technical_macd(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Plot moving average convergence divergence chart."""
-    data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
+    data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
     fast = kwargs.get("fast", 12)
     slow = kwargs.get("slow", 26)
     signal = kwargs.get("signal", 9)
@@ -124,7 +124,7 @@ def technical_hma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
 
 def technical_adx(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Average directional movement index chart."""
-    data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
+    data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
     length = kwargs.get("length", 14)
     scalar = kwargs.get("scalar", 100.0)
     drift = kwargs.get("drift", 1)
@@ -151,7 +151,7 @@ def technical_wma(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
 
 def technical_rsi(**kwargs) -> Tuple["OpenBBFigure", Dict[str, Any]]:
     """Relative strength index chart."""
-    data = basemodel_to_df(kwargs["data"], index=kwargs.get("index", "date"))
+    data = basemodel_to_df(kwargs["obbject_item"], index=kwargs.get("index", "date"))
     window = kwargs.get("window", 14)
     scalar = kwargs.get("scalar", 100.0)
     drift = kwargs.get("drift", 1)
