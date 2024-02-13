@@ -192,9 +192,7 @@ def get_project_ids() -> List[str]:
 
     # check if its a dict - which would be a successful api call -
     # might need to add error checking here later if they messed up the API key though.
-    if isinstance(PROJECTS_DATA, dict):
-        return [project["project_id"] for project in PROJECTS_DATA]
-    return PROJECTS_DATA
+    return ["none"]
 
 
 @log_start_end(log=logger)
