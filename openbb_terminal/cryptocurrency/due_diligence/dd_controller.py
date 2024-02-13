@@ -27,8 +27,6 @@ from openbb_terminal.cryptocurrency.due_diligence import (
     messari_view,
     pycoingecko_view,
     santiment_view,
-    tokenterminal_model,
-    tokenterminal_view,
 )
 from openbb_terminal.cryptocurrency.overview import cryptopanic_model
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -148,9 +146,6 @@ class DueDiligenceController(CryptoBaseController):
                 {c: {} for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES}
             )
             choices["mt"].update({c: None for c in self.messari_timeseries})
-            choices["desc"].update(
-                {c: None for c in tokenterminal_model.get_project_ids()}
-            )
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -1854,37 +1849,4 @@ class DueDiligenceController(CryptoBaseController):
                 post_kind=ns_parser.kind,
                 filter_=ns_parser.filter,
                 region=ns_parser.region,
-            )
-
-    @log_start_end(log=logger)
-    def call_desc(self, other_args):
-        """Process desc command"""
-        parser = argparse.ArgumentParser(
-            prog="desc",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Display project description [Source: Token Terminal]""",
-        )
-        parser.add_argument(
-            "-p",
-            "--project",
-            choices=tokenterminal_model.get_project_ids(),
-            required="-h" not in other_args,
-            dest="project",
-            help="Choose project of interest",
-        )
-
-        if other_args and other_args[0][0] != "-":
-            other_args.insert(0, "-p")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser and ns_parser.project in tokenterminal_model.get_project_ids():
-            tokenterminal_view.display_description(
-                project=ns_parser.project,
-                export=ns_parser.export,
-                sheet_name=(
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                ),
             )

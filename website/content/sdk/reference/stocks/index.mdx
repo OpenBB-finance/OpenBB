@@ -1,0 +1,114 @@
+# stocks
+
+import ReferenceCard from "@site/src/components/General/NewReferenceCard";
+
+### Menus
+<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<ReferenceCard
+    title="Options"
+    description="vol, oi, vsurf, voi, generate_data, dte, price, greeks, load_options_chains, pcr, info, chains, hist, last_price,..."
+    url="/sdk/reference/stocks/options"
+/>
+<ReferenceCard
+    title="Screener"
+    description="screener_data"
+    url="/sdk/reference/stocks/screener"
+/>
+<ReferenceCard
+    title="Ca"
+    description="volume, scorr, balance, similar, cashflow, sentiment, hcorr, income, hist, screener"
+    url="/sdk/reference/stocks/ca"
+/>
+<ReferenceCard
+    title="Qa"
+    description="fama_raw, capm, historical_5, beta"
+    url="/sdk/reference/stocks/qa"
+/>
+<ReferenceCard
+    title="Dps"
+    description="psi_q, sidtc, shorted, psi_sg, hsi, spos, ctb, pos, prom, ftd, dpotc"
+    url="/sdk/reference/stocks/dps"
+/>
+<ReferenceCard
+    title="Ins"
+    description="stats, blop, filter, blcs, blip, act, lis, lcb, lins, print_insider_data, lpsb, lit, blis, lip, blos, blcp"
+    url="/sdk/reference/stocks/ins"
+/>
+<ReferenceCard
+    title="Ba"
+    description="headlines, queries, messages, redditsent, rise, text_sent, stalker, mentions, bullbear, trending, getdd, cnews,..."
+    url="/sdk/reference/stocks/ba"
+/>
+<ReferenceCard
+    title="Disc"
+    description="pipo, filings, dividends, active, rtat, ipo, asc, gtech, ulc, trending, losers, fipo, upcoming, ugs, hotpenny,..."
+    url="/sdk/reference/stocks/disc"
+/>
+<ReferenceCard
+    title="Fa"
+    description="splits, sec, overview, similar_dfs, revfc, mktcap, analyst, news, balance, score, ratios, supplier, customer,..."
+    url="/sdk/reference/stocks/fa"
+/>
+<ReferenceCard
+    title="Ta"
+    description="summary, recom"
+    url="/sdk/reference/stocks/ta"
+/>
+<ReferenceCard
+    title="Th"
+    description="open, check_if_open, closed, exchange, all"
+    url="/sdk/reference/stocks/th"
+/>
+<ReferenceCard
+    title="Gov"
+    description="topbuys, contracts, qtrcontracts, topsells, lasttrades, government_trading, toplobbying, lobbying, lastcontracts,..."
+    url="/sdk/reference/stocks/gov"
+/>
+</ul>
+
+
+### Commands
+<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<ReferenceCard
+    title="Candle"
+    description="Show candle plot of loaded ticker."
+    url="/sdk/reference/stocks/candle"
+    command
+/>
+<ReferenceCard
+    title="Load"
+    description="Load a symbol to perform analysis using the string above as a template."
+    url="/sdk/reference/stocks/load"
+    command
+/>
+<ReferenceCard
+    title="News"
+    description="Get news for a given term and source. [Source: Ultima Insights News Monitor]"
+    url="/sdk/reference/stocks/news"
+    command
+/>
+<ReferenceCard
+    title="Process Candle"
+    description="Process DataFrame into candle style plot."
+    url="/sdk/reference/stocks/process_candle"
+    command
+/>
+<ReferenceCard
+    title="Quote"
+    description="Gets ticker quote from FMP"
+    url="/sdk/reference/stocks/quote"
+    command
+/>
+<ReferenceCard
+    title="Search"
+    description="Search selected query for tickers."
+    url="/sdk/reference/stocks/search"
+    command
+/>
+<ReferenceCard
+    title="Tob"
+    description="Get top of book bid and ask for ticker on exchange [CBOE.com]"
+    url="/sdk/reference/stocks/tob"
+    command
+/>
+</ul>
