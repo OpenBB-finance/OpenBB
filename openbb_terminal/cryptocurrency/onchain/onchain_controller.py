@@ -11,7 +11,6 @@ from datetime import datetime
 from typing import List, Optional
 
 from openbb_terminal.core.session.current_user import get_current_user
-
 from openbb_terminal.cryptocurrency.onchain import (
     bitquery_model,
     bitquery_view,
