@@ -9,8 +9,9 @@ from openbb_core.provider.standard_models.insider_trading import (
     InsiderTradingQueryParams,
 )
 from openbb_core.provider.utils.helpers import amake_requests, get_querystring
+from openbb_core.provider.utils.validators import check_single_value
 from openbb_fmp.utils.definitions import TRANSACTION_TYPES, TRANSACTION_TYPES_DICT
-from pydantic import Field, model_validator
+from pydantic import Field, field_validator, model_validator
 
 
 class FMPInsiderTradingQueryParams(InsiderTradingQueryParams):
@@ -19,13 +20,17 @@ class FMPInsiderTradingQueryParams(InsiderTradingQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Insider-Trading
     """
 
-    __validator_dict__ = {"check_single_value": ("symbol",)}
-
     transaction_type: TRANSACTION_TYPES = Field(
         default=None,
         description="Type of the transaction.",
         alias="transactionType",
     )
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_single_value(cls, v):
+        """Check that string is a single value."""
+        return check_single_value(v)
 
     @model_validator(mode="after")
     @classmethod

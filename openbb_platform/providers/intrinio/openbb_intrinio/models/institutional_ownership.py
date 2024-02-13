@@ -10,8 +10,9 @@ from openbb_core.provider.standard_models.institutional_ownership import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.validators import check_single_value
 from openbb_intrinio.utils.helpers import get_data_many, get_data_one
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class IntrinioInstitutionalOwnershipQueryParams(InstitutionalOwnershipQueryParams):
@@ -21,11 +22,15 @@ class IntrinioInstitutionalOwnershipQueryParams(InstitutionalOwnershipQueryParam
             https://docs.intrinio.com/documentation/web_api/get_owner_by_id_v2
     """
 
-    __validator_dict__ = {"check_single_value": ("symbol",)}
-
     limit: Optional[int] = Field(
         default=100, description=QUERY_DESCRIPTIONS.get("limit", ""), alias="page_size"
     )
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_single_value(cls, v):
+        """Check that string is a single value."""
+        return check_single_value(v)
 
 
 class IntrinioInstitutionalOwnershipData(InstitutionalOwnershipData):

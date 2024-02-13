@@ -9,6 +9,7 @@ from openbb_core.provider.standard_models.revenue_business_line import (
     RevenueBusinessLineData,
     RevenueBusinessLineQueryParams,
 )
+from openbb_core.provider.utils.validators import check_single_value
 from openbb_fmp.models.cash_flow import FMPCashFlowStatementFetcher
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from pydantic import field_validator
@@ -20,7 +21,11 @@ class FMPRevenueBusinessLineQueryParams(RevenueBusinessLineQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/sales-revenue-by-segments-api/
     """
 
-    __validator_dict__ = {"check_single_value": ("symbol",)}
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_single_value(cls, v):
+        """Check that string is a single value."""
+        return check_single_value(v)
 
 
 class FMPRevenueBusinessLineData(RevenueBusinessLineData):

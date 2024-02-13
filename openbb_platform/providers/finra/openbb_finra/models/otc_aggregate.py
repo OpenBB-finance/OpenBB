@@ -7,14 +7,13 @@ from openbb_core.provider.standard_models.otc_aggregate import (
     OTCAggregateData,
     OTCAggregateQueryParams,
 )
+from openbb_core.provider.utils.validators import check_single_value
 from openbb_finra.utils.helpers import get_full_data
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class FinraOTCAggregateQueryParams(OTCAggregateQueryParams):
     """FINRA OTC Aggregate Query."""
-
-    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     tier: Literal["T1", "T2", "OTCE"] = Field(
         default="T1",
@@ -24,6 +23,12 @@ class FinraOTCAggregateQueryParams(OTCAggregateQueryParams):
     is_ats: bool = Field(
         default=True, description="ATS data if true, NON-ATS otherwise"
     )
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_single_value(cls, v):
+        """Check that string is a single value."""
+        return check_single_value(v)
 
 
 class FinraOTCAggregateData(OTCAggregateData):

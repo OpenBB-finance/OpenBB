@@ -10,6 +10,7 @@ from openbb_core.provider.standard_models.cash_flow import (
     CashFlowStatementQueryParams,
 )
 from openbb_core.provider.utils.helpers import ClientResponse, amake_requests
+from openbb_core.provider.utils.validators import check_single_value
 from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import Field, field_validator, model_validator
 
@@ -23,13 +24,17 @@ class IntrinioCashFlowStatementQueryParams(CashFlowStatementQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
 
-    __validator_dict__ = {"check_single_value": ("symbol",)}
-
     period: Literal["annual", "quarter", "ttm", "ytd"] = Field(default="annual")
     fiscal_year: Optional[int] = Field(
         default=None,
         description="The specific fiscal year.  Reports do not go beyond 2008.",
     )
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_single_value(cls, v):
+        """Check that string is a single value."""
+        return check_single_value(v)
 
     @field_validator("symbol", mode="after", check_fields=False)
     @classmethod

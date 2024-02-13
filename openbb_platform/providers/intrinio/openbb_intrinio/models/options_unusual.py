@@ -8,6 +8,7 @@ from openbb_core.provider.standard_models.options_unusual import (
     OptionsUnusualData,
     OptionsUnusualQueryParams,
 )
+from openbb_core.provider.utils.validators import check_single_value
 from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import Field, field_validator
 
@@ -18,12 +19,16 @@ class IntrinioOptionsUnusualQueryParams(OptionsUnusualQueryParams):
     source: https://docs.intrinio.com/documentation/web_api/get_unusual_activity_v2
     """
 
-    __validator_dict__ = {"check_single_value": ("symbol",)}
-
     source: Literal["delayed", "realtime"] = Field(
         default="delayed",
         description="The source of the data. Either realtime or delayed.",
     )
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_single_value(cls, v):
+        """Check that string is a single value."""
+        return check_single_value(v)
 
 
 class IntrinioOptionsUnusualData(OptionsUnusualData):

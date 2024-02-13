@@ -8,13 +8,19 @@ from openbb_core.provider.standard_models.historical_dividends import (
     HistoricalDividendsData,
     HistoricalDividendsQueryParams,
 )
+from openbb_core.provider.utils.validators import check_single_value
+from pydantic import field_validator
 from yfinance import Ticker
 
 
 class YFinanceHistoricalDividendsQueryParams(HistoricalDividendsQueryParams):
     """YFinance Historical Dividends Query."""
 
-    __validator_dict__ = {"check_single_value": ("symbol",)}
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_single_value(cls, v):
+        """Check that string is a single value."""
+        return check_single_value(v)
 
 
 class YFinanceHistoricalDividendsData(HistoricalDividendsData):

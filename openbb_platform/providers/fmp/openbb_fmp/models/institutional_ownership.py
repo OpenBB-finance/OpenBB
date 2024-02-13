@@ -9,8 +9,9 @@ from openbb_core.provider.standard_models.institutional_ownership import (
     InstitutionalOwnershipQueryParams,
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.validators import check_single_value
 from openbb_fmp.utils.helpers import create_url, get_data_many
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class FMPInstitutionalOwnershipQueryParams(InstitutionalOwnershipQueryParams):
@@ -19,14 +20,18 @@ class FMPInstitutionalOwnershipQueryParams(InstitutionalOwnershipQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/institutional-stock-ownership-api/
     """
 
-    __validator_dict__ = {"check_single_value": ("symbol",)}
-
     include_current_quarter: Optional[bool] = Field(
         default=False, description="Include current quarter data."
     )
     date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("date", "")
     )
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_single_value(cls, v):
+        """Check that string is a single value."""
+        return check_single_value(v)
 
 
 class FMPInstitutionalOwnershipData(InstitutionalOwnershipData):

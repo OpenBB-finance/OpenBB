@@ -19,6 +19,7 @@ from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
 from openbb_core.provider.utils.helpers import amake_request, get_querystring
+from openbb_core.provider.utils.validators import check_single_value
 from pydantic import (
     Field,
     NonNegativeFloat,
@@ -111,6 +112,12 @@ class AVEquityHistoricalQueryParams(EquityHistoricalQueryParams):
             )
 
         return values
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_single_value(cls, v):
+        """Check that string is a single value."""
+        return check_single_value(v)
 
 
 class AVEquityHistoricalData(EquityHistoricalData):

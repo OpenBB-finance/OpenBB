@@ -10,7 +10,8 @@ from openbb_core.provider.standard_models.futures_curve import (
     FuturesCurveQueryParams,
 )
 from openbb_core.provider.utils.errors import EmptyDataError
-from pydantic import Field
+from openbb_core.provider.utils.validators import check_single_value
+from pydantic import Field, field_validator
 
 
 class CboeFuturesCurveQueryParams(FuturesCurveQueryParams):
@@ -19,7 +20,11 @@ class CboeFuturesCurveQueryParams(FuturesCurveQueryParams):
     Source: https://www.cboe.com/
     """
 
-    __validator_dict__ = {"check_single_value": ("symbol",)}
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_single_value(cls, v):
+        """Check that string is a single value."""
+        return check_single_value(v)
 
 
 class CboeFuturesCurveData(FuturesCurveData):

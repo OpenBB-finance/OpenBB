@@ -14,8 +14,9 @@ from openbb_core.provider.standard_models.insider_trading import (
 )
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.validators import check_single_value
 from openbb_intrinio.utils.helpers import get_data_many
-from pydantic import Field, model_validator
+from pydantic import Field, field_validator, model_validator
 
 
 class IntrinioInsiderTradingQueryParams(InsiderTradingQueryParams):
@@ -25,7 +26,6 @@ class IntrinioInsiderTradingQueryParams(InsiderTradingQueryParams):
     """
 
     __alias_dict__ = {"limit": "page_size"}
-    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     start_date: Optional[dateType] = Field(
         description=QUERY_DESCRIPTIONS.get("start_date", "")
@@ -41,6 +41,12 @@ class IntrinioInsiderTradingQueryParams(InsiderTradingQueryParams):
         default="updated_on",
         description="Field to sort by.",
     )
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_single_value(cls, v):
+        """Check that string is a single value."""
+        return check_single_value(v)
 
 
 class IntrinioInsiderTradingData(InsiderTradingData):

@@ -11,6 +11,7 @@ from openbb_core.provider.standard_models.equity_ownership import (
     EquityOwnershipData,
     EquityOwnershipQueryParams,
 )
+from openbb_core.provider.utils.validators import check_single_value
 from openbb_fmp.utils.helpers import create_url, get_data_many, most_recent_quarter
 from pydantic import field_validator
 
@@ -21,7 +22,11 @@ class FMPEquityOwnershipQueryParams(EquityOwnershipQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/#Stock-Ownership-by-Holders
     """
 
-    __validator_dict__ = {"check_single_value": ("symbol",)}
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_single_value(cls, v):
+        """Check that string is a single value."""
+        return check_single_value(v)
 
     @field_validator("date", mode="before", check_fields=True)
     @classmethod

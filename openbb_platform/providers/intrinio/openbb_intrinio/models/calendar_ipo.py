@@ -8,9 +8,10 @@ from openbb_core.provider.standard_models.calendar_ipo import (
     CalendarIpoQueryParams,
 )
 from openbb_core.provider.utils.helpers import get_querystring
+from openbb_core.provider.utils.validators import check_single_value
 from openbb_intrinio.utils.helpers import get_data_one
 from openbb_intrinio.utils.references import IntrinioCompany, IntrinioSecurity
-from pydantic import Field
+from pydantic import Field, field_validator
 
 
 class IntrinioCalendarIpoQueryParams(CalendarIpoQueryParams):
@@ -23,7 +24,6 @@ class IntrinioCalendarIpoQueryParams(CalendarIpoQueryParams):
         "symbol": "ticker",
         "limit": "page_size",
     }
-    __validator_dict__ = {"check_single_value": ("symbol",)}
 
     status: Optional[Literal["upcoming", "priced", "withdrawn"]] = Field(
         description="Status of the IPO. [upcoming, priced, or withdrawn]", default=None
@@ -38,6 +38,12 @@ class IntrinioCalendarIpoQueryParams(CalendarIpoQueryParams):
         default=None,
         alias="offer_amount_less_than",
     )
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_single_value(cls, v):
+        """Check that string is a single value."""
+        return check_single_value(v)
 
 
 class IntrinioCalendarIpoData(CalendarIpoData):

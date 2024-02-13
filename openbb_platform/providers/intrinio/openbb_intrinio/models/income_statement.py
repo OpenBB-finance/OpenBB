@@ -14,6 +14,7 @@ from openbb_core.provider.utils.helpers import (
     ClientSession,
     amake_requests,
 )
+from openbb_core.provider.utils.validators import check_single_value
 from openbb_intrinio.utils.helpers import get_data_one
 from pydantic import Field, field_validator
 
@@ -27,8 +28,6 @@ class IntrinioIncomeStatementQueryParams(IncomeStatementQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_fundamental_standardized_financials_v2
     """
 
-    __validator_dict__ = {"check_single_value": ("symbol",)}
-
     period: Literal["annual", "quarter", "ttm", "ytd"] = Field(default="annual")
     fiscal_year: Optional[int] = Field(
         default=None,
@@ -40,6 +39,12 @@ class IntrinioIncomeStatementQueryParams(IncomeStatementQueryParams):
     def handle_symbol(cls, v) -> str:
         """Handle symbols with a dash and replace it with a dot for Intrinio."""
         return v.replace("-", ".")
+
+    @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
+    def check_single_value(cls, v):
+        """Check that string is a single value."""
+        return check_single_value(v)
 
 
 class IntrinioIncomeStatementData(IncomeStatementData):
