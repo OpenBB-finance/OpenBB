@@ -122,7 +122,7 @@ class Charting:
         volume_ticks_x: int = 7,
         render: bool = True,
         **kwargs,
-    ) -> Tuple[OpenBBFigure, Dict[str, Any]]:
+    ):
         """
         Creates a OpenBBFigure with user customizations (if any) and saves it to the OBBject.
 
