@@ -141,7 +141,21 @@ class TerminalController(BaseController):
 
         self.update_success = False
 
+        self._generate_platform_commands()
+
         self.update_runtime_choices()
+
+    def _generate_platform_commands(self):
+        from openbb import obb
+
+        # 1. add menu to CHOICES_MENU
+        # 2. Inject mt.add_menu() into print_help()
+
+        # from openbb_terminal.poc_platform_equity_controller import (
+        #     PocPlatformEquityController,
+        # )
+
+        # self.queue = self.load_class(PocPlatformEquityController, "equity", self.queue)
 
     def update_runtime_choices(self):
         """Update runtime choices."""

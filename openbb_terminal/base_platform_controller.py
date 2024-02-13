@@ -1,4 +1,5 @@
 """Platform Equity Controller."""
+
 __docformat__ = "numpy"
 
 import logging
@@ -31,6 +32,8 @@ class PlatformController(BaseController):
         self.PATH = f"/{name}/"
         super().__init__(queue)
         self._name = name
+
+        self.translators = translators
 
         if translators:
             self._generate_commands(translators=translators)
