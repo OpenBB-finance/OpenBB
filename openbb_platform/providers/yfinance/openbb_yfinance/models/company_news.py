@@ -33,7 +33,7 @@ class YFinanceCompanyNewsData(CompanyNewsData):
     uuid: str = Field(description="Unique identifier for the news article")
     publisher: str = Field(description="Publisher of the news article")
     type: str = Field(description="Type of the news article")
-    thumbnail: Optional[List] = Field(
+    thumbnail: Optional[List[Dict[str, Any]]] = Field(
         default=None, description="Thumbnail related data to the ticker news article."
     )
 
