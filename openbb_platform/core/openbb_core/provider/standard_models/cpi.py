@@ -106,7 +106,7 @@ class ConsumerPriceIndexQueryParams(QueryParams):
     def validate_country(cls, c: str):  # pylint: disable=E0213
         """Validate country."""
         result = []
-        values = c.split(",")
+        values = c.replace(" ", "_").split(",")
         for v in values:
             check_item(v.lower(), CPI_COUNTRIES)
             result.append(v.lower())

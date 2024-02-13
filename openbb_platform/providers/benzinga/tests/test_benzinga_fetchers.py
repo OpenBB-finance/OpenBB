@@ -21,7 +21,7 @@ def vcr_config():
 
 @pytest.mark.record_http
 def test_benzinga_world_news_fetcher(credentials=test_credentials):
-    params = {}
+    params = {"limit": 20}
 
     fetcher = BenzingaWorldNewsFetcher()
     result = fetcher.test(params, credentials)
@@ -30,7 +30,7 @@ def test_benzinga_world_news_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_benzinga_company_news_fetcher(credentials=test_credentials):
-    params = {"symbols": "AAPL,MSFT"}
+    params = {"symbol": "AAPL,MSFT"}
 
     fetcher = BenzingaCompanyNewsFetcher()
     result = fetcher.test(params, credentials)

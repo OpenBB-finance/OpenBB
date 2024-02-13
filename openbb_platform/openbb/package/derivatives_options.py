@@ -149,7 +149,9 @@ class ROUTER_derivatives_options(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.derivatives.options.chains(symbol="AAPL")
+        >>> chains = obb.derivatives.options.chains(symbol="AAPL", provider="intrinio").to_df()
+        >>> #### Use the "date" parameter to get the end-of-day-data for a specific date, where supported. ####
+        >>> eod_chains = obb.derivatives.options.chains(symbol="AAPL", date="2023-01-25", provider="intrinio").to_df()
         """  # noqa: E501
 
         return self._run(
@@ -232,7 +234,9 @@ class ROUTER_derivatives_options(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.derivatives.options.unusual()
+        >>> options = obb.derivatives.options.unusual().to_df()
+        >>> #### Use the "symbol" parameter to get the most recent activity for a specific symbol. ####
+        >>> options = obb.derivatives.options.unusual(symbol="TSLA").to_df()
         """  # noqa: E501
 
         return self._run(

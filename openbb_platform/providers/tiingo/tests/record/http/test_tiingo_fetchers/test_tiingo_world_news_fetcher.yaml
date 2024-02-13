@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.tiingo.com/tiingo/news?limit=20&token=MOCK_TOKEN
+    uri: https://api.tiingo.com/tiingo/news?limit=20&offset=0&token=MOCK_TOKEN
   response:
     body:
       string: "[{\"id\":59591461,\"publishedDate\":\"2023-11-16T08:38:56Z\",\"title\":\"How

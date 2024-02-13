@@ -334,7 +334,7 @@ def test_index_snapshots(params, headers):
     [
         (
             {
-                "series_name": "PE Ratio by Month",
+                "series_name": "pe_month",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "collapse": "monthly",
