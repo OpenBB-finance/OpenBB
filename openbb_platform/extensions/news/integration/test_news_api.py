@@ -76,6 +76,7 @@ def headers():
                 "source": "bloomberg.com",
                 "start_date": None,
                 "end_date": None,
+                "offset": 0,
             }
         ),
     ],
@@ -96,7 +97,7 @@ def test_news_world(params, headers):
     [
         (
             {
-                "symbols": "AAPL",
+                "symbol": "AAPL",
                 "limit": 20,
                 "provider": "benzinga",
                 "date": "2023-01-01",
@@ -121,7 +122,7 @@ def test_news_world(params, headers):
                 "authors": "Benzinga Insights",
                 "content_types": "headline",
                 "provider": "benzinga",
-                "symbols": "AAPL,MSFT",
+                "symbol": "AAPL,MSFT",
                 "limit": 20,
             }
         ),
@@ -130,7 +131,7 @@ def test_news_world(params, headers):
                 "published_utc": "2023-01-01",
                 "order": "desc",
                 "provider": "polygon",
-                "symbols": "AAPL",
+                "symbol": "AAPL",
                 "limit": 20,
                 "start_date": None,
                 "end_date": None,
@@ -139,7 +140,7 @@ def test_news_world(params, headers):
         (
             {
                 "provider": "fmp",
-                "symbols": "AAPL",
+                "symbol": "AAPL",
                 "limit": 20,
                 "page": 1,
                 "start_date": None,
@@ -149,7 +150,7 @@ def test_news_world(params, headers):
         (
             {
                 "provider": "yfinance",
-                "symbols": "AAPL",
+                "symbol": "AAPL",
                 "limit": 20,
                 "start_date": None,
                 "end_date": None,
@@ -158,7 +159,7 @@ def test_news_world(params, headers):
         (
             {
                 "provider": "intrinio",
-                "symbols": "AAPL",
+                "symbol": "AAPL",
                 "limit": 20,
                 "start_date": None,
                 "end_date": None,
@@ -167,7 +168,7 @@ def test_news_world(params, headers):
         (
             {
                 "provider": "tiingo",
-                "symbols": "AAPL,MSFT",
+                "symbol": "AAPL,MSFT",
                 "limit": 20,
                 "source": "bloomberg.com",
                 "start_date": None,

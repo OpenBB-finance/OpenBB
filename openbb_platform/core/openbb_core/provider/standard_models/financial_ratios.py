@@ -1,6 +1,5 @@
 """Financial Ratios Standard Model."""
 
-import warnings
 from typing import Optional
 
 from pydantic import Field, NonNegativeInt, field_validator
@@ -11,8 +10,6 @@ from openbb_core.provider.utils.descriptions import (
     DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
-
-_warn = warnings.warn
 
 
 class FinancialRatiosQueryParams(QueryParams):
@@ -30,11 +27,7 @@ class FinancialRatiosQueryParams(QueryParams):
     @classmethod
     def upper_symbol(cls, v: str):
         """Convert symbol to uppercase."""
-        if "," in v:
-            _warn(
-                f"{QUERY_DESCRIPTIONS.get('symbol_list_warning', '')} {v.split(',')[0].upper()}"
-            )
-        return v.split(",")[0].upper() if "," in v else v.upper()
+        return v.upper()
 
 
 class FinancialRatiosData(Data):
