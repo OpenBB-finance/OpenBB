@@ -10,11 +10,11 @@ env:
 on:
   pull_request:
     types: [opened, synchronize, edited]
-  push:
-    branches:
-      - "feature/*"
-      - "hotfix/*"
-      - "release/*"
+  # push:
+  #   branches:
+  #     - "feature/*"
+  #     - "hotfix/*"
+  #     - "release/*"
   merge_group:
     types: [checks_requested]
 
