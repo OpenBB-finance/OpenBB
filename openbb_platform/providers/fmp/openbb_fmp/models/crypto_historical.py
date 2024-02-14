@@ -24,7 +24,7 @@ class FMPCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     """
 
     __alias_dict__ = {"start_date": "from", "end_date": "to"}
-    __openbb_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     timeseries: Optional[NonNegativeInt] = Field(
         default=None, description="Number of days to look back."

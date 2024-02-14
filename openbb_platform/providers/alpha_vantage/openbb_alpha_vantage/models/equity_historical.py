@@ -35,7 +35,7 @@ class AVEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     Source: https://www.alphavantage.co/documentation/#time-series-data
     """
 
-    __openbb_extra__ = {"symbol": ["multiple_items_allowed"]}
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     interval: Literal["1m", "5m", "15m", "30m", "60m", "1d", "1W", "1M"] = Field(
         default="1d",

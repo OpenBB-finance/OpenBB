@@ -26,7 +26,7 @@ class QueryParams(BaseModel):
     """
 
     __alias_dict__: Dict[str, str] = {}
-    __openbb_extra__: Dict[str, Any] = {}
+    __json_schema_extra__: Dict[str, Any] = {}
 
     def __repr__(self):
         """Return the string representation of the QueryParams object."""

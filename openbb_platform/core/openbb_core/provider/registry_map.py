@@ -113,7 +113,7 @@ class RegistryMap:
         extra_query,
     ):
         model: BaseModel = RegistryMap._get_model(fetcher, type_)
-        for f, props in getattr(model, "__openbb_extra__", {}).items():
+        for f, props in getattr(model, "__json_schema_extra__", {}).items():
             for p in props:
                 if f in standard_query["fields"]:
                     model_field = standard_query["fields"][f]
