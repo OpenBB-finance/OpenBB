@@ -168,8 +168,9 @@ class ParametersBuilder:
             return command_cov_provider
 
         if _needs_provider(func) and _maybe_unspec_provider(kwargs):
-            provider = _get_default_provider(route_default)
-            kwargs["provider_choices"] = {"provider": provider}
+            kwargs["provider_choices"] = {
+                "provider": _get_default_provider(route_default)
+            }
 
         return kwargs
 
