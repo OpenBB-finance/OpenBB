@@ -36,7 +36,6 @@ from openbb_terminal.stocks.options import (
     yfinance_model,
     yfinance_view,
 )
-from openbb_terminal.stocks.options.hedge import hedge_controller
 from openbb_terminal.stocks.options.options_view import (
     display_chains,
     display_expiry_dates,
@@ -81,7 +80,6 @@ class OptionsController(BaseController):
     ]
     CHOICES_MENUS = [
         "pricing",
-        "hedge",
     ]
 
     grhist_greeks_choices = [
@@ -276,7 +274,6 @@ class OptionsController(BaseController):
         mt.add_cmd("greeks", self.ticker and self.selected_date)
         mt.add_cmd("eodchain", self.ticker and self.selected_date)
         mt.add_raw("\n")
-        mt.add_menu("hedge", self.ticker and self.selected_date)
         console.print(text=mt.menu_text, menu="Stocks - Options")
 
     def custom_reset(self):
@@ -1404,23 +1401,6 @@ class OptionsController(BaseController):
                     maxi=ns_parser.max,
                     show_all=ns_parser.all,
                 )
-
-    @log_start_end(log=logger)
-    def call_hedge(self, _):
-        """Process hedge command"""
-        if self.ticker:
-            if self.selected_date:
-                self.queue = self.load_class(
-                    hedge_controller.HedgeController,
-                    self.ticker,
-                    self.selected_date,
-                    self.queue,
-                )
-            else:
-                console.print("No expiry loaded. First use `exp {expiry date}`")
-
-        else:
-            console.print("No ticker loaded. First use `load <ticker>`")
 
     @log_start_end(log=logger)
     def call_eodchain(self, other_args: List[str]):

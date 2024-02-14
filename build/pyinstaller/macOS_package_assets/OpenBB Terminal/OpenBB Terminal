@@ -16,8 +16,10 @@ echo "                                  |___/       "
 BOOTUP_MESSAGE="
 The boot up process might take a while. Please be patient...
 
-Have you checked out Community Routines yet?  You can access them through the OpenBB Hub!
-Get started in less than 3 minutes: https://www.youtube.com/watch?v=UFh_Ku0fdtY
+We will be deprecating the OpenBBTerminal in the future and this will be the final release.
+
+ We have been working hard to build the OpenBB platform and we will be releasing a CLI version of the platform in the coming
+ months where you can customize your experience and explore all of the data available on the OpenBB platform.
 
 "
 echo "$BOOTUP_MESSAGE"
