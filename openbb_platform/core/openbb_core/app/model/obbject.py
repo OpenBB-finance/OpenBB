@@ -278,37 +278,11 @@ class OBBject(Tagged, Generic[T]):
             del results["index"]
         return results
 
-    @staticmethod
-    def _get_show_error_message(route: str) -> str:
-        """Return error message for show method."""
-        charting_installed: bool = False
-        messages = {
-            "not_installed": "The charting extension is not installed.",
-            "not_found": "Chart not found. Please use `chart=True` argument or the accessor's methods to create a chart.",
-            "not_implemented": f"The route `{route}` does not have a charting function.",
-        }
-        try:
-            # pylint: disable=import-outside-toplevel
-            from openbb_charting import Charting
-
-            charting_installed = True
-        except ImportError:
-            charting_installed = False
-
-        if not charting_installed:
-            message_key = "not_installed"
-        else:
-            has_view = route.replace("/", "_")[1:] in Charting.functions()
-            message_key = "not_implemented" if not has_view else "not_found"
-
-        return messages[message_key]
-
     def show(self, **kwargs: Any) -> None:
         """Display chart."""
         # pylint: disable=no-member
         if not self.chart or not self.chart.fig:
-            error_message = self._get_show_error_message(self._route)
-            raise OpenBBError(error_message)
+            raise OpenBBError("Chart not found.")
         show_function: Callable = getattr(self.chart.fig, "show")
         show_function(**kwargs)
 
