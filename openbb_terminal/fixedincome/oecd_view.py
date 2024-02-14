@@ -83,9 +83,7 @@ def plot_treasuries(
     term = (
         "Short and Long"
         if short_term and long_term
-        else "Long"
-        if long_term
-        else "Short"
+        else "Long" if long_term else "Short"
     )
     title = f"{term} Term Interest Rates {' with forecasts' if forecast else ''}"
     fig.set_title(title)

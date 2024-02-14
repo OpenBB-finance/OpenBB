@@ -988,9 +988,7 @@ class CreateExcelFA:
         df = (
             self.df["IS"]
             if title in self.df["IS"].index
-            else self.df["BS"]
-            if title in self.df["BS"].index
-            else self.df["CF"]
+            else self.df["BS"] if title in self.df["BS"].index else self.df["CF"]
         )
         ind = (
             df.index.get_loc(title)
