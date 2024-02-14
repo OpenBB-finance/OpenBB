@@ -232,7 +232,8 @@ class ROUTER_economy(Container):
     def cpi(
         self,
         country: Annotated[
-            str, OpenBBCustomParameter(description="The country to get data.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="The country to get data."),
         ],
         units: Annotated[
             Literal["growth_previous", "growth_same", "index_2015"],
@@ -341,6 +342,7 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={"country": {"multiple_items_allowed": ["fred"]}},
             )
         )
 
