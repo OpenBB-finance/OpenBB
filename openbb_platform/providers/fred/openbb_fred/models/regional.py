@@ -1,8 +1,10 @@
 """FRED Regional Data Model."""
 
-from datetime import date as dateType
+# pylint: disable=unused-argument
+
 import json
 import warnings
+from datetime import date as dateType
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.abstract.fetcher import Fetcher
