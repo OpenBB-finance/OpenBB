@@ -59,7 +59,7 @@ class ROUTER_regulators_sec(Container):
 
         CikMap
         ------
-        cik : Optional[Union[int, str]]
+        cik : Optional[Union[str, int]]
             Central Index Key (provider: sec)
 
         Example
@@ -126,7 +126,7 @@ class ROUTER_regulators_sec(Container):
         ------------------
         name : Optional[str]
             The name of the institution. (provider: sec)
-        cik : Optional[Union[int, str]]
+        cik : Optional[Union[str, int]]
             Central Index Key (CIK) (provider: sec)
 
         Example
@@ -263,16 +263,16 @@ class ROUTER_regulators_sec(Container):
         >>> url = data.files[0]+data.files[-1]
         >>> #### The URL base will always be the 0 position in the list, feed  the URL back in as a parameter. ####
         >>> obb.regulators.sec.schema_files(url=url).results.files
-        >>>     ['https://xbrl.fasb.org/us-gaap/2024/'
+        >>>     ['https://xbrl.fasb.org/us-gaap/2024/',
         >>>     'USGAAP2024FileList.xml'
         >>>     'dis/'
         >>>     'dqcrules/'
-        >>>     'ebp/'
-        >>>     'elts/'
-        >>>     'entire/'
-        >>>     'meta/'
-        >>>     'stm/'
-        >>>     'us-gaap-2024.zip']
+        >>>    'ebp/'
+        >>>    'elts/'
+        >>>    'entire/'
+        >>>    'meta/'
+        >>>    'stm/'
+        >>>    'us-gaap-2024.zip']
         """  # noqa: E501
 
         return self._run(

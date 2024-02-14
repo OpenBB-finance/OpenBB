@@ -14,7 +14,6 @@ from typing_extensions import Annotated
 class ROUTER_etf(Container):
     """/etf
     countries
-    /discovery
     historical
     holdings
     holdings_date
@@ -85,13 +84,6 @@ class ROUTER_etf(Container):
                 extra_params=kwargs,
             )
         )
-
-    @property
-    def discovery(self):
-        # pylint: disable=import-outside-toplevel
-        from . import etf_discovery
-
-        return etf_discovery.ROUTER_etf_discovery(command_runner=self._command_runner)
 
     @validate
     def historical(
@@ -201,7 +193,7 @@ class ROUTER_etf(Container):
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         date : Optional[Union[str, datetime.date]]
-            A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
+            A specific date to get data for. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
             A specific date to get data for.  The date represents the period ending.  The date entered will return the closest filing. (provider: sec)
         cik : Optional[str]
             The CIK of the filing entity. Overrides symbol. (provider: fmp)
@@ -236,19 +228,16 @@ class ROUTER_etf(Container):
             The CUSIP of the holding. (provider: fmp, sec)
         isin : Optional[str]
             The ISIN of the holding. (provider: fmp, sec)
-        balance : Optional[int]
-            The balance of the holding, in shares or units. (provider: fmp);
-            The balance of the holding. (provider: sec)
+        balance : Optional[float]
+            The balance of the holding. (provider: fmp, sec)
         units : Optional[Union[str, float]]
-            The type of units. (provider: fmp);
-            The units of the holding. (provider: sec)
+            The units of the holding. (provider: fmp, sec)
         currency : Optional[str]
             The currency of the holding. (provider: fmp, sec)
         value : Optional[float]
-            The value of the holding, in dollars. (provider: fmp, sec)
+            The value of the holding in USD. (provider: fmp, sec)
         weight : Optional[float]
-            The weight of the holding, as a normalized percent. (provider: fmp);
-            The weight of the holding in ETF in %. (provider: sec)
+            The weight of the holding in ETF in %. (provider: fmp, sec)
         payoff_profile : Optional[str]
             The payoff profile of the holding. (provider: fmp, sec)
         asset_category : Optional[str]
@@ -271,8 +260,6 @@ class ROUTER_etf(Container):
             The CIK of the filing. (provider: fmp)
         acceptance_datetime : Optional[str]
             The acceptance datetime of the filing. (provider: fmp)
-        updated : Optional[Union[date, datetime]]
-            The date the data was updated. (provider: fmp)
         other_id : Optional[str]
             Internal identifier for the holding. (provider: sec)
         loan_value : Optional[float]
@@ -327,11 +314,11 @@ class ROUTER_etf(Container):
             The floating rate spread for reveivable portion of the swap. (provider: sec)
         rate_tenor_rec : Optional[str]
             The rate tenor for reveivable portion of the swap. (provider: sec)
-        rate_tenor_unit_rec : Optional[Union[int, str]]
+        rate_tenor_unit_rec : Optional[Union[str, int]]
             The rate tenor unit for reveivable portion of the swap. (provider: sec)
         reset_date_rec : Optional[str]
             The reset date for reveivable portion of the swap. (provider: sec)
-        reset_date_unit_rec : Optional[Union[int, str]]
+        reset_date_unit_rec : Optional[Union[str, int]]
             The reset date unit for reveivable portion of the swap. (provider: sec)
         rate_type_pmnt : Optional[str]
             The type of rate for payment portion of the swap. (provider: sec)
@@ -345,11 +332,11 @@ class ROUTER_etf(Container):
             The floating rate spread for payment portion of the swap. (provider: sec)
         rate_tenor_pmnt : Optional[str]
             The rate tenor for payment portion of the swap. (provider: sec)
-        rate_tenor_unit_pmnt : Optional[Union[int, str]]
+        rate_tenor_unit_pmnt : Optional[Union[str, int]]
             The rate tenor unit for payment portion of the swap. (provider: sec)
         reset_date_pmnt : Optional[str]
             The reset date for payment portion of the swap. (provider: sec)
-        reset_date_unit_pmnt : Optional[Union[int, str]]
+        reset_date_unit_pmnt : Optional[Union[str, int]]
             The reset date unit for payment portion of the swap. (provider: sec)
         repo_type : Optional[str]
             The type of repo. (provider: sec)
@@ -707,7 +694,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["finviz", "fmp"]] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """Price performance as a return, over different periods.
@@ -716,9 +703,9 @@ class ROUTER_etf(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['finviz', 'fmp']]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'finviz' if there is
+            If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
 
         Returns
@@ -726,7 +713,7 @@ class ROUTER_etf(Container):
         OBBject
             results : List[PricePerformance]
                 Serializable results.
-            provider : Optional[Literal['finviz', 'fmp']]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -765,22 +752,8 @@ class ROUTER_etf(Container):
             Ten-year return.
         max : Optional[float]
             Return from the beginning of the time series.
-        volatility_week : Optional[float]
-            One-week realized volatility, as a normalized percent. (provider: finviz)
-        volatility_month : Optional[float]
-            One-month realized volatility, as a normalized percent. (provider: finviz)
-        price : Optional[float]
-            Last Price. (provider: finviz)
-        volume : Optional[float]
-            Current volume. (provider: finviz)
-        average_volume : Optional[float]
-            Average daily volume. (provider: finviz)
-        relative_volume : Optional[float]
-            Relative volume as a ratio of current volume to average volume. (provider: finviz)
-        analyst_recommendation : Optional[float]
-            The analyst consensus, on a scale of 1-5 where 1 is a buy and 5 is a sell. (provider: finviz)
         symbol : Optional[str]
-            The ticker symbol. (provider: finviz, fmp)
+            The ticker symbol. (provider: fmp)
 
         Example
         -------
