@@ -281,6 +281,7 @@ def test_economy_balance_of_payments(params, headers):
                 "filter_value": None,
                 "tag_names": None,
                 "exclude_tag_names": None,
+                "series_id": None,
                 "provider": "fred",
             }
         ),
