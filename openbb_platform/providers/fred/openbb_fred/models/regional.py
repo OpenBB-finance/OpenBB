@@ -2,10 +2,11 @@
 
 # pylint: disable=unused-argument
 
-import json
-import warnings
 from datetime import date as dateType
 from typing import Any, Dict, List, Literal, Optional, Union
+
+import json
+import warnings
 
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.fred_series import (
