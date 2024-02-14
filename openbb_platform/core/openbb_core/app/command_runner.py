@@ -129,9 +129,9 @@ class ParametersBuilder:
             return "provider_choices" in parameters
 
         def _maybe_unspec_provider(kwargs: Dict[str, Any]) -> bool:
-            """Check if the provider can be unspecified.
+            """Check if the provider might be unspecified.
 
-            The condition are:
+            One of the following conditions:
             1. It is None
             2. It's the first provider, i.e. the runtime default
             """
