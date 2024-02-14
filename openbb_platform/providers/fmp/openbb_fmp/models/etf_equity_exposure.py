@@ -1,6 +1,6 @@
 """FMP ETF Equity Exposure Model."""
 
-# pylint: disable=unsed-argument
+# pylint: disable=unused-argument
 
 import asyncio
 import warnings
