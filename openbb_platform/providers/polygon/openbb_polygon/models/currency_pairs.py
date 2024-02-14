@@ -26,7 +26,7 @@ class PolygonCurrencyPairsQueryParams(CurrencyPairsQueryParams):
         default=None, description="Symbol of the pair to search."
     )
     date: Optional[dateType] = Field(
-        default=datetime.now().date(), description=QUERY_DESCRIPTIONS.get("date", "")
+        default=None, description=QUERY_DESCRIPTIONS.get("date", "")
     )
     search: Optional[str] = Field(
         default="",
