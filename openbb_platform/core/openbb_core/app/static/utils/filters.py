@@ -1,13 +1,13 @@
 """OpenBB filters."""
 
-from typing import Dict, Optional, Set
+from typing import Dict, List, Optional
 
 from openbb_core.app.utils import check_single_value, convert_to_basemodel
 
 
 def filter_inputs(
     data_processing: bool = False,
-    extra_info: Optional[Dict[str, Set[str]]] = None,
+    extra_info: Optional[Dict[str, List[str]]] = None,
     **kwargs,
 ) -> dict:
     """Filter command inputs."""
