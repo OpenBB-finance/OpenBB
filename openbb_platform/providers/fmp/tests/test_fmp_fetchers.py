@@ -27,6 +27,7 @@ from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
 from openbb_fmp.models.equity_historical import FMPEquityHistoricalFetcher
 from openbb_fmp.models.equity_ownership import FMPEquityOwnershipFetcher
 from openbb_fmp.models.equity_peers import FMPEquityPeersFetcher
+from openbb_fmp.models.equity_profile import FMPEquityProfileFetcher
 from openbb_fmp.models.equity_quote import FMPEquityQuoteFetcher
 from openbb_fmp.models.equity_screener import FMPEquityScreenerFetcher
 from openbb_fmp.models.equity_valuation_multiples import (
@@ -169,7 +170,7 @@ def test_fmp_equity_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_company_news_fetcher(credentials=test_credentials):
-    params = {"symbols": "AAPL,MSFT"}
+    params = {"symbol": "AAPL,MSFT"}
 
     fetcher = FMPCompanyNewsFetcher()
     result = fetcher.test(params, credentials)
@@ -632,5 +633,14 @@ def test_fmp_calendar_earnings_fetcher(credentials=test_credentials):
         "end_date": date(2023, 1, 10),
     }
     fetcher = FMPCalendarEarningsFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_equity_profile_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL"}
+
+    fetcher = FMPEquityProfileFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

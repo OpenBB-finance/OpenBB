@@ -1,0 +1,50 @@
+{
+    "crypto": {
+        "symbol": "BTCUSD"
+    },
+    "currency": {
+        "symbol": "EURUSD"
+    },
+    "derivatives": {
+        "symbol": "AAPL"
+    },
+    "economy": {
+        "country": "portugal",
+        "countries": ["portugal", "spain"]
+    },
+    "economy.fred_series": {
+        "symbol": "GFDGDPA188S"
+    },
+    "equity": {
+        "symbol": "AAPL",
+        "symbols": "AAPL,MSFT",
+        "query": "AAPL"
+    },
+    "equity.fundamental.historical_attributes": {
+        "tag": "ebitda"
+    },
+    "equity.fundamental.latest_attributes": {
+        "tag": "ceo"
+    },
+    "equity.fundamental.transcript": {
+        "year": 2020
+    },
+    "etf": {
+        "symbol": "SPY",
+        "query": "Vanguard"
+    },
+    "futures": {
+        "symbol": "ES"
+    },
+    "index": {
+        "symbol": "SPX",
+        "index": "^IBEX"
+    },
+    "news": {
+        "symbol": "AAPL"
+    },
+    "regulators": {
+        "symbol": "AAPL",
+        "query": "AAPL"
+    }
+}

@@ -1,4 +1,5 @@
 """Fixed Income Corporate Router."""
+
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
@@ -8,20 +9,25 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/spreads")
 
 # pylint: disable=unused-argument
 
 
-@router.command(model="TreasuryConstantMaturity")
-async def tmc(
+@router.command(
+    model="TreasuryConstantMaturity",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.fixedincome.fixedincome.spreads.tcm(maturity="2y")',
+    ],
+)
+async def tcm(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Treasury Constant Maturity.
 
     Get data for 10-Year Treasury Constant Maturity Minus Selected Treasury Constant Maturity.
@@ -32,13 +38,19 @@ async def tmc(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="SelectedTreasuryConstantMaturity")
-async def tmc_effr(
+@router.command(
+    model="SelectedTreasuryConstantMaturity",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.fixedincome.fixedincome.spreads.tcm_effr(maturity="10y")',
+    ],
+)
+async def tcm_effr(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Select Treasury Constant Maturity.
 
     Get data for Selected Treasury Constant Maturity Minus Federal Funds Rate
@@ -49,13 +61,19 @@ async def tmc_effr(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="SelectedTreasuryBill")
+@router.command(
+    model="SelectedTreasuryBill",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.fixedincome.fixedincome.spreads.treasury_effr(maturity="6m")',
+    ],
+)
 async def treasury_effr(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Select Treasury Bill.
 
     Get Selected Treasury Bill Minus Federal Funds Rate.

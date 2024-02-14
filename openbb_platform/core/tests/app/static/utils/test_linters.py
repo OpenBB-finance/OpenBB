@@ -1,4 +1,5 @@
 """Test linters.py file."""
+
 # pylint: disable=redefined-outer-name
 
 import pytest

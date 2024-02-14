@@ -1,4 +1,5 @@
 """Fixed Income Corporate Router."""
+
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
@@ -8,20 +9,25 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/corporate")
 
 # pylint: disable=unused-argument
 
 
-@router.command(model="ICEBofA")
+@router.command(
+    model="ICEBofA",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.fixedincome.corporate.ice_bofa(index_type="yield_to_worst")',
+    ],
+)
 async def ice_bofa(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """ICE BofA US Corporate Bond Indices.
 
     The ICE BofA US Corporate Index tracks the performance of US dollar denominated investment grade corporate debt
@@ -33,13 +39,19 @@ async def ice_bofa(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="MoodyCorporateBondIndex")
+@router.command(
+    model="MoodyCorporateBondIndex",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.fixedincome.corporate.moody(index_type="baa")',
+    ],
+)
 async def moody(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Moody Corporate Bond Index.
 
     Moody's Aaa and Baa are investment bonds that acts as an index of
@@ -50,13 +62,17 @@ async def moody(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="HighQualityMarketCorporateBond")
+@router.command(
+    model="HighQualityMarketCorporateBond",
+    exclude_auto_examples=True,
+    examples=['obb.fixedincome.corporate.hqm(yield_curve="par")'],
+)
 async def hqm(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """High Quality Market Corporate Bond.
 
     The HQM yield curve represents the high quality corporate bond market, i.e.,
@@ -67,13 +83,19 @@ async def hqm(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="SpotRate")
+@router.command(
+    model="SpotRate",
+    exclude_auto_examples=True,
+    examples=[
+        "obb.fixedincome.corporate.spot_rates(maturity=[10,20,30,50])",
+    ],
+)
 async def spot_rates(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Spot Rates.
 
     The spot rates for any maturity is the yield on a bond that provides a single payment at that maturity.
@@ -84,13 +106,19 @@ async def spot_rates(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="CommercialPaper")
+@router.command(
+    model="CommercialPaper",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.fixedincome.corporate.commercial_paper(maturity="15d")',
+    ],
+)
 async def commercial_paper(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Commercial Paper.
 
     Commercial paper (CP) consists of short-term, promissory notes issued primarily by corporations.

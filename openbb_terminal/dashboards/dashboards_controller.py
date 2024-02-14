@@ -1,4 +1,5 @@
 """Dashboards Module."""
+
 __docformat__ = "numpy"
 
 import argparse

@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -14,12 +14,16 @@ from typing_extensions import Annotated
 class ROUTER_economy(Container):
     """/economy
     calendar
+    composite_leading_indicator
     cpi
     fred_search
     fred_series
     /gdp
+    long_term_interest_rate
     money_measures
     risk_premium
+    short_term_interest_rate
+    unemployment
     """
 
     def __repr__(self) -> str:
@@ -43,7 +47,7 @@ class ROUTER_economy(Container):
         provider: Optional[Literal["fmp", "tradingeconomics"]] = None,
         **kwargs
     ) -> OBBject:
-        """Economic Calendar.
+        """Get the upcoming, or historical, economic calendar of global events.
 
         Parameters
         ----------
@@ -55,8 +59,8 @@ class ROUTER_economy(Container):
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
-        country : Optional[Union[str, List[str]]]
-            Country of the event (provider: tradingeconomics)
+        country : Optional[str]
+            Country of the event. (provider: tradingeconomics)
         importance : Optional[Literal['Low', 'Medium', 'High']]
             Importance of the event. (provider: tradingeconomics)
         group : Optional[Literal['interest rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']]
@@ -65,7 +69,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : List[EconomicCalendar]
+            results : EconomicCalendar
                 Serializable results.
             provider : Optional[Literal['fmp', 'tradingeconomics']]
                 Provider name.
@@ -118,7 +122,9 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.calendar()
+        >>> obb.economy.calendar(provider="fmp", start_date="2020-03-01", end_date="2020-03-31")
+        >>> #### By default, the calendar will be forward-looking. ####
+        >>> obb.economy.calendar(provider="nasdaq")
         """  # noqa: E501
 
         return self._run(
@@ -136,63 +142,89 @@ class ROUTER_economy(Container):
         )
 
     @validate
+    def composite_leading_indicator(
+        self,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        provider: Optional[Literal["oecd"]] = None,
+        **kwargs
+    ) -> OBBject:
+        """The composite leading indicator (CLI) is designed to provide early signals of turning points
+        in business cycles showing fluctuation of the economic activity around its long term potential level.
+        CLIs show short-term economic movements in qualitative rather than quantitative terms.
+
+
+            Parameters
+            ----------
+            start_date : Optional[datetime.date]
+                Start date of the data, in YYYY-MM-DD format.
+            end_date : Optional[datetime.date]
+                End date of the data, in YYYY-MM-DD format.
+            provider : Optional[Literal['oecd']]
+                The provider to use for the query, by default None.
+                If None, the provider specified in defaults is selected or 'oecd' if there is
+                no default.
+            country : Literal['united_states', 'united_kingdom', 'japan', 'mexico', 'indonesia', 'australia', 'brazil', 'canada', 'italy', 'germany', 'turkey', 'france', 'south_africa', 'south_korea', 'spain', 'india', 'china', 'g7', 'g20', 'all']
+                Country to get GDP for. (provider: oecd)
+
+            Returns
+            -------
+            OBBject
+                results : List[CLI]
+                    Serializable results.
+                provider : Optional[Literal['oecd']]
+                    Provider name.
+                warnings : Optional[List[Warning_]]
+                    List of warnings.
+                chart : Optional[Chart]
+                    Chart object.
+                extra: Dict[str, Any]
+                    Extra info.
+
+            CLI
+            ---
+            date : Optional[date]
+                The date of the data.
+            value : Optional[float]
+                CLI value
+            country : Optional[str]
+                Country for which CLI is given
+
+            Example
+            -------
+            >>> from openbb import obb
+            >>> obb.economy.composite_leading_indicator(country="all").to_df()
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/composite_leading_indicator",
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
+        )
+
+    @validate
     def cpi(
         self,
-        countries: Annotated[
-            List[
-                Literal[
-                    "australia",
-                    "austria",
-                    "belgium",
-                    "brazil",
-                    "bulgaria",
-                    "canada",
-                    "chile",
-                    "china",
-                    "croatia",
-                    "cyprus",
-                    "czech_republic",
-                    "denmark",
-                    "estonia",
-                    "euro_area",
-                    "finland",
-                    "france",
-                    "germany",
-                    "greece",
-                    "hungary",
-                    "iceland",
-                    "india",
-                    "indonesia",
-                    "ireland",
-                    "israel",
-                    "italy",
-                    "japan",
-                    "korea",
-                    "latvia",
-                    "lithuania",
-                    "luxembourg",
-                    "malta",
-                    "mexico",
-                    "netherlands",
-                    "new_zealand",
-                    "norway",
-                    "poland",
-                    "portugal",
-                    "romania",
-                    "russian_federation",
-                    "slovak_republic",
-                    "slovakia",
-                    "slovenia",
-                    "south_africa",
-                    "spain",
-                    "sweden",
-                    "switzerland",
-                    "turkey",
-                    "united_kingdom",
-                    "united_states",
-                ]
-            ],
-            OpenBBCustomParameter(description="The country or countries to get data."),
+        country: Annotated[
+            str, OpenBBCustomParameter(description="The country to get data.")
         ],
         units: Annotated[
             Literal["growth_previous", "growth_same", "index_2015"],
@@ -231,8 +263,8 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        countries : List[Literal['australia', 'austria', 'belgium', 'brazil', 'bulgar...
-            The country or countries to get data.
+        country : str
+            The country to get data.
         units : Literal['growth_previous', 'growth_same', 'index_2015']
             The unit of measurement for the data.
             Options:
@@ -277,7 +309,9 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.cpi(countries=['portugal', 'spain'], units="growth_same", frequency="monthly")
+        >>> obb.economy.cpi(countries=["japan", "china", "turkey"]).to_df()
+        >>> #### Use the `units` parameter to define the reference period for the change in values. ####
+        >>> obb.economy.cpi(countries=["united_states", "united_kingdom"], units="growth_previous").to_df()
         """  # noqa: E501
 
         return self._run(
@@ -287,7 +321,7 @@ class ROUTER_economy(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "countries": countries,
+                    "country": country,
                     "units": units,
                     "frequency": frequency,
                     "harmonized": harmonized,
@@ -323,7 +357,7 @@ class ROUTER_economy(Container):
                 no default.
             is_release : Optional[bool]
                 Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True. (provider: fred)
-            release_id : Optional[Union[str, int]]
+            release_id : Optional[Union[int, str]]
                 A specific release ID to target. (provider: fred)
             limit : Optional[int]
                 The number of data entries to return. (1-1000) (provider: fred)
@@ -354,7 +388,7 @@ class ROUTER_economy(Container):
 
             FredSearch
             ----------
-            release_id : Optional[Union[str, int]]
+            release_id : Optional[Union[int, str]]
                 The release ID for queries.
             series_id : Optional[str]
                 The series ID for the item in the release.
@@ -414,8 +448,7 @@ class ROUTER_economy(Container):
     def fred_series(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -521,7 +554,11 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.fred_series(symbol="AAPL", limit=100000)
+        >>> obb.economy.fred_series("NFCI").to_df()
+        >>> #### Multiple series can be passed in as a list. ####
+        >>> obb.economy.fred_series(["NFCI","STLFSI4"]).to_df()
+        >>> #### Use the `transform` parameter to transform the data as change, log, or percent change. ####
+        >>> obb.economy.fred_series("CBBTCUSD", transform="pc1").to_df()
         """  # noqa: E501
 
         return self._run(
@@ -531,7 +568,7 @@ class ROUTER_economy(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                     "limit": limit,
@@ -546,6 +583,93 @@ class ROUTER_economy(Container):
         from . import economy_gdp
 
         return economy_gdp.ROUTER_economy_gdp(command_runner=self._command_runner)
+
+    @validate
+    def long_term_interest_rate(
+        self,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        provider: Optional[Literal["oecd"]] = None,
+        **kwargs
+    ) -> OBBject:
+        """
+        Long-term interest rates refer to government bonds maturing in ten years.
+        Rates are mainly determined by the price charged by the lender, the risk from the borrower and the
+        fall in the capital value. Long-term interest rates are generally averages of daily rates,
+        measured as a percentage. These interest rates are implied by the prices at which the government bonds are
+        traded on financial markets, not the interest rates at which the loans were issued.
+        In all cases, they refer to bonds whose capital repayment is guaranteed by governments.
+        Long-term interest rates are one of the determinants of business investment.
+        Low long-term interest rates encourage investment in new equipment and high interest rates discourage it.
+        Investment is, in turn, a major source of economic growth.
+
+            Parameters
+            ----------
+            start_date : Optional[datetime.date]
+                Start date of the data, in YYYY-MM-DD format.
+            end_date : Optional[datetime.date]
+                End date of the data, in YYYY-MM-DD format.
+            provider : Optional[Literal['oecd']]
+                The provider to use for the query, by default None.
+                If None, the provider specified in defaults is selected or 'oecd' if there is
+                no default.
+            country : Literal['belgium', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
+                Country to get GDP for. (provider: oecd)
+            frequency : Literal['monthly', 'quarterly', 'annual']
+                Frequency to get interest rate for for. (provider: oecd)
+
+            Returns
+            -------
+            OBBject
+                results : List[STIR]
+                    Serializable results.
+                provider : Optional[Literal['oecd']]
+                    Provider name.
+                warnings : Optional[List[Warning_]]
+                    List of warnings.
+                chart : Optional[Chart]
+                    Chart object.
+                extra: Dict[str, Any]
+                    Extra info.
+
+            STIR
+            ----
+            date : Optional[date]
+                The date of the data.
+            value : Optional[float]
+                Interest rate (given as a whole number, i.e 10=10%)
+            country : Optional[str]
+                Country for which interest rate is given
+
+            Example
+            -------
+            >>> from openbb import obb
+            >>> obb.economy.long_term_interest_rate(country="all", frequency="quarterly").to_df()
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/long_term_interest_rate",
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
+        )
 
     @validate
     def money_measures(
@@ -571,7 +695,7 @@ class ROUTER_economy(Container):
         provider: Optional[Literal["federal_reserve"]] = None,
         **kwargs
     ) -> OBBject:
-        """Money Measures.
+        """Money Measures (M1/M2 and components). The Federal Reserve publishes as part of the H.6 Release.
 
         Parameters
         ----------
@@ -622,7 +746,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.money_measures(adjusted=True)
+        >>> obb.economy.money_measures(adjusted=False).to_df()
         """  # noqa: E501
 
         return self._run(
@@ -644,7 +768,7 @@ class ROUTER_economy(Container):
     def risk_premium(
         self, provider: Optional[Literal["fmp"]] = None, **kwargs
     ) -> OBBject:
-        """Historical Market Risk Premium.
+        """Market Risk Premium by country.
 
         Parameters
         ----------
@@ -681,7 +805,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.risk_premium()
+        >>> obb.economy.risk_premium().to_df()
         """  # noqa: E501
 
         return self._run(
@@ -691,6 +815,178 @@ class ROUTER_economy(Container):
                     "provider": provider,
                 },
                 standard_params={},
+                extra_params=kwargs,
+            )
+        )
+
+    @validate
+    def short_term_interest_rate(
+        self,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        provider: Optional[Literal["oecd"]] = None,
+        **kwargs
+    ) -> OBBject:
+        """
+        Short-term interest rates are the rates at which short-term borrowings are effected between
+        financial institutions or the rate at which short-term government paper is issued or traded in the market.
+        Short-term interest rates are generally averages of daily rates, measured as a percentage.
+        Short-term interest rates are based on three-month money market rates where available.
+        Typical standardised names are "money market rate" and "treasury bill rate".
+
+
+            Parameters
+            ----------
+            start_date : Optional[datetime.date]
+                Start date of the data, in YYYY-MM-DD format.
+            end_date : Optional[datetime.date]
+                End date of the data, in YYYY-MM-DD format.
+            provider : Optional[Literal['oecd']]
+                The provider to use for the query, by default None.
+                If None, the provider specified in defaults is selected or 'oecd' if there is
+                no default.
+            country : Literal['belgium', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
+                Country to get GDP for. (provider: oecd)
+            frequency : Literal['monthly', 'quarterly', 'annual']
+                Frequency to get interest rate for for. (provider: oecd)
+
+            Returns
+            -------
+            OBBject
+                results : List[STIR]
+                    Serializable results.
+                provider : Optional[Literal['oecd']]
+                    Provider name.
+                warnings : Optional[List[Warning_]]
+                    List of warnings.
+                chart : Optional[Chart]
+                    Chart object.
+                extra: Dict[str, Any]
+                    Extra info.
+
+            STIR
+            ----
+            date : Optional[date]
+                The date of the data.
+            value : Optional[float]
+                Interest rate (given as a whole number, i.e 10=10%)
+            country : Optional[str]
+                Country for which interest rate is given
+
+            Example
+            -------
+            >>> from openbb import obb
+            >>> obb.economy.short_term_interest_rate(country="all", frequency="quarterly").to_df()
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/short_term_interest_rate",
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
+                extra_params=kwargs,
+            )
+        )
+
+    @validate
+    def unemployment(
+        self,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        provider: Optional[Literal["oecd"]] = None,
+        **kwargs
+    ) -> OBBject:
+        """Global unemployment data.
+
+        Parameters
+        ----------
+        start_date : Optional[datetime.date]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Optional[datetime.date]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['oecd']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'oecd' if there is
+            no default.
+        country : Literal['colombia', 'new_zealand', 'united_kingdom', 'italy', 'luxembourg', 'euro_area19', 'sweden', 'oecd', 'south_africa', 'denmark', 'canada', 'switzerland', 'slovakia', 'hungary', 'portugal', 'spain', 'france', 'czech_republic', 'costa_rica', 'japan', 'slovenia', 'russia', 'austria', 'latvia', 'netherlands', 'israel', 'iceland', 'united_states', 'ireland', 'mexico', 'germany', 'greece', 'turkey', 'australia', 'poland', 'south_korea', 'chile', 'finland', 'european_union27_2020', 'norway', 'lithuania', 'euro_area20', 'estonia', 'belgium', 'brazil', 'indonesia', 'all']
+            Country to get GDP for. (provider: oecd)
+        sex : Literal['total', 'male', 'female']
+            Sex to get unemployment for. (provider: oecd)
+        frequency : Literal['monthly', 'quarterly', 'annual']
+            Frequency to get unemployment for. (provider: oecd)
+        age : Literal['total', '15-24', '15-64', '25-54', '55-64']
+            Age group to get unemployment for. Total indicates 15 years or over (provider: oecd)
+        seasonal_adjustment : bool
+            Whether to get seasonally adjusted unemployment. Defaults to False. (provider: oecd)
+
+        Returns
+        -------
+        OBBject
+            results : List[Unemployment]
+                Serializable results.
+            provider : Optional[Literal['oecd']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        Unemployment
+        ------------
+        date : Optional[date]
+            The date of the data.
+        value : Optional[float]
+            Unemployment rate (given as a whole number, i.e 10=10%)
+        country : Optional[str]
+            Country for which unemployment rate is given
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.economy.unemployment(country="all", frequency="quarterly")
+        >>> #### Demographics for the statistics are selected with the `age` and `sex` parameters. ####
+        >>> obb.economy.unemployment(
+        >>> country="all", frequency="quarterly", age="25-54"
+        >>> ).to_df().pivot(columns="country", values="value")
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/unemployment",
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "start_date": start_date,
+                    "end_date": end_date,
+                },
                 extra_params=kwargs,
             )
         )

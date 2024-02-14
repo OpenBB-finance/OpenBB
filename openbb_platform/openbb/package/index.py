@@ -1,14 +1,16 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional, Union
+from warnings import simplefilter, warn
 
+from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
 from openbb_core.app.static.utils.decorators import validate
 from openbb_core.app.static.utils.filters import filter_inputs
-from typing_extensions import Annotated
+from typing_extensions import Annotated, deprecated
 
 
 class ROUTER_index(Container):
@@ -26,7 +28,7 @@ class ROUTER_index(Container):
     def available(
         self, provider: Optional[Literal["fmp", "yfinance"]] = None, **kwargs
     ) -> OBBject:
-        """Available Indices. Available indices for a given provider.
+        """All indices available from a given provider.
 
         Parameters
         ----------
@@ -67,7 +69,7 @@ class ROUTER_index(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.index.available()
+        >>> obb.index.available(provider="yfinance").to_df()
         """  # noqa: E501
 
         return self._run(
@@ -85,20 +87,18 @@ class ROUTER_index(Container):
     def constituents(
         self,
         index: Annotated[
-            Literal["nasdaq", "sp500", "dowjones"],
-            OpenBBCustomParameter(
-                description="Index for which we want to fetch the constituents."
-            ),
-        ] = "dowjones",
+            str,
+            OpenBBCustomParameter(description="Index to fetch the constituents of."),
+        ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Index Constituents. Constituents of an index.
+        """Index Constituents.
 
         Parameters
         ----------
-        index : Literal['nasdaq', 'sp500', 'dowjones']
-            Index for which we want to fetch the constituents.
+        index : str
+            Index to fetch the constituents of.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -122,25 +122,27 @@ class ROUTER_index(Container):
         -----------------
         symbol : str
             Symbol representing the entity requested in the data.
-        name : str
+        name : Optional[str]
             Name of the constituent company in the index.
-        sector : str
-            Sector the constituent company in the index belongs to.
+        sector : Optional[str]
+            Sector the constituent company in the index belongs to. (provider: fmp)
         sub_sector : Optional[str]
-            Sub-sector the constituent company in the index belongs to.
+            Sub-sector the constituent company in the index belongs to. (provider: fmp)
         headquarter : Optional[str]
-            Location of the headquarter of the constituent company in the index.
+            Location of the headquarter of the constituent company in the index. (provider: fmp)
         date_first_added : Optional[Union[str, date]]
-            Date the constituent company was added to the index.
-        cik : int
-            Central Index Key (CIK) for the requested entity.
+            Date the constituent company was added to the index. (provider: fmp)
+        cik : Optional[int]
+            Central Index Key (CIK) for the requested entity. (provider: fmp)
         founded : Optional[Union[str, date]]
-            Founding year of the constituent company in the index.
+            Founding year of the constituent company in the index. (provider: fmp)
 
         Example
         -------
         >>> from openbb import obb
-        >>> obb.index.constituents(index="dowjones")
+        >>> obb.index.constituents("dowjones", provider="fmp").to_df()
+        >>> #### Providers other than FMP will use the ticker symbol. ####
+        >>> obb.index.constituents("BEP50P", provider="cboe").to_df()
         """  # noqa: E501
 
         return self._run(
@@ -157,11 +159,14 @@ class ROUTER_index(Container):
         )
 
     @validate
+    @deprecated(
+        "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
+        category=OpenBBDeprecationWarning,
+    )
     def market(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -268,11 +273,9 @@ class ROUTER_index(Container):
         >>> obb.index.market(symbol="SPX")
         """  # noqa: E501
 
-        from warnings import warn, simplefilter
-
         simplefilter("always", DeprecationWarning)
         warn(
-            "This endpoint will be deprecated in the future releases. Use '/index/price/historical' instead.",
+            "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
             category=DeprecationWarning,
             stacklevel=2,
         )
@@ -284,7 +287,7 @@ class ROUTER_index(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                     "start_date": start_date,
                     "end_date": end_date,
                 },

@@ -1,4 +1,5 @@
 """Messari view"""
+
 __docformat__ = "numpy"
 
 # pylint: disable=C0201

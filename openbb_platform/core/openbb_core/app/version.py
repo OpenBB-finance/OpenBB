@@ -1,4 +1,5 @@
 """Version script for the OpenBB Platform."""
+
 import shutil
 import subprocess
 from pathlib import Path
@@ -45,6 +46,12 @@ def is_git_repo(path: Path):
         return True
     except subprocess.CalledProcessError:
         return False
+
+
+def get_major_minor(version: str) -> tuple[int, int]:
+    """Retrieve the major and minor version from a version string."""
+    parts = version.split(".")
+    return (int(parts[0]), int(parts[1]))
 
 
 try:

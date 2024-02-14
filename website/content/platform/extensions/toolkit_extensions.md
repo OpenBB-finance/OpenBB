@@ -130,6 +130,9 @@ The `openbb-econometrics` extension installs a new router path (`obb.econometric
 - linearmodels
 
 :::note
+
+Statsmodels requires a C compiler be present on the system. Follow the instructions [here](https://cython.readthedocs.io/en/latest/src/quickstart/install.html) for system-specific methods.
+
 This extension is not accessible via REST API because `statsmodels` is not serializable.
 :::
 
@@ -175,7 +178,7 @@ After installation, the Python interface will automatically rebuild on initializ
 
 ## Technical
 
-The `openbb-technical` extension is for performing technical analysis on time series data. It installs a new router path (`obb.techincal`) and some additional Python libraries:
+The `openbb-technical` extension is for performing technical analysis on time series data. It installs a new router path (`obb.technical`) and some additional Python libraries:
 
 - pandas-ta
 - scikit-learn

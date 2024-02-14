@@ -13,8 +13,8 @@ from typing_extensions import Annotated
 
 class ROUTER_fixedincome_spreads(Container):
     """/fixedincome/spreads
-    tmc
-    tmc_effr
+    tcm
+    tcm_effr
     treasury_effr
     """
 
@@ -22,7 +22,7 @@ class ROUTER_fixedincome_spreads(Container):
         return self.__doc__ or ""
 
     @validate
-    def tmc(
+    def tcm(
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -88,11 +88,11 @@ class ROUTER_fixedincome_spreads(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.spreads.tmc(maturity="3m")
+            >>> obb.fixedincome.fixedincome.spreads.tcm(maturity="2y")
         """  # noqa: E501
 
         return self._run(
-            "/fixedincome/spreads/tmc",
+            "/fixedincome/spreads/tcm",
             **filter_inputs(
                 provider_choices={
                     "provider": provider,
@@ -107,7 +107,7 @@ class ROUTER_fixedincome_spreads(Container):
         )
 
     @validate
-    def tmc_effr(
+    def tcm_effr(
         self,
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -173,11 +173,11 @@ class ROUTER_fixedincome_spreads(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.spreads.tmc_effr(maturity="10y")
+            >>> obb.fixedincome.fixedincome.spreads.tcm_effr(maturity="10y")
         """  # noqa: E501
 
         return self._run(
-            "/fixedincome/spreads/tmc_effr",
+            "/fixedincome/spreads/tcm_effr",
             **filter_inputs(
                 provider_choices={
                     "provider": provider,
@@ -259,7 +259,7 @@ class ROUTER_fixedincome_spreads(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.fixedincome.spreads.treasury_effr(maturity="3m")
+            >>> obb.fixedincome.fixedincome.spreads.treasury_effr(maturity="6m")
         """  # noqa: E501
 
         return self._run(

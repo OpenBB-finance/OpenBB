@@ -49,7 +49,7 @@ def vcr_config():
 @pytest.mark.record_http
 def test_fredcpi_fetcher(credentials=test_credentials):
     """Test FREDConsumerPriceIndexFetcher."""
-    params = {"countries": ["portugal", "spain"]}
+    params = {"country": "portugal,spain"}
 
     fetcher = FREDConsumerPriceIndexFetcher()
     result = fetcher.test(params, credentials)

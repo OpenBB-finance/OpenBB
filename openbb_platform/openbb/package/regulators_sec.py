@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -27,13 +27,12 @@ class ROUTER_regulators_sec(Container):
     def cik_map(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the CIK number corresponding to a ticker symbol.
+        """Map a ticker symbol to a CIK number.
 
         Parameters
         ----------
@@ -66,7 +65,8 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.cik_map(symbol="AAPL")
+        >>> obb.regulators.sec.cik_map(symbol="MSFT").results.cik
+        >>>     0000789019
         """  # noqa: E501
 
         return self._run(
@@ -76,7 +76,7 @@ class ROUTER_regulators_sec(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -86,21 +86,27 @@ class ROUTER_regulators_sec(Container):
     def institutions_search(
         self,
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        use_cache: Annotated[
+            Optional[bool],
+            OpenBBCustomParameter(
+                description="Whether or not to use cache. If True, cache will store for seven days."
+            ),
+        ] = True,
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
-        """Look up institutions regulated by the SEC.
+        """Search SEC-regulated institutions by name and return a list of results with CIK numbers.
 
         Parameters
         ----------
         query : str
             Search query.
+        use_cache : Optional[bool]
+            Whether or not to use cache. If True, cache will store for seven days.
         provider : Optional[Literal['sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'sec' if there is
             no default.
-        use_cache : bool
-            Whether or not to use cache. If True, cache will store for seven days. (provider: sec)
 
         Returns
         -------
@@ -126,7 +132,7 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.institutions_search()
+        >>> obb.regulators.sec.institutions_search(query="blackstone real estate").to_df()
         """  # noqa: E501
 
         return self._run(
@@ -137,6 +143,7 @@ class ROUTER_regulators_sec(Container):
                 },
                 standard_params={
                     "query": query,
+                    "use_cache": use_cache,
                 },
                 extra_params=kwargs,
             )
@@ -185,7 +192,7 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.rss_litigation()
+        >>> obb.regulators.sec.rss_litigation().to_dict("records")[0]
         """  # noqa: E501
 
         return self._run(
@@ -203,15 +210,23 @@ class ROUTER_regulators_sec(Container):
     def schema_files(
         self,
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        use_cache: Annotated[
+            Optional[bool],
+            OpenBBCustomParameter(
+                description="Whether or not to use cache. If True, cache will store for seven days."
+            ),
+        ] = True,
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get lists of SEC XML schema files by year.
+        """A tool for navigating the directory of SEC XML schema files by year.
 
         Parameters
         ----------
         query : str
             Search query.
+        use_cache : Optional[bool]
+            Whether or not to use cache. If True, cache will store for seven days.
         provider : Optional[Literal['sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'sec' if there is
@@ -241,7 +256,23 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.schema_files()
+        >>> data = obb.regulators.sec.schema_files()
+        >>> data.files[0]
+        >>>     https://xbrl.fasb.org/us-gaap/
+        >>> #### The directory structure can be navigated by constructing a URL from the 'results' list. ####
+        >>> url = data.files[0]+data.files[-1]
+        >>> #### The URL base will always be the 0 position in the list, feed  the URL back in as a parameter. ####
+        >>> obb.regulators.sec.schema_files(url=url).results.files
+        >>>     ['https://xbrl.fasb.org/us-gaap/2024/',
+        >>>     'USGAAP2024FileList.xml'
+        >>>     'dis/'
+        >>>     'dqcrules/'
+        >>>    'ebp/'
+        >>>    'elts/'
+        >>>    'entire/'
+        >>>    'meta/'
+        >>>    'stm/'
+        >>>    'us-gaap-2024.zip']
         """  # noqa: E501
 
         return self._run(
@@ -252,6 +283,7 @@ class ROUTER_regulators_sec(Container):
                 },
                 standard_params={
                     "query": query,
+                    "use_cache": use_cache,
                 },
                 extra_params=kwargs,
             )
@@ -261,21 +293,27 @@ class ROUTER_regulators_sec(Container):
     def sic_search(
         self,
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        use_cache: Annotated[
+            Optional[bool],
+            OpenBBCustomParameter(
+                description="Whether or not to use cache. If True, cache will store for seven days."
+            ),
+        ] = True,
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
-        """Search for Industry Titles, Reporting Office, and SIC Codes.
+        """Search for Industry Titles, Reporting Office, and SIC Codes. An empty query string returns all results.
 
         Parameters
         ----------
         query : str
             Search query.
+        use_cache : Optional[bool]
+            Whether or not to use cache. If True, cache will store for seven days.
         provider : Optional[Literal['sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'sec' if there is
             no default.
-        use_cache : bool
-            Whether to use the cache or not. The full list will be cached for seven days if True. (provider: sec)
 
         Returns
         -------
@@ -303,7 +341,7 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.sic_search()
+        >>> obb.regulators.sec.sic_search("real estate investment trusts").results
         """  # noqa: E501
 
         return self._run(
@@ -314,6 +352,7 @@ class ROUTER_regulators_sec(Container):
                 },
                 standard_params={
                     "query": query,
+                    "use_cache": use_cache,
                 },
                 extra_params=kwargs,
             )
@@ -323,15 +362,23 @@ class ROUTER_regulators_sec(Container):
     def symbol_map(
         self,
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
+        use_cache: Annotated[
+            Optional[bool],
+            OpenBBCustomParameter(
+                description="Whether or not to use cache. If True, cache will store for seven days."
+            ),
+        ] = True,
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the ticker symbol corresponding to a company's CIK.
+        """Map a CIK number to a ticker symbol, leading 0s can be omitted or included.
 
         Parameters
         ----------
         query : str
             Search query.
+        use_cache : Optional[bool]
+            Whether or not to use cache. If True, cache will store for seven days.
         provider : Optional[Literal['sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'sec' if there is
@@ -359,7 +406,8 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.symbol_map()
+        >>> obb.regulators.sec.symbol_map("0000789019").results.symbol
+        >>>     MSFT
         """  # noqa: E501
 
         return self._run(
@@ -370,6 +418,7 @@ class ROUTER_regulators_sec(Container):
                 },
                 standard_params={
                     "query": query,
+                    "use_cache": use_cache,
                 },
                 extra_params=kwargs,
             )

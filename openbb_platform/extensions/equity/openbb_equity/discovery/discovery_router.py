@@ -1,4 +1,5 @@
 """Disc router for Equities."""
+
 # pylint: disable=unused-argument
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
@@ -9,7 +10,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/discovery")
 
@@ -20,7 +20,7 @@ async def gainers(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get the top Equity gainers."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -31,7 +31,7 @@ async def losers(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get the top Equity losers."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -42,7 +42,7 @@ async def active(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get the most active Equities."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -53,7 +53,7 @@ async def undervalued_large_caps(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get undervalued large cap Equities."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -64,7 +64,7 @@ async def undervalued_growth(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get undervalued growth Equities."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -75,7 +75,7 @@ async def aggressive_small_caps(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get aggressive small cap Equities."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -86,7 +86,7 @@ async def growth_tech(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get growth tech Equities."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -97,7 +97,7 @@ async def top_retail(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Tracks over $30B USD/day of individual investors trades.
 
     It gives a daily view into retail activity and sentiment for over 9,500 US traded stocks,
@@ -112,7 +112,7 @@ async def upcoming_release_days(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get upcoming release days."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -123,6 +123,6 @@ async def filings(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Get the most-recent filings submitted to the SEC."""
     return await OBBject.from_query(Query(**locals()))

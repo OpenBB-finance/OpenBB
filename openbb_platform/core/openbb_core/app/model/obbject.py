@@ -1,4 +1,5 @@
 """The OBBject."""
+
 from re import sub
 from typing import (
     TYPE_CHECKING,
@@ -72,8 +73,20 @@ class OBBject(Tagged, Generic[T]):
     @classmethod
     def results_type_repr(cls, params: Optional[Any] = None) -> str:
         """Return the results type name."""
-        type_ = params[0] if params else cls.model_fields["results"].annotation
+        results_field = cls.model_fields.get("results")
+        type_ = params[0] if params else results_field.annotation
         name = type_.__name__ if hasattr(type_, "__name__") else str(type_)
+
+        if (json_schema_extra := results_field.json_schema_extra) is not None:
+            model = json_schema_extra.get("model")
+
+            if json_schema_extra.get("is_union"):
+                return f"Union[List[{model}], {model}]"
+            if json_schema_extra.get("has_list"):
+                return f"List[{model}]"
+
+            return model
+
         if "typing." in str(type_):
             unpack_optional = sub(r"Optional\[(.*)\]", r"\1", str(type_))
             name = sub(

@@ -26,8 +26,8 @@ def headers():
             {
                 "display": "full",
                 "date": None,
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "start_date": None,
+                "end_date": None,
                 "updated_since": None,
                 "published_since": None,
                 "sort": "created",
@@ -46,12 +46,16 @@ def headers():
             {
                 "provider": "fmp",
                 "limit": 30,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
             {
                 "provider": "intrinio",
                 "limit": 20,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -61,6 +65,8 @@ def headers():
                 "tag": "federalreserve",
                 "source": "bloomberg",
                 "term": "MSFT",
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
@@ -68,6 +74,9 @@ def headers():
                 "provider": "tiingo",
                 "limit": 30,
                 "source": "bloomberg.com",
+                "start_date": None,
+                "end_date": None,
+                "offset": 0,
             }
         ),
     ],
@@ -86,7 +95,16 @@ def test_news_world(params, headers):
 @parametrize(
     "params",
     [
-        ({"symbols": "AAPL", "limit": 20, "provider": "benzinga"}),
+        (
+            {
+                "symbol": "AAPL",
+                "limit": 20,
+                "provider": "benzinga",
+                "date": "2023-01-01",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
+            }
+        ),
         (
             {
                 "display": "full",
@@ -104,7 +122,7 @@ def test_news_world(params, headers):
                 "authors": "Benzinga Insights",
                 "content_types": "headline",
                 "provider": "benzinga",
-                "symbols": "AAPL,MSFT",
+                "symbol": "AAPL,MSFT",
                 "limit": 20,
             }
         ),
@@ -113,46 +131,50 @@ def test_news_world(params, headers):
                 "published_utc": "2023-01-01",
                 "order": "desc",
                 "provider": "polygon",
-                "symbols": "AAPL",
+                "symbol": "AAPL",
                 "limit": 20,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
             {
                 "provider": "fmp",
-                "symbols": "AAPL",
+                "symbol": "AAPL",
                 "limit": 20,
                 "page": 1,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
             {
                 "provider": "yfinance",
-                "symbols": "AAPL",
+                "symbol": "AAPL",
                 "limit": 20,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
             {
                 "provider": "intrinio",
-                "symbols": "AAPL",
+                "symbol": "AAPL",
                 "limit": 20,
+                "start_date": None,
+                "end_date": None,
             }
         ),
         (
             {
                 "provider": "tiingo",
-                "symbols": "AAPL,MSFT",
+                "symbol": "AAPL,MSFT",
                 "limit": 20,
                 "source": "bloomberg.com",
+                "start_date": None,
+                "end_date": None,
             }
         ),
-        # (
-        #     {
-        #         "provider": "ultima",
-        #         "sectors": "Real Estate",
-        #     }
-        # ),
     ],
 )
 @pytest.mark.integration
@@ -161,29 +183,6 @@ def test_news_company(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/news/company?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
-    assert isinstance(result, requests.Response)
-    assert result.status_code == 200
-
-
-@pytest.mark.skip("openbb-ultima is not installed on the CI.")
-@parametrize(
-    "params",
-    [
-        (
-            {
-                "provider": "ultima",
-                "sectors": "Real Estate",
-            }
-        ),
-    ],
-)
-@pytest.mark.integration
-def test_news_sector(params, headers):
-    params = {p: v for p, v in params.items() if v}
-
-    query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/news/sector?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

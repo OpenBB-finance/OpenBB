@@ -1,4 +1,5 @@
 """Decorators"""
+
 __docformat__ = "numpy"
 import functools
 import logging

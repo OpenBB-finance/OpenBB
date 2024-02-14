@@ -379,11 +379,11 @@ def test_fixedincome_corporate_hqm(params, headers):
     [({"start_date": "2023-01-01", "end_date": "2023-06-06", "maturity": "3m"})],
 )
 @pytest.mark.integration
-def test_fixedincome_spreads_tmc(params, headers):
+def test_fixedincome_spreads_tcm(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/fixedincome/spreads/tmc?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/spreads/tcm?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -403,11 +403,11 @@ def test_fixedincome_spreads_tmc(params, headers):
     ],
 )
 @pytest.mark.integration
-def test_fixedincome_spreads_tmc_effr(params, headers):
+def test_fixedincome_spreads_tcm_effr(params, headers):
     params = {p: v for p, v in params.items() if v}
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/fixedincome/spreads/tmc_effr?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/fixedincome/spreads/tcm_effr?{query_str}"
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

@@ -1,4 +1,5 @@
 """Calendar Router."""
+
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
@@ -8,7 +9,6 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
-from pydantic import BaseModel
 
 router = Router(prefix="/calendar")
 
@@ -21,7 +21,7 @@ async def ipo(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Upcoming and Historical IPO Calendar."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -32,7 +32,7 @@ async def dividend(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Upcoming and Historical Dividend Calendar."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -43,7 +43,7 @@ async def splits(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Calendar Splits. Show Stock Split Calendar."""
     return await OBBject.from_query(Query(**locals()))
 
@@ -54,6 +54,6 @@ async def earnings(
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
-) -> OBBject[BaseModel]:
+) -> OBBject:
     """Upcoming and Historical earnings calendar."""
     return await OBBject.from_query(Query(**locals()))

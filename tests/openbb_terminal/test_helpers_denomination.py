@@ -44,12 +44,14 @@ def test_given_arguments_then_it_transforms_as_expected(
     )
 
     expected_df = target_df.apply(
-        lambda series: series
-        if skipPredicate is not None and skipPredicate(series)
-        else series
-        * (
-            get_denominations()[source]
-            / get_denominations()[expectedTargetDenomination]
+        lambda series: (
+            series
+            if skipPredicate is not None and skipPredicate(series)
+            else series
+            * (
+                get_denominations()[source]
+                / get_denominations()[expectedTargetDenomination]
+            )
         ),
         axis,
     )

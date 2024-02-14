@@ -1,6 +1,5 @@
 """Analyst Estimates Standard Model."""
 
-
 from datetime import date as dateType
 from typing import List, Literal, Set, Union
 
@@ -24,11 +23,10 @@ class AnalystEstimatesQueryParams(QueryParams):
     limit: int = Field(default=30, description=QUERY_DESCRIPTIONS.get("limit", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+    @classmethod
+    def upper_symbol(cls, v: str) -> str:
         """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+        return v.upper()
 
 
 class AnalystEstimatesData(Data):
@@ -72,6 +70,7 @@ class AnalystEstimatesData(Data):
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

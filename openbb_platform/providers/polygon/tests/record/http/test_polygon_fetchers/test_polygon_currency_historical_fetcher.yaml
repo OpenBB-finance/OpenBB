@@ -3,35 +3,35 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
       - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.polygon.io/v2/aggs/ticker/C:EURUSD/range/1/day/2023-01-01/2023-01-10?adjusted=True&apiKey=MOCK_API_KEY&limit=49999&sort=desc
+    uri: https://api.polygon.io/v2/aggs/ticker/C:EURUSD/range/1/day/2023-01-01/2023-01-10?apiKey=MOCK_API_KEY&limit=49999&sort=desc
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAA/2yUTWsbMRCG/8ucRZFG8yHtNe2ph0JLTqWU9e6apg0J8e6mlOD/XrTW1yE+CSE/
-        j0fvK7/B9jD9WS4wwN3w6f7r/bePYOBlXy7/7p73pw0GZw1clnV/3NZuZ5x/7+u2zDBsl32pJ2D4
-        /gavMKBFJjbw+hcG98GqJwPPeYlsYMrr4A38uq05egOPt7UzkDyi3tsQbPoYeCrYq8kORtXmsFIc
-        IkjNkXzZIa4ohKsCEalXJGpWkHpXBekrmU82FL4ISuGLoFaBt1oVzottikQtM3R03/DU0Tt4ZacD
-        GW0pSvfr691oSFsZzuwKnNHGRnfv0ClgLHiM4rG/nIQtDmeZfHNozVgsS3EwuibxVcLOhyoJKn3I
-        B7dIMFKkJomhDkLpxqYibA6uPeJ2T6jR9ikf2OLwIr4ViUMLWqWW9ehzdgTX5mhjaDZkxUHNCiVH
-        zSBaq6o2VWYq21Sr2ppKtaooTruwD2gWuK5JsYYtgWrYGttba09NNLQB2LsubIfXHwbWbdz2FQb4
-        8hnSM3/Zl3X7+TDDALwsciLlMdDZySjzfD7504j+vMR4nhgMTOUf4/o/AAD//4GaYFNpBAAA
+        H4sIAAAAAAAA/2yUQWsbPRCG/8ucxYdmpJmR9pqvpx4KLTmVUjbrDU0bEuLdTSnB/73IkTQ61Cch
+        5Ofx6H3lN9gfll/rGSa4mT7cfr798j84eDnW85+b5+Nphwm9g/O6HY/7NuzMp5/Htq8nmPbzsfYT
+        MH19g1eYyBNHdvD6Gyb8z2uIDp7rktjBUtcpOPjxvuYcHDy+r9FB8YiG4FPy5ePgqWEvrjqYVM3h
+        pTlEKJqj+KpDsCmEu4KI4qgo1KqIGrALylcqP/rU+CIkjS9C2gXBa1dgEG+KQm0zDPRg+DjQB3hn
+        lwMV7WOW4df3u9FUtiqcGRucyWej4z/oMVFueMoSaLycgm0O9ByDObRnLJ6lOZjQJKFLGEPqkqQy
+        hnzlNgnlmKNJcuqDxHJjSxOag3uP2O6JNPsx5Su2OYJIsCJxsqBVelmvfa6OhDaHjaHVUBVXalVo
+        xGgG0V5V9aUyS9uOvarW1NirSoI6hH2FVgEOTco9bEmxh63Z3po9NdFkA3DAIWykyzcH2z7vxwYT
+        fPoI5Zm/HOu2f384wQSCeZ7lXu4wzUsOeLeEOablfuE087oSOFjaP8blbwAAAP//JClhEWkEAAA=
     headers:
       Connection:
       - keep-alive
       Content-Encoding:
       - gzip
       Content-Length:
-      - '453'
+      - '455'
       Content-Type:
       - application/json
       Date:
-      - Tue, 26 Sep 2023 19:08:19 GMT
+      - Fri, 02 Feb 2024 00:32:57 GMT
       Server:
       - nginx/1.19.2
       Strict-Transport-Security:
@@ -39,7 +39,7 @@ interactions:
       Vary:
       - Accept-Encoding
       X-Request-Id:
-      - 5ee6b475a84f16a6ddfb3ba23fe99fc5
+      - 619aa6f6b18ac931bc3a48cfc58a5ee2
     status:
       code: 200
       message: OK

@@ -1,4 +1,5 @@
 """Rolling Statistics"""
+
 __docformat__ = "numpy"
 
 import logging

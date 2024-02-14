@@ -97,7 +97,7 @@ class ROUTER_fixedincome_government(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.government.treasury_rates()
+        >>> obb.fixedincome.government.treasury_rates(provider="federal_reserve")
         """  # noqa: E501
 
         return self._run(
@@ -118,7 +118,7 @@ class ROUTER_fixedincome_government(Container):
     def us_yield_curve(
         self,
         date: Annotated[
-            Optional[datetime.date],
+            Union[datetime.date, None, str],
             OpenBBCustomParameter(
                 description="A specific date to get data for. Defaults to the most recent FRED entry."
             ),
@@ -167,7 +167,7 @@ class ROUTER_fixedincome_government(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.government.us_yield_curve()
+        >>> obb.fixedincome.government.us_yield_curve(inflation_adjusted=True)
         """  # noqa: E501
 
         return self._run(

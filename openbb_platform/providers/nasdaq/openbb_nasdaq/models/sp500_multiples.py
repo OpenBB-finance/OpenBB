@@ -1,6 +1,8 @@
 """Nasdaq SP500 Multiples Model."""
 
-from typing import Any, Dict, List, Literal, Optional
+# pylint: disable=unused-argument
+
+from typing import Any, Dict, List, Optional
 
 import nasdaqdatalink
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -8,27 +10,26 @@ from openbb_core.provider.standard_models.sp500_multiples import (
     SP500MultiplesData,
     SP500MultiplesQueryParams,
 )
+from openbb_nasdaq.utils.query_params import DataLinkQueryParams
 from openbb_nasdaq.utils.series_ids import SP500MULTIPLES
-from pydantic import Field
+from pydantic import model_validator
 
 
-class NasdaqSP500MultiplesQueryParams(SP500MultiplesQueryParams):
+class NasdaqSP500MultiplesQueryParams(SP500MultiplesQueryParams, DataLinkQueryParams):
     """Nasdaq SP500 Multiples Query."""
-
-    collapse: Optional[
-        Literal["daily", "weekly", "monthly", "quarterly", "annual"]
-    ] = Field(
-        description="Collapse the frequency of the time series.",
-        default="monthly",
-    )
-    transform: Optional[Literal["diff", "rdiff", "cumul", "normalize"]] = Field(
-        description="The transformation of the time series.",
-        default=None,
-    )
 
 
 class NasdaqSP500MultiplesData(SP500MultiplesData):
     """Nasdaq SP500 Multiples Data."""
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_percent(cls, values):
+        """Normalize percent values."""
+        for k, v in values.items():
+            if any(x in k for x in ["yield", "growth"]):
+                values[k] = float(v) / 100
+        return values
 
 
 class NasdaqSP500MultiplesFetcher(
@@ -38,6 +39,7 @@ class NasdaqSP500MultiplesFetcher(
 
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> NasdaqSP500MultiplesQueryParams:
+        """Transform the query."""
         return NasdaqSP500MultiplesQueryParams(**params)
 
     @staticmethod
@@ -71,11 +73,12 @@ class NasdaqSP500MultiplesFetcher(
 
         return data.to_dict("records")
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: NasdaqSP500MultiplesQueryParams,
         data: List[Dict],
         **kwargs: Any,
     ) -> List[NasdaqSP500MultiplesData]:
-        """Parse data into the NasdaqSP500MultiplesData format."""
+        """Transform the data to the model."""
         return [NasdaqSP500MultiplesData.model_validate(d) for d in data]

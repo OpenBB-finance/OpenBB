@@ -1,4 +1,6 @@
 """Biztoc World News Model."""
+
+import warnings
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
@@ -11,13 +13,15 @@ from openbb_core.provider.standard_models.world_news import (
 from pandas import to_datetime
 from pydantic import Field, field_validator
 
+_warn = warnings.warn
+
 
 class BiztocWorldNewsQueryParams(WorldNewsQueryParams):
     """Biztoc World News Query."""
 
-    filter: Literal[
-        "crypto", "hot", "latest", "main", "media", "source", "tag"
-    ] = Field(default="latest", description="Filter by type of news.")
+    filter: Literal["crypto", "hot", "latest", "main", "media", "source", "tag"] = (
+        Field(default="latest", description="Filter by type of news.")
+    )
     source: str = Field(
         description="Filter by a specific publisher. Only valid when filter is set to source.",
         default="bloomberg",
@@ -35,7 +39,12 @@ class BiztocWorldNewsQueryParams(WorldNewsQueryParams):
 class BiztocWorldNewsData(WorldNewsData):
     """Biztoc World News Data."""
 
-    __alias_dict__ = {"date": "created", "text": "body", "site": "domain"}
+    __alias_dict__ = {
+        "date": "created",
+        "text": "body",
+        "site": "domain",
+        "images": "img",
+    }
 
     images: Optional[Dict[str, str]] = Field(
         description="Images for the article.", alias="images", default=None
@@ -67,6 +76,8 @@ class BiztocWorldNewsFetcher(
     @staticmethod
     def transform_query(params: Dict[str, Any]) -> BiztocWorldNewsQueryParams:
         """Transform the query."""
+        if params.get("start_date") or params.get("end_date"):
+            _warn("start_date and end_date are not supported for this endpoint.")
         return BiztocWorldNewsQueryParams(**params)
 
     @staticmethod
@@ -94,11 +105,12 @@ class BiztocWorldNewsFetcher(
                     hours=times[item["created"]]
                 )
 
-        return data
+        return sorted(data, key=lambda x: x["created"], reverse=True)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: BiztocWorldNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[BiztocWorldNewsData]:
         """Transform the data to the standard format."""
-        return [BiztocWorldNewsData.model_validate(d) for d in data]
+        return [BiztocWorldNewsData.model_validate(d) for d in data[: query.limit]]

@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import List, Literal, Optional, Union
+from typing import Literal, Optional
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -143,7 +143,7 @@ class ROUTER_equity(Container):
             Price to earnings ratio. (provider: fmp)
         exchange : Optional[str]
             The exchange of the stock. (provider: fmp)
-        timestamp : Optional[Union[int, float]]
+        timestamp : Optional[Union[float, int]]
             The timestamp of the data. (provider: fmp)
         earnings_announcement : Optional[str]
             The earnings announcement of the stock. (provider: fmp)
@@ -221,10 +221,9 @@ class ROUTER_equity(Container):
     def profile(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["intrinio"]] = None,
+        provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
         """Equity Info. Get general price and performance metrics of a stock.
@@ -233,9 +232,9 @@ class ROUTER_equity(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['intrinio']]
+        provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'intrinio' if there is
+            If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
 
         Returns
@@ -243,7 +242,7 @@ class ROUTER_equity(Container):
         OBBject
             results : List[EquityInfo]
                 Serializable results.
-            provider : Optional[Literal['intrinio']]
+            provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -260,6 +259,10 @@ class ROUTER_equity(Container):
             Common name of the company.
         cik : Optional[str]
             Central Index Key (CIK) for the requested entity.
+        cusip : Optional[str]
+            CUSIP identifier for the company.
+        isin : Optional[str]
+            International Securities Identification Number.
         lei : Optional[str]
             Legal Entity Identifier assigned to the company.
         legal_name : Optional[str]
@@ -326,10 +329,51 @@ class ROUTER_equity(Container):
             Date of the company's first stock price.
         last_stock_price_date : Optional[date]
             Date of the company's last stock price.
+        is_etf : Optional[bool]
+            If the symbol is an ETF. (provider: fmp)
+        is_actively_trading : Optional[bool]
+            If the company is actively trading. (provider: fmp)
+        is_adr : Optional[bool]
+            If the stock is an ADR. (provider: fmp)
+        is_fund : Optional[bool]
+            If the company is a fund. (provider: fmp)
+        image : Optional[str]
+            Image of the company. (provider: fmp)
+        currency : Optional[str]
+            Currency in which the stock is traded. (provider: fmp, yfinance)
+        market_cap : Optional[int]
+            Market capitalization of the company. (provider: fmp);
+            The market capitalization of the asset. (provider: yfinance)
+        last_price : Optional[float]
+            The last traded price. (provider: fmp)
+        year_high : Optional[float]
+            The one-year high of the price. (provider: fmp)
+        year_low : Optional[float]
+            The one-year low of the price. (provider: fmp)
+        volume_avg : Optional[int]
+            Average daily trading volume. (provider: fmp)
+        annualized_dividend_amount : Optional[float]
+            The annualized dividend payment based on the most recent regular dividend payment. (provider: fmp)
+        beta : Optional[float]
+            Beta of the stock relative to the market. (provider: fmp, yfinance)
         id : Optional[str]
             Intrinio ID for the company. (provider: intrinio)
         thea_enabled : Optional[bool]
             Whether the company has been enabled for Thea. (provider: intrinio)
+        exchange_timezone : Optional[str]
+            The timezone of the exchange. (provider: yfinance)
+        issue_type : Optional[str]
+            The issuance type of the asset. (provider: yfinance)
+        shares_outstanding : Optional[int]
+            The number of listed shares outstanding. (provider: yfinance)
+        shares_float : Optional[int]
+            The number of shares in the public float. (provider: yfinance)
+        shares_implied_outstanding : Optional[int]
+            Implied shares outstanding of common equityassuming the conversion of all convertible subsidiary equity into common. (provider: yfinance)
+        shares_short : Optional[int]
+            The reported number of shares short. (provider: yfinance)
+        dividend_yield : Optional[float]
+            The dividend yield of the asset, as a normalized percent. (provider: yfinance)
 
         Example
         -------
@@ -344,7 +388,7 @@ class ROUTER_equity(Container):
                     "provider": provider,
                 },
                 standard_params={
-                    "symbol": ",".join(symbol) if isinstance(symbol, list) else symbol,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )
@@ -465,6 +509,10 @@ class ROUTER_equity(Container):
             bool,
             OpenBBCustomParameter(description="Whether to search by ticker symbol."),
         ] = False,
+        use_cache: Annotated[
+            Optional[bool],
+            OpenBBCustomParameter(description="Whether to use the cache or not."),
+        ] = True,
         provider: Optional[Literal["intrinio", "sec"]] = None,
         **kwargs
     ) -> OBBject:
@@ -476,6 +524,8 @@ class ROUTER_equity(Container):
             Search query.
         is_symbol : bool
             Whether to search by ticker symbol.
+        use_cache : Optional[bool]
+            Whether to use the cache or not.
         provider : Optional[Literal['intrinio', 'sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'intrinio' if there is
@@ -486,8 +536,6 @@ class ROUTER_equity(Container):
             The number of data entries to return. (provider: intrinio)
         is_fund : bool
             Whether to direct the search to the list of mutual funds and ETFs. (provider: sec)
-        use_cache : bool
-            Whether to use the cache or not. Company names, tickers, and CIKs are cached for seven days. (provider: sec)
 
         Returns
         -------
@@ -520,7 +568,7 @@ class ROUTER_equity(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.search()
+        >>> obb.equity.search(query="AAPL", is_symbol=False, use_cache=True)
         """  # noqa: E501
 
         return self._run(
@@ -532,6 +580,7 @@ class ROUTER_equity(Container):
                 standard_params={
                     "query": query,
                     "is_symbol": is_symbol,
+                    "use_cache": use_cache,
                 },
                 extra_params=kwargs,
             )

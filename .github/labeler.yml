@@ -1,4 +1,5 @@
-version: 1
+version: 2
+appendOnly: true
 labels:
   - label: "platform"
     files:
@@ -8,21 +9,18 @@ labels:
     files:
       - "openbb_platform/.*"
 
-  - label: "bug"
-    branch: "^hotfix/.*"
-    files:
-      - "openbb_platform/.*"
-
-  - label: "platform"
-    branch: "^hotfix/.*"
-    files:
-      - "openbb_platform/.*"
-
   - label: "enhancement"
     branch: "^feature/.*"
 
   - label: "bug"
     branch: "^hotfix/.*"
 
+  - label: "bug"
+    branch: "^bugfix/.*"
+
   - label: "docs"
     branch: "^docs/.*"
+
+  - label: "excel"
+    files:
+      - "website/content/excel/.*"

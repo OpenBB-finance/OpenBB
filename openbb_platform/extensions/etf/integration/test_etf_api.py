@@ -73,6 +73,7 @@ def test_etf_historical(params, headers):
     [
         ({"symbol": "IOO", "provider": "fmp"}),
         ({"symbol": "MISL", "provider": "fmp"}),
+        ({"symbol": "QQQ", "provider": "yfinance"}),
     ],
 )
 @pytest.mark.integration
@@ -171,7 +172,10 @@ def test_etf_holdings(params, headers):
 
 @parametrize(
     "params",
-    [({"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "fmp"})],
+    [
+        ({"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "fmp"}),
+        ({"symbol": "SPY,VOO,QQQ,IWM,IWN,GOVT,JNK", "provider": "finviz"}),
+    ],
 )
 @pytest.mark.integration
 def test_etf_price_performance(params, headers):

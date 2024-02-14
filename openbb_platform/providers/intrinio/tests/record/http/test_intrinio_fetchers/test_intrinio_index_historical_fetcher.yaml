@@ -3,36 +3,25 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://api-v2.intrinio.com/indices/stock_market/$DJI/historical_data/level?api_key=MOCK_API_KEY&end_date=2023-06-06&page_size=1000&sort_order=desc&start_date=2023-01-01
+    uri: https://api-v2.intrinio.com/indices/stock_market/$DJI/historical_data/level?api_key=MOCK_API_KEY&end_date=2024-02-05&interval=1d&page_size=10000&sort_order=asc&start_date=2024-01-01
   response:
     body:
       string: !!binary |
-        H4sIAGQlZWUAA3RYTW8bRwz9K4LQoz0YkvPpm4FckkMubS8tCmFjbRoB8iqVVm4cI/+93KRFlzPP
-        gA6W9oEzfOQj3/pl++lwmU/nw8Nw3O2Hedje/f6y1T/G7d2WPcutT/rZ3myfhuNVfxSJWRyXbzc9
-        LBpYYlcSgvEalhWWIYzWMJ/IxdzB4q2sYVx9cQxh3kQLemifQrzl+j9suh6PCGLI8FWcBARbk8E5
-        BZciggUDq9VVRjAxh8boIiGYoZZLchFlSXUNC5xcEgQrpp4SXUWHUrbRvMuoAmR5I3aEeCPTRBKK
-        65tDUSZR8d4lRBuRhVVMG3mbKDlBfPhq+5tcQdG8oS2RZlARzCSacnCCauXXDSLE2WVEmzcNEig4
-        hjDDWyrBRZjpmrfgI7m+ouGWi0HV4qivlcJMfxTtNgxLtlbKLjzUDhnxrvQZBKsrKTm6ng5Fmf4o
-        OjwqvJrpj6yyAt0WGlmVmp3v+yM0sqoZqi80sqolO+r7Q2E2Ub1bQLSRmFpxRU0ZGl2loAMEoajt
-        ogyDWVkt0wjR5leJwpkbmgUUSnSMDrSSCkWHPDzQUKZkIOWFRlJJG5J6MsQuIB3h4RXYmgwusTrf
-        V13MAtJglMH4E6s8lqpqR2ca5XEQdr5PVJodxJLRUBC7g5h8fOXQdQuxV4FSrwKx0uOYPE7UsMYh
-        oIUmVitUdDJXCEs2mjYkysCsICpaUeA8xCqPKaIRI1Z4VKiitSdWK1R1UyUEMyuIOQZkscSuIHUV
-        BV7NZ9uSOjpgMCs+3Y4BRjNykepdRazZDeS9YHLNBuK07Nr+UG6EkDSFPhg3OihFtdePD250UCgh
-        L8aNF6MoyBZx48V8iK8casYH6WCOELbqDzgkuVkYy54FI54bH5ZqcqUXAVsRBOLiPIStOQteqQX2
-        m5v1w0pG7UcMNxujpFeiWSOW1DSXXu7cGLEaKtrHbGUQKL7Cm5VBqeQ86g4rg6pVwIey4W1pItTf
-        jRGrjAwK2R2kVdBD+2jUvAQtywW0JDWGreaC1gY1hm2hN/SZUmPYchCkZGoMWxbBmVrxpUUuEGYy
-        lcX+oUytY/PLekHRrGNjlQy8W+PYyCNlkREglDI1chF1KAlRa9xaIBUfGLnU2LWqr++gJakRX/Zq
-        ZACqeQlaDApK0qolqQuAGRjHxlVhsNWsY2OdC+AVkxrtkSQnEMZNAf642R6m/fhle/eyPewVqd92
-        /PXp/dd7RV6eHz+cjvrrT2/evdXv0/C4RHtz+nvz7jSNl83baX+9zOfDcNzcP43n4c9RUQ+naT5M
-        4zQr9P3pPH/a3D+Oy79Zvj+7TvP5WZ/8Oh3mcb/5edYbXjanjyvQ9fNy7d3H8/jXdZweFvR+OByf
-        9dFxuMy7H8/3/+VFi9J+8XS3fLTC3v+myNOHy3h+GubDadpd5uE8f4fTv/AGME4mWth+02THL/Pu
-        85LSD6r+AQAA//8DAAVlFaAwEgAA
+        H4sIAB/ZwGUAA4SUTW/bMAyG/4oh7JgRor4s5xagl/bQy7bLhsFQY3U14MidLWdNg/z3ye2ASQuB
+        ATpY4gOK7yvSZ/bUz3Gc+r0b2s5Fx7bfzix9eLZlggv1kWNabMOObljSYViG4bK5RsRfRNY1auCK
+        wmSOKckBGwpTBaY4SDKbLjBjAJHCbI4ZK4GTWJNjWmhAQ2DIi2yNhlpSGJaGIHBBYYVvuhHQWArT
+        /30BNHkmaRCQvLDOMZE8MzWF2dJaC4byDAvPrJFAVS9ykZZzBEslE0VzNFyD0hRWNIflBiTVQ0IX
+        l6oGkHonkdtmkTegSCwXaqWUdG0ybw6rTA2SUiqxuFSn/r6iRDF20mpswF5PgShHzxqtQInL9w3r
+        Q+df2PbM+i7RadeK1+P96y7R8+nwMA7p9MPN3W3aB3dYM96Mv6q7Mfi5ug3dMsepd0O1O/rJ/fCJ
+        2o8h9sGHmND7cYpP1e7g1z/HW2wJcTqlyJfQR99Vn2Kqcq7GxwxantfS28fJ/1x82K905/rhlEKD
+        m2P7Hu9ybfIzx+26BHDOvyZyfJj9dHSxH0M7RzfFNxz/4P8APnSlU5ck1r/E9nmV9D5KvwEAAP//
+        AwCCQKM2AwUAAA==
     headers:
       Connection:
       - keep-alive
@@ -41,7 +30,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 27 Nov 2023 23:25:24 GMT
+      - Mon, 05 Feb 2024 12:48:31 GMT
       Transfer-Encoding:
       - chunked
       Vary:

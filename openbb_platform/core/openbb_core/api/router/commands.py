@@ -77,7 +77,9 @@ def build_new_signature(path: str, func: Callable) -> Signature:
                     name.replace("-", "_"),
                     kind=Parameter.POSITIONAL_OR_KEYWORD,
                     default=default,
-                    annotation=Annotated[Optional[str], Header()],
+                    annotation=Annotated[
+                        Optional[str], Header(include_in_schema=False)
+                    ],
                 )
             )
 
@@ -144,7 +146,7 @@ def validate_output(c_out: OBBject) -> OBBject:
     for k, v in c_out.model_copy():
         exclude_fields_from_api(k, v)
 
-    return c_out.model_dump()
+    return c_out
 
 
 def build_api_wrapper(

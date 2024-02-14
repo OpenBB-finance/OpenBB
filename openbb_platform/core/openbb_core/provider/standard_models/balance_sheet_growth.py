@@ -1,6 +1,5 @@
 """Balance Sheet Statement Growth Standard Model."""
 
-
 from datetime import date as dateType
 from typing import List, Optional, Set, Union
 
@@ -21,11 +20,10 @@ class BalanceSheetGrowthQueryParams(QueryParams):
     limit: int = Field(default=10, description=QUERY_DESCRIPTIONS.get("limit", ""))
 
     @field_validator("symbol", mode="before", check_fields=False)
-    def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
+    @classmethod
+    def upper_symbol(cls, v: str):
         """Convert symbol to uppercase."""
-        if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+        return v.upper()
 
 
 class BalanceSheetGrowthData(Data):
@@ -131,6 +129,7 @@ class BalanceSheetGrowthData(Data):
     growth_net_debt: float = Field(description="Growth rate of net debt.")
 
     @field_validator("symbol", mode="before", check_fields=False)
+    @classmethod
     def upper_symbol(cls, v: Union[str, List[str], Set[str]]):
         """Convert symbol to uppercase."""
         if isinstance(v, str):

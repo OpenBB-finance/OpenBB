@@ -1,4 +1,5 @@
 """Integration test generator."""
+
 import argparse
 from pathlib import Path, PosixPath
 from typing import (

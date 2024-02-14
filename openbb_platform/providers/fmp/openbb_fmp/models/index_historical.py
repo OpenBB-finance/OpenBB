@@ -12,7 +12,7 @@ from openbb_core.provider.standard_models.index_historical import (
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import get_querystring
 from openbb_fmp.utils.helpers import get_data_many
-from pydantic import Field, NonNegativeInt
+from pydantic import Field, NonNegativeInt, field_validator
 
 
 class FMPIndexHistoricalQueryParams(IndexHistoricalQueryParams):
@@ -26,12 +26,15 @@ class FMPIndexHistoricalQueryParams(IndexHistoricalQueryParams):
     timeseries: Optional[NonNegativeInt] = Field(
         default=None, description="Number of days to look back."
     )
-    interval: Literal[
-        "1min", "5min", "15min", "30min", "1hour", "4hour", "1day"
-    ] = Field(default="1day", description="Data granularity.")
-    sort: Literal["asc", "desc"] = Field(
-        default="desc", description="Sort the data in ascending or descending order."
+    interval: Literal["1min", "5min", "15min", "30min", "1hour", "4hour", "1day"] = (
+        Field(default="1day", description="Data granularity.")
     )
+
+    @field_validator("interval")
+    @classmethod
+    def map_interval(cls, v):
+        """Map the interval from standard to the FMP format."""
+        return "1day" if v == "1d" else v
 
 
 class FMPIndexHistoricalData(IndexHistoricalData):

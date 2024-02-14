@@ -1,4 +1,5 @@
 """ FRED model """
+
 __docformat__ = "numpy"
 
 # IMPORTATION STANDARD

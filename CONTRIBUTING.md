@@ -68,7 +68,7 @@ We will be adding a function to get price targets from the Financial Modeling Pr
 ### Select Feature
 
 - Pick a feature you want to implement or a bug you want to fix from [our issues](https://github.com/OpenBB-finance/OpenBBTerminal/issues).
-- Feel free to discuss what you'll be working on either directly on [the issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues) or on [our Discord](www.openbb.co/discord).
+- Feel free to discuss what you'll be working on either directly on [the issue](https://github.com/OpenBB-finance/OpenBBTerminal/issues) or on [our Discord](https://openbb.co/discord).
   - This ensures someone from the team can help you and there isn't duplicated work.
 
 Before writing any code, it is good to understand what the data will look like.  In this case, we will be getting the price targets from the Financial Modeling Prep API, and the data will look like this:
@@ -1381,7 +1381,7 @@ The way to interpret this file is by following the path to a data source, e.g.
 - `stocks/candle` does not rely on any data source. This means that it relies on data that has been loaded before.
 - `stocks/load` relies on `YahooFinance`, `AlphaVantage`, `Polygon` or `EODHD`.
   - **The order is important as the first data source is the one utilized by default.**
-- `stoks/options/unu` relies on `FDScanner`.
+- `stocks/options/unu` relies on `FDScanner`.
 - `stocks/options/exp` relies on `YahooFinance` by default but `Tradier` and `Nasdaq` sources are allowed.
 
 > Note: The default data sources can be changed directly in the [OpenBB Hub](https://my.openbb.co/) by the user and automatically synchronized with the terminal on login.

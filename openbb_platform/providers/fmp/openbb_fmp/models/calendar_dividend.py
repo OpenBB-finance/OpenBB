@@ -30,6 +30,7 @@ class FMPCalendarDividendData(CalendarDividendData):
 
     __alias_dict__ = {
         "amount": "dividend",
+        "ex_dividend_date": "date",
         "record_date": "recordDate",
         "payment_date": "paymentDate",
         "declaration_date": "declarationDate",
@@ -45,7 +46,7 @@ class FMPCalendarDividendData(CalendarDividendData):
     )
 
     @field_validator(
-        "date",
+        "ex_dividend_date",
         "record_date",
         "payment_date",
         "declaration_date",
