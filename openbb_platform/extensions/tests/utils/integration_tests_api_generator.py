@@ -2,10 +2,11 @@
 
 import argparse
 import os
+from pathlib import Path
 from typing import Dict, List, Literal, Type, get_type_hints
 
 import requests
-from openbb_core.app.charting_service import ChartingService
+from openbb_charting import Charting
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 
@@ -160,25 +161,21 @@ def write_commands_integration_tests(
 
 def write_charting_extension_integration_tests():
     """Write the charting extension integration tests."""
-    functions = ChartingService.get_implemented_charting_functions()
+    import openbb_charting  # pylint: disable=import-outside-toplevel
 
-    # we assume test file exists
-    path = os.path.join(
-        "openbb_platform",
-        "extensions",
-        "charting",
-        "integration",
-        "test_charting_api.py",
-    )
+    functions = Charting.functions()
+
+    charting_ext_path = Path(openbb_charting.__file__).parent.parent
+    test_file = charting_ext_path / "integration" / "test_charting_api.py"
 
     for function in functions:
         route = "/" + function.replace("_", "/")
-        if not test_exists(route=function, path=path):
+        if not test_exists(route=function, path=test_file):
             write_test_w_template(
                 http_method="post",
                 params_list=[{"chart": True}],
                 route=route,
-                path=path,
+                path=test_file,
                 chart=True,
             )
 

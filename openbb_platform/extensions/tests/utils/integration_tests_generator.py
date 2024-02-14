@@ -14,7 +14,7 @@ from typing import (
     get_type_hints,
 )
 
-from openbb_core.app.charting_service import ChartingService
+from openbb_charting import Charting
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 from pydantic.fields import FieldInfo
@@ -44,6 +44,9 @@ def find_extensions(filter_chart: Optional[bool] = True):
     if filter_chart:
         filter_ext.append("charting")
     extensions = [x for x in Path("openbb_platform/extensions").iterdir() if x.is_dir()]
+    extensions.extend(
+        [x for x in Path("openbb_platform/obbject_extensions").iterdir() if x.is_dir()]
+    )
     extensions = [x for x in extensions if x.name not in filter_ext]
     return extensions
 
@@ -279,7 +282,7 @@ def write_charting_extension_integration_tests():
     """Write charting extension integration tests."""
     import openbb_charting  # pylint: disable=import-outside-toplevel
 
-    functions = ChartingService.get_implemented_charting_functions()
+    functions = Charting.functions()
 
     charting_ext_path = Path(openbb_charting.__file__).parent.parent
     test_file = charting_ext_path / "integration" / "test_charting_python.py"
@@ -306,15 +309,15 @@ if __name__ == "__main__":
     parser.add_argument(
         "--charting",
         dest="charting",
-        default=True,
-        action="store_false",
+        default=False,
+        action="store_true",
         help="Generate charting extension integration tests",
     )
     parser.add_argument(
         "--commands",
         dest="commands",
-        default=True,
-        action="store_false",
+        default=False,
+        action="store_true",
         help="Generate commands integration tests",
     )
 

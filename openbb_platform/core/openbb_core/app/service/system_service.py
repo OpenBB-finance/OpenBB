@@ -1,3 +1,5 @@
+"""System service."""
+
 import hashlib
 import json
 from pathlib import Path
@@ -18,11 +20,10 @@ class SystemService(metaclass=SingletonMeta):
         "headless",
         "logging_sub_app",
         "api_settings",
+        "debug_mode",
     }
 
-    PRO_VALIDATION_HASH = (
-        "300ac59fdcc8f899e0bc5c18cda8652220735da1a00e2af365efe9d8e5fe8306"
-    )
+    PRO_VALIDATION_HASH = "300ac59fdcc8f899e0bc5c18cda8652220735da1a00e2af365efe9d8e5fe8306"  # pragma: allowlist secret
 
     def __init__(
         self,
