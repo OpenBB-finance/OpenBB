@@ -336,7 +336,7 @@ class ROUTER_equity_ownership(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        date : Optional[datetime.date]
+        date : Union[datetime.date, None, str]
             A specific date to get data for.
         page : Optional[int]
             Page number of the data to fetch.

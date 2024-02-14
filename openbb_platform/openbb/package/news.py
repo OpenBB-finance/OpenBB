@@ -59,9 +59,9 @@ class ROUTER_news(Container):
             Symbol to get data for. This endpoint will accept multiple symbols separated by commas.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiing...
             The provider to use for the query, by default None.
@@ -239,9 +239,9 @@ class ROUTER_news(Container):
         ----------
         limit : int
             The number of data entries to return. The number of articles to return.
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'tiingo']]
             The provider to use for the query, by default None.

@@ -1,10 +1,10 @@
 """Container class."""
 
-from typing import Any, Tuple, Optional
+from typing import Any, Optional, Tuple
 
 from openbb_core.app.command_runner import CommandRunner
-from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.app.model.obbject import OBBject
 
 
 class Container:
