@@ -1,12 +1,12 @@
 """OpenBB OBBject extension for charting."""
 
+from inspect import getmembers, getsource, isfunction
 from typing import (
     Any,
     Callable,
     Dict,
     List,
     Optional,
-    Tuple,
     Union,
 )
 
@@ -18,8 +18,7 @@ from openbb_core.app.utils import basemodel_to_df, convert_to_basemodel
 from openbb_core.provider.abstract.data import Data
 
 from openbb_charting import charting_router
-from openbb_charting.core.to_chart import ChartIndicators, OpenBBFigure, to_chart
-from openbb_charting.utils.helpers import get_charting_functions
+from openbb_charting.core.to_chart import ChartIndicators, to_chart
 
 ext = Extension(name="charting")
 
@@ -60,9 +59,19 @@ class Charting:
         return ChartIndicators.get_available_indicators()
 
     @classmethod
-    def functions(cls):
+    def functions(cls) -> List[str]:
         """Returns a list of the available functions."""
-        return get_charting_functions()
+        implemented_functions = []
+
+        for name, obj in getmembers(charting_router, isfunction):
+            if (
+                obj.__module__ == charting_router.__name__
+                and not name.startswith("_")
+                and "NotImplementedError" not in getsource(obj)
+            ):
+                implemented_functions.append(name)
+
+        return implemented_functions
 
     def _handle_backend(self):
         # pylint: disable=import-outside-toplevel
