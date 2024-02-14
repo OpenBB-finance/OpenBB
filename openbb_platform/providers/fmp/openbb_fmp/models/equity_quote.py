@@ -22,6 +22,7 @@ class FMPEquityQuoteQueryParams(EquityQuoteQueryParams):
 
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
+
 class FMPEquityQuoteData(EquityQuoteData):
     """FMP Equity Quote Data."""
 

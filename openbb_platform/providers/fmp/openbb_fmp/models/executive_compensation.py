@@ -21,6 +21,7 @@ class FMPExecutiveCompensationQueryParams(ExecutiveCompensationQueryParams):
 
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
+
 class FMPExecutiveCompensationData(ExecutiveCompensationData):
     """FMP Executive Compensation Data."""
 

@@ -19,6 +19,7 @@ class FMPEquityValuationMultiplesQueryParams(EquityValuationMultiplesQueryParams
 
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
+
 class FMPEquityValuationMultiplesData(EquityValuationMultiplesData):
     """FMP Equity Valuation Multiples Data."""
 
