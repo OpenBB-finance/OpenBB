@@ -18,6 +18,9 @@ def filter_inputs(
     if extra_info:
         PROPERTY = "multiple_items_allowed"
 
+        # Here we check if list items are passed and multiple items allowed for
+        # the given provider/input combination. In that case we transform the list
+        # into a comma-separated string
         for field, props in extra_info.items():
             if PROPERTY in props and (
                 provider := kwargs.get("provider_choices", {}).get("provider")
