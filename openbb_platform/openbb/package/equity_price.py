@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -26,7 +26,8 @@ class ROUTER_equity_price(Container):
     def historical(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         interval: Annotated[
             Optional[str],
@@ -182,6 +183,16 @@ class ROUTER_equity_price(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={
+                    "symbol": {
+                        "multiple_items_allowed": {
+                            "fmp",
+                            "polygon",
+                            "yfinance",
+                            "tiingo",
+                        }
+                    }
+                },
             )
         )
 
