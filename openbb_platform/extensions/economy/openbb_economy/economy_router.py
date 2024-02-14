@@ -241,11 +241,6 @@ async def long_term_interest_rate(
         'obb.economy.fred_regional("NYICLAIMS")',
         "#### With a date, time series data is returned. ####",
         'obb.economy.fred_regional("NYICLAIMS", start_date="2021-01-01")',
-        "#### The same series is associated with a `series_group` ####",
-        "obb.economy.fred_regional(",
-        '"156241", is_series_group=True, region_type="state", frequency="w",',
-        'season="NSA", units="Number"',
-        ")",
     ],
 )
 async def fred_regional(
