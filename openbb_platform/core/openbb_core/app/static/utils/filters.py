@@ -17,10 +17,11 @@ def filter_inputs(
 
     if extra_info:
         PROPERTY = "multiple_items_allowed"
-        provider = kwargs["provider_choices"]["provider"]
 
         for field, props in extra_info.items():
-            if PROPERTY in props:
+            if PROPERTY in props and (
+                provider := kwargs.get("provider_choices", {}).get("provider")
+            ):
                 for p in ("standard_params", "extra_params"):
                     if field in kwargs.get(p, {}):
                         current = kwargs[p][field]
@@ -28,7 +29,7 @@ def filter_inputs(
                             ",".join(current) if isinstance(current, list) else current
                         )
 
-                        if provider not in props[PROPERTY]:
+                        if provider and provider not in props[PROPERTY]:
                             check_single_value(
                                 new, f"multiple values not allowed for '{provider}'"
                             )
