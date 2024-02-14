@@ -195,7 +195,7 @@ class FredRegionalDataFetcher(
         data: Dict,
         **kwargs,
     ) -> List[FredRegionalData]:
-        """Flatten the respnse object and validate the model."""
+        """Flatten the response object and validate the model."""
 
         results: List[FredRegionalData] = []
         if data.get("meta") is None:
