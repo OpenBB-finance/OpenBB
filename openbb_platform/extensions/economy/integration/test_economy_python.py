@@ -256,6 +256,21 @@ def test_economy_balance_of_payments(params, obb):
                 "provider": "fred",
             }
         ),
+        (
+            {
+                "query": None,
+                "is_release": False,
+                "release_id": None,
+                "offset": None,
+                "limit": None,
+                "filter_variable": None,
+                "filter_value": None,
+                "tag_names": None,
+                "exclude_tag_names": None,
+                "series_id": "NYICLAIMS",
+                "provider": "fred",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -447,6 +462,7 @@ def test_economy_long_term_interest_rate(params, obb):
                 "season": "NSA",
                 "aggregation_method": "eop",
                 "transform": "lin",
+                "provider": "fred",
             }
         )
     ],

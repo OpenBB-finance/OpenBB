@@ -510,6 +510,7 @@ def test_economy_long_term_interest_rate(params, headers):
                 "season": "NSA",
                 "aggregation_method": "eop",
                 "transform": "lin",
+                "provider": "fred",
             }
         )
     ],
