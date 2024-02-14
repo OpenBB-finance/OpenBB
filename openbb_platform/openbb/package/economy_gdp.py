@@ -102,7 +102,9 @@ class ROUTER_economy_gdp(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/economy/gdp/forecast", "oecd"
+                        provider,
+                        "/economy/gdp/forecast",
+                        ("oecd",),
                     )
                 },
                 standard_params={
@@ -188,7 +190,9 @@ class ROUTER_economy_gdp(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/economy/gdp/nominal", "oecd"
+                        provider,
+                        "/economy/gdp/nominal",
+                        ("oecd",),
                     )
                 },
                 standard_params={
@@ -273,7 +277,9 @@ class ROUTER_economy_gdp(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/economy/gdp/real", "oecd"
+                        provider,
+                        "/economy/gdp/real",
+                        ("oecd",),
                     )
                 },
                 standard_params={

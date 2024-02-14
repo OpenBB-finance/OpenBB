@@ -76,7 +76,11 @@ class ROUTER_index(Container):
             "/index/available",
             **filter_inputs(
                 provider_choices={
-                    "provider": self._get_provider(provider, "/index/available", "fmp")
+                    "provider": self._get_provider(
+                        provider,
+                        "/index/available",
+                        ("fmp", "yfinance"),
+                    )
                 },
                 standard_params={},
                 extra_params=kwargs,
@@ -150,7 +154,9 @@ class ROUTER_index(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/index/constituents", "fmp"
+                        provider,
+                        "/index/constituents",
+                        ("fmp",),
                     )
                 },
                 standard_params={
@@ -286,7 +292,11 @@ class ROUTER_index(Container):
             "/index/market",
             **filter_inputs(
                 provider_choices={
-                    "provider": self._get_provider(provider, "/index/market", "fmp")
+                    "provider": self._get_provider(
+                        provider,
+                        "/index/market",
+                        ("fmp", "intrinio", "polygon", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,

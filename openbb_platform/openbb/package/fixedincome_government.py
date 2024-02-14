@@ -107,7 +107,7 @@ class ROUTER_fixedincome_government(Container):
                     "provider": self._get_provider(
                         provider,
                         "/fixedincome/government/treasury_rates",
-                        "federal_reserve",
+                        ("federal_reserve", "fmp"),
                     )
                 },
                 standard_params={
@@ -179,7 +179,9 @@ class ROUTER_fixedincome_government(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/fixedincome/government/us_yield_curve", "fred"
+                        provider,
+                        "/fixedincome/government/us_yield_curve",
+                        ("fred",),
                     )
                 },
                 standard_params={

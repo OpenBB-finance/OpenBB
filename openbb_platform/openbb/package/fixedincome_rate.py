@@ -96,7 +96,9 @@ class ROUTER_fixedincome_rate(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/fixedincome/rate/ameribor", "fred"
+                        provider,
+                        "/fixedincome/rate/ameribor",
+                        ("fred",),
                     )
                 },
                 standard_params={
@@ -178,7 +180,9 @@ class ROUTER_fixedincome_rate(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/fixedincome/rate/dpcredit", "fred"
+                        provider,
+                        "/fixedincome/rate/dpcredit",
+                        ("fred",),
                     )
                 },
                 standard_params={
@@ -266,7 +270,9 @@ class ROUTER_fixedincome_rate(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/fixedincome/rate/ecb", "fred"
+                        provider,
+                        "/fixedincome/rate/ecb",
+                        ("fred",),
                     )
                 },
                 standard_params={
@@ -348,7 +354,9 @@ class ROUTER_fixedincome_rate(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/fixedincome/rate/effr", "federal_reserve"
+                        provider,
+                        "/fixedincome/rate/effr",
+                        ("federal_reserve", "fred"),
                     )
                 },
                 standard_params={
@@ -424,7 +432,9 @@ class ROUTER_fixedincome_rate(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/fixedincome/rate/effr_forecast", "fred"
+                        provider,
+                        "/fixedincome/rate/effr_forecast",
+                        ("fred",),
                     )
                 },
                 standard_params={},
@@ -503,7 +513,9 @@ class ROUTER_fixedincome_rate(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/fixedincome/rate/estr", "fred"
+                        provider,
+                        "/fixedincome/rate/estr",
+                        ("fred",),
                     )
                 },
                 standard_params={
@@ -582,7 +594,9 @@ class ROUTER_fixedincome_rate(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/fixedincome/rate/iorb", "fred"
+                        provider,
+                        "/fixedincome/rate/iorb",
+                        ("fred",),
                     )
                 },
                 standard_params={
@@ -663,7 +677,9 @@ class ROUTER_fixedincome_rate(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/fixedincome/rate/sonia", "fred"
+                        provider,
+                        "/fixedincome/rate/sonia",
+                        ("fred",),
                     )
                 },
                 standard_params={

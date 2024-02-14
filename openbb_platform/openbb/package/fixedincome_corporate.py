@@ -109,7 +109,9 @@ class ROUTER_fixedincome_corporate(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/fixedincome/corporate/commercial_paper", "fred"
+                        provider,
+                        "/fixedincome/corporate/commercial_paper",
+                        ("fred",),
                     )
                 },
                 standard_params={
@@ -194,7 +196,9 @@ class ROUTER_fixedincome_corporate(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/fixedincome/corporate/hqm", "fred"
+                        provider,
+                        "/fixedincome/corporate/hqm",
+                        ("fred",),
                     )
                 },
                 standard_params={
@@ -289,7 +293,9 @@ class ROUTER_fixedincome_corporate(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/fixedincome/corporate/ice_bofa", "fred"
+                        provider,
+                        "/fixedincome/corporate/ice_bofa",
+                        ("fred",),
                     )
                 },
                 standard_params={
@@ -378,7 +384,9 @@ class ROUTER_fixedincome_corporate(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/fixedincome/corporate/moody", "fred"
+                        provider,
+                        "/fixedincome/corporate/moody",
+                        ("fred",),
                     )
                 },
                 standard_params={
@@ -470,7 +478,9 @@ class ROUTER_fixedincome_corporate(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/fixedincome/corporate/spot_rates", "fred"
+                        provider,
+                        "/fixedincome/corporate/spot_rates",
+                        ("fred",),
                     )
                 },
                 standard_params={

@@ -88,7 +88,9 @@ class ROUTER_equity_estimates(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/equity/estimates/consensus", "fmp"
+                        provider,
+                        "/equity/estimates/consensus",
+                        ("fmp", "yfinance"),
                     )
                 },
                 standard_params={
@@ -202,7 +204,9 @@ class ROUTER_equity_estimates(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/equity/estimates/historical", "fmp"
+                        provider,
+                        "/equity/estimates/historical",
+                        ("fmp",),
                     )
                 },
                 standard_params={
@@ -352,7 +356,9 @@ class ROUTER_equity_estimates(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/equity/estimates/price_target", "benzinga"
+                        provider,
+                        "/equity/estimates/price_target",
+                        ("benzinga", "fmp"),
                     )
                 },
                 standard_params={

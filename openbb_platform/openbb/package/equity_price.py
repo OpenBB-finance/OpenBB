@@ -175,7 +175,9 @@ class ROUTER_equity_price(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/equity/price/historical", "fmp"
+                        provider,
+                        "/equity/price/historical",
+                        ("fmp", "intrinio", "polygon", "tiingo", "yfinance"),
                     )
                 },
                 standard_params={
@@ -315,7 +317,9 @@ class ROUTER_equity_price(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/equity/price/nbbo", "polygon"
+                        provider,
+                        "/equity/price/nbbo",
+                        ("polygon",),
                     )
                 },
                 standard_params={
@@ -403,7 +407,9 @@ class ROUTER_equity_price(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/equity/price/performance", "fmp"
+                        provider,
+                        "/equity/price/performance",
+                        ("fmp",),
                     )
                 },
                 standard_params={
@@ -566,7 +572,9 @@ class ROUTER_equity_price(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/equity/price/quote", "fmp"
+                        provider,
+                        "/equity/price/quote",
+                        ("fmp", "intrinio", "yfinance"),
                     )
                 },
                 standard_params={

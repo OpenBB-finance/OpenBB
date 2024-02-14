@@ -144,7 +144,9 @@ class ROUTER_equity_ownership(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/equity/ownership/insider_trading", "fmp"
+                        provider,
+                        "/equity/ownership/insider_trading",
+                        ("fmp", "intrinio"),
                     )
                 },
                 standard_params={
@@ -299,7 +301,9 @@ class ROUTER_equity_ownership(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/equity/ownership/institutional", "fmp"
+                        provider,
+                        "/equity/ownership/institutional",
+                        ("fmp", "intrinio"),
                     )
                 },
                 standard_params={
@@ -447,7 +451,9 @@ class ROUTER_equity_ownership(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/equity/ownership/major_holders", "fmp"
+                        provider,
+                        "/equity/ownership/major_holders",
+                        ("fmp",),
                     )
                 },
                 standard_params={
@@ -543,7 +549,9 @@ class ROUTER_equity_ownership(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/equity/ownership/share_statistics", "fmp"
+                        provider,
+                        "/equity/ownership/share_statistics",
+                        ("fmp", "intrinio", "yfinance"),
                     )
                 },
                 standard_params={

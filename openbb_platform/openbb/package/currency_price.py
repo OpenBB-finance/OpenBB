@@ -134,7 +134,9 @@ class ROUTER_currency_price(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/currency/price/historical", "fmp"
+                        provider,
+                        "/currency/price/historical",
+                        ("fmp", "polygon", "tiingo", "yfinance"),
                     )
                 },
                 standard_params={

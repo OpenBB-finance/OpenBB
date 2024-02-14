@@ -195,7 +195,9 @@ class ROUTER_equity(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/equity/market_snapshots", "fmp"
+                        provider,
+                        "/equity/market_snapshots",
+                        ("fmp", "polygon"),
                     )
                 },
                 standard_params={},
@@ -387,7 +389,11 @@ class ROUTER_equity(Container):
             "/equity/profile",
             **filter_inputs(
                 provider_choices={
-                    "provider": self._get_provider(provider, "/equity/profile", "fmp")
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/profile",
+                        ("fmp", "intrinio", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -496,7 +502,11 @@ class ROUTER_equity(Container):
             "/equity/screener",
             **filter_inputs(
                 provider_choices={
-                    "provider": self._get_provider(provider, "/equity/screener", "fmp")
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/screener",
+                        ("fmp",),
+                    )
                 },
                 standard_params={},
                 extra_params=kwargs,
@@ -578,7 +588,9 @@ class ROUTER_equity(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/equity/search", "intrinio"
+                        provider,
+                        "/equity/search",
+                        ("intrinio", "sec"),
                     )
                 },
                 standard_params={

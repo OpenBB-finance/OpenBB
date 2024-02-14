@@ -74,7 +74,9 @@ class ROUTER_regulators_sec(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/regulators/sec/cik_map", "sec"
+                        provider,
+                        "/regulators/sec/cik_map",
+                        ("sec",),
                     )
                 },
                 standard_params={
@@ -142,7 +144,9 @@ class ROUTER_regulators_sec(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/regulators/sec/institutions_search", "sec"
+                        provider,
+                        "/regulators/sec/institutions_search",
+                        ("sec",),
                     )
                 },
                 standard_params={
@@ -204,7 +208,9 @@ class ROUTER_regulators_sec(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/regulators/sec/rss_litigation", "sec"
+                        provider,
+                        "/regulators/sec/rss_litigation",
+                        ("sec",),
                     )
                 },
                 standard_params={},
@@ -286,7 +292,9 @@ class ROUTER_regulators_sec(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/regulators/sec/schema_files", "sec"
+                        provider,
+                        "/regulators/sec/schema_files",
+                        ("sec",),
                     )
                 },
                 standard_params={
@@ -357,7 +365,9 @@ class ROUTER_regulators_sec(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/regulators/sec/sic_search", "sec"
+                        provider,
+                        "/regulators/sec/sic_search",
+                        ("sec",),
                     )
                 },
                 standard_params={
@@ -425,7 +435,9 @@ class ROUTER_regulators_sec(Container):
             **filter_inputs(
                 provider_choices={
                     "provider": self._get_provider(
-                        provider, "/regulators/sec/symbol_map", "sec"
+                        provider,
+                        "/regulators/sec/symbol_map",
+                        ("sec",),
                     )
                 },
                 standard_params={
