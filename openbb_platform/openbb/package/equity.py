@@ -392,7 +392,9 @@ class ROUTER_equity(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["intrinio"]}},
+                extra_info={
+                    "symbol": {"multiple_items_allowed": ["intrinio", "yfinance"]}
+                },
             )
         )
 
