@@ -600,9 +600,9 @@ class MethodDefinition:
     ):
         """Add the field description to the param signature."""
         if model_name:
-            available_fields: Dict[str, FieldInfo] = ProviderInterface().map[
-                model_name
-            ]["openbb"]["QueryParams"]["fields"]
+            available_fields: Dict[str, FieldInfo] = (
+                ProviderInterface().params[model_name]["standard"].__dataclass_fields__
+            )
 
             for param, value in od.items():
                 if param not in available_fields:
@@ -613,7 +613,7 @@ class MethodDefinition:
                 new_value = value.replace(
                     annotation=Annotated[
                         value.annotation,
-                        OpenBBCustomParameter(description=field.description),
+                        OpenBBCustomParameter(description=field.default.description),
                     ],
                 )
 
@@ -871,10 +871,6 @@ class DocstringGenerator:
         standard_dict = params["standard"].__dataclass_fields__
         extra_dict = params["extra"].__dataclass_fields__
 
-        obb_query_fields: Dict[str, FieldInfo] = cls.provider_interface.map[model_name][
-            "openbb"
-        ]["QueryParams"]["fields"]
-
         if examples:
             example_docstring = "\n        Example\n        -------\n"
             example_docstring += "        >>> from openbb import obb\n"
@@ -890,9 +886,11 @@ class DocstringGenerator:
         for param_name, param in explicit_params.items():
             if param_name in standard_dict:
                 # pylint: disable=W0212
-                p_type = obb_query_fields[param_name].annotation
+                p_type = param._annotation.__args__[0]
                 type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
-                description = getattr(obb_query_fields[param_name], "description", "")
+                description = getattr(
+                    param._annotation.__metadata__[0], "description", ""
+                )
             elif param_name == "provider":
                 # pylint: disable=W0212
                 type_ = param._annotation

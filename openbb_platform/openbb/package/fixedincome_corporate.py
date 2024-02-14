@@ -62,9 +62,9 @@ class ROUTER_fixedincome_corporate(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             maturity : Literal['overnight', '7d', '15d', '30d', '60d', '90d']
                 The maturity.
@@ -149,7 +149,7 @@ class ROUTER_fixedincome_corporate(Container):
 
             Parameters
             ----------
-            date : Optional[datetime.date]
+            date : Union[datetime.date, None, str]
                 A specific date to get data for.
             yield_curve : Literal['spot', 'par']
                 The yield curve type.
@@ -242,9 +242,9 @@ class ROUTER_fixedincome_corporate(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             index_type : Literal['yield', 'yield_to_worst', 'total_return', 'spread']
                 The type of series.
@@ -339,9 +339,9 @@ class ROUTER_fixedincome_corporate(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             index_type : Literal['aaa', 'baa']
                 The type of series.
@@ -433,9 +433,9 @@ class ROUTER_fixedincome_corporate(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             maturity : List[float]
                 The maturities in years.

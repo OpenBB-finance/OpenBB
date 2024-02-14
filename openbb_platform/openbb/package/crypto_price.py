@@ -25,7 +25,7 @@ class ROUTER_crypto_price(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format."
+                description="Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple items allowed: fmp, polygon, yfinance."
             ),
         ],
         start_date: Annotated[
@@ -47,11 +47,11 @@ class ROUTER_crypto_price(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format.
-        start_date : Optional[datetime.date]
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple items allowed: fmp, polygon, yfinance.
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
             The provider to use for the query, by default None.
