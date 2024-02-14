@@ -34,7 +34,8 @@ def filter_inputs(
 
                         if provider and provider not in props[PROPERTY]:
                             check_single_value(
-                                new, f"multiple values not allowed for '{provider}'"
+                                new,
+                                f"{field} -> multiple values not allowed for '{provider}'",
                             )
 
                         kwargs[p][field] = new
