@@ -2,20 +2,18 @@ import inspect
 import json
 import re
 import shutil
-from inspect import Parameter, _empty, signature
 from pathlib import Path
 from textwrap import shorten
-from typing import Any, Callable, Dict, List, TextIO, Tuple, Union
+from typing import Any, Dict, List, TextIO, Tuple, Union, _GenericAlias
 
-from docstring_parser import parse
 from openbb_core.app.provider_interface import ProviderInterface
+from openbb_core.app.router import Router, RouterLoader
 from openbb_core.app.static.package_builder import (
-    DocstringGenerator,
-    MethodDefinition,
     PathHandler,
 )
 from openbb_core.provider import standard_models
 from pydantic.fields import FieldInfo
+from pydantic_core import PydanticUndefined
 
 website_path = Path(__file__).parent.absolute()
 SEO_META: Dict[str, Dict[str, Union[str, List[str]]]] = json.loads(
@@ -33,78 +31,306 @@ reference_import = (
 refrence_ul_element = """<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">"""
 
 
-def get_docstring_meta(
-    func: Callable, full_command_path: str, formatted_params: Dict[str, Parameter]
-) -> Dict[str, Any]:
-    """Extracts the meta information from the docstring of a function with no standardized results model."""
-    meta_command = {}
-    doc_parsed = parse(func.__doc__)  # type: ignore
+# def get_docstring_meta(
+#     func: Callable, full_command_path: str, formatted_params: Dict[str, Parameter]
+# ) -> Dict[str, Any]:
+#     """Extracts the meta information from the docstring of a function with no standardized results model."""
+#     meta_command = {}
+#     doc_parsed = parse(func.__doc__)  # type: ignore
 
-    cmd_params = []
-    for param in doc_parsed.params:
-        arg_default = (
-            formatted_params[param.arg_name].default
-            if param.arg_name in formatted_params
-            else None
+#     cmd_params = []
+#     for param in doc_parsed.params:
+#         arg_default = (
+#             formatted_params[param.arg_name].default
+#             if param.arg_name in formatted_params
+#             else None
+#         )
+#         cmd_params.append(
+#             {
+#                 "name": param.arg_name,
+#                 "type": get_annotation_type(param.type_name),
+#                 "default": (
+#                     str(arg_default)
+#                     if arg_default is not inspect.Parameter.empty
+#                     else None
+#                 ),
+#                 "cleaned_type": re.sub(
+#                     r"Literal\[([^\"\]]*)\]",
+#                     f"Literal[{type(arg_default).__name__}]",
+#                     get_annotation_type(
+#                         formatted_params[param.arg_name].annotation
+#                         if param.arg_name in formatted_params
+#                         else param.type_name
+#                     ),
+#                 ),
+#                 "optional": bool(arg_default is not inspect.Parameter.empty)
+#                 or param.is_optional,
+#                 "doc": param.description,
+#             }
+#         )
+
+#     if doc_parsed.returns:
+#         meta_command["returns"] = {
+#             "type": doc_parsed.returns.type_name,
+#             "doc": doc_parsed.returns.description,
+#         }
+
+#     examples = []
+#     for example in doc_parsed.examples:
+#         examples.append(
+#             {
+#                 "snippet": example.snippet,
+#                 "description": example.description.strip(),  # type: ignore
+#             }
+#         )
+
+#     def_params = [
+#         f"{d['name']}: {d['cleaned_type']}{' = ' + d['default'] if d['default'] else ''}"
+#         for d in cmd_params
+#     ]
+#     meta_command.update(
+#         {
+#             "description": doc_parsed.short_description
+#             + (
+#                 "\n\n" + doc_parsed.long_description
+#                 if doc_parsed.long_description
+#                 else ""
+#             ),
+#             "params": cmd_params,
+#             "func_def": f"{full_command_path}({', '.join(def_params)})",
+#             "examples": examples,
+#         }
+#     )
+
+#     return meta_command
+
+
+def get_field_data_type(field_type: _GenericAlias, required: bool) -> str:
+    is_optional = not required
+
+    try:
+        if "BeforeValidator" in str(field_type):
+            field_type = "Optional[int]" if is_optional else "int"
+
+        # Handle Annotated types by extracting the first type
+        if "Annotated[" in str(field_type):
+            field_type = str(field_type).split("[")[-1].split(",")[0]
+
+        field_type = (
+            str(field_type)
+            .replace("<class '", "")
+            .replace("'>", "")
+            .replace("typing.", "")
+            .replace("pydantic.types.", "")
+            .replace("datetime.datetime", "datetime")
+            .replace("datetime.date", "date")
+            .replace("NoneType", "None")
+            .replace(", None", "")
         )
-        cmd_params.append(
-            {
-                "name": param.arg_name,
-                "type": get_annotation_type(param.type_name),
-                "default": (
-                    str(arg_default)
-                    if arg_default is not inspect.Parameter.empty
-                    else None
-                ),
-                "cleaned_type": re.sub(
-                    r"Literal\[([^\"\]]*)\]",
-                    f"Literal[{type(arg_default).__name__}]",
-                    get_annotation_type(
-                        formatted_params[param.arg_name].annotation
-                        if param.arg_name in formatted_params
-                        else param.type_name
-                    ),
-                ),
-                "optional": bool(arg_default is not inspect.Parameter.empty)
-                or param.is_optional,
-                "doc": param.description,
-            }
+        field_type = (
+            f"Optional[{field_type}]"
+            if is_optional and "Optional" not in str(field_type)
+            else field_type
         )
+    except TypeError:
+        field_type = str(field_type)
 
-    if doc_parsed.returns:
-        meta_command["returns"] = {
-            "type": doc_parsed.returns.type_name,
-            "doc": doc_parsed.returns.description,
-        }
+    return field_type
 
-    examples = []
-    for example in doc_parsed.examples:
-        examples.append(
-            {
-                "snippet": example.snippet,
-                "description": example.description.strip(),  # type: ignore
-            }
-        )
 
-    def_params = [
-        f"{d['name']}: {d['cleaned_type']}{' = ' + d['default'] if d['default'] else ''}"
-        for d in cmd_params
-    ]
-    meta_command.update(
-        {
-            "description": doc_parsed.short_description
-            + (
-                "\n\n" + doc_parsed.long_description
-                if doc_parsed.long_description
-                else ""
-            ),
-            "params": cmd_params,
-            "func_def": f"{full_command_path}({', '.join(def_params)})",
-            "examples": examples,
-        }
+def get_provider_parameter_params(route: Router) -> Dict[str, str]:
+    # TODO: Find a better way to fetch this without inspecting the signature of the function
+    params_dict = dict(inspect.signature(route.endpoint).parameters)
+    model_type = params_dict["provider_choices"].annotation.__args__[0]
+    provider_params_field = model_type.__dataclass_fields__["provider"]
+
+    default = provider_params_field.type.__args__[0]
+    description = (
+        "The provider to use for the query, by default None. "
+        "If None, the provider specified in defaults is selected "
+        f"or '{default}' if there is no default."
     )
 
-    return meta_command
+    return {
+        "name": provider_params_field.name,
+        "type": str(provider_params_field.type).replace("typing.", ""),
+        "description": description,
+        "default": default,
+        "optional": True,
+    }
+
+
+def get_field_default(default: Any) -> str:
+    return "" if default == PydanticUndefined else default
+
+
+def generate_reference_file():
+    """Generate reference.json file using the OpenAPI schema,
+    ProviderInterface, CommandMap and DocstringGenerator.
+    """
+    pi = ProviderInterface()
+
+    reference: Dict[str, Dict] = {}
+
+    REFERENCE_FIELDS = [
+        "deprecated",
+        "description",
+        "examples",
+        "parameters",
+        "returns",
+        "data",
+    ]
+
+    router = RouterLoader.from_extensions()
+    route_map = {route.path: route for route in router.api_router.routes}
+
+    for path, route in route_map.items():
+        if route.methods == {"POST"}:
+            continue
+
+        reference[path] = dict.fromkeys(REFERENCE_FIELDS, None)
+        reference[path] = {k: {} for k in reference[path]}
+
+        # Add endpoint deprecation details
+        deprecated_value = getattr(route, "deprecated", None)
+        deprecated_value = getattr(route, "deprecated", None)
+        reference[path]["deprecated"]["flag"] = (
+            False if deprecated_value is None else deprecated_value
+        )
+        reference[path]["deprecated"]["message"] = (
+            route.summary if route.deprecated else None
+        )
+
+        # Add endpoint description
+        reference[path]["description"] = route.description
+
+        # Add endpoint examples
+        reference[path]["examples"] = route.openapi_extra.get("examples", [])
+
+        # Add endpoint parameters
+        # We use standard as the key to match the documentation structure
+        standard_model = route.openapi_extra.get("model", None)
+
+        # openbb provider is always present hence is the standard parameter
+        reference[path]["parameters"]["standard"] = [
+            {
+                "name": field,
+                "type": get_field_data_type(
+                    field_info.annotation, field_info.is_required()
+                ),
+                "description": field_info.description,
+                "default": get_field_default(field_info.default),
+                "optional": not field_info.is_required(),
+            }
+            for field, field_info in pi.map[standard_model]["openbb"]["QueryParams"][
+                "fields"
+            ].items()
+        ]
+
+        for provider in pi.map[standard_model]:
+            if provider == "openbb":
+                continue
+
+            # Adds standard parameters to the provider parameters since they are inherited by the model
+            reference[path]["parameters"][provider] = reference[path]["parameters"][
+                "standard"
+            ].copy()
+            provider_query_params = [
+                {
+                    "name": field,
+                    "type": get_field_data_type(
+                        field_info.annotation, field_info.is_required()
+                    ),
+                    "description": field_info.description,
+                    "default": get_field_default(field_info.default),
+                    "optional": not field_info.is_required(),
+                }
+                for field, field_info in pi.map[standard_model][provider][
+                    "QueryParams"
+                ]["fields"].items()
+            ]
+            reference[path]["parameters"][provider].extend(provider_query_params)
+
+        provider_parameter_fields = get_provider_parameter_params(route)
+        reference[path]["parameters"]["standard"].append(
+            {
+                "name": provider_parameter_fields["name"],
+                "type": provider_parameter_fields["type"],
+                "description": provider_parameter_fields["description"],
+                "default": provider_parameter_fields["default"],
+                "optional": provider_parameter_fields["optional"],
+            }
+        )
+
+        # Add endpoint returns
+        # Currently we only return an OBBject object with the results
+        reference[path]["returns"]["OBBject"] = [
+            {
+                "name": "results",
+                "type": f"List[{standard_model}]",
+                "description": "Serializable Results.",
+            },
+            {
+                "name": "provider",
+                "type": f"Optional[{provider_parameter_fields['type']}]",
+                "description": "Provider name.",
+            },
+            {
+                "name": "warnings",
+                "type": "Optional[List[Warning_]]",
+                "description": "List of warnings.",
+            },
+            {
+                "name": "chart",
+                "type": "Optional[Chart]",
+                "description": "Chart object.",
+            },
+            {
+                "name": "extra",
+                "type": "Dict[str, Any]",
+                "description": "Extra info.",
+            },
+        ]
+
+        # Add endpoint data fields
+        # openbb provider is always present hence is the standard data
+        reference[path]["data"]["standard"] = [
+            {
+                "name": field,
+                "type": get_field_data_type(
+                    field_info.annotation, field_info.is_required()
+                ),
+                "description": field_info.description,
+            }
+            for field, field_info in pi.map[standard_model]["openbb"]["Data"][
+                "fields"
+            ].items()
+        ]
+
+        for provider in pi.map[standard_model]:
+            if provider == "openbb":
+                continue
+
+            # Adds standard parameters to the provider parameters since they are inherited by the model
+            reference[path]["data"][provider] = reference[path]["data"][
+                "standard"
+            ].copy()
+            provider_data = [
+                {
+                    "name": field,
+                    "type": get_field_data_type(
+                        field_info.annotation, field_info.is_required()
+                    ),
+                    "description": field_info.description,
+                }
+                for field, field_info in pi.map[standard_model][provider]["Data"][
+                    "fields"
+                ].items()
+            ]
+            reference[path]["data"][provider].extend(provider_data)
+
+    with open("website/content/platform/reference.json", "w") as f:
+        json.dump(reference, f)
 
 
 def generate_markdown(meta_command: dict):
@@ -304,224 +530,224 @@ def get_annotation_type(annotation: Any) -> str:
     return subbed
 
 
-def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
-    route = PathHandler.get_route(path=path, route_map=route_map)
-    if not route:
-        return {}
+# def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
+#     route = PathHandler.get_route(path=path, route_map=route_map)
+#     if not route:
+#         return {}
 
-    func = route.endpoint  # type: ignore
-    func_name = func.__name__
-    model_name = route.openapi_extra.get("model", None) if route.openapi_extra else None
+#     func = route.endpoint  # type: ignore
+#     func_name = func.__name__
+#     model_name = route.openapi_extra.get("model", None) if route.openapi_extra else None
 
-    sig = signature(func)
-    parameter_map = dict(sig.parameters)
-    formatted_params = MethodDefinition.format_params(path, parameter_map=parameter_map)
+#     sig = signature(func)
+#     parameter_map = dict(sig.parameters)
+#     formatted_params = MethodDefinition.format_params(path, parameter_map=parameter_map)
 
-    meta_command: Dict[str, Union[List[Dict[str, str]], Any]] = {
-        "name": func_name,
-        "description": func.__doc__.strip() if func.__doc__ else "",
-        "source_code_url": "",
-        "func_def": "",
-        "params": [],
-        "provider_params": {},
-        "returns": {},
-        "schema": {},
-        "model": model_name,
-        "deprecated": route.deprecated or False,
-        "deprecation_message": route.summary if route.deprecated else "",
-    }
+#     meta_command: Dict[str, Union[List[Dict[str, str]], Any]] = {
+#         "name": func_name,
+#         "description": func.__doc__.strip() if func.__doc__ else "",
+#         "source_code_url": "",
+#         "func_def": "",
+#         "params": [],
+#         "provider_params": {},
+#         "returns": {},
+#         "schema": {},
+#         "model": model_name,
+#         "deprecated": route.deprecated or False,
+#         "deprecation_message": route.summary if route.deprecated else "",
+#     }
 
-    # Extract the full path from the 'path' variable, excluding the method name
-    path_components = path.strip("/").split("/")
-    # Construct the full command path, e.g., 'obb.equity.estimates.consensus'
-    full_command_path = "obb." + ".".join(path_components[:-1])
+#     # Extract the full path from the 'path' variable, excluding the method name
+#     path_components = path.strip("/").split("/")
+#     # Construct the full command path, e.g., 'obb.equity.estimates.consensus'
+#     full_command_path = "obb." + ".".join(path_components[:-1])
 
-    # Now add the actual function name
-    func_name = route.endpoint.__name__
-    full_command_path += f".{func_name}"
+#     # Now add the actual function name
+#     func_name = route.endpoint.__name__
+#     full_command_path += f".{func_name}"
 
-    if model_name:
-        providers = provider_interface.map[model_name]
+#     if model_name:
+#         providers = provider_interface.map[model_name]
 
-        obb_query_fields: Dict[str, FieldInfo] = providers["openbb"]["QueryParams"][
-            "fields"
-        ]
+#         obb_query_fields: Dict[str, FieldInfo] = providers["openbb"]["QueryParams"][
+#             "fields"
+#         ]
 
-        meta_command["description"] += "\n\n" + DocstringGenerator.generate_example(
-            model_name=model_name,
-            standard_params=obb_query_fields,
-        )
+#         meta_command["description"] += "\n\n" + DocstringGenerator.generate_example(
+#             model_name=model_name,
+#             standard_params=obb_query_fields,
+#         )
 
-        available_fields = list(obb_query_fields.keys())
-        available_fields.extend(["chart", "provider"])
+#         available_fields = list(obb_query_fields.keys())
+#         available_fields.extend(["chart", "provider"])
 
-        for param in formatted_params.values():
-            if param.name not in available_fields:
-                continue
+#         for param in formatted_params.values():
+#             if param.name not in available_fields:
+#                 continue
 
-            if param.name == "provider":
-                # pylint: disable=W0212
-                param_type = param._annotation  # type: ignore
-                default = param._annotation.__args__[0].__args__[0]  # type: ignore
-                description = (
-                    "The provider to use for the query, by default None. "
-                    f"If None, the provider specified in defaults is selected or '{default}' if there is no default."
-                    ""
-                )
-                optional = "True"
+#             if param.name == "provider":
+#                 # pylint: disable=W0212
+#                 param_type = param._annotation  # type: ignore
+#                 default = param._annotation.__args__[0].__args__[0]  # type: ignore
+#                 description = (
+#                     "The provider to use for the query, by default None. "
+#                     f"If None, the provider specified in defaults is selected or '{default}' if there is no default."
+#                     ""
+#                 )
+#                 optional = "True"
 
-            elif param.name == "chart":
-                param_type = "bool"
-                description = "Whether to create a chart or not, by default False."
-                optional = "True"
-                default = "False"
-            else:
-                description = obb_query_fields[param.name].description  # type: ignore
+#             elif param.name == "chart":
+#                 param_type = "bool"
+#                 description = "Whether to create a chart or not, by default False."
+#                 optional = "True"
+#                 default = "False"
+#             else:
+#                 description = obb_query_fields[param.name].description  # type: ignore
 
-                param_type = param.annotation
+#                 param_type = param.annotation
 
-                if param.default is Parameter.empty:
-                    default = ""
-                    optional = "False"
-                else:
-                    default = param.default
-                    optional = "True"
+#                 if param.default is Parameter.empty:
+#                     default = ""
+#                     optional = "False"
+#                 else:
+#                     default = param.default
+#                     optional = "True"
 
-            meta_command["params"].append(
-                {
-                    "name": param.name,
-                    "type": get_annotation_type(param_type),
-                    "default": (
-                        str(default)
-                        if not isinstance(default, str) or not default
-                        else f'"{default}"'
-                    ),
-                    "cleaned_type": re.sub(
-                        r"Literal\[([^\"\]]*)\]",
-                        f"Literal[{type(default).__name__}]",
-                        get_annotation_type(param_type),
-                    ),
-                    "optional": optional,
-                    "doc": (description or "").replace("\n", "<br/>").strip(),
-                }
-            )
+#             meta_command["params"].append(
+#                 {
+#                     "name": param.name,
+#                     "type": get_annotation_type(param_type),
+#                     "default": (
+#                         str(default)
+#                         if not isinstance(default, str) or not default
+#                         else f'"{default}"'
+#                     ),
+#                     "cleaned_type": re.sub(
+#                         r"Literal\[([^\"\]]*)\]",
+#                         f"Literal[{type(default).__name__}]",
+#                         get_annotation_type(param_type),
+#                     ),
+#                     "optional": optional,
+#                     "doc": (description or "").replace("\n", "<br/>").strip(),
+#                 }
+#             )
 
-        # Update the func_def to include the full path
-        def_params = [
-            f"{d['name']}: {d['cleaned_type']}{' = ' + d['default'] if d['default'] else ''}"
-            for d in meta_command["params"]
-        ]
-        meta_command["func_def"] = f"{full_command_path}({', '.join(def_params)})"
+#         # Update the func_def to include the full path
+#         def_params = [
+#             f"{d['name']}: {d['cleaned_type']}{' = ' + d['default'] if d['default'] else ''}"
+#             for d in meta_command["params"]
+#         ]
+#         meta_command["func_def"] = f"{full_command_path}({', '.join(def_params)})"
 
-        available_providers = re.sub(
-            r"Optional\[Literal\[([^\]]*)\]",
-            r"\1",
-            str(
-                getattr(formatted_params.get("provider", ""), "_annotation", "")
-            ).replace("typing.", ""),
-        )
-        if sig.return_annotation != _empty:
-            return_type = sig.return_annotation
-            if hasattr(return_type, "__origin__"):
-                return_type = return_type.__origin__
+#         available_providers = re.sub(
+#             r"Optional\[Literal\[([^\]]*)\]",
+#             r"\1",
+#             str(
+#                 getattr(formatted_params.get("provider", ""), "_annotation", "")
+#             ).replace("typing.", ""),
+#         )
+#         if sig.return_annotation != _empty:
+#             return_type = sig.return_annotation
+#             if hasattr(return_type, "__origin__"):
+#                 return_type = return_type.__origin__
 
-            description = f"""OBBject
-    results : List[{model_name}]
-        Serializable results.
+#             description = f"""OBBject
+#     results : List[{model_name}]
+#         Serializable results.
 
-    provider : Optional[Literal[{available_providers}]
-        Provider name.
+#     provider : Optional[Literal[{available_providers}]
+#         Provider name.
 
-    warnings : Optional[List[Warning_]]
-        List of warnings.
+#     warnings : Optional[List[Warning_]]
+#         List of warnings.
 
-    chart : Optional[Chart]
-        Chart object.
+#     chart : Optional[Chart]
+#         Chart object.
 
-    extra: Dict[str, Any]
-        Extra info."""
+#     extra: Dict[str, Any]
+#         Extra info."""
 
-            meta_command["returns"] = {
-                "type": return_type.__name__,
-                "doc": description,
-            }
+#             meta_command["returns"] = {
+#                 "type": return_type.__name__,
+#                 "doc": description,
+#             }
 
-        standard, provider_extras, provider_params = {}, {}, {}  # type: ignore
+#         standard, provider_extras, provider_params = {}, {}, {}  # type: ignore
 
-        for provider_name, model_details in providers.items():
-            data_fields: Dict[str, FieldInfo] = model_details["Data"]["fields"]
-            query_fields: Dict[str, FieldInfo] = model_details["QueryParams"]["fields"]
+#         for provider_name, model_details in providers.items():
+#             data_fields: Dict[str, FieldInfo] = model_details["Data"]["fields"]
+#             query_fields: Dict[str, FieldInfo] = model_details["QueryParams"]["fields"]
 
-            if provider_name == "openbb":
-                for name, field in data_fields.items():
-                    standard[name] = {
-                        "type": get_annotation_type(field.annotation),
-                        "doc": (field.description or "").replace("\n", "<br/>").strip(),
-                    }
-            else:
-                for name, field in query_fields.items():
-                    if name not in obb_query_fields:
-                        provider_params.setdefault(provider_name, {})[name] = {
-                            "type": get_annotation_type(field.annotation),
-                            "doc": (field.description or "")
-                            .replace("\n", "<br/>")
-                            .strip(),
-                            "optional": "True" if not field.is_required() else "False",
-                            "default": str(field.default).replace(
-                                "PydanticUndefined", ""
-                            ),
-                        }
-                for name, field in data_fields.items():
-                    if name not in providers["openbb"]["Data"]["fields"]:
-                        provider_extras.setdefault(provider_name, {})[name] = {
-                            "type": get_annotation_type(field.annotation),
-                            "doc": (field.description or "")
-                            .replace("\n", "<br/>")
-                            .strip(),
-                        }
+#             if provider_name == "openbb":
+#                 for name, field in data_fields.items():
+#                     standard[name] = {
+#                         "type": get_annotation_type(field.annotation),
+#                         "doc": (field.description or "").replace("\n", "<br/>").strip(),
+#                     }
+#             else:
+#                 for name, field in query_fields.items():
+#                     if name not in obb_query_fields:
+#                         provider_params.setdefault(provider_name, {})[name] = {
+#                             "type": get_annotation_type(field.annotation),
+#                             "doc": (field.description or "")
+#                             .replace("\n", "<br/>")
+#                             .strip(),
+#                             "optional": "True" if not field.is_required() else "False",
+#                             "default": str(field.default).replace(
+#                                 "PydanticUndefined", ""
+#                             ),
+#                         }
+#                 for name, field in data_fields.items():
+#                     if name not in providers["openbb"]["Data"]["fields"]:
+#                         provider_extras.setdefault(provider_name, {})[name] = {
+#                             "type": get_annotation_type(field.annotation),
+#                             "doc": (field.description or "")
+#                             .replace("\n", "<br/>")
+#                             .strip(),
+#                         }
 
-        meta_command["schema"] = {
-            "standard": standard,
-            "provider_extras": provider_extras,
-        }
-        meta_command["provider_params"] = provider_params
+#         meta_command["schema"] = {
+#             "standard": standard,
+#             "provider_extras": provider_extras,
+#         }
+#         meta_command["provider_params"] = provider_params
 
-    if not meta_command.get("params", None):
-        meta_command.update(
-            get_docstring_meta(func, full_command_path, formatted_params)
-        )
+#     if not meta_command.get("params", None):
+#         meta_command.update(
+#             get_docstring_meta(func, full_command_path, formatted_params)
+#         )
 
-    ref_path = full_command_path.replace("obb.", "")
-    cmd_keywords = "\n- ".join(ref_path.split("."))
-    default_desc = (
-        meta_command.get("description", "").split(".").pop(0).strip().replace(":", "")
-    )
-    header = (
-        f"title: {func_name}\ndescription: {default_desc}\nkeywords:\n- {cmd_keywords}"
-    )
+#     ref_path = full_command_path.replace("obb.", "")
+#     cmd_keywords = "\n- ".join(ref_path.split("."))
+#     default_desc = (
+#         meta_command.get("description", "").split(".").pop(0).strip().replace(":", "")
+#     )
+#     header = (
+#         f"title: {func_name}\ndescription: {default_desc}\nkeywords:\n- {cmd_keywords}"
+#     )
 
-    if seo_meta := SEO_META.get(
-        ref_path, SEO_META.get((".".join(path.split("/")[-2:])), None)
-    ):
-        keywords = "\n- ".join(seo_meta["keywords"])
-        header = f"title: {seo_meta['title']}\ndescription: {seo_meta['description']}\nkeywords:\n- {keywords}"
+#     if seo_meta := SEO_META.get(
+#         ref_path, SEO_META.get((".".join(path.split("/")[-2:])), None)
+#     ):
+#         keywords = "\n- ".join(seo_meta["keywords"])
+#         header = f"title: {seo_meta['title']}\ndescription: {seo_meta['description']}\nkeywords:\n- {keywords}"
 
-    title = ref_path.split(".")
-    title[0] += " "
+#     title = ref_path.split(".")
+#     title[0] += " "
 
-    meta_command[
-        "header"
-    ] = f"""---\n{header}\n---\n
-import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
+#     meta_command[
+#         "header"
+#     ] = f"""---\n{header}\n---\n
+# import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="{'/'.join(title)} - Reference | OpenBB Platform Docs" />\n\n"""
+# <HeadTitle title="{'/'.join(title)} - Reference | OpenBB Platform Docs" />\n\n"""
 
-    if meta_command["deprecated"]:
-        meta_command[
-            "header"
-        ] += f":::caution Deprecated\n{meta_command['deprecation_message']}\n:::\n\n"
+#     if meta_command["deprecated"]:
+#         meta_command[
+#             "header"
+#         ] += f":::caution Deprecated\n{meta_command['deprecation_message']}\n:::\n\n"
 
-    return meta_command
+#     return meta_command
 
 
 def generate_data_markdown_section(meta: Dict[str, Any], command: bool = True):
