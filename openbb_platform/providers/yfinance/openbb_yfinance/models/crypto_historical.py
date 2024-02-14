@@ -26,6 +26,8 @@ class YFinanceCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     Source: https://finance.yahoo.com/crypto/
     """
 
+    __openbb_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
     period: Optional[PERIODS] = Field(
         default="max", description=QUERY_DESCRIPTIONS.get("period", "")
