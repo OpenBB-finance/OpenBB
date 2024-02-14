@@ -2,8 +2,7 @@
 
 from typing import Dict, Optional, Set
 
-from openbb_core.app.utils import convert_to_basemodel
-from openbb_core.provider.utils.validators import check_single_value
+from openbb_core.app.utils import check_single_value, convert_to_basemodel
 
 
 def filter_inputs(

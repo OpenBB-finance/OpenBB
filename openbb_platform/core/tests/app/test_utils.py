@@ -1,8 +1,10 @@
 import numpy as np
+from openbb_core.app.model.abstract.error import OpenBBError
 import pandas as pd
 import pytest
 from openbb_core.app.utils import (
     basemodel_to_df,
+    check_single_value,
     df_to_basemodel,
     dict_to_basemodel,
     get_target_column,
@@ -124,3 +126,21 @@ def test_ndarray_to_basemodel(array, expected):
     result = ndarray_to_basemodel(array)
     for r, e in zip(result, expected):
         assert r.model_dump() == e.model_dump()
+
+
+@pytest.mark.parametrize(
+    "value, expected",
+    [
+        ("SYMBOL", "SYMBOL"),
+        (None, None),
+        ("", ""),
+        ("SYMBOL1,SYMBOL2", OpenBBError),
+        ("SYMBOL1;SYMBOL2", OpenBBError),
+    ],
+)
+def test_check_single_value(value, expected):
+    if expected is OpenBBError:
+        with pytest.raises(OpenBBError):
+            check_single_value(value)
+    else:
+        assert check_single_value(value) == expected

@@ -3,6 +3,7 @@ import json
 from typing import Dict, Iterable, List, Optional, Union
 
 import numpy as np
+from openbb_core.app.model.abstract.error import OpenBBError
 import pandas as pd
 from pydantic import ValidationError
 
@@ -140,3 +141,12 @@ def get_user_cache_directory() -> str:
         else Preferences().cache_directory
     )
     return cache_dir
+
+
+def check_single_value(
+    value: Optional[str], message: Optional[str] = None
+) -> Optional[str]:
+    """Check that string is a single value."""
+    if value and ("," in value or ";" in value):
+        raise OpenBBError(message if message else "multiple values not allowed")
+    return value
