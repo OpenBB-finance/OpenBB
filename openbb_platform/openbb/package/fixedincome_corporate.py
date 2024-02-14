@@ -107,7 +107,11 @@ class ROUTER_fixedincome_corporate(Container):
         return self._run(
             "/fixedincome/corporate/commercial_paper",
             **filter_inputs(
-                provider_choices={"provider": "fred" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/fixedincome/corporate/commercial_paper", "fred"
+                    )
+                },
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,
@@ -188,7 +192,11 @@ class ROUTER_fixedincome_corporate(Container):
         return self._run(
             "/fixedincome/corporate/hqm",
             **filter_inputs(
-                provider_choices={"provider": "fred" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/fixedincome/corporate/hqm", "fred"
+                    )
+                },
                 standard_params={
                     "date": date,
                     "yield_curve": yield_curve,
@@ -279,7 +287,11 @@ class ROUTER_fixedincome_corporate(Container):
         return self._run(
             "/fixedincome/corporate/ice_bofa",
             **filter_inputs(
-                provider_choices={"provider": "fred" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/fixedincome/corporate/ice_bofa", "fred"
+                    )
+                },
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,
@@ -364,7 +376,11 @@ class ROUTER_fixedincome_corporate(Container):
         return self._run(
             "/fixedincome/corporate/moody",
             **filter_inputs(
-                provider_choices={"provider": "fred" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/fixedincome/corporate/moody", "fred"
+                    )
+                },
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,
@@ -452,7 +468,11 @@ class ROUTER_fixedincome_corporate(Container):
         return self._run(
             "/fixedincome/corporate/spot_rates",
             **filter_inputs(
-                provider_choices={"provider": "fred" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/fixedincome/corporate/spot_rates", "fred"
+                    )
+                },
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,

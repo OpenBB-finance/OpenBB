@@ -104,7 +104,11 @@ class ROUTER_fixedincome_government(Container):
             "/fixedincome/government/treasury_rates",
             **filter_inputs(
                 provider_choices={
-                    "provider": "federal_reserve" if provider is None else provider
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/government/treasury_rates",
+                        "federal_reserve",
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -173,7 +177,11 @@ class ROUTER_fixedincome_government(Container):
         return self._run(
             "/fixedincome/government/us_yield_curve",
             **filter_inputs(
-                provider_choices={"provider": "fred" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/fixedincome/government/us_yield_curve", "fred"
+                    )
+                },
                 standard_params={
                     "date": date,
                     "inflation_adjusted": inflation_adjusted,

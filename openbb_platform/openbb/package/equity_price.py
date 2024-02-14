@@ -173,7 +173,11 @@ class ROUTER_equity_price(Container):
         return self._run(
             "/equity/price/historical",
             **filter_inputs(
-                provider_choices={"provider": "fmp" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/equity/price/historical", "fmp"
+                    )
+                },
                 standard_params={
                     "symbol": symbol,
                     "interval": interval,
@@ -310,7 +314,9 @@ class ROUTER_equity_price(Container):
             "/equity/price/nbbo",
             **filter_inputs(
                 provider_choices={
-                    "provider": "polygon" if provider is None else provider
+                    "provider": self._get_provider(
+                        provider, "/equity/price/nbbo", "polygon"
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -395,7 +401,11 @@ class ROUTER_equity_price(Container):
         return self._run(
             "/equity/price/performance",
             **filter_inputs(
-                provider_choices={"provider": "fmp" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/equity/price/performance", "fmp"
+                    )
+                },
                 standard_params={
                     "symbol": symbol,
                 },
@@ -554,7 +564,11 @@ class ROUTER_equity_price(Container):
         return self._run(
             "/equity/price/quote",
             **filter_inputs(
-                provider_choices={"provider": "fmp" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/equity/price/quote", "fmp"
+                    )
+                },
                 standard_params={
                     "symbol": symbol,
                 },

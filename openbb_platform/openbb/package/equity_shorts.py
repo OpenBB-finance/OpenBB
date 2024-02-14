@@ -85,7 +85,11 @@ class ROUTER_equity_shorts(Container):
         return self._run(
             "/equity/shorts/fails_to_deliver",
             **filter_inputs(
-                provider_choices={"provider": "sec" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/equity/shorts/fails_to_deliver", "sec"
+                    )
+                },
                 standard_params={
                     "symbol": symbol,
                 },

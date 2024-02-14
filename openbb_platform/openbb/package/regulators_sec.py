@@ -72,7 +72,11 @@ class ROUTER_regulators_sec(Container):
         return self._run(
             "/regulators/sec/cik_map",
             **filter_inputs(
-                provider_choices={"provider": "sec" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/regulators/sec/cik_map", "sec"
+                    )
+                },
                 standard_params={
                     "symbol": symbol,
                 },
@@ -136,7 +140,11 @@ class ROUTER_regulators_sec(Container):
         return self._run(
             "/regulators/sec/institutions_search",
             **filter_inputs(
-                provider_choices={"provider": "sec" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/regulators/sec/institutions_search", "sec"
+                    )
+                },
                 standard_params={
                     "query": query,
                     "use_cache": use_cache,
@@ -194,7 +202,11 @@ class ROUTER_regulators_sec(Container):
         return self._run(
             "/regulators/sec/rss_litigation",
             **filter_inputs(
-                provider_choices={"provider": "sec" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/regulators/sec/rss_litigation", "sec"
+                    )
+                },
                 standard_params={},
                 extra_params=kwargs,
             )
@@ -272,7 +284,11 @@ class ROUTER_regulators_sec(Container):
         return self._run(
             "/regulators/sec/schema_files",
             **filter_inputs(
-                provider_choices={"provider": "sec" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/regulators/sec/schema_files", "sec"
+                    )
+                },
                 standard_params={
                     "query": query,
                     "use_cache": use_cache,
@@ -339,7 +355,11 @@ class ROUTER_regulators_sec(Container):
         return self._run(
             "/regulators/sec/sic_search",
             **filter_inputs(
-                provider_choices={"provider": "sec" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/regulators/sec/sic_search", "sec"
+                    )
+                },
                 standard_params={
                     "query": query,
                     "use_cache": use_cache,
@@ -403,7 +423,11 @@ class ROUTER_regulators_sec(Container):
         return self._run(
             "/regulators/sec/symbol_map",
             **filter_inputs(
-                provider_choices={"provider": "sec" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/regulators/sec/symbol_map", "sec"
+                    )
+                },
                 standard_params={
                     "query": query,
                     "use_cache": use_cache,

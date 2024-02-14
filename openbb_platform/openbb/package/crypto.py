@@ -84,7 +84,9 @@ class ROUTER_crypto(Container):
         return self._run(
             "/crypto/search",
             **filter_inputs(
-                provider_choices={"provider": "fmp" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(provider, "/crypto/search", "fmp")
+                },
                 standard_params={
                     "query": query,
                 },

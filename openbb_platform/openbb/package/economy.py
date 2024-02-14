@@ -130,7 +130,9 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/calendar",
             **filter_inputs(
-                provider_choices={"provider": "fmp" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(provider, "/economy/calendar", "fmp")
+                },
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,
@@ -207,7 +209,11 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/composite_leading_indicator",
             **filter_inputs(
-                provider_choices={"provider": "oecd" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/economy/composite_leading_indicator", "oecd"
+                    )
+                },
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,
@@ -313,7 +319,9 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/cpi",
             **filter_inputs(
-                provider_choices={"provider": "fred" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(provider, "/economy/cpi", "fred")
+                },
                 standard_params={
                     "country": country,
                     "units": units,
@@ -428,7 +436,11 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/fred_search",
             **filter_inputs(
-                provider_choices={"provider": "fred" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/economy/fred_search", "fred"
+                    )
+                },
                 standard_params={
                     "query": query,
                 },
@@ -556,7 +568,11 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/fred_series",
             **filter_inputs(
-                provider_choices={"provider": "fred" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/economy/fred_series", "fred"
+                    )
+                },
                 standard_params={
                     "symbol": symbol,
                     "start_date": start_date,
@@ -650,7 +666,11 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/long_term_interest_rate",
             **filter_inputs(
-                provider_choices={"provider": "oecd" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/economy/long_term_interest_rate", "oecd"
+                    )
+                },
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,
@@ -741,7 +761,9 @@ class ROUTER_economy(Container):
             "/economy/money_measures",
             **filter_inputs(
                 provider_choices={
-                    "provider": "federal_reserve" if provider is None else provider
+                    "provider": self._get_provider(
+                        provider, "/economy/money_measures", "federal_reserve"
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -799,7 +821,11 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/risk_premium",
             **filter_inputs(
-                provider_choices={"provider": "fmp" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/economy/risk_premium", "fmp"
+                    )
+                },
                 standard_params={},
                 extra_params=kwargs,
             )
@@ -878,7 +904,11 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/short_term_interest_rate",
             **filter_inputs(
-                provider_choices={"provider": "oecd" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/economy/short_term_interest_rate", "oecd"
+                    )
+                },
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,
@@ -964,7 +994,11 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/unemployment",
             **filter_inputs(
-                provider_choices={"provider": "oecd" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/economy/unemployment", "oecd"
+                    )
+                },
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,

@@ -742,7 +742,7 @@ class MethodDefinition:
                 field = param.annotation.__args__[0].__dataclass_fields__["provider"]
                 default = field.type.__args__[0]
                 code += "                provider_choices={\n"
-                code += f'                    "provider": "{default}" if provider is None else provider\n'
+                code += f'                    "provider": self._get_provider(provider, "{path}", "{default}")\n'
                 code += "                },\n"
             elif MethodDefinition.is_annotated_dc(param.annotation):
                 fields = param.annotation.__args__[0].__dataclass_fields__

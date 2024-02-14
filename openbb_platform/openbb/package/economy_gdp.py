@@ -100,7 +100,11 @@ class ROUTER_economy_gdp(Container):
         return self._run(
             "/economy/gdp/forecast",
             **filter_inputs(
-                provider_choices={"provider": "oecd" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/economy/gdp/forecast", "oecd"
+                    )
+                },
                 standard_params={
                     "period": period,
                     "start_date": start_date,
@@ -182,7 +186,11 @@ class ROUTER_economy_gdp(Container):
         return self._run(
             "/economy/gdp/nominal",
             **filter_inputs(
-                provider_choices={"provider": "oecd" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/economy/gdp/nominal", "oecd"
+                    )
+                },
                 standard_params={
                     "units": units,
                     "start_date": start_date,
@@ -263,7 +271,11 @@ class ROUTER_economy_gdp(Container):
         return self._run(
             "/economy/gdp/real",
             **filter_inputs(
-                provider_choices={"provider": "oecd" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/economy/gdp/real", "oecd"
+                    )
+                },
                 standard_params={
                     "units": units,
                     "start_date": start_date,

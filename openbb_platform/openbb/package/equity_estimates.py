@@ -86,7 +86,11 @@ class ROUTER_equity_estimates(Container):
         return self._run(
             "/equity/estimates/consensus",
             **filter_inputs(
-                provider_choices={"provider": "fmp" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/equity/estimates/consensus", "fmp"
+                    )
+                },
                 standard_params={
                     "symbol": symbol,
                 },
@@ -196,7 +200,11 @@ class ROUTER_equity_estimates(Container):
         return self._run(
             "/equity/estimates/historical",
             **filter_inputs(
-                provider_choices={"provider": "fmp" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/equity/estimates/historical", "fmp"
+                    )
+                },
                 standard_params={
                     "symbol": symbol,
                     "period": period,
@@ -343,7 +351,9 @@ class ROUTER_equity_estimates(Container):
             "/equity/estimates/price_target",
             **filter_inputs(
                 provider_choices={
-                    "provider": "benzinga" if provider is None else provider
+                    "provider": self._get_provider(
+                        provider, "/equity/estimates/price_target", "benzinga"
+                    )
                 },
                 standard_params={
                     "symbol": symbol,

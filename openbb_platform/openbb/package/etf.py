@@ -75,7 +75,9 @@ class ROUTER_etf(Container):
         return self._run(
             "/etf/countries",
             **filter_inputs(
-                provider_choices={"provider": "fmp" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(provider, "/etf/countries", "fmp")
+                },
                 standard_params={
                     "symbol": symbol,
                 },
@@ -160,7 +162,9 @@ class ROUTER_etf(Container):
             "/etf/historical",
             **filter_inputs(
                 provider_choices={
-                    "provider": "yfinance" if provider is None else provider
+                    "provider": self._get_provider(
+                        provider, "/etf/historical", "yfinance"
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -385,7 +389,9 @@ class ROUTER_etf(Container):
         return self._run(
             "/etf/holdings",
             **filter_inputs(
-                provider_choices={"provider": "fmp" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(provider, "/etf/holdings", "fmp")
+                },
                 standard_params={
                     "symbol": symbol,
                 },
@@ -443,7 +449,11 @@ class ROUTER_etf(Container):
         return self._run(
             "/etf/holdings_date",
             **filter_inputs(
-                provider_choices={"provider": "fmp" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/etf/holdings_date", "fmp"
+                    )
+                },
                 standard_params={
                     "symbol": symbol,
                 },
@@ -527,7 +537,11 @@ class ROUTER_etf(Container):
         return self._run(
             "/etf/holdings_performance",
             **filter_inputs(
-                provider_choices={"provider": "fmp" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/etf/holdings_performance", "fmp"
+                    )
+                },
                 standard_params={
                     "symbol": symbol,
                 },
@@ -675,7 +689,9 @@ class ROUTER_etf(Container):
         return self._run(
             "/etf/info",
             **filter_inputs(
-                provider_choices={"provider": "fmp" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(provider, "/etf/info", "fmp")
+                },
                 standard_params={
                     "symbol": symbol,
                 },
@@ -759,7 +775,11 @@ class ROUTER_etf(Container):
         return self._run(
             "/etf/price_performance",
             **filter_inputs(
-                provider_choices={"provider": "fmp" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider, "/etf/price_performance", "fmp"
+                    )
+                },
                 standard_params={
                     "symbol": symbol,
                 },
@@ -846,7 +866,9 @@ class ROUTER_etf(Container):
         return self._run(
             "/etf/search",
             **filter_inputs(
-                provider_choices={"provider": "fmp" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(provider, "/etf/search", "fmp")
+                },
                 standard_params={
                     "query": query,
                 },
@@ -904,7 +926,9 @@ class ROUTER_etf(Container):
         return self._run(
             "/etf/sectors",
             **filter_inputs(
-                provider_choices={"provider": "fmp" if provider is None else provider},
+                provider_choices={
+                    "provider": self._get_provider(provider, "/etf/sectors", "fmp")
+                },
                 standard_params={
                     "symbol": symbol,
                 },

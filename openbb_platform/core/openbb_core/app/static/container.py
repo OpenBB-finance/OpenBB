@@ -1,6 +1,6 @@
 """Container class."""
 
-from typing import Any
+from typing import Any, Optional
 
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.obbject import OBBject
@@ -20,3 +20,14 @@ class Container:
         if output_type == "OBBject":
             return obbject
         return getattr(obbject, "to_" + output_type)()
+
+    def _get_provider(self, choice: Optional[str], cmd: str, default: str) -> str:
+        """Get the provider to use in execution."""
+        if choice is None:
+            config_default = self._command_runner.user_settings.defaults.routes.get(
+                cmd, None
+            )
+            if config_default:
+                return config_default
+            return default
+        return choice

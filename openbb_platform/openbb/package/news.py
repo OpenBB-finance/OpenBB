@@ -183,7 +183,9 @@ class ROUTER_news(Container):
             "/news/company",
             **filter_inputs(
                 provider_choices={
-                    "provider": "benzinga" if provider is None else provider
+                    "provider": self._get_provider(
+                        provider, "/news/company", "benzinga"
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -333,7 +335,7 @@ class ROUTER_news(Container):
             "/news/world",
             **filter_inputs(
                 provider_choices={
-                    "provider": "benzinga" if provider is None else provider
+                    "provider": self._get_provider(provider, "/news/world", "benzinga")
                 },
                 standard_params={
                     "limit": limit,
