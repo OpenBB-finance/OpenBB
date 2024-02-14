@@ -374,10 +374,10 @@ def get_cpi(
     for series_id, country_value, frequency_value, unit_value in series[
         ["series_id", "country", "frequency", "units"]
     ].values:
-        series_dictionary[f"{country_value}-{frequency_value}-{unit_value}"] = (
-            get_series_data(
-                series_id=series_id, start_date=start_date, end_date=end_date
-            )
+        series_dictionary[
+            f"{country_value}-{frequency_value}-{unit_value}"
+        ] = get_series_data(
+            series_id=series_id, start_date=start_date, end_date=end_date
         )
 
     df = pd.DataFrame.from_dict(series_dictionary)

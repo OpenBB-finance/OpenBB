@@ -45,7 +45,9 @@ def transform(
             lambda series: (
                 series
                 if skipPredicate is not None and skipPredicate(series)
-                else series * multiplier if isinstance(series, (float, int)) else series
+                else series * multiplier
+                if isinstance(series, (float, int))
+                else series
             ),
             axis,
         )

@@ -1743,15 +1743,15 @@ class EconometricsController(BaseController):
                         self.regression[regression][
                             "independent"
                         ] = independent_variables
-                        self.regression[regression_name]["model"] = (
-                            regression_view.display_panel(
-                                regression_df[dependent_variable],
-                                regression_df[independent_variables],
-                                regression,
-                                ns_parser.entity_effects,
-                                ns_parser.time_effects,
-                                ns_parser.export,
-                            )
+                        self.regression[regression_name][
+                            "model"
+                        ] = regression_view.display_panel(
+                            regression_df[dependent_variable],
+                            regression_df[independent_variables],
+                            regression,
+                            ns_parser.entity_effects,
+                            ns_parser.time_effects,
+                            ns_parser.export,
                         )
             else:
                 console.print(
