@@ -568,7 +568,9 @@ class ROUTER_etf(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for. (ETF)"),
+            OpenBBCustomParameter(
+                description="Symbol to get data for. (ETF) Multiple items allowed: yfinance."
+            ),
         ],
         provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
@@ -577,8 +579,8 @@ class ROUTER_etf(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for. (ETF)
+        symbol : Union[str, List[str]]
+            Symbol to get data for. (ETF) Multiple items allowed: yfinance.
         provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is

@@ -25,7 +25,7 @@ class ROUTER_currency_price(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format."
+                description="Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple items allowed: polygon, yfinance."
             ),
         ],
         start_date: Annotated[
@@ -55,8 +55,8 @@ class ROUTER_currency_price(Container):
 
             Parameters
             ----------
-            symbol : str
-                Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format.
+            symbol : Union[str, List[str]]
+                Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple items allowed: polygon, yfinance.
             start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
             end_date : Union[datetime.date, None, str]

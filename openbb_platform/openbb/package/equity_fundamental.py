@@ -1274,7 +1274,9 @@ class ROUTER_equity_fundamental(Container):
         ],
         tag: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Intrinio data tag ID or code."),
+            OpenBBCustomParameter(
+                description="Intrinio data tag ID or code. Multiple items allowed: intrinio."
+            ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -1313,8 +1315,8 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        tag : str
-            Intrinio data tag ID or code.
+        tag : Union[str, List[str]]
+            Intrinio data tag ID or code. Multiple items allowed: intrinio.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
@@ -2035,7 +2037,9 @@ class ROUTER_equity_fundamental(Container):
         ],
         tag: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Intrinio data tag ID or code."),
+            OpenBBCustomParameter(
+                description="Intrinio data tag ID or code. Multiple items allowed: intrinio."
+            ),
         ],
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
@@ -2046,8 +2050,8 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        tag : str
-            Intrinio data tag ID or code.
+        tag : Union[str, List[str]]
+            Intrinio data tag ID or code. Multiple items allowed: intrinio.
         provider : Optional[Literal['intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'intrinio' if there is
@@ -2184,7 +2188,9 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed: fmp."
+            ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -2205,8 +2211,8 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed: fmp.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
@@ -2290,7 +2296,9 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed: fmp."
+            ),
         ],
         period: Annotated[
             Optional[Literal["annual", "quarter"]],
@@ -2307,8 +2315,8 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed: fmp.
         period : Optional[Literal['annual', 'quarter']]
             Time period of the data to return.
         limit : Optional[int]
@@ -2553,7 +2561,9 @@ class ROUTER_equity_fundamental(Container):
         self,
         symbol: Annotated[
             Union[str, List[str]],
-            OpenBBCustomParameter(description="Symbol to get data for."),
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed: fmp."
+            ),
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -2562,8 +2572,8 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed: fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
