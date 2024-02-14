@@ -148,7 +148,6 @@ class FredRegionalQueryParams(SeriesQueryParams):
     def transform_validate(cls, values):
         """Add default start date."""
         if values.get("is_series_group") is True:
-            print(values)
             required = ["frequency", "region_type", "units"]
             for key in required:
                 if values.get(key) is None:
@@ -221,7 +220,6 @@ class FredRegionalDataFetcher(
             )
         if query.is_series_group is False:
             base_url = "https://api.stlouisfed.org/geofred/series/data?"
-            params = query.model_dump()
             url = (
                 base_url
                 + f"series_id={query.symbol}&"
