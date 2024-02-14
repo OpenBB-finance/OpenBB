@@ -2,6 +2,8 @@
 
 # pylint: disable=unsed-argument
 
+import asyncio
+import warnings
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -9,8 +11,11 @@ from openbb_core.provider.standard_models.etf_equity_exposure import (
     EtfEquityExposureData,
     EtfEquityExposureQueryParams,
 )
-from openbb_core.provider.utils.helpers import amake_requests
+from openbb_core.provider.utils.errors import EmptyDataError
+from openbb_core.provider.utils.helpers import amake_request
 from pydantic import field_validator
+
+_warn = warnings.warn
 
 
 class FMPEtfEquityExposureQueryParams(EtfEquityExposureQueryParams):
@@ -58,13 +63,22 @@ class FMPEtfEquityExposureFetcher(
         """Return the raw data from the FMP endpoint."""
         api_key = credentials.get("fmp_api_key") if credentials else ""
         symbols = query.symbol.split(",")
+        results = []
 
-        urls = [
-            f"https://financialmodelingprep.com/api/v3/etf-stock-exposure/{symbol}?apikey={api_key}"
-            for symbol in symbols
-        ]
+        async def get_one(symbol):
+            """Get one symbol."""
+            url = f"https://financialmodelingprep.com/api/v3/etf-stock-exposure/{symbol}?apikey={api_key}"
+            response = await amake_request(url)
+            if not response:
+                _warn(f"No results found for {symbol}.")
+            results.extend(response)
 
-        return await amake_requests(urls, **kwargs)
+        await asyncio.gather(*[get_one(symbol) for symbol in symbols])
+
+        if not results:
+            raise EmptyDataError()
+
+        return results
 
     @staticmethod
     def transform_data(
