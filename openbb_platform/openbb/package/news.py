@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
 from annotated_types import Ge
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
@@ -25,9 +25,9 @@ class ROUTER_news(Container):
     def company(
         self,
         symbol: Annotated[
-            str,
+            Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas."
+                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed: benzinga, intrinio."
             ),
         ],
         limit: Annotated[
@@ -55,8 +55,8 @@ class ROUTER_news(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for. This endpoint will accept multiple symbols separated by commas.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed: benzinga, intrinio.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
         start_date : Union[datetime.date, None, str]
@@ -203,6 +203,9 @@ class ROUTER_news(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={
+                    "symbol": {"multiple_items_allowed": ["benzinga", "intrinio"]}
+                },
             )
         )
 
