@@ -29,6 +29,8 @@ class IntrinioCompanyNewsQueryParams(CompanyNewsQueryParams):
 class IntrinioCompanyNewsData(CompanyNewsData):
     """Intrinio Company News Data."""
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     __alias_dict__ = {
         "symbols": "symbol",
         "date": "publication_date",
