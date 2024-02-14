@@ -12,9 +12,8 @@ from openbb_core.provider.standard_models.balance_sheet import (
     BalanceSheetData,
     BalanceSheetQueryParams,
 )
-from openbb_core.provider.utils.validators import check_single_value
 from openbb_fmp.utils.helpers import create_url, get_data_many
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, model_validator
 
 
 class FMPBalanceSheetQueryParams(BalanceSheetQueryParams):
@@ -24,12 +23,6 @@ class FMPBalanceSheetQueryParams(BalanceSheetQueryParams):
     """
 
     period: Optional[Literal["annual", "quarter"]] = Field(default="annual")
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def check_single_value(cls, v):
-        """Check that string is a single value."""
-        return check_single_value(v)
 
 
 class FMPBalanceSheetData(BalanceSheetData):

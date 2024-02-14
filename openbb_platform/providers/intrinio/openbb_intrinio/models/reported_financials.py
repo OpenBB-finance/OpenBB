@@ -13,10 +13,9 @@ from openbb_core.provider.utils.helpers import (
     amake_requests,
     to_snake_case,
 )
-from openbb_core.provider.utils.validators import check_single_value
 from openbb_intrinio.utils.helpers import get_data_one
 from pandas import DataFrame
-from pydantic import Field, field_validator
+from pydantic import Field
 
 _warn = warnings.warn
 
@@ -43,12 +42,6 @@ class IntrinioReportedFinancialsQueryParams(ReportedFinancialsQueryParams):
         default=None,
         description="The specific fiscal year.  Reports do not go beyond 2008.",
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def check_single_value(cls, v):
-        """Check that string is a single value."""
-        return check_single_value(v)
 
 
 class IntrinioReportedFinancialsData(ReportedFinancialsData):

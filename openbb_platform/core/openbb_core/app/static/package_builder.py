@@ -430,6 +430,18 @@ class ClassDefinition:
 class MethodDefinition:
     """Build the method definition for the Platform."""
 
+    # These are types we want to expand.
+    # For example, start_date is always a 'date', but we also accept 'str' as input.
+    # Be careful, if the type is not coercible by pydantic to the original type, you
+    # will need to add some conversion code in the input filter.
+    TYPE_EXPANSION = {
+        "data": DataProcessingSupportedTypes,
+        "start_date": str,
+        "end_date": str,
+        "date": str,
+        "provider": None,
+    }
+
     @staticmethod
     def build_class_loader_method(path: str) -> str:
         """Build the class loader method."""
@@ -471,6 +483,14 @@ class MethodDefinition:
             return Parameter.empty
 
         return default_default
+
+    @staticmethod
+    def get_extra(field: FieldInfo) -> dict:
+        """Get json schema extra"""
+        field_default = getattr(field, "default", None)
+        if field_default:
+            return getattr(field_default, "json_schema_extra", {})
+        return {}
 
     @staticmethod
     def is_annotated_dc(annotation) -> bool:
@@ -515,17 +535,6 @@ class MethodDefinition:
         path: str, parameter_map: Dict[str, Parameter]
     ) -> OrderedDict[str, Parameter]:
         """Format the params."""
-        # These are types we want to expand.
-        # For example, start_date is always a 'date', but we also accept 'str' as input.
-        # Be careful, if the type is not coercible by pydantic to the original type, you
-        # will need to add some conversion code in the input filter.
-        TYPE_EXPANSION = {
-            "data": DataProcessingSupportedTypes,
-            "start_date": str,
-            "end_date": str,
-            "date": str,
-            "provider": None,
-        }
 
         DEFAULT_REPLACEMENT = {
             "provider": None,
@@ -554,8 +563,8 @@ class MethodDefinition:
                 for field_name, field in fields.items():
                     type_ = MethodDefinition.get_type(field)
                     default = MethodDefinition.get_default(field)
-
-                    new_type = TYPE_EXPANSION.get(field_name, ...)
+                    extra = MethodDefinition.get_extra(field)
+                    new_type = MethodDefinition.get_expanded_type(field_name, extra)
                     updated_type = type_ if new_type is ... else Union[type_, new_type]
 
                     formatted[field_name] = Parameter(
@@ -565,8 +574,7 @@ class MethodDefinition:
                         default=DEFAULT_REPLACEMENT.get(field_name, default),
                     )
             else:
-                new_type = TYPE_EXPANSION.get(name, ...)
-
+                new_type = MethodDefinition.get_expanded_type(name)
                 if hasattr(new_type, "__constraints__"):
                     types = new_type.__constraints__ + (param.annotation,)
                     updated_type = Union[types]  # type: ignore
@@ -722,6 +730,8 @@ class MethodDefinition:
             code += "        simplefilter('always', DeprecationWarning)\n"
             code += f"""        warn("{deprecation_message}", category=DeprecationWarning, stacklevel=2)\n\n"""
 
+        extra_info = {}
+
         code += "        return self._run(\n"
         code += f"""            "{path}",\n"""
         code += "            **filter_inputs(\n"
@@ -734,9 +744,15 @@ class MethodDefinition:
                 code += f"                {name}={{\n"
                 for k, v in value.items():
                     code += f'                    "{k}": {v},\n'
+                    # TODO: Extend this to extra_params
+                    if extra := MethodDefinition.get_extra(fields[k]):
+                        extra_info[k] = extra
                 code += "                },\n"
             else:
                 code += f"                {name}={name},\n"
+
+        if extra_info:
+            code += f"                extra_info={extra_info},\n"
 
         if MethodDefinition.is_data_processing_function(path):
             code += "                data_processing=True,\n"
@@ -745,6 +761,12 @@ class MethodDefinition:
         code += "        )\n"
 
         return code
+
+    @classmethod
+    def get_expanded_type(cls, field_name: str, extra: Optional[dict] = None):
+        if extra and "multiple_items_allowed" in extra:
+            return List[str]
+        return cls.TYPE_EXPANSION.get(field_name, ...)
 
     @classmethod
     def build_command_method(

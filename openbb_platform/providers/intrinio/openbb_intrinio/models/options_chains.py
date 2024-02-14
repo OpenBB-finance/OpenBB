@@ -18,7 +18,6 @@ from openbb_core.provider.utils.helpers import (
     ClientResponse,
     amake_requests,
 )
-from openbb_core.provider.utils.validators import check_single_value
 from openbb_intrinio.utils.helpers import get_data_many, get_weekday
 from pydantic import Field, field_validator
 
@@ -32,12 +31,6 @@ class IntrinioOptionsChainsQueryParams(OptionsChainsQueryParams):
     date: Optional[dateType] = Field(
         default=None, description="The end-of-day date for options chains data."
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def check_single_value(cls, v):
-        """Check that string is a single value."""
-        return check_single_value(v)
 
 
 class IntrinioOptionsChainsData(OptionsChainsData):

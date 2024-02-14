@@ -98,7 +98,37 @@ class RegistryMap:
                         {p: {"model": provider_model, "is_list": is_list}}
                     )
 
+                self.update_json_schema_extra(
+                    p, fetcher, "query_params", standard_query, extra_query
+                )
+
         return map_, return_schemas
+
+    def update_json_schema_extra(
+        self,
+        provider,
+        fetcher: Fetcher,
+        type_: Literal["query_params", "data"],
+        standard_query,
+        extra_query,
+    ):
+        model: BaseModel = RegistryMap._get_model(fetcher, type_)
+        for f, props in getattr(model, "__openbb_extra__", {}).items():
+            for p in props:
+                if f in standard_query["fields"]:
+                    model_field = standard_query["fields"][f]
+                elif f in extra_query["fields"]:
+                    model_field = extra_query["fields"][f]
+                else:
+                    continue
+
+                if model_field.json_schema_extra is None:
+                    model_field.json_schema_extra = {}
+
+                if p not in model_field.json_schema_extra:
+                    model_field.json_schema_extra[p] = set()
+
+                model_field.json_schema_extra[p].add(provider)
 
     def _get_models(self, map_: MapType) -> List[str]:
         """Get available models."""

@@ -17,9 +17,8 @@ from openbb_core.provider.standard_models.options_chains import (
 )
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import amake_request
-from openbb_core.provider.utils.validators import check_single_value
 from pandas import DataFrame, DatetimeIndex, Series, to_datetime
-from pydantic import Field, field_validator
+from pydantic import Field
 
 
 class CboeOptionsChainsQueryParams(OptionsChainsQueryParams):
@@ -34,12 +33,6 @@ class CboeOptionsChainsQueryParams(OptionsChainsQueryParams):
         + "24 hours and are used to validate symbols."
         + " The results of the function are not cached. Set as False to bypass.",
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def check_single_value(cls, v):
-        """Check that string is a single value."""
-        return check_single_value(v)
 
 
 class CboeOptionsChainsData(OptionsChainsData):

@@ -19,7 +19,6 @@ from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
 from openbb_core.provider.utils.helpers import amake_request, get_querystring
-from openbb_core.provider.utils.validators import check_single_value
 from pydantic import (
     Field,
     NonNegativeFloat,
@@ -35,6 +34,8 @@ class AVEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 
     Source: https://www.alphavantage.co/documentation/#time-series-data
     """
+
+    __openbb_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     interval: Literal["1m", "5m", "15m", "30m", "60m", "1d", "1W", "1M"] = Field(
         default="1d",
@@ -112,12 +113,6 @@ class AVEquityHistoricalQueryParams(EquityHistoricalQueryParams):
             )
 
         return values
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def check_single_value(cls, v):
-        """Check that string is a single value."""
-        return check_single_value(v)
 
 
 class AVEquityHistoricalData(EquityHistoricalData):

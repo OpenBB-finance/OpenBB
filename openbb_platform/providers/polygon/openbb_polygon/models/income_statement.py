@@ -10,9 +10,8 @@ from openbb_core.provider.standard_models.income_statement import (
     IncomeStatementQueryParams,
 )
 from openbb_core.provider.utils.helpers import get_querystring
-from openbb_core.provider.utils.validators import check_single_value
 from openbb_polygon.utils.helpers import get_data_many
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, model_validator
 
 
 class PolygonIncomeStatementQueryParams(IncomeStatementQueryParams):
@@ -22,12 +21,6 @@ class PolygonIncomeStatementQueryParams(IncomeStatementQueryParams):
     """
 
     __alias_dict__ = {"symbol": "ticker", "period": "timeframe"}
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def check_single_value(cls, v):
-        """Check that string is a single value."""
-        return check_single_value(v)
 
     period: Literal["annual", "quarter", "ttm"] = Field(default="annual")
     filing_date: Optional[date] = Field(

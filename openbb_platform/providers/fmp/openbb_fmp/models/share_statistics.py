@@ -11,7 +11,6 @@ from openbb_core.provider.standard_models.share_statistics import (
     ShareStatisticsData,
     ShareStatisticsQueryParams,
 )
-from openbb_core.provider.utils.validators import check_single_value
 from openbb_fmp.utils.helpers import create_url, get_data_many
 from pydantic import field_validator
 
@@ -21,12 +20,6 @@ class FMPShareStatisticsQueryParams(ShareStatisticsQueryParams):
 
     Source: https://site.financialmodelingprep.com/developer/docs/shares-float-api/
     """
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def check_single_value(cls, v):
-        """Check that string is a single value."""
-        return check_single_value(v)
 
 
 class FMPShareStatisticsData(ShareStatisticsData):

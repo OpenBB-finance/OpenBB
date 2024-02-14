@@ -12,8 +12,7 @@ from openbb_core.provider.utils.helpers import (
     ClientResponse,
     amake_requests,
 )
-from openbb_core.provider.utils.validators import check_single_value
-from pydantic import Field, field_validator
+from pydantic import Field
 
 
 class IntrinioShareStatisticsQueryParams(ShareStatisticsQueryParams):
@@ -23,12 +22,6 @@ class IntrinioShareStatisticsQueryParams(ShareStatisticsQueryParams):
             https://data.intrinio.com/data-tag/weightedavebasicdilutedsharesos
             https://data.intrinio.com/data-tag/public_float
     """
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def check_single_value(cls, v):
-        """Check that string is a single value."""
-        return check_single_value(v)
 
 
 class IntrinioShareStatisticsData(ShareStatisticsData):

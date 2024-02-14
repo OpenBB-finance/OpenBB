@@ -7,9 +7,7 @@ from openbb_core.provider.standard_models.analyst_estimates import (
     AnalystEstimatesData,
     AnalystEstimatesQueryParams,
 )
-from openbb_core.provider.utils.validators import check_single_value
 from openbb_fmp.utils.helpers import create_url, get_data_many
-from pydantic import field_validator
 
 
 class FMPAnalystEstimatesQueryParams(AnalystEstimatesQueryParams):
@@ -17,12 +15,6 @@ class FMPAnalystEstimatesQueryParams(AnalystEstimatesQueryParams):
 
     Source: https://site.financialmodelingprep.com/developer/docs/analyst-estimates-api/
     """
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def check_single_value(cls, v):
-        """Check that string is a single value."""
-        return check_single_value(v)
 
 
 class FMPAnalystEstimatesData(AnalystEstimatesData):

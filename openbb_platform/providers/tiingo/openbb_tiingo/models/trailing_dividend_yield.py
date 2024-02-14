@@ -7,9 +7,7 @@ from openbb_core.provider.standard_models.trailing_dividend_yield import (
     TrailingDivYieldData,
     TrailingDivYieldQueryParams,
 )
-from openbb_core.provider.utils.validators import check_single_value
 from openbb_tiingo.utils.helpers import get_data_many
-from pydantic import field_validator
 
 
 class TiingoTrailingDivYieldQueryParams(TrailingDivYieldQueryParams):
@@ -17,12 +15,6 @@ class TiingoTrailingDivYieldQueryParams(TrailingDivYieldQueryParams):
 
     Source: https://www.tiingo.com/documentation/end-of-day
     """
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def check_single_value(cls, v):
-        """Check that string is a single value."""
-        return check_single_value(v)
 
 
 class TiingoTrailingDivYieldData(TrailingDivYieldData):

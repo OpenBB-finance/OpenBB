@@ -13,8 +13,7 @@ from openbb_core.provider.utils.helpers import (
     amake_requests,
     to_snake_case,
 )
-from openbb_core.provider.utils.validators import check_single_value
-from pydantic import Field, field_validator, model_validator
+from pydantic import Field, model_validator
 
 
 class FMPFinancialRatiosQueryParams(FinancialRatiosQueryParams):
@@ -26,12 +25,6 @@ class FMPFinancialRatiosQueryParams(FinancialRatiosQueryParams):
     period: Literal["annual", "quarter", "ttm"] = Field(
         default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
     )
-
-    @field_validator("symbol", mode="before", check_fields=False)
-    @classmethod
-    def check_single_value(cls, v):
-        """Check that string is a single value."""
-        return check_single_value(v)
 
 
 class FMPFinancialRatiosData(FinancialRatiosData):

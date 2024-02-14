@@ -26,6 +26,8 @@ class YFinanceEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     Source: https://finance.yahoo.com/
     """
 
+    __openbb_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     interval: Optional[
         Literal[
             "1m",
