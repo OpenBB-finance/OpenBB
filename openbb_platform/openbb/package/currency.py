@@ -125,9 +125,7 @@ class ROUTER_currency(Container):
         return self._run(
             "/currency/search",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={},
                 extra_params=kwargs,
             )

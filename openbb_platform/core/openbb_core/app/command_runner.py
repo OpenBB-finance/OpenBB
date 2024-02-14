@@ -19,7 +19,6 @@ from openbb_core.app.model.metadata import Metadata
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.app.model.user_settings import UserSettings
-from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap
 from openbb_core.app.service.system_service import SystemService
 from openbb_core.app.service.user_service import UserService
@@ -129,49 +128,47 @@ class ParametersBuilder:
             parameters = signature(func).parameters.keys()
             return "provider_choices" in parameters
 
-        def _has_provider(kwargs: Dict[str, Any]) -> bool:
-            """Check if the kwargs already have a provider."""
+        def _maybe_unspec_provider(kwargs: Dict[str, Any]) -> bool:
+            """Check if the provider can be unspecified.
+
+            The condition are:
+            1. It is None
+            2. It's the first provider, i.e. the runtime default
+            """
             provider_choices = kwargs.get("provider_choices", None)
 
             if isinstance(provider_choices, dict):  # when in python
-                return provider_choices.get("provider", None) is not None
+                choice = provider_choices.get("provider", None)
+                return choice is None or choice == _get_first_provider()
             if isinstance(provider_choices, object):  # when running as fastapi
-                return getattr(provider_choices, "provider", None) is not None
+                choice = getattr(provider_choices, "provider", None)
+                return choice is None or choice == _get_first_provider()
             return False
 
-        def _get_first_provider() -> Optional[str]:
-            """Get the first available provider."""
-            available_providers = ProviderInterface().available_providers
-            return available_providers[0] if available_providers else None
+        def _get_first_provider() -> str:
+            """Get the first provider."""
+            cmd_cov_given_route = command_coverage.get(route, None)
+            return cmd_cov_given_route[0] if cmd_cov_given_route else "NOT_FOUND"
 
         def _get_default_provider(
-            command_coverage: Dict[str, List[str]],
             route_default: Optional[Dict[str, Optional[str]]],
         ) -> Optional[str]:
             """
             Get the default provider for the given route.
 
             Either pick it from the user defaults or from the command coverage.
+
+            When the provider maybe unspecified we check the default configuration.
             """
-            cmd_cov_given_route = command_coverage.get(route, None)
-            command_cov_provider = (
-                cmd_cov_given_route[0] if cmd_cov_given_route else None
-            )
+            command_cov_provider = _get_first_provider()
 
             if route_default:
                 return route_default.get("provider", None) or command_cov_provider  # type: ignore
 
             return command_cov_provider
 
-        if not _has_provider(kwargs) and _needs_provider(func):
-            provider = (
-                _get_default_provider(
-                    command_coverage,
-                    route_default,
-                )
-                if route in command_coverage
-                else _get_first_provider()
-            )
+        if _needs_provider(func) and _maybe_unspec_provider(kwargs):
+            provider = _get_default_provider(route_default)
             kwargs["provider_choices"] = {"provider": provider}
 
         return kwargs

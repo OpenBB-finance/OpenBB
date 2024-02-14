@@ -738,6 +738,12 @@ class MethodDefinition:
         for name, param in parameter_map.items():
             if name == "extra_params":
                 code += f"                {name}=kwargs,\n"
+            elif name == "provider_choices":
+                field = param.annotation.__args__[0].__dataclass_fields__["provider"]
+                default = field.type.__args__[0]
+                code += "                provider_choices={\n"
+                code += f'                    "provider": "{default}" if provider is None else provider\n'
+                code += "                },\n"
             elif MethodDefinition.is_annotated_dc(param.annotation):
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 value = {k: k for k in fields}

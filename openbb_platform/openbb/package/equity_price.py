@@ -173,9 +173,7 @@ class ROUTER_equity_price(Container):
         return self._run(
             "/equity/price/historical",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "interval": interval,
@@ -312,7 +310,7 @@ class ROUTER_equity_price(Container):
             "/equity/price/nbbo",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": "polygon" if provider is None else provider
                 },
                 standard_params={
                     "symbol": symbol,
@@ -397,9 +395,7 @@ class ROUTER_equity_price(Container):
         return self._run(
             "/equity/price/performance",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },
@@ -558,9 +554,7 @@ class ROUTER_equity_price(Container):
         return self._run(
             "/equity/price/quote",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },

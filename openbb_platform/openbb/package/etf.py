@@ -75,9 +75,7 @@ class ROUTER_etf(Container):
         return self._run(
             "/etf/countries",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },
@@ -162,7 +160,7 @@ class ROUTER_etf(Container):
             "/etf/historical",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": "yfinance" if provider is None else provider
                 },
                 standard_params={
                     "symbol": symbol,
@@ -193,7 +191,7 @@ class ROUTER_etf(Container):
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         date : Optional[Union[str, datetime.date]]
-            A specific date to get data for. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
+            A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
             A specific date to get data for.  The date represents the period ending.  The date entered will return the closest filing. (provider: sec)
         cik : Optional[str]
             The CIK of the filing entity. Overrides symbol. (provider: fmp)
@@ -228,16 +226,19 @@ class ROUTER_etf(Container):
             The CUSIP of the holding. (provider: fmp, sec)
         isin : Optional[str]
             The ISIN of the holding. (provider: fmp, sec)
-        balance : Optional[float]
-            The balance of the holding. (provider: fmp, sec)
+        balance : Optional[int]
+            The balance of the holding, in shares or units. (provider: fmp);
+            The balance of the holding. (provider: sec)
         units : Optional[Union[str, float]]
-            The units of the holding. (provider: fmp, sec)
+            The type of units. (provider: fmp);
+            The units of the holding. (provider: sec)
         currency : Optional[str]
             The currency of the holding. (provider: fmp, sec)
         value : Optional[float]
-            The value of the holding in USD. (provider: fmp, sec)
+            The value of the holding, in dollars. (provider: fmp, sec)
         weight : Optional[float]
-            The weight of the holding in ETF in %. (provider: fmp, sec)
+            The weight of the holding, as a normalized percent. (provider: fmp);
+            The weight of the holding in ETF in %. (provider: sec)
         payoff_profile : Optional[str]
             The payoff profile of the holding. (provider: fmp, sec)
         asset_category : Optional[str]
@@ -260,6 +261,8 @@ class ROUTER_etf(Container):
             The CIK of the filing. (provider: fmp)
         acceptance_datetime : Optional[str]
             The acceptance datetime of the filing. (provider: fmp)
+        updated : Optional[Union[date, datetime]]
+            The date the data was updated. (provider: fmp)
         other_id : Optional[str]
             Internal identifier for the holding. (provider: sec)
         loan_value : Optional[float]
@@ -382,9 +385,7 @@ class ROUTER_etf(Container):
         return self._run(
             "/etf/holdings",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },
@@ -442,9 +443,7 @@ class ROUTER_etf(Container):
         return self._run(
             "/etf/holdings_date",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },
@@ -528,9 +527,7 @@ class ROUTER_etf(Container):
         return self._run(
             "/etf/holdings_performance",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },
@@ -678,9 +675,7 @@ class ROUTER_etf(Container):
         return self._run(
             "/etf/info",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },
@@ -764,9 +759,7 @@ class ROUTER_etf(Container):
         return self._run(
             "/etf/price_performance",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },
@@ -853,9 +846,7 @@ class ROUTER_etf(Container):
         return self._run(
             "/etf/search",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "query": query,
                 },
@@ -913,9 +904,7 @@ class ROUTER_etf(Container):
         return self._run(
             "/etf/sectors",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },

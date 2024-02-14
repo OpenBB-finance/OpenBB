@@ -107,9 +107,7 @@ class ROUTER_fixedincome_corporate(Container):
         return self._run(
             "/fixedincome/corporate/commercial_paper",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fred" if provider is None else provider},
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,
@@ -190,9 +188,7 @@ class ROUTER_fixedincome_corporate(Container):
         return self._run(
             "/fixedincome/corporate/hqm",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fred" if provider is None else provider},
                 standard_params={
                     "date": date,
                     "yield_curve": yield_curve,
@@ -283,9 +279,7 @@ class ROUTER_fixedincome_corporate(Container):
         return self._run(
             "/fixedincome/corporate/ice_bofa",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fred" if provider is None else provider},
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,
@@ -370,9 +364,7 @@ class ROUTER_fixedincome_corporate(Container):
         return self._run(
             "/fixedincome/corporate/moody",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fred" if provider is None else provider},
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,
@@ -460,9 +452,7 @@ class ROUTER_fixedincome_corporate(Container):
         return self._run(
             "/fixedincome/corporate/spot_rates",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fred" if provider is None else provider},
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,

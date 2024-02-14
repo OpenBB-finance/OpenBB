@@ -75,9 +75,7 @@ class ROUTER_index(Container):
         return self._run(
             "/index/available",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={},
                 extra_params=kwargs,
             )
@@ -148,9 +146,7 @@ class ROUTER_index(Container):
         return self._run(
             "/index/constituents",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "index": index,
                 },
@@ -283,9 +279,7 @@ class ROUTER_index(Container):
         return self._run(
             "/index/market",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "start_date": start_date,

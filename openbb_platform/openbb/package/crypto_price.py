@@ -130,9 +130,7 @@ class ROUTER_crypto_price(Container):
         return self._run(
             "/crypto/price/historical",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "start_date": start_date,

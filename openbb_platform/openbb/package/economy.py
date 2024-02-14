@@ -69,7 +69,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : EconomicCalendar
+            results : List[EconomicCalendar]
                 Serializable results.
             provider : Optional[Literal['fmp', 'tradingeconomics']]
                 Provider name.
@@ -130,9 +130,7 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/calendar",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,
@@ -209,9 +207,7 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/composite_leading_indicator",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "oecd" if provider is None else provider},
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,
@@ -317,9 +313,7 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/cpi",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fred" if provider is None else provider},
                 standard_params={
                     "country": country,
                     "units": units,
@@ -434,9 +428,7 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/fred_search",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fred" if provider is None else provider},
                 standard_params={
                     "query": query,
                 },
@@ -564,9 +556,7 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/fred_series",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fred" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "start_date": start_date,
@@ -631,7 +621,7 @@ class ROUTER_economy(Container):
             Returns
             -------
             OBBject
-                results : List[STIR]
+                results : List[LTIR]
                     Serializable results.
                 provider : Optional[Literal['oecd']]
                     Provider name.
@@ -642,7 +632,7 @@ class ROUTER_economy(Container):
                 extra: Dict[str, Any]
                     Extra info.
 
-            STIR
+            LTIR
             ----
             date : Optional[date]
                 The date of the data.
@@ -660,9 +650,7 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/long_term_interest_rate",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "oecd" if provider is None else provider},
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,
@@ -753,7 +741,7 @@ class ROUTER_economy(Container):
             "/economy/money_measures",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": "federal_reserve" if provider is None else provider
                 },
                 standard_params={
                     "start_date": start_date,
@@ -811,9 +799,7 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/risk_premium",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={},
                 extra_params=kwargs,
             )
@@ -892,9 +878,7 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/short_term_interest_rate",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "oecd" if provider is None else provider},
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,
@@ -980,9 +964,7 @@ class ROUTER_economy(Container):
         return self._run(
             "/economy/unemployment",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "oecd" if provider is None else provider},
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,

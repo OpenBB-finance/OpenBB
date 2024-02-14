@@ -385,9 +385,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/balance",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "period": period,
@@ -533,9 +531,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/balance_growth",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "limit": limit,
@@ -791,9 +787,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/cash",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "period": period,
@@ -921,9 +915,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/cash_growth",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "limit": limit,
@@ -1016,9 +1008,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/dividends",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "start_date": start_date,
@@ -1092,9 +1082,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/employee_count",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },
@@ -1226,9 +1214,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/filings",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "form_type": form_type,
@@ -1338,7 +1324,7 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/historical_attributes",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": "intrinio" if provider is None else provider
                 },
                 standard_params={
                     "symbol": symbol,
@@ -1422,9 +1408,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/historical_eps",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },
@@ -1486,9 +1470,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/historical_splits",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },
@@ -1837,9 +1819,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/income",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "period": period,
@@ -1965,9 +1945,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/income_growth",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "limit": limit,
@@ -2035,7 +2013,7 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/latest_attributes",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": "intrinio" if provider is None else provider
                 },
                 standard_params={
                     "symbol": symbol,
@@ -2109,9 +2087,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/management",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },
@@ -2207,9 +2183,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/management_compensation",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "start_date": start_date,
@@ -2464,9 +2438,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/metrics",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "period": period,
@@ -2644,9 +2616,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/multiples",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },
@@ -2783,9 +2753,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/overview",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },
@@ -2970,9 +2938,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/ratios",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "period": period,
@@ -3058,7 +3024,7 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/reported_financials",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": "intrinio" if provider is None else provider
                 },
                 standard_params={
                     "symbol": symbol,
@@ -3138,9 +3104,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/revenue_per_geography",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "period": period,
@@ -3218,9 +3182,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/revenue_per_segment",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "period": period,
@@ -3305,7 +3267,7 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/search_attributes",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": "intrinio" if provider is None else provider
                 },
                 standard_params={
                     "query": query,
@@ -3374,7 +3336,7 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/trailing_dividend_yield",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": "tiingo" if provider is None else provider
                 },
                 standard_params={
                     "symbol": symbol,
@@ -3446,9 +3408,7 @@ class ROUTER_equity_fundamental(Container):
         return self._run(
             "/equity/fundamental/transcript",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "year": year,

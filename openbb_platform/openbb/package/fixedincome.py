@@ -117,9 +117,7 @@ class ROUTER_fixedincome(Container):
         return self._run(
             "/fixedincome/sofr",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fred" if provider is None else provider},
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,

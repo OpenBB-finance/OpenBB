@@ -66,9 +66,7 @@ class ROUTER_equity_compare(Container):
         return self._run(
             "/equity/compare/peers",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },

@@ -94,7 +94,7 @@ class ROUTER_equity_discovery(Container):
             "/equity/discovery/active",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": "yfinance" if provider is None else provider
                 },
                 standard_params={
                     "sort": sort,
@@ -171,7 +171,7 @@ class ROUTER_equity_discovery(Container):
             "/equity/discovery/aggressive_small_caps",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": "yfinance" if provider is None else provider
                 },
                 standard_params={
                     "sort": sort,
@@ -265,9 +265,7 @@ class ROUTER_equity_discovery(Container):
         return self._run(
             "/equity/discovery/filings",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "start_date": start_date,
                     "end_date": end_date,
@@ -346,7 +344,7 @@ class ROUTER_equity_discovery(Container):
             "/equity/discovery/gainers",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": "yfinance" if provider is None else provider
                 },
                 standard_params={
                     "sort": sort,
@@ -423,7 +421,7 @@ class ROUTER_equity_discovery(Container):
             "/equity/discovery/growth_tech",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": "yfinance" if provider is None else provider
                 },
                 standard_params={
                     "sort": sort,
@@ -500,7 +498,7 @@ class ROUTER_equity_discovery(Container):
             "/equity/discovery/losers",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": "yfinance" if provider is None else provider
                 },
                 standard_params={
                     "sort": sort,
@@ -577,7 +575,7 @@ class ROUTER_equity_discovery(Container):
             "/equity/discovery/undervalued_growth",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": "yfinance" if provider is None else provider
                 },
                 standard_params={
                     "sort": sort,
@@ -654,7 +652,7 @@ class ROUTER_equity_discovery(Container):
             "/equity/discovery/undervalued_large_caps",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": "yfinance" if provider is None else provider
                 },
                 standard_params={
                     "sort": sort,

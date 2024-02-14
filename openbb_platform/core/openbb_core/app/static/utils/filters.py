@@ -27,14 +27,10 @@ def filter_inputs(
                         new = (
                             ",".join(current) if isinstance(current, list) else current
                         )
+
                         if provider not in props[PROPERTY]:
                             check_single_value(
-                                new,
-                                (
-                                    f"multiple values not allowed for '{provider}'"
-                                    if provider
-                                    else None
-                                ),
+                                new, f"multiple values not allowed for '{provider}'"
                             )
 
                         kwargs[p][field] = new

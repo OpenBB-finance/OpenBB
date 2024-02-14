@@ -142,9 +142,7 @@ class ROUTER_equity_ownership(Container):
         return self._run(
             "/equity/ownership/insider_trading",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "limit": limit,
@@ -295,9 +293,7 @@ class ROUTER_equity_ownership(Container):
         return self._run(
             "/equity/ownership/institutional",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },
@@ -441,9 +437,7 @@ class ROUTER_equity_ownership(Container):
         return self._run(
             "/equity/ownership/major_holders",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                     "date": date,
@@ -535,9 +529,7 @@ class ROUTER_equity_ownership(Container):
         return self._run(
             "/equity/ownership/share_statistics",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "fmp" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },

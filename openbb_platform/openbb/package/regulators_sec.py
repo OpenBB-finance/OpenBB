@@ -72,9 +72,7 @@ class ROUTER_regulators_sec(Container):
         return self._run(
             "/regulators/sec/cik_map",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "sec" if provider is None else provider},
                 standard_params={
                     "symbol": symbol,
                 },
@@ -138,9 +136,7 @@ class ROUTER_regulators_sec(Container):
         return self._run(
             "/regulators/sec/institutions_search",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "sec" if provider is None else provider},
                 standard_params={
                     "query": query,
                     "use_cache": use_cache,
@@ -198,9 +194,7 @@ class ROUTER_regulators_sec(Container):
         return self._run(
             "/regulators/sec/rss_litigation",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "sec" if provider is None else provider},
                 standard_params={},
                 extra_params=kwargs,
             )
@@ -263,24 +257,22 @@ class ROUTER_regulators_sec(Container):
         >>> url = data.files[0]+data.files[-1]
         >>> #### The URL base will always be the 0 position in the list, feed  the URL back in as a parameter. ####
         >>> obb.regulators.sec.schema_files(url=url).results.files
-        >>>     ['https://xbrl.fasb.org/us-gaap/2024/',
+        >>>     ['https://xbrl.fasb.org/us-gaap/2024/'
         >>>     'USGAAP2024FileList.xml'
         >>>     'dis/'
         >>>     'dqcrules/'
-        >>>    'ebp/'
-        >>>    'elts/'
-        >>>    'entire/'
-        >>>    'meta/'
-        >>>    'stm/'
-        >>>    'us-gaap-2024.zip']
+        >>>     'ebp/'
+        >>>     'elts/'
+        >>>     'entire/'
+        >>>     'meta/'
+        >>>     'stm/'
+        >>>     'us-gaap-2024.zip']
         """  # noqa: E501
 
         return self._run(
             "/regulators/sec/schema_files",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "sec" if provider is None else provider},
                 standard_params={
                     "query": query,
                     "use_cache": use_cache,
@@ -347,9 +339,7 @@ class ROUTER_regulators_sec(Container):
         return self._run(
             "/regulators/sec/sic_search",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "sec" if provider is None else provider},
                 standard_params={
                     "query": query,
                     "use_cache": use_cache,
@@ -413,9 +403,7 @@ class ROUTER_regulators_sec(Container):
         return self._run(
             "/regulators/sec/symbol_map",
             **filter_inputs(
-                provider_choices={
-                    "provider": provider,
-                },
+                provider_choices={"provider": "sec" if provider is None else provider},
                 standard_params={
                     "query": query,
                     "use_cache": use_cache,
