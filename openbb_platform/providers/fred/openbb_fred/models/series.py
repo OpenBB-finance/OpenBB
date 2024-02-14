@@ -25,6 +25,8 @@ _warn = warnings.warn
 class FredSeriesQueryParams(SeriesQueryParams):
     """FRED Series Query Params."""
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     __alias_dict__ = {
         "symbol": "series_id",
         "start_date": "observation_start",
