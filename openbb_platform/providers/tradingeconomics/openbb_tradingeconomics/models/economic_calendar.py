@@ -39,6 +39,8 @@ class TEEconomicCalendarQueryParams(EconomicCalendarQueryParams):
     Source: https://docs.tradingeconomics.com/economic_calendar/
     """
 
+    __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
+
     # TODO: Probably want to figure out the list we can use.
     country: Optional[str] = Field(default=None, description="Country of the event.")
     importance: Optional[IMPORTANCE] = Field(

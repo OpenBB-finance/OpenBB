@@ -14,6 +14,8 @@ from openbb_fred.utils.fred_helpers import all_cpi_options
 class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
     """FRED Consumer Price Index Query."""
 
+    __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
+
 
 class FREDConsumerPriceIndexData(ConsumerPriceIndexData):
     """FRED Consumer Price Index Data."""
