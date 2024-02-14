@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Literal, Optional
+from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -221,7 +221,8 @@ class ROUTER_equity(Container):
     def profile(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
@@ -391,6 +392,7 @@ class ROUTER_equity(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["intrinio"]}},
             )
         )
 

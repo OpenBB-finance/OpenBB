@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -69,7 +69,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : EconomicCalendar
+            results : List[EconomicCalendar]
                 Serializable results.
             provider : Optional[Literal['fmp', 'tradingeconomics']]
                 Provider name.
@@ -448,7 +448,8 @@ class ROUTER_economy(Container):
     def fred_series(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -574,6 +575,7 @@ class ROUTER_economy(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["fred"]}},
             )
         )
 
@@ -631,7 +633,7 @@ class ROUTER_economy(Container):
             Returns
             -------
             OBBject
-                results : List[STIR]
+                results : List[LTIR]
                     Serializable results.
                 provider : Optional[Literal['oecd']]
                     Provider name.
@@ -642,7 +644,7 @@ class ROUTER_economy(Container):
                 extra: Dict[str, Any]
                     Extra info.
 
-            STIR
+            LTIR
             ----
             date : Optional[date]
                 The date of the data.

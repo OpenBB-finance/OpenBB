@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Literal, Optional
+from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -27,7 +27,8 @@ class ROUTER_regulators_sec(Container):
     def cik_map(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["sec"]] = None,
         **kwargs
@@ -79,6 +80,7 @@ class ROUTER_regulators_sec(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["intrinio"]}},
             )
         )
 
@@ -263,16 +265,16 @@ class ROUTER_regulators_sec(Container):
         >>> url = data.files[0]+data.files[-1]
         >>> #### The URL base will always be the 0 position in the list, feed  the URL back in as a parameter. ####
         >>> obb.regulators.sec.schema_files(url=url).results.files
-        >>>     ['https://xbrl.fasb.org/us-gaap/2024/',
+        >>>     ['https://xbrl.fasb.org/us-gaap/2024/'
         >>>     'USGAAP2024FileList.xml'
         >>>     'dis/'
         >>>     'dqcrules/'
-        >>>    'ebp/'
-        >>>    'elts/'
-        >>>    'entire/'
-        >>>    'meta/'
-        >>>    'stm/'
-        >>>    'us-gaap-2024.zip']
+        >>>     'ebp/'
+        >>>     'elts/'
+        >>>     'entire/'
+        >>>     'meta/'
+        >>>     'stm/'
+        >>>     'us-gaap-2024.zip']
         """  # noqa: E501
 
         return self._run(

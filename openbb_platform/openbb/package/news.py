@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
 from annotated_types import Ge
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
@@ -25,7 +25,7 @@ class ROUTER_news(Container):
     def company(
         self,
         symbol: Annotated[
-            str,
+            Union[str, List[str]],
             OpenBBCustomParameter(
                 description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas."
             ),
@@ -192,6 +192,9 @@ class ROUTER_news(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={
+                    "symbol": {"multiple_items_allowed": ["benzinga", "intrinio"]}
+                },
             )
         )
 
@@ -201,9 +204,9 @@ class ROUTER_news(Container):
         limit: Annotated[
             int,
             OpenBBCustomParameter(
-                description="The number of data entries to return. Here its the no. of articles to return."
+                description="The number of data entries to return. The number of articles to return."
             ),
-        ] = 20,
+        ] = 2500,
         start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
@@ -224,7 +227,7 @@ class ROUTER_news(Container):
         Parameters
         ----------
         limit : int
-            The number of data entries to return. Here its the no. of articles to return.
+            The number of data entries to return. The number of articles to return.
         start_date : Optional[datetime.date]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Optional[datetime.date]
@@ -257,6 +260,8 @@ class ROUTER_news(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
+        offset : Optional[int]
+            Page offset, used in conjunction with limit. (provider: tiingo)
         source : Optional[str]
             A comma-separated list of the domains requested. (provider: tiingo)
 
@@ -277,15 +282,15 @@ class ROUTER_news(Container):
         WorldNews
         ---------
         date : datetime
-            The date of the data. Here it is the published date of the news.
+            The date of the data. The published date of the article.
         title : str
-            Title of the news.
+            Title of the article.
         images : Optional[List[Dict[str, str]]]
-            Images associated with the news.
+            Images associated with the article.
         text : Optional[str]
-            Text/body of the news.
+            Text/body of the article.
         url : Optional[str]
-            URL of the news.
+            URL to the article.
         id : Optional[str]
             Article ID. (provider: benzinga, intrinio)
         author : Optional[str]
@@ -314,7 +319,7 @@ class ROUTER_news(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.news.world(limit=20)
+        >>> obb.news.world(limit=2500)
         >>> # Get news on the specified dates.
         >>> obb.news.world(start_date='2024-02-01', end_date='2024-02-07')
         >>> # Display the headlines of the news.

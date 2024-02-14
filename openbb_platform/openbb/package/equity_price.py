@@ -411,7 +411,7 @@ class ROUTER_equity_price(Container):
     def quote(
         self,
         symbol: Annotated[
-            str,
+            Union[str, List[str]],
             OpenBBCustomParameter(
                 description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas."
             ),
@@ -565,5 +565,6 @@ class ROUTER_equity_price(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp", "intrinio"]}},
             )
         )

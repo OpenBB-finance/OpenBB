@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 from warnings import simplefilter, warn
 
 from annotated_types import Ge
@@ -2123,7 +2123,8 @@ class ROUTER_equity_fundamental(Container):
     def management_compensation(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -2216,6 +2217,7 @@ class ROUTER_equity_fundamental(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 
@@ -2223,7 +2225,8 @@ class ROUTER_equity_fundamental(Container):
     def metrics(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         period: Annotated[
             Optional[Literal["annual", "quarter"]],
@@ -2473,6 +2476,7 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 
@@ -2480,7 +2484,8 @@ class ROUTER_equity_fundamental(Container):
     def multiples(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Symbol to get data for."),
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -2651,6 +2656,7 @@ class ROUTER_equity_fundamental(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 
