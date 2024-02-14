@@ -98,9 +98,7 @@ class RegistryMap:
                         {p: {"model": provider_model, "is_list": is_list}}
                     )
 
-                self._merge_json_schema_extra(
-                    p, fetcher, "query_params", standard_query, extra_query
-                )
+                self._merge_json_schema_extra(p, fetcher, standard_query, extra_query)
 
         return map_, return_schemas
 
