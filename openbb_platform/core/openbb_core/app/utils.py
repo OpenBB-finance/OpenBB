@@ -1,3 +1,5 @@
+"""Utility functions for the OpenBB Core app."""
+
 import ast
 import json
 from typing import Dict, Iterable, List, Optional, Union
@@ -43,8 +45,10 @@ def df_to_basemodel(
     df: Union[pd.DataFrame, pd.Series], index: bool = False
 ) -> List[Data]:
     """Convert from a Pandas DataFrame to list of BaseModel."""
-    if index and not isinstance(df.index, pd.MultiIndex):
-        df = df.reset_index(drop=True)
+    is_multiindex = isinstance(df.index, pd.MultiIndex)
+
+    if not is_multiindex and (index or df.index.name):
+        df = df.reset_index()
     if isinstance(df, pd.Series):
         df = df.to_frame()
 
@@ -120,6 +124,7 @@ def get_target_column(df: pd.DataFrame, target: str) -> pd.Series:
 
 
 def get_target_columns(df: pd.DataFrame, target_columns: List[str]) -> pd.DataFrame:
+    """Get target columns from time series data."""
     df_result = pd.DataFrame()
     for target in target_columns:
         df_result[target] = get_target_column(df, target).to_frame()
@@ -127,6 +132,7 @@ def get_target_columns(df: pd.DataFrame, target_columns: List[str]) -> pd.DataFr
 
 
 def get_user_cache_directory() -> str:
+    """Get user cache directory."""
     file = SystemSettings().model_dump()["user_settings_path"]
     with open(file) as settings_file:
         contents = settings_file.read()

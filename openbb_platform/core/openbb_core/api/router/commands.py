@@ -1,3 +1,5 @@
+"""Commands: generates the command map."""
+
 import inspect
 from functools import partial, wraps
 from inspect import Parameter, Signature, signature
@@ -5,7 +7,6 @@ from typing import Any, Callable, Dict, Optional, Tuple, TypeVar
 
 from fastapi import APIRouter, Depends, Header
 from fastapi.routing import APIRoute
-from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.command_runner import CommandRunner
 from openbb_core.app.model.command_context import CommandContext
 from openbb_core.app.model.obbject import OBBject
@@ -17,6 +18,13 @@ from openbb_core.app.service.user_service import UserService
 from openbb_core.env import Env
 from pydantic import BaseModel
 from typing_extensions import Annotated, ParamSpec
+
+try:
+    from openbb_charting import Charting
+
+    CHARTING_INSTALLED = True
+except ImportError:
+    CHARTING_INSTALLED = False
 
 T = TypeVar("T")
 P = ParamSpec("P")
@@ -57,10 +65,7 @@ def build_new_signature(path: str, func: Callable) -> Signature:
             )
         )
 
-    if (
-        path.replace("/", "_")[1:]
-        in ChartingService.get_implemented_charting_functions()
-    ):
+    if CHARTING_INSTALLED and path.replace("/", "_")[1:] in Charting.functions():
         new_parameter_list.append(
             Parameter(
                 "chart",
@@ -104,6 +109,7 @@ def build_new_signature(path: str, func: Callable) -> Signature:
 def validate_output(c_out: OBBject) -> OBBject:
     """
     Validate OBBject object.
+
     Checks against the OBBject schema and removes fields that contain the
     `exclude_from_api` extra `pydantic.Field` kwarg.
     Note that the modification to the `OBBject` object is done in-place.

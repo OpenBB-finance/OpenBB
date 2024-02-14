@@ -103,7 +103,7 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").results
     >>> obb.quantitative.capm(data=stock_data, target="close")
     """
     import statsmodels.api as sm  # pylint: disable=import-outside-toplevel # type: ignore

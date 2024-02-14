@@ -30,6 +30,23 @@ The OBBject (OpenBB Object) is at the heart of developing around the OpenBB Plat
 - Extra
   - Additional metadata about the command run, including any arguments, the route, the timestamp, etc.
 
+Additionally, the OBBject class contains a class variable, `accessors`, which is used to register extensions to the class. This is done by using the `@obbject_accessor` decorator. This decorator will register the class as an accessor to the OBBject class, and will be available on every OBBject returned by a command.
+
+```python
+
+from openbb import obb
+res = obb.equity.price.historical("AAPL")
+res.accessors
+```
+
+An example with the `openbb-charting` extension would output:
+
+```console
+{'charting'}
+```
+
+> Find more about `OBBject` extensions [here](/website/content/platform/development/developer-guidelines/obbject_extensions.md).
+
 ## Example
 
 In the python interface, the OBBject class is returned by every command. The following example shows how to access the results of a command:
@@ -130,6 +147,6 @@ Returns numpy arrays of the results. Note that this loses the column names, so y
 
 Growing in popularity, polars is a blazingly fast dataframe library. This method will return a polars dataframe. Note that we do not include polars in the core dependency tree, so it needs to be installed separately.
 
----
+#### show()
 
-More information can be found on the [OpenBB Core Readme](https://github.com/OpenBB-finance/OpenBBTerminal/blob/develop/openbb_platform/core/README.md)
+This method will display the chart if it was computed during the execution of the command, by setting the `chart` parameter to `True`.
