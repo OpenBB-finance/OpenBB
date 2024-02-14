@@ -94,7 +94,11 @@ class ROUTER_equity_discovery(Container):
             "/equity/discovery/active",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/discovery/active",
+                        ("yfinance",),
+                    )
                 },
                 standard_params={
                     "sort": sort,
@@ -171,7 +175,11 @@ class ROUTER_equity_discovery(Container):
             "/equity/discovery/aggressive_small_caps",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/discovery/aggressive_small_caps",
+                        ("yfinance",),
+                    )
                 },
                 standard_params={
                     "sort": sort,
@@ -266,7 +274,11 @@ class ROUTER_equity_discovery(Container):
             "/equity/discovery/filings",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/discovery/filings",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -346,7 +358,11 @@ class ROUTER_equity_discovery(Container):
             "/equity/discovery/gainers",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/discovery/gainers",
+                        ("yfinance",),
+                    )
                 },
                 standard_params={
                     "sort": sort,
@@ -423,7 +439,11 @@ class ROUTER_equity_discovery(Container):
             "/equity/discovery/growth_tech",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/discovery/growth_tech",
+                        ("yfinance",),
+                    )
                 },
                 standard_params={
                     "sort": sort,
@@ -500,7 +520,11 @@ class ROUTER_equity_discovery(Container):
             "/equity/discovery/losers",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/discovery/losers",
+                        ("yfinance",),
+                    )
                 },
                 standard_params={
                     "sort": sort,
@@ -577,7 +601,11 @@ class ROUTER_equity_discovery(Container):
             "/equity/discovery/undervalued_growth",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/discovery/undervalued_growth",
+                        ("yfinance",),
+                    )
                 },
                 standard_params={
                     "sort": sort,
@@ -654,7 +682,11 @@ class ROUTER_equity_discovery(Container):
             "/equity/discovery/undervalued_large_caps",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/discovery/undervalued_large_caps",
+                        ("yfinance",),
+                    )
                 },
                 standard_params={
                     "sort": sort,

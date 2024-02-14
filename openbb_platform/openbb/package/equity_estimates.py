@@ -88,7 +88,11 @@ class ROUTER_equity_estimates(Container):
             "/equity/estimates/consensus",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/estimates/consensus",
+                        ("fmp", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -201,7 +205,11 @@ class ROUTER_equity_estimates(Container):
             "/equity/estimates/historical",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/estimates/historical",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -350,7 +358,11 @@ class ROUTER_equity_estimates(Container):
             "/equity/estimates/price_target",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/estimates/price_target",
+                        ("benzinga", "fmp"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,

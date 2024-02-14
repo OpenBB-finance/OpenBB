@@ -143,7 +143,11 @@ class ROUTER_equity_ownership(Container):
             "/equity/ownership/insider_trading",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/ownership/insider_trading",
+                        ("fmp", "intrinio"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -296,7 +300,11 @@ class ROUTER_equity_ownership(Container):
             "/equity/ownership/institutional",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/ownership/institutional",
+                        ("fmp", "intrinio"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -442,7 +450,11 @@ class ROUTER_equity_ownership(Container):
             "/equity/ownership/major_holders",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/ownership/major_holders",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -537,7 +549,11 @@ class ROUTER_equity_ownership(Container):
             "/equity/ownership/share_statistics",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/ownership/share_statistics",
+                        ("fmp", "intrinio", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,

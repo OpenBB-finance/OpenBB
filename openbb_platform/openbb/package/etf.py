@@ -76,7 +76,11 @@ class ROUTER_etf(Container):
             "/etf/countries",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/countries",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -162,7 +166,11 @@ class ROUTER_etf(Container):
             "/etf/historical",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/historical",
+                        ("yfinance",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -388,7 +396,11 @@ class ROUTER_etf(Container):
             "/etf/holdings",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/holdings",
+                        ("fmp", "sec"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -448,7 +460,11 @@ class ROUTER_etf(Container):
             "/etf/holdings_date",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/holdings_date",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -534,7 +550,11 @@ class ROUTER_etf(Container):
             "/etf/holdings_performance",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/holdings_performance",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -685,7 +705,11 @@ class ROUTER_etf(Container):
             "/etf/info",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/info",
+                        ("fmp", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -772,7 +796,11 @@ class ROUTER_etf(Container):
             "/etf/price_performance",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/price_performance",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -861,7 +889,11 @@ class ROUTER_etf(Container):
             "/etf/search",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/search",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "query": query,
@@ -921,7 +953,11 @@ class ROUTER_etf(Container):
             "/etf/sectors",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/sectors",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,

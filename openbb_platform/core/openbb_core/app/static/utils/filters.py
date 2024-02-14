@@ -17,24 +17,24 @@ def filter_inputs(
 
     if extra_info:
         PROPERTY = "multiple_items_allowed"
-        provider = kwargs["provider_choices"]["provider"]
 
+        # Here we check if list items are passed and multiple items allowed for
+        # the given provider/input combination. In that case we transform the list
+        # into a comma-separated string
         for field, props in extra_info.items():
-            if PROPERTY in props:
+            if PROPERTY in props and (
+                provider := kwargs.get("provider_choices", {}).get("provider")
+            ):
                 for p in ("standard_params", "extra_params"):
                     if field in kwargs.get(p, {}):
                         current = kwargs[p][field]
                         new = (
                             ",".join(current) if isinstance(current, list) else current
                         )
-                        if provider not in props[PROPERTY]:
+
+                        if provider and provider not in props[PROPERTY]:
                             check_single_value(
-                                new,
-                                (
-                                    f"multiple values not allowed for '{provider}'"
-                                    if provider
-                                    else None
-                                ),
+                                new, f"multiple values not allowed for '{provider}'"
                             )
 
                         kwargs[p][field] = new

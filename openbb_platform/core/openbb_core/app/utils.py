@@ -3,10 +3,10 @@ import json
 from typing import Dict, Iterable, List, Optional, Union
 
 import numpy as np
-from openbb_core.app.model.abstract.error import OpenBBError
 import pandas as pd
 from pydantic import ValidationError
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.preferences import Preferences
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.provider.abstract.data import Data

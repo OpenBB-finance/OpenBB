@@ -101,7 +101,11 @@ class ROUTER_economy_gdp(Container):
             "/economy/gdp/forecast",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/gdp/forecast",
+                        ("oecd",),
+                    )
                 },
                 standard_params={
                     "period": period,
@@ -185,7 +189,11 @@ class ROUTER_economy_gdp(Container):
             "/economy/gdp/nominal",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/gdp/nominal",
+                        ("oecd",),
+                    )
                 },
                 standard_params={
                     "units": units,
@@ -268,7 +276,11 @@ class ROUTER_economy_gdp(Container):
             "/economy/gdp/real",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/gdp/real",
+                        ("oecd",),
+                    )
                 },
                 standard_params={
                     "units": units,

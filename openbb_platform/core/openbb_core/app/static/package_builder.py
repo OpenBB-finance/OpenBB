@@ -738,6 +738,16 @@ class MethodDefinition:
         for name, param in parameter_map.items():
             if name == "extra_params":
                 code += f"                {name}=kwargs,\n"
+            elif name == "provider_choices":
+                field = param.annotation.__args__[0].__dataclass_fields__["provider"]
+                available = field.type.__args__
+                code += "                provider_choices={\n"
+                code += '                    "provider": self._get_provider(\n'
+                code += "                       provider,\n"
+                code += f'                       "{path}",\n'
+                code += f"                       {available},\n"
+                code += "                    )\n"
+                code += "                },\n"
             elif MethodDefinition.is_annotated_dc(param.annotation):
                 fields = param.annotation.__args__[0].__dataclass_fields__
                 value = {k: k for k in fields}

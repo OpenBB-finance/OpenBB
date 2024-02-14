@@ -98,7 +98,11 @@ class ROUTER_equity_calendar(Container):
             "/equity/calendar/dividend",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/calendar/dividend",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -188,7 +192,11 @@ class ROUTER_equity_calendar(Container):
             "/equity/calendar/earnings",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/calendar/earnings",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -352,7 +360,11 @@ class ROUTER_equity_calendar(Container):
             "/equity/calendar/ipo",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/calendar/ipo",
+                        ("intrinio",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -432,7 +444,11 @@ class ROUTER_equity_calendar(Container):
             "/equity/calendar/splits",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/calendar/splits",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,

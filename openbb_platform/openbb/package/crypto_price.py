@@ -131,7 +131,11 @@ class ROUTER_crypto_price(Container):
             "/crypto/price/historical",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/crypto/price/historical",
+                        ("fmp", "polygon", "tiingo", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,

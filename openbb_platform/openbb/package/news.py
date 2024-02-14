@@ -183,7 +183,18 @@ class ROUTER_news(Container):
             "/news/company",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/news/company",
+                        (
+                            "benzinga",
+                            "fmp",
+                            "intrinio",
+                            "polygon",
+                            "tiingo",
+                            "yfinance",
+                        ),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -336,7 +347,11 @@ class ROUTER_news(Container):
             "/news/world",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/news/world",
+                        ("benzinga", "fmp", "intrinio", "tiingo"),
+                    )
                 },
                 standard_params={
                     "limit": limit,

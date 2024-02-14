@@ -118,7 +118,11 @@ class ROUTER_fixedincome(Container):
             "/fixedincome/sofr",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/sofr",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,

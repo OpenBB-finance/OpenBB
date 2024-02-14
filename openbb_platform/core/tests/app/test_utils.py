@@ -1,7 +1,7 @@
 import numpy as np
-from openbb_core.app.model.abstract.error import OpenBBError
 import pandas as pd
 import pytest
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import (
     basemodel_to_df,
     check_single_value,

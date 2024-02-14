@@ -14,11 +14,26 @@ class QueryParams(BaseModel):
     Key Features:
     - Alias handling: Utilizes an aliasing mechanism to maintain compatibility with different naming
         conventions across various data formats. The alias is only applied when running `model_dump`.
+    - Json schema extra merging: Merge different json schema extra, identified by provider.
+        Example:
+            FMP fetcher:
+                __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+            Intrinio fetcher
+                __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
+            Creates a new field in the `symbol` schema with:
+            {
+                ...,
+                "multiple_items_allowed": ["fmp", "intrinio"],
+                ...,
+            }
 
     Attributes:
     __alias_dict__ (Dict[str, str]):
         A dictionary that maps field names to their aliases,
         facilitating the use of different naming conventions.
+    __json_schema_extra__ (Dict[str, List[str]]):
+        Properties to be included in the json schema extra.
     model_config (ConfigDict):
         A configuration dictionary that defines the model's behavior,
         such as accepting extra fields, populating by name, and alias

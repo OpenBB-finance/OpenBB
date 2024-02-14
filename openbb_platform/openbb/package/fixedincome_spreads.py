@@ -95,7 +95,11 @@ class ROUTER_fixedincome_spreads(Container):
             "/fixedincome/spreads/tcm",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/spreads/tcm",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -180,7 +184,11 @@ class ROUTER_fixedincome_spreads(Container):
             "/fixedincome/spreads/tcm_effr",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/spreads/tcm_effr",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -266,7 +274,11 @@ class ROUTER_fixedincome_spreads(Container):
             "/fixedincome/spreads/treasury_effr",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/spreads/treasury_effr",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,

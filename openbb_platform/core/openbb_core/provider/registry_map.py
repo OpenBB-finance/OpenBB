@@ -98,21 +98,21 @@ class RegistryMap:
                         {p: {"model": provider_model, "is_list": is_list}}
                     )
 
-                self.update_json_schema_extra(
+                self._merge_json_schema_extra(
                     p, fetcher, "query_params", standard_query, extra_query
                 )
 
         return map_, return_schemas
 
-    def update_json_schema_extra(
+    def _merge_json_schema_extra(
         self,
-        provider,
+        provider: str,
         fetcher: Fetcher,
-        type_: Literal["query_params", "data"],
-        standard_query,
-        extra_query,
+        standard_query: dict,
+        extra_query: dict,
     ):
-        model: BaseModel = RegistryMap._get_model(fetcher, type_)
+        """Merge json schema extra for different providers"""
+        model: BaseModel = RegistryMap._get_model(fetcher, "query_params")
         for f, props in getattr(model, "__json_schema_extra__", {}).items():
             for p in props:
                 if f in standard_query["fields"]:

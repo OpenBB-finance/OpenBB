@@ -174,7 +174,11 @@ class ROUTER_equity_price(Container):
             "/equity/price/historical",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/price/historical",
+                        ("fmp", "intrinio", "polygon", "tiingo", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -312,7 +316,11 @@ class ROUTER_equity_price(Container):
             "/equity/price/nbbo",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/price/nbbo",
+                        ("polygon",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -398,7 +406,11 @@ class ROUTER_equity_price(Container):
             "/equity/price/performance",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/price/performance",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -559,7 +571,11 @@ class ROUTER_equity_price(Container):
             "/equity/price/quote",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/price/quote",
+                        ("fmp", "intrinio", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
