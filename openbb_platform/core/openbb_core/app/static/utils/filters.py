@@ -29,8 +29,14 @@ def filter_inputs(
                         )
                         if provider not in props[PROPERTY]:
                             check_single_value(
-                                new, f"multiple values not allowed for '{provider}'"
+                                new,
+                                (
+                                    f"multiple values not allowed for '{provider}'"
+                                    if provider
+                                    else None
+                                ),
                             )
+
                         kwargs[p][field] = new
                         break
 
