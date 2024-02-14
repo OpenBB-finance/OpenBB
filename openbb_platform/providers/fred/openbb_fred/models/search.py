@@ -1,5 +1,7 @@
 """FRED Search Model."""
 
+# pylint: disable=unused-argument
+
 import asyncio
 from typing import Any, Dict, List, Literal, Optional, Union
 
@@ -121,16 +123,16 @@ class FredSearchFetcher(
         if query.series_id is not None:
             results = []
 
-            async def get_one(id: str):
+            async def get_one(_id: str):
                 data = {}
-                url = f"https://api.stlouisfed.org/geofred/series/group?series_id={id}&api_key={api_key}&file_type=json"
+                url = f"https://api.stlouisfed.org/geofred/series/group?series_id={_id}&api_key={api_key}&file_type=json"
                 response = await amake_request(url)
                 data = response.get("series_group")  # type: ignore
                 if data:
-                    data.update({"series_id": id})
+                    data.update({"series_id": _id})
                     results.append(data)
 
-            tasks = [get_one(id) for id in query.series_id.split(",")]
+            tasks = [get_one(_id) for _id in query.series_id.split(",")]
             await asyncio.gather(*tasks)
 
             if results:
