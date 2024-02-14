@@ -16,6 +16,7 @@ class ROUTER_economy(Container):
     calendar
     composite_leading_indicator
     cpi
+    fred_regional
     fred_search
     fred_series
     /gdp
@@ -69,7 +70,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : EconomicCalendar
+            results : List[EconomicCalendar]
                 Serializable results.
             provider : Optional[Literal['fmp', 'tradingeconomics']]
                 Provider name.
@@ -333,6 +334,155 @@ class ROUTER_economy(Container):
         )
 
     @validate
+    def fred_regional(
+        self,
+        symbol: Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        limit: Annotated[
+            Optional[int],
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 100000,
+        provider: Optional[Literal["fred"]] = None,
+        **kwargs
+    ) -> OBBject:
+        """
+        Query the Geo Fred API for regional economic data by series group.
+        The series group ID is found by using `fred_search` and the `series_id` parameter.
+
+
+            Parameters
+            ----------
+            symbol : str
+                Symbol to get data for.
+            start_date : Optional[datetime.date]
+                Start date of the data, in YYYY-MM-DD format.
+            end_date : Optional[datetime.date]
+                End date of the data, in YYYY-MM-DD format.
+            limit : Optional[int]
+                The number of data entries to return.
+            provider : Optional[Literal['fred']]
+                The provider to use for the query, by default None.
+                If None, the provider specified in defaults is selected or 'fred' if there is
+                no default.
+            region_type : Optional[Literal['bea', 'msa', 'frb', 'necta', 'state', 'country', 'county', 'censusregion']]
+                The type of regional data. This must match the value returned from searching by series ID. (provider: fred)
+            season : Optional[Literal['SA', 'NSA', 'SSA']]
+                The seasonal adjustments to the data. This must match the value returned from searching by series ID. (provider: fred)
+            units : Optional[str]
+                The units of the data. This should match the units returned when searching by series ID, but an incorrect field will not necessarily return an error. (provider: fred)
+            frequency : Literal['d', 'w', 'bw', 'm', 'q', 'sa', 'a', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']
+
+                    Frequency aggregation to convert high frequency data to lower frequency.
+                    The frequency of the series can be determined by searching by series ID.
+                        a = Annual
+                        sa= Semiannual
+                        q = Quarterly
+                        m = Monthly
+                        w = Weekly
+                        d = Daily
+                        wef = Weekly, Ending Friday
+                        weth = Weekly, Ending Thursday
+                        wew = Weekly, Ending Wednesday
+                        wetu = Weekly, Ending Tuesday
+                        wem = Weekly, Ending Monday
+                        wesu = Weekly, Ending Sunday
+                        wesa = Weekly, Ending Saturday
+                        bwew = Biweekly, Ending Wednesday
+                        bwem = Biweekly, Ending Monday
+                     (provider: fred)
+            aggregation_method : Literal['avg', 'sum', 'eop']
+
+                    A key that indicates the aggregation method used for frequency aggregation.
+                    This parameter has no affect if the frequency parameter is not set.
+                        avg = Average
+                        sum = Sum
+                        eop = End of Period
+                     (provider: fred)
+            transform : Literal['lin', 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']
+
+                    Transformation type
+                        lin = Levels (No transformation)
+                        chg = Change
+                        ch1 = Change from Year Ago
+                        pch = Percent Change
+                        pc1 = Percent Change from Year Ago
+                        pca = Compounded Annual Rate of Change
+                        cch = Continuously Compounded Rate of Change
+                        cca = Continuously Compounded Annual Rate of Change
+                        log = Natural Log
+                     (provider: fred)
+
+            Returns
+            -------
+            OBBject
+                results : List[FredRegional]
+                    Serializable results.
+                provider : Optional[Literal['fred']]
+                    Provider name.
+                warnings : Optional[List[Warning_]]
+                    List of warnings.
+                chart : Optional[Chart]
+                    Chart object.
+                extra: Dict[str, Any]
+                    Extra info.
+
+            FredRegional
+            ------------
+            date : date
+                The date of the data.
+            region : Optional[str]
+                The name of the region. (provider: fred)
+            code : Optional[Union[str, int]]
+                The code of the region. (provider: fred)
+            value : Optional[Union[float, int]]
+                The obersvation value. The units are defined in the search results by series ID. (provider: fred)
+            series_id : Optional[str]
+                The individual series ID for the region. (provider: fred)
+
+            Example
+            -------
+            >>> from openbb import obb
+            >>> series = obb.economy.fred_search(series_id="NYICLAIMS").results[0]
+            >>> group = series.series_group
+            >>> start_date = series.observation_start
+            >>> units = series.units
+            >>> season = series.seasonal_adjustment
+            >>> region_type = series.region_type
+            >>> obb.economy.fred_regional(
+            >>> group, start_date, units=units, season=season, region_type=region_type, frequency="w"
+            >>> ).to_df()
+        """  # noqa: E501
+
+        return self._run(
+            "/economy/fred_regional",
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": symbol,
+                    "start_date": start_date,
+                    "end_date": end_date,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
+        )
+
+    @validate
     def fred_search(
         self,
         query: Annotated[
@@ -371,6 +521,8 @@ class ROUTER_economy(Container):
                 A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' (provider: fred)
             exclude_tag_names : Optional[str]
                 A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. (provider: fred)
+            series_id : Optional[str]
+                A FRED Series ID to return series group information for. This returns the required information to query for regional data. Not all series that are in FRED have geographical data. Entering a value for series_id will override all other parameters. Multiple series_ids can be separated by commas. (provider: fred)
 
             Returns
             -------
@@ -424,6 +576,10 @@ class ROUTER_economy(Container):
                 Popularity of the series (provider: fred)
             group_popularity : Optional[int]
                 Group popularity of the release (provider: fred)
+            region_type : Optional[str]
+                The region type of the series. (provider: fred)
+            series_group : Optional[Union[int, str]]
+                The series group ID of the series. This value is used to query for regional data. (provider: fred)
 
             Example
             -------
@@ -631,7 +787,7 @@ class ROUTER_economy(Container):
             Returns
             -------
             OBBject
-                results : List[STIR]
+                results : List[LTIR]
                     Serializable results.
                 provider : Optional[Literal['oecd']]
                     Provider name.
@@ -642,7 +798,7 @@ class ROUTER_economy(Container):
                 extra: Dict[str, Any]
                     Extra info.
 
-            STIR
+            LTIR
             ----
             date : Optional[date]
                 The date of the data.

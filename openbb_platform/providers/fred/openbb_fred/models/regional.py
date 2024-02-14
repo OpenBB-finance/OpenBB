@@ -1,10 +1,12 @@
 """FRED Regional Data Model."""
 
 # pylint: disable=unused-argument
-
 import json
 import warnings
-from datetime import date as dateType
+from datetime import (
+    date as dateType,
+    datetime,
+)
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -30,11 +32,6 @@ class FredRegionalQueryParams(SeriesQueryParams):
     }
     symbol: str = Field(
         description="For this function, it is the series_group ID found by searching by series ID."
-    )
-    start_date: Optional[dateType] = Field(
-        default="1900-01-01",
-        description="The start date for the data."
-        + " This is required for the FRED API, so a default start date is generously set.",
     )
     region_type: Literal[
         "bea",
@@ -62,26 +59,23 @@ class FredRegionalQueryParams(SeriesQueryParams):
         + " This should match the units returned when searching by series ID,"
         + " but an incorrect field will not necessarily return an error."
     )
-    frequency: Union[
-        Literal[
-            "d",
-            "w",
-            "bw",
-            "m",
-            "q",
-            "sa",
-            "a",
-            "wef",
-            "weth",
-            "wew",
-            "wetu",
-            "wem",
-            "wesu",
-            "wesa",
-            "bwew",
-            "bwem",
-        ],
-        None,
+    frequency: Literal[
+        "d",
+        "w",
+        "bw",
+        "m",
+        "q",
+        "sa",
+        "a",
+        "wef",
+        "weth",
+        "wew",
+        "wetu",
+        "wem",
+        "wesu",
+        "wesa",
+        "bwew",
+        "bwem",
     ] = Field(
         default="a",
         description="""
@@ -104,7 +98,7 @@ class FredRegionalQueryParams(SeriesQueryParams):
             bwem = Biweekly, Ending Monday
         """,
     )
-    aggregation_method: Literal[None, "avg", "sum", "eop"] = Field(
+    aggregation_method: Literal["avg", "sum", "eop"] = Field(
         default="avg",
         description="""
         A key that indicates the aggregation method used for frequency aggregation.
@@ -186,7 +180,7 @@ class FredRegionalDataFetcher(
         base_url = "https://api.stlouisfed.org/geofred/regional/data?"
         url = (
             base_url
-            + get_querystring(query.model_dump(), ["limit"])
+            + get_querystring(query.model_dump(), ["limit", "end_date"])
             + f"&file_type=json&api_key={api_key}"
         )
         return await amake_request(url)  # type: ignore
@@ -213,5 +207,9 @@ class FredRegionalDataFetcher(
             for item in _row:
                 item["date"] = key
                 item["units"] = units
-                results.append(FredRegionalData.model_validate(item))
+                if (
+                    query.end_date is None
+                    or datetime.strptime(key, "%Y-%m-%d").date() <= query.end_date
+                ):
+                    results.append(FredRegionalData.model_validate(item))
         return results
