@@ -23,8 +23,8 @@ class IntrinioCompanyNewsQueryParams(CompanyNewsQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_company_news_v2
     """
 
-    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
     __alias_dict__ = {"symbol": "symbols", "page": "next_page", "limit": "page_size"}
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
 
 class IntrinioCompanyNewsData(CompanyNewsData):

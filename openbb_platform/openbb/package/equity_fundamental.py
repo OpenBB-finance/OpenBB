@@ -1245,7 +1245,8 @@ class ROUTER_equity_fundamental(Container):
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         tag: Annotated[
-            str, OpenBBCustomParameter(description="Intrinio data tag ID or code.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Intrinio data tag ID or code."),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -1351,6 +1352,7 @@ class ROUTER_equity_fundamental(Container):
                     "sort": sort,
                 },
                 extra_params=kwargs,
+                extra_info={"tag": {"multiple_items_allowed": ["intrinio"]}},
             )
         )
 
@@ -1984,7 +1986,8 @@ class ROUTER_equity_fundamental(Container):
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         tag: Annotated[
-            str, OpenBBCustomParameter(description="Intrinio data tag ID or code.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(description="Intrinio data tag ID or code."),
         ],
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
@@ -2042,6 +2045,7 @@ class ROUTER_equity_fundamental(Container):
                     "tag": tag,
                 },
                 extra_params=kwargs,
+                extra_info={"tag": {"multiple_items_allowed": ["intrinio"]}},
             )
         )
 
