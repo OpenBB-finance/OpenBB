@@ -24,10 +24,9 @@ class Container:
     def _get_provider(self, choice: Optional[str], cmd: str, default: str) -> str:
         """Get the provider to use in execution."""
         if choice is None:
-            config_default = self._command_runner.user_settings.defaults.routes.get(
-                cmd, None
-            )
-            if config_default:
+            if config_default := self._command_runner.user_settings.defaults.routes.get(
+                cmd, {}
+            ).get("provider"):
                 return config_default
             return default
         return choice
