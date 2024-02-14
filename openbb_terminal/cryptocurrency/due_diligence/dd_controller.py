@@ -69,7 +69,6 @@ class DueDiligenceController(CryptoBaseController):
         "change",
         "nonzero",
         "eb",
-        "funot",
         "desc",
     ]
 
@@ -195,7 +194,6 @@ class DueDiligenceController(CryptoBaseController):
         mt.add_cmd("ps")
         mt.add_cmd("mcapdom")
         mt.add_cmd("mt")
-        mt.add_cmd("funot")
 
         mt.add_info("_contributors_")
         mt.add_cmd("team")
@@ -1856,48 +1854,6 @@ class DueDiligenceController(CryptoBaseController):
                 post_kind=ns_parser.kind,
                 filter_=ns_parser.filter,
                 region=ns_parser.region,
-            )
-
-    @log_start_end(log=logger)
-    def call_funot(self, other_args):
-        """Process fun command"""
-        parser = argparse.ArgumentParser(
-            prog="funot",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Display fundamental metric over time [Source: Token Terminal]""",
-        )
-        parser.add_argument(
-            "-m",
-            "--metric",
-            default="",
-            choices=tokenterminal_model.METRICS,
-            dest="metric",
-            help="Choose metric of interest",
-        )
-        parser.add_argument(
-            "-p",
-            "--project",
-            required="-h" not in other_args,
-            choices=tokenterminal_model.get_project_ids(),
-            dest="project",
-            help="Choose project of interest",
-        )
-
-        if other_args and other_args[0][0] != "-":
-            other_args.insert(0, "-p")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            tokenterminal_view.display_fundamental_metric_from_project_over_time(
-                metric=ns_parser.metric,
-                project=ns_parser.project,
-                export=ns_parser.export,
-                sheet_name=(
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                ),
             )
 
     @log_start_end(log=logger)
