@@ -14,6 +14,7 @@ from typing_extensions import Annotated
 class ROUTER_etf(Container):
     """/etf
     countries
+    equity_exposure
     historical
     holdings
     holdings_date
@@ -69,11 +70,79 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.countries(symbol="SPY")
+        >>> obb.etf.countries("VT", provider="fmp")
         """  # noqa: E501
 
         return self._run(
             "/etf/countries",
+            **filter_inputs(
+                provider_choices={
+                    "provider": provider,
+                },
+                standard_params={
+                    "symbol": symbol,
+                },
+                extra_params=kwargs,
+            )
+        )
+
+    @validate
+    def equity_exposure(
+        self,
+        symbol: Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for. (Stock)")
+        ],
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
+    ) -> OBBject:
+        """Get the exposure to ETFs for a specific stock.
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for. (Stock)
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[EtfEquityExposure]
+                Serializable results.
+            provider : Optional[Literal['fmp']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        EtfEquityExposure
+        -----------------
+        equity_symbol : str
+            The symbol of the equity requested.
+        etf_symbol : str
+            The symbol of the ETF with exposure to the requested equity.
+        shares : Optional[int]
+            The number of shares held in the ETF.
+        weight : Optional[float]
+            The weight of the equity in the ETF, as a normalized percent.
+        market_value : Optional[Union[float, int]]
+            The market value of the equity position in the ETF.
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.etf.equity_exposure("MSFT", provider="fmp")
+        >>> #### This function accepts multiple tickers. ####
+        >>> obb.etf.equity_exposure(MSFT,AAPL", provider="fmp")
+        """  # noqa: E501
+
+        return self._run(
+            "/etf/equity_exposure",
             **filter_inputs(
                 provider_choices={
                     "provider": provider,
@@ -193,7 +262,7 @@ class ROUTER_etf(Container):
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         date : Optional[Union[str, datetime.date]]
-            A specific date to get data for. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
+            A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
             A specific date to get data for.  The date represents the period ending.  The date entered will return the closest filing. (provider: sec)
         cik : Optional[str]
             The CIK of the filing entity. Overrides symbol. (provider: fmp)
@@ -228,16 +297,19 @@ class ROUTER_etf(Container):
             The CUSIP of the holding. (provider: fmp, sec)
         isin : Optional[str]
             The ISIN of the holding. (provider: fmp, sec)
-        balance : Optional[float]
-            The balance of the holding. (provider: fmp, sec)
+        balance : Optional[int]
+            The balance of the holding, in shares or units. (provider: fmp);
+            The balance of the holding. (provider: sec)
         units : Optional[Union[str, float]]
-            The units of the holding. (provider: fmp, sec)
+            The type of units. (provider: fmp);
+            The units of the holding. (provider: sec)
         currency : Optional[str]
             The currency of the holding. (provider: fmp, sec)
         value : Optional[float]
-            The value of the holding in USD. (provider: fmp, sec)
+            The value of the holding, in dollars. (provider: fmp, sec)
         weight : Optional[float]
-            The weight of the holding in ETF in %. (provider: fmp, sec)
+            The weight of the holding, as a normalized percent. (provider: fmp);
+            The weight of the holding in ETF in %. (provider: sec)
         payoff_profile : Optional[str]
             The payoff profile of the holding. (provider: fmp, sec)
         asset_category : Optional[str]
@@ -260,6 +332,8 @@ class ROUTER_etf(Container):
             The CIK of the filing. (provider: fmp)
         acceptance_datetime : Optional[str]
             The acceptance datetime of the filing. (provider: fmp)
+        updated : Optional[Union[date, datetime]]
+            The date the data was updated. (provider: fmp)
         other_id : Optional[str]
             Internal identifier for the holding. (provider: sec)
         loan_value : Optional[float]
@@ -376,7 +450,11 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.holdings(symbol="SPY")
+        >>> obb.etf.holdings("XLK", provider="fmp").to_df()
+        >>> #### Including a date (FMP, SEC) will return the holdings as per NPORT-P filings. ####
+        >>> obb.etf.holdings("XLK", date="2022-03-31",provider="fmp").to_df()
+        >>> #### The same data can be returned from the SEC directly. ####
+        >>> obb.etf.holdings("XLK", date="2022-03-31",provider="sec").to_df()
         """  # noqa: E501
 
         return self._run(
@@ -401,7 +479,7 @@ class ROUTER_etf(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the holdings filing date for an individual ETF.
+        """Use this function to get the holdings dates, if available.
 
         Parameters
         ----------
@@ -436,7 +514,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.holdings_date(symbol="SPY")
+        >>> obb.etf.holdings_date("XLK", provider="fmp").results
         """  # noqa: E501
 
         return self._run(
@@ -461,7 +539,7 @@ class ROUTER_etf(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the ETF holdings performance.
+        """Get the recent price performance of each ticker held in the ETF.
 
         Parameters
         ----------
@@ -522,7 +600,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.holdings_performance(symbol="SPY")
+        >>> obb.etf.holdings_performance("XLK", provider="fmp")
         """  # noqa: E501
 
         return self._run(
@@ -582,30 +660,30 @@ class ROUTER_etf(Container):
             Description of the fund.
         inception_date : Optional[str]
             Inception date of the ETF.
+        issuer : Optional[str]
+            Company of the ETF. (provider: fmp)
+        cusip : Optional[str]
+            CUSIP of the ETF. (provider: fmp)
+        isin : Optional[str]
+            ISIN of the ETF. (provider: fmp)
+        domicile : Optional[str]
+            Domicile of the ETF. (provider: fmp)
         asset_class : Optional[str]
             Asset class of the ETF. (provider: fmp)
         aum : Optional[float]
             Assets under management. (provider: fmp)
-        avg_volume : Optional[float]
-            Average trading volume of the ETF. (provider: fmp)
-        cusip : Optional[str]
-            CUSIP of the ETF. (provider: fmp)
-        domicile : Optional[str]
-            Domicile of the ETF. (provider: fmp)
-        etf_company : Optional[str]
-            Company of the ETF. (provider: fmp)
-        expense_ratio : Optional[float]
-            Expense ratio of the ETF. (provider: fmp)
-        isin : Optional[str]
-            ISIN of the ETF. (provider: fmp)
         nav : Optional[float]
             Net asset value of the ETF. (provider: fmp)
         nav_currency : Optional[str]
             Currency of the ETF's net asset value. (provider: fmp)
-        website : Optional[str]
-            Website link of the ETF. (provider: fmp)
+        expense_ratio : Optional[float]
+            The expense ratio, as a normalized percent. (provider: fmp)
         holdings_count : Optional[int]
-            Number of holdings in the ETF. (provider: fmp)
+            Number of holdings. (provider: fmp)
+        avg_volume : Optional[float]
+            Average daily trading volume. (provider: fmp)
+        website : Optional[str]
+            Website of the issuer. (provider: fmp)
         fund_type : Optional[str]
             The legal type of fund. (provider: yfinance)
         fund_family : Optional[str]
@@ -672,7 +750,9 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.info(symbol="SPY")
+        >>> obb.etf.info("SPY", provider="fmp")
+        >>> #### This function accepts multiple tickers. ####
+        >>> obb.etf.info("SPY,IWM,QQQ,DJIA", provider="fmp")
         """  # noqa: E501
 
         return self._run(
@@ -697,7 +777,7 @@ class ROUTER_etf(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Price performance as a return, over different periods.
+        """Price performance as a return, over different periods. This is a proxy for `equity.price.performance`.
 
         Parameters
         ----------
@@ -758,7 +838,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.price_performance(symbol="SPY")
+        >>> obb.etf.price_performance("SPY,QQQ,IWM,DJIA", provider="fmp")
         """  # noqa: E501
 
         return self._run(
@@ -847,7 +927,9 @@ class ROUTER_etf(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> obb.etf.search(query="Vanguard")
+            >>> ### An empty query returns the full list of ETFs from the provider. ###
+            >>> obb.etf.search("", provider="fmp")
+            >>> #### The query will return results from text-based fields containing the term. ####obb.etf.search("commercial real estate", provider="fmp")
         """  # noqa: E501
 
         return self._run(
@@ -907,7 +989,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.sectors(symbol="SPY")
+        >>> obb.etf.sectors("SPY", provider="fmp")
         """  # noqa: E501
 
         return self._run(
