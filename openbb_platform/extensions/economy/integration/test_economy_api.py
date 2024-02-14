@@ -266,6 +266,7 @@ def test_economy_balance_of_payments(params, headers):
                 "filter_value": "Monthly",
                 "tag_names": "nsa",
                 "exclude_tag_names": None,
+                "series_id": None,
                 "provider": "fred",
             }
         ),
@@ -294,6 +295,7 @@ def test_economy_balance_of_payments(params, headers):
                 "filter_value": None,
                 "tag_names": None,
                 "exclude_tag_names": None,
+                "series_id": None,
                 "provider": "fred",
             }
         ),
@@ -503,7 +505,6 @@ def test_economy_long_term_interest_rate(params, headers):
                 "symbol": "942",
                 "start_date": "1975-01-01",
                 "end_date": None,
-                "date": None,
                 "frequency": "q",
                 "units": "Index 1980:Q1=100",
                 "region_type": "state",
