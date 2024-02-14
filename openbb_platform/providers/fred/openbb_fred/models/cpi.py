@@ -16,6 +16,7 @@ class FREDConsumerPriceIndexQueryParams(ConsumerPriceIndexQueryParams):
 
     __json_schema_extra__ = {"country": ["multiple_items_allowed"]}
 
+
 class FREDConsumerPriceIndexData(ConsumerPriceIndexData):
     """FRED Consumer Price Index Data."""
 
