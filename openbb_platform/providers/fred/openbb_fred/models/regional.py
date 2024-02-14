@@ -26,6 +26,7 @@ class FredRegionalQueryParams(SeriesQueryParams):
 
     __alias_dict__ = {
         "symbol": "series_group",
+        "transform": "transformation",
     }
     symbol: str = Field(
         description="For this function, it is the series_group ID or series ID."

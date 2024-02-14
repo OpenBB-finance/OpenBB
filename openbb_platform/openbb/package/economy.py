@@ -381,7 +381,7 @@ class ROUTER_economy(Container):
                 When True, the symbol provided is for a series_group, else it is for a series ID. (provider: fred)
             region_type : Optional[Literal['bea', 'msa', 'frb', 'necta', 'state', 'country', 'county', 'censusregion']]
                 The type of regional data. Parameter is only valid when `is_series_group` is True. (provider: fred)
-            season : Literal['SA', 'NSA', 'SSA']
+            season : Optional[Literal['SA', 'NSA', 'SSA']]
                 The seasonal adjustments to the data. Parameter is only valid when `is_series_group` is True. (provider: fred)
             units : Optional[str]
                 The units of the data. This should match the units returned from searching by series ID. An incorrect field will not necessarily return an error. Parameter is only valid when `is_series_group` is True. (provider: fred)
