@@ -430,3 +430,32 @@ def test_economy_long_term_interest_rate(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    argnames="params",
+    argvalues=[
+        (
+            {
+                "symbol": "942",
+                "start_date": "1975-01-01",
+                "end_date": None,
+                "date": None,
+                "frequency": "q",
+                "units": "Index 1980:Q1=100",
+                "region_type": "state",
+                "season": "NSA",
+                "aggregation_method": "eop",
+                "transform": "lin",
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_economy_fred_regional(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.economy.long_term_interest_rate(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
