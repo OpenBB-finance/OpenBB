@@ -90,6 +90,7 @@ def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir
         # Test case: test_mode is True, logging_suppress is True
         (
             {
+                "debug_mode": True,
                 "test_mode": True,
                 "logging_suppress": True,
                 "log_collect": True,
@@ -100,6 +101,7 @@ def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir
         # Test case: test_mode is False, logging_suppress is True
         (
             {
+                "debug_mode": False,
                 "test_mode": False,
                 "logging_suppress": True,
                 "log_collect": True,
@@ -111,6 +113,7 @@ def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir
         # and "posthog" handler is not present in logging_handlers
         (
             {
+                "debug_mode": False,
                 "test_mode": False,
                 "logging_suppress": False,
                 "log_collect": True,
@@ -122,6 +125,7 @@ def test_create_openbb_directory_directory_exists_system_settings_missing(tmpdir
         # and "posthog" handler is already present in logging_handlers
         (
             {
+                "debug_mode": False,
                 "test_mode": False,
                 "logging_suppress": False,
                 "log_collect": True,

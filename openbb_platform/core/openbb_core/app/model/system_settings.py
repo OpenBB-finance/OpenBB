@@ -48,6 +48,7 @@ class SystemSettings(Tagged):
     api_settings: FastAPISettings = Field(default_factory=FastAPISettings)
 
     # Others
+    debug_mode: bool = False
     test_mode: bool = False
     headless: bool = False
 
@@ -87,7 +88,7 @@ class SystemSettings(Tagged):
     def validate_posthog_handler(cls, values: "SystemSettings") -> "SystemSettings":
         """If the user has enabled log collection, then we need to add the Posthog."""
         if (
-            not any([values.test_mode, values.logging_suppress])
+            not any([values.test_mode, values.debug_mode, values.logging_suppress])
             and values.log_collect
             and "posthog" not in values.logging_handlers
         ):

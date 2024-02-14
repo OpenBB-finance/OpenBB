@@ -34,7 +34,6 @@ from pydantic_core import PydanticUndefined
 from starlette.routing import BaseRoute
 from typing_extensions import Annotated, _AnnotatedAlias
 
-from openbb_core.app.charting_service import ChartingService
 from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.provider_interface import ProviderInterface
@@ -43,6 +42,13 @@ from openbb_core.app.static.utils.console import Console
 from openbb_core.app.static.utils.linters import Linters
 from openbb_core.env import Env
 from openbb_core.provider.abstract.data import Data
+
+try:
+    from openbb_charting import Charting
+
+    CHARTING_INSTALLED = True
+except ImportError:
+    CHARTING_INSTALLED = False
 
 DataProcessingSupportedTypes = TypeVar(
     "DataProcessingSupportedTypes",
@@ -533,10 +539,7 @@ class MethodDefinition:
 
         parameter_map.pop("cc", None)
         # we need to add the chart parameter here bc of the docstring generation
-        if (
-            path.replace("/", "_")[1:]
-            in ChartingService.get_implemented_charting_functions()
-        ):
+        if CHARTING_INSTALLED and path.replace("/", "_")[1:] in Charting.functions():
             parameter_map["chart"] = Parameter(
                 name="chart",
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
@@ -706,10 +709,7 @@ class MethodDefinition:
         parameter_map.pop("cc", None)
         code = ""
 
-        if (
-            path.replace("/", "_")[1:]
-            in ChartingService.get_implemented_charting_functions()
-        ):
+        if CHARTING_INSTALLED and path.replace("/", "_")[1:] in Charting.functions():
             parameter_map["chart"] = Parameter(
                 name="chart",
                 kind=Parameter.POSITIONAL_OR_KEYWORD,
