@@ -455,19 +455,36 @@ def test_economy_long_term_interest_rate(params, obb):
     argvalues=[
         (
             {
-                "symbol": "942",
-                "start_date": "1975-01-01",
+                "symbol": "156241",
+                "is_series_group": True,
+                "start_date": "2000-01-01",
                 "end_date": None,
-                "frequency": "q",
-                "units": "Index 1980:Q1=100",
+                "frequency": "w",
+                "units": "Number",
                 "region_type": "state",
                 "season": "NSA",
                 "aggregation_method": "eop",
-                "transform": "lin",
+                "transform": "ch1",
                 "provider": "fred",
                 "limit": None,
             }
-        )
+        ),
+        (
+            {
+                "symbol": "CAICLAIMS",
+                "is_series_group": False,
+                "start_date": "1990-01-01",
+                "end_date": "2010-01-01",
+                "frequency": None,
+                "units": None,
+                "region_type": None,
+                "season": None,
+                "aggregation_method": None,
+                "transform": None,
+                "provider": "fred",
+                "limit": None,
+            }
+        ),
     ],
 )
 @pytest.mark.integration

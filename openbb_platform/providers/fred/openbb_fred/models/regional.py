@@ -3,10 +3,7 @@
 # pylint: disable=unused-argument
 import json
 import warnings
-from datetime import (
-    date as dateType,
-    datetime,
-)
+from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -31,56 +28,75 @@ class FredRegionalQueryParams(SeriesQueryParams):
         "symbol": "series_group",
     }
     symbol: str = Field(
-        description="For this function, it is the series_group ID found by searching by series ID."
+        description="For this function, it is the series_group ID or series ID."
+        + " If the symbol provided is for a series_group, set the `is_series_group` parameter to True."
+        + " Not all series that are in FRED have geographical data."
     )
-    region_type: Literal[
-        "bea",
-        "msa",
-        "frb",
-        "necta",
-        "state",
-        "country",
-        "county",
-        "censusregion",
+    is_series_group: bool = Field(
+        default=False,
+        description="When True, the symbol provided is for a series_group, else it is for a series ID.",
+    )
+    region_type: Union[
+        None,
+        Literal[
+            "bea",
+            "msa",
+            "frb",
+            "necta",
+            "state",
+            "country",
+            "county",
+            "censusregion",
+        ],
     ] = Field(
+        default=None,
         description="The type of regional data."
-        + " This must match the value returned from searching by series ID."
+        + " Parameter is only valid when `is_series_group` is True.",
     )
-    season: Literal[
-        "SA",
-        "NSA",
-        "SSA",
+    season: Union[
+        None,
+        Literal[
+            "SA",
+            "NSA",
+            "SSA",
+        ],
     ] = Field(
+        default="NSA",
         description="The seasonal adjustments to the data."
-        + " This must match the value returned from searching by series ID."
+        + " Parameter is only valid when `is_series_group` is True.",
     )
-    units: str = Field(
+    units: Optional[str] = Field(
+        default=None,
         description="The units of the data."
-        + " This should match the units returned when searching by series ID,"
-        + " but an incorrect field will not necessarily return an error."
+        + " This should match the units returned from searching by series ID."
+        + " An incorrect field will not necessarily return an error."
+        + " Parameter is only valid when `is_series_group` is True.",
     )
-    frequency: Literal[
-        "d",
-        "w",
-        "bw",
-        "m",
-        "q",
-        "sa",
-        "a",
-        "wef",
-        "weth",
-        "wew",
-        "wetu",
-        "wem",
-        "wesu",
-        "wesa",
-        "bwew",
-        "bwem",
+    frequency: Union[
+        None,
+        Literal[
+            "d",
+            "w",
+            "bw",
+            "m",
+            "q",
+            "sa",
+            "a",
+            "wef",
+            "weth",
+            "wew",
+            "wetu",
+            "wem",
+            "wesu",
+            "wesa",
+            "bwew",
+            "bwem",
+        ],
     ] = Field(
-        default="a",
+        default=None,
         description="""
         Frequency aggregation to convert high frequency data to lower frequency.
-        The frequency of the series can be determined by searching by series ID.
+        Parameter is only valid when `is_series_group` is True.
             a = Annual
             sa= Semiannual
             q = Quarterly
@@ -103,6 +119,7 @@ class FredRegionalQueryParams(SeriesQueryParams):
         description="""
         A key that indicates the aggregation method used for frequency aggregation.
         This parameter has no affect if the frequency parameter is not set.
+        Only valid when `is_series_group` is True.
             avg = Average
             sum = Sum
             eop = End of Period
@@ -113,7 +130,7 @@ class FredRegionalQueryParams(SeriesQueryParams):
     ] = Field(
         default="lin",
         description="""
-        Transformation type
+        Transformation type. Only valid when `is_series_group` is True.
             lin = Levels (No transformation)
             chg = Change
             ch1 = Change from Year Ago
@@ -130,8 +147,24 @@ class FredRegionalQueryParams(SeriesQueryParams):
     @classmethod
     def transform_validate(cls, values):
         """Add default start date."""
-        if values.get("start_date") is None:
-            values["start_date"] = "1900-01-01"
+        if values.get("is_series_group") is True:
+            print(values)
+            required = ["frequency", "region_type", "units"]
+            for key in required:
+                if values.get(key) is None:
+                    raise ValueError(
+                        f"{key} is a required field missing for series_group."
+                    )
+
+            values["start_date"] = (
+                "1900-01-01"
+                if values.get("start_date") is None
+                else values.get("start_date")
+            )
+        if values.get("is_series_group") is False:
+            values["start_date"] = (
+                None if values.get("start_date") is None else values.get("start_date")
+            )
         return values
 
 
@@ -177,12 +210,34 @@ class FredRegionalDataFetcher(
     ) -> Dict:
         """Extract the raw data."""
         api_key = credentials.get("fred_api_key") if credentials else ""
-        base_url = "https://api.stlouisfed.org/geofred/regional/data?"
-        url = (
-            base_url
-            + get_querystring(query.model_dump(), ["limit", "end_date"])
-            + f"&file_type=json&api_key={api_key}"
-        )
+        if query.is_series_group is True:
+            base_url = "https://api.stlouisfed.org/geofred/regional/data?"
+            url = (
+                base_url
+                + get_querystring(
+                    query.model_dump(), ["limit", "end_date", "is_series_group"]
+                )
+                + f"&file_type=json&api_key={api_key}"
+            )
+        if query.is_series_group is False:
+            base_url = "https://api.stlouisfed.org/geofred/series/data?"
+            params = query.model_dump()
+            url = (
+                base_url
+                + f"series_id={query.symbol}&"
+                + get_querystring(
+                    query.model_dump(),
+                    [
+                        "limit",
+                        "end_date",
+                        "region_type",
+                        "season",
+                        "units",
+                        "is_series_group",
+                    ],
+                )
+                + f"&file_type=json&api_key={api_key}"
+            )
         return await amake_request(url)  # type: ignore
 
     @staticmethod

@@ -377,16 +377,18 @@ class ROUTER_economy(Container):
                 The provider to use for the query, by default None.
                 If None, the provider specified in defaults is selected or 'fred' if there is
                 no default.
+            is_series_group : bool
+                When True, the symbol provided is for a series_group, else it is for a series ID. (provider: fred)
             region_type : Optional[Literal['bea', 'msa', 'frb', 'necta', 'state', 'country', 'county', 'censusregion']]
-                The type of regional data. This must match the value returned from searching by series ID. (provider: fred)
-            season : Optional[Literal['SA', 'NSA', 'SSA']]
-                The seasonal adjustments to the data. This must match the value returned from searching by series ID. (provider: fred)
+                The type of regional data. Parameter is only valid when `is_series_group` is True. (provider: fred)
+            season : Literal['SA', 'NSA', 'SSA']
+                The seasonal adjustments to the data. Parameter is only valid when `is_series_group` is True. (provider: fred)
             units : Optional[str]
-                The units of the data. This should match the units returned when searching by series ID, but an incorrect field will not necessarily return an error. (provider: fred)
-            frequency : Literal['d', 'w', 'bw', 'm', 'q', 'sa', 'a', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']
+                The units of the data. This should match the units returned from searching by series ID. An incorrect field will not necessarily return an error. Parameter is only valid when `is_series_group` is True. (provider: fred)
+            frequency : Optional[Literal['d', 'w', 'bw', 'm', 'q', 'sa', 'a', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
 
                     Frequency aggregation to convert high frequency data to lower frequency.
-                    The frequency of the series can be determined by searching by series ID.
+                    Parameter is only valid when `is_series_group` is True.
                         a = Annual
                         sa= Semiannual
                         q = Quarterly
@@ -407,13 +409,14 @@ class ROUTER_economy(Container):
 
                     A key that indicates the aggregation method used for frequency aggregation.
                     This parameter has no affect if the frequency parameter is not set.
+                    Only valid when `is_series_group` is True.
                         avg = Average
                         sum = Sum
                         eop = End of Period
                      (provider: fred)
             transform : Literal['lin', 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']
 
-                    Transformation type
+                    Transformation type. Only valid when `is_series_group` is True.
                         lin = Levels (No transformation)
                         chg = Change
                         ch1 = Change from Year Ago
@@ -455,15 +458,10 @@ class ROUTER_economy(Container):
             Example
             -------
             >>> from openbb import obb
-            >>> series = obb.economy.fred_search(series_id="NYICLAIMS").results[0]
-            >>> group = series.series_group
-            >>> start_date = series.observation_start
-            >>> units = series.units
-            >>> season = series.seasonal_adjustment
-            >>> region_type = series.region_type
-            >>> obb.economy.fred_regional(
-            >>> group, start_date, units=units, season=season, region_type=region_type, frequency="w"
-            >>> ).to_df()
+            >>> #### With no date, the most recent report is returned. ####
+            >>> obb.economy.fred_regional("NYICLAIMS")
+            >>> #### With a date, time series data is returned. ####
+            >>> obb.economy.fred_regional("NYICLAIMS", start_date="2021-01-01")
         """  # noqa: E501
 
         return self._run(

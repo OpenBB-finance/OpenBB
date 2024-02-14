@@ -291,6 +291,7 @@ def test_fred_regional_fetcher(credentials=test_credentials):
     """Test FredRegionalFetcher."""
     params = {
         "symbol": "942",
+        "is_series_group": True,
         "start_date": datetime.date(1975, 1, 1),
         "frequency": "q",
         "units": "Index 1980:Q1=100",
