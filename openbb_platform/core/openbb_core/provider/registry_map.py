@@ -126,9 +126,11 @@ class RegistryMap:
                     model_field.json_schema_extra = {}
 
                 if p not in model_field.json_schema_extra:
-                    model_field.json_schema_extra[p] = set()
+                    model_field.json_schema_extra[p] = []
 
-                model_field.json_schema_extra[p].add(provider)
+                providers = model_field.json_schema_extra[p]
+                if provider not in providers:
+                    providers.append(provider)
 
     def _get_models(self, map_: MapType) -> List[str]:
         """Get available models."""

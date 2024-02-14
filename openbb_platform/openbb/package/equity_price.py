@@ -185,12 +185,12 @@ class ROUTER_equity_price(Container):
                 extra_params=kwargs,
                 extra_info={
                     "symbol": {
-                        "multiple_items_allowed": {
+                        "multiple_items_allowed": [
                             "fmp",
                             "polygon",
-                            "yfinance",
                             "tiingo",
-                        }
+                            "yfinance",
+                        ]
                     }
                 },
             )
