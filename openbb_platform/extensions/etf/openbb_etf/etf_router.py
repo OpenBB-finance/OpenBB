@@ -183,7 +183,7 @@ async def holdings_performance(
     examples=[
         'obb.etf.equity_exposure("MSFT", provider="fmp")',
         "#### This function accepts multiple tickers. ####",
-        'obb.etf.equity_exposure(MSFT,AAPL", provider="fmp")',
+        'obb.etf.equity_exposure("MSFT,AAPL", provider="fmp")',
     ],
 )
 async def equity_exposure(
