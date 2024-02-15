@@ -395,7 +395,7 @@ def test_economy_money_measures(params, headers):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "oecd"}),
         (
             {
                 "country": "united_states",
@@ -424,7 +424,7 @@ def test_economy_unemployment(params, headers):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "oecd"}),
         (
             {
                 "country": "united_states",
@@ -449,7 +449,7 @@ def test_economy_composite_leading_indicator(params, headers):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "oecd"}),
         (
             {
                 "country": "united_states",
@@ -467,7 +467,7 @@ def test_economy_short_term_interest_rate(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/economy/short_term_interest_rate?{query_str}"
-    result = requests.get(url, headers=headers, timeout=10)
+    result = requests.get(url, headers=headers, timeout=30)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
 
@@ -475,7 +475,7 @@ def test_economy_short_term_interest_rate(params, headers):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
+        ({"start_date": "2023-01-01", "end_date": "2023-06-06", "provider": "oecd"}),
         (
             {
                 "country": "united_states",

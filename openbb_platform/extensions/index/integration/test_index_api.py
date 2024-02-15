@@ -155,10 +155,10 @@ def test_index_price_historical(params, headers):
             {
                 "symbol": "^DJI",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-03-03",
                 "provider": "fmp",
                 "sort": "desc",
-                "interval": None,
+                "interval": "1day",
                 "limit": None,
             }
         ),
