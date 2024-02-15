@@ -24,6 +24,7 @@ class IntrinioCompanyNewsQueryParams(CompanyNewsQueryParams):
     """
 
     __alias_dict__ = {"symbol": "symbols", "page": "next_page", "limit": "page_size"}
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
 
 class IntrinioCompanyNewsData(CompanyNewsData):

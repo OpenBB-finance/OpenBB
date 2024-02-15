@@ -17,6 +17,8 @@ class FMPEquityValuationMultiplesQueryParams(EquityValuationMultiplesQueryParams
     Source: https://site.financialmodelingprep.com/developer/docs/#Company-Key-Metrics
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
 
 class FMPEquityValuationMultiplesData(EquityValuationMultiplesData):
     """FMP Equity Valuation Multiples Data."""

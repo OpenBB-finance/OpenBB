@@ -21,6 +21,7 @@ class IntrinioIndexHistoricalQueryParams(IndexHistoricalQueryParams):
     """
 
     __alias_dict__ = {"limit": "page_size", "sort": "sort_order"}
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
 
 class IntrinioIndexHistoricalData(IndexHistoricalData):

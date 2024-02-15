@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 from pydantic import ValidationError
 
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.model.preferences import Preferences
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.provider.abstract.data import Data
@@ -146,3 +147,12 @@ def get_user_cache_directory() -> str:
         else Preferences().cache_directory
     )
     return cache_dir
+
+
+def check_single_item(
+    value: Optional[str], message: Optional[str] = None
+) -> Optional[str]:
+    """Check that string contains a single item."""
+    if value and ("," in value or ";" in value):
+        raise OpenBBError(message if message else "multiple items not allowed")
+    return value

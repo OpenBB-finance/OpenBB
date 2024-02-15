@@ -26,6 +26,7 @@ class FMPEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     """
 
     __alias_dict__ = {"start_date": "from", "end_date": "to"}
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     limit: Optional[NonNegativeInt] = Field(
         default=None,

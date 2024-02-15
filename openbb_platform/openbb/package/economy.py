@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -51,16 +51,16 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'tradingeconomics']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         country : Optional[str]
-            Country of the event. (provider: tradingeconomics)
+            Country of the event. Multiple items allowed. (provider: tradingeconomics)
         importance : Optional[Literal['Low', 'Medium', 'High']]
             Importance of the event. (provider: tradingeconomics)
         group : Optional[Literal['interest rate', 'inflation', 'bonds', 'consumer', 'gdp', 'government', 'housing', 'labour', 'markets', 'money', 'prices', 'trade', 'business']]
@@ -69,7 +69,7 @@ class ROUTER_economy(Container):
         Returns
         -------
         OBBject
-            results : EconomicCalendar
+            results : List[EconomicCalendar]
                 Serializable results.
             provider : Optional[Literal['fmp', 'tradingeconomics']]
                 Provider name.
@@ -131,7 +131,11 @@ class ROUTER_economy(Container):
             "/economy/calendar",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/calendar",
+                        ("fmp", "tradingeconomics"),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -166,9 +170,9 @@ class ROUTER_economy(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             provider : Optional[Literal['oecd']]
                 The provider to use for the query, by default None.
@@ -210,7 +214,11 @@ class ROUTER_economy(Container):
             "/economy/composite_leading_indicator",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/composite_leading_indicator",
+                        ("oecd",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -224,7 +232,10 @@ class ROUTER_economy(Container):
     def cpi(
         self,
         country: Annotated[
-            str, OpenBBCustomParameter(description="The country to get data.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="The country to get data. Multiple items allowed: fred."
+            ),
         ],
         units: Annotated[
             Literal["growth_previous", "growth_same", "index_2015"],
@@ -263,8 +274,8 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        country : str
-            The country to get data.
+        country : Union[str, List[str]]
+            The country to get data. Multiple items allowed: fred.
         units : Literal['growth_previous', 'growth_same', 'index_2015']
             The unit of measurement for the data.
             Options:
@@ -278,9 +289,9 @@ class ROUTER_economy(Container):
             Options: `monthly`, `quarter`, and `annual`.
         harmonized : bool
             Whether you wish to obtain harmonized data.
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fred']]
             The provider to use for the query, by default None.
@@ -318,7 +329,11 @@ class ROUTER_economy(Container):
             "/economy/cpi",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/cpi",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "country": country,
@@ -329,6 +344,7 @@ class ROUTER_economy(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={"country": {"multiple_items_allowed": ["fred"]}},
             )
         )
 
@@ -435,7 +451,11 @@ class ROUTER_economy(Container):
             "/economy/fred_search",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/fred_search",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "query": query,
@@ -448,7 +468,10 @@ class ROUTER_economy(Container):
     def fred_series(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed: fred."
+            ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -473,11 +496,11 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
-        start_date : Optional[datetime.date]
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed: fred.
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         limit : Optional[int]
             The number of data entries to return.
@@ -565,7 +588,11 @@ class ROUTER_economy(Container):
             "/economy/fred_series",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/fred_series",
+                        ("fred", "intrinio"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -574,6 +601,7 @@ class ROUTER_economy(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["fred"]}},
             )
         )
 
@@ -615,9 +643,9 @@ class ROUTER_economy(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             provider : Optional[Literal['oecd']]
                 The provider to use for the query, by default None.
@@ -631,7 +659,7 @@ class ROUTER_economy(Container):
             Returns
             -------
             OBBject
-                results : List[STIR]
+                results : List[LTIR]
                     Serializable results.
                 provider : Optional[Literal['oecd']]
                     Provider name.
@@ -642,7 +670,7 @@ class ROUTER_economy(Container):
                 extra: Dict[str, Any]
                     Extra info.
 
-            STIR
+            LTIR
             ----
             date : Optional[date]
                 The date of the data.
@@ -661,7 +689,11 @@ class ROUTER_economy(Container):
             "/economy/long_term_interest_rate",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/long_term_interest_rate",
+                        ("oecd",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -699,9 +731,9 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         adjusted : Optional[bool]
             Whether to return seasonally adjusted data.
@@ -753,7 +785,11 @@ class ROUTER_economy(Container):
             "/economy/money_measures",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/money_measures",
+                        ("federal_reserve",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -812,7 +848,11 @@ class ROUTER_economy(Container):
             "/economy/risk_premium",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/risk_premium",
+                        ("fmp",),
+                    )
                 },
                 standard_params={},
                 extra_params=kwargs,
@@ -847,9 +887,9 @@ class ROUTER_economy(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             provider : Optional[Literal['oecd']]
                 The provider to use for the query, by default None.
@@ -893,7 +933,11 @@ class ROUTER_economy(Container):
             "/economy/short_term_interest_rate",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/short_term_interest_rate",
+                        ("oecd",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -925,9 +969,9 @@ class ROUTER_economy(Container):
 
         Parameters
         ----------
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['oecd']]
             The provider to use for the query, by default None.
@@ -981,7 +1025,11 @@ class ROUTER_economy(Container):
             "/economy/unemployment",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/unemployment",
+                        ("oecd",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,

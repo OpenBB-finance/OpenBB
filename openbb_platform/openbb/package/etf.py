@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -77,7 +77,11 @@ class ROUTER_etf(Container):
             "/etf/countries",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/countries",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -181,9 +185,9 @@ class ROUTER_etf(Container):
         ----------
         symbol : str
             Symbol to get data for. (ETF)
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
@@ -231,7 +235,11 @@ class ROUTER_etf(Container):
             "/etf/historical",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/historical",
+                        ("yfinance",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -461,7 +469,11 @@ class ROUTER_etf(Container):
             "/etf/holdings",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/holdings",
+                        ("fmp", "sec"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -521,7 +533,11 @@ class ROUTER_etf(Container):
             "/etf/holdings_date",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/holdings_date",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -607,7 +623,11 @@ class ROUTER_etf(Container):
             "/etf/holdings_performance",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/holdings_performance",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -620,7 +640,10 @@ class ROUTER_etf(Container):
     def info(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. (ETF) Multiple items allowed: yfinance."
+            ),
         ],
         provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
@@ -629,8 +652,8 @@ class ROUTER_etf(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for. (ETF)
+        symbol : Union[str, List[str]]
+            Symbol to get data for. (ETF) Multiple items allowed: yfinance.
         provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -759,12 +782,17 @@ class ROUTER_etf(Container):
             "/etf/info",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/info",
+                        ("fmp", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["yfinance"]}},
             )
         )
 
@@ -845,7 +873,11 @@ class ROUTER_etf(Container):
             "/etf/price_performance",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/price_performance",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -936,7 +968,11 @@ class ROUTER_etf(Container):
             "/etf/search",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/search",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "query": query,
@@ -996,7 +1032,11 @@ class ROUTER_etf(Container):
             "/etf/sectors",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/sectors",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,

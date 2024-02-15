@@ -36,6 +36,8 @@ class PolygonCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
     Source: https://polygon.io/docs/forex/get_v2_aggs_ticker__forexticker__range__multiplier___timespan___from___to
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     interval: str = Field(
         default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
     )
