@@ -4,7 +4,7 @@ import re
 import shutil
 from pathlib import Path
 from textwrap import shorten
-from typing import Any, Dict, List, TextIO, Tuple, Union, _GenericAlias
+from typing import Any, Dict, List, TextIO, Tuple, Union
 
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import Router, RouterLoader
@@ -12,7 +12,6 @@ from openbb_core.app.static.package_builder import (
     PathHandler,
 )
 from openbb_core.provider import standard_models
-from pydantic.fields import FieldInfo
 from pydantic_core import PydanticUndefined
 
 website_path = Path(__file__).parent.absolute()
@@ -105,14 +104,14 @@ refrence_ul_element = """<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-
 #     return meta_command
 
 
-def get_field_data_type(field_type: _GenericAlias, required: bool) -> str:
-    is_optional = not required
-
+def get_field_data_type(field_type) -> str:
     try:
         if "BeforeValidator" in str(field_type):
-            field_type = "Optional[int]" if is_optional else "int"
+            field_type = "int"
 
-        # Handle Annotated types by extracting the first type
+        if "Optional" in str(field_type):
+            field_type = str(field_type.__args__[0])
+
         if "Annotated[" in str(field_type):
             field_type = str(field_type).split("[")[-1].split(",")[0]
 
@@ -126,11 +125,6 @@ def get_field_data_type(field_type: _GenericAlias, required: bool) -> str:
             .replace("datetime.date", "date")
             .replace("NoneType", "None")
             .replace(", None", "")
-        )
-        field_type = (
-            f"Optional[{field_type}]"
-            if is_optional and "Optional" not in str(field_type)
-            else field_type
         )
     except TypeError:
         field_type = str(field_type)
@@ -164,10 +158,39 @@ def get_field_default(default: Any) -> str:
     return "" if default == PydanticUndefined else default
 
 
-def generate_reference_file():
-    """Generate reference.json file using the OpenAPI schema,
-    ProviderInterface, CommandMap and DocstringGenerator.
+def get_provider_field_params(
+    pi: ProviderInterface,
+    standard_model: str,
+    params_type: str,
+    provider: str = "openbb",
+) -> List[Dict[str, str]]:
+    """Return the fields of the specified params_type for the specified provider of the standard_model.
+
+    Args:
+        pi (ProviderInterface): ProviderInterface class
+        standard_model (str): Name of the model
+        params_type (str): Paramters to fetch data for (QueryParams or Data)
+        provider (str, optional): Provider name. Defaults to "openbb".
+
+    Returns:
+        List[Dict[str, str]]: List of dictionarties containing the field name, type, description, default and optional
     """
+    return [
+        {
+            "name": field,
+            "type": get_field_data_type(field_info.annotation),
+            "description": field_info.description,
+            "default": get_field_default(field_info.default),
+            "optional": not field_info.is_required(),
+        }
+        for field, field_info in pi.map[standard_model][provider][params_type][
+            "fields"
+        ].items()
+    ]
+
+
+def generate_reference_file() -> None:
+    """Generate reference.json file using the ProviderInterface."""
     pi = ProviderInterface()
 
     reference: Dict[str, Dict] = {}
@@ -188,18 +211,14 @@ def generate_reference_file():
         if route.methods == {"POST"}:
             continue
 
-        reference[path] = dict.fromkeys(REFERENCE_FIELDS, None)
-        reference[path] = {k: {} for k in reference[path]}
+        reference[path] = {field: {} for field in REFERENCE_FIELDS}
 
         # Add endpoint deprecation details
         deprecated_value = getattr(route, "deprecated", None)
-        deprecated_value = getattr(route, "deprecated", None)
-        reference[path]["deprecated"]["flag"] = (
-            False if deprecated_value is None else deprecated_value
-        )
-        reference[path]["deprecated"]["message"] = (
-            route.summary if route.deprecated else None
-        )
+        reference[path]["deprecated"] = {
+            "flag": bool(deprecated_value),
+            "message": route.summary if deprecated_value else None,
+        }
 
         # Add endpoint description
         reference[path]["description"] = route.description
@@ -207,50 +226,14 @@ def generate_reference_file():
         # Add endpoint examples
         reference[path]["examples"] = route.openapi_extra.get("examples", [])
 
-        # Add endpoint parameters
+        # Add endpoint parameters and data fields
         # We use standard as the key to match the documentation structure
         standard_model = route.openapi_extra.get("model", None)
 
-        # openbb provider is always present hence is the standard parameter
-        reference[path]["parameters"]["standard"] = [
-            {
-                "name": field,
-                "type": get_field_data_type(
-                    field_info.annotation, field_info.is_required()
-                ),
-                "description": field_info.description,
-                "default": get_field_default(field_info.default),
-                "optional": not field_info.is_required(),
-            }
-            for field, field_info in pi.map[standard_model]["openbb"]["QueryParams"][
-                "fields"
-            ].items()
-        ]
-
-        for provider in pi.map[standard_model]:
-            if provider == "openbb":
-                continue
-
-            # Adds standard parameters to the provider parameters since they are inherited by the model
-            reference[path]["parameters"][provider] = reference[path]["parameters"][
-                "standard"
-            ].copy()
-            provider_query_params = [
-                {
-                    "name": field,
-                    "type": get_field_data_type(
-                        field_info.annotation, field_info.is_required()
-                    ),
-                    "description": field_info.description,
-                    "default": get_field_default(field_info.default),
-                    "optional": not field_info.is_required(),
-                }
-                for field, field_info in pi.map[standard_model][provider][
-                    "QueryParams"
-                ]["fields"].items()
-            ]
-            reference[path]["parameters"][provider].extend(provider_query_params)
-
+        # openbb provider is always present hence is the standard field
+        reference[path]["parameters"]["standard"] = get_provider_field_params(
+            pi, standard_model, "QueryParams"
+        )
         provider_parameter_fields = get_provider_parameter_params(route)
         reference[path]["parameters"]["standard"].append(
             {
@@ -261,6 +244,31 @@ def generate_reference_file():
                 "optional": provider_parameter_fields["optional"],
             }
         )
+        reference[path]["data"]["standard"] = get_provider_field_params(
+            pi, standard_model, "Data"
+        )
+
+        for provider in pi.map[standard_model]:
+            if provider == "openbb":
+                continue
+
+            # Adds standard parameters to the provider parameters since they are inherited by the model
+            reference[path]["parameters"][provider] = reference[path]["parameters"][
+                "standard"
+            ].copy()
+            provider_query_params = get_provider_field_params(
+                pi, standard_model, "QueryParams", provider
+            )
+            reference[path]["parameters"][provider].extend(provider_query_params)
+
+            # Adds standard data fields to the provider data fields since they are inherited by the model
+            reference[path]["data"][provider] = reference[path]["data"][
+                "standard"
+            ].copy()
+            provider_data = get_provider_field_params(
+                pi, standard_model, "Data", provider
+            )
+            reference[path]["data"][provider].extend(provider_data)
 
         # Add endpoint returns
         # Currently we only return an OBBject object with the results
@@ -291,43 +299,6 @@ def generate_reference_file():
                 "description": "Extra info.",
             },
         ]
-
-        # Add endpoint data fields
-        # openbb provider is always present hence is the standard data
-        reference[path]["data"]["standard"] = [
-            {
-                "name": field,
-                "type": get_field_data_type(
-                    field_info.annotation, field_info.is_required()
-                ),
-                "description": field_info.description,
-            }
-            for field, field_info in pi.map[standard_model]["openbb"]["Data"][
-                "fields"
-            ].items()
-        ]
-
-        for provider in pi.map[standard_model]:
-            if provider == "openbb":
-                continue
-
-            # Adds standard parameters to the provider parameters since they are inherited by the model
-            reference[path]["data"][provider] = reference[path]["data"][
-                "standard"
-            ].copy()
-            provider_data = [
-                {
-                    "name": field,
-                    "type": get_field_data_type(
-                        field_info.annotation, field_info.is_required()
-                    ),
-                    "description": field_info.description,
-                }
-                for field, field_info in pi.map[standard_model][provider]["Data"][
-                    "fields"
-                ].items()
-            ]
-            reference[path]["data"][provider].extend(provider_data)
 
     with open("website/content/platform/reference.json", "w") as f:
         json.dump(reference, f)
