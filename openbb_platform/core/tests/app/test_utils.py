@@ -4,7 +4,7 @@ import pytest
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.app.utils import (
     basemodel_to_df,
-    check_single_value,
+    check_single_item,
     df_to_basemodel,
     dict_to_basemodel,
     get_target_column,
@@ -138,9 +138,9 @@ def test_ndarray_to_basemodel(array, expected):
         ("SYMBOL1;SYMBOL2", OpenBBError),
     ],
 )
-def test_check_single_value(value, expected):
+def test_check_single_item(value, expected):
     if expected is OpenBBError:
         with pytest.raises(OpenBBError):
-            check_single_value(value)
+            check_single_item(value)
     else:
-        assert check_single_value(value) == expected
+        assert check_single_item(value) == expected

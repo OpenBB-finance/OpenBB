@@ -149,10 +149,10 @@ def get_user_cache_directory() -> str:
     return cache_dir
 
 
-def check_single_value(
+def check_single_item(
     value: Optional[str], message: Optional[str] = None
 ) -> Optional[str]:
-    """Check that string is a single value."""
+    """Check that string contains a single item."""
     if value and ("," in value or ";" in value):
-        raise OpenBBError(message if message else "multiple values not allowed")
+        raise OpenBBError(message if message else "multiple items not allowed")
     return value

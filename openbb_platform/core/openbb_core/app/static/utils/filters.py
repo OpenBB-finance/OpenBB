@@ -2,7 +2,7 @@
 
 from typing import Dict, List, Optional
 
-from openbb_core.app.utils import check_single_value, convert_to_basemodel
+from openbb_core.app.utils import check_single_item, convert_to_basemodel
 
 
 def filter_inputs(
@@ -33,9 +33,9 @@ def filter_inputs(
                         )
 
                         if provider and provider not in props[PROPERTY]:
-                            check_single_value(
+                            check_single_item(
                                 new,
-                                f"{field} -> multiple values not allowed for '{provider}'",
+                                f"{field} -> multiple items not allowed for '{provider}'",
                             )
 
                         kwargs[p][field] = new
