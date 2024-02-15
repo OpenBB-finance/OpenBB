@@ -85,7 +85,11 @@ class ROUTER_crypto(Container):
             "/crypto/search",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/crypto/search",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "query": query,

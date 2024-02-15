@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -26,7 +26,10 @@ class ROUTER_equity_price(Container):
     def historical(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed: fmp, polygon, tiingo, yfinance."
+            ),
         ],
         interval: Annotated[
             Optional[str],
@@ -53,13 +56,13 @@ class ROUTER_equity_price(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed: fmp, polygon, tiingo, yfinance.
         interval : Optional[str]
             Time interval of the data to return.
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'tiingo', 'yfinanc...
             The provider to use for the query, by default None.
@@ -173,7 +176,11 @@ class ROUTER_equity_price(Container):
             "/equity/price/historical",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/price/historical",
+                        ("fmp", "intrinio", "polygon", "tiingo", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -182,6 +189,16 @@ class ROUTER_equity_price(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={
+                    "symbol": {
+                        "multiple_items_allowed": [
+                            "fmp",
+                            "polygon",
+                            "tiingo",
+                            "yfinance",
+                        ]
+                    }
+                },
             )
         )
 
@@ -301,7 +318,11 @@ class ROUTER_equity_price(Container):
             "/equity/price/nbbo",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/price/nbbo",
+                        ("polygon",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -387,7 +408,11 @@ class ROUTER_equity_price(Container):
             "/equity/price/performance",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/price/performance",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -400,9 +425,9 @@ class ROUTER_equity_price(Container):
     def quote(
         self,
         symbol: Annotated[
-            str,
+            Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas."
+                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed: fmp, intrinio, yfinance."
             ),
         ],
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
@@ -412,8 +437,8 @@ class ROUTER_equity_price(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for. This endpoint will accept multiple symbols separated by commas.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed: fmp, intrinio, yfinance.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -548,11 +573,20 @@ class ROUTER_equity_price(Container):
             "/equity/price/quote",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/price/quote",
+                        ("fmp", "intrinio", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={
+                    "symbol": {
+                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
+                    }
+                },
             )
         )

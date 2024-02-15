@@ -98,7 +98,37 @@ class RegistryMap:
                         {p: {"model": provider_model, "is_list": is_list}}
                     )
 
+                self._merge_json_schema_extra(p, fetcher, standard_query, extra_query)
+
         return map_, return_schemas
+
+    def _merge_json_schema_extra(
+        self,
+        provider: str,
+        fetcher: Fetcher,
+        standard_query: dict,
+        extra_query: dict,
+    ):
+        """Merge json schema extra for different providers"""
+        model: BaseModel = RegistryMap._get_model(fetcher, "query_params")
+        for f, props in getattr(model, "__json_schema_extra__", {}).items():
+            for p in props:
+                if f in standard_query["fields"]:
+                    model_field = standard_query["fields"][f]
+                elif f in extra_query["fields"]:
+                    model_field = extra_query["fields"][f]
+                else:
+                    continue
+
+                if model_field.json_schema_extra is None:
+                    model_field.json_schema_extra = {}
+
+                if p not in model_field.json_schema_extra:
+                    model_field.json_schema_extra[p] = []
+
+                providers = model_field.json_schema_extra[p]
+                if provider not in providers:
+                    providers.append(provider)
 
     def _get_models(self, map_: MapType) -> List[str]:
         """Get available models."""
