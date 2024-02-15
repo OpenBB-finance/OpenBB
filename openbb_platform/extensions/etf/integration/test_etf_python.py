@@ -259,6 +259,7 @@ def test_etf_holdings_performance(params, obb):
         ({"symbol": "SPY,VOO,QQQ,IWM,IWN", "provider": "fmp"}),
     ],
 )
+@pytest.mark.integration
 def test_etf_equity_exposure(params, obb):
     params = {p: v for p, v in params.items() if v}
 
