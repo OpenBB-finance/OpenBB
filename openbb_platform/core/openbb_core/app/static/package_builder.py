@@ -2,6 +2,7 @@
 
 # pylint: disable=too-many-lines
 import builtins
+from dataclasses import Field
 import inspect
 import shutil
 import sys
@@ -44,7 +45,7 @@ from openbb_core.env import Env
 from openbb_core.provider.abstract.data import Data
 
 try:
-    from openbb_charting import Charting
+    from openbb_charting import Charting  # type: ignore
 
     CHARTING_INSTALLED = True
 except ImportError:
@@ -603,7 +604,7 @@ class MethodDefinition:
     ):
         """Add the field description to the param signature."""
         if model_name:
-            available_fields: Dict[str, FieldInfo] = (
+            available_fields: Dict[str, Field] = (
                 ProviderInterface().params[model_name]["standard"].__dataclass_fields__
             )
 
@@ -616,7 +617,9 @@ class MethodDefinition:
                 new_value = value.replace(
                     annotation=Annotated[
                         value.annotation,
-                        OpenBBCustomParameter(description=field.default.description),
+                        OpenBBCustomParameter(
+                            description=getattr(field.default, "description", "")
+                        ),
                     ],
                 )
 
@@ -773,7 +776,8 @@ class MethodDefinition:
         return code
 
     @classmethod
-    def get_expanded_type(cls, field_name: str, extra: Optional[dict] = None):
+    def get_expanded_type(cls, field_name: str, extra: Optional[dict] = None) -> object:
+        """Expand the original field type"""
         if extra and "multiple_items_allowed" in extra:
             return List[str]
         return cls.TYPE_EXPANSION.get(field_name, ...)
