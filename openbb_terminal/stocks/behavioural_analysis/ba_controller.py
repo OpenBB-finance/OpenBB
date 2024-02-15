@@ -45,8 +45,6 @@ class BehaviouralAnalysisController(StockBaseController):
     CHOICES_COMMANDS = [
         "load",
         "wsb",
-        "popular",
-        "getdd",
         "redditsent",
         "bullbear",
         "messages",
@@ -92,8 +90,6 @@ class BehaviouralAnalysisController(StockBaseController):
         mt.add_cmd("headlines", self.ticker)
         mt.add_cmd("snews", self.ticker)
         mt.add_cmd("wsb")
-        mt.add_cmd("popular")
-        mt.add_cmd("getdd")
         mt.add_cmd("redditsent", self.ticker)
         mt.add_cmd("trending")
         mt.add_cmd("stalker")
@@ -161,109 +157,6 @@ class BehaviouralAnalysisController(StockBaseController):
         if ns_parser:
             reddit_view.display_wsb_community(
                 limit=ns_parser.n_limit, new=ns_parser.b_new
-            )
-
-    @log_start_end(log=logger)
-    def call_popular(self, other_args: List[str]):
-        """Process popular command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="popular",
-            description="""Print latest popular tickers. [Source: Reddit]""",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=10,
-            help="limit of top tickers to retrieve",
-        )
-        parser.add_argument(
-            "-n",
-            "--num",
-            action="store",
-            dest="num",
-            type=check_positive,
-            default=10,
-            help="number of posts retrieved per sub reddit.",
-        )
-        parser.add_argument(
-            "-s",
-            "--sub",
-            action="store",
-            dest="s_subreddit",
-            type=str,
-            help="""
-                Subreddits to look for tickers, e.g. pennystocks,stocks.
-                Default: pennystocks, RobinHoodPennyStocks, Daytrading, StockMarket, stocks, investing,
-                wallstreetbets
-            """,
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            reddit_view.display_popular_tickers(
-                limit=ns_parser.limit,
-                post_limit=ns_parser.num,
-                subreddits=ns_parser.s_subreddit,
-                export=ns_parser.export,
-                sheet_name=(
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                ),
-            )
-
-    @log_start_end(log=logger)
-    def call_getdd(self, other_args: List[str]):
-        """Process getdd command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            prog="getdd",
-            description="""
-                Print top stock's due diligence from other users. [Source: Reddit]
-            """,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            action="store",
-            dest="limit",
-            type=check_positive,
-            default=5,
-            help="limit of posts to retrieve.",
-        )
-        parser.add_argument(
-            "-d",
-            "--days",
-            action="store",
-            dest="days",
-            type=check_positive,
-            default=3,
-            help="number of prior days to look for.",
-        )
-        parser.add_argument(
-            "-a",
-            "--all",
-            action="store_true",
-            dest="all",
-            default=False,
-            help="""
-                search through all flairs (apart from Yolo and Meme), otherwise we focus on
-                specific flairs: DD, technical analysis, Catalyst, News, Advice, Chart""",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            reddit_view.display_due_diligence(
-                limit=ns_parser.limit,
-                n_days=ns_parser.days,
-                show_all_flairs=ns_parser.all,
             )
 
     @log_start_end(log=logger)

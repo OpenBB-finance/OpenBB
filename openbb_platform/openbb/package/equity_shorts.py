@@ -86,7 +86,11 @@ class ROUTER_equity_shorts(Container):
             "/equity/shorts/fails_to_deliver",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/shorts/fails_to_deliver",
+                        ("sec",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,

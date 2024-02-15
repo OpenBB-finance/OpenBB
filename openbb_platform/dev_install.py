@@ -55,7 +55,7 @@ openbb-stockgrid = { path = "./providers/stockgrid" , optional = true,  develop 
 openbb_tmx = { path = "./providers/tmx", optional = true, develop = true }
 openbb-wsj = { path = "./providers/wsj", optional = true, develop = true }
 
-openbb-charting = { path = "./extensions/charting", optional = true, develop = true }
+openbb-charting = { path = "./obbject_extensions/charting", optional = true, develop = true }
 openbb-econometrics = { path = "./extensions/econometrics", optional = true, develop = true }
 openbb-quantitative = { path = "./extensions/quantitative", optional = true, develop = true }
 openbb-technical = { path = "./extensions/technical", optional = true, develop = true }

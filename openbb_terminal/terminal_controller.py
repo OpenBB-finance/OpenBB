@@ -89,7 +89,6 @@ class TerminalController(BaseController):
         "guess",
         "news",
         "intro",
-        "askobb",
         "record",
     ]
     CHOICES_MENUS = [
@@ -231,8 +230,6 @@ class TerminalController(BaseController):
         mt.add_cmd("record")
         mt.add_cmd("stop")
         mt.add_cmd("exe")
-        mt.add_raw("\n")
-        mt.add_cmd("askobb")
         mt.add_raw("\n")
         mt.add_info("_main_menu_")
         mt.add_menu("stocks")

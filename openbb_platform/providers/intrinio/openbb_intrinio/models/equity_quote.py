@@ -27,6 +27,8 @@ class IntrinioEquityQuoteQueryParams(EquityQuoteQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_security_realtime_price_v2
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     symbol: str = Field(
         description="A Security identifier (Ticker, FIGI, ISIN, CUSIP, Intrinio ID)."
     )

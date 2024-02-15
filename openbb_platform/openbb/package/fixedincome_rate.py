@@ -53,9 +53,9 @@ class ROUTER_fixedincome_rate(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             provider : Optional[Literal['fred']]
                 The provider to use for the query, by default None.
@@ -95,7 +95,11 @@ class ROUTER_fixedincome_rate(Container):
             "/fixedincome/rate/ameribor",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/rate/ameribor",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -133,9 +137,9 @@ class ROUTER_fixedincome_rate(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             provider : Optional[Literal['fred']]
                 The provider to use for the query, by default None.
@@ -175,7 +179,11 @@ class ROUTER_fixedincome_rate(Container):
             "/fixedincome/rate/dpcredit",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/rate/dpcredit",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -219,9 +227,9 @@ class ROUTER_fixedincome_rate(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             interest_rate_type : Literal['deposit', 'lending', 'refinancing']
                 The type of interest rate.
@@ -261,7 +269,11 @@ class ROUTER_fixedincome_rate(Container):
             "/fixedincome/rate/ecb",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/rate/ecb",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -299,9 +311,9 @@ class ROUTER_fixedincome_rate(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             provider : Optional[Literal['federal_reserve', 'fred']]
                 The provider to use for the query, by default None.
@@ -341,7 +353,11 @@ class ROUTER_fixedincome_rate(Container):
             "/fixedincome/rate/effr",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/rate/effr",
+                        ("federal_reserve", "fred"),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -415,7 +431,11 @@ class ROUTER_fixedincome_rate(Container):
             "/fixedincome/rate/effr_forecast",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/rate/effr_forecast",
+                        ("fred",),
+                    )
                 },
                 standard_params={},
                 extra_params=kwargs,
@@ -450,9 +470,9 @@ class ROUTER_fixedincome_rate(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             provider : Optional[Literal['fred']]
                 The provider to use for the query, by default None.
@@ -492,7 +512,11 @@ class ROUTER_fixedincome_rate(Container):
             "/fixedincome/rate/estr",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/rate/estr",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -529,9 +553,9 @@ class ROUTER_fixedincome_rate(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             provider : Optional[Literal['fred']]
                 The provider to use for the query, by default None.
@@ -569,7 +593,11 @@ class ROUTER_fixedincome_rate(Container):
             "/fixedincome/rate/iorb",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/rate/iorb",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -606,9 +634,9 @@ class ROUTER_fixedincome_rate(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             provider : Optional[Literal['fred']]
                 The provider to use for the query, by default None.
@@ -648,7 +676,11 @@ class ROUTER_fixedincome_rate(Container):
             "/fixedincome/rate/sonia",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/rate/sonia",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,

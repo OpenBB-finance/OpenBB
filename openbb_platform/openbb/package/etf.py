@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -76,7 +76,11 @@ class ROUTER_etf(Container):
             "/etf/countries",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/countries",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -112,9 +116,9 @@ class ROUTER_etf(Container):
         ----------
         symbol : str
             Symbol to get data for. (ETF)
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['yfinance']]
             The provider to use for the query, by default None.
@@ -162,7 +166,11 @@ class ROUTER_etf(Container):
             "/etf/historical",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/historical",
+                        ("yfinance",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -193,7 +201,7 @@ class ROUTER_etf(Container):
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
         date : Optional[Union[str, datetime.date]]
-            A specific date to get data for. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
+            A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
             A specific date to get data for.  The date represents the period ending.  The date entered will return the closest filing. (provider: sec)
         cik : Optional[str]
             The CIK of the filing entity. Overrides symbol. (provider: fmp)
@@ -228,16 +236,19 @@ class ROUTER_etf(Container):
             The CUSIP of the holding. (provider: fmp, sec)
         isin : Optional[str]
             The ISIN of the holding. (provider: fmp, sec)
-        balance : Optional[float]
-            The balance of the holding. (provider: fmp, sec)
+        balance : Optional[int]
+            The balance of the holding, in shares or units. (provider: fmp);
+            The balance of the holding. (provider: sec)
         units : Optional[Union[str, float]]
-            The units of the holding. (provider: fmp, sec)
+            The type of units. (provider: fmp);
+            The units of the holding. (provider: sec)
         currency : Optional[str]
             The currency of the holding. (provider: fmp, sec)
         value : Optional[float]
-            The value of the holding in USD. (provider: fmp, sec)
+            The value of the holding, in dollars. (provider: fmp, sec)
         weight : Optional[float]
-            The weight of the holding in ETF in %. (provider: fmp, sec)
+            The weight of the holding, as a normalized percent. (provider: fmp);
+            The weight of the holding in ETF in %. (provider: sec)
         payoff_profile : Optional[str]
             The payoff profile of the holding. (provider: fmp, sec)
         asset_category : Optional[str]
@@ -260,6 +271,8 @@ class ROUTER_etf(Container):
             The CIK of the filing. (provider: fmp)
         acceptance_datetime : Optional[str]
             The acceptance datetime of the filing. (provider: fmp)
+        updated : Optional[Union[date, datetime]]
+            The date the data was updated. (provider: fmp)
         other_id : Optional[str]
             Internal identifier for the holding. (provider: sec)
         loan_value : Optional[float]
@@ -383,7 +396,11 @@ class ROUTER_etf(Container):
             "/etf/holdings",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/holdings",
+                        ("fmp", "sec"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -443,7 +460,11 @@ class ROUTER_etf(Container):
             "/etf/holdings_date",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/holdings_date",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -529,7 +550,11 @@ class ROUTER_etf(Container):
             "/etf/holdings_performance",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/holdings_performance",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -542,7 +567,10 @@ class ROUTER_etf(Container):
     def info(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. (ETF) Multiple items allowed: yfinance."
+            ),
         ],
         provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
@@ -551,8 +579,8 @@ class ROUTER_etf(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for. (ETF)
+        symbol : Union[str, List[str]]
+            Symbol to get data for. (ETF) Multiple items allowed: yfinance.
         provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -679,12 +707,17 @@ class ROUTER_etf(Container):
             "/etf/info",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/info",
+                        ("fmp", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["yfinance"]}},
             )
         )
 
@@ -765,7 +798,11 @@ class ROUTER_etf(Container):
             "/etf/price_performance",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/price_performance",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -854,7 +891,11 @@ class ROUTER_etf(Container):
             "/etf/search",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/search",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "query": query,
@@ -914,7 +955,11 @@ class ROUTER_etf(Container):
             "/etf/sectors",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/sectors",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,

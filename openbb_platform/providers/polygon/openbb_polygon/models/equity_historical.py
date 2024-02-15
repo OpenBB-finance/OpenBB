@@ -36,6 +36,8 @@ class PolygonEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     Source: https://polygon.io/docs/stocks/getting-started
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     interval: str = Field(
         default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
     )

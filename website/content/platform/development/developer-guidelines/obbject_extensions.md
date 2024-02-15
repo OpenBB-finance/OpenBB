@@ -56,7 +56,7 @@ class Example:
         self._obbject = obbject
 
     def hello(self):
-        api_key = self._obbject._credentials.some_api_key.get_secret_value()
+        api_key = self._obbject._user_settings.credentials.some_api_key.get_secret_value()
         print(f"Hello, this is my credential: {api_key}!")
 ```
 

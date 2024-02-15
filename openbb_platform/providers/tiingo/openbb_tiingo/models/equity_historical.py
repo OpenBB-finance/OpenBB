@@ -24,6 +24,7 @@ class TiingoEquityHistoricalQueryParams(EquityHistoricalQueryParams):
         "start_date": "startDate",
         "end_date": "endDate",
     }
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     interval: Literal["1d", "1W", "1M", "1Y"] = Field(
         default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
