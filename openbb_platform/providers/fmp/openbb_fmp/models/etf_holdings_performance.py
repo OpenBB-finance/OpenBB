@@ -1,5 +1,7 @@
 """FMP ETF Holdings Performance Model."""
 
+# pylint: disable=unused-argument
+
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher

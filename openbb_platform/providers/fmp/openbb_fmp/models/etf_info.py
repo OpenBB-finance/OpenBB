@@ -1,5 +1,7 @@
 """FMP ETF Info Model."""
 
+# pylint: disable=unused-argument
+
 import asyncio
 import warnings
 from typing import Any, Dict, List, Optional
