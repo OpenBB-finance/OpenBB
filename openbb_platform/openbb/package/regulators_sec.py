@@ -1,6 +1,6 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
-from typing import Literal, Optional
+from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -27,7 +27,10 @@ class ROUTER_regulators_sec(Container):
     def cik_map(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed: intrinio, yfinance."
+            ),
         ],
         provider: Optional[Literal["sec"]] = None,
         **kwargs
@@ -36,8 +39,8 @@ class ROUTER_regulators_sec(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed: intrinio, yfinance.
         provider : Optional[Literal['sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'sec' if there is
@@ -73,12 +76,19 @@ class ROUTER_regulators_sec(Container):
             "/regulators/sec/cik_map",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/regulators/sec/cik_map",
+                        ("sec",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={
+                    "symbol": {"multiple_items_allowed": ["intrinio", "yfinance"]}
+                },
             )
         )
 
@@ -139,7 +149,11 @@ class ROUTER_regulators_sec(Container):
             "/regulators/sec/institutions_search",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/regulators/sec/institutions_search",
+                        ("sec",),
+                    )
                 },
                 standard_params={
                     "query": query,
@@ -199,7 +213,11 @@ class ROUTER_regulators_sec(Container):
             "/regulators/sec/rss_litigation",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/regulators/sec/rss_litigation",
+                        ("sec",),
+                    )
                 },
                 standard_params={},
                 extra_params=kwargs,
@@ -263,23 +281,27 @@ class ROUTER_regulators_sec(Container):
         >>> url = data.files[0]+data.files[-1]
         >>> #### The URL base will always be the 0 position in the list, feed  the URL back in as a parameter. ####
         >>> obb.regulators.sec.schema_files(url=url).results.files
-        >>>     ['https://xbrl.fasb.org/us-gaap/2024/',
+        >>>     ['https://xbrl.fasb.org/us-gaap/2024/'
         >>>     'USGAAP2024FileList.xml'
         >>>     'dis/'
         >>>     'dqcrules/'
-        >>>    'ebp/'
-        >>>    'elts/'
-        >>>    'entire/'
-        >>>    'meta/'
-        >>>    'stm/'
-        >>>    'us-gaap-2024.zip']
+        >>>     'ebp/'
+        >>>     'elts/'
+        >>>     'entire/'
+        >>>     'meta/'
+        >>>     'stm/'
+        >>>     'us-gaap-2024.zip']
         """  # noqa: E501
 
         return self._run(
             "/regulators/sec/schema_files",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/regulators/sec/schema_files",
+                        ("sec",),
+                    )
                 },
                 standard_params={
                     "query": query,
@@ -348,7 +370,11 @@ class ROUTER_regulators_sec(Container):
             "/regulators/sec/sic_search",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/regulators/sec/sic_search",
+                        ("sec",),
+                    )
                 },
                 standard_params={
                     "query": query,
@@ -414,7 +440,11 @@ class ROUTER_regulators_sec(Container):
             "/regulators/sec/symbol_map",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/regulators/sec/symbol_map",
+                        ("sec",),
+                    )
                 },
                 standard_params={
                     "query": query,
