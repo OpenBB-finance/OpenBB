@@ -96,6 +96,7 @@
     "equity_shorts_fails_to_deliver": "/equity/shorts/fails_to_deliver",
     "etf": "/etf",
     "etf_countries": "/etf/countries",
+    "etf_equity_exposure": "/etf/equity_exposure",
     "etf_historical": "/etf/historical",
     "etf_holdings": "/etf/holdings",
     "etf_holdings_date": "/etf/holdings_date",

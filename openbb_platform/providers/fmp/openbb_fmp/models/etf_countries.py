@@ -14,6 +14,8 @@ from openbb_fmp.utils.helpers import create_url, get_data_many
 class FMPEtfCountriesQueryParams(EtfCountriesQueryParams):
     """FMP ETF Countries Query."""
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
 
 class FMPEtfCountriesData(EtfCountriesData):
     """FMP ETF Countries Data."""
