@@ -10,6 +10,8 @@ from extensions.tests.utils.helpers import list_openbb_extensions
 cm = CommandMap()
 commands = list(cm.map.keys())
 
+# ruff: noqa: SIM114
+
 
 def parametrize(argnames: str, argvalues: List[Dict], **kwargs):
     """Custom parametrize decorator that filters test cases based on the environment."""
