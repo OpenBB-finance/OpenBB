@@ -1,4 +1,5 @@
 """Publish the OpenBB Platform to PyPi."""
+
 import argparse
 import subprocess
 import sys
@@ -11,7 +12,7 @@ EXTENSION_PACKAGES = ["extensions", "providers", "obbject_extensions"]
 
 CMD = [sys.executable, "-m", "poetry"]
 EXTENSION_DEPENDENCIES_UPDATE_CMD = ["add", "openbb-core=latest", "--lock"]
-VERSION_BUMP_CMD = ["version", "minor"]
+VERSION_BUMP_CMD = ["version", "patch"]
 PUBLISH_CMD = ["publish", "--build"]
 
 

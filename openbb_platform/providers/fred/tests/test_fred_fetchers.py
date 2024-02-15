@@ -19,6 +19,7 @@ from openbb_fred.models.hqm import FREDHighQualityMarketCorporateBondFetcher
 from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
 from openbb_fred.models.iorb_rates import FREDIORBFetcher
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
+from openbb_fred.models.regional import FredRegionalDataFetcher
 from openbb_fred.models.search import (
     FredSearchFetcher,
 )
@@ -281,5 +282,23 @@ def test_fred_series_fetcher(credentials=test_credentials):
     params = {"symbol": "SP500", "filter_variable": "frequency", "filter_value": "w"}
 
     fetcher = FredSeriesFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fred_regional_fetcher(credentials=test_credentials):
+    """Test FredRegionalFetcher."""
+    params = {
+        "symbol": "942",
+        "is_series_group": True,
+        "start_date": datetime.date(1975, 1, 1),
+        "frequency": "q",
+        "units": "Index 1980:Q1=100",
+        "region_type": "state",
+        "season": "NSA",
+    }
+
+    fetcher = FredRegionalDataFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

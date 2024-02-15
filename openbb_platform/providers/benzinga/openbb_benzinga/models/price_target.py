@@ -111,7 +111,6 @@ class BenzingaPriceTargetData(PriceTargetData):
         "published_date": "date",
         "news_url": "url_news",
         "adj_price_target": "adjusted_pt_current",
-        "analyst_name": "analyst",
         "price_target": "pt_current",
     }
 

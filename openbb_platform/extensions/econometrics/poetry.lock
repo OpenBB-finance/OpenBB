@@ -841,13 +841,13 @@ files = [
 
 [[package]]
 name = "openbb-core"
-version = "1.1.1"
+version = "1.1.2"
 description = "OpenBB package with core functionality"
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "openbb_core-1.1.1-py3-none-any.whl", hash = "sha256:56a8156494225cd920dd7b8998e754ace0e8c0ce569b0476f498fca3266e319d"},
-    {file = "openbb_core-1.1.1.tar.gz", hash = "sha256:69dafa517f600e97523c789af144e731adc2403a26ea6449a48e956066d5d37b"},
+    {file = "openbb_core-1.1.2-py3-none-any.whl", hash = "sha256:462419f771f0600db6b28307836e96280832c35587976dfc4c63987d7bc956e4"},
+    {file = "openbb_core-1.1.2.tar.gz", hash = "sha256:a8a25f0ee6f114921e96fbe96a7a0a31f8900d9e146f020bcd460122a16ba9e2"},
 ]
 
 [package.dependencies]
@@ -856,7 +856,7 @@ fastapi = ">=0.104.1,<0.105.0"
 html5lib = ">=1.1,<2.0"
 importlib-metadata = ">=6.8.0,<7.0.0"
 pandas = ">=1.5.3"
-posthog = ">=3.0.1,<4.0.0"
+posthog = ">=3.3.1,<4.0.0"
 pydantic = ">=2.5.1,<3.0.0"
 python-dotenv = ">=1.0.0,<2.0.0"
 python-jose = ">=3.3.0,<4.0.0"
@@ -965,13 +965,13 @@ test = ["pytest", "pytest-cov", "scipy"]
 
 [[package]]
 name = "posthog"
-version = "3.0.2"
+version = "3.4.1"
 description = "Integrate PostHog into any python application."
 optional = false
 python-versions = "*"
 files = [
-    {file = "posthog-3.0.2-py2.py3-none-any.whl", hash = "sha256:a8c0af6f2401fbe50f90e68c4143d0824b54e872de036b1c2f23b5abb39d88ce"},
-    {file = "posthog-3.0.2.tar.gz", hash = "sha256:701fba6e446a4de687c6e861b587e7b7741955ad624bf34fe013c06a0fec6fb3"},
+    {file = "posthog-3.4.1-py2.py3-none-any.whl", hash = "sha256:8f9e01fc223d113ad1b7fc66516bd2b7b745cb460802b757795d4cec16d91696"},
+    {file = "posthog-3.4.1.tar.gz", hash = "sha256:cbdae309e65172dcb7b921c611914139eb46a8a8f38266c2b51d78b60582af9d"},
 ]
 
 [package.dependencies]
@@ -984,7 +984,7 @@ six = ">=1.5"
 [package.extras]
 dev = ["black", "flake8", "flake8-print", "isort", "pre-commit"]
 sentry = ["django", "sentry-sdk"]
-test = ["coverage", "flake8", "freezegun (==0.3.15)", "mock (>=2.0.0)", "pylint", "pytest"]
+test = ["coverage", "flake8", "freezegun (==0.3.15)", "mock (>=2.0.0)", "pylint", "pytest", "pytest-timeout"]
 
 [[package]]
 name = "property-cached"
@@ -1794,4 +1794,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.8,<3.12"
-content-hash = "77376b07bf2bf3e9d5dc6bafb595d7ad9b86754578d585a181f966c32c77e60c"
+content-hash = "5000f97a4ae49fd8ea77fdb296e847d2d0496f1f083d09a67fae3e3998d4a382"

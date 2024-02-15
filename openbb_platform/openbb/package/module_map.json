@@ -19,6 +19,7 @@
     "economy_calendar": "/economy/calendar",
     "economy_composite_leading_indicator": "/economy/composite_leading_indicator",
     "economy_cpi": "/economy/cpi",
+    "economy_fred_regional": "/economy/fred_regional",
     "economy_fred_search": "/economy/fred_search",
     "economy_fred_series": "/economy/fred_series",
     "economy_gdp": "/economy/gdp",
