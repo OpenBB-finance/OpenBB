@@ -17,7 +17,6 @@ from typing import Any, Dict, List, Optional, Union
 
 # IMPORTS THIRDPARTY
 import numpy as np
-import openai
 import pandas as pd
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
@@ -42,8 +41,6 @@ from openbb_terminal.helper_funcs import (
     get_flair,
     parse_and_split_input,
     prefill_form,
-    query_LLM_local,
-    query_LLM_remote,
     screenshot,
     search_wikipedia,
     set_command_location,
@@ -115,7 +112,6 @@ class BaseController(metaclass=ABCMeta):
         "wiki",
         "stop",
         "screenshot",
-        "askobb",
         "hold",
     ]
 
@@ -375,134 +371,6 @@ class BaseController(metaclass=ABCMeta):
 
                     config_terminal.set_current_figure(None)
                     config_terminal.reset_legend()
-
-    def call_askobb(self, other_args: List[str]) -> None:
-        """Accept user input as a string and return the most appropriate Terminal command"""
-        self.save_class()
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="askobb",
-            description="Accept input as a string and return the most appropriate Terminal command",
-        )
-        parser.add_argument(
-            "--prompt",
-            "-p",
-            action="store",
-            type=str,
-            nargs="+",
-            dest="question",
-            required="-h" not in other_args and "--help" not in other_args,
-            default="",
-            help="Question for Askobb LLM",
-        )
-
-        parser.add_argument(
-            "--model",
-            "-m",
-            action="store",
-            type=str,
-            dest="gpt_model",
-            required=False,
-            default="gpt-3.5-turbo",
-            choices=["gpt-3.5-turbo", "gpt-4"],
-            help="GPT Model to use for Askobb LLM (default: gpt-3.5-turbo) or gpt-4 (beta)",
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-p")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-        )
-
-        if ns_parser:
-            # check if user has passed a question with 2 or more words
-            if len(ns_parser.question) < 2:
-                console.print("[red]Please enter a prompt with more than 1 word[/red]")
-            else:
-                api_key = get_current_user().credentials.API_OPENAI_KEY
-                if ns_parser.gpt_model == "gpt-4" and api_key == "REPLACE_ME":
-                    console.print(
-                        "[red]GPT-4 only available with local OPENAI Key.\n[/]"
-                    )
-                    return
-
-                if api_key == "REPLACE_ME":
-                    response, source_nodes = query_LLM_remote(
-                        " ".join(ns_parser.question)
-                    )
-
-                else:
-                    if ns_parser.gpt_model != "gpt-4":
-                        console.print(
-                            "[yellow]Using local OpenAI Key"
-                            ".  Please remove from OpenBB Hub to query askobb remotely.[/]\n"
-                        )
-                    # This is needed to avoid authentication error
-                    openai.api_key = api_key
-                    response, source_nodes = query_LLM_local(
-                        " ".join(ns_parser.question), ns_parser.gpt_model
-                    )
-
-                feedback = ""
-                if response is not None:
-                    # check that "I don't know" and "Sorry" is not the response
-                    if all(
-                        phrase not in response
-                        for phrase in [
-                            "I don't know",
-                            "Sorry",
-                            "I am not sure",
-                            "no terminal command provided",
-                            "no available",
-                            "no command provided",
-                            "no information",
-                            "does not contain",
-                            "I cannot provide",
-                        ]
-                    ):
-                        console.print(
-                            f"[green]Suggested Command:[/green] /{response}\n"
-                        )
-
-                        console.print(
-                            "[yellow]Would you like to run this command?(y/n/fb)[/yellow]"
-                        )
-                        user_response = input()
-                        if user_response == "y":
-                            self.queue.append("home/" + response)
-                        elif user_response == "n":
-                            console.print("Please refine your question and try again.")
-                        elif user_response == "fb":
-                            console.print(
-                                "\n[yellow]Please enter your feedback on askobb:[/] "
-                            )
-                            feedback = input()
-                            if feedback:
-                                console.print(
-                                    "\n[green]Thank you for your feedback![/]"
-                                )
-
-                    else:
-                        console.print(
-                            "[red]askobb could not respond with an appropriate answer.[/red]"
-                        )
-                        console.print("Please refine your question and try again.")
-
-                logger.info(
-                    "ASKOBB: %s ",
-                    json.dumps(
-                        {
-                            "Question": " ".join(ns_parser.question),
-                            "Model": ns_parser.gpt_model,
-                            "Response": response,
-                            "Nodes": str(source_nodes),
-                            "Feedback": feedback,
-                        }
-                    ),
-                )
 
     def save_class(self) -> None:
         """Save the current instance of the class to be loaded later."""

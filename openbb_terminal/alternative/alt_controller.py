@@ -23,7 +23,7 @@ class AlternativeDataController(BaseController):
     """Alternative Controller class"""
 
     CHOICES_COMMANDS: List[str] = ["hn"]
-    CHOICES_MENUS = ["covid", "oss", "realestate", "companieshouse"]
+    CHOICES_MENUS = ["oss", "realestate", "companieshouse"]
     PATH = "/alternative/"
     CHOICES_GENERATION = True
 
@@ -39,20 +39,12 @@ class AlternativeDataController(BaseController):
     def print_help(self):
         """Print help"""
         mt = MenuText("alternative/")
-        mt.add_menu("covid")
         mt.add_menu("oss")
         mt.add_menu("realestate")
         mt.add_menu("companieshouse")
         mt.add_raw("\n")
         mt.add_cmd("hn")
         console.print(text=mt.menu_text, menu="Alternative")
-
-    @log_start_end(log=logger)
-    def call_covid(self, _):
-        """Process covid command"""
-        from openbb_terminal.alternative.covid.covid_controller import CovidController
-
-        self.queue = self.load_class(CovidController, self.queue)
 
     @log_start_end(log=logger)
     def call_oss(self, _):
