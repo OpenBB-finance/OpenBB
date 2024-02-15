@@ -142,7 +142,7 @@ class ROUTER_etf(Container):
         >>> from openbb import obb
         >>> obb.etf.equity_exposure("MSFT", provider="fmp")
         >>> #### This function accepts multiple tickers. ####
-        >>> obb.etf.equity_exposure(MSFT,AAPL", provider="fmp")
+        >>> obb.etf.equity_exposure("MSFT,AAPL", provider="fmp")
         """  # noqa: E501
 
         return self._run(

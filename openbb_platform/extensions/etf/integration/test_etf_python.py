@@ -256,8 +256,7 @@ def test_etf_holdings_performance(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "provider": "fmp"}),
-        ({"symbol": "NVDA,INTC", "provider": "fmp"}),
+        ({"symbol": "SPY,VOO,QQQ,IWM,IWN", "provider": "fmp"}),
     ],
 )
 def test_etf_equity_exposure(params, obb):

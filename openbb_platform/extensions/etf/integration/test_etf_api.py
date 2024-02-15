@@ -269,8 +269,7 @@ def test_etf_holdings_performance(params, headers):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "provider": "fmp"}),
-        ({"symbol": "NVDA,INTC", "provider": "fmp"}),
+        ({"symbol": "SPY,VOO,QQQ,IWM,IWN", "provider": "fmp"}),
     ],
 )
 @pytest.mark.integration
