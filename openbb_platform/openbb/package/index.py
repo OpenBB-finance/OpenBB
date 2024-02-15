@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 from warnings import simplefilter, warn
 
 from openbb_core.app.deprecation import OpenBBDeprecationWarning
@@ -76,7 +76,11 @@ class ROUTER_index(Container):
             "/index/available",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/index/available",
+                        ("fmp", "yfinance"),
+                    )
                 },
                 standard_params={},
                 extra_params=kwargs,
@@ -149,7 +153,11 @@ class ROUTER_index(Container):
             "/index/constituents",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/index/constituents",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "index": index,
@@ -166,7 +174,10 @@ class ROUTER_index(Container):
     def market(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed: yfinance."
+            ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -187,11 +198,11 @@ class ROUTER_index(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
-        start_date : Optional[datetime.date]
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed: yfinance.
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'intrinio', 'polygon', 'yfinance']]
             The provider to use for the query, by default None.
@@ -284,7 +295,11 @@ class ROUTER_index(Container):
             "/index/market",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/index/market",
+                        ("fmp", "intrinio", "polygon", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -292,6 +307,7 @@ class ROUTER_index(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["yfinance"]}},
             )
         )
 

@@ -42,6 +42,7 @@ class FMPEquityProfileData(EquityInfoData):
         "long_description": "description",
         "first_stock_price_date": "ipoDate",
     }
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     is_etf: bool = Field(description="If the symbol is an ETF.")
     is_actively_trading: bool = Field(description="If the company is actively trading.")

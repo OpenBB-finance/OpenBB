@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -143,7 +143,11 @@ class ROUTER_equity_ownership(Container):
             "/equity/ownership/insider_trading",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/ownership/insider_trading",
+                        ("fmp", "intrinio"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -296,7 +300,11 @@ class ROUTER_equity_ownership(Container):
             "/equity/ownership/institutional",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/ownership/institutional",
+                        ("fmp", "intrinio"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -328,7 +336,7 @@ class ROUTER_equity_ownership(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        date : Optional[datetime.date]
+        date : Union[datetime.date, None, str]
             A specific date to get data for.
         page : Optional[int]
             Page number of the data to fetch.
@@ -442,7 +450,11 @@ class ROUTER_equity_ownership(Container):
             "/equity/ownership/major_holders",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/ownership/major_holders",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -457,7 +469,10 @@ class ROUTER_equity_ownership(Container):
     def share_statistics(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed: yfinance."
+            ),
         ],
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
@@ -466,8 +481,8 @@ class ROUTER_equity_ownership(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed: yfinance.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -536,11 +551,16 @@ class ROUTER_equity_ownership(Container):
             "/equity/ownership/share_statistics",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/ownership/share_statistics",
+                        ("fmp", "intrinio", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["yfinance"]}},
             )
         )

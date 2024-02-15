@@ -24,6 +24,7 @@ class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
         "limit": "pageSize",
         "symbol": "parameters[tickers]",
     }
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     fields: Optional[str] = Field(
         default=None,

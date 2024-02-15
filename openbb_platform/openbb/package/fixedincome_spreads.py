@@ -53,9 +53,9 @@ class ROUTER_fixedincome_spreads(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             maturity : Optional[Literal['3m', '2y']]
                 The maturity
@@ -95,7 +95,11 @@ class ROUTER_fixedincome_spreads(Container):
             "/fixedincome/spreads/tcm",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/spreads/tcm",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -138,9 +142,9 @@ class ROUTER_fixedincome_spreads(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             maturity : Optional[Literal['10y', '5y', '1y', '6m', '3m']]
                 The maturity
@@ -180,7 +184,11 @@ class ROUTER_fixedincome_spreads(Container):
             "/fixedincome/spreads/tcm_effr",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/spreads/tcm_effr",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,
@@ -224,9 +232,9 @@ class ROUTER_fixedincome_spreads(Container):
 
             Parameters
             ----------
-            start_date : Optional[datetime.date]
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             maturity : Optional[Literal['3m', '6m']]
                 The maturity
@@ -266,7 +274,11 @@ class ROUTER_fixedincome_spreads(Container):
             "/fixedincome/spreads/treasury_effr",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/fixedincome/spreads/treasury_effr",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "start_date": start_date,

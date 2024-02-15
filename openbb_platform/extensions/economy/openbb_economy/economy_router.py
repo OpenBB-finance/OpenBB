@@ -231,3 +231,26 @@ async def long_term_interest_rate(
     Low long-term interest rates encourage investment in new equipment and high interest rates discourage it.
     Investment is, in turn, a major source of economic growth."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="FredRegional",
+    exclude_auto_examples=True,
+    examples=[
+        "#### With no date, the most recent report is returned. ####",
+        'obb.economy.fred_regional("NYICLAIMS")',
+        "#### With a date, time series data is returned. ####",
+        'obb.economy.fred_regional("NYICLAIMS", start_date="2021-01-01")',
+    ],
+)
+async def fred_regional(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """
+    Query the Geo Fred API for regional economic data by series group.
+    The series group ID is found by using `fred_search` and the `series_id` parameter.
+    """
+    return await OBBject.from_query(Query(**locals()))

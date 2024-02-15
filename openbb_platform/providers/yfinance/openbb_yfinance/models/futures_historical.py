@@ -26,6 +26,8 @@ class YFinanceFuturesHistoricalQueryParams(FuturesHistoricalQueryParams):
     Source: https://finance.yahoo.com/crypto/
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
     period: Optional[PERIODS] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("period", "")
