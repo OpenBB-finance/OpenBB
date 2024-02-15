@@ -16,6 +16,8 @@ from openbb_core.provider.utils.descriptions import (
 class EquityOwnershipQueryParams(QueryParams):
     """Equity Ownership Query."""
 
+    __validator_dict__ = {"check_single": ("symbol",)}
+
     symbol: str = Field(description=QUERY_DESCRIPTIONS.get("symbol", ""))
     date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("date", "")

@@ -55,7 +55,7 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
     >>> obb.quantitative.normality(data=stock_data, target="close")
     """
     from scipy import stats  # pylint: disable=import-outside-toplevel
@@ -103,7 +103,7 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").results
     >>> obb.quantitative.capm(data=stock_data, target="close")
     """
     import statsmodels.api as sm  # pylint: disable=import-outside-toplevel # type: ignore
@@ -169,7 +169,7 @@ def omega_ratio(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
     >>> obb.quantitative.omega_ratio(data=stock_data, target="close")
     """
     df = basemodel_to_df(data)
@@ -223,7 +223,7 @@ def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
     >>> obb.quantitative.kurtosis(data=stock_data, target="close", window=252)
     """
     import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
@@ -272,7 +272,7 @@ def unitroot_test(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
     >>> obb.quantitative.unitroot_test(data=stock_data, target="close")
     >>> obb.quantitative.unitroot_test(data=stock_data, target="close", fuller_reg="ct", kpss_reg="ct")
     """
@@ -334,7 +334,7 @@ def sharpe_ratio(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
     >>> obb.quantitative.sharpe_ratio(data=stock_data, target="close")
     >>> obb.quantitative.sharpe_ratio(data=stock_data, target="close", rfr=0.01, window=126)
     """
@@ -393,7 +393,7 @@ def sortino_ratio(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
     >>> obb.quantitative.sortino_ratio(data=stock_data, target="close")
     >>> obb.quantitative.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)
     """
@@ -441,7 +441,7 @@ def skewness(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
     >>> obb.quantitative.skewness(data=stock_data, target="close", window=252)
     """
     import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
@@ -488,7 +488,7 @@ def quantile(
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
     >>> obb.quantitative.quantile(data=stock_data, target="close", window=252, quantile_pct=0.25)
     >>> obb.quantitative.quantile(data=stock_data, target="close", window=252, quantile_pct=0.75)
     """
@@ -532,7 +532,7 @@ def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
     Examples
     --------
     >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
+    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
     >>> obb.quantitative.summary(data=stock_data, target="close")
     """
     df = basemodel_to_df(data)

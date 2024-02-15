@@ -12,13 +12,9 @@ from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.cryptocurrency.defi import (
     coindix_model,
     coindix_view,
-    cryptosaurio_view,
     llama_model,
     llama_view,
-    smartstake_view,
     substack_view,
-    terramoney_fcd_model,
-    terramoney_fcd_view,
 )
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
@@ -26,7 +22,6 @@ from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
-    check_terra_address_format,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -45,12 +40,6 @@ class DefiController(BaseController):
         "dtvl",
         "newsletter",
         "vaults",
-        "sinfo",
-        "validators",
-        "gacc",
-        "sreturn",
-        "lcsc",
-        "anchor",
     ]
 
     PATH = "/crypto/defi/"
@@ -74,273 +63,7 @@ class DefiController(BaseController):
         mt.add_cmd("gdapps")
         mt.add_cmd("stvl")
         mt.add_cmd("dtvl")
-        mt.add_cmd("sinfo")
-        mt.add_cmd("validators")
-        mt.add_cmd("gacc")
-        mt.add_cmd("sreturn")
-        mt.add_cmd("lcsc")
-        mt.add_cmd("anchor")
         console.print(text=mt.menu_text, menu="Cryptocurrency - Decentralized Finance")
-
-    @log_start_end(log=logger)
-    def call_anchor(self, other_args: List[str]):
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="anchor",
-            description="""
-                Displays anchor protocol earnings data of a certain terra address
-                --transactions flag can be passed to show history of previous transactions
-                [Source: https://cryptosaurio.com/]
-            """,
-        )
-        parser.add_argument(
-            "--address",
-            dest="address",
-            type=check_terra_address_format,
-            help="Terra address. Valid terra addresses start with 'terra'",
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "--transactions",
-            action="store_true",
-            help="Flag to show transactions history in anchor earn",
-            dest="transactions",
-            default=False,
-        )
-
-        if other_args and other_args[0][0] != "-":
-            other_args.insert(0, "--address")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            cryptosaurio_view.display_anchor_data(
-                show_transactions=ns_parser.transactions,
-                export=ns_parser.export,
-                sheet_name=(
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                ),
-                address=ns_parser.address,
-            )
-
-    @log_start_end(log=logger)
-    def call_sinfo(self, other_args: List[str]):
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="sinfo",
-            description="""
-                Displays staking info of a certain terra address.
-                [Source: https://fcd.terra.dev/swagger]
-            """,
-        )
-        parser.add_argument(
-            "-a",
-            "--address",
-            dest="address",
-            type=check_terra_address_format,
-            help="Terra address. Valid terra addresses start with 'terra'",
-            required="-h" not in other_args,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="Number of delegations",
-            default=10,
-        )
-
-        if other_args and other_args[0][0] != "-":
-            other_args.insert(0, "-a")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            terramoney_fcd_view.display_account_staking_info(
-                address=ns_parser.address,
-                limit=ns_parser.limit,
-                export=ns_parser.export,
-                sheet_name=(
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                ),
-            )
-
-    @log_start_end(log=logger)
-    def call_validators(self, other_args: List[str]):
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="validators",
-            description="""
-                Displays information about terra validators.
-                [Source: https://fcd.terra.dev/swagger]
-            """,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="Number of validators to show",
-            default=10,
-        )
-        parser.add_argument(
-            "-s",
-            "--sort",
-            dest="sortby",
-            type=str,
-            help="Sort by given column. Default: votingPower",
-            default="votingPower",
-            choices=terramoney_fcd_model.VALIDATORS_COLUMNS,
-        )
-        parser.add_argument(
-            "-r",
-            "--reverse",
-            action="store_true",
-            dest="reverse",
-            default=False,
-            help=(
-                "Data is sorted in descending order by default. "
-                "Reverse flag will sort it in an ascending way. "
-                "Only works when raw data is displayed."
-            ),
-        )
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            terramoney_fcd_view.display_validators(
-                sortby=ns_parser.sortby,
-                ascend=ns_parser.reverse,
-                limit=ns_parser.limit,
-                export=ns_parser.export,
-                sheet_name=(
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                ),
-            )
-
-    @log_start_end(log=logger)
-    def call_gacc(self, other_args: List[str]):
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="gacc",
-            description="""
-                Displays terra blockchain account growth history.
-                [Source: https://fcd.terra.dev/swagger]
-            """,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="Number of days to show",
-            default=90,
-        )
-        parser.add_argument(
-            "--cumulative",
-            action="store_false",
-            help="Show cumulative or discrete values. For active accounts only discrete value are available",
-            dest="cumulative",
-            default=True,
-        )
-        parser.add_argument(
-            "-k",
-            "--kind",
-            dest="kind",
-            type=str,
-            help="Total account count or active account count. Default: total",
-            default="total",
-            choices=["active", "total"],
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-
-        if ns_parser:
-            terramoney_fcd_view.display_account_growth(
-                kind=ns_parser.kind,
-                export=ns_parser.export,
-                sheet_name=(
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                ),
-                cumulative=ns_parser.cumulative,
-                limit=ns_parser.limit,
-            )
-
-    @log_start_end(log=logger)
-    def call_sratio(self, other_args: List[str]):
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="sratio",
-            description="""
-                Displays terra blockchain staking ratio history.
-                [Source: https://fcd.terra.dev/swagger]
-            """,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="Number of days to show",
-            default=90,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-
-        if ns_parser:
-            terramoney_fcd_view.display_staking_ratio_history(
-                export=ns_parser.export,
-                sheet_name=(
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                ),
-                limit=ns_parser.limit,
-            )
-
-    @log_start_end(log=logger)
-    def call_sreturn(self, other_args: List[str]):
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="sreturn",
-            description="""
-                Displays terra blockchain staking returns history.
-                [Source: https://fcd.terra.dev/swagger]
-            """,
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            dest="limit",
-            type=check_positive,
-            help="Number of days to show",
-            default=90,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-
-        if ns_parser:
-            terramoney_fcd_view.display_staking_returns_history(
-                export=ns_parser.export,
-                sheet_name=(
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                ),
-                limit=ns_parser.limit,
-            )
 
     @log_start_end(log=logger)
     def call_gdapps(self, other_args: List[str]):
@@ -634,52 +357,6 @@ class DefiController(BaseController):
                 sortby=ns_parser.sortby,
                 ascend=ns_parser.reverse,
                 link=ns_parser.link,
-                export=ns_parser.export,
-                sheet_name=(
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                ),
-            )
-
-    def call_lcsc(self, other_args: List[str]):
-        """Process lcsc command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="lcsc",
-            description="""
-                Display Luna circulating supply changes stats.
-                [Source: Smartstake.io]
-
-                Follow these steps to get the key token:
-                1. Head to https://terra.smartstake.io/
-                2. Right click on your browser and choose Inspect
-                3. Select Network tab (by clicking on the expand button next to Source tab)
-                4. Go to Fetch/XHR tab, and refresh the page
-                5. Get the option looks similar to the following: `listData?type=history&dayCount=30`
-                6. Extract the key and token out of the URL
-
-            """,
-        )
-
-        parser.add_argument(
-            "-d",
-            "--days",
-            dest="days",
-            type=check_positive,
-            help="Number of days to display. Default: 30 days",
-            default=30,
-            choices=range(1, 1000),
-            metavar="DAYS",
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES, limit=5
-        )
-
-        if ns_parser:
-            smartstake_view.display_luna_circ_supply_change(
-                days=ns_parser.days,
-                limit=ns_parser.limit,
                 export=ns_parser.export,
                 sheet_name=(
                     " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
