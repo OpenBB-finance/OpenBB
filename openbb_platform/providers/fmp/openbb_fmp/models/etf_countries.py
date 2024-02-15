@@ -16,6 +16,7 @@ class FMPEtfCountriesQueryParams(EtfCountriesQueryParams):
 
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
+
 class FMPEtfCountriesData(EtfCountriesData):
     """FMP ETF Countries Data."""
 
