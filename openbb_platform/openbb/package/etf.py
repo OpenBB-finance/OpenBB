@@ -149,7 +149,11 @@ class ROUTER_etf(Container):
             "/etf/equity_exposure",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/etf/equity_exposure",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
