@@ -126,7 +126,11 @@ class ROUTER_currency(Container):
             "/currency/search",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/currency/search",
+                        ("fmp", "intrinio", "polygon"),
+                    )
                 },
                 standard_params={},
                 extra_params=kwargs,
