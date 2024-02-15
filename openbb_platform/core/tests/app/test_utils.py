@@ -129,7 +129,7 @@ def test_ndarray_to_basemodel(array, expected):
 
 
 @pytest.mark.parametrize(
-    "value, expected",
+    "item, expected",
     [
         ("SYMBOL", "SYMBOL"),
         (None, None),
@@ -138,9 +138,9 @@ def test_ndarray_to_basemodel(array, expected):
         ("SYMBOL1;SYMBOL2", OpenBBError),
     ],
 )
-def test_check_single_item(value, expected):
+def test_check_single_item(item, expected):
     if expected is OpenBBError:
         with pytest.raises(OpenBBError):
-            check_single_item(value)
+            check_single_item(item)
     else:
-        assert check_single_item(value) == expected
+        assert check_single_item(item) == expected
