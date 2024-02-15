@@ -7,6 +7,7 @@ from functools import partial, update_wrapper
 from types import MethodType
 from typing import Dict, List, Optional
 
+from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.menu import session
@@ -54,7 +55,11 @@ class PlatformController(BaseController):
             if ns_parser := self.parse_known_args_and_warn(parser, other_args):
                 try:
                     obbject = translator.execute_func(parsed_args=ns_parser)
-                    console.print(obbject.to_dataframe())
+
+                    if hasattr(ns_parser, "chart") and ns_parser.chart:
+                        obbject.show()
+                    else:
+                        print_rich_table(obbject.to_dataframe())
 
                 except Exception as e:
                     console.print(f"[red]{e}[/]\n")
@@ -91,7 +96,12 @@ class PlatformController(BaseController):
         """Print help."""
         mt = MenuText(self._name, 80)
 
+        mt.add_raw("Menus\n\n")
+        for menu in self.CHOICES_MENUS:
+            mt.add_menu(menu)
+
+        mt.add_raw("\nCommands\n\n")
         for command in self.CHOICES_COMMANDS:
-            mt.add_cmd(command)
+            mt.add_cmd(command.replace(f"{self._name}_", ""))
 
         console.print(text=mt.menu_text, menu=self._name)

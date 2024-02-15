@@ -61,6 +61,9 @@ class PocPlatformEquityController(PlatformController):
                     sub_menu_translators[new_name] = translator
                     choices_commands.append(new_name)
 
+                    self.CHOICES_COMMANDS.remove(translator_name)
+
+            PlatformController.CHOICES_COMMANDS = []
             PlatformController.CHOICES_COMMANDS.extend(choices_commands)
 
             self._generate_controller_call(
@@ -68,16 +71,3 @@ class PocPlatformEquityController(PlatformController):
                 name=path,
                 translators=sub_menu_translators,
             )
-
-    def print_help(self):
-        """Print help."""
-        mt = MenuText("poc_plat_equity/", 80)
-
-        menus = equity.paths
-
-        for key, value in menus.items():
-            if value == "path":
-                continue
-            mt.add_menu(key)
-
-        console.print(text=mt.menu_text, menu="POC Platform Equity")
