@@ -15,7 +15,7 @@ from openbb_core.app.utils import (
 from openbb_core.provider.abstract.data import Data
 from pydantic import NonNegativeFloat, PositiveInt
 
-from .helpers import get_fama_raw
+from .helpers import get_fama_raw, validate_window
 from .models import (
     ADFTestModel,
     CAPMModel,
@@ -196,8 +196,10 @@ def omega_ratio(
 
 
 @router.command(methods=["POST"])
-def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Data]]:
-    """Get the Kurtosis.
+def kurtosis(
+    data: List[Data], target: str, window: PositiveInt = 21, index: str = "date"
+) -> OBBject[List[Data]]:
+    """Get the rolling Kurtosis.
 
     Kurtosis provides insights into the shape of the data's distribution, particularly the heaviness of its tails.
     Kurtosis is a statistical measure that reveals whether the data points tend to cluster around the mean or if
@@ -214,6 +216,8 @@ def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
         Target column name.
     window : PositiveInt
         Window size.
+    index : str, optional
+        Index column name, by default "date"
 
     Returns
     -------
@@ -228,9 +232,12 @@ def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
     """
     import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
 
-    df = basemodel_to_df(data)
+    df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
-    results = ta.kurtosis(close=series_target, length=window).dropna()
+    validate_window(series_target, window)
+    results = (
+        ta.kurtosis(close=series_target, length=window).dropna().reset_index(drop=False)
+    )
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
@@ -304,9 +311,13 @@ def unitroot_test(
 
 @router.command(methods=["POST"])
 def sharpe_ratio(
-    data: List[Data], target: str, rfr: float = 0.0, window: PositiveInt = 252
+    data: List[Data],
+    target: str,
+    rfr: float = 0.0,
+    window: PositiveInt = 252,
+    index: str = "date",
 ) -> OBBject[List[Data]]:
-    """Get Sharpe Ratio.
+    """Get Rolling Sharpe Ratio.
 
     This function calculates the Sharpe Ratio, a metric used to assess the return of an investment compared to its risk.
     By factoring in the risk-free rate, it helps you understand how much extra return you're getting for the extra
@@ -325,6 +336,7 @@ def sharpe_ratio(
         Risk-free rate, by default 0.0
     window : PositiveInt, optional
         Window size, by default 252
+    index : str, optional
 
     Returns
     -------
@@ -338,12 +350,13 @@ def sharpe_ratio(
     >>> obb.quantitative.sharpe_ratio(data=stock_data, target="close")
     >>> obb.quantitative.sharpe_ratio(data=stock_data, target="close", rfr=0.01, window=126)
     """
-    df = basemodel_to_df(data)
+    df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
-
+    validate_window(series_target, window)
+    series_target.name = f"sharpe_{window}"
     returns = series_target.pct_change().dropna().rolling(window).sum()
     std = series_target.rolling(window).std() / np.sqrt(window)
-    results = ((returns - rfr) / std).dropna()
+    results = ((returns - rfr) / std).dropna().reset_index(drop=False)
 
     results = df_to_basemodel(results)
 
@@ -357,8 +370,9 @@ def sortino_ratio(
     target_return: float = 0.0,
     window: PositiveInt = 252,
     adjusted: bool = False,
+    index: str = "date",
 ) -> OBBject[List[Data]]:
-    """Get Sortino Ratio.
+    """Get rolling Sortino Ratio.
 
     The Sortino Ratio enhances the evaluation of investment returns by distinguishing harmful volatility
     from total volatility. Unlike other metrics that treat all volatility as risk, this command specifically assesses
@@ -384,7 +398,8 @@ def sortino_ratio(
         Window size, by default 252
     adjusted : bool, optional
         Adjust sortino ratio to compare it to sharpe ratio, by default False
-
+    index:str
+        Index column for input data
     Returns
     -------
     OBBject[List[Data]]
@@ -397,14 +412,18 @@ def sortino_ratio(
     >>> obb.quantitative.sortino_ratio(data=stock_data, target="close")
     >>> obb.quantitative.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)
     """
-    df = basemodel_to_df(data)
+    df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
-
+    validate_window(series_target, window)
     returns = series_target.pct_change().dropna().rolling(window).sum()
     downside_deviation = returns.rolling(window).apply(
         lambda x: (x.values[x.values < 0]).std() / np.sqrt(252) * 100
     )
-    results = ((returns - target_return) / downside_deviation).dropna()
+    results = (
+        ((returns - target_return) / downside_deviation)
+        .dropna()
+        .reset_index(drop=False)
+    )
 
     if adjusted:
         results = results / np.sqrt(2)
@@ -415,8 +434,10 @@ def sortino_ratio(
 
 
 @router.command(methods=["POST"])
-def skewness(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Data]]:
-    """Get Skewness.
+def skewness(
+    data: List[Data], target: str, window: PositiveInt = 21, index: str = "date"
+) -> OBBject[List[Data]]:
+    """Get Rolling Skewness.
 
     Skewness is a statistical measure that reveals the degree of asymmetry of a distribution around its mean.
     Positive skewness indicates a distribution with an extended tail to the right, while negative skewness shows a tail
@@ -432,7 +453,8 @@ def skewness(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
         Target column name.
     window : PositiveInt
         Window size.
-
+    index : str, optional
+        Index column name, by default "date"
     Returns
     -------
     OBBject[List[Data]]
@@ -446,9 +468,12 @@ def skewness(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
     """
     import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
 
-    df = basemodel_to_df(data)
+    df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
-    results = ta.skew(close=series_target, length=window).dropna()
+    validate_window(series_target, window)
+    results = (
+        ta.skew(close=series_target, length=window).dropna().reset_index(drop=False)
+    )
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
@@ -458,10 +483,11 @@ def skewness(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
 def quantile(
     data: List[Data],
     target: str,
-    window: PositiveInt,
+    window: PositiveInt = 21,
     quantile_pct: NonNegativeFloat = 0.5,
+    index: str = "date",
 ) -> OBBject[List[Data]]:
-    """Get Quantile.
+    """Get Rolling Quantile.
 
     Quantile is a statistical measure that identifies the value below which a given percentage of observations in a
     group of data falls. By setting the quantile percentage, you can determine any point in the distribution, not just
@@ -479,7 +505,7 @@ def quantile(
     window : PositiveInt
         Window size.
     quantile_pct : NonNegativeFloat, optional
-
+        Quantile to get
     Returns
     -------
     OBBject[List[Data]]
@@ -494,12 +520,14 @@ def quantile(
     """
     import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
 
-    df = basemodel_to_df(data)
+    df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
-
+    validate_window(series_target, window)
     df_median = ta.median(close=series_target, length=window).to_frame()
     df_quantile = ta.quantile(series_target, length=window, q=quantile_pct).to_frame()
-    results = pd.concat([df_median, df_quantile], axis=1).dropna()
+    results = (
+        pd.concat([df_median, df_quantile], axis=1).dropna().reset_index(drop=False)
+    )
 
     results_ = df_to_basemodel(results)
 

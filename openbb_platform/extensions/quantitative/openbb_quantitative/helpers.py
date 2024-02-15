@@ -1,6 +1,7 @@
 """Helper functions for Quantitative Analysis."""
 
 from io import BytesIO
+from typing import Union
 from urllib.request import urlopen
 from zipfile import ZipFile
 
@@ -51,3 +52,24 @@ def get_fama_raw(start_date: str, end_date: str) -> pd.DataFrame:
     df = df.loc[start_date:end_date]  # type: ignore
 
     return df
+
+
+def validate_window(input_data: Union[pd.Series, pd.DataFrame], window: int) -> None:
+    """Validate the window input.
+
+    Parameters
+    ----------
+    input_data : Union[pd.Series, pd.DataFrame]
+        The input data to be validated.
+    window : int
+        The window to be validated.
+
+    Raises
+    ------
+    ValueError
+        If the window is greater than the input data length.
+    """
+    if window > len(input_data):
+        raise ValueError(
+            f"Window '{window}' is greater than the input data length '{len(input_data)}'"
+        )
