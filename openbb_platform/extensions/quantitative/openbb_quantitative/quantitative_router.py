@@ -15,7 +15,7 @@ from openbb_core.app.utils import (
 from openbb_core.provider.abstract.data import Data
 from pydantic import NonNegativeFloat, PositiveInt
 
-from .helpers import get_fama_raw
+from .helpers import get_fama_raw, validate_window
 from .models import (
     ADFTestModel,
     CAPMModel,
@@ -234,6 +234,7 @@ def kurtosis(
 
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
+    validate_window(series_target, window)
     results = (
         ta.kurtosis(close=series_target, length=window).dropna().reset_index(drop=False)
     )
@@ -351,6 +352,7 @@ def sharpe_ratio(
     """
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
+    validate_window(series_target, window)
     series_target.name = f"sharpe_{window}"
     returns = series_target.pct_change().dropna().rolling(window).sum()
     std = series_target.rolling(window).std() / np.sqrt(window)
@@ -412,7 +414,7 @@ def sortino_ratio(
     """
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
-
+    validate_window(series_target, window)
     returns = series_target.pct_change().dropna().rolling(window).sum()
     downside_deviation = returns.rolling(window).apply(
         lambda x: (x.values[x.values < 0]).std() / np.sqrt(252) * 100
@@ -433,7 +435,7 @@ def sortino_ratio(
 
 @router.command(methods=["POST"])
 def skewness(
-    data: List[Data], target: str, window: PositiveInt, index: str = "date"
+    data: List[Data], target: str, window: PositiveInt = 21, index: str = "date"
 ) -> OBBject[List[Data]]:
     """Get Rolling Skewness.
 
@@ -468,6 +470,7 @@ def skewness(
 
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
+    validate_window(series_target, window)
     results = (
         ta.skew(close=series_target, length=window).dropna().reset_index(drop=False)
     )
@@ -480,7 +483,7 @@ def skewness(
 def quantile(
     data: List[Data],
     target: str,
-    window: PositiveInt,
+    window: PositiveInt = 21,
     quantile_pct: NonNegativeFloat = 0.5,
     index: str = "date",
 ) -> OBBject[List[Data]]:
@@ -519,11 +522,11 @@ def quantile(
 
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
-
+    validate_window(series_target, window)
     df_median = ta.median(close=series_target, length=window).to_frame()
     df_quantile = ta.quantile(series_target, length=window, q=quantile_pct).to_frame()
     results = (
-        pd.concat([df_median, df_quantile], axis=1).dropna().reser_index(drop=False)
+        pd.concat([df_median, df_quantile], axis=1).dropna().reset_index(drop=False)
     )
 
     results_ = df_to_basemodel(results)
