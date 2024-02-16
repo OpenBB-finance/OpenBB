@@ -1,6 +1,6 @@
-from openbb_quantitative.statistics import kurtosis, skew, mean, std_dev, var
 import pandas as pd
 import pytest
+from openbb_quantitative.statistics import kurtosis, mean, skew, std_dev
 
 test_data = pd.Series([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
