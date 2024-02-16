@@ -662,6 +662,34 @@ def test_equity_estimates_price_target(params, headers):
 @parametrize(
     "params",
     [
+        (
+            {
+                "symbol": "AAPL",
+                "limit": 10,
+                "provider": "benzinga",
+                # optional provider params
+                "fields": None,
+                "analyst_ids": None,
+                "firm_ids": None,
+                "firm_name": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_estimates_analyst_search(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/equity/estimates/analyst_search?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
         ({"symbol": "AAPL", "provider": "fmp"}),
         ({"symbol": "AAPL,AMZN,RELIANCE.NS", "provider": "yfinance"}),
     ],
