@@ -13,7 +13,9 @@ from openbb_core.app.utils import (
     get_target_columns,
 )
 from openbb_core.provider.abstract.data import Data
-from pydantic import NonNegativeFloat, PositiveInt
+from pydantic import PositiveInt
+
+from openbb_quantitative.rolling.rolling_router import router as rolling_router
 
 from .helpers import get_fama_raw, validate_window
 from .models import (
@@ -28,6 +30,7 @@ from .models import (
 )
 
 router = Router(prefix="")
+router.include_router(rolling_router)
 
 
 @router.command(methods=["POST"])
@@ -191,54 +194,6 @@ def omega_ratio(
     for i in threshold:
         omega_ = get_omega_ratio(series_target, i)
         results.append(OmegaModel(threshold=i, omega=omega_))
-
-    return OBBject(results=results)
-
-
-@router.command(methods=["POST"])
-def kurtosis(
-    data: List[Data], target: str, window: PositiveInt = 21, index: str = "date"
-) -> OBBject[List[Data]]:
-    """Get the rolling Kurtosis.
-
-    Kurtosis provides insights into the shape of the data's distribution, particularly the heaviness of its tails.
-    Kurtosis is a statistical measure that reveals whether the data points tend to cluster around the mean or if
-    outliers are more common than a normal distribution would suggest. A higher kurtosis indicates more data points are
-    found in the tails, suggesting potential volatility or risk.
-    This analysis is crucial for understanding the underlying characteristics of your data, helping to anticipate
-    extreme events or anomalies over a specified window of time.
-
-    Parameters
-    ----------
-    data : List[Data]
-        Time series data.
-    target : str
-        Target column name.
-    window : PositiveInt
-        Window size.
-    index : str, optional
-        Index column name, by default "date"
-
-    Returns
-    -------
-    OBBject[List[Data]]
-        Kurtosis.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.quantitative.kurtosis(data=stock_data, target="close", window=252)
-    """
-    import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
-
-    df = basemodel_to_df(data, index=index)
-    series_target = get_target_column(df, target)
-    validate_window(series_target, window)
-    results = (
-        ta.kurtosis(close=series_target, length=window).dropna().reset_index(drop=False)
-    )
-    results = df_to_basemodel(results)
 
     return OBBject(results=results)
 
@@ -427,107 +382,6 @@ def sortino_ratio(
 
     if adjusted:
         results = results / np.sqrt(2)
-
-    results_ = df_to_basemodel(results)
-
-    return OBBject(results=results_)
-
-
-@router.command(methods=["POST"])
-def skewness(
-    data: List[Data], target: str, window: PositiveInt = 21, index: str = "date"
-) -> OBBject[List[Data]]:
-    """Get Rolling Skewness.
-
-    Skewness is a statistical measure that reveals the degree of asymmetry of a distribution around its mean.
-    Positive skewness indicates a distribution with an extended tail to the right, while negative skewness shows a tail
-    that stretches left. Understanding skewness can provide insights into potential biases in data and help anticipate
-    the nature of future data points. It's particularly useful for identifying the likelihood of extreme outcomes in
-    financial returns, enabling more informed decision-making based on the distribution's shape over a specified period.
-
-    Parameters
-    ----------
-    data : List[Data]
-        Time series data.
-    target : str
-        Target column name.
-    window : PositiveInt
-        Window size.
-    index : str, optional
-        Index column name, by default "date"
-    Returns
-    -------
-    OBBject[List[Data]]
-        Skewness.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.quantitative.skewness(data=stock_data, target="close", window=252)
-    """
-    import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
-
-    df = basemodel_to_df(data, index=index)
-    series_target = get_target_column(df, target)
-    validate_window(series_target, window)
-    results = (
-        ta.skew(close=series_target, length=window).dropna().reset_index(drop=False)
-    )
-    results = df_to_basemodel(results)
-
-    return OBBject(results=results)
-
-
-@router.command(methods=["POST"])
-def quantile(
-    data: List[Data],
-    target: str,
-    window: PositiveInt = 21,
-    quantile_pct: NonNegativeFloat = 0.5,
-    index: str = "date",
-) -> OBBject[List[Data]]:
-    """Get Rolling Quantile.
-
-    Quantile is a statistical measure that identifies the value below which a given percentage of observations in a
-    group of data falls. By setting the quantile percentage, you can determine any point in the distribution, not just
-    the median. Whether you're interested in the median, quartiles, or any other position within your data's range,
-    this tool offers a precise way to understand the distribution's characteristics.
-    It's especially useful for identifying outliers, understanding dispersion, and setting thresholds for
-    decision-making based on the distribution of data over a specified period.
-
-    Parameters
-    ----------
-    data : List[Data]
-        Time series data.
-    target : str
-        Target column name.
-    window : PositiveInt
-        Window size.
-    quantile_pct : NonNegativeFloat, optional
-        Quantile to get
-    Returns
-    -------
-    OBBject[List[Data]]
-        Quantile.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.quantitative.quantile(data=stock_data, target="close", window=252, quantile_pct=0.25)
-    >>> obb.quantitative.quantile(data=stock_data, target="close", window=252, quantile_pct=0.75)
-    """
-    import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
-
-    df = basemodel_to_df(data, index=index)
-    series_target = get_target_column(df, target)
-    validate_window(series_target, window)
-    df_median = ta.median(close=series_target, length=window).to_frame()
-    df_quantile = ta.quantile(series_target, length=window, q=quantile_pct).to_frame()
-    results = (
-        pd.concat([df_median, df_quantile], axis=1).dropna().reset_index(drop=False)
-    )
 
     results_ = df_to_basemodel(results)
 
