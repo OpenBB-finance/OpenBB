@@ -586,7 +586,7 @@ def test_equity_ownership_major_holders(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "limit": 10, "provider": "fmp"}),
+        ({"symbol": "AAPL", "limit": 10, "provider": "fmp", "with_grade": True}),
         (
             {
                 "symbol": "AAPL",
@@ -595,8 +595,8 @@ def test_equity_ownership_major_holders(params, obb):
                 # optional provider params
                 "fields": None,
                 "date": None,
-                "date_from": None,
-                "date_to": None,
+                "start_date": None,
+                "end_date": None,
                 "importance": None,
                 "updated": None,
                 "action": None,

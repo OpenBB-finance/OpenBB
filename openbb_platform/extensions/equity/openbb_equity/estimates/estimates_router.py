@@ -46,3 +46,14 @@ async def consensus(
 ) -> OBBject:
     """Price Target Consensus. Price target consensus data."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(model="AnalystSearch")
+async def analyst_search(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Search for specific analysts and get their forecast track record."""
+    return await OBBject.from_query(Query(**locals()))

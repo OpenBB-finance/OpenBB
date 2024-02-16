@@ -22,7 +22,7 @@ class FMPEquityProfileQueryParams(EquityInfoQueryParams):
 
     Source: https://site.financialmodelingprep.com/developer/docs/companies-key-stats-free-api/
     """
-
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
 class FMPEquityProfileData(EquityInfoData):
     """FMP Equity Profile Data."""
