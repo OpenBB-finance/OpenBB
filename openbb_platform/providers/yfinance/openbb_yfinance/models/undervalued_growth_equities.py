@@ -1,5 +1,7 @@
 """Yahoo Finance Asset Undervalued Growth Tech Equities Model."""
 
+# pylint: disable=unused-argument
+
 import re
 from typing import Any, Dict, List, Optional
 
@@ -91,17 +93,21 @@ class YFUndervaluedGrowthEquitiesFetcher(
         def df_apply(data):
             """Replace abbreviations"""
             multipliers = {"M": 1e6, "B": 1e9, "T": 1e12}
+
+            def replace_suffix(x, suffix, multiplier):
+                return (
+                    float(str(x).replace(suffix, "")) * multiplier
+                    if suffix in str(x)
+                    else x
+                )
+
             for col in ["Market Cap", "Avg Vol (3 month)", "Volume", "% Change"]:
                 if col == "% Change":
                     data[col] = data[col].astype(str).str.replace("%", "").astype(float)
                 else:
                     for suffix, multiplier in multipliers.items():
                         data[col] = data[col].apply(
-                            lambda x: (
-                                float(str(x).replace(suffix, "")) * multiplier
-                                if suffix in str(x)
-                                else x
-                            )
+                            replace_suffix, args=(suffix, multiplier)
                         )
             return data
 
