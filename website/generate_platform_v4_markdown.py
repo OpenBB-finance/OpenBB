@@ -11,267 +11,20 @@ from openbb_core.app.router import Router, RouterLoader
 from openbb_core.provider import standard_models
 from pydantic_core import PydanticUndefined
 
-website_path = Path(__file__).parent.absolute()
-# SEO_META: Dict[str, Dict[str, Union[str, List[str]]]] = json.loads(
-#     (website_path / "metadata/platform_v4_seo_metadata.json").read_text()
-# )
+WEBSITE_PATH = Path(__file__).parent.absolute()
+SEO_METADATA_PATH = Path(WEBSITE_PATH / "metadata/platform_v4_seo_metadata.json")
+PLATFORM_CONTENT_PATH = Path(WEBSITE_PATH / "content/platform")
+PLATFORM_REFERENCE_PATH = Path(WEBSITE_PATH / "content/platform/reference")
+PLATFORM_DATA_MODELS_PATH = Path(WEBSITE_PATH / "content/platform/data_models")
 
-REFERENCE_IMPORT_UL = """import ReferenceCard from "@site/src/components/General/NewReferenceCard";
+PLATFORM_REFERENCE_IMPORT_UL = """import ReferenceCard from "@site/src/components/General/NewReferenceCard";
 
 <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
 """
-
-reference_import = (
+PLATFORM_REFERENCE_IMPORT = (
     'import ReferenceCard from "@site/src/components/General/NewReferenceCard";\n\n'
 )
-refrence_ul_element = """<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">"""
-
-
-# def get_annotation_type(annotation: Any) -> str:
-#     optional_regex = re.compile(r"Optional\[(.*)\]")
-#     annotated_regex = re.compile(r"Annotated\[(?P<type>.*)\,.*\]")
-
-#     subbed = re.sub(
-#         optional_regex,
-#         r"\1",
-#         str(annotation)
-#         .replace("<class '", "")
-#         .replace("'>", "")
-#         .replace("typing.", "")
-#         .replace("pydantic.types.", "")
-#         .replace("datetime.datetime", "datetime")
-#         .replace("datetime.date", "date")
-#         .replace("NoneType", "None")
-#         .replace(", None", "")
-#         .replace("openbb_core.provider.abstract.data.", "")
-#         .replace("pandas.core.frame.", "pd.")
-#         .replace("pandas.core.series.", "pd."),
-#     )
-#     if match := annotated_regex.match(subbed):
-#         subbed = match.group("type")
-
-#     return subbed
-
-
-# def get_command_meta(path: str, route_map: Dict[str, Any]) -> Dict[str, Any]:
-#     route = PathHandler.get_route(path=path, route_map=route_map)
-#     if not route:
-#         return {}
-
-#     func = route.endpoint  # type: ignore
-#     func_name = func.__name__
-#     model_name = route.openapi_extra.get("model", None) if route.openapi_extra else None
-
-#     sig = signature(func)
-#     parameter_map = dict(sig.parameters)
-#     formatted_params = MethodDefinition.format_params(path, parameter_map=parameter_map)
-
-#     meta_command: Dict[str, Union[List[Dict[str, str]], Any]] = {
-#         "name": func_name,
-#         "description": func.__doc__.strip() if func.__doc__ else "",
-#         "source_code_url": "",
-#         "func_def": "",
-#         "params": [],
-#         "provider_params": {},
-#         "returns": {},
-#         "schema": {},
-#         "model": model_name,
-#         "deprecated": route.deprecated or False,
-#         "deprecation_message": route.summary if route.deprecated else "",
-#     }
-
-#     # Extract the full path from the 'path' variable, excluding the method name
-#     path_components = path.strip("/").split("/")
-#     # Construct the full command path, e.g., 'obb.equity.estimates.consensus'
-#     full_command_path = "obb." + ".".join(path_components[:-1])
-
-#     # Now add the actual function name
-#     func_name = route.endpoint.__name__
-#     full_command_path += f".{func_name}"
-
-#     if model_name:
-#         providers = provider_interface.map[model_name]
-
-#         obb_query_fields: Dict[str, FieldInfo] = providers["openbb"]["QueryParams"][
-#             "fields"
-#         ]
-
-#         meta_command["description"] += "\n\n" + DocstringGenerator.generate_example(
-#             model_name=model_name,
-#             standard_params=obb_query_fields,
-#         )
-
-#         available_fields = list(obb_query_fields.keys())
-#         available_fields.extend(["chart", "provider"])
-
-#         for param in formatted_params.values():
-#             if param.name not in available_fields:
-#                 continue
-
-#             if param.name == "provider":
-#                 # pylint: disable=W0212
-#                 param_type = param._annotation  # type: ignore
-#                 default = param._annotation.__args__[0].__args__[0]  # type: ignore
-#                 description = (
-#                     "The provider to use for the query, by default None. "
-#                     f"If None, the provider specified in defaults is selected or '{default}' if there is no default."
-#                     ""
-#                 )
-#                 optional = "True"
-
-#             elif param.name == "chart":
-#                 param_type = "bool"
-#                 description = "Whether to create a chart or not, by default False."
-#                 optional = "True"
-#                 default = "False"
-#             else:
-#                 description = obb_query_fields[param.name].description  # type: ignore
-
-#                 param_type = param.annotation
-
-#                 if param.default is Parameter.empty:
-#                     default = ""
-#                     optional = "False"
-#                 else:
-#                     default = param.default
-#                     optional = "True"
-
-#             meta_command["params"].append(
-#                 {
-#                     "name": param.name,
-#                     "type": get_annotation_type(param_type),
-#                     "default": (
-#                         str(default)
-#                         if not isinstance(default, str) or not default
-#                         else f'"{default}"'
-#                     ),
-#                     "cleaned_type": re.sub(
-#                         r"Literal\[([^\"\]]*)\]",
-#                         f"Literal[{type(default).__name__}]",
-#                         get_annotation_type(param_type),
-#                     ),
-#                     "optional": optional,
-#                     "doc": (description or "").replace("\n", "<br/>").strip(),
-#                 }
-#             )
-
-#         # Update the func_def to include the full path
-#         def_params = [
-#             f"{d['name']}: {d['cleaned_type']}{' = ' + d['default'] if d['default'] else ''}"
-#             for d in meta_command["params"]
-#         ]
-#         meta_command["func_def"] = f"{full_command_path}({', '.join(def_params)})"
-
-#         available_providers = re.sub(
-#             r"Optional\[Literal\[([^\]]*)\]",
-#             r"\1",
-#             str(
-#                 getattr(formatted_params.get("provider", ""), "_annotation", "")
-#             ).replace("typing.", ""),
-#         )
-#         if sig.return_annotation != _empty:
-#             return_type = sig.return_annotation
-#             if hasattr(return_type, "__origin__"):
-#                 return_type = return_type.__origin__
-
-#             description = f"""OBBject
-#     results : List[{model_name}]
-#         Serializable results.
-
-#     provider : Optional[Literal[{available_providers}]
-#         Provider name.
-
-#     warnings : Optional[List[Warning_]]
-#         List of warnings.
-
-#     chart : Optional[Chart]
-#         Chart object.
-
-#     extra: Dict[str, Any]
-#         Extra info."""
-
-#             meta_command["returns"] = {
-#                 "type": return_type.__name__,
-#                 "doc": description,
-#             }
-
-#         standard, provider_extras, provider_params = {}, {}, {}  # type: ignore
-
-#         for provider_name, model_details in providers.items():
-#             data_fields: Dict[str, FieldInfo] = model_details["Data"]["fields"]
-#             query_fields: Dict[str, FieldInfo] = model_details["QueryParams"]["fields"]
-
-#             if provider_name == "openbb":
-#                 for name, field in data_fields.items():
-#                     standard[name] = {
-#                         "type": get_annotation_type(field.annotation),
-#                         "doc": (field.description or "").replace("\n", "<br/>").strip(),
-#                     }
-#             else:
-#                 for name, field in query_fields.items():
-#                     if name not in obb_query_fields:
-#                         provider_params.setdefault(provider_name, {})[name] = {
-#                             "type": get_annotation_type(field.annotation),
-#                             "doc": (field.description or "")
-#                             .replace("\n", "<br/>")
-#                             .strip(),
-#                             "optional": "True" if not field.is_required() else "False",
-#                             "default": str(field.default).replace(
-#                                 "PydanticUndefined", ""
-#                             ),
-#                         }
-#                 for name, field in data_fields.items():
-#                     if name not in providers["openbb"]["Data"]["fields"]:
-#                         provider_extras.setdefault(provider_name, {})[name] = {
-#                             "type": get_annotation_type(field.annotation),
-#                             "doc": (field.description or "")
-#                             .replace("\n", "<br/>")
-#                             .strip(),
-#                         }
-
-#         meta_command["schema"] = {
-#             "standard": standard,
-#             "provider_extras": provider_extras,
-#         }
-#         meta_command["provider_params"] = provider_params
-
-#     if not meta_command.get("params", None):
-#         meta_command.update(
-#             get_docstring_meta(func, full_command_path, formatted_params)
-#         )
-
-#     ref_path = full_command_path.replace("obb.", "")
-#     cmd_keywords = "\n- ".join(ref_path.split("."))
-#     default_desc = (
-#         meta_command.get("description", "").split(".").pop(0).strip().replace(":", "")
-#     )
-#     header = (
-#         f"title: {func_name}\ndescription: {default_desc}\nkeywords:\n- {cmd_keywords}"
-#     )
-
-#     if seo_meta := SEO_META.get(
-#         ref_path, SEO_META.get((".".join(path.split("/")[-2:])), None)
-#     ):
-#         keywords = "\n- ".join(seo_meta["keywords"])
-#         header = f"title: {seo_meta['title']}\ndescription: {seo_meta['description']}\nkeywords:\n- {keywords}"
-
-#     title = ref_path.split(".")
-#     title[0] += " "
-
-#     meta_command[
-#         "header"
-#     ] = f"""---\n{header}\n---\n
-# import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
-
-# <HeadTitle title="{'/'.join(title)} - Reference | OpenBB Platform Docs" />\n\n"""
-
-#     if meta_command["deprecated"]:
-#         meta_command[
-#             "header"
-#         ] += f":::caution Deprecated\n{meta_command['deprecation_message']}\n:::\n\n"
-
-
-#     return meta_command
+PLATFORM_REFERENCE_UL_ELEMENT = """<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">"""
 
 
 def get_field_data_type(field_type) -> str:
@@ -329,7 +82,7 @@ def get_provider_field_params(
     standard_model: str,
     params_type: str,
     provider: str = "openbb",
-) -> List[Dict[str, str]]:
+) -> List[Dict[str, Any]]:
     """Return the fields of the specified params_type for the specified provider of the standard_model.
 
     Args:
@@ -346,9 +99,7 @@ def get_provider_field_params(
             "name": field,
             "type": get_field_data_type(field_info.annotation),
             "description": field_info.description,
-            "default": (
-                "" if field_info.default == PydanticUndefined else field_info.default
-            ),
+            "default": "" if field_info.default is PydanticUndefined else str(field_info.default),  # fmt: skip
             "optional": not field_info.is_required(),
         }
         for field, field_info in pi.map[standard_model][provider][params_type][
@@ -381,6 +132,11 @@ def generate_reference_file() -> List[str]:
 
         reference[path] = {field: {} for field in REFERENCE_FIELDS}
 
+        # Add endpoint model
+        # Standard model also is the key to access router data
+        standard_model = route.openapi_extra["model"]
+        reference[path]["model"] = standard_model
+
         # Add endpoint deprecation details
         deprecated_value = getattr(route, "deprecated", None)
         reference[path]["deprecated"] = {
@@ -395,9 +151,6 @@ def generate_reference_file() -> List[str]:
         reference[path]["examples"] = route.openapi_extra.get("examples", [])
 
         # Add endpoint parameters and data fields
-        # We use standard as the key to match the documentation structure
-        standard_model = route.openapi_extra.get("model", None)
-
         # openbb provider is always present hence is the standard field
         reference[path]["parameters"]["standard"] = get_provider_field_params(
             pi, standard_model, "QueryParams"
@@ -474,107 +227,157 @@ def generate_reference_file() -> List[str]:
     return list(route_map.keys())
 
 
-def generate_markdown_seo(path: str, path_reference: Dict[str, Any]) -> str:
-    with open(f"{website_path}/metadata/platform_v4_seo_metadata.json") as f:
+def create_markdown_seo(path: str, path_description: str) -> str:
+    with open(SEO_METADATA_PATH) as f:
         seo_metadata = json.load(f)
 
-    seo_path = path.replace("/", ".")
+    path = path.replace("/", ".")
 
-    if seo_metadata.get(seo_path, None):
-        title = seo_metadata[seo_path]["title"]
-        description = seo_metadata[seo_path]["description"]
-        keywords = "- " + "\n- ".join(seo_metadata[seo_path]["keywords"])
+    if seo_metadata.get(path, None):
+        title = seo_metadata[path]["title"]
+        description = seo_metadata[path]["description"]
+        keywords = "- " + "\n- ".join(seo_metadata[path]["keywords"])
     else:
-        title = seo_path
-        description = path_reference["description"]
-        keywords = "- " + "\n- ".join(seo_path.split("."))
+        title = path
+        description = path_description
+        keywords = "- " + "\n- ".join(path.split("."))
 
-    title = seo_metadata[seo_path]["title"]
-    description = seo_metadata[seo_path]["description"]
-    keywords = "- " + "\n- ".join(seo_metadata[seo_path]["keywords"])
+    title = seo_metadata[path]["title"]
+    description = seo_metadata[path]["description"]
+    keywords = "- " + "\n- ".join(seo_metadata[path]["keywords"])
+
+    markdown = (
+        f"---\n"
+        f"title: {title}\n"
+        f"description: {description}\n"
+        f"keywords:\n{keywords}\n"
+        f"---\n\n"
+    )
+
+    return markdown
+
+
+def create_markdown_intro(
+    path: str, path_description: str, deprecated: Dict[str, str]
+) -> str:
+    deprecation_message = (
+        ":::caution Deprecated\n" f"{deprecated['message']}\n" ":::\n\n"
+        if deprecated["flag"]
+        else ""
+    )
+
+    markdown = (
+        "import HeadTitle from '@site/src/components/General/HeadTitle.tsx';\n\n"
+        f'<HeadTitle title="{path} - Reference | OpenBB Platform Docs" />\n\n'
+        f"{deprecation_message}"
+        "<!-- markdownlint-disable MD012 MD031 MD033 -->\n\n"
+        "import Tabs from '@theme/Tabs';\n"
+        "import TabItem from '@theme/TabItem';\n\n"
+        f"{path_description}\n\n"
+    )
+
+    return markdown
+
+
+def create_markdown_examples(examples: List[str]) -> str:
+    markdown = "Example\n"
+    markdown += "-------\n"
+    examples_str = "\n".join(examples)
+    markdown += f"```python\n{examples_str}\n```\n\n"
+    markdown += "---\n\n"
+
+    return markdown
+
+
+def create_markdown_tabular_section(
+    parameters: Dict[str, List[Dict[str, str]]], heading: str
+) -> str:
+    markdown = f"## {heading}\n\n"
+    tabs = ""
+
+    for provider, params_list in parameters.items():
+        params_table_rows = []
+
+        for params in params_list:
+            if params["name"] == "provider":
+                params["default"] = f"'{params['default']}'"
+
+            params_table_rows.append(
+                "| " + " | ".join(str(v) for v in params.values()) + " |"
+            )
+
+        tabs += (
+            f"\n<TabItem value='{provider}' label='{provider}'>\n\n"
+            "| Name | Type | Description | Default | Optional |\n"
+            "| ---- | ---- | ----------- | ------- | -------- |\n"
+            + "\n".join(params_table_rows)
+            + "\n</TabItem>\n"
+        )
+
+    markdown += f"<Tabs>\n{tabs}\n</Tabs>\n\n"
+    markdown += "---\n\n"
+
+    return markdown
+
+
+def create_markdown_returns_section(returns: List[Dict[str, str]]) -> str:
+    markdown = "## Returns\n\n"
+    returns_data = ""
+
+    for params in returns:
+        returns_data += f"\t{params['name']} : {params['type']}\n"
+        returns_data += f"\t\t{params['description']}\n"
+
+    markdown += "```python wordwrap\n"
+    markdown += "OBBject\n"
+    markdown += returns_data
+    markdown += "```\n\n"
+    markdown += "---\n\n"
+
+    return markdown
+
+
+def create_data_model_markdown(title: str, description: str, model: str) -> str:
+    file_name = find_data_model_implementation_file(model)
 
     markdown = "---\n"
     markdown += f"title: {title}\n"
     markdown += f"description: {description}\n"
-    markdown += f"keywords:\n{keywords}\n"
     markdown += "---\n\n"
-    # markdown += "<!-- markdownlint-disable MD012 MD031 MD033 -->\n\n"
-    # markdown += (
-    #     "import Tabs from '@theme/Tabs';\nimport TabItem from '@theme/TabItem';\n\n"
-    # )
+    markdown += "<!-- markdownlint-disable MD012 MD031 MD033 -->\n\n"
+    markdown += "import Tabs from '@theme/Tabs';\n"
+    markdown += "import TabItem from '@theme/TabItem';\n\n"
+    markdown += "---\n\n"
+    markdown += "## Implementation details\n\n"
+    markdown += "### Class names\n\n"
+    markdown += "| Model name | Parameters class | Data class |\n"
+    markdown += "| ---------- | ---------------- | ---------- |\n"
+    markdown += f"| {model} | {model}QueryParams | {model}Data |\n"
+    markdown += "\n### Import Statement\n\n"
+    markdown += "```python\n"
+    markdown += f"from openbb_core.provider.standard_models.{file_name} import (\n"
+    markdown += f"{model}Data,\n{model}QueryParams,\nData,\n"
+    markdown += ")\n"
+    markdown += "```\n\n"
 
     return markdown
 
 
-def generate_markdown_section(meta: Dict[str, Any]):
-    # Process description to handle docstring examples
-    lines = meta["description"].split("\n")
-    description = []
-    example_code = []
-    in_example_block = False
+def find_data_model_implementation_file(data_model: str) -> str:
+    def search_in_file(file_path: Path, search_string: str) -> bool:
+        with open(file_path, encoding="utf-8", errors="ignore") as file:
+            if search_string in file.read():
+                return True
+        return False
 
-    for line in lines:
-        if line.strip().startswith(">>>"):
-            in_example_block = True
-            # Remove leading '>>>' and spaces
-            example_line = line.strip()[4:]
-            example_code.append(example_line)
-        else:
-            if in_example_block:
-                # We've reached the end of an example block
-                in_example_block = False
-                # Append the gathered example code as a block
-                description.append("```python\n" + "\n".join(example_code) + "\n```\n")
-                example_code = []  # Reset for the next example block
-            # Add the current line to the description
-            description.append(line.strip())
+    standard_models_path = Path(standard_models.__file__).parent
+    file_name = ""
 
-    prev_snippet = "  "
-    for example in meta.get("examples", []):
-        if isinstance(example["snippet"], str) and ">>>" in example["snippet"]:
-            snippet = example["snippet"].replace(">>> ", "")
-            example_code.append(snippet)
-            if example["description"] and prev_snippet != "":
-                example_code.append(example["description"])
-                prev_snippet = snippet.strip()
-            elif example["description"]:
-                example_code.append(example["description"])
-        else:
-            if example["description"]:
-                example_code.append(example["description"])
-            prev_snippet = ""
+    for file in standard_models_path.glob("**/*.py"):
+        if search_in_file(file, f"class {data_model}Data"):
+            file_name = file.with_suffix("").name
 
-    # Join the description parts and handle any remaining example code
-    if example_code:  # If there's an example block at the end of the docstring
-        if meta.get("examples", []):
-            description.append("\nExample:\n-------\n")
-        description.append("\n\n```python\n" + "\n".join(example_code) + "\n```")
-
-    markdown_description = "\n".join(description)
-
-    markdown = markdown_description
-    markdown += "\n\n" if not markdown_description.endswith("\n\n") else ""
-
-    # Only add function definition if there was no example code
-    if not example_code and not re.search(r"```python", markdown):
-        markdown += "```python wordwrap\n" + meta["func_def"] + "\n```\n\n"
-
-    markdown += "---\n\n## Parameters\n\n"
-    if meta["params"]:
-        markdown += generate_params_markdown_section(meta)
-    else:
-        markdown += "This function does not take standardized parameters.\n\n"
-
-    markdown += "---\n\n## Returns\n\n"
-    if meta["returns"]:
-        return_desc = meta["returns"]["doc"] if meta["returns"]["doc"] else ""
-        markdown += f"```python wordwrap\n{return_desc}\n```\n\n"
-    else:
-        markdown += "This function does not return a standardized model\n\n"
-
-    markdown += "---\n\n"
-
-    return markdown
+    return file_name
 
 
 def create_nested_menus_card(folder: Path, url: str, data_models: bool = False) -> str:
@@ -642,7 +445,9 @@ def write_reference_index(
     data_models : bool, optional
         Whether the folder is a data_models folder, by default False
     """
-    f.write(f"# {fname}\n\n{REFERENCE_IMPORT_UL if data_models else reference_import}")
+    f.write(
+        f"# {fname}\n\n{PLATFORM_REFERENCE_IMPORT_UL if data_models else PLATFORM_REFERENCE_IMPORT}"
+    )
     sub_folders = [sub for sub in path.glob("*") if sub.is_dir()]
 
     menus = []
@@ -652,73 +457,17 @@ def write_reference_index(
         )
 
     if sub_folders and not data_models:
-        f.write(f"### Menus\n{refrence_ul_element}\n{''.join(menus)}</ul>\n")
+        f.write(f"### Menus\n{PLATFORM_REFERENCE_UL_ELEMENT}\n{''.join(menus)}</ul>\n")
 
     folder_cmd_cards: List[Dict[str, str]] = reference_cards.get(path, {})  # type: ignore
 
     if folder_cmd_cards:
         if not data_models:
-            f.write(f"\n\n### Commands\n{refrence_ul_element}\n")
+            f.write(f"\n\n### Commands\n{PLATFORM_REFERENCE_UL_ELEMENT}\n")
         f.write(create_cmd_cards(folder_cmd_cards, data_models) + "</ul>\n")
 
 
-def generate_params_markdown_section(meta: Dict[str, Any]):
-    if not meta.get("params", None):
-        return ""
-
-    markdown = """<Tabs>
-<TabItem value="standard" label="Standard">\n\n"""
-    markdown += "| Name | Type | Description | Default | Optional |\n"
-    markdown += "| ---- | ---- | ----------- | ------- | -------- |\n"
-    standard = ""
-    for param in meta["params"]:
-        standard += f"| {param['name']} | {param['type']} | {param['doc']} | {param['default']} | {param['optional']} |\n"
-
-    markdown += standard
-    markdown += "</TabItem>\n\n"
-
-    for provider, fields in meta["provider_params"].items():
-        markdown += f"<TabItem value='{provider}' label='{provider}'>\n\n"
-        markdown += "| Name | Type | Description | Default | Optional |\n"
-        markdown += "| ---- | ---- | ----------- | ------- | -------- |\n"
-        markdown += standard
-        for name, field in fields.items():
-            markdown += f"| {name} | {field['type']} | {field['doc']} | {field['default']} | {field['optional']} |\n"
-        markdown += "</TabItem>\n\n"
-
-    markdown += "</Tabs>\n\n"
-    return markdown
-
-
-def generate_data_markdown_section(meta: Dict[str, Any], command: bool = True):
-    if not meta.get("schema", None):
-        return ""
-
-    markdown = "## Data\n\n" if command else ""
-    markdown += """<Tabs>
-<TabItem value="standard" label="Standard">\n\n"""
-    markdown += "| Name | Type | Description |\n"
-    markdown += "| ---- | ---- | ----------- |\n"
-    standard = ""
-    for name, field in meta["schema"]["standard"].items():
-        standard += f"| {name} | {field['type']} | {field['doc']} |\n"
-    markdown += standard
-    markdown += "</TabItem>\n\n"
-
-    for provider, fields in meta["schema"]["provider_extras"].items():
-        markdown += f"<TabItem value='{provider}' label='{provider}'>\n\n"
-        markdown += "| Name | Type | Description |\n"
-        markdown += "| ---- | ---- | ----------- |\n"
-        markdown += standard
-        for name, field in fields.items():
-            markdown += f"| {name} | {field['type']} | {field['doc']} |\n"
-        markdown += "</TabItem>\n\n"
-
-    markdown += "</Tabs>\n\n"
-    return markdown
-
-
-def generate_data_model_card_info(meta: Dict[str, Any]) -> Tuple[str, str]:
+def create_data_model_card_info(meta: Dict[str, Any]) -> Tuple[str, str]:
     description = meta["description"]
 
     split_description = list(filter(None, description.split(".")))  # type: ignore
@@ -728,145 +477,122 @@ def generate_data_model_card_info(meta: Dict[str, Any]) -> Tuple[str, str]:
     return title, description
 
 
-def find_data_model_implementation_file(data_model: str) -> str:
-    def search_in_file(file_path: Path, search_string: str) -> bool:
-        with open(file_path, encoding="utf-8", errors="ignore") as file:
-            if search_string in file.read():
-                return True
-        return False
-
-    standard_models_path = Path(standard_models.__file__).parent
-    file_name = ""
-
-    for file in standard_models_path.glob("**/*.py"):
-        if search_in_file(file, f"class {data_model}Data"):
-            file_name = file.with_suffix("").name
-
-    return file_name
-
-
-def generate_implementation_details_markdown_section(data_model: str) -> str:
-    markdown = "---\n\n## Implementation details\n\n"
-    markdown += "### Class names\n\n"
-    markdown += "| Model name | Parameters class | Data class |\n"
-    markdown += "| ---------- | ---------------- | ---------- |\n"
-    markdown += f"| `{data_model}` | `{data_model}QueryParams` | `{data_model}Data` |\n"
-    markdown += "\n### Import Statement\n\n"
-    markdown += "```python\n"
-
-    file_name = find_data_model_implementation_file(data_model)
-
-    markdown += f"from openbb_core.provider.standard_models.{file_name} import (\n"
-    markdown += f"{data_model}Data,\n{data_model}QueryParams,\n"
-    markdown += ")\n```"
-
-    return markdown
-
-
-def generate_platform_markdown() -> None:
+def create_platform_markdown() -> None:
     """Generate markdown files for OpenBB Docusaurus website."""
-    # route_map = PathHandler.build_route_map()
-    # path_list = sorted(PathHandler.build_path_list(route_map=route_map))
     path_list = generate_reference_file()
 
-    with open(website_path / "content/platform/reference.json") as f:
+    with open(PLATFORM_CONTENT_PATH / "reference.json") as f:
         reference = json.load(f)
 
     print("Generating markdown files...")
     kwargs = {"encoding": "utf-8", "newline": "\n"}
-    content_path = website_path / "content/platform/reference"
-    data_models_path = website_path / "content/platform/data_models"
     reference_cards: Dict[Path, List[Dict[str, str]]] = {}
     data_reference_cards: Dict[Path, List[Dict[str, str]]] = {}
 
-    for file in content_path.glob("*"):
-        if file.is_file():
-            file.unlink()
-        else:
-            shutil.rmtree(file)
-    for file in data_models_path.glob("*"):
-        if file.is_file():
-            file.unlink()
-        else:
-            shutil.rmtree(file)
+    # Clear the platform/reference folder
+    shutil.rmtree(PLATFORM_REFERENCE_PATH, ignore_errors=True)
+
+    # Clear the platform/data_models folder
+    shutil.rmtree(PLATFORM_DATA_MODELS_PATH, ignore_errors=True)
 
     for path in path_list:
-        # meta_command = get_command_meta(path, route_map)
-        # if not meta_command:
-        #     continue
-        # func = PathHandler.get_route(path=path, route_map=route_map).endpoint
+        reference_markdown = ""
+        data_markdown = ""
+
         func_name = path.split("/")[-1]
 
-        # func_name = func.__name__
-        if func_name == "index":
-            func_name = "index_cmd"
-
         folder = "/".join(path.strip("/").split("/")[:-1])
-        filepath = content_path / folder / f"{func_name}.md"
+        filepath = PLATFORM_REFERENCE_PATH / folder / f"{func_name}.md"
 
-        # markdown = generate_markdown(meta_command=meta_command)
-        markdown = generate_markdown_seo(path, reference[path])
-
-        if data_model := meta_command.get("model", None):
-            ## title is the desc here - clean this later
-            (
-                data_model_card_title,
-                data_model_card_description,
-            ) = generate_data_model_card_info(meta_command)
-
-            title = re.sub(
-                r"([A-Z]{1}[a-z]+)|([A-Z]{3}|[SP500]|[EU])([A-Z]{1}[a-z]+)|([A-Z]{5,})",  # noqa: W605
-                lambda m: (
-                    f"{m.group(1) or m.group(4)} ".title()
-                    if not any([m.group(2), m.group(3)])
-                    else f"{m.group(2)} {m.group(3)} "
-                ),
-                data_model,
-            ).strip()
-
-            data_markdown = (
-                f"---\ntitle: {title}\n"
-                f"description: {data_model_card_title}\n---\n\n"
-                "<!-- markdownlint-disable MD012 MD031 MD033 -->\n\n"
-                "import Tabs from '@theme/Tabs';\nimport TabItem from '@theme/TabItem';\n\n"
-            )
-
-            data_markdown += generate_implementation_details_markdown_section(
-                data_model
-            )
-
-            data_model_markdown = generate_data_markdown_section(meta_command)
-            data_markdown += "\n\n## Parameters\n\n"
-            if meta_command["params"]:
-                data_markdown += generate_params_markdown_section(meta_command)
-
-            data_markdown += data_model_markdown
-            markdown += data_model_markdown
-
-            data_filepath = data_models_path / f"{data_model}.md"
-
-            data_reference_cards.setdefault(data_filepath.parent, []).append(
-                dict(
-                    title=title,
-                    description=data_model_card_title or "",
-                    url=data_models_path.relative_to(data_models_path) / data_model,
-                )
-            )
-            data_filepath.parent.mkdir(parents=True, exist_ok=True)
-            with open(data_filepath, "w", **kwargs) as f:  # type: ignore
-                f.write(data_markdown)
-
-        reference_cards.setdefault(filepath.parent, []).append(
-            dict(
-                title=func_name,
-                description=func.__doc__ or "",
-                url="/".join((content_path / folder).relative_to(content_path).parts),
-            )
+        reference_markdown = create_markdown_seo(
+            path[1:], reference[path]["description"]
+        )
+        reference_markdown += create_markdown_intro(
+            path[1:], reference[path]["description"], reference[path]["deprecated"]
+        )
+        reference_markdown += create_markdown_examples(reference[path]["examples"])
+        reference_markdown += create_markdown_tabular_section(
+            reference[path]["parameters"], "Parameters"
+        )
+        reference_markdown += create_markdown_returns_section(
+            reference[path]["returns"]["OBBject"]
+        )
+        reference_markdown += create_markdown_tabular_section(
+            reference[path]["data"], "Data"
         )
 
-        filepath.parent.mkdir(parents=True, exist_ok=True)
-        with open(filepath, "w", **kwargs) as f:  # type: ignore
-            f.write(markdown)
+        data_markdown = create_data_model_markdown(
+            reference[path]["title"],
+            reference[path]["description"],
+            reference[path]["model"],
+        )
+        data_markdown += create_markdown_tabular_section(
+            reference[path]["parameters"], "Parameters"
+        )
+        data_markdown += create_markdown_tabular_section(
+            reference[path]["data"], "Data"
+        )
+
+        # if data_model := meta_command.get("model", None):
+        #     ## title is the desc here - clean this later
+        #     (
+        #         data_model_card_title,
+        #         data_model_card_description,
+        #     ) = generate_data_model_card_info(meta_command)
+
+        #     title = re.sub(
+        #         r"([A-Z]{1}[a-z]+)|([A-Z]{3}|[SP500]|[EU])([A-Z]{1}[a-z]+)|([A-Z]{5,})",  # noqa: W605
+        #         lambda m: (
+        #             f"{m.group(1) or m.group(4)} ".title()
+        #             if not any([m.group(2), m.group(3)])
+        #             else f"{m.group(2)} {m.group(3)} "
+        #         ),
+        #         data_model,
+        #     ).strip()
+
+        #     data_markdown = (
+        #         f"---\ntitle: {title}\n"
+        #         f"description: {data_model_card_title}\n---\n\n"
+        #         "<!-- markdownlint-disable MD012 MD031 MD033 -->\n\n"
+        #         "import Tabs from '@theme/Tabs';\nimport TabItem from '@theme/TabItem';\n\n"
+        #     )
+
+        #     data_markdown += generate_implementation_details_markdown_section(
+        #         data_model
+        #     )
+
+        #     data_model_markdown = generate_data_markdown_section(meta_command)
+        #     data_markdown += "\n\n## Parameters\n\n"
+        #     if meta_command["params"]:
+        #         data_markdown += generate_params_markdown_section(meta_command)
+
+        #     data_markdown += data_model_markdown
+        #     markdown += data_model_markdown
+
+        #     data_filepath = data_models_path / f"{data_model}.md"
+
+        #     data_reference_cards.setdefault(data_filepath.parent, []).append(
+        #         dict(
+        #             title=title,
+        #             description=data_model_card_title or "",
+        #             url=data_models_path.relative_to(data_models_path) / data_model,
+        #         )
+        #     )
+        #     data_filepath.parent.mkdir(parents=True, exist_ok=True)
+        #     with open(data_filepath, "w", **kwargs) as f:  # type: ignore
+        #         f.write(data_markdown)
+
+        # reference_cards.setdefault(filepath.parent, []).append(
+        #     dict(
+        #         title=func_name,
+        #         description=func.__doc__ or "",
+        #         url="/".join((content_path / folder).relative_to(content_path).parts),
+        #     )
+        # )
+
+        # filepath.parent.mkdir(parents=True, exist_ok=True)
+        # with open(filepath, "w", **kwargs) as f:  # type: ignore
+        #     f.write(markdown)
 
     reference_cards = dict(sorted(reference_cards.items(), key=lambda item: item[0]))
     data_reference_cards = {
