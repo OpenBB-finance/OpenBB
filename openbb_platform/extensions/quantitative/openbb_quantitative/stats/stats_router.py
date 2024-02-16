@@ -13,7 +13,7 @@ from openbb_core.app.utils import (
 from openbb_core.provider.abstract.data import Data
 from pydantic import NonNegativeFloat
 
-from ..statistics import (
+from openbb_quantitative.statistics import (
     kurtosis as _kurtosis,
     mean as _mean,
     skew as _skew,
@@ -29,7 +29,7 @@ def skew(
     data: List[Data],
     target: str,
 ) -> OBBject[List[Data]]:
-    """Get the  skew. of tthe data set
+    """Get the  skew. of the data set
 
     Skew is a statistical measure that reveals the degree of asymmetry of a distribution around its mean.
     Positive skewness indicates a distribution with an extended tail to the right, while negative skewness shows a tail
