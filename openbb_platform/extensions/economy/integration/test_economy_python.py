@@ -491,7 +491,7 @@ def test_economy_long_term_interest_rate(params, obb):
 def test_economy_fred_regional(params, obb):
     params = {p: v for p, v in params.items() if v}
 
-    result = obb.economy.long_term_interest_rate(**params)
+    result = obb.economy.fred_regional(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

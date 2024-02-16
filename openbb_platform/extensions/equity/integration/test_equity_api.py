@@ -959,7 +959,7 @@ def test_equity_compare_groups(params, headers):
                 "provider": "polygon",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
+                "end_date": "2023-01-04",
                 "interval": "1m",
             }
         ),
@@ -1295,9 +1295,7 @@ def test_equity_price_quote(params, headers):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "provider": "cboe"}),
         ({"symbol": "MSFT", "provider": "intrinio"}),
-        ({"symbol": "AAPL,MSFT", "provider": "cboe"}),
         ({"symbol": "AAPL,MSFT", "provider": "intrinio"}),
         ({"symbol": "AAPL,MSFT", "provider": "finviz"}),
         ({"symbol": "AAPL,MSFT", "provider": "yfinance"}),

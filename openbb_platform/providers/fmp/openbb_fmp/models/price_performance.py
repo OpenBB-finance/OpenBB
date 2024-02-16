@@ -18,6 +18,8 @@ class FMPPricePerformanceQueryParams(RecentPerformanceQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/stock-split-calendar-api/
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
 
 class FMPPricePerformanceData(RecentPerformanceData):
     """FMP Price Performance Data."""

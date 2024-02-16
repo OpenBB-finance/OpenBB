@@ -1127,7 +1127,7 @@ def test_equity_fundamental_historical_attributes(params, obb):
         (
             {
                 "provider": "intrinio",
-                "symbol": ["AAPL", "MSFT"],
+                "symbol": ["MSFT", "AAPL"],
                 "tag": ["ceo", "ebitda"],
             }
         ),
