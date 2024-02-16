@@ -521,8 +521,17 @@ def create_platform_markdown() -> None:
             reference[path]["data"], "Data"
         )
 
+        data_markdown_title = re.sub(
+            r"([A-Z]{1}[a-z]+)|([A-Z]{3}|[SP500]|[EU])([A-Z]{1}[a-z]+)|([A-Z]{5,})",  # noqa: W605
+            lambda m: (
+                f"{m.group(1) or m.group(4)} ".title()
+                if not any([m.group(2), m.group(3)])
+                else f"{m.group(2)} {m.group(3)} "
+            ),
+            reference[path]["model"],
+        ).strip()
         data_markdown = create_data_model_markdown(
-            reference[path]["title"],
+            data_markdown_title,
             reference[path]["description"],
             reference[path]["model"],
         )
