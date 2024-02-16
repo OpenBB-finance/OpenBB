@@ -2,12 +2,7 @@
 
 # pylint: disable=unused-argument
 
-from datetime import (
-    date as dateType,
-    datetime,
-    time,
-    timezone,
-)
+from datetime import datetime
 from typing import Any, Dict, List, Optional, Union
 
 from openbb_core.provider.abstract.fetcher import Fetcher

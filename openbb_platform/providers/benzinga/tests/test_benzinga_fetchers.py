@@ -51,6 +51,6 @@ def test_benzinga_price_target_fetcher(credentials=test_credentials):
 def test_benzinga_analyst_search_fetcher(credentials=test_credentials):
     params = {"firm_name": "Barclays"}
 
-    fetcher = BenzingaPriceTargetFetcher()
+    fetcher = BenzingaAnalystSearchFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
