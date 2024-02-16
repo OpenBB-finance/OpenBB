@@ -1,0 +1,25 @@
+from openbb_quantitative.statistics import kurtosis, skew, mean, std_dev, var
+import pandas as pd
+import pytest
+
+test_data = pd.Series([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+
+def test_kurtosis():
+    assert kurtosis(test_data) == pytest.approx(-1.224, abs=1e-3)
+
+
+def test_skew():
+    assert skew(test_data) == pytest.approx(0.0, abs=1e-3)
+
+
+def test_mean():
+    assert mean(test_data) == pytest.approx(5.5, abs=1e-3)
+
+
+def test_std_dev():
+    assert std_dev(test_data) == pytest.approx(2.872, abs=1e-3)
+
+
+def test_mean():
+    assert mean(test_data) == pytest.approx(5.5, abs=1e-3)
