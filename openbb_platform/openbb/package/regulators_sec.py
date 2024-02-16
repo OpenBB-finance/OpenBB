@@ -29,7 +29,7 @@ class ROUTER_regulators_sec(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: finviz, intrinio, yfinance."
+                description="Symbol to get data for. Multiple items allowed: intrinio, yfinance."
             ),
         ],
         provider: Optional[Literal["sec"]] = None,
@@ -40,7 +40,7 @@ class ROUTER_regulators_sec(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: finviz, intrinio, yfinance.
+            Symbol to get data for. Multiple items allowed: intrinio, yfinance.
         provider : Optional[Literal['sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'sec' if there is
@@ -62,7 +62,7 @@ class ROUTER_regulators_sec(Container):
 
         CikMap
         ------
-        cik : Optional[Union[int, str]]
+        cik : Optional[Union[str, int]]
             Central Index Key (provider: sec)
 
         Example
@@ -87,9 +87,7 @@ class ROUTER_regulators_sec(Container):
                 },
                 extra_params=kwargs,
                 extra_info={
-                    "symbol": {
-                        "multiple_items_allowed": ["finviz", "intrinio", "yfinance"]
-                    }
+                    "symbol": {"multiple_items_allowed": ["intrinio", "yfinance"]}
                 },
             )
         )
@@ -138,7 +136,7 @@ class ROUTER_regulators_sec(Container):
         ------------------
         name : Optional[str]
             The name of the institution. (provider: sec)
-        cik : Optional[Union[int, str]]
+        cik : Optional[Union[str, int]]
             Central Index Key (CIK) (provider: sec)
 
         Example

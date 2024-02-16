@@ -230,9 +230,7 @@ class ROUTER_news(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
-        provider: Optional[
-            Literal["benzinga", "biztoc", "fmp", "intrinio", "tiingo"]
-        ] = None,
+        provider: Optional[Literal["benzinga", "fmp", "intrinio", "tiingo"]] = None,
         **kwargs
     ) -> OBBject:
         """World News. Global news data.
@@ -245,7 +243,7 @@ class ROUTER_news(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['benzinga', 'biztoc', 'fmp', 'intrinio', 'tiingo...
+        provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'tiingo']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
@@ -273,24 +271,17 @@ class ROUTER_news(Container):
             Authors of the news to retrieve. (provider: benzinga)
         content_types : Optional[str]
             Content types of the news to retrieve. (provider: benzinga)
-        filter : Literal['crypto', 'hot', 'latest', 'main', 'media', 'source', 'tag']
-            Filter by type of news. (provider: biztoc)
-        source : Optional[str]
-            Filter by a specific publisher. Only valid when filter is set to source. (provider: biztoc);
-            A comma-separated list of the domains requested. (provider: tiingo)
-        tag : Optional[str]
-            Tag, topic, to filter articles by. Only valid when filter is set to tag. (provider: biztoc)
-        term : Optional[str]
-            Search term to filter articles by. This overrides all other filters. (provider: biztoc)
         offset : Optional[int]
             Page offset, used in conjunction with limit. (provider: tiingo)
+        source : Optional[str]
+            A comma-separated list of the domains requested. (provider: tiingo)
 
         Returns
         -------
         OBBject
             results : List[WorldNews]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'biztoc', 'fmp', 'intrinio', 'tiingo']]
+            provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'tiingo']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -312,7 +303,7 @@ class ROUTER_news(Container):
         url : Optional[str]
             URL to the article.
         id : Optional[str]
-            Article ID. (provider: benzinga, biztoc, intrinio)
+            Article ID. (provider: benzinga, intrinio)
         author : Optional[str]
             Author of the news. (provider: benzinga)
         teaser : Optional[str]
@@ -321,14 +312,10 @@ class ROUTER_news(Container):
             Channels associated with the news. (provider: benzinga)
         stocks : Optional[str]
             Stocks associated with the news. (provider: benzinga)
-        tags : Optional[Union[List[str], str]]
-            Tags associated with the news. (provider: benzinga, biztoc, tiingo)
+        tags : Optional[str]
+            Tags associated with the news. (provider: benzinga, tiingo)
         updated : Optional[datetime]
             Updated date of the news. (provider: benzinga)
-        favicon : Optional[str]
-            Icon image for the source of the article. (provider: biztoc)
-        score : Optional[float]
-            Search relevance score for the article. (provider: biztoc)
         site : Optional[str]
             News source. (provider: fmp, tiingo)
         company : Optional[Dict[str, Any]]
@@ -363,7 +350,7 @@ class ROUTER_news(Container):
                     "provider": self._get_provider(
                         provider,
                         "/news/world",
-                        ("benzinga", "biztoc", "fmp", "intrinio", "tiingo"),
+                        ("benzinga", "fmp", "intrinio", "tiingo"),
                     )
                 },
                 standard_params={

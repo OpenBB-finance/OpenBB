@@ -14,7 +14,6 @@ from typing_extensions import Annotated
 class ROUTER_etf(Container):
     """/etf
     countries
-    /discovery
     equity_exposure
     historical
     holdings
@@ -33,10 +32,7 @@ class ROUTER_etf(Container):
     def countries(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. (ETF) Multiple items allowed: fmp."
-            ),
+            str, OpenBBCustomParameter(description="Symbol to get data for. (ETF)")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -45,8 +41,8 @@ class ROUTER_etf(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. (ETF) Multiple items allowed: fmp.
+        symbol : str
+            Symbol to get data for. (ETF)
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -91,16 +87,8 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
-
-    @property
-    def discovery(self):
-        # pylint: disable=import-outside-toplevel
-        from . import etf_discovery
-
-        return etf_discovery.ROUTER_etf_discovery(command_runner=self._command_runner)
 
     @validate
     def equity_exposure(
@@ -149,7 +137,7 @@ class ROUTER_etf(Container):
             The number of shares held in the ETF.
         weight : Optional[float]
             The weight of the equity in the ETF, as a normalized percent.
-        market_value : Optional[Union[int, float]]
+        market_value : Optional[Union[float, int]]
             The market value of the equity position in the ETF.
 
         Example
@@ -416,11 +404,11 @@ class ROUTER_etf(Container):
             The floating rate spread for reveivable portion of the swap. (provider: sec)
         rate_tenor_rec : Optional[str]
             The rate tenor for reveivable portion of the swap. (provider: sec)
-        rate_tenor_unit_rec : Optional[Union[int, str]]
+        rate_tenor_unit_rec : Optional[Union[str, int]]
             The rate tenor unit for reveivable portion of the swap. (provider: sec)
         reset_date_rec : Optional[str]
             The reset date for reveivable portion of the swap. (provider: sec)
-        reset_date_unit_rec : Optional[Union[int, str]]
+        reset_date_unit_rec : Optional[Union[str, int]]
             The reset date unit for reveivable portion of the swap. (provider: sec)
         rate_type_pmnt : Optional[str]
             The type of rate for payment portion of the swap. (provider: sec)
@@ -434,11 +422,11 @@ class ROUTER_etf(Container):
             The floating rate spread for payment portion of the swap. (provider: sec)
         rate_tenor_pmnt : Optional[str]
             The rate tenor for payment portion of the swap. (provider: sec)
-        rate_tenor_unit_pmnt : Optional[Union[int, str]]
+        rate_tenor_unit_pmnt : Optional[Union[str, int]]
             The rate tenor unit for payment portion of the swap. (provider: sec)
         reset_date_pmnt : Optional[str]
             The reset date for payment portion of the swap. (provider: sec)
-        reset_date_unit_pmnt : Optional[Union[int, str]]
+        reset_date_unit_pmnt : Optional[Union[str, int]]
             The reset date unit for payment portion of the swap. (provider: sec)
         repo_type : Optional[str]
             The type of repo. (provider: sec)
@@ -570,10 +558,7 @@ class ROUTER_etf(Container):
     def holdings_performance(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: fmp."
-            ),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -582,8 +567,8 @@ class ROUTER_etf(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: fmp.
+        symbol : str
+            Symbol to get data for.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -656,7 +641,6 @@ class ROUTER_etf(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 
@@ -824,23 +808,20 @@ class ROUTER_etf(Container):
     def price_performance(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: fmp."
-            ),
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["finviz", "fmp"]] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """Price performance as a return, over different periods. This is a proxy for `equity.price.performance`.
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: fmp.
-        provider : Optional[Literal['finviz', 'fmp']]
+        symbol : str
+            Symbol to get data for.
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'finviz' if there is
+            If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
 
         Returns
@@ -848,7 +829,7 @@ class ROUTER_etf(Container):
         OBBject
             results : List[PricePerformance]
                 Serializable results.
-            provider : Optional[Literal['finviz', 'fmp']]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -887,22 +868,8 @@ class ROUTER_etf(Container):
             Ten-year return.
         max : Optional[float]
             Return from the beginning of the time series.
-        volatility_week : Optional[float]
-            One-week realized volatility, as a normalized percent. (provider: finviz)
-        volatility_month : Optional[float]
-            One-month realized volatility, as a normalized percent. (provider: finviz)
-        price : Optional[float]
-            Last Price. (provider: finviz)
-        volume : Optional[float]
-            Current volume. (provider: finviz)
-        average_volume : Optional[float]
-            Average daily volume. (provider: finviz)
-        relative_volume : Optional[float]
-            Relative volume as a ratio of current volume to average volume. (provider: finviz)
-        analyst_recommendation : Optional[float]
-            The analyst consensus, on a scale of 1-5 where 1 is a buy and 5 is a sell. (provider: finviz)
         symbol : Optional[str]
-            The ticker symbol. (provider: finviz, fmp)
+            The ticker symbol. (provider: fmp)
 
         Example
         -------
@@ -917,14 +884,13 @@ class ROUTER_etf(Container):
                     "provider": self._get_provider(
                         provider,
                         "/etf/price_performance",
-                        ("finviz", "fmp"),
+                        ("fmp",),
                     )
                 },
                 standard_params={
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 

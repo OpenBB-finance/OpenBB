@@ -228,14 +228,14 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: benzinga, finviz."
+                description="Symbol to get data for. Multiple items allowed: benzinga."
             ),
         ],
         limit: Annotated[
             int,
             OpenBBCustomParameter(description="The number of data entries to return."),
         ] = 100,
-        provider: Optional[Literal["benzinga", "finviz", "fmp"]] = None,
+        provider: Optional[Literal["benzinga", "fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """Price Target. Price target data.
@@ -243,10 +243,10 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: benzinga, finviz.
+            Symbol to get data for. Multiple items allowed: benzinga.
         limit : int
             The number of data entries to return.
-        provider : Optional[Literal['benzinga', 'finviz', 'fmp']]
+        provider : Optional[Literal['benzinga', 'fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
             no default.
@@ -276,7 +276,7 @@ class ROUTER_equity_estimates(Container):
         OBBject
             results : List[PriceTarget]
                 Serializable results.
-            provider : Optional[Literal['benzinga', 'finviz', 'fmp']]
+            provider : Optional[Literal['benzinga', 'fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
@@ -345,10 +345,6 @@ class ROUTER_equity_estimates(Container):
             URL for analyst ratings page for this ticker on Benzinga.com. (provider: benzinga)
         name : Optional[str]
             Name of company that is subject of rating. (provider: benzinga)
-        status : Optional[str]
-            The action taken by the firm. This could be 'Upgrade', 'Downgrade', 'Reiterated', etc. (provider: finviz)
-        rating_change : Optional[str]
-            The rating given by the analyst. This could be 'Buy', 'Sell', 'Underweight', etc. If the rating is a revision, the change is indicated by '->' (provider: finviz)
         new_grade : Optional[str]
             New grade (provider: fmp)
         previous_grade : Optional[str]
@@ -369,7 +365,7 @@ class ROUTER_equity_estimates(Container):
                     "provider": self._get_provider(
                         provider,
                         "/equity/estimates/price_target",
-                        ("benzinga", "finviz", "fmp"),
+                        ("benzinga", "fmp"),
                     )
                 },
                 standard_params={
@@ -377,8 +373,6 @@ class ROUTER_equity_estimates(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                extra_info={
-                    "symbol": {"multiple_items_allowed": ["benzinga", "finviz"]}
-                },
+                extra_info={"symbol": {"multiple_items_allowed": ["benzinga"]}},
             )
         )
