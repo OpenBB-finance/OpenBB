@@ -600,8 +600,8 @@ def test_equity_ownership_major_holders(params, obb):
                 "importance": None,
                 "updated": None,
                 "action": None,
-                "analyst": None,
-                "firm": None,
+                "analyst_ids": None,
+                "firm_ids": None,
             }
         ),
         ({"symbol": "AAPL", "provider": "finviz"}),
@@ -620,14 +620,14 @@ def test_equity_estimates_price_target(params, obb):
     [
         (
             {
-                "symbol": "AAPL",
                 "limit": 10,
                 "provider": "benzinga",
                 # optional provider params
                 "fields": None,
                 "analyst_ids": None,
                 "firm_ids": None,
-                "firm_name": None,
+                "firm_name": "Barclays",
+                "analyst_name": None,
             }
         ),
     ],

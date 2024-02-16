@@ -19,7 +19,7 @@ router = Router(prefix="/estimates")
     model="PriceTarget",
     exclude_auto_examples=True,
     examples=[
-        'obb.equity.estimates.price_target(start_date="2020-01-01", end_date="2024-02-16",limit=10, symbol="msft", provider="benzinga",action="downgrades").to_df()'  # noqa: E501
+        'obb.equity.estimates.price_target(start_date="2020-01-01", end_date="2024-02-16",limit=10, symbol="msft", provider="benzinga",action="downgrades").to_df()'  # noqa: E501 pylint: disable=line-too-long
     ],
 )
 async def price_target(
