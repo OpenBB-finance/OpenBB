@@ -644,6 +644,7 @@ def test_equity_ownership_major_holders(params, headers):
                 "action": None,
                 "analyst_ids": None,
                 "firm_ids": None,
+                "page": 0,
             }
         ),
     ],

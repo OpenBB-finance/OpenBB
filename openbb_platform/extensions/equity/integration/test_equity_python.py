@@ -602,6 +602,7 @@ def test_equity_ownership_major_holders(params, obb):
                 "action": None,
                 "analyst_ids": None,
                 "firm_ids": None,
+                "page": 0,
             }
         ),
         ({"symbol": "AAPL", "provider": "finviz"}),
