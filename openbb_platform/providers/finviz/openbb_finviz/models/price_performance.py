@@ -19,7 +19,7 @@ class FinvizPricePerformanceQueryParams(RecentPerformanceQueryParams):
 
     Source: https://finviz.com/screener.ashx
     """
-
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
 class FinvizPricePerformanceData(RecentPerformanceData):
     """Finviz Price Performance Data."""
