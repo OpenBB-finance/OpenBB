@@ -2,28 +2,28 @@
 
 from typing import List, Literal
 
-import numpy as np
 import pandas as pd
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
     basemodel_to_df,
-    df_to_basemodel,
     get_target_column,
     get_target_columns,
 )
 from openbb_core.provider.abstract.data import Data
-from pydantic import PositiveInt
 
+from openbb_quantitative.performance.performance_router import (
+    router as performance_router,
+)
 from openbb_quantitative.rolling.rolling_router import router as rolling_router
+from openbb_quantitative.stats.stats_router import router as stats_router
 
-from .helpers import get_fama_raw, validate_window
+from .helpers import get_fama_raw
 from .models import (
     ADFTestModel,
     CAPMModel,
     KPSSTestModel,
     NormalityModel,
-    OmegaModel,
     SummaryModel,
     TestModel,
     UnitRootModel,
@@ -31,6 +31,8 @@ from .models import (
 
 router = Router(prefix="")
 router.include_router(rolling_router)
+router.include_router(stats_router)
+router.include_router(performance_router)
 
 
 @router.command(methods=["POST"])
@@ -141,64 +143,6 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
 
 
 @router.command(methods=["POST"])
-def omega_ratio(
-    data: List[Data],
-    target: str,
-    threshold_start: float = 0.0,
-    threshold_end: float = 1.5,
-) -> OBBject[List[OmegaModel]]:
-    """Calculate the Omega Ratio.
-
-    The Omega Ratio is a sophisticated metric that goes beyond traditional performance measures by considering the
-    probability of achieving returns above a given threshold. It offers a more nuanced view of risk and reward,
-    focusing on the likelihood of success rather than just average outcomes.
-
-    Parameters
-    ----------
-    data : List[Data]
-        Time series data.
-    target : str
-        Target column name.
-    threshold_start : float, optional
-        Start threshold, by default 0.0
-    threshold_end : float, optional
-        End threshold, by default 1.5
-
-    Returns
-    -------
-    OBBject[List[OmegaModel]]
-        Omega ratios.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.quantitative.omega_ratio(data=stock_data, target="close")
-    """
-    df = basemodel_to_df(data)
-    series_target = get_target_column(df, target)
-
-    epsilon = 1e-6  # to avoid division by zero
-
-    def get_omega_ratio(df_target: pd.Series, threshold: float) -> float:
-        """Get omega ratio."""
-        daily_threshold = (threshold + 1) ** np.sqrt(1 / 252) - 1
-        excess = df_target - daily_threshold
-        numerator = excess[excess > 0].sum()
-        denominator = -excess[excess < 0].sum() + epsilon
-
-        return numerator / denominator
-
-    threshold = np.linspace(threshold_start, threshold_end, 50)
-    results = []
-    for i in threshold:
-        omega_ = get_omega_ratio(series_target, i)
-        results.append(OmegaModel(threshold=i, omega=omega_))
-
-    return OBBject(results=results)
-
-
-@router.command(methods=["POST"])
 def unitroot_test(
     data: List[Data],
     target: str,
@@ -262,130 +206,6 @@ def unitroot_test(
         ),
     )
     return OBBject(results=unitroot_summary)
-
-
-@router.command(methods=["POST"])
-def sharpe_ratio(
-    data: List[Data],
-    target: str,
-    rfr: float = 0.0,
-    window: PositiveInt = 252,
-    index: str = "date",
-) -> OBBject[List[Data]]:
-    """Get Rolling Sharpe Ratio.
-
-    This function calculates the Sharpe Ratio, a metric used to assess the return of an investment compared to its risk.
-    By factoring in the risk-free rate, it helps you understand how much extra return you're getting for the extra
-    volatility that you endure by holding a riskier asset. The Sharpe Ratio is essential for investors looking to
-    compare the efficiency of different investments, providing a clear picture of potential rewards in relation to their
-    risks over a specified period. Ideal for gauging the effectiveness of investment strategies, it offers insights into
-    optimizing your portfolio for maximum return on risk.
-
-    Parameters
-    ----------
-    data : List[Data]
-        Time series data.
-    target : str
-        Target column name.
-    rfr : float, optional
-        Risk-free rate, by default 0.0
-    window : PositiveInt, optional
-        Window size, by default 252
-    index : str, optional
-
-    Returns
-    -------
-    OBBject[List[Data]]
-        Sharpe ratio.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.quantitative.sharpe_ratio(data=stock_data, target="close")
-    >>> obb.quantitative.sharpe_ratio(data=stock_data, target="close", rfr=0.01, window=126)
-    """
-    df = basemodel_to_df(data, index=index)
-    series_target = get_target_column(df, target)
-    validate_window(series_target, window)
-    series_target.name = f"sharpe_{window}"
-    returns = series_target.pct_change().dropna().rolling(window).sum()
-    std = series_target.rolling(window).std() / np.sqrt(window)
-    results = ((returns - rfr) / std).dropna().reset_index(drop=False)
-
-    results = df_to_basemodel(results)
-
-    return OBBject(results=results)
-
-
-@router.command(methods=["POST"])
-def sortino_ratio(
-    data: List[Data],
-    target: str,
-    target_return: float = 0.0,
-    window: PositiveInt = 252,
-    adjusted: bool = False,
-    index: str = "date",
-) -> OBBject[List[Data]]:
-    """Get rolling Sortino Ratio.
-
-    The Sortino Ratio enhances the evaluation of investment returns by distinguishing harmful volatility
-    from total volatility. Unlike other metrics that treat all volatility as risk, this command specifically assesses
-    the volatility of negative returns relative to a target or desired return.
-    It's particularly useful for investors who are more concerned with downside risk than with overall volatility.
-    By calculating the Sortino Ratio, investors can better understand the risk-adjusted return of their investments,
-    focusing on the likelihood and impact of negative returns.
-    This approach offers a more nuanced tool for portfolio optimization, especially in strategies aiming
-    to minimize the downside.
-
-    For method & terminology see:
-    http://www.redrockcapital.com/Sortino__A__Sharper__Ratio_Red_Rock_Capital.pdf
-
-    Parameters
-    ----------
-    data : List[Data]
-        Time series data.
-    target : str
-        Target column name.
-    target_return : float, optional
-        Target return, by default 0.0
-    window : PositiveInt, optional
-        Window size, by default 252
-    adjusted : bool, optional
-        Adjust sortino ratio to compare it to sharpe ratio, by default False
-    index:str
-        Index column for input data
-    Returns
-    -------
-    OBBject[List[Data]]
-        Sortino ratio.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.quantitative.sortino_ratio(data=stock_data, target="close")
-    >>> obb.quantitative.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)
-    """
-    df = basemodel_to_df(data, index=index)
-    series_target = get_target_column(df, target)
-    validate_window(series_target, window)
-    returns = series_target.pct_change().dropna().rolling(window).sum()
-    downside_deviation = returns.rolling(window).apply(
-        lambda x: (x.values[x.values < 0]).std() / np.sqrt(252) * 100
-    )
-    results = (
-        ((returns - target_return) / downside_deviation)
-        .dropna()
-        .reset_index(drop=False)
-    )
-
-    if adjusted:
-        results = results / np.sqrt(2)
-
-    results_ = df_to_basemodel(results)
-
-    return OBBject(results=results_)
 
 
 @router.command(methods=["POST"])
