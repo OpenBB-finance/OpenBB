@@ -146,7 +146,7 @@ class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
         """Convert a List[str] to a string list."""
         if isinstance(v, str):
             return v
-        return ",".join([char for char in list(v)])
+        return ",".join(v) if v else None
 
 
 class BenzingaPriceTargetData(PriceTargetData):
