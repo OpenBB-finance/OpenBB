@@ -51,17 +51,14 @@ class TmxEtfSectorsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
 
-        symbols = query.symbol.split(",")
         target = DataFrame()
         _data = DataFrame(await get_all_etfs(use_cache=query.use_cache))
-        symbol = symbols[0]
-        if len(symbols) > 1:
-            _warn(
-                "Multiple symbols provided, but are not allowed, using the first one: "
-                + symbol
-            )
-        if ".TO" in symbol:
-            symbol = symbol.replace(".TO", "")  # noqa
+        symbol = (
+            query.symbol.upper()
+            .replace("-", ".")
+            .replace(".TO", "")
+            .replace(".TSX", "")
+        )
         _target = _data[_data["symbol"] == symbol]["sectors"]
         if len(_target) > 0:
             target = DataFrame.from_records(_target.iloc[0]).rename(

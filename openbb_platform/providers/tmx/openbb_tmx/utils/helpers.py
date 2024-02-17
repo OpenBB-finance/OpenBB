@@ -342,14 +342,14 @@ def check_weekday(date) -> str:
         Date in YYYY-MM-DD format.  If the date is a weekend, returns the date of the next weekday.
     """
 
-    if pd.to_datetime(date).weekday() not in range(0, 5):
-        date_ = next_workday(pd.to_datetime(date)).strftime("%Y-%m-%d")
-        date = date_
+    if pd.to_datetime(date).weekday() > 4:
+        return next_workday(pd.to_datetime(date)).strftime("%Y-%m-%d")
     return date
 
 
 async def get_all_etfs(use_cache: bool = True) -> List[Dict]:
-    """Gets a summary of the TMX ETF universe.
+    """
+    Gets a summary of the TMX ETF universe.
 
     Returns
     -------
@@ -463,11 +463,7 @@ async def get_current_options(symbol: str, use_cache: bool = True) -> pd.DataFra
     symbol = symbol.upper()
 
     # Remove exchange  identifiers from the symbol.
-    if ".TO" in symbol:
-        symbol = symbol.replace(".TO", "")
-    if ".TSX" in symbol:
-        symbol = symbol.replace(".TSX", "")
-
+    symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
     # Underlying symbol may have a different ticker symbol than the ticker used to lookup options.
     if len(SYMBOLS[SYMBOLS["underlying_symbol"].str.contains(symbol)]) == 1:
         symbol = SYMBOLS[SYMBOLS["underlying_symbol"] == symbol].index.values[0]
@@ -567,10 +563,7 @@ async def download_eod_chains(
     symbol = symbol.upper()
     SYMBOLS = await get_all_options_tickers(use_cache=False)
     # Remove echange  identifiers from the symbol.
-    if ".TO" in symbol:
-        symbol = symbol.replace(".TO", "")
-    if ".TSX" in symbol:
-        symbol = symbol.replace(".TSX", "")
+    symbol = symbol.upper().replace("-", ".").replace(".TO", "").replace(".TSX", "")
 
     # Underlying symbol may have a different ticker symbol than the ticker used to lookup options.
     if len(SYMBOLS[SYMBOLS["underlying_symbol"].str.contains(symbol)]) == 1:

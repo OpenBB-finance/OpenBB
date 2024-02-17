@@ -34,7 +34,7 @@ class TmxEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     Ticker symbols are assumed to be Canadian listings when no suffix is provided.
     ".TO" or ."TSX" are accepted but will automatically be removed.
 
-    US tickerse are supported via their composite format: "AAPL:US"
+    US tickers are supported via their composite format: "AAPL:US"
 
     Canadian Depositary Receipts (CDRs) are: "AAPL:AQL"
 
@@ -42,6 +42,8 @@ class TmxEquityHistoricalQueryParams(EquityHistoricalQueryParams):
 
     source: https://money.tmx.com
     """
+
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     interval: Union[
         Literal["1m", "2m", "5m", "15m", "30m", "60m", "1h", "1d", "1W", "1M"], str, int
@@ -106,8 +108,8 @@ class TmxEquityHistoricalData(EquityHistoricalData):
         description="Nominal value of recorded transactions.", default=None
     )
 
-    @classmethod
     @field_validator("date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=W0221
         """Validate the datetime format."""
         try:
@@ -175,6 +177,9 @@ class TmxEquityHistoricalFetcher(
                 # Add the symbol to the data for multi-ticker support.
                 data = [{**d, "symbol": symbol} for d in data]
                 results.extend(data)
+
+            if data == []:
+                _warn(f"No data found for {symbol}.")
 
             return results
 

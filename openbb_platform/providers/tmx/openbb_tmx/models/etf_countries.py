@@ -1,6 +1,8 @@
 """TMX ETF Countries fetcher."""
 
 # pylint: disable=unused-argument
+
+import warnings
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -12,9 +14,13 @@ from openbb_tmx.utils.helpers import get_all_etfs
 from pandas import DataFrame
 from pydantic import Field
 
+_warn = warnings.warn
+
 
 class TmxEtfCountriesQueryParams(EtfCountriesQueryParams):
     """TMX ETF Countries Query Params"""
+
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     use_cache: bool = Field(
         default=True,
@@ -70,6 +76,8 @@ class TmxEtfCountriesFetcher(
                     data.update({i: target.loc[i]["weight"]})
                 if data:
                     results.update({symbol: data})
+            else:
+                _warn(f"No data found for {symbol}")
 
         output = (
             DataFrame(results)

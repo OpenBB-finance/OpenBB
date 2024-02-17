@@ -18,6 +18,8 @@ from pydantic import Field, field_validator
 class TmxPriceTargetConsensusQueryParams(PriceTargetConsensusQueryParams):
     """TMX Price Target Consensus Query."""
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
 
 class TmxPriceTargetConsensusData(PriceTargetConsensusData):
     """TMX Price Target Consensus Data."""

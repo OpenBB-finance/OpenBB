@@ -9,6 +9,7 @@ from openbb_core.provider.standard_models.insider_trading import (
     InsiderTradingData,
     InsiderTradingQueryParams,
 )
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import to_snake_case
 from openbb_tmx.utils import gql
 from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent
@@ -120,6 +121,10 @@ class TmxInsiderTradingFetcher(
             "getCompanyInsidersActivities"
         ):
             results = response["data"]["getCompanyInsidersActivities"]
+
+        if results == []:
+            raise EmptyDataError()
+
         return results
 
     @staticmethod

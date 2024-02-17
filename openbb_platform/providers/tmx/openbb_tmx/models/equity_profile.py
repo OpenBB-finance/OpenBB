@@ -18,6 +18,8 @@ from pydantic import Field, model_validator
 class TmxEquityProfileQueryParams(EquityInfoQueryParams):
     """TMX Equity Profile query params."""
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
 
 class TmxEquityProfileData(EquityInfoData):
     """TMX Equity Profile Data."""

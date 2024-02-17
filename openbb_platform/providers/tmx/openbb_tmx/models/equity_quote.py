@@ -1,8 +1,10 @@
 """TMX Equity Profile fetcher"""
 
 # pylint: disable=unused-argument
+
 import asyncio
 import json
+import warnings
 from datetime import (
     date as dateType,
     datetime,
@@ -20,9 +22,13 @@ from openbb_tmx.utils import gql
 from openbb_tmx.utils.helpers import get_data_from_gql, get_random_agent
 from pydantic import Field, field_validator
 
+_warn = warnings.warn
+
 
 class TmxEquityQuoteQueryParams(EquityQuoteQueryParams):
     """TMX Equity Profile query params."""
+
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
 
 class TmxEquityQuoteData(EquityQuoteData):
@@ -312,6 +318,8 @@ class TmxEquityQuoteFetcher(
             if r["data"].get("getQuoteBySymbol"):
                 data = r["data"]["getQuoteBySymbol"]
                 results.append(data)
+            else:
+                _warn(f"Could not get data for {symbol}.")
 
         tasks = [create_task(symbol, results) for symbol in symbols]
         await asyncio.gather(*tasks)
