@@ -205,7 +205,7 @@ class BenzingaPriceTargetData(PriceTargetData):
         default=None,
         description="URL for analyst ratings news articles for this ticker on Benzinga.com.",
     )
-    url_analyst: str = Field(
+    url_analyst: Optional[str] = Field(
         default=None,
         description="URL for analyst ratings page for this ticker on Benzinga.com.",
     )
@@ -264,7 +264,6 @@ class BenzingaPriceTargetFetcher(
         querystring = get_querystring(query.model_dump(by_alias=True), [])
 
         url = f"{base_url}?{querystring}&token={token}"
-        print(url)
         data = await amake_requests(url, **kwargs)
 
         if not data:
