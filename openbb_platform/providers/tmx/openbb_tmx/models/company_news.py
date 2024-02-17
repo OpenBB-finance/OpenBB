@@ -20,7 +20,7 @@ from pydantic import Field, field_validator
 class TmxCompanyNewsQueryParams(CompanyNewsQueryParams):
     """TMX Stock News query."""
 
-    __alias_dict__ = {"symbols": "symbol"}
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     page: Optional[int] = Field(
         default=1, description="The page number to start from. Use with limit."
@@ -63,7 +63,7 @@ class TmxCompanyNewsFetcher(
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
         user_agent = get_random_agent()
-        symbols = query.symbols.split(",")
+        symbols = query.symbol.split(",")
         results = []
 
         async def create_task(symbol, results):
