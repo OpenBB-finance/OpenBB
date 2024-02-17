@@ -107,9 +107,12 @@ class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
         default=None,
         description="Comma-separated list of analyst (person) IDs."
         + " Omitting will bring back all available analysts.",
+        alias="parameters[analyst_id]",
     )
     firm_ids: Optional[Union[List[str], str]] = Field(
-        default=None, description="Comma-separated list of firm IDs."
+        default=None,
+        description="Comma-separated list of firm IDs.",
+        alias="parameters[firm_id]",
     )
     fields: Optional[Union[List[str], str]] = Field(
         default=None,
@@ -142,8 +145,8 @@ class BenzingaPriceTargetQueryParams(PriceTargetQueryParams):
     def convert_list(cls, v: Union[str, List[str]]):
         """Convert a List[str] to a string list."""
         if isinstance(v, str):
-            return v.upper()
-        return ",".join([symbol.upper() for symbol in list(v)])
+            return v
+        return ",".join([char for char in list(v)])
 
 
 class BenzingaPriceTargetData(PriceTargetData):
@@ -261,6 +264,7 @@ class BenzingaPriceTargetFetcher(
         querystring = get_querystring(query.model_dump(by_alias=True), [])
 
         url = f"{base_url}?{querystring}&token={token}"
+        print(url)
         data = await amake_requests(url, **kwargs)
 
         if not data:
