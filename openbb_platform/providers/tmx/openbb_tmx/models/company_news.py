@@ -104,7 +104,7 @@ class TmxCompanyNewsFetcher(
                     # The summary is a duplicated headline, so we drop it.
                     news[i].pop("summary", None)
                     # Add the symbol to the data for multi-ticker support.
-                    news[i]["symbol"] = symbol
+                    news[i]["symbols"] = symbol
                 results.extend(news)
 
             return results
