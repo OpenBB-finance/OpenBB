@@ -353,7 +353,10 @@ class ROUTER_economy(Container):
     def fred_regional(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed: fred."
+            ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -381,11 +384,11 @@ class ROUTER_economy(Container):
 
             Parameters
             ----------
-            symbol : str
-                Symbol to get data for.
-            start_date : Optional[datetime.date]
+            symbol : Union[str, List[str]]
+                Symbol to get data for. Multiple items allowed: fred.
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             limit : Optional[int]
                 The number of data entries to return.
@@ -484,7 +487,11 @@ class ROUTER_economy(Container):
             "/economy/fred_regional",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/economy/fred_regional",
+                        ("fred",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -493,6 +500,7 @@ class ROUTER_economy(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["fred"]}},
             )
         )
 

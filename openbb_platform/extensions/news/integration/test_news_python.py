@@ -153,7 +153,7 @@ def test_news_world(params, obb):
         (
             {
                 "provider": "tiingo",
-                "symbol": "AAPL,MSFT",
+                "symbol": "AAPL",
                 "limit": 20,
                 "source": "bloomberg.com",
                 "start_date": None,

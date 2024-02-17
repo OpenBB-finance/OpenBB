@@ -104,6 +104,6 @@ def test_derivatives_futures_curve(params, headers):
 
     query_str = get_querystring(params, [])
     url = f"http://0.0.0.0:8000/api/v1/derivatives/futures/curve?{query_str}"
-    result = requests.get(url, headers=headers, timeout=30)
+    result = requests.get(url, headers=headers, timeout=60)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200

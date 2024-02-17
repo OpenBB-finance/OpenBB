@@ -270,3 +270,19 @@ def test_etf_holdings_performance(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        ({"symbol": "SPY,VOO,QQQ,IWM,IWN", "provider": "fmp"}),
+    ],
+)
+@pytest.mark.integration
+def test_etf_equity_exposure(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.etf.equity_exposure(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

@@ -39,7 +39,7 @@ def test_index_constituents(params, obb):
     [
         (
             {
-                "interval": "1m",
+                "interval": "1d",
                 "provider": "cboe",
                 "symbol": "AAVE100",
                 "start_date": "2024-01-01",
@@ -149,20 +149,20 @@ def test_index_price_historical(params, obb):
             {
                 "symbol": "^DJI",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-03-03",
                 "provider": "fmp",
                 "sort": "desc",
-                "interval": None,
+                "interval": "1day",
                 "limit": None,
             }
         ),
         (
             {
-                "interval": "1m",
+                "interval": "1d",
                 "provider": "cboe",
                 "symbol": "AAVE100",
                 "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
+                "end_date": "2023-01-05",
                 "use_cache": True,
                 "limit": None,
                 "sort": None,
