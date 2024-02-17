@@ -269,7 +269,15 @@ class TmxIndexSnapshotsFetcher(
         **kwargs: Any,
     ) -> List[TmxIndexSnapshotsData]:
         """Return the transformed data."""
-        data = data.copy()
-        data = [{k: (None if v in ["", 0] else v) for k, v in d.items()} for d in data]
-        data = [d for d in data if "price" in d and d["price"] is not None]
-        return [TmxIndexSnapshotsData.model_validate(d) for d in data]
+        return [
+            TmxIndexSnapshotsData.model_validate(
+                {
+                    "change_percent" if k == "percentChange" else k: (
+                        None if v in ["", 0] else v
+                    )
+                    for k, v in d.items()
+                }
+            )
+            for d in data
+            if "price" in d and d["price"] is not None
+        ]
