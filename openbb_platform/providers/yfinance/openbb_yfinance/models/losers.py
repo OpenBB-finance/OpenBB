@@ -83,9 +83,6 @@ class YFLosersFetcher(Fetcher[YFLosersQueryParams, List[YFLosersData]]):
     ) -> List[YFLosersData]:
         """Transform data."""
 
-        def df_apply(data):
-            """Replace abbreviations"""
-
         columns = ["Market Cap", "Avg Vol (3 month)", "Volume", "% Change"]
 
         data = df_transform_numbers(data=data, columns=columns)
