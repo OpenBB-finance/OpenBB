@@ -125,7 +125,13 @@ async def sp500_multiples(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="IndexSectors")
+@router.command(
+    model="IndexSectors",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.index.sectors(symbol="^TX60", provider="tmx").to_df()',
+    ],
+)
 async def sectors(
     cc: CommandContext,
     provider_choices: ProviderChoices,
