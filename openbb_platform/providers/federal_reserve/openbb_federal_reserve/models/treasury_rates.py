@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from io import BytesIO
 from typing import Any, Dict, List, Optional
 
+from numpy import nan
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.treasury_rates import (
     TreasuryRatesData,
@@ -86,9 +87,9 @@ class FederalReserveTreasuryRatesFetcher(
 
         df = read_csv(BytesIO(r.content), header=5, index_col=None, parse_dates=True)
         df.columns = ["date"] + maturities
-        df = df.replace("ND", None)
+        df = df.set_index("date").replace("ND", nan)
 
-        return df
+        return df.dropna(axis=0, how="all").reset_index()
 
     @staticmethod
     def transform_data(
@@ -101,10 +102,9 @@ class FederalReserveTreasuryRatesFetcher(
             (to_datetime(df.date) >= to_datetime(query.start_date))  # type: ignore
             & (to_datetime(df.date) <= to_datetime(query.end_date))  # type: ignore
         ]
-
         for col in maturities:
-            df[col] = (df[col].astype(float) / 100).fillna("N/A").replace("N/A", None)
-
+            df[col] = df[col].astype(float) / 100
+        df = df.fillna("N/A").replace("N/A", None)
         return [
             FederalReserveTreasuryRatesData.model_validate(d)
             for d in df.to_dict("records")
