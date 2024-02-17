@@ -6,12 +6,13 @@ import re
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
-import requests
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_performance import (
     EquityPerformanceData,
     EquityPerformanceQueryParams,
 )
+from openbb_core.provider.utils.helpers import make_request
+from openbb_yfinance.utils.helpers import df_transform_numbers
 from pydantic import Field
 
 
@@ -65,10 +66,9 @@ class YFLosersFetcher(Fetcher[YFLosersQueryParams, List[YFLosersData]]):
     ) -> pd.DataFrame:
         """Get data from YF."""
         headers = {"user_agent": "Mozilla/5.0"}
-        html = requests.get(
+        html = make_request(
             "https://finance.yahoo.com/screener/predefined/day_losers",
             headers=headers,
-            timeout=10,
         ).text
         html_clean = re.sub(r"(<span class=\"Fz\(0\)\">).*?(</span>)", "", html)
         df = pd.read_html(html_clean, header=None)[0].dropna(how="all", axis=1)
@@ -85,27 +85,12 @@ class YFLosersFetcher(Fetcher[YFLosersQueryParams, List[YFLosersData]]):
 
         def df_apply(data):
             """Replace abbreviations"""
-            multipliers = {"M": 1e6, "B": 1e9, "T": 1e12}
 
-            def replace_suffix(x, suffix, multiplier):
-                return (
-                    float(str(x).replace(suffix, "")) * multiplier
-                    if suffix in str(x)
-                    else x
-                )
+        columns = ["Market Cap", "Avg Vol (3 month)", "Volume", "% Change"]
 
-            for col in ["Market Cap", "Avg Vol (3 month)", "Volume", "% Change"]:
-                if col == "% Change":
-                    data[col] = data[col].astype(str).str.replace("%", "").astype(float)
-                else:
-                    for suffix, multiplier in multipliers.items():
-                        data[col] = data[col].apply(
-                            replace_suffix, args=(suffix, multiplier)
-                        )
-            return data
-
-        data = df_apply(data)
+        data = df_transform_numbers(data=data, columns=columns)
         data = data.fillna("N/A").replace("N/A", None)
+
         return [
             YFLosersData.model_validate(d)
             for d in data.sort_values("% Change", ascending=True).to_dict(

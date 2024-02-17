@@ -11,6 +11,7 @@ from openbb_core.provider.standard_models.equity_performance import (
     EquityPerformanceQueryParams,
 )
 from openbb_core.provider.utils.helpers import make_request
+from openbb_yfinance.utils.helpers import df_transform_numbers
 from pandas import DataFrame, read_html
 from pydantic import Field
 
@@ -81,29 +82,11 @@ class YFActiveFetcher(Fetcher[YFActiveQueryParams, List[YFActiveData]]):
     ) -> List[YFActiveData]:
         """Transform data."""
 
-        def df_apply(data):
-            """Replace abbreviations"""
-            multipliers = {"M": 1e6, "B": 1e9, "T": 1e12}
+        columns = ["Market Cap", "Avg Vol (3 month)", "Volume", "% Change"]
 
-            def replace_suffix(x, suffix, multiplier):
-                return (
-                    float(str(x).replace(suffix, "")) * multiplier
-                    if suffix in str(x)
-                    else x
-                )
-
-            for col in ["Market Cap", "Avg Vol (3 month)", "Volume", "% Change"]:
-                if col == "% Change":
-                    data[col] = data[col].astype(str).str.replace("%", "").astype(float)
-                else:
-                    for suffix, multiplier in multipliers.items():
-                        data[col] = data[col].apply(
-                            replace_suffix, args=(suffix, multiplier)
-                        )
-            return data
-
-        data = df_apply(data)
+        data = df_transform_numbers(data, columns)
         data = data.fillna("N/A").replace("N/A", None)
+
         return [
             YFActiveData.model_validate(d)
             for d in data.sort_values(by="Volume", ascending=False).to_dict("records")

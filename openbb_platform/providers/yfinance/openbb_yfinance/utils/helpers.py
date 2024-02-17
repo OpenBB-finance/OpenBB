@@ -190,3 +190,20 @@ def yf_download(
         data.columns = data.columns.str.lower().str.replace(" ", "_").to_list()
 
     return data
+
+
+def df_transform_numbers(data: pd.DataFrame, columns: list) -> pd.DataFrame:
+    """Replace abbreviations of numbers with actual numbers."""
+    multipliers = {"M": 1e6, "B": 1e9, "T": 1e12}
+
+    def replace_suffix(x, suffix, multiplier):
+        return float(str(x).replace(suffix, "")) * multiplier if suffix in str(x) else x
+
+    for col in columns:
+        if col == "% Change":
+            data[col] = data[col].astype(str).str.replace("%", "").astype(float)
+        else:
+            for suffix, multiplier in multipliers.items():
+                data[col] = data[col].apply(replace_suffix, args=(suffix, multiplier))
+
+    return data
