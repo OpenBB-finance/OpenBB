@@ -3,8 +3,7 @@ import json
 import re
 import shutil
 from pathlib import Path
-from textwrap import shorten
-from typing import Any, Dict, List, TextIO, Tuple, Union
+from typing import Any, Dict, List, Union
 
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import Router, RouterLoader
@@ -17,14 +16,8 @@ PLATFORM_CONTENT_PATH = Path(WEBSITE_PATH / "content/platform")
 PLATFORM_REFERENCE_PATH = Path(WEBSITE_PATH / "content/platform/reference")
 PLATFORM_DATA_MODELS_PATH = Path(WEBSITE_PATH / "content/platform/data_models")
 
-PLATFORM_REFERENCE_IMPORT_UL = """import ReferenceCard from "@site/src/components/General/NewReferenceCard";
-
-<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
-"""
-PLATFORM_REFERENCE_IMPORT = (
-    'import ReferenceCard from "@site/src/components/General/NewReferenceCard";\n\n'
-)
-PLATFORM_REFERENCE_UL_ELEMENT = """<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">"""
+PLATFORM_REFERENCE_IMPORT = 'import ReferenceCard from "@site/src/components/General/NewReferenceCard";'  # fmt: skip
+PLATFORM_REFERENCE_UL_ELEMENT = '<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">'  # fmt: skip
 
 
 def get_field_data_type(field_type) -> str:
@@ -108,7 +101,7 @@ def get_provider_field_params(
     ]
 
 
-def generate_reference_file() -> List[str]:
+def generate_reference_file() -> None:
     """Generate reference.json file using the ProviderInterface."""
     pi = ProviderInterface()
 
@@ -221,17 +214,16 @@ def generate_reference_file() -> List[str]:
             },
         ]
 
-    with open("website/content/platform/reference.json", "w") as f:
-        json.dump(reference, f)
-
-    return list(route_map.keys())
+    with open(PLATFORM_CONTENT_PATH / "reference.json", "w", encoding="utf-8") as f:
+        json.dump(reference, f, indent=4)
 
 
-def create_markdown_seo(path: str, path_description: str) -> str:
+def create_markdown_seo(path: str, description: str) -> str:
     with open(SEO_METADATA_PATH) as f:
         seo_metadata = json.load(f)
 
     path = path.replace("/", ".")
+    description = description.strip().replace("\n", " ").replace("  ", " ")
 
     if seo_metadata.get(path, None):
         title = seo_metadata[path]["title"]
@@ -239,12 +231,7 @@ def create_markdown_seo(path: str, path_description: str) -> str:
         keywords = "- " + "\n- ".join(seo_metadata[path]["keywords"])
     else:
         title = path
-        description = path_description
         keywords = "- " + "\n- ".join(path.split("."))
-
-    title = seo_metadata[path]["title"]
-    description = seo_metadata[path]["description"]
-    keywords = "- " + "\n- ".join(seo_metadata[path]["keywords"])
 
     markdown = (
         f"---\n"
@@ -258,13 +245,14 @@ def create_markdown_seo(path: str, path_description: str) -> str:
 
 
 def create_markdown_intro(
-    path: str, path_description: str, deprecated: Dict[str, str]
+    path: str, description: str, deprecated: Dict[str, str]
 ) -> str:
     deprecation_message = (
         ":::caution Deprecated\n" f"{deprecated['message']}\n" ":::\n\n"
         if deprecated["flag"]
         else ""
     )
+    description = description.strip().replace("\n", " ").replace("  ", " ")
 
     markdown = (
         "import HeadTitle from '@site/src/components/General/HeadTitle.tsx';\n\n"
@@ -273,7 +261,7 @@ def create_markdown_intro(
         "<!-- markdownlint-disable MD012 MD031 MD033 -->\n\n"
         "import Tabs from '@theme/Tabs';\n"
         "import TabItem from '@theme/TabItem';\n\n"
-        f"{path_description}\n\n"
+        f"{description}\n\n"
     )
 
     return markdown
@@ -299,9 +287,6 @@ def create_markdown_tabular_section(
         params_table_rows = []
 
         for params in params_list:
-            if params["name"] == "provider":
-                params["default"] = f"'{params['default']}'"
-
             params_table_rows.append(
                 "| " + " | ".join(str(v) for v in params.values()) + " |"
             )
@@ -339,6 +324,7 @@ def create_markdown_returns_section(returns: List[Dict[str, str]]) -> str:
 
 def create_data_model_markdown(title: str, description: str, model: str) -> str:
     file_name = find_data_model_implementation_file(model)
+    description = description.strip().replace("\n", " ").replace("  ", " ")
 
     markdown = "---\n"
     markdown += f"title: {title}\n"
@@ -352,11 +338,11 @@ def create_data_model_markdown(title: str, description: str, model: str) -> str:
     markdown += "### Class names\n\n"
     markdown += "| Model name | Parameters class | Data class |\n"
     markdown += "| ---------- | ---------------- | ---------- |\n"
-    markdown += f"| {model} | {model}QueryParams | {model}Data |\n"
+    markdown += f"| `{model}` | `{model}QueryParams` | `{model}Data` |\n"
     markdown += "\n### Import Statement\n\n"
     markdown += "```python\n"
     markdown += f"from openbb_core.provider.standard_models.{file_name} import (\n"
-    markdown += f"{model}Data,\n{model}QueryParams,\nData,\n"
+    markdown += f"{model}Data,\n{model}QueryParams,\n"
     markdown += ")\n"
     markdown += "```\n\n"
 
@@ -380,114 +366,115 @@ def find_data_model_implementation_file(data_model: str) -> str:
     return file_name
 
 
-def create_nested_menus_card(folder: Path, url: str, data_models: bool = False) -> str:
-    sub_categories = [
-        sub.stem
-        for sub in folder.glob("**/**/*.md*")
-        if sub.is_file() and sub.stem != "index"
-    ]
-    path = "reference" if not data_models else "data_models"
-    categories = shorten(", ".join(sub_categories), width=116, placeholder="...")
-    url = f"/platform/{path}/{url}/{folder.name}".replace("//", "/")
+def generate_reference_index_files(path_list: List[str]) -> None:
+    for path in path_list:
+        directories = path.strip("/").split("/")
+        current_path = PLATFORM_REFERENCE_PATH
+        for i, directory in enumerate(directories[:-1], 1):
+            current_path /= directory
+            current_path.mkdir(parents=True, exist_ok=True)
+            if i == len(directories) - 1:
+                index_content = f"""# {directory}
 
-    index_card = f"""<ReferenceCard
-    title="{folder.name.replace("_", " ").title()}"
-    description="{categories}"
-    url="{url}"
-/>\n"""
-    return index_card
+import ReferenceCard from "@site/src/components/General/NewReferenceCard";
 
-
-def create_cmd_cards(cmd_text: List[Dict[str, str]], data_models: bool = False) -> str:
-    path = "reference" if not data_models else "data_models"
-    cmd_cards = ""
-    for cmd in cmd_text:
-        title = cmd["title"].replace("_", " ")
-        url = f"/platform/{path}/{cmd['url']}".replace("//", "/")
-        description = shorten(f"{cmd['description']}", width=116, placeholder="...")
-
-        if not data_models:
-            title = title.title()
-            url = f"{url}/{cmd['title']}"
-
-        cmd_cards += f"""<ReferenceCard
-    title="{title}"
-    description="{description.split(".").pop(0).strip().replace(":", "").replace('"', "'")}"
-    url="{url}"
+### Commands
+<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<ReferenceCard
+    title="{directories[-1].capitalize()}"
+    description="Description for {directories[-1]}"
+    url="/platform/reference/{'/'.join(directories)}"
     command
-/>\n"""
-    return cmd_cards
+/>
+</ul>
+"""
+            else:
+                index_content = f"""# {directory}
+
+import ReferenceCard from "@site/src/components/General/NewReferenceCard";
+
+### Menus
+<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">
+<ReferenceCard
+    title="{directories[i].capitalize()}"
+    description="Description for {directories[i]}"
+    url="/platform/reference/{'/'.join(directories[:i+1])}"
+/>
+</ul>
+"""
+            with open(current_path / "index.mdx", "w", encoding="utf-8") as f:
+                f.write(index_content)
+
+            category_content = {"label": directory.capitalize(), "position": i}
+            with open(current_path / "_category_.json", "w", encoding="utf-8") as f:
+                json.dump(category_content, f, indent=2)
 
 
-def write_reference_index(
-    reference_cards: Dict[Path, List[Dict[str, str]]],
-    fname: str,
-    path: Path,
-    rel_path: Path,
-    f: TextIO,
-    data_models: bool = False,
-) -> None:
-    """Write to the corresponding index.mdx file for a given folder, with the
-    appropriate nested menus and command cards.
+def create_data_models_index(title: str, description: str, model: str) -> str:
+    description = description.strip().replace("\n", " ").replace("  ", " ")
 
-    Parameters
-    ----------
-    reference_cards : Dict[Path, List[Dict[str, str]]]
-        Dictionary of command cards to be written to the index.mdx file.
-    fname : str
-        Name of the index.mdx file.
-    path : Path
-        Path to the folder to be written.
-    rel_path : Path
-        Relative path to the folder to be written.
-    f : TextIO
-        File to write to.
-    data_models : bool, optional
-        Whether the folder is a data_models folder, by default False
-    """
-    f.write(
-        f"# {fname}\n\n{PLATFORM_REFERENCE_IMPORT_UL if data_models else PLATFORM_REFERENCE_IMPORT}"
+    return (
+        "<ReferenceCard\n"
+        f'\ttitle="{title}"\n'
+        f'\tdescription="{description}"\n'
+        f'\turl="/platform/reference/{model}"\n'
+        "/>\n"
     )
-    sub_folders = [sub for sub in path.glob("*") if sub.is_dir()]
-
-    menus = []
-    for folder in sub_folders:
-        menus.append(
-            create_nested_menus_card(folder, "/".join(rel_path.parts), data_models)
-        )
-
-    if sub_folders and not data_models:
-        f.write(f"### Menus\n{PLATFORM_REFERENCE_UL_ELEMENT}\n{''.join(menus)}</ul>\n")
-
-    folder_cmd_cards: List[Dict[str, str]] = reference_cards.get(path, {})  # type: ignore
-
-    if folder_cmd_cards:
-        if not data_models:
-            f.write(f"\n\n### Commands\n{PLATFORM_REFERENCE_UL_ELEMENT}\n")
-        f.write(create_cmd_cards(folder_cmd_cards, data_models) + "</ul>\n")
 
 
-def create_data_model_card_info(meta: Dict[str, Any]) -> Tuple[str, str]:
-    description = meta["description"]
+def generate_data_models_index_files(content: str) -> None:
+    index_content = (
+        "# Data Models\n\n"
+        "import ReferenceCard from '@site/src/components/General/NewReferenceCard';\n\n"
+        "<ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6'>\n"
+        f"{content}\n"
+        "</ul>\n"
+    )
+    with open(PLATFORM_DATA_MODELS_PATH / "index.mdx", "w", encoding="utf-8") as f:
+        f.write(index_content)
 
-    split_description = list(filter(None, description.split(".")))  # type: ignore
-    title = split_description[0]
-    description = ".".join(split_description[1:]) if len(split_description) > 1 else ""
+    category_content = {"label": "Data Models", "position": 4}
+    with open(
+        PLATFORM_DATA_MODELS_PATH / "_category_.json",
+        "w",
+        encoding="utf-8",
+    ) as f:
+        json.dump(category_content, f, indent=2)
 
-    return title, description
+
+def generate_markdown_file(path: str, markdown_content: str, content_type: str) -> None:
+    # Determine the base path based on the content type
+    # For reference content, split the path to separate the
+    # directory structure from the file name
+    if content_type == "reference":
+        parts = path.strip("/").split("/")
+        file_name = f"{parts[-1]}.md"
+        directory_path = PLATFORM_REFERENCE_PATH / "/".join(parts[:-1])
+    # For data models, the file name is derived from the last
+    # part of the path, and there's no additional directory structure
+    elif content_type == "data_model":
+        file_name = f"{path.split('/')[-1]}.md"
+        directory_path = PLATFORM_DATA_MODELS_PATH
+    else:
+        raise ValueError("Invalid content type specified")
+
+    # Ensure the directory exists
+    directory_path.mkdir(parents=True, exist_ok=True)
+
+    # Write the markdown content to the file
+    with open(directory_path / file_name, "w", encoding="utf-8") as md_file:
+        md_file.write(markdown_content)
 
 
-def create_platform_markdown() -> None:
+def generate_platform_markdown() -> None:
     """Generate markdown files for OpenBB Docusaurus website."""
-    path_list = generate_reference_file()
+    data_models_index_content = ""
+    generate_reference_file()
 
     with open(PLATFORM_CONTENT_PATH / "reference.json") as f:
         reference = json.load(f)
 
     print("Generating markdown files...")
-    kwargs = {"encoding": "utf-8", "newline": "\n"}
-    reference_cards: Dict[Path, List[Dict[str, str]]] = {}
-    data_reference_cards: Dict[Path, List[Dict[str, str]]] = {}
 
     # Clear the platform/reference folder
     shutil.rmtree(PLATFORM_REFERENCE_PATH, ignore_errors=True)
@@ -495,31 +482,31 @@ def create_platform_markdown() -> None:
     # Clear the platform/data_models folder
     shutil.rmtree(PLATFORM_DATA_MODELS_PATH, ignore_errors=True)
 
-    for path in path_list:
-        reference_markdown = ""
-        data_markdown = ""
+    for path, path_data in reference.items():
+        reference_markdown_content = ""
+        data_markdown_content = ""
 
-        func_name = path.split("/")[-1]
+        model = path_data["model"]
+        description = path_data["description"]
+        path_parameters_fields = path_data["parameters"]
+        path_data_fields = path_data["data"]
 
-        folder = "/".join(path.strip("/").split("/")[:-1])
-        filepath = PLATFORM_REFERENCE_PATH / folder / f"{func_name}.md"
+        reference_markdown_content = create_markdown_seo(path[1:], description)
+        reference_markdown_content += create_markdown_intro(
+            path[1:], description, path_data["deprecated"]
+        )
+        reference_markdown_content += create_markdown_examples(path_data["examples"])
+        reference_markdown_content += create_markdown_tabular_section(
+            path_parameters_fields, "Parameters"
+        )
+        reference_markdown_content += create_markdown_returns_section(
+            path_data["returns"]["OBBject"]
+        )
+        reference_markdown_content += create_markdown_tabular_section(
+            path_data_fields, "Data"
+        )
 
-        reference_markdown = create_markdown_seo(
-            path[1:], reference[path]["description"]
-        )
-        reference_markdown += create_markdown_intro(
-            path[1:], reference[path]["description"], reference[path]["deprecated"]
-        )
-        reference_markdown += create_markdown_examples(reference[path]["examples"])
-        reference_markdown += create_markdown_tabular_section(
-            reference[path]["parameters"], "Parameters"
-        )
-        reference_markdown += create_markdown_returns_section(
-            reference[path]["returns"]["OBBject"]
-        )
-        reference_markdown += create_markdown_tabular_section(
-            reference[path]["data"], "Data"
-        )
+        generate_markdown_file(path, reference_markdown_content, "reference")
 
         data_markdown_title = re.sub(
             r"([A-Z]{1}[a-z]+)|([A-Z]{3}|[SP500]|[EU])([A-Z]{1}[a-z]+)|([A-Z]{5,})",  # noqa: W605
@@ -528,124 +515,28 @@ def create_platform_markdown() -> None:
                 if not any([m.group(2), m.group(3)])
                 else f"{m.group(2)} {m.group(3)} "
             ),
-            reference[path]["model"],
+            path_data["model"],
         ).strip()
-        data_markdown = create_data_model_markdown(
+        data_markdown_content = create_data_model_markdown(
             data_markdown_title,
-            reference[path]["description"],
-            reference[path]["model"],
+            description,
+            model,
         )
-        data_markdown += create_markdown_tabular_section(
-            reference[path]["parameters"], "Parameters"
+        data_markdown_content += create_markdown_tabular_section(
+            path_parameters_fields, "Parameters"
         )
-        data_markdown += create_markdown_tabular_section(
-            reference[path]["data"], "Data"
+        data_markdown_content += create_markdown_tabular_section(
+            path_data_fields, "Data"
         )
-
-        # if data_model := meta_command.get("model", None):
-        #     ## title is the desc here - clean this later
-        #     (
-        #         data_model_card_title,
-        #         data_model_card_description,
-        #     ) = generate_data_model_card_info(meta_command)
-
-        #     title = re.sub(
-        #         r"([A-Z]{1}[a-z]+)|([A-Z]{3}|[SP500]|[EU])([A-Z]{1}[a-z]+)|([A-Z]{5,})",  # noqa: W605
-        #         lambda m: (
-        #             f"{m.group(1) or m.group(4)} ".title()
-        #             if not any([m.group(2), m.group(3)])
-        #             else f"{m.group(2)} {m.group(3)} "
-        #         ),
-        #         data_model,
-        #     ).strip()
-
-        #     data_markdown = (
-        #         f"---\ntitle: {title}\n"
-        #         f"description: {data_model_card_title}\n---\n\n"
-        #         "<!-- markdownlint-disable MD012 MD031 MD033 -->\n\n"
-        #         "import Tabs from '@theme/Tabs';\nimport TabItem from '@theme/TabItem';\n\n"
-        #     )
-
-        #     data_markdown += generate_implementation_details_markdown_section(
-        #         data_model
-        #     )
-
-        #     data_model_markdown = generate_data_markdown_section(meta_command)
-        #     data_markdown += "\n\n## Parameters\n\n"
-        #     if meta_command["params"]:
-        #         data_markdown += generate_params_markdown_section(meta_command)
-
-        #     data_markdown += data_model_markdown
-        #     markdown += data_model_markdown
-
-        #     data_filepath = data_models_path / f"{data_model}.md"
-
-        #     data_reference_cards.setdefault(data_filepath.parent, []).append(
-        #         dict(
-        #             title=title,
-        #             description=data_model_card_title or "",
-        #             url=data_models_path.relative_to(data_models_path) / data_model,
-        #         )
-        #     )
-        #     data_filepath.parent.mkdir(parents=True, exist_ok=True)
-        #     with open(data_filepath, "w", **kwargs) as f:  # type: ignore
-        #         f.write(data_markdown)
-
-        # reference_cards.setdefault(filepath.parent, []).append(
-        #     dict(
-        #         title=func_name,
-        #         description=func.__doc__ or "",
-        #         url="/".join((content_path / folder).relative_to(content_path).parts),
-        #     )
-        # )
-
-        # filepath.parent.mkdir(parents=True, exist_ok=True)
-        # with open(filepath, "w", **kwargs) as f:  # type: ignore
-        #     f.write(markdown)
-
-    reference_cards = dict(sorted(reference_cards.items(), key=lambda item: item[0]))
-    data_reference_cards = {
-        folder: sorted(cards, key=lambda item: item["title"])
-        for folder, cards in data_reference_cards.items()
-    }
-    with open(content_path / "index.mdx", "w", **kwargs) as f:  # type: ignore
-        fname = "OpenBB Platform Reference"
-        rel_path = content_path.relative_to(content_path)
-        write_reference_index(reference_cards, fname, content_path, rel_path, f)
-
-    with open(data_models_path / "index.mdx", "w", **kwargs) as f:  # type: ignore
-        fname = "Data Models"
-        rel_path = data_models_path.relative_to(data_models_path)
-        write_reference_index(
-            data_reference_cards, fname, data_models_path, rel_path, f, True
+        data_models_index_content += create_data_models_index(
+            data_markdown_title, description, model
         )
 
-    with open(content_path / "_category_.json", "w", **kwargs) as f:  # type: ignore
-        # Generate category json
-        f.write(json.dumps({"label": "Reference", "position": 5}, indent=2))
+        generate_markdown_file(model, data_markdown_content, "data_model")
 
-    def gen_category_json(fname: str, path: Path, position: int = 1):
-        """Generate category json"""
-        with open(path / "_category_.json", "w", **kwargs) as f:  # type: ignore
-            f.write(
-                json.dumps({"label": fname.title(), "position": position}, indent=2)
-            )
-
-        with open(path / "index.mdx", "w", **kwargs) as f:  # type: ignore
-            rel_path = path.relative_to(content_path)
-            write_reference_index(reference_cards, fname, path, rel_path, f)
-
-    def gen_category_recursive(nested_path: Path):
-        """Generate category json recursively"""
-        position = 1
-        for folder in nested_path.iterdir():
-            if folder.is_dir():
-                gen_category_json(folder.name, folder, position)
-                gen_category_recursive(folder)  # pylint: disable=cell-var-from-loop
-                position += 1
-
-    gen_category_recursive(content_path)
-    print(f"Markdown files generated, check the {content_path} folder.")
+    generate_reference_index_files(reference.keys())
+    generate_data_models_index_files(data_models_index_content)
+    print(f"Markdown files generated, check the {PLATFORM_CONTENT_PATH} folder.")
 
 
 def save_metadata(path: Path) -> Dict[str, Dict[str, Union[str, List[str]]]]:
@@ -670,8 +561,8 @@ def save_metadata(path: Path) -> Dict[str, Dict[str, Union[str, List[str]]]]:
                 ],
             }
 
-    filepath = website_path / "metadata/platform_v4_seo_metadata2.json"
-    with open(filepath, "w", encoding="utf-8", newline="\n") as f:
+    filepath = WEBSITE_PATH / "metadata/platform_v4_seo_metadata2.json"
+    with open(filepath, "w", encoding="utf-8") as f:
         json.dump(metadata, f, indent=2)
 
     return metadata
