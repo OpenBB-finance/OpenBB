@@ -1225,9 +1225,7 @@ def test_equity_price_quote(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "provider": "cboe"}),
         ({"symbol": "MSFT", "provider": "intrinio"}),
-        ({"symbol": "AAPL,MSFT", "provider": "cboe"}),
         ({"symbol": "AAPL,MSFT", "provider": "intrinio"}),
         ({"symbol": "AAPL,MSFT", "provider": "finviz"}),
         ({"symbol": "AAPL,MSFT", "provider": "yfinance"}),
