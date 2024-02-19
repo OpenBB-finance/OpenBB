@@ -394,7 +394,7 @@ def create_reference_markdown_examples(examples: List[str]) -> str:
         str: Example section for the markdown file
     """
 
-    examples_str = "\n".join(examples)
+    examples_str = "from openbb import obb\n" + "\n".join(examples)
     markdown = f"Example\n-------\n\n```python\n{examples_str}\n```\n\n---\n\n"
     return markdown
 
@@ -600,10 +600,10 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
                 url = f"/platform/reference/{'/'.join(directories[:-1])}/{sub_dir.name}"
                 # Add a ReferenceCard component for the sub-directory
                 index_content += (
-                    "<ReferenceCard"
-                    f"title={title}"
-                    f"description={cleaned_description}"
-                    f"url={url}"
+                    "<ReferenceCard "
+                    f'title="{title}" '
+                    f'description="{cleaned_description}" '
+                    f'url="{url} "'
                     "/>\n"
                 )
             index_content += "</ul>\n\n"
@@ -626,10 +626,10 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
                     )
                     # Add a ReferenceCard component for the markdown file
                     index_content += (
-                        "<ReferenceCard"
-                        f"title={title}"
-                        f"description={cleaned_description}"
-                        f"url={url}"
+                        "<ReferenceCard "
+                        f'title="{title}" '
+                        f'description="{cleaned_description}" '
+                        f'url="{url} "'
                         "/>\n"
                     )
             index_content += "</ul>\n\n"
