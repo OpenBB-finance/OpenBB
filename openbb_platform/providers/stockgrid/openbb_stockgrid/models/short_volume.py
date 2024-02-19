@@ -23,6 +23,7 @@ class StockgridShortVolumeData(ShortVolumeData):
     """Stockgrid Short Volume Data."""
 
     __alias_dict__ = {"short_volume_percent": "short_volume%", "symbol": "ticker"}
+
     close: Optional[float] = Field(
         default=None, description="Closing price of the stock on the date."
     )
@@ -48,6 +49,7 @@ class StockgridShortVolumeFetcher(
         """Transform query params."""
         return StockgridShortVolumeQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: StockgridShortVolumeQueryParams,

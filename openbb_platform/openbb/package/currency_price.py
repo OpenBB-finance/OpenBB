@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
@@ -23,9 +23,9 @@ class ROUTER_currency_price(Container):
     def historical(
         self,
         symbol: Annotated[
-            str,
+            Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format."
+                description="Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple items allowed: polygon, yfinance."
             ),
         ],
         start_date: Annotated[
@@ -55,11 +55,11 @@ class ROUTER_currency_price(Container):
 
             Parameters
             ----------
-            symbol : str
-                Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format.
-            start_date : Optional[datetime.date]
+            symbol : Union[str, List[str]]
+                Symbol to get data for. Can use CURR1-CURR2 or CURR1CURR2 format. Multiple items allowed: polygon, yfinance.
+            start_date : Union[datetime.date, None, str]
                 Start date of the data, in YYYY-MM-DD format.
-            end_date : Optional[datetime.date]
+            end_date : Union[datetime.date, None, str]
                 End date of the data, in YYYY-MM-DD format.
             provider : Optional[Literal['fmp', 'polygon', 'tiingo', 'yfinance']]
                 The provider to use for the query, by default None.
@@ -133,7 +133,11 @@ class ROUTER_currency_price(Container):
             "/currency/price/historical",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/currency/price/historical",
+                        ("fmp", "polygon", "tiingo", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -141,5 +145,8 @@ class ROUTER_currency_price(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={
+                    "symbol": {"multiple_items_allowed": ["polygon", "yfinance"]}
+                },
             )
         )

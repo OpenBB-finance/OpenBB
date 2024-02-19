@@ -158,7 +158,11 @@ class ROUTER_derivatives_options(Container):
             "/derivatives/options/chains",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/derivatives/options/chains",
+                        ("intrinio",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -243,7 +247,11 @@ class ROUTER_derivatives_options(Container):
             "/derivatives/options/unusual",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/derivatives/options/unusual",
+                        ("intrinio",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,

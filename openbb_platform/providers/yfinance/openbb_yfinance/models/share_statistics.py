@@ -23,6 +23,8 @@ _warn = warnings.warn
 class YFinanceShareStatisticsQueryParams(ShareStatisticsQueryParams):
     """YFinance Share Statistics Query."""
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
 
 class YFinanceShareStatisticsData(ShareStatisticsData):
     """YFinance Share Statistics Data."""

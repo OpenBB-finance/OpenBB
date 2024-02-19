@@ -34,6 +34,7 @@ from openbb_fmp.models.equity_valuation_multiples import (
     FMPEquityValuationMultiplesFetcher,
 )
 from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
+from openbb_fmp.models.etf_equity_exposure import FMPEtfEquityExposureFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
 from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
 from openbb_fmp.models.etf_holdings_performance import FMPEtfHoldingsPerformanceFetcher
@@ -642,5 +643,14 @@ def test_fmp_equity_profile_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL"}
 
     fetcher = FMPEquityProfileFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_etf_equity_exposure_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL,MSFT"}
+
+    fetcher = FMPEtfEquityExposureFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

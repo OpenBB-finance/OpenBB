@@ -188,7 +188,7 @@ def autocorrelation(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
-) -> OBBject[Dict]:
+) -> OBBject[Data]:
     """Perform Durbin-Watson test for autocorrelation.
 
     The Durbin-Watson test is a widely used method for detecting the presence of autocorrelation in the residuals

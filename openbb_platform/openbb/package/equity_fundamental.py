@@ -1,7 +1,7 @@
 ### THIS FILE IS AUTO-GENERATED. DO NOT EDIT. ###
 
 import datetime
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 from warnings import simplefilter, warn
 
 from annotated_types import Ge
@@ -386,7 +386,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/balance",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/balance",
+                        ("fmp", "intrinio", "polygon", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -534,7 +538,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/balance_growth",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/balance_growth",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -792,7 +800,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/cash",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/cash",
+                        ("fmp", "intrinio", "polygon", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -922,7 +934,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/cash_growth",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/cash_growth",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -959,9 +975,9 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        start_date : Optional[datetime.date]
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
@@ -1017,7 +1033,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/dividends",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/dividends",
+                        ("fmp", "intrinio", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -1093,7 +1113,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/employee_count",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/employee_count",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -1227,7 +1251,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/filings",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/filings",
+                        ("fmp", "intrinio", "sec"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -1245,7 +1273,10 @@ class ROUTER_equity_fundamental(Container):
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         tag: Annotated[
-            str, OpenBBCustomParameter(description="Intrinio data tag ID or code.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Intrinio data tag ID or code. Multiple items allowed: intrinio."
+            ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -1284,11 +1315,11 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        tag : str
-            Intrinio data tag ID or code.
-        start_date : Optional[datetime.date]
+        tag : Union[str, List[str]]
+            Intrinio data tag ID or code. Multiple items allowed: intrinio.
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         frequency : Optional[Literal['daily', 'weekly', 'monthly', 'quarterly', 'year...
             The frequency of the data.
@@ -1338,7 +1369,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/historical_attributes",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/historical_attributes",
+                        ("intrinio",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -1351,6 +1386,7 @@ class ROUTER_equity_fundamental(Container):
                     "sort": sort,
                 },
                 extra_params=kwargs,
+                extra_info={"tag": {"multiple_items_allowed": ["intrinio"]}},
             )
         )
 
@@ -1423,7 +1459,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/historical_eps",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/historical_eps",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -1487,7 +1527,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/historical_splits",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/historical_splits",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -1838,7 +1882,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/income",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/income",
+                        ("fmp", "intrinio", "polygon", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -1874,7 +1922,7 @@ class ROUTER_equity_fundamental(Container):
             Symbol to get data for.
         limit : int
             The number of data entries to return.
-        period : Literal['annual', 'quarter']
+        period : Literal['quarter', 'annual']
             Time period of the data to return.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
@@ -1966,7 +2014,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/income_growth",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/income_growth",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -1984,7 +2036,10 @@ class ROUTER_equity_fundamental(Container):
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         tag: Annotated[
-            str, OpenBBCustomParameter(description="Intrinio data tag ID or code.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Intrinio data tag ID or code. Multiple items allowed: intrinio."
+            ),
         ],
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
@@ -1995,8 +2050,8 @@ class ROUTER_equity_fundamental(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        tag : str
-            Intrinio data tag ID or code.
+        tag : Union[str, List[str]]
+            Intrinio data tag ID or code. Multiple items allowed: intrinio.
         provider : Optional[Literal['intrinio']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'intrinio' if there is
@@ -2035,13 +2090,18 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/latest_attributes",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/latest_attributes",
+                        ("intrinio",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
                     "tag": tag,
                 },
                 extra_params=kwargs,
+                extra_info={"tag": {"multiple_items_allowed": ["intrinio"]}},
             )
         )
 
@@ -2110,7 +2170,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/management",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/management",
+                        ("fmp", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -2123,7 +2187,10 @@ class ROUTER_equity_fundamental(Container):
     def management_compensation(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed: fmp."
+            ),
         ],
         start_date: Annotated[
             Union[datetime.date, None, str],
@@ -2144,11 +2211,11 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
-        start_date : Optional[datetime.date]
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed: fmp.
+        start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
-        end_date : Optional[datetime.date]
+        end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
@@ -2208,7 +2275,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/management_compensation",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/management_compensation",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -2216,6 +2287,7 @@ class ROUTER_equity_fundamental(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 
@@ -2223,7 +2295,10 @@ class ROUTER_equity_fundamental(Container):
     def metrics(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed: fmp."
+            ),
         ],
         period: Annotated[
             Optional[Literal["annual", "quarter"]],
@@ -2240,8 +2315,8 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed: fmp.
         period : Optional[Literal['annual', 'quarter']]
             Time period of the data to return.
         limit : Optional[int]
@@ -2465,7 +2540,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/metrics",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/metrics",
+                        ("fmp", "intrinio", "yfinance"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -2473,6 +2552,7 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 
@@ -2480,7 +2560,10 @@ class ROUTER_equity_fundamental(Container):
     def multiples(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed: fmp."
+            ),
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -2489,8 +2572,8 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed: fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -2645,12 +2728,17 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/multiples",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/multiples",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
             )
         )
 
@@ -2784,7 +2872,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/overview",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/overview",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -2971,7 +3063,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/ratios",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/ratios",
+                        ("fmp", "intrinio"),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -3058,7 +3154,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/reported_financials",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/reported_financials",
+                        ("intrinio",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -3139,7 +3239,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/revenue_per_geography",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/revenue_per_geography",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -3219,7 +3323,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/revenue_per_segment",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/revenue_per_segment",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -3305,7 +3413,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/search_attributes",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/search_attributes",
+                        ("intrinio",),
+                    )
                 },
                 standard_params={
                     "query": query,
@@ -3374,7 +3486,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/trailing_dividend_yield",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/trailing_dividend_yield",
+                        ("tiingo",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,
@@ -3447,7 +3563,11 @@ class ROUTER_equity_fundamental(Container):
             "/equity/fundamental/transcript",
             **filter_inputs(
                 provider_choices={
-                    "provider": provider,
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/fundamental/transcript",
+                        ("fmp",),
+                    )
                 },
                 standard_params={
                     "symbol": symbol,

@@ -89,7 +89,6 @@ class TerminalController(BaseController):
         "guess",
         "news",
         "intro",
-        "askobb",
         "record",
     ]
     CHOICES_MENUS = [

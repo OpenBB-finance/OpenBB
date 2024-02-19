@@ -30,6 +30,7 @@ from openbb_fmp.models.equity_valuation_multiples import (
     FMPEquityValuationMultiplesFetcher,
 )
 from openbb_fmp.models.etf_countries import FMPEtfCountriesFetcher
+from openbb_fmp.models.etf_equity_exposure import FMPEtfEquityExposureFetcher
 from openbb_fmp.models.etf_holdings import FMPEtfHoldingsFetcher
 from openbb_fmp.models.etf_holdings_date import FMPEtfHoldingsDateFetcher
 from openbb_fmp.models.etf_holdings_performance import FMPEtfHoldingsPerformanceFetcher
@@ -96,6 +97,7 @@ fmp_provider = Provider(
         "EquityScreener": FMPEquityScreenerFetcher,
         "EquityValuationMultiples": FMPEquityValuationMultiplesFetcher,
         "EtfCountries": FMPEtfCountriesFetcher,
+        "EtfEquityExposure": FMPEtfEquityExposureFetcher,
         "EtfHoldings": FMPEtfHoldingsFetcher,
         "EtfHoldingsDate": FMPEtfHoldingsDateFetcher,
         "EtfHoldingsPerformance": FMPEtfHoldingsPerformanceFetcher,
