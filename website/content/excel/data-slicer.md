@@ -28,7 +28,7 @@ To help you slice parts of data, we provide the [OBB.GET](https://docs.openbb.co
 | 2022/09/24 | 394 328 000 000.00 | 223 546 000 000.00 | 170 782 000 000.00 |
 | 2021/09/25 | 365 817 000 000.00 | 212 981 000 000.00 | 152 836 000 000.00 |
 
-- Slice single row:
+- Slicing a single row:
 
 ```excel
 =OBB.GET(A1:D3,DATE(2023,9,30))
@@ -38,7 +38,7 @@ To help you slice parts of data, we provide the [OBB.GET](https://docs.openbb.co
 When passing date labels make sure to use the format `YYYY/MM/DD` or refer to a cell range containing Excel date format - DATE(year,month,day).
 :::
 
-- Slicing single column:
+- Slicing a single column:
 
 ```excel
 =OBB.GET(A1:D3,,"revenue")
