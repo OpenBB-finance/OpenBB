@@ -9,9 +9,7 @@ from datetime import datetime, timedelta
 from typing import List, Optional
 
 import financedatabase as fd
-from openbb import obb
 
-from argparse_translator.argparse_class_processor import ArgparseClassProcessor
 from openbb_terminal import config_terminal
 from openbb_terminal.common import (
     feedparser_view,
@@ -37,9 +35,6 @@ from openbb_terminal.terminal_helper import suppress_stdout
 # pylint: disable=R1710,import-outside-toplevel,R0913,R1702,no-member
 
 logger = logging.getLogger(__name__)
-
-
-equity_price_translations = ArgparseClassProcessor(target_class=obb.equity.price)
 
 
 class StocksController(StockBaseController):
@@ -155,32 +150,6 @@ class StocksController(StockBaseController):
         """Class specific component of load command"""
         with suppress_stdout():
             self.call_load(other_args)
-
-    def call_load(self, other_args: List[str]):
-        """Process load command."""
-        translator = equity_price_translations.get_translator(
-            command="equity_price_historical"
-        )
-        parser = translator.parser
-
-        if ns_parser := self.parse_known_args_and_warn(parser, other_args):
-            try:
-                obbject = translator.execute_func(parsed_args=ns_parser)
-                self.ticker = ns_parser.symbol
-                self.stock = obbject.to_dataframe()
-
-                # TODO : temporary workaround
-                # core gives all columns lower case and terminal expects 1st letter upper case
-                # upper case first letter of all columns
-                self.stock.columns = [
-                    x[0].upper() + x[1:] for x in self.stock.columns.tolist()
-                ]
-                if hasattr(ns_parser, "chart") and ns_parser.chart:
-                    obbject.show()
-
-            except Exception as e:
-                console.print(f"[red]{e}[/]\n")
-                return
 
     @log_start_end(log=logger)
     def call_search(self, other_args: List[str]):
