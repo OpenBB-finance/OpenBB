@@ -2,6 +2,9 @@
 
 import ast
 import json
+from datetime import (
+    date as dateType,
+)
 from typing import Dict, Iterable, List, Optional, Union
 
 import numpy as np
@@ -14,9 +17,12 @@ from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.provider.abstract.data import Data
 
 
+def is_tz_aware(dt):
+    return dt.tzinfo is not None and dt.tzinfo.utcoffset(dt) is not None
+
 def basemodel_to_df(
     data: Union[List[Data], Data],
-    index: Optional[Union[str, Iterable]] = None,
+    index: Optional[Union[None, str, Iterable]] = None,
 ) -> pd.DataFrame:
     """Convert list of BaseModel to a Pandas DataFrame."""
     if isinstance(data, list):
@@ -33,11 +39,20 @@ def basemodel_to_df(
         df = df.drop(["is_multiindex", "multiindex_names"], axis=1)
 
     if index and index in df.columns:
-        df = df.set_index(index)
         # TODO: This should probably check if the index can be converted to a datetime instead of just assuming
-        if df.index.name == "date":
-            df.index = pd.to_datetime(df.index)
+        if index == "date":
+            date_check = df["date"].iloc[-1]
+            if isinstance(date_check, str):
+                df["date"] = df["date"].apply(pd.Timestamp)
+            if not isinstance(date_check, dateType):
+                if is_tz_aware(date_check) is False:
+                    df["date"] = pd.to_datetime(df["date"])
+                if is_tz_aware(date_check) is True:
+                    df["date"] = df["date"].apply(pd.Timestamp)
+            df.set_index("date", inplace=True)
             df.sort_index(axis=0, inplace=True)
+        else:
+            df = df.set_index(index) if index else df
 
     return df
 
