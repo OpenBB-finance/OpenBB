@@ -7,6 +7,7 @@ from functools import partial, update_wrapper
 from types import MethodType
 from typing import Dict, List, Optional
 
+from argparse_translator.argparse_class_processor import ArgparseClassProcessor
 from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -17,36 +18,95 @@ from openbb_terminal.rich_config import MenuText, console
 logger = logging.getLogger(__name__)
 
 
+class DummyTranslation:
+    """Dummy Translation for testing."""
+
+    def __init__(self):
+        """Construct a Dummy Translation Class."""
+        self.paths = {}
+        self.translators = {}
+
+
 class PlatformController(BaseController):
     """Platform Controller Base class."""
 
-    CHOICES_COMMANDS = []
     CHOICES_GENERATION = True
 
     def __init__(
         self,
         name: str,
+        platform_target: Optional[type] = None,
         queue: Optional[List[str]] = None,
         translators: Optional[Dict] = None,
     ):
-        """Construct Data."""
+        """Construct a Platform based Controller."""
         self.PATH = f"/{name}/"
         super().__init__(queue)
         self._name = name
 
-        self.translators = translators
+        if not (platform_target or translators):
+            raise ValueError("Either platform_target or translators must be provided.")
 
-        if translators:
-            self._generate_commands(translators=translators)
-            self.CHOICES_COMMANDS = translators.keys()
+        self._translated_target = (
+            ArgparseClassProcessor(target_class=platform_target)
+            if platform_target
+            else DummyTranslation()
+        )
+        self.translators = translators or self._translated_target.translators
+        self.paths = self._translated_target.paths
+
+        if self.translators:
+            self._generate_commands()
+            self._generate_sub_controllers()
 
             if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
                 choices: dict = self.choices_default
                 self.completer = NestedCompleter.from_nested_dict(choices)
 
-    def _generate_commands(self, translators):
-        for name, translator in translators.items():
-            self._generate_command_call(name=name, translator=translator)
+    def _generate_sub_controllers(self):
+        """Handle paths."""
+        for path, value in self.paths.items():
+            if value == "path":
+                continue
+
+            sub_menu_translators = {}
+            choices_commands = []
+
+            for translator_name, translator in self.translators.items():
+                if f"{self._name}_{path}" in translator_name:
+                    new_name = translator_name.replace(f"{self._name}_{path}_", "")
+                    sub_menu_translators[new_name] = translator
+                    choices_commands.append(new_name)
+
+                    if translator_name in self.CHOICES_COMMANDS:
+                        self.CHOICES_COMMANDS.remove(translator_name)
+
+            # Create the sub controller as a new class
+            class_name = f"{self._name.capitalize()}{path.capitalize()}Controller"
+            SubController = type(
+                class_name,
+                (PlatformController,),
+                {
+                    "CHOICES_GENERATION": True,
+                    # "CHOICES_MENUS": [],
+                    "CHOICES_COMMANDS": choices_commands,
+                },
+            )
+
+            self._generate_controller_call(
+                controller=SubController,
+                name=path,
+                translators=sub_menu_translators,
+            )
+
+    def _generate_commands(self):
+        """Generate commands."""
+        for name, translator in self.translators.items():
+
+            # Prepare the translator name to create a command call in the controller
+            new_name = name.replace(f"{self._name}_", "")
+
+            self._generate_command_call(name=new_name, translator=translator)
 
     def _generate_command_call(self, name, translator):
         def method(self, other_args: List[str], translator=translator):
@@ -96,12 +156,14 @@ class PlatformController(BaseController):
         """Print help."""
         mt = MenuText(self._name, 80)
 
-        mt.add_raw("Menus\n\n")
-        for menu in self.CHOICES_MENUS:
-            mt.add_menu(menu)
+        if self.CHOICES_MENUS:
+            mt.add_raw("Menus\n\n")
+            for menu in self.CHOICES_MENUS:
+                mt.add_menu(menu)
 
-        mt.add_raw("\nCommands\n\n")
-        for command in self.CHOICES_COMMANDS:
-            mt.add_cmd(command.replace(f"{self._name}_", ""))
+        if self.CHOICES_COMMANDS:
+            mt.add_raw("\nCommands\n\n")
+            for command in self.CHOICES_COMMANDS:
+                mt.add_cmd(command.replace(f"{self._name}_", ""))
 
         console.print(text=mt.menu_text, menu=self._name)

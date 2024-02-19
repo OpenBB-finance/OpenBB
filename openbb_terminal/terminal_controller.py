@@ -623,11 +623,15 @@ class TerminalController(BaseController):
 
     def call_poc_plat_equity(self, _):
         """Process poc_platform_equity command."""
-        from openbb_terminal.poc_platform_equity_controller import (
-            PocPlatformEquityController,
+        from openbb_terminal.platform_controller_factory import (
+            PlatformControllerFactory,
         )
+        from openbb import obb
 
-        self.queue = self.load_class(PocPlatformEquityController, "equity", self.queue)
+        pcf = PlatformControllerFactory(obb.equity)
+        EquityController = pcf.create()
+
+        self.queue = self.load_class(EquityController, "equity", obb.equity, self.queue)
 
     def call_intro(self, _):
         """Process intro command."""
