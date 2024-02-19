@@ -1,15 +1,18 @@
 """Yahoo Finance Asset Performance Gainers Model."""
 
+# pylint: disable=unused-argument
+
 import re
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
-import requests
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.equity_performance import (
     EquityPerformanceData,
     EquityPerformanceQueryParams,
 )
+from openbb_core.provider.utils.helpers import make_request
+from openbb_yfinance.utils.helpers import df_transform_numbers
 from pydantic import Field
 
 
@@ -35,10 +38,10 @@ class YFGainersData(EquityPerformanceData):
         "pe_ratio_ttm": "PE Ratio (TTM)",
     }
 
-    market_cap: str = Field(
+    market_cap: Optional[float] = Field(
         description="Market Cap.",
     )
-    avg_volume_3_months: float = Field(
+    avg_volume_3_months: Optional[float] = Field(
         description="Average volume over the last 3 months in millions.",
     )
     pe_ratio_ttm: Optional[float] = Field(
@@ -63,18 +66,12 @@ class YFGainersFetcher(Fetcher[YFGainersQueryParams, List[YFGainersData]]):
     ) -> pd.DataFrame:
         """Get data from YF."""
         headers = {"user_agent": "Mozilla/5.0"}
-        html = requests.get(
+        html = make_request(
             "https://finance.yahoo.com/screener/predefined/day_gainers",
             headers=headers,
-            timeout=10,
         ).text
         html_clean = re.sub(r"(<span class=\"Fz\(0\)\">).*?(</span>)", "", html)
-        df = (
-            pd.read_html(html_clean, header=None)[0]
-            .dropna(how="all", axis=1)
-            .fillna("-")
-            .replace("-", None)
-        )
+        df = pd.read_html(html_clean, header=None)[0].dropna(how="all", axis=1)
         return df
 
     @staticmethod
@@ -84,11 +81,12 @@ class YFGainersFetcher(Fetcher[YFGainersQueryParams, List[YFGainersData]]):
         **kwargs: Any,
     ) -> List[YFGainersData]:
         """Transform data."""
-        data["% Change"] = data["% Change"].str.replace("%", "").astype(float)
-        data["Volume"] = data["Volume"].str.replace("M", "").astype(float) * 1000000
-        data["Avg Vol (3 month)"] = (
-            data["Avg Vol (3 month)"].str.replace("M", "").astype(float) * 1000000
-        )
+
+        columns = ["Market Cap", "Avg Vol (3 month)", "Volume", "% Change"]
+
+        data = df_transform_numbers(data=data, columns=columns)
+        data = data.fillna("N/A").replace("N/A", None)
+
         return [
             YFGainersData.model_validate(d)
             for d in data.sort_values("% Change", ascending=False).to_dict(
