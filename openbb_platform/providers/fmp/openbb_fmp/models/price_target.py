@@ -1,5 +1,7 @@
 """FMP Equity Ownership Model."""
 
+# pylint: disable=unused-argument
+
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -27,15 +29,31 @@ class FMPPriceTargetQueryParams(PriceTargetQueryParams):
 class FMPPriceTargetData(PriceTargetData):
     """FMP Price Target Data."""
 
-    __alias_dict__ = {"news_url": "newsURL", "news_base_url": "newsBaseURL"}
+    __alias_dict__ = {
+        "analyst_firm": "gradingCompany",
+        "rating_current": "newGrade",
+        "rating_previous": "previousGrade",
+        "news_title": "newsTitle",
+        "url_news": "newsURL",
+        "url_base": "newsBaseURL",
+    }
 
-    new_grade: Optional[str] = Field(description="New grade", default=None)
-    previous_grade: Optional[str] = Field(description="Previous grade", default=None)
-    grading_company: Optional[str] = Field(description="Grading company", default=None)
+    news_url: Optional[str] = Field(
+        default=None, description="News URL of the price target."
+    )
+    news_title: Optional[str] = Field(
+        default=None, description="News title of the price target."
+    )
+    news_publisher: Optional[str] = Field(
+        default=None, description="News publisher of the price target."
+    )
+    news_base_url: Optional[str] = Field(
+        default=None, description="News base URL of the price target."
+    )
 
     @field_validator("published_date", mode="before", check_fields=False)
-    def fiscal_date_ending_validate(cls, v: str):  # pylint: disable=E0213
-        """Return the fiscal date ending as a datetime object."""
+    def validate_date(cls, v: str):  # pylint: disable=E0213
+        """Validate the published date."""
         v = v.replace("\n", "")
         return datetime.strptime(v, "%Y-%m-%dT%H:%M:%S.%fZ")  # type: ignore
 
@@ -53,7 +71,6 @@ class FMPPriceTargetFetcher(
         """Transform the query params."""
         return FMPPriceTargetQueryParams(**params)
 
-    # pylint: disable=unused-argument
     @staticmethod
     async def aextract_data(
         query: FMPPriceTargetQueryParams,
@@ -71,11 +88,16 @@ class FMPPriceTargetFetcher(
 
         return await get_data_urls(urls)
 
-    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: FMPPriceTargetQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPPriceTargetData]:
         """Return the transformed data."""
-        data = data[: query.limit]
-        return [FMPPriceTargetData.model_validate(d) for d in data]
+        results: List[FMPPriceTargetData] = []
+        for item in data:
+            new_item = {
+                k if k != "analystCompany" else "analyst_firm": v
+                for k, v in item.items()
+            }
+            results.append(FMPPriceTargetData.model_validate(new_item))
+        return results
