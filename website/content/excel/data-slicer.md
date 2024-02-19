@@ -31,7 +31,7 @@ To help you slice parts of data, OpenBB Add-in for Excel provides the [OBB.GET](
 - Slice single row:
 
 ```excel
-=OBB.GET("A1:D3",DATE(2023,9,30))
+=OBB.GET(A1:D3,DATE(2023,9,30))
 ```
 
 :::note
@@ -41,19 +41,19 @@ When passing date labels make sure to use the format `YYYY/MM/DD` or refer to a 
 - Slicing single column:
 
 ```excel
-=OBB.GET("A1:D3",,"revenue")
+=OBB.GET(A1:D3,,"revenue")
 ```
 
 - Slicing by index:
 
 ```excel
-=OBB.GET("A1:D3",2,3)
+=OBB.GET(A1:D3,2,3)
 ```
 
 - Slicing multiple rows and columns:
 
 ```excel
-=OBB.GET("A1:D3",{"2023/09/30","2021/09/25"},{"cost_of_revenue","gross_profit"})
+=OBB.GET(A1:D3,{"2023/09/30","2021/09/25"},{"cost_of_revenue","gross_profit"})
 ```
 
 :::tip
