@@ -13,12 +13,15 @@ import sys
 import time
 import webbrowser
 from datetime import datetime
+from functools import partial, update_wrapper
 from pathlib import Path
+from types import MethodType
 from typing import Any, Dict, List, Optional
 
 import certifi
 import pandas as pd
 import requests
+from openbb import obb
 from prompt_toolkit import PromptSession
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
@@ -45,6 +48,9 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
+from openbb_terminal.platform_controller_factory import (
+    PlatformControllerFactory,
+)
 from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.routine_functions import is_reset, parse_openbb_script
@@ -60,6 +66,8 @@ from openbb_terminal.terminal_helper import (
     update_terminal,
     welcome_message,
 )
+
+PLATFORM_ROUTERS = [d for d in dir(obb) if "_" not in d]
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
@@ -107,8 +115,8 @@ class TerminalController(BaseController):
         "futures",
         "fixedincome",
         "funds",
-        "poc_plat_equity",
     ]
+    CHOICES_MENUS.extend(PLATFORM_ROUTERS)
 
     if is_auth_enabled():
         CHOICES_MENUS.append("account")
@@ -131,7 +139,6 @@ class TerminalController(BaseController):
         super().__init__(jobs_cmds)
 
         self.queue: List[str] = list()
-        self.mt = MenuText("")
 
         if jobs_cmds:
             self.queue = parse_and_split_input(
@@ -145,16 +152,33 @@ class TerminalController(BaseController):
         self.update_runtime_choices()
 
     def _generate_platform_commands(self):
-        from openbb import obb
+        """Generate Platform based commands/menus."""
 
-        # 1. add menu to CHOICES_MENU
-        # 2. Inject mt.add_menu() into print_help()
+        def method(self, _, controller, name, target):
+            self.queue = self.load_class(controller, name, target, self.queue)
 
-        # from openbb_terminal.poc_platform_equity_controller import (
-        #     PocPlatformEquityController,
-        # )
+        for router in PLATFORM_ROUTERS:
+            if router not in ["equity", "crypto", "etf"]:
+                continue
 
-        # self.queue = self.load_class(PocPlatformEquityController, "equity", self.queue)
+            target = getattr(obb, router)
+            pcf = PlatformControllerFactory(target)
+            DynamicController = pcf.create()
+
+            # Bind the method to the class
+            bound_method = MethodType(method, self)
+
+            # Update the wrapper and set the attribute
+            bound_method = update_wrapper(
+                partial(
+                    bound_method,
+                    controller=DynamicController,
+                    name=router,
+                    target=target,
+                ),
+                method,
+            )
+            setattr(self, f"call_{router}", bound_method)
 
     def update_runtime_choices(self):
         """Update runtime choices."""
@@ -223,50 +247,56 @@ class TerminalController(BaseController):
 
     def print_help(self):
         """Print help."""
-        self.mt.add_info("_home_")
-        self.mt.add_cmd("intro")
-        self.mt.add_cmd("about")
-        self.mt.add_cmd("support")
-        self.mt.add_cmd("survey")
+        mt = MenuText("")
+        mt.add_raw("\n")
+        mt.add_info("_home_")
+        mt.add_cmd("intro")
+        mt.add_cmd("about")
+        mt.add_cmd("support")
+        mt.add_cmd("survey")
         if not is_installer():
-            self.mt.add_cmd("update")
-        self.mt.add_cmd("wiki")
-        self.mt.add_cmd("news")
-        self.mt.add_raw("\n")
-        self.mt.add_info("_configure_")
+            mt.add_cmd("update")
+        mt.add_cmd("wiki")
+        mt.add_cmd("news")
+        mt.add_raw("\n")
+        mt.add_info("_configure_")
         if is_auth_enabled():
-            self.mt.add_menu("account")
-        self.mt.add_menu("keys")
-        self.mt.add_menu("featflags")
-        self.mt.add_menu("sources")
-        self.mt.add_menu("settings")
-        self.mt.add_raw("\n")
-        self.mt.add_info("_scripts_")
-        self.mt.add_cmd("record")
-        self.mt.add_cmd("stop")
-        self.mt.add_cmd("exe")
-        self.mt.add_raw("\n")
-        self.mt.add_cmd("askobb")
-        self.mt.add_raw("\n")
-        self.mt.add_info("_main_menu_")
-        self.mt.add_menu("stocks")
-        self.mt.add_menu("crypto")
-        self.mt.add_menu("etf")
-        self.mt.add_menu("economy")
-        self.mt.add_menu("forex")
-        self.mt.add_menu("futures")
-        self.mt.add_menu("fixedincome")
-        self.mt.add_menu("alternative")
-        self.mt.add_menu("funds")
-        self.mt.add_menu("poc_plat_equity")
-        self.mt.add_raw("\n")
-        self.mt.add_info("_toolkits_")
-        self.mt.add_menu("econometrics")
-        self.mt.add_menu("forecast")
-        self.mt.add_menu("portfolio")
-        self.mt.add_menu("dashboards")
-        self.mt.add_menu("reports")
-        console.print(text=self.mt.menu_text, menu="Home")
+            mt.add_menu("account")
+        mt.add_menu("keys")
+        mt.add_menu("featflags")
+        mt.add_menu("sources")
+        mt.add_menu("settings")
+        mt.add_raw("\n")
+        mt.add_info("_scripts_")
+        mt.add_cmd("record")
+        mt.add_cmd("stop")
+        mt.add_cmd("exe")
+        mt.add_raw("\n")
+        mt.add_cmd("askobb")
+        mt.add_raw("\n")
+        mt.add_info("_main_menu_")
+        mt.add_menu("stocks")
+        mt.add_menu("crypto")
+        mt.add_menu("etf")
+        mt.add_menu("economy")
+        mt.add_menu("forex")
+        mt.add_menu("futures")
+        mt.add_menu("fixedincome")
+        mt.add_menu("alternative")
+        mt.add_menu("funds")
+        mt.add_raw("\n")
+        mt.add_info("_toolkits_")
+        mt.add_menu("econometrics")
+        mt.add_menu("forecast")
+        mt.add_menu("portfolio")
+        mt.add_menu("dashboards")
+        mt.add_menu("reports")
+        mt.add_raw("\n")
+        mt.add_info("Platform CLI")
+        for router in PLATFORM_ROUTERS:
+            mt.add_menu(router)
+
+        console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
 
     def call_news(self, other_args: List[str]) -> None:
@@ -619,18 +649,6 @@ class TerminalController(BaseController):
         from openbb_terminal.mutual_funds.mutual_fund_controller import FundController
 
         self.queue = self.load_class(FundController, self.queue)
-
-    def call_poc_plat_equity(self, _):
-        """Process poc_platform_equity command."""
-        from openbb_terminal.platform_controller_factory import (
-            PlatformControllerFactory,
-        )
-        from openbb import obb
-
-        pcf = PlatformControllerFactory(obb.equity)
-        EquityController = pcf.create()
-
-        self.queue = self.load_class(EquityController, "equity", obb.equity, self.queue)
 
     def call_intro(self, _):
         """Process intro command."""
