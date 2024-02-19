@@ -173,4 +173,7 @@ class PolygonIndexHistoricalFetcher(
         """Transform the data."""
         if not data:
             raise EmptyDataError()
-        return [PolygonIndexHistoricalData.model_validate(d) for d in data]
+        return [
+            PolygonIndexHistoricalData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["t"], reverse=False)
+        ]

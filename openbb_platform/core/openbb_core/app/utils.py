@@ -2,9 +2,7 @@
 
 import ast
 import json
-from datetime import (
-    date as dateType,
-)
+from datetime import time
 from typing import Dict, Iterable, List, Optional, Union
 
 import numpy as np
@@ -16,9 +14,6 @@ from openbb_core.app.model.preferences import Preferences
 from openbb_core.app.model.system_settings import SystemSettings
 from openbb_core.provider.abstract.data import Data
 
-
-def is_tz_aware(dt):
-    return dt.tzinfo is not None and dt.tzinfo.utcoffset(dt) is not None
 
 def basemodel_to_df(
     data: Union[List[Data], Data],
@@ -39,20 +34,18 @@ def basemodel_to_df(
         df = df.drop(["is_multiindex", "multiindex_names"], axis=1)
 
     if index and index in df.columns:
-        # TODO: This should probably check if the index can be converted to a datetime instead of just assuming
         if index == "date":
-            date_check = df["date"].iloc[-1]
-            if isinstance(date_check, str):
-                df["date"] = df["date"].apply(pd.Timestamp)
-            if not isinstance(date_check, dateType):
-                if is_tz_aware(date_check) is False:
-                    df["date"] = pd.to_datetime(df["date"])
-                if is_tz_aware(date_check) is True:
-                    df["date"] = df["date"].apply(pd.Timestamp)
+            df["date"] = df["date"].apply(pd.to_datetime)
+            if df["date"].iloc[0].time() == df["date"].iloc[-1].time() and df[
+                "date"
+            ].iloc[-1].time() == time(0, 0):
+                df["date"] = df["date"].apply(lambda x: x.date())
             df.set_index("date", inplace=True)
             df.sort_index(axis=0, inplace=True)
         else:
-            df = df.set_index(index) if index else df
+            df = (
+                df.set_index(index) if index is not None and index in df.columns else df
+            )
 
     return df
 

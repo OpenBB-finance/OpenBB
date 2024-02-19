@@ -178,4 +178,7 @@ class PolygonEquityHistoricalFetcher(
         """Transform the data from the Polygon endpoint."""
         if not data:
             raise EmptyDataError()
-        return [PolygonEquityHistoricalData.model_validate(d) for d in data]
+        return [
+            PolygonEquityHistoricalData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["t"], reverse=False)
+        ]
