@@ -49,6 +49,7 @@
     "equity_discovery_undervalued_growth": "/equity/discovery/undervalued_growth",
     "equity_discovery_undervalued_large_caps": "/equity/discovery/undervalued_large_caps",
     "equity_estimates": "/equity/estimates",
+    "equity_estimates_analyst_search": "/equity/estimates/analyst_search",
     "equity_estimates_consensus": "/equity/estimates/consensus",
     "equity_estimates_historical": "/equity/estimates/historical",
     "equity_estimates_price_target": "/equity/estimates/price_target",
