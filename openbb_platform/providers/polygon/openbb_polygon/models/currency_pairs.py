@@ -159,6 +159,7 @@ class PolygonCurrencyPairsFetcher(
 
         return all_data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: PolygonCurrencyPairsQueryParams,

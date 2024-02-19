@@ -208,6 +208,7 @@ class PolygonEquityNBBOFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: PolygonEquityNBBOQueryParams,
