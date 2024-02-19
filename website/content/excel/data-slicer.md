@@ -1,22 +1,22 @@
 ---
 title: Data slicer
 sidebar_position: 4
-description: Access your data connectors from OpenBB Terminal Pro inside OpenBB Add-in for Excel.
+description: Slice Excel ranges by label or index
 keywords:
 - Microsoft Excel
 - Add-in
 - Advanced
-- Data connectors
-- BYOD
-- Bring your own data
+- Slice data
+- Data slicer
+- Get specific fields
 ---
 
 <!-- markdownlint-disable MD033 -->
 import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
-<HeadTitle title="Slice parts of data | OpenBB Add-in for Excel Docs" />
+<HeadTitle title="Data slicer | OpenBB Add-in for Excel Docs" />
 
-To help you slice parts of data, OpenBB Add-in for Excel provides the [OBB.GET](https://docs.openbb.co/excel/reference/get) function. This function allows you to slice any kind of data, from a rows to columns or a subset of a range. It is useful to extract specific parts from other `OBB.` data functions. Data can be sliced by label or index.
+To help you slice parts of data, we provide the [OBB.GET](https://docs.openbb.co/excel/reference/get) function. This function allows to slice rows, columns or range subsets. It is useful to extract specific fields from the `OBB.` custom functions. Data can be sliced by label or index.
 
 ### Example
 
