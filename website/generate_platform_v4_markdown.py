@@ -25,7 +25,7 @@ PLATFORM_DATA_MODELS_PATH = Path(WEBSITE_PATH / "content/platform/data_models")
 
 # Imports used in the generated markdown files
 PLATFORM_REFERENCE_IMPORT = "import ReferenceCard from '@site/src/components/General/NewReferenceCard';"  # fmt: skip
-PLATFORM_REFERENCE_UL_ELEMENT = '<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">'  # fmt: skip
+PLATFORM_REFERENCE_UL_ELEMENT = '<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">'  # noqa: E501
 
 
 def save_metadata(path: Path) -> Dict[str, Dict[str, Union[str, List[str]]]]:
@@ -599,7 +599,13 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
                 # Construct the URL for the sub-directory
                 url = f"/platform/reference/{'/'.join(directories[:-1])}/{sub_dir.name}"
                 # Add a ReferenceCard component for the sub-directory
-                index_content += f'<ReferenceCard title="{title}" description="{cleaned_description}" url="{url}" />\n'
+                index_content += (
+                    "<ReferenceCard"
+                    f"title={title}"
+                    f"description={cleaned_description}"
+                    f"url={url}"
+                    "/>\n"
+                )
             index_content += "</ul>\n\n"
 
         # Commands section for markdown files
@@ -619,7 +625,13 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
                         f"/platform/reference/{'/'.join(directories[:-1])}/{file.stem}"
                     )
                     # Add a ReferenceCard component for the markdown file
-                    index_content += f'<ReferenceCard title="{title}" description="{cleaned_description}" url="{url}" />\n'
+                    index_content += (
+                        "<ReferenceCard"
+                        f"title={title}"
+                        f"description={cleaned_description}"
+                        f"url={url}"
+                        "/>\n"
+                    )
             index_content += "</ul>\n\n"
 
         # Generate the index.mdx file for the current directory
