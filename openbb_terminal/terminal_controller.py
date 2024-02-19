@@ -158,7 +158,10 @@ class TerminalController(BaseController):
             self.queue = self.load_class(controller, name, target, self.queue)
 
         for router in PLATFORM_ROUTERS:
-            if router not in ["equity", "crypto", "etf"]:
+            if router in [
+                "user",
+                "system",
+            ]:
                 continue
 
             target = getattr(obb, router)
@@ -299,99 +302,99 @@ class TerminalController(BaseController):
         console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
 
-    def call_news(self, other_args: List[str]) -> None:
-        """Process news command."""
-        parse = argparse.ArgumentParser(
-            add_help=False,
-            prog="news",
-            description="display news articles based on term and data sources",
-        )
-        parse.add_argument(
-            "-t",
-            "--term",
-            dest="term",
-            default=[""],
-            nargs="+",
-            help="search for a term on the news",
-        )
-        parse.add_argument(
-            "-s",
-            "--sources",
-            dest="sources",
-            default="bloomberg",
-            type=str,
-            help="sources from where to get news from (separated by comma)",
-        )
-        parse.add_argument(
-            "--tag",
-            dest="tag",
-            default="",
-            type=str,
-            help="display news for an individual tag [Biztoc only]",
-        )
-        parse.add_argument(
-            "--sourcelist",
-            dest="sourcelist",
-            action="store_true",
-            help="list all available sources from where to get news from [Biztoc only]",
-        )
-        parse.add_argument(
-            "--taglist",
-            dest="taglist",
-            action="store_true",
-            help="list all trending tags [Biztoc only]",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-        news_parser = self.parse_known_args_and_warn(
-            parse, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=25
-        )
-        if news_parser:
-            if news_parser.source == "Feedparser":
-                # If biztoc options passed to feedparser source, let the user know
-                to_return = False
-                if news_parser.taglist:
-                    console.print("--taglist only available for Biztoc.\n")
-                    to_return = True
-                if news_parser.sourcelist:
-                    console.print("--sourcelist only available for Biztoc.\n")
-                    to_return = True
-                if news_parser.tag:
-                    console.print("--tag only available for Biztoc.\n")
-                    to_return = True
+    # def call_news(self, other_args: List[str]) -> None:
+    #     """Process news command."""
+    #     parse = argparse.ArgumentParser(
+    #         add_help=False,
+    #         prog="news",
+    #         description="display news articles based on term and data sources",
+    #     )
+    #     parse.add_argument(
+    #         "-t",
+    #         "--term",
+    #         dest="term",
+    #         default=[""],
+    #         nargs="+",
+    #         help="search for a term on the news",
+    #     )
+    #     parse.add_argument(
+    #         "-s",
+    #         "--sources",
+    #         dest="sources",
+    #         default="bloomberg",
+    #         type=str,
+    #         help="sources from where to get news from (separated by comma)",
+    #     )
+    #     parse.add_argument(
+    #         "--tag",
+    #         dest="tag",
+    #         default="",
+    #         type=str,
+    #         help="display news for an individual tag [Biztoc only]",
+    #     )
+    #     parse.add_argument(
+    #         "--sourcelist",
+    #         dest="sourcelist",
+    #         action="store_true",
+    #         help="list all available sources from where to get news from [Biztoc only]",
+    #     )
+    #     parse.add_argument(
+    #         "--taglist",
+    #         dest="taglist",
+    #         action="store_true",
+    #         help="list all trending tags [Biztoc only]",
+    #     )
+    #     if other_args and "-" not in other_args[0][0]:
+    #         other_args.insert(0, "-t")
+    #     news_parser = self.parse_known_args_and_warn(
+    #         parse, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=25
+    #     )
+    #     if news_parser:
+    #         if news_parser.source == "Feedparser":
+    #             # If biztoc options passed to feedparser source, let the user know
+    #             to_return = False
+    #             if news_parser.taglist:
+    #                 console.print("--taglist only available for Biztoc.\n")
+    #                 to_return = True
+    #             if news_parser.sourcelist:
+    #                 console.print("--sourcelist only available for Biztoc.\n")
+    #                 to_return = True
+    #             if news_parser.tag:
+    #                 console.print("--tag only available for Biztoc.\n")
+    #                 to_return = True
 
-                if to_return:
-                    return
+    #             if to_return:
+    #                 return
 
-                query = " ".join(news_parser.term)
-                feedparser_view.display_news(
-                    term=query,
-                    sources=news_parser.sources,
-                    limit=news_parser.limit,
-                    export=news_parser.export,
-                    sheet_name=news_parser.sheet_name,
-                )
-            if news_parser.source == "Biztoc":
-                query = " ".join(news_parser.term)
-                if news_parser.sourcelist and news_parser.sourcelist is True:
-                    biztoc_view.display_sources(
-                        export=news_parser.export,
-                        sheet_name=news_parser.sheet_name,
-                    )
-                elif news_parser.taglist and news_parser.taglist is True:
-                    biztoc_view.display_tags(
-                        export=news_parser.export,
-                        sheet_name=news_parser.sheet_name,
-                    )
-                else:
-                    biztoc_view.display_news(
-                        term=query,
-                        tag=news_parser.tag,
-                        source=news_parser.sources,
-                        limit=news_parser.limit,
-                        export=news_parser.export,
-                        sheet_name=news_parser.sheet_name,
-                    )
+    #             query = " ".join(news_parser.term)
+    #             feedparser_view.display_news(
+    #                 term=query,
+    #                 sources=news_parser.sources,
+    #                 limit=news_parser.limit,
+    #                 export=news_parser.export,
+    #                 sheet_name=news_parser.sheet_name,
+    #             )
+    #         if news_parser.source == "Biztoc":
+    #             query = " ".join(news_parser.term)
+    #             if news_parser.sourcelist and news_parser.sourcelist is True:
+    #                 biztoc_view.display_sources(
+    #                     export=news_parser.export,
+    #                     sheet_name=news_parser.sheet_name,
+    #                 )
+    #             elif news_parser.taglist and news_parser.taglist is True:
+    #                 biztoc_view.display_tags(
+    #                     export=news_parser.export,
+    #                     sheet_name=news_parser.sheet_name,
+    #                 )
+    #             else:
+    #                 biztoc_view.display_news(
+    #                     term=query,
+    #                     tag=news_parser.tag,
+    #                     source=news_parser.sources,
+    #                     limit=news_parser.limit,
+    #                     export=news_parser.export,
+    #                     sheet_name=news_parser.sheet_name,
+    #                 )
 
     def parse_input(self, an_input: str) -> List:
         """Overwrite the BaseController parse_input for `askobb` and 'exe'
@@ -530,11 +533,11 @@ class TerminalController(BaseController):
                 "https://openbb.co/products/terminal#get-started\n"
             )
 
-    def call_account(self, _):
-        """Process account command."""
-        from openbb_terminal.account.account_controller import AccountController
+    # def call_account(self, _):
+    #     """Process account command."""
+    #     from openbb_terminal.account.account_controller import AccountController
 
-        self.queue = self.load_class(AccountController, self.queue)
+    #     self.queue = self.load_class(AccountController, self.queue)
 
     def call_keys(self, _):
         """Process keys command."""
@@ -560,23 +563,23 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(StocksController, self.queue)
 
-    def call_crypto(self, _):
-        """Process crypto command."""
-        from openbb_terminal.cryptocurrency.crypto_controller import CryptoController
+    # def call_crypto(self, _):
+    #     """Process crypto command."""
+    #     from openbb_terminal.cryptocurrency.crypto_controller import CryptoController
 
-        self.queue = self.load_class(CryptoController, self.queue)
+    #     self.queue = self.load_class(CryptoController, self.queue)
 
-    def call_economy(self, _):
-        """Process economy command."""
-        from openbb_terminal.economy.economy_controller import EconomyController
+    # def call_economy(self, _):
+    #     """Process economy command."""
+    #     from openbb_terminal.economy.economy_controller import EconomyController
 
-        self.queue = self.load_class(EconomyController, self.queue)
+    #     self.queue = self.load_class(EconomyController, self.queue)
 
-    def call_etf(self, _):
-        """Process etf command."""
-        from openbb_terminal.etf.etf_controller import ETFController
+    # def call_etf(self, _):
+    #     """Process etf command."""
+    #     from openbb_terminal.etf.etf_controller import ETFController
 
-        self.queue = self.load_class(ETFController, self.queue)
+    #     self.queue = self.load_class(ETFController, self.queue)
 
     def call_forex(self, _):
         """Process forex command."""
@@ -636,13 +639,13 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(FuturesController, self.queue)
 
-    def call_fixedincome(self, _):
-        """Process fixedincome command."""
-        from openbb_terminal.fixedincome.fixedincome_controller import (
-            FixedIncomeController,
-        )
+    # def call_fixedincome(self, _):
+    #     """Process fixedincome command."""
+    #     from openbb_terminal.fixedincome.fixedincome_controller import (
+    #         FixedIncomeController,
+    #     )
 
-        self.queue = self.load_class(FixedIncomeController, self.queue)
+    #     self.queue = self.load_class(FixedIncomeController, self.queue)
 
     def call_funds(self, _):
         """Process etf command"""
