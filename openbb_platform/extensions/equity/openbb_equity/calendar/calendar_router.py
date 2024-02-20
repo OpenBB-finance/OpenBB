@@ -30,7 +30,7 @@ async def ipo(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Historical, current, and upcoming initial public offerings (IPOs)."""
+    """Historical and upcoming initial public offerings (IPOs)."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -47,7 +47,7 @@ async def dividend(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Historical and upcoming dividend calendar. Includes dividend amount and ex-dividend and payment dates."""
+    """Historical and upcoming dividend payments. Includes dividend amount and ex-dividend and payment dates."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -64,7 +64,7 @@ async def splits(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Historical and upcoming stock splits calendar."""
+    """Historical and upcoming stock split operations."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -81,5 +81,5 @@ async def earnings(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Historical and upcoming company earnings calendar. Includes earnings per share (EPS) and revenue information."""
+    """Historical and upcoming company earnings releases. Includes earnings per share (EPS) and revenue information."""
     return await OBBject.from_query(Query(**locals()))

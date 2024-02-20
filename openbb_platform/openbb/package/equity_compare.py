@@ -27,40 +27,44 @@ class ROUTER_equity_compare(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Equity Peers. Company peers.
+        """Get the closest peers for a given company.
 
-        Parameters
-        ----------
-        symbol : str
-            Symbol to get data for.
-        provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
+            Peers consist of companies trading on the same exchange, operating within the same sector
+        and with comparable market capitalizations.
 
-        Returns
-        -------
-        OBBject
-            results : EquityPeers
-                Serializable results.
+
+            Parameters
+            ----------
+            symbol : str
+                Symbol to get data for.
             provider : Optional[Literal['fmp']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra: Dict[str, Any]
-                Extra info.
+                The provider to use for the query, by default None.
+                If None, the provider specified in defaults is selected or 'fmp' if there is
+                no default.
 
-        EquityPeers
-        -----------
-        peers_list : List[str]
-            A list of equity peers based on sector, exchange and market cap.
+            Returns
+            -------
+            OBBject
+                results : EquityPeers
+                    Serializable results.
+                provider : Optional[Literal['fmp']]
+                    Provider name.
+                warnings : Optional[List[Warning_]]
+                    List of warnings.
+                chart : Optional[Chart]
+                    Chart object.
+                extra: Dict[str, Any]
+                    Extra info.
 
-        Example
-        -------
-        >>> from openbb import obb
-        >>> obb.equity.compare.peers(symbol="AAPL")
+            EquityPeers
+            -----------
+            peers_list : List[str]
+                A list of equity peers based on sector, exchange and market cap.
+
+            Example
+            -------
+            >>> from openbb import obb
+            >>> obb.equity.compare.peers(symbol="AAPL")
         """  # noqa: E501
 
         return self._run(

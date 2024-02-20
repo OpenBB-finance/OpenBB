@@ -40,7 +40,7 @@ class ROUTER_equity_calendar(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Historical and upcoming dividend calendar. Includes dividend amount and ex-dividend and payment dates.
+        """Historical and upcoming dividend payments. Includes dividend amount and ex-dividend and payment dates.
 
         Parameters
         ----------
@@ -132,7 +132,7 @@ class ROUTER_equity_calendar(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Historical and upcoming company earnings calendar. Includes earnings per share (EPS) and revenue information.
+        """Historical and upcoming company earnings releases. Includes earnings per share (EPS) and revenue information.
 
         Parameters
         ----------
@@ -235,7 +235,7 @@ class ROUTER_equity_calendar(Container):
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
     ) -> OBBject:
-        """Historical, current, and upcoming initial public offerings (IPOs).
+        """Historical and upcoming initial public offerings (IPOs).
 
         Parameters
         ----------
@@ -402,7 +402,7 @@ class ROUTER_equity_calendar(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Historical and upcoming stock splits calendar.
+        """Historical and upcoming stock split operations.
 
         Parameters
         ----------
