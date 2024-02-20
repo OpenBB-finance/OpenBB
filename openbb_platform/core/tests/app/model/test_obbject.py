@@ -266,7 +266,7 @@ def test_to_dataframe_w_args(results, index, sort_by):
 
 @pytest.mark.parametrize(
     "results",
-    # Test case 1: Normal results with "date" column
+    # Test case 1: List of models.
     (
         [
             MockDataFrame(date="2023-07-30", value=10),
