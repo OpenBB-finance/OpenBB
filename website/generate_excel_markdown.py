@@ -33,8 +33,14 @@ class CommandLib:
 
     # These examples will be generated in the core, but we keep them here meanwhile
     EXAMPLE_PARAMS: Dict[str, Dict] = {
+        "/get": {
+            "data": '{"a","b","c";"d","e","f"}',
+            "row": '"d"',
+            "column": '"c"',
+        },
         "/byod": {
             "widget": '"widget_name"',
+            "backend": '"backend_name"',
         },
         "crypto": {
             "symbol": '"BTCUSD"',
@@ -247,11 +253,9 @@ class CommandLib:
             standard_eg += f"{p_value}{sep}"
         standard_eg = standard_eg.strip(f"{sep} ") + ")"
 
-        if required_eg == standard_eg:
-            return {"A. Required": required_eg}
-        # Uncomment to add standard examples
-        # return {"A. Required": required_eg, "B. Standard": standard_eg}
-        return {"A. Required": required_eg}
+        if cmd in ("/get", "/byod"):
+            return {"Required": required_eg, "Standard": standard_eg}
+        return {"Required": required_eg}
 
     def get_info(self, cmd: str) -> Dict[str, Any]:
         """Get the info for a command."""
@@ -337,7 +341,7 @@ class Editor:
         def get_syntax() -> str:
             if sig := cmd_info["signature"]:
                 syntax = "## Syntax\n\n"
-                syntax += f"```{self.interface} wordwrap\n"
+                syntax += f"```{self.interface}\n"
                 syntax += f"{sig}\n"
                 syntax += "```\n\n"
                 return syntax
@@ -381,7 +385,7 @@ class Editor:
                 examples = "### Example\n\n"
                 for _, v in cmd_examples.items():
                     # examples += f"### {k}\n\n"
-                    examples += f"```{self.interface} wordwrap\n"
+                    examples += f"```{self.interface}\n"
                     examples += f"{v}\n"
                     examples += "```\n\n"
 
