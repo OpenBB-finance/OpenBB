@@ -189,7 +189,6 @@ class StocksDarkpoolShorts(Category):
     """Darkpool Shorts Module.
 
     Attributes:
-        `ctb`: Get stocks with highest cost to borrow [Source: Interactive Broker]\n
         `dpotc`: Get all FINRA data associated with a ticker\n
         `dpotc_chart`: Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]\n
         `ftd`: Display fails-to-deliver data for a given ticker. [Source: SEC]\n
@@ -212,7 +211,6 @@ class StocksDarkpoolShorts(Category):
 
     def __init__(self):
         super().__init__()
-        self.ctb = lib.stocks_dps_ibkr_model.get_cost_to_borrow
         self.dpotc = lib.stocks_dps_finra_model.getTickerFINRAdata
         self.dpotc_chart = lib.stocks_dps_finra_view.darkpool_ats_otc
         self.ftd = lib.stocks_dps_sec_model.get_fails_to_deliver
