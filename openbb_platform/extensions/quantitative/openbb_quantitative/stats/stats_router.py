@@ -11,8 +11,6 @@ from openbb_core.app.utils import (
     get_target_column,
 )
 from openbb_core.provider.abstract.data import Data
-from pydantic import NonNegativeFloat
-
 from openbb_quantitative.statistics import (
     kurtosis as _kurtosis,
     mean as _mean,
@@ -20,6 +18,7 @@ from openbb_quantitative.statistics import (
     std_dev as _std,
     var as _var,
 )
+from pydantic import NonNegativeFloat
 
 router = Router(prefix="/stats")
 

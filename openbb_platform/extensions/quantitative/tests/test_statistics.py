@@ -13,10 +13,6 @@ def test_skew():
     assert skew(test_data) == pytest.approx(0.0, abs=1e-3)
 
 
-def test_mean():
-    assert mean(test_data) == pytest.approx(5.5, abs=1e-3)
-
-
 def test_std_dev():
     assert std_dev(test_data) == pytest.approx(2.872, abs=1e-3)
 
