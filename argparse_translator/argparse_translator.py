@@ -92,8 +92,17 @@ class ArgparseTranslator:
 
         choices = ()
 
+        if type_origin is Literal:
+            choices = get_args(param_type)
+            param_type = type(choices[0])
+
         if type_origin is list:  # TODO: dict should also go here
             param_type = get_args(param_type)[0]
+
+            if get_origin(param_type) is Literal:
+                choices = get_args(param_type)
+                param_type = type(choices[0])
+
         if type_origin is Union:
             # if str type is available on Union, use it
             if str in get_args(param_type):
@@ -183,9 +192,9 @@ class ArgparseTranslator:
                         annotation=Annotated[
                             child_param.annotation,
                             OpenBBCustomParameter(
-                                help=param_type.schema()["properties"][
-                                    child_param.name
-                                ].get("help", None)
+                                description=param_type.model_json_schema()[
+                                    "properties"
+                                ][child_param.name].get("description", None)
                             ),
                         ],
                         kind=inspect.Parameter.KEYWORD_ONLY,
@@ -318,7 +327,7 @@ class ArgparseTranslator:
 # from openbb import obb
 
 
-# translator = ArgparseTranslator(obb.equity.price.historical)
+# translator = ArgparseTranslator(obb.economy.cpi)
 # equity_historical_price = translator.translate()
 # result = equity_historical_price()
 # print(result)
