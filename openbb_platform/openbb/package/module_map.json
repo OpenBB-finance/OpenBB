@@ -136,6 +136,7 @@
     "index_market": "/index/market",
     "index_price": "/index/price",
     "index_price_historical": "/index/price/historical",
+    "index_sectors": "/index/sectors",
     "news": "/news",
     "news_company": "/news/company",
     "news_world": "/news/world",
