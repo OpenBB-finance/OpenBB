@@ -4,7 +4,7 @@ import json
 import re
 import shutil
 from pathlib import Path
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List
 
 from fastapi.routing import APIRoute
 from openbb_core.app.provider_interface import ProviderInterface
@@ -25,35 +25,6 @@ PLATFORM_DATA_MODELS_PATH = Path(WEBSITE_PATH / "content/platform/data_models")
 # Imports used in the generated markdown files
 PLATFORM_REFERENCE_IMPORT = "import ReferenceCard from '@site/src/components/General/NewReferenceCard';"  # fmt: skip
 PLATFORM_REFERENCE_UL_ELEMENT = '<ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 -ml-6">'  # noqa: E501
-
-
-def save_metadata(path: Path) -> Dict[str, Dict[str, Union[str, List[str]]]]:
-    """Save SEO metadata"""
-    regex = re.compile(
-        r"---\ntitle: (.*)\ndescription: (.*)\nkeywords:(.*)\n---\n\nimport HeadTitle",
-        re.MULTILINE | re.DOTALL,
-    )
-
-    metadata = {}
-    for file in path.rglob("*/**/*.md"):
-        context = file.read_text(encoding="utf-8")
-        match = regex.search(context)
-        if match:
-            title, description, keywords = match.groups()
-            key = file.relative_to(path).as_posix().removesuffix(".md")
-            metadata[key.replace("/", ".")] = {
-                "title": title,
-                "description": description,
-                "keywords": [
-                    keyword.strip() for keyword in keywords.split("\n- ") if keyword
-                ],
-            }
-
-    filepath = WEBSITE_PATH / "metadata/platform_v4_seo_metadata2.json"
-    with open(filepath, "w", encoding="utf-8") as f:
-        json.dump(metadata, f, indent=2)
-
-    return metadata
 
 
 def get_field_data_type(field_type: Any) -> str:
@@ -172,7 +143,19 @@ def get_provider_field_params(
     return provider_field_params
 
 
-def get_post_method_parameters_info(annotations, docstring):
+def get_post_method_parameters_info(
+    annotations: Dict, docstring: str
+) -> List[Dict[str, str]]:
+    """Get the parameters for the POST method endpoints.
+
+    Args:
+        annotations (Dict): Endpoint function parameter names and their corresponding data types
+        docstring (str): Docstring of the endpoint function
+
+    Returns:
+        List[Dict[str, str]]: List of dictionaries containing the name,
+        type, description, default and optionality of each parameter.
+    """
     parameters_info = []
     descriptions = {}
     section = docstring.split("Parameters")[1].split("Returns")[0]
@@ -203,17 +186,26 @@ def get_post_method_parameters_info(annotations, docstring):
     return parameters_info
 
 
-def get_post_method_returns_info(annotations, docstring):
+def get_post_method_returns_info(return_type: Any, docstring: str) -> Dict[str, str]:
+    """Get the returns information for the POST method endpoints.
+
+    Args:
+        return_type (Any): Return type of the endpoint function
+        docstring (str): Docstring of the endpoint function
+
+    Returns:
+        Dict[str, str]: Dictionary containing the name, type, description of the return value
+    """
     section = docstring.split("Parameters")[1].split("Returns")[-1]
 
     # Directly capturing return description (assuming single return value for simplicity)
     description_lines = section.strip().split("\n")
     description = description_lines[-1].strip() if len(description_lines) > 1 else ""
-    return_type = annotations["return"].model_fields["results"].annotation
+    return_annotation = return_type.model_fields["results"].annotation
 
     returns_info = {
         "name": "results",
-        "type": get_field_data_type(return_type),
+        "type": get_field_data_type(return_annotation),
         "description": description,
     }
 
@@ -323,7 +315,7 @@ def generate_reference_file() -> None:
             route_annotations = route.endpoint.__annotations__.copy()
             route_docstring = route.endpoint.__doc__
 
-            returns_annotations = {"return": route_annotations.pop("return")}
+            return_type = route_annotations.pop("return")
             parameters_annotations = route_annotations
 
             # Add endpoint parameters fields for POST methods
@@ -363,9 +355,7 @@ def generate_reference_file() -> None:
             ]
 
         elif route_method == {"POST"}:
-            returns_info = get_post_method_returns_info(
-                returns_annotations, route_docstring
-            )
+            returns_info = get_post_method_returns_info(return_type, route_docstring)
             reference[path]["returns"]["OBBject"] = [
                 {
                     "name": returns_info["name"],
@@ -397,7 +387,7 @@ def create_reference_markdown_seo(path: str, description: str) -> str:
     path = path.replace("/", ".")
 
     if seo_metadata.get(path, None):
-        cleaned_title = seo_metadata[path]["title"].replace("_", " ")
+        cleaned_title = seo_metadata[path]["title"]
         cleaned_description = (
             seo_metadata[path]["description"]
             .strip()
@@ -408,7 +398,7 @@ def create_reference_markdown_seo(path: str, description: str) -> str:
         keywords = "- " + "\n- ".join(seo_metadata[path]["keywords"])
     else:
         # Get the router name as the title
-        cleaned_title = path.split(".")[-1].replace("_", " ")
+        cleaned_title = path.split(".")[-1]
         # Get the first sentence of the description
         cleaned_description = description.split(".")[0].strip()
         keywords = "- " + "\n- ".join(path.split("."))
@@ -628,105 +618,98 @@ def find_data_model_implementation_file(data_model: str) -> str:
 
 
 def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
-    """Generate index.mdx and _category_.json files for the reference sub-directories.
+    """Generate index.mdx and _category_.json files for directories and sub-directories
+    in the reference directory.
 
     Args:
-        reference_content (Dict[str, str]): Dictionary containing
-        the endpoints and their corresponding descriptions
+        reference_content (Dict[str, str]): Endpoints and their corresponding descriptions.
     """
 
-    # Generate the _category_.json file for the reference directory
-    print("Generating the _category_.json for the reference directory...")
-    reference_category = {"label": "Reference", "position": 5}
-    with open(PLATFORM_REFERENCE_PATH / "_category_.json", "w", encoding="utf-8") as f:
-        json.dump(reference_category, f, indent=2)
-
-    for path, description in reference_content.items():
-        directories = path.strip("/").split("/")
-        current_path = PLATFORM_REFERENCE_PATH
-
-        for directory in directories[:-1]:
-            current_path /= directory
-
-        # Locate sub-directories for the Menus section
-        sub_dirs = [d for d in current_path.iterdir() if d.is_dir()]
-        # Locate markdown files for the Commands section
+    def generate_index_and_category(
+        path: Path, parent_label: str = "Reference", position: int = 5
+    ):
+        # Check for sub-directories and markdown files in the current directory
+        sub_dirs = [d for d in path.iterdir() if d.is_dir()]
         markdown_files = [
-            f for f in current_path.iterdir() if f.is_file() and f.suffix == ".md"
+            f for f in path.iterdir() if f.is_file() and f.suffix == ".md"
         ]
 
-        index_content = f"# {directories[-2]}\n\n"
-        index_content += f"{PLATFORM_REFERENCE_IMPORT}\n\n"
+        # Generate _category_.json for the current directory
+        print(f"Generating the _category_.json for the {path} directory...")
+        category_content = {"label": parent_label, "position": position}
+        with open(path / "_category_.json", "w", encoding="utf-8") as f:
+            json.dump(category_content, f, indent=2)
 
-        # Building Menus section for sub-directories
+        # Initialize index.mdx content with the parent label and import statement
+        index_content = f"# {parent_label}\n\n{PLATFORM_REFERENCE_IMPORT}\n\n"
+
+        # Menus section for sub-directories
         if sub_dirs:
             index_content += "### Menus\n"
-            # Add the unordered list element for the menus
             index_content += PLATFORM_REFERENCE_UL_ELEMENT + "\n"
-
             for sub_dir in sub_dirs:
-                # Format file name as the title for the ReferenceCard component
-                title = sub_dir.name.replace("_", " ").capitalize()
-                # Get the first sentence from the description
-                cleaned_description = description.split(".")[0].strip()
-                # Construct the URL for the sub-directory
-                url = f"/platform/reference/{'/'.join(directories[:-1])}/{sub_dir.name}"
-                # Add a ReferenceCard component for the sub-directory
-                index_content += (
-                    "<ReferenceCard "
-                    f'title="{title}" '
-                    f'description="{cleaned_description}" '
-                    f'url="{url} "'
-                    "/>\n"
-                )
+                # Capitalize the sub-directory name to use as a title for display
+                title = sub_dir.name.capitalize()
+                # Get the relative path of the sub-directory from the platform reference path
+                # and convert it to POSIX style for consistency across OS
+                sub_dir_path = sub_dir.relative_to(PLATFORM_REFERENCE_PATH).as_posix()
+                # Retrieve the description of the sub-directory from the reference content,
+                # defaulting to an empty string if not found, and take only the first sentence
+                sub_dir_description = reference_content.get(f"/{sub_dir_path}", "").split(".")[0]  # fmt: skip
+
+                # List all markdown files in the sub-directory, excluding the index.mdx file,
+                # to include in the description
+                sub_dir_markdown_files = [
+                    f.stem for f in sub_dir.glob("*.md") if f.name != "index.mdx"
+                ]
+                # If there are markdown files found, append their names to the sub-directory
+                # description, separated by commas
+                if sub_dir_markdown_files:
+                    sub_dir_description += ", ".join(sub_dir_markdown_files)
+
+                url = f"/platform/reference/{sub_dir_path}"
+                index_content += f"<ReferenceCard title='{title}' description='{sub_dir_description}' url='{url}' />\n"
             index_content += "</ul>\n\n"
 
         # Commands section for markdown files
-        if markdown_files:  # Check if there are any markdown files
-            index_content += "### Commands\n"  # Add a Commands section header
-            index_content += (
-                PLATFORM_REFERENCE_UL_ELEMENT + "\n"
-            )  # Add the unordered list element for the commands
-            for file in markdown_files:  # Iterate through each markdown file
-                if file.name != "index.mdx":  # Exclude the index file itself
-                    # Format file name as the title for the ReferenceCard component
-                    title = file.stem.replace("_", " ").capitalize()
-                    # Get the first sentence from the description
-                    cleaned_description = description.split(".")[0].strip()
-                    # Construct the URL for the markdown file
-                    url = (
-                        f"/platform/reference/{'/'.join(directories[:-1])}/{file.stem}"
-                    )
-                    # Add a ReferenceCard component for the markdown file
-                    index_content += (
-                        "<ReferenceCard "
-                        f'title="{title}" '
-                        f'description="{cleaned_description}" '
-                        f'url="{url} "'
-                        "/>\n"
-                    )
+        if markdown_files:
+            index_content += "### Commands\n"
+            index_content += PLATFORM_REFERENCE_UL_ELEMENT + "\n"
+            for file in markdown_files:
+                # Check if the current file is not the index file to avoid self-referencing
+                if file.name != "index.mdx":
+                    # Extract the file name without extension to use as a title
+                    title = file.stem
+                    # Generate a relative file path from the PLATFORM_REFERENCE_PATH,
+                    # remove the file extension, and convert it to POSIX path format
+                    # for consistency across OS
+                    file_path = file.relative_to(PLATFORM_REFERENCE_PATH).with_suffix("").as_posix()  # fmt: skip
+                    # Attempt to fetch the file's description from reference_content
+                    # using its path,split by the first period to get the first sentence,
+                    # and default to an empty string if not found
+                    file_description = reference_content.get(f"/{file_path}", "").split(".")[0]  # fmt: skip
+                    url = f"/platform/reference/{file_path}"
+                    index_content += f"<ReferenceCard title='{title}' description='{file_description}' url='{url}' />\n"
             index_content += "</ul>\n\n"
 
-        # Generate the index.mdx file for the current directory
-        print(f"Generating the index.json for the {current_path} directory...")
-        with open(current_path / "index.mdx", "w", encoding="utf-8") as f:
+        # Save the index.mdx file
+        print(f"Generating the index.mdx for the {path} directory...")
+        with open(path / "index.mdx", "w", encoding="utf-8") as f:
             f.write(index_content)
 
-        # Generate the _category_.json for the current directory
-        print(f"Generating the _category_.json for the {current_path} directory...")
-        category_content = {
-            "label": directories[-2].capitalize(),
-            "position": len(directories) - 2,
-        }
-        with open(current_path / "_category_.json", "w", encoding="utf-8") as f:
-            json.dump(category_content, f, indent=2)
+        # Recursively generate for sub-directories
+        for i, sub_dir in enumerate(sub_dirs, start=1):
+            generate_index_and_category(sub_dir, sub_dir.name.capitalize(), i)
+
+    # Start the recursive generation from the PLATFORM_REFERENCE_PATH
+    generate_index_and_category(PLATFORM_REFERENCE_PATH)
 
 
 def generate_reference_top_level_index() -> None:
     """Generate the top-level index.mdx file for the reference directory."""
 
-    # Maximum number of cards to display on the Reference page
-    MAX_CARDS = 10
+    # Maximum number of commands to display on the cards in the Reference page
+    MAX_COMMANDS = 8
 
     # Get the sub-directories in the reference directory
     reference_dirs = [d for d in PLATFORM_REFERENCE_PATH.iterdir() if d.is_dir()]
@@ -739,10 +722,13 @@ def generate_reference_top_level_index() -> None:
 
         # Recursively find all markdown files in the directory and subdirectories
         for file in dir_path.rglob("*.md"):
-            markdown_files.append(file.stem.replace("_", " ").capitalize())
+            markdown_files.append(file.stem)
 
         # Format description as a comma-separated string
-        description_str = f"{', '.join(markdown_files[:MAX_CARDS])},..."
+        if len(markdown_files) <= MAX_COMMANDS:
+            description_str = f"{', '.join(markdown_files)}"
+        else:
+            description_str = f"{', '.join(markdown_files[:MAX_COMMANDS])},..."
 
         reference_cards_content += (
             f"<ReferenceCard\n"
@@ -815,7 +801,7 @@ def generate_data_models_index_files(content: str) -> None:
 
     # Generate the _category_.json file for the data_models directory
     print("Generating the _category_.json for the data_models directory...")
-    category_content = {"label": "Data Models", "position": 8}
+    category_content = {"label": "Data Models", "position": 6}
     with open(
         PLATFORM_DATA_MODELS_PATH / "_category_.json", "w", encoding="utf-8"
     ) as f:
