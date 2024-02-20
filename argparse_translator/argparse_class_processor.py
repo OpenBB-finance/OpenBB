@@ -74,7 +74,7 @@ class ArgparseClassProcessor:
                 methods[f"{class_name}_{name}"] = ArgparseTranslator(
                     func=member, add_help=add_help
                 )
-            else:
+            elif inspect.isclass(member):
                 methods = {
                     **methods,
                     **ArgparseClassProcessor._process_class(
@@ -91,6 +91,7 @@ class ArgparseClassProcessor:
             .rsplit(".", maxsplit=1)[-1]
             .replace("'>", "")
             .replace("ROUTER_", "")
+            .lower()
         )
 
     def get_translator(self, command: str) -> ArgparseTranslator:
@@ -115,6 +116,6 @@ class ArgparseClassProcessor:
                 continue
             if inspect.ismethod(member):
                 pass
-            else:
+            elif inspect.isclass(member):
                 self._build_paths(target=getattr(target, name), depth=depth + 1)
                 self._paths[f"{name}"] = "sub" * depth + "path"
