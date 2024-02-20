@@ -91,17 +91,18 @@ The `Fetcher` class implementation is based on the [TET pattern](/platform/devel
 - Transform the query: the output of this method should be `QueryParams` child.
 - Extract the data: the output of this method can be `Any` but it's recommended to be a `Dict` (will facilitate the next step of the fetcher's action, the data transformation).
 - Transform the data: the output of this method should be a `List[Data]` or `Data` (or a child of it).
+
 :::
 
 ### The `OBBject` class
 
 The OBBject class is a generic class in the OpenBB platform that represents a standardized object for handling and manipulating data fetched from various providers. It extends the `Tagged` class and uses Python's generics to allow flexibility in the type of results it can handle.
 
-The class includes several fields such as results, provider, warnings, and extra, which respectively represent the fetched data, the data provider, any warnings generated during data fetching, and a dictionary for any additional information.
+The class includes several fields such as results, provider, warnings, chart, and extra, which respectively represent the fetched data, the data provider, any warnings generated during data fetching, an optional chart object for visualizing the data, and a dictionary for any additional information.
 
 The class provides several methods for converting the fetched data into different formats, including `to_df` (or `to_dataframe`) for converting to a pandas DataFrame, `to_polars` for converting to a Polars DataFrame, `to_numpy` for converting to a numpy array, and `to_dict` for converting to a dictionary.
 
-The class also includes a `__repr__` method for a human-readable representation of the object, and a `model_parametrized_name method` for returning the model name with its parameters.
+The class also includes a `__repr__` method for a human-readable representation of the object, as well as the familiar Pydantic BaseModel methods like `model_dump()` and `model_json_schema()`.
 
 ### The `Router` class
 
