@@ -1,0 +1,147 @@
+interactions:
+- request:
+    body: '{"operationName": "getQuoteBySymbol", "variables": {"locale": "en", "symbol":
+      "RY"}, "query": " query getQuoteBySymbol(\n  $symbol: String,\n  $locale: String\n)
+      {\n  getQuoteBySymbol(symbol: $symbol, locale: $locale) {\n    symbol\n    name\n    price\n    priceChange\n    percentChange\n    exchangeName\n    exShortName\n    exchangeCode\n    sector\n    industry\n    volume\n    openPrice\n    dayHigh\n    dayLow\n    MarketCap\n    MarketCapAllClasses\n    peRatio\n    prevClose\n    dividendFrequency\n    dividendYield\n    dividendAmount\n    dividendCurrency\n    beta\n    eps\n    exDividendDate\n    shortDescription\n    longDescription\n    website\n    email\n    phoneNumber\n    fullAddress\n    employees\n    shareOutStanding\n    totalDebtToEquity\n    totalSharesOutStanding\n    sharesESCROW\n    vwap\n    dividendPayDate\n    weeks52high\n    weeks52low\n    alpha\n    averageVolume10D\n    averageVolume30D\n    averageVolume50D\n    priceToBook\n    priceToCashFlow\n    returnOnEquity\n    returnOnAssets\n    day21MovingAvg\n    day50MovingAvg\n    day200MovingAvg\n    dividend3Years\n    dividend5Years\n    datatype\n    issueType\n    qmdescription\n  }\n}\n"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/RY
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA61Uy27jNhTd9ysIbbqorBEp6uWdIydogc7k4XTaLGmJsYhIpEJS9giD/HsvaSVK
+        AnRXwwvp3Ad5j849P4OGWRasfwYHbm9HZfnFtJv6veocZuan4O4hCAPJeu6e1cQ6dMHkE1KPqGKS
+        NQyigxY1hHFCI5LMr1XL5AHAOEozgLiuubQLSHFRUhIG/EftsW/nA+6VVtIqtLOqfkKXczBwebtW
+        afuatvsnWGor1Syg4bVVGl6vhGSydrVCNqOxegLQXV3IA4BH1Y2uF8mygmIaBmrg8uZ1kCTK0xD4
+        mX4Xh/Y8WVZ64E91mhPC4CvTT9xWbACkKEhS4iLPc/IusOm6qmPGcONT8jLLcpLQ1DFyx6xQAOMo
+        96TxY9UpMx+fQftGHEXDZXOl+fPIZe0GuB2Ztlx3U7DEHwTvmmBNI5ws4KZXo7TQLEqKBa1GredO
+        1WYLPfbcSSCOCppSAhPywd0Uvk9Rwi93JG/n2i2zjmYSE7qK8YpQFMdr/49iR7z7Pltuai0GGEz+
+        h1yQMEhJ7gDbcmRPCnVMH7ixaA+JBgk5Z0bQtFPy8L/2RH9Yl80QMMK1EY+CN+jRS0VAX8P1ESRg
+        UK36gckphJ6PXINkEEjYKAk5TDYu3IOkXcn+LKkQnTjrbLvq4aAD70Htb91CuIAZtZNjCKV6UBq4
+        XCp9RzYIC+16Lx3zVhuh+/ac6u5dK+n2yJU3y1RwtrAtYk0jHEvQBcSsnbykn92R8le0i/xBCt40
+        NAJ1aAH9geUT3xvhP25r7WDWX76cTqdI7+sI5nSL1jPhrMCtegtEfxv7PXc79htGFGeozOmqSMoU
+        4o9j122aRnMDOgowuulYzdF30XV8BVsheFi9zb/jtQb56elXg7Z8AGE71kL0FSxAA5khuq1CVG38
+        DYZOTdytUVAUKcVecEzz69HuLIzllnqNaUySLIkx6NYqYHPL9/ZeXT6Pwk5O5bicAztXaz4XZynO
+        CMFza3O5q+6u/w7WEmYCwzj5PXceR7OYZMtS3bDpw26QFUk8q/zJpKQ9OwiF04s3sPMuEudRCW7B
+        uqH1SxjHSVqAFTGQJmjou7coHG+DdUpoipPsUyhxIRrHaZl+DqU+lGGaOG/zjnyvLpR6co6QY/yG
+        Vcy0V/46qyQCX4IvMmp5LV9JwzSK6QJvwMuscZfNM++HBH9VRyBwc3QckgyGoHMojd+HcBnRrIzP
+        LkriDzFCIhqnRbpwmjxwpuGcPHJ++oqmMwqeWfpGltlpcMzz83XB7I0Z+f0ZrHYAPPfNBwPZvlt8
+        ZyMmeHl5+eVfcjLaKQ0HAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:23 GMT
+      Etag:
+      - W/"70d-fHugecv56LrRY9XFNFeamlQimkE"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getQuoteBySymbol", "variables": {"locale": "en", "symbol":
+      "NTR"}, "query": " query getQuoteBySymbol(\n  $symbol: String,\n  $locale: String\n)
+      {\n  getQuoteBySymbol(symbol: $symbol, locale: $locale) {\n    symbol\n    name\n    price\n    priceChange\n    percentChange\n    exchangeName\n    exShortName\n    exchangeCode\n    sector\n    industry\n    volume\n    openPrice\n    dayHigh\n    dayLow\n    MarketCap\n    MarketCapAllClasses\n    peRatio\n    prevClose\n    dividendFrequency\n    dividendYield\n    dividendAmount\n    dividendCurrency\n    beta\n    eps\n    exDividendDate\n    shortDescription\n    longDescription\n    website\n    email\n    phoneNumber\n    fullAddress\n    employees\n    shareOutStanding\n    totalDebtToEquity\n    totalSharesOutStanding\n    sharesESCROW\n    vwap\n    dividendPayDate\n    weeks52high\n    weeks52low\n    alpha\n    averageVolume10D\n    averageVolume30D\n    averageVolume50D\n    priceToBook\n    priceToCashFlow\n    returnOnEquity\n    returnOnAssets\n    day21MovingAvg\n    day50MovingAvg\n    day200MovingAvg\n    dividend3Years\n    dividend5Years\n    datatype\n    issueType\n    qmdescription\n  }\n}\n"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/NTR
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA61VS4/bNhC+91cQAooeaiui3vapjr1BgWZ3k5XTNkdampWIpUiFpOyqwf73DiX5
+        se21hg/mN5yPM988/N2rmGXe+rtXg/3cKwvvh2JoD0o4zMy/vIf9k7fwJGvBHXqrOUjy0VY+op3m
+        JcJZ4q/S+bRtmKwRC/wwQwh0CdJewShJM5ovPPirHLGHiXevtJJWkcKq8oXczUbP3Ssape35WvGn
+        d/XdquoKGiit0ni8ZxY0Z8IgyGXVG6sHhDc1RtcL22tHe1Sid4xZuMqDYOGpDuSnOZl4TKZiw6+8
+        bvCc+nE8nj+q08V8z/QL2C3rvHWUJWmS02QVZzf4RoitYMaAmW7EaUpzSp0kT8xy5a1p6OfurOG4
+        FcpMOqYrfIofeQWy+qDhWw+ydOF/7pnGvMTgXe1fOYgK2f08S67oplW9tE7rJLqi217rmepLsUOS
+        A7jaB/4qCsMIH4UOA8U6hiv85KFTeTf77lBR9AuDMFrScBnmJAjW49cPnPKuQDswpeYdJiZv2oQb
+        YhsgJ6VF9ZMhgukajCXPoC0X/G/QpNOq6kv8cRhIyTpWcju4zhJK1v8rJzn7z9aJxTYagLSMS1Jq
+        1RE5XbJGcqtVDXJBOmWZaRaEyYp0jTJdg3IwYRvV1w3h1kzuz6rsjQvufP/UgAa0nwOuhTowQQSw
+        CkNDDy6NZUJAdQmSnLhtiHbEYiBh8CMxDdPgkz36l6rtmBwcHTa3GjnPybNLc+MLGivLxfSGu/QF
+        c8FHCotxmwUxIASX9Y1gCI7Jlw20vERydwkqM+VsQB+506viGmcMA8M5fWa6JZiwVS36Oxkvahww
+        lJclei5b7AumCV7S6O64lMSngXSC2WelW+MqfYKD4WODNdZ2Zv3u3el08udC+Ji1m3iU2O0iLo/g
+        6Mwvb+1YFwkPfXsAtwF+piQKUrKKomWeBK5Fn3shNlWFYRjXyJQSukKlC4vVt+SOGbsoegyC0Ay3
+        ASmYeWFWKax+8duCbDdjCJ1QA8BIEE20Y3Uee4vSygo19dbxKk7iLIpxpVjsA7GDg92ru29IPrhp
+        S2e8cJ7mP65RSON05jV3xfbp8Q9vLTF43Fgnt2twGQXBiqbBzWh/YsN1QuNlQHFIR13hxSRhMy4x
+        SiM/Ci+gGDcZhpPj4mACW9oFFwTUrTZ2BM1q+H1ckTTYeeswSWnsdsIbU+RMNA7iVZT9y5SMpjAN
+        siSb/xf26r1SL4j6mOgF2+KofBijWWIk2Lm9lo/yrFfu9DqDG9ylFtWPfZqM6zik9+qI0m2O9biW
+        wyhN02lTJ8GtKfVpOrsEt4Y88gMs11XJ6CswPa7BlF7RZEaXgZ+PNDhIQ+f0hilO/J8xpof9BG4L
+        BL611Zvltbkd0KLvOsGxk15fX3/4BzRtXseGBwAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:23 GMT
+      Etag:
+      - W/"786-J6jDjEdFePspLg4uw0/rmblQy0Q"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1
