@@ -5,7 +5,7 @@ from unittest.mock import MagicMock
 import pandas as pd
 import pytest
 from openbb_core.app.model.obbject import Chart, OBBject, OpenBBError
-from openbb_core.app.utils import basemodel_to_df, df_to_basemodel
+from openbb_core.app.utils import basemodel_to_df
 from openbb_core.provider.abstract.data import Data
 from pandas.testing import assert_frame_equal
 
