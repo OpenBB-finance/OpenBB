@@ -1,6 +1,5 @@
 """Platform V4 Markdown Generator Script."""
 
-import inspect
 import json
 import re
 import shutil
@@ -86,6 +85,7 @@ def get_field_data_type(field_type: Any) -> str:
             .replace("'>", "")
             .replace("typing.", "")
             .replace("pydantic.types.", "")
+            .replace("openbb_core.provider.abstract.data.", "")
             .replace("datetime.datetime", "datetime")
             .replace("datetime.date", "date")
             .replace("NoneType", "None")
@@ -113,8 +113,8 @@ def get_provider_parameter_info(route: APIRoute) -> Dict[str, str]:
     """
 
     # TODO: Find a better way to fetch this without inspecting the signature of the function
-    params_dict = dict(inspect.signature(route.endpoint).parameters)
-    model_type = params_dict["provider_choices"].annotation.__args__[0]
+    params_dict = route.endpoint.__annotations__
+    model_type = params_dict["provider_choices"].__args__[0]
     provider_params_field = model_type.__dataclass_fields__["provider"]
 
     # Type is Union[Literal[<provider_name>], None]
@@ -172,6 +172,54 @@ def get_provider_field_params(
     return provider_field_params
 
 
+def get_post_method_parameters_info(annotations, docstring):
+    parameters_info = []
+    descriptions = {}
+    section = docstring.split("Parameters")[1].split("Returns")[0]
+
+    lines = section.split("\n")
+    current_param = None
+    for line in lines:
+        cleaned_line = line.strip()
+
+        if ":" in cleaned_line:  # This line names a parameter
+            current_param = cleaned_line.split(":")[0]
+            current_param = current_param.strip()
+        elif current_param:  # This line describes the parameter
+            description = cleaned_line.strip()
+            descriptions[current_param] = description
+            current_param = None  # Reset current_param to ensure each description is correctly associated
+
+    for param, type_ in annotations.items():
+        detail = {
+            "name": param,
+            "type": get_field_data_type(type_),
+            "description": descriptions.get(param, ""),
+            "default": "None",  # Assuming "None" as default; specific defaults need to be manually extracted if needed
+            "optional": "Optional" in str(type_),
+        }
+        parameters_info.append(detail)
+
+    return parameters_info
+
+
+def get_post_method_returns_info(annotations, docstring):
+    section = docstring.split("Parameters")[1].split("Returns")[-1]
+
+    # Directly capturing return description (assuming single return value for simplicity)
+    description_lines = section.strip().split("\n")
+    description = description_lines[-1].strip() if len(description_lines) > 1 else ""
+    return_type = annotations["return"].model_fields["results"].annotation
+
+    returns_info = {
+        "name": "results",
+        "type": get_field_data_type(return_type),
+        "description": description,
+    }
+
+    return returns_info
+
+
 # mypy: disable-error-code="attr-defined,arg-type"
 def generate_reference_file() -> None:
     """Generate reference.json file using the ProviderInterface map."""
@@ -197,20 +245,19 @@ def generate_reference_file() -> None:
     route_map = {route.path: route for route in router.api_router.routes}
 
     for path, route in route_map.items():
-        # Currently supporting only GET endpoints
-        if route.methods == {"POST"}:
-            continue
-
         # Initialize the reference fields as empty dictionaries
         reference[path] = {field: {} for field in REFERENCE_FIELDS}
 
-        # Standard model is used as the key for the reference dictionary
-        standard_model = route.openapi_extra["model"]
+        # Route method is used to distinguish between GET and POST methods
+        route_method = route.methods
 
-        # Model map contains the QueryParams and Data fields for each provider
-        model_map = pi_map[standard_model]
+        # Standard model is used as the key for the ProviderInterface Map dictionary
+        standard_model = route.openapi_extra["model"] if route_method == {"GET"} else ""
 
-        # Add endpoint model
+        # Model Map contains the QueryParams and Data fields for each provider for a standard model
+        model_map = pi_map[standard_model] if standard_model else ""
+
+        # Add endpoint model for GET methods
         reference[path]["model"] = standard_model
 
         # Add endpoint deprecation details
@@ -227,79 +274,105 @@ def generate_reference_file() -> None:
         reference[path]["examples"] = route.openapi_extra.get("examples", [])
 
         # Add endpoint parameters fields for standard provider
-        # openbb provider is always present hence its the standard field
-        reference[path]["parameters"]["standard"] = get_provider_field_params(
-            model_map, "QueryParams"
-        )
-
-        # Add `provider` parameter fields to the openbb provider
-        provider_parameter_fields = get_provider_parameter_info(route)
-        reference[path]["parameters"]["standard"].append(
-            {
-                "name": provider_parameter_fields["name"],
-                "type": provider_parameter_fields["type"],
-                "description": provider_parameter_fields["description"],
-                "default": provider_parameter_fields["default"],
-                "optional": provider_parameter_fields["optional"],
-            }
-        )
-
-        # Add endpoint data fields for standard provider
-        reference[path]["data"]["standard"] = get_provider_field_params(
-            model_map, "Data"
-        )
-
-        for provider in model_map:
-            if provider == "openbb":
-                continue
-
-            # Adds standard parameters to the provider parameters since they are inherited by the model
-            # A copy is used to prevent the standard parameters fields from being modified
-            reference[path]["parameters"][provider] = reference[path]["parameters"][
-                "standard"
-            ].copy()
-            provider_query_params = get_provider_field_params(
-                model_map, "QueryParams", provider
+        if route_method == {"GET"}:
+            # openbb provider is always present hence its the standard field
+            reference[path]["parameters"]["standard"] = get_provider_field_params(
+                model_map, "QueryParams"
             )
-            reference[path]["parameters"][provider].extend(provider_query_params)
 
-            # Adds standard data fields to the provider data fields since they are inherited by the model
-            # A copy is used to prevent the standard data fields from being modified
-            reference[path]["data"][provider] = reference[path]["data"][
-                "standard"
-            ].copy()
-            provider_data = get_provider_field_params(model_map, "Data", provider)
-            reference[path]["data"][provider].extend(provider_data)
+            # Add `provider` parameter fields to the openbb provider
+            provider_parameter_fields = get_provider_parameter_info(route)
+            reference[path]["parameters"]["standard"].append(
+                {
+                    "name": provider_parameter_fields["name"],
+                    "type": provider_parameter_fields["type"],
+                    "description": provider_parameter_fields["description"],
+                    "default": provider_parameter_fields["default"],
+                    "optional": provider_parameter_fields["optional"],
+                }
+            )
+
+            # Add endpoint data fields for standard provider
+            reference[path]["data"]["standard"] = get_provider_field_params(
+                model_map, "Data"
+            )
+
+            for provider in model_map:
+                if provider == "openbb":
+                    continue
+
+                # Adds standard parameters to the provider parameters since they are inherited by the model
+                # A copy is used to prevent the standard parameters fields from being modified
+                reference[path]["parameters"][provider] = reference[path]["parameters"][
+                    "standard"
+                ].copy()
+                provider_query_params = get_provider_field_params(
+                    model_map, "QueryParams", provider
+                )
+                reference[path]["parameters"][provider].extend(provider_query_params)
+
+                # Adds standard data fields to the provider data fields since they are inherited by the model
+                # A copy is used to prevent the standard data fields from being modified
+                reference[path]["data"][provider] = reference[path]["data"][
+                    "standard"
+                ].copy()
+                provider_data = get_provider_field_params(model_map, "Data", provider)
+                reference[path]["data"][provider].extend(provider_data)
+
+        elif route_method == {"POST"}:
+            route_annotations = route.endpoint.__annotations__.copy()
+            route_docstring = route.endpoint.__doc__
+
+            returns_annotations = {"return": route_annotations.pop("return")}
+            parameters_annotations = route_annotations
+
+            # Add endpoint parameters fields for POST methods
+            reference[path]["parameters"]["standard"] = get_post_method_parameters_info(
+                parameters_annotations, route_docstring
+            )
 
         # Add endpoint returns data
         # Currently only OBBject object is returned
-        reference[path]["returns"]["OBBject"] = [
-            {
-                "name": "results",
-                "type": f"List[{standard_model}]",
-                "description": "Serializable Results.",
-            },
-            {
-                "name": "provider",
-                "type": f"Optional[{provider_parameter_fields['type']}]",
-                "description": "Provider name.",
-            },
-            {
-                "name": "warnings",
-                "type": "Optional[List[Warning_]]",
-                "description": "List of warnings.",
-            },
-            {
-                "name": "chart",
-                "type": "Optional[Chart]",
-                "description": "Chart object.",
-            },
-            {
-                "name": "extra",
-                "type": "Dict[str, Any]",
-                "description": "Extra info.",
-            },
-        ]
+        if route_method == {"GET"}:
+            reference[path]["returns"]["OBBject"] = [
+                {
+                    "name": "results",
+                    "type": f"List[{standard_model}]",
+                    "description": "Serializable Results.",
+                },
+                {
+                    "name": "provider",
+                    "type": f"Optional[{provider_parameter_fields['type']}]",
+                    "description": "Provider name.",
+                },
+                {
+                    "name": "warnings",
+                    "type": "Optional[List[Warning_]]",
+                    "description": "List of warnings.",
+                },
+                {
+                    "name": "chart",
+                    "type": "Optional[Chart]",
+                    "description": "Chart object.",
+                },
+                {
+                    "name": "extra",
+                    "type": "Dict[str, Any]",
+                    "description": "Extra info.",
+                },
+            ]
+
+        elif route_method == {"POST"}:
+            returns_info = get_post_method_returns_info(
+                returns_annotations, route_docstring
+            )
+            reference[path]["returns"]["OBBject"] = [
+                {
+                    "name": returns_info["name"],
+                    "type": returns_info["type"],
+                    "description": returns_info["description"],
+                }
+            ]
 
     # Dumping the reference dictionary as a JSON file
     with open(PLATFORM_CONTENT_PATH / "reference.json", "w", encoding="utf-8") as f:
@@ -555,7 +628,7 @@ def find_data_model_implementation_file(data_model: str) -> str:
 
 
 def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
-    """Generate index.mdx and _category_.json files for the reference directory.
+    """Generate index.mdx and _category_.json files for the reference sub-directories.
 
     Args:
         reference_content (Dict[str, str]): Dictionary containing
@@ -810,7 +883,7 @@ def generate_platform_markdown() -> None:
         reference_markdown_content = ""
         data_markdown_content = ""
 
-        model = path_data["model"]
+        # model = path_data["model"]
         description = path_data["description"]
         path_parameters_fields = path_data["parameters"]
         path_data_fields = path_data["data"]
@@ -826,43 +899,49 @@ def generate_platform_markdown() -> None:
         reference_markdown_content += create_reference_markdown_examples(
             path_data["examples"]
         )
-        reference_markdown_content += create_reference_markdown_tabular_section(
-            path_parameters_fields, "Parameters"
-        )
+
+        if path_parameters_fields := path_data["parameters"]:
+            reference_markdown_content += create_reference_markdown_tabular_section(
+                path_parameters_fields, "Parameters"
+            )
+
+        if path_data_fields := path_data["data"]:
+            reference_markdown_content += create_reference_markdown_tabular_section(
+                path_data_fields, "Data"
+            )
+
         reference_markdown_content += create_reference_markdown_returns_section(
             path_data["returns"]["OBBject"]
-        )
-        reference_markdown_content += create_reference_markdown_tabular_section(
-            path_data_fields, "Data"
         )
 
         generate_markdown_file(path, reference_markdown_content, "reference")
 
-        data_markdown_title = re.sub(
-            r"([A-Z]{1}[a-z]+)|([A-Z]{3}|[SP500]|[EU])([A-Z]{1}[a-z]+)|([A-Z]{5,})",  # noqa: W605
-            lambda m: (
-                f"{m.group(1) or m.group(4)} ".title()
-                if not any([m.group(2), m.group(3)])
-                else f"{m.group(2)} {m.group(3)} "
-            ),
-            path_data["model"],
-        ).strip()
-        data_markdown_content = create_data_model_markdown(
-            data_markdown_title,
-            description,
-            model,
-        )
-        data_markdown_content += create_reference_markdown_tabular_section(
-            path_parameters_fields, "Parameters"
-        )
-        data_markdown_content += create_reference_markdown_tabular_section(
-            path_data_fields, "Data"
-        )
-        data_models_index_content += create_data_models_index(
-            data_markdown_title, description, model
-        )
+        if model := path_data["model"]:
+            data_markdown_title = re.sub(
+                r"([A-Z]{1}[a-z]+)|([A-Z]{3}|[SP500]|[EU])([A-Z]{1}[a-z]+)|([A-Z]{5,})",  # noqa: W605
+                lambda m: (
+                    f"{m.group(1) or m.group(4)} ".title()
+                    if not any([m.group(2), m.group(3)])
+                    else f"{m.group(2)} {m.group(3)} "
+                ),
+                path_data["model"],
+            ).strip()
+            data_markdown_content = create_data_model_markdown(
+                data_markdown_title,
+                description,
+                model,
+            )
+            data_markdown_content += create_reference_markdown_tabular_section(
+                path_parameters_fields, "Parameters"
+            )
+            data_markdown_content += create_reference_markdown_tabular_section(
+                path_data_fields, "Data"
+            )
+            data_models_index_content += create_data_models_index(
+                data_markdown_title, description, model
+            )
 
-        generate_markdown_file(model, data_markdown_content, "data_models")
+            generate_markdown_file(model, data_markdown_content, "data_models")
 
     # Generate the index.mdx and _category_.json files for the reference directory
     generate_reference_index_files(reference_index_content_dict)
