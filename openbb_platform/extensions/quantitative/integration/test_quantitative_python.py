@@ -181,7 +181,13 @@ def test_quantitative_unitroot_test(params, data_type, obb):
     "params, data_type",
     [
         (
-            {"data": "", "target": "close", "rfr": "", "window": "", "index": "date"},
+            {
+                "data": "",
+                "target": "close",
+                "rfr": "",
+                "window": "100",
+                "index": "date",
+            },
             "equity",
         ),
         (
@@ -189,7 +195,7 @@ def test_quantitative_unitroot_test(params, data_type, obb):
                 "data": "",
                 "target": "high",
                 "rfr": "0.5",
-                "window": "250",
+                "window": "100",
                 "index": "date",
             },
             "crypto",
@@ -214,7 +220,7 @@ def test_quantitative_sharpe_ratio(params, data_type, obb):
                 "data": "",
                 "target": "close",
                 "target_return": "",
-                "window": "",
+                "window": "100",
                 "adjusted": "",
                 "index": "date",
             },
@@ -224,8 +230,8 @@ def test_quantitative_sharpe_ratio(params, data_type, obb):
             {
                 "data": "",
                 "target": "close",
-                "target_return": "0.5",
-                "window": "275",
+                "target_return": "",
+                "window": "100",
                 "adjusted": "true",
                 "index": "date",
             },

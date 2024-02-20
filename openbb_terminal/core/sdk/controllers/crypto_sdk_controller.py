@@ -29,8 +29,6 @@ class CryptoController(model.CryptoRoot):
         """Cryptocurrency Due Diligence Submodule
 
         Attributes:
-            `active`: Returns active addresses of a certain symbol\n
-            `active_chart`: Plots active addresses of a certain symbol over time\n
             `all_binance_trading_pairs`: Returns all available pairs on Binance in DataFrame format. DataFrame has 3 columns symbol, baseAsset, quoteAsset\n
             `ath`: Get all time high for a coin in a given currency\n
             `atl`: Get all time low for a coin in a given currency\n
@@ -40,15 +38,10 @@ class CryptoController(model.CryptoRoot):
             `basic_chart`: Prints table showing basic information for coin. Like:\n
             `binance_available_quotes_for_each_coin`: Helper methods that for every coin available on Binance add all quote assets. [Source: Binance]\n
             `candle`: Get candles for chosen trading pair and time interval. [Source: Coinbase]\n
-            `change`: Returns 30d change of the supply held in exchange wallets of a certain symbol.\n
-            `change_chart`: Plots 30d change of the supply held in exchange wallets.\n
             `check_valid_binance_str`: Check if symbol is in defined binance. [Source: Binance]\n
-            `close`: Returns the price of a cryptocurrency\n
             `coin`: Get coin by id [Source: CoinPaprika]\n
             `coin_market_chart`: Get prices for given coin. [Source: CoinGecko]\n
             `dev`: Get developer stats for a coin\n
-            `eb`: Returns the total amount of coins held on exchange addresses in units and percentage.\n
-            `eb_chart`: Plots total amount of coins held on exchange addresses in units and percentage.\n
             `events`: Get all events related to given coin like conferences, start date of futures trading etc.\n
             `events_chart`: Prints table showing all events for given coin id. [Source: CoinPaprika]\n
             `ex`: Get all exchanges for given coin id. [Source: CoinPaprika]\n
@@ -58,8 +51,6 @@ class CryptoController(model.CryptoRoot):
             `fr_chart`: Display coin fundraising\n
             `get_mt`: Returns available messari timeseries\n
             `get_mt_chart`: Prints table showing messari timeseries list\n
-            `gh`: Returns  a list of developer activity for a given coin and time interval.\n
-            `gh_chart`: Returns a list of github activity for a given coin and time interval.\n
             `gov`: Returns coin governance\n
             `gov_chart`: Prints table showing coin governance\n
             `headlines`: Gets Sentiment analysis provided by FinBrain's API [Source: finbrain].\n
@@ -76,12 +67,8 @@ class CryptoController(model.CryptoRoot):
             `mt_chart`: Plots messari timeseries\n
             `news`: Get recent posts from CryptoPanic news aggregator platform. [Source: https://cryptopanic.com/]\n
             `news_chart`: Prints table showing recent posts from CryptoPanic news aggregator platform.\n
-            `nonzero`: Returns addresses with non-zero balance of a certain symbol\n
-            `nonzero_chart`: Plots addresses with non-zero balance of a certain symbol\n
             `ob`: Returns orderbook for a coin in a given exchange\n
             `ob_chart`: Plots order book for a coin in a given exchange\n
-            `oi`: Returns open interest by exchange for a certain symbol\n
-            `oi_chart`: Plots open interest by exchange for a certain cryptocurrency\n
             `pi`: Returns coin product info\n
             `pi_chart`: Prints table showing project info\n
             `pr`: Fetch data to calculate potential returns of a certain coin. [Source: CoinGecko]\n
@@ -115,36 +102,18 @@ class CryptoController(model.CryptoRoot):
         """Cryptocurrency DeFi Submodule
 
         Attributes:
-            `anchor_data`: Returns anchor protocol earnings data of a certain terra address\n
-            `anchor_data_chart`: Plots anchor protocol earnings data of a certain terra address\n
-            `aterra`: Returns historical data of an asset in a certain terra address\n
-            `aterra_chart`: Plots the 30-day history of specified asset in terra address\n
-            `ayr`: Displays the 30-day history of the Anchor Yield Reserve.\n
-            `ayr_chart`: Plots the 30-day history of the Anchor Yield Reserve.\n
             `dtvl`: Returns information about historical tvl of a defi protocol.\n
             `dtvl_chart`: Plots historical TVL of different dApps\n
-            `gacc`: Get terra blockchain account growth history [Source: https://fcd.terra.dev/swagger]\n
-            `gacc_chart`: Plots terra blockchain account growth history [Source: https://fcd.terra.dev/swagger]\n
             `gdapps`: Display top dApps (in terms of TVL) grouped by chain.\n
             `gdapps_chart`: Plots top dApps (in terms of TVL) grouped by chain.\n
-            `gov_proposals`: Get terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]\n
-            `gov_proposals_chart`: Prints table showing terra blockchain governance proposals list [Source: https://fcd.terra.dev/swagger]\n
             `ldapps`: Returns information about listed DeFi protocols, their current TVL and changes to it in the last hour/day/week.\n
             `ldapps_chart`: Prints table showing information about listed DeFi protocols, their current TVL and changes to it in\n
             `luna_supply`: Get supply history of the Terra ecosystem\n
             `luna_supply_chart`: Plots and prints table showing Luna circulating supply stats\n
             `newsletters`: Scrape all substack newsletters from url list.\n
             `newsletters_chart`: Prints table showing DeFi related substack newsletters.\n
-            `sinfo`: Get staking info for provided terra account [Source: https://fcd.terra.dev/swagger]\n
-            `sinfo_chart`: Prints table showing staking info for provided terra account address [Source: https://fcd.terra.dev/swagger]\n
-            `sratio`: Get terra blockchain staking ratio history [Source: https://fcd.terra.dev/swagger]\n
-            `sratio_chart`: Plots terra blockchain staking ratio history [Source: https://fcd.terra.dev/v1]\n
-            `sreturn`: Get terra blockchain staking returns history [Source: https://fcd.terra.dev/v1]\n
-            `sreturn_chart`: Plots terra blockchain staking returns history [Source: https://fcd.terra.dev/swagger]\n
             `stvl`: Returns historical values of the total sum of TVLs from all listed protocols.\n
             `stvl_chart`: Plots historical values of the total sum of TVLs from all listed protocols.\n
-            `validators`: Get information about terra validators [Source: https://fcd.terra.dev/swagger]\n
-            `validators_chart`: Prints table showing information about terra validators [Source: https://fcd.terra.dev/swagger]\n
             `vaults`: Get DeFi Vaults Information. DeFi Vaults are pools of funds with an assigned strategy which main goal is to\n
             `vaults_chart`: Prints table showing Top DeFi Vaults - pools of funds with an assigned strategy which main goal is to\n
         """
@@ -226,14 +195,10 @@ class CryptoController(model.CryptoRoot):
             `dvcp`: Get daily volume for given pair [Source: https://graphql.bitquery.io/]\n
             `dvcp_chart`: Prints table showing daily volume for given pair\n
             `erc20_tokens`: Helper method that loads ~1500 most traded erc20 token.\n
-            `gwei`: Returns the most recent Ethereum gas fees in gwei\n
-            `gwei_chart`: Current gwei fees\n
             `hist`: Get information about balance historical transactions. [Source: Ethplorer]\n
             `hist_chart`: Display information about balance historical transactions. [Source: Ethplorer]\n
             `holders`: Get info about top token holders. [Source: Ethplorer]\n
             `holders_chart`: Display info about top ERC20 token holders. [Source: Ethplorer]\n
-            `hr`: Returns dataframe with mean hashrate of btc or eth blockchain and symbol price\n
-            `hr_chart`: Plots dataframe with mean hashrate of btc or eth blockchain and symbol price.\n
             `info`: Get info about ERC20 token. [Source: Ethplorer]\n
             `info_chart`: Display info about ERC20 token. [Source: Ethplorer]\n
             `lt`: Get trades on Decentralized Exchanges aggregated by DEX [Source: https://graphql.bitquery.io/]\n
@@ -269,8 +234,6 @@ class CryptoController(model.CryptoRoot):
         Attributes:
             `altindex`: Get altcoin index overtime\n
             `altindex_chart`: Displays altcoin index overtime\n
-            `btcrb`: Get bitcoin price data\n
-            `btcrb_chart`: Displays bitcoin rainbow chart\n
             `categories`: Returns top crypto categories [Source: CoinGecko]\n
             `categories_chart`: Shows top cryptocurrency categories by market capitalization\n
             `cbpairs`: Get a list of available currency pairs for trading. [Source: Coinbase]\n
