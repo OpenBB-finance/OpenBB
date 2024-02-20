@@ -586,7 +586,7 @@ def test_equity_ownership_major_holders(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "limit": 10, "provider": "fmp"}),
+        ({"symbol": "AAPL", "limit": 10, "provider": "fmp", "with_grade": True}),
         (
             {
                 "symbol": "AAPL",
@@ -595,13 +595,14 @@ def test_equity_ownership_major_holders(params, obb):
                 # optional provider params
                 "fields": None,
                 "date": None,
-                "date_from": None,
-                "date_to": None,
+                "start_date": None,
+                "end_date": None,
                 "importance": None,
                 "updated": None,
                 "action": None,
-                "analyst": None,
-                "firm": None,
+                "analyst_ids": None,
+                "firm_ids": None,
+                "page": 0,
             }
         ),
         ({"symbol": "AAPL", "provider": "finviz"}),
@@ -610,6 +611,31 @@ def test_equity_ownership_major_holders(params, obb):
 @pytest.mark.integration
 def test_equity_estimates_price_target(params, obb):
     result = obb.equity.estimates.price_target(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert result.results is not None
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "limit": 10,
+                "provider": "benzinga",
+                # optional provider params
+                "fields": None,
+                "analyst_ids": None,
+                "firm_ids": None,
+                "firm_name": "Barclays",
+                "analyst_name": None,
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_estimates_analyst_search(params, obb):
+    result = obb.equity.estimates.analyst_search(**params)
     assert result
     assert isinstance(result, OBBject)
     assert result.results is not None
@@ -1225,9 +1251,7 @@ def test_equity_price_quote(params, obb):
 @parametrize(
     "params",
     [
-        ({"symbol": "AAPL", "provider": "cboe"}),
         ({"symbol": "MSFT", "provider": "intrinio"}),
-        ({"symbol": "AAPL,MSFT", "provider": "cboe"}),
         ({"symbol": "AAPL,MSFT", "provider": "intrinio"}),
         ({"symbol": "AAPL,MSFT", "provider": "finviz"}),
         ({"symbol": "AAPL,MSFT", "provider": "yfinance"}),

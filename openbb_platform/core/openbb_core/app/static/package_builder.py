@@ -493,7 +493,7 @@ class MethodDefinition:
 
     @staticmethod
     def get_extra(field: FieldInfo) -> dict:
-        """Get json schema extra"""
+        """Get json schema extra."""
         field_default = getattr(field, "default", None)
         if field_default:
             return getattr(field_default, "json_schema_extra", {})
@@ -542,7 +542,6 @@ class MethodDefinition:
         path: str, parameter_map: Dict[str, Parameter]
     ) -> OrderedDict[str, Parameter]:
         """Format the params."""
-
         DEFAULT_REPLACEMENT = {
             "provider": None,
         }
@@ -701,13 +700,12 @@ class MethodDefinition:
     ):
         """Build the command method docstring."""
         doc = func.__doc__
-        if model_name:
-            doc = DocstringGenerator.generate(
-                func=func,
-                formatted_params=formatted_params,
-                model_name=model_name,
-                examples=examples,
-            )
+        doc = DocstringGenerator.generate(
+            func=func,
+            formatted_params=formatted_params,
+            model_name=model_name,
+            examples=examples,
+        )
         code = f'        """{doc}        """  # noqa: E501\n\n' if doc else ""
 
         return code
@@ -777,7 +775,7 @@ class MethodDefinition:
 
     @classmethod
     def get_expanded_type(cls, field_name: str, extra: Optional[dict] = None) -> object:
-        """Expand the original field type"""
+        """Expand the original field type."""
         if extra and "multiple_items_allowed" in extra:
             return List[str]
         return cls.TYPE_EXPANSION.get(field_name, ...)
@@ -1008,6 +1006,12 @@ class DocstringGenerator:
                     examples=examples,
                 )
             return doc
+        if examples and examples != [""] and doc:
+            doc += "\n    Examples\n    --------\n"
+            doc += "    >>> from openbb import obb\n"
+            for example in examples:
+                if example != "":
+                    doc += f"    >>> {example}\n"
         return doc
 
     @staticmethod
