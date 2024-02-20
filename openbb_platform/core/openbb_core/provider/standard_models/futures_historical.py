@@ -1,7 +1,7 @@
 """Futures Historical Price Standard Model."""
 
 from datetime import date, datetime
-from typing import Optional
+from typing import Optional, Union
 
 from dateutil import parser
 from pydantic import Field, field_validator

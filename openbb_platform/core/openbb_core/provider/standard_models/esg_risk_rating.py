@@ -1,7 +1,7 @@
 """ESG Risk Rating Standard Model."""
 
 from datetime import date as dateType
-from typing import List, Literal, Optional, Set, Union
+from typing import Literal, Optional, Union
 
 from pydantic import Field, field_validator
 
