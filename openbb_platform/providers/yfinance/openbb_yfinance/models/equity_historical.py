@@ -161,6 +161,8 @@ class YFinanceEquityHistoricalFetcher(
 
         data.reset_index(inplace=True)
         data.rename(columns={"index": "date"}, inplace=True)
+        if query.interval in ["1d", "1W", "1M", "3M"]:
+            data["date"] = data["date"].dt.date
 
         return data.to_dict("records")
 

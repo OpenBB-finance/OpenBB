@@ -152,7 +152,7 @@ class PolygonCryptoHistoricalFetcher(
             for r in results:
                 r["t"] = datetime.fromtimestamp(r["t"] / 1000, tz=timezone("UTC"))
                 if query._timespan not in ["second", "minute", "hour"]:
-                    r["t"] = r["t"].date()
+                    r["t"] = r["t"].date().strftime("%Y-%m-%d")
                 else:
                     r["t"] = r["t"].strftime("%Y-%m-%dT%H:%M:%S%z")
                 if "," in query.symbol:

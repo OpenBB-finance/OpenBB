@@ -33,13 +33,14 @@ def basemodel_to_df(
         df = df.set_index(col_names)
         df = df.drop(["is_multiindex", "multiindex_names"], axis=1)
 
+    # If the date column contains dates only, convert them to a date to avoid encoding time data.
+    if "date" in df.columns:
+        df["date"] = df["date"].apply(pd.to_datetime)
+        if all(t.time() == time(0, 0) for t in df["date"]):
+            df["date"] = df["date"].apply(lambda x: x.date())
+
     if index and index in df.columns:
         if index == "date":
-            df["date"] = df["date"].apply(pd.to_datetime)
-            if df["date"].iloc[0].time() == df["date"].iloc[-1].time() and df[
-                "date"
-            ].iloc[-1].time() == time(0, 0):
-                df["date"] = df["date"].apply(lambda x: x.date())
             df.set_index("date", inplace=True)
             df.sort_index(axis=0, inplace=True)
         else:
@@ -66,6 +67,12 @@ def df_to_basemodel(
         df["is_multiindex"] = True
         df["multiindex_names"] = str(df.index.names)
         df = df.reset_index()
+
+    # Converting to JSON will add T00:00:00.000 to all dates with no time element unless we format it as a string first.
+    if "date" in df.columns:
+        df["date"] = df["date"].apply(pd.to_datetime)
+        if all(t.time() == time(0, 0) for t in df["date"]):
+            df["date"] = df["date"].apply(lambda x: x.date().strftime("%Y-%m-%d"))
 
     return [
         Data(**d) for d in json.loads(df.to_json(orient="records", date_format="iso"))
