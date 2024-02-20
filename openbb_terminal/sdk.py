@@ -91,10 +91,9 @@ class OpenBBSDK:
         """Alternative Submodule
 
         Submodules:
-            `covid`: Covid Module
+            `companieshouse`: Companieshouse Module
             `oss`: Oss Module
             `realestate`: Realestate Module
-            `companieshouse`: CompaniesHouse Module
 
         Attributes:
             `hn`: Get top stories from HackerNews.\n
@@ -411,7 +410,6 @@ class OpenBBSDK:
             `biztoc`: Set BizToc key\n
             `cmc`: Set Coinmarketcap key\n
             `coinbase`: Set Coinbase key\n
-            `coinglass`: Set Coinglass key.\n
             `cpanic`: Set Cpanic key.\n
             `databento`: Set DataBento key\n
             `degiro`: Set Degiro key\n
@@ -422,7 +420,6 @@ class OpenBBSDK:
             `fred`: Set FRED key\n
             `get_keys_info`: Get info on available APIs to use in set_keys.\n
             `github`: Set GitHub key.\n
-            `glassnode`: Set Glassnode key.\n
             `messari`: Set Messari key.\n
             `mykeys`: Get currently set API keys.\n
             `news`: Set News key\n
@@ -434,8 +431,6 @@ class OpenBBSDK:
             `santiment`: Set Santiment key.\n
             `set_keys`: Set API keys in bundle.\n
             `smartstake`: Set Smartstake key.\n
-            `stocksera`: Set Stocksera key.\n
-            `tokenterminal`: Set Token Terminal key.\n
             `tradier`: Set Tradier key\n
             `ultima`: Set Ultima Insights key\n
             `walert`: Set Walert key\n

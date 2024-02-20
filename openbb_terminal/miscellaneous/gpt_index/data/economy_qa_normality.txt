@@ -1,8 +1,0 @@
-parent_command:economy/qa
-usage: normality
-
-Normality tests
-
-normality
-Examples:
-- To perform a normality test for the economy: economy/qa/normality

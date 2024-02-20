@@ -35,7 +35,13 @@ router.include_router(stats_router)
 router.include_router(performance_router)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.normality(data=stock_data, target='close')",
+    ],
+)
 def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     """Get Normality Statistics.
 
@@ -56,12 +62,6 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     -------
     OBBject[NormalityModel]
         Normality tests summary. See qa_models.NormalityModel for details.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.quantitative.normality(data=stock_data, target="close")
     """
     from scipy import stats  # pylint: disable=import-outside-toplevel
 
@@ -85,7 +85,13 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     return OBBject(results=norm_summary)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.capm(data=stock_data, target='close')",
+    ],
+)
 def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     """Get Capital Asset Pricing Model (CAPM).
 
@@ -104,12 +110,6 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     -------
     OBBject[CAPMModel]
         CAPM model summary.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").results
-    >>> obb.quantitative.capm(data=stock_data, target="close")
     """
     import statsmodels.api as sm  # pylint: disable=import-outside-toplevel # type: ignore
 
@@ -174,13 +174,6 @@ def unitroot_test(
     -------
     OBBject[UnitRootModel]
         Unit root tests summary.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.quantitative.unitroot_test(data=stock_data, target="close")
-    >>> obb.quantitative.unitroot_test(data=stock_data, target="close", fuller_reg="ct", kpss_reg="ct")
     """
     # pylint: disable=import-outside-toplevel
     from statsmodels.tsa import stattools  # type: ignore
@@ -230,12 +223,6 @@ def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
     -------
     OBBject[SummaryModel]
         Summary table.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.quantitative.summary(data=stock_data, target="close")
     """
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
