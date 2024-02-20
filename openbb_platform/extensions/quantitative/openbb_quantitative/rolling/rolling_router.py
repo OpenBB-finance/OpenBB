@@ -13,11 +13,11 @@ from openbb_core.app.utils import (
 from openbb_core.provider.abstract.data import Data
 from openbb_quantitative.helpers import validate_window
 from openbb_quantitative.statistics import (
-    kurtosis as _kurtosis,
-    mean as _mean,
-    skew as _skew,
-    std_dev as _std,
-    var as _var,
+    kurtosis_,
+    mean_,
+    skew_,
+    std_dev_,
+    var_,
 )
 from pydantic import NonNegativeFloat, PositiveInt
 
@@ -66,7 +66,7 @@ def skew(
     series_target.name = f"rolling_skew_{window}"
     validate_window(series_target, window)
     results = (
-        series_target.rolling(window).apply(_skew).dropna().reset_index(drop=False)
+        series_target.rolling(window).apply(skew_).dropna().reset_index(drop=False)
     )
     results = df_to_basemodel(results)
 
@@ -109,7 +109,7 @@ def variance(
     series_target = get_target_column(df, target)
     series_target.name = f"rolling_var_{window}"
     validate_window(series_target, window)
-    results = series_target.rolling(window).apply(_var).dropna().reset_index(drop=False)
+    results = series_target.rolling(window).apply(var_).dropna().reset_index(drop=False)
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
@@ -155,7 +155,9 @@ def stdev(
     series_target = get_target_column(df, target)
     series_target.name = f"rolling_stdev_{window}"
     validate_window(series_target, window)
-    results = series_target.rolling(window).apply(_std).dropna().reset_index(drop=False)
+    results = (
+        series_target.rolling(window).apply(std_dev_).dropna().reset_index(drop=False)
+    )
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
@@ -203,7 +205,7 @@ def kurtosis(
     series_target.name = f"rolling_kurtosis_{window}"
     validate_window(series_target, window)
     results = (
-        series_target.rolling(window).apply(_kurtosis).dropna().reset_index(drop=False)
+        series_target.rolling(window).apply(kurtosis_).dropna().reset_index(drop=False)
     )
     results = df_to_basemodel(results)
 
@@ -313,7 +315,7 @@ def mean(
     series_target.name = f"rolling_mean_{window}"
     validate_window(series_target, window)
     results = (
-        series_target.rolling(window).apply(_mean).dropna().reset_index(drop=False)
+        series_target.rolling(window).apply(mean_).dropna().reset_index(drop=False)
     )
     results = df_to_basemodel(results)
 

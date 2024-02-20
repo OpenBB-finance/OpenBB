@@ -12,11 +12,11 @@ from openbb_core.app.utils import (
 )
 from openbb_core.provider.abstract.data import Data
 from openbb_quantitative.statistics import (
-    kurtosis as _kurtosis,
-    mean as _mean,
-    skew as _skew,
-    std_dev as _std,
-    var as _var,
+    kurtosis_,
+    mean_,
+    skew_,
+    std_dev_,
+    var_,
 )
 from pydantic import NonNegativeFloat
 
@@ -59,7 +59,7 @@ def skew(
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
-    results = pd.DataFrame([_skew(series_target)], columns=["skew"])
+    results = pd.DataFrame([skew_(series_target)], columns=["skew"])
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
@@ -73,15 +73,17 @@ def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
     Variance measures the dispersion of a set of data points around their mean. It is a key metric for
     assessing the volatility and stability of financial returns or other time series data.
 
-    Parameters:
-        data: List[Data]
-            The time series data as a list of data points.
-        target: str
-            The name of the column for which to calculate variance.
+    Parameters
+    ----------
+    data: List[Data]
+        The time series data as a list of data points.
+    target: str
+        The name of the column for which to calculate variance.
 
-    Returns:
-        OBBject[List[Data]]
-            An object containing the rolling variance values.
+    Returns
+    -------
+    OBBject[List[Data]]
+        An object containing the rolling variance values.
 
     Examples:
     --------
@@ -92,7 +94,7 @@ def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
     """
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
-    results = pd.DataFrame([_var(series_target)], columns=["variance"])
+    results = pd.DataFrame([var_(series_target)], columns=["variance"])
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
@@ -107,16 +109,18 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
      It is widely used to assess the risk and volatility of financial returns or other time series data
      It is the square root of the variance.
 
-    Parameters:
-        data: List[Data]
-            The time series data as a list of data points.
-        target: str
-            The name of the column for which to calculate standard deviation.
+    Parameters
+    ----------
+    data: List[Data]
+        The time series data as a list of data points.
+    target: str
+        The name of the column for which to calculate standard deviation.
 
 
-    Returns:
-        OBBject[List[Data]]
-            An object containing the rolling standard deviation values.
+    Returns
+    -------
+    OBBject[List[Data]]
+        An object containing the rolling standard deviation values.
 
 
     Examples
@@ -130,7 +134,7 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
-    results = pd.DataFrame([_std(series_target)], columns=["stdev"])
+    results = pd.DataFrame([std_dev_(series_target)], columns=["stdev"])
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
@@ -146,15 +150,16 @@ def kurtosis(data: List[Data], target) -> OBBject[List[Data]]:
     Low kurtosis indicates a distribution with lighter tails (less outliers), suggesting less risk of extreme outcomes.
     This function helps in assessing the risk of outliers in financial returns or other time series data.
 
-    Parameters:
+    Parameters
         data: List[Data]
             The time series data as a list of data points.
         target: str
             The name of the column for which to calculate kurtosis.
 
-    Returns:
-        OBBject[List[Data]]
-            An object containing the kurtosis value
+    Returns
+    ------
+    OBBject[List[Data]]
+        An object containing the kurtosis value
 
     Examples
     --------
@@ -167,7 +172,7 @@ def kurtosis(data: List[Data], target) -> OBBject[List[Data]]:
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
-    results = pd.DataFrame([_kurtosis(series_target)], columns=["kurtosis"])
+    results = pd.DataFrame([kurtosis_(series_target)], columns=["kurtosis"])
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
@@ -193,9 +198,10 @@ def quantile(
         quantile_pct: NonNegativeFloat, optional
             The quantile percentage to calculate (e.g., 0.5 for median), default is 0.5.
 
-    Returns:
-        OBBject[List[Data]]
-            An object containing the rolling quantile values with the median.
+    Returns
+    -------
+    OBBject[List[Data]]
+        An object containing the rolling quantile values with the median.
 
     Examples
     --------
@@ -229,12 +235,15 @@ def mean(
     This function is widely used in financial analysis to smooth short-term fluctuations and highlight longer-term trends
     or cycles in time series data.
 
-    Parameters:
-        data: List[Data]
-            The time series data as a list of data points.
-        target: str
-            The name of the column for which to calculate the mean.
-    Returns:
+    Parameters
+    ----------
+    data: List[Data]
+        The time series data as a list of data points.
+    target: str
+        The name of the column for which to calculate the mean.
+
+    Returns
+    -------
         OBBject[List[Data]]
             An object containing the mean value.
 
@@ -249,7 +258,7 @@ def mean(
 
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
-    results = pd.DataFrame([_mean(series_target)], columns=["mean"])
+    results = pd.DataFrame([mean_(series_target)], columns=["mean"])
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
