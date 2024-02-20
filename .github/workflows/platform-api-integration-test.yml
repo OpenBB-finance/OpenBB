@@ -38,15 +38,7 @@ jobs:
           python-version: "3.10"
           architecture: x64
 
-      - name: Load cached venv
-        id: cached-python-environment
-        uses: actions/cache@v3
-        with:
-          path: runner_env
-          key: runner_env-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
-
       - name: Install Dependencies
-        if: steps.cached-python-environment.outputs.cache-hit != 'true'
         run: |
           python -m venv runner_env
           source runner_env/bin/activate
@@ -96,14 +88,6 @@ jobs:
         run: |
           source runner_env/bin/activate
           pytest openbb_platform -m integration
-
-      - name: Cache pip packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: runner_env-${{ runner.os }}-v1-${{ hashFiles('**/poetry.lock', '**/dev_install.py') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
 
       - name: Upload summary to Slack
         uses: adrey/slack-file-upload-action@master
