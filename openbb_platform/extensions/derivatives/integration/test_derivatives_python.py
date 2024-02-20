@@ -22,6 +22,14 @@ def obb(pytestconfig):
     [
         ({"provider": "intrinio", "symbol": "AAPL", "date": "2023-01-25"}),
         ({"provider": "cboe", "symbol": "AAPL", "use_cache": False}),
+        (
+            {
+                "provider": "tmx",
+                "symbol": "SHOP",
+                "date": "2022-12-28",
+                "use_cache": False,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
