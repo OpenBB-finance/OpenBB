@@ -1,5 +1,6 @@
 """US Government Treasury Auctions Model."""
 
+# pylint: disable=unused-argument
 from typing import Any, Dict, List, Optional
 
 import pandas as pd
@@ -69,7 +70,9 @@ class GovernmentUSTreasuryAuctionsFetcher(
         if r.status_code != 200:
             raise RuntimeError(r.status_code)
         data = pd.DataFrame(r.json())
-        results = data.replace("", None).convert_dtypes().to_dict("records")
+        results = (
+            data.fillna("N/A").replace("", None).replace("N/A", None).to_dict("records")
+        )
 
         return results
 

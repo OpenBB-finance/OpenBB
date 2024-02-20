@@ -53,7 +53,7 @@ def test_cboe_index_historical_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_cboe_index_constituents_fetcher(credentials=test_credentials):
-    params = {"symbol": "BUKBUS"}
+    params = {"symbol": "BUK100P"}
 
     fetcher = CboeIndexConstituentsFetcher()
     result = fetcher.test(params, credentials)
