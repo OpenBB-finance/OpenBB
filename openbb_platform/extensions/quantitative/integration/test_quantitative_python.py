@@ -121,7 +121,7 @@ def test_quantitative_omega_ratio(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.quantitative.omega_ratio(**params)
+    result = obb.quantitative.performance.omega_ratio(**params)
     assert result
     assert isinstance(result, OBBject)
 
@@ -138,7 +138,7 @@ def test_quantitative_kurtosis(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.quantitative.kurtosis(**params)
+    result = obb.quantitative.rolling.kurtosis(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
@@ -207,7 +207,7 @@ def test_quantitative_sharpe_ratio(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.quantitative.sharpe_ratio(**params)
+    result = obb.quantitative.performance.sharpe_ratio(**params)
     assert result
     assert isinstance(result, OBBject)
 
@@ -244,7 +244,7 @@ def test_quantitative_sortino_ratio(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.quantitative.sortino_ratio(**params)
+    result = obb.quantitative.performance.sortino_ratio(**params)
     assert result
     assert isinstance(result, OBBject)
 
@@ -296,7 +296,7 @@ def test_quantitative_quantile(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.quantitative.quantile(**params)
+    result = obb.quantitative.rolling.quantile(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
