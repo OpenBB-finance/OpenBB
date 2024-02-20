@@ -13,8 +13,8 @@ from openbb_core.app.utils import (
 from openbb_core.provider.abstract.data import Data
 from pydantic import NonNegativeFloat, PositiveInt
 
-from ..helpers import validate_window
-from ..statistics import (
+from openbb_quantitative.helpers import validate_window
+from openbb_quantitative.statistics import (
     kurtosis as _kurtosis,
     mean as _mean,
     skew as _skew,

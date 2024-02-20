@@ -12,8 +12,8 @@ from openbb_core.app.utils import (
 from openbb_core.provider.abstract.data import Data
 from pydantic import PositiveInt
 
-from ..helpers import validate_window
-from ..models import (
+from openbb_quantitative.helpers import validate_window
+from openbb_quantitative.models import (
     OmegaModel,
 )
 
