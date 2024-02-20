@@ -52,6 +52,7 @@ openbb-government-us = { path = "./providers/government_us", optional = true, de
 openbb-nasdaq = { path = "./providers/nasdaq", optional = true, develop = true }
 openbb-seeking-alpha = { path = "./providers/seeking_alpha", optional = true, develop = true }
 openbb-stockgrid = { path = "./providers/stockgrid" , optional = true,  develop = true }
+openbb_tmx = { path = "./providers/tmx", optional = true, develop = true }
 openbb-wsj = { path = "./providers/wsj", optional = true, develop = true }
 
 openbb-charting = { path = "./obbject_extensions/charting", optional = true, develop = true }

@@ -123,3 +123,20 @@ async def sp500_multiples(
 ) -> OBBject:
     """Historical S&P 500 multiples and Shiller PE ratios."""
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="IndexSectors",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.index.sectors(symbol="^TX60", provider="tmx").to_df()',
+    ],
+)
+async def sectors(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Index Sectors. Sector weighting of an index."""
+    return await OBBject.from_query(Query(**locals()))
