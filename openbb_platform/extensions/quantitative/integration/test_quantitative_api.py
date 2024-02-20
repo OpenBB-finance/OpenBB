@@ -132,7 +132,7 @@ def test_quantitative_omega_ratio(params, data_type):
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/quantitative/omega_ratio?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/performance/omega_ratio?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -151,7 +151,7 @@ def test_quantitative_kurtosis(params, data_type):
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/quantitative/kurtosis?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/rolling/kurtosis?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -217,7 +217,9 @@ def test_quantitative_sharpe_ratio(params, data_type):
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/quantitative/sharpe_ratio?{query_str}"
+    url = (
+        f"http://0.0.0.0:8000/api/v1/quantitative/performance/sharpe_ratio?{query_str}"
+    )
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -256,7 +258,9 @@ def test_quantitative_sortino_ratio(params, data_type):
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/quantitative/sortino_ratio?{query_str}"
+    url = (
+        f"http://0.0.0.0:8000/api/v1/quantitative/performance/sortino_ratio?{query_str}"
+    )
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -274,7 +278,7 @@ def test_quantitative_skewness(params, data_type):
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/quantitative/skewness?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/rolling/skew?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=60, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
@@ -311,7 +315,7 @@ def test_quantitative_quantile(params, data_type):
     data = json.dumps(get_data(data_type))
 
     query_str = get_querystring(params, [])
-    url = f"http://0.0.0.0:8000/api/v1/quantitative/quantile?{query_str}"
+    url = f"http://0.0.0.0:8000/api/v1/quantitative/rolling/quantile?{query_str}"
     result = requests.post(url, headers=get_headers(), timeout=10, data=data)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
