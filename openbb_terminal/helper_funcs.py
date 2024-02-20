@@ -14,7 +14,6 @@ import logging
 import os
 import random
 import re
-import shutil
 import sys
 import urllib.parse
 import webbrowser
@@ -40,7 +39,6 @@ import pytz
 import requests
 import yfinance as yf
 from holidays import US as us_holidays
-
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
 from PIL import Image, ImageDraw
