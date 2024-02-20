@@ -171,27 +171,27 @@ class MockMultiData(Data):
                     "df1": pd.DataFrame(
                         {
                             "date": [
-                                pd.to_datetime("1956-01-01"),
-                                pd.to_datetime("1956-02-01"),
-                                pd.to_datetime("1956-03-01"),
+                                "1956-01-01",
+                                "1956-02-01",
+                                "1956-03-01",
                             ],
                             "another_date": ["2023-09-01", "2023-09-01", "2023-09-01"],
                             "value": [0.0, 0.0, 0.0],
                         },
                         columns=["date", "another_date", "value"],
-                    ).set_index("date"),
+                    ),
                     "df2": pd.DataFrame(
                         {
                             "date": [
-                                pd.to_datetime("1955-03-01"),
-                                pd.to_datetime("1955-04-01"),
-                                pd.to_datetime("1955-05-01"),
+                                "1955-03-01",
+                                "1955-04-01",
+                                "1955-05-01",
                             ],
                             "another_date": ["2023-09-01", "2023-09-01", "2023-09-01"],
                             "value": [0.0, 0.0, 0.0],
                         },
                         columns=["date", "another_date", "value"],
-                    ).set_index("date"),
+                    ),
                 },
                 axis=1,
                 sort=True,
@@ -210,7 +210,7 @@ def test_to_dataframe(results, expected_df):
 
     # Act and Assert
     if isinstance(expected_df, pd.DataFrame):
-        result = co.to_dataframe()
+        result = co.to_dataframe(index=None)
         assert_frame_equal(result, expected_df)
     else:
         with pytest.raises(expected_df.__class__) as exc_info:

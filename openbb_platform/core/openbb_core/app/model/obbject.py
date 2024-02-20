@@ -113,13 +113,13 @@ class OBBject(Tagged, Generic[T]):
         return f"OBBject[{cls.results_type_repr(params)}]"
 
     def to_df(
-        self, index: Optional[Union[None, str]] = "date", sort_by: Optional[str] = None
+        self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
     ) -> pd.DataFrame:
         """Alias for `to_dataframe`."""
         return self.to_dataframe(index=index, sort_by=sort_by)
 
     def to_dataframe(
-        self, index: Optional[Union[None, str]] = "date", sort_by: Optional[str] = None
+        self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
     ) -> pd.DataFrame:
         """Convert results field to pandas dataframe.
 
@@ -259,7 +259,7 @@ class OBBject(Tagged, Generic[T]):
         Dict[str, List]
             Dictionary of lists.
         """
-        df = self.to_dataframe()  # type: ignore
+        df = self.to_dataframe(index=None)  # type: ignore
         transpose = False
         if orient == "list":
             transpose = True
