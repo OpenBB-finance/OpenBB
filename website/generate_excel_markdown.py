@@ -253,9 +253,6 @@ class CommandLib:
             standard_eg += f"{p_value}{sep}"
         standard_eg = standard_eg.strip(f"{sep} ") + ")"
 
-        if required_eg == standard_eg:
-            return {"Required": required_eg}
-
         if cmd in ("/get", "/byod"):
             return {"Required": required_eg, "Standard": standard_eg}
         return {"Required": required_eg}
