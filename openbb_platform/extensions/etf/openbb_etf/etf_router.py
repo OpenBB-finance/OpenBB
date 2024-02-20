@@ -41,7 +41,15 @@ async def search(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EtfHistorical", operation_id="etf_historical")
+@router.command(
+    model="EtfHistorical",
+    operation_id="etf_historical",
+    examples=[
+        'obb.etf.historical("SPY", provider="yfinance")',
+        "#### This function accepts multiple tickers. ####",
+        'obb.etf.historical("SPY,IWM,QQQ,DJIA", provider="yfinance")',
+    ],
+)
 async def historical(
     cc: CommandContext,
     provider_choices: ProviderChoices,
