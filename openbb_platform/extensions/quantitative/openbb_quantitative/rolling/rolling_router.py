@@ -46,6 +46,7 @@ def skew(
         Window size.
     index : str, optional
         Index column name, by default "date"
+
     Returns
     -------
     OBBject[List[Data]]
@@ -93,8 +94,9 @@ def variance(
             The name of the index column, default is "date".
 
     Returns:
-        OBBject[List[Data]]
-            An object containing the rolling variance values.
+    -------
+    OBBject[List[Data]]
+        An object containing the rolling variance values.
 
     Examples:
     --------
@@ -135,8 +137,9 @@ def stdev(
             The name of the index column, default is "date".
 
     Returns:
-        OBBject[List[Data]]
-            An object containing the rolling standard deviation values.
+    -------
+    OBBject[List[Data]]
+        An object containing the rolling standard deviation values.
 
 
     Examples
@@ -182,8 +185,9 @@ def kurtosis(
             The name of the index column, default is "date".
 
     Returns:
-        OBBject[List[Data]]
-            An object containing the rolling kurtosis values.
+    -------
+    OBBject[List[Data]]
+        An object containing the rolling kurtosis values.
 
     Examples
     --------
@@ -234,8 +238,9 @@ def quantile(
             The name of the index column, default is "date".
 
     Returns:
-        OBBject[List[Data]]
-            An object containing the rolling quantile values with the median.
+    -------
+    OBBject[List[Data]]
+        An object containing the rolling quantile values with the median.
 
     Examples
     --------

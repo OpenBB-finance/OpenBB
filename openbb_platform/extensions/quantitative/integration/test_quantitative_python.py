@@ -256,11 +256,11 @@ def test_quantitative_sortino_ratio(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_skewness(params, data_type, obb):
+def test_quantitative_skew(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
-    result = obb.quantitative.skewness(**params)
+    result = obb.quantitative.rolling.skew(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
