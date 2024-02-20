@@ -19,6 +19,8 @@ class FMPExecutiveCompensationQueryParams(ExecutiveCompensationQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/executive-compensation-api/
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
 
 class FMPExecutiveCompensationData(ExecutiveCompensationData):
     """FMP Executive Compensation Data."""

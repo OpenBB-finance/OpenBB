@@ -141,8 +141,8 @@ def test_quantitative_omega_ratio(params, data_type):
 @parametrize(
     "params, data_type",
     [
-        ({"data": "", "target": "close", "window": "5"}, "equity"),
-        ({"data": "", "target": "high", "window": "10"}, "crypto"),
+        ({"data": "", "target": "close", "window": "5", "index": "date"}, "equity"),
+        ({"data": "", "target": "high", "window": "10", "index": "date"}, "crypto"),
     ],
 )
 @pytest.mark.integration
@@ -195,8 +195,20 @@ def test_quantitative_unitroot_test(params, data_type):
 @parametrize(
     "params, data_type",
     [
-        ({"data": "", "target": "close", "rfr": "", "window": ""}, "equity"),
-        ({"data": "", "target": "high", "rfr": "0.5", "window": "250"}, "crypto"),
+        (
+            {"data": "", "target": "close", "rfr": "", "window": "", "index": "date"},
+            "equity",
+        ),
+        (
+            {
+                "data": "",
+                "target": "high",
+                "rfr": "0.5",
+                "window": "250",
+                "index": "date",
+            },
+            "crypto",
+        ),
     ],
 )
 @pytest.mark.integration
@@ -221,6 +233,7 @@ def test_quantitative_sharpe_ratio(params, data_type):
                 "target_return": "",
                 "window": "",
                 "adjusted": "",
+                "index": "date",
             },
             "equity",
         ),
@@ -231,6 +244,7 @@ def test_quantitative_sharpe_ratio(params, data_type):
                 "target_return": "0.5",
                 "window": "275",
                 "adjusted": "true",
+                "index": "date",
             },
             "crypto",
         ),
@@ -251,7 +265,7 @@ def test_quantitative_sortino_ratio(params, data_type):
 @parametrize(
     "params, data_type",
     [
-        ({"data": "", "target": "close", "window": "220"}, "equity"),
+        ({"data": "", "target": "close", "window": "220", "index": "date"}, "equity"),
     ],
 )
 @pytest.mark.integration
@@ -275,6 +289,7 @@ def test_quantitative_skewness(params, data_type):
                 "target": "close",
                 "window": "10",
                 "quantile_pct": "",
+                "index": "date",
             },
             "equity",
         ),
@@ -284,6 +299,7 @@ def test_quantitative_skewness(params, data_type):
                 "target": "high",
                 "window": "50",
                 "quantile_pct": "0.6",
+                "index": "date",
             },
             "crypto",
         ),

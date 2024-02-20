@@ -17,8 +17,6 @@ from openbb_terminal.cryptocurrency.due_diligence import (
     ccxt_view,
     coinbase_model,
     coinbase_view,
-    coinglass_model,
-    coinglass_view,
     coinpaprika_view,
     cryptopanic_view,
     glassnode_model,
@@ -27,8 +25,6 @@ from openbb_terminal.cryptocurrency.due_diligence import (
     messari_view,
     pycoingecko_view,
     santiment_view,
-    tokenterminal_model,
-    tokenterminal_view,
 )
 from openbb_terminal.cryptocurrency.overview import cryptopanic_model
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
@@ -36,7 +32,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_non_negative,
     check_positive,
     valid_date,
 )
@@ -60,18 +55,7 @@ def check_cg_id(symbol: str):
 class DueDiligenceController(CryptoBaseController):
     """Due Diligence Controller class"""
 
-    CHOICES_COMMANDS = [
-        "load",
-        "fundrate",
-        "oi",
-        "liquidations",
-        "active",
-        "change",
-        "nonzero",
-        "eb",
-        "funot",
-        "desc",
-    ]
+    CHOICES_COMMANDS = ["load", "active", "change", "nonzero", "eb"]
 
     SPECIFIC_CHOICES = {
         "cp": [
@@ -149,9 +133,6 @@ class DueDiligenceController(CryptoBaseController):
                 {c: {} for c in glassnode_model.GLASSNODE_SUPPORTED_EXCHANGES}
             )
             choices["mt"].update({c: None for c in self.messari_timeseries})
-            choices["desc"].update(
-                {c: None for c in tokenterminal_model.get_project_ids()}
-            )
 
             self.completer = NestedCompleter.from_nested_dict(choices)
 
@@ -181,9 +162,6 @@ class DueDiligenceController(CryptoBaseController):
         mt.add_cmd("mkt")
         mt.add_cmd("ex")
         mt.add_cmd("balance")
-        mt.add_cmd("oi")
-        mt.add_cmd("fundrate")
-        mt.add_cmd("liquidations")
         mt.add_cmd("eb")
         mt.add_cmd("trades")
         mt.add_cmd("ob")
@@ -195,7 +173,6 @@ class DueDiligenceController(CryptoBaseController):
         mt.add_cmd("ps")
         mt.add_cmd("mcapdom")
         mt.add_cmd("mt")
-        mt.add_cmd("funot")
 
         mt.add_info("_contributors_")
         mt.add_cmd("team")
@@ -505,98 +482,6 @@ class DueDiligenceController(CryptoBaseController):
                 )
             else:
                 console.print(f"[red]{self.symbol} not supported on Glassnode.[/red]")
-
-    @log_start_end(log=logger)
-    def call_oi(self, other_args):
-        """Process oi command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="oi",
-            description="""
-                Displays open interest by exchange for a certain asset
-                [Source: https://coinglass.github.io/API-Reference/]
-            """,
-        )
-
-        parser.add_argument(
-            "-i",
-            "--interval",
-            dest="interval",
-            type=check_non_negative,
-            help="Frequency interval. Default: 0",
-            default=0,
-            choices=coinglass_model.INTERVALS,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-
-        if ns_parser:
-            assert isinstance(self.symbol, str)  # noqa: S101
-            coinglass_view.display_open_interest(
-                symbol=self.symbol.upper(),
-                interval=ns_parser.interval,
-                export=ns_parser.export,
-                sheet_name=(
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                ),
-            )
-
-    @log_start_end(log=logger)
-    def call_liquidations(self, other_args):
-        """Process liquidations command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="liquidations",
-            description="""
-                Displays liquidations data for the loaded crypto asset
-                [Source: https://coinglass.github.io/API-Reference/#liquidation-chart]
-            """,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-
-        if ns_parser:
-            assert isinstance(self.symbol, str)  # noqa: S101
-            coinglass_view.display_liquidations(
-                symbol=self.symbol.upper(),
-                export=ns_parser.export,
-                sheet_name=(
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                ),
-            )
-
-    @log_start_end(log=logger)
-    def call_fundrate(self, other_args):
-        """Process fundrate command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="fundrate",
-            description="""
-                Displays funding rate by exchange for a certain asset
-                [Source: https://coinglass.github.io/API-Reference/]
-            """,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-
-        if ns_parser:
-            assert isinstance(self.symbol, str)  # noqa: S101
-            coinglass_view.display_funding_rate(
-                symbol=self.symbol.upper(),
-                export=ns_parser.export,
-                sheet_name=(
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                ),
-            )
 
     @log_start_end(log=logger)
     def call_info(self, other_args):
@@ -1856,79 +1741,4 @@ class DueDiligenceController(CryptoBaseController):
                 post_kind=ns_parser.kind,
                 filter_=ns_parser.filter,
                 region=ns_parser.region,
-            )
-
-    @log_start_end(log=logger)
-    def call_funot(self, other_args):
-        """Process fun command"""
-        parser = argparse.ArgumentParser(
-            prog="funot",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Display fundamental metric over time [Source: Token Terminal]""",
-        )
-        parser.add_argument(
-            "-m",
-            "--metric",
-            default="",
-            choices=tokenterminal_model.METRICS,
-            dest="metric",
-            help="Choose metric of interest",
-        )
-        parser.add_argument(
-            "-p",
-            "--project",
-            required="-h" not in other_args,
-            choices=tokenterminal_model.get_project_ids(),
-            dest="project",
-            help="Choose project of interest",
-        )
-
-        if other_args and other_args[0][0] != "-":
-            other_args.insert(0, "-p")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_BOTH_RAW_DATA_AND_FIGURES
-        )
-        if ns_parser:
-            tokenterminal_view.display_fundamental_metric_from_project_over_time(
-                metric=ns_parser.metric,
-                project=ns_parser.project,
-                export=ns_parser.export,
-                sheet_name=(
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                ),
-            )
-
-    @log_start_end(log=logger)
-    def call_desc(self, other_args):
-        """Process desc command"""
-        parser = argparse.ArgumentParser(
-            prog="desc",
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            description="""Display project description [Source: Token Terminal]""",
-        )
-        parser.add_argument(
-            "-p",
-            "--project",
-            choices=tokenterminal_model.get_project_ids(),
-            required="-h" not in other_args,
-            dest="project",
-            help="Choose project of interest",
-        )
-
-        if other_args and other_args[0][0] != "-":
-            other_args.insert(0, "-p")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser and ns_parser.project in tokenterminal_model.get_project_ids():
-            tokenterminal_view.display_description(
-                project=ns_parser.project,
-                export=ns_parser.export,
-                sheet_name=(
-                    " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                ),
             )

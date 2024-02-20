@@ -51,5 +51,5 @@ class FMPEquityPeersFetcher(
         query: FMPEquityPeersQueryParams, data: dict, **kwargs: Any
     ) -> FMPEquityPeersData:
         """Return the transformed data."""
-        data.pop("symbol")
+        data.pop("symbol", None)
         return FMPEquityPeersData.model_validate(data)

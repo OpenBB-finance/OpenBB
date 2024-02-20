@@ -15,7 +15,7 @@ from openbb_core.app.utils import (
 from openbb_core.provider.abstract.data import Data
 from pydantic import NonNegativeFloat, PositiveInt
 
-from .helpers import get_fama_raw
+from .helpers import get_fama_raw, validate_window
 from .models import (
     ADFTestModel,
     CAPMModel,
@@ -30,7 +30,13 @@ from .models import (
 router = Router(prefix="")
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.normality(data=stock_data, target='close')",
+    ],
+)
 def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     """Get Normality Statistics.
 
@@ -51,12 +57,6 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     -------
     OBBject[NormalityModel]
         Normality tests summary. See qa_models.NormalityModel for details.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> obb.quantitative.normality(data=stock_data, target="close")
     """
     from scipy import stats  # pylint: disable=import-outside-toplevel
 
@@ -80,7 +80,13 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
     return OBBject(results=norm_summary)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.capm(data=stock_data, target='close')",
+    ],
+)
 def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     """Get Capital Asset Pricing Model (CAPM).
 
@@ -99,12 +105,6 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     -------
     OBBject[CAPMModel]
         CAPM model summary.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> obb.quantitative.capm(data=stock_data, target="close")
     """
     import statsmodels.api as sm  # pylint: disable=import-outside-toplevel # type: ignore
 
@@ -137,7 +137,13 @@ def capm(data: List[Data], target: str) -> OBBject[CAPMModel]:
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.omega_ratio(data=stock_data, target='close')",
+    ],
+)
 def omega_ratio(
     data: List[Data],
     target: str,
@@ -165,12 +171,6 @@ def omega_ratio(
     -------
     OBBject[List[OmegaModel]]
         Omega ratios.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> obb.quantitative.omega_ratio(data=stock_data, target="close")
     """
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -195,9 +195,17 @@ def omega_ratio(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
-def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Data]]:
-    """Get the Kurtosis.
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.kurtosis(data=stock_data, target='close', window=252)",
+    ],
+)
+def kurtosis(
+    data: List[Data], target: str, window: PositiveInt = 21, index: str = "date"
+) -> OBBject[List[Data]]:
+    """Get the rolling Kurtosis.
 
     Kurtosis provides insights into the shape of the data's distribution, particularly the heaviness of its tails.
     Kurtosis is a statistical measure that reveals whether the data points tend to cluster around the mean or if
@@ -214,29 +222,35 @@ def kurtosis(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
         Target column name.
     window : PositiveInt
         Window size.
+    index : str, optional
+        Index column name, by default "date"
 
     Returns
     -------
     OBBject[List[Data]]
         Kurtosis.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> obb.quantitative.kurtosis(data=stock_data, target="close", window=252)
     """
     import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
 
-    df = basemodel_to_df(data)
+    df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
-    results = ta.kurtosis(close=series_target, length=window).dropna()
+    validate_window(series_target, window)
+    results = (
+        ta.kurtosis(close=series_target, length=window).dropna().reset_index(drop=False)
+    )
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.unitroot_test(data=stock_data, target='close')",
+        'obb.quantitative.unitroot_test(data=stock_data, target="close", fuller_reg="ct", kpss_reg="ct")',
+    ],
+)
 def unitroot_test(
     data: List[Data],
     target: str,
@@ -268,13 +282,6 @@ def unitroot_test(
     -------
     OBBject[UnitRootModel]
         Unit root tests summary.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> obb.quantitative.unitroot_test(data=stock_data, target="close")
-    >>> obb.quantitative.unitroot_test(data=stock_data, target="close", fuller_reg="ct", kpss_reg="ct")
     """
     # pylint: disable=import-outside-toplevel
     from statsmodels.tsa import stattools  # type: ignore
@@ -302,11 +309,22 @@ def unitroot_test(
     return OBBject(results=unitroot_summary)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.sharpe_ratio(data=stock_data, target='close')",
+        "obb.quantitative.sharpe_ratio(data=stock_data, target='close', rfr=0.01, window=126)",
+    ],
+)
 def sharpe_ratio(
-    data: List[Data], target: str, rfr: float = 0.0, window: PositiveInt = 252
+    data: List[Data],
+    target: str,
+    rfr: float = 0.0,
+    window: PositiveInt = 252,
+    index: str = "date",
 ) -> OBBject[List[Data]]:
-    """Get Sharpe Ratio.
+    """Get Rolling Sharpe Ratio.
 
     This function calculates the Sharpe Ratio, a metric used to assess the return of an investment compared to its risk.
     By factoring in the risk-free rate, it helps you understand how much extra return you're getting for the extra
@@ -325,40 +343,43 @@ def sharpe_ratio(
         Risk-free rate, by default 0.0
     window : PositiveInt, optional
         Window size, by default 252
+    index : str, optional
 
     Returns
     -------
     OBBject[List[Data]]
         Sharpe ratio.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> obb.quantitative.sharpe_ratio(data=stock_data, target="close")
-    >>> obb.quantitative.sharpe_ratio(data=stock_data, target="close", rfr=0.01, window=126)
     """
-    df = basemodel_to_df(data)
+    df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
-
+    validate_window(series_target, window)
+    series_target.name = f"sharpe_{window}"
     returns = series_target.pct_change().dropna().rolling(window).sum()
     std = series_target.rolling(window).std() / np.sqrt(window)
-    results = ((returns - rfr) / std).dropna()
+    results = ((returns - rfr) / std).dropna().reset_index(drop=False)
 
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.sortino_ratio(data=stock_data, target='close')",
+        "obb.quantitative.sortino_ratio(data=stock_data, target='close', target_return=0.01, window=126, adjusted=True)",
+    ],
+)
 def sortino_ratio(
     data: List[Data],
     target: str,
     target_return: float = 0.0,
     window: PositiveInt = 252,
     adjusted: bool = False,
+    index: str = "date",
 ) -> OBBject[List[Data]]:
-    """Get Sortino Ratio.
+    """Get rolling Sortino Ratio.
 
     The Sortino Ratio enhances the evaluation of investment returns by distinguishing harmful volatility
     from total volatility. Unlike other metrics that treat all volatility as risk, this command specifically assesses
@@ -384,27 +405,25 @@ def sortino_ratio(
         Window size, by default 252
     adjusted : bool, optional
         Adjust sortino ratio to compare it to sharpe ratio, by default False
-
+    index:str
+        Index column for input data
     Returns
     -------
     OBBject[List[Data]]
         Sortino ratio.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> obb.quantitative.sortino_ratio(data=stock_data, target="close")
-    >>> obb.quantitative.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)
     """
-    df = basemodel_to_df(data)
+    df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
-
+    validate_window(series_target, window)
     returns = series_target.pct_change().dropna().rolling(window).sum()
     downside_deviation = returns.rolling(window).apply(
         lambda x: (x.values[x.values < 0]).std() / np.sqrt(252) * 100
     )
-    results = ((returns - target_return) / downside_deviation).dropna()
+    results = (
+        ((returns - target_return) / downside_deviation)
+        .dropna()
+        .reset_index(drop=False)
+    )
 
     if adjusted:
         results = results / np.sqrt(2)
@@ -414,9 +433,17 @@ def sortino_ratio(
     return OBBject(results=results_)
 
 
-@router.command(methods=["POST"])
-def skewness(data: List[Data], target: str, window: PositiveInt) -> OBBject[List[Data]]:
-    """Get Skewness.
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.skewness(data=stock_data, target='close', window=252)",
+    ],
+)
+def skewness(
+    data: List[Data], target: str, window: PositiveInt = 21, index: str = "date"
+) -> OBBject[List[Data]]:
+    """Get Rolling Skewness.
 
     Skewness is a statistical measure that reveals the degree of asymmetry of a distribution around its mean.
     Positive skewness indicates a distribution with an extended tail to the right, while negative skewness shows a tail
@@ -432,36 +459,42 @@ def skewness(data: List[Data], target: str, window: PositiveInt) -> OBBject[List
         Target column name.
     window : PositiveInt
         Window size.
-
+    index : str, optional
+        Index column name, by default "date"
     Returns
     -------
     OBBject[List[Data]]
         Skewness.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> obb.quantitative.skewness(data=stock_data, target="close", window=252)
     """
     import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
 
-    df = basemodel_to_df(data)
+    df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
-    results = ta.skew(close=series_target, length=window).dropna()
+    validate_window(series_target, window)
+    results = (
+        ta.skew(close=series_target, length=window).dropna().reset_index(drop=False)
+    )
     results = df_to_basemodel(results)
 
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        'obb.quantitative.quantile(data=stock_data, target="close", window=252, quantile_pct=0.25)',
+        "obb.quantitative.quantile(data=stock_data, target='close', window=252, quantile_pct=0.75)",
+    ],
+)
 def quantile(
     data: List[Data],
     target: str,
-    window: PositiveInt,
+    window: PositiveInt = 21,
     quantile_pct: NonNegativeFloat = 0.5,
+    index: str = "date",
 ) -> OBBject[List[Data]]:
-    """Get Quantile.
+    """Get Rolling Quantile.
 
     Quantile is a statistical measure that identifies the value below which a given percentage of observations in a
     group of data falls. By setting the quantile percentage, you can determine any point in the distribution, not just
@@ -479,34 +512,35 @@ def quantile(
     window : PositiveInt
         Window size.
     quantile_pct : NonNegativeFloat, optional
-
+        Quantile to get
     Returns
     -------
     OBBject[List[Data]]
         Quantile.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> obb.quantitative.quantile(data=stock_data, target="close", window=252, quantile_pct=0.25)
-    >>> obb.quantitative.quantile(data=stock_data, target="close", window=252, quantile_pct=0.75)
     """
     import pandas_ta as ta  # pylint: disable=import-outside-toplevel # type: ignore
 
-    df = basemodel_to_df(data)
+    df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
-
+    validate_window(series_target, window)
     df_median = ta.median(close=series_target, length=window).to_frame()
     df_quantile = ta.quantile(series_target, length=window, q=quantile_pct).to_frame()
-    results = pd.concat([df_median, df_quantile], axis=1).dropna()
+    results = (
+        pd.concat([df_median, df_quantile], axis=1).dropna().reset_index(drop=False)
+    )
 
     results_ = df_to_basemodel(results)
 
     return OBBject(results=results_)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.quantitative.volatility(data=stock_data, target='close')",
+    ],
+)
 def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
     """Get Summary Statistics.
 
@@ -528,12 +562,6 @@ def summary(data: List[Data], target: str) -> OBBject[SummaryModel]:
     -------
     OBBject[SummaryModel]
         Summary table.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp")
-    >>> obb.quantitative.summary(data=stock_data, target="close")
     """
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)

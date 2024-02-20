@@ -56,3 +56,14 @@ This notebook shows you how you can use OpenbB Platform as functions in an LLM b
 - Convert all OpenBB Platform functions to LLM tools
 - Build a basic Langchain agent that can utilize function calling
 - Run the agent
+
+### usdLiquidityIndex
+
+This notebook demonstrates how to query the Federal Reserve Economic Database and recreate the USD Liquidity Index.
+
+- Search FRED for series IDs.
+- Load multiple series as a single call.
+- Unpacking the data response from the FRED query.
+- Perform arithmetic operations on a DataFrame.
+- Normalization methods for a series or DataFrame.
+- Simple processes for creating charts.

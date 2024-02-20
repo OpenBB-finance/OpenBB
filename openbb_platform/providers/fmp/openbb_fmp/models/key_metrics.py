@@ -23,6 +23,8 @@ class FMPKeyMetricsQueryParams(KeyMetricsQueryParams):
     Source: https://site.financialmodelingprep.com/developer/docs/company-key-metrics-api/
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     period: Optional[Literal["annual", "quarter"]] = Field(
         default="annual", description=QUERY_DESCRIPTIONS.get("period", "")
     )

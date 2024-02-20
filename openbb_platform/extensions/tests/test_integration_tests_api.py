@@ -2,7 +2,7 @@
 
 from typing import Literal
 
-from openbb_core.app.charting_service import ChartingService
+from openbb_charting import Charting
 
 from extensions.tests.utils.integration_tests_testers import (
     check_missing_integration_test_params,
@@ -41,7 +41,8 @@ def test_api_interface_wrong_integration_test_params() -> None:
 
 def test_charting_extension_function_coverage() -> None:
     """Test if all charting extension functions are covered by integration tests."""
-    functions = ChartingService.get_implemented_charting_functions()
+    functions = Charting.functions()
+
     test_names = [f"test_chart_{func}" for func in functions]
     integration_tests_modules = get_integration_tests(
         test_type="api", filter_charting_ext=False

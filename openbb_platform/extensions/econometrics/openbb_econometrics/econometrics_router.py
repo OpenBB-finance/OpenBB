@@ -29,7 +29,13 @@ from openbb_econometrics.utils import get_engle_granger_two_step_cointegration_t
 router = Router(prefix="")
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        "obb.econometrics.correlation_matrix(data=stock_data)",
+    ],
+)
 def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
     """Get the correlation matrix of an input dataset.
 
@@ -47,12 +53,6 @@ def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
     -------
     OBBject[List[Data]]:
         Correlation matrix.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.econometrics.correlation_matrix(data=stock_data)
     """
     df = basemodel_to_df(data)
     # remove non float columns from the dataframe to perform the correlation
@@ -70,7 +70,14 @@ def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
     return OBBject(results=ret)
 
 
-@router.command(methods=["POST"], include_in_schema=False)
+@router.command(
+    methods=["POST"],
+    include_in_schema=False,
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        'obb.econometrics.ols_regression(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+    ],
+)
 def ols_regression(
     data: List[Data],
     y_column: str,
@@ -96,12 +103,6 @@ def ols_regression(
     -------
     OBBject[Dict]:
         OBBject with the results being model and results objects.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.econometrics.ols_regression(data=stock_data, y_column="close", x_columns=["open", "high", "low"])
     """
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
     y = get_target_column(basemodel_to_df(data), y_column)
@@ -110,7 +111,13 @@ def ols_regression(
     return OBBject(results={"model": model, "results": results})
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        'obb.econometrics.ols_regression_summary(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+    ],
+)
 def ols_regression_summary(
     data: List[Data],
     y_column: str,
@@ -133,12 +140,6 @@ def ols_regression_summary(
     -------
     OBBject[Data]:
         OBBject with the results being summary object.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.econometrics.ols_regression_summary(data=stock_data, y_column="close", x_columns=["open", "high", "low"])
     """
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
     y = get_target_column(basemodel_to_df(data), y_column)
@@ -183,12 +184,18 @@ def ols_regression_summary(
     return OBBject(results=clean_results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        'obb.econometrics.autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+    ],
+)
 def autocorrelation(
     data: List[Data],
     y_column: str,
     x_columns: List[str],
-) -> OBBject[Dict]:
+) -> OBBject[Data]:
     """Perform Durbin-Watson test for autocorrelation.
 
     The Durbin-Watson test is a widely used method for detecting the presence of autocorrelation in the residuals
@@ -212,12 +219,6 @@ def autocorrelation(
     -------
     OBBject[Dict]:
         OBBject with the results being the score from the test.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.econometrics.autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])
     """
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
     y = get_target_column(basemodel_to_df(data), y_column)
@@ -225,7 +226,13 @@ def autocorrelation(
     return OBBject(results=Data(score=durbin_watson(results.resid)))
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        'obb.econometrics.residual_autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
+    ],
+)
 def residual_autocorrelation(
     data: List[Data],
     y_column: str,
@@ -257,12 +264,6 @@ def residual_autocorrelation(
     -------
     OBBject[Data]:
         OBBject with the results being the score from the test.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.econometrics.residual_autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])
     """
     X = sm.add_constant(get_target_columns(basemodel_to_df(data), x_columns))
     y = get_target_column(basemodel_to_df(data), y_column)
@@ -280,7 +281,13 @@ def residual_autocorrelation(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        'obb.econometrics.cointegration(data=stock_data, columns=["open", "close"])',
+    ],
+)
 def cointegration(
     data: List[Data],
     columns: List[str],
@@ -309,12 +316,6 @@ def cointegration(
     -------
     OBBject[Data]:
         OBBject with the results being the score from the test.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.econometrics.cointegration(data=stock_data, columns=["open", "close"])
     """
     pairs = list(combinations(columns, 2))
     dataset = get_target_columns(basemodel_to_df(data), columns)
@@ -339,7 +340,13 @@ def cointegration(
     return OBBject(results=result)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        'obb.econometrics.causality(data=stock_data, y_column="close", x_column="open")',
+    ],
+)
 def causality(
     data: List[Data],
     y_column: str,
@@ -371,12 +378,6 @@ def causality(
     -------
     OBBject[Data]:
         OBBject with the results being the score from the test.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.econometrics.causality(data=stock_data, y_column="close", x_column="open")
     """
     X = get_target_column(basemodel_to_df(data), x_column)
     y = get_target_column(basemodel_to_df(data), y_column)
@@ -396,7 +397,14 @@ def causality(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+        'obb.econometrics.unit_root(data=stock_data, column="close")',
+        'obb.econometrics.unit_root(data=stock_data, column="close", regression="ct")',
+    ],
+)
 def unit_root(
     data: List[Data],
     column: str,
@@ -427,13 +435,6 @@ def unit_root(
     -------
     OBBject[Data]:
         OBBject with the results being the score from the test.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.econometrics.unit_root(data=stock_data, column="close")
-    >>> obb.econometrics.unit_root(data=stock_data, column="close", regression="ct")
     """
     dataset = get_target_column(basemodel_to_df(data), column)
     adfstat, pvalue, usedlag, nobs, _, icbest = adfuller(dataset, regression=regression)

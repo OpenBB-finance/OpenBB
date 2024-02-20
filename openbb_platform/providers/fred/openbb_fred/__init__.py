@@ -16,6 +16,7 @@ from openbb_fred.models.hqm import FREDHighQualityMarketCorporateBondFetcher
 from openbb_fred.models.ice_bofa import FREDICEBofAFetcher
 from openbb_fred.models.iorb_rates import FREDIORBFetcher
 from openbb_fred.models.moody import FREDMoodyCorporateBondIndexFetcher
+from openbb_fred.models.regional import FredRegionalDataFetcher
 from openbb_fred.models.search import (
     FredSearchFetcher,
 )
@@ -51,6 +52,7 @@ fred_provider = Provider(
         "CommercialPaper": FREDCommercialPaperFetcher,
         "FredSearch": FredSearchFetcher,
         "FredSeries": FredSeriesFetcher,
+        "FredRegional": FredRegionalDataFetcher,
         "SpotRate": FREDSpotRateFetcher,
         "HighQualityMarketCorporateBond": FREDHighQualityMarketCorporateBondFetcher,
         "TreasuryConstantMaturity": FREDTreasuryConstantMaturityFetcher,
