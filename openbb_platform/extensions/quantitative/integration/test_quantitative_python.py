@@ -117,7 +117,7 @@ def test_quantitative_capm(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_omega_ratio(params, data_type, obb):
+def test_quantitative_performance_omega_ratio(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -134,7 +134,7 @@ def test_quantitative_omega_ratio(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_kurtosis(params, data_type, obb):
+def test_quantitative_rolling_kurtosis(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -203,7 +203,7 @@ def test_quantitative_unitroot_test(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_sharpe_ratio(params, data_type, obb):
+def test_quantitative_performance_sharpe_ratio(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -240,7 +240,7 @@ def test_quantitative_sharpe_ratio(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_sortino_ratio(params, data_type, obb):
+def test_quantitative_performance_sortino_ratio(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -256,7 +256,7 @@ def test_quantitative_sortino_ratio(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_skew(params, data_type, obb):
+def test_quantitative_rolling_skew(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -292,7 +292,7 @@ def test_quantitative_skew(params, data_type, obb):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_quantile(params, data_type, obb):
+def test_quantitative_rolling_quantile(params, data_type, obb):
     params = {p: v for p, v in params.items() if v}
     params["data"] = get_data(data_type)
 
@@ -317,3 +317,111 @@ def test_quantitative_summary(params, data_type, obb):
     result = obb.quantitative.summary(**params)
     assert result
     assert isinstance(result, OBBject)
+
+
+@parametrize(
+    "params, data_type",
+    [
+        (
+            {
+                "data": "",
+                "target": "close",
+                "window": "10",
+                "quantile_pct": "",
+                "index": "date",
+            },
+            "equity",
+        ),
+        (
+            {
+                "data": "",
+                "target": "high",
+                "window": "50",
+                "quantile_pct": "0.6",
+                "index": "date",
+            },
+            "crypto",
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_rolling_stdev(params, data_type, obb):
+    params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
+
+    result = obb.quantitative.rolling.stdev(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params, data_type",
+    [
+        (
+            {
+                "data": "",
+                "target": "close",
+                "window": "10",
+                "quantile_pct": "",
+                "index": "date",
+            },
+            "equity",
+        ),
+        (
+            {
+                "data": "",
+                "target": "high",
+                "window": "50",
+                "quantile_pct": "0.6",
+                "index": "date",
+            },
+            "crypto",
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_rolling_mean(params, data_type, obb):
+    params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
+
+    result = obb.quantitative.rolling.mean(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params, data_type",
+    [
+        (
+            {
+                "data": "",
+                "target": "close",
+                "window": "10",
+                "quantile_pct": "",
+                "index": "date",
+            },
+            "equity",
+        ),
+        (
+            {
+                "data": "",
+                "target": "high",
+                "window": "50",
+                "quantile_pct": "0.6",
+                "index": "date",
+            },
+            "crypto",
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_rolling_variance(params, data_type, obb):
+    params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
+
+    result = obb.quantitative.rolling.variance(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

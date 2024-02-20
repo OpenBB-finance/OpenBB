@@ -127,7 +127,7 @@ def test_quantitative_capm(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_omega_ratio(params, data_type):
+def test_quantitative_performance_omega_ratio(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -146,7 +146,7 @@ def test_quantitative_omega_ratio(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_kurtosis(params, data_type):
+def test_quantitative_rolling_kurtosis(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -212,7 +212,7 @@ def test_quantitative_unitroot_test(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_sharpe_ratio(params, data_type):
+def test_quantitative_performance_sharpe_ratio(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -253,7 +253,7 @@ def test_quantitative_sharpe_ratio(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_sortino_ratio(params, data_type):
+def test_quantitative_performance_sortino_ratio(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -273,7 +273,7 @@ def test_quantitative_sortino_ratio(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_skewness(params, data_type):
+def test_quantitative_rolling_skew(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
@@ -310,7 +310,7 @@ def test_quantitative_skewness(params, data_type):
     ],
 )
 @pytest.mark.integration
-def test_quantitative_quantile(params, data_type):
+def test_quantitative_rolling_quantile(params, data_type):
     params = {p: v for p, v in params.items() if v}
     data = json.dumps(get_data(data_type))
 
