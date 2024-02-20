@@ -121,7 +121,6 @@ class StocksController(model.StocksRoot):
         """Stocks Darkpool Shorts Submodule
 
         Attributes:
-            `ctb`: Get stocks with highest cost to borrow [Source: Interactive Broker]\n
             `dpotc`: Get all FINRA data associated with a ticker\n
             `dpotc_chart`: Display barchart of dark pool (ATS) and OTC (Non ATS) data. [Source: FINRA]\n
             `ftd`: Display fails-to-deliver data for a given ticker. [Source: SEC]\n
