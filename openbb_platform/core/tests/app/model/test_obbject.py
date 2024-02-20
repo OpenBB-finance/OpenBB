@@ -266,22 +266,26 @@ def test_to_dataframe_w_args(results, index, sort_by):
 
 @pytest.mark.parametrize(
     "results",
-    # Test case 1: List of models.
+    # Test case 1: List of models with daylight savings crossover.
     (
         [
-            MockDataFrame(date="2023-07-30", value=10),
-            MockDataFrame(date="2023-07-31", value=9),
+            MockDataFrame(date="2023-11-03 00:00:00-04:00", value=10),
+            MockDataFrame(date="2023-11-03 08:00:00-04:00", value=9),
+            MockDataFrame(date="2023-11-03 16:00:00-04:00", value=8),
+            MockDataFrame(date="2023-11-06 00:00:00-05:00", value=11),
+            MockDataFrame(date="2023-11-06 08:00:00-05:00", value=7),
+            MockDataFrame(date="2023-11-06 16:00:00-05:00", value=12),
         ],
     ),
 )
-def test_to_df_no_index(results):
+def test_to_df_daylight_savings(results):
     """Test helper."""
     # Arrange
     co = OBBject(results=results)
 
     # Act and Assert
-    expected_df = co.to_dataframe(index=None)
-    result = basemodel_to_df(df_to_basemodel(co.to_df()))
+    expected_df = basemodel_to_df(results, index="date")
+    result = co.to_dataframe(index="date")
     assert isinstance(result, pd.DataFrame)
     assert_frame_equal(expected_df, result)
 
