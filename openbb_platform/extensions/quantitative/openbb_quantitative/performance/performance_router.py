@@ -10,12 +10,11 @@ from openbb_core.app.utils import (
     get_target_column,
 )
 from openbb_core.provider.abstract.data import Data
-from pydantic import PositiveInt
-
 from openbb_quantitative.helpers import validate_window
 from openbb_quantitative.models import (
     OmegaModel,
 )
+from pydantic import PositiveInt
 
 router = Router(prefix="/performance")
 
