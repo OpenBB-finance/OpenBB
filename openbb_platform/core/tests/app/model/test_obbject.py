@@ -5,6 +5,7 @@ from unittest.mock import MagicMock
 import pandas as pd
 import pytest
 from openbb_core.app.model.obbject import Chart, OBBject, OpenBBError
+from openbb_core.app.utils import basemodel_to_df, df_to_basemodel
 from openbb_core.provider.abstract.data import Data
 from pandas.testing import assert_frame_equal
 
@@ -45,6 +46,13 @@ class MockMultiData(Data):
 
     date: str
     another_date: str
+    value: float
+
+
+class MockDataFrame(Data):
+    """Test helper."""
+
+    date: str
     value: float
 
 
@@ -171,9 +179,9 @@ class MockMultiData(Data):
                     "df1": pd.DataFrame(
                         {
                             "date": [
-                                "1956-01-01",
-                                "1956-02-01",
-                                "1956-03-01",
+                                pd.to_datetime("1956-01-01").date(),
+                                pd.to_datetime("1956-02-01").date(),
+                                pd.to_datetime("1956-03-01").date(),
                             ],
                             "another_date": ["2023-09-01", "2023-09-01", "2023-09-01"],
                             "value": [0.0, 0.0, 0.0],
@@ -183,9 +191,9 @@ class MockMultiData(Data):
                     "df2": pd.DataFrame(
                         {
                             "date": [
-                                "1955-03-01",
-                                "1955-04-01",
-                                "1955-05-01",
+                                pd.to_datetime("1955-03-01").date(),
+                                pd.to_datetime("1955-04-01").date(),
+                                pd.to_datetime("1955-05-01").date(),
                             ],
                             "another_date": ["2023-09-01", "2023-09-01", "2023-09-01"],
                             "value": [0.0, 0.0, 0.0],
@@ -214,7 +222,7 @@ def test_to_dataframe(results, expected_df):
         assert_frame_equal(result, expected_df)
     else:
         with pytest.raises(expected_df.__class__) as exc_info:
-            co.to_dataframe()
+            co.to_dataframe(index=None)
 
         assert str(exc_info.value) == str(expected_df)
 
@@ -254,6 +262,28 @@ def test_to_dataframe_w_args(results, index, sort_by):
 
     # check if dataframe is properly sorted
     assert result[sort_by].is_monotonic_increasing
+
+
+@pytest.mark.parametrize(
+    "results",
+    # Test case 1: Normal results with "date" column
+    (
+        [
+            MockDataFrame(date="2023-07-30", value=10),
+            MockDataFrame(date="2023-07-31", value=9),
+        ],
+    ),
+)
+def test_to_df_no_index(results):
+    """Test helper."""
+    # Arrange
+    co = OBBject(results=results)
+
+    # Act and Assert
+    expected_df = co.to_dataframe(index=None)
+    result = basemodel_to_df(df_to_basemodel(co.to_df()))
+    assert isinstance(result, pd.DataFrame)
+    assert_frame_equal(expected_df, result)
 
 
 @pytest.mark.parametrize(
