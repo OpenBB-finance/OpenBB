@@ -14,7 +14,7 @@ from openbb_core.provider.standard_models.treasury_rates import (
 )
 from openbb_core.provider.utils.helpers import make_request
 from pandas import DataFrame, read_csv, to_datetime
-from pydantic import field_validator
+from pydantic import field_validator, model_validator
 
 maturities = [
     "month_1",
