@@ -13,6 +13,7 @@ class PlatformControllerFactory:
             .rsplit(".", maxsplit=1)[-1]
             .replace("'>", "")
             .replace("ROUTER_", "")
+            .lower()
         )
         self.controller_name = f"{self.router_name.capitalize()}Controller"
 
