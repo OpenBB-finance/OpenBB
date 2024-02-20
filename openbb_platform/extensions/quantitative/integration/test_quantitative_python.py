@@ -425,3 +425,120 @@ def test_quantitative_rolling_variance(params, data_type, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params, data_type",
+    [
+        ({"data": "", "target": "close"}, "equity"),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_stats_skew(params, data_type, obb):
+    params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
+
+    result = obb.quantitative.stats.skew(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params, data_type",
+    [
+        ({"data": "", "target": "close"}, "equity"),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_stats_kurtosis(params, data_type, obb):
+    params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
+
+    result = obb.quantitative.stats.kurtosis(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params, data_type",
+    [
+        ({"data": "", "target": "close"}, "equity"),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_stats_variance(params, data_type, obb):
+    params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
+
+    result = obb.quantitative.stats.variance(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params, data_type",
+    [
+        ({"data": "", "target": "close"}, "equity"),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_stats_stdev(params, data_type, obb):
+    params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
+
+    result = obb.quantitative.stats.stdev(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params, data_type",
+    [
+        ({"data": "", "target": "close"}, "equity"),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_stats_mean(params, data_type, obb):
+    params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
+
+    result = obb.quantitative.stats.mean(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params, data_type",
+    [
+        (
+            {
+                "data": "",
+                "target": "close",
+                "quantile_pct": "",
+            },
+            "equity",
+        ),
+        (
+            {
+                "data": "",
+                "target": "close",
+                "quantile_pct": "0.6",
+            },
+            "crypto",
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_quantitative_stats_quantile(params, data_type, obb):
+    params = {p: v for p, v in params.items() if v}
+    params["data"] = get_data(data_type)
+
+    result = obb.quantitative.stats.quantile(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
