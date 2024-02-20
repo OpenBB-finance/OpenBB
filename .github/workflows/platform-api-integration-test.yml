@@ -51,7 +51,7 @@ jobs:
           python -m venv runner_env
           source runner_env/bin/activate
           pip install poetry toml
-          python openbb_platform/dev_install.py -e all
+          python openbb_platform/dev_install.py -e
 
       - name: Populate System Setting Files
         run: |
@@ -87,7 +87,7 @@ jobs:
       - name: Wait for 42 seconds
         run: sleep 42
 
-      - name: Run API Integration Tests
+      - name: Run Integration Tests
         run: |
           source runner_env/bin/activate
           pip list

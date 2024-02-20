@@ -918,8 +918,8 @@ def test_equity_compare_groups(params, headers):
             {
                 "provider": "cboe",
                 "symbol": "AAPL",
-                "start_date": "2023-01-01",
-                "end_date": "2023-01-02",
+                "start_date": "2024-02-19",
+                "end_date": "2022-02-20",
                 "interval": "1m",
                 "use_cache": False,
             }
