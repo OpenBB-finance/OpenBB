@@ -1,6 +1,6 @@
 ---
 title: Data slicer
-sidebar_position: 4
+sidebar_position: 5
 description: Slice Excel ranges by label or index
 keywords:
 - Microsoft Excel
