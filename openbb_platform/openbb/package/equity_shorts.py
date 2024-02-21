@@ -79,7 +79,7 @@ class ROUTER_equity_shorts(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.shorts.fails_to_deliver(symbol="AAPL")
+        >>> obb.equity.shorts.fails_to_deliver(symbol='AAPL')
         """  # noqa: E501
 
         return self._run(

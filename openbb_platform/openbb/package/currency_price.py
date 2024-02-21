@@ -89,7 +89,7 @@ class ROUTER_currency_price(Container):
 
         CurrencyHistorical
         ------------------
-        date : datetime
+        date : Union[date, datetime]
             The date of the data.
         open : float
             The open price.

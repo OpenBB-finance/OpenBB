@@ -222,7 +222,7 @@ class ROUTER_etf(Container):
 
         EtfHistorical
         -------------
-        date : date
+        date : Union[date, datetime]
             The date of the data.
         open : float
             The open price.

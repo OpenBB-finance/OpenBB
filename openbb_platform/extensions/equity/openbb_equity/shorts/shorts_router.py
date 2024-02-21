@@ -18,7 +18,7 @@ router = Router(prefix="/shorts")
 @router.command(
     model="EquityFTD",
     exclude_auto_examples=True,
-    examples=["obb.equity.shorts.short_volume(symbol='AAPL')"],
+    examples=["obb.equity.shorts.fails_to_deliver(symbol='AAPL')"],
 )
 async def fails_to_deliver(
     cc: CommandContext,
