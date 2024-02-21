@@ -677,7 +677,6 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
         ]
 
         # Generate _category_.json for the current directory
-        print(f"Generating the _category_.json for the {path} directory...")
         category_content = {"label": parent_label, "position": position}
         with open(path / "_category_.json", "w", encoding="utf-8") as f:
             json.dump(category_content, f, indent=2)
@@ -735,7 +734,6 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
             index_content += "</ul>\n\n"
 
         # Save the index.mdx file
-        print(f"Generating the index.mdx for the {path} directory...")
         with open(path / "index.mdx", "w", encoding="utf-8") as f:
             f.write(index_content)
 
@@ -789,7 +787,6 @@ def generate_reference_top_level_index() -> None:
     )
 
     # Generate the top-level index.mdx file for the reference directory
-    print("Generating the top-level index.mdx for the reference directory...")
     with (PLATFORM_REFERENCE_PATH / "index.mdx").open("w", encoding="utf-8") as f:
         f.write(index_content)
 
@@ -837,12 +834,10 @@ def generate_data_models_index_files(content: str) -> None:
     )
 
     # Generate the index.mdx file for the data_models directory
-    print("Generating the index.mdx for the data_models directory...")
     with open(PLATFORM_DATA_MODELS_PATH / "index.mdx", "w", encoding="utf-8") as f:
         f.write(index_content)
 
     # Generate the _category_.json file for the data_models directory
-    print("Generating the _category_.json for the data_models directory...")
     category_content = {"label": "Data Models", "position": 6}
     with open(
         PLATFORM_DATA_MODELS_PATH / "_category_.json", "w", encoding="utf-8"
@@ -880,7 +875,6 @@ def generate_markdown_file(path: str, markdown_content: str, directory: str) -> 
     directory_path.mkdir(parents=True, exist_ok=True)
 
     # Generate the markdown file for the specified path and directory
-    print(f"Generating the {file_name} file for the {directory} directory...")
     with open(directory_path / file_name, "w", encoding="utf-8") as md_file:
         md_file.write(markdown_content)
 
@@ -888,30 +882,32 @@ def generate_markdown_file(path: str, markdown_content: str, directory: str) -> 
 def generate_platform_markdown() -> None:
     """Generate markdown files for OpenBB Docusaurus website."""
 
-    data_models_index_content = ""
+    data_models_index_content = []
     reference_index_content_dict = {}
 
+    print("[CRITICAL] Ensure all the extensions are installed before running this script!")  # fmt: skip
+
     # Generate and read the reference.json file
-    print("Generating reference.json file...")
+    print("[INFO] Generating the reference.json file...")
     generate_reference_file()
     with open(PLATFORM_CONTENT_PATH / "reference.json") as f:
         reference = json.load(f)
 
-    print("Generating markdown files...")
-
     # Clear the platform/reference folder
-    print("Clearing the platform/reference folder...")
+    print("[INFO] Clearing the platform/reference folder...")
     shutil.rmtree(PLATFORM_REFERENCE_PATH, ignore_errors=True)
 
     # Clear the platform/data_models folder
-    print("Clearing the platform/data_models folder...")
+    print("[INFO] Clearing the platform/data_models folder...")
     shutil.rmtree(PLATFORM_DATA_MODELS_PATH, ignore_errors=True)
+
+    print(f"[INFO] Generating the markdown files for the {PLATFORM_REFERENCE_PATH} sub-directories...")  # fmt: skip
+    print(f"[INFO] Generating the markdown files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
 
     for path, path_data in reference.items():
         reference_markdown_content = ""
         data_markdown_content = ""
 
-        # model = path_data["model"]
         description = path_data["description"]
         path_parameters_fields = path_data["parameters"]
         path_data_fields = path_data["data"]
@@ -965,21 +961,28 @@ def generate_platform_markdown() -> None:
             data_markdown_content += create_reference_markdown_tabular_section(
                 path_data_fields, "Data"
             )
-            data_models_index_content += create_data_models_index(
-                data_markdown_title, description, model
+            data_models_index_content.append(
+                create_data_models_index(data_markdown_title, description, model)
             )
 
             generate_markdown_file(model, data_markdown_content, "data_models")
 
     # Generate the index.mdx and _category_.json files for the reference directory
+    print(f"[INFO] Generating the index files for the {PLATFORM_REFERENCE_PATH} sub-directories...")  # fmt: skip
     generate_reference_index_files(reference_index_content_dict)
+    print(
+        "[INFO] Generating the index files for the {PLATFORM_REFERENCE_PATH} directory..."
+    )
     generate_reference_top_level_index()
 
+    # Sort the data models index content alphabetically to display in the same order
+    data_models_index_content.sort()
+    data_models_index_content_str = "".join(data_models_index_content)
+
     # Generate the index.mdx and _category_.json files for the data_models directory
-    generate_data_models_index_files(data_models_index_content)
-    print(
-        f"Markdown files generated, check the {PLATFORM_REFERENCE_PATH} and {PLATFORM_DATA_MODELS_PATH} folders."
-    )
+    print(f"[INFO] Generating the index files for the {PLATFORM_DATA_MODELS_PATH} directory...")  # fmt: skip
+    generate_data_models_index_files(data_models_index_content_str)
+    print("[INFO] Markdown files generated successfully!")
 
 
 if __name__ == "__main__":
