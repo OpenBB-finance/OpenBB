@@ -59,13 +59,13 @@ def test_charting_extension_function_coverage() -> None:
     assert missing_items == [], "\n".join(missing_items)
 
 
-def test_missing_api_integration_tests() -> None:
+def test_missing_python_integration_tests() -> None:
     """Check if there are missing tests."""
     missing = check_missing_integration_tests(test_type="python")
     assert not missing, "\n".join(missing)
 
 
-def test_outdated_api_integration_tests() -> None:
+def test_outdated_python_integration_tests() -> None:
     """Check if there are outdated tests."""
     outdated = check_outdated_integration_tests(test_type="python")
     assert not outdated, "\n".join(outdated)

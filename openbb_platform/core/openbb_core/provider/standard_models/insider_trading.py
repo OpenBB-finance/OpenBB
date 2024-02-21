@@ -37,7 +37,9 @@ class InsiderTradingQueryParams(QueryParams):
 class InsiderTradingData(Data):
     """Insider Trading Data."""
 
-    symbol: str = Field(description=DATA_DESCRIPTIONS.get("symbol", ""))
+    symbol: Optional[str] = Field(
+        default=None, description=DATA_DESCRIPTIONS.get("symbol", "")
+    )
     company_cik: Optional[Union[int, str]] = Field(
         default=None, description="CIK number of the company."
     )

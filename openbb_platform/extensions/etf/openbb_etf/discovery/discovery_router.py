@@ -15,7 +15,14 @@ router = Router(prefix="/discovery")
 # pylint: disable=unused-argument
 
 
-@router.command(model="ETFGainers", operation_id="etf_gainers")
+@router.command(
+    model="ETFGainers",
+    operation_id="etf_gainers",
+    examples=[
+        "### Get the top ETF gainers. ###",
+        'obb.etf.discovery.gainers(provider="wsj")',
+    ],
+)
 async def gainers(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -26,7 +33,14 @@ async def gainers(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="ETFLosers", operation_id="etf_losers")
+@router.command(
+    model="ETFLosers",
+    operation_id="etf_losers",
+    examples=[
+        "### Get the top ETF losers. ###",
+        'obb.etf.discovery.losers(provider="wsj")',
+    ],
+)
 async def losers(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -37,7 +51,14 @@ async def losers(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="ETFActive", operation_id="etf_active")
+@router.command(
+    model="ETFActive",
+    operation_id="etf_active",
+    examples=[
+        "### Get the most active ETFs. ###",
+        'obb.etf.discovery.active(provider="wsj")',
+    ],
+)
 async def active(
     cc: CommandContext,
     provider_choices: ProviderChoices,

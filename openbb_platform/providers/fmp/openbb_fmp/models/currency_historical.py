@@ -107,4 +107,7 @@ class FMPCurrencyHistoricalFetcher(
             and d.get("change") != 0
             and d.get("changeOverTime") != 0
         ]
-        return [FMPCurrencyHistoricalData.model_validate(d) for d in data]
+        return [
+            FMPCurrencyHistoricalData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["date"], reverse=False)
+        ]
