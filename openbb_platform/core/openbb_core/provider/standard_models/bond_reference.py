@@ -65,8 +65,7 @@ class BondReferenceQueryParams(QueryParams):
         """Convert the field to uppercase and convert a list to a query string."""
         if isinstance(v, str):
             return v.upper()
-        v = ",".join([symbol.upper() for symbol in list(v)])
-        return v if v else None
+        return ",".join([symbol.upper() for symbol in list(v)]) if v else None
 
 
 class BondReferenceData(Data):

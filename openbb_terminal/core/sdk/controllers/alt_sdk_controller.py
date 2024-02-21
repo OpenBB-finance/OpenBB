@@ -8,10 +8,9 @@ class AltController(model.AltRoot):
     """Alternative Module.
 
     Submodules:
-        `covid`: Covid Module
+        `companieshouse`: Companieshouse Module
         `oss`: Oss Module
         `realestate`: Realestate Module
-        `companieshouse`: CompaniesHouse Module
 
     Attributes:
         `hn`: Get top stories from HackerNews.\n
@@ -19,21 +18,20 @@ class AltController(model.AltRoot):
     """
 
     @property
-    def covid(self):
-        """Alternative Covid Submodule
+    def companieshouse(self):
+        """Alternative Companieshouse Submodule
 
         Attributes:
-            `global_cases`: Get historical cases for given country.\n
-            `global_deaths`: Get historical deaths for given country.\n
-            `ov`: Get historical cases and deaths by country.\n
-            `ov_chart`: Prints table showing historical cases and deaths by country.\n
-            `slopes`: Load cases and find slope over period.\n
-            `slopes_chart`: Prints table showing countries with the highest case slopes.\n
-            `stat`: Show historical cases and deaths by country.\n
-            `stat_chart`: Prints table showing historical cases and deaths by country.\n
+            `download_filing_document`: Download company's filing document.\n
+            `get_company_info`: Gets company info by company number\n
+            `get_filing_document`: Download given filing document pdf\n
+            `get_filings`: Gets information on filings for given company, e.g. accounts, etc\n
+            `get_officers`: Gets information on company officers\n
+            `get_persons_with_significant_control`: Gets information on persons with significant control over the company\n
+            `get_search_results`: All companies with searchStr in their name.\n
         """
 
-        return model.AltCovid()
+        return model.AltCompanieshouse()
 
     @property
     def oss(self):
@@ -67,19 +65,3 @@ class AltController(model.AltRoot):
         """
 
         return model.AltRealestate()
-
-    @property
-    def companieshouse(self):
-        """Alternative CompaniesHouse Submodule
-
-        Attributes:
-            `get_search_results`: Search for companies by name\n
-            `get_company_info`: Get details of company by registration number\n
-            `get_officers`: Get company officers\n
-            `get_persons_with_significant_control`: Get people/organisations with significant control over company\n
-            `get_filings`: Get company filing details\n
-            `get_filing_document`: Get company filed document\n
-            `download_filing_document`: Download company filed document\n
-        """
-
-        return model.AltCompaniesHouse()

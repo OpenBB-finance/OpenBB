@@ -1087,6 +1087,7 @@ en:
   dashboards/chains: options chain analysis
   dashboards/shortdata: finra shortdata analysis
   dashboards/futures: historical futures performance
+  dashboards/options: cboe options analysis
   reports: customizable research reports through jupyter notebooks
   reports/_reports_: Build and run your custom reports or try one of our templates
   reports/_OpenBB_reports_: OpenBB reports
