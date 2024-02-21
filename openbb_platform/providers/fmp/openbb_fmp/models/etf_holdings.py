@@ -3,10 +3,7 @@
 # pylint: disable=unused-argument
 
 import warnings
-from datetime import (
-    date as dateType,
-    datetime,
-)
+from datetime import date as dateType
 from typing import Any, Dict, List, Optional, Union
 
 from openbb_core.provider.abstract.data import ForceInt
