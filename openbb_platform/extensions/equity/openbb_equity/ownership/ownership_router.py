@@ -22,7 +22,7 @@ async def major_holders(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get information about major holders of a given company over time."""
+    """Get information about major holders for a given company over time."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -55,5 +55,5 @@ async def share_statistics(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get information about a company's share float."""
+    """Get information about share float for a given company."""
     return await OBBject.from_query(Query(**locals()))
