@@ -90,9 +90,8 @@ class ROUTER_index(Container):
     @validate
     def constituents(
         self,
-        index: Annotated[
-            str,
-            OpenBBCustomParameter(description="Index to fetch the constituents of."),
+        symbol: Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
@@ -101,8 +100,8 @@ class ROUTER_index(Container):
 
         Parameters
         ----------
-        index : str
-            Index to fetch the constituents of.
+        symbol : str
+            Symbol to get data for.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -160,7 +159,7 @@ class ROUTER_index(Container):
                     )
                 },
                 standard_params={
-                    "index": index,
+                    "symbol": symbol,
                 },
                 extra_params=kwargs,
             )

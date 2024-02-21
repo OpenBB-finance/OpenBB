@@ -26,14 +26,14 @@ from typing_extensions import Annotated
 
 
 @pytest.fixture(scope="module")
-def tmp_package_dir(tmp_path_factory):
-    return tmp_path_factory.mktemp("package")
+def tmp_openbb_dir(tmp_path_factory):
+    return tmp_path_factory.mktemp("openbb")
 
 
 @pytest.fixture(scope="module")
-def package_builder(tmp_package_dir):
+def package_builder(tmp_openbb_dir):
     """Return package builder."""
-    return PackageBuilder(tmp_package_dir)
+    return PackageBuilder(tmp_openbb_dir)
 
 
 def test_package_builder_init(package_builder):
@@ -544,14 +544,16 @@ def test_generate(docstring_generator):
     assert "Returns" in doc
 
 
-def test_read_extension_map(package_builder, tmp_package_dir):
+def test_read_extension_map(package_builder, tmp_openbb_dir):
     """Test read extension map."""
 
     PATH = "openbb_core.app.static.package_builder."
     open_mock = mock_open()
     with patch(PATH + "open", open_mock), patch(PATH + "load") as mock_load:
-        package_builder._read_extension_map(tmp_package_dir)
-        open_mock.assert_called_once_with(Path(tmp_package_dir, "extension_map.json"))
+        package_builder._read(Path(tmp_openbb_dir / "assets" / "extension_map.json"))
+        open_mock.assert_called_once_with(
+            Path(tmp_openbb_dir / "assets" / "extension_map.json")
+        )
         mock_load.assert_called_once()
 
 
@@ -606,7 +608,7 @@ def test_read_extension_map(package_builder, tmp_package_dir):
 )
 def test_package_diff(
     package_builder,
-    tmp_package_dir,
+    tmp_openbb_dir,
     ext_built,
     ext_installed,
     ext_inst_version,
@@ -619,21 +621,19 @@ def test_package_diff(
         return ext_installed.select(**{"group": group})
 
     PATH = "openbb_core.app.static.package_builder."
-    with patch.object(
-        PackageBuilder, "_read_extension_map"
-    ) as mock_read_extension_map, patch(
+    with patch.object(PackageBuilder, "_read") as mock_read, patch(
         PATH + "entry_points", mock_entry_points
-    ), patch.object(
-        EntryPoint, "dist", new_callable=PropertyMock
-    ) as mock_obj:
+    ), patch.object(EntryPoint, "dist", new_callable=PropertyMock) as mock_obj:
 
         class MockPathDistribution:
             version = ext_inst_version
 
         mock_obj.return_value = MockPathDistribution()
-        mock_read_extension_map.return_value = ext_built
+        mock_read.return_value = ext_built
 
-        add, remove = package_builder._diff(tmp_package_dir)
+        add, remove = package_builder._diff(
+            Path(tmp_openbb_dir, "assets", "extension_map.json")
+        )
 
         # We add whatever is not built, but is installed
         assert add == expected_add
@@ -651,20 +651,22 @@ def test_package_diff(
         ({"this"}, {"that"}, False),
     ],
 )
-def test_auto_build(package_builder, tmp_package_dir, add, remove, openbb_auto_build):
+def test_auto_build(package_builder, tmp_openbb_dir, add, remove, openbb_auto_build):
     """Test auto build."""
 
-    with patch.object(PackageBuilder, "_diff") as mock_package_diff, patch.object(
+    with patch.object(PackageBuilder, "_diff") as mock_assets_diff, patch.object(
         PackageBuilder, "build"
     ) as mock_build, patch.object(Env, "AUTO_BUILD", openbb_auto_build):
-        mock_package_diff.return_value = add, remove
+        mock_assets_diff.return_value = add, remove
 
         package_builder.auto_build()
 
     if openbb_auto_build:
-        mock_package_diff.assert_called_once_with(Path(tmp_package_dir, "package"))
+        mock_assets_diff.assert_called_once_with(
+            Path(tmp_openbb_dir, "assets", "extension_map.json")
+        )
         if add or remove:
             mock_build.assert_called_once()
     else:
-        mock_package_diff.assert_not_called()
+        mock_assets_diff.assert_not_called()
         mock_build.assert_not_called()
