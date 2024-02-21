@@ -1,12 +1,12 @@
 """Platform V4 Markdown Generator Script."""
 
+import inspect
 import json
 import re
 import shutil
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Callable, Dict, List
 
-from fastapi.routing import APIRoute
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
 from openbb_core.provider import standard_models
@@ -68,7 +68,7 @@ def get_field_data_type(field_type: Any) -> str:
     return field_type
 
 
-def get_provider_parameter_info(route: APIRoute) -> Dict[str, str]:
+def get_provider_parameter_info(endpoint: Callable) -> Dict[str, str]:
     """Get the name, type, description, default value and optionality
     information for the provider parameter.
 
@@ -77,14 +77,13 @@ def get_provider_parameter_info(route: APIRoute) -> Dict[str, str]:
     function type annotations then the information is extracted from it.
 
     Args:
-        route (APIRoute): Router object containing the endpoint details
+        endpoint (Callable): Router endpoint function
 
     Returns:
         Dict[str, str]: Dictionary of the provider parameter information
     """
 
-    # TODO: Find a better way to fetch this without inspecting the signature of the function
-    params_dict = route.endpoint.__annotations__
+    params_dict = endpoint.__annotations__
     model_type = params_dict["provider_choices"].__args__[0]
     provider_params_field = model_type.__dataclass_fields__["provider"]
 
@@ -122,7 +121,7 @@ def get_provider_field_params(
 
     Returns:
         List[Dict[str, str]]: List of dictionaries containing the field name,
-        type, description, default and optionality of each provider.
+        type, description, default, optional flag and standard flag for each provider.
     """
 
     provider_field_params = [
@@ -136,6 +135,7 @@ def get_provider_field_params(
             .replace('"', "'"),
             "default": "" if field_info.default is PydanticUndefined else str(field_info.default),  # fmt: skip
             "optional": not field_info.is_required(),
+            "standard": False,
         }
         for field, field_info in model_map[provider][params_type]["fields"].items()
     ]
@@ -143,14 +143,35 @@ def get_provider_field_params(
     return provider_field_params
 
 
-def get_post_method_parameters_info(
-    annotations: Dict, docstring: str
-) -> List[Dict[str, str]]:
+def get_function_params_default_value(endpoint: Callable) -> Dict:
+    """Get the default for the endpoint function parameters.
+
+    Args:
+        endpoint (Callable): Router endpoint function
+
+    Returns:
+        Dict: Endpoint function parameters and their default values
+    """
+
+    default_values = {}
+
+    signature = inspect.signature(endpoint)
+    parameters = signature.parameters
+
+    for name, param in parameters.items():
+        if param.default is not inspect.Parameter.empty:
+            default_values[name] = param.default
+        else:
+            default_values[name] = ""
+
+    return default_values
+
+
+def get_post_method_parameters_info(endpoint: Callable) -> List[Dict[str, str]]:
     """Get the parameters for the POST method endpoints.
 
     Args:
-        annotations (Dict): Endpoint function parameter names and their corresponding data types
-        docstring (str): Docstring of the endpoint function
+        endpoint (Callable): Router endpoint function
 
     Returns:
         List[Dict[str, str]]: List of dictionaries containing the name,
@@ -158,7 +179,9 @@ def get_post_method_parameters_info(
     """
     parameters_info = []
     descriptions = {}
-    section = docstring.split("Parameters")[1].split("Returns")[0]
+
+    parameters_default_values = get_function_params_default_value(endpoint)
+    section = endpoint.__doc__.split("Parameters")[1].split("Returns")[0]  # type: ignore
 
     lines = section.split("\n")
     current_param = None
@@ -171,45 +194,52 @@ def get_post_method_parameters_info(
         elif current_param:  # This line describes the parameter
             description = cleaned_line.strip()
             descriptions[current_param] = description
-            current_param = None  # Reset current_param to ensure each description is correctly associated
+            # Reset current_param to ensure each description is
+            # correctly associated with the parameter
+            current_param = None
 
-    for param, type_ in annotations.items():
-        detail = {
-            "name": param,
-            "type": get_field_data_type(type_),
-            "description": descriptions.get(param, ""),
-            "default": "None",  # Assuming "None" as default; specific defaults need to be manually extracted if needed
-            "optional": "Optional" in str(type_),
-        }
-        parameters_info.append(detail)
+    for param, param_type in endpoint.__annotations__.items():
+        if param == "return":
+            continue
+
+        parameters_info.append(
+            {
+                "name": param,
+                "type": get_field_data_type(param_type),
+                "description": descriptions.get(param, ""),
+                "default": parameters_default_values.get(param, ""),
+                "optional": "Optional" in str(param_type),
+            }
+        )
 
     return parameters_info
 
 
-def get_post_method_returns_info(return_type: Any, docstring: str) -> Dict[str, str]:
+def get_post_method_returns_info(endpoint: Callable) -> List[Dict[str, str]]:
     """Get the returns information for the POST method endpoints.
 
     Args:
-        return_type (Any): Return type of the endpoint function
-        docstring (str): Docstring of the endpoint function
+        endpoint (Callable): Router endpoint function
 
     Returns:
         Dict[str, str]: Dictionary containing the name, type, description of the return value
     """
-    section = docstring.split("Parameters")[1].split("Returns")[-1]
-
-    # Directly capturing return description (assuming single return value for simplicity)
+    section = endpoint.__doc__.split("Parameters")[1].split("Returns")[-1]  # type: ignore
     description_lines = section.strip().split("\n")
     description = description_lines[-1].strip() if len(description_lines) > 1 else ""
-    return_annotation = return_type.model_fields["results"].annotation
+    return_type = endpoint.__annotations__["return"].model_fields["results"].annotation
 
-    returns_info = {
-        "name": "results",
-        "type": get_field_data_type(return_annotation),
-        "description": description,
-    }
+    # Only one item is returned hence its a list with a single dictionary.
+    # Future changes to the return type will require changes to this code snippet.
+    return_info = [
+        {
+            "name": "results",
+            "type": get_field_data_type(return_type),
+            "description": description,
+        }
+    ]
 
-    return returns_info
+    return return_info
 
 
 # mypy: disable-error-code="attr-defined,arg-type"
@@ -243,6 +273,9 @@ def generate_reference_file() -> None:
         # Route method is used to distinguish between GET and POST methods
         route_method = route.methods
 
+        # Route endpoint is the callable function
+        route_func = route.endpoint
+
         # Standard model is used as the key for the ProviderInterface Map dictionary
         standard_model = route.openapi_extra["model"] if route_method == {"GET"} else ""
 
@@ -273,7 +306,7 @@ def generate_reference_file() -> None:
             )
 
             # Add `provider` parameter fields to the openbb provider
-            provider_parameter_fields = get_provider_parameter_info(route)
+            provider_parameter_fields = get_provider_parameter_info(route_func)
             reference[path]["parameters"]["standard"].append(
                 {
                     "name": provider_parameter_fields["name"],
@@ -312,15 +345,9 @@ def generate_reference_file() -> None:
                 reference[path]["data"][provider].extend(provider_data)
 
         elif route_method == {"POST"}:
-            route_annotations = route.endpoint.__annotations__.copy()
-            route_docstring = route.endpoint.__doc__
-
-            return_type = route_annotations.pop("return")
-            parameters_annotations = route_annotations
-
             # Add endpoint parameters fields for POST methods
             reference[path]["parameters"]["standard"] = get_post_method_parameters_info(
-                parameters_annotations, route_docstring
+                route_func
             )
 
         # Add endpoint returns data
@@ -355,14 +382,9 @@ def generate_reference_file() -> None:
             ]
 
         elif route_method == {"POST"}:
-            returns_info = get_post_method_returns_info(return_type, route_docstring)
-            reference[path]["returns"]["OBBject"] = [
-                {
-                    "name": returns_info["name"],
-                    "type": returns_info["type"],
-                    "description": returns_info["description"],
-                }
-            ]
+            reference[path]["returns"]["OBBject"] = get_post_method_returns_info(
+                route_func
+            )
 
     # Dumping the reference dictionary as a JSON file
     with open(PLATFORM_CONTENT_PATH / "reference.json", "w", encoding="utf-8") as f:
@@ -481,12 +503,18 @@ def create_reference_markdown_tabular_section(
     # params_list is a list of dictionaries containing the
     # information for all the parameters of the provider.
     for provider, params_list in parameters.items():
+        # Exclude the standard parameters from the table
+        filtered_params = [
+            {k: v for k, v in params.items() if k != "standard"}
+            for params in params_list
+        ]
+
         # Parameter information for every provider is extracted
         # from the dictionary and joined to form a row of the table.
         # A `|` is added at the start and end of the row to
         # create the table cell.
         params_table_rows = [
-            f"| {' | '.join(map(str, params.values()))} |" for params in params_list
+            f"| {' | '.join(map(str, params.values()))} |" for params in filtered_params
         ]
         # All rows are joined to form the table.
         params_table_rows_str = "\n".join(params_table_rows)
@@ -510,7 +538,8 @@ def create_reference_markdown_returns_section(returns: List[Dict[str, str]]) -> 
     """Create the returns section for the markdown file.
 
     Args:
-        returns (List[Dict[str, str]]): List of returns
+        returns (List[Dict[str, str]]): List of dictionaries containing
+        the name, type and description of the returns
 
     Returns:
         str: Returns section for the markdown file
