@@ -4,10 +4,10 @@ sidebar_position: 7
 description: Learn how to use OpenBB Copilot to interact with the OpenBB Terminal Pro
 keywords:
 - OpenBB Copilot
+- copilot
 - voice command
-- change theme mode
-- load templates
-- TSLA
+- agent
+- assistant
 - Natural language processing
 - Large language model
 - OpenAI
@@ -21,15 +21,7 @@ import ReactPlayer from 'react-player'
 
 import TutorialVideo from '@site/src/components/General/TutorialVideo.tsx';
 
-<!-- <TutorialVideo -->
-<!--   youtubeLink="https://www.youtube.com/embed/ZdIZ4dOG9tE?si=dKAanLAC84eVKcyD" -->
-<!--   videoLegend="Short introduction to copilot" -->
-<!-- /> -->
-
 OpenBB copilot is your companion to interact with the OpenBB Terminal Pro.
-
-
-<!-- <img className="pro-border-gradient" width="3701" alt="COPILOT- New" src="https://github.com/OpenBB-finance/OpenBBTerminal/assets/25267873/1c2d892e-03b7-4db8-9e8c-6fb1ab8512a1" /> -->
 
 ## Getting started
 
@@ -107,9 +99,39 @@ encourage users to experiment with adding different kinds of widgets. For
 example, OpenBB Copilot is particularly effective at summarizing earnings call
 transcripts from the "Earnings Transcripts" widget.
 
-## Focus on specific widgets
+## Querying specific widgets only
+
+<ReactPlayer width="70%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBBTerminal/assets/14093308/1335e310-cd65-4917-bc34-1de8b3e5f7fc' />
+
+
+Sometimes you may wish to drill down and utilize OpenBB Copilot to analyze only
+ a specific subset of widgets. For example, you may want to use OpenBB Copilot
+ is assist you in a deep analysis of an earnings transcript in the "Earnings
+ Transcript" widget, without retrieving data from the rest of the dashboard.
+ 
+ To achieve this, you can chat with only specific widgets by clicking on the
+ "Add widgets as context" button on each widget you wish to chat to. Doing so
+ will make that widget's data available to OpenBB Copilot, while excluding other
+ widgets that are not selected. You can then use OpenBB Copilot as normal, and
+ the widgets in the rest of the dashboard will be ignored.
 
 ## Bring your own files
 
+<ReactPlayer width="70%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBBTerminal/assets/14093308/905eb674-5619-4797-8adf-9cf13a846792' />
 
-The scope of your request can range from basic commands such as "change theme mode to light", to more intricate requests like "load my equity template with TSLA" or "Add insider trading and ownership widgets to this dashboard".
+OpenBB Copilot can also answer queries using your files. Currently TXT, PDF,
+CSV and XLSX files are supported. Files can be added to the Copilot by dragging
+and dropping them on the OpenBB Copilot chatbox, or by clicking the paper clip
+icon.
+
+Once your files are uploaded, OpenBB Copilot will use the data in the uploaded
+files, when required, in order to answer your queries. If OpenBB uses the data
+contained in your files to answer a query, it will cite which files it used (and
+in the case of PDFs, the specific page).
+
+### A note on filenames
+OpenBB Copilot makes careful use of filenames to assess whether a file is
+relevant to the user's query. As a result, it is highly recommended that you use
+filenames that are descriptive of the data that they contain. For example, given
+a PDF file containing a technical report from TSLA released in 2024, a good
+filename would be `tsla_technical_report_2024.pdf`.
