@@ -33,7 +33,7 @@ OpenBB copilot is your companion to interact with the OpenBB Terminal Pro.
 
 ## Getting started
 
-<ReactPlayer width="1156px" height="720px" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBBTerminal/assets/14093308/6466c3e3-111b-4246-ae9b-b6403712c862' />
+<ReactPlayer width="100%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBBTerminal/assets/14093308/6466c3e3-111b-4246-ae9b-b6403712c862' />
 
 To open OpenBB Copilot, click on the icon located at the bottom right of the Terminal Pro screen.
 
@@ -47,7 +47,7 @@ We'll be exploring each of these features in the sections below.
 
 ## Understanding chat history
 
-<ReactPlayer width="720px" height="500px" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBBTerminal/assets/14093308/312510fb-fb17-474c-8698-a2960134e285' />
+<ReactPlayer width="100%" height="100%" playing loop muted='true' volume='0' url='https://github.com/OpenBB-finance/OpenBBTerminal/assets/14093308/312510fb-fb17-474c-8698-a2960134e285' />
 
 OpenBB Copilot is a conversational agent. This means that OpenBB Copilot uses
 previous messages in the current chat to help answer your query. This means you
