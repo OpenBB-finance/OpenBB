@@ -10,7 +10,7 @@ from openbb_core.provider.standard_models.market_historical import (
 )
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
-    amake_request,
+    amake_requests,
     get_querystring,
 )
 from pandas import to_datetime
@@ -68,9 +68,14 @@ class TEMarketHistoricalFetcher(
         """Return the raw data from the TE endpoint."""
         api_key = credentials.get("tradingeconomics_api_key") if credentials else ""
 
+        symbols = query.symbol.split(",")
+
         base_url = "https://api.tradingeconomics.com/markets/historical"
         query_str = get_querystring(query.model_dump(), ["symbol"])
-        url = f"{base_url}/{query.symbol}?{query_str}&c={api_key}"
+        urls = []
+
+        for symbol in symbols:
+            urls.append(f"{base_url}/{symbol}?{query_str}&c={api_key}")
 
         async def callback(response: ClientResponse, _: Any) -> Union[dict, List[dict]]:
             """Return the response."""
@@ -78,7 +83,7 @@ class TEMarketHistoricalFetcher(
                 raise RuntimeError(f"Error in TE request -> {await response.text()}")
             return await response.json()
 
-        return await amake_request(url, response_callback=callback, **kwargs)
+        return await amake_requests(urls, response_callback=callback, **kwargs)
 
     # pylint: disable=unused-argument
     @staticmethod
