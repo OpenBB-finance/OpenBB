@@ -216,10 +216,11 @@ class ROUTER_equity_discovery(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the URL to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC
+        """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC
         filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,
-        and Foreign Investment Disclosures. The annual 10-K report is required to be filed annually and includes the
-        company's financial statements, management discussion and analysis, and audited financial statements.
+        Foreign Investment Disclosures and others. The annual 10-K report is required to be
+        filed annually and includes the company's financial statements, management discussion and analysis,
+        and audited financial statements.
 
 
         Parameters

@@ -96,7 +96,7 @@ async def dividends(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Historical Dividends. Historical dividends data for a given company."""
+    """Get historical dividend data for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -107,7 +107,7 @@ async def historical_eps(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Historical earnings-per-share for a given company."""
+    """Get historical earnings per share data for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -118,40 +118,58 @@ async def employee_count(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Historical Employees. Historical number of employees."""
+    """Get historical employee count data for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="SearchAttributes")
+@router.command(
+    model="SearchAttributes",
+    exclude_auto_examples=True,
+    examples=[
+        "obb.equity.fundamental.search_attributes(query='ebitda')",
+    ],
+)
 async def search_attributes(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Search Intrinio data tags."""
+    """Search Intrinio data tags to search in latest or historical attributes."""
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="LatestAttributes")
+@router.command(
+    model="LatestAttributes",
+    exclude_auto_examples=True,
+    examples=[
+        "obb.equity.fundamental.latest_attributes(tag='ceo')",
+    ],
+)
 async def latest_attributes(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Fetch the latest value of a data tag from Intrinio."""
+    """Get the latest value of a data tag from Intrinio."""
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="HistoricalAttributes")
+@router.command(
+    model="HistoricalAttributes",
+    exclude_auto_examples=True,
+    examples=[
+        "obb.equity.fundamental.historical_attributes(tag='ebitda')",
+    ],
+)
 async def historical_attributes(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Fetch the historical values of a data tag from Intrinio."""
+    """Get the historical values of a data tag from Intrinio."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -184,7 +202,7 @@ async def metrics(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Key Metrics. Key metrics for a given company."""
+    """Get fundamental metrics for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -195,7 +213,7 @@ async def management(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Key Executives. Key executives for a given company."""
+    """Get executive management team information for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -206,7 +224,7 @@ async def management_compensation(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get Executive Compensation. Information about the executive compensation for a given company."""
+    """Get executive management team compensation for a given company over time."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -225,7 +243,7 @@ async def overview(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Company Overview. General information about a company."""
+    """Get company general business and stock information for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -236,7 +254,7 @@ async def ratios(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Extensive set of ratios over time. Financial ratios for a given company."""
+    """Get an extensive set of financial and accounting ratios for a given company over time."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -247,7 +265,7 @@ async def revenue_per_geography(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Revenue Geographic. Geographic revenue data."""
+    """Get the revenue geographic breakdown for a given company over time."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -258,7 +276,7 @@ async def revenue_per_segment(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Revenue Business Line. Business line revenue data."""
+    """Get the revenue breakdown by business segment for a given company over time."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -269,7 +287,12 @@ async def filings(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Company Filings. Company filings data."""
+    """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC
+    filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,
+    Foreign Investment Disclosures and others. The annual 10-K report is required to be
+    filed annually and includes the company's financial statements, management discussion and analysis,
+    and audited financial statements.
+    """
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -280,7 +303,7 @@ async def historical_splits(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Historical Splits. Historical splits data."""
+    """Get historical stock splits for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -291,7 +314,7 @@ async def transcript(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Earnings Call Transcript. Earnings call transcript for a given company."""
+    """Get earnings call transcripts for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -302,5 +325,5 @@ async def trailing_dividend_yield(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Trailing 1yr dividend yield."""
+    """Get the 1 year trailing dividend yield for a given company over time."""
     return await OBBject.from_query(Query(**locals()))
