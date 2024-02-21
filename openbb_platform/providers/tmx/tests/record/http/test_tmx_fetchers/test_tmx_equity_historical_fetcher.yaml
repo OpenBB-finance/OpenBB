@@ -1,0 +1,1104 @@
+interactions:
+- request:
+    body: '{"operationName": "getCompanyPriceHistory", "variables": {"adjusted": true,
+      "adjustmentType": "SO", "end": "2022-12-30", "start": "2022-12-03", "symbol":
+      "SHOP", "unadjusted": false}, "query": "query getCompanyPriceHistory($symbol:
+      String!, $start: String, $end: String, $adjusted: Boolean, $adjustmentType:
+      String, $unadjusted: Boolean, $limit: Int) {\n getCompanyPriceHistory(\n symbol:
+      $symbol\n start: $start\n end: $end\n adjusted: $adjusted\n adjustmentType:
+      $adjustmentType\n unadjusted: $unadjusted\n limit: $limit\n ) {\n datetime\n
+      openPrice\n closePrice\n high\n low\n volume\n tradeValue\n numberOfTrade\n
+      change\n changePercent\n vwap\n}\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA42Xu27kNhSG+zyG6jFxrjyk2zTpskWQJkgx8U5sA/aMMTvexcLwu+dIHksUSQFx
+        p8tI+vhfDv02fN1f9sPt23B/uPx6en7ZH39+OT/eHX57/HY5nX8Ot3+9jbccLo/Ph+F2ICC6Qbph
+        GHbD6eVwnG4ebiUG1d1w93T6dvg8ZQFwNzw83j9MBzHuhqfTj+lest3w/fT0Oj6TIzNE//HlvP96
+        +HP/9Oon0UBVIflvjq/P/xzOv//7x3jZr0T/Bn/Tw/5474c38PHi6fDL4Xx3OF78LAZU/+33H/uX
+        6YVZVN93XRTKFYqE3KKMT5tRMn2iSIglCmlSiRWKElNM4301Ss4MCwoHjA2JBUQrQEwsbYGkFoQq
+        EAkyc2hQXDggFhwWc+KaIyZmSZkbDgLRUhIMwq0kjkcziK+bUtwC4cZcVoNoSFwogjOJBiwVMRAU
+        qUmyJVRNHUU0x/9BArSYa/ySbXNRhZImJ1XmosVcfj0tKDHpwqKgbEJrFuJoERJLq0oGtYKFWpCr
+        6p/eSmK2xYEVRw5ShyQXHAqB8idHClhQqHmEq7iTKUrM0smIiehC4Y9t0w6Tka8YOXBi2sKoa8tr
+        qXZWLmrLMUbzfGB4CdDCIR4F01xxeBQsEnZqK5txyaHScHhpoRQgCLblK6xLyxc/VSApjOt59VUO
+        WshR6EFiGaXiQAJWiNa6Cj9Kuajf3EkIhjTG80rinhbZCjvG1lmNIlIIYraAWF5AckRBqqIupgLe
+        yrmNB6utQRhbEHB/lJK46puS6BpEoectW7yFYbaWq8eltTRyay0yb7PcWouESmvd0KRvJ+tGBUn2
+        BtwikYqEAlTm8o9PNJPwTOLny/p1EhelJmEiBsBOZY1/K02say4e9fwg8W/zOt8aiVhNEvVJUoHQ
+        tH+4gliwz/b1C1SWL1uaFnBFktHUF19bErMsq9qybm3N9asSSHhTkWqM+DLHFmRsgCsIhaSLJCWI
+        xwGBoAKBzMkyd8zljGtJsDNInI9KScA2KxhyYy5pUZbAa4C8SMJFAzMw8pin9Wx3FkiCnQbmlFYk
+        44NbErR5mIzG9shtkaRGFO2Q5CImaEviy12KuvZgFUliny+ROvstnrBLkq4mwKmMidAmiTWaYB14
+        mobsTAK22KusLp9gkCtNCD09PmW6JOUOeAx8N+9FTtwDHpstkGqYuHumVi9BOBAW7oqyuCumhSR6
+        yfgucU3CDsdiCJ3As+VVCXc2KmMJqxXu8o3jZk7qcWLNf1j+9bLsuFKIc1B8519u530/n0YvrOyV
+        AVPOvXnCUdbzpEvCOE94r1UmTO9/v7//8h9P+kboUg4AAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:26 GMT
+      Etag:
+      - W/"e52-S5qLwXYnk4UzkcRNKFfsZoMMxnc"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getCompanyPriceHistory", "variables": {"adjusted": true,
+      "adjustmentType": "SO", "end": "2023-01-01", "start": "2022-12-31", "symbol":
+      "SHOP", "unadjusted": false}, "query": "query getCompanyPriceHistory($symbol:
+      String!, $start: String, $end: String, $adjusted: Boolean, $adjustmentType:
+      String, $unadjusted: Boolean, $limit: Int) {\n getCompanyPriceHistory(\n symbol:
+      $symbol\n start: $start\n end: $end\n adjusted: $adjusted\n adjustmentType:
+      $adjustmentType\n unadjusted: $unadjusted\n limit: $limit\n ) {\n datetime\n
+      openPrice\n closePrice\n high\n low\n volume\n tradeValue\n numberOfTrade\n
+      change\n changePercent\n vwap\n}\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: '{"data":{"getCompanyPriceHistory":[]}}
+
+        '
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '39'
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:26 GMT
+      Etag:
+      - W/"27-G4d6IvnrFkPJGwX/GEmrbC/6qm8"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getCompanyPriceHistory", "variables": {"adjusted": true,
+      "adjustmentType": "SO", "end": "2022-09-09", "start": "2022-08-13", "symbol":
+      "SHOP", "unadjusted": false}, "query": "query getCompanyPriceHistory($symbol:
+      String!, $start: String, $end: String, $adjusted: Boolean, $adjustmentType:
+      String, $unadjusted: Boolean, $limit: Int) {\n getCompanyPriceHistory(\n symbol:
+      $symbol\n start: $start\n end: $end\n adjusted: $adjusted\n adjustmentType:
+      $adjustmentType\n unadjusted: $unadjusted\n limit: $limit\n ) {\n datetime\n
+      openPrice\n closePrice\n high\n low\n volume\n tradeValue\n numberOfTrade\n
+      change\n changePercent\n vwap\n}\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3WXT2/jNhDF7/0YOjvE/CWHvvbSW/dQ9FL04GbdTYAkDrJOF4sg371D2ZYoUgJy
+        sWJL/Pm9eW/8MXw9nA/D/mP4djz/enp+Pbz8/PL2eH/87fH7+fT2c9j/9VHecjw/Ph+H/UBAdAfZ
+        /4bdcHo9voxvHvZCgXU33D+dvh9vlzQw7oaHx28P4wtJu+Hp9GN8L+Xd8N/p6f15/GhKWP55fjt8
+        Pf55eHr3i5hRMGbw9728P/9zfPv93z/Kv4c9aVTwJz0cXr75Sw5it1dfjm/3x5fzsDd/cnnCj8Or
+        319C0vi5W+ewhgMCcMOBwXjiwJDpysE5MM8ciZVBGw4G8YcLQs9BUKBvHBiIOg4OADJxYBCxTZC0
+        BPHDaWxAIMRZEAgWbyAWEs0gTGSpfMcLQfwa5YTagWACtBqE4wqIRL2B+NEsZtkCiR2IyRLEL5He
+        QMa7zSBYOYuRlIoHlyCkgCn2zkKzVDnrDkabNiR+NY2q31AwG26hUGMuDMk6FJXaXDKbi2I1JOD2
+        yrlBiSzKSbA3FyeNFQqOyrcoHDJOKG4IJNm0F3Zz0qL46VErFOIKJVUofmgqH16gJNFsxtSjCJc7
+        VaoI9yjoYys1ilFaRbE7blEu33qDojahsCt+iy5nlAolU+Ri9xqFIGJSLTfoRl7LIW8oTtL7yx+Q
+        uRp5c7NugUCXwaNhlyAlQq8gFGzKYM+5euTVvz5oR144xpx4JYPBOC816WfeNUFIFQr4pzZQqK0T
+        HKO11UQrTUrm3DSpY5jET5wbTRA4mko5ZTv0goILlNj3yXV+JpKMSFskTXx5+3BqSGicjSuJhBJF
+        NxKtNDEDLsjLkZcoCayPYaJoVQzf0TiNLYh4mE5B7AcRxk1NtCHhEFsSh7OKxCZNXJ9KkogyOn9B
+        guIdD7aSw5Lr8PIk6TgopDQXvOeYom1hSDclkRqMi5smDJFqU6msxQBedW2fMHhASXF61ycKuebA
+        NZAYuQIRzlvjTtzpAS0IBYh1buUZBBaCWLTcRvBl4yoLRwuimnDRJrhSjK6JYm2tDJvWaouRL6G+
+        1GTueNeEaEaRqk3Idy60BiVnZY22Mu0aQZckK9PuohQDTqJgsq0ywTa4oodDNyQyj3saa/1C4tNT
+        mSu6ANqaKzJkS6WluwhOVEcwh5VWLIeZW1EDrte7Y7RrsF3So8ZIYw1eMSxMlRjr0CpbIkK7p3iP
+        gEZa2R1Lgy6LZG3jMp6NlXyv5a0ZwWYLVq+5lsPRJg4dH3jhSMHq3TH6OlKAFyAGBJlsRQ5CS4v0
+        TSsLl4Z5dfRzJMybgjQ1ol4Nja/87Datjlo2hRuJjYabu53cRtTuW9FSIumHnfw3zFKS9WqP04T4
+        QYjSpiTakzRbiuIYuVcSHiUbSfzO9T7vvz9STK25lH1RybAy7EnickvRVRRI05ZSTsIQP//+/Pzl
+        fyvzfqwbDwAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:26 GMT
+      Etag:
+      - W/"f1b-VS2gt7jRSyDBAfLwB2lkDXiWx00"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getCompanyPriceHistory", "variables": {"adjusted": true,
+      "adjustmentType": "SO", "end": "2022-12-02", "start": "2022-11-05", "symbol":
+      "SHOP", "unadjusted": false}, "query": "query getCompanyPriceHistory($symbol:
+      String!, $start: String, $end: String, $adjusted: Boolean, $adjustmentType:
+      String, $unadjusted: Boolean, $limit: Int) {\n getCompanyPriceHistory(\n symbol:
+      $symbol\n start: $start\n end: $end\n adjusted: $adjusted\n adjustmentType:
+      $adjustmentType\n unadjusted: $unadjusted\n limit: $limit\n ) {\n datetime\n
+      openPrice\n closePrice\n high\n low\n volume\n tradeValue\n numberOfTrade\n
+      change\n changePercent\n vwap\n}\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA32XzU7kRhSF93kMr5tS3f+q3maTXWYRZRNl0WE6gAQ0YmBGI8S759rgcrnKDju7
+        27Q/n3PuuX4bvp5eTsPxbbg5v/x6eXg6Pf788nx3ff7t7tvL5fnncPzrbfzK+eXu4TwcB4yIV4BX
+        EYfDcHk6P05fHo6iQeUwXN9fvp3nUxayHobbu5vb4agxKB2G+8uP6bvi3/1+uX8d/6dmFgE+DC/P
+        p6/nP0/3r36So2AGxHQYHl8f/jk///7vH+PHwxHNP/Bfuj093vjhVQxE8+GX8/P1+fFlOivqP/79
+        x+nJfzAFEqD3wzYKNCgSckOSAuaZxA9sBpFQcQiSMMU1B0WiCGrQcRBJjAsHhdhjSOBEhcKfJ4lu
+        UsAVxYbCn0uLIQGLIJ8HHxwxxLyA5JRMsAERYjUW6wUhlpQWEA4JOpAc/PoCwiFK3APB3IBggIYj
+        BpbCwQHkk4NzyFgJIkadsTCZmlsubxgLcl4ZK+XeWBCsIoGggNvGcpLUkYyXrlBgOvWJQmG8gVkS
+        oQWFXfjJ9isU5IyScQMFE1Te8ieoHQm7P7AGwZT2QGQN4s852hrET0GaQThPN/+hiWcHFhAEzpPv
+        axCInHIW5Q4EUFjXmvTmuhpvfibx30sReI+EO5Lx0oYkL2GPAWBxVy2JEYpgk3aV8dH3HP6oq5nl
+        FL0ebiwpEDkk0bwHQQ2EBdyQgyo5uETEpg9mCCJNMKZ3JYcSKApt+CoK2cIBPpA2fBXH3BQ1mHEX
+        BDuQzlfOVjgsMM4cGqCKOioAWxN1rw9WBMPeVmKwttVGQKZmSYVEfRyQ7ZE0HeLcBB0Jlenrnwsv
+        KGqVJMZeGG1CzKIxju3SSaJYSTJmYQOFAqVSh+Od+EDZQYF2akFA6dwViyrjCKvCPj2xeQDHFGlk
+        W00tHwAat4oENI+jvEJB7lEw8PS45qAA7qYdrEv7ZNh1l1SdCBPXnHasOpFAPCoNCoiPWY6xL3dI
+        Wpe7o8S0heKXlxHsJqR9VbTrkoj/1yUYEi1dwlWVCJq2awoSWmaijQmcKeYVyUYpkm9bueoS9hGy
+        B9J0iZdeakFoEr7sKVxKkUJVJcLZaMztCiSbn2SzfgR78+OqE3Fjdvml1ZriAu+tKcBdTFJf7oCV
+        IFjpUQlCWX0ENzMYoy+TnodeEPSFEtcp6UHcWjQOoKIImey1O/Szq1vlsbYWT1U/Bz5qLQkIQuut
+        hJ5s20gJeUyqMUxBe29ZkFR6cdwFYT/uzQrM0g/hD7YyhFMZwvxRvzOIu0WZGhCvxJRdmF6TlIQX
+        EK+KPu2ggQ2qGaxqe2mPzQ7MHrB2TfF9wQoJVQsXTGVW3OWdncbXrdXg8mUeGXijGZNA7S4XfsNd
+        47vDsnH5SMi4566YOpTc5MSffSwblx8sKLh6USTLSVPbjKr+IgW8IUqMqXKXL9QbonhMyguW35pl
+        3ONou+RjWV9xuApQcXCFUe8qIpq6godo/scbA1hj5hoDegwfKCAVBiHb+9/v77/8B1z+CB/fDwAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:26 GMT
+      Etag:
+      - W/"fdf-5XqwNVF3J/TzVAsfYnSPWP+H9W8"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getCompanyPriceHistory", "variables": {"adjusted": true,
+      "adjustmentType": "SO", "end": "2022-01-28", "start": "2022-01-01", "symbol":
+      "SHOP", "unadjusted": false}, "query": "query getCompanyPriceHistory($symbol:
+      String!, $start: String, $end: String, $adjusted: Boolean, $adjustmentType:
+      String, $unadjusted: Boolean, $limit: Int) {\n getCompanyPriceHistory(\n symbol:
+      $symbol\n start: $start\n end: $end\n adjusted: $adjusted\n adjustmentType:
+      $adjustmentType\n unadjusted: $unadjusted\n limit: $limit\n ) {\n datetime\n
+      openPrice\n closePrice\n high\n low\n volume\n tradeValue\n numberOfTrade\n
+      change\n changePercent\n vwap\n}\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3WXT2/jNhDF7/0YOjvEcP5whrn20lv3UPRS9OBm3U2AJA6yTheLIN+9Q8cSaVI6
+        SqYs/fjevBm+T1/3p/10+z59O5x+PT697J9/fnl9uDv89vD9dHz9Od3+9V6WHE4PT4fpdkJAvIF4
+        gzbtpuPL4fm8eLqNICEa7qa7x+P3w3wzxkDZdtP9w7f7z8uEaTc9Hn+UJ/xH9Sf+Oz6+lf9GE2La
+        TafX/dfDn/vHN79HkE2TAO+m57enfw6vv//7R/l5umVk9bfd75+/+ZX6e2S+/HJ4vTs8n8rdGP3/
+        f+xfyussJE78sVvn0Y4nckjJOh7gAECV57LmwkNBTFoeSAjXPJgzcE5IKzwFcua5Sf7pPADdSBDB
+        ipQCU7QtpNQjaUDuFQJ/kVaiHFBkIbIQmSsREyraNRHnqMBQwDuiRJYbIgyWRiAMQlWj6FuYdBNI
+        Ro2slyhiyNoAOUJ5wQUoBc1UgUglcw+EIJKi2ggEZ4PPQOJAeSTikMkqUSyrcIuI+yriFYksGKeF
+        CL2IdC6inCuMcBzUEd8LQtQ4wETQs72XAnK3rhRQcfuMAi6ObJHEjgQl+EaOeVBcPpOkkIvJL9rk
+        EAtXNZvrqx0OICjlFW2yUENz41aPuiKOG+wcSDNSCoRpUx3omCiGmHvDoQWMeYEiCYALFKojaoWK
+        kmHIBLCInGDMBEJoKwiCJhqZXJZcM4EgGMW8gRRzj0QeIStIuVh9RsohL0AWFKwNOUrUh7Zaspxo
+        DG1JKA0QhYi4lgmUqu3KFxpvAvV9yPefk3ZAhCE2xqNLul6Q3HjpKrdRSt+4RvLnXf9RoyLoVW6b
+        xPVQqETe+AS3Ui72nYj0MzmvgFyhktNVIcVFI+JLqF6AlIdCiu5RVAEYc4GLP2cetxzbgOOO4xra
+        VCIWNwXqI87p/c0jj1d2y8OypPb8xCIQahoHBXMlwFYGhSYI/CpkGPUhj1StQOKTAusWEHVA7JqX
+        HL4G8qCBGtrzmguQ96i2DaHFzNgBeeYXx43J7Yq0ReQNz9aizrtGo5FPCp52W0jYI3mVc+85Z4hW
+        PedrFiAu29oCCap2lqOULSPTSsxBvrKcwJrliPOC459CwFu5Hfte5O4yjD2OfIpeFUqki0IaWsNJ
+        tMQ9DgukXJK3w/EZL1UcDGgjTvTMThWHg5ptGq5vQ1y2qK8gdsNZbUN+yXEZTUtTiqkFylz0vQZC
+        SHD+476CLGlruIC44jfvO1L9lkPy8XGDCPqIO/uNeiKfrmM9PHB2Qy+jKWPg3EqkPjz0EnlR+Yli
+        JeSYrZ0W2PvQChEG1UYk30PRLc9BP2yXzx3OQ2fO6jlxiMVyZz82qY0+QuU+5aIqfib0cHyg62Fb
+        8ug6l05jzTkuKWtbEx3007aUbeqAxFsZ10wQP59YTQXfAmiJxCOx18hYkqfcSCTnbtvMCqYrRMUG
+        dZ7zzykD7xZR34rUp23qZwVnQKxnvHnNJ5I0pyHKYNbh+Mku+TG29Ou+r0ZKLY9P9ZlXDkQ+ZZ9B
+        ZyLXyE/KH39/fPzyP2Kcaf6sDwAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:26 GMT
+      Etag:
+      - W/"fac-akp0J7sz4KSM/bbhidh0LJo8zmw"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getCompanyPriceHistory", "variables": {"adjusted": true,
+      "adjustmentType": "SO", "end": "2022-07-15", "start": "2022-06-18", "symbol":
+      "SHOP", "unadjusted": false}, "query": "query getCompanyPriceHistory($symbol:
+      String!, $start: String, $end: String, $adjusted: Boolean, $adjustmentType:
+      String, $unadjusted: Boolean, $limit: Int) {\n getCompanyPriceHistory(\n symbol:
+      $symbol\n start: $start\n end: $end\n adjusted: $adjusted\n adjustmentType:
+      $adjustmentType\n unadjusted: $unadjusted\n limit: $limit\n ) {\n datetime\n
+      openPrice\n closePrice\n high\n low\n volume\n tradeValue\n numberOfTrade\n
+      change\n changePercent\n vwap\n}\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3WXP2/jRhDF+3wM1tJi58/O7LpNky5XBGmCFIpPORuwLcMn53Aw/N0zS0nkcJeE
+        G4siSP447715+hi+Hs6H4e5j+HY8/3p6fj28/Pzy9nh//O3x+/n09nO4++ujnnI8Pz4fh7sBI+I+
+        6h7SsBtOr8eX8eThjmMouBvun07fj/Mh3Q0Pj98e7H8IiXbD0+nHcEclgH3x3+npvV4SRTBz2g3n
+        t8PX45+Hp3c7CFFzKpphN7y8P/9zfPv93z/q1/YNs9QbPRxevtnHOF738unL8e3++HK2cwJBsTv8
+        OLyOj5GipM/dOgc3HBAKdBwwg2BIPINU5hsIccxSpAEhTZlyTCsgmmkG2cN44YZkT0HGe9xQSHAT
+        hbqRaEMCQcGRlDKTsB8J28un0o6EAEhiXiFBzY4kBl4hgRDr4SsJBM7EWyTYkGDA0qBggDShUEjp
+        imJXJk/CMZWeBBMz0Zq4lL246j0aEJtB0okDA0WVLQ5oOFJAajkmiBTEQQg7ikIm4VZZyFKAc1yj
+        AEex5xBzP48ccmLHwVpggyPmhoNteg2HjDe5omhIckPhgGlGgRw5CixRMkEmM09HUhiyHweujSPV
+        8LhiSICYdQtDO1nl1uspVFNeMYzp5nU7N3pdiT1vlcpiIpCRE+GKrkiymwgG1Q5EwqjIKwiHwmkT
+        RLp5VP0vQChEcdIqaQbR4g1iHAStQZLFFsMKCCjjIrT69N1bsNQrXkkoKMsmSb9GRul6ErbQm0g4
+        yE1ZlIP69AWhGkMLEE4xWZateCQXcCBmEehALN4pe4cI0hZHu0ZiaA1Sc8Otw0lYRjxTCESmxujI
+        NgtN2DGQiC7Cqp+F3RTJb0IuZRVB9hQ7d0ArKnMgbuwPFTcLUtt6rahIMUUqK/tDuHhRWab29tgn
+        y5TkUIR4PXdlj6XPq1ZVtseLU1WROXpzdnllSzplXaKouZ9zTejOHlxTzJEkWFmFhqI+eq3n4BZK
+        G72trJIlHk8gNdR1Tl7JbiqYMXerEIvaCqmHO3FFXpAUkZ5ELlXuAmLZyRsOMZAmfJO1hNjC5BCn
+        pmUn5FrFLiyy3OpJFNvwVTVxaV+0sGRdRJbUatMXLXsVE4paC6Qtp2Brdg2ibdUyR8TiWACmBNaA
+        fipaMLaxZX+iK6udxlcy7xFnnAnFSobOsWVl2zS8RdJWRjOKtEOxx3X9V21NTVMhE59bJgRirmxZ
+        BJJ1ld72tmIcC1k89vllb9aVRlObteEtlrY0WpPvduJo2ttSdI53DCIJWpdYLEcl7QsK5uQ6PFxq
+        0RKBLkOatmHBzdhq66I9GLbTsHDM7Isv8Myhi99VFl2tsKyqW3Kt2N1+hZHfJbTWtLIrKGiTieuF
+        0UjaXQL1N1hHEondNomqrsOD05XYCmy2CUpELtw3lNE1M4f2HPZWXWhZHAinz78/P3/5H2qlaOoM
+        DwAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:26 GMT
+      Etag:
+      - W/"f0c-wn1vdiOX4Uq9z5XfIuTkCd2wQ4g"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getCompanyPriceHistory", "variables": {"adjusted": true,
+      "adjustmentType": "SO", "end": "2022-04-22", "start": "2022-03-26", "symbol":
+      "SHOP", "unadjusted": false}, "query": "query getCompanyPriceHistory($symbol:
+      String!, $start: String, $end: String, $adjusted: Boolean, $adjustmentType:
+      String, $unadjusted: Boolean, $limit: Int) {\n getCompanyPriceHistory(\n symbol:
+      $symbol\n start: $start\n end: $end\n adjusted: $adjusted\n adjustmentType:
+      $adjustmentType\n unadjusted: $unadjusted\n limit: $limit\n ) {\n datetime\n
+      openPrice\n closePrice\n high\n low\n volume\n tradeValue\n numberOfTrade\n
+      change\n changePercent\n vwap\n}\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3WXS2/kNhCE7/kZOs8Q/WCT3b7uJbfsIcglyGHindgG7BnDO97FwvB/T3MeEkVK
+        R0u0xE/VVcX5GL7tTrvh7mN42J++HF9ed4dfX9+e7ve/P30/Hd9+DXd/f5Ql+9PTy364GwiIthC3
+        RMNmOL7uD+fFw12CoJQ3w/3z8fv+ek00COhmeHx6ePQVFOJmeD7+9Bs55Jg2w4/j83t5KptqpM1w
+        ett92/+1e373a8RJATX7/xzeX/7dv/3x35/ldnkQor/ocXd48L+2GExuf37dv93vDye/yoHIL//4
+        uXv191lgifFzs4yCDUoOFBsUx4syoVxXXGAsxBpGMMVocxgmQGMrH6OBQRCRikYCn9/d4GhASjec
+        5MhotIYDc5wcg5g1OBIU5IbjK9IVxm+kLDWMi9Aow4KWRGgBhpKkWhoIqXy1lgY5+NcYcXLQbGvq
+        oDU47J+C5jg5hZh4xMlBUK5AmUJSnYDQok/CHAijQsxI2AExAE085c0dTAwk8YbiG0HStIaiDQoF
+        ZWlQ2AdgQvEPVbS7oEDAcmtE0ZSsRWGB7MZJPQomm1D8Ub1pIBCMnvHNcRZeQ4kNioTMuUPxoR9R
+        0uXpFxQOIFarAgLUqoKUIVIfAO4QqKaMQi6L+gSQs/AXmhgw4aow3Fkmt2HmhIZ5pNFAcYKJqYIh
+        8nCQBiaDp1bWhRHjzBMM+ifrWdAdrNWMRdNVYZpczubCYINS8EZhFF2LkcWjgKoZI5OszYwRZRbi
+        olfD4lFWC+MZnK0Xxh0DtWOU1qIMm2Quzm5QNJwtelXFc77s/oJSxRinmKiRhLyvRBB6SWLKVcHQ
+        ZbsNBYVzml8hfF8iukIBje0VgnUJ5v6xsV9uK64coSKhxLnsbkYCJDmRci9IVpuXCy44JfnusRIk
+        59UIg9ywkI9mo4kPFOKoicYAWW8s3mNWdSWhUlsv6PlFKRVHtbogzNolIC90i8fWOF1ltrOteQVS
+        AyNu5EYYB6Q4wXg9xltX+rQpVr5nMi6kM2mSSQSwvit9xnAmTYKFY0wKrBWMW2VVGZnDGPjhKzYw
+        3rRxzDDzY8QVRT2cZ7qwr+MGBYFRUXrbsxrN8th4MY+JaWTxQfAMWmNp2sX3DdBMmfOd43RkIZlg
+        uOxyhAEXIDVD5hWZNFrfk65WnmA8q3Ch8rWcNi4kvg9mWCVpEqzsrT2M+TXJI4maTwLeUOL1oDRW
+        S8y59YslyK5WP2KsdeVTgIWa9Ja3yS5+rsW0nGO85ZZFF7zvh81pwnyF1Syx3JqSjLA79FOMKCwL
+        nW9TL56HKS4lGQfVMcncrKK8fK50muaYbNh5xVI9X5krt9SJnL2yW45IYFnLMaWrSKzq3rvQbOG4
+        70GdU+UVWwlk3pJ1tgdoUMwdOf14MW9/vpVkoSzLp76nqKnLMP+Vco6rFka56nsJYL1ZSrGNA+Y7
+        ATfdGktblC7ggiyapgiDabjIalFIvEM6o3hH+q+z3vMeEfUxn6A/57PHDVVGQZH4+c/n52//AyJc
+        p0xCDwAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:26 GMT
+      Etag:
+      - W/"f42-8XxCrq0VbZh7T3XCcaRrmMBUoJo"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getCompanyPriceHistory", "variables": {"adjusted": true,
+      "adjustmentType": "SO", "end": "2022-08-12", "start": "2022-07-16", "symbol":
+      "SHOP", "unadjusted": false}, "query": "query getCompanyPriceHistory($symbol:
+      String!, $start: String, $end: String, $adjusted: Boolean, $adjustmentType:
+      String, $unadjusted: Boolean, $limit: Int) {\n getCompanyPriceHistory(\n symbol:
+      $symbol\n start: $start\n end: $end\n adjusted: $adjusted\n adjustmentType:
+      $adjustmentType\n unadjusted: $unadjusted\n limit: $limit\n ) {\n datetime\n
+      openPrice\n closePrice\n high\n low\n volume\n tradeValue\n numberOfTrade\n
+      change\n changePercent\n vwap\n}\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3WWO2/jRhDH+3wM1vZinjs7btOkyxVBmiCF4lPOBmzL8Mk5HAx/9wwpiVrukp34
+        AMUf5/+Yj+Hr7rgb7j6Gb/vjr4fn193Lzy9vj/f73x6/Hw9vP4e7vz7GW/bHx+f9cDcQEN1CuUUa
+        bobD6/5lunm4U0ql3Az3T4fv+/nUzfDw+O0hfnFCvBmeDj/iN6QcN/53eHofH0iWM1ucOL7tvu7/
+        3D29x0kUhlKK2M3w8v78z/7t93//GC/HFS0ST7p/2L18i0NILJejL/u3+/3LcTyZdfyHH7vX+DtM
+        RlI+b9YpsKGQ6eUWFJhynkEsFa1A5AoilkHQlyCk2UyUoQOhvAC5hUQ9SZyVTDMKJyf3LRRoUCCp
+        dSg+k1DCciaRkjJeSViRCKAZiRUmdsk9CeRSkcj0rAbEk8l1JJDMkDc4wJcc4ml6fMUhlmgGies+
+        g+RUuAJhyOAtiBbgErLrQVCAqpFwKtSPxJKYXFDiTQqAbKGUZiScqFfX6IzzTCQpX9WllbrYJLtb
+        g+KKnAVpZSaUa5TQMPconMBxngolsExbKNqgnN57afc0fpgZxX3d8ZwdcXznBkWloPVGwUJOC6NA
+        r6/prFcoXmjL8yDdVHwFRSsUmz2PSxQ1R2qnUhzD277ieaLrGKaprJDEGIQrkqK6ZXngzirY6oun
+        wJpJLik83moViIdTiJvwgggusFGyLQj7+LUvIJpIOxCEsAZVIJpp0/NNmYj2no+Mmjli2nYB0Ul1
+        cwqDeM7aiitzcCiugJQpJM8gPIm2ASnJ5Wr4EvbXdWnZLbXZFV+GGo5TPp6zyxJcDC88hdoMEhHs
+        uiItgEnpnbTyFC1XaclKnUQNj2o9o4Su3XELpcmuuFuaOom0hVlbccBeoVQxnAsRc2N4xjFtbBRn
+        a/jstKj4UnpxxUzmPomvHOGxxWENxylXFxw6eeHMoaPOThixXVQDcYmP3/Y7ZvaieaVM1FTrVpQV
+        Cpyy7EzByRjW8zcwcoOBk3IWGBGz11aM65dWZF9wqGBp95QIWXXGNYeIq1TCyklWShE5Tfo7o8Qy
+        A7yprKZKwgSuXcFfWzEsN6PEdDxXy6NkcWvdjhmhiPczGft92Yq40ooUOyVVBY9AtoXSLsHQrY/x
+        9nRtxZjKbBJLXI0lSi621tzuwRRLpXLv93FgVXCFs61PrthVqNTRZcSbPsG+S9r1kSbNzfuj4HV/
+        9LpLOJb03HZJAIqO600fwXUpxte3DiSSyqja6KNKNtUFXW5BOxKvN/rTPnHJrVpdHDoSbEdibCDi
+        vVMwJpjrUpReXEiJzKqJIGreIMG2TORUs8syoXkicTB3ScS/VtpSz2LtHowUjhfqJzJeqNod10ox
+        JoJ1dInzlkmwbRKchL/goMokZ84LCNVbMOYM47gWIKxcRGzFJOH3UoNo34lhnMoisfdlxM+/Pz9/
+        +R8E6MUoGQ8AAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:26 GMT
+      Etag:
+      - W/"f19-o3GRviDfCA9l3yKzHvSC1MviLL8"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getCompanyPriceHistory", "variables": {"adjusted": true,
+      "adjustmentType": "SO", "end": "2022-05-20", "start": "2022-04-23", "symbol":
+      "SHOP", "unadjusted": false}, "query": "query getCompanyPriceHistory($symbol:
+      String!, $start: String, $end: String, $adjusted: Boolean, $adjustmentType:
+      String, $unadjusted: Boolean, $limit: Int) {\n getCompanyPriceHistory(\n symbol:
+      $symbol\n start: $start\n end: $end\n adjusted: $adjusted\n adjustmentType:
+      $adjustmentType\n unadjusted: $unadjusted\n limit: $limit\n ) {\n datetime\n
+      openPrice\n closePrice\n high\n low\n volume\n tradeValue\n numberOfTrade\n
+      change\n changePercent\n vwap\n}\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3WXQW/cRgyF7/0ZOtuDIYcckr720ltzKHopetgm29iAYweO0yAI/N/75FjS7IwE
+        n1YrrPXp8b3H+TF9OD2fppsf08fz86+Pnz6fHr6/e7p7f/7t7svz49P36eavH/Mt5+e7T+fpZuLM
+        fJ31mvN0NT1+Pj+83jzdKCUJu5re3z9+Ob9dk5pquZpu7z7ebjfcP37DNyUZ1avpv8f7r/PPirgp
+        Pj8/nT6c/zzdf8U1zpHZq+MXHr5++uf89Pu/f8xfTzdVMuE/3Z4ePuLTdUlabPn87vz0/vzwjMuW
+        suI/fDt9fn0SVY6Xq10WiksW3F0KXbJoTlRtheHkEQtMTTSTrTCVnLiDKWylVK8jTOa6wZRULQYW
+        S0GysOBJSsgRig8oNKoi7guJOJTQhUQhmGwkbOHSkVDJtarvkLBVbWShxLWOsnCqSo0u1bUcwVgH
+        40k7FkumsrJEko1FILluLIWDODoWFcv4k4GlODUjhtG1ccIKZOeVBOOWmY5I6uAWjzLowmaNXV7v
+        WHTxC7eQqA1u4ZrNeECRyLmRBRLHjiyU03x5hcGs8hFMGWWZzXthF0phm/dXkLdbVxKLXHoSsBXS
+        2YAdiVayjUSTiQ4gxEnYV69QKkSHZuEOhBAZPqrCq1s0LyA58YaBQbPaYyi7G8lOfFVqfCLJfJwt
+        IryozSaKiKNDm1CHgcG0frgwwkKrUSRV1g0lNpSqFvM7uECxGsHheVTEQ5rZ4sQyphdGjmSVRDhl
+        90Oj5CG/svSSICRjRcGo8prEoCyN5xH55jEkMR5SYjQKJrOFyUn3YBBrsglTkhc7Mkoee6VHkcSl
+        ZYnZwEtFepvFqMiSpTc9FYlSx/xSs6ZVrmX288jiKXwzvcyJc8gyJtjY954QQU2Caa5rRzYkUcx6
+        VSQ7KnIniS3XuCTRnfhyuHRre3RazUd2yTqQmHMXX4w03OILVVKWCEP9KnkzYyWYeu87UxSRccZM
+        1RsaR67vrC4Eym3I8DBFtB7hSIcT8FeHU1EmK03lRLwsYoplQC4cQyHdlCF5IkqeU6qvljqP60KD
+        36VRGmxnsu4uFbGJKT5C6YpFbU6mC10C28ra9/U1uX5yWGo04SjR1wrNr94pxhAr0dYKGsNHq0CC
+        rVTwEHDjEURXKhie6tJhOEKrruPlSRYMgasakKJYKkoHEljKsIGNxSKZm+Eqqby2wCUI9sGGxCCZ
+        7lterjkGEs5dgOFa6GYUzB6tLIjphiTzsLMQNpGMifNREuNGEmSuVx5tUn4uTG8saIqo+y4BS7cX
+        K7aH2sUXfsHnZn5jwUT5Ol6cLFoa/1kWF6bHm2Q0/kijRNHqIrqni9jmeOx7YvsBBhYbdCncLcZ4
+        +WV+ZW8sONCsOxi+oiaMSbL08cXFAmqNhtcicqGL7qxgWAO8Oa4IGjwf6tLXir2uof2INa0yb5CN
+        XZC07Y4PUbtjJDlXy7mM5xWsVC0Mgop2shhjxY0uOMXtxxdY+mIJOLD3C7zObYDVuZeXCDNqlWGs
+        u/0xUrMERm/0PoKiPXxllICMMDjEbmGMZzEr+vL3y8sv/wNvFhPyBxAAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:26 GMT
+      Etag:
+      - W/"1007-MCcmZNPTYYCrgHtcDNBzLtIXRHw"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getCompanyPriceHistory", "variables": {"adjusted": true,
+      "adjustmentType": "SO", "end": "2022-06-17", "start": "2022-05-21", "symbol":
+      "SHOP", "unadjusted": false}, "query": "query getCompanyPriceHistory($symbol:
+      String!, $start: String, $end: String, $adjusted: Boolean, $adjustmentType:
+      String, $unadjusted: Boolean, $limit: Int) {\n getCompanyPriceHistory(\n symbol:
+      $symbol\n start: $start\n end: $end\n adjusted: $adjusted\n adjustmentType:
+      $adjustmentType\n unadjusted: $unadjusted\n limit: $limit\n ) {\n datetime\n
+      openPrice\n closePrice\n high\n low\n volume\n tradeValue\n numberOfTrade\n
+      change\n changePercent\n vwap\n}\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3WXP2/kNhDF+3wM1V6C8590e026XBGkCVJsfBvbgO01fOs7HAx/9wzXa5EipVIS
+        V+KPb96b2bfp2/60n67fptvD6cvx8Xn/9Ovry/3N4ff776fjy6/p+u+3suRwun88TNcTRsRd1B3Y
+        dDUdnw9P58XTNeWQBa+mm4fj98PlHkPAxFfT3f3tnV9hkKvp4fizLv5xfHgtbzXUTP7w9LL/dvhr
+        //Dq9zCrACXx3z+9Pv57ePnjvz/LY/+1gvmH7vZPt34FIRF8Xn49vNwcnk7+saDsd3/83D/7RQym
+        md+v1kl0SeKrE+QliW+YhWaSwjWzJH+5VhaK/l5dsgDkSMwCI4tYriw7PyLNA8xOAwB90vheVES2
+        aGTQJWknCwZf3MhizFUYzrnCCCVI2AmDlFAAV4Sx1Ajj7606zSwackXxg1TXeAuFB2Fyz+IbpiiN
+        MGxYhVFsWMhItSsyYEusRqMwbEyNMBAijFVW9IqpEUY00hYNdTQYel1iINCZhfzdcGHxR6DYFpmJ
+        po4FRZHZaGSh8tuZhf1dK0XmJ1nObrZMipC3WGLHIkF6yzAHTlUZDZg/LeNofD62mYZQraNxv6QU
+        o63QYFxYRnUss524SXSm4UCMtkETc0eT3DLS0VgAmT0jLgd9wvgTaGHcHtRLI5wlp5wGGLSEizLL
+        ulJmFHKupjGXRrfKLKYOxoKlXpr8kScXabxsQSoNtgFAGXNx+oImI/oOyrI+AFgWycwrMBSiVmFS
+        yIxbyRy7HuMy9pYxl7lGmbNWXdg/1OjCBBK7XPYPOSDAGGWM5UhqlFHRriORy1F9kHiwoW2q0vcY
+        cUV7Vfx9UrulVY6mu6CBymB8LomcRqt40XOl8C7Iox4ewaXYLxQSzJJuUfQRlsI5bjrbS1NblxWf
+        tk/GrSLeRvpOmTVDzDDWlkqV4MPfccUpAAHMGhwhgS0cHEVJS5pidODG9pTSJ414UVirjEjqlSFv
+        Dya80iql7r5MK95nBxj35dxb3KQR46ZRYDB9LsnZlZfRwvQEtcQktaaHdN7PslMmQTFcKTLTvIgw
+        E1yLMG29ohzXZZEdjTDDYGmL3uJ5XXuLBO/oTZFpTn3X9wkGvHpWDMNRYMECtsKC3r5yE8ec1x3j
+        LH2jXGHxMaWk5qyL766GcTsl+xRJ2skiCZDOEdiR+GSziGJDWYlitTaKLeb1Hik77KO4VFMfYB6B
+        1IYxNVZZZJix9D0Fs+NB2WRfXiS5TeIoY7cv9ctNdQnrulUcpE9iz/bUN3v2oKrl5VEzO8X/bbQ+
+        8azqLe+dQ6OtgWAZSCoI5BFEgvusmVpEeFORbtDnMjsMg75aagZKqKXlszS0E5imfs4HiihiJaEH
+        EuW2tqKMzdEnY67TpDtG4iZJP+d7uVCfXt6msFFEuBmNzxNKNbwB9ijZGw/yiuF1MbF4V1ltKvHj
+        L9IMI2T8/s/7+2//A5tBnnI+DwAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:26 GMT
+      Etag:
+      - W/"f3e-5ntz1kAhzwoc9UZZznbG0JnDqY4"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getCompanyPriceHistory", "variables": {"adjusted": true,
+      "adjustmentType": "SO", "end": "2022-10-07", "start": "2022-09-10", "symbol":
+      "SHOP", "unadjusted": false}, "query": "query getCompanyPriceHistory($symbol:
+      String!, $start: String, $end: String, $adjusted: Boolean, $adjustmentType:
+      String, $unadjusted: Boolean, $limit: Int) {\n getCompanyPriceHistory(\n symbol:
+      $symbol\n start: $start\n end: $end\n adjusted: $adjusted\n adjustmentType:
+      $adjustmentType\n unadjusted: $unadjusted\n limit: $limit\n ) {\n datetime\n
+      openPrice\n closePrice\n high\n low\n volume\n tradeValue\n numberOfTrade\n
+      change\n changePercent\n vwap\n}\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4WXTW/jNhCG7/0ZOjsE54sz9HUvvXUPRS9FD27WTQIkcZB1ulgE+e8dyrFEkRIK
+        BAFsOREfvR8zfh++Hc6HYf8+3B3PX05PL4fnn19fH26Pvz58P59efw77P9/LR47nh6fjsB8wIt5A
+        vIk67IbTy/F5/PCw57gbbh9P34+fr0kDyW64f7i7LxdDhN3wePoxXoi0G/49Pb6Vf8jCMSnuhvPr
+        4dvxj8Pjm78Jigxsyrvh+e3p7+Prb//8Xi4PeySm5He6Pzzf+csbClmvL78eX2+Pz2d/N4cUze/x
+        4/Ay3jCnDB+7dY7UcEBQW6L4W4QTCgbBTxTHMplRMIuk2KIgJk7G2KGARqIKJYbEPQr47eSK4ifh
+        nGgLRToU4Q4lpxpFrygQotYofuzMHYpGBoIVFC5i1yjy/yjZyLZQeIlC+fIfaxQMCSYUCpO/cpA8
+        kwihEjaiIBKRovSiEKRYkXAw6EAAgy5B3KtbINSAaChWaJJiVw6ywFdJKIUqJySUKKVGEcKsmcl6
+        RXJmmzni+KxajtFwU0hSpNWQxHxDsaFI4zNuKCBXGGIzBlYhYRY/GzUc3gCcEVbyDou8xyBrHJQr
+        Dkm6mhDnwNxwWChHWXCkkGY58piKSQ6rfBVdDWv1MAXDWLLQ+spLjha9BdYnxJtK696ChFsk1pGg
+        NiQ52Jz1ONdvhspWRp7z2GBITNlzk3s5PEwwY3wWzJKCvetnPbKfi3WLQruYN93rXFX3xoB05bAQ
+        U8VBnIG0jUeMKiqp5/ALcVFYnNcKCxNNJBaMOW+RpN5Z0qEYVCiaZhStnEVuIE4tCiZ3XOReEsgE
+        yzGCKyh+u9I7kyhsedNabWW5tTpnQRWREu+rt7iqXso+DbUFER8sKNZHBKPCorKkT4gbblT9qoiI
+        rjZvwcB2QQmlPhtFZDYXhNI/V0WQ685SM2qzroLZf8UeJIlVIbm5jNlWkVKLUikCJJuKQDfYWbvB
+        HnM1DYmqHaVGiRBzOV1Tv4qa4lr9+pBemiutmSthruahwWbgm0HiJ43tXId6caSA84YCeRF41W6O
+        sK9UoKVp25QYLwKPl7psQCRg5MVg163AQ+6XrQaE/LFUIFPeLx+dVi0ffWbWgEACBYSVuPNisLsT
+        ekHI35x6q+xJtL6fFIx2/aXQDET/e0gVRuIKo3KWedkaNiEhAfOFNa+kHcdlsBJkbfuVYLkmIbfj
+        Fkm7/V6e+AKF502LZdzdLyQ05mmyFphYby00tRj7uHsHmNa9xT1IDDlP9VuOwba1a0Gz+jp1br+Q
+        cKBZEh5veAHBMU4TSERhab+Q+LiI5cpKRiIuhjv2IBhMpwIuz22LgnqKLh5Qx8MqCKrUAABRLNt/
+        TeHPj3wBSysriquXlu27aiypIuJHYdgUpB0kEqCNuoyz5ZMljZm8sPC4YE5ZdwP5ut6Odk3+s7I0
+        ei+Xr5Ozs6j/VuWDXWdnFSyxj78+Pn75D3cRhsTZDwAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:26 GMT
+      Etag:
+      - W/"fd9-jmWmAa8xerU5zxGjw2xCoMYt9Qw"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getCompanyPriceHistory", "variables": {"adjusted": true,
+      "adjustmentType": "SO", "end": "2022-02-25", "start": "2022-01-29", "symbol":
+      "SHOP", "unadjusted": false}, "query": "query getCompanyPriceHistory($symbol:
+      String!, $start: String, $end: String, $adjusted: Boolean, $adjustmentType:
+      String, $unadjusted: Boolean, $limit: Int) {\n getCompanyPriceHistory(\n symbol:
+      $symbol\n start: $start\n end: $end\n adjusted: $adjusted\n adjustmentType:
+      $adjustmentType\n unadjusted: $unadjusted\n limit: $limit\n ) {\n datetime\n
+      openPrice\n closePrice\n high\n low\n volume\n tradeValue\n numberOfTrade\n
+      change\n changePercent\n vwap\n}\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3WXT2/jNhDF7/0YOjvE/CU5ue6lt+6h6KXowc26SYAkDrLOLhZBvnuHcSxSpARf
+        LFmW+OObefP0Nn3bn/bT9dt0ezh9OT4+759+fX25vzn8fv/9dHz5NV3//VYuOZzuHw/T9URAdAV0
+        RTrtpuPz4enj4uk6xyC2m24ejt8Pl1MazHQ33d3f3vlRCv794fjTv1JA3E0/jg+v5Z6cMFHaTaeX
+        /bfDX/uH13IOIwOlRLvp6fXx38PLH//9WX72X4yiP+du/3TrRxCM+XL49fByc3g6TdcYwPyGP37u
+        nz+WgaDxfbfOIUuOpIEGDIg0Y2hQkk+Q88Uzh8aMtOQgQwVVwoFDc5bK4WuUAcO3lHHGwJARbAuD
+        OzkwMPASJFkwqiAcUrQLiIXUgGDEFDsQhyDAsuYORGIryBUE//eA4qf93zMLhGict1hoYIFeEwiQ
+        eUaRgMYNirUwLhdCB5NdKuOURlXUrIHh4DsxwkhgaoUBYd2AwdzBcLCMHQ2X3Z/bBErVnxsFvdhy
+        ZRFIMWnXKcJeY7YijCZZCgNga8IAVhYnE9vqFUxLFqOgkEaW8pgzjV9heW57DphbZYxEBxo/F0lG
+        Gu9hSw0OeqFlGnn8fC5//wRKAUloCygugRAwdDzGIRteeD4v+MAxDFJhEsSUOxOLDgIciwf2MIlQ
+        WxgL7oIrML780sZnGF+Lu8ZW22DnyOg7YbnzZEQOVN2sHMqlcxBSiNAYs6vF2AlEkJKiCIzGjJJa
+        Q+M4do4ES7M2ZYHZtsWRXpzsivc8vuZch8wHM8YZKAZFrkAEUYs5LYCIY3Y3iiOQ/9Rq5GNgrX0s
+        zQKVJdJ2+2AvUNFCeqAcTBsg37IGR1JTc0xgkrsGUtSkpqO1uQu2JSfBvW7N2qDs34XHfKozbgHB
+        CBSVx4rTMtwuQC7YbHCIFCKlVqGM2LURcWamvFZyprRwa12TyD3IKpJvqHiE2EAC65F8xNvQROlj
+        IlUi1gaoUYiQmfsOkgQ5f/h4j7MYPhokjv4mXu4NjJbN3OogyH0HWcDUs/iM0VxhPGbE6gg5RKaF
+        PEA9DxdnljzKQ8qNPOidOWYc91OJC0eIm44AqReHzrFp0T8WojTl5vqlBkcbe/NVD+Kg11pKsJI7
+        aTF+/Ml5xa+DlRRcaXR7msLgb9FTUR7lySStX2eo/ub91tqbl0K5duEHAKgIxcl6PzCGCmShusPM
+        k88PqzjEIls43ON4bgbs1aGQUsVxQURrtZH7YWziDqpCxyNMCbyrRoEyaGvX7lwrA+jKH1g0v/ib
+        J0fcVqgLokiORIO/+aqlJoTLNZ9IFtr8hon7YC0+Tt22YDTszIDt/PG0RWsZwRMcNyqVXM+8hdTP
+        IF9uD0Tid6AWqLqbhbbesn/6FzefUJ5IV9xABZs4Sj5NR3kwxFzVIfIoh+sFh1c8jFPyd57eqv0e
+        sckHxP7iUHHwXI1VH0+/1uljKVNUXcnXWVp7w9A4RCXymCpYkcBHuL+M/vP+/tv/uPrIq3sPAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:26 GMT
+      Etag:
+      - W/"f7b-evCnf/2J+BfC0RHrFkDrghhSBmw"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getCompanyPriceHistory", "variables": {"adjusted": true,
+      "adjustmentType": "SO", "end": "2022-11-04", "start": "2022-10-08", "symbol":
+      "SHOP", "unadjusted": false}, "query": "query getCompanyPriceHistory($symbol:
+      String!, $start: String, $end: String, $adjusted: Boolean, $adjustmentType:
+      String, $unadjusted: Boolean, $limit: Int) {\n getCompanyPriceHistory(\n symbol:
+      $symbol\n start: $start\n end: $end\n adjusted: $adjusted\n adjustmentType:
+      $adjustmentType\n unadjusted: $unadjusted\n limit: $limit\n ) {\n datetime\n
+      openPrice\n closePrice\n high\n low\n volume\n tradeValue\n numberOfTrade\n
+      change\n changePercent\n vwap\n}\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA32WO2/cRhDH+3wM1qfFPHYeq9ZNurgw0gQpLvJFEiDpBPlkwxD03TPU+cjlLhlV
+        xyUh8of/Y+Zt+Lo/7Yfrt+H2cPp0fHzeP/38/HJ/c/j9/tvp+PJzuP7rbXzkcLp/PAzXAwHRFeIV
+        5GE3HJ8PTx8PD9dZU5HdcPNw/Ha4HHFi3g1397d3cWGJ4/7D8Uf8psS4G74fH17H/ykoIhRPnl72
+        Xw9/7h9e45DIgA0w74an18d/Di9//PtlvD1cM5pavOlu/3Qbl1ecQC6Xnw8vN4enU5xqEtN4x4/9
+        c7wwJ2DR9906CjcokjI2KJrYJxRPNKHIAoUZxFWXKChZTUqGDoWQpMwocH7vkgSSF5pANJmXLQ5q
+        OCyJNhySik0cJaHPHGXG0Jy9SF5iMGRAFcEVRUrxShFMWXtFQifzCcQSsm8qgg2JNxiWMldy6CRH
+        3JgxiDPl1liIFH9s1mGEGG61GkYdBSYZNZogCjivQsAVtxBhyTYhISdWcoxxOXOE36hKCFBGxSYh
+        HBI5jKlqbeXqUINgLwckzrkCUfMNDvKWo4MYuaaYk10gcmKdIbKSEDXZiARwZhvBWwgp5jXE+EwH
+        YThDhIWhyBaFNRSYSusqTUQTiKYpGxgRnDmMgGlUZxEOMuUQpM94Bpi/PKKVrBcDxzRgBZLd1lMe
+        ILoE4ZK0AYmjUaRfIGfQDxL2NPp+UoRYzBoSNCAsqrTSVrluq4g5Wh9zSj6nPKzneT3lQSIdibeS
+        QFKuSKBcSMooz1S7KEXafCA5I+XRRG3QPUbODBIcueMYMaziUIRNRdpRGF7tBSkTBnxk+yII19OD
+        EdraDWOgerRWj2EOttBjbRBSGkU7c8R3RPHRFkdbWNCJMX7cRCFlppAq6GK52Oi5Zp47c8aVIaiy
+        mOeQejXisJhVGEp5q3cJOlsBdSRlJqF5nAdJqXyVwVShDYi6uCj0czC+ib32VelAcnKdbYWxE/GW
+        rbB0HNjZCiaMD20rW1U5jyr1Au1WAgi5uPXjA0lbQbxXBBONIfqliEdccKt70TuSUjoUocpbJnPQ
+        sV6wYilEaRUhyCHISmVhnC6S3luLY/Rx7aytusJmgrCdq7ym8IQTRVzkC0RMxUXOXWDszqauonQF
+        +0mIjtn+31aSKGslBkDBLYzcYTTp4HoOxm2dcq6plmLcorSVIvo+hldeoYghj/U8x7Vdl2H2VIzK
+        jFtbCTZLO3Mkq+PAabuKi8lSlRTxAs7adBXGiRPBSleN28oCok9GFCNMs5wlvoG3GhebjT2e5hYi
+        thpeg4gmqVddZzVsxQDkWNl9ZQJKgQWHrCwlSZwrDguQLY5mcpy/s8FgqzFs5pBaj2xQuNVD3EtB
+        X1lJBGC5kpSVqop3LxQRdn//+/39t/8AoL7slv0OAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:26 GMT
+      Etag:
+      - W/"efd-2K4ZqZhpyNbmMWLvFVYyzuXxsgE"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"operationName": "getCompanyPriceHistory", "variables": {"adjusted": true,
+      "adjustmentType": "SO", "end": "2022-03-25", "start": "2022-02-26", "symbol":
+      "SHOP", "unadjusted": false}, "query": "query getCompanyPriceHistory($symbol:
+      String!, $start: String, $end: String, $adjusted: Boolean, $adjustmentType:
+      String, $unadjusted: Boolean, $limit: Int) {\n getCompanyPriceHistory(\n symbol:
+      $symbol\n start: $start\n end: $end\n adjusted: $adjusted\n adjustmentType:
+      $adjustmentType\n unadjusted: $unadjusted\n limit: $limit\n ) {\n datetime\n
+      openPrice\n closePrice\n high\n low\n volume\n tradeValue\n numberOfTrade\n
+      change\n changePercent\n vwap\n}\n}"}'
+    headers:
+      Accept:
+      - '*/*'
+      Content-Type:
+      - application/json
+      authority:
+      - app-money.tmx.com
+      locale:
+      - en
+      referer:
+      - https://money.tmx.com/en/quote/SHOP
+    method: POST
+    uri: https://app-money.tmx.com/graphql
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3WXT2/cNhDF7/0YOtsE5w85HF9z6a05FL0UPWyTbWzAsQPHaRAE/u593K4kipSO
+        qxV29eN7897o5/Tx9Hqa7n5On86v754/fzk9/Xj/8vDh/OvD19fnlx/T3Z8/6y3n14fP5+lu4sh8
+        G+WW03QzPX85P11unu6KBUvpZvrw+Pz1PF/TkDOu3T98usenEpj1Znp8/o4PEvhm+vf58Vv9Vcq5
+        SLyZXl9OH89/nB6/1WtKmbJnXH769vnv88tv//xev57uJDnhj+5PT5/w6VZCcp0/vz+/fDg/veKy
+        hmj1L76fvlyepCSXt5t9Fu1YPHDOHQuePvnCgjuMZpYUVL2hcTfuaSwxx+w20lApDU0MZD7SxICH
+        XWjqWeshjWxpHD8ZaaBRKTONczArM42FvLKoJ/OORRU0wpwHlhQ3ynAoxCOLhFhWFg8xJT1i4U6Z
+        HJR5y+IEZRoUJptRNIg3NlOTmLSD4cKWIc0OTMkrTArkMrDkEEVnFBx0cjtEoQ6lBNHeZPi9ZI3J
+        0kzC4fI/VxB2mMS2IJzIi7DvgHDrsIjTHw1WPbKA4DHEiA5AqHQgFOqzbDhS8LzYC46SmYOCcWMv
+        V42StiDwGydMhY8gog2IBGIaQCRYtgVEQpZ8NChkWxCz4KWPMHhYV0Xwn7MkloMJt5po0g6FpSAJ
+        hMep1yzSojiXAUVxrisKIc+SHaHkDgWhmDpzWQlOS4KZw9BzghkkbFnEs1jnL4lKlMzGPE55zV88
+        KAZwZCEKmReD1bPDHx7BdNWSM2pEO5gYrIbaFYagUr7C5IR0bIVhtX7qKcEXTlXtoVzIVxhFTI4e
+        w/PUaPifJTvSP6cjlq5acPflHFoW8PFiMYBpohVFc9MsnE1Lj1JIYklxz2Mkm54kGRMMPZloESYX
+        zOdhT1IXYcah81g9jCgLiywBhi+oDu/qML088mZazKQQrDeKUmJLQgHEIwlMkBaHoTAh+xFIHMaF
+        R38RNSBcbTGjmFIjSqFUp3eDEmMskGr0l0pshgWnn32n7uGI6rsrC0ZfSz5giT44zGKXxwYfrTAZ
+        Uiy6lJDqgS+6GFl1yVYX4ZQxMDvN4k1Fosl5NBjV/Wyp+2qJYkfVErtqgQqlT2RMC1K1mXyqi9E8
+        LiU37ZLULzvpJsYMjV9MRmXMN+OCI6sR2CuD7YipGRfU19G4xL5fsLxon2Mwbc22K40hCcoayrwp
+        mGzRO2nIMeTRdRwZLc5bn8UxyOCzSEvFYJzrLnRE0y/JdQp7GhA2Cz+jVebmhwWlNAGAincrPU2O
+        iuV+1CYV3U5N2ekYSOa80hjyzo4KM3ZLMlbF2EUAALksWYYblmUMy1L77iJ5yGQRcfGaq32SxRI3
+        GzLFnUzmkJib5tdSyhHIuCEzdbJgbZFaWFeS6x0zi13ObN0spS7nm/lHB0bdfRNzyhsa1Z2Rga0S
+        NSuZSjqk6ZdkwxT2KxmmXBZdsHTHZSfDV6kdmMJDMAu6hD3uKGOxUybtBDMQ07onw2K0j8K33K/J
+        yK3Uv4Zh46xjuuz7UZp3l5K8DWbxvjCFM2wmtaeGlmlXMmx3PuqCVwpuXykF6f3219vbL/8BmBrv
+        oRMQAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - frame-ancestors 'none'; default-src 'self'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Wed, 27 Dec 2023 22:03:26 GMT
+      Etag:
+      - W/"1013-IGw0OHh5zXMOH77BOPR78oFET0U"
+      Strict-Transport-Security:
+      - max-age=15552000; includeSubDomains
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Origin, Accept-Encoding
+      X-Content-Type-Options:
+      - nosniff
+      X-DNS-Prefetch-Control:
+      - 'off'
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-XSS-Protection:
+      - 1; mode=block
+    status:
+      code: 200
+      message: OK
+version: 1

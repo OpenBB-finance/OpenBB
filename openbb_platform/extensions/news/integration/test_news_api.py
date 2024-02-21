@@ -175,6 +175,14 @@ def test_news_world(params, headers):
                 "end_date": None,
             }
         ),
+        (
+            {
+                "provider": "tmx",
+                "symbol": "RBC",
+                "limit": 20,
+                "page": 1,
+            }
+        ),
     ],
 )
 @pytest.mark.integration

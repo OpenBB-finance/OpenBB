@@ -76,7 +76,7 @@ class YFinanceBalanceSheetFetcher(
             raise EmptyDataError()
         data.index = [to_snake_case(i) for i in data.index]
         data = data.reset_index().sort_index(ascending=False).set_index("index")
-        data = data.convert_dtypes().fillna(0).replace(0, None).to_dict()
+        data = data.fillna("N/A").replace("N/A", None).to_dict()
         data = [{"period_ending": str(key), **value} for key, value in data.items()]
 
         data = json.loads(json.dumps(data))
