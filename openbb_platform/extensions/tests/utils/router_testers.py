@@ -132,7 +132,7 @@ def check_router_model_functions_signature() -> List[str]:
                     )
                 if expected_return_type not in str(function.__annotations__["return"]):
                     missing_return_type.append(
-                        f"{function.__name__} in {router_name}"
+                        f"{function.__name__} in {router_name} "
                         f"doesn't have the expected return type: {expected_return_type}"
                     )
 

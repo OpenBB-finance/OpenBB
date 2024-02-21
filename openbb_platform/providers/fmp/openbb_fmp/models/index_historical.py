@@ -109,7 +109,7 @@ class FMPIndexHistoricalFetcher(
         query: FMPIndexHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPIndexHistoricalData]:
         """Return the transformed data."""
-        if query.sort == "asc":
-            data = sorted(data, key=lambda x: x["date"], reverse=True)
-
-        return [FMPIndexHistoricalData.model_validate(d) for d in data]
+        return [
+            FMPIndexHistoricalData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["date"], reverse=False)
+        ]

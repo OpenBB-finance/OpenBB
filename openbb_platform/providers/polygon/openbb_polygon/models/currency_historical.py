@@ -149,7 +149,7 @@ class PolygonCurrencyHistoricalFetcher(
             for r in results:
                 r["t"] = datetime.fromtimestamp(r["t"] / 1000, tz=timezone("UTC"))
                 if query._timespan not in ["second", "minute", "hour"]:
-                    r["t"] = r["t"].date()
+                    r["t"] = r["t"].date().strftime("%Y-%m-%d")
                 else:
                     r["t"] = r["t"].strftime("%Y-%m-%dT%H:%M:%S%z")
                 if "," in query.symbol:
@@ -169,4 +169,7 @@ class PolygonCurrencyHistoricalFetcher(
         """Return the transformed data."""
         if not data:
             raise EmptyDataError()
-        return [PolygonCurrencyHistoricalData.model_validate(d) for d in data]
+        return [
+            PolygonCurrencyHistoricalData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["t"], reverse=False)
+        ]
