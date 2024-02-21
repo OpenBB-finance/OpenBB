@@ -16,6 +16,9 @@ from pydantic_core import PydanticUndefined
 # Number of spaces to substitute tabs for indentation
 TAB_WIDTH = 4
 
+# Maximum number of commands to display on the cards
+MAX_COMMANDS = 8
+
 # Paths to use for generating and storing the markdown files
 WEBSITE_PATH = Path(__file__).parent.absolute()
 SEO_METADATA_PATH = Path(WEBSITE_PATH / "metadata/platform_v4_seo_metadata.json")
@@ -689,14 +692,13 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
             index_content += "### Menus\n"
             index_content += PLATFORM_REFERENCE_UL_ELEMENT + "\n"
             for sub_dir in sub_dirs:
+                # Initialize the sub-directory description
+                sub_dir_description = ""
                 # Capitalize the sub-directory name to use as a title for display
                 title = sub_dir.name.capitalize()
                 # Get the relative path of the sub-directory from the platform reference path
                 # and convert it to POSIX style for consistency across OS
                 sub_dir_path = sub_dir.relative_to(PLATFORM_REFERENCE_PATH).as_posix()
-                # Retrieve the description of the sub-directory from the reference content,
-                # defaulting to an empty string if not found, and take only the first sentence
-                sub_dir_description = reference_content.get(f"/{sub_dir_path}", "").split(".")[0]  # fmt: skip
 
                 # List all markdown files in the sub-directory, excluding the index.mdx file,
                 # to include in the description
@@ -706,7 +708,12 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
                 # If there are markdown files found, append their names to the sub-directory
                 # description, separated by commas
                 if sub_dir_markdown_files:
-                    sub_dir_description += ", ".join(sub_dir_markdown_files)
+                    if len(sub_dir_markdown_files) <= MAX_COMMANDS:
+                        sub_dir_description += ", ".join(sub_dir_markdown_files)
+                    else:
+                        sub_dir_description += (
+                            f"{', '.join(sub_dir_markdown_files[:MAX_COMMANDS])},..."
+                        )
 
                 url = f"/platform/reference/{sub_dir_path}"
                 index_content += f"<ReferenceCard title='{title}' description='{sub_dir_description}' url='{url}' />\n"
@@ -747,9 +754,6 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
 
 def generate_reference_top_level_index() -> None:
     """Generate the top-level index.mdx file for the reference directory."""
-
-    # Maximum number of commands to display on the cards in the Reference page
-    MAX_COMMANDS = 8
 
     # Get the sub-directories in the reference directory
     reference_dirs = [d for d in PLATFORM_REFERENCE_PATH.iterdir() if d.is_dir()]
