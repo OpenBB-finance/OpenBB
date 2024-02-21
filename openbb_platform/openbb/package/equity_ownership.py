@@ -61,7 +61,7 @@ class ROUTER_equity_ownership(Container):
         Returns
         -------
         OBBject
-            results : List[InsiderTrading]
+            results : InsiderTrading
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
@@ -186,7 +186,7 @@ class ROUTER_equity_ownership(Container):
         Returns
         -------
         OBBject
-            results : List[InstitutionalOwnership]
+            results : InstitutionalOwnership
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio']]
                 Provider name.
@@ -348,7 +348,7 @@ class ROUTER_equity_ownership(Container):
         Returns
         -------
         OBBject
-            results : List[EquityOwnership]
+            results : EquityOwnership
                 Serializable results.
             provider : Optional[Literal['fmp']]
                 Provider name.
@@ -491,7 +491,7 @@ class ROUTER_equity_ownership(Container):
         Returns
         -------
         OBBject
-            results : List[ShareStatistics]
+            results : ShareStatistics
                 Serializable results.
             provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
                 Provider name.

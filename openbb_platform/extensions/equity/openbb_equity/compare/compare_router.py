@@ -45,7 +45,7 @@ async def groups(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Group companies by sector, industry or country and display either performance or valuation metrics.
+    """Get company data grouped by sector, industry or country and display either performance or valuation metrics.
 
     Valuation metrics include price to earnings, price to book, price to sales ratios and price to cash flow.
     Performance metrics include the stock price change for different time periods."""
