@@ -140,7 +140,7 @@ class FMPEquityHistoricalFetcher(
         """Return the transformed data."""
         # remove a duplicated fields.
         results: List[FMPEquityHistoricalData] = []
-        for d in  sorted(data, key=lambda x: x["date"], reverse=False):
+        for d in sorted(data, key=lambda x: x["date"], reverse=False):
             _ = d.pop("changeOverTime")
             results.append(FMPEquityHistoricalData.model_validate(d))
         return results
