@@ -9,6 +9,7 @@ from typing import Any, Callable, Dict, List
 
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import RouterLoader
+from openbb_core.app.static.package_builder import MethodDefinition
 from openbb_core.provider import standard_models
 from pydantic_core import PydanticUndefined
 
@@ -124,21 +125,33 @@ def get_provider_field_params(
         type, description, default, optional flag and standard flag for each provider.
     """
 
-    provider_field_params = [
-        {
-            "name": field,
-            "type": get_field_data_type(field_info.annotation),
-            "description": str(field_info.description)
-            .strip()
-            .replace("\n", " ")
-            .replace("  ", " ")
-            .replace('"', "'"),
-            "default": "" if field_info.default is PydanticUndefined else str(field_info.default),  # fmt: skip
-            "optional": not field_info.is_required(),
-            "standard": False,
-        }
-        for field, field_info in model_map[provider][params_type]["fields"].items()
-    ]
+    provider_field_params = []
+    expanded_types = MethodDefinition.TYPE_EXPANSION
+
+    for field, field_info in model_map[provider][params_type]["fields"].items():
+        # Determine the field type, expanding it if necessary and if params_type is "Parameters"
+        field_type = get_field_data_type(field_info.annotation)
+
+        if params_type == "QueryParams" and field in expanded_types:
+            expanded_type = get_field_data_type(expanded_types[field])
+            field_type = f"Union[{expanded_type}, {field_type}]"
+
+        cleaned_description = (
+            str(field_info.description)
+            .strip().replace("\n", " ").replace("  ", " ").replace('"', "'")
+        )  # fmt: skip
+        default_value = "" if field_info.default is PydanticUndefined else str(field_info.default)  # fmt: skip
+
+        provider_field_params.append(
+            {
+                "name": field,
+                "type": field_type,
+                "description": cleaned_description,
+                "default": default_value,
+                "optional": not field_info.is_required(),
+                "standard": False,
+            }
+        )
 
     return provider_field_params
 
