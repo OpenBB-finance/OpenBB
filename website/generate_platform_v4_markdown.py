@@ -699,7 +699,6 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
                 # Get the relative path of the sub-directory from the platform reference path
                 # and convert it to POSIX style for consistency across OS
                 sub_dir_path = sub_dir.relative_to(PLATFORM_REFERENCE_PATH).as_posix()
-
                 # List all markdown files in the sub-directory, excluding the index.mdx file,
                 # to include in the description
                 sub_dir_markdown_files = [
