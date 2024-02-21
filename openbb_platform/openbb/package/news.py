@@ -133,7 +133,7 @@ class ROUTER_news(Container):
             Author of the article. (provider: benzinga, polygon)
         teaser : Optional[str]
             Teaser of the news. (provider: benzinga)
-        images : Optional[Union[List[Dict[str, str]], List[str], str]]
+        images : Optional[Union[List[Dict[str, str]], str, List[str]]]
             URL to the images of the news. (provider: benzinga, fmp)
         channels : Optional[str]
             Channels associated with the news. (provider: benzinga)
