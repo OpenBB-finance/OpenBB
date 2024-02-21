@@ -40,7 +40,7 @@ class ROUTER_equity_calendar(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get historical and upcoming dividend payments. Includes dividend amount and ex-dividend and payment dates.
+        """Get historical and upcoming dividend payments. Includes dividend amount, ex-dividend and payment dates.
 
         Parameters
         ----------

@@ -47,7 +47,7 @@ async def dividend(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get historical and upcoming dividend payments. Includes dividend amount and ex-dividend and payment dates."""
+    """Get historical and upcoming dividend payments. Includes dividend amount, ex-dividend and payment dates."""
     return await OBBject.from_query(Query(**locals()))
 
 
