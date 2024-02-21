@@ -39,13 +39,13 @@ class ROUTER_equity_shorts(Container):
             no default.
         limit : Optional[int]
 
-                Limit the number of reports to parse, from most recent.
-                Approximately 24 reports per year, going back to 2009.
-                 (provider: sec)
+                    Limit the number of reports to parse, from most recent.
+                    Approximately 24 reports per year, going back to 2009.
+                     (provider: sec)
         skip_reports : Optional[int]
 
-                Skip N number of reports from current. A value of 1 will skip the most recent report.
-                 (provider: sec)
+                    Skip N number of reports from current. A value of 1 will skip the most recent report.
+                     (provider: sec)
 
         Returns
         -------

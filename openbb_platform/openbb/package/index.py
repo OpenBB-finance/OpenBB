@@ -213,8 +213,8 @@ class ROUTER_index(Container):
             Data granularity. (provider: fmp, yfinance)
         sort : Literal['asc', 'desc']
             Sort the data in ascending or descending order. (provider: fmp);
-            Sort order. (provider: intrinio);
-            Sort order of the data. (provider: polygon)
+                Sort order. (provider: intrinio);
+                Sort order of the data. (provider: polygon)
         tag : Optional[str]
             Index tag. (provider: intrinio)
         type : Optional[str]

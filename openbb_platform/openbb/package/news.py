@@ -79,7 +79,7 @@ class ROUTER_news(Container):
             Key to sort the news by. (provider: benzinga)
         order : Optional[Literal['asc', 'desc']]
             Order to sort the news by. (provider: benzinga);
-            Sort order of the articles. (provider: polygon)
+                Sort order of the articles. (provider: polygon)
         isin : Optional[str]
             The company's ISIN. (provider: benzinga)
         cusip : Optional[str]
@@ -145,7 +145,7 @@ class ROUTER_news(Container):
             Updated date of the news. (provider: benzinga)
         site : Optional[str]
             Name of the news source. (provider: fmp);
-            News source. (provider: tiingo)
+                News source. (provider: tiingo)
         amp_url : Optional[str]
             AMP URL. (provider: polygon)
         image_url : Optional[str]

@@ -830,17 +830,17 @@ class DocstringGenerator:
         available_providers = providers or "Optional[str]"
 
         obbject_description = (
-            "        OBBject\n"
-            f"            results : {results_type}\n"
-            "                Serializable results.\n"
-            f"            provider : {available_providers}\n"
-            "                Provider name.\n"
-            "            warnings : Optional[List[Warning_]]\n"
-            "                List of warnings.\n"
-            "            chart : Optional[Chart]\n"
-            "                Chart object.\n"
-            "            extra: Dict[str, Any]\n"
-            "                Extra info.\n"
+            "    OBBject\n"
+            f"        results : {results_type}\n"
+            "            Serializable results.\n"
+            f"        provider : {available_providers}\n"
+            "            Provider name.\n"
+            "        warnings : Optional[List[Warning_]]\n"
+            "            List of warnings.\n"
+            "        chart : Optional[Chart]\n"
+            "            Chart object.\n"
+            "        extra: Dict[str, Any]\n"
+            "            Extra info.\n"
         )
         obbject_description = obbject_description.replace("NoneType", "None")
 
@@ -878,15 +878,15 @@ class DocstringGenerator:
         extra_dict = params["extra"].__dataclass_fields__
 
         if examples:
-            example_docstring = "\n        Example\n        -------\n"
-            example_docstring += "        >>> from openbb import obb\n"
+            example_docstring = "\n    Example\n    -------\n"
+            example_docstring += "    >>> from openbb import obb\n"
             for example in examples:
-                example_docstring += f"        >>> {example}\n"
+                example_docstring += f"    >>> {example}\n"
 
-        docstring = summary
+        docstring = summary.strip("\n")
         docstring += "\n\n"
-        docstring += "        Parameters\n"
-        docstring += "        ----------\n"
+        docstring += "    Parameters\n"
+        docstring += "    ----------\n"
 
         # Explicit parameters
         for param_name, param in explicit_params.items():
@@ -902,8 +902,8 @@ class DocstringGenerator:
                 type_ = param._annotation
                 default = param._annotation.__args__[0].__args__[0]
                 description = f"""The provider to use for the query, by default None.
-    If None, the provider specified in defaults is selected or '{default}' if there is
-    no default."""
+If None, the provider specified in defaults is selected or '{default}' if there is
+no default."""
             elif param_name == "chart":
                 type_ = "bool"
                 description = "Whether to create a chart or not, by default False."
@@ -912,8 +912,8 @@ class DocstringGenerator:
                 description = ""
 
             type_str = format_type(type_, char_limit=79)  # type: ignore
-            docstring += f"        {param_name} : {type_str}\n"
-            docstring += f"            {format_description(description)}\n"
+            docstring += f"    {param_name} : {type_str}\n"
+            docstring += f"        {format_description(description)}\n"
 
         # Kwargs
         for param_name, param in extra_dict.items():
@@ -925,13 +925,13 @@ class DocstringGenerator:
 
             description = getattr(param.default, "description", "")
 
-            docstring += f"        {param_name} : {type_}\n"
-            docstring += f"            {format_description(description)}\n"
+            docstring += f"    {param_name} : {type_}\n"
+            docstring += f"        {format_description(description)}\n"
 
         # Returns
         docstring += "\n"
-        docstring += "        Returns\n"
-        docstring += "        -------\n"
+        docstring += "    Returns\n"
+        docstring += "    -------\n"
         provider_param = explicit_params.get("provider", None)
         available_providers = getattr(provider_param, "_annotation", None)
 
@@ -939,7 +939,7 @@ class DocstringGenerator:
 
         # Schema
         underline = "-" * len(model_name)
-        docstring += f"\n        {model_name}\n        {underline}\n"
+        docstring += f"\n    {model_name}\n    {underline}\n"
 
         for name, field in returns.items():
             try:
@@ -970,8 +970,8 @@ class DocstringGenerator:
 
             description = getattr(field, "description", "")
 
-            docstring += f"        {field.alias or name} : {field_type}\n"
-            docstring += f"            {format_description(description)}\n"
+            docstring += f"    {field.alias or name} : {field_type}\n"
+            docstring += f"        {format_description(description)}\n"
 
         if examples:
             docstring += example_docstring

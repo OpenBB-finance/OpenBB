@@ -70,7 +70,7 @@ class ROUTER_equity_price(Container):
             no default.
         limit : Optional[Union[Annotated[int, Ge(ge=0)], int]]
             Number of days to look back (Only for interval 1d). (provider: fmp);
-            The number of data entries to return. (provider: polygon)
+                The number of data entries to return. (provider: polygon)
         start_time : Optional[datetime.time]
             Return intervals starting at the specified time on the `start_date` formatted as 'HH:MM:SS'. (provider: intrinio)
         end_time : Optional[datetime.time]
@@ -83,7 +83,7 @@ class ROUTER_equity_price(Container):
             Sort order of the data. (provider: polygon)
         adjusted : bool
             Output time series is adjusted by historical split and dividend events. (provider: polygon);
-            Adjust all OHLC data automatically. (provider: yfinance)
+                Adjust all OHLC data automatically. (provider: yfinance)
         prepost : bool
             Include Pre and Post market data. (provider: yfinance)
         include : bool
@@ -125,8 +125,8 @@ class ROUTER_equity_price(Container):
             Human readable format of the date. (provider: fmp)
         adj_close : Optional[float]
             The adjusted close price. (provider: fmp);
-            Adjusted closing price during the period. (provider: intrinio);
-            Adjusted closing price during the period. (provider: tiingo)
+                Adjusted closing price during the period. (provider: intrinio);
+                Adjusted closing price during the period. (provider: tiingo)
         unadjusted_volume : Optional[float]
             Unadjusted volume of the symbol. (provider: fmp)
         change : Optional[float]
@@ -227,26 +227,26 @@ class ROUTER_equity_price(Container):
             A specific date to get data for. Use bracketed the timestamp parameters to specify exact time ranges. (provider: polygon)
         timestamp_lt : Optional[Union[datetime.datetime, str]]
 
-                    Query by datetime, less than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
-                    YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
-                 (provider: polygon)
+                        Query by datetime, less than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
+                        YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
+                     (provider: polygon)
         timestamp_gt : Optional[Union[datetime.datetime, str]]
 
-                    Query by datetime, greater than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
-                    YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
-                 (provider: polygon)
+                        Query by datetime, greater than. Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
+                        YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
+                     (provider: polygon)
         timestamp_lte : Optional[Union[datetime.datetime, str]]
 
-                    Query by datetime, less than or equal to.
-                    Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
-                    YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
-                 (provider: polygon)
+                        Query by datetime, less than or equal to.
+                        Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
+                        YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
+                     (provider: polygon)
         timestamp_gte : Optional[Union[datetime.datetime, str]]
 
-                    Query by datetime, greater than or equal to.
-                    Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
-                    YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
-                 (provider: polygon)
+                        Query by datetime, greater than or equal to.
+                        Either a date with the format YYYY-MM-DD or a TZ-aware timestamp string,
+                        YYYY-MM-DDTH:M:S.000000000-04:00". Include all nanoseconds and the 'T' between the day and hour.
+                     (provider: polygon)
 
         Returns
         -------
@@ -270,9 +270,9 @@ class ROUTER_equity_price(Container):
             The last ask price.
         ask_size : int
 
-                The ask size. This represents the number of round lot orders at the given ask price.
-                The normal round lot size is 100 shares.
-                An ask size of 2 means there are 200 shares available to purchase at the given ask price.
+                    The ask size. This represents the number of round lot orders at the given ask price.
+                    The normal round lot size is 100 shares.
+                    An ask size of 2 means there are 200 shares available to purchase at the given ask price.
 
         bid_size : int
             The bid size in round lots.
@@ -288,25 +288,25 @@ class ROUTER_equity_price(Container):
             A list of indicator codes. (provider: polygon)
         sequence_num : Optional[int]
 
-                    The sequence number represents the sequence in which message events happened.
-                    These are increasing and unique per ticker symbol, but will not always be sequential
-                    (e.g., 1, 2, 6, 9, 10, 11)
-                 (provider: polygon)
+                        The sequence number represents the sequence in which message events happened.
+                        These are increasing and unique per ticker symbol, but will not always be sequential
+                        (e.g., 1, 2, 6, 9, 10, 11)
+                     (provider: polygon)
         participant_timestamp : Optional[datetime]
 
-                    The nanosecond accuracy Participant/Exchange Unix Timestamp.
-                    This is the timestamp of when the quote was actually generated at the exchange.
-                 (provider: polygon)
+                        The nanosecond accuracy Participant/Exchange Unix Timestamp.
+                        This is the timestamp of when the quote was actually generated at the exchange.
+                     (provider: polygon)
         sip_timestamp : Optional[datetime]
 
-                    The nanosecond accuracy SIP Unix Timestamp.
-                    This is the timestamp of when the SIP received this quote from the exchange which produced it.
-                 (provider: polygon)
+                        The nanosecond accuracy SIP Unix Timestamp.
+                        This is the timestamp of when the SIP received this quote from the exchange which produced it.
+                     (provider: polygon)
         trf_timestamp : Optional[datetime]
 
-                    The nanosecond accuracy TRF (Trade Reporting Facility) Unix Timestamp.
-                    This is the timestamp of when the trade reporting facility received this quote.
-                 (provider: polygon)
+                        The nanosecond accuracy TRF (Trade Reporting Facility) Unix Timestamp.
+                        This is the timestamp of when the trade reporting facility received this quote.
+                     (provider: polygon)
 
         Example
         -------
