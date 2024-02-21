@@ -77,7 +77,7 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : float
             The trading volume.
-        market_cap : Optional[str]
+        market_cap : Optional[float]
             Market Cap displayed in billions. (provider: yfinance)
         avg_volume_3_months : Optional[float]
             Average volume over the last 3 months in millions. (provider: yfinance)
@@ -158,7 +158,7 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : float
             The trading volume.
-        market_cap : Optional[str]
+        market_cap : Optional[float]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
             Average volume over the last 3 months in millions. (provider: yfinance)
@@ -341,7 +341,7 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : float
             The trading volume.
-        market_cap : Optional[str]
+        market_cap : Optional[float]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
             Average volume over the last 3 months in millions. (provider: yfinance)
@@ -422,7 +422,7 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : float
             The trading volume.
-        market_cap : Optional[str]
+        market_cap : Optional[float]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
             Average volume over the last 3 months in millions. (provider: yfinance)
@@ -503,7 +503,7 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : float
             The trading volume.
-        market_cap : Optional[str]
+        market_cap : Optional[float]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
             Average volume over the last 3 months in millions. (provider: yfinance)
@@ -584,7 +584,7 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : float
             The trading volume.
-        market_cap : Optional[str]
+        market_cap : Optional[float]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
             Average volume over the last 3 months in millions. (provider: yfinance)

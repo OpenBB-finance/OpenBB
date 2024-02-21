@@ -79,7 +79,9 @@ class PackageBuilder:
     def auto_build(self) -> None:
         """Trigger build if there are differences between built and installed extensions."""
         if Env().AUTO_BUILD:
-            add, remove = PackageBuilder._diff(self.directory / "package")
+            add, remove = PackageBuilder._diff(
+                self.directory / "assets" / "extension_map.json"
+            )
             if add:
                 a = ", ".join(add)
                 print(f"Extensions to add: {a}")  # noqa: T201
@@ -98,7 +100,7 @@ class PackageBuilder:
     ) -> None:
         """Build the extensions for the Platform."""
         self.console.log("\nBuilding extensions package...\n")
-        self._clean_package(modules)
+        self._clean(modules)
         ext_map = self._get_extension_map()
         self._save_extension_map(ext_map)
         self._save_module_map()
@@ -107,8 +109,9 @@ class PackageBuilder:
         if self.lint:
             self._run_linters()
 
-    def _clean_package(self, modules: Optional[Union[str, List[str]]] = None) -> None:
-        """Delete the package folder or modules before building."""
+    def _clean(self, modules: Optional[Union[str, List[str]]] = None) -> None:
+        """Delete the assets and package folder or modules before building."""
+        shutil.rmtree(self.directory / "assets", ignore_errors=True)
         if modules:
             for module in modules:
                 module_path = self.directory / "package" / f"{module}.py"
@@ -141,7 +144,7 @@ class PackageBuilder:
         """Save the map of extensions available at build time."""
         code = dumps(obj=dict(sorted(ext_map.items())), indent=4)
         self.console.log("Writing extension map...")
-        self._write(code=code, name="extension_map", extension="json")
+        self._write(code=code, name="extension_map", extension="json", folder="assets")
 
     def _save_module_map(self):
         """Save the module map."""
@@ -152,7 +155,7 @@ class PackageBuilder:
         }
         code = dumps(obj=dict(sorted(module_map.items())), indent=4)
         self.console.log("\nWriting module map...")
-        self._write(code=code, name="module_map", extension="json")
+        self._write(code=code, name="module_map", extension="json", folder="assets")
 
     def _save_modules(
         self,
@@ -197,9 +200,11 @@ class PackageBuilder:
         linters.ruff()
         linters.black()
 
-    def _write(self, code: str, name: str, extension="py") -> None:
+    def _write(
+        self, code: str, name: str, extension: str = "py", folder: str = "package"
+    ) -> None:
         """Write the module to the package."""
-        package_folder = self.directory / "package"
+        package_folder = self.directory / folder
         package_path = package_folder / f"{name}.{extension}"
 
         package_folder.mkdir(exist_ok=True)
@@ -209,25 +214,24 @@ class PackageBuilder:
             file.write(code.replace("typing.", ""))
 
     @staticmethod
-    def _read_extension_map(package: Path) -> dict:
-        """Get extension map from package folder."""
-        ext_map_file = Path(package, "extension_map.json")
+    def _read(path: Path) -> dict:
+        """Get content from folder."""
         try:
-            with open(ext_map_file) as fp:
-                ext_map = load(fp)
+            with open(Path(path)) as fp:
+                content = load(fp)
         except Exception:
-            ext_map = {}
+            content = {}
 
-        return ext_map
+        return content
 
     @staticmethod
-    def _diff(package: Path) -> Tuple[Set[str], Set[str]]:
+    def _diff(path: Path) -> Tuple[Set[str], Set[str]]:
         """Check differences between built and installed extensions.
 
         Parameters
         ----------
-        package: Path
-            The path to the package
+        path: Path
+            The path to the folder where the extension map is stored.
 
         Returns
         -------
@@ -235,7 +239,7 @@ class PackageBuilder:
             First element: set of installed extensions that are not in the package.
             Second element: set of extensions in the package that are not installed.
         """
-        ext_map = PackageBuilder._read_extension_map(package)
+        ext_map = PackageBuilder._read(path)
 
         add: Set[str] = set()
         remove: Set[str] = set()
