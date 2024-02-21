@@ -22,7 +22,7 @@ async def multiples(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Equity Valuation Multiples. Valuation multiples for a stock ticker."""
+    """Get equity valuation multiples for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -33,7 +33,7 @@ async def balance(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Balance Sheet. Balance sheet statement."""
+    """Get the balance sheet for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -44,7 +44,7 @@ async def balance_growth(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Balance Sheet Statement Growth. Information about the growth of the company balance sheet."""
+    """Get the growth of a company's balance sheet items over time."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -55,18 +55,26 @@ async def cash(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Cash Flow Statement. Information about the cash flow statement."""
+    """Get the cash flow statement for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="ReportedFinancials")
+@router.command(
+    model="ReportedFinancials",
+    examples=[
+        "# Get reported income statement",
+        "obb.equity.fundamental.reported_financials(symbol='AAPL', statement_type='income)",
+        "# Get reported cash flow statement",
+        "obb.equity.fundamental.reported_financials(symbol='AAPL', statement_type='cash')",
+    ],
+)
 async def reported_financials(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Financial statements, as-reported."""
+    """Get financial statements as reported by the company."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -77,7 +85,7 @@ async def cash_growth(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Cash Flow Statement Growth. Information about the growth of the company cash flow statement."""
+    """Get the growth of a company's cash flow statement items over time."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -154,7 +162,7 @@ async def income(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Income Statement. Report on a company's financial performance."""
+    """Get the income statement for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -165,7 +173,7 @@ async def income_growth(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Income Statement Growth. Information about the growth of the company income statement."""
+    """Get the growth of a company's income statement items over time."""
     return await OBBject.from_query(Query(**locals()))
 
 
