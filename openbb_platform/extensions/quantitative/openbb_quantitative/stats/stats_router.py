@@ -23,7 +23,14 @@ from pydantic import NonNegativeFloat
 router = Router(prefix="/stats")
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+        'returns = stock_data["close"].pct_change().dropna()',
+        'obb.quantitative.stats.skew(data=returns, target="close")',
+    ],
+)
 def skew(
     data: List[Data],
     target: str,
@@ -47,14 +54,6 @@ def skew(
     -------
     OBBject[List[Data]]
         Rolling skew.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    # We typically will want to use the returns for analysis
-    >>> returns = stock_data["close"].pct_change().dropna()
-    >>> obb.quantitative.stats.skew(data=returns, target="close")
     """
 
     df = basemodel_to_df(data)
@@ -65,7 +64,14 @@ def skew(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+        'returns = stock_data["close"].pct_change().dropna()',
+        'obb.quantitative.stats.variance(data=returns, target="close")',
+    ],
+)
 def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
     """
     Calculate the  variance of a target column.
@@ -84,13 +90,6 @@ def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
     -------
     OBBject[List[Data]]
         An object containing the rolling variance values.
-
-    Examples:
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> returns = stock_data["close"].pct_change().dropna()
-    >>> obb.quantitative.rolling.variance(data=returns, target="close")
     """
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -100,7 +99,14 @@ def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+        'returns = stock_data["close"].pct_change().dropna()',
+        'obb.quantitative.stats.stdev(data=returns, target="close")',
+    ],
+)
 def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
     """
     Calculate the rolling standard deviation of a target column.
@@ -116,20 +122,10 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
     target: str
         The name of the column for which to calculate standard deviation.
 
-
     Returns
     -------
     OBBject[List[Data]]
         An object containing the rolling standard deviation values.
-
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    # We typically will want to use the returns for analysis
-    >>> returns = stock_data["close"].pct_change().dropna()
-    >>> obb.quantitative.stats.stdev(data=returns, target="close")
     """
 
     df = basemodel_to_df(data)
@@ -140,7 +136,14 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+        'returns = stock_data["close"].pct_change().dropna()',
+        'obb.quantitative.stats.kurtosis(data=returns, target="close")',
+    ],
+)
 def kurtosis(data: List[Data], target) -> OBBject[List[Data]]:
     """
     Calculate the rolling kurtosis of a target column.
@@ -160,14 +163,6 @@ def kurtosis(data: List[Data], target) -> OBBject[List[Data]]:
     ------
     OBBject[List[Data]]
         An object containing the kurtosis value
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    # We typically will want to use the returns for analysis
-    >>> returns = stock_data["close"].pct_change().dropna()
-    >>> obb.quantitative.stats.kurtosis(data=returns, target="close")
     """
 
     df = basemodel_to_df(data)
@@ -178,7 +173,14 @@ def kurtosis(data: List[Data], target) -> OBBject[List[Data]]:
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+        'returns = stock_data["close"].pct_change().dropna()',
+        'obb.quantitative.stats.quantile(data=returns, target="close", quantile_pct=0.75)',
+    ],
+)
 def quantile(
     data: List[Data],
     target: str,
@@ -190,26 +192,19 @@ def quantile(
     Quantiles are points dividing the range of a probability distribution into  intervals with equal probabilities,
     or dividing the  sample in the same way.
 
-    Parameters:
-        data: List[Data]
-            The time series data as a list of data points.
-        target: str
-            The name of the column for which to calculate the quantile.
-        quantile_pct: NonNegativeFloat, optional
-            The quantile percentage to calculate (e.g., 0.5 for median), default is 0.5.
+    Parameters
+    ----------
+    data: List[Data]
+        The time series data as a list of data points.
+    target: str
+        The name of the column for which to calculate the quantile.
+    quantile_pct: NonNegativeFloat, optional
+        The quantile percentage to calculate (e.g., 0.5 for median), default is 0.5.
 
     Returns
     -------
     OBBject[List[Data]]
         An object containing the rolling quantile values with the median.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> returns = stock_data["close"].pct_change().dropna()
-    >>> obb.quantitative.stats.quantile(data=returns, target="close")
-    >>> obb.quantitative.stats.quantile(data=returns, target="close")
     """
 
     df = basemodel_to_df(
@@ -223,7 +218,14 @@ def quantile(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+        'returns = stock_data["close"].pct_change().dropna()',
+        'obb.quantitative.stats.mean(data=returns, target="close")',
+    ],
+)
 def mean(
     data: List[Data],
     target: str,
@@ -246,14 +248,6 @@ def mean(
     -------
         OBBject[List[Data]]
             An object containing the mean value.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    # We typically will want to use the returns for analysis
-    >>> returns = stock_data["close"].pct_change().dropna()
-    >>> obb.quantitative.stats.mean(data=returns, target="close")
     """
 
     df = basemodel_to_df(data)

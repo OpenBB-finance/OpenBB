@@ -19,7 +19,14 @@ from pydantic import PositiveInt
 router = Router(prefix="/performance")
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+        'returns = stock_data["close"].pct_change().dropna()',
+        'obb.quantitative.omega_ratio(data=returns, target="close")',
+    ],
+)
 def omega_ratio(
     data: List[Data],
     target: str,
@@ -47,12 +54,6 @@ def omega_ratio(
     -------
     OBBject[List[OmegaModel]]
         Omega ratios.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> obb.quantitative.omega_ratio(data=stock_data, target="close")
     """
     df = basemodel_to_df(data)
     series_target = get_target_column(df, target)
@@ -77,7 +78,14 @@ def omega_ratio(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+        'returns = stock_data["close"].pct_change().dropna()',
+        'obb.quantitative.sharpe_ratio(data=returns, target="close")',
+    ],
+)
 def sharpe_ratio(
     data: List[Data],
     target: str,
@@ -110,15 +118,6 @@ def sharpe_ratio(
     -------
     OBBject[List[Data]]
         Sharpe ratio.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> returns = stock_data["close"].pct_change().dropna()
-    >>> obb.quantitative.sharpe_ratio(data=returns, target="close")
-    # To specify a risk-free rate and a window
-    >>> obb.quantitative.sharpe_ratio(data=returns, target="close", rfr=0.03, window=126)
     """
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
@@ -133,7 +132,15 @@ def sharpe_ratio(
     return OBBject(results=results)
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+        'returns = stock_data["close"].pct_change().dropna()',
+        'obb.quantitative.sortino_ratio(data=stock_data, target="close")',
+        'obb.quantitative.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)',
+    ],
+)
 def sortino_ratio(
     data: List[Data],
     target: str,
@@ -174,14 +181,6 @@ def sortino_ratio(
     -------
     OBBject[List[Data]]
         Sortino ratio.
-
-    Examples
-    --------
-    >>> from openbb import obb
-    >>> stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()
-    >>> returns = stock_data["close"].pct_change().dropna()
-    >>> obb.quantitative.sortino_ratio(data=stock_data, target="close")
-    >>> obb.quantitative.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)
     """
     df = basemodel_to_df(data, index=index)
     series_target = get_target_column(df, target)
