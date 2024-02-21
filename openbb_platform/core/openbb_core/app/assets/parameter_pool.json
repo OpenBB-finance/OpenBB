@@ -20,9 +20,6 @@
         "symbols": "AAPL,MSFT",
         "query": "AAPL"
     },
-    "equity.fundamental.transcript": {
-        "year": 2020
-    },
     "etf": {
         "symbol": "SPY",
         "query": "Vanguard"

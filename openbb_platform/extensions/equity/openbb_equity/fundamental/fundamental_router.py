@@ -307,7 +307,13 @@ async def historical_splits(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EarningsCallTranscript")
+@router.command(
+    model="EarningsCallTranscript",
+    exclude_auto_examples=True,
+    examples=[
+        "obb.equity.fundamental.transcript(symbol='AAPL', year=2020)",
+    ],
+)
 async def transcript(
     cc: CommandContext,
     provider_choices: ProviderChoices,

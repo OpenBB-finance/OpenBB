@@ -3463,7 +3463,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["tiingo"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the 1 year trailing dividend yield for a given company.
+        """Get the 1 year trailing dividend yield for a given company over time.
 
         Parameters
         ----------
@@ -3577,7 +3577,7 @@ class ROUTER_equity_fundamental(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.fundamental.transcript(symbol="AAPL", year=2020)
+        >>> obb.equity.fundamental.transcript(symbol='AAPL', year=2020)
         """  # noqa: E501
 
         return self._run(
