@@ -639,10 +639,10 @@ class ROUTER_equity_fundamental(Container):
             The date the filing was accepted. (provider: fmp)
         reported_currency : Optional[str]
             The currency in which the cash flow statement was reported. (provider: fmp);
-                The currency in which the balance sheet is reported. (provider: intrinio)
+            The currency in which the balance sheet is reported. (provider: intrinio)
         net_income : Optional[float]
             Net income. (provider: fmp);
-                Consolidated Net Income. (provider: intrinio)
+            Consolidated Net Income. (provider: intrinio)
         depreciation_and_amortization : Optional[float]
             Depreciation and amortization. (provider: fmp)
         deferred_income_tax : Optional[float]
@@ -1641,7 +1641,7 @@ class ROUTER_equity_fundamental(Container):
             Gross profit. (provider: fmp, intrinio, polygon)
         gross_profit_margin : Optional[float]
             Gross profit margin. (provider: fmp);
-                Gross margin ratio. (provider: intrinio)
+            Gross margin ratio. (provider: intrinio)
         general_and_admin_expense : Optional[float]
             General and administrative expenses. (provider: fmp)
         research_and_development_expense : Optional[float]
@@ -1660,15 +1660,15 @@ class ROUTER_equity_fundamental(Container):
             Interest income. (provider: fmp)
         total_interest_expense : Optional[float]
             Total interest expenses. (provider: fmp, intrinio);
-                Interest Expense (provider: polygon)
+            Interest Expense (provider: polygon)
         depreciation_and_amortization : Optional[float]
             Depreciation and amortization. (provider: fmp, polygon)
         ebitda : Optional[float]
             EBITDA. (provider: fmp);
-                Earnings Before Interest, Taxes, Depreciation and Amortization. (provider: intrinio)
+            Earnings Before Interest, Taxes, Depreciation and Amortization. (provider: intrinio)
         ebitda_margin : Optional[float]
             EBITDA margin. (provider: fmp);
-                Margin on Earnings Before Interest, Taxes, Depreciation and Amortization. (provider: intrinio)
+            Margin on Earnings Before Interest, Taxes, Depreciation and Amortization. (provider: intrinio)
         total_operating_income : Optional[float]
             Total operating income. (provider: fmp, intrinio)
         operating_income_margin : Optional[float]
@@ -1677,27 +1677,27 @@ class ROUTER_equity_fundamental(Container):
             Total other income and expenses. (provider: fmp)
         total_pre_tax_income : Optional[float]
             Total pre-tax income. (provider: fmp, intrinio);
-                Income Before Tax (provider: polygon)
+            Income Before Tax (provider: polygon)
         pre_tax_income_margin : Optional[float]
             Pre-tax income margin. (provider: fmp, intrinio)
         income_tax_expense : Optional[float]
             Income tax expense. (provider: fmp, intrinio, polygon)
         consolidated_net_income : Optional[float]
             Consolidated net income. (provider: fmp, intrinio);
-                Net Income/Loss (provider: polygon)
+            Net Income/Loss (provider: polygon)
         net_income_margin : Optional[float]
             Net income margin. (provider: fmp)
         basic_earnings_per_share : Optional[float]
             Basic earnings per share. (provider: fmp, intrinio);
-                Earnings Per Share (provider: polygon)
+            Earnings Per Share (provider: polygon)
         diluted_earnings_per_share : Optional[float]
             Diluted earnings per share. (provider: fmp, intrinio, polygon)
         weighted_average_basic_shares_outstanding : Optional[float]
             Weighted average basic shares outstanding. (provider: fmp, intrinio);
-                Basic Average Shares (provider: polygon)
+            Basic Average Shares (provider: polygon)
         weighted_average_diluted_shares_outstanding : Optional[float]
             Weighted average diluted shares outstanding. (provider: fmp, intrinio);
-                Diluted Average Shares (provider: polygon)
+            Diluted Average Shares (provider: polygon)
         link : Optional[str]
             Link to the filing. (provider: fmp)
         final_link : Optional[str]
@@ -1756,7 +1756,7 @@ class ROUTER_equity_fundamental(Container):
             Other interest expense (provider: intrinio)
         net_interest_income : Optional[float]
             Net interest income (provider: intrinio);
-                Interest Income Net (provider: polygon)
+            Interest Income Net (provider: polygon)
         other_non_interest_income : Optional[float]
             Other non-interest income (provider: intrinio)
         investment_banking_income : Optional[float]
@@ -1779,7 +1779,7 @@ class ROUTER_equity_fundamental(Container):
             Other gains (provider: intrinio)
         non_operating_income : Optional[float]
             Non-operating income (provider: intrinio);
-                Non Operating Income/Loss (provider: polygon)
+            Non Operating Income/Loss (provider: polygon)
         other_income : Optional[float]
             Other income (provider: intrinio)
         other_revenue : Optional[float]
@@ -1814,7 +1814,7 @@ class ROUTER_equity_fundamental(Container):
             Net income attributable to noncontrolling interest (provider: intrinio)
         net_income_attributable_to_common_shareholders : Optional[float]
             Net income attributable to common shareholders (provider: intrinio);
-                Net Income/Loss Available To Common Stockholders Basic (provider: polygon)
+            Net Income/Loss Available To Common Stockholders Basic (provider: polygon)
         basic_and_diluted_earnings_per_share : Optional[float]
             Basic and diluted earnings per share (provider: intrinio)
         cash_dividends_to_common_per_share : Optional[float]
@@ -2480,7 +2480,7 @@ class ROUTER_equity_fundamental(Container):
             Capital expenditures per share (provider: fmp)
         beta : Optional[float]
             Beta relative to the broad market calculated on a rolling three-year basis. (provider: intrinio);
-                Beta relative to the broad market (5-year monthly). (provider: yfinance)
+            Beta relative to the broad market (5-year monthly). (provider: yfinance)
         volume : Optional[float]
             Volume (provider: intrinio)
         fifty_two_week_high : Optional[float]

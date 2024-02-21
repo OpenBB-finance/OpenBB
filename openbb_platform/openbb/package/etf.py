@@ -286,7 +286,7 @@ class ROUTER_etf(Container):
             no default.
         date : Optional[Union[str, datetime.date]]
             A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
-                A specific date to get data for.  The date represents the period ending.  The date entered will return the closest filing. (provider: sec)
+            A specific date to get data for.  The date represents the period ending.  The date entered will return the closest filing. (provider: sec)
         cik : Optional[str]
             The CIK of the filing entity. Overrides symbol. (provider: fmp)
         use_cache : bool
@@ -322,17 +322,17 @@ class ROUTER_etf(Container):
             The ISIN of the holding. (provider: fmp, sec)
         balance : Optional[int]
             The balance of the holding, in shares or units. (provider: fmp);
-                The balance of the holding. (provider: sec)
+            The balance of the holding. (provider: sec)
         units : Optional[Union[str, float]]
             The type of units. (provider: fmp);
-                The units of the holding. (provider: sec)
+            The units of the holding. (provider: sec)
         currency : Optional[str]
             The currency of the holding. (provider: fmp, sec)
         value : Optional[float]
             The value of the holding, in dollars. (provider: fmp, sec)
         weight : Optional[float]
             The weight of the holding, as a normalized percent. (provider: fmp);
-                The weight of the holding in ETF in %. (provider: sec)
+            The weight of the holding in ETF in %. (provider: sec)
         payoff_profile : Optional[str]
             The payoff profile of the holding. (provider: fmp, sec)
         asset_category : Optional[str]

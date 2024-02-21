@@ -279,15 +279,15 @@ class ROUTER_economy(Container):
             The country to get data. Multiple items allowed: fred.
         units : Literal['growth_previous', 'growth_same', 'index_2015']
             The unit of measurement for the data.
-                Options:
-                - `growth_previous`: Percent growth from the previous period.
-                  If monthly data, this is month-over-month, etc
-                - `growth_same`: Percent growth from the same period in the previous year.
-                  If looking at monthly data, this would be year-over-year, etc.
-                - `index_2015`: Rescaled index value, such that the value in 2015 is 100.
+            Options:
+            - `growth_previous`: Percent growth from the previous period.
+              If monthly data, this is month-over-month, etc
+            - `growth_same`: Percent growth from the same period in the previous year.
+              If looking at monthly data, this would be year-over-year, etc.
+            - `index_2015`: Rescaled index value, such that the value in 2015 is 100.
         frequency : Literal['monthly', 'quarter', 'annual']
             The frequency of the data.
-                Options: `monthly`, `quarter`, and `annual`.
+            Options: `monthly`, `quarter`, and `annual`.
         harmonized : bool
             Whether you wish to obtain harmonized data.
         start_date : Union[datetime.date, None, str]
@@ -405,46 +405,46 @@ class ROUTER_economy(Container):
             The units of the data. This should match the units returned from searching by series ID. An incorrect field will not necessarily return an error. Parameter is only valid when `is_series_group` is True. (provider: fred)
         frequency : Optional[Literal['d', 'w', 'bw', 'm', 'q', 'sa', 'a', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
 
-                    Frequency aggregation to convert high frequency data to lower frequency.
-                    Parameter is only valid when `is_series_group` is True.
-                        a = Annual
-                        sa= Semiannual
-                        q = Quarterly
-                        m = Monthly
-                        w = Weekly
-                        d = Daily
-                        wef = Weekly, Ending Friday
-                        weth = Weekly, Ending Thursday
-                        wew = Weekly, Ending Wednesday
-                        wetu = Weekly, Ending Tuesday
-                        wem = Weekly, Ending Monday
-                        wesu = Weekly, Ending Sunday
-                        wesa = Weekly, Ending Saturday
-                        bwew = Biweekly, Ending Wednesday
-                        bwem = Biweekly, Ending Monday
-                     (provider: fred)
+                Frequency aggregation to convert high frequency data to lower frequency.
+                Parameter is only valid when `is_series_group` is True.
+                    a = Annual
+                    sa= Semiannual
+                    q = Quarterly
+                    m = Monthly
+                    w = Weekly
+                    d = Daily
+                    wef = Weekly, Ending Friday
+                    weth = Weekly, Ending Thursday
+                    wew = Weekly, Ending Wednesday
+                    wetu = Weekly, Ending Tuesday
+                    wem = Weekly, Ending Monday
+                    wesu = Weekly, Ending Sunday
+                    wesa = Weekly, Ending Saturday
+                    bwew = Biweekly, Ending Wednesday
+                    bwem = Biweekly, Ending Monday
+                 (provider: fred)
         aggregation_method : Literal['avg', 'sum', 'eop']
 
-                    A key that indicates the aggregation method used for frequency aggregation.
-                    This parameter has no affect if the frequency parameter is not set.
-                    Only valid when `is_series_group` is True.
-                        avg = Average
-                        sum = Sum
-                        eop = End of Period
-                     (provider: fred)
+                A key that indicates the aggregation method used for frequency aggregation.
+                This parameter has no affect if the frequency parameter is not set.
+                Only valid when `is_series_group` is True.
+                    avg = Average
+                    sum = Sum
+                    eop = End of Period
+                 (provider: fred)
         transform : Literal['lin', 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']
 
-                    Transformation type. Only valid when `is_series_group` is True.
-                        lin = Levels (No transformation)
-                        chg = Change
-                        ch1 = Change from Year Ago
-                        pch = Percent Change
-                        pc1 = Percent Change from Year Ago
-                        pca = Compounded Annual Rate of Change
-                        cch = Continuously Compounded Rate of Change
-                        cca = Continuously Compounded Annual Rate of Change
-                        log = Natural Log
-                     (provider: fred)
+                Transformation type. Only valid when `is_series_group` is True.
+                    lin = Levels (No transformation)
+                    chg = Change
+                    ch1 = Change from Year Ago
+                    pch = Percent Change
+                    pc1 = Percent Change from Year Ago
+                    pca = Compounded Annual Rate of Change
+                    cch = Continuously Compounded Rate of Change
+                    cca = Continuously Compounded Annual Rate of Change
+                    log = Natural Log
+                 (provider: fred)
 
         Returns
         -------
@@ -670,44 +670,44 @@ class ROUTER_economy(Container):
             no default.
         frequency : Literal[None, 'a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']
 
-                    Frequency aggregation to convert high frequency data to lower frequency.
-                        None = No change
-                        a = Annual
-                        q = Quarterly
-                        m = Monthly
-                        w = Weekly
-                        d = Daily
-                        wef = Weekly, Ending Friday
-                        weth = Weekly, Ending Thursday
-                        wew = Weekly, Ending Wednesday
-                        wetu = Weekly, Ending Tuesday
-                        wem = Weekly, Ending Monday
-                        wesu = Weekly, Ending Sunday
-                        wesa = Weekly, Ending Saturday
-                        bwew = Biweekly, Ending Wednesday
-                        bwem = Biweekly, Ending Monday
-                     (provider: fred)
+                Frequency aggregation to convert high frequency data to lower frequency.
+                    None = No change
+                    a = Annual
+                    q = Quarterly
+                    m = Monthly
+                    w = Weekly
+                    d = Daily
+                    wef = Weekly, Ending Friday
+                    weth = Weekly, Ending Thursday
+                    wew = Weekly, Ending Wednesday
+                    wetu = Weekly, Ending Tuesday
+                    wem = Weekly, Ending Monday
+                    wesu = Weekly, Ending Sunday
+                    wesa = Weekly, Ending Saturday
+                    bwew = Biweekly, Ending Wednesday
+                    bwem = Biweekly, Ending Monday
+                 (provider: fred)
         aggregation_method : Literal[None, 'avg', 'sum', 'eop']
 
-                    A key that indicates the aggregation method used for frequency aggregation.
-                    This parameter has no affect if the frequency parameter is not set.
-                        avg = Average
-                        sum = Sum
-                        eop = End of Period
-                     (provider: fred)
+                A key that indicates the aggregation method used for frequency aggregation.
+                This parameter has no affect if the frequency parameter is not set.
+                    avg = Average
+                    sum = Sum
+                    eop = End of Period
+                 (provider: fred)
         transform : Literal[None, 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']
 
-                    Transformation type
-                        None = No transformation
-                        chg = Change
-                        ch1 = Change from Year Ago
-                        pch = Percent Change
-                        pc1 = Percent Change from Year Ago
-                        pca = Compounded Annual Rate of Change
-                        cch = Continuously Compounded Rate of Change
-                        cca = Continuously Compounded Annual Rate of Change
-                        log = Natural Log
-                     (provider: fred)
+                Transformation type
+                    None = No transformation
+                    chg = Change
+                    ch1 = Change from Year Ago
+                    pch = Percent Change
+                    pc1 = Percent Change from Year Ago
+                    pca = Compounded Annual Rate of Change
+                    cch = Continuously Compounded Rate of Change
+                    cca = Continuously Compounded Annual Rate of Change
+                    log = Natural Log
+                 (provider: fred)
         all_pages : Optional[bool]
             Returns all pages of data from the API call at once. (provider: intrinio)
         sleep : Optional[float]
