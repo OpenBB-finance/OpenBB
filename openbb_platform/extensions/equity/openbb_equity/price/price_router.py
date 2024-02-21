@@ -22,7 +22,7 @@ async def quote(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the latest quote for a given stock. Quote includes price, volume, and other information."""
+    """Get the latest quote for a given stock. Quote includes price, volume, and other data."""
     return await OBBject.from_query(Query(**locals()))
 
 

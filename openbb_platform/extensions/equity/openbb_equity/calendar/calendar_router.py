@@ -81,5 +81,5 @@ async def earnings(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get historical and upcoming company earnings releases. Includes earnings per share (EPS) and revenue information."""
+    """Get historical and upcoming company earnings releases. Includes earnings per share (EPS) and revenue data."""
     return await OBBject.from_query(Query(**locals()))

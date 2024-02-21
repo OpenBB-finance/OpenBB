@@ -44,5 +44,5 @@ async def short_interest(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get reported Short Volume and Days to Cover data."""
+    """Get reported short volume and days to cover data."""
     return await OBBject.from_query(Query(**locals()))

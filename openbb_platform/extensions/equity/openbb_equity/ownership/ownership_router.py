@@ -22,7 +22,7 @@ async def major_holders(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get information about major holders for a given company over time."""
+    """Get data about major holders for a given company over time."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -33,7 +33,7 @@ async def institutional(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get information about institutional ownership for a given company over time."""
+    """Get data about institutional ownership for a given company over time."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -44,7 +44,7 @@ async def insider_trading(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get information about trading by a company's management team and board of directors."""
+    """Get data about trading by a company's management team and board of directors."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -55,5 +55,5 @@ async def share_statistics(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get information about share float for a given company."""
+    """Get data about share float for a given company."""
     return await OBBject.from_query(Query(**locals()))

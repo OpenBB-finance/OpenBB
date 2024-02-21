@@ -2131,7 +2131,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get executive management team information for a given company.
+        """Get executive management team data for a given company.
 
         Parameters
         ----------
@@ -2772,7 +2772,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get company general business and stock information for a given company.
+        """Get company general business and stock data for a given company.
 
         Parameters
         ----------

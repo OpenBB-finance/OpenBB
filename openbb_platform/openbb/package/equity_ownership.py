@@ -35,7 +35,7 @@ class ROUTER_equity_ownership(Container):
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get information about trading by a company's management team and board of directors.
+        """Get data about trading by a company's management team and board of directors.
 
         Parameters
         ----------
@@ -166,7 +166,7 @@ class ROUTER_equity_ownership(Container):
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get information about institutional ownership for a given company over time.
+        """Get data about institutional ownership for a given company over time.
 
         Parameters
         ----------
@@ -330,7 +330,7 @@ class ROUTER_equity_ownership(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get information about major holders for a given company over time.
+        """Get data about major holders for a given company over time.
 
         Parameters
         ----------
@@ -477,7 +477,7 @@ class ROUTER_equity_ownership(Container):
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get information about share float for a given company.
+        """Get data about share float for a given company.
 
         Parameters
         ----------

@@ -132,7 +132,7 @@ class ROUTER_equity_calendar(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get historical and upcoming company earnings releases. Includes earnings per share (EPS) and revenue information.
+        """Get historical and upcoming company earnings releases. Includes earnings per share (EPS) and revenue data.
 
         Parameters
         ----------

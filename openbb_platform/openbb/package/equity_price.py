@@ -437,7 +437,7 @@ class ROUTER_equity_price(Container):
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the latest quote for a given stock. Quote includes price, volume, and other information.
+        """Get the latest quote for a given stock. Quote includes price, volume, and other data.
 
         Parameters
         ----------

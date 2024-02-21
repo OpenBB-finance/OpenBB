@@ -213,7 +213,7 @@ async def management(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get executive management team information for a given company."""
+    """Get executive management team data for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -243,7 +243,7 @@ async def overview(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get company general business and stock information for a given company."""
+    """Get company general business and stock data for a given company."""
     return await OBBject.from_query(Query(**locals()))
 
 
