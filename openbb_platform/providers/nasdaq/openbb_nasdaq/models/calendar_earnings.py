@@ -44,7 +44,7 @@ class NasdaqCalendarEarningsData(CalendarEarningsData):
         default=None,
         description="The earnings surprise as normalized percentage points.",
         alias="surprise",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     num_estimates: Optional[int] = Field(
         default=None,

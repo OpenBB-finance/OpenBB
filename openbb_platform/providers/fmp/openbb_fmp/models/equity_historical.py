@@ -54,7 +54,7 @@ class FMPEquityHistoricalData(EquityHistoricalData):
     change_percent: Optional[float] = Field(
         default=None,
         description="Change in price as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     label: Optional[str] = Field(
         default=None, description="Human readable format of the date."

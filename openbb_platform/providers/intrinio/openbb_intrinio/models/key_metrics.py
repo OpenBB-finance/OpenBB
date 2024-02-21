@@ -43,7 +43,7 @@ class IntrinioKeyMetricsData(KeyMetricsData):
     dividend_yield: float = Field(
         default=None,
         description="Dividend yield, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="dividendyield",
     )
 

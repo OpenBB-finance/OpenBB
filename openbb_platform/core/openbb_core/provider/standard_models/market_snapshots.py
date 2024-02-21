@@ -41,7 +41,7 @@ class MarketSnapshotsData(Data):
     change_percent: Optional[float] = Field(
         description="The change, as a normalized percent.",
         default=None,
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     volume: Optional[int] = Field(
         description=DATA_DESCRIPTIONS.get("volume", ""), default=None

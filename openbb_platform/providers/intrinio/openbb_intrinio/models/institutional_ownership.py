@@ -59,7 +59,7 @@ class IntrinioInstitutionalOwnershipData(InstitutionalOwnershipData):
     amount_change_percent: Optional[float] = Field(
         default=None,
         description="Change in the amount of ownership since the last report, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
 

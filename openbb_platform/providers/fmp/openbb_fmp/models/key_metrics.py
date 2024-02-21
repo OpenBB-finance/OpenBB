@@ -103,12 +103,12 @@ class FMPKeyMetricsData(KeyMetricsData):
     earnings_yield: Optional[float] = Field(
         default=None,
         description="Earnings yield",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     free_cash_flow_yield: Optional[float] = Field(
         default=None,
         description="Free cash flow yield",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     debt_to_equity: Optional[float] = Field(
         default=None, description="Debt-to-equity ratio"
@@ -129,7 +129,7 @@ class FMPKeyMetricsData(KeyMetricsData):
     dividend_yield: Optional[float] = Field(
         default=None,
         description="Dividend yield, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     payout_ratio: Optional[float] = Field(default=None, description="Payout ratio")
     sales_general_and_administrative_to_revenue: Optional[float] = Field(
@@ -160,12 +160,12 @@ class FMPKeyMetricsData(KeyMetricsData):
     roic: Optional[float] = Field(
         default=None,
         description="Return on invested capital",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     return_on_tangible_assets: Optional[float] = Field(
         default=None,
         description="Return on tangible assets",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     graham_net_net: Optional[float] = Field(
         default=None, description="Graham net-net working capital"
@@ -212,7 +212,7 @@ class FMPKeyMetricsData(KeyMetricsData):
     roe: Optional[float] = Field(
         default=None,
         description="Return on equity",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     capex_per_share: Optional[float] = Field(
         default=None, description="Capital expenditures per share"

@@ -126,6 +126,7 @@ class FredSearchFetcher(
             async def get_one(_id: str):
                 data = {}
                 url = f"https://api.stlouisfed.org/geofred/series/group?series_id={_id}&api_key={api_key}&file_type=json"
+                print(url)
                 response = await amake_request(url)
                 data = response.get("series_group")  # type: ignore
                 if data:

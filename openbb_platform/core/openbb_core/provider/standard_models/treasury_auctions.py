@@ -82,7 +82,7 @@ class USTreasuryAuctionsData(Data):
         default=None,
         description="The interest rate of the security.",
         alias="interestRate",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     cpi_on_issue_date: Optional[float] = Field(
         default=None,
@@ -144,7 +144,7 @@ class USTreasuryAuctionsData(Data):
         default=None,
         description="Allocation percent, as normalized percentage points.",
         alias="allocationPercentage",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     allocation_percent_decimals: Optional[float] = Field(
         default=None,
@@ -165,13 +165,13 @@ class USTreasuryAuctionsData(Data):
         default=None,
         description="The average median discount rate of the security.",
         alias="averageMedianDiscountRate",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     avg_median_investment_rate: Optional[float] = Field(
         default=None,
         description="The average median investment rate of the security.",
         alias="averageMedianInvestmentRate",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     avg_median_price: Optional[float] = Field(
         default=None,
@@ -182,13 +182,13 @@ class USTreasuryAuctionsData(Data):
         default=None,
         description="The average median discount margin of the security.",
         alias="averageMedianDiscountMargin",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     avg_median_yield: Optional[float] = Field(
         default=None,
         description="The average median yield of the security.",
         alias="averageMedianYield",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     back_dated: Literal["Yes", "No", None] = Field(
         default=None,
@@ -317,19 +317,19 @@ class USTreasuryAuctionsData(Data):
         default=None,
         description="The FRN index determination rate of the security.",
         alias="frnIndexDeterminationRate",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     high_discount_rate: Optional[float] = Field(
         default=None,
         description="The high discount rate of the security.",
         alias="highDiscountRate",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     high_investment_rate: Optional[float] = Field(
         default=None,
         description="The high investment rate of the security.",
         alias="highInvestmentRate",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     high_price: Optional[float] = Field(
         default=None,
@@ -339,13 +339,13 @@ class USTreasuryAuctionsData(Data):
     high_discount_margin: Optional[float] = Field(
         default=None,
         description="The high discount margin of the security.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     high_yield: Optional[float] = Field(
         default=None,
         description="The high yield of the security at auction.",
         alias="highYield",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     index_ratio_on_issue_date: Optional[float] = Field(
         default=None,
@@ -371,13 +371,13 @@ class USTreasuryAuctionsData(Data):
         default=None,
         description="The low discount rate of the security.",
         alias="lowDiscountRate",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     low_investment_rate: Optional[float] = Field(
         default=None,
         description="The low investment rate of the security.",
         alias="lowInvestmentRate",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     low_price: Optional[float] = Field(
         default=None,
@@ -388,13 +388,13 @@ class USTreasuryAuctionsData(Data):
         default=None,
         description="The low discount margin of the security.",
         alias="lowDiscountMargin",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     low_yield: Optional[float] = Field(
         default=None,
         description="The low yield of the security at auction.",
         alias="lowYield",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     maturing_date: Optional[dateType] = Field(
         default=None,
@@ -561,7 +561,7 @@ class USTreasuryAuctionsData(Data):
     spread: Optional[float] = Field(
         default=None,
         description="The spread on the security.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     standard_payment_per_1000: Optional[float] = Field(
         default=None,

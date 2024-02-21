@@ -30,5 +30,5 @@ class TrailingDivYieldData(Data):
     date: dateType = Field(description=DATA_DESCRIPTIONS.get("date", ""))
     trailing_dividend_yield: float = Field(
         description="Trailing dividend yield, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )

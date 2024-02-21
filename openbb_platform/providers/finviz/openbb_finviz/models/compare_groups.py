@@ -79,42 +79,42 @@ class FinvizCompareGroupsData(CompareGroupsData):
     performance_1D: Optional[float] = Field(
         default=None,
         description="The performance in the last day, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     performance_1W: Optional[float] = Field(
         default=None,
         description="The performance in the last week, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     performance_1M: Optional[float] = Field(
         default=None,
         description="The performance in the last month, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     performance_3M: Optional[float] = Field(
         default=None,
         description="The performance in the last quarter, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     performance_6M: Optional[float] = Field(
         default=None,
         description="The performance in the last half year, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     performance_1Y: Optional[float] = Field(
         default=None,
         description="The performance in the last year, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     performance_YTD: Optional[float] = Field(
         default=None,
         description="The performance in the year to date, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     dividend_yield: Optional[float] = Field(
         default=None,
         description="The dividend yield of the group, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     pe: Optional[float] = Field(
         default=None,
@@ -132,23 +132,23 @@ class FinvizCompareGroupsData(CompareGroupsData):
     eps_growth_past_5_years: Optional[float] = Field(
         default=None,
         description="The EPS growth of the group for the past 5 years, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     eps_growth_next_5_years: Optional[float] = Field(
         default=None,
         description="The estimated EPS growth of the groupo for the next 5 years,"
         + " as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     sales_growth_past_5_years: Optional[float] = Field(
         default=None,
         description="The sales growth of the group for the past 5 years, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     float_short: Optional[float] = Field(
         default=None,
         description="The percent of the float shorted for the group, as a normalized value.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     analyst_recommendation: Optional[float] = Field(
         default=None,

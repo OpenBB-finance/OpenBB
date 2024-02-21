@@ -33,7 +33,7 @@ class UnemploymentData(Data):
     rate: Optional[float] = Field(
         default=None,
         description="Unemployment rate, as a normalized percent. (e.g. 0.0001 == 0.01%)",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     country: Optional[str] = Field(
         default=None,

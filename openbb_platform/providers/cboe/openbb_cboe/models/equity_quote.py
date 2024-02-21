@@ -53,78 +53,78 @@ class CboeEquityQuoteData(EquityQuoteData):
     iv30: Optional[float] = Field(
         default=None,
         description="The 30-day implied volatility of the stock.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     iv30_change: Optional[float] = Field(
         default=None,
         description="Change in 30-day implied volatility of the stock.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     iv30_change_percent: Optional[float] = Field(
         default=None,
         description="Change in 30-day implied volatility of the"
         + " stock as a normalized percentage value.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     iv30_annual_high: Optional[float] = Field(
         default=None,
         description="The 1-year high of 30-day implied volatility.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     hv30_annual_high: Optional[float] = Field(
         default=None,
         description="The 1-year high of 30-day realized volatility.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     iv30_annual_low: Optional[float] = Field(
         default=None,
         description="The 1-year low of 30-day implied volatility.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     hv30_annual_low: Optional[float] = Field(
         default=None,
         description="The 1-year low of 30-dayrealized volatility.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     iv60_annual_high: Optional[float] = Field(
         default=None,
         description="The 1-year high of 60-day implied volatility.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     hv60_annual_high: Optional[float] = Field(
         default=None,
         description="The 1-year high of 60-day realized volatility.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     iv60_annual_low: Optional[float] = Field(
         default=None,
         description="The 1-year low of 60-day implied volatility.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     hv60_annual_low: Optional[float] = Field(
         default=None,
         description="The 1-year low of 60-day realized volatility.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     iv90_annual_high: Optional[float] = Field(
         default=None,
         description="The 1-year high of 90-day implied volatility.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     hv90_annual_high: Optional[float] = Field(
         default=None,
         description="The 1-year high of 90-day realized volatility.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     iv90_annual_low: Optional[float] = Field(
         default=None,
         description="The 1-year low of 90-day implied volatility.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     hv90_annual_low: Optional[float] = Field(
         default=None,
         description="The 1-year low of 90-day realized volatility.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 
 

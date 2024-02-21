@@ -35,5 +35,5 @@ class DiscountWindowPrimaryCreditRateData(Data):
     rate: Optional[float] = Field(
         default=None,
         description="Discount Window Primary Credit Rate.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )

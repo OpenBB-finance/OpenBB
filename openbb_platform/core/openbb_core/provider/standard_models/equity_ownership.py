@@ -77,22 +77,22 @@ class EquityOwnershipData(Data):
     weight: Optional[float] = Field(
         default=None,
         description="Weight of ownership, as a normalized percentage.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     last_weight: Optional[float] = Field(
         default=None,
         description="The weight of ownership from the previous reporting period, as a normalized percentage.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     change_in_weight: Optional[float] = Field(
         default=None,
         description="Previous weight minus the current weight.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     change_in_weight_percent: Optional[float] = Field(
         default=None,
         description="The change as a percent of the weight, as a normalized percentage.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     market_value: Optional[int] = Field(
         default=None,
@@ -109,7 +109,7 @@ class EquityOwnershipData(Data):
     change_in_market_value_percent: Optional[float] = Field(
         default=None,
         description="Percent change in market value, as a normalized percentage.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     shares_number: Optional[int] = Field(
         default=None,
@@ -126,7 +126,7 @@ class EquityOwnershipData(Data):
     change_in_shares_percent: Optional[float] = Field(
         default=None,
         description="Percent change in the number of shares owned, as a normalized percentage.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     quarter_end_price: Optional[float] = Field(
         default=None,
@@ -147,23 +147,23 @@ class EquityOwnershipData(Data):
     ownership: Optional[float] = Field(
         default=None,
         description="The ownership of the outstanding shares, as a normalized percentage.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     last_ownership: Optional[float] = Field(
         default=None,
         description="The ownership of the outstanding shares from the previous report,"
         + " as a normalized percentage.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     change_in_ownership: Optional[float] = Field(
         default=None,
         description="Change in ownership amount.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     change_in_ownership_percent: Optional[float] = Field(
         default=None,
         description="Percent change in ownership from the previous report, as a normalized percentage.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     holding_period: Optional[int] = Field(
         default=None,
@@ -180,7 +180,7 @@ class EquityOwnershipData(Data):
     performance_percent: Optional[float] = Field(
         default=None,
         description="Performance of the position as a normalized percentage.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     last_performance: Optional[float] = Field(
         default=None,

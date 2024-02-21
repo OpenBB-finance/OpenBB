@@ -47,7 +47,7 @@ class FMPEtfInfoData(EtfInfoData):
     expense_ratio: Optional[float] = Field(
         default=None,
         description="The expense ratio, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     holdings_count: Optional[int] = Field(
         default=None, description="Number of holdings."

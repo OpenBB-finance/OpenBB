@@ -135,17 +135,17 @@ class IntrinioFinancialRatiosData(FinancialRatiosData):
     dividend_yield: Optional[float] = Field(
         default=None,
         description="Dividend yield, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     earnings_yield: Optional[float] = Field(
         default=None,
         description="Earnings yield, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     gross_margin: Optional[float] = Field(
         default=None,
         description="Gross margin, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     adjusted_basic_eps: Optional[float] = Field(
         default=None,
@@ -315,7 +315,7 @@ class IntrinioFinancialRatiosData(FinancialRatiosData):
     ebitda_margin: Optional[float] = Field(
         default=None,
         description="EBITDA margin, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     ev_to_ebitda: Optional[float] = Field(
         default=None,
@@ -324,7 +324,7 @@ class IntrinioFinancialRatiosData(FinancialRatiosData):
     ebit_margin: Optional[float] = Field(
         default=None,
         description="EBIT margin, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     ev_to_ebit: Optional[float] = Field(
         default=None,
@@ -333,7 +333,7 @@ class IntrinioFinancialRatiosData(FinancialRatiosData):
     interest_burden_percent: Optional[float] = Field(
         default=None,
         description="Interest burden percent (normalized)",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     ebit_to_interest_expense: Optional[float] = Field(
         default=None,
@@ -346,22 +346,22 @@ class IntrinioFinancialRatiosData(FinancialRatiosData):
     pre_tax_income_margin: Optional[float] = Field(
         default=None,
         description="Pre tax income margin, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     tax_burden_percent: Optional[float] = Field(
         default=None,
         description="Tax burden percent (normalized)",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     effective_tax_rate: Optional[float] = Field(
         default=None,
         description="Effective tax rate, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     operating_margin: Optional[float] = Field(
         default=None,
         description="Operating margin, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     ev_to_operating_cash_flow: Optional[float] = Field(
         default=None,
@@ -386,7 +386,7 @@ class IntrinioFinancialRatiosData(FinancialRatiosData):
     net_operating_profit_after_tax_margin: Optional[float] = Field(
         default=None,
         description="Net operating profit after tax margin, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     ev_to_nopat: Optional[float] = Field(
         default=None,
@@ -415,12 +415,12 @@ class IntrinioFinancialRatiosData(FinancialRatiosData):
     normalized_nopat_margin: Optional[float] = Field(
         default=None,
         description="Normalized net operating profit after tax margin, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     net_profit_margin: Optional[float] = Field(
         default=None,
         description="Net profit margin, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     free_cash_flow_to_interest_expense: Optional[float] = Field(
         default=None,
@@ -433,52 +433,52 @@ class IntrinioFinancialRatiosData(FinancialRatiosData):
     return_on_invested_capital: Optional[float] = Field(
         default=None,
         description="Return on invested capital, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     net_non_operating_expense_percent: Optional[float] = Field(
         default=None,
         description="Net non operating expense as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     roic_nnep_spread: Optional[float] = Field(
         default=None,
         description="The spread between ROIC and net non operating expense percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     return_on_net_non_operating_assets: Optional[float] = Field(
         default=None,
         description="Return on net non operating assets, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     operating_return_on_assets: Optional[float] = Field(
         default=None,
         description="Operating return on assets, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     return_on_assets: Optional[float] = Field(
         default=None,
         description="Return on assets, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     cash_returned_on_invested_capital: Optional[float] = Field(
         default=None,
         description="Cash returned on invested capital, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     return_on_equity_simple: Optional[float] = Field(
         default=None,
         description="Return on equity simple, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     return_on_common_equity: Optional[float] = Field(
         default=None,
         description="Return on common equity, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     return_on_equity: Optional[float] = Field(
         default=None,
         description="Return on equity, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     equity_to_capitalization: Optional[float] = Field(
         default=None,
@@ -487,7 +487,7 @@ class IntrinioFinancialRatiosData(FinancialRatiosData):
     preferred_equity_to_capitalization: Optional[float] = Field(
         default=None,
         description="Preferred equity to capitalization ratio",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
     non_controlling_interest_to_capitalization: Optional[float] = Field(
         default=None,
