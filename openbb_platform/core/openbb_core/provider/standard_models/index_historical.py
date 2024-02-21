@@ -73,7 +73,6 @@ class IndexHistoricalData(Data):
     @classmethod
     def date_validate(cls, v):
         """Return formatted datetime."""
-        v = parser.isoparse(str(v))
-        if v.hour == 0 and v.minute == 0:
-            return v.date()
-        return v
+        if ":" in str(v):
+            return parser.isoparse(str(v))
+        return parser.parse(str(v)).date()

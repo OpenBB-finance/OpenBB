@@ -74,7 +74,7 @@ class ROUTER_equity_ownership(Container):
 
         InsiderTrading
         --------------
-        symbol : str
+        symbol : Optional[str]
             Symbol representing the entity requested in the data.
         company_cik : Optional[Union[int, str]]
             CIK number of the company.
