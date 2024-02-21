@@ -11,9 +11,11 @@ from openbb_core.app.query import Query
 from openbb_core.app.router import Router
 
 from openbb_economy.gdp.gdp_router import router as gdp_router
+from openbb_economy.markets.markets_router import router as markets_router
 
 router = Router(prefix="")
 router.include_router(gdp_router)
+router.include_router(markets_router)
 
 # pylint: disable=unused-argument
 
