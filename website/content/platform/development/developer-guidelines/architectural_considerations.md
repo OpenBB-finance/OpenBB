@@ -91,6 +91,7 @@ The `Fetcher` class implementation is based on the [TET pattern](/platform/devel
 - Transform the query: the output of this method should be `QueryParams` child.
 - Extract the data: the output of this method can be `Any` but it's recommended to be a `Dict` (will facilitate the next step of the fetcher's action, the data transformation).
 - Transform the data: the output of this method should be a `List[Data]` or `Data` (or a child of it).
+
 :::
 
 ### The `OBBject` class
@@ -101,9 +102,7 @@ The class includes several fields such as results, provider, warnings, chart, an
 
 The class provides several methods for converting the fetched data into different formats, including `to_df` (or `to_dataframe`) for converting to a pandas DataFrame, `to_polars` for converting to a Polars DataFrame, `to_numpy` for converting to a numpy array, and `to_dict` for converting to a dictionary.
 
-The `to_chart` method allows for creating or updating a chart based on the fetched data, and the show method is used to display the chart.
-
-The class also includes a `__repr__` method for a human-readable representation of the object, and a `model_parametrized_name method` for returning the model name with its parameters.
+The class also includes a `__repr__` method for a human-readable representation of the object, as well as the familiar Pydantic BaseModel methods like `model_dump()` and `model_json_schema()`.
 
 ### The `Router` class
 
