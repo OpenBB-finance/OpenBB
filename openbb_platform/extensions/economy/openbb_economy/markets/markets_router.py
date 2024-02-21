@@ -15,7 +15,7 @@ router = Router(prefix="/markets")
 # pylint: disable=unused-argument
 
 
-# @router.command(model="MarketsCategoryQuotes")
+# @router.command(model="MarketCategoryQuotes")
 # async def quote_category(
 #     cc: CommandContext,
 #     provider_choices: ProviderChoices,
@@ -26,7 +26,7 @@ router = Router(prefix="/markets")
 #     return await OBBject.from_query(Query(**locals()))
 
 
-# @router.command(model="MarketsSymbolQuotes")
+# @router.command(model="MarketSymbolQuotes")
 # async def quote_symbol(
 #     cc: CommandContext,
 #     provider_choices: ProviderChoices,
@@ -37,12 +37,17 @@ router = Router(prefix="/markets")
 #     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="MarketsHistorical")
+@router.command(model="MarketHistorical")
 async def historical(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get quotes for a specific symbol."""
+    """
+    Get historical price data for a symbol within a market category.
+
+    The market categories available are exchange rates, stock market indexes,
+    share prices, commodity prices, government bonds and crypto currencies.
+    """
     return await OBBject.from_query(Query(**locals()))
