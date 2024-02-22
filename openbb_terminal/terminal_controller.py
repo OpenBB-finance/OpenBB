@@ -463,14 +463,6 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(FeatureFlagsController, self.queue)
 
-    def call_dashboards(self, _):
-        """Process dashboards command."""
-        from openbb_terminal.dashboards.dashboards_controller import (
-            DashboardsController,
-        )
-
-        self.queue = self.load_class(DashboardsController, self.queue)
-
     def call_alternative(self, _):
         """Process alternative command."""
         from openbb_terminal.alternative.alt_controller import AlternativeDataController
