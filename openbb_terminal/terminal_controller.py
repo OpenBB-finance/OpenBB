@@ -45,6 +45,7 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     get_flair,
     parse_and_split_input,
+    print_rich_table,
 )
 from openbb_terminal.menu import is_papermill, session
 from openbb_terminal.parent_classes import BaseController
@@ -66,8 +67,13 @@ from openbb_terminal.terminal_helper import (
     update_terminal,
     welcome_message,
 )
+from pydantic import BaseModel
 
-PLATFORM_ROUTERS = [d for d in dir(obb) if "_" not in d]
+PLATFORM_ROUTERS = {
+    d: "menu" if not isinstance(getattr(obb, d), BaseModel) else "command"
+    for d in dir(obb)
+    if "_" not in d
+}
 
 # pylint: disable=too-many-public-methods,import-outside-toplevel, too-many-function-args
 # pylint: disable=too-many-branches,no-member,C0302,too-many-return-statements, inconsistent-return-statements
@@ -87,36 +93,43 @@ if is_installer():
 class TerminalController(BaseController):
     """Terminal Controller class."""
 
-    CHOICES_COMMANDS = [
-        "keys",
-        "settings",
-        "survey",
-        "update",
-        "featflags",
-        "exe",
-        "guess",
-        "news",
-        "intro",
-        "record",
-    ]
-    CHOICES_MENUS = [
-        "stocks",
-        "economy",
-        "crypto",
-        "portfolio",
-        "forex",
-        "etf",
-        "reports",
-        "dashboards",
-        "alternative",
-        "econometrics",
-        "sources",
-        "forecast",
-        "futures",
-        "fixedincome",
-        "funds",
-    ]
-    CHOICES_MENUS.extend(PLATFORM_ROUTERS)
+    # CHOICES_COMMANDS = [
+    #     "keys",
+    #     "settings",
+    #     "survey",
+    #     "update",
+    #     "featflags",
+    #     "exe",
+    #     "guess",
+    #     "news",
+    #     "intro",
+    #     "record",
+    # ]
+    # CHOICES_MENUS = [
+    #     "stocks",
+    #     "economy",
+    #     "crypto",
+    #     "portfolio",
+    #     "forex",
+    #     "etf",
+    #     "reports",
+    #     "dashboards",
+    #     "alternative",
+    #     "econometrics",
+    #     "sources",
+    #     "forecast",
+    #     "futures",
+    #     "fixedincome",
+    #     "funds",
+    # ]
+    CHOICES_COMMANDS = []
+    CHOICES_MENUS = []
+
+    for router, value in PLATFORM_ROUTERS.items():
+        if value == "menu":
+            CHOICES_MENUS.append(router)
+        else:
+            CHOICES_COMMANDS.append(router)
 
     if is_auth_enabled():
         CHOICES_MENUS.append("account")
@@ -154,33 +167,41 @@ class TerminalController(BaseController):
     def _generate_platform_commands(self):
         """Generate Platform based commands/menus."""
 
-        def method(self, _, controller, name, target):
+        def method_call_class(self, _, controller, name, target):
             self.queue = self.load_class(controller, name, target, self.queue)
 
-        for router in PLATFORM_ROUTERS:
-            if router in [
-                "user",
-                "system",
-            ]:
-                continue
+        # pylint: disable=unused-argument
+        def method_call_command(self, _, target: BaseModel):
+            df = pd.DataFrame.from_dict(target.model_dump(), orient="index")
+            return print_rich_table(df)
+
+        for router, value in PLATFORM_ROUTERS.items():
 
             target = getattr(obb, router)
-            pcf = PlatformControllerFactory(target)
-            DynamicController = pcf.create()
 
-            # Bind the method to the class
-            bound_method = MethodType(method, self)
+            if value == "menu":
+                pcf = PlatformControllerFactory(target)
+                DynamicController = pcf.create()
 
-            # Update the wrapper and set the attribute
-            bound_method = update_wrapper(
-                partial(
-                    bound_method,
-                    controller=DynamicController,
-                    name=router,
-                    target=target,
-                ),
-                method,
-            )
+                # Bind the method to the class
+                bound_method = MethodType(method_call_class, self)
+
+                # Update the wrapper and set the attribute
+                bound_method = update_wrapper(
+                    partial(
+                        bound_method,
+                        controller=DynamicController,
+                        name=router,
+                        target=target,
+                    ),
+                    method_call_class,
+                )
+            else:
+                bound_method = MethodType(method_call_command, self)
+                bound_method = update_wrapper(
+                    partial(bound_method, target=target), method_call_command
+                )
+
             setattr(self, f"call_{router}", bound_method)
 
     def update_runtime_choices(self):
@@ -251,53 +272,56 @@ class TerminalController(BaseController):
     def print_help(self):
         """Print help."""
         mt = MenuText("")
-        mt.add_raw("\n")
-        mt.add_info("_home_")
-        mt.add_cmd("intro")
-        mt.add_cmd("about")
-        mt.add_cmd("support")
-        mt.add_cmd("survey")
-        if not is_installer():
-            mt.add_cmd("update")
-        mt.add_cmd("wiki")
-        mt.add_cmd("news")
-        mt.add_raw("\n")
-        mt.add_info("_configure_")
-        if is_auth_enabled():
-            mt.add_menu("account")
-        mt.add_menu("keys")
-        mt.add_menu("featflags")
-        mt.add_menu("sources")
-        mt.add_menu("settings")
-        mt.add_raw("\n")
-        mt.add_info("_scripts_")
-        mt.add_cmd("record")
-        mt.add_cmd("stop")
-        mt.add_cmd("exe")
-        mt.add_raw("\n")
-        mt.add_cmd("askobb")
-        mt.add_raw("\n")
-        mt.add_info("_main_menu_")
-        mt.add_menu("stocks")
-        mt.add_menu("crypto")
-        mt.add_menu("etf")
-        mt.add_menu("economy")
-        mt.add_menu("forex")
-        mt.add_menu("futures")
-        mt.add_menu("fixedincome")
-        mt.add_menu("alternative")
-        mt.add_menu("funds")
-        mt.add_raw("\n")
-        mt.add_info("_toolkits_")
-        mt.add_menu("econometrics")
-        mt.add_menu("forecast")
-        mt.add_menu("portfolio")
-        mt.add_menu("dashboards")
-        mt.add_menu("reports")
-        mt.add_raw("\n")
+        # mt.add_raw("\n")
+        # mt.add_info("_home_")
+        # mt.add_cmd("intro")
+        # mt.add_cmd("about")
+        # mt.add_cmd("support")
+        # mt.add_cmd("survey")
+        # if not is_installer():
+        #     mt.add_cmd("update")
+        # mt.add_cmd("wiki")
+        # mt.add_cmd("news")
+        # mt.add_raw("\n")
+        # mt.add_info("_configure_")
+        # if is_auth_enabled():
+        #     mt.add_menu("account")
+        # mt.add_menu("keys")
+        # mt.add_menu("featflags")
+        # mt.add_menu("sources")
+        # mt.add_menu("settings")
+        # mt.add_raw("\n")
+        # mt.add_info("_scripts_")
+        # mt.add_cmd("record")
+        # mt.add_cmd("stop")
+        # mt.add_cmd("exe")
+        # mt.add_raw("\n")
+        # mt.add_cmd("askobb")
+        # mt.add_raw("\n")
+        # mt.add_info("_main_menu_")
+        # mt.add_menu("stocks")
+        # mt.add_menu("crypto")
+        # mt.add_menu("etf")
+        # mt.add_menu("economy")
+        # mt.add_menu("forex")
+        # mt.add_menu("futures")
+        # mt.add_menu("fixedincome")
+        # mt.add_menu("alternative")
+        # mt.add_menu("funds")
+        # mt.add_raw("\n")
+        # mt.add_info("_toolkits_")
+        # mt.add_menu("econometrics")
+        # mt.add_menu("forecast")
+        # mt.add_menu("portfolio")
+        # mt.add_menu("dashboards")
+        # mt.add_menu("reports")
+        # mt.add_raw("\n")
         mt.add_info("Platform CLI")
-        for router in PLATFORM_ROUTERS:
-            mt.add_menu(router)
+        for router, value in PLATFORM_ROUTERS.items():
+            if value == "menu":
+                mt.add_menu(router)
+            else:
+                mt.add_cmd(router)
 
         console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
@@ -363,38 +387,38 @@ class TerminalController(BaseController):
     #                 console.print("--tag only available for Biztoc.\n")
     #                 to_return = True
 
-    #             if to_return:
-    #                 return
+                if to_return:
+                    return
 
-    #             query = " ".join(news_parser.term)
-    #             feedparser_view.display_news(
-    #                 term=query,
-    #                 sources=news_parser.sources,
-    #                 limit=news_parser.limit,
-    #                 export=news_parser.export,
-    #                 sheet_name=news_parser.sheet_name,
-    #             )
-    #         if news_parser.source == "Biztoc":
-    #             query = " ".join(news_parser.term)
-    #             if news_parser.sourcelist and news_parser.sourcelist is True:
-    #                 biztoc_view.display_sources(
-    #                     export=news_parser.export,
-    #                     sheet_name=news_parser.sheet_name,
-    #                 )
-    #             elif news_parser.taglist and news_parser.taglist is True:
-    #                 biztoc_view.display_tags(
-    #                     export=news_parser.export,
-    #                     sheet_name=news_parser.sheet_name,
-    #                 )
-    #             else:
-    #                 biztoc_view.display_news(
-    #                     term=query,
-    #                     tag=news_parser.tag,
-    #                     source=news_parser.sources,
-    #                     limit=news_parser.limit,
-    #                     export=news_parser.export,
-    #                     sheet_name=news_parser.sheet_name,
-    #                 )
+                query = " ".join(news_parser.term)
+                feedparser_view.display_news(
+                    term=query,
+                    sources=news_parser.sources,
+                    limit=news_parser.limit,
+                    export=news_parser.export,
+                    sheet_name=news_parser.sheet_name,
+                )
+            if news_parser.source == "Biztoc":
+                query = " ".join(news_parser.term)
+                if news_parser.sourcelist and news_parser.sourcelist is True:
+                    biztoc_view.display_sources(
+                        export=news_parser.export,
+                        sheet_name=news_parser.sheet_name,
+                    )
+                elif news_parser.taglist and news_parser.taglist is True:
+                    biztoc_view.display_tags(
+                        export=news_parser.export,
+                        sheet_name=news_parser.sheet_name,
+                    )
+                else:
+                    biztoc_view.display_news(
+                        term=query,
+                        tag=news_parser.tag,
+                        source=news_parser.sources,
+                        limit=news_parser.limit,
+                        export=news_parser.export,
+                        sheet_name=news_parser.sheet_name,
+                    )
 
     def parse_input(self, an_input: str) -> List:
         """Overwrite the BaseController parse_input for `askobb` and 'exe'
