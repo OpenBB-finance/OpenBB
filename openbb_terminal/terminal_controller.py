@@ -463,12 +463,6 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(FeatureFlagsController, self.queue)
 
-    def call_funds(self, _):
-        """Process etf command"""
-        from openbb_terminal.mutual_funds.mutual_fund_controller import FundController
-
-        self.queue = self.load_class(FundController, self.queue)
-
     def call_intro(self, _):
         """Process intro command."""
         webbrowser.open(
