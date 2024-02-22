@@ -774,20 +774,6 @@ class StocksController(StockBaseController):
         )
 
     @log_start_end(log=logger)
-    def call_qa(self, _):
-        """Process qa command."""
-        from openbb_terminal.stocks.quantitative_analysis import qa_controller
-
-        self.queue = self.load_class(
-            qa_controller.QaController,
-            self.ticker,
-            self.start,
-            self.interval,
-            self.stock,
-            self.queue,
-        )
-
-    @log_start_end(log=logger)
     def call_forecast(self, _):
         """Process forecast command."""
         from openbb_terminal.forecast import forecast_controller
