@@ -47,7 +47,7 @@ class CompanyNewsQueryParams(QueryParams):
         """Populate start date if empty."""
         if not v:
             now = datetime.now().date()
-            v = now - relativedelta(weeks=2)
+            v = now - relativedelta(weeks=16)
         return v
 
     @field_validator("end_date", mode="before")

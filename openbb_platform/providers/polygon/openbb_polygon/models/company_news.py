@@ -2,6 +2,7 @@
 
 # pylint: disable=unused-argument
 
+import asyncio
 from typing import Any, Dict, List, Literal, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -19,6 +20,7 @@ class PolygonCompanyNewsQueryParams(CompanyNewsQueryParams):
     Source: https://polygon.io/docs/stocks/get_v2_reference_news
     """
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
     __alias_dict__ = {
         "symbol": "ticker",
         "start_date": "published_utc.gte",
@@ -96,25 +98,35 @@ class PolygonCompanyNewsFetcher(
         api_key = credentials.get("polygon_api_key") if credentials else ""
 
         base_url = "https://api.polygon.io/v2/reference/news"
-        query_str = get_querystring(query.model_dump(by_alias=True), ["limit"])
-
-        url = (
-            f"{base_url}?{query_str}&limit={query.limit if query.limit and query.limit <= 1000 else 1000}"
-            + f"&apiKey={api_key}"
+        query_str = get_querystring(
+            query.model_dump(by_alias=True), ["limit", "ticker"]
         )
+        results = []
 
-        response = await amake_request(url)
-        data = response.get("results", [])  # type: ignore
-        next_url = response.get("next_url", None)  # type: ignore
-        records = len(data)
-        while next_url and records < query.limit:  # type: ignore
-            url = f"{next_url}&apiKey={api_key}"
+        async def get_one(symbol):
+            """Get one symbol."""
+            url = (
+                f"{base_url}?ticker={symbol}&{query_str}&limit="
+                + f"{query.limit if query.limit and query.limit <= 1000 else 1000}"
+                + f"&apiKey={api_key}"
+            )
             response = await amake_request(url)
-            data.extend(response.get("results", []))  # type: ignore
-            records = len(data)
+            data = response.get("results", [])  # type: ignore
             next_url = response.get("next_url", None)  # type: ignore
+            records = len(data)
+            while next_url and records < query.limit:  # type: ignore
+                url = f"{next_url}&apiKey={api_key}"
+                response = await amake_request(url)
+                data.extend(response.get("results", []))  # type: ignore
+                records = len(data)
+                next_url = response.get("next_url", None)  # type: ignore
 
-        return data[: query.limit]
+            if data:
+                results.extend(data[: query.limit])
+
+        await asyncio.gather(*[get_one(symbol) for symbol in query.symbol.split(",")])  # type: ignore
+
+        return results
 
     @staticmethod
     def transform_data(
