@@ -261,7 +261,7 @@ class TA_Data:
         self.df_ta: pd.DataFrame = df_ta
         self.indicators: ChartIndicators = indicators
         self.ma_mode: List[str] = ma_mode or ["sma", "ema", "wma", "hma", "zlma", "rma"]
-        self.close_col = ta_helpers.check_columns(df_ta)
+        self.close_col = check_columns(df_ta)
         if self.close_col is None:
             raise ValueError("No close column found in dataframe")
 

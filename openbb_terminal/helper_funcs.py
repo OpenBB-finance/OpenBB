@@ -40,15 +40,6 @@ import pytz
 import requests
 import yfinance as yf
 from holidays import US as us_holidays
-# from llama_index import (
-#     LLMPredictor,
-#     PromptHelper,
-#     ServiceContext,
-#     SimpleDirectoryReader,
-#     StorageContext,
-#     VectorStoreIndex,
-#     load_index_from_storage,
-# )
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
 from PIL import Image, ImageDraw

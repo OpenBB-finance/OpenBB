@@ -8,7 +8,6 @@ from typing import Any, Dict, List, Optional, Type, Union
 import pandas as pd
 
 from openbb_terminal import OpenBBFigure, config_terminal, theme
-from openbb_terminal.common.technical_analysis import ta_helpers
 from openbb_terminal.core.config.paths import REPOSITORY_DIRECTORY
 from openbb_terminal.core.plots.plotly_ta.base import PltTA
 from openbb_terminal.core.plots.plotly_ta.data_classes import ChartIndicators
@@ -17,6 +16,47 @@ from openbb_terminal.rich_config import console
 
 PLUGINS_PATH = Path(__file__).parent / "plugins"
 PLOTLY_TA: Optional["PlotlyTA"] = None
+
+
+def check_columns(
+    data: pd.DataFrame, high: bool = True, low: bool = True, close: bool = True
+) -> Optional[str]:
+    """Returns the close columns, or None if the dataframe does not have required columns
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        The dataframe to check
+    high: bool
+        Whether to check for high column
+    low: bool
+        Whether to check for low column
+    close: bool
+        Whether to check for close column
+
+    Returns
+    -------
+    Optional[str]
+        The name of the close column, none if df is invalid
+
+    """
+    close_regex = r"(Adj\sClose|adj_close|Close)"
+    # pylint: disable=too-many-boolean-expressions
+    if (
+        (re.findall(r"High", str(data.columns), re.IGNORECASE) is None and high)
+        or (re.findall(r"Low", str(data.columns), re.IGNORECASE) is None and low)
+        or (close_col := re.findall(close_regex, str(data.columns), re.IGNORECASE))
+        is None
+        and close
+    ):
+        logger.error("Invalid columns. data has columns %s", data.columns)
+        console.print(
+            "[red] Please make sure that the columns 'High', 'Low', and 'Close'"
+            " are in the dataframe.[/red]"
+        )
+        return None
+
+    return [col for col in close_col if col in data.columns][-1]
 
 
 class PlotlyTA(PltTA):
@@ -160,7 +200,7 @@ class PlotlyTA(PltTA):
         self.indicators = indicators
         self.intraday = df_stock.index[-2].time() != df_stock.index[-1].time()
         self.df_stock = df_stock
-        self.close_column = ta_helpers.check_columns(self.df_stock)
+        self.close_column = check_columns(self.df_stock)
         self.params = self.indicators.get_params()
 
         self.has_volume = "Volume" in self.df_stock.columns and bool(
