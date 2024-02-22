@@ -353,7 +353,7 @@ class ImportDefinition:
         else:
             code += "\nfrom typing_extensions import Annotated, deprecated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
-        code += "\nfrom openbb_core.app.static.utils.decorators import validate\n"
+        code += "\nfrom openbb_core.app.static.utils.decorators import exception_handler, validate\n"
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
         code += "\nfrom openbb_core.provider.abstract.data import Data"
         code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
@@ -677,19 +677,23 @@ class MethodDefinition:
             else ""
         )
 
-        msg = ""
+        code = ""
+        deprecated = ""
+
         if MethodDefinition.is_deprecated_function(path):
             deprecation_message = MethodDefinition.get_deprecation_message(path)
             deprecation_type_class = type(
                 deprecation_message.metadata  # type: ignore
             ).__name__
 
-            msg = "\n    @deprecated("
-            msg += f'\n        "{deprecation_message}",'
-            msg += f"\n        category={deprecation_type_class},"
-            msg += "\n    )"
+            deprecated = "\n    @deprecated("
+            deprecated += f'\n        "{deprecation_message}",'
+            deprecated += f"\n        category={deprecation_type_class},"
+            deprecated += "\n    )"
 
-        code = f"\n    @validate{args}{msg}"
+        code += "\n    @exception_handler"
+        code += f"\n    @validate{args}"
+        code += deprecated
         code += f"\n    def {func_name}("
         code += f"\n        self,\n        {func_params}\n    ) -> {func_returns}:\n"
 
