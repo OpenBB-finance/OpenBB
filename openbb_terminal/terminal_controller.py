@@ -90,16 +90,18 @@ class TerminalController(BaseController):
     """Terminal Controller class."""
 
     CHOICES_COMMANDS = [
+        "intro",
+        "about",
+        "support",
         "survey",
         "update",
-        "featflags",
-        "exe",
-        "guess",
-        "intro",
         "record",
+        "stop",
+        "exe",
     ]
-    CHOICES_COMMANDS = []
-    CHOICES_MENUS = []
+    CHOICES_MENUS = [
+        "featflags",
+    ]
 
     for router, value in PLATFORM_ROUTERS.items():
         if value == "menu":
@@ -282,116 +284,6 @@ class TerminalController(BaseController):
         url = r"(exe (--url )?(https?://)?my\.openbb\.(dev|co)/u/.*/routine/.*)"
         custom_filters = [sort_filter, url]
         return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
-
-    def call_guess(self, other_args: List[str]) -> None:
-        """Process guess command."""
-        import random
-
-        current_user = get_current_user()
-
-        if self.GUESS_NUMBER_TRIES_LEFT == 0 and self.GUESS_SUM_SCORE < 0.01:
-            parser = argparse.ArgumentParser(
-                add_help=False,
-                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                prog="guess",
-                description="Guess command to achieve task successfully.",
-            )
-            parser.add_argument(
-                "-l",
-                "--limit",
-                type=check_positive,
-                help="Number of tasks to attempt.",
-                dest="limit",
-                default=1,
-            )
-            if other_args and "-" not in other_args[0][0]:
-                other_args.insert(0, "-l")
-                ns_parser_guess = self.parse_simple_args(parser, other_args)
-
-                if self.GUESS_TOTAL_TRIES == 0:
-                    self.GUESS_NUMBER_TRIES_LEFT = ns_parser_guess.limit
-                    self.GUESS_SUM_SCORE = 0
-                    self.GUESS_TOTAL_TRIES = ns_parser_guess.limit
-
-        try:
-            with open(current_user.preferences.GUESS_EASTER_EGG_FILE) as f:
-                # Load the file as a JSON document
-                json_doc = json.load(f)
-
-                task = random.choice(list(json_doc.keys()))  # nosec # noqa: S311
-                solution = json_doc[task]
-
-                start = time.time()
-                console.print(f"\n[yellow]{task}[/yellow]\n")
-                an_input = (
-                    session.prompt("GUESS / $ ")
-                    if isinstance(session, PromptSession)
-                    else ""
-                )
-                time_dif = time.time() - start
-
-                # When there are multiple paths to same solution
-                if isinstance(solution, List):
-                    if an_input.lower() in [s.lower() for s in solution]:
-                        self.queue = an_input.split("/") + ["home"]
-                        console.print(
-                            f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
-                        )
-                        # If we are already counting successes
-                        if self.GUESS_TOTAL_TRIES > 0:
-                            self.GUESS_CORRECTLY += 1
-                            self.GUESS_SUM_SCORE += time_dif
-                    else:
-                        solutions_texts = "\n".join(solution)
-                        console.print(
-                            f"\n[red]You guessed wrong! The correct paths would have been:\n{solutions_texts}[/red]\n"
-                        )
-
-                # When there is a single path to the solution
-                elif an_input.lower() == solution.lower():
-                    self.queue = an_input.split("/") + ["home"]
-                    console.print(
-                        f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
-                    )
-                    # If we are already counting successes
-                    if self.GUESS_TOTAL_TRIES > 0:
-                        self.GUESS_CORRECTLY += 1
-                        self.GUESS_SUM_SCORE += time_dif
-                else:
-                    console.print(
-                        f"\n[red]You guessed wrong! The correct path would have been:\n{solution}[/red]\n"
-                    )
-
-                # Compute average score and provide a result if it's the last try
-                if self.GUESS_TOTAL_TRIES > 0:
-                    self.GUESS_NUMBER_TRIES_LEFT -= 1
-                    if self.GUESS_NUMBER_TRIES_LEFT == 0 and self.GUESS_TOTAL_TRIES > 1:
-                        color = (
-                            "green"
-                            if self.GUESS_CORRECTLY == self.GUESS_TOTAL_TRIES
-                            else "red"
-                        )
-                        console.print(
-                            f"[{color}]OUTCOME: You got {int(self.GUESS_CORRECTLY)} out of"
-                            f" {int(self.GUESS_TOTAL_TRIES)}.[/{color}]\n"
-                        )
-                        if self.GUESS_CORRECTLY == self.GUESS_TOTAL_TRIES:
-                            avg = self.GUESS_SUM_SCORE / self.GUESS_TOTAL_TRIES
-                            console.print(
-                                f"[green]Average score: {round(avg, 2)} seconds![/green]\n"
-                            )
-                        self.GUESS_TOTAL_TRIES = 0
-                        self.GUESS_CORRECTLY = 0
-                        self.GUESS_SUM_SCORE = 0
-                    else:
-                        self.queue += ["guess"]
-
-        except Exception as e:
-            console.print(
-                f"[red]Failed to load guess game from file: "
-                f"{current_user.preferences.GUESS_EASTER_EGG_FILE}[/red]"
-            )
-            console.print(f"[red]{e}[/red]")
 
     @staticmethod
     def call_survey(_) -> None:
