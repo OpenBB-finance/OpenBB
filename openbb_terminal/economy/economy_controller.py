@@ -2285,33 +2285,3 @@ class EconomyController(BaseController):
                 self.DATASETS
             )
             self.update_runtime_choices()
-
-    @log_start_end(log=logger)
-    def call_qa(self, _):
-        """Process qa command"""
-        if not any(True for x in self.DATASETS.values() if not x.empty):
-            console.print(
-                "There is no data stored. Please use either the 'macro', 'fred', 'index' and/or "
-                "'treasury' command in combination with the -st argument to plot data.\n"
-            )
-            return
-
-        from openbb_terminal.economy.quantitative_analysis.qa_controller import (
-            QaController,
-        )
-
-        data: Dict = {}  # type: ignore
-        for source, _ in self.DATASETS.items():
-            if not self.DATASETS[source].empty:
-                if len(self.DATASETS[source].columns) == 1:
-                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
-                else:
-                    for col in list(self.DATASETS[source].columns):
-                        data[col] = self.DATASETS[source][col].to_frame()
-
-        if data:
-            self.queue = self.load_class(QaController, data, self.queue)
-        else:
-            console.print(
-                "[red]Please load a dataset before moving to the qa menu[/red]\n"
-            )
