@@ -7,7 +7,7 @@ from openbb_core.app.utils import check_single_item, convert_to_basemodel
 
 def filter_inputs(
     data_processing: bool = False,
-    extra_info: Optional[Dict[str, List[str]]] = None,
+    extra_info: Optional[Dict[str, Dict[str, List[str]]]] = None,
     **kwargs,
 ) -> dict:
     """Filter command inputs."""
