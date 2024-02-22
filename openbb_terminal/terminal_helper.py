@@ -20,7 +20,6 @@ from packaging import version
 
 # IMPORTATION INTERNAL
 import openbb_terminal.core.session.local_model as Local
-from openbb_terminal import thought_of_the_day as thought
 from openbb_terminal.base_helpers import load_env_files
 from openbb_terminal.core.config.paths import HIST_FILE_PATH, SETTINGS_ENV_FILE
 from openbb_terminal.core.plots.backend import plots_backend
@@ -376,14 +375,6 @@ def welcome_message():
     Prints first welcome message, help and a notification if updates are available.
     """
     console.print(f"\nWelcome to OpenBB Terminal v{get_current_system().VERSION}")
-
-    if get_current_user().preferences.ENABLE_THOUGHTS_DAY:
-        console.print("---------------------------------")
-        try:
-            thought.get_thought_of_the_day()
-        except Exception as e:
-            logger.exception("Exception: %s", str(e))
-            console.print(e)
 
 
 def reset(queue: Optional[List[str]] = None):
