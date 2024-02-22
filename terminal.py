@@ -19,12 +19,6 @@ def main():
     sent_args = sys.argv[1:]
     cfg.setup_config_terminal()
 
-    if "--streamlit" in sent_args:
-        from openbb_terminal.dashboards import streamlit_run
-
-        hide_splashscreen()
-        sys.exit(streamlit_run.main())
-
     if "-t" in sent_args or "--test" in sent_args:
         from openbb_terminal.core.integration_tests import integration_controller
 
