@@ -726,7 +726,7 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
                 # Check if the current file is not the index file to avoid self-referencing
                 if file.name != "index.mdx":
                     # Extract the file name without extension to use as a title
-                    title = file.stem
+                    title = file.stem.replace("_", " ")
                     # Generate a relative file path from the PLATFORM_REFERENCE_PATH,
                     # remove the file extension, and convert it to POSIX path format
                     # for consistency across OS
