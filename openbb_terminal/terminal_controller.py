@@ -25,10 +25,10 @@ from openbb import obb
 from prompt_toolkit import PromptSession
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
+from pydantic import BaseModel
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.account.show_prompt import get_show_prompt, set_show_prompt
-from openbb_terminal.common import biztoc_model, biztoc_view, feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
@@ -41,7 +41,6 @@ from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.session.current_user import get_current_user, set_preference
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
     check_positive,
     get_flair,
     parse_and_split_input,
@@ -67,7 +66,6 @@ from openbb_terminal.terminal_helper import (
     update_terminal,
     welcome_message,
 )
-from pydantic import BaseModel
 
 PLATFORM_ROUTERS = {
     d: "menu" if not isinstance(getattr(obb, d), BaseModel) else "command"
@@ -459,18 +457,6 @@ class TerminalController(BaseController):
                 "Find the most recent release of the OpenBB Terminal here: "
                 "https://openbb.co/products/terminal#get-started\n"
             )
-
-    # def call_account(self, _):
-    #     """Process account command."""
-    #     from openbb_terminal.account.account_controller import AccountController
-
-    #     self.queue = self.load_class(AccountController, self.queue)
-
-    def call_keys(self, _):
-        """Process keys command."""
-        from openbb_terminal.keys_controller import KeysController
-
-        self.queue = self.load_class(KeysController, self.queue)
 
     def call_settings(self, _):
         """Process settings command."""
