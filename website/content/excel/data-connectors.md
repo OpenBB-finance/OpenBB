@@ -37,7 +37,7 @@ If your backend supports it is possible to pass a symbol, date or other optional
 ```
 
 :::tip
-The easiest way to pass optional parameters is write them into cells and reference them in the function. For example, `=OBB.BYOD(...,A1:B2)` where A1 contains "param1", B1 "value1", A2 "param2", B2 "value2" and so on.
+The easiest way to pass optional parameters is to write them into cells and reference them in the function. For example, `=OBB.BYOD(...,A1:B2)` where A1 contains "param1", B1 "value1", A2 "param2", B2 "value2" and so on.
 :::
 
 #### Additional notes

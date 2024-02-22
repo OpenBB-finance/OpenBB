@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from uuid_extensions import uuid7str
+from uuid_extensions import uuid7str  # type: ignore
 
 
 class Tagged(BaseModel):

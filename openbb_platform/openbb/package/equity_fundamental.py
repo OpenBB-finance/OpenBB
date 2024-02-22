@@ -1270,7 +1270,10 @@ class ROUTER_equity_fundamental(Container):
     def historical_attributes(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed: intrinio."
+            ),
         ],
         tag: Annotated[
             Union[str, List[str]],
@@ -1313,8 +1316,8 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed: intrinio.
         tag : Union[str, List[str]]
             Intrinio data tag ID or code. Multiple items allowed: intrinio.
         start_date : Union[datetime.date, None, str]
@@ -1386,7 +1389,10 @@ class ROUTER_equity_fundamental(Container):
                     "sort": sort,
                 },
                 extra_params=kwargs,
-                extra_info={"tag": {"multiple_items_allowed": ["intrinio"]}},
+                extra_info={
+                    "symbol": {"multiple_items_allowed": ["intrinio"]},
+                    "tag": {"multiple_items_allowed": ["intrinio"]},
+                },
             )
         )
 
@@ -2033,7 +2039,10 @@ class ROUTER_equity_fundamental(Container):
     def latest_attributes(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed: intrinio."
+            ),
         ],
         tag: Annotated[
             Union[str, List[str]],
@@ -2048,8 +2057,8 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
-        symbol : str
-            Symbol to get data for.
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed: intrinio.
         tag : Union[str, List[str]]
             Intrinio data tag ID or code. Multiple items allowed: intrinio.
         provider : Optional[Literal['intrinio']]
@@ -2101,7 +2110,10 @@ class ROUTER_equity_fundamental(Container):
                     "tag": tag,
                 },
                 extra_params=kwargs,
-                extra_info={"tag": {"multiple_items_allowed": ["intrinio"]}},
+                extra_info={
+                    "symbol": {"multiple_items_allowed": ["intrinio"]},
+                    "tag": {"multiple_items_allowed": ["intrinio"]},
+                },
             )
         )
 
@@ -3431,7 +3443,7 @@ class ROUTER_equity_fundamental(Container):
     def trailing_dividend_yield(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Optional[str], OpenBBCustomParameter(description="Symbol to get data for.")
         ] = None,
         limit: Annotated[
             Optional[int],
@@ -3446,7 +3458,7 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
         limit : Optional[int]
             The number of data entries to return. Default is 252, the number of trading days in a year.
