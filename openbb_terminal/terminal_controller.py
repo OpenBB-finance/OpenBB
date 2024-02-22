@@ -174,11 +174,9 @@ class TerminalController(BaseController):
             return print_rich_table(df)
 
         for router, value in PLATFORM_ROUTERS.items():
-
             target = getattr(obb, router)
 
             if value == "menu":
-
                 pcf = PlatformControllerFactory(target)
                 DynamicController = pcf.create()
 
@@ -448,6 +446,7 @@ class TerminalController(BaseController):
         """Process survey command."""
         webbrowser.open("https://openbb.co/survey")
 
+    # TODO: revamp or remove
     def call_update(self, _):
         """Process update command."""
         if not is_installer():
@@ -457,12 +456,6 @@ class TerminalController(BaseController):
                 "Find the most recent release of the OpenBB Terminal here: "
                 "https://openbb.co/products/terminal#get-started\n"
             )
-
-    def call_settings(self, _):
-        """Process settings command."""
-        from openbb_terminal.settings_controller import SettingsController
-
-        self.queue = self.load_class(SettingsController, self.queue)
 
     def call_featflags(self, _):
         """Process feature flags command."""
