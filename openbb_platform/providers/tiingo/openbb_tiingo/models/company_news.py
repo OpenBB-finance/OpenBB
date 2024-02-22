@@ -2,7 +2,6 @@
 
 # pylint: disable=unused-argument
 
-import json
 import math
 from datetime import datetime
 from typing import Any, Dict, List, Optional
