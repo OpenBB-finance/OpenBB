@@ -463,18 +463,6 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(FeatureFlagsController, self.queue)
 
-    # def call_etf(self, _):
-    #     """Process etf command."""
-    #     from openbb_terminal.etf.etf_controller import ETFController
-
-    #     self.queue = self.load_class(ETFController, self.queue)
-
-    def call_reports(self, _):
-        """Process reports command."""
-        from openbb_terminal.reports.reports_controller import ReportController
-
-        self.queue = self.load_class(ReportController, self.queue)
-
     def call_dashboards(self, _):
         """Process dashboards command."""
         from openbb_terminal.dashboards.dashboards_controller import (
