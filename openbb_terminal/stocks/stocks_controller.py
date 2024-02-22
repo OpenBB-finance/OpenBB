@@ -715,18 +715,6 @@ class StocksController(StockBaseController):
         )
 
     @log_start_end(log=logger)
-    def call_ba(self, _):
-        """Process ba command."""
-        from openbb_terminal.stocks.behavioural_analysis import ba_controller
-
-        self.queue = self.load_class(
-            ba_controller.BehaviouralAnalysisController,
-            self.ticker,
-            self.start,
-            self.queue,
-        )
-
-    @log_start_end(log=logger)
     def call_forecast(self, _):
         """Process forecast command."""
         from openbb_terminal.forecast import forecast_controller
