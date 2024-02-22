@@ -90,18 +90,15 @@ if is_installer():
 class TerminalController(BaseController):
     """Terminal Controller class."""
 
-    # CHOICES_COMMANDS = [
-    #     "keys",
-    #     "settings",
-    #     "survey",
-    #     "update",
-    #     "featflags",
-    #     "exe",
-    #     "guess",
-    #     "news",
-    #     "intro",
-    #     "record",
-    # ]
+    CHOICES_COMMANDS = [
+        "survey",
+        "update",
+        "featflags",
+        "exe",
+        "guess",
+        "intro",
+        "record",
+    ]
     CHOICES_COMMANDS = []
     CHOICES_MENUS = []
 
@@ -257,9 +254,6 @@ class TerminalController(BaseController):
             mt.add_cmd("update")
         mt.add_raw("\n")
         mt.add_info("_configure_")
-        if is_auth_enabled():
-            mt.add_menu("account")
-        mt.add_menu("keys")
         mt.add_menu("featflags")
         mt.add_raw("\n")
         mt.add_info("_scripts_")
