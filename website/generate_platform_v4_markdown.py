@@ -715,7 +715,7 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
                         )
 
                 url = f"/platform/reference/{sub_dir_path}"
-                index_content += f"<ReferenceCard title='{title}' description='{sub_dir_description}' url='{url}' />\n"
+                index_content += f'<ReferenceCard title="{title}" description="{sub_dir_description}" url="{url}" />\n'
             index_content += "</ul>\n\n"
 
         # Commands section for markdown files
@@ -736,7 +736,7 @@ def generate_reference_index_files(reference_content: Dict[str, str]) -> None:
                     # and default to an empty string if not found
                     file_description = reference_content.get(f"/{file_path}", "").split(".")[0]  # fmt: skip
                     url = f"/platform/reference/{file_path}"
-                    index_content += f"<ReferenceCard title='{title}' description='{file_description}' url='{url}' />\n"
+                    index_content += f'<ReferenceCard title="{title}" description="{file_description}" url="{url}" />\n'
             index_content += "</ul>\n\n"
 
         # Save the index.mdx file
