@@ -51,7 +51,6 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.platform_controller_factory import (
     PlatformControllerFactory,
 )
-from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.routine_functions import is_reset, parse_openbb_script
 from openbb_terminal.terminal_helper import (
@@ -102,23 +101,6 @@ class TerminalController(BaseController):
     #     "news",
     #     "intro",
     #     "record",
-    # ]
-    # CHOICES_MENUS = [
-    #     "stocks",
-    #     "economy",
-    #     "crypto",
-    #     "portfolio",
-    #     "forex",
-    #     "etf",
-    #     "reports",
-    #     "dashboards",
-    #     "alternative",
-    #     "econometrics",
-    #     "sources",
-    #     "forecast",
-    #     "futures",
-    #     "fixedincome",
-    #     "funds",
     # ]
     CHOICES_COMMANDS = []
     CHOICES_MENUS = []
@@ -265,50 +247,28 @@ class TerminalController(BaseController):
     def print_help(self):
         """Print help."""
         mt = MenuText("")
-        # mt.add_raw("\n")
-        # mt.add_info("_home_")
-        # mt.add_cmd("intro")
-        # mt.add_cmd("about")
-        # mt.add_cmd("support")
-        # mt.add_cmd("survey")
-        # if not is_installer():
-        #     mt.add_cmd("update")
-        # mt.add_cmd("wiki")
-        # mt.add_cmd("news")
-        # mt.add_raw("\n")
-        # mt.add_info("_configure_")
-        # if is_auth_enabled():
-        #     mt.add_menu("account")
-        # mt.add_menu("keys")
-        # mt.add_menu("featflags")
-        # mt.add_menu("sources")
-        # mt.add_menu("settings")
-        # mt.add_raw("\n")
-        # mt.add_info("_scripts_")
-        # mt.add_cmd("record")
-        # mt.add_cmd("stop")
-        # mt.add_cmd("exe")
-        # mt.add_raw("\n")
-        # mt.add_cmd("askobb")
-        # mt.add_raw("\n")
-        # mt.add_info("_main_menu_")
-        # mt.add_menu("stocks")
-        # mt.add_menu("crypto")
-        # mt.add_menu("etf")
-        # mt.add_menu("economy")
-        # mt.add_menu("forex")
-        # mt.add_menu("futures")
-        # mt.add_menu("fixedincome")
-        # mt.add_menu("alternative")
-        # mt.add_menu("funds")
-        # mt.add_raw("\n")
-        # mt.add_info("_toolkits_")
-        # mt.add_menu("econometrics")
-        # mt.add_menu("forecast")
-        # mt.add_menu("portfolio")
-        # mt.add_menu("dashboards")
-        # mt.add_menu("reports")
-        # mt.add_raw("\n")
+        mt.add_raw("\n")
+        mt.add_info("_home_")
+        mt.add_cmd("intro")
+        mt.add_cmd("about")
+        mt.add_cmd("support")
+        mt.add_cmd("survey")
+        if not is_installer():
+            mt.add_cmd("update")
+        mt.add_raw("\n")
+        mt.add_info("_configure_")
+        if is_auth_enabled():
+            mt.add_menu("account")
+        mt.add_menu("keys")
+        mt.add_menu("featflags")
+        mt.add_raw("\n")
+        mt.add_info("_scripts_")
+        mt.add_cmd("record")
+        mt.add_cmd("stop")
+        mt.add_cmd("exe")
+        mt.add_raw("\n")
+        mt.add_cmd("askobb")
+        mt.add_raw("\n")
         mt.add_info("Platform CLI")
         for router, value in PLATFORM_ROUTERS.items():
             if value == "menu":
