@@ -88,36 +88,36 @@ class ROUTER_currency_price(Container):
             extra: Dict[str, Any]
                 Extra info.
 
-            CurrencyHistorical
-            ------------------
-            date : Union[date, datetime]
-                The date of the data.
-            open : float
-                The open price.
-            high : float
-                The high price.
-            low : float
-                The low price.
-            close : float
-                The close price.
-            volume : Optional[float]
-                The trading volume.
-            vwap : Optional[Annotated[float, Gt(gt=0)]]
-                Volume Weighted Average Price over the period.
-            adj_close : Optional[float]
-                The adjusted close price. (provider: fmp)
-            unadjusted_volume : Optional[float]
-                Unadjusted volume of the symbol. (provider: fmp)
-            change : Optional[float]
-                Change in the price of the symbol from the previous day. (provider: fmp)
-            change_percent : Optional[float]
-                Change % in the price of the symbol. (provider: fmp)
-            label : Optional[str]
-                Human readable format of the date. (provider: fmp)
-            change_over_time : Optional[float]
-                Change % in the price of the symbol over a period of time. (provider: fmp)
-            transactions : Optional[Annotated[int, Gt(gt=0)]]
-                Number of transactions for the symbol in the time period. (provider: polygon)
+        CurrencyHistorical
+        ------------------
+        date : Union[date, datetime]
+            The date of the data.
+        open : float
+            The open price.
+        high : float
+            The high price.
+        low : float
+            The low price.
+        close : float
+            The close price.
+        volume : Optional[float]
+            The trading volume.
+        vwap : Optional[Annotated[float, Gt(gt=0)]]
+            Volume Weighted Average Price over the period.
+        adj_close : Optional[float]
+            The adjusted close price. (provider: fmp)
+        unadjusted_volume : Optional[float]
+            Unadjusted volume of the symbol. (provider: fmp)
+        change : Optional[float]
+            Change in the price of the symbol from the previous day. (provider: fmp)
+        change_percent : Optional[float]
+            Change % in the price of the symbol. (provider: fmp)
+        label : Optional[str]
+            Human readable format of the date. (provider: fmp)
+        change_over_time : Optional[float]
+            Change % in the price of the symbol over a period of time. (provider: fmp)
+        transactions : Optional[Annotated[int, Gt(gt=0)]]
+            Number of transactions for the symbol in the time period. (provider: polygon)
 
         Example
         -------
