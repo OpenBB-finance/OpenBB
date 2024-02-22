@@ -309,7 +309,17 @@ def generate_reference_file() -> None:
         }
 
         # Add endpoint description
-        reference[path]["description"] = route.description
+        if route_method == {"GET"}:
+            reference[path]["description"] = route.description
+        elif route_method == {"POST"}:
+            # POST method router `description` attribute is unreliable as it may or
+            # may not contain the "Parameters" and "Returns" sections. Hence, the
+            # endpoint function docstring is used instead.
+            description = (
+                route.endpoint.__doc__.split("Parameters")[0].strip().replace("\n", " ")
+            )
+            # Remove extra spaces in between the string
+            reference[path]["description"] = re.sub(" +", " ", description)
 
         # Add endpoint examples
         reference[path]["examples"] = route.openapi_extra.get("examples", [])
