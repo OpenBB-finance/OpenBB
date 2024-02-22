@@ -663,20 +663,6 @@ class StocksController(StockBaseController):
         )
 
     @log_start_end(log=logger)
-    def call_ins(self, _):
-        """Process ins command."""
-        from openbb_terminal.stocks.insider.insider_controller import InsiderController
-
-        self.queue = self.load_class(
-            InsiderController,
-            self.ticker,
-            self.start,
-            self.interval,
-            self.stock,
-            self.queue,
-        )
-
-    @log_start_end(log=logger)
     def call_gov(self, _):
         """Process gov command."""
         from openbb_terminal.stocks.government.gov_controller import GovController
