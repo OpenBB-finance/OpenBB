@@ -948,10 +948,6 @@ def main(
         One or multiple inputs to be replaced in the routine and separated by commas.
         E.g. GME,AMC,BTC-USD
     """
-    if kwargs["module"] == "ipykernel_launcher":
-        bootup()
-        return ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
-
     if debug:
         set_system_variable("DEBUG_MODE", True)
 
