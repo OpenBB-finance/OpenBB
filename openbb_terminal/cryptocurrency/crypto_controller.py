@@ -367,23 +367,6 @@ class CryptoController(CryptoBaseController):
             )
 
     @log_start_end(log=logger)
-    def call_dd(self, _):
-        """Process dd command"""
-        if self.symbol:
-            from openbb_terminal.cryptocurrency.due_diligence.dd_controller import (
-                DueDiligenceController,
-            )
-
-            self.queue = self.load_class(
-                DueDiligenceController,
-                self.symbol,
-                self.source,
-                queue=self.queue,
-            )
-        else:
-            console.print("No coin selected. Use 'load' to load a coin.\n")
-
-    @log_start_end(log=logger)
     def call_onchain(self, _):
         """Process onchain command"""
         from openbb_terminal.cryptocurrency.onchain.onchain_controller import (
