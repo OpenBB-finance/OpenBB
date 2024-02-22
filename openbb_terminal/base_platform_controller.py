@@ -15,6 +15,8 @@ from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
 
+import pandas as pd
+
 logger = logging.getLogger(__name__)
 
 
@@ -118,8 +120,14 @@ class PlatformController(BaseController):
 
                     if hasattr(ns_parser, "chart") and ns_parser.chart:
                         obbject.show()
-                    else:
+                    elif hasattr(obbject, "to_dataframe"):
                         print_rich_table(obbject.to_dataframe())
+                    elif isinstance(obbject, dict):
+                        print_rich_table(
+                            pd.DataFrame.from_dict(obbject, orient="index")
+                        )
+                    else:
+                        console.print(obbject)
 
                 except Exception as e:
                     console.print(f"[red]{e}[/]\n")
