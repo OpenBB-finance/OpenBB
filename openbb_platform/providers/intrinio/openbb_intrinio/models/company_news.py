@@ -23,7 +23,7 @@ class IntrinioCompanyNewsQueryParams(CompanyNewsQueryParams):
     Source: https://docs.intrinio.com/documentation/web_api/get_company_news_v2
     """
 
-    __alias_dict__ = {"symbol": "symbols", "page": "next_page", "limit": "page_size"}
+    __alias_dict__ = {"symbol": "symbols", "limit": "page_size"}
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
 
@@ -67,7 +67,7 @@ class IntrinioCompanyNewsFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com/companies"
-        query_str = get_querystring(query.model_dump(by_alias=True), ["symbols"])
+        query_str = get_querystring(query.model_dump(by_alias=True), ["symbols", "page"])
 
         async def callback(response: ClientResponse, _: Any) -> List[Dict]:
             """Return the response."""
@@ -93,4 +93,4 @@ class IntrinioCompanyNewsFetcher(
     ) -> List[IntrinioCompanyNewsData]:
         """Return the transformed data."""
         modeled_data = [IntrinioCompanyNewsData.model_validate(d) for d in data]
-        return filter_by_dates(modeled_data, query.start_date, query.end_date)
+        return filter_by_dates(modeled_data, query.start_date, query.end_date)  # type: ignore

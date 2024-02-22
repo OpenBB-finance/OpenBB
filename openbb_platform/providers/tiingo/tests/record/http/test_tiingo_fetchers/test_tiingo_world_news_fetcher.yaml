@@ -9,112 +9,104 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://api.tiingo.com/tiingo/news?limit=20&offset=0&token=MOCK_TOKEN
+    uri: https://api.tiingo.com/tiingo/news?limit=20&token=MOCK_TOKEN
   response:
     body:
-      string: "[{\"id\":62518791,\"publishedDate\":\"2024-02-22T07:17:02Z\",\"title\":\"ChipMOS
-        GAAP EPADS of $0.43, revenue of $187M beats by $12.93M\",\"url\":\"https://seekingalpha.com/news/4070054-chipmos-gaap-epads-of-043-revenue-of-187m-beats-by-1293m\",\"description\":\"ChipMOS
-        press release (IMOS): Q4 GAAP EPADS of $0.43.\\nRevenue of $187M (+22.2% Y/Y)
-        beats by $12.93M.\\nStrong Financial Position and Liquidity with $403.5 million
-        balance of Cash\",\"source\":\"seekingalpha.com\",\"tags\":[],\"crawlDate\":\"2024-02-22T07:17:25.895070Z\",\"tickers\":[]},{\"id\":62518778,\"publishedDate\":\"2024-02-22T07:16:24.061899Z\",\"title\":\"Electric
-        van production to secure future of Vauxhall's Luton plant\",\"url\":\"https://news.sky.com/story/electric-van-production-to-secure-future-of-vauxhalls-luton-plant-13078020\",\"description\":\"Stellantis
-        says production at the Bedfordshire site from next year will initially be
-        limited but it is to make five models across its brand footprint.\",\"source\":\"news.sky.com\",\"tags\":[\"Business\",\"Consumer
-        Discretionary\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2024-02-22T07:16:29.183422Z\",\"tickers\":[\"nsany\",\"pugoy\"]},{\"id\":62518802,\"publishedDate\":\"2024-02-22T07:16:22Z\",\"title\":\"NVIDIA,
-        Keurig Dr Pepper And 3 Stocks To Watch Heading Into Thursday\",\"url\":\"https://www.benzinga.com/news/earnings/24/02/37253951/nvidia-keurig-dr-pepper-and-3-stocks-to-watch-heading-into-thursday\",\"description\":\"With
-        U.S. stock futures trading higher this morning on Thursday, some of the stocks
-        that may grab investor focus today are as follows:\",\"source\":\"benzinga.com\",\"tags\":[\"Benzinga\",\"Consumer
-        Defensive\",\"Earnings\",\"Kdp\",\"Markets\",\"News\",\"Nvda\",\"Pcg\",\"Pre-Market
-        Outlook\",\"Rivn\",\"Sq\",\"Stock\",\"Stocks To Watch\",\"Technology\",\"Trading
-        Ideas\",\"Unknown Sector\",\"Utilities\"],\"crawlDate\":\"2024-02-22T07:18:28.237846Z\",\"tickers\":[\"kdp\",\"ne-ws\",\"nvda\",\"pcg\",\"rivn\",\"sq\"]},{\"id\":62518821,\"publishedDate\":\"2024-02-22T07:16:00Z\",\"title\":\"Repsol
-        Plans Share Buyback Program\",\"url\":\"https://www.marketwatch.com/story/repsol-plans-share-buyback-program-d0cab731\",\"description\":\"By
-        Adria Calatayud Repsol said it plans to return up to 10 billion euros ($10.82
-        billion) to shareholders through dividends and share buybacks between 2024...\",\"source\":\"marketwatch.com\",\"tags\":[\"Energy\",\"Es:Rep\",\"Stock\"],\"crawlDate\":\"2024-02-22T07:18:59.194918Z\",\"tickers\":[\"repyy\"]},{\"id\":62518793,\"publishedDate\":\"2024-02-22T07:15:00Z\",\"title\":\"What
-        to Watch in Berkshire\u2019s Earnings, Buffett\u2019s Shareholder Letter\",\"url\":\"https://www.barrons.com/articles/berkshire-hathaway-earnings-stock-price-warren-buffett-c475011e\",\"description\":null,\"source\":\"barrons.com\",\"tags\":[\"Communication
-        Services\",\"Consumer Cyclical\",\"Consumer Discretionary\",\"Healthcare\",\"Stock\",\"Technology\",\"Unknown
-        Sector\"],\"crawlDate\":\"2024-02-22T07:17:33.021410Z\",\"tickers\":[\"aapl\",\"amzn\",\"brka\",\"chtr\",\"dva\",\"snow\",\"snow\",\"spx\"]},{\"id\":62518752,\"publishedDate\":\"2024-02-22T07:13:39Z\",\"title\":\"Carriage
-        beats top-line and bottom-line estimates; initiates Q1 and FY24 outlook\",\"url\":\"https://seekingalpha.com/news/4070053-carriage-beats-top-line-and-bottom-line-estimates-initiates-q1-and-fy24-outlook\",\"description\":\"Carriage
-        press release (CSV): Q4 Non-GAAP EPS of $0.77 beats by $0.28.\\nRevenue of
-        $98.8M (+5.2% Y/Y) beats by $5.15M.\\nOutlook: In the first quarter of 2024,
-        the company expects to close two\",\"source\":\"seekingalpha.com\",\"tags\":[],\"crawlDate\":\"2024-02-22T07:15:33.972381Z\",\"tickers\":[]},{\"id\":62518754,\"publishedDate\":\"2024-02-22T07:13:27Z\",\"title\":\"Eurostoxx
-        futures +0.8% in early European trading\",\"url\":\"https://www.forexlive.com/news/eurostoxx-futures-08-in-early-european-trading-20240222/\",\"description\":\"A
-        more positive mood greets European traders today\",\"source\":\"forexlive.com\",\"tags\":[\"News\",\"Stock\",\"Unknown
-        Sector\"],\"crawlDate\":\"2024-02-22T07:15:35.048839Z\",\"tickers\":[\"ne-ws\"]},{\"id\":62518758,\"publishedDate\":\"2024-02-22T07:13:00Z\",\"title\":\"AB
-        Electrolux publishes 2023 Annual Report\",\"url\":\"https://www.prnewswire.com/news-releases/ab-electrolux-publishes-2023-annual-report-302068405.html\",\"description\":\"/PRNewswire/
-        -- AB Electrolux Annual Report for 2023 has been published on the Group's
-        website as of today. The Annual Report in Swedish as well as an English...\",\"source\":\"prnewswire.com\",\"tags\":[\"Accounting
-        News & Issues\",\"Computer & Electronics\",\"Consumer & Cosmetics\",\"Earnings\",\"Electrical
-        Utilities\",\"Home Improvement\",\"Household\",\"Retail\"],\"crawlDate\":\"2024-02-22T07:15:40.042757Z\",\"tickers\":[]},{\"id\":62518799,\"publishedDate\":\"2024-02-22T07:12:40Z\",\"title\":\"Tesla
-        Charging Station Maintenance, Expansion In Sweden Under Threat As Trade Union
-        Extends Support To Striking IF Metall\",\"url\":\"https://www.benzinga.com/news/24/02/37254108/tesla-charging-station-maintenance-expansion-in-sweden-under-threat-as-trade-union-extends-support-t\",\"description\":\"
-        \",\"source\":\"benzinga.com\",\"tags\":[\"Benzinga\",\"Benzinga Neuro\",\"Consumer
-        Cyclical\",\"Electric Vehicles\",\"Evs\",\"Mobility\",\"News\",\"Stock\",\"Sweden\",\"Tech\",\"Tsla\",\"Unknown
-        Sector\"],\"crawlDate\":\"2024-02-22T07:18:27.116089Z\",\"tickers\":[\"ne-ws\",\"tm\",\"tsla\"]},{\"id\":62518743,\"publishedDate\":\"2024-02-22T07:12:00Z\",\"title\":\"Optical
-        Time Domain Reflectometer (OTDR) Market size to grow by USD 76.43 million
-        from 2022 to 2027, Aishwarya Technologies and Telecom Ltd., Anritsu Corp.,
-        Briticom, to emerge as some of the key companies, Technavio\",\"url\":\"https://www.prnewswire.com/news-releases/optical-time-domain-reflectometer-otdr-market-size-to-grow-by-usd-76-43-million-from-2022-to-2027--aishwarya-technologies-and-telecom-ltd-anritsu-corp-briticom-to-emerge-as-some-of-the-key-companies-technavio-302067331.html\",\"description\":\"/PRNewswire/
-        -- The potential growth difference for the optical time domain reflectometer
-        (OTDR) market from 2022 to 2027 is USD 76.43 million. Key companies...\",\"source\":\"prnewswire.com\",\"tags\":[\"Computer
-        & Electronics\",\"CryptoCurrency\",\"ETF\",\"FX\",\"Market Research Reports\",\"Networks\",\"Telecommunications
-        Industry\"],\"crawlDate\":\"2024-02-22T07:13:54.507574Z\",\"tickers\":[\"usd\"]},{\"id\":62518790,\"publishedDate\":\"2024-02-22T07:11:44Z\",\"title\":\"Live
-        updates | Attackers open fire in the West Bank, killing 1 Israeli and wounding
-        others\",\"url\":\"https://www.washingtonpost.com/national/2024/02/22/israel-hamas-war-live-updates-02-22-2024/a2403caa-d151-11ee-ac8b-765284b5203e_story.html\",\"description\":\"Israeli
-        police say three gunmen opened fire on the road near a checkpoint in the Israeli-occupied
-        West Bank, killing one Israeli and wounding at least eight, as violence persists
-        in the territory\",\"source\":\"washingtonpost.com\",\"tags\":[\"General\",\"Israel\",\"Israel-Hamas
-        War\",\"Ml--Israel-Palestinians-Live Updates\",\"Shootings\",\"War And Unrest\",\"World\"],\"crawlDate\":\"2024-02-22T07:16:56.108802Z\",\"tickers\":[]},{\"id\":62518746,\"publishedDate\":\"2024-02-22T07:11:34Z\",\"title\":\"Racist
-        attacker who stomped on Asian woman in Times Square jailed for 15 years\",\"url\":\"https://www.independent.co.uk/news/world/americas/crime/vilma-kari-times-square-racist-attack-b2500386.html\",\"description\":\"In
-        2021, Brandon Elliot repeatedly and viciously attacked then 65-year-old Vilma
-        Kari \",\"source\":\"independent.co.uk\",\"tags\":[\"Alvin Bragg\",\"Asian\",\"Filipino\",\"Hate
-        Crime\",\"Manhattan\",\"New York\",\"Times Square\"],\"crawlDate\":\"2024-02-22T07:14:27.121424Z\",\"tickers\":[]},{\"id\":62518740,\"publishedDate\":\"2024-02-22T07:11:00Z\",\"title\":\"AB
-        Electrolux publishes 2023 Annual Report\",\"url\":\"https://www.prnewswire.com/news-releases/ab-electrolux-publishes-2023-annual-report-302068403.html\",\"description\":\"/PRNewswire/
-        -- AB Electrolux Annual Report for 2023 has been published on the Group's
-        website as of today. The Annual Report in Swedish as well as an English...\",\"source\":\"prnewswire.com\",\"tags\":[\"Accounting
-        News & Issues\",\"Computer & Electronics\",\"Consumer & Cosmetics\",\"Earnings\",\"Electrical
-        Utilities\",\"Home Improvement\",\"Household\",\"Retail\"],\"crawlDate\":\"2024-02-22T07:13:50.434750Z\",\"tickers\":[]},{\"id\":62518696,\"publishedDate\":\"2024-02-22T07:10:37Z\",\"title\":\"Ziff
-        Davis beats top-line and bottom-line estimates; initiates FY24 outlook\",\"url\":\"https://seekingalpha.com/news/4070052-ziff-davis-beats-top-line-and-bottom-line-estimates-initiates-fy24-outlook\",\"description\":\"Ziff
-        Davis press release (ZD): Q4 Non-GAAP EPS of $2.33 beats by $1.10.\\nRevenue
-        of $389.9M (-1.7% Y/Y) beats by $71.27M.\\nAdjusted EBITDA for the quarter
-        decreased 0.4% to $167.6 million\",\"source\":\"seekingalpha.com\",\"tags\":[],\"crawlDate\":\"2024-02-22T07:11:32.729226Z\",\"tickers\":[]},{\"id\":62518745,\"publishedDate\":\"2024-02-22T07:10:22Z\",\"title\":\"Leicester
-        river search - latest: Missing boy named as father who tried to save him says
-        son is \u2018bundle of joy\u2019\",\"url\":\"https://www.independent.co.uk/news/uk/home-news/leicester-missing-boy-river-soar-xielo-maruziva-latest-b2500441.html\",\"description\":\"Leicestershire
-        Police\u2019s continue search for Xielo Maruziva in the River Soar as mother
-        desperate for return of \u2018cheeky\u2019 son \",\"source\":\"independent.co.uk\",\"tags\":[\"Leicester\",\"Leicestershire\",\"Leicestershire
-        Police\",\"River\"],\"crawlDate\":\"2024-02-22T07:14:25.845664Z\",\"tickers\":[]},{\"id\":62518744,\"publishedDate\":\"2024-02-22T07:10:17Z\",\"title\":\"In
-        Big News For INDIA, AAP-Congress Agree Delhi Seat Deal, Say Sources\",\"url\":\"https://www.ndtv.com/india-news/congress-aap-delhi-seat-sharing-lok-sabha-election-in-big-news-for-india-aap-congress-agree-delhi-seat-deal-say-sources-5105231\",\"description\":\"The
-        Congress and the Aam Aadmi Party are on the verge of a deal to divide Delhi's
-        seven Lok Sabha seats, sources have said.\",\"source\":\"ndtv.com\",\"tags\":[\"Aap
-        Congress Delhi Seat Sharing\",\"Aap Congress Delhi Seat Sharing Talks\",\"Aap
-        Congress India Alliance\",\"Aap-Congress Alliance\",\"Aap-Congress Alliance
-        In Delhi\",\"Aap-Congress Alliance Talks\",\"India\",\"India Alliance\",\"Lok
-        Sabha Election 2024\"],\"crawlDate\":\"2024-02-22T07:14:21.626780Z\",\"tickers\":[]},{\"id\":62518753,\"publishedDate\":\"2024-02-22T07:10:00Z\",\"title\":\"Verisk
-        Once Again Earns Great Place To Work Certification\u2122 in Poland\",\"url\":\"https://www.globenewswire.com/news-release/2024/02/22/2833326/0/en/Verisk-Once-Again-Earns-Great-Place-To-Work-Certification-in-Poland.html?f=22&fvtc=2&fvtv=1\",\"description\":\"KRAK\xD3W,
-        POLAND, Feb.  22, 2024  (GLOBE NEWSWIRE) -- For the second consecutive year,
-        leading global data analytics and technology provider Verisk...\",\"source\":\"globenewswire.com\",\"tags\":[\"Data
-        Analytics\",\"Employee Engagement\",\"Great Place To Work\",\"Inc. (Verisk)\",\"Industrials\",\"Insurance\",\"Insurance
-        Services Office\",\"Nasdaq:Vrsk\",\"Poland\",\"Stock\"],\"crawlDate\":\"2024-02-22T07:15:34.228247Z\",\"tickers\":[\"vrsk\"]},{\"id\":62518735,\"publishedDate\":\"2024-02-22T07:10:00Z\",\"title\":\"Xabi
-        Alonso snubbing Liverpool could leave perfect Thiago replacement off-limits\",\"url\":\"https://www.express.co.uk/sport/football/1869400/liverpool-news-xabi-alonso-thiago-alcantara\",\"description\":\"Liverpool
-        face fierce competition for Xabi Alonso as Europe's top clubs circle.\",\"source\":\"express.co.uk\",\"tags\":[\"Consumer
-        Cyclical\",\"Joshua Kimmich\",\"Liverpool\",\"Stock\",\"Thiago\",\"Thiago
-        Alcantara\",\"Xabi Alonso\"],\"crawlDate\":\"2024-02-22T07:13:40.624111Z\",\"tickers\":[\"manu\"]},{\"id\":62518693,\"publishedDate\":\"2024-02-22T07:09:20Z\",\"title\":\"Prankster
-        suspended from $20K-a-year school after he drenched boaters with milk in viral
-        stunt: \u2018I\u2019m just a kid, you ruined my life\u2019\",\"url\":\"https://nypost.com/2024/02/22/lifestyle/australian-teen-suspended-from-melbourne-grammar-school-after-drenching-boat-passengers-in-milk/\",\"description\":\"A
-        young prankster was booted from his $20,000-a-year school after video he posted
-        online shows him pouring milk on a group of women enjoying a boat ride.\",\"source\":\"nypost.com\",\"tags\":[\"Boats\",\"Pranks\",\"Schools\",\"Vacations\"],\"crawlDate\":\"2024-02-22T07:10:29.889875Z\",\"tickers\":[]},{\"id\":62518687,\"publishedDate\":\"2024-02-22T07:09:07Z\",\"title\":\"Switch
-        to electric vehicles could prevent child asthma attacks\",\"url\":\"https://www.upi.com/Health_News/2024/02/22/electric-vehicles/3381708541892/\",\"description\":\"If
-        all cars and trucks sold in America were \\\"zero emission\\\" by 2040 and
-        the country's electric grid was also powered by clean energy, nearly 2.8 million
-        child asthma attacks would be prevented annually.\",\"source\":\"upi.com\",\"tags\":[\"Health\",\"North
-        America\"],\"crawlDate\":\"2024-02-22T07:09:21.671104Z\",\"tickers\":[]}]"
+      string: "[{\"id\":62543755,\"publishedDate\":\"2024-02-22T18:00:26Z\",\"title\":\"15
+        Hot Penny Stocks On the Move\",\"url\":\"https://www.insidermonkey.com/blog/15-hot-penny-stocks-on-the-move-1260788/\",\"description\":\"Strong
+        inflation data from January and the Fed\",\"source\":\"insidermonkey.com\",\"tags\":[],\"crawlDate\":\"2024-02-22T18:00:41.711533Z\",\"tickers\":[]},{\"id\":62543748,\"publishedDate\":\"2024-02-22T18:00:00Z\",\"title\":\"The
+        U.S. Finally Started to Crack Down on Crypto Emissions in 2023\",\"url\":\"https://oilprice.com/Finance/the-Markets/The-US-Finally-Started-to-Crack-Down-on-Crypto-Emissions-in-2023.html\",\"description\":\"The
+        global push for comprehensive crypto regulations intensified in 2023 as the
+        U.S. cracked down on major firms, addressing environmental and security issues.\",\"source\":\"oilprice.com\",\"tags\":[\"Bitcoin\",\"Crime\",\"CryptoCurrency\",\"Cryptocurrency\",\"Energy\",\"Environment\",\"Mining\",\"Regulation\",\"United
+        States\"],\"crawlDate\":\"2024-02-22T18:00:27.430093Z\",\"tickers\":[]},{\"id\":62543750,\"publishedDate\":\"2024-02-22T18:00:00Z\",\"title\":\"VeChain:
+        Will This Important Update Take VET To 50 Cents?\",\"url\":\"https://watcher.guru/news/vechain-will-this-important-update-take-vet-to-50-cents\",\"description\":\"VeChain
+        (VET) has been gaining momentum in the cryptocurrency market, showcasing impressive
+        performance amid........\",\"source\":\"watcher.guru\",\"tags\":[\"CryptoCurrency\",\"Tiingo
+        Top\"],\"crawlDate\":\"2024-02-22T18:00:29.216257Z\",\"tickers\":[]},{\"id\":62543717,\"publishedDate\":\"2024-02-22T17:59:28Z\",\"title\":\"Mercedes-Benz
+        rallies after backing off 50% EV target, unveiling new buybacks\",\"url\":\"https://seekingalpha.com/news/4070483-mercedes-benz-rallies-after-backing-off-50-ev-target-unveiling-new-buybacks\",\"description\":\"Mercedes-Benz
+        delays electrification target by 5 years to 2030, announces stock buyback
+        program. Read more.\",\"source\":\"seekingalpha.com\",\"tags\":[\"Consumer
+        Discretionary\",\"Stock\"],\"crawlDate\":\"2024-02-22T18:00:00.801505Z\",\"tickers\":[\"mbgaf\"]},{\"id\":62543699,\"publishedDate\":\"2024-02-22T17:59:27.191176Z\",\"title\":\"Understanding
+        the Waves of Bitcoin Buying\",\"url\":\"https://www.cryptoglobe.com/latest/2024/02/understanding-the-waves-of-bitcoin-buying/\",\"description\":\"Have
+        you ever found yourself at the edge of the digital currency ocean, wondering
+        how to dive into the swirling currents of Bitcoin? It's a common place to
+        be as cryptocurrency becomes a staple of modern financial discussions. Just
+        like any other form of trading, there's a need to grasp the essentials before
+        you make the plunge. Whether it's setting up a digital wallet to store your
+        coins or finding the right platform for exchange, each step lays the foundation
+        for a seamless experience. For many, dipping a toe in begins with a simple
+        google of Bitcoin buy to survey the expanse of buying options and educational
+        resources available.\",\"source\":\"cryptoglobe.com\",\"tags\":[\"CryptoCurrency\"],\"crawlDate\":\"2024-02-22T17:59:38.864060Z\",\"tickers\":[]},{\"id\":62543694,\"publishedDate\":\"2024-02-22T17:58:32Z\",\"title\":\"PCH
+        Reopens After Mudslides, Malibu Canyon Remains Closed\",\"url\":\"https://patch.com/california/malibu/pch-reopens-after-mudslides-malibu-canyon-remains-closed\",\"description\":\"Crews
+        are working to clear mudslides that have hampered travel in and around Malibu
+        this week.\",\"source\":\"patch.com\",\"tags\":[\"California\",\"Canyon\",\"Closed\",\"Malibu\",\"Mudslides\",\"Remains\",\"Reopens\",\"Traffic\",\"Transit\"],\"crawlDate\":\"2024-02-22T17:59:34.787354Z\",\"tickers\":[]},{\"id\":62543754,\"publishedDate\":\"2024-02-22T17:58:23Z\",\"title\":\"Hora
+        de hablar de una nueva solucin para el conflicto israel-palestino\",\"url\":\"https://www.jpost.com/spanish/opinion/article-788420\",\"description\":\"Despu\xE9s
+        del 7 de octubre, es momento de que pol\xEDticos, expertos en seguridad y
+        grupos de reflexi\xF3n ofrezcan nuevas y creativas sugerencias, ya que las
+        que han circulado hasta ahora han fracasado.\\r\\n\",\"source\":\"jpost.com\",\"tags\":[\"Es-Israel\",\"Ham\xE1s\",\"Israel\",\"Palestina\",\"Palestinian
+        Territories\",\"Soluci\xF3n De Dos Estados\"],\"crawlDate\":\"2024-02-22T18:00:40.855387Z\",\"tickers\":[]},{\"id\":62543573,\"publishedDate\":\"2024-02-22T17:58:19.939191Z\",\"title\":\"Illuminating
+        the source-sink balancing act of photosynthetic 'tiny green bacteria'\",\"url\":\"https://phys.org/news/2024-02-illuminating-source-photosynthetic-tiny-green.html\",\"description\":\"Cyanobacteria
+        are little green microorganisms that photosynthesize, like plants and algae
+        do, but with stark differences in how they function.\",\"source\":\"phys.org\",\"tags\":[\"Biology\",\"Cell
+        & Microbiology\"],\"crawlDate\":\"2024-02-22T17:58:23.064214Z\",\"tickers\":[]},{\"id\":62543644,\"publishedDate\":\"2024-02-22T17:57:08Z\",\"title\":\"2024
+        NFL Draft odds, predictions: Who will go after Caleb Williams?\",\"url\":\"https://nypost.com/2024/02/22/sports/2024-nfl-draft-odds-predictions-who-will-go-after-caleb-williams/\",\"description\":\"The
+        Washington Commanders\u2019 pick at No. 2 is a bit unclear.\",\"source\":\"nypost.com\",\"tags\":[\"Drake
+        Maye\",\"Nfl Betting\",\"Nfl Draft\",\"Nfl Draft 2024\",\"Sports Betting\",\"Sports
+        Picks\"],\"crawlDate\":\"2024-02-22T17:58:37.005962Z\",\"tickers\":[]},{\"id\":62543580,\"publishedDate\":\"2024-02-22T17:56:52Z\",\"title\":\"Is
+        Amazon shutting down Freevee? Here's what we know so far\",\"url\":\"https://www.tomsguide.com/entertainment/prime-video/is-amazon-shutting-down-freevee-heres-what-we-know-so-far\",\"description\":\"Prime
+        Video with ads may render Freevee redundant\",\"source\":\"tomsguide.com\",\"tags\":[],\"crawlDate\":\"2024-02-22T17:58:24.495914Z\",\"tickers\":[]},{\"id\":62543753,\"publishedDate\":\"2024-02-22T17:56:50Z\",\"title\":\"Gemini
+        - Google's New AI, Offers Users Free Image Creation And More\",\"url\":\"https://www.ndtv.com/world-news/gemini-googles-new-ai-offers-users-free-image-creation-and-more-5105962\",\"description\":\"Gemini,
+        released on December 6, 2023, and powered by the Imagen 2 model, allows users
+        to generate high-quality images with text prompts.\",\"source\":\"ndtv.com\",\"tags\":[\"Gemini\",\"Google
+        Ai\",\"Healthcare\",\"Industrials\",\"Stock\",\"Technology\"],\"crawlDate\":\"2024-02-22T18:00:37.930340Z\",\"tickers\":[\"goog\",\"googl\",\"vrtx\",\"vtnr\"]},{\"id\":62543565,\"publishedDate\":\"2024-02-22T17:56:49Z\",\"title\":\"Municipal
+        Elections \u2013 a Basic Guide\",\"url\":\"https://www.jpost.com/israel-news/article-788422\",\"description\":\"Elections
+        for local authorities, first scheduled for October 31, were postponed twice
+        due to the October 7 massacre and subsequent nation-wide draft of hundreds
+        of thousands of reservists.\",\"source\":\"jpost.com\",\"tags\":[\"Israel
+        Elections\",\"Israel-Hamas War 2024\",\"Israeli\",\"Municipal Elections\"],\"crawlDate\":\"2024-02-22T17:58:17.440229Z\",\"tickers\":[]},{\"id\":62543688,\"publishedDate\":\"2024-02-22T17:56:39Z\",\"title\":\"Does
+        Fubo\u2019s antitrust lawsuit against ESPN, Fox, and WBD stand a chance?\",\"url\":\"https://arstechnica.com/tech-policy/2024/02/does-fubos-antitrust-lawsuit-against-espn-fox-and-wbd-stand-a-chance/\",\"description\":\"Fubo:
+        Media giants' anticompetitive tactics already killed PS Vue, other streamers.\",\"source\":\"arstechnica.com\",\"tags\":[\"Consumer
+        Cyclical\",\"Stock\",\"Tiingo Top\"],\"crawlDate\":\"2024-02-22T17:59:25.401501Z\",\"tickers\":[\"dis\"]},{\"id\":62543696,\"publishedDate\":\"2024-02-22T17:56:28Z\",\"title\":\"Jan
+        6 Capitol Riot Participation Lands Charges For Philly Man: Feds\",\"url\":\"https://patch.com/pennsylvania/ardmore/philly-man-charged-jan-6-capitol-riot-participation-feds\",\"description\":\"A
+        67-year-old Philadelphia man is accused of illegally entering the United States
+        Capitol building on Jan. 6, 2021.\",\"source\":\"patch.com\",\"tags\":[\"Capitol\",\"Charges\",\"Crime\",\"Participation\",\"Pennsylvania\",\"Philadelphia\",\"Philly\",\"Safety\",\"United
+        States\"],\"crawlDate\":\"2024-02-22T17:59:36.085142Z\",\"tickers\":[]},{\"id\":62543627,\"publishedDate\":\"2024-02-22T17:56:24Z\",\"title\":\"5
+        Hot Penny Stock On the Move\",\"url\":\"https://www.insidermonkey.com/blog/5-hot-penny-stock-on-the-move-1260790/\",\"description\":\"Applied
+        Therapeutics Inc (NASDAQ:APLT) shares jumped about 79% over the past five
+        days through February 22.\",\"source\":\"insidermonkey.com\",\"tags\":[\"Stock\",\"Unknown
+        Sector\"],\"crawlDate\":\"2024-02-22T17:58:33.379918Z\",\"tickers\":[\"aplt\"]},{\"id\":62543702,\"publishedDate\":\"2024-02-22T17:56:11Z\",\"title\":\"Police
+        special constable sacked for watching footage of stabbed Nottingham attack
+        victims\",\"url\":\"https://www.independent.co.uk/news/uk/crime/nottingham-valdo-calocane-police-sacked-grace-omalley-b2500862.html\",\"description\":\"Almost
+        180 police staff accessed material relating to the knife rampage \u2013 although
+        11 had no legitimate policing reason to do so\",\"source\":\"independent.co.uk\",\"tags\":[\"Nottingham\",\"Police\"],\"crawlDate\":\"2024-02-22T17:59:40.275499Z\",\"tickers\":[]},{\"id\":62543438,\"publishedDate\":\"2024-02-22T17:56:10Z\",\"title\":\"Putin
+        smiles when asked about 'crude' Biden remark\",\"url\":\"https://thewest.com.au/politics/putin-smiles-when-asked-about-crude-biden-remark-c-13695777\",\"description\":\"Russian
+        President Vladimir Putin has told media the US president's remark calling
+        him a \\\"crazy SOB\\\" shows why the Kremlin prefers Joe Biden to Donald
+        Trump.\",\"source\":\"thewest.com.au\",\"tags\":[\"Politics\",\"Russian Federation\",\"Tiingo
+        Top\"],\"crawlDate\":\"2024-02-22T17:56:21.908531Z\",\"tickers\":[]},{\"id\":62543751,\"publishedDate\":\"2024-02-22T17:55:48Z\",\"title\":\"Almadex
+        Samples 0.59% copper and 0.18 g/t gold in Outcrop at Newly-Acquired Porphyry
+        Target in Nevada, USA\",\"url\":\"https://www.globenewswire.com/news-release/2024/02/22/2833982/0/en/Almadex-Samples-0-59-copper-and-0-18-g-t-gold-in-Outcrop-at-Newly-Acquired-Porphyry-Target-in-Nevada-USA.html?f=22&fvtc=2&fvtv=1\",\"description\":\"VANCOUVER,
+        British Columbia, Feb.  22, 2024  (GLOBE NEWSWIRE) -- Almadex Minerals Ltd.
+        (\",\"source\":\"globenewswire.com\",\"tags\":[\"#Criticalminerals\",\"#Prospectgenerator\",\"Almadex
+        Minerals Ltd.\",\"Tsx Venture Exchange:Dex\"],\"crawlDate\":\"2024-02-22T18:00:31.672332Z\",\"tickers\":[]},{\"id\":62543490,\"publishedDate\":\"2024-02-22T17:55:38Z\",\"title\":\"Wi-Fi
+        software found in many major laptops and smartphones has a major security
+        flaw \u2014 here's what you need to know\",\"url\":\"https://www.techradar.com/pro/security/wi-fi-software-found-in-many-major-laptops-and-smartphones-has-a-major-security-flaw-heres-what-you-need-to-know\",\"description\":\"Do
+        you know which SSID you're connecting to?\",\"source\":\"techradar.com\",\"tags\":[\"Stock\",\"Technology\"],\"crawlDate\":\"2024-02-22T17:57:20.899177Z\",\"tickers\":[\"rht\"]},{\"id\":62543752,\"publishedDate\":\"2024-02-22T17:55:38Z\",\"title\":\"Delhi
+        Police Issues Traffic Advisory In View Of Farmers' Protest\",\"url\":\"https://www.ndtv.com/india-news/delhi-police-issues-traffic-advisory-in-view-of-farmers-protest-5108716\",\"description\":\"The
+        Delhi Police on Thursday issued a traffic advisory in view of the farmers'
+        protest, saying vehicular movement will be affected on city borders due to
+        pickets and checkpoints and asked commuters to plan accordingly.\",\"source\":\"ndtv.com\",\"tags\":[\"Delhi
+        Police Advisory Farmers Protest\",\"Delhi Police Traffic Advisory\",\"Farmers
+        Protest Traffic Advisory\"],\"crawlDate\":\"2024-02-22T18:00:35.439403Z\",\"tickers\":[]}]"
     headers:
       Allow:
       - GET, HEAD, OPTIONS
       Content-Length:
-      - '12292'
+      - '10951'
       Content-Type:
       - application/json
       Date:
-      - Thu, 22 Feb 2024 07:19:54 GMT
+      - Thu, 22 Feb 2024 18:01:11 GMT
       Server:
       - nginx/1.18.0 (Ubuntu)
       Vary:
