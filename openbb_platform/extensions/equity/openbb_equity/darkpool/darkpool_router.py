@@ -15,16 +15,21 @@ router = Router(prefix="/darkpool")
 # pylint: disable=unused-argument
 
 
-@router.command(model="OTCAggregate")
+@router.command(
+    model="OTCAggregate",
+    examples=[
+        "# Get OTC data for a symbol",
+        "obb.equity.darkpool.otc(symbol='AAPL')",
+    ],
+)
 async def otc(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Weekly aggregate trade data for Over The Counter deals.
+    """Get the weekly aggregate trade data for Over The Counter deals.
 
     ATS and non-ATS trading data for each ATS/firm
-    with trade reporting obligations under FINRA rules.
-    """
+    with trade reporting obligations under FINRA rules."""
     return await OBBject.from_query(Query(**locals()))

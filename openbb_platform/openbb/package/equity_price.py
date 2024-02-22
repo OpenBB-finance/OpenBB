@@ -52,7 +52,7 @@ class ROUTER_equity_price(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Equity Historical price. Load stock data for a specific ticker.
+        """Get historical price data for a given stock. This includes open, high, low, close, and volume.
 
         Parameters
         ----------
@@ -211,7 +211,7 @@ class ROUTER_equity_price(Container):
         provider: Optional[Literal["polygon"]] = None,
         **kwargs
     ) -> OBBject:
-        """Equity NBBO. Load National Best Bid and Offer for a specific equity.
+        """Get the National Best Bid and Offer for a given stock.
 
         Parameters
         ----------
@@ -343,7 +343,7 @@ class ROUTER_equity_price(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Price performance as a return, over different periods.
+        """Get price performance data for a given stock. This includes price changes for different time periods.
 
         Parameters
         ----------
@@ -437,7 +437,7 @@ class ROUTER_equity_price(Container):
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Equity Quote. Load stock data for a specific ticker.
+        """Get the latest quote for a given stock. Quote includes price, volume, and other data.
 
         Parameters
         ----------
