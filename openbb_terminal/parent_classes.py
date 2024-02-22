@@ -12,12 +12,11 @@ import logging
 import os
 import re
 from abc import ABCMeta, abstractmethod
-from datetime import datetime, timedelta
+from datetime import datetime
 from io import StringIO
 from typing import Any, Dict, List, Optional, Union
 
 # IMPORTS THIRDPARTY
-import pandas as pd
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
@@ -31,13 +30,11 @@ from openbb_terminal.core.config.paths import HIST_FILE_PATH
 from openbb_terminal.core.session import hub_model as Hub
 from openbb_terminal.core.session.constants import SCRIPT_TAGS
 from openbb_terminal.core.session.current_user import get_current_user, is_local
-from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_file_type_saved,
     check_positive,
-    export_data,
     get_flair,
     parse_and_split_input,
     prefill_form,
@@ -46,7 +43,6 @@ from openbb_terminal.helper_funcs import (
     set_command_location,
     support_message,
     system_clear,
-    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console, get_ordered_list_sources
@@ -68,14 +64,6 @@ EXPORT_ONLY_FIGURES_ALLOWED = 2
 EXPORT_BOTH_RAW_DATA_AND_FIGURES = 3
 
 controllers: Dict[str, Any] = {}
-
-CRYPTO_SOURCES = {
-    "bin": "Binance",
-    "CoinGecko": "CoinGecko",
-    "cp": "CoinPaprika",
-    "cb": "Coinbase",
-    "YahooFinance": "YahooFinance",
-}
 
 SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
 
@@ -1376,149 +1364,3 @@ class BaseController(metaclass=ABCMeta):
                 elif self.TRY_RELOAD and get_current_user().preferences.RETRY_WITH_LOAD:
                     console.print(f"\nTrying `load {an_input}`\n")
                     self.queue.insert(0, "load " + an_input)
-
-
-class CryptoBaseController(BaseController, metaclass=ABCMeta):
-    """Base controller class for crypto related menus."""
-
-    def __init__(self, queue):
-        """Instantiate the base class for Crypto Controllers that use a load function."""
-        super().__init__(queue)
-
-        self.symbol = ""
-        self.vs = ""
-        self.current_df = pd.DataFrame()
-        self.current_currency = ""
-        self.source = ""
-        self.current_interval = ""
-        self.exchange = ""
-        self.price_str = ""
-        self.interval = ""
-        self.resolution = "1D"
-        self.TRY_RELOAD = True
-        self.exchanges = cryptocurrency_helpers.get_exchanges_ohlc()
-
-    def call_load(self, other_args):
-        """Process load command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="""Load crypto currency to perform analysis on.
-            Yahoo Finance is used as default source.
-            Other sources can be used such as 'ccxt' or 'cg' with --source.
-            If you select 'ccxt', you can then select any exchange with --exchange.
-            You can also select a specific interval with --interval.""",
-        )
-        parser.add_argument(
-            "-c",
-            "--coin",
-            help="Coin to get. Must be coin symbol (e.g., btc, eth)",
-            dest="coin",
-            type=str,
-            required="-h" not in other_args and "--help" not in other_args,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date,
-            default=(datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d"),
-            dest="start",
-            help="The starting date (format YYYY-MM-DD) of the crypto",
-        )
-
-        parser.add_argument(
-            "--exchange",
-            help="Exchange to search",
-            dest="exchange",
-            type=str,
-            default="binance",
-            choices=self.exchanges,
-        )
-
-        parser.add_argument(
-            "-e",
-            "--end",
-            type=valid_date,
-            default=datetime.now().strftime("%Y-%m-%d"),
-            dest="end",
-            help="The ending date (format YYYY-MM-DD) of the crypto",
-        )
-        parser.add_argument(
-            "-i",
-            "--interval",
-            action="store",
-            dest="interval",
-            type=str,
-            default="1440",
-            choices=["1", "5", "15", "30", "60", "240", "1440", "10080", "43200"],
-            help="The interval of the crypto",
-        )
-
-        parser.add_argument(
-            "--vs",
-            help="Quote currency (what to view coin vs). e.g., usdc, usdt, ... if source is ccxt, usd, eur, ... otherwise",  # noqa
-            dest="vs",
-            default="usdt",
-            type=str,
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-c")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            if (
-                ns_parser.source in ("YahooFinance", "CoinGecko")
-                and ns_parser.vs == "usdt"
-            ):
-                ns_parser.vs = "usd"
-            if ns_parser.source == "YahooFinance" and ns_parser.interval in [
-                "240",
-                "10080",
-                "43200",
-            ]:
-                console.print(
-                    f"[red]YahooFinance does not support {ns_parser.interval}min interval[/red]"
-                )
-                return
-            (self.current_df) = cryptocurrency_helpers.load(
-                symbol=ns_parser.coin.lower(),
-                to_symbol=ns_parser.vs,
-                end_date=ns_parser.end.strftime("%Y-%m-%d"),
-                start_date=ns_parser.start.strftime("%Y-%m-%d"),
-                interval=ns_parser.interval,
-                source=ns_parser.source,
-                exchange=ns_parser.exchange,
-            )
-            if not self.current_df.empty:
-                self.vs = ns_parser.vs
-                self.exchange = ns_parser.exchange
-                self.source = ns_parser.source
-                self.current_interval = ns_parser.interval
-                self.current_currency = ns_parser.vs
-                self.symbol = ns_parser.coin.lower()
-                self.data = (  # pylint: disable=attribute-defined-outside-init
-                    self.current_df.copy()
-                )
-                cryptocurrency_helpers.show_quick_performance(
-                    self.current_df,
-                    self.symbol,
-                    self.current_currency,
-                    ns_parser.source,
-                    ns_parser.exchange,
-                    self.current_interval,
-                )
-                export_data(
-                    ns_parser.export,
-                    os.path.dirname(os.path.abspath(__file__)),
-                    "load",
-                    self.current_df.copy(),
-                    sheet_name=(
-                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                    ),
-                )
