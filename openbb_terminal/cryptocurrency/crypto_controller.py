@@ -306,28 +306,6 @@ class CryptoController(CryptoBaseController):
             )
 
     @log_start_end(log=logger)
-    def call_ta(self, _):
-        """Process ta command"""
-        from openbb_terminal.cryptocurrency.technical_analysis.ta_controller import (
-            TechnicalAnalysisController,
-        )
-
-        # TODO: Play with this to get correct usage
-        if self.symbol:
-            if self.current_currency != "" and not self.current_df.empty:
-                self.queue = self.load_class(
-                    TechnicalAnalysisController,
-                    stock=self.current_df,
-                    coin=self.symbol,
-                    start=self.current_df.index[0],
-                    interval="",
-                    queue=self.queue,
-                )
-
-        else:
-            console.print("No coin selected. Use 'load' to load a coin.\n")
-
-    @log_start_end(log=logger)
     def call_tools(self, _):
         """Process tools command"""
         from openbb_terminal.cryptocurrency.tools.tools_controller import (
