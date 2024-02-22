@@ -158,9 +158,9 @@ class BenzingaCompanyNewsFetcher(
         )
 
         pages = math.ceil(query.limit / 100) if query.limit else 1
-
+        page_size = 100 if query.limit and query.limit > 100 else query.limit
         urls = [
-            f"{base_url}?{querystring}&page={page}&pageSize=100&token={token}"
+            f"{base_url}?{querystring}&page={page}&pageSize={page_size}&token={token}"
             for page in range(pages)
         ]
 
