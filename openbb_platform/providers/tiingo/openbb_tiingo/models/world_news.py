@@ -1,5 +1,9 @@
 """Tiingo World News Model."""
 
+# pylint: disable=unused-argument
+
+import json
+import math
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -9,8 +13,7 @@ from openbb_core.provider.standard_models.world_news import (
     WorldNewsData,
     WorldNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import get_querystring
-from openbb_tiingo.utils.helpers import get_data_many
+from openbb_core.provider.utils.helpers import amake_requests, get_querystring
 from pydantic import Field, field_validator
 
 
@@ -60,12 +63,6 @@ class TiingoWorldNewsData(WorldNewsData):
         """Validate the date."""
         return parser.parse(v)
 
-    @field_validator("symbols", mode="after")
-    @classmethod
-    def symbols_validate(cls, v: str):
-        """Convert symbols to upper case."""
-        return v.upper()
-
 
 class TiingoWorldNewsFetcher(
     Fetcher[
@@ -81,8 +78,8 @@ class TiingoWorldNewsFetcher(
         return TiingoWorldNewsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
-        query: TiingoWorldNewsQueryParams,  # pylint: disable=unused-argument
+    async def aextract_data(
+        query: TiingoWorldNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -90,15 +87,28 @@ class TiingoWorldNewsFetcher(
         api_key = credentials.get("tiingo_token") if credentials else ""
 
         base_url = "https://api.tiingo.com/tiingo/news"
-        query_str = get_querystring(query.model_dump(by_alias=True), [])
-        url = f"{base_url}?{query_str}&token={api_key}"
 
-        return get_data_many(url)
+        query_str = get_querystring(
+            query.model_dump(by_alias=False), ["limit", "offset"]
+        )
 
-    # pylint: disable=unused-argument
+        limit = query.limit if query.limit else 1000
+        pages = 0
+        if limit > 1000:
+            pages = math.ceil(limit / 1000)
+            limit = 1000
+            urls = [
+                f"{base_url}?{query_str}&token={api_key}&limit={limit}&offset={page * 1000 if page > 0 else 0}"
+                for page in range(0, pages)
+            ]
+        else:
+            urls = [f"{base_url}?{query_str}&token={api_key}&limit={limit}"]
+
+        return await amake_requests(urls)
+
     @staticmethod
     def transform_data(
         query: TiingoWorldNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[TiingoWorldNewsData]:
         """Return the transformed data."""
-        return [TiingoWorldNewsData.model_validate(d) for d in data]
+        return [TiingoWorldNewsData.model_validate(d) for d in data[: query.limit]]

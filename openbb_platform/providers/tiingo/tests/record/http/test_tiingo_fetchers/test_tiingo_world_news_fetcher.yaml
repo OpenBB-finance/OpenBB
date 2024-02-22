@@ -3,132 +3,121 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
     uri: https://api.tiingo.com/tiingo/news?limit=20&offset=0&token=MOCK_TOKEN
   response:
     body:
-      string: "[{\"id\":59591461,\"publishedDate\":\"2023-11-16T08:38:56Z\",\"title\":\"How
-        to navigate higher education finances for a transformative journey? MintGenie
-        explains\",\"url\":\"https://www.livemint.com/money/personal-finance/how-to-navigate-higher-education-finances-for-a-transformative-journey-mintgenie-explains-11699517017204.html\",\"description\":\"Navigating
-        higher education finances requires careful planning and a personal approach.
-        Prioritize, stay informed, budget effectively, seek scholarships, explore
-        investments, and manage loans wisely to establish a robust foundation for
-        a successful educational journey.\",\"source\":\"livemint.com\",\"tags\":[\"Budgeting\",\"Cost
-        Of Education\",\"Educational Goals\",\"Expert Speak\",\"Financial Goals\",\"Financial
-        Planning\",\"Financial Resources\",\"Higher Education\",\"Inflation\",\"Investing\",\"Loans\",\"Mutual
-        Funds\",\"Personal Finance\",\"Scholarships\",\"Stocks\",\"Tax Benefits\"],\"crawlDate\":\"2023-11-16T08:39:15.354554Z\",\"tickers\":[]},{\"id\":59591464,\"publishedDate\":\"2023-11-16T08:38:22Z\",\"title\":\"Broome
-        financial counsellor Sen Amaratunga recognised for service to community\",\"url\":\"https://thewest.com.au/news/broome-advertiser/broome-financial-counsellor-sen-amaratunga-recognised-for-service-to-community--c-12574080\",\"description\":\"A
-        Broome financial counsellor has been honoured with an award for his dedication
-        to servicing the community.\_\",\"source\":\"thewest.com.au\",\"tags\":[\"Broome-Advertiser\",\"Kimberley\"],\"crawlDate\":\"2023-11-16T08:39:32.545512Z\",\"tickers\":[]},{\"id\":59591466,\"publishedDate\":\"2023-11-16T08:38:00Z\",\"title\":\"NetEase
-        Announces Third Quarter 2023 Unaudited Financial Results\",\"url\":\"https://www.prnewswire.com/news-releases/netease-announces-third-quarter-2023-unaudited-financial-results-301990338.html\",\"description\":\"/PRNewswire/
-        -- NetEase, Inc. (NASDAQ: NTES and HKEX: 9999, \\\"NetEase\\\" or the \\\"Company\\\"),
-        a leading internet and game services provider, today announced its...\",\"source\":\"prnewswire.com\",\"tags\":[\"Banking
-        & Financial Services\",\"Computer & Electronics\",\"Computer Software\",\"Earnings\",\"Earnings
-        Forecasts & Projections\",\"Electronic Gaming\",\"Entertainment\",\"Internet
-        Technology\",\"Mobile Entertainment\",\"Multimedia & Internet\",\"Telecommunications
-        Industry\",\"Web Site\"],\"crawlDate\":\"2023-11-16T08:39:47.836668Z\",\"tickers\":[]},{\"id\":59591465,\"publishedDate\":\"2023-11-16T08:37:46Z\",\"title\":\"UK's
-        Cameron makes first official visit to Ukraine\",\"url\":\"https://thewest.com.au/news/conflict/uks-cameron-makes-first-official-visit-to-ukraine-c-12578128\",\"description\":\"David
-        Cameron has met President Volodymyr Zelenskiy to underscore Britain's support
-        for Ukraine on his first official trip as foreign secretary.\",\"source\":\"thewest.com.au\",\"tags\":[\"Conflict\",\"Ukraine\"],\"crawlDate\":\"2023-11-16T08:39:33.544746Z\",\"tickers\":[]},{\"id\":59591382,\"publishedDate\":\"2023-11-16T08:37:25.324087Z\",\"title\":\"Retail,
-        institutional investors to be subject to same rules for short selling for
-        fairness\",\"url\":\"https://koreatimes.co.kr/www/nation/2023/11/488_363360.html?utm_source=fl\",\"description\":\"The
-        ruling People Power Party and financial authorities have announced plans to
-        apply the same conditions for the local short selling system for both retail
-        and institutional investors. \",\"source\":\"koreatimes.co.kr\",\"tags\":[\"Fsc\",\"Fss\",\"Korea\",\"Korea
-        Times\",\"Korean In English\",\"Koreatimes\",\"Short Selling\",\"South Korea\",\"The
-        Korea Times\",\"Tiingo Top\"],\"crawlDate\":\"2023-11-16T08:37:26.483241Z\",\"tickers\":[]},{\"id\":59591420,\"publishedDate\":\"2023-11-16T08:37:24Z\",\"title\":\"Bill
-        Director buys stock worth $1M (NYSE:BILL)\",\"url\":\"https://seekingalpha.com/news/4037421-bill-director-buys-stock-worth-1m\",\"description\":\"Bill
-        Holdings director David Hornik purchased $1M worth of shares at $56.49 each.
-        The stock price is up 1.9% to $60.75 pre-market.\",\"source\":\"seekingalpha.com\",\"tags\":[\"Stock\",\"Unknown
-        Sector\"],\"crawlDate\":\"2023-11-16T08:38:21.175265Z\",\"tickers\":[\"bill\"]},{\"id\":59591429,\"publishedDate\":\"2023-11-16T08:37:11.873000Z\",\"title\":\"New
-        Delhi smog grows more intense as farm fires rage\",\"url\":\"https://www.reuters.com/world/india/new-delhi-smog-grows-more-intense-farm-fires-rage-2023-11-16/\",\"description\":\"Toxic
-        smog gripping New Delhi grew more intense on Thursday as farm fires raged
-        in nearby fields despite a court-ordered ban, making India's capital the world's
-        most polluted city again.\",\"source\":\"reuters.com\",\"tags\":[\"2023:Ml_Kbn32B0Iw\",\"2023:Ml_Kbn32B0Iw:1\",\"2023:Ml_L1N3Ch0Kv\",\"2023:Ml_L1N3Ch0Kv:1327319944\",\"2023:Ml_M1L1N3Ch0Kv\",\"2023:Ml_M1L1N3Ch0Kv:1327319944\",\"Guid:Tag:Reuters.Com\",\"India\",\"Usn:Kbn32B0Iw\",\"Usn:L1N3Ch0Kv\",\"Usn:M1L1N3Ch0Kv\",\"Vguid:Tag:Reuters.Com\"],\"crawlDate\":\"2023-11-16T08:38:28.349029Z\",\"tickers\":[]},{\"id\":59591435,\"publishedDate\":\"2023-11-16T08:37:09Z\",\"title\":\"Fans
-        to miss Coldplay after flight cancellation\",\"url\":\"https://www.smh.com.au/national/fans-to-miss-coldplay-after-flight-cancellation-20231116-p5eko8.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"Coldplay
-        and Robbie Williams fans are devastated to miss their concerts after flights
-        were cancelled from Adelaide Airport.\",\"source\":\"smh.com.au\",\"tags\":[\"National\"],\"crawlDate\":\"2023-11-16T08:38:31.298558Z\",\"tickers\":[]},{\"id\":59591380,\"publishedDate\":\"2023-11-16T08:37:05Z\",\"title\":\"Bitcoin\u2019s
-        Price is Pumping in the Past 24 Hours: Here\u2019s Why\",\"url\":\"https://cryptopotato.com/bitcoins-price-is-pumping-in-the-past-24-hours-heres-why/\",\"description\":\"BTC
-        rose to almost $38K following the SEC's latest delay on crypto ETF applications.\",\"source\":\"cryptopotato.com\",\"tags\":[\"Bitcoin\",\"Bitcoin
-        (Btc) Price\",\"Crypto Bits\",\"Crypto News\",\"CryptoCurrency\",\"ETF\",\"Financial
-        Services\",\"Real Estate\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2023-11-16T08:37:20.616538Z\",\"tickers\":[\"bcf\",\"bgio\",\"blk\",\"ihit\",\"ivr\",\"ivz\"]},{\"id\":59591430,\"publishedDate\":\"2023-11-16T08:37:00Z\",\"title\":\"ATP
-        Finals LIVE: Novak Djokovic given stark warning as Nick Kyrgios makes X-rated
-        error\",\"url\":\"https://www.express.co.uk/sport/tennis/1835605/ATP-Finals-LIVE-Novak-Djokovic-Nick-Kyrgios-tennis-scores-results-highlights\",\"description\":\"Express
-        Sport is on hand to provide the latest news from the ATP Finals.\",\"source\":\"express.co.uk\",\"tags\":[\"Andrey
-        Rublev\",\"Atp Finals\",\"Atp Finals Highlights\",\"Atp Finals Results\",\"Atp
-        Finals Scores\",\"Nick Kyrgios\",\"Novak Djokovic\",\"Rafael Nadal\",\"Tennis\",\"Tennis
-        Scores\"],\"crawlDate\":\"2023-11-16T08:38:28.605087Z\",\"tickers\":[]},{\"id\":59591426,\"publishedDate\":\"2023-11-16T08:36:48Z\",\"title\":\"Royal
-        Mail blames strikes and slump in letter sending as losses deepen\",\"url\":\"https://www.telegraph.co.uk/business/2023/11/16/royal-mail-blames-strikes-slump-letter-sending-losses/\",\"description\":\"Postal
-        company suffers \xA3319m hit as boss reiterates calls to scrap Saturday letter
-        deliveries\",\"source\":\"telegraph.co.uk\",\"tags\":[\"Business\",\"Ofcom\",\"Royal
-        Mail\",\"Royal Mail Strikes\",\"Standard\",\"Stock\",\"Tiingo Top\",\"Unknown
-        Sector\"],\"crawlDate\":\"2023-11-16T08:38:27.571781Z\",\"tickers\":[\"roymf\"]},{\"id\":59591434,\"publishedDate\":\"2023-11-16T08:36:05Z\",\"title\":\"Car
-        rams barricade near Israel embassy in Tokyo, driver detained\",\"url\":\"https://nypost.com/2023/11/16/news/car-rams-barricade-near-israel-embassy-in-tokyo-man-detained/\",\"description\":\"A
-        man crashed a car into a barricade near the entrance of the Israeli embassy
-        in Tokyo on Thursday, injuring a police officer.\",\"source\":\"nypost.com\",\"tags\":[\"Hamas\",\"Israel\",\"Israel
-        War 2023\",\"Tokyo\"],\"crawlDate\":\"2023-11-16T08:38:31.314583Z\",\"tickers\":[]},{\"id\":59591371,\"publishedDate\":\"2023-11-16T08:36:03Z\",\"title\":\"Monet
-        in Paris: The French Impressionists Alive multi-sensory experience arrives
-        at Crown Perth\",\"url\":\"https://thewest.com.au/genwest/arts/monet-in-paris-the-french-impressionists-alive-multi-sensory-experience-arrives-at-crown-perth-c-12566259\",\"description\":\"All
-        the charm of Parisian neighbourhood Montmartre has been transported to Perth
-        with multi-sensory experience, Monet in Paris \u2013 The French Impressionists
-        Alive.\",\"source\":\"thewest.com.au\",\"tags\":[\"Arts\"],\"crawlDate\":\"2023-11-16T08:36:41.491701Z\",\"tickers\":[]},{\"id\":59591356,\"publishedDate\":\"2023-11-16T08:35:54Z\",\"title\":\"Synagogue
-        in Armenia set alight in latest attack on Jewish diaspora\",\"url\":\"https://www.jpost.com/diaspora/antisemitism/article-773485\",\"description\":\"A
-        similar attack occurred in October by ASALA, which targeted the World Jewish
-        Center in Yerevan.\",\"source\":\"jpost.com\",\"tags\":[\"Antisemitism\",\"Armenia\",\"Attack\",\"Azerbaijan\",\"Diaspora
-        Jews\"],\"crawlDate\":\"2023-11-16T08:36:14.626883Z\",\"tickers\":[]},{\"id\":59591377,\"publishedDate\":\"2023-11-16T08:35:54Z\",\"title\":\"Nationwide
-        protests add to Panama woes\",\"url\":\"https://splash247.com/nationwide-protests-add-to-panama-woes/\",\"description\":\"It\u2019s
-        not just drought in Panama that is giving supply chain planners pause for
-        reflection, the Central American nation is also reeling from the largest protests
-        in the western hemisphere, action that has affected rail, roads and ports
-        over the past month. Protests that began over a mining contract with a Canadian
-        company have rocked \u2026\",\"source\":\"splash247.com\",\"tags\":[\"Central
-        America\",\"Panama\"],\"crawlDate\":\"2023-11-16T08:37:15.350030Z\",\"tickers\":[]},{\"id\":59591358,\"publishedDate\":\"2023-11-16T08:35:03Z\",\"title\":\"Police
-        investigate after woman\u2019s body found\",\"url\":\"https://www.smh.com.au/national/police-investigate-after-woman-s-body-found-20231116-p5eko7.html?ref=rss&utm_medium=rss&utm_source=rss_feed\",\"description\":\"Detectives
-        are investigating after a woman's body was found in a block of units in Adelaide\u2019s
-        east.\",\"source\":\"smh.com.au\",\"tags\":[\"National\"],\"crawlDate\":\"2023-11-16T08:36:19.777723Z\",\"tickers\":[]},{\"id\":59591440,\"publishedDate\":\"2023-11-16T08:35:02.359000Z\",\"title\":\"Macquarie
-        invests $190 mln in green aviation fuel supplier SkyNRG\",\"url\":\"https://www.reuters.com/sustainability/climate-energy/macquarie-invests-190-mln-green-aviation-fuel-supplier-skynrg-2023-11-16/\",\"description\":\"Australia's
-        Macquarie Group Ltd said on Thursday its asset management arm will make an
-        initial investment of up to 175 million euros (about $190 million) in Netherlands-based
-        sustainable aviation fuel (SAF) supplier SkyNRG.\",\"source\":\"reuters.com\",\"tags\":[\"2023:Ml_Kbn32B0In\",\"2023:Ml_Kbn32B0In:1\",\"2023:Ml_Kbn32B0Io\",\"2023:Ml_Kbn32B0Io:1\",\"2023:Ml_L4N3Ch1Um\",\"2023:Ml_L4N3Ch1Va\",\"2023:Ml_L4N3Ch1Va:722089037\",\"Australia\",\"Guid:Tag:Reuters.Com\",\"Netherlands\",\"Netherlands
-        Antilles\",\"Stock\",\"Unknown Sector\",\"Usn:Kbn32B0In\",\"Usn:Kbn32B0Io\",\"Usn:L4N3Ch1Um\",\"Usn:L4N3Ch1Va\",\"Vguid:Tag:Reuters.Com\"],\"crawlDate\":\"2023-11-16T08:38:39.691757Z\",\"tickers\":[\"mqg\"]},{\"id\":59591353,\"publishedDate\":\"2023-11-16T08:35:00Z\",\"title\":\"US-Cannabis
-        Market is to grow by USD 46.90 billion between 2022 - 2027 | Aurora Cannabis
-        Inc., Canopy Growth Corp., Charlottes Web Holdings Inc. and more among the
-        key companies\",\"url\":\"https://www.prnewswire.com/news-releases/us-cannabis-market-is-to-grow-by-usd-46-90-billion-between-2022---2027--aurora-cannabis-inc-canopy-growth-corp-charlottes-web-holdings-inc-and-more-among-the-key-companies-301989972.html\",\"description\":\"/PRNewswire/
-        -- The US-Cannabis Market is projected to witness a surge at a Compound Annual
-        Growth Rate (CAGR) of 24.03% with USD 46.90 b illion from 2022 to...\",\"source\":\"prnewswire.com\",\"tags\":[\"Cannabis\",\"CryptoCurrency\",\"ETF\",\"FX\",\"Health
-        Care & Hospitals\",\"Healthcare\",\"Market Research Reports\",\"Stock\",\"Unknown
-        Sector\"],\"crawlDate\":\"2023-11-16T08:35:37.725202Z\",\"tickers\":[\"acb\",\"twmjf\",\"usd\"]},{\"id\":59591354,\"publishedDate\":\"2023-11-16T08:35:00Z\",\"title\":\"North
-        America - The Maintenance, Repair, and Overhaul (MRO) Distribution Market
-        size to grow at a CAGR of 2.43% from 2022 to 2027| A.R. Thomson Group, Applied
-        Industrial Technologies Inc., AWC Inc. and more among the key companies in
-        the market -Technavio\",\"url\":\"https://www.prnewswire.com/news-releases/north-america---the-maintenance-repair-and-overhaul-mro-distribution-market-size-to-grow-at-a-cagr-of-2-43-from-2022-to-2027-ar-thomson-group-applied-industrial-technologies-inc-awc-inc-and-more-among-the-key-companies-301989958.html\",\"description\":\"/PRNewswire/
-        -- The MRO distribution market in North America is estimated to grow at a
-        CAGR of 2.43% between 2022 and 2027 and the size of the market is...\",\"source\":\"prnewswire.com\",\"tags\":[\"Energy\",\"Industrials\",\"Market
-        Research Reports\",\"North America\",\"Oil & Energy\",\"Stock\",\"Unknown
-        Sector\"],\"crawlDate\":\"2023-11-16T08:35:38.520380Z\",\"tickers\":[\"ait\",\"awc\",\"cagr\",\"mro\"]},{\"id\":59591355,\"publishedDate\":\"2023-11-16T08:35:00Z\",\"title\":\"Smartphone
-        Screen Protector Market is driven by the growing awareness of the importance
-        of device protection - Technavio\",\"url\":\"https://www.prnewswire.com/news-releases/smartphone-screen-protector-market-is-driven-by-the-growing-awareness-of-the-importance-of-device-protection---technavio-301990019.html\",\"description\":\"/PRNewswire/
-        -- In a recent analysis conducted by Technavio, titled \\\"Smartphone Screen
-        Protector Market Analysis - APAC, North America, Europe, South America,...\",\"source\":\"prnewswire.com\",\"tags\":[\"Computer
-        & Electronics\",\"Consumer Electronics\",\"Market Research Reports\",\"Mobile
-        Entertainment\",\"North America\",\"South America\"],\"crawlDate\":\"2023-11-16T08:35:39.717934Z\",\"tickers\":[]}]"
+      string: "[{\"id\":62518791,\"publishedDate\":\"2024-02-22T07:17:02Z\",\"title\":\"ChipMOS
+        GAAP EPADS of $0.43, revenue of $187M beats by $12.93M\",\"url\":\"https://seekingalpha.com/news/4070054-chipmos-gaap-epads-of-043-revenue-of-187m-beats-by-1293m\",\"description\":\"ChipMOS
+        press release (IMOS): Q4 GAAP EPADS of $0.43.\\nRevenue of $187M (+22.2% Y/Y)
+        beats by $12.93M.\\nStrong Financial Position and Liquidity with $403.5 million
+        balance of Cash\",\"source\":\"seekingalpha.com\",\"tags\":[],\"crawlDate\":\"2024-02-22T07:17:25.895070Z\",\"tickers\":[]},{\"id\":62518778,\"publishedDate\":\"2024-02-22T07:16:24.061899Z\",\"title\":\"Electric
+        van production to secure future of Vauxhall's Luton plant\",\"url\":\"https://news.sky.com/story/electric-van-production-to-secure-future-of-vauxhalls-luton-plant-13078020\",\"description\":\"Stellantis
+        says production at the Bedfordshire site from next year will initially be
+        limited but it is to make five models across its brand footprint.\",\"source\":\"news.sky.com\",\"tags\":[\"Business\",\"Consumer
+        Discretionary\",\"Stock\",\"Unknown Sector\"],\"crawlDate\":\"2024-02-22T07:16:29.183422Z\",\"tickers\":[\"nsany\",\"pugoy\"]},{\"id\":62518802,\"publishedDate\":\"2024-02-22T07:16:22Z\",\"title\":\"NVIDIA,
+        Keurig Dr Pepper And 3 Stocks To Watch Heading Into Thursday\",\"url\":\"https://www.benzinga.com/news/earnings/24/02/37253951/nvidia-keurig-dr-pepper-and-3-stocks-to-watch-heading-into-thursday\",\"description\":\"With
+        U.S. stock futures trading higher this morning on Thursday, some of the stocks
+        that may grab investor focus today are as follows:\",\"source\":\"benzinga.com\",\"tags\":[\"Benzinga\",\"Consumer
+        Defensive\",\"Earnings\",\"Kdp\",\"Markets\",\"News\",\"Nvda\",\"Pcg\",\"Pre-Market
+        Outlook\",\"Rivn\",\"Sq\",\"Stock\",\"Stocks To Watch\",\"Technology\",\"Trading
+        Ideas\",\"Unknown Sector\",\"Utilities\"],\"crawlDate\":\"2024-02-22T07:18:28.237846Z\",\"tickers\":[\"kdp\",\"ne-ws\",\"nvda\",\"pcg\",\"rivn\",\"sq\"]},{\"id\":62518821,\"publishedDate\":\"2024-02-22T07:16:00Z\",\"title\":\"Repsol
+        Plans Share Buyback Program\",\"url\":\"https://www.marketwatch.com/story/repsol-plans-share-buyback-program-d0cab731\",\"description\":\"By
+        Adria Calatayud Repsol said it plans to return up to 10 billion euros ($10.82
+        billion) to shareholders through dividends and share buybacks between 2024...\",\"source\":\"marketwatch.com\",\"tags\":[\"Energy\",\"Es:Rep\",\"Stock\"],\"crawlDate\":\"2024-02-22T07:18:59.194918Z\",\"tickers\":[\"repyy\"]},{\"id\":62518793,\"publishedDate\":\"2024-02-22T07:15:00Z\",\"title\":\"What
+        to Watch in Berkshire\u2019s Earnings, Buffett\u2019s Shareholder Letter\",\"url\":\"https://www.barrons.com/articles/berkshire-hathaway-earnings-stock-price-warren-buffett-c475011e\",\"description\":null,\"source\":\"barrons.com\",\"tags\":[\"Communication
+        Services\",\"Consumer Cyclical\",\"Consumer Discretionary\",\"Healthcare\",\"Stock\",\"Technology\",\"Unknown
+        Sector\"],\"crawlDate\":\"2024-02-22T07:17:33.021410Z\",\"tickers\":[\"aapl\",\"amzn\",\"brka\",\"chtr\",\"dva\",\"snow\",\"snow\",\"spx\"]},{\"id\":62518752,\"publishedDate\":\"2024-02-22T07:13:39Z\",\"title\":\"Carriage
+        beats top-line and bottom-line estimates; initiates Q1 and FY24 outlook\",\"url\":\"https://seekingalpha.com/news/4070053-carriage-beats-top-line-and-bottom-line-estimates-initiates-q1-and-fy24-outlook\",\"description\":\"Carriage
+        press release (CSV): Q4 Non-GAAP EPS of $0.77 beats by $0.28.\\nRevenue of
+        $98.8M (+5.2% Y/Y) beats by $5.15M.\\nOutlook: In the first quarter of 2024,
+        the company expects to close two\",\"source\":\"seekingalpha.com\",\"tags\":[],\"crawlDate\":\"2024-02-22T07:15:33.972381Z\",\"tickers\":[]},{\"id\":62518754,\"publishedDate\":\"2024-02-22T07:13:27Z\",\"title\":\"Eurostoxx
+        futures +0.8% in early European trading\",\"url\":\"https://www.forexlive.com/news/eurostoxx-futures-08-in-early-european-trading-20240222/\",\"description\":\"A
+        more positive mood greets European traders today\",\"source\":\"forexlive.com\",\"tags\":[\"News\",\"Stock\",\"Unknown
+        Sector\"],\"crawlDate\":\"2024-02-22T07:15:35.048839Z\",\"tickers\":[\"ne-ws\"]},{\"id\":62518758,\"publishedDate\":\"2024-02-22T07:13:00Z\",\"title\":\"AB
+        Electrolux publishes 2023 Annual Report\",\"url\":\"https://www.prnewswire.com/news-releases/ab-electrolux-publishes-2023-annual-report-302068405.html\",\"description\":\"/PRNewswire/
+        -- AB Electrolux Annual Report for 2023 has been published on the Group's
+        website as of today. The Annual Report in Swedish as well as an English...\",\"source\":\"prnewswire.com\",\"tags\":[\"Accounting
+        News & Issues\",\"Computer & Electronics\",\"Consumer & Cosmetics\",\"Earnings\",\"Electrical
+        Utilities\",\"Home Improvement\",\"Household\",\"Retail\"],\"crawlDate\":\"2024-02-22T07:15:40.042757Z\",\"tickers\":[]},{\"id\":62518799,\"publishedDate\":\"2024-02-22T07:12:40Z\",\"title\":\"Tesla
+        Charging Station Maintenance, Expansion In Sweden Under Threat As Trade Union
+        Extends Support To Striking IF Metall\",\"url\":\"https://www.benzinga.com/news/24/02/37254108/tesla-charging-station-maintenance-expansion-in-sweden-under-threat-as-trade-union-extends-support-t\",\"description\":\"
+        \",\"source\":\"benzinga.com\",\"tags\":[\"Benzinga\",\"Benzinga Neuro\",\"Consumer
+        Cyclical\",\"Electric Vehicles\",\"Evs\",\"Mobility\",\"News\",\"Stock\",\"Sweden\",\"Tech\",\"Tsla\",\"Unknown
+        Sector\"],\"crawlDate\":\"2024-02-22T07:18:27.116089Z\",\"tickers\":[\"ne-ws\",\"tm\",\"tsla\"]},{\"id\":62518743,\"publishedDate\":\"2024-02-22T07:12:00Z\",\"title\":\"Optical
+        Time Domain Reflectometer (OTDR) Market size to grow by USD 76.43 million
+        from 2022 to 2027, Aishwarya Technologies and Telecom Ltd., Anritsu Corp.,
+        Briticom, to emerge as some of the key companies, Technavio\",\"url\":\"https://www.prnewswire.com/news-releases/optical-time-domain-reflectometer-otdr-market-size-to-grow-by-usd-76-43-million-from-2022-to-2027--aishwarya-technologies-and-telecom-ltd-anritsu-corp-briticom-to-emerge-as-some-of-the-key-companies-technavio-302067331.html\",\"description\":\"/PRNewswire/
+        -- The potential growth difference for the optical time domain reflectometer
+        (OTDR) market from 2022 to 2027 is USD 76.43 million. Key companies...\",\"source\":\"prnewswire.com\",\"tags\":[\"Computer
+        & Electronics\",\"CryptoCurrency\",\"ETF\",\"FX\",\"Market Research Reports\",\"Networks\",\"Telecommunications
+        Industry\"],\"crawlDate\":\"2024-02-22T07:13:54.507574Z\",\"tickers\":[\"usd\"]},{\"id\":62518790,\"publishedDate\":\"2024-02-22T07:11:44Z\",\"title\":\"Live
+        updates | Attackers open fire in the West Bank, killing 1 Israeli and wounding
+        others\",\"url\":\"https://www.washingtonpost.com/national/2024/02/22/israel-hamas-war-live-updates-02-22-2024/a2403caa-d151-11ee-ac8b-765284b5203e_story.html\",\"description\":\"Israeli
+        police say three gunmen opened fire on the road near a checkpoint in the Israeli-occupied
+        West Bank, killing one Israeli and wounding at least eight, as violence persists
+        in the territory\",\"source\":\"washingtonpost.com\",\"tags\":[\"General\",\"Israel\",\"Israel-Hamas
+        War\",\"Ml--Israel-Palestinians-Live Updates\",\"Shootings\",\"War And Unrest\",\"World\"],\"crawlDate\":\"2024-02-22T07:16:56.108802Z\",\"tickers\":[]},{\"id\":62518746,\"publishedDate\":\"2024-02-22T07:11:34Z\",\"title\":\"Racist
+        attacker who stomped on Asian woman in Times Square jailed for 15 years\",\"url\":\"https://www.independent.co.uk/news/world/americas/crime/vilma-kari-times-square-racist-attack-b2500386.html\",\"description\":\"In
+        2021, Brandon Elliot repeatedly and viciously attacked then 65-year-old Vilma
+        Kari \",\"source\":\"independent.co.uk\",\"tags\":[\"Alvin Bragg\",\"Asian\",\"Filipino\",\"Hate
+        Crime\",\"Manhattan\",\"New York\",\"Times Square\"],\"crawlDate\":\"2024-02-22T07:14:27.121424Z\",\"tickers\":[]},{\"id\":62518740,\"publishedDate\":\"2024-02-22T07:11:00Z\",\"title\":\"AB
+        Electrolux publishes 2023 Annual Report\",\"url\":\"https://www.prnewswire.com/news-releases/ab-electrolux-publishes-2023-annual-report-302068403.html\",\"description\":\"/PRNewswire/
+        -- AB Electrolux Annual Report for 2023 has been published on the Group's
+        website as of today. The Annual Report in Swedish as well as an English...\",\"source\":\"prnewswire.com\",\"tags\":[\"Accounting
+        News & Issues\",\"Computer & Electronics\",\"Consumer & Cosmetics\",\"Earnings\",\"Electrical
+        Utilities\",\"Home Improvement\",\"Household\",\"Retail\"],\"crawlDate\":\"2024-02-22T07:13:50.434750Z\",\"tickers\":[]},{\"id\":62518696,\"publishedDate\":\"2024-02-22T07:10:37Z\",\"title\":\"Ziff
+        Davis beats top-line and bottom-line estimates; initiates FY24 outlook\",\"url\":\"https://seekingalpha.com/news/4070052-ziff-davis-beats-top-line-and-bottom-line-estimates-initiates-fy24-outlook\",\"description\":\"Ziff
+        Davis press release (ZD): Q4 Non-GAAP EPS of $2.33 beats by $1.10.\\nRevenue
+        of $389.9M (-1.7% Y/Y) beats by $71.27M.\\nAdjusted EBITDA for the quarter
+        decreased 0.4% to $167.6 million\",\"source\":\"seekingalpha.com\",\"tags\":[],\"crawlDate\":\"2024-02-22T07:11:32.729226Z\",\"tickers\":[]},{\"id\":62518745,\"publishedDate\":\"2024-02-22T07:10:22Z\",\"title\":\"Leicester
+        river search - latest: Missing boy named as father who tried to save him says
+        son is \u2018bundle of joy\u2019\",\"url\":\"https://www.independent.co.uk/news/uk/home-news/leicester-missing-boy-river-soar-xielo-maruziva-latest-b2500441.html\",\"description\":\"Leicestershire
+        Police\u2019s continue search for Xielo Maruziva in the River Soar as mother
+        desperate for return of \u2018cheeky\u2019 son \",\"source\":\"independent.co.uk\",\"tags\":[\"Leicester\",\"Leicestershire\",\"Leicestershire
+        Police\",\"River\"],\"crawlDate\":\"2024-02-22T07:14:25.845664Z\",\"tickers\":[]},{\"id\":62518744,\"publishedDate\":\"2024-02-22T07:10:17Z\",\"title\":\"In
+        Big News For INDIA, AAP-Congress Agree Delhi Seat Deal, Say Sources\",\"url\":\"https://www.ndtv.com/india-news/congress-aap-delhi-seat-sharing-lok-sabha-election-in-big-news-for-india-aap-congress-agree-delhi-seat-deal-say-sources-5105231\",\"description\":\"The
+        Congress and the Aam Aadmi Party are on the verge of a deal to divide Delhi's
+        seven Lok Sabha seats, sources have said.\",\"source\":\"ndtv.com\",\"tags\":[\"Aap
+        Congress Delhi Seat Sharing\",\"Aap Congress Delhi Seat Sharing Talks\",\"Aap
+        Congress India Alliance\",\"Aap-Congress Alliance\",\"Aap-Congress Alliance
+        In Delhi\",\"Aap-Congress Alliance Talks\",\"India\",\"India Alliance\",\"Lok
+        Sabha Election 2024\"],\"crawlDate\":\"2024-02-22T07:14:21.626780Z\",\"tickers\":[]},{\"id\":62518753,\"publishedDate\":\"2024-02-22T07:10:00Z\",\"title\":\"Verisk
+        Once Again Earns Great Place To Work Certification\u2122 in Poland\",\"url\":\"https://www.globenewswire.com/news-release/2024/02/22/2833326/0/en/Verisk-Once-Again-Earns-Great-Place-To-Work-Certification-in-Poland.html?f=22&fvtc=2&fvtv=1\",\"description\":\"KRAK\xD3W,
+        POLAND, Feb.  22, 2024  (GLOBE NEWSWIRE) -- For the second consecutive year,
+        leading global data analytics and technology provider Verisk...\",\"source\":\"globenewswire.com\",\"tags\":[\"Data
+        Analytics\",\"Employee Engagement\",\"Great Place To Work\",\"Inc. (Verisk)\",\"Industrials\",\"Insurance\",\"Insurance
+        Services Office\",\"Nasdaq:Vrsk\",\"Poland\",\"Stock\"],\"crawlDate\":\"2024-02-22T07:15:34.228247Z\",\"tickers\":[\"vrsk\"]},{\"id\":62518735,\"publishedDate\":\"2024-02-22T07:10:00Z\",\"title\":\"Xabi
+        Alonso snubbing Liverpool could leave perfect Thiago replacement off-limits\",\"url\":\"https://www.express.co.uk/sport/football/1869400/liverpool-news-xabi-alonso-thiago-alcantara\",\"description\":\"Liverpool
+        face fierce competition for Xabi Alonso as Europe's top clubs circle.\",\"source\":\"express.co.uk\",\"tags\":[\"Consumer
+        Cyclical\",\"Joshua Kimmich\",\"Liverpool\",\"Stock\",\"Thiago\",\"Thiago
+        Alcantara\",\"Xabi Alonso\"],\"crawlDate\":\"2024-02-22T07:13:40.624111Z\",\"tickers\":[\"manu\"]},{\"id\":62518693,\"publishedDate\":\"2024-02-22T07:09:20Z\",\"title\":\"Prankster
+        suspended from $20K-a-year school after he drenched boaters with milk in viral
+        stunt: \u2018I\u2019m just a kid, you ruined my life\u2019\",\"url\":\"https://nypost.com/2024/02/22/lifestyle/australian-teen-suspended-from-melbourne-grammar-school-after-drenching-boat-passengers-in-milk/\",\"description\":\"A
+        young prankster was booted from his $20,000-a-year school after video he posted
+        online shows him pouring milk on a group of women enjoying a boat ride.\",\"source\":\"nypost.com\",\"tags\":[\"Boats\",\"Pranks\",\"Schools\",\"Vacations\"],\"crawlDate\":\"2024-02-22T07:10:29.889875Z\",\"tickers\":[]},{\"id\":62518687,\"publishedDate\":\"2024-02-22T07:09:07Z\",\"title\":\"Switch
+        to electric vehicles could prevent child asthma attacks\",\"url\":\"https://www.upi.com/Health_News/2024/02/22/electric-vehicles/3381708541892/\",\"description\":\"If
+        all cars and trucks sold in America were \\\"zero emission\\\" by 2040 and
+        the country's electric grid was also powered by clean energy, nearly 2.8 million
+        child asthma attacks would be prevented annually.\",\"source\":\"upi.com\",\"tags\":[\"Health\",\"North
+        America\"],\"crawlDate\":\"2024-02-22T07:09:21.671104Z\",\"tickers\":[]}]"
     headers:
-      allow:
+      Allow:
       - GET, HEAD, OPTIONS
-      content-length:
-      - '13244'
-      content-type:
+      Content-Length:
+      - '12292'
+      Content-Type:
       - application/json
-      date:
-      - Thu, 16 Nov 2023 08:40:09 GMT
-      server:
+      Date:
+      - Thu, 22 Feb 2024 07:19:54 GMT
+      Server:
       - nginx/1.18.0 (Ubuntu)
-      vary:
+      Vary:
       - Cookie, Origin
       x-frame-options:
       - SAMEORIGIN
