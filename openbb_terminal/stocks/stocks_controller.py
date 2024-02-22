@@ -623,17 +623,6 @@ class StocksController(StockBaseController):
         self.queue = self.load_class(DiscoveryController, self.queue)
 
     @log_start_end(log=logger)
-    def call_dps(self, _):
-        """Process dps command."""
-        from openbb_terminal.stocks.dark_pool_shorts.dps_controller import (
-            DarkPoolShortsController,
-        )
-
-        self.queue = self.load_class(
-            DarkPoolShortsController, self.ticker, self.start, self.stock, self.queue
-        )
-
-    @log_start_end(log=logger)
     def call_scr(self, _):
         """Process scr command."""
         from openbb_terminal.stocks.screener.screener_controller import (
