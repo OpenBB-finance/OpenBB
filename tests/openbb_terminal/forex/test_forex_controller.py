@@ -12,9 +12,6 @@ from openbb_terminal.core.session.current_user import (
     copy_user,
 )
 from openbb_terminal.forex import forex_controller
-from openbb_terminal.forex.technical_analysis.ta_controller import (
-    TechnicalAnalysisController,
-)
 
 # pylint: disable=E1101
 # pylint: disable=W0603
@@ -248,20 +245,6 @@ def test_call_func_expect_queue(expected_queue, func, queue):
             None,
             None,
             None,
-        ),
-        (
-            "call_ta",
-            [],
-            "ForexController.load_class",
-            [TechnicalAnalysisController],
-            dict(
-                ticker="MOCK_TICKER/MOCK_TICKER",
-                source="YahooFinance",
-                data=NON_EMPTY_DF,
-                start=pd.Timestamp("2020-11-30 00:00:00"),
-                interval="",
-                queue=[],
-            ),
         ),
         (
             "call_oanda",

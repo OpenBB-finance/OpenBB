@@ -409,28 +409,6 @@ class ForexController(BaseController):
         self.queue = self.load_class(OandaController, queue=self.queue)
 
     @log_start_end(log=logger)
-    def call_ta(self, _):
-        """Process ta command"""
-        from openbb_terminal.forex.technical_analysis.ta_controller import (
-            TechnicalAnalysisController,
-        )
-
-        # TODO: Play with this to get correct usage
-        if self.to_symbol and self.from_symbol and not self.data.empty:
-            self.queue = self.load_class(
-                TechnicalAnalysisController,
-                ticker=f"{self.from_symbol}/{self.to_symbol}",
-                source=self.source,
-                data=self.data,
-                start=self.data.index[0],
-                interval="",
-                queue=self.queue,
-            )
-
-        else:
-            console.print("No currency pair data is loaded. Use 'load' to load data.\n")
-
-    @log_start_end(log=logger)
     def call_qa(self, _):
         """Process qa command"""
         if self.from_symbol and self.to_symbol:
