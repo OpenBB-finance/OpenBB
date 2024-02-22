@@ -22,7 +22,6 @@ from openbb_terminal.core.config.paths import (
 from openbb_terminal.core.plots.backend import plots_backend
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.decorators import log_start_end
-from openbb_terminal.forex.forex_controller import FX_TICKERS
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -70,7 +69,7 @@ REPORT_CHOICES = {
         "--symbol": {c: None for c in ETF_TICKERS},
     },
     "forex": {
-        "--symbol": {c: None for c in FX_TICKERS},
+        "--symbol": {c: None for c in []},
     },
     "portfolio": {
         "--transactions": {c: None for c in PORTFOLIO_HOLDINGS_FILES},
