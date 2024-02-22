@@ -132,4 +132,7 @@ class FMPEquityHistoricalFetcher(
         query: FMPEquityHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPEquityHistoricalData]:
         """Return the transformed data."""
-        return [FMPEquityHistoricalData.model_validate(d) for d in data]
+        return [
+            FMPEquityHistoricalData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["date"], reverse=False)
+        ]

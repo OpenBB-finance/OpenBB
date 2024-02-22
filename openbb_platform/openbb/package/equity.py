@@ -227,7 +227,7 @@ class ROUTER_equity(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: intrinio, yfinance."
+                description="Symbol to get data for. Multiple items allowed: fmp, intrinio, yfinance."
             ),
         ],
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
@@ -238,7 +238,7 @@ class ROUTER_equity(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: intrinio, yfinance.
+            Symbol to get data for. Multiple items allowed: fmp, intrinio, yfinance.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -403,7 +403,9 @@ class ROUTER_equity(Container):
                 },
                 extra_params=kwargs,
                 extra_info={
-                    "symbol": {"multiple_items_allowed": ["intrinio", "yfinance"]}
+                    "symbol": {
+                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
+                    }
                 },
             )
         )

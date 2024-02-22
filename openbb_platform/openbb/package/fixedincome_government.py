@@ -69,30 +69,32 @@ class ROUTER_fixedincome_government(Container):
         -------------
         date : date
             The date of the data.
+        week_4 : Optional[float]
+            4 week Treasury bills rate (secondary market).
         month_1 : Optional[float]
-            1 month treasury rate.
+            1 month Treasury rate.
         month_2 : Optional[float]
-            2 month treasury rate.
+            2 month Treasury rate.
         month_3 : Optional[float]
-            3 month treasury rate.
+            3 month Treasury rate.
         month_6 : Optional[float]
-            6 month treasury rate.
+            6 month Treasury rate.
         year_1 : Optional[float]
-            1 year treasury rate.
+            1 year Treasury rate.
         year_2 : Optional[float]
-            2 year treasury rate.
+            2 year Treasury rate.
         year_3 : Optional[float]
-            3 year treasury rate.
+            3 year Treasury rate.
         year_5 : Optional[float]
-            5 year treasury rate.
+            5 year Treasury rate.
         year_7 : Optional[float]
-            7 year treasury rate.
+            7 year Treasury rate.
         year_10 : Optional[float]
-            10 year treasury rate.
+            10 year Treasury rate.
         year_20 : Optional[float]
-            20 year treasury rate.
+            20 year Treasury rate.
         year_30 : Optional[float]
-            30 year treasury rate.
+            30 year Treasury rate.
 
         Example
         -------
