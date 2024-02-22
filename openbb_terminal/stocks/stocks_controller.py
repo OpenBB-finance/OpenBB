@@ -706,15 +706,6 @@ class StocksController(StockBaseController):
         )
 
     @log_start_end(log=logger)
-    def call_bt(self, _):
-        """Process bt command."""
-        from openbb_terminal.stocks.backtesting import bt_controller
-
-        self.queue = self.load_class(
-            bt_controller.BacktestingController, self.ticker, self.stock, self.queue
-        )
-
-    @log_start_end(log=logger)
     def call_forecast(self, _):
         """Process forecast command."""
         from openbb_terminal.forecast import forecast_controller
