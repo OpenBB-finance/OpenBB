@@ -24,7 +24,7 @@ class Container:
         return getattr(obbject, "to_" + output_type)()
 
     def _get_provider(
-        self, choice: Optional[str], cmd: str, available: Tuple[str]
+        self, choice: Optional[str], cmd: str, available: Tuple[str, ...]
     ) -> str:
         """Get the provider to use in execution."""
         if choice is None:

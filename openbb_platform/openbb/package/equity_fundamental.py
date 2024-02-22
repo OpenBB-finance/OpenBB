@@ -3452,7 +3452,7 @@ class ROUTER_equity_fundamental(Container):
     def trailing_dividend_yield(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Optional[str], OpenBBCustomParameter(description="Symbol to get data for.")
         ] = None,
         limit: Annotated[
             Optional[int],
@@ -3467,7 +3467,7 @@ class ROUTER_equity_fundamental(Container):
 
         Parameters
         ----------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
         limit : Optional[int]
             The number of data entries to return. Default is 252, the number of trading days in a year.
