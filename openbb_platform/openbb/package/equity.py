@@ -77,7 +77,7 @@ class ROUTER_equity(Container):
     def market_snapshots(
         self, provider: Optional[Literal["fmp", "polygon"]] = None, **kwargs
     ) -> OBBject:
-        """Get a current, complete, market snapshot.
+        """Get an updated equity market snapshot. This includes price data for thousands of stocks.
 
         Parameters
         ----------
@@ -235,7 +235,7 @@ class ROUTER_equity(Container):
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Equity Info. Get general price and performance metrics of a stock.
+        """Get general information about a company. This includes company name, industry, sector and price data.
 
         Parameters
         ----------
@@ -415,7 +415,7 @@ class ROUTER_equity(Container):
     @exception_handler
     @validate
     def screener(self, provider: Optional[Literal["fmp"]] = None, **kwargs) -> OBBject:
-        """Equity Screen. Screen for companies meeting various criteria.
+        """Screen for companies meeting various criteria. These criteria include market cap, price, beta, volume, and dividend yield.
 
         Parameters
         ----------
@@ -540,7 +540,7 @@ class ROUTER_equity(Container):
         provider: Optional[Literal["intrinio", "sec"]] = None,
         **kwargs
     ) -> OBBject:
-        """Equity Search. Search for a company or stock ticker.
+        """Search for stock symbol, CIK, LEI, or company name.
 
         Parameters
         ----------

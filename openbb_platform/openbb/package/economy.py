@@ -171,46 +171,46 @@ class ROUTER_economy(Container):
         CLIs show short-term economic movements in qualitative rather than quantitative terms.
 
 
-            Parameters
-            ----------
-            start_date : Union[datetime.date, None, str]
-                Start date of the data, in YYYY-MM-DD format.
-            end_date : Union[datetime.date, None, str]
-                End date of the data, in YYYY-MM-DD format.
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['oecd']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'oecd' if there is
+            no default.
+        country : Literal['united_states', 'united_kingdom', 'japan', 'mexico', 'indonesia', 'australia', 'brazil', 'canada', 'italy', 'germany', 'turkey', 'france', 'south_africa', 'south_korea', 'spain', 'india', 'china', 'g7', 'g20', 'all']
+            Country to get GDP for. (provider: oecd)
+
+        Returns
+        -------
+        OBBject
+            results : List[CLI]
+                Serializable results.
             provider : Optional[Literal['oecd']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'oecd' if there is
-                no default.
-            country : Literal['united_states', 'united_kingdom', 'japan', 'mexico', 'indonesia', 'australia', 'brazil', 'canada', 'italy', 'germany', 'turkey', 'france', 'south_africa', 'south_korea', 'spain', 'india', 'china', 'g7', 'g20', 'all']
-                Country to get GDP for. (provider: oecd)
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[CLI]
-                    Serializable results.
-                provider : Optional[Literal['oecd']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra: Dict[str, Any]
-                    Extra info.
+        CLI
+        ---
+        date : Optional[date]
+            The date of the data.
+        value : Optional[float]
+            CLI value
+        country : Optional[str]
+            Country for which CLI is given
 
-            CLI
-            ---
-            date : Optional[date]
-                The date of the data.
-            value : Optional[float]
-                CLI value
-            country : Optional[str]
-                Country for which CLI is given
-
-            Example
-            -------
-            >>> from openbb import obb
-            >>> obb.economy.composite_leading_indicator(country="all").to_df()
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.economy.composite_leading_indicator(country="all").to_df()
         """  # noqa: E501
 
         return self._run(
@@ -381,110 +381,109 @@ class ROUTER_economy(Container):
         provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject:
-        """
-        Query the Geo Fred API for regional economic data by series group.
+        """Query the Geo Fred API for regional economic data by series group.
         The series group ID is found by using `fred_search` and the `series_id` parameter.
 
 
-            Parameters
-            ----------
-            symbol : Union[str, List[str]]
-                Symbol to get data for. Multiple items allowed: fred.
-            start_date : Union[datetime.date, None, str]
-                Start date of the data, in YYYY-MM-DD format.
-            end_date : Union[datetime.date, None, str]
-                End date of the data, in YYYY-MM-DD format.
-            limit : Optional[int]
-                The number of data entries to return.
+        Parameters
+        ----------
+        symbol : Union[str, List[str]]
+            Symbol to get data for. Multiple items allowed: fred.
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        limit : Optional[int]
+            The number of data entries to return.
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+        is_series_group : bool
+            When True, the symbol provided is for a series_group, else it is for a series ID. (provider: fred)
+        region_type : Optional[Literal['bea', 'msa', 'frb', 'necta', 'state', 'country', 'county', 'censusregion']]
+            The type of regional data. Parameter is only valid when `is_series_group` is True. (provider: fred)
+        season : Optional[Literal['SA', 'NSA', 'SSA']]
+            The seasonal adjustments to the data. Parameter is only valid when `is_series_group` is True. (provider: fred)
+        units : Optional[str]
+            The units of the data. This should match the units returned from searching by series ID. An incorrect field will not necessarily return an error. Parameter is only valid when `is_series_group` is True. (provider: fred)
+        frequency : Optional[Literal['d', 'w', 'bw', 'm', 'q', 'sa', 'a', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+
+                Frequency aggregation to convert high frequency data to lower frequency.
+                Parameter is only valid when `is_series_group` is True.
+                    a = Annual
+                    sa= Semiannual
+                    q = Quarterly
+                    m = Monthly
+                    w = Weekly
+                    d = Daily
+                    wef = Weekly, Ending Friday
+                    weth = Weekly, Ending Thursday
+                    wew = Weekly, Ending Wednesday
+                    wetu = Weekly, Ending Tuesday
+                    wem = Weekly, Ending Monday
+                    wesu = Weekly, Ending Sunday
+                    wesa = Weekly, Ending Saturday
+                    bwew = Biweekly, Ending Wednesday
+                    bwem = Biweekly, Ending Monday
+                 (provider: fred)
+        aggregation_method : Literal['avg', 'sum', 'eop']
+
+                A key that indicates the aggregation method used for frequency aggregation.
+                This parameter has no affect if the frequency parameter is not set.
+                Only valid when `is_series_group` is True.
+                    avg = Average
+                    sum = Sum
+                    eop = End of Period
+                 (provider: fred)
+        transform : Literal['lin', 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']
+
+                Transformation type. Only valid when `is_series_group` is True.
+                    lin = Levels (No transformation)
+                    chg = Change
+                    ch1 = Change from Year Ago
+                    pch = Percent Change
+                    pc1 = Percent Change from Year Ago
+                    pca = Compounded Annual Rate of Change
+                    cch = Continuously Compounded Rate of Change
+                    cca = Continuously Compounded Annual Rate of Change
+                    log = Natural Log
+                 (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[FredRegional]
+                Serializable results.
             provider : Optional[Literal['fred']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fred' if there is
-                no default.
-            is_series_group : bool
-                When True, the symbol provided is for a series_group, else it is for a series ID. (provider: fred)
-            region_type : Optional[Literal['bea', 'msa', 'frb', 'necta', 'state', 'country', 'county', 'censusregion']]
-                The type of regional data. Parameter is only valid when `is_series_group` is True. (provider: fred)
-            season : Optional[Literal['SA', 'NSA', 'SSA']]
-                The seasonal adjustments to the data. Parameter is only valid when `is_series_group` is True. (provider: fred)
-            units : Optional[str]
-                The units of the data. This should match the units returned from searching by series ID. An incorrect field will not necessarily return an error. Parameter is only valid when `is_series_group` is True. (provider: fred)
-            frequency : Optional[Literal['d', 'w', 'bw', 'm', 'q', 'sa', 'a', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
 
-                    Frequency aggregation to convert high frequency data to lower frequency.
-                    Parameter is only valid when `is_series_group` is True.
-                        a = Annual
-                        sa= Semiannual
-                        q = Quarterly
-                        m = Monthly
-                        w = Weekly
-                        d = Daily
-                        wef = Weekly, Ending Friday
-                        weth = Weekly, Ending Thursday
-                        wew = Weekly, Ending Wednesday
-                        wetu = Weekly, Ending Tuesday
-                        wem = Weekly, Ending Monday
-                        wesu = Weekly, Ending Sunday
-                        wesa = Weekly, Ending Saturday
-                        bwew = Biweekly, Ending Wednesday
-                        bwem = Biweekly, Ending Monday
-                     (provider: fred)
-            aggregation_method : Literal['avg', 'sum', 'eop']
+        FredRegional
+        ------------
+        date : date
+            The date of the data.
+        region : Optional[str]
+            The name of the region. (provider: fred)
+        code : Optional[Union[str, int]]
+            The code of the region. (provider: fred)
+        value : Optional[Union[float, int]]
+            The obersvation value. The units are defined in the search results by series ID. (provider: fred)
+        series_id : Optional[str]
+            The individual series ID for the region. (provider: fred)
 
-                    A key that indicates the aggregation method used for frequency aggregation.
-                    This parameter has no affect if the frequency parameter is not set.
-                    Only valid when `is_series_group` is True.
-                        avg = Average
-                        sum = Sum
-                        eop = End of Period
-                     (provider: fred)
-            transform : Literal['lin', 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']
-
-                    Transformation type. Only valid when `is_series_group` is True.
-                        lin = Levels (No transformation)
-                        chg = Change
-                        ch1 = Change from Year Ago
-                        pch = Percent Change
-                        pc1 = Percent Change from Year Ago
-                        pca = Compounded Annual Rate of Change
-                        cch = Continuously Compounded Rate of Change
-                        cca = Continuously Compounded Annual Rate of Change
-                        log = Natural Log
-                     (provider: fred)
-
-            Returns
-            -------
-            OBBject
-                results : List[FredRegional]
-                    Serializable results.
-                provider : Optional[Literal['fred']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra: Dict[str, Any]
-                    Extra info.
-
-            FredRegional
-            ------------
-            date : date
-                The date of the data.
-            region : Optional[str]
-                The name of the region. (provider: fred)
-            code : Optional[Union[str, int]]
-                The code of the region. (provider: fred)
-            value : Optional[Union[float, int]]
-                The obersvation value. The units are defined in the search results by series ID. (provider: fred)
-            series_id : Optional[str]
-                The individual series ID for the region. (provider: fred)
-
-            Example
-            -------
-            >>> from openbb import obb
-            >>> #### With no date, the most recent report is returned. ####
-            >>> obb.economy.fred_regional("NYICLAIMS")
-            >>> #### With a date, time series data is returned. ####
-            >>> obb.economy.fred_regional("NYICLAIMS", start_date="2021-01-01")
+        Example
+        -------
+        >>> from openbb import obb
+        >>> #### With no date, the most recent report is returned. ####
+        >>> obb.economy.fred_regional("NYICLAIMS")
+        >>> #### With a date, time series data is returned. ####
+        >>> obb.economy.fred_regional("NYICLAIMS", start_date="2021-01-01")
         """  # noqa: E501
 
         return self._run(
@@ -518,100 +517,99 @@ class ROUTER_economy(Container):
         provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject:
-        """
-        Search for FRED series or economic releases by ID or string.
+        """Search for FRED series or economic releases by ID or string.
         This does not return the observation values, only the metadata.
         Use this function to find series IDs for `fred_series()`.
 
 
-            Parameters
-            ----------
-            query : Optional[str]
-                The search word(s).
+        Parameters
+        ----------
+        query : Optional[str]
+            The search word(s).
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+        is_release : Optional[bool]
+            Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True. (provider: fred)
+        release_id : Optional[Union[int, str]]
+            A specific release ID to target. (provider: fred)
+        limit : Optional[int]
+            The number of data entries to return. (1-1000) (provider: fred)
+        offset : Optional[Annotated[int, Ge(ge=0)]]
+            Offset the results in conjunction with limit. (provider: fred)
+        filter_variable : Literal[None, 'frequency', 'units', 'seasonal_adjustment']
+            Filter by an attribute. (provider: fred)
+        filter_value : Optional[str]
+            String value to filter the variable by.  Used in conjunction with filter_variable. (provider: fred)
+        tag_names : Optional[str]
+            A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' (provider: fred)
+        exclude_tag_names : Optional[str]
+            A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. (provider: fred)
+        series_id : Optional[str]
+            A FRED Series ID to return series group information for. This returns the required information to query for regional data. Not all series that are in FRED have geographical data. Entering a value for series_id will override all other parameters. Multiple series_ids can be separated by commas. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[FredSearch]
+                Serializable results.
             provider : Optional[Literal['fred']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fred' if there is
-                no default.
-            is_release : Optional[bool]
-                Is release?  If True, other search filter variables are ignored. If no query text or release_id is supplied, this defaults to True. (provider: fred)
-            release_id : Optional[Union[int, str]]
-                A specific release ID to target. (provider: fred)
-            limit : Optional[int]
-                The number of data entries to return. (1-1000) (provider: fred)
-            offset : Optional[Annotated[int, Ge(ge=0)]]
-                Offset the results in conjunction with limit. (provider: fred)
-            filter_variable : Literal[None, 'frequency', 'units', 'seasonal_adjustment']
-                Filter by an attribute. (provider: fred)
-            filter_value : Optional[str]
-                String value to filter the variable by.  Used in conjunction with filter_variable. (provider: fred)
-            tag_names : Optional[str]
-                A semicolon delimited list of tag names that series match all of.  Example: 'japan;imports' (provider: fred)
-            exclude_tag_names : Optional[str]
-                A semicolon delimited list of tag names that series match none of.  Example: 'imports;services'. Requires that variable tag_names also be set to limit the number of matching series. (provider: fred)
-            series_id : Optional[str]
-                A FRED Series ID to return series group information for. This returns the required information to query for regional data. Not all series that are in FRED have geographical data. Entering a value for series_id will override all other parameters. Multiple series_ids can be separated by commas. (provider: fred)
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[FredSearch]
-                    Serializable results.
-                provider : Optional[Literal['fred']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra: Dict[str, Any]
-                    Extra info.
+        FredSearch
+        ----------
+        release_id : Optional[Union[int, str]]
+            The release ID for queries.
+        series_id : Optional[str]
+            The series ID for the item in the release.
+        name : Optional[str]
+            The name of the release.
+        title : Optional[str]
+            The title of the series.
+        observation_start : Optional[date]
+            The date of the first observation in the series.
+        observation_end : Optional[date]
+            The date of the last observation in the series.
+        frequency : Optional[str]
+            The frequency of the data.
+        frequency_short : Optional[str]
+            Short form of the data frequency.
+        units : Optional[str]
+            The units of the data.
+        units_short : Optional[str]
+            Short form of the data units.
+        seasonal_adjustment : Optional[str]
+            The seasonal adjustment of the data.
+        seasonal_adjustment_short : Optional[str]
+            Short form of the data seasonal adjustment.
+        last_updated : Optional[datetime]
+            The datetime of the last update to the data.
+        notes : Optional[str]
+            Description of the release.
+        press_release : Optional[bool]
+            If the release is a press release.
+        url : Optional[str]
+            URL to the release.
+        popularity : Optional[int]
+            Popularity of the series (provider: fred)
+        group_popularity : Optional[int]
+            Group popularity of the release (provider: fred)
+        region_type : Optional[str]
+            The region type of the series. (provider: fred)
+        series_group : Optional[Union[int, str]]
+            The series group ID of the series. This value is used to query for regional data. (provider: fred)
 
-            FredSearch
-            ----------
-            release_id : Optional[Union[int, str]]
-                The release ID for queries.
-            series_id : Optional[str]
-                The series ID for the item in the release.
-            name : Optional[str]
-                The name of the release.
-            title : Optional[str]
-                The title of the series.
-            observation_start : Optional[date]
-                The date of the first observation in the series.
-            observation_end : Optional[date]
-                The date of the last observation in the series.
-            frequency : Optional[str]
-                The frequency of the data.
-            frequency_short : Optional[str]
-                Short form of the data frequency.
-            units : Optional[str]
-                The units of the data.
-            units_short : Optional[str]
-                Short form of the data units.
-            seasonal_adjustment : Optional[str]
-                The seasonal adjustment of the data.
-            seasonal_adjustment_short : Optional[str]
-                Short form of the data seasonal adjustment.
-            last_updated : Optional[datetime]
-                The datetime of the last update to the data.
-            notes : Optional[str]
-                Description of the release.
-            press_release : Optional[bool]
-                If the release is a press release.
-            url : Optional[str]
-                URL to the release.
-            popularity : Optional[int]
-                Popularity of the series (provider: fred)
-            group_popularity : Optional[int]
-                Group popularity of the release (provider: fred)
-            region_type : Optional[str]
-                The region type of the series. (provider: fred)
-            series_group : Optional[Union[int, str]]
-                The series group ID of the series. This value is used to query for regional data. (provider: fred)
-
-            Example
-            -------
-            >>> from openbb import obb
-            >>> obb.economy.fred_search()
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.economy.fred_search()
         """  # noqa: E501
 
         return self._run(
@@ -799,8 +797,7 @@ class ROUTER_economy(Container):
         provider: Optional[Literal["oecd"]] = None,
         **kwargs
     ) -> OBBject:
-        """
-        Long-term interest rates refer to government bonds maturing in ten years.
+        """Long-term interest rates refer to government bonds maturing in ten years.
         Rates are mainly determined by the price charged by the lender, the risk from the borrower and the
         fall in the capital value. Long-term interest rates are generally averages of daily rates,
         measured as a percentage. These interest rates are implied by the prices at which the government bonds are
@@ -810,48 +807,48 @@ class ROUTER_economy(Container):
         Low long-term interest rates encourage investment in new equipment and high interest rates discourage it.
         Investment is, in turn, a major source of economic growth.
 
-            Parameters
-            ----------
-            start_date : Union[datetime.date, None, str]
-                Start date of the data, in YYYY-MM-DD format.
-            end_date : Union[datetime.date, None, str]
-                End date of the data, in YYYY-MM-DD format.
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['oecd']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'oecd' if there is
+            no default.
+        country : Literal['belgium', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
+            Country to get GDP for. (provider: oecd)
+        frequency : Literal['monthly', 'quarterly', 'annual']
+            Frequency to get interest rate for for. (provider: oecd)
+
+        Returns
+        -------
+        OBBject
+            results : List[LTIR]
+                Serializable results.
             provider : Optional[Literal['oecd']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'oecd' if there is
-                no default.
-            country : Literal['belgium', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
-                Country to get GDP for. (provider: oecd)
-            frequency : Literal['monthly', 'quarterly', 'annual']
-                Frequency to get interest rate for for. (provider: oecd)
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[LTIR]
-                    Serializable results.
-                provider : Optional[Literal['oecd']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra: Dict[str, Any]
-                    Extra info.
+        LTIR
+        ----
+        date : Optional[date]
+            The date of the data.
+        value : Optional[float]
+            Interest rate (given as a whole number, i.e 10=10%)
+        country : Optional[str]
+            Country for which interest rate is given
 
-            LTIR
-            ----
-            date : Optional[date]
-                The date of the data.
-            value : Optional[float]
-                Interest rate (given as a whole number, i.e 10=10%)
-            country : Optional[str]
-                Country for which interest rate is given
-
-            Example
-            -------
-            >>> from openbb import obb
-            >>> obb.economy.long_term_interest_rate(country="all", frequency="quarterly").to_df()
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.economy.long_term_interest_rate(country="all", frequency="quarterly").to_df()
         """  # noqa: E501
 
         return self._run(
@@ -1049,56 +1046,55 @@ class ROUTER_economy(Container):
         provider: Optional[Literal["oecd"]] = None,
         **kwargs
     ) -> OBBject:
-        """
-        Short-term interest rates are the rates at which short-term borrowings are effected between
+        """Short-term interest rates are the rates at which short-term borrowings are effected between
         financial institutions or the rate at which short-term government paper is issued or traded in the market.
         Short-term interest rates are generally averages of daily rates, measured as a percentage.
         Short-term interest rates are based on three-month money market rates where available.
         Typical standardised names are "money market rate" and "treasury bill rate".
 
 
-            Parameters
-            ----------
-            start_date : Union[datetime.date, None, str]
-                Start date of the data, in YYYY-MM-DD format.
-            end_date : Union[datetime.date, None, str]
-                End date of the data, in YYYY-MM-DD format.
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['oecd']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'oecd' if there is
+            no default.
+        country : Literal['belgium', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
+            Country to get GDP for. (provider: oecd)
+        frequency : Literal['monthly', 'quarterly', 'annual']
+            Frequency to get interest rate for for. (provider: oecd)
+
+        Returns
+        -------
+        OBBject
+            results : List[STIR]
+                Serializable results.
             provider : Optional[Literal['oecd']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'oecd' if there is
-                no default.
-            country : Literal['belgium', 'ireland', 'mexico', 'indonesia', 'new_zealand', 'japan', 'united_kingdom', 'france', 'chile', 'canada', 'netherlands', 'united_states', 'south_korea', 'norway', 'austria', 'south_africa', 'denmark', 'switzerland', 'hungary', 'luxembourg', 'australia', 'germany', 'sweden', 'iceland', 'turkey', 'greece', 'israel', 'czech_republic', 'latvia', 'slovenia', 'poland', 'estonia', 'lithuania', 'portugal', 'costa_rica', 'slovakia', 'finland', 'spain', 'russia', 'euro_area19', 'colombia', 'italy', 'india', 'china', 'croatia', 'all']
-                Country to get GDP for. (provider: oecd)
-            frequency : Literal['monthly', 'quarterly', 'annual']
-                Frequency to get interest rate for for. (provider: oecd)
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[STIR]
-                    Serializable results.
-                provider : Optional[Literal['oecd']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra: Dict[str, Any]
-                    Extra info.
+        STIR
+        ----
+        date : Optional[date]
+            The date of the data.
+        value : Optional[float]
+            Interest rate (given as a whole number, i.e 10=10%)
+        country : Optional[str]
+            Country for which interest rate is given
 
-            STIR
-            ----
-            date : Optional[date]
-                The date of the data.
-            value : Optional[float]
-                Interest rate (given as a whole number, i.e 10=10%)
-            country : Optional[str]
-                Country for which interest rate is given
-
-            Example
-            -------
-            >>> from openbb import obb
-            >>> obb.economy.short_term_interest_rate(country="all", frequency="quarterly").to_df()
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.economy.short_term_interest_rate(country="all", frequency="quarterly").to_df()
         """  # noqa: E501
 
         return self._run(

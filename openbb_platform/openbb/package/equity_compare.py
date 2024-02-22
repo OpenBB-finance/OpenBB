@@ -28,7 +28,10 @@ class ROUTER_equity_compare(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Equity Peers. Company peers.
+        """Get the closest peers for a given company.
+
+        Peers consist of companies trading on the same exchange, operating within the same sector
+        and with comparable market capitalizations.
 
         Parameters
         ----------

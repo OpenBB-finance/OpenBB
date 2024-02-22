@@ -39,7 +39,7 @@ class ROUTER_equity_discovery(Container):
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the most active Equities.
+        """Get the most actively traded stocks based on volume.
 
         Parameters
         ----------
@@ -121,7 +121,7 @@ class ROUTER_equity_discovery(Container):
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get aggressive small cap Equities.
+        """Get top small cap stocks based on earnings growth.
 
         Parameters
         ----------
@@ -219,7 +219,12 @@ class ROUTER_equity_discovery(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the most-recent filings submitted to the SEC.
+        """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC
+        filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,
+        Foreign Investment Disclosures and others. The annual 10-K report is required to be
+        filed annually and includes the company's financial statements, management discussion and analysis,
+        and audited financial statements.
+
 
         Parameters
         ----------
@@ -271,6 +276,8 @@ class ROUTER_equity_discovery(Container):
         -------
         >>> from openbb import obb
         >>> obb.equity.discovery.filings(limit=100)
+        >>> # Get filings for the year 2023, limited to 100 results
+        >>> obb.equity.discovery.filings(start_date='2023-01-01', end_date='2023-12-31')
         """  # noqa: E501
 
         return self._run(
@@ -306,7 +313,7 @@ class ROUTER_equity_discovery(Container):
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the top Equity gainers.
+        """Get the top price gainers in the stock market.
 
         Parameters
         ----------
@@ -388,7 +395,7 @@ class ROUTER_equity_discovery(Container):
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get growth tech Equities.
+        """Get top tech stocks based on revenue and earnings growth.
 
         Parameters
         ----------
@@ -470,7 +477,7 @@ class ROUTER_equity_discovery(Container):
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the top Equity losers.
+        """Get the top price losers in the stock market.
 
         Parameters
         ----------
@@ -552,7 +559,7 @@ class ROUTER_equity_discovery(Container):
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get undervalued growth Equities.
+        """Get potentially undervalued growth stocks.
 
         Parameters
         ----------
@@ -634,7 +641,7 @@ class ROUTER_equity_discovery(Container):
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get undervalued large cap Equities.
+        """Get potentially undervalued large cap stocks.
 
         Parameters
         ----------

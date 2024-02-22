@@ -205,7 +205,7 @@ class ROUTER_equity_estimates(Container):
         provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Consensus price target and recommendation.
+        """Get consensus price target and recommendation.
 
         Parameters
         ----------
@@ -295,7 +295,7 @@ class ROUTER_equity_estimates(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Historical analyst estimates for earnings and revenue.
+        """Get historical analyst estimates for earnings and revenue.
 
         Parameters
         ----------
@@ -413,7 +413,7 @@ class ROUTER_equity_estimates(Container):
         provider: Optional[Literal["benzinga", "fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Analyst price targets by company.
+        """Get analyst price targets by company.
 
         Parameters
         ----------

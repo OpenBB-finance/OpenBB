@@ -36,7 +36,7 @@ class ROUTER_equity_ownership(Container):
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
-        """Insider Trading. Information about insider trading.
+        """Get data about trading by a company's management team and board of directors.
 
         Parameters
         ----------
@@ -168,7 +168,7 @@ class ROUTER_equity_ownership(Container):
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
-        """Institutional Ownership. Institutional ownership data.
+        """Get data about institutional ownership for a given company over time.
 
         Parameters
         ----------
@@ -333,7 +333,7 @@ class ROUTER_equity_ownership(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Equity Ownership. Information about the company ownership.
+        """Get data about major holders for a given company over time.
 
         Parameters
         ----------
@@ -481,7 +481,7 @@ class ROUTER_equity_ownership(Container):
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Share Statistics. Share statistics for a given company.
+        """Get data about share float for a given company.
 
         Parameters
         ----------
