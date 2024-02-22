@@ -4,7 +4,6 @@ from . import (
     cryptocurrency,
     economy,
     etf,
-    forex,
     portfolio,
     reports,
     fixedincome,
