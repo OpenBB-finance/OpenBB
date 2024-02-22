@@ -1,7 +1,6 @@
 # flake8: noqa
 from . import (
     common,
-    economy,
     etf,
     portfolio,
     reports,
