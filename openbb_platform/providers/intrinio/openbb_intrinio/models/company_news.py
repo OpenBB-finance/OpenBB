@@ -67,7 +67,9 @@ class IntrinioCompanyNewsFetcher(
         api_key = credentials.get("intrinio_api_key") if credentials else ""
 
         base_url = "https://api-v2.intrinio.com/companies"
-        query_str = get_querystring(query.model_dump(by_alias=True), ["symbols", "page"])
+        query_str = get_querystring(
+            query.model_dump(by_alias=True), ["symbols", "page"]
+        )
 
         async def callback(response: ClientResponse, _: Any) -> List[Dict]:
             """Return the response."""
