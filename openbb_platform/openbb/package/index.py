@@ -8,7 +8,7 @@ from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated, deprecated
 
@@ -24,6 +24,7 @@ class ROUTER_index(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def available(
         self, provider: Optional[Literal["fmp", "yfinance"]] = None, **kwargs
@@ -87,6 +88,7 @@ class ROUTER_index(Container):
             )
         )
 
+    @exception_handler
     @validate
     def constituents(
         self,
@@ -165,6 +167,7 @@ class ROUTER_index(Container):
             )
         )
 
+    @exception_handler
     @validate
     @deprecated(
         "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
