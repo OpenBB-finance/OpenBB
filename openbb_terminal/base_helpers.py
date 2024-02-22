@@ -23,33 +23,6 @@ openbb_posthog = Posthog(
 )
 
 
-def handle_error(name: str, default: Any, menu: menus = ""):
-    """Handles the error by returning the default value and printing an
-    informative error message.
-
-    Parameters
-    ----------
-    name: str
-        The name of the environment variable
-    default: Any
-        The value to return if the converter fails
-    menu: menus
-        If provided, will tell the user where to fix the setting
-
-    Returns
-    ----------
-    Any
-        The default value
-
-    """
-    base = f"[red]Invalid variable provided for variable '{name}'."
-    if menu:
-        base += f" Please change the setting in the `{menu}` menu."
-    base += "[/red]\n"
-    console.print(base)
-    return default
-
-
 def strtobool(val):
     """Convert a string representation of truth to true (1) or false (0).
 
@@ -90,10 +63,3 @@ def remove_log_handlers():
     """Remove the log handlers - needs to be done before reloading modules."""
     for handler in logging.root.handlers[:]:
         logging.root.removeHandler(handler)
-
-
-def clear_openbb_env_vars(exceptions: Optional[List[str]] = None):
-    """Clear openbb environment variables."""
-    for v in os.environ:
-        if v.startswith("OPENBB") and (not exceptions or v not in exceptions):
-            os.environ.pop(v)

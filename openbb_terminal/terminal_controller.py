@@ -261,7 +261,6 @@ class TerminalController(BaseController):
         mt.add_cmd("stop")
         mt.add_cmd("exe")
         mt.add_raw("\n")
-        mt.add_cmd("askobb")
         mt.add_raw("\n")
         mt.add_info("Platform CLI")
         for router, value in PLATFORM_ROUTERS.items():
