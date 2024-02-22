@@ -463,12 +463,6 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(FeatureFlagsController, self.queue)
 
-    def call_forecast(self, _):
-        """Process forecast command."""
-        from openbb_terminal.forecast.forecast_controller import ForecastController
-
-        self.queue = self.load_class(ForecastController, "", pd.DataFrame(), self.queue)
-
     def call_portfolio(self, _):
         """Process portfolio command."""
         from openbb_terminal.portfolio.portfolio_controller import PortfolioController
