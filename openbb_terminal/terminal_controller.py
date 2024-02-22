@@ -463,14 +463,6 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(FeatureFlagsController, self.queue)
 
-    def call_econometrics(self, _):
-        """Process econometrics command."""
-        from openbb_terminal.econometrics.econometrics_controller import (
-            EconometricsController,
-        )
-
-        self.queue = EconometricsController(self.queue).menu()
-
     def call_forecast(self, _):
         """Process forecast command."""
         from openbb_terminal.forecast.forecast_controller import ForecastController
