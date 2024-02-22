@@ -89,5 +89,5 @@ class FMPCompanyNewsFetcher(
         query: FMPCompanyNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPCompanyNewsData]:
         """Return the transformed data."""
-        modeled_data =  [FMPCompanyNewsData.model_validate(d) for d in data]
+        modeled_data = [FMPCompanyNewsData.model_validate(d) for d in data]
         return filter_by_dates(modeled_data, query.start_date, query.end_date)  # type: ignore
