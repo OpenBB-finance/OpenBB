@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 
 import requests
+from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.top_retail import (
     TopRetailData,
@@ -49,8 +50,12 @@ class NasdaqTopRetailFetcher(
         response = requests.get(
             f"https://data.nasdaq.com/api/v3/datatables/NDAQ/RTAT10/?api_key={api_key}",
             timeout=5,
-        ).json()
-        return response["datatable"]["data"][: query.limit]
+        )
+        if response.status_code != 200:
+            reason = getattr(response, "reason", "Unknown")
+            raise OpenBBError(f"Failed to get data from Nasdaq -> {reason}")
+        content = response.json()
+        return content["datatable"]["data"][: query.limit]
 
     @staticmethod
     def transform_data(

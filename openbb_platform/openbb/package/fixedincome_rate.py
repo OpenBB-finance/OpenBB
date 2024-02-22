@@ -51,44 +51,44 @@ class ROUTER_fixedincome_rate(Container):
         American Financial Exchange (AFX).
 
 
-            Parameters
-            ----------
-            start_date : Union[datetime.date, None, str]
-                Start date of the data, in YYYY-MM-DD format.
-            end_date : Union[datetime.date, None, str]
-                End date of the data, in YYYY-MM-DD format.
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+        parameter : Literal['overnight', 'term_30', 'term_90', '1_week_term_structure', '1_month_term_structure', '3_month_term_structure', '6_month_term_structure', '1_year_term_structure', '2_year_term_structure', '30_day_ma', '90_day_ma']
+            Period of AMERIBOR rate. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[AMERIBOR]
+                Serializable results.
             provider : Optional[Literal['fred']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fred' if there is
-                no default.
-            parameter : Literal['overnight', 'term_30', 'term_90', '1_week_term_structure', '1_month_term_structure', '3_month_term_structure', '6_month_term_structure', '1_year_term_structure', '2_year_term_structure', '30_day_ma', '90_day_ma']
-                Period of AMERIBOR rate. (provider: fred)
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[AMERIBOR]
-                    Serializable results.
-                provider : Optional[Literal['fred']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra: Dict[str, Any]
-                    Extra info.
+        AMERIBOR
+        --------
+        date : date
+            The date of the data.
+        rate : Optional[float]
+            AMERIBOR rate.
 
-            AMERIBOR
-            --------
-            date : date
-                The date of the data.
-            rate : Optional[float]
-                AMERIBOR rate.
-
-            Example
-            -------
-            >>> from openbb import obb
-            >>> obb.fixedincome.rate.ameribor(parameter="30_day_ma").to_df()
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.fixedincome.rate.ameribor(parameter="30_day_ma").to_df()
         """  # noqa: E501
 
         return self._run(
@@ -135,44 +135,44 @@ class ROUTER_fixedincome_rate(Container):
         also known as the discount rate.
 
 
-            Parameters
-            ----------
-            start_date : Union[datetime.date, None, str]
-                Start date of the data, in YYYY-MM-DD format.
-            end_date : Union[datetime.date, None, str]
-                End date of the data, in YYYY-MM-DD format.
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+        parameter : Literal['daily_excl_weekend', 'monthly', 'weekly', 'daily', 'annual']
+            FRED series ID of DWPCR data. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[DiscountWindowPrimaryCreditRate]
+                Serializable results.
             provider : Optional[Literal['fred']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fred' if there is
-                no default.
-            parameter : Literal['daily_excl_weekend', 'monthly', 'weekly', 'daily', 'annual']
-                FRED series ID of DWPCR data. (provider: fred)
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[DiscountWindowPrimaryCreditRate]
-                    Serializable results.
-                provider : Optional[Literal['fred']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra: Dict[str, Any]
-                    Extra info.
+        DiscountWindowPrimaryCreditRate
+        -------------------------------
+        date : date
+            The date of the data.
+        rate : Optional[float]
+            Discount Window Primary Credit Rate.
 
-            DiscountWindowPrimaryCreditRate
-            -------------------------------
-            date : date
-                The date of the data.
-            rate : Optional[float]
-                Discount Window Primary Credit Rate.
-
-            Example
-            -------
-            >>> from openbb import obb
-            >>> obb.fixedincome.rate.dpcredit(start_date="2023-02-01", end_date="2023-05-01").to_df()
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.fixedincome.rate.dpcredit(start_date="2023-02-01", end_date="2023-05-01").to_df()
         """  # noqa: E501
 
         return self._run(
@@ -225,44 +225,44 @@ class ROUTER_fixedincome_rate(Container):
         - The rate on the marginal lending facility, which offers overnight credit to banks from the Eurosystem.
 
 
-            Parameters
-            ----------
-            start_date : Union[datetime.date, None, str]
-                Start date of the data, in YYYY-MM-DD format.
-            end_date : Union[datetime.date, None, str]
-                End date of the data, in YYYY-MM-DD format.
-            interest_rate_type : Literal['deposit', 'lending', 'refinancing']
-                The type of interest rate.
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        interest_rate_type : Literal['deposit', 'lending', 'refinancing']
+            The type of interest rate.
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[EuropeanCentralBankInterestRates]
+                Serializable results.
             provider : Optional[Literal['fred']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fred' if there is
-                no default.
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[EuropeanCentralBankInterestRates]
-                    Serializable results.
-                provider : Optional[Literal['fred']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra: Dict[str, Any]
-                    Extra info.
+        EuropeanCentralBankInterestRates
+        --------------------------------
+        date : date
+            The date of the data.
+        rate : Optional[float]
+            European Central Bank Interest Rate.
 
-            EuropeanCentralBankInterestRates
-            --------------------------------
-            date : date
-                The date of the data.
-            rate : Optional[float]
-                European Central Bank Interest Rate.
-
-            Example
-            -------
-            >>> from openbb import obb
-            >>> obb.fixedincome.rate.ecb(interest_rate_type="refinancing")
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.fixedincome.rate.ecb(interest_rate_type="refinancing")
         """  # noqa: E501
 
         return self._run(
@@ -309,44 +309,44 @@ class ROUTER_fixedincome_rate(Container):
         United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
 
 
-            Parameters
-            ----------
-            start_date : Union[datetime.date, None, str]
-                Start date of the data, in YYYY-MM-DD format.
-            end_date : Union[datetime.date, None, str]
-                End date of the data, in YYYY-MM-DD format.
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['federal_reserve', 'fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'federal_reserve' if there is
+            no default.
+        parameter : Literal['monthly', 'daily', 'weekly', 'daily_excl_weekend', 'annual', 'biweekly', 'volume']
+            Period of FED rate. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[FEDFUNDS]
+                Serializable results.
             provider : Optional[Literal['federal_reserve', 'fred']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'federal_reserve' if there is
-                no default.
-            parameter : Literal['monthly', 'daily', 'weekly', 'daily_excl_weekend', 'annual', 'biweekly', 'volume']
-                Period of FED rate. (provider: fred)
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[FEDFUNDS]
-                    Serializable results.
-                provider : Optional[Literal['federal_reserve', 'fred']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra: Dict[str, Any]
-                    Extra info.
+        FEDFUNDS
+        --------
+        date : date
+            The date of the data.
+        rate : Optional[float]
+            FED rate.
 
-            FEDFUNDS
-            --------
-            date : date
-                The date of the data.
-            rate : Optional[float]
-                FED rate.
-
-            Example
-            -------
-            >>> from openbb import obb
-            >>> obb.fixedincome.rate.effr(parameter="daily", provider="fred").to_df()
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.fixedincome.rate.effr(parameter="daily", provider="fred").to_df()
         """  # noqa: E501
 
         return self._run(
@@ -379,52 +379,52 @@ class ROUTER_fixedincome_rate(Container):
         calendar year or over the longer run.
 
 
-            Parameters
-            ----------
+        Parameters
+        ----------
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+        long_run : bool
+            Flag to show long run projections (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[PROJECTIONS]
+                Serializable results.
             provider : Optional[Literal['fred']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fred' if there is
-                no default.
-            long_run : bool
-                Flag to show long run projections (provider: fred)
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[PROJECTIONS]
-                    Serializable results.
-                provider : Optional[Literal['fred']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra: Dict[str, Any]
-                    Extra info.
+        PROJECTIONS
+        -----------
+        date : date
+            The date of the data.
+        range_high : Optional[float]
+            High projection of rates.
+        central_tendency_high : Optional[float]
+            Central tendency of high projection of rates.
+        median : Optional[float]
+            Median projection of rates.
+        range_midpoint : Optional[float]
+            Midpoint projection of rates.
+        central_tendency_midpoint : Optional[float]
+            Central tendency of midpoint projection of rates.
+        range_low : Optional[float]
+            Low projection of rates.
+        central_tendency_low : Optional[float]
+            Central tendency of low projection of rates.
 
-            PROJECTIONS
-            -----------
-            date : date
-                The date of the data.
-            range_high : Optional[float]
-                High projection of rates.
-            central_tendency_high : Optional[float]
-                Central tendency of high projection of rates.
-            median : Optional[float]
-                Median projection of rates.
-            range_midpoint : Optional[float]
-                Midpoint projection of rates.
-            central_tendency_midpoint : Optional[float]
-                Central tendency of midpoint projection of rates.
-            range_low : Optional[float]
-                Low projection of rates.
-            central_tendency_low : Optional[float]
-                Central tendency of low projection of rates.
-
-            Example
-            -------
-            >>> from openbb import obb
-            >>> obb.fixedincome.rate.effr_forecast(long_run=True)
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.fixedincome.rate.effr_forecast(long_run=True)
         """  # noqa: E501
 
         return self._run(
@@ -468,44 +468,44 @@ class ROUTER_fixedincome_rate(Container):
         executed at arm’s length and thus reflect market rates in an unbiased way.
 
 
-            Parameters
-            ----------
-            start_date : Union[datetime.date, None, str]
-                Start date of the data, in YYYY-MM-DD format.
-            end_date : Union[datetime.date, None, str]
-                End date of the data, in YYYY-MM-DD format.
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+        parameter : Literal['volume_weighted_trimmed_mean_rate', 'number_of_transactions', 'number_of_active_banks', 'total_volume', 'share_of_volume_of_the_5_largest_active_banks', 'rate_at_75th_percentile_of_volume', 'rate_at_25th_percentile_of_volume']
+            Period of ESTR rate. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[ESTR]
+                Serializable results.
             provider : Optional[Literal['fred']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fred' if there is
-                no default.
-            parameter : Literal['volume_weighted_trimmed_mean_rate', 'number_of_transactions', 'number_of_active_banks', 'total_volume', 'share_of_volume_of_the_5_largest_active_banks', 'rate_at_75th_percentile_of_volume', 'rate_at_25th_percentile_of_volume']
-                Period of ESTR rate. (provider: fred)
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[ESTR]
-                    Serializable results.
-                provider : Optional[Literal['fred']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra: Dict[str, Any]
-                    Extra info.
+        ESTR
+        ----
+        date : date
+            The date of the data.
+        rate : Optional[float]
+            ESTR rate.
 
-            ESTR
-            ----
-            date : date
-                The date of the data.
-            rate : Optional[float]
-                ESTR rate.
-
-            Example
-            -------
-            >>> from openbb import obb
-            >>> obb.fixedincome.rate.estr(parameter="number_of_active_banks")
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.fixedincome.rate.estr(parameter="number_of_active_banks")
         """  # noqa: E501
 
         return self._run(
@@ -551,42 +551,42 @@ class ROUTER_fixedincome_rate(Container):
         United States, the Federal Reserve System's Board of Governors set the bank rate, also known as the discount rate.
 
 
-            Parameters
-            ----------
-            start_date : Union[datetime.date, None, str]
-                Start date of the data, in YYYY-MM-DD format.
-            end_date : Union[datetime.date, None, str]
-                End date of the data, in YYYY-MM-DD format.
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[IORB]
+                Serializable results.
             provider : Optional[Literal['fred']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fred' if there is
-                no default.
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[IORB]
-                    Serializable results.
-                provider : Optional[Literal['fred']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra: Dict[str, Any]
-                    Extra info.
+        IORB
+        ----
+        date : date
+            The date of the data.
+        rate : Optional[float]
+            IORB rate.
 
-            IORB
-            ----
-            date : date
-                The date of the data.
-            rate : Optional[float]
-                IORB rate.
-
-            Example
-            -------
-            >>> from openbb import obb
-            >>> obb.fixedincome.rate.iorb()
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.fixedincome.rate.iorb()
         """  # noqa: E501
 
         return self._run(
@@ -632,44 +632,44 @@ class ROUTER_fixedincome_rate(Container):
         financial institutions and other institutional investors.
 
 
-            Parameters
-            ----------
-            start_date : Union[datetime.date, None, str]
-                Start date of the data, in YYYY-MM-DD format.
-            end_date : Union[datetime.date, None, str]
-                End date of the data, in YYYY-MM-DD format.
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+        parameter : Literal['rate', 'index', '10th_percentile', '25th_percentile', '75th_percentile', '90th_percentile', 'total_nominal_value']
+            Period of SONIA rate. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[SONIA]
+                Serializable results.
             provider : Optional[Literal['fred']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fred' if there is
-                no default.
-            parameter : Literal['rate', 'index', '10th_percentile', '25th_percentile', '75th_percentile', '90th_percentile', 'total_nominal_value']
-                Period of SONIA rate. (provider: fred)
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[SONIA]
-                    Serializable results.
-                provider : Optional[Literal['fred']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra: Dict[str, Any]
-                    Extra info.
+        SONIA
+        -----
+        date : date
+            The date of the data.
+        rate : Optional[float]
+            SONIA rate.
 
-            SONIA
-            -----
-            date : date
-                The date of the data.
-            rate : Optional[float]
-                SONIA rate.
-
-            Example
-            -------
-            >>> from openbb import obb
-            >>> obb.fixedincome.rate.sonia(parameter="total_nominal_value")
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.fixedincome.rate.sonia(parameter="total_nominal_value")
         """  # noqa: E501
 
         return self._run(

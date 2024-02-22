@@ -62,7 +62,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Balance Sheet. Balance sheet statement.
+        """Get the balance sheet for a given company.
 
         Parameters
         ----------
@@ -414,7 +414,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Balance Sheet Statement Growth. Information about the growth of the company balance sheet.
+        """Get the growth of a company's balance sheet items over time.
 
         Parameters
         ----------
@@ -568,7 +568,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Cash Flow Statement. Information about the cash flow statement.
+        """Get the cash flow statement for a given company.
 
         Parameters
         ----------
@@ -828,7 +828,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Cash Flow Statement Growth. Information about the growth of the company cash flow statement.
+        """Get the growth of a company's cash flow statement items over time.
 
         Parameters
         ----------
@@ -969,7 +969,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Historical Dividends. Historical dividends data for a given company.
+        """Get historical dividend data for a given company.
 
         Parameters
         ----------
@@ -1057,7 +1057,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Historical Employees. Historical number of employees.
+        """Get historical employee count data for a given company.
 
         Parameters
         ----------
@@ -1145,7 +1145,12 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp", "intrinio", "sec"]] = None,
         **kwargs
     ) -> OBBject:
-        """Company Filings. Company filings data.
+        """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC
+        filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,
+        Foreign Investment Disclosures and others. The annual 10-K report is required to be
+        filed annually and includes the company's financial statements, management discussion and analysis,
+        and audited financial statements.
+
 
         Parameters
         ----------
@@ -1312,7 +1317,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
     ) -> OBBject:
-        """Fetch the historical values of a data tag from Intrinio.
+        """Get the historical values of a data tag from Intrinio.
 
         Parameters
         ----------
@@ -1365,7 +1370,7 @@ class ROUTER_equity_fundamental(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.fundamental.historical_attributes(symbol="AAPL", tag="ebitda", frequency="yearly", limit=1000, sort="desc")
+        >>> obb.equity.fundamental.historical_attributes(tag='ebitda')
         """  # noqa: E501
 
         return self._run(
@@ -1405,7 +1410,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Historical earnings-per-share for a given company.
+        """Get historical earnings per share data for a given company.
 
         Parameters
         ----------
@@ -1487,7 +1492,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Historical Splits. Historical splits data.
+        """Get historical stock splits for a given company.
 
         Parameters
         ----------
@@ -1562,7 +1567,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Income Statement. Report on a company's financial performance.
+        """Get the income statement for a given company.
 
         Parameters
         ----------
@@ -1920,7 +1925,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Income Statement Growth. Information about the growth of the company income statement.
+        """Get the growth of a company's income statement items over time.
 
         Parameters
         ----------
@@ -2053,7 +2058,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
     ) -> OBBject:
-        """Fetch the latest value of a data tag from Intrinio.
+        """Get the latest value of a data tag from Intrinio.
 
         Parameters
         ----------
@@ -2092,7 +2097,7 @@ class ROUTER_equity_fundamental(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.fundamental.latest_attributes(symbol="AAPL", tag="ceo")
+        >>> obb.equity.fundamental.latest_attributes(tag='ceo')
         """  # noqa: E501
 
         return self._run(
@@ -2126,7 +2131,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Key Executives. Key executives for a given company.
+        """Get executive management team data for a given company.
 
         Parameters
         ----------
@@ -2219,7 +2224,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get Executive Compensation. Information about the executive compensation for a given company.
+        """Get executive management team compensation for a given company over time.
 
         Parameters
         ----------
@@ -2323,7 +2328,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Key Metrics. Key metrics for a given company.
+        """Get fundamental metrics for a given company.
 
         Parameters
         ----------
@@ -2580,7 +2585,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Equity Valuation Multiples. Valuation multiples for a stock ticker.
+        """Get equity valuation multiples for a given company.
 
         Parameters
         ----------
@@ -2767,7 +2772,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Company Overview. General information about a company.
+        """Get company general business and stock data for a given company.
 
         Parameters
         ----------
@@ -2913,7 +2918,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
-        """Extensive set of ratios over time. Financial ratios for a given company.
+        """Get an extensive set of financial and accounting ratios for a given company over time.
 
         Parameters
         ----------
@@ -3114,7 +3119,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
     ) -> OBBject:
-        """Financial statements, as-reported.
+        """Get financial statements as reported by the company.
 
         Parameters
         ----------
@@ -3160,6 +3165,10 @@ class ROUTER_equity_fundamental(Container):
         -------
         >>> from openbb import obb
         >>> obb.equity.fundamental.reported_financials(symbol="AAPL", period="annual", statement_type="balance", limit=100)
+        >>> # Get reported income statement
+        >>> obb.equity.fundamental.reported_financials(symbol='AAPL', statement_type='income)
+        >>> # Get reported cash flow statement
+        >>> obb.equity.fundamental.reported_financials(symbol='AAPL', statement_type='cash')
         """  # noqa: E501
 
         return self._run(
@@ -3199,7 +3208,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Revenue Geographic. Geographic revenue data.
+        """Get the revenue geographic breakdown for a given company over time.
 
         Parameters
         ----------
@@ -3283,7 +3292,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Revenue Business Line. Business line revenue data.
+        """Get the revenue breakdown by business segment for a given company over time.
 
         Parameters
         ----------
@@ -3363,7 +3372,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
     ) -> OBBject:
-        """Search Intrinio data tags.
+        """Search Intrinio data tags to search in latest or historical attributes.
 
         Parameters
         ----------
@@ -3418,7 +3427,7 @@ class ROUTER_equity_fundamental(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.fundamental.search_attributes(query="AAPL", limit=1000)
+        >>> obb.equity.fundamental.search_attributes(query='ebitda')
         """  # noqa: E501
 
         return self._run(
@@ -3443,7 +3452,7 @@ class ROUTER_equity_fundamental(Container):
     def trailing_dividend_yield(
         self,
         symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
+            Optional[str], OpenBBCustomParameter(description="Symbol to get data for.")
         ] = None,
         limit: Annotated[
             Optional[int],
@@ -3454,11 +3463,11 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["tiingo"]] = None,
         **kwargs
     ) -> OBBject:
-        """Trailing 1yr dividend yield.
+        """Get the 1 year trailing dividend yield for a given company over time.
 
         Parameters
         ----------
-        symbol : str
+        symbol : Optional[str]
             Symbol to get data for.
         limit : Optional[int]
             The number of data entries to return. Default is 252, the number of trading days in a year.
@@ -3525,7 +3534,7 @@ class ROUTER_equity_fundamental(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Earnings Call Transcript. Earnings call transcript for a given company.
+        """Get earnings call transcripts for a given company.
 
         Parameters
         ----------
@@ -3568,7 +3577,7 @@ class ROUTER_equity_fundamental(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.fundamental.transcript(symbol="AAPL", year=2020)
+        >>> obb.equity.fundamental.transcript(symbol='AAPL', year=2020)
         """  # noqa: E501
 
         return self._run(

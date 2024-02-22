@@ -86,7 +86,7 @@ class ROUTER_crypto_price(Container):
 
         CryptoHistorical
         ----------------
-        date : datetime
+        date : Union[date, datetime]
             The date of the data.
         open : float
             The open price.
