@@ -463,12 +463,6 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(FeatureFlagsController, self.queue)
 
-    # def call_economy(self, _):
-    #     """Process economy command."""
-    #     from openbb_terminal.economy.economy_controller import EconomyController
-
-    #     self.queue = self.load_class(EconomyController, self.queue)
-
     # def call_etf(self, _):
     #     """Process etf command."""
     #     from openbb_terminal.etf.etf_controller import ETFController
