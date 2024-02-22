@@ -6,7 +6,7 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -23,6 +23,7 @@ class ROUTER_fixedincome_corporate(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def commercial_paper(
         self,
@@ -125,6 +126,7 @@ class ROUTER_fixedincome_corporate(Container):
             )
         )
 
+    @exception_handler
     @validate
     def hqm(
         self,
@@ -209,6 +211,7 @@ class ROUTER_fixedincome_corporate(Container):
             )
         )
 
+    @exception_handler
     @validate
     def ice_bofa(
         self,
@@ -307,6 +310,7 @@ class ROUTER_fixedincome_corporate(Container):
             )
         )
 
+    @exception_handler
     @validate
     def moody(
         self,
@@ -398,6 +402,7 @@ class ROUTER_fixedincome_corporate(Container):
             )
         )
 
+    @exception_handler
     @validate
     def spot_rates(
         self,

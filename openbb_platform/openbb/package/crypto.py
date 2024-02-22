@@ -5,7 +5,7 @@ from typing import Literal, Optional
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -26,6 +26,7 @@ class ROUTER_crypto(Container):
 
         return crypto_price.ROUTER_crypto_price(command_runner=self._command_runner)
 
+    @exception_handler
     @validate
     def search(
         self,

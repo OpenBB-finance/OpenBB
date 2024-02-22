@@ -9,7 +9,7 @@ from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated, deprecated
 
@@ -46,6 +46,7 @@ class ROUTER_equity_fundamental(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def balance(
         self,
@@ -401,6 +402,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def balance_growth(
         self,
@@ -552,6 +554,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def cash(
         self,
@@ -815,6 +818,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def cash_growth(
         self,
@@ -948,6 +952,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def dividends(
         self,
@@ -1048,6 +1053,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def employee_count(
         self,
@@ -1126,6 +1132,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def filings(
         self,
@@ -1271,6 +1278,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def historical_attributes(
         self,
@@ -1401,6 +1409,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def historical_eps(
         self,
@@ -1483,6 +1492,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def historical_splits(
         self,
@@ -1551,6 +1561,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def income(
         self,
@@ -1908,6 +1919,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def income_growth(
         self,
@@ -2040,6 +2052,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def latest_attributes(
         self,
@@ -2122,6 +2135,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def management(
         self,
@@ -2200,6 +2214,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def management_compensation(
         self,
@@ -2308,6 +2323,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def metrics(
         self,
@@ -2573,6 +2589,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def multiples(
         self,
@@ -2759,6 +2776,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     @deprecated(
         "This endpoint is deprecated; use `/equity/profile` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
@@ -2902,6 +2920,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def ratios(
         self,
@@ -3095,6 +3114,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def reported_financials(
         self,
@@ -3191,6 +3211,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def revenue_per_geography(
         self,
@@ -3275,6 +3296,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def revenue_per_segment(
         self,
@@ -3359,6 +3381,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def search_attributes(
         self,
@@ -3448,6 +3471,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def trailing_dividend_yield(
         self,
@@ -3521,6 +3545,7 @@ class ROUTER_equity_fundamental(Container):
             )
         )
 
+    @exception_handler
     @validate
     def transcript(
         self,

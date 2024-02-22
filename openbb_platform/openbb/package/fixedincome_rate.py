@@ -6,7 +6,7 @@ from typing import Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -26,6 +26,7 @@ class ROUTER_fixedincome_rate(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def ameribor(
         self,
@@ -109,6 +110,7 @@ class ROUTER_fixedincome_rate(Container):
             )
         )
 
+    @exception_handler
     @validate
     def dpcredit(
         self,
@@ -193,6 +195,7 @@ class ROUTER_fixedincome_rate(Container):
             )
         )
 
+    @exception_handler
     @validate
     def ecb(
         self,
@@ -284,6 +287,7 @@ class ROUTER_fixedincome_rate(Container):
             )
         )
 
+    @exception_handler
     @validate
     def effr(
         self,
@@ -367,6 +371,7 @@ class ROUTER_fixedincome_rate(Container):
             )
         )
 
+    @exception_handler
     @validate
     def effr_forecast(
         self, provider: Optional[Literal["fred"]] = None, **kwargs
@@ -442,6 +447,7 @@ class ROUTER_fixedincome_rate(Container):
             )
         )
 
+    @exception_handler
     @validate
     def estr(
         self,
@@ -526,6 +532,7 @@ class ROUTER_fixedincome_rate(Container):
             )
         )
 
+    @exception_handler
     @validate
     def iorb(
         self,
@@ -607,6 +614,7 @@ class ROUTER_fixedincome_rate(Container):
             )
         )
 
+    @exception_handler
     @validate
     def sonia(
         self,
