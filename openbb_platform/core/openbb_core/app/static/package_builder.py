@@ -353,7 +353,7 @@ class ImportDefinition:
         else:
             code += "\nfrom typing_extensions import Annotated, deprecated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
-        code += "\nfrom openbb_core.app.static.utils.decorators import validate\n"
+        code += "\nfrom openbb_core.app.static.utils.decorators import exception_handler, validate\n"
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
         code += "\nfrom openbb_core.provider.abstract.data import Data"
         code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
@@ -677,19 +677,23 @@ class MethodDefinition:
             else ""
         )
 
-        msg = ""
+        code = ""
+        deprecated = ""
+
         if MethodDefinition.is_deprecated_function(path):
             deprecation_message = MethodDefinition.get_deprecation_message(path)
             deprecation_type_class = type(
                 deprecation_message.metadata  # type: ignore
             ).__name__
 
-            msg = "\n    @deprecated("
-            msg += f'\n        "{deprecation_message}",'
-            msg += f"\n        category={deprecation_type_class},"
-            msg += "\n    )"
+            deprecated = "\n    @deprecated("
+            deprecated += f'\n        "{deprecation_message}",'
+            deprecated += f"\n        category={deprecation_type_class},"
+            deprecated += "\n    )"
 
-        code = f"\n    @validate{args}{msg}"
+        code += "\n    @exception_handler"
+        code += f"\n    @validate{args}"
+        code += deprecated
         code += f"\n    def {func_name}("
         code += f"\n        self,\n        {func_params}\n    ) -> {func_returns}:\n"
 
@@ -830,17 +834,17 @@ class DocstringGenerator:
         available_providers = providers or "Optional[str]"
 
         obbject_description = (
-            "        OBBject\n"
-            f"            results : {results_type}\n"
-            "                Serializable results.\n"
-            f"            provider : {available_providers}\n"
-            "                Provider name.\n"
-            "            warnings : Optional[List[Warning_]]\n"
-            "                List of warnings.\n"
-            "            chart : Optional[Chart]\n"
-            "                Chart object.\n"
-            "            extra: Dict[str, Any]\n"
-            "                Extra info.\n"
+            "    OBBject\n"
+            f"        results : {results_type}\n"
+            "            Serializable results.\n"
+            f"        provider : {available_providers}\n"
+            "            Provider name.\n"
+            "        warnings : Optional[List[Warning_]]\n"
+            "            List of warnings.\n"
+            "        chart : Optional[Chart]\n"
+            "            Chart object.\n"
+            "        extra: Dict[str, Any]\n"
+            "            Extra info.\n"
         )
         obbject_description = obbject_description.replace("NoneType", "None")
 
@@ -871,22 +875,22 @@ class DocstringGenerator:
 
         def format_description(description: str) -> str:
             """Format description in docstrings."""
-            description = description.replace("\n", "\n        ")
+            description = description.replace("\n", "\n    ")
             return description
 
         standard_dict = params["standard"].__dataclass_fields__
         extra_dict = params["extra"].__dataclass_fields__
 
         if examples:
-            example_docstring = "\n        Example\n        -------\n"
-            example_docstring += "        >>> from openbb import obb\n"
+            example_docstring = "\n    Example\n    -------\n"
+            example_docstring += "    >>> from openbb import obb\n"
             for example in examples:
-                example_docstring += f"        >>> {example}\n"
+                example_docstring += f"    >>> {example}\n"
 
-        docstring = summary
+        docstring = summary.strip("\n")
         docstring += "\n\n"
-        docstring += "        Parameters\n"
-        docstring += "        ----------\n"
+        docstring += "    Parameters\n"
+        docstring += "    ----------\n"
 
         # Explicit parameters
         for param_name, param in explicit_params.items():
@@ -912,8 +916,8 @@ class DocstringGenerator:
                 description = ""
 
             type_str = format_type(type_, char_limit=79)  # type: ignore
-            docstring += f"        {param_name} : {type_str}\n"
-            docstring += f"            {format_description(description)}\n"
+            docstring += f"    {param_name} : {type_str}\n"
+            docstring += f"        {format_description(description)}\n"
 
         # Kwargs
         for param_name, param in extra_dict.items():
@@ -925,13 +929,13 @@ class DocstringGenerator:
 
             description = getattr(param.default, "description", "")
 
-            docstring += f"        {param_name} : {type_}\n"
-            docstring += f"            {format_description(description)}\n"
+            docstring += f"    {param_name} : {type_}\n"
+            docstring += f"        {format_description(description)}\n"
 
         # Returns
         docstring += "\n"
-        docstring += "        Returns\n"
-        docstring += "        -------\n"
+        docstring += "    Returns\n"
+        docstring += "    -------\n"
         provider_param = explicit_params.get("provider", None)
         available_providers = getattr(provider_param, "_annotation", None)
 
@@ -939,7 +943,7 @@ class DocstringGenerator:
 
         # Schema
         underline = "-" * len(model_name)
-        docstring += f"\n        {model_name}\n        {underline}\n"
+        docstring += f"\n    {model_name}\n    {underline}\n"
 
         for name, field in returns.items():
             try:
@@ -970,8 +974,8 @@ class DocstringGenerator:
 
             description = getattr(field, "description", "")
 
-            docstring += f"        {field.alias or name} : {field_type}\n"
-            docstring += f"            {format_description(description)}\n"
+            docstring += f"    {field.alias or name} : {field_type}\n"
+            docstring += f"        {format_description(description)}\n"
 
         if examples:
             docstring += example_docstring

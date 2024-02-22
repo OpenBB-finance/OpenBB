@@ -5,7 +5,7 @@ from typing import Literal, Optional
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -18,6 +18,7 @@ class ROUTER_equity_compare(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def peers(
         self,
@@ -27,7 +28,10 @@ class ROUTER_equity_compare(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Equity Peers. Company peers.
+        """Get the closest peers for a given company.
+
+        Peers consist of companies trading on the same exchange, operating within the same sector
+        and with comparable market capitalizations.
 
         Parameters
         ----------
