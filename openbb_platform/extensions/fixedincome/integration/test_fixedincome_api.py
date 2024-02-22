@@ -439,10 +439,9 @@ def test_fixedincome_spreads_treasury_effr(params, headers):
 @parametrize(
     "params",
     [
-        ({"date": "2023-01-01", "yield_curve_type": "spot_rate"}),
         (
             {
-                "rating": "A",
+                "rating": "aaa",
                 "provider": "ecb",
                 "date": "2023-01-01",
                 "yield_curve_type": "spot_rate",

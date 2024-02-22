@@ -1,7 +1,7 @@
 """Euro Area Yield Curve Standard Model."""
 
 from datetime import date as dateType
-from typing import Literal, Optional
+from typing import Optional
 
 from pydantic import Field
 
@@ -16,16 +16,14 @@ class EUYieldCurveQueryParams(QueryParams):
     date: Optional[dateType] = Field(
         default=None, description=QUERY_DESCRIPTIONS.get("date", "")
     )
-    yield_curve_type: Literal["spot_rate", "instantaneous_forward", "par_yield"] = (
-        Field(
-            default="spot_rate",
-            description="The yield curve type.",
-        )
-    )
 
 
 class EUYieldCurveData(Data):
     """Euro Area Yield Curve Data."""
 
-    maturity: str = Field(description="Yield curve rate maturity.")
-    rate: Optional[float] = Field(description="Yield curve rate.", default=None)
+    maturity: Optional[float] = Field(description="Maturity, in years.", default=None)
+    rate: Optional[float] = Field(
+        description="Yield curve rate, as a normalized percent.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent.", "frontend_multiply": 100},
+    )
