@@ -463,12 +463,6 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(FeatureFlagsController, self.queue)
 
-    def call_portfolio(self, _):
-        """Process portfolio command."""
-        from openbb_terminal.portfolio.portfolio_controller import PortfolioController
-
-        self.queue = self.load_class(PortfolioController, self.queue)
-
     def call_sources(self, _):
         """Process sources command."""
         from openbb_terminal.sources_controller import SourcesController
