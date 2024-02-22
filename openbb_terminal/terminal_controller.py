@@ -180,6 +180,7 @@ class TerminalController(BaseController):
             target = getattr(obb, router)
 
             if value == "menu":
+
                 pcf = PlatformControllerFactory(target)
                 DynamicController = pcf.create()
 
@@ -387,38 +388,38 @@ class TerminalController(BaseController):
     #                 console.print("--tag only available for Biztoc.\n")
     #                 to_return = True
 
-                if to_return:
-                    return
+    #             if to_return:
+    #                 return
 
-                query = " ".join(news_parser.term)
-                feedparser_view.display_news(
-                    term=query,
-                    sources=news_parser.sources,
-                    limit=news_parser.limit,
-                    export=news_parser.export,
-                    sheet_name=news_parser.sheet_name,
-                )
-            if news_parser.source == "Biztoc":
-                query = " ".join(news_parser.term)
-                if news_parser.sourcelist and news_parser.sourcelist is True:
-                    biztoc_view.display_sources(
-                        export=news_parser.export,
-                        sheet_name=news_parser.sheet_name,
-                    )
-                elif news_parser.taglist and news_parser.taglist is True:
-                    biztoc_view.display_tags(
-                        export=news_parser.export,
-                        sheet_name=news_parser.sheet_name,
-                    )
-                else:
-                    biztoc_view.display_news(
-                        term=query,
-                        tag=news_parser.tag,
-                        source=news_parser.sources,
-                        limit=news_parser.limit,
-                        export=news_parser.export,
-                        sheet_name=news_parser.sheet_name,
-                    )
+    #             query = " ".join(news_parser.term)
+    #             feedparser_view.display_news(
+    #                 term=query,
+    #                 sources=news_parser.sources,
+    #                 limit=news_parser.limit,
+    #                 export=news_parser.export,
+    #                 sheet_name=news_parser.sheet_name,
+    #             )
+    #         if news_parser.source == "Biztoc":
+    #             query = " ".join(news_parser.term)
+    #             if news_parser.sourcelist and news_parser.sourcelist is True:
+    #                 biztoc_view.display_sources(
+    #                     export=news_parser.export,
+    #                     sheet_name=news_parser.sheet_name,
+    #                 )
+    #             elif news_parser.taglist and news_parser.taglist is True:
+    #                 biztoc_view.display_tags(
+    #                     export=news_parser.export,
+    #                     sheet_name=news_parser.sheet_name,
+    #                 )
+    #             else:
+    #                 biztoc_view.display_news(
+    #                     term=query,
+    #                     tag=news_parser.tag,
+    #                     source=news_parser.sources,
+    #                     limit=news_parser.limit,
+    #                     export=news_parser.export,
+    #                     sheet_name=news_parser.sheet_name,
+    #                 )
 
     def parse_input(self, an_input: str) -> List:
         """Overwrite the BaseController parse_input for `askobb` and 'exe'
