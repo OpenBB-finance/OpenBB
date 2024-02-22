@@ -33,7 +33,7 @@ from openbb_terminal.core.session import hub_model as Hub
 from openbb_terminal.core.session.constants import SCRIPT_TAGS
 from openbb_terminal.core.session.current_user import get_current_user, is_local
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-from openbb_terminal.decorators import log_start_end
+
 from openbb_terminal.helper_funcs import (
     check_file_type_saved,
     check_positive,
@@ -445,7 +445,6 @@ class BaseController(metaclass=ABCMeta):
         if the_input not in self.KEYS_MENU:
             self.log_queue()
 
-    @log_start_end(log=logger)
     def switch(self, an_input: str) -> List[str]:
         """Process and dispatch input.
 
@@ -519,12 +518,10 @@ class BaseController(metaclass=ABCMeta):
 
         return self.queue
 
-    @log_start_end(log=logger)
     def call_cls(self, _) -> None:
         """Process cls command."""
         system_clear()
 
-    @log_start_end(log=logger)
     def call_home(self, _) -> None:
         """Process home command."""
         self.save_class()
@@ -536,12 +533,10 @@ class BaseController(metaclass=ABCMeta):
         for _ in range(self.PATH.count("/") - 1):
             self.queue.insert(0, "quit")
 
-    @log_start_end(log=logger)
     def call_help(self, _) -> None:
         """Process help command."""
         self.print_help()
 
-    @log_start_end(log=logger)
     def call_about(self, other_args: List[str]) -> None:
         """Process about command."""
         description = "Display the documentation of the menu or command."
@@ -580,13 +575,11 @@ class BaseController(metaclass=ABCMeta):
                 self.PATH, command=ns_parser.command, arg_type=arg_type
             )
 
-    @log_start_end(log=logger)
     def call_quit(self, _) -> None:
         """Process quit menu command."""
         self.save_class()
         self.queue.insert(0, "quit")
 
-    @log_start_end(log=logger)
     def call_exit(self, _) -> None:
         # Not sure how to handle controller loading here
         """Process exit terminal command."""
@@ -599,7 +592,6 @@ class BaseController(metaclass=ABCMeta):
             if not get_current_user().profile.remember:
                 Local.remove(HIST_FILE_PATH)
 
-    @log_start_end(log=logger)
     def call_reset(self, _) -> None:
         """Process reset command.
 
@@ -617,7 +609,6 @@ class BaseController(metaclass=ABCMeta):
             for _ in range(len(self.path)):
                 self.queue.insert(0, "quit")
 
-    @log_start_end(log=logger)
     def call_resources(self, other_args: List[str]) -> None:
         """Process resources command."""
         parser = argparse.ArgumentParser(
@@ -636,7 +627,6 @@ class BaseController(metaclass=ABCMeta):
             else:
                 console.print("No resources available.\n")
 
-    @log_start_end(log=logger)
     def call_support(self, other_args: List[str]) -> None:
         """Process support command."""
         self.save_class()
@@ -710,9 +700,6 @@ class BaseController(metaclass=ABCMeta):
 
             webbrowser.open(form_url + url_params)
 
-
-
-    @log_start_end(log=logger)
     def call_record(self, other_args) -> None:
         """Process record command."""
         parser = argparse.ArgumentParser(
@@ -874,7 +861,6 @@ class BaseController(metaclass=ABCMeta):
                 "\n[yellow]Remember to run 'stop' command when you are done!\n[/yellow]"
             )
 
-    @log_start_end(log=logger)
     def call_stop(self, _) -> None:
         """Process stop command."""
         global RECORD_SESSION  # noqa: PLW0603
@@ -982,7 +968,6 @@ class BaseController(metaclass=ABCMeta):
             RECORD_SESSION = False
             SESSION_RECORDED = list()
 
-    @log_start_end(log=logger)
     def call_screenshot(self, other_args: List[str]) -> None:
         """Process screenshot command."""
         parser = argparse.ArgumentParser(
@@ -998,7 +983,6 @@ class BaseController(metaclass=ABCMeta):
         if ns_parser:
             screenshot()
 
-    @log_start_end(log=logger)
     def call_whoami(self, other_args: List[str]) -> None:
         """Process whoami command."""
         parser = argparse.ArgumentParser(

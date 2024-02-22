@@ -1,10 +1,8 @@
 # This is for helpers that do NOT import any OpenBB Modules
 import logging
-import os
-from typing import Any, List, Literal, Optional
+from typing import Literal
 
 from dotenv import load_dotenv
-from posthog import Posthog
 from rich.console import Console
 
 from openbb_terminal.core.config.paths import (
@@ -16,11 +14,6 @@ from openbb_terminal.core.config.paths import (
 console = Console()
 
 menus = Literal["", "featflags", "settings"]
-
-openbb_posthog = Posthog(
-    "phc_w3vscAiNobDjUM9gYw2ffAFPUc8COciilsvvp3tAPi",
-    host="https://app.posthog.com",
-)
 
 
 def strtobool(val):

@@ -35,7 +35,6 @@ from openbb_terminal.core.config.paths import (
     REPOSITORY_DIRECTORY,
     SETTINGS_ENV_FILE,
 )
-from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.core.session import constants, session_controller
 from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.session.current_user import get_current_user, set_preference
@@ -628,8 +627,6 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
     """Terminal Menu."""
 
     current_user = get_current_user()
-
-    log_terminal(test_mode=test_mode)
 
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)

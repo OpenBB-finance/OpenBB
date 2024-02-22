@@ -364,10 +364,6 @@ def disable_matplotlib():
     matplotlib.use("Agg")
 
 
-def disable_check_api():
-    decorators.disable_check_api()
-
-
 def enable_debug():
     set_system_variable("DEBUG_MODE", True)
 
@@ -378,7 +374,6 @@ def pytest_configure(config: Config) -> None:
     brotli_check()
     enable_debug()
     disable_rich()
-    disable_check_api()
     disable_matplotlib()
 
 

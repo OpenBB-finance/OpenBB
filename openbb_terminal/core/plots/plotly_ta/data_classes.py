@@ -11,7 +11,6 @@ import pandas_ta as ta
 
 from openbb_terminal.base_helpers import console
 
-from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
@@ -245,7 +244,6 @@ class TA_Data:
 
     """
 
-    @log_start_end(log=logger)
     def __init__(
         self,
         df_ta: Union[pd.DataFrame, pd.Series],

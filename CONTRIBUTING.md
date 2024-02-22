@@ -115,7 +115,7 @@ from openbb_terminal.helpers import request
 
 logger = logging.getLogger(__name__)
 
-@log_start_end(log=logger)
+
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def get_price_targets(cls, symbol: str) -> pd.DataFrame:
     """Get price targets for a company [Source: Financial Modeling Prep]
@@ -178,7 +178,7 @@ In the example below, you can see that we explicitly handle some of them.
 It's not always possible to distinguish error types using `status_code`. So depending on the API provider, you can use either error messages or exceptions.
 
 ```python
-@log_start_end(log=logger)
+
 @check_api_key(["API_NEWS_TOKEN"])
 def get_news(
     query: str,
@@ -240,7 +240,7 @@ should be included in the file `OpenBBTerminal/website/content/terminal/usage/da
 7. Finally, call `export_data` where the variables are export variable, current filename, command name, and dataframe.
 
 ```python
-@log_start_end(log=logger)
+
 @check_api_key(["API_KEY_FINANCIALMODELINGPREP"])
 def display_price_targets(
     symbol: str, limit: int = 10, export: str = "", sheet_name: Optional[str] = None
@@ -350,7 +350,7 @@ Same with limit, we can pass limit=10 to add the `-l` flag with default=10.  Her
 Our new function will be:
 
 ```python
-   @log_start_end(log=logger)
+
     def call_pt(self, other_args: List[str]):
         """Process pt command"""
         parser = argparse.ArgumentParser(
@@ -437,7 +437,7 @@ Now from the terminal, this function can be run as desired:
 When adding a new menu, the code looks like this:
 
 ```python
-@log_start_end(log=logger)
+
 def call_fa(self, _):
     """Process fa command"""
     from openbb_terminal.stocks.fundamental_analysis.fa_controller import (
@@ -1582,11 +1582,11 @@ You can also use the decorator `@log_start_end` to automatically record a messag
 ```python
 import logging
 
-from openbb_terminal.decorators import log_start_end
+
 
 logger = logging.getLogger(__name__)
 
-@log_start_end(log=logger)
+
 def your_function() -> pd.DataFrame:
     pass
 ```

@@ -16,7 +16,7 @@ from openbb_terminal.core.session.env_handler import write_to_dotenv
 
 # IMPORTATION INTERNAL
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-from openbb_terminal.decorators import log_start_end
+
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
@@ -110,14 +110,12 @@ class FeatureFlagsController(BaseController):
             "RETRY_WITH_LOAD", not get_current_user().preferences.RETRY_WITH_LOAD
         )
 
-    @log_start_end(log=logger)
     def call_interactive(self, _):
         """Process interactive command"""
         set_and_save_preference(
             "USE_INTERACTIVE_DF", not get_current_user().preferences.USE_INTERACTIVE_DF
         )
 
-    @log_start_end(log=logger)
     def call_cls(self, _):
         """Process cls command"""
         set_and_save_preference(
@@ -125,7 +123,6 @@ class FeatureFlagsController(BaseController):
             not get_current_user().preferences.USE_CLEAR_AFTER_CMD,
         )
 
-    @log_start_end(log=logger)
     def call_promptkit(self, _):
         """Process promptkit command"""
         set_and_save_preference(
@@ -133,7 +130,6 @@ class FeatureFlagsController(BaseController):
             not get_current_user().preferences.USE_PROMPT_TOOLKIT,
         )
 
-    @log_start_end(log=logger)
     def call_thoughts(self, _):
         """Process thoughts command"""
         set_and_save_preference(
@@ -141,7 +137,6 @@ class FeatureFlagsController(BaseController):
             not get_current_user().preferences.ENABLE_THOUGHTS_DAY,
         )
 
-    @log_start_end(log=logger)
     def call_reporthtml(self, _):
         """Process reporthtml command"""
         set_and_save_preference(
@@ -149,7 +144,6 @@ class FeatureFlagsController(BaseController):
             not get_current_user().preferences.OPEN_REPORT_AS_HTML,
         )
 
-    @log_start_end(log=logger)
     def call_exithelp(self, _):
         """Process exithelp command"""
         set_and_save_preference(
@@ -157,7 +151,6 @@ class FeatureFlagsController(BaseController):
             not get_current_user().preferences.ENABLE_EXIT_AUTO_HELP,
         )
 
-    @log_start_end(log=logger)
     def call_rcontext(self, _):
         """Process rcontext command"""
         set_and_save_preference(
@@ -165,14 +158,12 @@ class FeatureFlagsController(BaseController):
             not get_current_user().preferences.REMEMBER_CONTEXTS,
         )
 
-    @log_start_end(log=logger)
     def call_dt(self, _):
         """Process dt command"""
         set_and_save_preference(
             "USE_DATETIME", not get_current_user().preferences.USE_DATETIME
         )
 
-    @log_start_end(log=logger)
     def call_richpanel(self, _):
         """Process richpanel command"""
         set_and_save_preference(
@@ -180,7 +171,6 @@ class FeatureFlagsController(BaseController):
             not get_current_user().preferences.ENABLE_RICH_PANEL,
         )
 
-    @log_start_end(log=logger)
     def call_tbhint(self, _):
         """Process tbhint command"""
         if get_current_user().preferences.TOOLBAR_HINT:

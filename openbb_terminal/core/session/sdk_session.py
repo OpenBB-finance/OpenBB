@@ -8,7 +8,7 @@ from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
 )
-from openbb_terminal.decorators import log_start_end
+
 from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_helper import print_guest_block_msg
 
@@ -39,7 +39,6 @@ def get_session(email: str, password: str, token: str, save: bool) -> dict:
     return session
 
 
-@log_start_end(log=logger)
 def login(
     email: str = "",
     password: str = "",
@@ -93,7 +92,6 @@ def login(
             console_print("[green]Login successful.[/green]")
 
 
-@log_start_end(log=logger)
 def logout():
     """
     Logout and clear session.
@@ -110,7 +108,6 @@ def logout():
     )
 
 
-@log_start_end(log=logger)
 def whoami():
     """
     Display user info.
