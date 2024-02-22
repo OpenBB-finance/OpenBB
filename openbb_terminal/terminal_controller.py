@@ -481,12 +481,6 @@ class TerminalController(BaseController):
 
     #     self.queue = self.load_class(ETFController, self.queue)
 
-    def call_forex(self, _):
-        """Process forex command."""
-        from openbb_terminal.forex.forex_controller import ForexController
-
-        self.queue = self.load_class(ForexController, self.queue)
-
     def call_reports(self, _):
         """Process reports command."""
         from openbb_terminal.reports.reports_controller import ReportController
