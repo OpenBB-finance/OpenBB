@@ -463,12 +463,6 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(FeatureFlagsController, self.queue)
 
-    # def call_crypto(self, _):
-    #     """Process crypto command."""
-    #     from openbb_terminal.cryptocurrency.crypto_controller import CryptoController
-
-    #     self.queue = self.load_class(CryptoController, self.queue)
-
     # def call_economy(self, _):
     #     """Process economy command."""
     #     from openbb_terminal.economy.economy_controller import EconomyController
