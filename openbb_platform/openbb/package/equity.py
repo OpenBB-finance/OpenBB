@@ -5,7 +5,7 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -72,11 +72,12 @@ class ROUTER_equity(Container):
             command_runner=self._command_runner
         )
 
+    @exception_handler
     @validate
     def market_snapshots(
         self, provider: Optional[Literal["fmp", "polygon"]] = None, **kwargs
     ) -> OBBject:
-        """Get a current, complete, market snapshot.
+        """Get an updated equity market snapshot. This includes price data for thousands of stocks.
 
         Parameters
         ----------
@@ -221,24 +222,25 @@ class ROUTER_equity(Container):
 
         return equity_price.ROUTER_equity_price(command_runner=self._command_runner)
 
+    @exception_handler
     @validate
     def profile(
         self,
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: intrinio, yfinance."
+                description="Symbol to get data for. Multiple items allowed: fmp, intrinio, yfinance."
             ),
         ],
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Equity Info. Get general price and performance metrics of a stock.
+        """Get general information about a company. This includes company name, industry, sector and price data.
 
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: intrinio, yfinance.
+            Symbol to get data for. Multiple items allowed: fmp, intrinio, yfinance.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -403,14 +405,18 @@ class ROUTER_equity(Container):
                 },
                 extra_params=kwargs,
                 extra_info={
-                    "symbol": {"multiple_items_allowed": ["intrinio", "yfinance"]}
+                    "symbol": {
+                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
+                    }
                 },
             )
         )
 
+    @exception_handler
     @validate
     def screener(self, provider: Optional[Literal["fmp"]] = None, **kwargs) -> OBBject:
-        """Equity Screen. Screen for companies meeting various criteria.
+        """Screen for companies meeting various criteria. These criteria include
+        market cap, price, beta, volume, and dividend yield.
 
         Parameters
         ----------
@@ -519,6 +525,7 @@ class ROUTER_equity(Container):
             )
         )
 
+    @exception_handler
     @validate
     def search(
         self,
@@ -534,7 +541,7 @@ class ROUTER_equity(Container):
         provider: Optional[Literal["intrinio", "sec"]] = None,
         **kwargs
     ) -> OBBject:
-        """Equity Search. Search for a company or stock ticker.
+        """Search for stock symbol, CIK, LEI, or company name.
 
         Parameters
         ----------

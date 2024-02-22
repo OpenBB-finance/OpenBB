@@ -107,4 +107,7 @@ class FMPCryptoHistoricalFetcher(
         query: FMPCryptoHistoricalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[FMPCryptoHistoricalData]:
         """Return the transformed data."""
-        return [FMPCryptoHistoricalData.model_validate(d) for d in data]
+        return [
+            FMPCryptoHistoricalData.model_validate(d)
+            for d in sorted(data, key=lambda x: x["date"], reverse=False)
+        ]

@@ -137,7 +137,6 @@ def test_fixedincome_rate_ameribor(params, obb):
 @parametrize(
     "params",
     [
-        ({"start_date": "2023-01-01", "end_date": "2023-06-06"}),
         (
             {
                 "parameter": "weekly",
@@ -406,10 +405,9 @@ def test_fixedincome_spreads_treasury_effr(params, obb):
 @parametrize(
     "params",
     [
-        ({"date": "2023-01-01", "yield_curve_type": "spot_rate"}),
         (
             {
-                "rating": "A",
+                "rating": "aaa",
                 "provider": "ecb",
                 "date": "2023-01-01",
                 "yield_curve_type": "spot_rate",
@@ -477,10 +475,23 @@ def test_fixedincome_government_treasury_auctions(params, obb):
         ),
         (
             {
-                "date": "2023-11-16",
+                "date": "2023-12-28",
                 "cusip": None,
                 "security_type": "bill",
                 "provider": "government_us",
+            }
+        ),
+        (
+            {
+                "date": None,
+                "provider": "tmx",
+                "govt_type": "federal",
+                "issue_date_min": None,
+                "issue_date_max": None,
+                "last_traded_min": None,
+                "maturity_date_min": None,
+                "maturity_date_max": None,
+                "use_cache": True,
             }
         ),
     ],
@@ -490,6 +501,41 @@ def test_fixedincome_government_treasury_prices(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.fixedincome.government.treasury_prices(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@pytest.mark.parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "tmx",
+                "issuer_name": "federal",
+                "issue_date_min": None,
+                "issue_date_max": None,
+                "last_traded_min": None,
+                "coupon_min": 3,
+                "coupon_max": None,
+                "currency": None,
+                "issued_amount_min": None,
+                "issued_amount_max": None,
+                "maturity_date_min": None,
+                "maturity_date_max": None,
+                "isin": None,
+                "lei": None,
+                "country": None,
+                "use_cache": False,
+            }
+        )
+    ],
+)
+@pytest.mark.integration
+def test_fixedincome_corporate_bond_prices(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.fixedincome.corporate.bond_prices(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

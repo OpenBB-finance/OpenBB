@@ -1,6 +1,37 @@
 {
   "functions": [
     {
+      "description": "Slice data from a range.",
+      "helpUrl": "https://docs.openbb.co/excel/data-slicer",
+      "id": "GET",
+      "name": "GET",
+      "parameters": [
+        {
+          "description": "Data to slice.",
+          "dimensionality": "matrix",
+          "name": "data",
+          "type": "any"
+        },
+        {
+          "description": "Range of row labels or indices.",
+          "dimensionality": "matrix",
+          "name": "row",
+          "optional": true,
+          "type": "any"
+        },
+        {
+          "description": "Range of column labels or indices.",
+          "dimensionality": "matrix",
+          "name": "column",
+          "optional": true,
+          "type": "any"
+        }
+      ],
+      "result": {
+        "dimensionality": "matrix"
+      }
+    },
+    {
       "description": "Bring Your Own Data features from OpenBB Terminal Pro.",
       "helpUrl": "https://docs.openbb.co/excel/data-connectors",
       "id": "BYOD",

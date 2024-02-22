@@ -6,7 +6,7 @@ from typing import Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -26,6 +26,7 @@ class ROUTER_equity_discovery(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def active(
         self,
@@ -38,7 +39,7 @@ class ROUTER_equity_discovery(Container):
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the most active Equities.
+        """Get the most actively traded stocks based on volume.
 
         Parameters
         ----------
@@ -77,7 +78,7 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : float
             The trading volume.
-        market_cap : Optional[str]
+        market_cap : Optional[float]
             Market Cap displayed in billions. (provider: yfinance)
         avg_volume_3_months : Optional[float]
             Average volume over the last 3 months in millions. (provider: yfinance)
@@ -107,6 +108,7 @@ class ROUTER_equity_discovery(Container):
             )
         )
 
+    @exception_handler
     @validate
     def aggressive_small_caps(
         self,
@@ -119,7 +121,7 @@ class ROUTER_equity_discovery(Container):
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get aggressive small cap Equities.
+        """Get top small cap stocks based on earnings growth.
 
         Parameters
         ----------
@@ -158,7 +160,7 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : float
             The trading volume.
-        market_cap : Optional[str]
+        market_cap : Optional[float]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
             Average volume over the last 3 months in millions. (provider: yfinance)
@@ -188,6 +190,7 @@ class ROUTER_equity_discovery(Container):
             )
         )
 
+    @exception_handler
     @validate
     def filings(
         self,
@@ -216,7 +219,12 @@ class ROUTER_equity_discovery(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the most-recent filings submitted to the SEC.
+        """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC
+        filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,
+        Foreign Investment Disclosures and others. The annual 10-K report is required to be
+        filed annually and includes the company's financial statements, management discussion and analysis,
+        and audited financial statements.
+
 
         Parameters
         ----------
@@ -268,6 +276,8 @@ class ROUTER_equity_discovery(Container):
         -------
         >>> from openbb import obb
         >>> obb.equity.discovery.filings(limit=100)
+        >>> # Get filings for the year 2023, limited to 100 results
+        >>> obb.equity.discovery.filings(start_date='2023-01-01', end_date='2023-12-31')
         """  # noqa: E501
 
         return self._run(
@@ -290,6 +300,7 @@ class ROUTER_equity_discovery(Container):
             )
         )
 
+    @exception_handler
     @validate
     def gainers(
         self,
@@ -302,7 +313,7 @@ class ROUTER_equity_discovery(Container):
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the top Equity gainers.
+        """Get the top price gainers in the stock market.
 
         Parameters
         ----------
@@ -341,7 +352,7 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : float
             The trading volume.
-        market_cap : Optional[str]
+        market_cap : Optional[float]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
             Average volume over the last 3 months in millions. (provider: yfinance)
@@ -371,6 +382,7 @@ class ROUTER_equity_discovery(Container):
             )
         )
 
+    @exception_handler
     @validate
     def growth_tech(
         self,
@@ -383,7 +395,7 @@ class ROUTER_equity_discovery(Container):
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get growth tech Equities.
+        """Get top tech stocks based on revenue and earnings growth.
 
         Parameters
         ----------
@@ -422,7 +434,7 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : float
             The trading volume.
-        market_cap : Optional[str]
+        market_cap : Optional[float]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
             Average volume over the last 3 months in millions. (provider: yfinance)
@@ -452,6 +464,7 @@ class ROUTER_equity_discovery(Container):
             )
         )
 
+    @exception_handler
     @validate
     def losers(
         self,
@@ -464,7 +477,7 @@ class ROUTER_equity_discovery(Container):
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get the top Equity losers.
+        """Get the top price losers in the stock market.
 
         Parameters
         ----------
@@ -503,7 +516,7 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : float
             The trading volume.
-        market_cap : Optional[str]
+        market_cap : Optional[float]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
             Average volume over the last 3 months in millions. (provider: yfinance)
@@ -533,6 +546,7 @@ class ROUTER_equity_discovery(Container):
             )
         )
 
+    @exception_handler
     @validate
     def undervalued_growth(
         self,
@@ -545,7 +559,7 @@ class ROUTER_equity_discovery(Container):
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get undervalued growth Equities.
+        """Get potentially undervalued growth stocks.
 
         Parameters
         ----------
@@ -584,7 +598,7 @@ class ROUTER_equity_discovery(Container):
             Percent change.
         volume : float
             The trading volume.
-        market_cap : Optional[str]
+        market_cap : Optional[float]
             Market Cap. (provider: yfinance)
         avg_volume_3_months : Optional[float]
             Average volume over the last 3 months in millions. (provider: yfinance)
@@ -614,6 +628,7 @@ class ROUTER_equity_discovery(Container):
             )
         )
 
+    @exception_handler
     @validate
     def undervalued_large_caps(
         self,
@@ -626,7 +641,7 @@ class ROUTER_equity_discovery(Container):
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Get undervalued large cap Equities.
+        """Get potentially undervalued large cap stocks.
 
         Parameters
         ----------

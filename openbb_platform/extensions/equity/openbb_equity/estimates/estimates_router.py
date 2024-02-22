@@ -28,7 +28,7 @@ async def price_target(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Analyst price targets by company."""
+    """Get analyst price targets by company."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -45,7 +45,7 @@ async def historical(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Historical analyst estimates for earnings and revenue."""
+    """Get historical analyst estimates for earnings and revenue."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -62,7 +62,7 @@ async def consensus(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Consensus price target and recommendation."""
+    """Get consensus price target and recommendation."""
     return await OBBject.from_query(Query(**locals()))
 
 

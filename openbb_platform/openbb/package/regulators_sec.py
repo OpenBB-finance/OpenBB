@@ -5,7 +5,7 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -23,13 +23,14 @@ class ROUTER_regulators_sec(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def cik_map(
         self,
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: intrinio, yfinance."
+                description="Symbol to get data for. Multiple items allowed: fmp, intrinio, yfinance."
             ),
         ],
         provider: Optional[Literal["sec"]] = None,
@@ -40,7 +41,7 @@ class ROUTER_regulators_sec(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: intrinio, yfinance.
+            Symbol to get data for. Multiple items allowed: fmp, intrinio, yfinance.
         provider : Optional[Literal['sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'sec' if there is
@@ -87,11 +88,14 @@ class ROUTER_regulators_sec(Container):
                 },
                 extra_params=kwargs,
                 extra_info={
-                    "symbol": {"multiple_items_allowed": ["intrinio", "yfinance"]}
+                    "symbol": {
+                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
+                    }
                 },
             )
         )
 
+    @exception_handler
     @validate
     def institutions_search(
         self,
@@ -163,6 +167,7 @@ class ROUTER_regulators_sec(Container):
             )
         )
 
+    @exception_handler
     @validate
     def rss_litigation(
         self, provider: Optional[Literal["sec"]] = None, **kwargs
@@ -224,6 +229,7 @@ class ROUTER_regulators_sec(Container):
             )
         )
 
+    @exception_handler
     @validate
     def schema_files(
         self,
@@ -311,6 +317,7 @@ class ROUTER_regulators_sec(Container):
             )
         )
 
+    @exception_handler
     @validate
     def sic_search(
         self,
@@ -384,6 +391,7 @@ class ROUTER_regulators_sec(Container):
             )
         )
 
+    @exception_handler
     @validate
     def symbol_map(
         self,

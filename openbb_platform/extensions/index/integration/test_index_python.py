@@ -21,8 +21,9 @@ def obb(pytestconfig):  # pylint: disable=inconsistent-return-statements
 @parametrize(
     "params",
     [
-        ({"index": "dowjones", "provider": "fmp"}),
-        ({"index": "BUKBUS", "provider": "cboe"}),
+        ({"symbol": "dowjones", "provider": "fmp"}),
+        ({"symbol": "BUKBUS", "provider": "cboe"}),
+        ({"symbol": "^TX60", "provider": "tmx", "use_cache": False}),
     ],
 )
 @pytest.mark.integration
@@ -275,6 +276,7 @@ def test_index_market(params, obb):
         ({"provider": "cboe", "use_cache": False}),
         ({"provider": "fmp"}),
         ({"provider": "yfinance"}),
+        ({"provider": "tmx", "use_cache": False}),
     ],
 )
 @pytest.mark.integration
@@ -288,7 +290,14 @@ def test_index_available(params, obb):
 @parametrize(
     "params",
     [
-        ({"query": "D", "is_symbol": True, "use_cache": False, "provider": "cboe"}),
+        (
+            {
+                "query": "D",
+                "is_symbol": True,
+                "provider": "cboe",
+                "use_cache": False,
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -303,6 +312,7 @@ def test_index_search(params, obb):
     "params",
     [
         ({"region": "us", "provider": "cboe"}),
+        ({"provider": "tmx", "region": "ca", "use_cache": False}),
     ],
 )
 @pytest.mark.integration
@@ -331,6 +341,20 @@ def test_index_snapshots(params, obb):
 @pytest.mark.integration
 def test_index_sp500_multiples(params, obb):
     result = obb.index.sp500_multiples(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        ({"symbol": "^TX60", "provider": "tmx"}),
+    ],
+)
+@pytest.mark.integration
+def test_index_sectors(params, obb):
+    result = obb.index.sectors(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0

@@ -79,7 +79,9 @@ class PackageBuilder:
     def auto_build(self) -> None:
         """Trigger build if there are differences between built and installed extensions."""
         if Env().AUTO_BUILD:
-            add, remove = PackageBuilder._diff(self.directory / "package")
+            add, remove = PackageBuilder._diff(
+                self.directory / "assets" / "extension_map.json"
+            )
             if add:
                 a = ", ".join(add)
                 print(f"Extensions to add: {a}")  # noqa: T201
@@ -98,7 +100,7 @@ class PackageBuilder:
     ) -> None:
         """Build the extensions for the Platform."""
         self.console.log("\nBuilding extensions package...\n")
-        self._clean_package(modules)
+        self._clean(modules)
         ext_map = self._get_extension_map()
         self._save_extension_map(ext_map)
         self._save_module_map()
@@ -107,8 +109,9 @@ class PackageBuilder:
         if self.lint:
             self._run_linters()
 
-    def _clean_package(self, modules: Optional[Union[str, List[str]]] = None) -> None:
-        """Delete the package folder or modules before building."""
+    def _clean(self, modules: Optional[Union[str, List[str]]] = None) -> None:
+        """Delete the assets and package folder or modules before building."""
+        shutil.rmtree(self.directory / "assets", ignore_errors=True)
         if modules:
             for module in modules:
                 module_path = self.directory / "package" / f"{module}.py"
@@ -141,7 +144,7 @@ class PackageBuilder:
         """Save the map of extensions available at build time."""
         code = dumps(obj=dict(sorted(ext_map.items())), indent=4)
         self.console.log("Writing extension map...")
-        self._write(code=code, name="extension_map", extension="json")
+        self._write(code=code, name="extension_map", extension="json", folder="assets")
 
     def _save_module_map(self):
         """Save the module map."""
@@ -152,7 +155,7 @@ class PackageBuilder:
         }
         code = dumps(obj=dict(sorted(module_map.items())), indent=4)
         self.console.log("\nWriting module map...")
-        self._write(code=code, name="module_map", extension="json")
+        self._write(code=code, name="module_map", extension="json", folder="assets")
 
     def _save_modules(
         self,
@@ -197,9 +200,11 @@ class PackageBuilder:
         linters.ruff()
         linters.black()
 
-    def _write(self, code: str, name: str, extension="py") -> None:
+    def _write(
+        self, code: str, name: str, extension: str = "py", folder: str = "package"
+    ) -> None:
         """Write the module to the package."""
-        package_folder = self.directory / "package"
+        package_folder = self.directory / folder
         package_path = package_folder / f"{name}.{extension}"
 
         package_folder.mkdir(exist_ok=True)
@@ -209,25 +214,24 @@ class PackageBuilder:
             file.write(code.replace("typing.", ""))
 
     @staticmethod
-    def _read_extension_map(package: Path) -> dict:
-        """Get extension map from package folder."""
-        ext_map_file = Path(package, "extension_map.json")
+    def _read(path: Path) -> dict:
+        """Get content from folder."""
         try:
-            with open(ext_map_file) as fp:
-                ext_map = load(fp)
+            with open(Path(path)) as fp:
+                content = load(fp)
         except Exception:
-            ext_map = {}
+            content = {}
 
-        return ext_map
+        return content
 
     @staticmethod
-    def _diff(package: Path) -> Tuple[Set[str], Set[str]]:
+    def _diff(path: Path) -> Tuple[Set[str], Set[str]]:
         """Check differences between built and installed extensions.
 
         Parameters
         ----------
-        package: Path
-            The path to the package
+        path: Path
+            The path to the folder where the extension map is stored.
 
         Returns
         -------
@@ -235,7 +239,7 @@ class PackageBuilder:
             First element: set of installed extensions that are not in the package.
             Second element: set of extensions in the package that are not installed.
         """
-        ext_map = PackageBuilder._read_extension_map(package)
+        ext_map = PackageBuilder._read(path)
 
         add: Set[str] = set()
         remove: Set[str] = set()
@@ -349,7 +353,7 @@ class ImportDefinition:
         else:
             code += "\nfrom typing_extensions import Annotated, deprecated"
         code += "\nfrom openbb_core.app.utils import df_to_basemodel"
-        code += "\nfrom openbb_core.app.static.utils.decorators import validate\n"
+        code += "\nfrom openbb_core.app.static.utils.decorators import exception_handler, validate\n"
         code += "\nfrom openbb_core.app.static.utils.filters import filter_inputs\n"
         code += "\nfrom openbb_core.provider.abstract.data import Data"
         code += "\nfrom openbb_core.app.deprecation import OpenBBDeprecationWarning\n"
@@ -673,19 +677,23 @@ class MethodDefinition:
             else ""
         )
 
-        msg = ""
+        code = ""
+        deprecated = ""
+
         if MethodDefinition.is_deprecated_function(path):
             deprecation_message = MethodDefinition.get_deprecation_message(path)
             deprecation_type_class = type(
                 deprecation_message.metadata  # type: ignore
             ).__name__
 
-            msg = "\n    @deprecated("
-            msg += f'\n        "{deprecation_message}",'
-            msg += f"\n        category={deprecation_type_class},"
-            msg += "\n    )"
+            deprecated = "\n    @deprecated("
+            deprecated += f'\n        "{deprecation_message}",'
+            deprecated += f"\n        category={deprecation_type_class},"
+            deprecated += "\n    )"
 
-        code = f"\n    @validate{args}{msg}"
+        code += "\n    @exception_handler"
+        code += f"\n    @validate{args}"
+        code += deprecated
         code += f"\n    def {func_name}("
         code += f"\n        self,\n        {func_params}\n    ) -> {func_returns}:\n"
 
@@ -826,17 +834,17 @@ class DocstringGenerator:
         available_providers = providers or "Optional[str]"
 
         obbject_description = (
-            "        OBBject\n"
-            f"            results : {results_type}\n"
-            "                Serializable results.\n"
-            f"            provider : {available_providers}\n"
-            "                Provider name.\n"
-            "            warnings : Optional[List[Warning_]]\n"
-            "                List of warnings.\n"
-            "            chart : Optional[Chart]\n"
-            "                Chart object.\n"
-            "            extra: Dict[str, Any]\n"
-            "                Extra info.\n"
+            "    OBBject\n"
+            f"        results : {results_type}\n"
+            "            Serializable results.\n"
+            f"        provider : {available_providers}\n"
+            "            Provider name.\n"
+            "        warnings : Optional[List[Warning_]]\n"
+            "            List of warnings.\n"
+            "        chart : Optional[Chart]\n"
+            "            Chart object.\n"
+            "        extra: Dict[str, Any]\n"
+            "            Extra info.\n"
         )
         obbject_description = obbject_description.replace("NoneType", "None")
 
@@ -867,22 +875,22 @@ class DocstringGenerator:
 
         def format_description(description: str) -> str:
             """Format description in docstrings."""
-            description = description.replace("\n", "\n        ")
+            description = description.replace("\n", "\n    ")
             return description
 
         standard_dict = params["standard"].__dataclass_fields__
         extra_dict = params["extra"].__dataclass_fields__
 
         if examples:
-            example_docstring = "\n        Example\n        -------\n"
-            example_docstring += "        >>> from openbb import obb\n"
+            example_docstring = "\n    Example\n    -------\n"
+            example_docstring += "    >>> from openbb import obb\n"
             for example in examples:
-                example_docstring += f"        >>> {example}\n"
+                example_docstring += f"    >>> {example}\n"
 
-        docstring = summary
+        docstring = summary.strip("\n")
         docstring += "\n\n"
-        docstring += "        Parameters\n"
-        docstring += "        ----------\n"
+        docstring += "    Parameters\n"
+        docstring += "    ----------\n"
 
         # Explicit parameters
         for param_name, param in explicit_params.items():
@@ -908,8 +916,8 @@ class DocstringGenerator:
                 description = ""
 
             type_str = format_type(type_, char_limit=79)  # type: ignore
-            docstring += f"        {param_name} : {type_str}\n"
-            docstring += f"            {format_description(description)}\n"
+            docstring += f"    {param_name} : {type_str}\n"
+            docstring += f"        {format_description(description)}\n"
 
         # Kwargs
         for param_name, param in extra_dict.items():
@@ -921,13 +929,13 @@ class DocstringGenerator:
 
             description = getattr(param.default, "description", "")
 
-            docstring += f"        {param_name} : {type_}\n"
-            docstring += f"            {format_description(description)}\n"
+            docstring += f"    {param_name} : {type_}\n"
+            docstring += f"        {format_description(description)}\n"
 
         # Returns
         docstring += "\n"
-        docstring += "        Returns\n"
-        docstring += "        -------\n"
+        docstring += "    Returns\n"
+        docstring += "    -------\n"
         provider_param = explicit_params.get("provider", None)
         available_providers = getattr(provider_param, "_annotation", None)
 
@@ -935,7 +943,7 @@ class DocstringGenerator:
 
         # Schema
         underline = "-" * len(model_name)
-        docstring += f"\n        {model_name}\n        {underline}\n"
+        docstring += f"\n    {model_name}\n    {underline}\n"
 
         for name, field in returns.items():
             try:
@@ -966,8 +974,8 @@ class DocstringGenerator:
 
             description = getattr(field, "description", "")
 
-            docstring += f"        {field.alias or name} : {field_type}\n"
-            docstring += f"            {format_description(description)}\n"
+            docstring += f"    {field.alias or name} : {field_type}\n"
+            docstring += f"        {format_description(description)}\n"
 
         if examples:
             docstring += example_docstring

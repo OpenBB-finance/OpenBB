@@ -139,6 +139,7 @@ def test_equity_calendar_splits(params, headers):
     [
         ({"start_date": "2023-11-09", "end_date": "2023-11-10", "provider": "fmp"}),
         ({"start_date": "2023-11-09", "end_date": "2023-11-10", "provider": "nasdaq"}),
+        ({"start_date": "2023-11-09", "end_date": "2023-11-10", "provider": "tmx"}),
     ],
 )
 @pytest.mark.integration
@@ -292,6 +293,7 @@ def test_equity_fundamental_historical_splits(params, headers):
                 "provider": "intrinio",
             }
         ),
+        ({"symbol": "RY", "provider": "tmx"}),
         (
             {
                 "symbol": "AAPL",
@@ -451,6 +453,13 @@ def test_equity_fundamental_income_growth(params, headers):
 @parametrize(
     "params",
     [
+        (
+            {
+                "symbol": "RY",
+                "provider": "tmx",
+                "limit": None,
+            }
+        ),
         (
             {
                 "provider": "fmp",
@@ -693,6 +702,7 @@ def test_equity_estimates_analyst_search(params, headers):
     [
         ({"symbol": "AAPL", "provider": "fmp"}),
         ({"symbol": "AAPL,AMZN,RELIANCE.NS", "provider": "yfinance"}),
+        ({"symbol": "TD:US", "provider": "tmx"}),
     ],
 )
 @pytest.mark.integration
@@ -797,6 +807,16 @@ def test_equity_fundamental_revenue_per_segment(params, headers):
                 "symbol": None,
                 "provider": "sec",
                 "use_cache": False,
+            }
+        ),
+        (
+            {
+                "provider": "tmx",
+                "symbol": "IBM:US",
+                "start_date": "2023-09-30",
+                "end_date": "2023-12-31",
+                "limit": None,
+                "form_type": None,
             }
         ),
     ],
@@ -1048,6 +1068,16 @@ def test_equity_compare_groups(params, headers):
                 "interval": "1M",
             }
         ),
+        (
+            {
+                "provider": "tmx",
+                "symbol": "AAPL:US",
+                "start_date": "2023-01-01",
+                "end_date": "2023-12-31",
+                "interval": "1d",
+                "adjustment": "splits_only",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
@@ -1241,6 +1271,7 @@ def test_equity_fundamental_latest_attributes(params, headers):
         ({"query": "AAPl", "is_symbol": True, "provider": "cboe", "use_cache": False}),
         ({"query": "Apple", "provider": "sec", "use_cache": False, "is_fund": False}),
         ({"query": "", "provider": "nasdaq", "use_cache": False, "is_etf": True}),
+        ({"query": "gold", "provider": "tmx", "use_cache": False}),
         (
             {
                 "query": "gold",
@@ -1308,6 +1339,7 @@ def test_equity_screener(params, headers):
         ({"symbol": "AAPL", "provider": "fmp"}),
         ({"symbol": "AAPL", "provider": "cboe", "use_cache": False}),
         ({"symbol": "AAPL", "provider": "yfinance"}),
+        ({"symbol": "AAPL:US", "provider": "tmx"}),
     ],
 )
 @pytest.mark.integration
@@ -1328,6 +1360,7 @@ def test_equity_price_quote(params, headers):
         ({"symbol": "AAPL,MSFT", "provider": "intrinio"}),
         ({"symbol": "AAPL,MSFT", "provider": "finviz"}),
         ({"symbol": "AAPL,MSFT", "provider": "yfinance"}),
+        ({"provider": "tmx", "symbol": "AAPL:US"}),
         ({"symbol": "AAPL,MSFT", "provider": "fmp"}),
     ],
 )
@@ -1344,7 +1377,10 @@ def test_equity_profile(params, headers):
 
 @parametrize(
     "params",
-    [({"sort": "desc", "provider": "yfinance"})],
+    [
+        ({"sort": "desc", "provider": "yfinance"}),
+        ({"provider": "tmx", "category": "52w_high"}),
+    ],
 )
 @pytest.mark.integration
 def test_equity_discovery_gainers(params, headers):

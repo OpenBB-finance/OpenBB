@@ -113,13 +113,13 @@ class OBBject(Tagged, Generic[T]):
         return f"OBBject[{cls.results_type_repr(params)}]"
 
     def to_df(
-        self, index: Optional[str] = None, sort_by: Optional[str] = None
+        self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
     ) -> pd.DataFrame:
         """Alias for `to_dataframe`."""
         return self.to_dataframe(index=index, sort_by=sort_by)
 
     def to_dataframe(
-        self, index: Optional[str] = None, sort_by: Optional[str] = None
+        self, index: Optional[Union[str, None]] = "date", sort_by: Optional[str] = None
     ) -> pd.DataFrame:
         """Convert results field to pandas dataframe.
 
@@ -173,7 +173,7 @@ class OBBject(Tagged, Generic[T]):
                 for k, v in r.items():
                     # Dict[str, List[BaseModel]]
                     if is_list_of_basemodel(v):
-                        dict_of_df[k] = basemodel_to_df(v, index or "date")
+                        dict_of_df[k] = basemodel_to_df(v, index)
                         sort_columns = False
                     # Dict[str, Any]
                     else:
@@ -184,14 +184,14 @@ class OBBject(Tagged, Generic[T]):
             # List[BaseModel]
             elif is_list_of_basemodel(res):
                 dt: Union[List[Data], Data] = res  # type: ignore
-                df = basemodel_to_df(dt, index or "date")
+                df = basemodel_to_df(dt, index)
                 sort_columns = False
             # List[List | str | int | float] | Dict[str, Dict | List | BaseModel]
             else:
                 try:
                     df = pd.DataFrame(res)
                     # Set index, if any
-                    if index and index in df.columns:
+                    if index is not None and index in df.columns:
                         df.set_index(index, inplace=True)
 
                 except ValueError:
@@ -234,11 +234,11 @@ class OBBject(Tagged, Generic[T]):
                 "Please install polars: `pip install polars pyarrow`  to use this method."
             ) from exc
 
-        return from_pandas(self.to_dataframe().reset_index())
+        return from_pandas(self.to_dataframe(index=None))
 
     def to_numpy(self) -> ndarray:
         """Convert results field to numpy array."""
-        return self.to_dataframe().reset_index().to_numpy()
+        return self.to_dataframe(index=None).to_numpy()
 
     def to_dict(
         self,
@@ -259,7 +259,7 @@ class OBBject(Tagged, Generic[T]):
         Dict[str, List]
             Dictionary of lists.
         """
-        df = self.to_dataframe()  # type: ignore
+        df = self.to_dataframe(index=None)  # type: ignore
         transpose = False
         if orient == "list":
             transpose = True

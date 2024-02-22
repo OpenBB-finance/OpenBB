@@ -25,7 +25,7 @@ class CboeIndexConstituentsQueryParams(IndexConstituentsQueryParams):
     Gets the current price data for all constituents of the CBOE European Index.
     """
 
-    index: CONSTITUENTS_EU = Field(default="BUK100P")
+    symbol: CONSTITUENTS_EU = Field(default="BUK100P")
 
 
 class CboeIndexConstituentsData(IndexConstituentsData):
@@ -109,7 +109,7 @@ class CboeIndexConstituentsFetcher(
 
         url = (
             "https://cdn.cboe.com/api/global/european_indices"
-            f"/constituent_quotes/{query.index}.json"
+            f"/constituent_quotes/{query.symbol}.json"
         )
         data = await amake_request(url)
         return data.get("data")

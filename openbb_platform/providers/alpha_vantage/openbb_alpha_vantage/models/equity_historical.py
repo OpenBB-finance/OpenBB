@@ -1,12 +1,11 @@
 """Alpha Vantage Equity Historical Price Model."""
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_alpha_vantage.utils.helpers import (
     extract_key_name,
-    filter_by_dates,
     get_interval,
 )
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -19,6 +18,7 @@ from openbb_core.provider.utils.descriptions import (
     QUERY_DESCRIPTIONS,
 )
 from openbb_core.provider.utils.helpers import amake_request, get_querystring
+from pandas import to_datetime
 from pydantic import (
     Field,
     NonNegativeFloat,
@@ -201,7 +201,17 @@ class AVEquityHistoricalFetcher(
                 }
                 for date, values in content.items()
             ]
-            filter_by_dates(d, query.start_date, query.end_date)
-            transformed_data += d
+            if query.start_date and query.end_date:
+                transformed_data = list(
+                    filter(
+                        lambda x: to_datetime(query.start_date)
+                        <= to_datetime(x["date"])
+                        <= to_datetime(query.end_date) + timedelta(days=1),
+                        d,
+                    )
+                )
 
-        return [AVEquityHistoricalData.model_validate(d) for d in transformed_data]
+        return [
+            AVEquityHistoricalData.model_validate(d)
+            for d in sorted(transformed_data, key=lambda x: x["date"], reverse=False)
+        ]
