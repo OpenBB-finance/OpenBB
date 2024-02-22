@@ -5,7 +5,7 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -72,6 +72,7 @@ class ROUTER_equity(Container):
             command_runner=self._command_runner
         )
 
+    @exception_handler
     @validate
     def market_snapshots(
         self, provider: Optional[Literal["fmp", "polygon"]] = None, **kwargs
@@ -221,6 +222,7 @@ class ROUTER_equity(Container):
 
         return equity_price.ROUTER_equity_price(command_runner=self._command_runner)
 
+    @exception_handler
     @validate
     def profile(
         self,
@@ -410,6 +412,7 @@ class ROUTER_equity(Container):
             )
         )
 
+    @exception_handler
     @validate
     def screener(self, provider: Optional[Literal["fmp"]] = None, **kwargs) -> OBBject:
         """Equity Screen. Screen for companies meeting various criteria.
@@ -521,6 +524,7 @@ class ROUTER_equity(Container):
             )
         )
 
+    @exception_handler
     @validate
     def search(
         self,

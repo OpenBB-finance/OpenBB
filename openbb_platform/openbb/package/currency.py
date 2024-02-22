@@ -4,7 +4,7 @@ from typing import Literal, Optional
 
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 
 
@@ -24,6 +24,7 @@ class ROUTER_currency(Container):
 
         return currency_price.ROUTER_currency_price(command_runner=self._command_runner)
 
+    @exception_handler
     @validate
     def search(
         self, provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None, **kwargs

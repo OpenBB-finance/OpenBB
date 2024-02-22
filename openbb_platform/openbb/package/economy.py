@@ -6,7 +6,7 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -30,6 +30,7 @@ class ROUTER_economy(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def calendar(
         self,
@@ -146,6 +147,7 @@ class ROUTER_economy(Container):
             )
         )
 
+    @exception_handler
     @validate
     def composite_leading_indicator(
         self,
@@ -229,6 +231,7 @@ class ROUTER_economy(Container):
             )
         )
 
+    @exception_handler
     @validate
     def cpi(
         self,
@@ -349,6 +352,7 @@ class ROUTER_economy(Container):
             )
         )
 
+    @exception_handler
     @validate
     def fred_regional(
         self,
@@ -504,6 +508,7 @@ class ROUTER_economy(Container):
             )
         )
 
+    @exception_handler
     @validate
     def fred_search(
         self,
@@ -626,6 +631,7 @@ class ROUTER_economy(Container):
             )
         )
 
+    @exception_handler
     @validate
     def fred_series(
         self,
@@ -774,6 +780,7 @@ class ROUTER_economy(Container):
 
         return economy_gdp.ROUTER_economy_gdp(command_runner=self._command_runner)
 
+    @exception_handler
     @validate
     def long_term_interest_rate(
         self,
@@ -865,6 +872,7 @@ class ROUTER_economy(Container):
             )
         )
 
+    @exception_handler
     @validate
     def money_measures(
         self,
@@ -962,6 +970,7 @@ class ROUTER_economy(Container):
             )
         )
 
+    @exception_handler
     @validate
     def risk_premium(
         self, provider: Optional[Literal["fmp"]] = None, **kwargs
@@ -1021,6 +1030,7 @@ class ROUTER_economy(Container):
             )
         )
 
+    @exception_handler
     @validate
     def short_term_interest_rate(
         self,
@@ -1109,6 +1119,7 @@ class ROUTER_economy(Container):
             )
         )
 
+    @exception_handler
     @validate
     def unemployment(
         self,
