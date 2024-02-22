@@ -384,21 +384,6 @@ class CryptoController(CryptoBaseController):
             console.print("No coin selected. Use 'load' to load a coin.\n")
 
     @log_start_end(log=logger)
-    def call_qa(self, _):
-        """Process qa command"""
-        if self.symbol:
-            from openbb_terminal.cryptocurrency.quantitative_analysis import (
-                qa_controller,
-            )
-
-            self.queue = self.load_class(
-                qa_controller.QaController,
-                self.symbol,
-                self.current_df,
-                self.queue,
-            )
-
-    @log_start_end(log=logger)
     def call_onchain(self, _):
         """Process onchain command"""
         from openbb_terminal.cryptocurrency.onchain.onchain_controller import (
