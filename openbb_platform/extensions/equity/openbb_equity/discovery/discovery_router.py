@@ -21,7 +21,7 @@ async def gainers(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the top Equity gainers."""
+    """Get the top price gainers in the stock market."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -32,7 +32,7 @@ async def losers(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the top Equity losers."""
+    """Get the top price losers in the stock market."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -43,7 +43,7 @@ async def active(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the most active Equities."""
+    """Get the most actively traded stocks based on volume."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -54,7 +54,7 @@ async def undervalued_large_caps(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get undervalued large cap Equities."""
+    """Get potentially undervalued large cap stocks."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -65,7 +65,7 @@ async def undervalued_growth(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get undervalued growth Equities."""
+    """Get potentially undervalued growth stocks."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -76,7 +76,7 @@ async def aggressive_small_caps(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get aggressive small cap Equities."""
+    """Get top small cap stocks based on earnings growth."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -87,7 +87,7 @@ async def growth_tech(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get growth tech Equities."""
+    """Get top tech stocks based on revenue and earnings growth."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -101,8 +101,7 @@ async def top_retail(
     """Tracks over $30B USD/day of individual investors trades.
 
     It gives a daily view into retail activity and sentiment for over 9,500 US traded stocks,
-    ADRs, and ETPs.
-    """
+    ADRs, and ETPs."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -113,16 +112,27 @@ async def upcoming_release_days(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get upcoming release days."""
+    """Get upcoming earnings release dates."""
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="DiscoveryFilings")
+@router.command(
+    model="DiscoveryFilings",
+    examples=[
+        "# Get filings for the year 2023, limited to 100 results",
+        "obb.equity.discovery.filings(start_date='2023-01-01', end_date='2023-12-31')",
+    ],
+)
 async def filings(
     cc: CommandContext,
     provider_choices: ProviderChoices,
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Get the most-recent filings submitted to the SEC."""
+    """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC
+    filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,
+    Foreign Investment Disclosures and others. The annual 10-K report is required to be
+    filed annually and includes the company's financial statements, management discussion and analysis,
+    and audited financial statements.
+    """
     return await OBBject.from_query(Query(**locals()))
