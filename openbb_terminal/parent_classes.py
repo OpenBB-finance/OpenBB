@@ -11,6 +11,8 @@ import json
 import logging
 import os
 import re
+import urllib
+import webbrowser
 from abc import ABCMeta, abstractmethod
 from datetime import datetime
 from io import StringIO
@@ -37,11 +39,8 @@ from openbb_terminal.helper_funcs import (
     check_positive,
     get_flair,
     parse_and_split_input,
-    prefill_form,
     screenshot,
-    search_wikipedia,
     set_command_location,
-    support_message,
     system_clear,
 )
 from openbb_terminal.menu import session
@@ -665,7 +664,7 @@ class BaseController(metaclass=ABCMeta):
             "--msg",
             "-m",
             action="store",
-            type=support_message,
+            type=str,
             nargs="+",
             dest="msg",
             required=False,
@@ -690,41 +689,28 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            prefill_form(
-                ticket_type=ns_parser.type,
-                menu=main_menu,
-                command=ns_parser.command,
-                message=" ".join(ns_parser.msg),
-                path=self.PATH,
-            )
+            # prefill_form(
+            #     ticket_type=ns_parser.type,
+            #     menu=main_menu,
+            #     command=ns_parser.command,
+            #     message=" ".join(ns_parser.msg),
+            #     path=self.PATH,
+            # )
+            form_url = "https://my.openbb.co/app/terminal/support?"
 
-    @log_start_end(log=logger)
-    def call_wiki(self, other_args: List[str]) -> None:
-        """Process wiki command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="wiki",
-            description="Search Wikipedia",
-        )
-        parser.add_argument(
-            "--expression",
-            "-e",
-            action="store",
-            nargs="+",
-            dest="expression",
-            required=True,
-            default="",
-            help="Expression to search for",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-e")
+            params = {
+                "type": ns_parser.type,
+                "menu": main_menu,
+                "path": self.PATH,
+                "command": ns_parser.command,
+                "message": " ".join(ns_parser.msg.replace('"', "")),
+            }
 
-        ns_parser = self.parse_simple_args(parser, other_args)
+            url_params = urllib.parse.urlencode(params)
 
-        if ns_parser and ns_parser.expression:
-            expression = " ".join(ns_parser.expression)
-            search_wikipedia(expression)
+            webbrowser.open(form_url + url_params)
+
+
 
     @log_start_end(log=logger)
     def call_record(self, other_args) -> None:
