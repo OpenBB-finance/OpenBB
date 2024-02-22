@@ -409,27 +409,6 @@ class ForexController(BaseController):
         self.queue = self.load_class(OandaController, queue=self.queue)
 
     @log_start_end(log=logger)
-    def call_qa(self, _):
-        """Process qa command"""
-        if self.from_symbol and self.to_symbol:
-            if self.data.empty:
-                console.print(
-                    "No currency pair data is loaded. Use 'load' to load data.\n"
-                )
-            else:
-                from openbb_terminal.forex.quantitative_analysis import qa_controller
-
-                self.queue = self.load_class(
-                    qa_controller.QaController,
-                    self.from_symbol,
-                    self.to_symbol,
-                    self.data,
-                    self.queue,
-                )
-        else:
-            console.print("No pair selected.\n")
-
-    @log_start_end(log=logger)
     def call_forecast(self, _):
         """Process forecast command"""
         from openbb_terminal.forecast import forecast_controller
