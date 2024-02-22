@@ -463,18 +463,6 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(FeatureFlagsController, self.queue)
 
-    def call_sources(self, _):
-        """Process sources command."""
-        from openbb_terminal.sources_controller import SourcesController
-
-        self.queue = self.load_class(SourcesController, self.queue)
-
-    def call_futures(self, _):
-        """Process futures command."""
-        from openbb_terminal.futures.futures_controller import FuturesController
-
-        self.queue = self.load_class(FuturesController, self.queue)
-
     # def call_fixedincome(self, _):
     #     """Process fixedincome command."""
     #     from openbb_terminal.fixedincome.fixedincome_controller import (
