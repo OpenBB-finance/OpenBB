@@ -463,12 +463,6 @@ class TerminalController(BaseController):
 
         self.queue = self.load_class(FeatureFlagsController, self.queue)
 
-    def call_alternative(self, _):
-        """Process alternative command."""
-        from openbb_terminal.alternative.alt_controller import AlternativeDataController
-
-        self.queue = self.load_class(AlternativeDataController, self.queue)
-
     def call_econometrics(self, _):
         """Process econometrics command."""
         from openbb_terminal.econometrics.econometrics_controller import (
