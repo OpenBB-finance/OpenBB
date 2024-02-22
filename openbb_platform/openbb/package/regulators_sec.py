@@ -5,7 +5,7 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -23,6 +23,7 @@ class ROUTER_regulators_sec(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def cik_map(
         self,
@@ -94,6 +95,7 @@ class ROUTER_regulators_sec(Container):
             )
         )
 
+    @exception_handler
     @validate
     def institutions_search(
         self,
@@ -165,6 +167,7 @@ class ROUTER_regulators_sec(Container):
             )
         )
 
+    @exception_handler
     @validate
     def rss_litigation(
         self, provider: Optional[Literal["sec"]] = None, **kwargs
@@ -226,6 +229,7 @@ class ROUTER_regulators_sec(Container):
             )
         )
 
+    @exception_handler
     @validate
     def schema_files(
         self,
@@ -313,6 +317,7 @@ class ROUTER_regulators_sec(Container):
             )
         )
 
+    @exception_handler
     @validate
     def sic_search(
         self,
@@ -386,6 +391,7 @@ class ROUTER_regulators_sec(Container):
             )
         )
 
+    @exception_handler
     @validate
     def symbol_map(
         self,
