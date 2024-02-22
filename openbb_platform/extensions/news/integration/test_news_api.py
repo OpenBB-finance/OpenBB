@@ -172,6 +172,7 @@ def test_news_world(params, headers):
                 "source": "bloomberg.com",
                 "start_date": None,
                 "end_date": None,
+                "offset": None,
             }
         ),
         (
