@@ -399,15 +399,6 @@ class ForexController(BaseController):
                 logger.error("Make sure ba currency pair is loaded.")
                 console.print("[red]Make sure a currency pair is loaded.[/red]\n")
 
-    # MENUS
-    @log_start_end(log=logger)
-    @check_api_key(["OANDA_ACCOUNT_TYPE", "OANDA_ACCOUNT", "OANDA_TOKEN"])
-    def call_oanda(self, _):
-        """Enter Oanda menu."""
-        from openbb_terminal.forex.oanda.oanda_controller import OandaController
-
-        self.queue = self.load_class(OandaController, queue=self.queue)
-
     @log_start_end(log=logger)
     def call_forecast(self, _):
         """Process forecast command"""
