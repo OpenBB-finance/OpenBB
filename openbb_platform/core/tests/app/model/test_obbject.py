@@ -1,5 +1,6 @@
 """Tests for the OBBject class."""
 
+from typing import Optional
 from unittest.mock import MagicMock
 
 import pandas as pd
@@ -8,6 +9,7 @@ from openbb_core.app.model.obbject import Chart, OBBject, OpenBBError
 from openbb_core.app.utils import basemodel_to_df
 from openbb_core.provider.abstract.data import Data
 from pandas.testing import assert_frame_equal
+from pydantic import Field
 
 
 def test_OBBject():
@@ -54,6 +56,22 @@ class MockDataFrame(Data):
 
     date: str
     value: float
+
+
+class MockDataModel(Data):
+
+    name: str = Field(default=None, description="Common name of the company.")
+    cik: str = Field(
+        default=None,
+        description="Central Index Key assigned to the company.",
+    )
+    cusip: str = Field(default=None, description="CUSIP identifier for the company.")
+    isin: str = Field(
+        default=None, description="International Securities Identification Number."
+    )
+    lei: Optional[str] = Field(
+        default=None, description="Legal Entity Identifier assigned to the company."
+    )
 
 
 @pytest.mark.parametrize(
@@ -388,3 +406,48 @@ def test_show_chart_no_fig():
     # Act and Assert
     with pytest.raises(OpenBBError, match="Chart not found."):
         mock_instance.show()
+
+
+@pytest.mark.parametrize(
+    "results",
+    [
+        # Test case 1: List of models.
+        (
+            [
+                MockDataModel(
+                    name="Mock Company",
+                    cik="0001234567",
+                    cusip="5556789",
+                    isin="US5556789",
+                    lei=None,
+                ),
+                MockDataModel(
+                    name="Mock Company 2",
+                    cik="0001234568",
+                    cusip="5556781",
+                    isin="US5556788",
+                    lei="1234567890",
+                ),
+            ]
+        ),
+        # Test case 2: Not a list.
+        MockDataModel(
+            name="Mock Company 3",
+            cik="0001234565",
+            cusip="5556783",
+            isin="US5556785",
+            lei="1234567891",
+        ),
+    ],
+)
+def test_get_field_descriptions(results):
+    """Test helper."""
+    # Arrange
+    co = OBBject(results=results)
+
+    # Act
+    descriptions = co.get_field_descriptions()
+
+    # Assert
+    assert isinstance(descriptions, dict)
+    assert len(descriptions) == 5
