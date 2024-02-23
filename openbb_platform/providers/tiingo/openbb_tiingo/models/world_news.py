@@ -42,19 +42,24 @@ class TiingoWorldNewsData(WorldNewsData):
         "text": "description",
     }
 
-    symbols: str = Field(
-        description="Ticker tagged in the fetched news.", alias="tickers"
+    symbols: Optional[str] = Field(
+        default=None,
+        description="Ticker tagged in the fetched news.",
+        alias="tickers",
     )
     article_id: int = Field(description="Unique ID of the news article.", alias="id")
     site: str = Field(description="News source.", alias="source")
-    tags: str = Field(description="Tags associated with the news article.")
+    tags: Optional[str] = Field(
+        default=None,
+        description="Tags associated with the news article.",
+    )
     crawl_date: datetime = Field(description="Date the news article was crawled.")
 
     @field_validator("tags", "symbols", mode="before")
     @classmethod
     def list_to_string(cls, v):
         """Convert list to string."""
-        return ",".join(v)
+        return ",".join(v) if v else None
 
     @field_validator("crawl_date", mode="before")
     @classmethod

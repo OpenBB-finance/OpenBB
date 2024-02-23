@@ -46,7 +46,9 @@ class TiingoCompanyNewsData(CompanyNewsData):
         "text": "description",
     }
 
-    tags: str = Field(description="Tags associated with the news article.")
+    tags: Optional[str] = Field(
+        default=None, description="Tags associated with the news article."
+    )
     article_id: int = Field(description="Unique ID of the news article.", alias="id")
     source: str = Field(description="News source.")
     crawl_date: datetime = Field(description="Date the news article was crawled.")
@@ -55,7 +57,7 @@ class TiingoCompanyNewsData(CompanyNewsData):
     @classmethod
     def list_to_string(cls, v):
         """Convert list to string."""
-        return ",".join(v)
+        return ",".join(v) if v else None
 
     @field_validator("crawl_date", mode="before")
     @classmethod
