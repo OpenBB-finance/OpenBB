@@ -1,5 +1,7 @@
 """Platform V4 Markdown Generator Script."""
 
+# pylint: disable=too-many-lines
+
 import inspect
 import json
 import re
@@ -55,7 +57,7 @@ def get_field_data_type(field_type: Any) -> str:
             field_type = str(field_type).rsplit("[", maxsplit=1)[-1].split(",")[0]
 
         if "models" in str(field_type):
-            field_type = str(field_type).split(".")[-1]
+            field_type = str(field_type).rsplit(".", maxsplit=1)[-1]
 
         field_type = (
             str(field_type)
@@ -356,8 +358,10 @@ def generate_reference_file() -> None:
                 if provider == "openbb":
                     continue
 
-                # Adds standard parameters to the provider parameters since they are inherited by the model
-                # A copy is used to prevent the standard parameters fields from being modified
+                # Adds standard parameters to the provider parameters since they are
+                # inherited by the model.
+                # A copy is used to prevent the standard parameters fields from being
+                # modified.
                 reference[path]["parameters"][provider] = reference[path]["parameters"][
                     "standard"
                 ].copy()
@@ -366,8 +370,9 @@ def generate_reference_file() -> None:
                 )
                 reference[path]["parameters"][provider].extend(provider_query_params)
 
-                # Adds standard data fields to the provider data fields since they are inherited by the model
-                # A copy is used to prevent the standard data fields from being modified
+                # Adds standard data fields to the provider data fields since they are
+                # inherited by the model.
+                # A copy is used to prevent the standard data fields from being modified.
                 reference[path]["data"][provider] = reference[path]["data"][
                     "standard"
                 ].copy()
@@ -539,23 +544,39 @@ def create_reference_markdown_tabular_section(
             for params in params_list
         ]
 
-        # Parameter information for every provider is extracted
-        # from the dictionary and joined to form a row of the table.
-        # A `|` is added at the start and end of the row to
-        # create the table cell.
+        # Do not add default and optional columns in the Data section
+        # because James and Andrew don't like it
+        if heading == "Data":
+            filtered_params = [
+                {k: v for k, v in params.items() if k not in ["default", "optional"]}
+                for params in filtered_params
+            ]
+
+        # Parameter information for every provider is extracted from the dictionary
+        # and joined to form a row of the table.
+        # A `|` is added at the start and end of the row to create the table cell.
         params_table_rows = [
             f"| {' | '.join(map(str, params.values()))} |" for params in filtered_params
         ]
         # All rows are joined to form the table.
         params_table_rows_str = "\n".join(params_table_rows)
 
-        tables_list.append(
-            f"\n<TabItem value='{provider}' label='{provider}'>\n\n"
-            "| Name | Type | Description | Default | Optional |\n"
-            "| ---- | ---- | ----------- | ------- | -------- |\n"
-            f"{params_table_rows_str}\n"
-            "</TabItem>\n"
-        )
+        if heading == "Parameters":
+            tables_list.append(
+                f"\n<TabItem value='{provider}' label='{provider}'>\n\n"
+                "| Name | Type | Description | Default | Optional |\n"
+                "| ---- | ---- | ----------- | ------- | -------- |\n"
+                f"{params_table_rows_str}\n"
+                "</TabItem>\n"
+            )
+        elif heading == "Data":
+            tables_list.append(
+                f"\n<TabItem value='{provider}' label='{provider}'>\n\n"
+                "| Name | Type | Description |\n"
+                "| ---- | ---- | ----------- |\n"
+                f"{params_table_rows_str}\n"
+                "</TabItem>\n"
+            )
 
     # For easy debugging of the created strings
     tables = "".join(tables_list)
