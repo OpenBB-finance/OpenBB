@@ -25,6 +25,5 @@ DATA_DESCRIPTIONS = {
     "volume": "The trading volume.",
     "adj_close": "The adjusted close price.",
     "vwap": "Volume Weighted Average Price over the period.",
-    "previous_close": "The previous close price.",
     "prev_close": "The previous close price.",
 }
