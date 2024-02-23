@@ -43,11 +43,6 @@ class Env(metaclass=SingletonMeta):
         return self.str2bool(self._environ.get("OPENBB_AUTO_BUILD", True))
 
     @property
-    def CHARTING_EXTENSION(self) -> str:
-        """Charting extension: specifies which charting extension to use"""
-        return self._environ.get("OPENBB_CHARTING_EXTENSION", "openbb_charting")
-
-    @property
     def DEBUG_MODE(self) -> bool:
         """Debug mode: enables debug mode"""
         return self.str2bool(self._environ.get("OPENBB_DEBUG_MODE", False))

@@ -22,7 +22,7 @@ async def quote(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Equity Quote. Load stock data for a specific ticker."""
+    """Get the latest quote for a given stock. Quote includes price, volume, and other data."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -33,7 +33,7 @@ async def nbbo(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Equity NBBO. Load National Best Bid and Offer for a specific equity."""
+    """Get the National Best Bid and Offer for a given stock."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -44,7 +44,7 @@ async def historical(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Equity Historical price. Load stock data for a specific ticker."""
+    """Get historical price data for a given stock. This includes open, high, low, close, and volume."""
     return await OBBject.from_query(Query(**locals()))
 
 
@@ -55,5 +55,5 @@ async def performance(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """Price performance as a return, over different periods."""
+    """Get price performance data for a given stock. This includes price changes for different time periods."""
     return await OBBject.from_query(Query(**locals()))

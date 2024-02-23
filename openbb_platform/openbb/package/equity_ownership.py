@@ -6,7 +6,7 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -22,6 +22,7 @@ class ROUTER_equity_ownership(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def insider_trading(
         self,
@@ -35,7 +36,7 @@ class ROUTER_equity_ownership(Container):
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
-        """Insider Trading. Information about insider trading.
+        """Get data about trading by a company's management team and board of directors.
 
         Parameters
         ----------
@@ -157,6 +158,7 @@ class ROUTER_equity_ownership(Container):
             )
         )
 
+    @exception_handler
     @validate
     def institutional(
         self,
@@ -166,7 +168,7 @@ class ROUTER_equity_ownership(Container):
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
-        """Institutional Ownership. Institutional ownership data.
+        """Get data about institutional ownership for a given company over time.
 
         Parameters
         ----------
@@ -313,6 +315,7 @@ class ROUTER_equity_ownership(Container):
             )
         )
 
+    @exception_handler
     @validate
     def major_holders(
         self,
@@ -330,7 +333,7 @@ class ROUTER_equity_ownership(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Equity Ownership. Information about the company ownership.
+        """Get data about major holders for a given company over time.
 
         Parameters
         ----------
@@ -465,6 +468,7 @@ class ROUTER_equity_ownership(Container):
             )
         )
 
+    @exception_handler
     @validate
     def share_statistics(
         self,
@@ -477,7 +481,7 @@ class ROUTER_equity_ownership(Container):
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Share Statistics. Share statistics for a given company.
+        """Get data about share float for a given company.
 
         Parameters
         ----------

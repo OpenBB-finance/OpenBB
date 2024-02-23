@@ -6,7 +6,7 @@ from typing import Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -22,6 +22,7 @@ class ROUTER_equity_calendar(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def dividend(
         self,
@@ -40,7 +41,7 @@ class ROUTER_equity_calendar(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Upcoming and Historical Dividend Calendar.
+        """Get historical and upcoming dividend payments. Includes dividend amount, ex-dividend and payment dates.
 
         Parameters
         ----------
@@ -92,6 +93,8 @@ class ROUTER_equity_calendar(Container):
         -------
         >>> from openbb import obb
         >>> obb.equity.calendar.dividend()
+        >>> # Get dividend calendar for specific dates.
+        >>> obb.equity.calendar.dividend(start_date='2024-02-01', end_date='2024-02-07')
         """  # noqa: E501
 
         return self._run(
@@ -112,6 +115,7 @@ class ROUTER_equity_calendar(Container):
             )
         )
 
+    @exception_handler
     @validate
     def earnings(
         self,
@@ -130,7 +134,7 @@ class ROUTER_equity_calendar(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Upcoming and Historical earnings calendar.
+        """Get historical and upcoming company earnings releases. Includes earnings per share (EPS) and revenue data.
 
         Parameters
         ----------
@@ -186,6 +190,8 @@ class ROUTER_equity_calendar(Container):
         -------
         >>> from openbb import obb
         >>> obb.equity.calendar.earnings()
+        >>> # Get earnings calendar for specific dates.
+        >>> obb.equity.calendar.earnings(start_date='2024-02-01', end_date='2024-02-07')
         """  # noqa: E501
 
         return self._run(
@@ -206,6 +212,7 @@ class ROUTER_equity_calendar(Container):
             )
         )
 
+    @exception_handler
     @validate
     def ipo(
         self,
@@ -231,7 +238,7 @@ class ROUTER_equity_calendar(Container):
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
     ) -> OBBject:
-        """Upcoming and Historical IPO Calendar.
+        """Get historical and upcoming initial public offerings (IPOs).
 
         Parameters
         ----------
@@ -354,6 +361,10 @@ class ROUTER_equity_calendar(Container):
         -------
         >>> from openbb import obb
         >>> obb.equity.calendar.ipo(limit=100)
+        >>> # Get all IPOs available.
+        >>> obb.equity.calendar.ipo()
+        >>> # Get IPOs for specific dates.
+        >>> obb.equity.calendar.ipo(start_date='2024-02-01', end_date='2024-02-07')
         """  # noqa: E501
 
         return self._run(
@@ -376,6 +387,7 @@ class ROUTER_equity_calendar(Container):
             )
         )
 
+    @exception_handler
     @validate
     def splits(
         self,
@@ -394,7 +406,7 @@ class ROUTER_equity_calendar(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Calendar Splits. Show Stock Split Calendar.
+        """Get historical and upcoming stock split operations.
 
         Parameters
         ----------
@@ -438,6 +450,8 @@ class ROUTER_equity_calendar(Container):
         -------
         >>> from openbb import obb
         >>> obb.equity.calendar.splits()
+        >>> # Get stock splits calendar for specific dates.
+        >>> obb.equity.calendar.splits(start_date='2024-02-01', end_date='2024-02-07')
         """  # noqa: E501
 
         return self._run(
