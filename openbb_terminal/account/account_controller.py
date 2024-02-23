@@ -23,7 +23,6 @@ from openbb_terminal.core.session.routines_handler import (
 )
 from openbb_terminal.core.session.session_model import logout
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import check_positive
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
@@ -143,7 +142,6 @@ class AccountController(BaseController):
         self.update_runtime_choices()
         console.print(text=mt.menu_text, menu="Account")
 
-    @log_start_end(log=logger)
     def call_login(self, other_args: List[str]) -> None:
         """Process login command."""
         parser = argparse.ArgumentParser(
@@ -158,7 +156,6 @@ class AccountController(BaseController):
         elif ns_parser:
             set_show_prompt(True)
 
-    @log_start_end(log=logger)
     def call_logout(self, other_args: List[str]) -> None:
         """Process logout command."""
         parser = argparse.ArgumentParser(
@@ -182,7 +179,6 @@ class AccountController(BaseController):
             else:
                 self.print_help()
 
-    @log_start_end(log=logger)
     def call_clear(self, other_args: List[str]):
         """Clear data"""
         parser = argparse.ArgumentParser(
@@ -208,7 +204,6 @@ class AccountController(BaseController):
             else:
                 console.print("[info]Aborted.[/info]")
 
-    @log_start_end(log=logger)
     def call_list(self, other_args: List[str]):
         """List routines"""
         parser = argparse.ArgumentParser(
@@ -270,7 +265,6 @@ class AccountController(BaseController):
 
             console.print("")
 
-    @log_start_end(log=logger)
     def call_upload(self, other_args: List[str]):
         """Upload"""
         parser = argparse.ArgumentParser(
@@ -373,7 +367,7 @@ class AccountController(BaseController):
 
     # store data in list with "personal/default" to identify data's routine type
     # and for save_routine
-    @log_start_end(log=logger)
+
     def call_download(self, other_args: List[str]):
         """Download"""
         parser = argparse.ArgumentParser(
@@ -456,7 +450,6 @@ class AccountController(BaseController):
                     elif file_path:
                         console.print(f"[info]Location:[/info] {file_path}")
 
-    @log_start_end(log=logger)
     def call_delete(self, other_args: List[str]):
         """Delete"""
         parser = argparse.ArgumentParser(
@@ -505,7 +498,6 @@ class AccountController(BaseController):
             else:
                 console.print("[info]Aborted.[/info]")
 
-    @log_start_end(log=logger)
     def call_generate(self, other_args: List[str]) -> None:
         """Process generate command."""
         parser = argparse.ArgumentParser(
@@ -553,7 +545,6 @@ class AccountController(BaseController):
                 if token:
                     console.print(f"\n[info]Token:[/info] {token}\n")
 
-    @log_start_end(log=logger)
     def call_show(self, other_args: List[str]) -> None:
         """Process show command."""
         parser = argparse.ArgumentParser(
@@ -574,7 +565,6 @@ class AccountController(BaseController):
                 if token:
                     console.print(f"[info]Token:[/info] {token}")
 
-    @log_start_end(log=logger)
     def call_revoke(self, other_args: List[str]) -> None:
         """Process revoke command."""
         parser = argparse.ArgumentParser(

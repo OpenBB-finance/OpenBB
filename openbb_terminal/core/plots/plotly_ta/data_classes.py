@@ -1,6 +1,7 @@
 # pylint: disable=C0302,R0915,R0914,R0913,R0903,R0904
 
 import logging
+import re
 import sys
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Union
@@ -9,13 +10,52 @@ import pandas as pd
 import pandas_ta as ta
 
 from openbb_terminal.base_helpers import console
-from openbb_terminal.common.technical_analysis import ta_helpers
-from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
 # pylint: disable=E1123
 datacls_kwargs = {"slots": True} if sys.version_info >= (3, 10) else {}
+
+
+def check_columns(
+    data: pd.DataFrame, high: bool = True, low: bool = True, close: bool = True
+) -> Optional[str]:
+    """Returns the close columns, or None if the dataframe does not have required columns
+
+    Parameters
+    ----------
+    data: pd.DataFrame
+        The dataframe to check
+    high: bool
+        Whether to check for high column
+    low: bool
+        Whether to check for low column
+    close: bool
+        Whether to check for close column
+
+    Returns
+    -------
+    Optional[str]
+        The name of the close column, none if df is invalid
+
+    """
+    close_regex = r"(Adj\sClose|adj_close|Close)"
+    # pylint: disable=too-many-boolean-expressions
+    if (
+        (re.findall(r"High", str(data.columns), re.IGNORECASE) is None and high)
+        or (re.findall(r"Low", str(data.columns), re.IGNORECASE) is None and low)
+        or (close_col := re.findall(close_regex, str(data.columns), re.IGNORECASE))
+        is None
+        and close
+    ):
+        logger.error("Invalid columns. data has columns %s", data.columns)
+        console.print(
+            "[red] Please make sure that the columns 'High', 'Low', and 'Close'"
+            " are in the dataframe.[/red]"
+        )
+        return None
+
+    return [col for col in close_col if col in data.columns][-1]
 
 
 def columns_regex(df_ta: pd.DataFrame, name: str) -> List[str]:
@@ -203,7 +243,6 @@ class TA_Data:
 
     """
 
-    @log_start_end(log=logger)
     def __init__(
         self,
         df_ta: Union[pd.DataFrame, pd.Series],
@@ -219,7 +258,7 @@ class TA_Data:
         self.df_ta: pd.DataFrame = df_ta
         self.indicators: ChartIndicators = indicators
         self.ma_mode: List[str] = ma_mode or ["sma", "ema", "wma", "hma", "zlma", "rma"]
-        self.close_col = ta_helpers.check_columns(df_ta)
+        self.close_col = check_columns(df_ta)
         if self.close_col is None:
             raise ValueError("No close column found in dataframe")
 

@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 
 import openbb_terminal.core.session.hub_model as Hub
 import openbb_terminal.core.session.local_model as Local
-from openbb_terminal.base_helpers import remove_log_handlers
 from openbb_terminal.core.config.paths import HIST_FILE_PATH, SESSION_FILE_PATH
 from openbb_terminal.core.models.user_model import ProfileModel, SourcesModel, UserModel
 from openbb_terminal.core.session.current_user import (
@@ -22,7 +21,6 @@ from openbb_terminal.core.session.routines_handler import (
 from openbb_terminal.core.session.sources_handler import get_updated_hub_sources
 from openbb_terminal.core.session.utils import run_thread
 from openbb_terminal.helper_funcs import system_clear
-from openbb_terminal.loggers import setup_logging
 from openbb_terminal.rich_config import console
 
 # pylint: disable=consider-using-f-string
@@ -204,9 +202,7 @@ def logout(
     if not Local.remove(get_current_user().preferences.USER_ROUTINES_DIRECTORY / "hub"):
         success = False
 
-    remove_log_handlers()
     set_default_user()
-    setup_logging()
 
     plt.close("all")
 

@@ -3,12 +3,10 @@ import logging
 import pytest
 
 from openbb_terminal.core.session.current_system import set_system_variable
-from openbb_terminal.decorators import log_start_end
 
 logger = logging.getLogger(__name__)
 
 
-@log_start_end(log=logger)
 def function_that_fails():
     raise ValueError("Failure")
 

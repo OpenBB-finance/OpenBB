@@ -5,7 +5,6 @@ __docformat__ = "numpy"
 import argparse
 import contextlib
 import difflib
-import json
 import logging
 import os
 import re
@@ -22,27 +21,23 @@ import certifi
 import pandas as pd
 import requests
 from openbb import obb
-from prompt_toolkit import PromptSession
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
+from pydantic import BaseModel
 
 import openbb_terminal.config_terminal as cfg
 from openbb_terminal.account.show_prompt import get_show_prompt, set_show_prompt
-from openbb_terminal.common import biztoc_model, biztoc_view, feedparser_view
 from openbb_terminal.core.config.paths import (
     HOME_DIRECTORY,
     MISCELLANEOUS_DIRECTORY,
     REPOSITORY_DIRECTORY,
     SETTINGS_ENV_FILE,
 )
-from openbb_terminal.core.log.generation.custom_logger import log_terminal
 from openbb_terminal.core.session import constants, session_controller
 from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.session.current_user import get_current_user, set_preference
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import (
-    EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_positive,
     get_flair,
     parse_and_split_input,
     print_rich_table,
@@ -52,7 +47,6 @@ from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.platform_controller_factory import (
     PlatformControllerFactory,
 )
-from openbb_terminal.reports.reports_model import ipykernel_launcher
 from openbb_terminal.rich_config import MenuText, console
 from openbb_terminal.routine_functions import is_reset, parse_openbb_script
 from openbb_terminal.terminal_helper import (
@@ -67,7 +61,6 @@ from openbb_terminal.terminal_helper import (
     update_terminal,
     welcome_message,
 )
-from pydantic import BaseModel
 
 PLATFORM_ROUTERS = {
     d: "menu" if not isinstance(getattr(obb, d), BaseModel) else "command"
@@ -93,37 +86,19 @@ if is_installer():
 class TerminalController(BaseController):
     """Terminal Controller class."""
 
-    # CHOICES_COMMANDS = [
-    #     "keys",
-    #     "settings",
-    #     "survey",
-    #     "update",
-    #     "featflags",
-    #     "exe",
-    #     "guess",
-    #     "news",
-    #     "intro",
-    #     "record",
-    # ]
-    # CHOICES_MENUS = [
-    #     "stocks",
-    #     "economy",
-    #     "crypto",
-    #     "portfolio",
-    #     "forex",
-    #     "etf",
-    #     "reports",
-    #     "dashboards",
-    #     "alternative",
-    #     "econometrics",
-    #     "sources",
-    #     "forecast",
-    #     "futures",
-    #     "fixedincome",
-    #     "funds",
-    # ]
-    CHOICES_COMMANDS = []
-    CHOICES_MENUS = []
+    CHOICES_COMMANDS = [
+        "intro",
+        "about",
+        "support",
+        "survey",
+        "update",
+        "record",
+        "stop",
+        "exe",
+    ]
+    CHOICES_MENUS = [
+        "featflags",
+    ]
 
     for router, value in PLATFORM_ROUTERS.items():
         if value == "menu":
@@ -176,11 +151,9 @@ class TerminalController(BaseController):
             return print_rich_table(df)
 
         for router, value in PLATFORM_ROUTERS.items():
-
             target = getattr(obb, router)
 
             if value == "menu":
-
                 pcf = PlatformControllerFactory(target)
                 DynamicController = pcf.create()
 
@@ -211,12 +184,8 @@ class TerminalController(BaseController):
             # choices: dict = self.choices_default
             choices: dict = {c: {} for c in self.controller_choices}  # type: ignore
             choices["support"] = self.SUPPORT_CHOICES
-            choices["news"] = self.NEWS_CHOICES
-            choices["news"]["--source"] = {c: {} for c in ["Biztoc", "Feedparser"]}
             choices["hold"] = {c: None for c in ["on", "off", "-s", "--sameaxis"]}
             choices["hold"]["off"] = {"--title": None}
-            if biztoc_model.BIZTOC_TAGS:
-                choices["news"]["--tag"] = {c: {} for c in biztoc_model.BIZTOC_TAGS}
 
             self.ROUTINE_FILES = {
                 filepath.name: filepath
@@ -273,50 +242,24 @@ class TerminalController(BaseController):
     def print_help(self):
         """Print help."""
         mt = MenuText("")
-        # mt.add_raw("\n")
-        # mt.add_info("_home_")
-        # mt.add_cmd("intro")
-        # mt.add_cmd("about")
-        # mt.add_cmd("support")
-        # mt.add_cmd("survey")
-        # if not is_installer():
-        #     mt.add_cmd("update")
-        # mt.add_cmd("wiki")
-        # mt.add_cmd("news")
-        # mt.add_raw("\n")
-        # mt.add_info("_configure_")
-        # if is_auth_enabled():
-        #     mt.add_menu("account")
-        # mt.add_menu("keys")
-        # mt.add_menu("featflags")
-        # mt.add_menu("sources")
-        # mt.add_menu("settings")
-        # mt.add_raw("\n")
-        # mt.add_info("_scripts_")
-        # mt.add_cmd("record")
-        # mt.add_cmd("stop")
-        # mt.add_cmd("exe")
-        # mt.add_raw("\n")
-        # mt.add_cmd("askobb")
-        # mt.add_raw("\n")
-        # mt.add_info("_main_menu_")
-        # mt.add_menu("stocks")
-        # mt.add_menu("crypto")
-        # mt.add_menu("etf")
-        # mt.add_menu("economy")
-        # mt.add_menu("forex")
-        # mt.add_menu("futures")
-        # mt.add_menu("fixedincome")
-        # mt.add_menu("alternative")
-        # mt.add_menu("funds")
-        # mt.add_raw("\n")
-        # mt.add_info("_toolkits_")
-        # mt.add_menu("econometrics")
-        # mt.add_menu("forecast")
-        # mt.add_menu("portfolio")
-        # mt.add_menu("dashboards")
-        # mt.add_menu("reports")
-        # mt.add_raw("\n")
+        mt.add_raw("\n")
+        mt.add_info("_home_")
+        mt.add_cmd("intro")
+        mt.add_cmd("about")
+        mt.add_cmd("support")
+        mt.add_cmd("survey")
+        if not is_installer():
+            mt.add_cmd("update")
+        mt.add_raw("\n")
+        mt.add_info("_configure_")
+        mt.add_menu("featflags")
+        mt.add_raw("\n")
+        mt.add_info("_scripts_")
+        mt.add_cmd("record")
+        mt.add_cmd("stop")
+        mt.add_cmd("exe")
+        mt.add_raw("\n")
+        mt.add_raw("\n")
         mt.add_info("Platform CLI")
         for router, value in PLATFORM_ROUTERS.items():
             if value == "menu":
@@ -326,100 +269,6 @@ class TerminalController(BaseController):
 
         console.print(text=mt.menu_text, menu="Home")
         self.update_runtime_choices()
-
-    # def call_news(self, other_args: List[str]) -> None:
-    #     """Process news command."""
-    #     parse = argparse.ArgumentParser(
-    #         add_help=False,
-    #         prog="news",
-    #         description="display news articles based on term and data sources",
-    #     )
-    #     parse.add_argument(
-    #         "-t",
-    #         "--term",
-    #         dest="term",
-    #         default=[""],
-    #         nargs="+",
-    #         help="search for a term on the news",
-    #     )
-    #     parse.add_argument(
-    #         "-s",
-    #         "--sources",
-    #         dest="sources",
-    #         default="bloomberg",
-    #         type=str,
-    #         help="sources from where to get news from (separated by comma)",
-    #     )
-    #     parse.add_argument(
-    #         "--tag",
-    #         dest="tag",
-    #         default="",
-    #         type=str,
-    #         help="display news for an individual tag [Biztoc only]",
-    #     )
-    #     parse.add_argument(
-    #         "--sourcelist",
-    #         dest="sourcelist",
-    #         action="store_true",
-    #         help="list all available sources from where to get news from [Biztoc only]",
-    #     )
-    #     parse.add_argument(
-    #         "--taglist",
-    #         dest="taglist",
-    #         action="store_true",
-    #         help="list all trending tags [Biztoc only]",
-    #     )
-    #     if other_args and "-" not in other_args[0][0]:
-    #         other_args.insert(0, "-t")
-    #     news_parser = self.parse_known_args_and_warn(
-    #         parse, other_args, EXPORT_ONLY_RAW_DATA_ALLOWED, limit=25
-    #     )
-    #     if news_parser:
-    #         if news_parser.source == "Feedparser":
-    #             # If biztoc options passed to feedparser source, let the user know
-    #             to_return = False
-    #             if news_parser.taglist:
-    #                 console.print("--taglist only available for Biztoc.\n")
-    #                 to_return = True
-    #             if news_parser.sourcelist:
-    #                 console.print("--sourcelist only available for Biztoc.\n")
-    #                 to_return = True
-    #             if news_parser.tag:
-    #                 console.print("--tag only available for Biztoc.\n")
-    #                 to_return = True
-
-    #             if to_return:
-    #                 return
-
-    #             query = " ".join(news_parser.term)
-    #             feedparser_view.display_news(
-    #                 term=query,
-    #                 sources=news_parser.sources,
-    #                 limit=news_parser.limit,
-    #                 export=news_parser.export,
-    #                 sheet_name=news_parser.sheet_name,
-    #             )
-    #         if news_parser.source == "Biztoc":
-    #             query = " ".join(news_parser.term)
-    #             if news_parser.sourcelist and news_parser.sourcelist is True:
-    #                 biztoc_view.display_sources(
-    #                     export=news_parser.export,
-    #                     sheet_name=news_parser.sheet_name,
-    #                 )
-    #             elif news_parser.taglist and news_parser.taglist is True:
-    #                 biztoc_view.display_tags(
-    #                     export=news_parser.export,
-    #                     sheet_name=news_parser.sheet_name,
-    #                 )
-    #             else:
-    #                 biztoc_view.display_news(
-    #                     term=query,
-    #                     tag=news_parser.tag,
-    #                     source=news_parser.sources,
-    #                     limit=news_parser.limit,
-    #                     export=news_parser.export,
-    #                     sheet_name=news_parser.sheet_name,
-    #                 )
 
     def parse_input(self, an_input: str) -> List:
         """Overwrite the BaseController parse_input for `askobb` and 'exe'
@@ -433,121 +282,12 @@ class TerminalController(BaseController):
         custom_filters = [sort_filter, url]
         return parse_and_split_input(an_input=an_input, custom_filters=custom_filters)
 
-    def call_guess(self, other_args: List[str]) -> None:
-        """Process guess command."""
-        import random
-
-        current_user = get_current_user()
-
-        if self.GUESS_NUMBER_TRIES_LEFT == 0 and self.GUESS_SUM_SCORE < 0.01:
-            parser = argparse.ArgumentParser(
-                add_help=False,
-                formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-                prog="guess",
-                description="Guess command to achieve task successfully.",
-            )
-            parser.add_argument(
-                "-l",
-                "--limit",
-                type=check_positive,
-                help="Number of tasks to attempt.",
-                dest="limit",
-                default=1,
-            )
-            if other_args and "-" not in other_args[0][0]:
-                other_args.insert(0, "-l")
-                ns_parser_guess = self.parse_simple_args(parser, other_args)
-
-                if self.GUESS_TOTAL_TRIES == 0:
-                    self.GUESS_NUMBER_TRIES_LEFT = ns_parser_guess.limit
-                    self.GUESS_SUM_SCORE = 0
-                    self.GUESS_TOTAL_TRIES = ns_parser_guess.limit
-
-        try:
-            with open(current_user.preferences.GUESS_EASTER_EGG_FILE) as f:
-                # Load the file as a JSON document
-                json_doc = json.load(f)
-
-                task = random.choice(list(json_doc.keys()))  # nosec # noqa: S311
-                solution = json_doc[task]
-
-                start = time.time()
-                console.print(f"\n[yellow]{task}[/yellow]\n")
-                an_input = (
-                    session.prompt("GUESS / $ ")
-                    if isinstance(session, PromptSession)
-                    else ""
-                )
-                time_dif = time.time() - start
-
-                # When there are multiple paths to same solution
-                if isinstance(solution, List):
-                    if an_input.lower() in [s.lower() for s in solution]:
-                        self.queue = an_input.split("/") + ["home"]
-                        console.print(
-                            f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
-                        )
-                        # If we are already counting successes
-                        if self.GUESS_TOTAL_TRIES > 0:
-                            self.GUESS_CORRECTLY += 1
-                            self.GUESS_SUM_SCORE += time_dif
-                    else:
-                        solutions_texts = "\n".join(solution)
-                        console.print(
-                            f"\n[red]You guessed wrong! The correct paths would have been:\n{solutions_texts}[/red]\n"
-                        )
-
-                # When there is a single path to the solution
-                elif an_input.lower() == solution.lower():
-                    self.queue = an_input.split("/") + ["home"]
-                    console.print(
-                        f"\n[green]You guessed correctly in {round(time_dif, 2)} seconds![green]\n"
-                    )
-                    # If we are already counting successes
-                    if self.GUESS_TOTAL_TRIES > 0:
-                        self.GUESS_CORRECTLY += 1
-                        self.GUESS_SUM_SCORE += time_dif
-                else:
-                    console.print(
-                        f"\n[red]You guessed wrong! The correct path would have been:\n{solution}[/red]\n"
-                    )
-
-                # Compute average score and provide a result if it's the last try
-                if self.GUESS_TOTAL_TRIES > 0:
-                    self.GUESS_NUMBER_TRIES_LEFT -= 1
-                    if self.GUESS_NUMBER_TRIES_LEFT == 0 and self.GUESS_TOTAL_TRIES > 1:
-                        color = (
-                            "green"
-                            if self.GUESS_CORRECTLY == self.GUESS_TOTAL_TRIES
-                            else "red"
-                        )
-                        console.print(
-                            f"[{color}]OUTCOME: You got {int(self.GUESS_CORRECTLY)} out of"
-                            f" {int(self.GUESS_TOTAL_TRIES)}.[/{color}]\n"
-                        )
-                        if self.GUESS_CORRECTLY == self.GUESS_TOTAL_TRIES:
-                            avg = self.GUESS_SUM_SCORE / self.GUESS_TOTAL_TRIES
-                            console.print(
-                                f"[green]Average score: {round(avg, 2)} seconds![/green]\n"
-                            )
-                        self.GUESS_TOTAL_TRIES = 0
-                        self.GUESS_CORRECTLY = 0
-                        self.GUESS_SUM_SCORE = 0
-                    else:
-                        self.queue += ["guess"]
-
-        except Exception as e:
-            console.print(
-                f"[red]Failed to load guess game from file: "
-                f"{current_user.preferences.GUESS_EASTER_EGG_FILE}[/red]"
-            )
-            console.print(f"[red]{e}[/red]")
-
     @staticmethod
     def call_survey(_) -> None:
         """Process survey command."""
         webbrowser.open("https://openbb.co/survey")
 
+    # TODO: revamp or remove
     def call_update(self, _):
         """Process update command."""
         if not is_installer():
@@ -558,125 +298,11 @@ class TerminalController(BaseController):
                 "https://openbb.co/products/terminal#get-started\n"
             )
 
-    # def call_account(self, _):
-    #     """Process account command."""
-    #     from openbb_terminal.account.account_controller import AccountController
-
-    #     self.queue = self.load_class(AccountController, self.queue)
-
-    def call_keys(self, _):
-        """Process keys command."""
-        from openbb_terminal.keys_controller import KeysController
-
-        self.queue = self.load_class(KeysController, self.queue)
-
-    def call_settings(self, _):
-        """Process settings command."""
-        from openbb_terminal.settings_controller import SettingsController
-
-        self.queue = self.load_class(SettingsController, self.queue)
-
     def call_featflags(self, _):
         """Process feature flags command."""
         from openbb_terminal.featflags_controller import FeatureFlagsController
 
         self.queue = self.load_class(FeatureFlagsController, self.queue)
-
-    def call_stocks(self, _):
-        """Process stocks command."""
-        from openbb_terminal.stocks.stocks_controller import StocksController
-
-        self.queue = self.load_class(StocksController, self.queue)
-
-    # def call_crypto(self, _):
-    #     """Process crypto command."""
-    #     from openbb_terminal.cryptocurrency.crypto_controller import CryptoController
-
-    #     self.queue = self.load_class(CryptoController, self.queue)
-
-    # def call_economy(self, _):
-    #     """Process economy command."""
-    #     from openbb_terminal.economy.economy_controller import EconomyController
-
-    #     self.queue = self.load_class(EconomyController, self.queue)
-
-    # def call_etf(self, _):
-    #     """Process etf command."""
-    #     from openbb_terminal.etf.etf_controller import ETFController
-
-    #     self.queue = self.load_class(ETFController, self.queue)
-
-    def call_forex(self, _):
-        """Process forex command."""
-        from openbb_terminal.forex.forex_controller import ForexController
-
-        self.queue = self.load_class(ForexController, self.queue)
-
-    def call_reports(self, _):
-        """Process reports command."""
-        from openbb_terminal.reports.reports_controller import ReportController
-
-        self.queue = self.load_class(ReportController, self.queue)
-
-    def call_dashboards(self, _):
-        """Process dashboards command."""
-        from openbb_terminal.dashboards.dashboards_controller import (
-            DashboardsController,
-        )
-
-        self.queue = self.load_class(DashboardsController, self.queue)
-
-    def call_alternative(self, _):
-        """Process alternative command."""
-        from openbb_terminal.alternative.alt_controller import AlternativeDataController
-
-        self.queue = self.load_class(AlternativeDataController, self.queue)
-
-    def call_econometrics(self, _):
-        """Process econometrics command."""
-        from openbb_terminal.econometrics.econometrics_controller import (
-            EconometricsController,
-        )
-
-        self.queue = EconometricsController(self.queue).menu()
-
-    def call_forecast(self, _):
-        """Process forecast command."""
-        from openbb_terminal.forecast.forecast_controller import ForecastController
-
-        self.queue = self.load_class(ForecastController, "", pd.DataFrame(), self.queue)
-
-    def call_portfolio(self, _):
-        """Process portfolio command."""
-        from openbb_terminal.portfolio.portfolio_controller import PortfolioController
-
-        self.queue = self.load_class(PortfolioController, self.queue)
-
-    def call_sources(self, _):
-        """Process sources command."""
-        from openbb_terminal.sources_controller import SourcesController
-
-        self.queue = self.load_class(SourcesController, self.queue)
-
-    def call_futures(self, _):
-        """Process futures command."""
-        from openbb_terminal.futures.futures_controller import FuturesController
-
-        self.queue = self.load_class(FuturesController, self.queue)
-
-    # def call_fixedincome(self, _):
-    #     """Process fixedincome command."""
-    #     from openbb_terminal.fixedincome.fixedincome_controller import (
-    #         FixedIncomeController,
-    #     )
-
-    #     self.queue = self.load_class(FixedIncomeController, self.queue)
-
-    def call_funds(self, _):
-        """Process etf command"""
-        from openbb_terminal.mutual_funds.mutual_fund_controller import FundController
-
-        self.queue = self.load_class(FundController, self.queue)
 
     def call_intro(self, _):
         """Process intro command."""
@@ -890,8 +516,6 @@ def terminal(jobs_cmds: Optional[List[str]] = None, test_mode=False):
     """Terminal Menu."""
 
     current_user = get_current_user()
-
-    log_terminal(test_mode=test_mode)
 
     ret_code = 1
     t_controller = TerminalController(jobs_cmds)
@@ -1203,10 +827,6 @@ def main(
         One or multiple inputs to be replaced in the routine and separated by commas.
         E.g. GME,AMC,BTC-USD
     """
-    if kwargs["module"] == "ipykernel_launcher":
-        bootup()
-        return ipykernel_launcher(kwargs["module_file"], kwargs["module_hist_file"])
-
     if debug:
         set_system_variable("DEBUG_MODE", True)
 

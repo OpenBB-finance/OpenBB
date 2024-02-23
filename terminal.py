@@ -9,7 +9,6 @@ import openbb_terminal.config_terminal as cfg  # noqa: E402
 # pylint:disable=unused-import,import-outside-toplevel
 import openbb_terminal.core.session.current_system as syst  # noqa: F401,E402
 from openbb_terminal.terminal_helper import (  # noqa: E402
-    hide_splashscreen,
     is_auth_enabled,
     is_installer,
 )
@@ -18,12 +17,6 @@ from openbb_terminal.terminal_helper import (  # noqa: E402
 def main():
     sent_args = sys.argv[1:]
     cfg.setup_config_terminal()
-
-    if "--streamlit" in sent_args:
-        from openbb_terminal.dashboards import streamlit_run
-
-        hide_splashscreen()
-        sys.exit(streamlit_run.main())
 
     if "-t" in sent_args or "--test" in sent_args:
         from openbb_terminal.core.integration_tests import integration_controller

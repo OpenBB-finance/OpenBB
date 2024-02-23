@@ -11,14 +11,14 @@ import json
 import logging
 import os
 import re
+import urllib
+import webbrowser
 from abc import ABCMeta, abstractmethod
-from datetime import datetime, timedelta
+from datetime import datetime
 from io import StringIO
 from typing import Any, Dict, List, Optional, Union
 
 # IMPORTS THIRDPARTY
-import numpy as np
-import pandas as pd
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from rich.markdown import Markdown
@@ -32,26 +32,18 @@ from openbb_terminal.core.config.paths import HIST_FILE_PATH
 from openbb_terminal.core.session import hub_model as Hub
 from openbb_terminal.core.session.constants import SCRIPT_TAGS
 from openbb_terminal.core.session.current_user import get_current_user, is_local
-from openbb_terminal.cryptocurrency import cryptocurrency_helpers
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     check_file_type_saved,
     check_positive,
-    export_data,
     get_flair,
     parse_and_split_input,
-    prefill_form,
     screenshot,
-    search_wikipedia,
     set_command_location,
-    support_message,
     system_clear,
-    valid_date,
 )
 from openbb_terminal.menu import session
 from openbb_terminal.rich_config import console, get_ordered_list_sources
-from openbb_terminal.stocks import stocks_helper
 from openbb_terminal.terminal_helper import (
     is_auth_enabled,
     open_openbb_documentation,
@@ -70,14 +62,6 @@ EXPORT_ONLY_FIGURES_ALLOWED = 2
 EXPORT_BOTH_RAW_DATA_AND_FIGURES = 3
 
 controllers: Dict[str, Any] = {}
-
-CRYPTO_SOURCES = {
-    "bin": "Binance",
-    "CoinGecko": "CoinGecko",
-    "cp": "CoinPaprika",
-    "cb": "Coinbase",
-    "YahooFinance": "YahooFinance",
-}
 
 SUPPORT_TYPE = ["bug", "suggestion", "question", "generic"]
 
@@ -460,7 +444,6 @@ class BaseController(metaclass=ABCMeta):
         if the_input not in self.KEYS_MENU:
             self.log_queue()
 
-    @log_start_end(log=logger)
     def switch(self, an_input: str) -> List[str]:
         """Process and dispatch input.
 
@@ -534,12 +517,10 @@ class BaseController(metaclass=ABCMeta):
 
         return self.queue
 
-    @log_start_end(log=logger)
     def call_cls(self, _) -> None:
         """Process cls command."""
         system_clear()
 
-    @log_start_end(log=logger)
     def call_home(self, _) -> None:
         """Process home command."""
         self.save_class()
@@ -551,12 +532,10 @@ class BaseController(metaclass=ABCMeta):
         for _ in range(self.PATH.count("/") - 1):
             self.queue.insert(0, "quit")
 
-    @log_start_end(log=logger)
     def call_help(self, _) -> None:
         """Process help command."""
         self.print_help()
 
-    @log_start_end(log=logger)
     def call_about(self, other_args: List[str]) -> None:
         """Process about command."""
         description = "Display the documentation of the menu or command."
@@ -595,13 +574,11 @@ class BaseController(metaclass=ABCMeta):
                 self.PATH, command=ns_parser.command, arg_type=arg_type
             )
 
-    @log_start_end(log=logger)
     def call_quit(self, _) -> None:
         """Process quit menu command."""
         self.save_class()
         self.queue.insert(0, "quit")
 
-    @log_start_end(log=logger)
     def call_exit(self, _) -> None:
         # Not sure how to handle controller loading here
         """Process exit terminal command."""
@@ -614,7 +591,6 @@ class BaseController(metaclass=ABCMeta):
             if not get_current_user().profile.remember:
                 Local.remove(HIST_FILE_PATH)
 
-    @log_start_end(log=logger)
     def call_reset(self, _) -> None:
         """Process reset command.
 
@@ -632,7 +608,6 @@ class BaseController(metaclass=ABCMeta):
             for _ in range(len(self.path)):
                 self.queue.insert(0, "quit")
 
-    @log_start_end(log=logger)
     def call_resources(self, other_args: List[str]) -> None:
         """Process resources command."""
         parser = argparse.ArgumentParser(
@@ -651,7 +626,6 @@ class BaseController(metaclass=ABCMeta):
             else:
                 console.print("No resources available.\n")
 
-    @log_start_end(log=logger)
     def call_support(self, other_args: List[str]) -> None:
         """Process support command."""
         self.save_class()
@@ -679,7 +653,7 @@ class BaseController(metaclass=ABCMeta):
             "--msg",
             "-m",
             action="store",
-            type=support_message,
+            type=str,
             nargs="+",
             dest="msg",
             required=False,
@@ -704,43 +678,27 @@ class BaseController(metaclass=ABCMeta):
         ns_parser = self.parse_simple_args(parser, other_args)
 
         if ns_parser:
-            prefill_form(
-                ticket_type=ns_parser.type,
-                menu=main_menu,
-                command=ns_parser.command,
-                message=" ".join(ns_parser.msg),
-                path=self.PATH,
-            )
+            # prefill_form(
+            #     ticket_type=ns_parser.type,
+            #     menu=main_menu,
+            #     command=ns_parser.command,
+            #     message=" ".join(ns_parser.msg),
+            #     path=self.PATH,
+            # )
+            form_url = "https://my.openbb.co/app/terminal/support?"
 
-    @log_start_end(log=logger)
-    def call_wiki(self, other_args: List[str]) -> None:
-        """Process wiki command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="wiki",
-            description="Search Wikipedia",
-        )
-        parser.add_argument(
-            "--expression",
-            "-e",
-            action="store",
-            nargs="+",
-            dest="expression",
-            required=True,
-            default="",
-            help="Expression to search for",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-e")
+            params = {
+                "type": ns_parser.type,
+                "menu": main_menu,
+                "path": self.PATH,
+                "command": ns_parser.command,
+                "message": " ".join(ns_parser.msg.replace('"', "")),
+            }
 
-        ns_parser = self.parse_simple_args(parser, other_args)
+            url_params = urllib.parse.urlencode(params)
 
-        if ns_parser and ns_parser.expression:
-            expression = " ".join(ns_parser.expression)
-            search_wikipedia(expression)
+            webbrowser.open(form_url + url_params)
 
-    @log_start_end(log=logger)
     def call_record(self, other_args) -> None:
         """Process record command."""
         parser = argparse.ArgumentParser(
@@ -902,7 +860,6 @@ class BaseController(metaclass=ABCMeta):
                 "\n[yellow]Remember to run 'stop' command when you are done!\n[/yellow]"
             )
 
-    @log_start_end(log=logger)
     def call_stop(self, _) -> None:
         """Process stop command."""
         global RECORD_SESSION  # noqa: PLW0603
@@ -1010,7 +967,6 @@ class BaseController(metaclass=ABCMeta):
             RECORD_SESSION = False
             SESSION_RECORDED = list()
 
-    @log_start_end(log=logger)
     def call_screenshot(self, other_args: List[str]) -> None:
         """Process screenshot command."""
         parser = argparse.ArgumentParser(
@@ -1026,7 +982,6 @@ class BaseController(metaclass=ABCMeta):
         if ns_parser:
             screenshot()
 
-    @log_start_end(log=logger)
     def call_whoami(self, other_args: List[str]) -> None:
         """Process whoami command."""
         parser = argparse.ArgumentParser(
@@ -1378,350 +1333,3 @@ class BaseController(metaclass=ABCMeta):
                 elif self.TRY_RELOAD and get_current_user().preferences.RETRY_WITH_LOAD:
                     console.print(f"\nTrying `load {an_input}`\n")
                     self.queue.insert(0, "load " + an_input)
-
-
-class StockBaseController(BaseController, metaclass=ABCMeta):
-    """Base controller class for stocks related menus."""
-
-    def __init__(self, queue):
-        """Instantiate the base class for Stock Controllers that use a load function."""
-        super().__init__(queue)
-        self.stock = pd.DataFrame()
-        self.interval = "1440min"
-        self.ticker = ""
-        self.start = ""
-        self.suffix = ""  # To hold suffix for Yahoo Finance
-        self.add_info = stocks_helper.additional_info_about_ticker("")
-        self.TRY_RELOAD = True
-        self.USER_IMPORT_FILES = {
-            filepath.name: filepath
-            for file_type in ["csv"]
-            for filepath in (
-                get_current_user().preferences.USER_CUSTOM_IMPORTS_DIRECTORY / "stocks"
-            ).rglob(f"*.{file_type}")
-        }
-
-    def call_load(self, other_args: List[str]):
-        """Process load command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="Load stock ticker to perform analysis on. When the data source"
-            + " is yf, an Indian ticker can be"
-            + " loaded by using '.NS' at the end, e.g. 'SBIN.NS'. See available market in"
-            + " https://help.yahoo.com/kb/exchanges-data-providers-yahoo-finance-sln2310.html.",
-        )
-        parser.add_argument(
-            "-t",
-            "--ticker",
-            action="store",
-            dest="ticker",
-            required="-h" not in other_args and "--help" not in other_args,
-            help="Stock ticker",
-        )
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date,
-            default=(datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d"),
-            dest="start",
-            help="The starting date (format YYYY-MM-DD) of the stock",
-        )
-        parser.add_argument(
-            "-e",
-            "--end",
-            type=valid_date,
-            default=datetime.now().strftime("%Y-%m-%d"),
-            dest="end",
-            help="The ending date (format YYYY-MM-DD) of the stock",
-        )
-        parser.add_argument(
-            "-i",
-            "--interval",
-            action="store",
-            dest="interval",
-            type=int,
-            default=1440,
-            choices=[1, 5, 15, 30, 60],
-            help="Intraday stock minutes",
-        )
-        parser.add_argument(
-            "-p",
-            "--prepost",
-            action="store_true",
-            default=False,
-            dest="prepost",
-            help="Pre/After market hours. Only reflected in 'YahooFinance' intraday data.",
-        )
-        parser.add_argument(
-            "-f",
-            "--file",
-            default=None,
-            help="Path to load custom file.",
-            dest="filepath",
-            type=str,
-        )
-        parser.add_argument(
-            "-m",
-            "--monthly",
-            action="store_true",
-            default=False,
-            help="Load monthly data",
-            dest="monthly",
-        )
-        parser.add_argument(
-            "-w",
-            "--weekly",
-            action="store_true",
-            default=False,
-            help="Load weekly data",
-            dest="weekly",
-        )
-        parser.add_argument(
-            "--performance",
-            dest="performance",
-            action="store_true",
-            default=False,
-            help="Show performance information.",
-        )
-        parser.add_argument(
-            "--india",
-            dest="india",
-            action="store_true",
-            default=False,
-            help="Only works for yf source, when the ticker has .NS suffix as part of it.",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-t")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            if ns_parser.weekly and ns_parser.monthly:
-                console.print(
-                    "[red]Only one of monthly or weekly can be selected.[/red]."
-                )
-                return
-            if ns_parser.india and not ns_parser.ticker.endswith((".ns", ".NS")):
-                ns_parser.ticker = ns_parser.ticker + ".NS"
-            if ns_parser.filepath is None:
-                df_stock_candidate = stocks_helper.load(
-                    ns_parser.ticker,
-                    ns_parser.start,
-                    ns_parser.interval,
-                    ns_parser.end,
-                    ns_parser.prepost,
-                    ns_parser.source,
-                    weekly=ns_parser.weekly,
-                    monthly=ns_parser.monthly,
-                )
-            else:
-                # This seems to block the .exe since the folder needs to be manually created
-                # This block makes sure that we only look for the file if the -f flag is used
-                # Adding files in the argparse choices, will fail for the .exe even without -f
-                file_location = self.USER_IMPORT_FILES.get(
-                    ns_parser.filepath, ns_parser.filepath
-                )
-                df_stock_candidate = stocks_helper.load_custom(str(file_location))
-                if df_stock_candidate.empty:
-                    return
-            is_df = isinstance(df_stock_candidate, pd.DataFrame)
-            if not (
-                (is_df and df_stock_candidate.empty)
-                or (not is_df and not df_stock_candidate)
-            ):
-                self.stock = df_stock_candidate
-                if (
-                    ns_parser.interval == 1440
-                    and not ns_parser.weekly
-                    and not ns_parser.monthly
-                    and ns_parser.filepath is None
-                    and self.PATH == "/stocks/"
-                    and ns_parser.performance
-                ):
-                    console.print()
-                    stocks_helper.show_quick_performance(self.stock, ns_parser.ticker)
-                if "." in ns_parser.ticker:
-                    self.ticker, self.suffix = ns_parser.ticker.upper().split(".")
-                    if "." not in self.ticker:
-                        self.ticker = ns_parser.ticker.upper()
-                else:
-                    self.ticker = ns_parser.ticker.upper()
-                    self.suffix = ""
-
-                if ns_parser.source.lower() == "EODHD":
-                    self.start = self.stock.index[0].to_pydatetime()
-                else:
-                    self.start = ns_parser.start
-                self.interval = f"{ns_parser.interval}min"
-
-                if self.PATH in ["/stocks/qa/"]:
-                    self.stock["Returns"] = self.stock["Adj Close"].pct_change()
-                    self.stock["LogRet"] = np.log(self.stock["Adj Close"]) - np.log(
-                        self.stock["Adj Close"].shift(1)
-                    )
-                    self.stock["LogPrice"] = np.log(self.stock["Adj Close"])
-                    self.stock = self.stock.rename(columns={"Adj Close": "AdjClose"})
-                    self.stock = self.stock.dropna()
-                    self.stock.columns = [x.lower() for x in self.stock.columns]
-                    # pylint: disable=attribute-defined-outside-init
-                    self.target = "returns" if not self.stock.empty else ""
-
-                export_data(
-                    ns_parser.export,
-                    os.path.dirname(os.path.abspath(__file__)),
-                    f"load_{self.ticker}",
-                    self.stock.copy(),
-                    sheet_name=(
-                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                    ),
-                )
-
-
-class CryptoBaseController(BaseController, metaclass=ABCMeta):
-    """Base controller class for crypto related menus."""
-
-    def __init__(self, queue):
-        """Instantiate the base class for Crypto Controllers that use a load function."""
-        super().__init__(queue)
-
-        self.symbol = ""
-        self.vs = ""
-        self.current_df = pd.DataFrame()
-        self.current_currency = ""
-        self.source = ""
-        self.current_interval = ""
-        self.exchange = ""
-        self.price_str = ""
-        self.interval = ""
-        self.resolution = "1D"
-        self.TRY_RELOAD = True
-        self.exchanges = cryptocurrency_helpers.get_exchanges_ohlc()
-
-    def call_load(self, other_args):
-        """Process load command."""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="load",
-            description="""Load crypto currency to perform analysis on.
-            Yahoo Finance is used as default source.
-            Other sources can be used such as 'ccxt' or 'cg' with --source.
-            If you select 'ccxt', you can then select any exchange with --exchange.
-            You can also select a specific interval with --interval.""",
-        )
-        parser.add_argument(
-            "-c",
-            "--coin",
-            help="Coin to get. Must be coin symbol (e.g., btc, eth)",
-            dest="coin",
-            type=str,
-            required="-h" not in other_args and "--help" not in other_args,
-        )
-
-        parser.add_argument(
-            "-s",
-            "--start",
-            type=valid_date,
-            default=(datetime.now() - timedelta(days=1100)).strftime("%Y-%m-%d"),
-            dest="start",
-            help="The starting date (format YYYY-MM-DD) of the crypto",
-        )
-
-        parser.add_argument(
-            "--exchange",
-            help="Exchange to search",
-            dest="exchange",
-            type=str,
-            default="binance",
-            choices=self.exchanges,
-        )
-
-        parser.add_argument(
-            "-e",
-            "--end",
-            type=valid_date,
-            default=datetime.now().strftime("%Y-%m-%d"),
-            dest="end",
-            help="The ending date (format YYYY-MM-DD) of the crypto",
-        )
-        parser.add_argument(
-            "-i",
-            "--interval",
-            action="store",
-            dest="interval",
-            type=str,
-            default="1440",
-            choices=["1", "5", "15", "30", "60", "240", "1440", "10080", "43200"],
-            help="The interval of the crypto",
-        )
-
-        parser.add_argument(
-            "--vs",
-            help="Quote currency (what to view coin vs). e.g., usdc, usdt, ... if source is ccxt, usd, eur, ... otherwise",  # noqa
-            dest="vs",
-            default="usdt",
-            type=str,
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-c")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-
-        if ns_parser:
-            if (
-                ns_parser.source in ("YahooFinance", "CoinGecko")
-                and ns_parser.vs == "usdt"
-            ):
-                ns_parser.vs = "usd"
-            if ns_parser.source == "YahooFinance" and ns_parser.interval in [
-                "240",
-                "10080",
-                "43200",
-            ]:
-                console.print(
-                    f"[red]YahooFinance does not support {ns_parser.interval}min interval[/red]"
-                )
-                return
-            (self.current_df) = cryptocurrency_helpers.load(
-                symbol=ns_parser.coin.lower(),
-                to_symbol=ns_parser.vs,
-                end_date=ns_parser.end.strftime("%Y-%m-%d"),
-                start_date=ns_parser.start.strftime("%Y-%m-%d"),
-                interval=ns_parser.interval,
-                source=ns_parser.source,
-                exchange=ns_parser.exchange,
-            )
-            if not self.current_df.empty:
-                self.vs = ns_parser.vs
-                self.exchange = ns_parser.exchange
-                self.source = ns_parser.source
-                self.current_interval = ns_parser.interval
-                self.current_currency = ns_parser.vs
-                self.symbol = ns_parser.coin.lower()
-                self.data = (  # pylint: disable=attribute-defined-outside-init
-                    self.current_df.copy()
-                )
-                cryptocurrency_helpers.show_quick_performance(
-                    self.current_df,
-                    self.symbol,
-                    self.current_currency,
-                    ns_parser.source,
-                    ns_parser.exchange,
-                    self.current_interval,
-                )
-                export_data(
-                    ns_parser.export,
-                    os.path.dirname(os.path.abspath(__file__)),
-                    "load",
-                    self.current_df.copy(),
-                    sheet_name=(
-                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                    ),
-                )
