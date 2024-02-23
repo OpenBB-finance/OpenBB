@@ -20,7 +20,6 @@ from _pytest.mark.structures import Mark
 # IMPORTS INTERNAL
 from openbb_terminal import (
     config_terminal,
-    decorators,
     helper_funcs,
 )
 from openbb_terminal.core.session.current_system import set_system_variable

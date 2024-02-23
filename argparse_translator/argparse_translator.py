@@ -17,10 +17,9 @@ from typing import (
     get_type_hints,
 )
 
+from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from pydantic import BaseModel
 from typing_extensions import Annotated
-
-from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 
 SEP = "__"
 
@@ -187,7 +186,7 @@ class ArgparseTranslator:
                 # add help to the annotation
                 annotated_parameters: List[inspect.Parameter] = []
                 for child_param in sig.parameters.values():
-                    child_param = child_param.replace(
+                    new_child_param = child_param.replace(
                         name=f"{param.name}{SEP}{child_param.name}",
                         annotation=Annotated[
                             child_param.annotation,
@@ -199,7 +198,7 @@ class ArgparseTranslator:
                         ],
                         kind=inspect.Parameter.KEYWORD_ONLY,
                     )
-                    annotated_parameters.append(child_param)
+                    annotated_parameters.append(new_child_param)
 
                 # replacing with the annotated parameters
                 new_signature = inspect.Signature(

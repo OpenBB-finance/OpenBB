@@ -4,7 +4,6 @@ import pytest
 
 from openbb_terminal.core.session.current_system import set_system_variable
 
-
 logger = logging.getLogger(__name__)
 
 
