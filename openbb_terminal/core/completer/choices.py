@@ -2,7 +2,6 @@ from argparse import SUPPRESS, ArgumentParser
 from contextlib import contextmanager
 from inspect import isfunction, unwrap
 from io import StringIO
-from os import environ
 from types import MethodType
 from typing import Callable, List
 from unittest.mock import patch

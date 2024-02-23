@@ -1,5 +1,5 @@
-from openbb_terminal.base_platform_controller import PlatformController
 from argparse_translator.argparse_class_processor import ArgparseClassProcessor
+from openbb_terminal.base_platform_controller import PlatformController
 
 
 class PlatformControllerFactory:

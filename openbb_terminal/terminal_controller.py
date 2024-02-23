@@ -5,7 +5,6 @@ __docformat__ = "numpy"
 import argparse
 import contextlib
 import difflib
-import json
 import logging
 import os
 import re
@@ -22,7 +21,6 @@ import certifi
 import pandas as pd
 import requests
 from openbb import obb
-from prompt_toolkit import PromptSession
 from prompt_toolkit.formatted_text import HTML
 from prompt_toolkit.styles import Style
 from pydantic import BaseModel
@@ -40,7 +38,6 @@ from openbb_terminal.core.session.current_system import set_system_variable
 from openbb_terminal.core.session.current_user import get_current_user, set_preference
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
 from openbb_terminal.helper_funcs import (
-    check_positive,
     get_flair,
     parse_and_split_input,
     print_rich_table,

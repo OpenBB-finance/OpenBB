@@ -23,7 +23,6 @@ from openbb_terminal.core.session.routines_handler import (
 )
 from openbb_terminal.core.session.session_model import logout
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal.helper_funcs import check_positive
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController

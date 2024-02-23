@@ -8,7 +8,6 @@ from openbb_terminal.core.session.current_user import (
     get_current_user,
     is_local,
 )
-
 from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_helper import print_guest_block_msg
 

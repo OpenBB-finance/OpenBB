@@ -11,7 +11,6 @@ import pandas_ta as ta
 
 from openbb_terminal.base_helpers import console
 
-
 logger = logging.getLogger(__name__)
 
 # pylint: disable=E1123

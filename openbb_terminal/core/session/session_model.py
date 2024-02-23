@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 
 import openbb_terminal.core.session.hub_model as Hub
 import openbb_terminal.core.session.local_model as Local
-from openbb_terminal.base_helpers import remove_log_handlers
 from openbb_terminal.core.config.paths import HIST_FILE_PATH, SESSION_FILE_PATH
 from openbb_terminal.core.models.user_model import ProfileModel, SourcesModel, UserModel
 from openbb_terminal.core.session.current_user import (

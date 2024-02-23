@@ -7,15 +7,15 @@ from functools import partial, update_wrapper
 from types import MethodType
 from typing import Dict, List, Optional
 
+import pandas as pd
+
 from argparse_translator.argparse_class_processor import ArgparseClassProcessor
-from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
+from openbb_terminal.helper_funcs import print_rich_table
 from openbb_terminal.menu import session
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.rich_config import MenuText, console
-
-import pandas as pd
 
 logger = logging.getLogger(__name__)
 

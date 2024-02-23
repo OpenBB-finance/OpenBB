@@ -33,7 +33,6 @@ from openbb_terminal.core.session import hub_model as Hub
 from openbb_terminal.core.session.constants import SCRIPT_TAGS
 from openbb_terminal.core.session.current_user import get_current_user, is_local
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-
 from openbb_terminal.helper_funcs import (
     check_file_type_saved,
     check_positive,

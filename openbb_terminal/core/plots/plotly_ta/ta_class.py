@@ -1,6 +1,7 @@
 # pylint: disable=R0902
 import importlib
 import inspect
+import re
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Type, Union
@@ -49,12 +50,10 @@ def check_columns(
         is None
         and close
     ):
-        logger.error("Invalid columns. data has columns %s", data.columns)
-        console.print(
-            "[red] Please make sure that the columns 'High', 'Low', and 'Close'"
-            " are in the dataframe.[/red]"
+        raise ValueError(
+            " Please make sure that the columns 'High', 'Low', and 'Close'"
+            " are in the dataframe."
         )
-        return None
 
     return [col for col in close_col if col in data.columns][-1]
 
