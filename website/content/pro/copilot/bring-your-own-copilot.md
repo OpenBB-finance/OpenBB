@@ -33,7 +33,7 @@ setting up an API endpoint. This endpoint enables Terminal Pro to interact with
 the custom copilot. To facilitate this process, we provide an open-source
 Example Copilot that illustrates the necessary steps for integration. 
 
-The example code is available here.
+The example code is available [here](https://github.com/OpenBB-finance/copilot-for-terminal-pro).
 
 ## Adding a custom copilot to Terminal Pro
 
