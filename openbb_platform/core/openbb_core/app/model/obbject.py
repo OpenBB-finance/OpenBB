@@ -134,7 +134,12 @@ class OBBject(Tagged, Generic[T]):
             )
         for i in columns:
             if i in model:
-                descriptions[i] = model[i].get("description", None)
+                descriptions[i] = (
+                    str(model[i].get("description", None))
+                    .replace("  ", "")
+                    .replace("\n", " ")
+                    .strip()
+                )
 
         return descriptions
 
