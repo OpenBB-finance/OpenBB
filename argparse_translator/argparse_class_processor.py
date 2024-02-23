@@ -3,6 +3,9 @@ from typing import Dict, Type
 
 from argparse_translator.argparse_translator import ArgparseTranslator
 
+# TODO: this needs to be done differently
+from openbb_core.app.static.container import Container
+
 
 class ArgparseClassProcessor:
     """
@@ -74,7 +77,7 @@ class ArgparseClassProcessor:
                 methods[f"{class_name}_{name}"] = ArgparseTranslator(
                     func=member, add_help=add_help
                 )
-            elif inspect.isclass(member):
+            elif isinstance(member, Container):
                 methods = {
                     **methods,
                     **ArgparseClassProcessor._process_class(
@@ -116,6 +119,6 @@ class ArgparseClassProcessor:
                 continue
             if inspect.ismethod(member):
                 pass
-            elif inspect.isclass(member):
+            elif isinstance(member, Container):
                 self._build_paths(target=getattr(target, name), depth=depth + 1)
                 self._paths[f"{name}"] = "sub" * depth + "path"
