@@ -54,6 +54,9 @@ def get_field_data_type(field_type: Any) -> str:
         if "Annotated[" in str(field_type):
             field_type = str(field_type).rsplit("[", maxsplit=1)[-1].split(",")[0]
 
+        if "models" in str(field_type):
+            field_type = str(field_type).split(".")[-1]
+
         field_type = (
             str(field_type)
             .replace("<class '", "")
