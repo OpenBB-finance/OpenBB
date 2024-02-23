@@ -178,7 +178,7 @@ class Charting:
         index = (
             data.index.name
             if has_data and isinstance(data, (pd.DataFrame, pd.Series))
-            else None
+            else ""
         )
         data_as_df: pd.DataFrame = (
             basemodel_to_df(convert_to_basemodel(data), index=index)
