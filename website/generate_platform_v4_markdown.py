@@ -105,6 +105,7 @@ def get_provider_parameter_info(endpoint: Callable) -> Dict[str, str]:
         "description": description,
         "default": default,
         "optional": True,
+        "standard": True,
     }
 
     return provider_parameter_info
@@ -152,7 +153,7 @@ def get_provider_field_params(
                 "description": cleaned_description,
                 "default": default_value,
                 "optional": not field_info.is_required(),
-                "standard": False,
+                "standard": provider == "openbb",
             }
         )
 
