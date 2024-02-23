@@ -6,7 +6,7 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -22,6 +22,7 @@ class ROUTER_equity_price(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def historical(
         self,
@@ -52,7 +53,7 @@ class ROUTER_equity_price(Container):
         ] = None,
         **kwargs
     ) -> OBBject:
-        """Equity Historical price. Load stock data for a specific ticker.
+        """Get historical price data for a given stock. This includes open, high, low, close, and volume.
 
         Parameters
         ----------
@@ -202,6 +203,7 @@ class ROUTER_equity_price(Container):
             )
         )
 
+    @exception_handler
     @validate
     def nbbo(
         self,
@@ -211,7 +213,7 @@ class ROUTER_equity_price(Container):
         provider: Optional[Literal["polygon"]] = None,
         **kwargs
     ) -> OBBject:
-        """Equity NBBO. Load National Best Bid and Offer for a specific equity.
+        """Get the National Best Bid and Offer for a given stock.
 
         Parameters
         ----------
@@ -331,6 +333,7 @@ class ROUTER_equity_price(Container):
             )
         )
 
+    @exception_handler
     @validate
     def performance(
         self,
@@ -343,7 +346,7 @@ class ROUTER_equity_price(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Price performance as a return, over different periods.
+        """Get price performance data for a given stock. This includes price changes for different time periods.
 
         Parameters
         ----------
@@ -425,6 +428,7 @@ class ROUTER_equity_price(Container):
             )
         )
 
+    @exception_handler
     @validate
     def quote(
         self,
@@ -437,7 +441,7 @@ class ROUTER_equity_price(Container):
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Equity Quote. Load stock data for a specific ticker.
+        """Get the latest quote for a given stock. Quote includes price, volume, and other data.
 
         Parameters
         ----------

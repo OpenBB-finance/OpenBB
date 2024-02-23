@@ -3,6 +3,8 @@
 from functools import wraps
 from typing import Any, Callable, Optional, TypeVar, overload
 
+from openbb_core.app.model.abstract.error import OpenBBError
+from openbb_core.env import Env
 from pydantic import validate_call
 from typing_extensions import ParamSpec
 
@@ -36,3 +38,20 @@ def validate(
         return wrapper
 
     return decorated if func is None else decorated(func)
+
+
+def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
+    """Handle exceptions, attempting to focus on the last call from the traceback."""
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            if Env().DEBUG_MODE:
+                raise
+            raise OpenBBError(
+                f"\nType -> {e.__class__.__name__}\n\nDetail -> {str(e)}"
+            ) from None
+
+    return wrapper

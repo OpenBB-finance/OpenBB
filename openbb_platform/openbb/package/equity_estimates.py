@@ -5,7 +5,7 @@ from typing import List, Literal, Optional, Union
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.static.container import Container
-from openbb_core.app.static.utils.decorators import validate
+from openbb_core.app.static.utils.decorators import exception_handler, validate
 from openbb_core.app.static.utils.filters import filter_inputs
 from typing_extensions import Annotated
 
@@ -21,6 +21,7 @@ class ROUTER_equity_estimates(Container):
     def __repr__(self) -> str:
         return self.__doc__ or ""
 
+    @exception_handler
     @validate
     def analyst_search(
         self,
@@ -191,6 +192,7 @@ class ROUTER_equity_estimates(Container):
             )
         )
 
+    @exception_handler
     @validate
     def consensus(
         self,
@@ -203,7 +205,7 @@ class ROUTER_equity_estimates(Container):
         provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
-        """Consensus price target and recommendation.
+        """Get consensus price target and recommendation.
 
         Parameters
         ----------
@@ -275,6 +277,7 @@ class ROUTER_equity_estimates(Container):
             )
         )
 
+    @exception_handler
     @validate
     def historical(
         self,
@@ -292,7 +295,7 @@ class ROUTER_equity_estimates(Container):
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Historical analyst estimates for earnings and revenue.
+        """Get historical analyst estimates for earnings and revenue.
 
         Parameters
         ----------
@@ -393,6 +396,7 @@ class ROUTER_equity_estimates(Container):
             )
         )
 
+    @exception_handler
     @validate
     def price_target(
         self,
@@ -409,7 +413,7 @@ class ROUTER_equity_estimates(Container):
         provider: Optional[Literal["benzinga", "fmp"]] = None,
         **kwargs
     ) -> OBBject:
-        """Analyst price targets by company.
+        """Get analyst price targets by company.
 
         Parameters
         ----------

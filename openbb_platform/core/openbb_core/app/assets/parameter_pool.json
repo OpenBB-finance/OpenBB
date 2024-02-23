@@ -20,15 +20,6 @@
         "symbols": "AAPL,MSFT",
         "query": "AAPL"
     },
-    "equity.fundamental.historical_attributes": {
-        "tag": "ebitda"
-    },
-    "equity.fundamental.latest_attributes": {
-        "tag": "ceo"
-    },
-    "equity.fundamental.transcript": {
-        "year": 2020
-    },
     "etf": {
         "symbol": "SPY",
         "query": "Vanguard"
