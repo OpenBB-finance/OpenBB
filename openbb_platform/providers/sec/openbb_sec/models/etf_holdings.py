@@ -30,7 +30,7 @@ class SecEtfHoldingsQueryParams(EtfHoldingsQueryParams):
     date: Optional[Union[str, dateType]] = Field(
         description=QUERY_DESCRIPTIONS.get("date", "")
         + "  The date represents the period ending."
-        +" The date entered will return the closest filing.",
+        + " The date entered will return the closest filing.",
         default=None,
     )
     use_cache: bool = Field(
