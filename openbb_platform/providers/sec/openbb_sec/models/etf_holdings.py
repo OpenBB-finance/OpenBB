@@ -1,6 +1,6 @@
 """SEC ETF Holings Model."""
 
-# pylint: unused-argument
+# pylint: disable =[unused-argument,too-many-locals,too-many-branches]
 
 import warnings
 from datetime import date as dateType
@@ -29,7 +29,8 @@ class SecEtfHoldingsQueryParams(EtfHoldingsQueryParams):
 
     date: Optional[Union[str, dateType]] = Field(
         description=QUERY_DESCRIPTIONS.get("date", "")
-        + "  The date represents the period ending.  The date entered will return the closest filing.",
+        + "  The date represents the period ending."
+        +" The date entered will return the closest filing.",
         default=None,
     )
     use_cache: bool = Field(
@@ -354,7 +355,7 @@ class SecEtfHoldingsFetcher(
 
     # pylint: disable=too-many-statements
     @staticmethod
-    def transform_data(
+    def transform_data(  # noqa: PLR0912
         query: SecEtfHoldingsQueryParams,
         data: Dict,
         **kwargs: Any,
@@ -590,30 +591,31 @@ class SecEtfHoldingsFetcher(
                             df.loc[i, "reset_date_unit_rec"] = swap_deriv[
                                 "floatingRecDesc"
                             ]["rtResetTenors"]["rtResetTenor"].get("@resetDtUnit")
-                        df.loc[i, "rate_type_pmnt"] = swap_deriv[
-                            "floatingPmntDesc"
-                        ].get("@fixedOrFloating")
-                        df.loc[i, "floating_rate_index_pmnt"] = swap_deriv[
-                            "floatingPmntDesc"
-                        ].get("@floatingRtIndex")
-                        df.loc[i, "floating_rate_spread_pmnt"] = float(
-                            swap_deriv["floatingPmntDesc"].get("@floatingRtSpread")
-                        )
-                        df.loc[i, "payment_amount_pmnt"] = float(
-                            swap_deriv["floatingPmntDesc"].get("@pmntAmt")
-                        )
-                        df.loc[i, "rate_tenor_pmnt"] = swap_deriv["floatingPmntDesc"][
-                            "rtResetTenors"
-                        ]["rtResetTenor"].get("@rateTenor")
-                        df.loc[i, "rate_tenor_unit_pmnt"] = swap_deriv[
-                            "floatingPmntDesc"
-                        ]["rtResetTenors"]["rtResetTenor"].get("@rateTenorUnit")
-                        df.loc[i, "reset_date_pmnt"] = swap_deriv["floatingPmntDesc"][
-                            "rtResetTenors"
-                        ]["rtResetTenor"].get("@resetDt")
-                        df.loc[i, "reset_date_unit_rec"] = swap_deriv[
-                            "floatingPmntDesc"
-                        ]["rtResetTenors"]["rtResetTenor"].get("@resetDtUnit")
+                        if "floatingPmntDesc" in swap_deriv:
+                            df.loc[i, "rate_type_pmnt"] = swap_deriv[
+                                "floatingPmntDesc"
+                            ].get("@fixedOrFloating")
+                            df.loc[i, "floating_rate_index_pmnt"] = swap_deriv[
+                                "floatingPmntDesc"
+                            ].get("@floatingRtIndex")
+                            df.loc[i, "floating_rate_spread_pmnt"] = float(
+                                swap_deriv["floatingPmntDesc"].get("@floatingRtSpread")
+                            )
+                            df.loc[i, "payment_amount_pmnt"] = float(
+                                swap_deriv["floatingPmntDesc"].get("@pmntAmt")
+                            )
+                            df.loc[i, "rate_tenor_pmnt"] = swap_deriv[
+                                "floatingPmntDesc"
+                            ]["rtResetTenors"]["rtResetTenor"].get("@rateTenor")
+                            df.loc[i, "rate_tenor_unit_pmnt"] = swap_deriv[
+                                "floatingPmntDesc"
+                            ]["rtResetTenors"]["rtResetTenor"].get("@rateTenorUnit")
+                            df.loc[i, "reset_date_pmnt"] = swap_deriv[
+                                "floatingPmntDesc"
+                            ]["rtResetTenors"]["rtResetTenor"].get("@resetDt")
+                            df.loc[i, "reset_date_unit_rec"] = swap_deriv[
+                                "floatingPmntDesc"
+                            ]["rtResetTenors"]["rtResetTenor"].get("@resetDtUnit")
                         df.loc[i, "expiry_date"] = swap_deriv.get("terminationDt")
                         df.loc[i, "upfront_payment"] = float(
                             swap_deriv.get("upfrontPmnt")
