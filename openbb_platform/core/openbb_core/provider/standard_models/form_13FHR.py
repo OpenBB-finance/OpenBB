@@ -67,7 +67,7 @@ class Form13FHRData(Data):
         + " 'SH' for shares. 'PRN' for principal amount."
         + " Convertible debt securities are reported as 'PRN'.",
     )
-    option_type: Optional[Literal["Call", "Put"]] = Field(
+    option_type: Optional[Literal["call", "put"]] = Field(
         default=None,
         description="Defined when the holdings being reported are put or call options."
         + " Only long positions are reported."
@@ -99,3 +99,9 @@ class Form13FHRData(Data):
         + " Values are rounded to the nearest US dollar"
         + " and use the closing price of the last trading day of the calendar year or quarter.",
     )
+
+    @field_validator("option_type", mode="before", check_fields=False)
+    @classmethod
+    def validate_option_type(cls, v: str):
+        """Validate and convert to lower case."""
+        return v.lower() if v else None
