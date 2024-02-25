@@ -1,3 +1,5 @@
+"""Utility functions for parsing SEC Form 13F-HR."""
+
 from typing import Dict, Optional
 
 import xmltodict
@@ -33,7 +35,7 @@ def get_13f_candidates(symbol: Optional[str] = None, cik: Optional[str] = None):
     query = fetcher.transform_query(params)
     filings = fetcher.extract_data(query, {})
     if len(filings) == 0:
-        raise ValueError(f"No 13F-HR filings found for {symbol}")
+        raise ValueError(f"No 13F-HR filings found for {symbol if symbol else cik}.")
 
     # Filings before June 30, 2013 are non-structured and are not supported by downstream parsers.
     return (
@@ -168,12 +170,12 @@ async def parse_13f_hr(filing: str):
     df = DataFrame(data)
     df["principal_amount"] = df["principal_amount"].astype(int)
 
+    agg_index = ["cusip", "security_type", "putCall"]
     agg_columns = {
         "period_ending": "first",
         "nameOfIssuer": "first",
         "titleOfClass": "first",
         "value": "sum",
-        "investmentDiscretion": "first",
         "principal_amount": "sum",
         "voting_authority_sole": "sum",
         "voting_authority_shared": "sum",
@@ -182,10 +184,23 @@ async def parse_13f_hr(filing: str):
 
     # Only aggregate columns that exist in the DataFrame
     agg_columns = {k: v for k, v in agg_columns.items() if k in df.columns}
+    agg_index = [k for k in agg_index if k in df.columns]
+    df = df.groupby([*agg_index]).agg(agg_columns)
 
-    df = df.groupby(["cusip", "security_type"]).agg(agg_columns)
+    for col in [
+        "voting_authority_sole",
+        "voting_authority_shared",
+        "voting_authority_none",
+    ]:
+        if col in df.columns and all(df[col] == 0):
+            df.drop(columns=col, inplace=True)
 
     total_value = df["value"].sum()
     df["weight"] = round(df["value"] / total_value, 6)
 
-    return df.reset_index().sort_values(by="weight", ascending=False)
+    return (
+        df.reset_index()
+        .fillna("N/A")
+        .sort_values(by="weight", ascending=False)
+        .replace("N/A", None)
+    )

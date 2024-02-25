@@ -42,7 +42,7 @@ class ROUTER_equity_ownership(Container):
         limit: Annotated[
             Optional[int],
             OpenBBCustomParameter(
-                description="The number of data entries to return. The number of previous filings to return. This parameter is overriden by the date parameter."
+                description="The number of data entries to return. The number of previous filings to return. The date parameter takes priority over this parameter."
             ),
         ] = 1,
         provider: Optional[Literal["sec"]] = None,
@@ -63,7 +63,7 @@ class ROUTER_equity_ownership(Container):
         date : Union[datetime.date, None, str]
             A specific date to get data for. The date represents the end of the reporting period. All form 13F-HR filings are based on the calendar year and are reported quarterly. If a date is not supplied, the most recent filing is returned. Submissions beginning 2013-06-30 are supported.
         limit : Optional[int]
-            The number of data entries to return. The number of previous filings to return. This parameter is overriden by the date parameter.
+            The number of data entries to return. The number of previous filings to return. The date parameter takes priority over this parameter.
         provider : Optional[Literal['sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'sec' if there is
@@ -86,17 +86,17 @@ class ROUTER_equity_ownership(Container):
         Form13FHR
         ---------
         period_ending : date
-            The date of the reporting period ended.
+            The end-of-quarter date of the filing.
         issuer : str
             The name of the issuer.
         cusip : str
             The CUSIP of the security.
         asset_class : str
             The title of the asset class for the security.
-        security_type : str
-            The type of security 'SH' for shares. 'PRN' for principal amount. 'Call' or 'Put' for options.
-        investment_discretion : str
-            The nature of the investment discretion held by the Manager. One of: 'SOLE', 'DFND' (defined), 'OTR' (other).
+        security_type : Optional[Literal['SH', 'PRN']]
+            The total number of shares of the class of security or the principal amount of such class. 'SH' for shares. 'PRN' for principal amount. Convertible debt securities are reported as 'PRN'.
+        option_type : Optional[Literal['Call', 'Put']]
+            Defined when the holdings being reported are put or call options. Only long positions are reported.
         voting_authority_sole : Optional[int]
             The number of shares for which the Manager exercises sole voting authority (none).
         voting_authority_shared : Optional[int]
@@ -104,11 +104,11 @@ class ROUTER_equity_ownership(Container):
         voting_authority_other : Optional[int]
             The number of shares for which the Manager exercises other shared voting authority (none).
         principal_amount : int
-            The total number of shares of the class of security or the principla amount of such class.
+            The total number of shares of the class of security or the principal amount of such class. Only long positions are reported
         value : int
-            The fair market value of the holding of the particular class of security. Values are rounded to the nearest US dollar
+            The fair market value of the holding of the particular class of security. The value reported for options is the fair market value of the underlying security with resepect to the number of shares controlled. Values are rounded to the nearest US dollar and use the closing price of the last trading day of the calendar year or quarter.
         weight : Optional[float]
-            The weight of the security relative to the market value of all securities in the filing , as a normalized percent.. (provider: sec)
+            The weight of the security relative to the market value of all securities in the filing , as a normalized percent. (provider: sec)
 
         Example
         -------
@@ -119,7 +119,8 @@ class ROUTER_equity_ownership(Container):
         >>> obb.equity.ownership.form_13f(symbol="BRK-A", date="2016-09-30")
         >>> ### Use the `limit` parameter to return N number of reports from the most recent. ###
         >>> ### Example finding Michael Burry's filings. ###
-        >>> cik = obb.regulators.sec.institutions_search("Scion Asset Management").results[0].cikobb.equity.ownership.form_13f(cik, limit=2).to_df()
+        >>> cik = obb.regulators.sec.institutions_search("Scion Asset Management").results[0].cik
+        >>> obb.equity.ownership.form_13f(cik, limit=2).to_df()
         """  # noqa: E501
 
         return self._run(

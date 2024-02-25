@@ -69,7 +69,7 @@ async def share_statistics(
         'obb.equity.ownership.form_13f(symbol="BRK-A", date="2016-09-30")',
         "### Use the `limit` parameter to return N number of reports from the most recent. ###",
         "### Example finding Michael Burry's filings. ###",
-        'cik = obb.regulators.sec.institutions_search("Scion Asset Management").results[0].cik'
+        'cik = obb.regulators.sec.institutions_search("Scion Asset Management").results[0].cik',
         "obb.equity.ownership.form_13f(cik, limit=2).to_df()",
     ],
 )

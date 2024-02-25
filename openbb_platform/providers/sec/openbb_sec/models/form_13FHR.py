@@ -30,11 +30,12 @@ class SecForm13FHRData(Form13FHRData):
     __alias_dict__ = {
         "issuer": "nameOfIssuer",
         "asset_class": "titleOfClass",
+        "option_type": "putCall",
     }
 
     weight: float = Field(
         description="The weight of the security relative to the market value of all securities in the filing"
-        + " , as a normalized percent..",
+        + " , as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
     )
 

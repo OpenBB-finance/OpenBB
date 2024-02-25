@@ -1,7 +1,7 @@
 """From 13F-HR Standard Model."""
 
 from datetime import date as dateType
-from typing import Optional
+from typing import Literal, Optional
 
 from pydantic import Field, field_validator
 
@@ -34,7 +34,7 @@ class Form13FHRQueryParams(QueryParams):
         default=1,
         description=QUERY_DESCRIPTIONS.get("limit", "")
         + " The number of previous filings to return."
-        + " This parameter is overriden by the date parameter.",
+        + " The date parameter takes priority over this parameter.",
     )
 
     @field_validator("symbol", mode="before", check_fields=False)
@@ -45,23 +45,32 @@ class Form13FHRQueryParams(QueryParams):
 
 
 class Form13FHRData(Data):
-    """Form 13F-HR Data."""
+    """
+    Form 13F-HR Data.
+
+    Detailed documentation of the filing can be found here:
+    https://www.sec.gov/pdf/form13f.pdf
+    """
 
     period_ending: dateType = Field(
-        description="The date of the reporting period ended."
+        description="The end-of-quarter date of the filing."
     )
     issuer: str = Field(description="The name of the issuer.")
     cusip: str = Field(description="The CUSIP of the security.")
     asset_class: str = Field(
         description="The title of the asset class for the security."
     )
-    security_type: str = Field(
-        description="The type of security"
-        + " 'SH' for shares. 'PRN' for principal amount. 'Call' or 'Put' for options.",
+    security_type: Optional[Literal["SH", "PRN"]] = Field(
+        default=None,
+        description="The total number of shares of the class of security"
+        + " or the principal amount of such class."
+        + " 'SH' for shares. 'PRN' for principal amount."
+        + " Convertible debt securities are reported as 'PRN'.",
     )
-    investment_discretion: str = Field(
-        description="The nature of the investment discretion held by the Manager."
-        + " One of: 'SOLE', 'DFND' (defined), 'OTR' (other).",
+    option_type: Optional[Literal["Call", "Put"]] = Field(
+        default=None,
+        description="Defined when the holdings being reported are put or call options."
+        + " Only long positions are reported."
     )
     voting_authority_sole: Optional[int] = Field(
         default=None,
@@ -80,9 +89,13 @@ class Form13FHRData(Data):
     )
     principal_amount: int = Field(
         description="The total number of shares of the class of security"
-        + " or the principla amount of such class.",
+        + " or the principal amount of such class."
+        + " Only long positions are reported"
     )
     value: int = Field(
         description="The fair market value of the holding of the particular class of security."
-        + " Values are rounded to the nearest US dollar",
+        + " The value reported for options is the fair market value of the underlying security"
+        + " with resepect to the number of shares controlled."
+        + " Values are rounded to the nearest US dollar"
+        + " and use the closing price of the last trading day of the calendar year or quarter.",
     )
