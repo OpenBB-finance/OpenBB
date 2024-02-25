@@ -108,8 +108,12 @@ def get_period_ending(filing_str: str):
 async def parse_13f_hr(filing: str):
     """Parses a 13F-HR filing from the Complete Submission TXT file string."""
     data = DataFrame()
+
+    # Check if the input string is a URL
     if filing.startswith("https://"):
         filing = await get_complete_submission(filing)  # type: ignore
+
+    # Validate the submission so we know that we can parse it.
     if get_submission_type(filing) not in ("13F-HR", "13F-HR/A"):
         raise ValueError("Submission type is not 13F-HR.")
 
@@ -140,6 +144,8 @@ async def parse_13f_hr(filing: str):
     data["value"] = data["value"].astype(int)
     security_type = []
     principal_amount = []
+
+    # Unpack the nested objects
     try:
         security_type = [d.get("sshPrnamtType") for d in data["shrsOrPrnAmt"]]
         data["security_type"] = security_type
@@ -165,11 +171,15 @@ async def parse_13f_hr(filing: str):
                 data.pop(col)
     except ValueError:
         pass
+
+    # Add the period ending so that the filing is identified when multiple are requested.
     data["period_ending"] = to_datetime(period_ending, yearfirst=False).date()
 
     df = DataFrame(data)
     df["principal_amount"] = df["principal_amount"].astype(int)
 
+    # Aggregate the data because there are multiple entries for each security and we need the totals.
+    # We break it down by CUSIP, security type, and option type.
     agg_index = ["cusip", "security_type", "putCall"]
     agg_columns = {
         "period_ending": "first",
