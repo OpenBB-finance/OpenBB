@@ -95,7 +95,7 @@ class Form13FHRData(Data):
     value: int = Field(
         description="The fair market value of the holding of the particular class of security."
         + " The value reported for options is the fair market value of the underlying security"
-        + " with resepect to the number of shares controlled."
+        + " with respect to the number of shares controlled."
         + " Values are rounded to the nearest US dollar"
         + " and use the closing price of the last trading day of the calendar year or quarter.",
     )
