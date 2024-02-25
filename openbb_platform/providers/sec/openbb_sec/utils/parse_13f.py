@@ -162,13 +162,6 @@ async def parse_13f_hr(filing: str):
         data["voting_authority_shared"] = [int(s) for s in shared]
         data["voting_authority_none"] = [int(s) for s in none]
         data.pop("votingAuthority")
-        for col in [
-            "voting_authority_sole",
-            "voting_authority_shared",
-            "voting_authority_none",
-        ]:
-            if data[col].sum() == 0:
-                data.pop(col)
     except ValueError:
         pass
 
