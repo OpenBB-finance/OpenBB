@@ -95,7 +95,7 @@ class ROUTER_equity_ownership(Container):
             The title of the asset class for the security.
         security_type : Optional[Literal['SH', 'PRN']]
             The total number of shares of the class of security or the principal amount of such class. 'SH' for shares. 'PRN' for principal amount. Convertible debt securities are reported as 'PRN'.
-        option_type : Optional[Literal['Call', 'Put']]
+        option_type : Optional[Literal['call', 'put']]
             Defined when the holdings being reported are put or call options. Only long positions are reported.
         voting_authority_sole : Optional[int]
             The number of shares for which the Manager exercises sole voting authority (none).
@@ -106,7 +106,7 @@ class ROUTER_equity_ownership(Container):
         principal_amount : int
             The total number of shares of the class of security or the principal amount of such class. Only long positions are reported
         value : int
-            The fair market value of the holding of the particular class of security. The value reported for options is the fair market value of the underlying security with resepect to the number of shares controlled. Values are rounded to the nearest US dollar and use the closing price of the last trading day of the calendar year or quarter.
+            The fair market value of the holding of the particular class of security. The value reported for options is the fair market value of the underlying security with respect to the number of shares controlled. Values are rounded to the nearest US dollar and use the closing price of the last trading day of the calendar year or quarter.
         weight : Optional[float]
             The weight of the security relative to the market value of all securities in the filing , as a normalized percent. (provider: sec)
 
