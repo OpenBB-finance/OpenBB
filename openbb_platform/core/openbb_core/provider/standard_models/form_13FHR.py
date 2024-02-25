@@ -70,7 +70,7 @@ class Form13FHRData(Data):
     option_type: Optional[Literal["call", "put"]] = Field(
         default=None,
         description="Defined when the holdings being reported are put or call options."
-        + " Only long positions are reported."
+        + " Only long positions are reported.",
     )
     voting_authority_sole: Optional[int] = Field(
         default=None,
