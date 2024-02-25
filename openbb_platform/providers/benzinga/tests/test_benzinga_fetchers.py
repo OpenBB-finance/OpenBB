@@ -31,7 +31,7 @@ def test_benzinga_world_news_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_benzinga_company_news_fetcher(credentials=test_credentials):
-    params = {"symbol": "AAPL,MSFT"}
+    params = {"symbol": "AAPL,MSFT", "limit": 20}
 
     fetcher = BenzingaCompanyNewsFetcher()
     result = fetcher.test(params, credentials)

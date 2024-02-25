@@ -1,5 +1,8 @@
 """Tiingo Company News Model."""
 
+# pylint: disable=unused-argument
+
+import math
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
@@ -9,8 +12,7 @@ from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
-from openbb_core.provider.utils.helpers import filter_by_dates, get_querystring
-from openbb_tiingo.utils.helpers import get_data_many
+from openbb_core.provider.utils.helpers import amake_requests, get_querystring
 from pydantic import Field, field_validator
 
 
@@ -20,8 +22,16 @@ class TiingoCompanyNewsQueryParams(CompanyNewsQueryParams):
     Source: https://www.tiingo.com/documentation/news
     """
 
-    __alias_dict__ = {"symbol": "tickers"}
+    __alias_dict__ = {
+        "symbol": "tickers",
+        "start_date": "startDate",
+        "end_date": "endDate",
+    }
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
+    offset: Optional[int] = Field(
+        default=0, description="Page offset, used in conjunction with limit."
+    )
     source: Optional[str] = Field(
         default=None, description="A comma-separated list of the domains requested."
     )
@@ -36,28 +46,24 @@ class TiingoCompanyNewsData(CompanyNewsData):
         "text": "description",
     }
 
+    tags: Optional[str] = Field(
+        default=None, description="Tags associated with the news article."
+    )
     article_id: int = Field(description="Unique ID of the news article.", alias="id")
-    site: str = Field(description="News source.", alias="source")
-    tags: str = Field(description="Tags associated with the news article.")
+    source: str = Field(description="News source.")
     crawl_date: datetime = Field(description="Date the news article was crawled.")
 
     @field_validator("tags", "symbols", mode="before")
     @classmethod
     def list_to_string(cls, v):
         """Convert list to string."""
-        return ",".join(v)
+        return ",".join(v) if v else None
 
     @field_validator("crawl_date", mode="before")
     @classmethod
     def validate_date(cls, v):
         """Validate the date."""
         return parser.parse(v)
-
-    @field_validator("symbols", mode="after")
-    @classmethod
-    def symbols_validate(cls, v: str):
-        """Convert symbols to upper case."""
-        return v.upper()
 
 
 class TiingoCompanyNewsFetcher(
@@ -74,8 +80,8 @@ class TiingoCompanyNewsFetcher(
         return TiingoCompanyNewsQueryParams(**params)
 
     @staticmethod
-    def extract_data(
-        query: TiingoCompanyNewsQueryParams,  # pylint: disable=unused-argument
+    async def aextract_data(
+        query: TiingoCompanyNewsQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
@@ -83,16 +89,27 @@ class TiingoCompanyNewsFetcher(
         api_key = credentials.get("tiingo_token") if credentials else ""
 
         base_url = "https://api.tiingo.com/tiingo/news"
-        query_str = get_querystring(query.model_dump(by_alias=True), [])
-        url = f"{base_url}?{query_str}&token={api_key}"
+        query_str = get_querystring(
+            query.model_dump(by_alias=False), ["limit", "offset"]
+        )
 
-        return get_data_many(url)
+        limit = query.limit if query.limit else 1000
+        pages = 0
+        if limit > 1000:
+            pages = math.ceil(limit / 1000)
+            limit = 1000
+            urls = [
+                f"{base_url}?{query_str}&token={api_key}&limit={limit}&offset={page * 1000 if page > 0 else 0}"
+                for page in range(0, pages)
+            ]
+        else:
+            urls = [f"{base_url}?{query_str}&token={api_key}&limit={limit}"]
 
-    # pylint: disable=unused-argument
+        return await amake_requests(urls)
+
     @staticmethod
     def transform_data(
         query: TiingoCompanyNewsQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[TiingoCompanyNewsData]:
         """Return the transformed data."""
-        modeled_data = [TiingoCompanyNewsData.model_validate(d) for d in data]
-        return filter_by_dates(modeled_data, query.start_date, query.end_date)
+        return [TiingoCompanyNewsData.model_validate(d) for d in data[: query.limit]]
