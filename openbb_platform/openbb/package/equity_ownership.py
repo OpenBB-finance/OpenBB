@@ -13,6 +13,7 @@ from typing_extensions import Annotated
 
 class ROUTER_equity_ownership(Container):
     """/equity/ownership
+    form_13f
     insider_trading
     institutional
     major_holders
@@ -21,6 +22,124 @@ class ROUTER_equity_ownership(Container):
 
     def __repr__(self) -> str:
         return self.__doc__ or ""
+
+    @exception_handler
+    @validate
+    def form_13f(
+        self,
+        symbol: Annotated[
+            str,
+            OpenBBCustomParameter(
+                description="Symbol to get data for. A CIK or Symbol can be used."
+            ),
+        ],
+        date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="A specific date to get data for. The date represents the end of the reporting period. All form 13F-HR filings are based on the calendar year and are reported quarterly. If a date is not supplied, the most recent filing is returned. Submissions beginning 2013-06-30 are supported."
+            ),
+        ] = None,
+        limit: Annotated[
+            Optional[int],
+            OpenBBCustomParameter(
+                description="The number of data entries to return. The number of previous filings to return. This parameter is overriden by the date parameter."
+            ),
+        ] = 1,
+        provider: Optional[Literal["sec"]] = None,
+        **kwargs
+    ) -> OBBject:
+        """The Securities and Exchange Commission's (SEC) Form 13F is a quarterly report
+        that is required to be filed by all institutional investment managers with at least
+        $100 million in assets under management.
+        Managers are required to file Form 13F within 45 days after the last day of the calendar quarter.
+        Most funds wait until the end of this period in order to conceal
+        their investment strategy from competitors and the public.
+
+
+        Parameters
+        ----------
+        symbol : str
+            Symbol to get data for. A CIK or Symbol can be used.
+        date : Union[datetime.date, None, str]
+            A specific date to get data for. The date represents the end of the reporting period. All form 13F-HR filings are based on the calendar year and are reported quarterly. If a date is not supplied, the most recent filing is returned. Submissions beginning 2013-06-30 are supported.
+        limit : Optional[int]
+            The number of data entries to return. The number of previous filings to return. This parameter is overriden by the date parameter.
+        provider : Optional[Literal['sec']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'sec' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[Form13FHR]
+                Serializable results.
+            provider : Optional[Literal['sec']]
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra: Dict[str, Any]
+                Extra info.
+
+        Form13FHR
+        ---------
+        period_ending : date
+            The date of the reporting period ended.
+        issuer : str
+            The name of the issuer.
+        cusip : str
+            The CUSIP of the security.
+        asset_class : str
+            The title of the asset class for the security.
+        security_type : str
+            The type of security 'SH' for shares. 'PRN' for principal amount. 'Call' or 'Put' for options.
+        investment_discretion : str
+            The nature of the investment discretion held by the Manager. One of: 'SOLE', 'DFND' (defined), 'OTR' (other).
+        voting_authority_sole : Optional[int]
+            The number of shares for which the Manager exercises sole voting authority (none).
+        voting_authority_shared : Optional[int]
+            The number of shares for which the Manager exercises a defined shared voting authority (none).
+        voting_authority_other : Optional[int]
+            The number of shares for which the Manager exercises other shared voting authority (none).
+        principal_amount : int
+            The total number of shares of the class of security or the principla amount of such class.
+        value : int
+            The fair market value of the holding of the particular class of security. Values are rounded to the nearest US dollar
+        weight : Optional[float]
+            The weight of the security relative to the market value of all securities in the filing , as a normalized percent.. (provider: sec)
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> ### Enter the symbol as either the stock ticker or the CIK number as a string. ###
+        >>> obb.equity.ownership.form_13f(symbol="NVDA").to_df()
+        >>> ### Enter a date (calendar quarter ending) for a specific report. ###
+        >>> obb.equity.ownership.form_13f(symbol="BRK-A", date="2016-09-30")
+        >>> ### Use the `limit` parameter to return N number of reports from the most recent. ###
+        >>> ### Example finding Michael Burry's filings. ###
+        >>> cik = obb.regulators.sec.institutions_search("Scion Asset Management").results[0].cikobb.equity.ownership.form_13f(cik, limit=2).to_df()
+        """  # noqa: E501
+
+        return self._run(
+            "/equity/ownership/form_13f",
+            **filter_inputs(
+                provider_choices={
+                    "provider": self._get_provider(
+                        provider,
+                        "/equity/ownership/form_13f",
+                        ("sec",),
+                    )
+                },
+                standard_params={
+                    "symbol": symbol,
+                    "date": date,
+                    "limit": limit,
+                },
+                extra_params=kwargs,
+            )
+        )
 
     @exception_handler
     @validate
