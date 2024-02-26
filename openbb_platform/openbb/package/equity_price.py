@@ -155,9 +155,9 @@ class ROUTER_equity_price(Container):
         factor : Optional[float]
             factor by which to multiply equity prices before this date, in order to calculate historically-adjusted equity prices. (provider: intrinio)
         split_ratio : Optional[float]
-            Ratio of the equity split, if a equity split occurred. (provider: intrinio, tiingo)
+            Ratio of the equity split, if a split occurred. (provider: intrinio, tiingo, yfinance)
         dividend : Optional[float]
-            Dividend amount, if a dividend was paid. (provider: intrinio, tiingo)
+            Dividend amount, if a dividend was paid. (provider: intrinio, tiingo, yfinance)
         percent_change : Optional[float]
             Percent change in the price of the symbol from the previous day. (provider: intrinio)
         fifty_two_week_high : Optional[float]

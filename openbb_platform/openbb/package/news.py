@@ -26,15 +26,11 @@ class ROUTER_news(Container):
     def company(
         self,
         symbol: Annotated[
-            Union[str, List[str]],
+            Union[str, None, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for providers: benzinga, intrinio."
+                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for providers: benzinga, fmp, intrinio, polygon, tiingo, yfinance."
             ),
-        ],
-        limit: Annotated[
-            Optional[Annotated[int, Ge(ge=0)]],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 20,
+        ] = None,
         start_date: Annotated[
             Union[datetime.date, None, str],
             OpenBBCustomParameter(
@@ -47,6 +43,10 @@ class ROUTER_news(Container):
                 description="End date of the data, in YYYY-MM-DD format."
             ),
         ] = None,
+        limit: Annotated[
+            Optional[Annotated[int, Ge(ge=0)]],
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 2500,
         provider: Optional[
             Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"]
         ] = None,
@@ -56,14 +56,14 @@ class ROUTER_news(Container):
 
         Parameters
         ----------
-        symbol : Union[str, List[str]]
-            Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for providers: benzinga, intrinio.
-        limit : Optional[Annotated[int, Ge(ge=0)]]
-            The number of data entries to return.
+        symbol : Union[str, None, List[str]]
+            Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for providers: benzinga, fmp, intrinio, polygon, tiingo, yfinance.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
+        limit : Optional[Annotated[int, Ge(ge=0)]]
+            The number of data entries to return.
         provider : Optional[Literal['benzinga', 'fmp', 'intrinio', 'polygon', 'tiing...
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'benzinga' if there is
@@ -95,8 +95,8 @@ class ROUTER_news(Container):
             Content types of the news to retrieve. (provider: benzinga)
         page : Optional[int]
             Page number of the results. Use in combination with limit. (provider: fmp)
-        published_utc : Optional[str]
-            Date query to fetch articles. Supports operators <, <=, >, >= (provider: polygon)
+        offset : Optional[int]
+            Page offset, used in conjunction with limit. (provider: tiingo)
         source : Optional[str]
             A comma-separated list of the domains requested. (provider: tiingo)
 
@@ -116,60 +116,50 @@ class ROUTER_news(Container):
 
         CompanyNews
         -----------
-        symbols : str
-             Here it is a separated list of symbols.
         date : datetime
-            The date of the data. Here it is the date of the news.
+            The date of the data. Here it is the published date of the article.
         title : str
-            Title of the news.
-        image : Optional[str]
-            Image URL of the news.
+            Title of the article.
         text : Optional[str]
-            Text/body of the news.
+            Text/body of the article.
+        images : Optional[List[Dict[str, str]]]
+            Images associated with the article.
         url : str
-            URL of the news.
+            URL to the article.
+        symbols : Optional[str]
+            Symbols associated with the article.
         id : Optional[str]
             Article ID. (provider: benzinga, intrinio, polygon)
         author : Optional[str]
-            Author of the article. (provider: benzinga, polygon)
+            Author of the article. (provider: benzinga)
         teaser : Optional[str]
             Teaser of the news. (provider: benzinga)
-        images : Optional[Union[List[Dict[str, str]], str, List[str]]]
-            URL to the images of the news. (provider: benzinga, fmp)
         channels : Optional[str]
             Channels associated with the news. (provider: benzinga)
         stocks : Optional[str]
             Stocks associated with the news. (provider: benzinga)
         tags : Optional[str]
-            Tags associated with the news. (provider: benzinga, tiingo)
+            Tags associated with the news. (provider: benzinga, polygon, tiingo)
         updated : Optional[datetime]
             Updated date of the news. (provider: benzinga)
-        site : Optional[str]
+        source : Optional[str]
             Name of the news source. (provider: fmp);
-            News source. (provider: tiingo)
+            Source of the article. (provider: polygon);
+            News source. (provider: tiingo);
+            Source of the news article (provider: yfinance)
         amp_url : Optional[str]
             AMP URL. (provider: polygon)
-        image_url : Optional[str]
-            Image URL. (provider: polygon)
-        keywords : Optional[List[str]]
-            Keywords in the article (provider: polygon)
-        publisher : Optional[Union[openbb_polygon.models.company_news.PolygonPublisher, str]]
-            Publisher of the article. (provider: polygon, yfinance)
+        publisher : Optional[openbb_polygon.models.company_news.PolygonPublisher]
+            Publisher of the article. (provider: polygon)
         article_id : Optional[int]
             Unique ID of the news article. (provider: tiingo)
         crawl_date : Optional[datetime]
             Date the news article was crawled. (provider: tiingo)
-        uuid : Optional[str]
-            Unique identifier for the news article (provider: yfinance)
-        type : Optional[str]
-            Type of the news article (provider: yfinance)
-        thumbnail : Optional[List]
-            Thumbnail related data to the ticker news article. (provider: yfinance)
 
         Example
         -------
         >>> from openbb import obb
-        >>> obb.news.company(symbol="AAPL", limit=20)
+        >>> obb.news.company(limit=2500)
         >>> # Get news on the specified dates.
         >>> obb.news.company(symbol='AAPL', start_date='2024-02-01', end_date='2024-02-07')
         >>> # Display the headlines of the news.
@@ -199,13 +189,22 @@ class ROUTER_news(Container):
                 },
                 standard_params={
                     "symbol": symbol,
-                    "limit": limit,
                     "start_date": start_date,
                     "end_date": end_date,
+                    "limit": limit,
                 },
                 extra_params=kwargs,
                 extra_info={
-                    "symbol": {"multiple_items_allowed": ["benzinga", "intrinio"]}
+                    "symbol": {
+                        "multiple_items_allowed": [
+                            "benzinga",
+                            "fmp",
+                            "intrinio",
+                            "polygon",
+                            "tiingo",
+                            "yfinance",
+                        ]
+                    }
                 },
             )
         )

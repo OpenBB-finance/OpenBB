@@ -50,6 +50,17 @@ Functions with charting enabled return figures to a field (`chart`) in the `OBBj
 The `openbb-charting` is in fact an [`OBBject` extension](/website/content/platform/development/developer-guidelines/obbject_extensions.md) which means you'll have the functionality it exposes on every command result.
 :::
 
+The following packages are dependencies of the `openbb-charting` extension:
+
+- scipy
+- plotly
+- statsmodels
+- reportlab
+- pywry
+- svglib
+- nbformat
+- pandas-ta
+
 ### Installation
 
 To install the extension, run the following command in this folder:
@@ -87,6 +98,12 @@ When using Linux distributions, the PyWry dependency requires certain dependenci
 
 - Fedora:
 `sudo dnf install gtk3-devel webkit2gtk3-devel`
+
+If Rust (Cargo) is required, install it:
+
+```console
+curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
+```
 
 ## Devtools
 
