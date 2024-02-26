@@ -19,6 +19,8 @@ _warn = warnings.warn
 class YFinanceKeyMetricsQueryParams(KeyMetricsQueryParams):
     """YFinance Key Metrics Query."""
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
 
 class YFinanceKeyMetricsData(KeyMetricsData):
     """YFinance Key Metrics Data."""
@@ -110,17 +112,17 @@ class YFinanceKeyMetricsData(KeyMetricsData):
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
         alias="grossMargins",
     )
-    ebitda_margin: Optional[float] = Field(
-        default=None,
-        description="EBITDA margin, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
-        alias="ebitdaMargins",
-    )
     operating_margin: Optional[float] = Field(
         default=None,
         description="Operating margin, as a normalized percent.",
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
         alias="operatingMargins",
+    )
+    ebitda_margin: Optional[float] = Field(
+        default=None,
+        description="EBITDA margin, as a normalized percent.",
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+        alias="ebitdaMargins",
     )
     profit_margin: Optional[float] = Field(
         default=None,

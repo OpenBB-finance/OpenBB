@@ -238,7 +238,7 @@ class ROUTER_economy(Container):
         country: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="The country to get data. Multiple items allowed: fred."
+                description="The country to get data. Multiple items allowed for provider(s): fred."
             ),
         ],
         units: Annotated[
@@ -279,7 +279,7 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         country : Union[str, List[str]]
-            The country to get data. Multiple items allowed: fred.
+            The country to get data. Multiple items allowed for provider(s): fred.
         units : Literal['growth_previous', 'growth_same', 'index_2015']
             The unit of measurement for the data.
             Options:
@@ -359,7 +359,7 @@ class ROUTER_economy(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: fred."
+                description="Symbol to get data for. Multiple items allowed for provider(s): fred."
             ),
         ],
         start_date: Annotated[
@@ -388,7 +388,7 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: fred.
+            Symbol to get data for. Multiple items allowed for provider(s): fred.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
@@ -470,7 +470,7 @@ class ROUTER_economy(Container):
             The date of the data.
         region : Optional[str]
             The name of the region. (provider: fred)
-        code : Optional[Union[str, int]]
+        code : Optional[Union[int, str]]
             The code of the region. (provider: fred)
         value : Optional[Union[float, int]]
             The obersvation value. The units are defined in the search results by series ID. (provider: fred)
@@ -636,7 +636,7 @@ class ROUTER_economy(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: fred."
+                description="Symbol to get data for. Multiple items allowed for provider(s): fred."
             ),
         ],
         start_date: Annotated[
@@ -663,7 +663,7 @@ class ROUTER_economy(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: fred.
+            Symbol to get data for. Multiple items allowed for provider(s): fred.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
