@@ -5,7 +5,7 @@ from typing import Any, Callable, Optional, TypeVar, overload
 
 from openbb_core.app.model.abstract.error import OpenBBError
 from openbb_core.env import Env
-from pydantic import validate_call
+from pydantic import ValidationError, validate_call
 from typing_extensions import ParamSpec
 
 P = ParamSpec("P")
@@ -44,14 +44,42 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
     """Handle exceptions, attempting to focus on the last call from the traceback."""
 
     @wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*f_args, **f_kwargs):
         try:
-            return func(*args, **kwargs)
-        except Exception as e:
+            return func(*f_args, **f_kwargs)
+        except (ValidationError, Exception) as e:
             if Env().DEBUG_MODE:
                 raise
-            raise OpenBBError(
-                f"\nType -> {e.__class__.__name__}\n\nDetail -> {str(e)}"
-            ) from None
+            if isinstance(e, ValidationError):
+                idx = 0
+                input_value = ""
+                error_list = []
+
+                validation_error = f"{e.error_count()} validations errors in {e.title}"
+                for error in e.errors():
+                    if error["input"] == input_value:
+                        idx -= 1
+                    idx += 1
+                    input_value = error["input"]
+
+                    arg_error = f"Arg {idx} -> {error['loc'][0]}\n"
+                    error_details = (
+                        f"  {error['msg']} "
+                        f"[validation_error_type={error['type']}, "
+                        f"input_type={type(error['input']).__name__}, "
+                        f"input_value={input_value}]\n"
+                    )
+                    error_info = f"    For further information visit {error['url']}\n"
+                    error_list.append(arg_error + error_details + error_info)
+
+                error_list.insert(0, validation_error)
+                error_str = "\n".join(error_list)
+                raise OpenBBError(
+                    f"\nType -> ValidationError \n\nDetails -> {error_str}"
+                ) from None
+            else:
+                raise OpenBBError(
+                    f"\nType -> {e.original.original.__class__.__name__}\n\nDetail -> {str(e)}"
+                ) from None
 
     return wrapper
