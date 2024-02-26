@@ -14,7 +14,6 @@ import logging
 import os
 import random
 import re
-import shutil
 import sys
 import urllib.parse
 import webbrowser
@@ -40,16 +39,6 @@ import pytz
 import requests
 import yfinance as yf
 from holidays import US as us_holidays
-from langchain.chat_models import ChatOpenAI
-from llama_index import (
-    LLMPredictor,
-    PromptHelper,
-    ServiceContext,
-    SimpleDirectoryReader,
-    StorageContext,
-    VectorStoreIndex,
-    load_index_from_storage,
-)
 from pandas._config.config import get_option
 from pandas.plotting import register_matplotlib_converters
 from PIL import Image, ImageDraw
@@ -66,7 +55,6 @@ from openbb_terminal.core.session.current_system import get_current_system
 
 # IMPORTS INTERNAL
 from openbb_terminal.core.session.current_user import get_current_user
-from openbb_terminal.decorators import check_api_key
 from openbb_terminal.rich_config import console
 
 logger = logging.getLogger(__name__)
@@ -2213,124 +2201,6 @@ def remove_timezone_from_dataframe(df: pd.DataFrame) -> pd.DataFrame:
         df.index.name = index_name
 
     return df
-
-
-@check_api_key(["API_OPENAI_KEY"])
-def query_LLM_local(query_text, gpt_model):
-    current_user = get_current_user()
-    os.environ["OPENAI_API_KEY"] = current_user.credentials.API_OPENAI_KEY
-
-    # check if index exists
-    index_path = GPT_INDEX_DIRECTORY / f"index_{GPT_INDEX_VER}.json"
-    old_index_paths = [
-        str(x) for x in GPT_INDEX_DIRECTORY.glob("index_*.json") if x != index_path
-    ]
-
-    # define LLM
-    llm_predictor = LLMPredictor(llm=ChatOpenAI(temperature=0.5, model_name=gpt_model))
-    # define prompt helper
-    prompt_helper = PromptHelper(context_window=4096, num_output=256)
-    service_context = ServiceContext.from_defaults(
-        llm_predictor=llm_predictor, prompt_helper=prompt_helper
-    )
-
-    if os.path.exists(index_path):
-        # rebuild storage context
-        storage_context = StorageContext.from_defaults(persist_dir=index_path)
-        index = load_index_from_storage(
-            service_context=service_context, storage_context=storage_context
-        )
-    else:
-        # If the index file doesn't exist or is of incorrect version, generate a new one
-        # First, remove old version(s), if any
-        for path in old_index_paths:
-            if os.path.isfile(path):
-                os.remove(path)
-            elif os.path.isdir(path):
-                shutil.rmtree(path)
-
-        # Then, generate and save new index
-        # import from print console and say generating index, this might take a while
-        console.print("Generating index, this might take a while....\n")
-
-        # read in documents
-        documents = SimpleDirectoryReader(GPT_INDEX_DIRECTORY / "data/").load_data()
-        index = VectorStoreIndex.from_documents(
-            documents, service_context=service_context
-        )
-
-        # save to disk
-        console.print("Saving index to disk....\n")
-        index.storage_context.persist(index_path)
-
-    current_date = datetime.now().astimezone(pytz.timezone("America/New_York"))
-
-    prompt_string = f"""From the cli argparse help text above, provide the terminal
-        command for {query_text}. If relevant, use the examples as guidance.
-        Provide the exact command along with the parent command with a "/" separation to get that information,
-        and nothing else including any explanation. Don't add any other word such as 'Command to get', 'Answer'
-        or the likes.  If you do not know, reply "I don't know"
-
-        Current date: {current_date.strftime("%Y-%m-%d")}
-        Current day of the week: {current_date.strftime("%A")}
-
-        Remember:
-        1. It is very important to provide the full path of the command including the parent command and loading
-        the particular target before running any subsequent commands
-        2. If you are asked about dates or times, load the target dates, times span during the "load" command
-        before running any subsequent commands. replace all <> with the actual dates and times.  The date format should
-        be YYYY-MM-DD. If there is no date included in the query, do not specify any.
-        3. Country names should be snake case and lower case. example: united_states.
-        4. Always use a comma to separate between countries and no spaces: example: united_states,italy,spain
-        5. Always use "load" command first before running any subsequent commands. example:
-        stocks/load <symbol>/ ....
-        crypto/load <symbol>/ .... etc.
-        6. Do not include --export unless the request asks for the data to be exported or saved to a specific file type.
-        7. Do not make up any subcommands or options for the specific command.
-        8. Do not provide anything that could be interpreted as investment advice.
-        9. Any request asking for options refers to stocks/options.
-
-        Only do what is asked and only provide a single command string, never more than one.
-        """
-
-    # try to get the response from the index
-    try:
-        query_engine = index.as_query_engine()
-        response = query_engine.query(prompt_string)
-        return response.response, response.source_nodes
-    except Exception as e:
-        # check if the error has the following "The model: `gpt-4` does not exist"
-        if "The model: `gpt-4` does not exist" in str(e):
-            console.print(
-                "[red]You do not have access to GPT4 model with your API key."
-                " Please try again with valid API Access.[/red]"
-            )
-            return None
-
-        console.print(f"[red]Something went wrong with the query. {e}[/red]")
-        return None, None
-
-
-def query_LLM_remote(query_text: str):
-    """Query askobb on gpt-3.5 turbo hosted model
-
-    Parameters
-    ----------
-    query_text : str
-        Query string for askobb
-    """
-
-    url = "https://api.openbb.co/askobb"
-
-    data = {"prompt": query_text, "accessToken": get_current_user().profile.token}
-
-    ask_obbrequest_data = request(url, method="POST", json=data, timeout=15).json()
-
-    if "error" in ask_obbrequest_data:
-        console.print(f"[red]{ask_obbrequest_data['error']}[/red]")
-        return None, None
-
-    return ask_obbrequest_data["response"], ask_obbrequest_data["source_nodes"]
 
 
 def check_valid_date(date_string) -> bool:

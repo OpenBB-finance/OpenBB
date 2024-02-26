@@ -221,6 +221,7 @@ class FundController(BaseController):
             dest="fund",
             type=str,
             required="-h" not in other_args,
+            nargs="+",
         )
 
         parser.add_argument(
@@ -236,7 +237,7 @@ class FundController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             mstarpy_view.display_search(
-                term=ns_parser.fund,
+                term=" ".join(ns_parser.fund),
                 country=self.country,
                 limit=ns_parser.limit,
             )
