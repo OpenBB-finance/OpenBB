@@ -35,7 +35,8 @@ class MarketSnapshotsData(Data):
         default=None,
     )
     prev_close: Optional[float] = Field(
-        description="The previous closing price of the stock.", default=None
+        description=DATA_DESCRIPTIONS.get("prev_close", ""),
+        default=None,
     )
     change: Optional[float] = Field(description="The change in price.", default=None)
     change_percent: Optional[float] = Field(
