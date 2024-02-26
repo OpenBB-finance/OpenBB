@@ -796,6 +796,7 @@ def generate_reference_top_level_index() -> None:
 
     # Get the sub-directories in the reference directory
     reference_dirs = [d for d in PLATFORM_REFERENCE_PATH.iterdir() if d.is_dir()]
+    reference_dirs.sort()
     reference_cards_content = ""
 
     for dir_path in reference_dirs:
