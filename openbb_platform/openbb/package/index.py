@@ -178,7 +178,7 @@ class ROUTER_index(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: yfinance."
+                description="Symbol to get data for. Multiple items allowed for provider(s): yfinance."
             ),
         ],
         start_date: Annotated[
@@ -201,7 +201,7 @@ class ROUTER_index(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: yfinance.
+            Symbol to get data for. Multiple items allowed for provider(s): yfinance.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
