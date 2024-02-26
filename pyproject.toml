@@ -25,7 +25,6 @@ openbb-charting = "^2.0.0"
 prompt-toolkit = "^3.0.16"
 rich = "^12.6.0"
 python-dotenv = "^1.0.0"
-python-i18n = "^0.3.9"
 
 # Plots related dependencies that will be removed in the future
 scipy = "1.10.1"             #Pinning on July 6 for pip issues
@@ -38,6 +37,7 @@ svglib = "^1.5.0"
 
 # To be removed
 matplotlib = "^3.3.3"
+python-i18n = "^0.3.9"
 
 [tool.poetry.group.dev.dependencies]
 openbb-devtools = "^1.1.3"
