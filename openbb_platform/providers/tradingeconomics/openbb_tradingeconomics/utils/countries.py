@@ -16,6 +16,7 @@ country_dict = {
         "Spain",
     ],
     "Australia": [
+        "Australia",
         "Fiji",
         "Kiribati",
         "New Caledonia",
