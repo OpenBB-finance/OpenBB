@@ -30,7 +30,7 @@ class FMPIndexHistoricalQueryParams(IndexHistoricalQueryParams):
         Field(default="1day", description="Data granularity.")
     )
 
-    @field_validator("interval")
+    @field_validator("interval", mode="before", check_fields=True)
     @classmethod
     def map_interval(cls, v):
         """Map the interval from standard to the FMP format."""
