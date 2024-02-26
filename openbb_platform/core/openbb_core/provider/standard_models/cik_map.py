@@ -7,6 +7,7 @@ from pydantic import Field, field_validator
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
 from openbb_core.provider.utils.descriptions import (
+    DATA_DESCRIPTIONS,
     QUERY_DESCRIPTIONS,
 )
 
@@ -27,5 +28,5 @@ class CikMapData(Data):
     """CikMap Data."""
 
     cik: Optional[Union[str, int]] = Field(
-        default=None, description="Central Index Key"
+        default=None, description=DATA_DESCRIPTIONS.get("cik", "")
     )
