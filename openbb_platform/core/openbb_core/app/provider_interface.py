@@ -219,13 +219,13 @@ class ProviderInterface(metaclass=SingletonMeta):
 
         additional_description = ""
         if (extra := field.json_schema_extra) and (
-            multiple := extra.get("multiple_items_allowed")
+            multiple := extra.get("multiple_items_allowed")  # type: ignore
         ):
             if provider_name:
                 additional_description += " Multiple items allowed."
             else:
                 additional_description += (
-                    " Multiple items allowed: " + ", ".join(multiple) + "."
+                    " Multiple items allowed for providers: " + ", ".join(multiple) + "."  # type: ignore
                 )
 
         provider_field = (

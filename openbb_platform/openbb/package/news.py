@@ -28,7 +28,7 @@ class ROUTER_news(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed: benzinga, intrinio."
+                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for providers: benzinga, intrinio."
             ),
         ],
         limit: Annotated[
@@ -57,7 +57,7 @@ class ROUTER_news(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed: benzinga, intrinio.
+            Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for providers: benzinga, intrinio.
         limit : Optional[Annotated[int, Ge(ge=0)]]
             The number of data entries to return.
         start_date : Union[datetime.date, None, str]

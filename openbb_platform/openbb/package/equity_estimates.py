@@ -199,7 +199,7 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: yfinance."
+                description="Symbol to get data for. Multiple items allowed for providers: yfinance."
             ),
         ],
         provider: Optional[Literal["fmp", "yfinance"]] = None,
@@ -210,7 +210,7 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: yfinance.
+            Symbol to get data for. Multiple items allowed for providers: yfinance.
         provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -403,7 +403,7 @@ class ROUTER_equity_estimates(Container):
         symbol: Annotated[
             Union[str, None, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: benzinga."
+                description="Symbol to get data for. Multiple items allowed for providers: benzinga."
             ),
         ] = None,
         limit: Annotated[
@@ -418,7 +418,7 @@ class ROUTER_equity_estimates(Container):
         Parameters
         ----------
         symbol : Union[str, None, List[str]]
-            Symbol to get data for. Multiple items allowed: benzinga.
+            Symbol to get data for. Multiple items allowed for providers: benzinga.
         limit : int
             The number of data entries to return.
         provider : Optional[Literal['benzinga', 'fmp']]
