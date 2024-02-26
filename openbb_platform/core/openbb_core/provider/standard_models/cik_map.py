@@ -1,4 +1,4 @@
-"""Equity Info Standard Model."""
+"""Cik Map Standard Model."""
 
 from typing import Optional, Union
 
