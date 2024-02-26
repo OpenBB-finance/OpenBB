@@ -19,6 +19,8 @@ _warn = warnings.warn
 class YFinanceKeyMetricsQueryParams(KeyMetricsQueryParams):
     """YFinance Key Metrics Query."""
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
 
 class YFinanceKeyMetricsData(KeyMetricsData):
     """YFinance Key Metrics Data."""
