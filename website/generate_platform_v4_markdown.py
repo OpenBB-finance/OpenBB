@@ -339,15 +339,7 @@ def generate_reference_file() -> None:
 
             # Add `provider` parameter fields to the openbb provider
             provider_parameter_fields = get_provider_parameter_info(route_func)
-            reference[path]["parameters"]["standard"].append(
-                {
-                    "name": provider_parameter_fields["name"],
-                    "type": provider_parameter_fields["type"],
-                    "description": provider_parameter_fields["description"],
-                    "default": provider_parameter_fields["default"],
-                    "optional": provider_parameter_fields["optional"],
-                }
-            )
+            reference[path]["parameters"]["standard"].append(provider_parameter_fields)
 
             # Add endpoint data fields for standard provider
             reference[path]["data"]["standard"] = get_provider_field_params(
@@ -1009,7 +1001,7 @@ def generate_platform_markdown() -> None:
     print(f"[INFO] Generating the index files for the {PLATFORM_REFERENCE_PATH} sub-directories...")  # fmt: skip
     generate_reference_index_files(reference_index_content_dict)
     print(
-        "[INFO] Generating the index files for the {PLATFORM_REFERENCE_PATH} directory..."
+        f"[INFO] Generating the index files for the {PLATFORM_REFERENCE_PATH} directory..."
     )
     generate_reference_top_level_index()
 
