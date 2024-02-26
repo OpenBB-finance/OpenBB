@@ -62,7 +62,7 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                     idx += 1
                     input_value = error["input"]
 
-                    arg_error = f"Arg {idx} -> {error['loc'][0]}\n"
+                    arg_error = f"Arg {error['loc'][0]} ->\n"
                     error_details = (
                         f"  {error['msg']} "
                         f"[validation_error_type={error['type']}, "
