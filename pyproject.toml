@@ -39,11 +39,6 @@ svglib = "^1.5.0"
 # To be removed
 matplotlib = "^3.3.3"
 
-
-[tool.poetry.extras]
-installer = ["pyinstaller"]
-doc = ["docstring-parser"]
-
 [tool.poetry.group.dev.dependencies]
 openbb-devtools = "^1.1.3"
 
