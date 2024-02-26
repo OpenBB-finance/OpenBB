@@ -115,7 +115,7 @@ class ROUTER_equity(Container):
         close : Optional[float]
             The close price.
         prev_close : Optional[float]
-            The previous closing price of the stock.
+            The previous close price.
         change : Optional[float]
             The change in price.
         change_percent : Optional[float]

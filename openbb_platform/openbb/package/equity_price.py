@@ -527,7 +527,7 @@ class ROUTER_equity_price(Container):
         exchange_volume : Optional[Union[float, int]]
             Volume of shares exchanged during the trading day on the specific exchange.
         prev_close : Optional[float]
-
+            The previous close price.
         change : Optional[float]
             Change in price from previous close.
         change_percent : Optional[float]
