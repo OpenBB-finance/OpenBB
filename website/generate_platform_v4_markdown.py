@@ -149,6 +149,14 @@ def get_provider_field_params(
             str(field_info.description)
             .strip().replace("\n", " ").replace("  ", " ").replace('"', "'")
         )  # fmt: skip
+
+        # Add information for the providers supporting multiple symbols
+        if params_type == "QueryParams" and field_info.json_schema_extra:
+            multiple_items = ", ".join(
+                field_info.json_schema_extra["multiple_items_allowed"]
+            )
+            cleaned_description += f" Multiple items supported by {multiple_items}."
+
         default_value = "" if field_info.default is PydanticUndefined else str(field_info.default)  # fmt: skip
 
         provider_field_params.append(
@@ -592,7 +600,7 @@ def create_reference_markdown_returns_section(returns: List[Dict[str, str]]) -> 
 
     for params in returns:
         returns_data += f"{TAB_WIDTH*' '}{params['name']} : {params['type']}\n"
-        returns_data += f"{TAB_WIDTH*' '}{TAB_WIDTH*' '}{params['description']}\n"
+        returns_data += f"{TAB_WIDTH*' '}{TAB_WIDTH*' '}{params['description']}\n\n"
 
     markdown = (
         "## Returns\n\n"
