@@ -2330,7 +2330,7 @@ class ROUTER_equity_fundamental(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: fmp."
+                description="Symbol to get data for. Multiple items allowed: fmp, yfinance."
             ),
         ],
         period: Annotated[
@@ -2349,7 +2349,7 @@ class ROUTER_equity_fundamental(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: fmp.
+            Symbol to get data for. Multiple items allowed: fmp, yfinance.
         period : Optional[Literal['annual', 'quarter']]
             Time period of the data to return.
         limit : Optional[int]
@@ -2585,7 +2585,7 @@ class ROUTER_equity_fundamental(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp"]}},
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp", "yfinance"]}},
             )
         )
 
