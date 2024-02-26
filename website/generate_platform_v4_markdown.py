@@ -155,7 +155,9 @@ def get_provider_field_params(
             multiple_items = ", ".join(
                 field_info.json_schema_extra["multiple_items_allowed"]
             )
-            cleaned_description += f" Multiple items supported by {multiple_items}."
+            cleaned_description += (
+                f" Multiple items allowed for provider(s): {multiple_items}."
+            )
 
         default_value = "" if field_info.default is PydanticUndefined else str(field_info.default)  # fmt: skip
 
