@@ -112,17 +112,17 @@ class YFinanceKeyMetricsData(KeyMetricsData):
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="grossMargins",
     )
-    operating_margin: Optional[float] = Field(
-        default=None,
-        description="Operating margin, as a normalized percent.",
-        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
-        alias="operatingMargins",
-    )
     ebitda_margin: Optional[float] = Field(
         default=None,
         description="EBITDA margin, as a normalized percent.",
         json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
         alias="ebitdaMargins",
+    )
+    operating_margin: Optional[float] = Field(
+        default=None,
+        description="Operating margin, as a normalized percent.",
+        json_schema_extra={"x-unit_measurement": "percent", "x-frontend_multiply": 100},
+        alias="operatingMargins",
     )
     profit_margin: Optional[float] = Field(
         default=None,
