@@ -44,7 +44,7 @@ this, navigate to the "Add copilot" section and follow the prompts:
 
 - Click on the "Add copilot" button.
 - Enter the API endpoint of your custom copilot.
-- Confirm the addition, and your custom Copilot will be integrated and ready for use.
- 
+- Confirm the addition.
+- You are now ready to use your custom copilot. 
 
 

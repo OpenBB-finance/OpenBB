@@ -34,7 +34,7 @@ own personal research assistant. OpenBB Copilot can answer general financial
 questions, use the data displayed in the dashboard to perform analytical tasks,
 and even interact with files that you choose to upload.
 
-We'll be exploring each of these features the following sections below.
+We'll be exploring each of these features in the following sections below.
 
 ## Understanding chat history
 
@@ -45,7 +45,7 @@ previous messages and answers in the current chat to help answer your query.
 This allows you to guide OpenBB Copilot to perform the task you want, or ask
 follow-up questions.
 
-In the example above, the user first asked about the Price-to-earnings (P/E)
+In the example above, the user first asked about the price-to-earnings (P/E)
 ratio. After OpenBB Copilot answered the question, the user asked a
 follow-up question regarding additional ratios that may be important. Since
 OpenBB Copilot is aware of the context of the current conversation, it
@@ -54,7 +54,7 @@ proceeded to answer the user's query within the context of the conversation
 of use.
 
 If you'd like to clear the history of the current conversation, you can do so by
-clicking on the bin icon in the OpenBB Copilot chatbox. It is usually a good
+clicking on the trashcan icon in the OpenBB Copilot chatbox. It is usually a good
 idea to clear the chat history when you have a new question that is unrelated to
 your current conversation.
 
@@ -131,9 +131,12 @@ uploaded files, if necessary, to answer your queries. If OpenBB Copilot uses the
 contained in your files to answer a query, it will cite which files it used (and
 in the case of PDFs, the specific page).
 
-### A note on filenames
+:::note
+
 OpenBB Copilot makes use of filenames to assess whether a file is
 relevant to the user's query. As a result, it is highly recommended that you use
 filenames that are descriptive of the data that they contain. For example, given
 a PDF file containing a technical report from TSLA released in 2024, a good
 filename would be `tsla_technical_report_2024.pdf`.
+
+::: 
