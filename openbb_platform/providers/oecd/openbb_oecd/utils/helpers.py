@@ -120,7 +120,7 @@ def parse_url(url: str) -> DataFrame:
     DataFrame
         Pandas dataframe containing URL data
     """
-    response = helpers.make_request(url)
+    response = helpers.make_request(url, timeout=30)
     response.raise_for_status()
     return oecd_xml_to_df(response.text)
 
