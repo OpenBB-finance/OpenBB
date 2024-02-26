@@ -30,7 +30,7 @@ class ROUTER_regulators_sec(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for providers: fmp, intrinio, yfinance."
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance."
             ),
         ],
         provider: Optional[Literal["sec"]] = None,
@@ -41,7 +41,7 @@ class ROUTER_regulators_sec(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for providers: fmp, intrinio, yfinance.
+            Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance.
         provider : Optional[Literal['sec']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'sec' if there is

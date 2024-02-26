@@ -35,7 +35,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. (ETF) Multiple items allowed for providers: fmp."
+                description="Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp."
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
@@ -46,7 +46,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. (ETF) Multiple items allowed for providers: fmp.
+            Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -102,7 +102,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. (Stock) Multiple items allowed for providers: fmp."
+                description="Symbol to get data for. (Stock) Multiple items allowed for provider(s): fmp."
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
@@ -113,7 +113,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. (Stock) Multiple items allowed for providers: fmp.
+            Symbol to get data for. (Stock) Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -573,7 +573,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for providers: fmp."
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
@@ -584,7 +584,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for providers: fmp.
+            Symbol to get data for. Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -668,7 +668,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. (ETF) Multiple items allowed for providers: fmp, yfinance."
+                description="Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp, yfinance."
             ),
         ],
         provider: Optional[Literal["fmp", "yfinance"]] = None,
@@ -679,7 +679,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. (ETF) Multiple items allowed for providers: fmp, yfinance.
+            Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp, yfinance.
         provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -829,7 +829,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for providers: fmp."
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
@@ -840,7 +840,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for providers: fmp.
+            Symbol to get data for. Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is

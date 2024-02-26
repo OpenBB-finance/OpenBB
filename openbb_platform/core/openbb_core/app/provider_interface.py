@@ -225,7 +225,7 @@ class ProviderInterface(metaclass=SingletonMeta):
                 additional_description += " Multiple items allowed."
             else:
                 additional_description += (
-                    " Multiple items allowed for providers: " + ", ".join(multiple) + "."  # type: ignore
+                    " Multiple items allowed for provider(s): " + ", ".join(multiple) + "."  # type: ignore
                 )
 
         provider_field = (

@@ -29,7 +29,7 @@ class ROUTER_equity_price(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for providers: fmp, polygon, tiingo, yfinance."
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance."
             ),
         ],
         interval: Annotated[
@@ -58,7 +58,7 @@ class ROUTER_equity_price(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for providers: fmp, polygon, tiingo, yfinance.
+            Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance.
         interval : Optional[str]
             Time interval of the data to return.
         start_date : Union[datetime.date, None, str]
@@ -155,7 +155,7 @@ class ROUTER_equity_price(Container):
         factor : Optional[float]
             factor by which to multiply equity prices before this date, in order to calculate historically-adjusted equity prices. (provider: intrinio)
         split_ratio : Optional[float]
-            Ratio of the equity split, if a split occurred. (provider: intrinio, tiingo, yfinance)
+            Ratio of the equity split, if a equity split occurred. (provider: intrinio, tiingo, yfinance)
         dividend : Optional[float]
             Dividend amount, if a dividend was paid. (provider: intrinio, tiingo, yfinance)
         percent_change : Optional[float]
@@ -340,7 +340,7 @@ class ROUTER_equity_price(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for providers: fmp."
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
@@ -351,7 +351,7 @@ class ROUTER_equity_price(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed for providers: fmp.
+            Symbol to get data for. Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -435,7 +435,7 @@ class ROUTER_equity_price(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for providers: fmp, intrinio, yfinance."
+                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): fmp, intrinio, yfinance."
             ),
         ],
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
@@ -446,7 +446,7 @@ class ROUTER_equity_price(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for providers: fmp, intrinio, yfinance.
+            Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): fmp, intrinio, yfinance.
         provider : Optional[Literal['fmp', 'intrinio', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
