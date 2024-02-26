@@ -1,27 +1,21 @@
 """SEC CIK Mapping Model."""
 
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, Optional
 
-from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.equity_info import EquityInfoQueryParams
+from openbb_core.provider.standard_models.cik_map import CikMapData, CikMapQueryParams
 from openbb_sec.utils.helpers import symbol_map
-from pydantic import Field
 
 
-class SecCikMapQueryParams(EquityInfoQueryParams):
+class SecCikMapQueryParams(CikMapQueryParams):
     """SEC CIK Mapping Query.
 
     Source: https://sec.gov/
     """
 
 
-class SecCikMapData(Data):
+class SecCikMapData(CikMapData):
     """SEC CIK Mapping Data."""
-
-    cik: Optional[Union[str, int]] = Field(
-        default=None, description="Central Index Key"
-    )
 
 
 class SecCikMapFetcher(
