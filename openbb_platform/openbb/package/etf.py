@@ -35,7 +35,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. (ETF) Multiple items allowed: fmp."
+                description="Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp."
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
@@ -46,7 +46,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. (ETF) Multiple items allowed: fmp.
+            Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -102,7 +102,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. (Stock) Multiple items allowed: fmp."
+                description="Symbol to get data for. (Stock) Multiple items allowed for provider(s): fmp."
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
@@ -113,7 +113,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. (Stock) Multiple items allowed: fmp.
+            Symbol to get data for. (Stock) Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -415,11 +415,11 @@ class ROUTER_etf(Container):
             The floating rate spread for reveivable portion of the swap. (provider: sec)
         rate_tenor_rec : Optional[str]
             The rate tenor for reveivable portion of the swap. (provider: sec)
-        rate_tenor_unit_rec : Optional[Union[str, int]]
+        rate_tenor_unit_rec : Optional[Union[int, str]]
             The rate tenor unit for reveivable portion of the swap. (provider: sec)
         reset_date_rec : Optional[str]
             The reset date for reveivable portion of the swap. (provider: sec)
-        reset_date_unit_rec : Optional[Union[str, int]]
+        reset_date_unit_rec : Optional[Union[int, str]]
             The reset date unit for reveivable portion of the swap. (provider: sec)
         rate_type_pmnt : Optional[str]
             The type of rate for payment portion of the swap. (provider: sec)
@@ -433,11 +433,11 @@ class ROUTER_etf(Container):
             The floating rate spread for payment portion of the swap. (provider: sec)
         rate_tenor_pmnt : Optional[str]
             The rate tenor for payment portion of the swap. (provider: sec)
-        rate_tenor_unit_pmnt : Optional[Union[str, int]]
+        rate_tenor_unit_pmnt : Optional[Union[int, str]]
             The rate tenor unit for payment portion of the swap. (provider: sec)
         reset_date_pmnt : Optional[str]
             The reset date for payment portion of the swap. (provider: sec)
-        reset_date_unit_pmnt : Optional[Union[str, int]]
+        reset_date_unit_pmnt : Optional[Union[int, str]]
             The reset date unit for payment portion of the swap. (provider: sec)
         repo_type : Optional[str]
             The type of repo. (provider: sec)
@@ -573,7 +573,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: fmp."
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
@@ -584,7 +584,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: fmp.
+            Symbol to get data for. Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -668,7 +668,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. (ETF) Multiple items allowed: fmp, yfinance."
+                description="Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp, yfinance."
             ),
         ],
         provider: Optional[Literal["fmp", "yfinance"]] = None,
@@ -679,7 +679,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. (ETF) Multiple items allowed: fmp, yfinance.
+            Symbol to get data for. (ETF) Multiple items allowed for provider(s): fmp, yfinance.
         provider : Optional[Literal['fmp', 'yfinance']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
@@ -829,7 +829,7 @@ class ROUTER_etf(Container):
         symbol: Annotated[
             Union[str, List[str]],
             OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed: fmp."
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
             ),
         ],
         provider: Optional[Literal["fmp"]] = None,
@@ -840,7 +840,7 @@ class ROUTER_etf(Container):
         Parameters
         ----------
         symbol : Union[str, List[str]]
-            Symbol to get data for. Multiple items allowed: fmp.
+            Symbol to get data for. Multiple items allowed for provider(s): fmp.
         provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
