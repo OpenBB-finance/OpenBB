@@ -394,7 +394,7 @@ def generate_reference_file() -> None:
                 {
                     "name": "results",
                     "type": f"List[{standard_model}]",
-                    "description": "Serializable Results.",
+                    "description": "Serializable results.",
                 },
                 {
                     "name": "provider",
@@ -463,11 +463,10 @@ def create_reference_markdown_seo(path: str, description: str) -> str:
         keywords = "- " + "\n- ".join(path.split("."))
 
     markdown = (
-        f"---\n"
+        "---\n"
         f'title: "{cleaned_title}"\n'
         f'description: "{cleaned_description}"\n'
         f"keywords:\n{keywords}\n"
-        f"---\n\n"
     )
 
     return markdown
@@ -494,6 +493,7 @@ def create_reference_markdown_intro(
     )
 
     markdown = (
+        "---\n\n"
         "import HeadTitle from '@site/src/components/General/HeadTitle.tsx';\n\n"
         f'<HeadTitle title="{path} - Reference | OpenBB Platform Docs" />\n\n'
         f"{deprecation_message}"
@@ -517,7 +517,7 @@ def create_reference_markdown_examples(examples: List[str]) -> str:
     """
 
     examples_str = "from openbb import obb\n" + "\n".join(examples)
-    markdown = f"Example\n-------\n\n```python\n{examples_str}\n```\n\n---\n\n"
+    markdown = f"Example\n-------\n\n```python\n{examples_str}\n```\n\n"
     return markdown
 
 
@@ -582,7 +582,7 @@ def create_reference_markdown_tabular_section(
 
     # For easy debugging of the created strings
     tables = "".join(tables_list)
-    markdown = f"## {heading}\n\n<Tabs>\n{tables}\n</Tabs>\n\n---\n\n"
+    markdown = f"---\n\n## {heading}\n\n<Tabs>\n{tables}\n</Tabs>\n\n"
 
     return markdown
 
@@ -604,13 +604,16 @@ def create_reference_markdown_returns_section(returns: List[Dict[str, str]]) -> 
         returns_data += f"{TAB_WIDTH*' '}{params['name']} : {params['type']}\n"
         returns_data += f"{TAB_WIDTH*' '}{TAB_WIDTH*' '}{params['description']}\n\n"
 
+    # Remove the last two newline characters to render Returns section properly
+    returns_data = returns_data.rstrip("\n\n")
+
     markdown = (
+        "---\n\n"
         "## Returns\n\n"
         "```python wordwrap\n"
         "OBBject\n"
-        f"{returns_data}"
+        f"{returns_data}\n"
         "```\n\n"
-        "---\n\n"
     )
 
     return markdown
@@ -969,14 +972,14 @@ def generate_platform_markdown() -> None:
                 path_parameters_fields, "Parameters"
             )
 
+        reference_markdown_content += create_reference_markdown_returns_section(
+            path_data["returns"]["OBBject"]
+        )
+
         if path_data_fields := path_data["data"]:
             reference_markdown_content += create_reference_markdown_tabular_section(
                 path_data_fields, "Data"
             )
-
-        reference_markdown_content += create_reference_markdown_returns_section(
-            path_data["returns"]["OBBject"]
-        )
 
         generate_markdown_file(path, reference_markdown_content, "reference")
 
