@@ -1,11 +1,13 @@
 import json
 import shutil
 import sys
+from functools import reduce
 from pathlib import Path
 from textwrap import shorten
 from typing import Any, Dict, List, Literal
 
 import requests
+from requests_cache import Optional
 
 # Paths
 WEBSITE_PATH = Path(__file__).parent.absolute()
@@ -30,6 +32,7 @@ class CommandLib:
         "str": "Text",
         "string": "Text",
     }
+    API_PREFIX = "/api/v1"
 
     # These examples will be generated in the core, but we keep them here meanwhile
     EXAMPLE_PARAMS: Dict[str, Dict] = {
@@ -155,6 +158,21 @@ class CommandLib:
         with open(XL_PLATFORM_PATH, "w") as f:
             json.dump(r.json(), f, indent=2)
 
+    @staticmethod
+    def _traverse(
+        parts: List[str], map_: dict, exclude: Optional[List[str]] = None
+    ) -> dict:
+        """Traverse the map."""
+        if exclude is None:
+            exclude = []
+        for e in exclude:
+            if e in parts:
+                parts.remove(e)
+        try:
+            return reduce(lambda x, y: x[y], parts, map_)
+        except KeyError:
+            return {}
+
     def read_seo_metadata(self) -> dict:
         """Get the SEO metadata."""
         with open(SEO_METADATA_PATH) as f:
@@ -210,20 +228,36 @@ class CommandLib:
 
     def _get_data(self, cmd: str) -> dict:
         """Get the data of the command from the openapi."""
-        model = (
-            self.openapi.get("paths", {})
-            .get(f"/api/v1{cmd}", {})
-            .get("get", {})
-            .get("model")
+        schema = self._traverse(
+            [
+                "paths",
+                self.API_PREFIX + cmd,
+                "get",
+                "responses",
+                "200",
+                "content",
+                "application/json",
+                "schema",
+            ],
+            self.openapi,
         )
-        if model:
-            schema = self.openapi["components"]["schemas"][model]["properties"]
-            data = {}
-            for name, info in schema.items():
-                data[name] = {
-                    "description": info.get("description", "").replace("\n", " "),
+        if "$ref" in schema and (
+            inner_schema := self._traverse(
+                schema["$ref"].split("/"), self.openapi, ["#"]
+            )
+        ):
+            models = self._traverse(["properties", "results", "anyOf"], inner_schema)[0]
+            if models.get("type") == "array":
+                models = models["items"]
+
+            d = {}
+            for k, v in self._traverse(["discriminator", "mapping"], models).items():
+                model_schema = self._traverse(v.split("/"), self.openapi, ["#"])
+                d[k] = {
+                    name: {"description": info.get("description", "").replace("\n", "")}
+                    for name, info in model_schema["properties"].items()
                 }
-            return data
+            return d
         return {}
 
     def _get_examples(
@@ -368,15 +402,22 @@ class Editor:
                 return parameters
             return ""
 
-        def get_return_data() -> str:
+        def get_data() -> str:
+            # data = "<!-- markdownlint-disable MD012 MD031 MD033 -->\n"
             if data_schema := cmd_info["data"]:
-                data = "## Return Data\n\n"
-                data += "| Name | Description |\n"
-                data += "| ---- | ----------- |\n"
-                for field_name, field_info in data_schema.items():
-                    name = field_name
-                    description = field_info["description"]
-                    data += f"| {name} | {description} |\n"
+                data = "import Tabs from '@theme/Tabs';\n"
+                data += "import TabItem from '@theme/TabItem';\n\n"
+                data += "## Data\n\n"
+                data += "<Tabs>\n"
+                for provider, fields in data_schema.items():
+                    data += f"<TabItem value='{provider}'>\n\n"
+                    data += "| Name | Description |\n"
+                    data += "| ---- | ----------- |\n"
+                    for name, info in fields.items():
+                        description = info["description"]
+                        data += f"| {name} | {description} |\n"
+                    data += "</TabItem>\n"
+                data += "</Tabs>\n"
                 return data
             return ""
 
@@ -400,7 +441,7 @@ class Editor:
         content += "---\n\n"
         content += get_parameters()
         content += "---\n\n"
-        content += get_return_data()
+        content += get_data()
         Editor.write(path, content)
 
     def generate_sidebar(self):
@@ -436,7 +477,11 @@ class Editor:
             if files:
                 content = section
                 content += OPEN_UL
-                for file in files:
+                # Sort the folders first and then files
+                for file in sorted(
+                    files,
+                    key=lambda path: ((0, path) if path.is_dir() else (1, path)),
+                ):
                     t = file.stem
                     title = t.upper() if t != self.main_folder else t.title()
                     if command:
@@ -568,8 +613,9 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--no-update":
         pass
     else:
-        CommandLib.fetch_xl_funcs()
-        CommandLib.fetch_openapi()
+        pass
+        # CommandLib.fetch_xl_funcs()
+        # CommandLib.fetch_openapi()
 
     Editor(
         directory=CONTENT_PATH,
