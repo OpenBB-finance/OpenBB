@@ -139,9 +139,6 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
     loans_held_for_sale: Optional[float] = Field(
         default=None, description="Loans Held for Sale (Net)"
     )
-    purchase_of_property_plant_and_equipment: Optional[float] = Field(
-        default=None, description="Purchase of Property, Plant, and Equipment"
-    )
     other_investing_activities: Optional[float] = Field(
         default=None, description="Other Investing Activities (Net)"
     )

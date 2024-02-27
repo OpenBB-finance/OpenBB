@@ -46,3 +46,7 @@ class CashFlowStatementData(Data):
         default=None,
         description="Net cash from operating activities.",
     )
+    purchase_of_property_plant_and_equipment: Optional[float] = Field(
+        default=None,
+        description="Purchase of property, plant and equipment.",
+    )
