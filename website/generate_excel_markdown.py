@@ -17,7 +17,7 @@ XL_PLATFORM_PATH = CONTENT_PATH / "excel" / "openapi.json"
 SEO_METADATA_PATH = WEBSITE_PATH / "metadata" / "platform_v4_seo_metadata.json"
 
 # URLs: the platorm url should match the backend being used by excel.openbb.co
-XL_FUNCS_URL = "https://excel.openbb.co/assets/functions.json"
+XL_FUNCS_URL = "https://excel.openbb.dev/assets/functions.json"
 XL_PLATFORM_URL = "https://sdk.openbb.dev/openapi.json"
 
 
@@ -163,11 +163,7 @@ class CommandLib:
         parts: List[str], map_: dict, exclude: Optional[List[str]] = None
     ) -> dict:
         """Traverse the map."""
-        if exclude is None:
-            exclude = []
-        for e in exclude:
-            if e in parts:
-                parts.remove(e)
+        parts = [p for p in parts if p not in (exclude or [])]
         try:
             return reduce(lambda x, y: x[y], parts, map_)
         except KeyError:
