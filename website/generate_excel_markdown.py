@@ -613,9 +613,8 @@ if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "--no-update":
         pass
     else:
-        pass
-        # CommandLib.fetch_xl_funcs()
-        # CommandLib.fetch_openapi()
+        CommandLib.fetch_xl_funcs()
+        CommandLib.fetch_openapi()
 
     Editor(
         directory=CONTENT_PATH,
