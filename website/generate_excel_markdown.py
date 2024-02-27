@@ -476,7 +476,6 @@ class Editor:
             if files:
                 content = section
                 content += OPEN_UL
-                # Sort the folders first and then files
                 for file in files:
                     t = file.stem
                     title = t.upper() if t != self.main_folder else t.title()
