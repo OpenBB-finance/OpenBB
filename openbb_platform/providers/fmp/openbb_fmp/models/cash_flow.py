@@ -125,10 +125,6 @@ class FMPCashFlowStatementData(CashFlowStatementData):
         default=None,
         description="Change in other non-cash items.",
     )
-    net_cash_from_operating_activities: Optional[float] = Field(
-        default=None,
-        description="Net cash from operating activities.",
-    )
     purchase_of_property_plant_and_equipment: Optional[float] = Field(
         default=None,
         description="Purchase of property, plant and equipment.",
@@ -136,10 +132,6 @@ class FMPCashFlowStatementData(CashFlowStatementData):
     acquisitions: Optional[float] = Field(
         default=None,
         description="Acquisitions.",
-    )
-    purchase_of_investment_securities: Optional[float] = Field(
-        default=None,
-        description="Purchase of investment securities.",
     )
     sale_and_maturity_of_investments: Optional[float] = Field(
         default=None,

@@ -39,3 +39,10 @@ class CashFlowStatementData(Data):
     fiscal_year: Optional[int] = Field(
         description="The fiscal year of the fiscal period.", default=None
     )
+    purchase_of_investment_securities: Optional[float] = Field(
+        default=None, description="Purchase of Investment Securities"
+    )
+    net_cash_from_operating_activities: Optional[float] = Field(
+        default=None,
+        description="Net cash from operating activities.",
+    )

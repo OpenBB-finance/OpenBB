@@ -125,9 +125,6 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
     net_income_discontinued_operations: Optional[float] = Field(
         default=None, description="Net Income (Discontinued Operations)"
     )
-    net_cash_from_operating_activities: Optional[float] = Field(
-        default=None, description="Net Cash from Operating Activities"
-    )
     divestitures: Optional[float] = Field(default=None, description="Divestitures")
     sale_of_property_plant_and_equipment: Optional[float] = Field(
         default=None, description="Sale of Property, Plant, and Equipment"
@@ -135,9 +132,6 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
     acquisitions: Optional[float] = Field(default=None, description="Acquisitions")
     purchase_of_investments: Optional[float] = Field(
         default=None, description="Purchase of Investments"
-    )
-    purchase_of_investment_securities: Optional[float] = Field(
-        default=None, description="Purchase of Investment Securities"
     )
     sale_and_maturity_of_investments: Optional[float] = Field(
         default=None, description="Sale and Maturity of Investments"
@@ -249,7 +243,6 @@ class IntrinioCashFlowStatementFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the Intrinio endpoint."""
-
         api_key = credentials.get("intrinio_api_key") if credentials else ""
         statement_code = "cash_flow_statement"
         if query.period in ["quarter", "annual"]:
