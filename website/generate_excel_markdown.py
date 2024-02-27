@@ -78,6 +78,9 @@ class CommandLib:
             "type": '"real"',
             "adjusted": "TRUE",
         },
+        "/economy/fred_regional": {
+            "symbol": '"NYICLAIMS"',
+        },
         "equity": {
             "symbol": '"AAPL"',
             "tag": '"ebitda"',
@@ -265,6 +268,9 @@ class CommandLib:
         """Get the examples of the command."""
         sig = signature_.split("(")[0] + "("
         category = signature_.split(".")[1].lower()
+
+        if cmd == "/economy/fred_regional":
+            print(cmd)
 
         def get_p_value(cmd, p_name) -> str:
             if cmd in self.EXAMPLE_PARAMS:
