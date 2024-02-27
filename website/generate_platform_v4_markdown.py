@@ -158,6 +158,9 @@ def get_provider_field_params(
             cleaned_description += (
                 f" Multiple items allowed for provider(s): {multiple_items}."
             )
+            # Manually setting to List[<field_type>] for multiple items
+            # Should be removed if TYPE_EXPANSION is updated to include this
+            field_type = f"Union[{field_type}, List[{field_type}]]"
 
         default_value = "" if field_info.default is PydanticUndefined else str(field_info.default)  # fmt: skip
 
@@ -331,9 +334,7 @@ def generate_reference_file() -> None:
             # POST method router `description` attribute is unreliable as it may or
             # may not contain the "Parameters" and "Returns" sections. Hence, the
             # endpoint function docstring is used instead.
-            description = (
-                route.endpoint.__doc__.split("Parameters")[0].strip().replace("\n", " ")
-            )
+            description = route.endpoint.__doc__.split("Parameters")[0].strip()
             # Remove extra spaces in between the string
             reference[path]["description"] = re.sub(" +", " ", description)
 
