@@ -289,34 +289,6 @@
       }
     },
     {
-      "description": "Futures Term Structure, current or historical.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/derivatives/futures/curve",
-      "id": "DERIVATIVES.FUTURES.CURVE",
-      "name": "DERIVATIVES.FUTURES.CURVE",
-      "parameters": [
-        {
-          "description": "Symbol to get data for.",
-          "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "A specific date to get data for.",
-          "name": "date",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Options: databento, defaults to databento.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        }
-      ],
-      "result": {
-        "dimensionality": "matrix"
-      }
-    },
-    {
       "description": "Get the complete options chain for a ticker.",
       "helpUrl": "https://docs.openbb.co/excel/reference/derivatives/options/chains",
       "id": "DERIVATIVES.OPTIONS.CHAINS",
@@ -328,22 +300,16 @@
           "type": "string"
         },
         {
-          "description": "Options: databento, intrinio, defaults to databento.",
+          "description": "Options: intrinio, defaults to intrinio.",
           "name": "provider",
           "optional": true,
           "type": "string"
         },
         {
-          "description": "The end-of-day date for options chains data. (provider: databento, intrinio)",
+          "description": "The end-of-day date for options chains data. (provider: intrinio)",
           "name": "date",
           "optional": true,
           "type": "string"
-        },
-        {
-          "description": "The number of options chains to return. (provider: databento)",
-          "name": "limit",
-          "optional": true,
-          "type": "number"
         }
       ],
       "result": {
