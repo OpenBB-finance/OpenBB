@@ -37,5 +37,4 @@ class FeaturesKeys(BaseModel):
     API_TWITTER_BEARER_TOKEN: Optional[str] = Field(default=None)
     API_TWITTER_KEY: Optional[str] = Field(default=None)
     API_TWITTER_SECRET_KEY: Optional[str] = Field(default=None)
-    API_ULTIMA_KEY: Optional[str] = Field(default=None)
     API_WHALE_ALERT_KEY: Optional[str] = Field(default=None)

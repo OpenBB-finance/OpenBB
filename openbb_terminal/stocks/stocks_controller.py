@@ -14,7 +14,6 @@ from openbb_terminal import config_terminal
 from openbb_terminal.common import (
     feedparser_view,
     newsapi_view,
-    ultima_newsmonitor_view,
 )
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.core.session.current_user import get_current_user
@@ -608,27 +607,6 @@ class StocksController(StockBaseController):
                         show_newest=ns_parser.n_oldest,
                         sources=ns_parser.sources,
                     )
-                elif str(ns_parser.source).lower() == "ultima":
-                    query = str(self.ticker).upper()
-                    if query not in ultima_newsmonitor_view.supported_terms():
-                        console.print(
-                            "[red]Ticker not supported by Ultima Insights News Monitor. Falling back to default.\n[/red]"
-                        )
-                        feedparser_view.display_news(
-                            term=query,
-                            sources=ns_parser.sources,
-                            limit=ns_parser.limit,
-                            export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
-                        )
-                    else:
-                        ultima_newsmonitor_view.display_news(
-                            term=query,
-                            sources=ns_parser.sources,
-                            limit=ns_parser.limit,
-                            export=ns_parser.export,
-                            sheet_name=ns_parser.sheet_name,
-                        )
                 elif ns_parser.source == "Feedparser":
                     feedparser_view.display_news(
                         term=self.ticker,
