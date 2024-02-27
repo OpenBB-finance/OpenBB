@@ -113,13 +113,12 @@ def test_news_world(params, obb):
         ),
         (
             {
-                "published_utc": "2024-01-10",
                 "order": "desc",
                 "provider": "polygon",
                 "symbol": "AAPL",
                 "limit": 20,
-                "start_date": None,
-                "end_date": None,
+                "start_date": "2024-01-10",
+                "end_date": "2024-01-10",
             }
         ),
         (
@@ -158,6 +157,7 @@ def test_news_world(params, obb):
                 "source": "bloomberg.com",
                 "start_date": None,
                 "end_date": None,
+                "offset": None,
             }
         ),
         (
