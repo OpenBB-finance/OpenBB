@@ -129,5 +129,6 @@ fmp_provider = Provider(
         "ShareStatistics": FMPShareStatisticsFetcher,
         "TreasuryRates": FMPTreasuryRatesFetcher,
         "WorldNews": FMPWorldNewsFetcher,
+        "EtfHistorical": FMPEquityHistoricalFetcher,
     },
 )
