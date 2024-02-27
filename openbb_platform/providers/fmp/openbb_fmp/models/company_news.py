@@ -37,8 +37,6 @@ class FMPCompanyNewsData(CompanyNewsData):
         "source": "site",
     }
 
-    source: str = Field(description="Name of the news source.")
-
     @field_validator("images", mode="before", check_fields=False)
     @classmethod
     def validate_images(cls, v):

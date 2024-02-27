@@ -54,7 +54,6 @@ class PolygonCompanyNewsData(CompanyNewsData):
         "tags": "keywords",
     }
 
-    source: Optional[str] = Field(default=None, description="Source of the article.")
     tags: Optional[str] = Field(
         default=None, description="Keywords/tags in the article"
     )

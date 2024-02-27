@@ -75,3 +75,8 @@ class CompanyNewsData(Data):
     symbols: Optional[str] = Field(
         default=None, description="Symbols associated with the article."
     )
+    source: Optional[str] = Field(default=None, description="Source of the article.")
+    id: Optional[str] = Field(default=None, description="Article ID.")
+    tags: Optional[str] = Field(
+        default=None, description="Tags associated with the article."
+    )

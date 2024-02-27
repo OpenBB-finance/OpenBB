@@ -11,7 +11,7 @@ from openbb_core.provider.standard_models.company_news import (
     CompanyNewsData,
     CompanyNewsQueryParams,
 )
-from pydantic import Field, field_validator
+from pydantic import field_validator
 from yfinance import Ticker
 
 
@@ -34,8 +34,6 @@ class YFinanceCompanyNewsData(CompanyNewsData):
         "images": "thumbnail",
         "source": "publisher",
     }
-
-    source: str = Field(description="Source of the news article")
 
     @field_validator("symbols", mode="before", check_fields=False)
     @classmethod

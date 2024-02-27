@@ -50,7 +50,6 @@ class TiingoCompanyNewsData(CompanyNewsData):
         default=None, description="Tags associated with the news article."
     )
     article_id: int = Field(description="Unique ID of the news article.", alias="id")
-    source: str = Field(description="News source.")
     crawl_date: datetime = Field(description="Date the news article was crawled.")
 
     @field_validator("tags", "symbols", mode="before")
