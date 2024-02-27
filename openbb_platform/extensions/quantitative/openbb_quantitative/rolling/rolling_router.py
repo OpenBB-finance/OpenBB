@@ -230,7 +230,7 @@ def quantile(
 
     Quantiles are points dividing the range of a probability distribution into  intervals with equal probabilities,
     or dividing the  sample in the same way. This function is useful for understanding the distribution of data
-    within a specified window, allowing for analysis of trends, identification of outliers, and assessment of risk..
+    within a specified window, allowing for analysis of trends, identification of outliers, and assessment of risk.
 
     Parameters:
         data: List[Data]

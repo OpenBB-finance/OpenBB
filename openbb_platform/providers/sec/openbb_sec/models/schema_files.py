@@ -23,7 +23,7 @@ class SecSchemaFilesQueryParams(CotSearchQueryParams):
 class SecSchemaFilesData(Data):
     """SEC Schema Files List Data."""
 
-    files: List = Field(description="Dictionary of URLs to SEC Schema Files")
+    files: List[str] = Field(description="Dictionary of URLs to SEC Schema Files")
 
 
 class SecSchemaFilesFetcher(Fetcher[SecSchemaFilesQueryParams, SecSchemaFilesData]):
