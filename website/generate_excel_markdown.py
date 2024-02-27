@@ -18,7 +18,7 @@ SEO_METADATA_PATH = WEBSITE_PATH / "metadata" / "platform_v4_seo_metadata.json"
 
 # URLs: the platorm url should match the backend being used by excel.openbb.co
 XL_FUNCS_URL = "https://excel.openbb.co/assets/functions.json"
-XL_PLATFORM_URL = "https://sdk.openbb.co/openapi.json"
+XL_PLATFORM_URL = "https://sdk.openbb.dev/openapi.json"
 
 
 class CommandLib:
@@ -477,10 +477,7 @@ class Editor:
                 content = section
                 content += OPEN_UL
                 # Sort the folders first and then files
-                for file in sorted(
-                    files,
-                    key=lambda path: ((0, path) if path.is_dir() else (1, path)),
-                ):
+                for file in files:
                     t = file.stem
                     title = t.upper() if t != self.main_folder else t.title()
                     if command:
@@ -522,20 +519,15 @@ class Editor:
 
             ### Main folder
             if folder == self.main_folder:
-                files = list(path.glob("*"))
-                # Put the cmds_folder folder at the end
-                index = next(
-                    (
-                        i
-                        for i, path in enumerate(files)
-                        if path.stem == self.main_folder
-                    ),
-                    None,
+                files = sorted(
+                    list(path.glob("*")),
+                    key=lambda path: ((0, path) if path.is_dir() else (1, path)),
                 )
-                if index is not None:
-                    cmd_folder = files.pop(index)
-                    files.append(cmd_folder)
-                content += get_cards(folder=folder, files=files, command=False)
+                content += get_cards(
+                    folder=folder,
+                    files=files,
+                    command=False,
+                )
                 return content
 
             ### Menus
@@ -571,7 +563,7 @@ class Editor:
 
         def recursive(path: Path):
             position = 1
-            for p in path.iterdir():
+            for p in sorted(path.iterdir()):
                 if p.is_dir():
                     write_mdx_and_category(p, p.name, position)
                     recursive(p)
