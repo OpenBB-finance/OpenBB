@@ -36,8 +36,6 @@ from openbb_terminal.common import (
     news_sdk_helper as common_news_sdk_helper,
     newsapi_model as common_newsapi_model,
     newsapi_view as common_newsapi_view,
-    ultima_newsmonitor_model as common_ultima_newsmonitor_model,
-    ultima_newsmonitor_view as common_ultima_newsmonitor_view,
 )
 
 # Common Behavioural Analysis
@@ -275,8 +273,6 @@ from openbb_terminal.stocks import (
 from openbb_terminal.stocks.behavioural_analysis import (
     finnhub_model as stocks_ba_finnhub_model,
     finnhub_view as stocks_ba_finnhub_view,
-    news_sentiment_model as stocks_ba_news_sentiment_model,
-    news_sentiment_view as stocks_ba_news_sentiment_view,
 )
 
 # Stocks - Comparison Analysis

@@ -11,7 +11,6 @@ class StocksRoot(Category):
     Attributes:
         `candle`: Show candle plot of loaded ticker.\n
         `load`: Load a symbol to perform analysis using the string above as a template.\n
-        `news`: Get news for a given term and source. [Source: Ultima Insights News Monitor]\n
         `process_candle`: Process DataFrame into candle style plot.\n
         `quote`: Gets ticker quote from FMP\n
         `quote_chart`: Financial Modeling Prep ticker(s) quote.\n
@@ -25,7 +24,6 @@ class StocksRoot(Category):
         super().__init__()
         self.candle = lib.stocks_helper.display_candle
         self.load = lib.stocks_helper.load
-        self.news = lib.common_ultima_newsmonitor_model.get_news
         self.process_candle = lib.stocks_helper.process_candle
         self.quote = lib.stocks_model.get_quote
         self.quote_chart = lib.stocks_view.display_quote
@@ -45,8 +43,6 @@ class StocksBehavioralAnalysis(Category):
         `mentions`: Get interest over time from google api [Source: google].\n
         `mentions_chart`: Plots weekly bars of stock's interest over time. other users watchlist. [Source: Google].\n
         `messages`: Get last messages for a given ticker [Source: stocktwits].\n
-        `ns`: Getting Onclusive Data. [Source: Invisage Platform]\n
-        `ns_chart`: Display Onclusive Data. [Source: Invisage Plotform]\n
         `popular`: Get popular tickers from list of subreddits [Source: reddit].\n
         `queries`: Get related queries from google api [Source: google].\n
         `redditsent`: Find posts related to a specific search term in Reddit.\n
@@ -73,8 +69,6 @@ class StocksBehavioralAnalysis(Category):
         self.mentions = lib.stocks_ba_google_model.get_mentions
         self.mentions_chart = lib.stocks_ba_google_view.display_mentions
         self.messages = lib.stocks_ba_stocktwits_model.get_messages
-        self.ns = lib.stocks_ba_news_sentiment_model.get_data
-        self.ns_chart = lib.stocks_ba_news_sentiment_view.display_articles_data
         self.popular = lib.stocks_ba_reddit_model.get_popular_tickers
         self.queries = lib.stocks_ba_google_model.get_queries
         self.redditsent = lib.stocks_ba_reddit_model.get_posts_about

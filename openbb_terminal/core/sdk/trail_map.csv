@@ -345,7 +345,6 @@ stocks.ba.getdd,stocks_ba_reddit_model.get_due_dilligence,
 stocks.ba.headlines,stocks_ba_finbrain_model.get_sentiment,stocks_ba_finbrain_view.display_sentiment_analysis
 stocks.ba.mentions,stocks_ba_google_model.get_mentions,stocks_ba_google_view.display_mentions
 stocks.ba.messages,stocks_ba_stocktwits_model.get_messages,
-stocks.ba.ns,stocks_ba_news_sentiment_model.get_data,stocks_ba_news_sentiment_view.display_articles_data
 stocks.ba.popular,stocks_ba_reddit_model.get_popular_tickers,
 stocks.ba.queries,stocks_ba_google_model.get_queries,
 stocks.ba.redditsent,stocks_ba_reddit_model.get_posts_about,
@@ -460,7 +459,6 @@ stocks.ins.lpsb,stocks_insider_sdk_helper.lpsb,
 stocks.ins.print_insider_data,stocks_insider_openinsider_model.get_print_insider_data,stocks_insider_openinsider_view.print_insider_data
 stocks.ins.stats,stocks_insider_sdk_helper.stats,
 stocks.load,stocks_helper.load,
-stocks.news,common_ultima_newsmonitor_model.get_news,
 stocks.options.chains,stocks_options_sdk_helper.get_full_option_chain,
 stocks.options.dte,stocks_options_helpers.get_dte,
 stocks.options.eodchain,stocks_options_intrinio_model.get_full_chain_eod,

@@ -17,7 +17,6 @@ class KeysRoot(Category):
         `coinbase`: Set Coinbase key\n
         `cpanic`: Set Cpanic key.\n
         `databento`: Set DataBento key\n
-        `degiro`: Set Degiro key\n
         `eodhd`: Set Eodhd key.\n
         `ethplorer`: Set Ethplorer key.\n
         `finnhub`: Set Finnhub key\n
@@ -28,16 +27,13 @@ class KeysRoot(Category):
         `messari`: Set Messari key.\n
         `mykeys`: Get currently set API keys.\n
         `news`: Set News key\n
-        `oanda`: Set Oanda key\n
         `polygon`: Set Polygon key\n
         `quandl`: Set Quandl key\n
         `reddit`: Set Reddit key\n
-        `rh`: Set Robinhood key\n
         `santiment`: Set Santiment key.\n
         `set_keys`: Set API keys in bundle.\n
         `smartstake`: Set Smartstake key.\n
         `tradier`: Set Tradier key\n
-        `ultima`: Set Ultima Insights key\n
         `walert`: Set Walert key\n
     """
 
@@ -53,7 +49,6 @@ class KeysRoot(Category):
         self.coinbase = lib.keys_model.set_coinbase_key
         self.cpanic = lib.keys_model.set_cpanic_key
         self.databento = lib.keys_model.set_databento_key
-        self.degiro = lib.keys_model.set_degiro_key
         self.eodhd = lib.keys_model.set_eodhd_key
         self.ethplorer = lib.keys_model.set_ethplorer_key
         self.finnhub = lib.keys_model.set_finnhub_key
@@ -64,14 +59,11 @@ class KeysRoot(Category):
         self.messari = lib.keys_model.set_messari_key
         self.mykeys = lib.keys_model.get_keys
         self.news = lib.keys_model.set_news_key
-        self.oanda = lib.keys_model.set_oanda_key
         self.polygon = lib.keys_model.set_polygon_key
         self.quandl = lib.keys_model.set_quandl_key
         self.reddit = lib.keys_model.set_reddit_key
-        self.rh = lib.keys_model.set_rh_key
         self.santiment = lib.keys_model.set_santiment_key
         self.set_keys = lib.keys_model.set_keys
         self.smartstake = lib.keys_model.set_smartstake_key
         self.tradier = lib.keys_model.set_tradier_key
-        self.ultima = lib.keys_model.set_ultima_key
         self.walert = lib.keys_model.set_walert_key
