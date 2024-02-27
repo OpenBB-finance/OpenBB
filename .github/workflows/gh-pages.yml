@@ -57,9 +57,9 @@ jobs:
         run: |
           source .venv/bin/activate
           pip uninstall Brotli -y
+          pytest tests/website --autodoc
           poetry run python website/generate_sdk_v3_markdown.py
           poetry run python website/generate_terminal_v3_markdown.py
-          pytest tests/website --autodoc
 
       - name: Generate Platform Markdown
         run: |
