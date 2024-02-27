@@ -14,7 +14,7 @@ from pydantic import Field, field_validator
 
 
 class TmxEtfInfoQueryParams(EtfInfoQueryParams):
-    """TMX ETF Info Query Params"""
+    """TMX ETF Info Query Params."""
 
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
@@ -28,23 +28,20 @@ class TmxEtfInfoQueryParams(EtfInfoQueryParams):
 class TmxEtfInfoData(EtfInfoData):
     """TMX ETF Info Data."""
 
-    issuer: Optional[str] = Field(
-        description="The issuer of the ETF.", alias="fund_family", default=None
-    )
+    __alias_dict__ = {
+        "issuer": "fund_family",
+        "avg_volume": "volume_avg_daily",
+    }
     investment_style: Optional[str] = Field(
         description="The investment style of the ETF.", default=None
     )
     esg: Optional[bool] = Field(
         description="Whether the ETF qualifies as an ESG fund.", default=None
     )
-    currency: Optional[str] = Field(description="The currency of the ETF.")
     unit_price: Optional[float] = Field(
         description="The unit price of the ETF.", default=None
     )
     close: Optional[float] = Field(description="The closing price of the ETF.")
-    prev_close: Optional[float] = Field(
-        description="The previous closing price of the ETF.", default=None
-    )
     return_1m: Optional[float] = Field(
         description="The one-month return of the ETF, as a normalized percent",
         default=None,
@@ -57,11 +54,6 @@ class TmxEtfInfoData(EtfInfoData):
     )
     return_6m: Optional[float] = Field(
         description="The six-month return of the ETF, as a normalized percent.",
-        default=None,
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
-    )
-    return_ytd: Optional[float] = Field(
-        description="The year-to-date return of the ETF, as a normalized percent.",
         default=None,
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
@@ -90,17 +82,11 @@ class TmxEtfInfoData(EtfInfoData):
         default=None,
         json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
     )
-    avg_volume: Optional[int] = Field(
-        description="The average daily volume of the ETF.",
-        alias="volume_avg_daily",
-        default=None,
-    )
     avg_volume_30d: Optional[int] = Field(
         description="The 30-day average volume of the ETF.",
         alias="volume_avg_30d",
         default=None,
     )
-    aum: Optional[float] = Field(description="The AUM of the ETF.", default=None)
     pe_ratio: Optional[float] = Field(
         description="The price-to-earnings ratio of the ETF.", default=None
     )
@@ -125,7 +111,6 @@ class TmxEtfInfoData(EtfInfoData):
     dividend_frequency: Optional[str] = Field(
         description="The dividend payment frequency of the ETF.", default=None
     )
-    website: Optional[str] = Field(description="The website of the ETF.", default=None)
     description: Optional[str] = Field(
         description="The description of the ETF.",
         alias="investment_objectives",
@@ -174,7 +159,6 @@ class TmxEtfInfoFetcher(
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the TMX endpoint."""
-
         results = []
         symbols = (
             query.symbol.split(",") if "," in query.symbol else [query.symbol.upper()]

@@ -26,16 +26,12 @@ class FMPEtfInfoQueryParams(EtfInfoQueryParams):
 class FMPEtfInfoData(EtfInfoData):
     """FMP ETF Info Data."""
 
-    issuer: Optional[str] = Field(
-        default=None, description="Company of the ETF.", alias="etfCompany"
-    )
     cusip: Optional[str] = Field(default=None, description="CUSIP of the ETF.")
     isin: Optional[str] = Field(default=None, description="ISIN of the ETF.")
     domicile: Optional[str] = Field(default=None, description="Domicile of the ETF.")
     asset_class: Optional[str] = Field(
         default=None, description="Asset class of the ETF."
     )
-    aum: Optional[float] = Field(default=None, description="Assets under management.")
     nav: Optional[float] = Field(
         default=None, description="Net asset value of the ETF."
     )
@@ -53,7 +49,6 @@ class FMPEtfInfoData(EtfInfoData):
     avg_volume: Optional[float] = Field(
         default=None, description="Average daily trading volume."
     )
-    website: Optional[str] = Field(default=None, description="Website of the issuer.")
 
 
 class FMPEtfInfoFetcher(

@@ -30,6 +30,7 @@ class YFinanceEtfInfoData(EtfInfoData):
         "name": "longName",
         "inception_date": "fundInceptionDate",
         "description": "longBusinessSummary",
+        "return_ytd": "ytdReturn",
     }
 
     fund_type: Optional[str] = Field(
@@ -54,10 +55,6 @@ class YFinanceEtfInfoData(EtfInfoData):
         default=None,
         description="The timezone of the exchange.",
         alias="timeZoneFullName",
-    )
-    currency: Optional[str] = Field(
-        default=None,
-        description="The currency in which the fund is listed.",
     )
     nav_price: Optional[float] = Field(
         default=None,
@@ -110,12 +107,6 @@ class YFinanceEtfInfoData(EtfInfoData):
         default=None,
         description="200-day moving average price.",
         alias="twoHundredDayAverage",
-    )
-    return_ytd: Optional[float] = Field(
-        default=None,
-        description="The year-to-date return of the fund, as a normalized percent.",
-        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
-        alias="ytdReturn",
     )
     return_3y_avg: Optional[float] = Field(
         default=None,
@@ -179,11 +170,6 @@ class YFinanceEtfInfoData(EtfInfoData):
     volume: Optional[int] = Field(
         default=None,
         description="The trading volume of the most recent trading session.",
-    )
-    prev_close: Optional[float] = Field(
-        default=None,
-        description="The previous closing price.",
-        alias="previousClose",
     )
 
     @field_validator("inception_date", mode="before", check_fields=False)

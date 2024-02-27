@@ -33,3 +33,24 @@ class EtfInfoData(Data):
         default=None, description="Description of the fund."
     )
     inception_date: Optional[str] = Field(description="Inception date of the ETF.")
+    prev_close: Optional[float] = Field(
+        default=None,
+        description="The previous closing price.",
+        alias="previousClose",
+    )
+    website: Optional[str] = Field(default=None, description="Website of the issuer.")
+    issuer: Optional[str] = Field(description="The issuer of the ETF.", default=None)
+    return_ytd: Optional[float] = Field(
+        description="The year-to-date return of the ETF, as a normalized percent.",
+        default=None,
+        json_schema_extra={"unit_measurement": "percent", "frontend_multiply": 100},
+    )
+    avg_volume: Optional[int] = Field(
+        description="The average daily volume of the ETF.",
+        default=None,
+    )
+    aum: Optional[float] = Field(description="Assets under management.", default=None)
+    currency: Optional[str] = Field(
+        default=None,
+        description="The currency in which the fund is listed.",
+    )
