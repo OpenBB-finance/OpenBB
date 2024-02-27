@@ -16,6 +16,8 @@ from pydantic import Field, field_validator
 class TmxEtfInfoQueryParams(EtfInfoQueryParams):
     """TMX ETF Info Query Params"""
 
+    __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
+
     use_cache: bool = Field(
         default=True,
         description="Whether to use a cached request. All ETF data comes from a single JSON file that is updated daily."

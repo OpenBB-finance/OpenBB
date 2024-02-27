@@ -33,7 +33,6 @@ class FeaturesKeys(BaseModel):
     API_SHROOM_KEY: Optional[str] = Field(default=None)
     API_SMARTSTAKE_KEY: Optional[str] = Field(default=None)
     API_SMARTSTAKE_TOKEN: Optional[str] = Field(default=None)
-    API_STOCKSERA_KEY: Optional[str] = Field(default=None)
     API_TOKEN_TERMINAL_KEY: Optional[str] = Field(default=None)
     API_TWITTER_BEARER_TOKEN: Optional[str] = Field(default=None)
     API_TWITTER_KEY: Optional[str] = Field(default=None)
