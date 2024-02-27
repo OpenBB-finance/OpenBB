@@ -2720,40 +2720,6 @@
       }
     },
     {
-      "description": "Equity Ownership. Information about the company ownership.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/equity/ownership/major_holders",
-      "id": "EQUITY.OWNERSHIP.MAJOR_HOLDERS",
-      "name": "EQUITY.OWNERSHIP.MAJOR_HOLDERS",
-      "parameters": [
-        {
-          "description": "Symbol to get data for.",
-          "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "A specific date to get data for.",
-          "name": "date",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Page number of the data to fetch.",
-          "name": "page",
-          "optional": true,
-          "type": "number"
-        },
-        {
-          "description": "Options: fmp, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
-        }
-      ],
-      "result": {
-        "dimensionality": "matrix"
-      }
-    },
-    {
       "description": "Share Statistics. Share statistics for a given company.",
       "helpUrl": "https://docs.openbb.co/excel/reference/equity/ownership/share_statistics",
       "id": "EQUITY.OWNERSHIP.SHARE_STATISTICS",
