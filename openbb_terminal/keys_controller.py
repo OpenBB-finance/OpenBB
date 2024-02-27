@@ -660,49 +660,6 @@ class KeysController(BaseController):  # pylint: disable=too-many-public-methods
             )
 
     @log_start_end(log=logger)
-    def call_oanda(self, other_args: List[str]):
-        """Process oanda command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="oanda",
-            description="Set Oanda API key.",
-        )
-        parser.add_argument(
-            "-a",
-            "--account",
-            type=str,
-            dest="account",
-            help="account",
-        )
-        parser.add_argument(
-            "-t",
-            "--token",
-            type=str,
-            dest="token",
-            help="token",
-        )
-        parser.add_argument(
-            "-at",
-            "--account_type",
-            type=str,
-            dest="account_type",
-            help="account type ('live' or 'practice')",
-        )
-        if not other_args:
-            console.print("For your API Key, visit: https://developer.oanda.com")
-            return
-        ns_parser = self.parse_simple_args(parser, other_args)
-        if ns_parser:
-            self.status_dict["oanda"] = keys_model.set_oanda_key(
-                account=ns_parser.account,
-                access_token=ns_parser.token,
-                account_type=ns_parser.account_type,
-                persist=True,
-                show_output=True,
-            )
-
-    @log_start_end(log=logger)
     def call_binance(self, other_args: List[str]):
         """Process binance command"""
         parser = argparse.ArgumentParser(

@@ -1496,7 +1496,6 @@ class ForexController(BaseController):
     CHOICES_MENUS = [
         "forecast",
         "qa",
-        "oanda",
         "ta",
     ]
     RESOLUTION = ["i", "d", "w", "m"]

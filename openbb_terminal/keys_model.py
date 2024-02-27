@@ -13,14 +13,12 @@ from enum import Enum
 from typing import Dict, List, Union
 
 import binance
-import oandapyV20.endpoints.pricing
 import pandas as pd
 import praw
 import quandl
 from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI
 from nixtlats import TimeGPT
-from oandapyV20 import API as oanda_API
 from prawcore.exceptions import ResponseException
 from tokenterminal import TokenTerminal
 
@@ -65,7 +63,6 @@ API_DICT: Dict = {
     "reddit": "REDDIT",
     "rh": "ROBINHOOD",
     "degiro": "DEGIRO",
-    "oanda": "OANDA",
     "binance": "BINANCE",
     "bitquery": "BITQUERY",
     "coinbase": "COINBASE",
@@ -1322,97 +1319,6 @@ def check_degiro_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_FAILED
 
         del dg  # ensure the object is destroyed explicitly
-
-    if show_output:
-        console.print(status.colorize())
-
-    return str(status)
-
-
-def set_oanda_key(
-    account: str,
-    access_token: str,
-    account_type: str = "",
-    persist: bool = False,
-    show_output: bool = False,
-) -> str:
-    """Set Oanda key
-
-    Parameters
-    ----------
-    account: str
-        User account
-    access_token: str
-        User token
-    account_type: str, optional
-        User account type
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.oanda(
-            account="example_account",
-            access_token="example_access_token",
-            account_type="example_account_type"
-        )
-    """
-
-    handle_credential("OANDA_ACCOUNT", account, persist)
-    handle_credential("OANDA_TOKEN", access_token, persist)
-    handle_credential("OANDA_ACCOUNT_TYPE", account_type, persist)
-
-    return check_oanda_key(show_output)
-
-
-def check_oanda_key(show_output: bool = False) -> str:
-    """Check Oanda key
-
-    Parameters
-    ----------
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    if show_output:
-        console.print("Checking status...")
-
-    current_user = get_current_user()
-
-    oanda_keys = [
-        current_user.credentials.OANDA_TOKEN,
-        current_user.credentials.OANDA_ACCOUNT,
-    ]
-    if "REPLACE_ME" in oanda_keys:
-        status = KeyStatus.NOT_DEFINED
-    else:
-        client = oanda_API(access_token=current_user.credentials.OANDA_TOKEN)
-        account = current_user.credentials.OANDA_ACCOUNT
-        try:
-            parameters = {"instruments": "EUR_USD"}
-            request_ = oandapyV20.endpoints.pricing.PricingInfo(
-                accountID=account, params=parameters
-            )
-            client.request(request_)
-            status = KeyStatus.DEFINED_TEST_PASSED
-
-        except Exception:
-            status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
         console.print(status.colorize())

@@ -18,8 +18,7 @@ import openbb_terminal.cryptocurrency.cryptocurrency_helpers as crypto_helpers
 # ETF
 import openbb_terminal.etf.discovery.wsj_model as etf_disc_wsj_model
 import openbb_terminal.etf.discovery.wsj_view as etf_disc_wsj_view
-import openbb_terminal.forex.oanda.oanda_model as forex_oanda_model
-import openbb_terminal.forex.oanda.oanda_view as forex_oanda_view
+
 import openbb_terminal.stocks.quantitative_analysis.beta_model as stocks_qa_beta_model
 import openbb_terminal.stocks.quantitative_analysis.beta_view as stocks_qa_beta_view
 

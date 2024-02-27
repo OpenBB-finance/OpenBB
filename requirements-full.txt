@@ -212,7 +212,6 @@ notebook-shim==0.2.3 ; python_full_version >= "3.8.1" and python_full_version !=
 notebook==6.5.4 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 numba==0.57.1 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 numpy==1.23.4 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
-oandapyv20==0.6.3 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 oauthlib==3.2.2 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"
 onetimepass==1.0.1 ; python_full_version >= "3.8.1" and python_version < "3.11" and python_full_version != "3.9.7"
 openai-whisper==20230124 ; python_full_version >= "3.8.1" and python_full_version != "3.9.7" and python_version < "3.11"

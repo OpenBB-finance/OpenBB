@@ -97,7 +97,6 @@ def sha256sum(filename):
     return h.hexdigest()
 
 
-
 def open_openbb_documentation(  # noqa: PLR0912
     path,
     url="https://docs.openbb.co/terminal",
