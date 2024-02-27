@@ -38,8 +38,6 @@ class CboeAvailableIndicesData(AvailableIndicesData):
         "close_time": "calc_end_time",
     }
 
-    symbol: Optional[str] = Field(description="Symbol for the index.")
-
     description: Optional[str] = Field(
         default=None,
         description="Description for the index. Valid only for US indices.",

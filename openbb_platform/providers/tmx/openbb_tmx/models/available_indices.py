@@ -28,8 +28,6 @@ class TmxAvailableIndicesQueryParams(AvailableIndicesQueryParams):
 class TmxAvailableIndicesData(AvailableIndicesData):
     """TMX Available Indices Data."""
 
-    symbol: str = Field(description="The ticker symbol of the index.")
-
 
 class TmxAvailableIndicesFetcher(
     Fetcher[
