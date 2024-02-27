@@ -67,3 +67,13 @@ This notebook demonstrates how to query the Federal Reserve Economic Database an
 - Perform arithmetic operations on a DataFrame.
 - Normalization methods for a series or DataFrame.
 - Simple processes for creating charts.
+
+### impliedEarningsMove
+
+This notebook demonstrates how to calculate the implied earnings move using options prices from free sources.
+
+- Get upcoming earnings calendar.
+- Fetch options chains data.
+- Get the last price of the underlying stock.
+- Find the nearest call and put strikes to the last price of the stock.
+- Calculate the implied daily move using the price of a straddle.
