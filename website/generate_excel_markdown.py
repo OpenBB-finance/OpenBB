@@ -519,6 +519,7 @@ class Editor:
 
             ### Main folder
             if folder == self.main_folder:
+                # sort the folders first and then files to push byod,get to the bottom
                 files = sorted(
                     list(path.glob("*")),
                     key=lambda path: ((0, path) if path.is_dir() else (1, path)),
