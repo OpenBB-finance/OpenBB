@@ -92,7 +92,7 @@ class PolygonEquityNBBOData(EquityNBBOData):
     conditions: Optional[Union[str, List[int], List[str]]] = Field(
         default=None, description="A list of condition codes.", alias="conditions"
     )
-    indicators: Optional[List] = Field(
+    indicators: Optional[List[int]] = Field(
         default=None, description="A list of indicator codes.", alias="indicators"
     )
     sequence_num: Optional[int] = Field(
@@ -208,6 +208,7 @@ class PolygonEquityNBBOFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: PolygonEquityNBBOQueryParams,

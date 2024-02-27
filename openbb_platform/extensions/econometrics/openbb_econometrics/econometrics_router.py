@@ -353,10 +353,10 @@ def causality(
     x_column: str,
     lag: PositiveInt = 3,
 ) -> OBBject[Data]:
-    """Perform Granger causality test to determine if X "causes" y.
+    """Perform Granger causality test to determine if X 'causes' y.
 
     The Granger causality test is a statistical hypothesis test to determine if one time series is useful in
-    forecasting another. While "causality" in this context does not imply a cause-and-effect relationship in
+    forecasting another. While 'causality' in this context does not imply a cause-and-effect relationship in
     the philosophical sense, it does test whether changes in one variable are systematically followed by changes
     in another variable, suggesting a predictive relationship. By specifying a lag, you set the number of periods to
     look back in the time series to assess this relationship. This test is particularly useful in economic and
