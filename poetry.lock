@@ -1831,25 +1831,6 @@ files = [
 ]
 
 [[package]]
-name = "degiro-connector"
-version = "2.0.21"
-description = "This is yet another library to access Degiro's API."
-optional = false
-python-versions = ">=3.7.1,<4.0.0"
-files = [
-    {file = "degiro-connector-2.0.21.tar.gz", hash = "sha256:06b7bda360cafca5b271c47ef939b7ec4f534ddd60284323bea898215445bcf2"},
-    {file = "degiro_connector-2.0.21-py3-none-any.whl", hash = "sha256:1f4d806260f69d6b006ff6d3d18ebcd80c4866b1b07edba43a1583fc2f507ae2"},
-]
-
-[package.dependencies]
-grpcio = ">=1.41.1,<2.0.0"
-onetimepass = ">=1.0.1,<2.0.0"
-pandas = ">=1.1.5,<2.0.0"
-protobuf = ">=3.19.1,<4.0.0"
-requests = ">=2.26.0,<3.0.0"
-wrapt = ">=1.12.1,<2.0.0"
-
-[[package]]
 name = "detecta"
 version = "0.0.5"
 description = "Detect events in data"
@@ -5040,19 +5021,6 @@ signals = ["blinker (>=1.4.0)"]
 signedtoken = ["cryptography (>=3.0.0)", "pyjwt (>=2.0.0,<3)"]
 
 [[package]]
-name = "onetimepass"
-version = "1.0.1"
-description = "Module for generating and validating HOTP and TOTP tokens"
-optional = false
-python-versions = "*"
-files = [
-    {file = "onetimepass-1.0.1.tar.gz", hash = "sha256:a569dac076d6e3761cbc55e36952144a637ca1b075c6d509de1c1dbc5e7f6a27"},
-]
-
-[package.dependencies]
-six = "*"
-
-[[package]]
 name = "openai-whisper"
 version = "20230124"
 description = "Robust Speech Recognition via Large-Scale Weak Supervision"
@@ -6534,17 +6502,6 @@ scipy = ">=1.5.1"
 six = "*"
 
 [[package]]
-name = "pyotp"
-version = "2.8.0"
-description = "Python One Time Password Library"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "pyotp-2.8.0-py3-none-any.whl", hash = "sha256:889d037fdde6accad28531fc62a790f089e5dfd5b638773e9ee004cce074a2e5"},
-    {file = "pyotp-2.8.0.tar.gz", hash = "sha256:c2f5e17d9da92d8ec1f7de6331ab08116b9115adbabcba6e208d46fc49a98c5a"},
-]
-
-[[package]]
 name = "pyparsing"
 version = "3.0.9"
 description = "pyparsing module - Classes and methods to define and execute parsing grammars"
@@ -7543,23 +7500,6 @@ scikit-learn = ">=0.22.0"
 scipy = ">=1.0.1"
 statsmodels = ">=0.10.1"
 xlsxwriter = ">=1.3.7"
-
-[[package]]
-name = "robin-stocks"
-version = "2.1.0"
-description = "A Python wrapper around the Robinhood API"
-optional = false
-python-versions = ">=3"
-files = [
-    {file = "robin_stocks-2.1.0-py3-none-any.whl", hash = "sha256:f746640e08d138fda2e1da42444e2881c3fb1ce43485f332e5079a42b0a78d57"},
-    {file = "robin_stocks-2.1.0.tar.gz", hash = "sha256:3d6b1d97ecf3191897d09c9dc430b57c6183a38d4c66a64f9c62a8f015bb0ae9"},
-]
-
-[package.dependencies]
-cryptography = "*"
-pyotp = "*"
-python-dotenv = "*"
-requests = "*"
 
 [[package]]
 name = "rsa"
@@ -10112,4 +10052,4 @@ optimization = ["Riskfolio-Lib"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1,<3.11, !=3.9.7"
-content-hash = "735680ac538415746ec4db6a037264b3ca9ac715b8a7b98ee6175fec45b067eb"
+content-hash = "1351e12fc6fccaa4e86e4659ef3e1b4fa375bac2dd72594d5ca6cfd25a1f357b"

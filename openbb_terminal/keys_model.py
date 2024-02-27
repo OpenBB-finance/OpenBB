@@ -4,8 +4,6 @@ __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines
 
-import contextlib
-import io
 import logging
 import sys
 from datetime import date
@@ -30,7 +28,6 @@ from openbb_terminal.cryptocurrency.coinbase_helpers import (
     make_coinbase_request,
 )
 from openbb_terminal.helper_funcs import request
-from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_helper import suppress_stdout
 
@@ -61,8 +58,6 @@ API_DICT: Dict = {
     "cmc": "COINMARKETCAP",
     "finnhub": "FINNHUB",
     "reddit": "REDDIT",
-    "rh": "ROBINHOOD",
-    "degiro": "DEGIRO",
     "binance": "BINANCE",
     "bitquery": "BITQUERY",
     "coinbase": "COINBASE",
@@ -1148,177 +1143,6 @@ def check_bitquery_key(show_output: bool = False) -> str:
         else:
             logger.warning("Bitquery key defined, test failed")
             status = KeyStatus.DEFINED_TEST_FAILED
-
-    if show_output:
-        console.print(status.colorize())
-
-    return str(status)
-
-
-def set_rh_key(
-    username: str,
-    password: str,
-    persist: bool = False,
-    show_output: bool = False,
-) -> str:
-    """Set Robinhood key
-
-    Parameters
-    ----------
-    username: str
-        User username
-    password: str
-        User password
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.rh(
-            username="example_username",
-            password="example_password"
-        )
-    """
-    handle_credential("RH_USERNAME", username, persist)
-    handle_credential("RH_PASSWORD", password, persist)
-
-    return check_rh_key(show_output)
-
-
-def check_rh_key(show_output: bool = False) -> str:
-    """Check Robinhood key
-
-    Parameters
-    ----------
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    if show_output:
-        console.print("Checking status...")
-
-    current_user = get_current_user()
-
-    rh_keys = [
-        current_user.credentials.RH_USERNAME,
-        current_user.credentials.RH_PASSWORD,
-    ]
-    status = (
-        KeyStatus.NOT_DEFINED
-        if "REPLACE_ME" in rh_keys
-        else KeyStatus.DEFINED_NOT_TESTED
-    )
-
-    if show_output:
-        console.print(status.colorize())
-
-    return str(status)
-
-
-def set_degiro_key(
-    username: str,
-    password: str,
-    secret: str = "",
-    persist: bool = False,
-    show_output: bool = False,
-) -> str:
-    """Set Degiro key
-
-    Parameters
-    ----------
-    username: str
-        User username
-    password: str
-        User password
-    secret: str, optional
-        User secret
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.degiro(
-            username="example_username",
-            password="example_password"
-        )
-    """
-
-    handle_credential("DG_USERNAME", username, persist)
-    handle_credential("DG_PASSWORD", password, persist)
-    handle_credential("DG_TOTP_SECRET", secret, persist)
-
-    return check_degiro_key(show_output)
-
-
-def check_degiro_key(show_output: bool = False) -> str:
-    """Check Degiro key
-
-    Parameters
-    ----------
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    if show_output:
-        console.print("Checking status...")
-
-    current_user = get_current_user()
-
-    dg_keys = [
-        current_user.credentials.DG_USERNAME,
-        current_user.credentials.DG_PASSWORD,
-        current_user.credentials.DG_TOTP_SECRET,
-    ]
-    if "REPLACE_ME" in dg_keys:
-        status = KeyStatus.NOT_DEFINED
-    else:
-        dg = DegiroModel()
-        try:
-            f = io.StringIO()  # suppress stdout
-            with contextlib.redirect_stdout(f):
-                check_creds = dg.check_credentials()  # pylint: disable=no-member
-
-            if "2FA is enabled" in f.getvalue() or check_creds:
-                status = KeyStatus.DEFINED_TEST_PASSED
-            else:
-                raise Exception
-
-            status = KeyStatus.DEFINED_TEST_PASSED
-
-        except Exception:
-            status = KeyStatus.DEFINED_TEST_FAILED
-
-        del dg  # ensure the object is destroyed explicitly
 
     if show_output:
         console.print(status.colorize())
