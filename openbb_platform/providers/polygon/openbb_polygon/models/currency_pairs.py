@@ -26,7 +26,7 @@ class PolygonCurrencyPairsQueryParams(CurrencyPairsQueryParams):
         default=None, description="Symbol of the pair to search."
     )
     date: Optional[dateType] = Field(
-        default=datetime.now().date(), description=QUERY_DESCRIPTIONS.get("date", "")
+        default=None, description=QUERY_DESCRIPTIONS.get("date", "")
     )
     search: Optional[str] = Field(
         default="",
@@ -159,6 +159,7 @@ class PolygonCurrencyPairsFetcher(
 
         return all_data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: PolygonCurrencyPairsQueryParams,
