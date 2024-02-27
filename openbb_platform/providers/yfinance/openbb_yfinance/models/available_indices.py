@@ -44,6 +44,7 @@ class YFinanceAvailableIndicesFetcher(
         """Transform the query params."""
         return YFinanceAvailableIndicesQueryParams(**params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
         query: YFinanceAvailableIndicesQueryParams,
@@ -55,6 +56,7 @@ class YFinanceAvailableIndicesFetcher(
 
         return indices.to_dict("records")
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: YFinanceAvailableIndicesQueryParams, data: List[Dict], **kwargs: Any
