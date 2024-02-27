@@ -1370,7 +1370,6 @@ The convention is as follows:
     "news": [
       "Feedparser",
       "NewsApi",
-      "Ultima"
     ],
             ...
 ```

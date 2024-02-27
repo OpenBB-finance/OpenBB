@@ -27,7 +27,6 @@ from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sour
 from openbb_terminal.stocks.comparison_analysis import (
     finbrain_view,
     finnhub_model,
-    finviz_compare_model,
     finviz_compare_view,
     marketwatch_view,
     polygon_model,
@@ -265,37 +264,7 @@ class ComparisonAnalysisController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
-                if ns_parser.source == "Finviz":
-                    compare_list = (
-                        ["Sector", "Industry"]
-                        if ns_parser.b_no_country
-                        else ["Sector", "Industry", "Country"]
-                    )
-
-                    self.similar = finviz_compare_model.get_similar_companies(
-                        self.ticker, compare_list
-                    )
-                    if self.similar is None:
-                        return
-                    self.user = "Finviz"
-
-                    if self.ticker.upper() in self.similar:
-                        self.similar.remove(self.ticker.upper())
-
-                    if len(self.similar) > ns_parser.limit:
-                        random.shuffle(self.similar)
-                        self.similar = sorted(self.similar[: ns_parser.limit])
-                        console.print(
-                            f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
-                        )
-
-                    if self.similar:
-                        self.similar = [self.ticker] + self.similar
-
-                        console.print(
-                            f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
-                        )
-                elif ns_parser.source == "Polygon":
+                if ns_parser.source == "Polygon":
                     self.similar = polygon_model.get_similar_companies(
                         self.ticker, ns_parser.us_only
                     )
