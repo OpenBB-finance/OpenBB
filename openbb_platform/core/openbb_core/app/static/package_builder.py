@@ -843,7 +843,7 @@ class DocstringGenerator:
             "            List of warnings.\n"
             "        chart : Optional[Chart]\n"
             "            Chart object.\n"
-            "        extra: Dict[str, Any]\n"
+            "        extra : Dict[str, Any]\n"
             "            Extra info.\n"
         )
         obbject_description = obbject_description.replace("NoneType", "None")
