@@ -57,6 +57,7 @@ jobs:
         run: |
           source .venv/bin/activate
           pip uninstall Brotli -y
+          pip install docstring_parser
           pytest tests/website --autodoc
           poetry run python website/generate_sdk_v3_markdown.py
           poetry run python website/generate_terminal_v3_markdown.py
@@ -68,7 +69,7 @@ jobs:
           poetry run python openbb_platform/dev_install.py -e all
           pip uninstall nbmake -y
           poetry run python website/generate_platform_v4_markdown.py
-      
+
       - name: Generate Excel Docs
         run: |
           source .venv/bin/activate
