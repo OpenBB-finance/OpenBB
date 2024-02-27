@@ -89,7 +89,7 @@ class ROUTER_fixedincome_corporate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CommercialPaper
@@ -171,7 +171,7 @@ class ROUTER_fixedincome_corporate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         HighQualityMarketCorporateBond
@@ -275,7 +275,7 @@ class ROUTER_fixedincome_corporate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         ICEBofA
@@ -367,7 +367,7 @@ class ROUTER_fixedincome_corporate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         MoodyCorporateBondIndex
@@ -462,7 +462,7 @@ class ROUTER_fixedincome_corporate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         SpotRate

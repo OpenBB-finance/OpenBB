@@ -53,7 +53,7 @@ class ROUTER_derivatives_options(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         OptionsChains
@@ -209,7 +209,7 @@ class ROUTER_derivatives_options(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         OptionsUnusual
