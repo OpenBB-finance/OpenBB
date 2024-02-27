@@ -50,3 +50,49 @@ class CashFlowStatementData(Data):
         default=None,
         description="Purchase of property, plant and equipment.",
     )
+    repurchase_of_common_equity: Optional[float] = Field(
+        default=None,
+        description="Repurchase of common equity.",
+    )
+    growth_other_financing_activities: Optional[float] = Field(
+        description="Growth rate of other financing activities."
+    )
+    acquisitions: Optional[float] = Field(
+        default=None,
+        description="Acquisitions.",
+    )
+    net_income: Optional[float] = Field(
+        default=None,
+        description="Net income.",
+    )
+    net_change_in_cash_and_equivalents: Optional[float] = Field(
+        default=None, description="Net Change in Cash and Equivalents"
+    )
+    repayment_of_debt: Optional[float] = Field(
+        default=None, description="Repayment of Debt"
+    )
+    net_cash_from_investing_activities: Optional[float] = Field(
+        default=None,
+        description="Net cash from investing activities.",
+    )
+    payment_of_dividends: Optional[float] = Field(
+        default=None,
+        description="Payment of dividends.",
+    )
+    net_cash_from_financing_activities: Optional[float] = Field(
+        default=None,
+        description="Net cash from financing activities.",
+    )
+    reported_currency: Optional[str] = Field(
+        default=None,
+        description="The currency in which the cash flow statement was reported.",
+    )
+    other_investing_activities: Optional[float] = Field(
+        default=None, description="Other Investing Activities."
+    )
+    sale_and_maturity_of_investments: Optional[float] = Field(
+        default=None, description="Sale and Maturity of Investments."
+    )
+    issuance_of_common_equity: Optional[float] = Field(
+        default=None, description="Issuance of Common Equity"
+    )

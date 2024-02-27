@@ -81,14 +81,6 @@ class FMPCashFlowStatementData(CashFlowStatementData):
     accepted_date: Optional[datetime] = Field(
         default=None, description="The date the filing was accepted."
     )
-    reported_currency: Optional[str] = Field(
-        default=None,
-        description="The currency in which the cash flow statement was reported.",
-    )
-    net_income: Optional[float] = Field(
-        default=None,
-        description="Net income.",
-    )
     depreciation_and_amortization: Optional[float] = Field(
         default=None,
         description="Depreciation and amortization.",
@@ -125,53 +117,9 @@ class FMPCashFlowStatementData(CashFlowStatementData):
         default=None,
         description="Change in other non-cash items.",
     )
-    acquisitions: Optional[float] = Field(
-        default=None,
-        description="Acquisitions.",
-    )
-    sale_and_maturity_of_investments: Optional[float] = Field(
-        default=None,
-        description="Sale and maturity of investments.",
-    )
-    other_investing_activities: Optional[float] = Field(
-        default=None,
-        description="Other investing activities.",
-    )
-    net_cash_from_investing_activities: Optional[float] = Field(
-        default=None,
-        description="Net cash from investing activities.",
-    )
-    repayment_of_debt: Optional[float] = Field(
-        default=None,
-        description="Repayment of debt.",
-    )
-    issuance_of_common_equity: Optional[float] = Field(
-        default=None,
-        description="Issuance of common equity.",
-    )
-    repurchase_of_common_equity: Optional[float] = Field(
-        default=None,
-        description="Repurchase of common equity.",
-    )
-    payment_of_dividends: Optional[float] = Field(
-        default=None,
-        description="Payment of dividends.",
-    )
-    other_financing_activities: Optional[float] = Field(
-        default=None,
-        description="Other financing activities.",
-    )
-    net_cash_from_financing_activities: Optional[float] = Field(
-        default=None,
-        description="Net cash from financing activities.",
-    )
     effect_of_exchange_rate_changes_on_cash: Optional[float] = Field(
         default=None,
         description="Effect of exchange rate changes on cash.",
-    )
-    net_change_in_cash_and_equivalents: Optional[float] = Field(
-        default=None,
-        description="Net change in cash and equivalents.",
     )
     cash_at_beginning_of_period: Optional[float] = Field(
         default=None,

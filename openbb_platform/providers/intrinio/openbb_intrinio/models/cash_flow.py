@@ -84,14 +84,6 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
         "sale_and_maturity_of_investments": "saleofinvestments",
         "sale_of_property_plant_and_equipment": "saleofplantpropertyandequipment",
     }
-
-    reported_currency: Optional[str] = Field(
-        description="The currency in which the balance sheet is reported.",
-        default=None,
-    )
-    net_income: Optional[float] = Field(
-        default=None, description="Consolidated Net Income."
-    )
     provision_for_loan_losses: Optional[float] = Field(
         default=None, description="Provision for Loan Losses"
     )
@@ -129,18 +121,11 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
     sale_of_property_plant_and_equipment: Optional[float] = Field(
         default=None, description="Sale of Property, Plant, and Equipment"
     )
-    acquisitions: Optional[float] = Field(default=None, description="Acquisitions")
     purchase_of_investments: Optional[float] = Field(
         default=None, description="Purchase of Investments"
     )
-    sale_and_maturity_of_investments: Optional[float] = Field(
-        default=None, description="Sale and Maturity of Investments"
-    )
     loans_held_for_sale: Optional[float] = Field(
         default=None, description="Loans Held for Sale (Net)"
-    )
-    other_investing_activities: Optional[float] = Field(
-        default=None, description="Other Investing Activities (Net)"
     )
     net_cash_from_continuing_investing_activities: Optional[float] = Field(
         default=None, description="Net Cash from Continuing Investing Activities"
@@ -148,32 +133,14 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
     net_cash_from_discontinued_investing_activities: Optional[float] = Field(
         default=None, description="Net Cash from Discontinued Investing Activities"
     )
-    net_cash_from_investing_activities: Optional[float] = Field(
-        default=None, description="Net Cash from Investing Activities"
-    )
-    payment_of_dividends: Optional[float] = Field(
-        default=None, description="Payment of Dividends"
-    )
-    repurchase_of_common_equity: Optional[float] = Field(
-        default=None, description="Repurchase of Common Equity"
-    )
     repurchase_of_preferred_equity: Optional[float] = Field(
         default=None, description="Repurchase of Preferred Equity"
-    )
-    issuance_of_common_equity: Optional[float] = Field(
-        default=None, description="Issuance of Common Equity"
     )
     issuance_of_preferred_equity: Optional[float] = Field(
         default=None, description="Issuance of Preferred Equity"
     )
     issuance_of_debt: Optional[float] = Field(
         default=None, description="Issuance of Debt"
-    )
-    repayment_of_debt: Optional[float] = Field(
-        default=None, description="Repayment of Debt"
-    )
-    other_financing_activities: Optional[float] = Field(
-        default=None, description="Other Financing Activities (Net)"
     )
     cash_interest_received: Optional[float] = Field(
         default=None, description="Cash Interest Received"
@@ -190,17 +157,11 @@ class IntrinioCashFlowStatementData(CashFlowStatementData):
     net_cash_from_discontinued_financing_activities: Optional[float] = Field(
         default=None, description="Net Cash from Discontinued Financing Activities"
     )
-    net_cash_from_financing_activities: Optional[float] = Field(
-        default=None, description="Net Cash from Financing Activities"
-    )
     effect_of_exchange_rate_changes: Optional[float] = Field(
         default=None, description="Effect of Exchange Rate Changes"
     )
     other_net_changes_in_cash: Optional[float] = Field(
         default=None, description="Other Net Changes in Cash"
-    )
-    net_change_in_cash_and_equivalents: Optional[float] = Field(
-        default=None, description="Net Change in Cash and Equivalents"
     )
     cash_income_taxes_paid: Optional[float] = Field(
         default=None, description="Cash Income Taxes Paid"
