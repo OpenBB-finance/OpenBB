@@ -55,7 +55,7 @@ class CashFlowStatementData(Data):
         description="Repurchase of common equity.",
     )
     growth_other_financing_activities: Optional[float] = Field(
-        description="Growth rate of other financing activities."
+        default=None, description="Growth rate of other financing activities."
     )
     acquisitions: Optional[float] = Field(
         default=None,
