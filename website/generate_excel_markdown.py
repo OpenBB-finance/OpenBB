@@ -403,7 +403,6 @@ class Editor:
             return ""
 
         def get_data() -> str:
-            # data = "<!-- markdownlint-disable MD012 MD031 MD033 -->\n"
             if data_schema := cmd_info["data"]:
                 data = "import Tabs from '@theme/Tabs';\n"
                 data += "import TabItem from '@theme/TabItem';\n\n"
