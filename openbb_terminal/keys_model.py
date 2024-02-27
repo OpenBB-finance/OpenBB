@@ -92,7 +92,7 @@ API_DICT = dict(sorted(API_DICT.items()))
 class KeyStatus(str, Enum):
     """Class to handle status messages and colors"""
 
-    DEFINED_TEST_FAILED = "Defined, test failed"
+    DEFINED_TEST_FAILED = "Defined, test failed.  Data may still be accessible."
     NOT_DEFINED = "Not defined"
     DEFINED_TEST_PASSED = "Defined, test passed"
     DEFINED_TEST_INCONCLUSIVE = "Defined, test inconclusive"
