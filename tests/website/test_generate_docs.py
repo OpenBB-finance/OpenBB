@@ -8,7 +8,8 @@ try:
         generate_sdk_v3_markdown as gen_sdk,
         generate_terminal_v3_markdown as gen_term,
     )
-except ImportError:
+except ImportError as e:
+    print(e)
     pytest.skip(allow_module_level=True)
 
 
