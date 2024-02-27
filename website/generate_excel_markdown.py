@@ -1,11 +1,13 @@
 import json
 import shutil
 import sys
+from functools import reduce
 from pathlib import Path
 from textwrap import shorten
 from typing import Any, Dict, List, Literal
 
 import requests
+from requests_cache import Optional
 
 # Paths
 WEBSITE_PATH = Path(__file__).parent.absolute()
@@ -30,6 +32,7 @@ class CommandLib:
         "str": "Text",
         "string": "Text",
     }
+    API_PREFIX = "/api/v1"
 
     # These examples will be generated in the core, but we keep them here meanwhile
     EXAMPLE_PARAMS: Dict[str, Dict] = {
@@ -58,6 +61,9 @@ class CommandLib:
             "start_date": '"2023-01-01"',
             "end_date": '"2023-12-31"',
         },
+        "/derivatives/futures/curve": {
+            "symbol": '"NG"',
+        },
         "economy": {
             "countries": '"united_states"',
             "start_date": '"2023-01-01"',
@@ -71,6 +77,9 @@ class CommandLib:
             "period": '"quarter"',
             "type": '"real"',
             "adjusted": "TRUE",
+        },
+        "/economy/fred_regional": {
+            "symbol": '"NYICLAIMS"',
         },
         "equity": {
             "symbol": '"AAPL"',
@@ -155,6 +164,17 @@ class CommandLib:
         with open(XL_PLATFORM_PATH, "w") as f:
             json.dump(r.json(), f, indent=2)
 
+    @staticmethod
+    def _traverse(
+        parts: List[str], map_: dict, exclude: Optional[List[str]] = None
+    ) -> dict:
+        """Traverse the map."""
+        parts = [p for p in parts if p not in (exclude or [])]
+        try:
+            return reduce(lambda x, y: x[y], parts, map_)
+        except KeyError:
+            return {}
+
     def read_seo_metadata(self) -> dict:
         """Get the SEO metadata."""
         with open(SEO_METADATA_PATH) as f:
@@ -210,20 +230,36 @@ class CommandLib:
 
     def _get_data(self, cmd: str) -> dict:
         """Get the data of the command from the openapi."""
-        model = (
-            self.openapi.get("paths", {})
-            .get(f"/api/v1{cmd}", {})
-            .get("get", {})
-            .get("model")
+        schema = self._traverse(
+            [
+                "paths",
+                self.API_PREFIX + cmd,
+                "get",
+                "responses",
+                "200",
+                "content",
+                "application/json",
+                "schema",
+            ],
+            self.openapi,
         )
-        if model:
-            schema = self.openapi["components"]["schemas"][model]["properties"]
-            data = {}
-            for name, info in schema.items():
-                data[name] = {
-                    "description": info.get("description", "").replace("\n", " "),
+        if "$ref" in schema and (
+            inner_schema := self._traverse(
+                schema["$ref"].split("/"), self.openapi, ["#"]
+            )
+        ):
+            models = self._traverse(["properties", "results", "anyOf"], inner_schema)[0]
+            if models.get("type") == "array":
+                models = models["items"]
+
+            d = {}
+            for k, v in self._traverse(["discriminator", "mapping"], models).items():
+                model_schema = self._traverse(v.split("/"), self.openapi, ["#"])
+                d[k] = {
+                    name: {"description": info.get("description", "").replace("\n", "")}
+                    for name, info in model_schema["properties"].items()
                 }
-            return data
+            return d
         return {}
 
     def _get_examples(
@@ -232,6 +268,9 @@ class CommandLib:
         """Get the examples of the command."""
         sig = signature_.split("(")[0] + "("
         category = signature_.split(".")[1].lower()
+
+        if cmd == "/economy/fred_regional":
+            print(cmd)
 
         def get_p_value(cmd, p_name) -> str:
             if cmd in self.EXAMPLE_PARAMS:
@@ -368,15 +407,21 @@ class Editor:
                 return parameters
             return ""
 
-        def get_return_data() -> str:
+        def get_data() -> str:
             if data_schema := cmd_info["data"]:
-                data = "## Return Data\n\n"
-                data += "| Name | Description |\n"
-                data += "| ---- | ----------- |\n"
-                for field_name, field_info in data_schema.items():
-                    name = field_name
-                    description = field_info["description"]
-                    data += f"| {name} | {description} |\n"
+                data = "import Tabs from '@theme/Tabs';\n"
+                data += "import TabItem from '@theme/TabItem';\n\n"
+                data += "## Data\n\n"
+                data += "<Tabs>\n"
+                for provider, fields in data_schema.items():
+                    data += f"<TabItem value='{provider}'>\n\n"
+                    data += "| Name | Description |\n"
+                    data += "| ---- | ----------- |\n"
+                    for name, info in fields.items():
+                        description = info["description"]
+                        data += f"| {name} | {description} |\n"
+                    data += "</TabItem>\n"
+                data += "</Tabs>\n"
                 return data
             return ""
 
@@ -400,7 +445,7 @@ class Editor:
         content += "---\n\n"
         content += get_parameters()
         content += "---\n\n"
-        content += get_return_data()
+        content += get_data()
         Editor.write(path, content)
 
     def generate_sidebar(self):
@@ -478,20 +523,16 @@ class Editor:
 
             ### Main folder
             if folder == self.main_folder:
-                files = list(path.glob("*"))
-                # Put the cmds_folder folder at the end
-                index = next(
-                    (
-                        i
-                        for i, path in enumerate(files)
-                        if path.stem == self.main_folder
-                    ),
-                    None,
+                # sort the folders first and then files to push byod,get to the bottom
+                files = sorted(
+                    list(path.glob("*")),
+                    key=lambda path: ((0, path) if path.is_dir() else (1, path)),
                 )
-                if index is not None:
-                    cmd_folder = files.pop(index)
-                    files.append(cmd_folder)
-                content += get_cards(folder=folder, files=files, command=False)
+                content += get_cards(
+                    folder=folder,
+                    files=files,
+                    command=False,
+                )
                 return content
 
             ### Menus
@@ -527,7 +568,7 @@ class Editor:
 
         def recursive(path: Path):
             position = 1
-            for p in path.iterdir():
+            for p in sorted(path.iterdir()):
                 if p.is_dir():
                     write_mdx_and_category(p, p.name, position)
                     recursive(p)
