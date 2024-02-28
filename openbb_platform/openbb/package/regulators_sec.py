@@ -55,7 +55,7 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CikMap
@@ -125,7 +125,7 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         InstitutionsSearch
@@ -184,7 +184,7 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         RssLitigation
@@ -261,12 +261,12 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         SchemaFiles
         -----------
-        files : Optional[List]
+        files : Optional[List[str]]
             Dictionary of URLs to SEC Schema Files (provider: sec)
 
         Example
@@ -347,7 +347,7 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         SicSearch
@@ -421,7 +421,7 @@ class ROUTER_regulators_sec(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         SymbolMap

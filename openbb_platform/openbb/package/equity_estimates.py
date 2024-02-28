@@ -74,7 +74,7 @@ class ROUTER_equity_estimates(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         AnalystSearch
@@ -227,7 +227,7 @@ class ROUTER_equity_estimates(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         PriceTargetConsensus
@@ -321,7 +321,7 @@ class ROUTER_equity_estimates(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         AnalystEstimates
@@ -459,7 +459,7 @@ class ROUTER_equity_estimates(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         PriceTarget
