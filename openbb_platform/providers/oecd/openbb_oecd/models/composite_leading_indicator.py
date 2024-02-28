@@ -78,7 +78,7 @@ class OECDCLIFetcher(Fetcher[OECDCLIQueryParams, List[OECDCLIData]]):
 
     @staticmethod
     def extract_data(
-        query: OECDCLIQueryParams,  # pylint: disable=W0613
+        query: OECDCLIQueryParams,  # pylint: disable=unused-argument
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict:
@@ -107,6 +107,6 @@ class OECDCLIFetcher(Fetcher[OECDCLIQueryParams, List[OECDCLIData]]):
     @staticmethod
     def transform_data(
         query: OECDCLIQueryParams, data: Dict, **kwargs: Any
-    ) -> List[OECDCLIData]:
+    ) -> List[OECDCLIData]:  # pylint: disable=unused-argument
         """Transform the data from the OECD endpoint."""
         return [OECDCLIData.model_validate(d) for d in data]
