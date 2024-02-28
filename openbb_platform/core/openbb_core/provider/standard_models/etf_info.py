@@ -34,9 +34,7 @@ class EtfInfoData(Data):
     )
     inception_date: Optional[str] = Field(description="Inception date of the ETF.")
     prev_close: Optional[float] = Field(
-        default=None,
-        description="The previous closing price.",
-        alias="previousClose",
+        default=None, description=DATA_DESCRIPTIONS.get("prev_close", "")
     )
     website: Optional[str] = Field(default=None, description="Website of the issuer.")
     issuer: Optional[str] = Field(description="The issuer of the ETF.", default=None)
