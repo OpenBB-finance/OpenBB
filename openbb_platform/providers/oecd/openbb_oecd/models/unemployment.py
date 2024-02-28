@@ -98,9 +98,10 @@ class OECDUnemploymentFetcher(
 
         return OECDUnemploymentQueryParams(**transformed_params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
-        query: OECDUnemploymentQueryParams,  # pylint: disable=unused-argument
+        query: OECDUnemploymentQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict:
@@ -141,9 +142,10 @@ class OECDUnemploymentFetcher(
 
         return data
 
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: OECDUnemploymentQueryParams, data: Dict, **kwargs: Any
-    ) -> List[OECDUnemploymentData]:  # pylint: disable=unused-argument
+    ) -> List[OECDUnemploymentData]:
         """Transform the data from the OECD endpoint."""
         return [OECDUnemploymentData.model_validate(d) for d in data]
