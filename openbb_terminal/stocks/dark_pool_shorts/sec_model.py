@@ -115,7 +115,9 @@ def get_fails_to_deliver(
             response = requests.get(
                 url, headers={"User-Agent": get_user_agent()}, timeout=10
             )
-            with zipfile.ZipFile(io.BytesIO(response.content)) as z, z.open(z.namelist()[0]) as f:
+            with zipfile.ZipFile(io.BytesIO(response.content)) as z, z.open(
+                z.namelist()[0]
+            ) as f:
                 all_ftds = pd.read_csv(
                     f,
                     sep="|",
