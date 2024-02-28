@@ -76,7 +76,7 @@ class ROUTER_fixedincome_rate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         AMERIBOR
@@ -161,7 +161,7 @@ class ROUTER_fixedincome_rate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         DiscountWindowPrimaryCreditRate
@@ -252,7 +252,7 @@ class ROUTER_fixedincome_rate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EuropeanCentralBankInterestRates
@@ -337,7 +337,7 @@ class ROUTER_fixedincome_rate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         FEDFUNDS
@@ -404,7 +404,7 @@ class ROUTER_fixedincome_rate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         PROJECTIONS
@@ -498,7 +498,7 @@ class ROUTER_fixedincome_rate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         ESTR
@@ -580,7 +580,7 @@ class ROUTER_fixedincome_rate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         IORB
@@ -664,7 +664,7 @@ class ROUTER_fixedincome_rate(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         SONIA

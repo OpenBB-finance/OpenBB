@@ -72,7 +72,7 @@ class ROUTER_currency(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CurrencyPairs
