@@ -269,9 +269,6 @@ class CommandLib:
         sig = signature_.split("(")[0] + "("
         category = signature_.split(".")[1].lower()
 
-        if cmd == "/economy/fred_regional":
-            print(cmd)
-
         def get_p_value(cmd, p_name) -> str:
             if cmd in self.EXAMPLE_PARAMS:
                 return self.EXAMPLE_PARAMS[cmd].get(p_name, "")
