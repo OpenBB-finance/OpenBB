@@ -190,7 +190,7 @@ class ROUTER_equity_ownership(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         InsiderTrading
@@ -285,7 +285,7 @@ class ROUTER_equity_ownership(Container):
         symbol: Annotated[
             str, OpenBBCustomParameter(description="Symbol to get data for.")
         ],
-        provider: Optional[Literal["fmp", "intrinio"]] = None,
+        provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """Get data about institutional ownership for a given company over time.
@@ -294,7 +294,7 @@ class ROUTER_equity_ownership(Container):
         ----------
         symbol : str
             Symbol to get data for.
-        provider : Optional[Literal['fmp', 'intrinio']]
+        provider : Optional[Literal['fmp']]
             The provider to use for the query, by default None.
             If None, the provider specified in defaults is selected or 'fmp' if there is
             no default.
@@ -302,21 +302,19 @@ class ROUTER_equity_ownership(Container):
             Include current quarter data. (provider: fmp)
         date : Optional[datetime.date]
             A specific date to get data for. (provider: fmp)
-        limit : Optional[int]
-            The number of data entries to return. (provider: intrinio)
 
         Returns
         -------
         OBBject
             results : List[InstitutionalOwnership]
                 Serializable results.
-            provider : Optional[Literal['fmp', 'intrinio']]
+            provider : Optional[Literal['fmp']]
                 Provider name.
             warnings : Optional[List[Warning_]]
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         InstitutionalOwnership
@@ -393,24 +391,6 @@ class ROUTER_equity_ownership(Container):
             Put-call ratio on the previous reporting date. (provider: fmp)
         put_call_ratio_change : Optional[float]
             Change in the put-call ratio between the current and previous reporting dates. (provider: fmp)
-        name : Optional[str]
-            Name of the institutional owner. (provider: intrinio)
-        value : Optional[float]
-            Value of the institutional owner. (provider: intrinio)
-        amount : Optional[float]
-            Amount of the institutional owner. (provider: intrinio)
-        sole_voting_authority : Optional[float]
-            Sole voting authority of the institutional owner. (provider: intrinio)
-        shared_voting_authority : Optional[float]
-            Shared voting authority of the institutional owner. (provider: intrinio)
-        no_voting_authority : Optional[float]
-            No voting authority of the institutional owner. (provider: intrinio)
-        previous_amount : Optional[float]
-            Previous amount of the institutional owner. (provider: intrinio)
-        amount_change : Optional[float]
-            Amount change of the institutional owner. (provider: intrinio)
-        amount_percent_change : Optional[float]
-            Amount percent change of the institutional owner. (provider: intrinio)
 
         Example
         -------
@@ -425,7 +405,7 @@ class ROUTER_equity_ownership(Container):
                     "provider": self._get_provider(
                         provider,
                         "/equity/ownership/institutional",
-                        ("fmp", "intrinio"),
+                        ("fmp",),
                     )
                 },
                 standard_params={
@@ -479,7 +459,7 @@ class ROUTER_equity_ownership(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityOwnership
@@ -623,7 +603,7 @@ class ROUTER_equity_ownership(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         ShareStatistics
