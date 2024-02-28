@@ -182,6 +182,12 @@ class PlotlyTA(PltTA):
         if not isinstance(indicators, ChartIndicators):
             indicators = ChartIndicators.from_dict(indicators or dict(dict()))
 
+        # Apply to_datetime to the index in a way that handles daylight savings.
+        df_stock.loc[:, "date"] = df_stock.index  # type: ignore
+        df_stock["date"] = df_stock["date"].apply(pd.to_datetime)
+        df_stock.index = df_stock["date"]  # type: ignore
+        df_stock.drop(columns=["date"], inplace=True)
+
         self.indicators = indicators
         self.intraday = df_stock.index[-2].time() != df_stock.index[-1].time()
         self.df_stock = df_stock.sort_index(ascending=True)
