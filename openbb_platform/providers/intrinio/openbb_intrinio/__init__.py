@@ -54,6 +54,7 @@ intrinio_provider = Provider(
         "EquityInfo": IntrinioEquityInfoFetcher,
         "EquityQuote": IntrinioEquityQuoteFetcher,
         "EquitySearch": IntrinioEquitySearchFetcher,
+        "EtfHistorical": IntrinioEquityHistoricalFetcher,
         "FinancialRatios": IntrinioFinancialRatiosFetcher,
         "FredSeries": IntrinioFredSeriesFetcher,
         "HistoricalAttributes": IntrinioHistoricalAttributesFetcher,
