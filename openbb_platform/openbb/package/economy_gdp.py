@@ -82,7 +82,7 @@ class ROUTER_economy_gdp(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         GdpForecast
@@ -171,7 +171,7 @@ class ROUTER_economy_gdp(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         GdpNominal
@@ -259,7 +259,7 @@ class ROUTER_economy_gdp(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         GdpReal
