@@ -12,6 +12,7 @@ from openbb_core.provider.standard_models.crypto_historical import (
     CryptoHistoricalData,
     CryptoHistoricalQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     amake_requests,
@@ -37,16 +38,16 @@ class TiingoCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     interval: Literal["1m", "5m", "15m", "30m", "1h", "4h", "1d"] = Field(
-        default="1d", description="Data granularity."
-    )
-    _frequency: Literal["daily", "weekly", "monthly", "annually"] = PrivateAttr(
-        default=None
+        default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
     )
     exchanges: Optional[List[str]] = Field(
         default=None,
         description=(
             "To limit the query to a subset of exchanges e.g. ['POLONIEX', 'GDAX']"
         ),
+    )
+    _frequency: Literal["daily", "weekly", "monthly", "annually"] = PrivateAttr(
+        default=None
     )
 
     # pylint: disable=protected-access
@@ -110,7 +111,7 @@ class TiingoCryptoHistoricalFetcher(
 
         return TiingoCryptoHistoricalQueryParams(**transformed_params)
 
-    # pylint: disable=protected-access,unused-argument
+    # pylint: disable=protected-access
     @staticmethod
     async def aextract_data(
         query: TiingoCryptoHistoricalQueryParams,

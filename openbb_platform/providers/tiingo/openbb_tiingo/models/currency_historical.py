@@ -12,12 +12,13 @@ from openbb_core.provider.standard_models.currency_historical import (
     CurrencyHistoricalData,
     CurrencyHistoricalQueryParams,
 )
+from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     amake_requests,
     get_querystring,
 )
-from pydantic import Field, PrivateAttr, field_validator, model_validator
+from pydantic import Field, PrivateAttr, model_validator
 
 _warn = warnings.warn
 
@@ -37,7 +38,7 @@ class TiingoCurrencyHistoricalQueryParams(CurrencyHistoricalQueryParams):
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     interval: Literal["1m", "5m", "15m", "30m", "1h", "4h", "1d"] = Field(
-        default="1d", description="Data granularity."
+        default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
     )
     _frequency: Literal["daily", "weekly", "monthly", "annually"] = PrivateAttr(
         default=None
