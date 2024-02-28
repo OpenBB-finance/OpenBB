@@ -525,6 +525,7 @@
     "revenue": ["OECD"],
     "spending": ["OECD"],
     "trust": ["OECD"],
+    "macro": ["EconDB"],
     "treasury": ["FED"],
     "fred": ["FRED"],
     "index": ["YahooFinance"]
