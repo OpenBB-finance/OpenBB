@@ -3,7 +3,6 @@
 # pylint: disable=unused-argument
 
 import warnings
-
 from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
@@ -13,7 +12,7 @@ from openbb_core.provider.standard_models.crypto_historical import (
     CryptoHistoricalData,
     CryptoHistoricalQueryParams,
 )
-from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS
+from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     amake_requests,
@@ -37,7 +36,7 @@ class FMPCryptoHistoricalQueryParams(CryptoHistoricalQueryParams):
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     interval: Literal["1m", "5m", "15m", "30m", "1h", "4h", "1d"] = Field(
-        default="1d", description="Time granularity to fetch data for."
+        default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
     )
 
 
