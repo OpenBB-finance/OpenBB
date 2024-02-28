@@ -4,7 +4,7 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 from dateutil.relativedelta import relativedelta
 from pydantic import Field, NonNegativeInt, field_validator
@@ -76,7 +76,7 @@ class CompanyNewsData(Data):
         default=None, description="Symbols associated with the article."
     )
     source: Optional[str] = Field(default=None, description="Source of the article.")
-    id: Optional[str] = Field(default=None, description="Article ID.")
+    id: Optional[Union[int, str]] = Field(default=None, description="Article ID.")
     tags: Optional[str] = Field(
         default=None, description="Tags associated with the article."
     )
