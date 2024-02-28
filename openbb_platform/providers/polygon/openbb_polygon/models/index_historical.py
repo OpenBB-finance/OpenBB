@@ -39,10 +39,16 @@ class PolygonIndexHistoricalQueryParams(IndexHistoricalQueryParams):
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
     interval: str = Field(
-        default="1d", description=QUERY_DESCRIPTIONS.get("interval", "")
+        default="1d",
+        description=QUERY_DESCRIPTIONS.get("interval", "")
+        + " The numberic portion of the interval can be any positive integer."
+        + " The letter portion can be one of the following: s, m, h, d, W, M, Q, Y",
     )
     sort: Literal["asc", "desc"] = Field(
-        default="desc", description="Sort order of the data."
+        default="asc",
+        description="Sort order of the data."
+        + " This impacts the results in combination with the 'limit' parameter."
+        + " The results are always returned in ascending order by date.",
     )
     limit: PositiveInt = Field(
         default=49999, description=QUERY_DESCRIPTIONS.get("limit", "")
