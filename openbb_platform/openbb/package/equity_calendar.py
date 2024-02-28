@@ -65,7 +65,7 @@ class ROUTER_equity_calendar(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CalendarDividend
@@ -158,7 +158,7 @@ class ROUTER_equity_calendar(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CalendarEarnings
@@ -272,7 +272,7 @@ class ROUTER_equity_calendar(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CalendarIpo
@@ -430,7 +430,7 @@ class ROUTER_equity_calendar(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CalendarSplits
