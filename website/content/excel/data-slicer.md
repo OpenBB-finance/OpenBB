@@ -50,6 +50,11 @@ When passing date labels make sure to use the format `YYYY/MM/DD` or refer to a 
 =OBB.GET(A1:D3,2,3)
 ```
 
+:::tip
+To slice the from the last row use negative numbers. For example, `=OBB.GET(A1:D3,-1,-2)` will return the last row and the second to last column.
+:::
+
+
 - Slicing multiple rows and columns:
 
 ```excel
