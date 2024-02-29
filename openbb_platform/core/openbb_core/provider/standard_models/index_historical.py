@@ -32,7 +32,6 @@ class IndexHistoricalQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("interval", ""),
     )
 
-
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def upper_symbol(cls, v: str) -> str:
