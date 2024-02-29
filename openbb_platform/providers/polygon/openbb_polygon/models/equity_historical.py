@@ -1,6 +1,6 @@
 """Polygon Equity Historical Price Model."""
 
-# pylint: disable=unused-argument
+# pylint: disable=unused-argument,protected-access
 
 import warnings
 from datetime import datetime
@@ -65,7 +65,7 @@ class PolygonEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     _multiplier: PositiveInt = PrivateAttr(default=None)
     _timespan: str = PrivateAttr(default=None)
 
-    # pylint: disable=protected-access
+
     @model_validator(mode="after")
     @classmethod
     def get_api_interval_params(cls, values: "PolygonEquityHistoricalQueryParams"):
