@@ -42,7 +42,7 @@ class PolygonEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     interval: str = Field(
         default="1d",
         description=QUERY_DESCRIPTIONS.get("interval", "")
-        + " The numberic portion of the interval can be any positive integer."
+        + " The numeric portion of the interval can be any positive integer."
         + " The letter portion can be one of the following: s, m, h, d, W, M, Q, Y",
     )
     adjustment: Literal["splits_only", "unadjusted"] = Field(
