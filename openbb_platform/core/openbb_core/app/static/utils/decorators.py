@@ -48,8 +48,15 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
         try:
             return func(*f_args, **f_kwargs)
         except (ValidationError, Exception) as e:
+            # If the DEBUG_MODE is enabled, raise the exception with complete traceback
             if Env().DEBUG_MODE:
                 raise
+
+            # Get the last traceback object from the exception
+            tb = e.__traceback__
+            while tb.tb_next is not None:
+                tb = tb.tb_next
+
             if isinstance(e, ValidationError):
                 error_list = []
 
@@ -67,13 +74,14 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
 
                 error_list.insert(0, validation_error)
                 error_str = "\n".join(error_list)
+
                 raise OpenBBError(
                     f"\nType -> ValidationError \n\nDetails -> {error_str}"
-                ) from None
+                ).with_traceback(tb) from None
 
             # If the error is not a ValidationError, then it is a generic exception
             raise OpenBBError(
-                f"\nType -> {e.original.original.__class__.__name__}\n\nDetail -> {str(e)}"
-            ) from None
+                f"\nType -> {e.original.__class__.__name__}\n\nDetail -> {str(e)}"
+            ).with_traceback(tb) from None
 
     return wrapper
