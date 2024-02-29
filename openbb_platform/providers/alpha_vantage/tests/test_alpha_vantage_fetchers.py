@@ -20,13 +20,12 @@ def vcr_config():
 
 
 @pytest.mark.record_http
-@pytest.mark.skip(reason="This is a premium endpoint.")
 def test_av_equity_historical_fetcher(credentials=test_credentials):
     params = {
         "symbol": "AAPL",
         "start_date": date(2023, 1, 1),
         "end_date": date(2023, 1, 10),
-        "interval": "1d",
+        "interval": "15m",
     }
 
     fetcher = AVEquityHistoricalFetcher()

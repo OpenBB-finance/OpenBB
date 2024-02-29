@@ -3,30 +3,30 @@ interactions:
     body: null
     headers:
       Accept:
-      - '*/*'
+      - application/json
       Accept-Encoding:
-      - gzip, deflate, br
+      - gzip, deflate
       Connection:
       - keep-alive
     method: GET
-    uri: https://api-v2.intrinio.com/securities/AAPL/prices?api_key=MOCK_API_KEY&end_date=2023-01-10&end_time=23%3A59%3A59&frequency=daily&source=realtime&start_date=2023-01-01&start_time=00%3A00%3A00&timezone=UTC
+    uri: https://api-v2.intrinio.com/securities/AAPL/prices?api_key=MOCK_API_KEY&end_date=2023-01-10&end_time=23%3A59%3A59&frequency=daily&source=realtime&start_date=2023-01-01&start_time=00%3A00%3A00&timezone=America%2FNew_York
   response:
     body:
       string: !!binary |
-        H4sIADErLWUAA6yW207cMBCGX6Xy9a5lx8fsHagVqtTSA6ICVVUUZb27hpCkThZYEO/OeI9xslwQ
-        cTnj8Xj8+c9MnlHdlNltUjmbmRpN/j6jadoYNEERidiY0DElaIRs0bi0Ms6WUzSZpXltRmjmzP+l
-        KbIVBE9Tm68grqxMgSaUERzJEVrY+cJbdG3l5QMYkcY0GqEsL2uziVRshO7LfHkHtmQ6llQITEYo
-        nd4k23xRjBXdeHY5yd6zzauw0BtHKzdVG9ex/LM0a0oHcd6oq9w2iUsbW249U3tvp6aA+xJvZou0
-        mBtv+GMARWaKJjl4CeECctpZs0qahzJ5MOZ2V6xSWEe9xW3dDEv+MuphJ/Eg7FwdsDPM6R57jHUc
-        YKfigF0RFRNNWR973MEeYc0D7DFmPMQOLhlSb6cfTJ29QZ1+KHX5fuqRxIQeqIP04z11HlD3ZKID
-        da2U4Ir2xC7Wr9ii7uUfUueYyR510hF7O/8w7PwtsTOpPxS7GIBdYcr22MFSqoVdyRZ2INDGTmIZ
-        KaK72CUWcYhd4Yh1sO8c+9wc87iDvZV/GPYxxeyI3McQRIn8UPB8kN69qHeQNJaH5g6kdQu8XMt0
-        DyamlEnW6zIQJULwMCNoB7wQHfBifdsAfCv/MPAwqI7rnRL2JnYolr8XOxs2U3W7zbS7jJ9zbbmr
-        A3VKI0oV9IEjM5V1ZyoL24wvv6d3wUPswQEDBc/XY+WY4Jnqw93WqwnW/TbUJv8PajDZ0tkGgD4j
-        C+d6R5LOb9z8Bthm5V2VFqtkvQJGcn4lz55+wMrmt8g8bmrZBNSP86R8+u5i/yxF6i+PTqoqN5++
-        Ftk629S7vvy68MbSue1LXl58Bkdjs1vj/JaTn9+2Z5e1bUwSrEwu/e6ZnVtwnJ6eEUJO42txFQVb
-        OutXv6/9l1wvUmfgrdK6DiLohTjXfzREwH/eXepWSW7rxhZzNGnc0rzAbcxjk1Spp14s8/zlFQAA
-        //8DAMvSMmUYCgAA
+        H4sIALYJ4GUAA6yW226cMBCGX6XyNWv5ADbsXaJWUaU2PUStElUVsljvrhMC1LBJNlHeveM9YWDT
+        qjSXM54Z29/8jHlCdVNmN2llTaZrNP3xhGaq0WiKGGF8QuiEEhQgUzRWVdqacoamc5XXOkBzq3+t
+        dJGtIXimTL6GuLLSBZpSTjATAVqaxdJZdGPl5T0YLMaUBSjLy1pvIyUP0F2Zr27BFjxOBI0iTAKk
+        Ztfprh5LMJdbz74mOXh2dSVm0daxrw1Zcbh1Has/V1lTWohzRl3lpkmtaky588zMnZnpAu5LnJkt
+        VbHQzojiAAGKTBdN2noJCWH7uZk367S5L9N7rW/2h5Vyk9Rb3J2bY86egwF2kozCHsoWO8chPWAH
+        FkkHO41a7JLIhMSUD7FHPewMRx3qyT7Fg+6a7UP3q4+Gzl+ATl8Vuvh36ExgQlvooPzkAD3sQAc0
+        grXQYymjUNKB1qNNazzokBd2oIeYhD3qMZY9qfvlx1EPN90/Qp2LIdj/oR6NoC4x5QfqYEnpUZfC
+        ow4EfOokEUySuE9dHGS7rylw0qHOcUJ71ENMZY+6V34c9QnF/IjYJxBEiXhV7uEotTtJ7xnFWLST
+        HUDHHneBufC4J5RywQcjRmy643OHXsY9uTPeAx/tx9Cx8uO4wyN1fLBTwv9APRkOoL9Q5+Pe09if
+        Mf6IcRL0xS5b6JQySiVMgSPvadJ/TwntyZ2zgdwZ62LvbDBS7zAkX9A7dzPtOPmYYDFc9Mn/hDPo
+        bGVNA0CfkIF9nSNVi2u7uAa2WXlbqWKdblbASM8vxdnjJ1jZ/hLph+1ZtgH1wyItHz/axLWlUO7y
+        6KSqcv3mfZFtqs2c692XC2esrN118tvFW3A0JrvR1qWcfP6w27usTaPTzsr0m8uem4UBx+npGSHk
+        NLmKLlknpbd++fXKfcj1UlkNvVJ13YmgF9F5/D2GCPjHu1V2neambkyxQNPGrvQz3EY/NGmlHPVi
+        lefPvwEAAP//AwDtIUFLFAoAAA==
     headers:
       Connection:
       - keep-alive
@@ -35,7 +35,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 16 Oct 2023 12:23:13 GMT
+      - Thu, 29 Feb 2024 04:36:06 GMT
       Transfer-Encoding:
       - chunked
       Vary:
