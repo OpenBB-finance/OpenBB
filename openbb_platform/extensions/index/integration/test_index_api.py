@@ -180,6 +180,7 @@ def test_index_price_historical(params, headers):
     ],
 )
 @pytest.mark.integration
+@pytest.mark.skip(reason="Deprecating this endpoint")
 def test_index_market(params, headers):
     params = {p: v for p, v in params.items() if v}
 
