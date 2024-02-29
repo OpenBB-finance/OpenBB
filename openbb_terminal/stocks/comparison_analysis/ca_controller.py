@@ -16,7 +16,6 @@ from openbb_terminal.decorators import log_start_end
 from openbb_terminal.helper_funcs import (
     EXPORT_BOTH_RAW_DATA_AND_FIGURES,
     EXPORT_ONLY_RAW_DATA_ALLOWED,
-    check_non_negative,
     check_positive,
     check_start_less_than_end,
     valid_date,
@@ -27,7 +26,6 @@ from openbb_terminal.rich_config import MenuText, console, get_ordered_list_sour
 from openbb_terminal.stocks.comparison_analysis import (
     finbrain_view,
     finnhub_model,
-    finviz_compare_model,
     finviz_compare_view,
     marketwatch_view,
     polygon_model,
@@ -67,7 +65,6 @@ class ComparisonAnalysisController(BaseController):
         "ownership",
         "performance",
         "technical",
-        "tsne",
     ]
     choices_ohlca = ["o", "h", "l", "c", "a"]
     CHOICES_MENUS: List = list()
@@ -108,7 +105,6 @@ class ComparisonAnalysisController(BaseController):
         mt.add_raw("\n")
         mt.add_param("_ticker", self.ticker)
         mt.add_raw("\n")
-        mt.add_cmd("tsne", self.ticker)
         mt.add_cmd("get", self.ticker)
         mt.add_raw("\n")
         mt.add_cmd("set")
@@ -177,57 +173,6 @@ class ComparisonAnalysisController(BaseController):
                     self.similar = []
 
     @log_start_end(log=logger)
-    def call_tsne(self, other_args: List[str]):
-        """Process tsne command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="tsne",
-            description="""Get similar companies to compare with using sklearn TSNE.""",
-        )
-        parser.add_argument(
-            "-r",
-            "--learnrate",
-            default=200,
-            dest="lr",
-            type=check_non_negative,
-            help="TSNE Learning rate.  Typical values are between 50 and 200",
-        )
-        parser.add_argument(
-            "-l",
-            "--limit",
-            default=10,
-            dest="limit",
-            type=check_positive,
-            help="Limit of stocks to retrieve. The subsample will occur randomly.",
-        )
-        parser.add_argument(
-            "-p", "--no_plot", action="store_true", default=False, dest="no_plot"
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-l")
-        ns_parser = self.parse_known_args_and_warn(parser, other_args)
-        if ns_parser:
-            if self.ticker:
-                self.similar = yahoo_finance_view.display_sp500_comps_tsne(
-                    self.ticker,
-                    lr=ns_parser.lr,
-                    no_plot=ns_parser.no_plot,
-                    limit=ns_parser.limit,
-                )
-
-                self.similar = [self.ticker] + self.similar
-                console.print(
-                    f"[ML] Similar Companies: {', '.join(self.similar)}", "\n"
-                )
-
-            else:
-                console.print(
-                    "You need to 'set' a ticker to get similar companies from first! This is "
-                    "for example done by running 'ticker gme'"
-                )
-
-    @log_start_end(log=logger)
     def call_get(self, other_args: List[str]):
         """Process get command"""
         parser = argparse.ArgumentParser(
@@ -265,37 +210,7 @@ class ComparisonAnalysisController(BaseController):
         ns_parser = self.parse_known_args_and_warn(parser, other_args)
         if ns_parser:
             if self.ticker:
-                if ns_parser.source == "Finviz":
-                    compare_list = (
-                        ["Sector", "Industry"]
-                        if ns_parser.b_no_country
-                        else ["Sector", "Industry", "Country"]
-                    )
-
-                    self.similar = finviz_compare_model.get_similar_companies(
-                        self.ticker, compare_list
-                    )
-                    if self.similar is None:
-                        return
-                    self.user = "Finviz"
-
-                    if self.ticker.upper() in self.similar:
-                        self.similar.remove(self.ticker.upper())
-
-                    if len(self.similar) > ns_parser.limit:
-                        random.shuffle(self.similar)
-                        self.similar = sorted(self.similar[: ns_parser.limit])
-                        console.print(
-                            f"The limit of stocks to compare are {ns_parser.limit}. The subsample will occur randomly.\n",
-                        )
-
-                    if self.similar:
-                        self.similar = [self.ticker] + self.similar
-
-                        console.print(
-                            f"[{self.user}] Similar Companies: {', '.join(self.similar)}",
-                        )
-                elif ns_parser.source == "Polygon":
+                if ns_parser.source == "Polygon":
                     self.similar = polygon_model.get_similar_companies(
                         self.ticker, ns_parser.us_only
                     )

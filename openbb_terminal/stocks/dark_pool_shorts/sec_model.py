@@ -1,13 +1,15 @@
 """ SEC Model """
 
 __docformat__ = "numpy"
-
+import io
 import logging
+import zipfile
 from datetime import datetime, timedelta
 from typing import Optional
 from urllib.error import HTTPError
 
 import pandas as pd
+import requests
 from bs4 import BeautifulSoup
 
 from openbb_terminal.decorators import log_start_end
@@ -110,16 +112,19 @@ def get_fails_to_deliver(
                 break
             link = links[link_idx]
             url = "https://www.sec.gov" + link["href"]
-            all_ftds = pd.read_csv(
-                url,
-                compression="zip",
-                sep="|",
-                engine="python",
-                skipfooter=2,
-                usecols=[0, 2, 3, 5],
-                dtype={"QUANTITY (FAILS)": "int"},
-                encoding="iso8859",
+            response = requests.get(
+                url, headers={"User-Agent": get_user_agent()}, timeout=10
             )
+            with zipfile.ZipFile(io.BytesIO(response.content)) as z, z.open(
+                z.namelist()[0]
+            ) as f:
+                all_ftds = pd.read_csv(
+                    f,
+                    sep="|",
+                    usecols=[0, 2, 3, 5],
+                    dtype={"QUANTITY (FAILS)": "int"},
+                    encoding="iso8859",
+                )
             tmp_ftds = all_ftds[all_ftds["SYMBOL"] == symbol]
             del tmp_ftds["PRICE"]
             del tmp_ftds["SYMBOL"]
@@ -172,16 +177,19 @@ def get_fails_to_deliver(
 
         for ftd_link in ftd_urls:
             try:
-                all_ftds = pd.read_csv(
-                    ftd_link,
-                    compression="zip",
-                    sep="|",
-                    engine="python",
-                    skipfooter=2,
-                    usecols=[0, 2, 3, 5],
-                    dtype={"QUANTITY (FAILS)": "Int64"},
-                    encoding="iso8859",
+                response = requests.get(
+                    ftd_link, headers={"User-Agent": get_user_agent()}, timeout=10
                 )
+                with zipfile.ZipFile(io.BytesIO(response.content)) as z, z.open(
+                    z.namelist()[0]
+                ) as f:
+                    all_ftds = pd.read_csv(
+                        f,
+                        sep="|",
+                        usecols=[0, 2, 3, 5],
+                        dtype={"QUANTITY (FAILS)": "Int64"},
+                        encoding="iso8859",
+                    )
             except HTTPError:
                 continue
 
