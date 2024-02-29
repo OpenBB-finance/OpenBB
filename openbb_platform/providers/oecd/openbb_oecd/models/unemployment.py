@@ -10,63 +10,21 @@ from openbb_core.provider.standard_models.unemployment import (
     UnemploymentQueryParams,
 )
 from openbb_oecd.utils import helpers
+from openbb_oecd.utils.constants import (
+    CODE_TO_COUNTRY_UNEMPLOYMENT,
+    COUNTRY_TO_CODE_UNEMPLOYMENT,
+)
 from pydantic import Field, field_validator
 
-country_mapping = {
-    "COL": "colombia",
-    "NZL": "new_zealand",
-    "GBR": "united_kingdom",
-    "ITA": "italy",
-    "LUX": "luxembourg",
-    "EA19": "euro_area19",
-    "SWE": "sweden",
-    "OECD": "oecd",
-    "ZAF": "south_africa",
-    "DNK": "denmark",
-    "CAN": "canada",
-    "CHE": "switzerland",
-    "SVK": "slovakia",
-    "HUN": "hungary",
-    "PRT": "portugal",
-    "ESP": "spain",
-    "FRA": "france",
-    "CZE": "czech_republic",
-    "CRI": "costa_rica",
-    "JPN": "japan",
-    "SVN": "slovenia",
-    "RUS": "russia",
-    "AUT": "austria",
-    "LVA": "latvia",
-    "NLD": "netherlands",
-    "ISR": "israel",
-    "ISL": "iceland",
-    "USA": "united_states",
-    "IRL": "ireland",
-    "MEX": "mexico",
-    "DEU": "germany",
-    "GRC": "greece",
-    "TUR": "turkey",
-    "AUS": "australia",
-    "POL": "poland",
-    "KOR": "south_korea",
-    "CHL": "chile",
-    "FIN": "finland",
-    "EU27_2020": "european_union27_2020",
-    "NOR": "norway",
-    "LTU": "lithuania",
-    "EA20": "euro_area20",
-    "EST": "estonia",
-    "BEL": "belgium",
-    "BRA": "brazil",
-    "IDN": "indonesia",
-}
-countries = tuple(country_mapping.values()) + ("all",)
+countries = tuple(CODE_TO_COUNTRY_UNEMPLOYMENT.values()) + ("all",)
 CountriesLiteral = Literal[countries]  # type: ignore
-country_to_code = {v: k for k, v in country_mapping.items()}
 
 
 class OECDUnemploymentQueryParams(UnemploymentQueryParams):
-    """OECD Unemployment Query."""
+    """OECD Unemployment Query.
+
+    Source: https://data-explorer.oecd.org/?lc=en
+    """
 
     country: CountriesLiteral = Field(
         description="Country to get GDP for.", default="united_states"
@@ -109,10 +67,10 @@ class OECDUnemploymentData(UnemploymentData):
                     return date(_year, 12, 31)
             # Now match if it is monthly, i.e 2022-01
             elif re.match(r"\d{4}-\d{2}$", in_date):
-                year, month = map(int, in_date.split("-"))
+                year, month = map(int, in_date.split("-"))  # type: ignore
                 if month == 12:
-                    return date(year, month, 31)
-                next_month = date(year, month + 1, 1)
+                    return date(year, month, 31)  # type: ignore
+                next_month = date(year, month + 1, 1)  # type: ignore
                 return date(next_month.year, next_month.month, 1) - timedelta(days=1)
             # Now match if it is yearly, i.e 2022
             elif re.match(r"\d{4}$", in_date):
@@ -140,9 +98,10 @@ class OECDUnemploymentFetcher(
 
         return OECDUnemploymentQueryParams(**transformed_params)
 
+    # pylint: disable=unused-argument
     @staticmethod
     def extract_data(
-        query: OECDUnemploymentQueryParams,  # pylint: disable=W0613
+        query: OECDUnemploymentQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> Dict:
@@ -157,23 +116,33 @@ class OECDUnemploymentFetcher(
             "55-64": "Y55T64",
         }[query.age]
         seasonal_adjustment = "Y" if query.seasonal_adjustment else "N"
-        country = "" if query.country == "all" else country_to_code[query.country]
+        country = (
+            ""
+            if query.country == "all"
+            else COUNTRY_TO_CODE_UNEMPLOYMENT[query.country]
+        )
         url = "https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_INDIC,1.0/.UNE_LF........"
         data = helpers.get_possibly_cached_data(url, function="economy_unemployment")
-        query = f"AGE=='{age}' & SEX=='{sex}' & FREQ=='{frequency}' & ADJUSTMENT=='{seasonal_adjustment}'"
-        query = query + f" & REF_AREA=='{country}'" if country else query
+        url_query = f"AGE=='{age}' & SEX=='{sex}' & FREQ=='{frequency}' & ADJUSTMENT=='{seasonal_adjustment}'"
+        url_query = url_query + f" & REF_AREA=='{country}'" if country else url_query
         # Filter down
         data = (
-            data.query(query)
+            data.query(url_query)
             .reset_index(drop=True)[["REF_AREA", "TIME_PERIOD", "VALUE"]]
             .rename(
                 columns={"REF_AREA": "country", "TIME_PERIOD": "date", "VALUE": "value"}
             )
         )
-        data["country"] = data["country"].map(country_mapping)
+        data["country"] = data["country"].map(CODE_TO_COUNTRY_UNEMPLOYMENT)
 
-        return data.to_dict(orient="records")
+        data = data.to_dict(orient="records")
+        start_date = query.start_date.strftime("%Y-%m-%d")  # type: ignore
+        end_date = query.end_date.strftime("%Y-%m-%d")  # type: ignore
+        data = list(filter(lambda x: start_date <= x["date"] <= end_date, data))
 
+        return data
+
+    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: OECDUnemploymentQueryParams, data: Dict, **kwargs: Any

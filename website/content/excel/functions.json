@@ -7,22 +7,22 @@
       "name": "GET",
       "parameters": [
         {
-          "description": "Data to slice.",
+          "description": "Array to slice.",
           "dimensionality": "matrix",
-          "name": "data",
+          "name": "array",
           "type": "any"
         },
         {
           "description": "Range of row labels or indices.",
           "dimensionality": "matrix",
-          "name": "row",
+          "name": "rows",
           "optional": true,
           "type": "any"
         },
         {
           "description": "Range of column labels or indices.",
           "dimensionality": "matrix",
-          "name": "column",
+          "name": "columns",
           "optional": true,
           "type": "any"
         }
@@ -2713,40 +2713,6 @@
           "name": "page_size",
           "optional": true,
           "type": "number"
-        }
-      ],
-      "result": {
-        "dimensionality": "matrix"
-      }
-    },
-    {
-      "description": "Equity Ownership. Information about the company ownership.",
-      "helpUrl": "https://docs.openbb.co/excel/reference/equity/ownership/major_holders",
-      "id": "EQUITY.OWNERSHIP.MAJOR_HOLDERS",
-      "name": "EQUITY.OWNERSHIP.MAJOR_HOLDERS",
-      "parameters": [
-        {
-          "description": "Symbol to get data for.",
-          "name": "symbol",
-          "type": "string"
-        },
-        {
-          "description": "A specific date to get data for.",
-          "name": "date",
-          "optional": true,
-          "type": "string"
-        },
-        {
-          "description": "Page number of the data to fetch.",
-          "name": "page",
-          "optional": true,
-          "type": "number"
-        },
-        {
-          "description": "Options: fmp, defaults to fmp.",
-          "name": "provider",
-          "optional": true,
-          "type": "string"
         }
       ],
       "result": {
