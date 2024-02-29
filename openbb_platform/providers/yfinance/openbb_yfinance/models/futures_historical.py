@@ -4,7 +4,7 @@
 # ruff: noqa: SIM105
 
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -15,7 +15,7 @@ from openbb_core.provider.standard_models.futures_historical import (
 from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.helpers import get_futures_data, yf_download
-from openbb_yfinance.utils.references import INTERVALS, MONTHS, PERIODS
+from openbb_yfinance.utils.references import INTERVALS_DICT, MONTHS
 from pandas import Timestamp, to_datetime
 from pydantic import Field, field_validator
 
@@ -28,9 +28,23 @@ class YFinanceFuturesHistoricalQueryParams(FuturesHistoricalQueryParams):
 
     __json_schema_extra__ = {"symbol": ["multiple_items_allowed"]}
 
-    interval: Optional[INTERVALS] = Field(default="1d", description="Data granularity.")
-    period: Optional[PERIODS] = Field(
-        default=None, description=QUERY_DESCRIPTIONS.get("period", "")
+    interval: Literal[
+        "1m",
+        "2m",
+        "5m",
+        "15m",
+        "30m",
+        "60m",
+        "90m",
+        "1h",
+        "1d",
+        "5d",
+        "1W",
+        "1M",
+        "1Q",
+    ] = Field(
+        default="1d",
+        description=QUERY_DESCRIPTIONS.get("interval", ""),
     )
 
 
@@ -112,7 +126,7 @@ class YFinanceFuturesHistoricalFetcher(
             query.symbol,
             start=query.start_date,
             end=query.end_date,
-            interval=query.interval,  # type: ignore
+            interval=INTERVALS_DICT[query.interval],  # type: ignore
             prepost=True,
             auto_adjust=False,
             actions=False,
@@ -120,23 +134,6 @@ class YFinanceFuturesHistoricalFetcher(
 
         if data.empty:
             raise EmptyDataError()
-
-        days = (
-            1
-            if query.interval in ["1m", "2m", "5m", "15m", "30m", "60m", "1h", "90m"]
-            else 0
-        )
-        if "date" in data.columns:
-            data.set_index("date", inplace=True)
-            data.index = to_datetime(data.index)
-        if query.start_date:
-            data = data[
-                (data.index >= to_datetime(query.start_date))
-                & (data.index <= to_datetime(query.end_date + timedelta(days=days)))
-            ]
-
-        data.reset_index(inplace=True)
-        data.rename(columns={"index": "date"}, inplace=True)
 
         return data.to_dict("records")
 
