@@ -9,7 +9,7 @@ interactions:
       Connection:
       - keep-alive
     method: GET
-    uri: https://financialmodelingprep.com/api/v3/historical-price-full/%5EDJI?apikey=MOCK_API_KEY&from=2023-01-01&interval=1d&limit=10000&sort=asc&to=2023-01-10
+    uri: https://financialmodelingprep.com/api/v3/historical-price-full/%5EDJI?apikey=MOCK_API_KEY&from=2023-01-01&interval=1d&to=2023-01-10
   response:
     body:
       string: !!binary |
