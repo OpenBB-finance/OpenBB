@@ -6,7 +6,6 @@ import re
 from datetime import date, timedelta
 from typing import Any, Dict, List, Literal, Optional, Union
 
-from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.long_term_interest_rate import (
     LTIRData,
@@ -113,13 +112,11 @@ class OECDLTIRFetcher(Fetcher[OECDLTIRQueryParams, List[OECDLTIRData]]):
         )
         data["country"] = data["country"].map(CODE_TO_COUNTRY_IR)
         data = data.fillna("N/A").replace("N/A", None)
-        data = data.to_dict(orient="records")
-
-        start_date = (query.start_date - relativedelta(months=1)).strftime("%Y-%m-%d")  # type: ignore
-        end_date = (query.end_date - relativedelta(months=1)).strftime("%Y-%m-%d")  # type: ignore
-        data = list(filter(lambda x: start_date <= x["date"] <= end_date, data))
-
-        return data
+        data["date"] = data["date"].apply(helpers.oecd_date_to_python_date)
+        data = data[
+            (data["date"] <= query.end_date) & (data["date"] >= query.start_date)
+        ]
+        return data.to_dict(orient="records")
 
     @staticmethod
     def transform_data(

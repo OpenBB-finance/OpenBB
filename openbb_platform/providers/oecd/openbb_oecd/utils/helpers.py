@@ -2,14 +2,14 @@ import ssl
 from datetime import date
 from io import StringIO
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Union
 
 import requests
 import urllib3
 from defusedxml.ElementTree import fromstring
 from openbb_core.app.utils import get_user_cache_directory
 from openbb_core.provider import helpers
-from pandas import DataFrame, read_csv, read_parquet
+from pandas import DataFrame, read_csv, read_parquet, to_datetime
 
 cache = get_user_cache_directory() + "/oecd"
 # Create the cache directory if it does not exist
@@ -245,3 +245,15 @@ def get_possibly_cached_data(
         if not skip_cache:
             write_to_cache(cache_str=base_cache, data=data, cache_method=cache_method)
     return data
+
+
+def oecd_date_to_python_date(input_date: Union[str, int]) -> date:
+    """Darrens good idea to make the dates filterable"""
+    input_date = str(input_date)
+    if "Q" in input_date:
+        return to_datetime(input_date).to_period("Q").to_timestamp("Q").date()
+    if len(input_date) == 4:
+        return date(int(input_date), 12, 31)
+    if len(input_date) == 7:
+        return to_datetime(input_date).to_period("M").to_timestamp("M").date()
+    raise ValueError("Date not in expected format")

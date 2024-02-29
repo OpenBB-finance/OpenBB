@@ -3,7 +3,6 @@
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional, Union
 
-from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.gdp_nominal import (
     GdpNominalData,
@@ -82,15 +81,14 @@ class OECDGdpNominalFetcher(
         if query.country != "all":
             data_df = data_df[data_df["country"] == query.country]
         data_df = data_df[["country", "date", "value"]]
-        data = data_df.to_dict(orient="records")
-        start_date = (query.start_date - relativedelta(months=1)).strftime("%Y-%m-%d")  # type: ignore
-        end_date = (query.end_date - relativedelta(months=1)).strftime("%Y-%m-%d")  # type: ignore
-        data = [
-            x
-            for x in data
-            if f"{x['date']}-01-01" >= start_date and f"{x['date']}-12-31" <= end_date
+        data_df["date"] = data_df["date"].apply(helpers.oecd_date_to_python_date)
+        data_df = data_df[
+            (data_df["date"] <= query.end_date) & (data_df["date"] >= query.start_date)
         ]
-        return data
+        data_df["date"] = data_df["date"].apply(
+            lambda x: x.year
+        )  # Validator wont accept datetime.date?
+        return data_df.to_dict(orient="records")
 
     @staticmethod
     def transform_data(
