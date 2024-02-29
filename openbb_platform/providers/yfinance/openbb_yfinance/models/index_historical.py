@@ -4,7 +4,7 @@
 # pylint: disable=unused-argument
 
 import warnings
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 import pandas as pd

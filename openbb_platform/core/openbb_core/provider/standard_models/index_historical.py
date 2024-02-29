@@ -4,10 +4,10 @@ from datetime import (
     date as dateType,
     datetime,
 )
-from typing import Literal, Optional, Union
+from typing import Optional, Union
 
 from dateutil import parser
-from pydantic import Field, PositiveInt, StrictFloat, field_validator
+from pydantic import Field, StrictFloat, field_validator
 
 from openbb_core.provider.abstract.data import Data, ForceInt
 from openbb_core.provider.abstract.query_params import QueryParams

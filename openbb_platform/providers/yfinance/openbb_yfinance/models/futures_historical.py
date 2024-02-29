@@ -3,7 +3,7 @@
 # pylint: disable=unused-argument
 # ruff: noqa: SIM105
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Any, Dict, List, Literal, Optional
 
 from dateutil.relativedelta import relativedelta
@@ -16,7 +16,7 @@ from openbb_core.provider.utils.descriptions import QUERY_DESCRIPTIONS
 from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_yfinance.utils.helpers import get_futures_data, yf_download
 from openbb_yfinance.utils.references import INTERVALS_DICT, MONTHS
-from pandas import Timestamp, to_datetime
+from pandas import Timestamp
 from pydantic import Field, field_validator
 
 

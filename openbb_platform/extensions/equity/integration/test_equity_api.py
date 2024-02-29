@@ -1,7 +1,6 @@
 """API integration tests for equity extension."""
 
 import base64
-from datetime import time
 
 import pytest
 import requests
