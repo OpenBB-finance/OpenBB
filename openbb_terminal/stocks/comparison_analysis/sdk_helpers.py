@@ -6,7 +6,6 @@ from typing import List
 
 from openbb_terminal.stocks.comparison_analysis import (
     finnhub_model,
-    finviz_compare_model,
     polygon_model,
     yahoo_finance_model,
 )
@@ -36,9 +35,6 @@ def get_similar(symbol: str, source="Finviz") -> List[str]:
     To use our custom TSNE model for similar tickers in the SP500:
     >>> similar_tickers = openbb.stocks.ca.similar("AAPL", source="TSNE")
     """
-    if source.lower() == "finviz":
-        return finviz_compare_model.get_similar_companies(symbol)
-
     if source.lower() == "polygon":
         return polygon_model.get_similar_companies(symbol)
 
