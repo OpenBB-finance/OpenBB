@@ -48,14 +48,14 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
         try:
             return func(*f_args, **f_kwargs)
         except (ValidationError, Exception) as e:
-            # Get the last traceback object from the exception
-            tb = e.original.__traceback__
-            while tb.tb_next is not None:
-                tb = tb.tb_next
-
             # If the DEBUG_MODE is enabled, raise the exception with complete traceback
             if Env().DEBUG_MODE:
                 raise
+
+            # Get the last traceback object from the exception
+            tb = e.__traceback__
+            while tb.tb_next is not None:
+                tb = tb.tb_next
 
             if isinstance(e, ValidationError):
                 error_list = []
