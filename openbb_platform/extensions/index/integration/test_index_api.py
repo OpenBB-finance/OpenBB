@@ -43,57 +43,28 @@ def test_index_constituents(params, headers):
     [
         (
             {
-                "interval": "1m",
-                "provider": "cboe",
-                "symbol": "AAVE100",
-                "start_date": "2024-01-01",
-                "end_date": "2024-02-05",
-                "use_cache": False,
-                "sort": None,
-                "limit": None,
-            }
-        ),
-        (
-            {
                 "interval": "1d",
                 "provider": "cboe",
                 "symbol": "AAVE100",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "use_cache": False,
-                "sort": None,
-                "limit": None,
             }
         ),
         (
             {
-                "interval": "1min",
+                "interval": "1d",
                 "provider": "fmp",
                 "symbol": "^DJI",
                 "start_date": "2024-01-01",
                 "end_date": "2024-02-05",
-                "timeseries": 1,
-                "sort": "desc",
-                "limit": None,
             }
         ),
         (
             {
-                "interval": "1day",
-                "provider": "fmp",
-                "symbol": "^DJI",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "timeseries": 1,
-                "sort": "desc",
-                "limit": None,
-            }
-        ),
-        (
-            {
+                "interval": "1m",
                 "sort": "desc",
                 "limit": 49999,
-                "interval": "1m",
                 "provider": "polygon",
                 "symbol": "NDX",
                 "start_date": "2023-01-01",
@@ -114,15 +85,10 @@ def test_index_constituents(params, headers):
         (
             {
                 "interval": "1d",
-                "period": "max",
-                "prepost": True,
-                "rounding": True,
                 "provider": "yfinance",
                 "symbol": "DJI",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "sort": None,
-                "limit": None,
             }
         ),
         (
@@ -132,7 +98,6 @@ def test_index_constituents(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "symbol": "DJI",
-                "sort": "desc",
                 "limit": 100,
             }
         ),

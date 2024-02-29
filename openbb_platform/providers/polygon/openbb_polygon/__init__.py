@@ -34,6 +34,7 @@ polygon_provider = Provider(
         "CurrencyPairs": PolygonCurrencyPairsFetcher,
         "EquityHistorical": PolygonEquityHistoricalFetcher,
         "EquityNBBO": PolygonEquityNBBOFetcher,
+        "EtfHistorical": PolygonEquityHistoricalFetcher,
         "IncomeStatement": PolygonIncomeStatementFetcher,
         "IndexHistorical": PolygonIndexHistoricalFetcher,
         "MarketIndices": PolygonMarketIndicesFetcher,

@@ -52,11 +52,10 @@ class AVEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     )
     adjustment: Literal["splits_only", "splits_and_dividends", "unadjusted"] = Field(
         description="The adjustment factor to apply. 'splits_only' is not supported for intraday data.",
-        default="splits_and_dividends",
+        default="splits_only",
     )
     extended_hours: Optional[bool] = Field(
-        description="Extended trading hours during pre-market and after-hours."
-        "Only available for intraday data.",
+        description="Include Pre and Post market data.",
         default=False,
     )
 

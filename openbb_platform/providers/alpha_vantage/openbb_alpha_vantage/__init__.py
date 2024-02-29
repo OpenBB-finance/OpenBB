@@ -16,5 +16,6 @@ alpha_vantage_provider = Provider(
     credentials=["api_key"],
     fetcher_dict={
         "EquityHistorical": AVEquityHistoricalFetcher,
+        "EtfHistorical": AVEquityHistoricalFetcher,
     },
 )

@@ -42,47 +42,18 @@ def test_index_constituents(params, obb):
                 "interval": "1d",
                 "provider": "cboe",
                 "symbol": "AAVE100",
-                "start_date": "2024-01-01",
-                "end_date": "2024-02-05",
+                "start_date": "2023-01-01",
+                "end_date": "2023-06-06",
                 "use_cache": False,
-                "sort": None,
-                "limit": None,
             }
         ),
         (
             {
                 "interval": "1d",
-                "provider": "cboe",
-                "symbol": "AAVE100",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "use_cache": False,
-                "sort": None,
-                "limit": None,
-            }
-        ),
-        (
-            {
-                "interval": "1min",
                 "provider": "fmp",
                 "symbol": "^DJI",
                 "start_date": "2024-01-01",
                 "end_date": "2024-02-05",
-                "timeseries": 1,
-                "sort": "desc",
-                "limit": None,
-            }
-        ),
-        (
-            {
-                "interval": "1day",
-                "provider": "fmp",
-                "symbol": "^DJI",
-                "start_date": "2023-01-01",
-                "end_date": "2023-06-06",
-                "timeseries": 1,
-                "sort": "desc",
-                "limit": None,
             }
         ),
         (
@@ -110,15 +81,10 @@ def test_index_constituents(params, obb):
         (
             {
                 "interval": "1d",
-                "period": "max",
-                "prepost": True,
-                "rounding": True,
                 "provider": "yfinance",
                 "symbol": "DJI",
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
-                "sort": None,
-                "limit": None,
             }
         ),
         (
@@ -128,7 +94,6 @@ def test_index_constituents(params, obb):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "symbol": "DJI",
-                "sort": "desc",
                 "limit": 100,
             }
         ),

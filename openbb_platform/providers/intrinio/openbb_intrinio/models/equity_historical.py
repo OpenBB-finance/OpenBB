@@ -234,7 +234,12 @@ class IntrinioEquityHistoricalFetcher(
         **kwargs: Any,
     ) -> List[IntrinioEquityHistoricalData]:
         """Return the transformed data."""
+        date_col = (
+            "time"
+            if query.interval in ["1m", "5m", "10m", "15m", "30m", "60m", "1h"]
+            else "date"
+        )
         return [
             IntrinioEquityHistoricalData.model_validate(d)
-            for d in sorted(data, key=lambda x: x["date"], reverse=False)
+            for d in sorted(data, key=lambda x: x[date_col], reverse=False)
         ]

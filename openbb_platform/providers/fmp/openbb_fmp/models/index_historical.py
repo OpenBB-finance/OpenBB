@@ -13,6 +13,7 @@ from openbb_core.provider.standard_models.index_historical import (
     IndexHistoricalQueryParams,
 )
 from openbb_core.provider.utils.descriptions import DATA_DESCRIPTIONS, QUERY_DESCRIPTIONS
+from openbb_core.provider.utils.errors import EmptyDataError
 from openbb_core.provider.utils.helpers import (
     ClientResponse,
     amake_requests,
@@ -131,6 +132,8 @@ class FMPIndexHistoricalFetcher(
         **kwargs: Any,
     ) -> List[FMPIndexHistoricalData]:
         """Return the transformed data."""
+        if not data:
+            raise EmptyDataError()
 
         # Get rid of duplicate fields.
         to_pop = ["label", "changePercent", "unadjustedVolume", "adjClose"]
