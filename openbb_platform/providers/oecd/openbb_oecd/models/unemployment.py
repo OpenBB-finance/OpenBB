@@ -121,8 +121,17 @@ class OECDUnemploymentFetcher(
             if query.country == "all"
             else COUNTRY_TO_CODE_UNEMPLOYMENT[query.country]
         )
-        url = "https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_INDIC,1.0/.UNE_LF........"
-        data = helpers.get_possibly_cached_data(url, function="economy_unemployment")
+        # For caching, include this in the key
+        query_dict = {
+            k: v
+            for k, v in query.__dict__.items()
+            if k not in ["start_date", "end_date"]
+        }
+
+        url = f"https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_INDIC,1.0/{country}.UNE_LF...{seasonal_adjustment}.{sex}.{age}..."
+        data = helpers.get_possibly_cached_data(
+            url, function="economy_unemployment", query_dict=query_dict
+        )
         url_query = f"AGE=='{age}' & SEX=='{sex}' & FREQ=='{frequency}' & ADJUSTMENT=='{seasonal_adjustment}'"
         url_query = url_query + f" & REF_AREA=='{country}'" if country else url_query
         # Filter down
