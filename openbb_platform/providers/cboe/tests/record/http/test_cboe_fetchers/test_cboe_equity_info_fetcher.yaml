@@ -1,0 +1,114 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://cdn.cboe.com/api/global/delayed_quotes/quotes/AAPL.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA1xRy27CMBD8FWvPIfIrL9+499BD75ZJLLBI4jQ20BTx79UaEA3HndmZ3Z29QnSD
+        DdEMEygCnHKxoc2Gl4Q1ihZKMsgIdCYaUOQKYRl2vsfO7fbzA6n2NM92jHqaXWtBEVbxnLOMwM51
+        zzIjYMLxjdTB/aJA3NlnWWYE/GTH1C3zWmYEDm5/SHWRvHp/eXjRGjfofVhNPvv+NCAiKadVWRQZ
+        AXcWFBThMq/KJiMQ7PfoUVTSqhJcSIaDp9medWcW/fIs70PSebo9mHGP+EbkdfUG68nOrR0j0jxn
+        TdU85r5kLG9YvUb/qepcNAKX7U2IOs6msxq/s37MF5OqoErUmL79ebiksDGc6FpMGjp/GSEd2p5m
+        Fxcdlyk5hejbI9yQWj/z9gcAAP//AwCkZebeDAIAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 80cdc8f7ea139abd-MIA
+      Cache-Control:
+      - max-age=0, s-maxage=5
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 26 Sep 2023 19:06:36 GMT
+      ETag:
+      - W/"23e87da6795e2433a5ea9cc52e3c77b6"
+      Last-Modified:
+      - Tue, 26 Sep 2023 19:05:45 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 5888333a47f4bcb4270f45fea45f08bc.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - R899eJtot2_qu6I8v4eacLquOEAPrpZLQwXmhxiNKOhkh5T0zMGtNQ==
+      X-Amz-Cf-Pop:
+      - MIA3-P4
+      X-Cache:
+      - RefreshHit from cloudfront
+      x-amz-server-side-encryption:
+      - AES256
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+    method: GET
+    uri: https://cdn.cboe.com/api/global/delayed_quotes/historical_data/AAPL.json
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA2ySzWoCQRCEX2WZsw7V3dM93XvznkPeQDYkxAV/ApqEIL572ChKRs/9UUV99DEd
+        xs3b/jBsPlLfJQbLHDFn64h6SC+UZl16HQ5D6rtj2v9sXnbriVwsnp+m07Ddfg7r5Wp8X6W+o/DM
+        HBFauaoEbNal1Zdg+Z8rnh3QcCpFhVj/MLvDOIeHgUiUb3HRchKZqtUpkVEINHHjg9qSa1WAlNWr
+        n/PGB73IzgUgIWZVP2P3tZ6tCgARtRCxm4/17nvSwSWTRYSTeUxLGx0XTDK51ggNtxAv3ui4Yl61
+        MXA5WfaIAIpYAYnVRsAVCyMApbCiuEuz/4JFBhmAWqo5zEqz/4pVDgAIUuUq5TTr2hc5/QIAAP//
+        AwAp+lGSYgIAAA==
+    headers:
+      CF-Cache-Status:
+      - DYNAMIC
+      CF-RAY:
+      - 80cdc8fc6b429af1-MIA
+      Cache-Control:
+      - max-age=300, s-maxage=600
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 26 Sep 2023 19:06:37 GMT
+      ETag:
+      - W/"85783b2264e96b33536491cd48bea1a9"
+      Last-Modified:
+      - Tue, 26 Sep 2023 11:10:22 GMT
+      Server:
+      - cloudflare
+      Transfer-Encoding:
+      - chunked
+      Via:
+      - 1.1 8f716abb35818e2bd8a0134286c0945c.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - 92zjtgwtkx7fkAAN2UXnVVamN6NmQyzV6AqFTW7aX6lsiFh6OIRiMA==
+      X-Amz-Cf-Pop:
+      - MIA3-P4
+      X-Cache:
+      - RefreshHit from cloudfront
+      x-amz-server-side-encryption:
+      - AES256
+    status:
+      code: 200
+      message: OK
+version: 1
