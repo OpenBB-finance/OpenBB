@@ -117,7 +117,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         BalanceSheet
@@ -440,7 +440,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         BalanceSheetGrowth
@@ -625,7 +625,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CashFlowStatement
@@ -856,7 +856,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CashFlowStatementGrowth
@@ -1002,7 +1002,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         HistoricalDividends
@@ -1085,7 +1085,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         HistoricalEmployees
@@ -1195,7 +1195,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CompanyFilings
@@ -1361,7 +1361,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         HistoricalAttributes
@@ -1443,7 +1443,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         HistoricalEps
@@ -1524,7 +1524,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         HistoricalSplits
@@ -1632,7 +1632,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         IncomeStatement
@@ -1963,7 +1963,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         IncomeStatementGrowth
@@ -2095,7 +2095,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         LatestAttributes
@@ -2167,7 +2167,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         KeyExecutives
@@ -2265,7 +2265,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         ExecutiveCompensation
@@ -2372,7 +2372,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         KeyMetrics
@@ -2624,7 +2624,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityValuationMultiples
@@ -2812,7 +2812,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CompanyOverview
@@ -2965,7 +2965,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         FinancialRatios
@@ -3169,7 +3169,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         ReportedFinancials
@@ -3255,7 +3255,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         RevenueGeographic
@@ -3340,7 +3340,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         RevenueBusinessLine
@@ -3419,7 +3419,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         SearchAttributes
@@ -3511,7 +3511,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         TrailingDividendYield
@@ -3583,7 +3583,7 @@ class ROUTER_equity_fundamental(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EarningsCallTranscript

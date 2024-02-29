@@ -61,7 +61,7 @@ class ROUTER_equity_discovery(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityActive
@@ -143,7 +143,7 @@ class ROUTER_equity_discovery(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityAggressiveSmallCaps
@@ -254,7 +254,7 @@ class ROUTER_equity_discovery(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         DiscoveryFilings
@@ -335,7 +335,7 @@ class ROUTER_equity_discovery(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityGainers
@@ -417,7 +417,7 @@ class ROUTER_equity_discovery(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         GrowthTechEquities
@@ -499,7 +499,7 @@ class ROUTER_equity_discovery(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityLosers
@@ -581,7 +581,7 @@ class ROUTER_equity_discovery(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityUndervaluedGrowth
@@ -663,7 +663,7 @@ class ROUTER_equity_discovery(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityUndervaluedLargeCaps

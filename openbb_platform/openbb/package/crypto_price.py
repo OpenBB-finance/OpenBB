@@ -82,7 +82,7 @@ class ROUTER_crypto_price(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CryptoHistorical
