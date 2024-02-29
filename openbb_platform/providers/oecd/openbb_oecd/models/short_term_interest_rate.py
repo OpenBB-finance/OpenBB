@@ -91,9 +91,15 @@ class OECDSTIRFetcher(Fetcher[OECDSTIRQueryParams, List[OECDSTIRData]]):
         """Return the raw data from the OECD endpoint."""
         frequency = query.frequency[0].upper()
         country = "" if query.country == "all" else COUNTRY_TO_CODE_IR[query.country]
-        url = "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_KEI@DF_KEI,4.0/..IR3TIB...."
+        query_dict = {
+            k: v
+            for k, v in query.__dict__.items()
+            if k not in ["start_date", "end_date"]
+        }
+
+        url = f"https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_KEI@DF_KEI,4.0/{country}.{frequency}.IR3TIB...."
         data = helpers.get_possibly_cached_data(
-            url, function="economy_short_term_interest_rate"
+            url, function="economy_short_term_interest_rate", query_dict=query_dict
         )
         url_query = f"FREQ=='{frequency}'"
         url_query = url_query + f" & REF_AREA=='{country}'" if country else url_query
