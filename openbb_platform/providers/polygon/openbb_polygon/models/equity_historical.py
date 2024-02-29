@@ -65,7 +65,6 @@ class PolygonEquityHistoricalQueryParams(EquityHistoricalQueryParams):
     _multiplier: PositiveInt = PrivateAttr(default=None)
     _timespan: str = PrivateAttr(default=None)
 
-
     @model_validator(mode="after")
     @classmethod
     def get_api_interval_params(cls, values: "PolygonEquityHistoricalQueryParams"):
