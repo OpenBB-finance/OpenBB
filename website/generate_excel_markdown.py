@@ -37,9 +37,9 @@ class CommandLib:
     # These examples will be generated in the core, but we keep them here meanwhile
     EXAMPLE_PARAMS: Dict[str, Dict] = {
         "/get": {
-            "data": '{"a","b","c";"d","e","f"}',
-            "row": '"d"',
-            "column": '"c"',
+            "array": '{"a","b","c";"d","e","f"}',
+            "rows": '"d"',
+            "columns": '"c"',
         },
         "/byod": {
             "widget": '"widget_name"',
