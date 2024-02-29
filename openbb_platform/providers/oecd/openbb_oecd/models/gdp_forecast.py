@@ -4,6 +4,7 @@ import re
 from datetime import date
 from typing import Any, Dict, List, Literal, Optional, Union
 
+from dateutil.relativedelta import relativedelta
 from openbb_core.provider.abstract.fetcher import Fetcher
 from openbb_core.provider.standard_models.gdp_forecast import (
     GdpForecastData,
@@ -97,8 +98,8 @@ class OECDGdpForecastFetcher(
         data_df = data_df[data_df["country"] == query.country]
         data_df = data_df[["country", "date", "value"]]
         data = data_df.to_dict(orient="records")
-        start_date = query.start_date.strftime("%Y-%m-%d")  # type: ignore
-        end_date = query.end_date.strftime("%Y-%m-%d")  # type: ignore
+        start_date = (query.start_date - relativedelta(months=1)).strftime("%Y-%m-%d")  # type: ignore
+        end_date = (query.end_date - relativedelta(months=1)).strftime("%Y-%m-%d")  # type: ignore
         data = [
             x
             for x in data
