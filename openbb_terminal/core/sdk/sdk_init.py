@@ -18,8 +18,6 @@ import openbb_terminal.cryptocurrency.cryptocurrency_helpers as crypto_helpers
 # ETF
 import openbb_terminal.etf.discovery.wsj_model as etf_disc_wsj_model
 import openbb_terminal.etf.discovery.wsj_view as etf_disc_wsj_view
-import openbb_terminal.forex.oanda.oanda_model as forex_oanda_model
-import openbb_terminal.forex.oanda.oanda_view as forex_oanda_view
 import openbb_terminal.stocks.quantitative_analysis.beta_model as stocks_qa_beta_model
 import openbb_terminal.stocks.quantitative_analysis.beta_view as stocks_qa_beta_view
 
@@ -38,8 +36,6 @@ from openbb_terminal.common import (
     news_sdk_helper as common_news_sdk_helper,
     newsapi_model as common_newsapi_model,
     newsapi_view as common_newsapi_view,
-    ultima_newsmonitor_model as common_ultima_newsmonitor_model,
-    ultima_newsmonitor_view as common_ultima_newsmonitor_view,
 )
 
 # Common Behavioural Analysis
@@ -277,8 +273,6 @@ from openbb_terminal.stocks import (
 from openbb_terminal.stocks.behavioural_analysis import (
     finnhub_model as stocks_ba_finnhub_model,
     finnhub_view as stocks_ba_finnhub_view,
-    news_sentiment_model as stocks_ba_news_sentiment_model,
-    news_sentiment_view as stocks_ba_news_sentiment_view,
 )
 
 # Stocks - Comparison Analysis
