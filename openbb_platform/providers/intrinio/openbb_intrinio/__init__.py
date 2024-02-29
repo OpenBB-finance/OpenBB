@@ -22,9 +22,10 @@ from openbb_intrinio.models.historical_dividends import (
 from openbb_intrinio.models.income_statement import IntrinioIncomeStatementFetcher
 from openbb_intrinio.models.index_historical import IntrinioIndexHistoricalFetcher
 from openbb_intrinio.models.insider_trading import IntrinioInsiderTradingFetcher
-from openbb_intrinio.models.institutional_ownership import (
-    IntrinioInstitutionalOwnershipFetcher,
-)
+
+# from openbb_intrinio.models.institutional_ownership import (
+#     IntrinioInstitutionalOwnershipFetcher,
+# )
 from openbb_intrinio.models.key_metrics import IntrinioKeyMetricsFetcher
 from openbb_intrinio.models.latest_attributes import IntrinioLatestAttributesFetcher
 from openbb_intrinio.models.market_indices import IntrinioMarketIndicesFetcher
@@ -61,8 +62,8 @@ intrinio_provider = Provider(
         "IncomeStatement": IntrinioIncomeStatementFetcher,
         "IndexHistorical": IntrinioIndexHistoricalFetcher,
         "InsiderTrading": IntrinioInsiderTradingFetcher,
-        "InstitutionalOwnership": IntrinioInstitutionalOwnershipFetcher,
-        "KeyMetrics": IntrinioFinancialRatiosFetcher,
+        # "InstitutionalOwnership": IntrinioInstitutionalOwnershipFetcher, # Disabled due to unreliable Intrinio endpoint
+        "KeyMetrics": IntrinioKeyMetricsFetcher,
         "LatestAttributes": IntrinioLatestAttributesFetcher,
         "MarketIndices": IntrinioMarketIndicesFetcher,
         "OptionsChains": IntrinioOptionsChainsFetcher,

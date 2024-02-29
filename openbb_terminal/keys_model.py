@@ -4,8 +4,6 @@ __docformat__ = "numpy"
 
 # pylint: disable=too-many-lines
 
-import contextlib
-import io
 import logging
 import sys
 from datetime import date
@@ -13,14 +11,12 @@ from enum import Enum
 from typing import Dict, List, Union
 
 import binance
-import oandapyV20.endpoints.pricing
 import pandas as pd
 import praw
 import quandl
 from alpha_vantage.timeseries import TimeSeries
 from coinmarketcapapi import CoinMarketCapAPI
 from nixtlats import TimeGPT
-from oandapyV20 import API as oanda_API
 from prawcore.exceptions import ResponseException
 from tokenterminal import TokenTerminal
 
@@ -32,7 +28,6 @@ from openbb_terminal.cryptocurrency.coinbase_helpers import (
     make_coinbase_request,
 )
 from openbb_terminal.helper_funcs import request
-from openbb_terminal.portfolio.brokers.degiro.degiro_model import DegiroModel
 from openbb_terminal.rich_config import console
 from openbb_terminal.terminal_helper import suppress_stdout
 
@@ -63,9 +58,6 @@ API_DICT: Dict = {
     "cmc": "COINMARKETCAP",
     "finnhub": "FINNHUB",
     "reddit": "REDDIT",
-    "rh": "ROBINHOOD",
-    "degiro": "DEGIRO",
-    "oanda": "OANDA",
     "binance": "BINANCE",
     "bitquery": "BITQUERY",
     "coinbase": "COINBASE",
@@ -1150,268 +1142,6 @@ def check_bitquery_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("Bitquery key defined, test failed")
-            status = KeyStatus.DEFINED_TEST_FAILED
-
-    if show_output:
-        console.print(status.colorize())
-
-    return str(status)
-
-
-def set_rh_key(
-    username: str,
-    password: str,
-    persist: bool = False,
-    show_output: bool = False,
-) -> str:
-    """Set Robinhood key
-
-    Parameters
-    ----------
-    username: str
-        User username
-    password: str
-        User password
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.rh(
-            username="example_username",
-            password="example_password"
-        )
-    """
-    handle_credential("RH_USERNAME", username, persist)
-    handle_credential("RH_PASSWORD", password, persist)
-
-    return check_rh_key(show_output)
-
-
-def check_rh_key(show_output: bool = False) -> str:
-    """Check Robinhood key
-
-    Parameters
-    ----------
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    if show_output:
-        console.print("Checking status...")
-
-    current_user = get_current_user()
-
-    rh_keys = [
-        current_user.credentials.RH_USERNAME,
-        current_user.credentials.RH_PASSWORD,
-    ]
-    status = (
-        KeyStatus.NOT_DEFINED
-        if "REPLACE_ME" in rh_keys
-        else KeyStatus.DEFINED_NOT_TESTED
-    )
-
-    if show_output:
-        console.print(status.colorize())
-
-    return str(status)
-
-
-def set_degiro_key(
-    username: str,
-    password: str,
-    secret: str = "",
-    persist: bool = False,
-    show_output: bool = False,
-) -> str:
-    """Set Degiro key
-
-    Parameters
-    ----------
-    username: str
-        User username
-    password: str
-        User password
-    secret: str, optional
-        User secret
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.degiro(
-            username="example_username",
-            password="example_password"
-        )
-    """
-
-    handle_credential("DG_USERNAME", username, persist)
-    handle_credential("DG_PASSWORD", password, persist)
-    handle_credential("DG_TOTP_SECRET", secret, persist)
-
-    return check_degiro_key(show_output)
-
-
-def check_degiro_key(show_output: bool = False) -> str:
-    """Check Degiro key
-
-    Parameters
-    ----------
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    if show_output:
-        console.print("Checking status...")
-
-    current_user = get_current_user()
-
-    dg_keys = [
-        current_user.credentials.DG_USERNAME,
-        current_user.credentials.DG_PASSWORD,
-        current_user.credentials.DG_TOTP_SECRET,
-    ]
-    if "REPLACE_ME" in dg_keys:
-        status = KeyStatus.NOT_DEFINED
-    else:
-        dg = DegiroModel()
-        try:
-            f = io.StringIO()  # suppress stdout
-            with contextlib.redirect_stdout(f):
-                check_creds = dg.check_credentials()  # pylint: disable=no-member
-
-            if "2FA is enabled" in f.getvalue() or check_creds:
-                status = KeyStatus.DEFINED_TEST_PASSED
-            else:
-                raise Exception
-
-            status = KeyStatus.DEFINED_TEST_PASSED
-
-        except Exception:
-            status = KeyStatus.DEFINED_TEST_FAILED
-
-        del dg  # ensure the object is destroyed explicitly
-
-    if show_output:
-        console.print(status.colorize())
-
-    return str(status)
-
-
-def set_oanda_key(
-    account: str,
-    access_token: str,
-    account_type: str = "",
-    persist: bool = False,
-    show_output: bool = False,
-) -> str:
-    """Set Oanda key
-
-    Parameters
-    ----------
-    account: str
-        User account
-    access_token: str
-        User token
-    account_type: str, optional
-        User account type
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.oanda(
-            account="example_account",
-            access_token="example_access_token",
-            account_type="example_account_type"
-        )
-    """
-
-    handle_credential("OANDA_ACCOUNT", account, persist)
-    handle_credential("OANDA_TOKEN", access_token, persist)
-    handle_credential("OANDA_ACCOUNT_TYPE", account_type, persist)
-
-    return check_oanda_key(show_output)
-
-
-def check_oanda_key(show_output: bool = False) -> str:
-    """Check Oanda key
-
-    Parameters
-    ----------
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    if show_output:
-        console.print("Checking status...")
-
-    current_user = get_current_user()
-
-    oanda_keys = [
-        current_user.credentials.OANDA_TOKEN,
-        current_user.credentials.OANDA_ACCOUNT,
-    ]
-    if "REPLACE_ME" in oanda_keys:
-        status = KeyStatus.NOT_DEFINED
-    else:
-        client = oanda_API(access_token=current_user.credentials.OANDA_TOKEN)
-        account = current_user.credentials.OANDA_ACCOUNT
-        try:
-            parameters = {"instruments": "EUR_USD"}
-            request_ = oandapyV20.endpoints.pricing.PricingInfo(
-                accountID=account, params=parameters
-            )
-            client.request(request_)
-            status = KeyStatus.DEFINED_TEST_PASSED
-
-        except Exception:
             status = KeyStatus.DEFINED_TEST_FAILED
 
     if show_output:
@@ -2538,75 +2268,6 @@ def check_databento_key(show_output: bool = False) -> str:
             status = KeyStatus.DEFINED_TEST_PASSED
         else:
             logger.warning("DataBento key defined, test inconclusive")
-            status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
-
-    if show_output:
-        console.print(status.colorize())
-
-    return str(status)
-
-
-def set_ultima_key(key: str, persist: bool = False, show_output: bool = False) -> str:
-    """Set Ultima Insights key
-
-    Parameters
-    ----------
-    key: str
-        API key
-    persist: bool, optional
-        If False, api key change will be contained to where it was changed. For example, a Jupyter notebook session.
-        If True, api key change will be global, i.e. it will affect terminal environment variables.
-        By default, False.
-    show_output: bool, optional
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-
-    Examples
-    --------
-    >>> from openbb_terminal.sdk import openbb
-    >>> openbb.keys.ultima(key="example_key")
-    """
-
-    handle_credential("API_ULTIMA_KEY", key, persist)
-    return check_ultima_key(show_output)
-
-
-def check_ultima_key(show_output: bool = False) -> str:
-    """Check Ultima Insights key
-
-    Parameters
-    ----------
-    show_output: bool
-        Display status string or not. By default, False.
-
-    Returns
-    -------
-    str
-        Status of key set
-    """
-
-    current_user = get_current_user()
-
-    if current_user.credentials.API_ULTIMA_KEY == "REPLACE_ME":
-        status = KeyStatus.NOT_DEFINED
-    else:
-        r = request(
-            "https://api.ultimainsights.ai/v1/checkAPIKey",
-            headers={
-                "Authorization": f"Bearer {current_user.credentials.API_ULTIMA_KEY}"
-            },
-        )
-        if r.status_code in [403, 401, 429]:
-            logger.warning("Ultima Insights key defined, test failed")
-            status = KeyStatus.DEFINED_TEST_FAILED
-        elif r.status_code == 200:
-            status = KeyStatus.DEFINED_TEST_PASSED
-        else:
-            logger.warning("Ultima Insights key defined, test inconclusive")
             status = KeyStatus.DEFINED_TEST_INCONCLUSIVE
 
     if show_output:

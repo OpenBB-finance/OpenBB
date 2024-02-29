@@ -103,7 +103,7 @@ class ROUTER_equity_price(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityHistorical
@@ -261,7 +261,7 @@ class ROUTER_equity_price(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityNBBO
@@ -286,7 +286,7 @@ class ROUTER_equity_price(Container):
             The exchange tape. (provider: polygon)
         conditions : Optional[Union[str, List[int], List[str]]]
             A list of condition codes. (provider: polygon)
-        indicators : Optional[List]
+        indicators : Optional[List[int]]
             A list of indicator codes. (provider: polygon)
         sequence_num : Optional[int]
 
@@ -368,7 +368,7 @@ class ROUTER_equity_price(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         PricePerformance
@@ -465,7 +465,7 @@ class ROUTER_equity_price(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         EquityQuote
