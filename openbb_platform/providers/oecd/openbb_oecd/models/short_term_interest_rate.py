@@ -87,7 +87,7 @@ class OECDSTIRFetcher(Fetcher[OECDSTIRQueryParams, List[OECDSTIRData]]):
         query: OECDSTIRQueryParams,  # pylint: disable=W0613
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
         frequency = query.frequency[0].upper()
         country = "" if query.country == "all" else COUNTRY_TO_CODE_IR[query.country]
@@ -123,7 +123,7 @@ class OECDSTIRFetcher(Fetcher[OECDSTIRQueryParams, List[OECDSTIRData]]):
 
     @staticmethod
     def transform_data(
-        query: OECDSTIRQueryParams, data: Dict, **kwargs: Any
+        query: OECDSTIRQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[OECDSTIRData]:
         """Transform the data from the OECD endpoint."""
         return [OECDSTIRData.model_validate(d) for d in data]

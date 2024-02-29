@@ -82,7 +82,7 @@ class OECDCLIFetcher(Fetcher[OECDCLIQueryParams, List[OECDCLIData]]):
         query: OECDCLIQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
         country = "" if query.country == "all" else COUNTRY_TO_CODE_CLI[query.country]
 
@@ -118,7 +118,7 @@ class OECDCLIFetcher(Fetcher[OECDCLIQueryParams, List[OECDCLIData]]):
     @staticmethod
     def transform_data(
         query: OECDCLIQueryParams,
-        data: Dict,
+        data: List[Dict],
         **kwargs: Any,
     ) -> List[OECDCLIData]:
         """Transform the data from the OECD endpoint."""

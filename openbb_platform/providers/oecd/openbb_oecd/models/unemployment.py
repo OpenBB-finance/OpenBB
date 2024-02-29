@@ -104,7 +104,7 @@ class OECDUnemploymentFetcher(
         query: OECDUnemploymentQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
         sex = {"total": "_T", "male": "M", "female": "F"}[query.sex]
         frequency = query.frequency[0].upper()
@@ -154,7 +154,7 @@ class OECDUnemploymentFetcher(
     # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        query: OECDUnemploymentQueryParams, data: Dict, **kwargs: Any
+        query: OECDUnemploymentQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[OECDUnemploymentData]:
         """Transform the data from the OECD endpoint."""
         return [OECDUnemploymentData.model_validate(d) for d in data]

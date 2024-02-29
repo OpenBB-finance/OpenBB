@@ -67,7 +67,7 @@ class OECDGdpForecastFetcher(
         query: OECDGdpForecastQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
         units = query.period[0].upper()
         _type = "REAL" if query.type == "real" else "NOM"
@@ -94,11 +94,20 @@ class OECDGdpForecastFetcher(
         )
         data_df = data_df[data_df["country"] == query.country]
         data_df = data_df[["country", "date", "value"]]
-        return data_df.to_dict(orient="records")
+        data = data_df.to_dict(orient="records")
+        start_date = query.start_date.strftime("%Y-%m-%d")  # type: ignore
+        end_date = query.end_date.strftime("%Y-%m-%d")  # type: ignore
+        data = [
+            x
+            for x in data
+            if f"{x['date']}-01-01" >= start_date and f"{x['date']}-12-31" <= end_date
+        ]
+
+        return data
 
     @staticmethod
     def transform_data(
-        query: OECDGdpForecastQueryParams, data: Dict, **kwargs: Any
+        query: OECDGdpForecastQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[OECDGdpForecastData]:
         """Transform the data from the OECD endpoint."""
         return [OECDGdpForecastData.model_validate(d) for d in data]

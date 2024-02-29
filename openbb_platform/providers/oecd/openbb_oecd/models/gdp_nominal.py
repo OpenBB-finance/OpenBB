@@ -11,7 +11,7 @@ from openbb_core.provider.standard_models.gdp_nominal import (
 from openbb_oecd.utils import constants, helpers
 from pydantic import Field, field_validator
 
-gdp_countries = tuple(constants.COUNTRY_TO_CODE_GDP.keys())
+gdp_countries = tuple(constants.COUNTRY_TO_CODE_GDP.keys()) + ("all",)
 GDPCountriesLiteral = Literal[gdp_countries]  # type: ignore
 
 
@@ -56,7 +56,7 @@ class OECDGdpNominalFetcher(
         query: OECDGdpNominalQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
         unit = "MLN_USD" if query.units == "usd" else "USD_CAP"
         url = (
@@ -76,13 +76,22 @@ class OECDGdpNominalFetcher(
             }
         )
         data_df["country"] = data_df["country"].map(constants.CODE_TO_COUNTRY_GDP)
-        data_df = data_df[data_df["country"] == query.country]
+        if query.country != "all":
+            data_df = data_df[data_df["country"] == query.country]
         data_df = data_df[["country", "date", "value"]]
-        return data_df.to_dict(orient="records")
+        data = data_df.to_dict(orient="records")
+        start_date = query.start_date.strftime("%Y-%m-%d")  # type: ignore
+        end_date = query.end_date.strftime("%Y-%m-%d")  # type: ignore
+        data = [
+            x
+            for x in data
+            if f"{x['date']}-01-01" >= start_date and f"{x['date']}-12-31" <= end_date
+        ]
+        return data
 
     @staticmethod
     def transform_data(
-        query: OECDGdpNominalQueryParams, data: Dict, **kwargs: Any
+        query: OECDGdpNominalQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[OECDGdpNominalData]:
         """Transform the data from the OECD endpoint."""
         return [OECDGdpNominalData.model_validate(d) for d in data]
