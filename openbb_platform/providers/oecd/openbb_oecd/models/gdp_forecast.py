@@ -15,6 +15,8 @@ from pydantic import Field, field_validator
 gdp_countries = tuple(constants.COUNTRY_TO_CODE_GDP_FORECAST.keys())
 GDPCountriesLiteral = Literal[gdp_countries]  # type: ignore
 
+# pylint: disable=unused-argument
+
 
 class OECDGdpForecastQueryParams(GdpForecastQueryParams):
     """OECD GDP Forecast Query."""

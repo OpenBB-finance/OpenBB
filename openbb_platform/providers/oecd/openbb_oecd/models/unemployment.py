@@ -128,7 +128,10 @@ class OECDUnemploymentFetcher(
             if k not in ["start_date", "end_date"]
         }
 
-        url = f"https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_INDIC,1.0/{country}.UNE_LF...{seasonal_adjustment}.{sex}.{age}..."
+        url = (
+            f"https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_INDIC,"
+            f"1.0/{country}.UNE_LF...{seasonal_adjustment}.{sex}.{age}..."
+        )
         data = helpers.get_possibly_cached_data(
             url, function="economy_unemployment", query_dict=query_dict
         )

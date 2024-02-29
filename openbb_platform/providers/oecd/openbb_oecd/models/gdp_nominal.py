@@ -14,6 +14,8 @@ from pydantic import Field, field_validator
 gdp_countries = tuple(constants.COUNTRY_TO_CODE_GDP.keys()) + ("all",)
 GDPCountriesLiteral = Literal[gdp_countries]  # type: ignore
 
+# pylint: disable=unused-argument
+
 
 class OECDGdpNominalQueryParams(GdpNominalQueryParams):
     """OECD Nominal GDP Query."""

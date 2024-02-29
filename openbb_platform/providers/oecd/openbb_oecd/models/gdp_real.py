@@ -15,6 +15,7 @@ rgdp_countries = tuple(constants.COUNTRY_TO_CODE_RGDP.keys()) + ("all",)
 RGDPCountriesLiteral = Literal[rgdp_countries]  # type: ignore
 
 
+# pylint: disable=unused-argument
 class OECDGdpRealQueryParams(GdpRealQueryParams):
     """OECD Real GDP Query."""
 
