@@ -118,12 +118,13 @@ def test_etf_search(params, headers):
             {
                 "sort": "desc",
                 "limit": "49999",
-                "adjusted": "unadjusted",
+                "adjustment": "unadjusted",
                 "provider": "polygon",
                 "symbol": "SPY",
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-03",
                 "interval": "1m",
+                "extended_hours": False,
             }
         ),
         (
@@ -136,6 +137,7 @@ def test_etf_search(params, headers):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
+                "extended_hours": False,
             }
         ),
         (

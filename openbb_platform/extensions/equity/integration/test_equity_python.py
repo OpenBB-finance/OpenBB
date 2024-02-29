@@ -908,12 +908,13 @@ def test_equity_compare_groups(params, obb):
             {
                 "sort": "desc",
                 "limit": "49999",
-                "adjusted": "unadjusted",
+                "adjustment": "unadjusted",
                 "provider": "polygon",
                 "symbol": "AAPL",
                 "start_date": "2023-01-01",
                 "end_date": "2023-01-03",
                 "interval": "1m",
+                "extended_hours": False,
             }
         ),
         (
@@ -926,6 +927,7 @@ def test_equity_compare_groups(params, obb):
                 "start_date": "2023-01-01",
                 "end_date": "2023-06-06",
                 "interval": "1d",
+                "extended_hours": False,
             }
         ),
         (
