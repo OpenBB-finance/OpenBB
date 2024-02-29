@@ -13,7 +13,7 @@ import pandas as pd
 from openbb_terminal.common.quantitative_analysis import qa_view
 from openbb_terminal.core.session.current_user import get_current_user
 from openbb_terminal.custom_prompt_toolkit import NestedCompleter
-from openbb_terminal.decorators import check_api_key, log_start_end
+from openbb_terminal.decorators import log_start_end
 from openbb_terminal.forex import av_view, forex_helper, fxempire_view
 from openbb_terminal.forex.forex_helper import (
     FOREX_SOURCES,
@@ -54,7 +54,6 @@ class ForexController(BaseController):
     CHOICES_MENUS = [
         "forecast",
         "qa",
-        "oanda",
         "ta",
     ]
     RESOLUTION = ["i", "d", "w", "m"]
@@ -94,9 +93,6 @@ class ForexController(BaseController):
         mt.add_menu("ta", self.fx_pair)
         mt.add_menu("qa", self.fx_pair)
         mt.add_menu("forecast")
-        mt.add_raw("\n")
-        mt.add_info("forex")
-        mt.add_menu("oanda")
         console.print(text=mt.menu_text, menu="Forex")
 
     def custom_reset(self):
@@ -400,13 +396,6 @@ class ForexController(BaseController):
                 console.print("[red]Make sure a currency pair is loaded.[/red]\n")
 
     # MENUS
-    @log_start_end(log=logger)
-    @check_api_key(["OANDA_ACCOUNT_TYPE", "OANDA_ACCOUNT", "OANDA_TOKEN"])
-    def call_oanda(self, _):
-        """Enter Oanda menu."""
-        from openbb_terminal.forex.oanda.oanda_controller import OandaController
-
-        self.queue = self.load_class(OandaController, queue=self.queue)
 
     @log_start_end(log=logger)
     def call_ta(self, _):

@@ -4,7 +4,6 @@ __docformat__ = "numpy"
 # pylint: disable=C0302 ,R1710,R0904,C0415,too-many-branches,unnecessary-dict-index-lookup
 
 import argparse
-import itertools
 import logging
 import os
 from datetime import (
@@ -23,7 +22,6 @@ from openbb_terminal.economy import (
     commodity_view,
     econdb_model,
     econdb_view,
-    economy_helpers,
     fedreserve_model,
     fedreserve_view,
     finviz_model,
@@ -34,7 +32,6 @@ from openbb_terminal.economy import (
     nasdaq_view,
     oecd_model,
     oecd_view,
-    plot_view,
     wsj_view,
     yfinance_model,
     yfinance_view,
@@ -58,7 +55,6 @@ class EconomyController(BaseController):
     """Economy Controller class"""
 
     CHOICES_COMMANDS = [
-        "eval",
         "overview",
         "futures",
         "gdp",
@@ -75,18 +71,12 @@ class EconomyController(BaseController):
         "fred",
         "index",
         "treasury",
-        "plot",
         "valuation",
         "performance",
         "map",
-        "bigmac",
         "events",
         "edebt",
         "usdli",
-    ]
-
-    CHOICES_MENUS = [
-        "qa",
     ]
 
     wsj_sortby_cols_dict = {c: None for c in ["ticker", "last", "change", "prevClose"]}
@@ -177,16 +167,9 @@ class EconomyController(BaseController):
 
         self.current_series: Dict = dict()
         self.fred_query: pd.Series = pd.Series(dtype=float)
-        self.DATASETS: Dict[Any, pd.DataFrame] = dict()
         self.UNITS: Dict[Any, Dict[Any, Any]] = dict()
         self.FRED_TITLES: Dict = dict()
         self.choices: Dict = dict()
-
-        self.DATASETS["macro"] = pd.DataFrame()
-        self.DATASETS["treasury"] = pd.DataFrame()
-        self.DATASETS["fred"] = pd.DataFrame()
-        self.DATASETS["index"] = pd.DataFrame()
-
         if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
             choices: dict = self.choices_default
             # This is still needed because we can't use choices and nargs separated by comma
@@ -248,10 +231,6 @@ class EconomyController(BaseController):
             choices["fred"]["-p"] = "--parameter"
             choices["index"]["--indices"] = {c: {} for c in yfinance_model.INDICES}
             choices["index"]["-i"] = "--indices"
-            choices["bigmac"]["--countries"] = {
-                c: {} for c in nasdaq_model.get_country_codes()["Code"].values
-            }
-            choices["bigmac"]["-c"] = "--countries"
             choices["events"]["--countries"] = {
                 c: {} for c in nasdaq_model.get_country_names()
             }
@@ -280,30 +259,13 @@ class EconomyController(BaseController):
         return commands
 
     def update_runtime_choices(self):
-        if session and get_current_user().preferences.USE_PROMPT_TOOLKIT:
-            if not self.fred_query.empty:
-                self.choices["fred"]["--parameter"] = {c: None for c in self.fred_query}
+        if (
+            session
+            and get_current_user().preferences.USE_PROMPT_TOOLKIT
+            and not self.fred_query.empty
+        ):
+            self.choices["fred"]["--parameter"] = {c: None for c in self.fred_query}
 
-            if self.DATASETS:
-                options = [
-                    option for _, values in self.DATASETS.items() for option in values
-                ]
-
-                # help users to select multiple timeseries for one axis
-                economicdata = list()
-                for L in [1, 2]:
-                    for subset in itertools.combinations(options, L):
-                        economicdata.append(",".join(subset))
-                        if len(subset) > 1:
-                            economicdata.append(",".join(subset[::-1]))
-
-                for argument in [
-                    "--y1",
-                    "--y2",
-                ]:
-                    self.choices["plot"][argument] = {
-                        option: None for option in economicdata
-                    }
         self.completer = NestedCompleter.from_nested_dict(self.choices)
 
     def print_help(self):
@@ -312,10 +274,8 @@ class EconomyController(BaseController):
         mt.add_cmd("overview")
         mt.add_cmd("futures")
         mt.add_cmd("map")
-        mt.add_cmd("bigmac")
         mt.add_cmd("events")
         mt.add_cmd("edebt")
-        mt.add_raw("\n")
         mt.add_cmd("valuation")
         mt.add_cmd("performance")
         mt.add_cmd("usdli")
@@ -337,13 +297,6 @@ class EconomyController(BaseController):
         mt.add_cmd("treasury")
         mt.add_cmd("fred")
         mt.add_cmd("index")
-        mt.add_raw("\n")
-        mt.add_param("_stored", self.stored_datasets)
-        mt.add_raw("\n")
-        mt.add_cmd("eval")
-        mt.add_cmd("plot")
-        mt.add_raw("\n")
-        mt.add_menu("qa")
 
         console.print(text=mt.menu_text, menu="Economy")
 
@@ -524,55 +477,6 @@ class EconomyController(BaseController):
                 period=ns_parser.s_period,
                 map_filter=ns_parser.s_type,
             )
-
-    @log_start_end(log=logger)
-    def call_bigmac(self, other_args: List[str]):
-        """Process bigmac command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="bigmac",
-            description="""
-                 Get historical Big Mac Index [Nasdaq Data Link]
-             """,
-        )
-        parser.add_argument(
-            "--codes",
-            help="Flag to show all country codes",
-            dest="codes",
-            action="store_true",
-            default=False,
-        )
-        parser.add_argument(
-            "-c",
-            "--countries",
-            help="Country codes to get data for.",
-            dest="countries",
-            default="USA",
-            type=str,
-        )
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-            raw=True,
-        )
-        if ns_parser:
-            ns_parser.countries = list_from_str(ns_parser.countries)
-            if ns_parser.codes:
-                console.print(
-                    nasdaq_model.get_country_codes().to_string(index=False), "\n"
-                )
-            else:
-                nasdaq_view.display_big_mac_index(
-                    country_codes=ns_parser.countries,
-                    raw=ns_parser.raw,
-                    export=ns_parser.export,
-                    sheet_name=(
-                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                    ),
-                )
 
     @log_start_end(log=logger)
     def call_gdp(self, other_args: List[str]):
@@ -1285,27 +1189,6 @@ class EconomyController(BaseController):
                     else:
                         df.columns = ["_".join(column) for column in df.columns]
 
-                    for column in df.columns:
-                        if column in self.DATASETS["macro"].columns:
-                            self.DATASETS["macro"].drop(column, axis=1, inplace=True)
-
-                    self.DATASETS["macro"] = pd.concat(
-                        [self.DATASETS["macro"], df],
-                        axis=1,
-                    )
-
-                    # update units dict
-                    for country, data in units.items():
-                        if country not in self.UNITS:
-                            self.UNITS[country] = {}
-
-                        for key, value in data.items():
-                            self.UNITS[country][key] = value
-
-                    self.stored_datasets = (
-                        economy_helpers.update_stored_datasets_string(self.DATASETS)
-                    )
-
                     # Display data just loaded
                     econdb_view.show_macro_data(
                         parameters=parameters,
@@ -1440,13 +1323,6 @@ class EconomyController(BaseController):
                             f"{data['title']} ({data['units']})"
                         )
 
-                        # Making data available at the class level
-                        self.DATASETS["fred"][series_id] = df[series_id]
-
-                    self.stored_datasets = (
-                        economy_helpers.update_stored_datasets_string(self.DATASETS)
-                    )
-
                     self.update_runtime_choices()
                     if get_current_user().preferences.ENABLE_EXIT_AUTO_HELP:
                         self.print_help()
@@ -1573,11 +1449,6 @@ class EconomyController(BaseController):
                     dfs_indices.append(df)
 
                     if not df.empty:
-                        self.DATASETS["index"][index] = df
-
-                        self.stored_datasets = (
-                            economy_helpers.update_stored_datasets_string(self.DATASETS)
-                        )
                         columns.append(index)
 
                 # If no data is found, we print a message and return
@@ -1981,81 +1852,6 @@ class EconomyController(BaseController):
             )
 
     @log_start_end(log=logger)
-    def call_plot(self, other_args: List[str]):
-        """Process plot command"""
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="plot",
-            description="This command can plot any data on two y-axes obtained from the macro, fred, index and "
-            "treasury commands. To be able to use this data, just load the available series from the previous "
-            "commands. For example 'macro -p GDP -c Germany Netherlands' will store the data for usage "
-            "in this command. Therefore, it allows you to plot different time series in one graph. "
-            "The example above could be plotted the following way: 'plot --y1 Germany_GDP --y2 Netherlands_GDP' "
-            "or 'plot --y1 Germany_GDP Netherlands_GDP'",
-        )
-        parser.add_argument(
-            "--y1",
-            type=str,
-            dest="yaxis1",
-            help="Select the data you wish to plot on the first y-axis. You can select multiple variables here.",
-            default="",
-        )
-        parser.add_argument(
-            "--y2",
-            type=str,
-            dest="yaxis2",
-            help="Select the data you wish to plot on the second y-axis. You can select multiple variables here.",
-            default="",
-        )
-
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "--y1")
-        ns_parser = self.parse_known_args_and_warn(
-            parser,
-            other_args,
-            export_allowed=EXPORT_BOTH_RAW_DATA_AND_FIGURES,
-            limit=10,
-        )
-
-        if ns_parser:
-            y1s = list_from_str(ns_parser.yaxis1)
-            y2s = list_from_str(ns_parser.yaxis2)
-            if not self.DATASETS:
-                console.print(
-                    "There is no data stored yet. Please use either the 'macro', 'fred', 'index' and/or "
-                    "'treasury' command."
-                )
-                return
-            dataset_yaxis1 = economy_helpers.get_yaxis_data(
-                self.DATASETS, self.UNITS, self.FRED_TITLES, y1s
-            )
-            if dataset_yaxis1.empty:
-                console.print(
-                    f"[red]Not able to find any data for the --y1 argument. The currently available "
-                    f"options are: {', '.join(self.choices['plot']['--y1'])}[/red]\n"
-                )
-
-            dataset_yaxis2 = economy_helpers.get_yaxis_data(
-                self.DATASETS, self.UNITS, self.FRED_TITLES, y2s
-            )
-            if dataset_yaxis2.empty:
-                console.print(
-                    f"[red]Not able to find any data for the --y2 argument. The currently available "
-                    f"options are: {', '.join(self.choices['plot']['--y2'])}[/red]\n"
-                )
-
-            if y1s or y2s:
-                plot_view.show_plot(
-                    dataset_yaxis_1=dataset_yaxis1,
-                    dataset_yaxis_2=dataset_yaxis2,
-                    export=ns_parser.export,
-                    sheet_name=(
-                        " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
-                    ),
-                )
-
-    @log_start_end(log=logger)
     def call_valuation(self, other_args: List[str]):
         """Process valuation command"""
         parser = argparse.ArgumentParser(
@@ -2245,73 +2041,4 @@ class EconomyController(BaseController):
                 sheet_name=(
                     " ".join(ns_parser.sheet_name) if ns_parser.sheet_name else None
                 ),
-            )
-
-    @log_start_end(log=logger)
-    def call_eval(self, other_args):
-        parser = argparse.ArgumentParser(
-            add_help=False,
-            formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-            prog="eval",
-            description="""Create custom data column from loaded datasets.  Can be mathematical expressions supported
-            by pandas.eval() function.
-
-            Example.  If I have loaded `fred DGS2,DGS5` and I want to create a new column that is the difference
-            between these two, I can create a new column by doing `eval spread = DGS2 - DGS5`.
-            Notice that the command is case sensitive, i.e., `DGS2` is not the same as `dgs2`.
-            """,
-        )
-        parser.add_argument(
-            "-q",
-            "--query",
-            type=str,
-            nargs="+",
-            dest="query",
-            required="-h" not in other_args and "--help" not in other_args,
-            help="Query to evaluate on loaded datasets",
-        )
-        if other_args and "-" not in other_args[0][0]:
-            other_args.insert(0, "-q")
-
-        ns_parser = self.parse_known_args_and_warn(
-            parser, other_args, export_allowed=EXPORT_ONLY_RAW_DATA_ALLOWED
-        )
-        if ns_parser:
-            self.DATASETS = economy_helpers.create_new_entry(
-                self.DATASETS, " ".join(ns_parser.query)
-            )
-
-            self.stored_datasets = economy_helpers.update_stored_datasets_string(
-                self.DATASETS
-            )
-            self.update_runtime_choices()
-
-    @log_start_end(log=logger)
-    def call_qa(self, _):
-        """Process qa command"""
-        if not any(True for x in self.DATASETS.values() if not x.empty):
-            console.print(
-                "There is no data stored. Please use either the 'macro', 'fred', 'index' and/or "
-                "'treasury' command in combination with the -st argument to plot data.\n"
-            )
-            return
-
-        from openbb_terminal.economy.quantitative_analysis.qa_controller import (
-            QaController,
-        )
-
-        data: Dict = {}  # type: ignore
-        for source, _ in self.DATASETS.items():
-            if not self.DATASETS[source].empty:
-                if len(self.DATASETS[source].columns) == 1:
-                    data[self.DATASETS[source].columns[0]] = self.DATASETS[source]
-                else:
-                    for col in list(self.DATASETS[source].columns):
-                        data[col] = self.DATASETS[source][col].to_frame()
-
-        if data:
-            self.queue = self.load_class(QaController, data, self.queue)
-        else:
-            console.print(
-                "[red]Please load a dataset before moving to the qa menu[/red]\n"
             )
