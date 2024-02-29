@@ -78,7 +78,7 @@ class AVEquityHistoricalData(EquityHistoricalData):
     )
     split_ratio: Optional[NonNegativeFloat] = Field(
         default=None,
-        description="Split coefficient, if a split occured.",
+        description="Split coefficient, if a split occurred.",
     )
 
 
