@@ -102,7 +102,7 @@ class OECDGdpForecastFetcher(
         ]
         data_df["date"] = data_df["date"].apply(
             lambda x: x.year
-        )  # Validator wont accept datetime.date?
+        )  # Validator won't accept datetime.date?
         return data_df.to_dict(orient="records")
 
     @staticmethod
