@@ -85,7 +85,7 @@ class ROUTER_currency_price(Container):
                 List of warnings.
             chart : Optional[Chart]
                 Chart object.
-            extra: Dict[str, Any]
+            extra : Dict[str, Any]
                 Extra info.
 
         CurrencyHistorical
