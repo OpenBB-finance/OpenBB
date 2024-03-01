@@ -95,13 +95,19 @@ class OECDSTIRFetcher(Fetcher[OECDSTIRQueryParams, List[OECDSTIRData]]):
         query: OECDSTIRQueryParams,  # pylint: disable=W0613
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
         frequency = query.frequency[0].upper()
         country = "" if query.country == "all" else COUNTRY_TO_CODE_IR[query.country]
-        url = "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_KEI@DF_KEI,4.0/..IR3TIB...."
+        query_dict = {
+            k: v
+            for k, v in query.__dict__.items()
+            if k not in ["start_date", "end_date"]
+        }
+
+        url = f"https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_KEI@DF_KEI,4.0/{country}.{frequency}.IR3TIB...."
         data = helpers.get_possibly_cached_data(
-            url, function="economy_short_term_interest_rate"
+            url, function="economy_short_term_interest_rate", query_dict=query_dict
         )
         url_query = f"FREQ=='{frequency}'"
         url_query = url_query + f" & REF_AREA=='{country}'" if country else url_query
@@ -115,17 +121,16 @@ class OECDSTIRFetcher(Fetcher[OECDSTIRQueryParams, List[OECDSTIRData]]):
         )
         data["country"] = data["country"].map(CODE_TO_COUNTRY_IR)
         data = data.fillna("N/A").replace("N/A", None)
-        data = data.to_dict(orient="records")
+        data["date"] = data["date"].apply(helpers.oecd_date_to_python_date)
+        data = data[
+            (data["date"] <= query.end_date) & (data["date"] >= query.start_date)
+        ]
 
-        start_date = query.start_date.strftime("%Y-%m-%d")  # type: ignore
-        end_date = query.end_date.strftime("%Y-%m-%d")  # type: ignore
-        data = list(filter(lambda x: start_date <= x["date"] <= end_date, data))
-
-        return data
+        return data.to_dict(orient="records")
 
     @staticmethod
     def transform_data(
-        query: OECDSTIRQueryParams, data: Dict, **kwargs: Any
+        query: OECDSTIRQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[OECDSTIRData]:
         """Transform the data from the OECD endpoint."""
         return [OECDSTIRData.model_validate(d) for d in data]
