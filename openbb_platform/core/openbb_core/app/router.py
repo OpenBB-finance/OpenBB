@@ -239,7 +239,9 @@ class Router:
             kwargs["openapi_extra"] = kwargs.get("openapi_extra", {})
             kwargs["openapi_extra"]["model"] = model
             kwargs["openapi_extra"]["api_examples"] = kwargs.pop("api_examples", None)
-            kwargs["openapi_extra"]["python_examples"] = kwargs.pop("python_examples", None)
+            kwargs["openapi_extra"]["python_examples"] = kwargs.pop(
+                "python_examples", None
+            )
             kwargs["operation_id"] = kwargs.get(
                 "operation_id", SignatureInspector.get_operation_id(func)
             )
