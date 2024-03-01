@@ -134,7 +134,9 @@ async def dividends(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="HistoricalEps")
+@router.command(
+    model="HistoricalEps", api_examples=[Example(parameters={"symbol": "AAPL"})]
+)
 async def historical_eps(
     cc: CommandContext,
     provider_choices: ProviderChoices,

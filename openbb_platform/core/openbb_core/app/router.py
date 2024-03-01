@@ -234,7 +234,7 @@ class Router:
 
         model = kwargs.pop("model", "")
         api_examples: List[Example] = kwargs.pop("api_examples", [])
-        python_examples = kwargs.pop("python_examples", None)
+        python_examples = kwargs.pop("python_examples", [])
 
         if func := SignatureInspector.complete(func, model):
 

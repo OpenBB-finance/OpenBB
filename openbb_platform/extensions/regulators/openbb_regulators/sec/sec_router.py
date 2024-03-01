@@ -45,6 +45,7 @@ async def institutions_search(
 
 @router.command(
     model="SchemaFiles",
+    api_examples=[Example(parameters={})],
     python_examples=[
         "data = obb.regulators.sec.schema_files()",
         "data.files[0]",

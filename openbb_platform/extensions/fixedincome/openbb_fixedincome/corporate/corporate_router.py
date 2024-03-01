@@ -117,7 +117,7 @@ async def commercial_paper(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="BondPrices")
+@router.command(model="BondPrices", api_examples=[Example(parameters={})])
 async def bond_prices(
     cc: CommandContext,
     provider_choices: ProviderChoices,
