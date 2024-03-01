@@ -17,7 +17,7 @@ class Example(BaseModel):
     def to_python(
         self, func_name: str, func_params: Dict[str, Field], indentation: str = ""
     ) -> str:
-        """Return a Python code representation of the examplself."""
+        """Return a Python code representation of the example."""
         eg = ""
         if self.scope == "api" and self.parameters is not None:
             if self.description:
@@ -39,7 +39,7 @@ class Example(BaseModel):
 
             eg = indentation + eg.strip(", ") + ")\n"
         elif self.scope == "python" and self.code is not None:
-            for line in self.code:
+            for line in self.code:  # pylint: disable=not-an-iterable
                 eg += f"{indentation}>>> {line}\n"
 
         return eg
