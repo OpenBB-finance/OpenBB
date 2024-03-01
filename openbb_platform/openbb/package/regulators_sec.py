@@ -66,8 +66,7 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.cik_map(symbol="MSFT").results.cik
-        >>>     0000789019
+        >>> obb.regulators.sec.cik_map(symbol='MSFT')
         """  # noqa: E501
 
         return self._run(
@@ -138,7 +137,7 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.institutions_search(query="blackstone real estate").to_df()
+        >>> obb.regulators.sec.institutions_search(query='blackstone real estate')
         """  # noqa: E501
 
         return self._run(
@@ -203,7 +202,7 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.rss_litigation().to_dict("records")[0]
+        >>> obb.regulators.sec.rss_litigation()
         """  # noqa: E501
 
         return self._run(
@@ -362,7 +361,7 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.sic_search("real estate investment trusts").results
+        >>> obb.regulators.sec.sic_search(query='real estate investment trusts')
         """  # noqa: E501
 
         return self._run(
@@ -432,8 +431,7 @@ class ROUTER_regulators_sec(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.regulators.sec.symbol_map("0000789019").results.symbol
-        >>>     MSFT
+        >>> obb.regulators.sec.symbol_map(cik='0000789019')
         """  # noqa: E501
 
         return self._run(

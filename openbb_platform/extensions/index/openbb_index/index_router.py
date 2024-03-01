@@ -2,6 +2,7 @@
 
 from openbb_core.app.deprecation import OpenBBDeprecationWarning
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -27,6 +28,7 @@ router.include_router(price_router)
         since=(4, 1),
         expected_removal=(4, 3),
     ),
+    api_examples=[Example(parameters={"symbol": "SPX"})],
 )
 async def market(
     cc: CommandContext,
@@ -40,11 +42,12 @@ async def market(
 
 @router.command(
     model="IndexConstituents",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.index.constituents("dowjones", provider="fmp").to_df()',
-        "#### Providers other than FMP will use the ticker symbol. ####",
-        'obb.index.constituents("BEP50P", provider="cboe").to_df()',
+    api_examples=[
+        Example(parameters={"symbol": "dowjones", "provider": "fmp"}),
+        Example(
+            description="Providers other than FMP will use the ticker symbol.",
+            parameters={"symbol": "BEP50P", "provider": "cboe"},
+        ),
     ],
 )
 async def constituents(
@@ -59,10 +62,7 @@ async def constituents(
 
 @router.command(
     model="IndexSnapshots",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.index.snapshots(region="us",provider="cboe").to_df()',
-    ],
+    api_examples=[Example(parameters={"region": "us", "provider": "cboe"})],
 )
 async def snapshots(
     cc: CommandContext,
@@ -76,10 +76,7 @@ async def snapshots(
 
 @router.command(
     model="AvailableIndices",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.index.available(provider="yfinance").to_df()',
-    ],
+    api_examples=[Example(parameters={"provider": "yfinance"})],
 )
 async def available(
     cc: CommandContext,
@@ -93,10 +90,7 @@ async def available(
 
 @router.command(
     model="IndexSearch",
-    exclude_auto_examples=True,
-    examples=[
-        "obb.index.search(query='SPX', provider='cboe').to_df()",
-    ],
+    api_examples=[Example(parameters={"query": "SPX", "provider": "cboe"})],
 )
 async def search(
     cc: CommandContext,
@@ -110,9 +104,8 @@ async def search(
 
 @router.command(
     model="SP500Multiples",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.index.sp500_multiples(series_name="shiller_pe_year", provider="nasdaq").to_df()',
+    api_examples=[
+        Example(parameters={"series_name": "shiller_pe_year", "provider": "nasdaq"})
     ],
 )
 async def sp500_multiples(
@@ -127,10 +120,7 @@ async def sp500_multiples(
 
 @router.command(
     model="IndexSectors",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.index.sectors(symbol="^TX60", provider="tmx").to_df()',
-    ],
+    api_examples=[Example(parameters={"symbol": "^TX60", "provider": "tmx"})],
 )
 async def sectors(
     cc: CommandContext,

@@ -1,6 +1,7 @@
 """The Commodity router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -15,7 +16,10 @@ router = Router(prefix="")
 
 
 # pylint: disable=unused-argument
-@router.command(model="LbmaFixing")
+@router.command(
+    model="LbmaFixing",
+    api_examples=[Example(parameters={"asset": "gold"})],
+)
 async def lbma_fixing(
     cc: CommandContext,
     provider_choices: ProviderChoices,

@@ -171,7 +171,7 @@ class ROUTER_equity_estimates(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.estimates.analyst_search(firm_name="Wedbush", provider="benzinga").to_df()
+        >>> obb.equity.estimates.analyst_search(firm_name='Wedbush', provider='benzinga')
         """  # noqa: E501
 
         return self._run(
@@ -256,7 +256,7 @@ class ROUTER_equity_estimates(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.estimates.consensus("AAPL,MSFT", provider="yfinance").to_df()
+        >>> obb.equity.estimates.consensus(symbol='AAPL,MSFT', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -374,7 +374,7 @@ class ROUTER_equity_estimates(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.estimates.historical("AAPL", period="quarter", provider="fmp").to_df()
+        >>> obb.equity.estimates.historical(symbol='AAPL', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -524,7 +524,7 @@ class ROUTER_equity_estimates(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.estimates.price_target(start_date="2020-01-01", end_date="2024-02-16",limit=10, symbol="msft", provider="benzinga",action="downgrades").to_df()
+        >>> obb.equity.estimates.price_target(start_date='2020-01-01', end_date='2024-02-16', limit=10, symbol='msft', provider='benzinga', action=downgrades)
         """  # noqa: E501
 
         return self._run(

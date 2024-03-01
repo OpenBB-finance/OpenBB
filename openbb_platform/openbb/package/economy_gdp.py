@@ -95,7 +95,7 @@ class ROUTER_economy_gdp(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.gdp.forecast(period="annual", type="real")
+        >>> obb.economy.gdp.forecast(period='annual', type='real')
         """  # noqa: E501
 
         return self._run(
@@ -184,7 +184,7 @@ class ROUTER_economy_gdp(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.gdp.nominal(units="usd")
+        >>> obb.economy.gdp.nominal(units='usd')
         """  # noqa: E501
 
         return self._run(
@@ -272,7 +272,7 @@ class ROUTER_economy_gdp(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.gdp.real(units="yoy")
+        >>> obb.economy.gdp.real(units='yoy')
         """  # noqa: E501
 
         return self._run(

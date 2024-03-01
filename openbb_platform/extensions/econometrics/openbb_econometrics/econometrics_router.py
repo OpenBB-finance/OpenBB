@@ -31,7 +31,7 @@ router = Router(prefix="")
 
 @router.command(
     methods=["POST"],
-    examples=[
+    python_examples=[
         "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
         "obb.econometrics.correlation_matrix(data=stock_data)",
     ],
@@ -73,7 +73,7 @@ def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
 @router.command(
     methods=["POST"],
     include_in_schema=False,
-    examples=[
+    python_examples=[
         "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
         'obb.econometrics.ols_regression(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
     ],
@@ -113,7 +113,7 @@ def ols_regression(
 
 @router.command(
     methods=["POST"],
-    examples=[
+    python_examples=[
         "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
         'obb.econometrics.ols_regression_summary(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
     ],
@@ -186,7 +186,7 @@ def ols_regression_summary(
 
 @router.command(
     methods=["POST"],
-    examples=[
+    python_examples=[
         "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
         'obb.econometrics.autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
     ],
@@ -228,7 +228,7 @@ def autocorrelation(
 
 @router.command(
     methods=["POST"],
-    examples=[
+    python_examples=[
         "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
         'obb.econometrics.residual_autocorrelation(data=stock_data, y_column="close", x_columns=["open", "high", "low"])',
     ],
@@ -283,7 +283,7 @@ def residual_autocorrelation(
 
 @router.command(
     methods=["POST"],
-    examples=[
+    python_examples=[
         "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
         'obb.econometrics.cointegration(data=stock_data, columns=["open", "close"])',
     ],
@@ -342,7 +342,7 @@ def cointegration(
 
 @router.command(
     methods=["POST"],
-    examples=[
+    python_examples=[
         "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
         'obb.econometrics.causality(data=stock_data, y_column="close", x_column="open")',
     ],
@@ -399,7 +399,7 @@ def causality(
 
 @router.command(
     methods=["POST"],
-    examples=[
+    python_examples=[
         "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
         'obb.econometrics.unit_root(data=stock_data, column="close")',
         'obb.econometrics.unit_root(data=stock_data, column="close", regression="ct")',

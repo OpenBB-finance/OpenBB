@@ -78,8 +78,8 @@ class ROUTER_crypto(Container):
         -------
         >>> from openbb import obb
         >>> obb.crypto.search()
-        >>> obb.crypto.search("BTCUSD")
-        >>> obb.crypto.search("ETH-USD")
+        >>> obb.crypto.search(symbol='BTCUSD')
+        >>> obb.crypto.search(symbol='ETH-USD')
         """  # noqa: E501
 
         return self._run(

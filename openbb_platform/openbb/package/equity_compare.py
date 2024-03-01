@@ -64,7 +64,7 @@ class ROUTER_equity_compare(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.compare.peers(symbol="AAPL")
+        >>> obb.equity.compare.peers(symbol='AAPL')
         """  # noqa: E501
 
         return self._run(

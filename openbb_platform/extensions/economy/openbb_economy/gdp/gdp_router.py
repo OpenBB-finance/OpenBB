@@ -1,6 +1,7 @@
 """Economy GDP Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -15,7 +16,10 @@ router = Router(prefix="/gdp")
 # pylint: disable=unused-argument
 
 
-@router.command(model="GdpForecast")
+@router.command(
+    model="GdpForecast",
+    api_examples=[Example(parameters={"period": "annual", "type": "real"})],
+)
 async def forecast(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -26,7 +30,10 @@ async def forecast(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="GdpNominal")
+@router.command(
+    model="GdpNominal",
+    api_examples=[Example(parameters={"units": "usd"})],
+)
 async def nominal(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -37,7 +44,10 @@ async def nominal(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="GdpReal")
+@router.command(
+    model="GdpReal",
+    api_examples=[Example(parameters={"units": "yoy"})],
+)
 async def real(
     cc: CommandContext,
     provider_choices: ProviderChoices,

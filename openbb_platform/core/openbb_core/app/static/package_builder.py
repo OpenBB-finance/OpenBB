@@ -37,6 +37,7 @@ from typing_extensions import Annotated, _AnnotatedAlias
 
 from openbb_core.app.extension_loader import ExtensionLoader, OpenBBGroups
 from openbb_core.app.model.custom_parameter import OpenBBCustomParameter
+from openbb_core.app.model.example import Example
 from openbb_core.app.provider_interface import ProviderInterface
 from openbb_core.app.router import CommandMap, RouterLoader
 from openbb_core.app.static.utils.console import Console
@@ -404,8 +405,9 @@ class ClassDefinition:
                         if route.openapi_extra
                         else None
                     ),
-                    examples=route.openapi_extra.get("examples", None),
-                )  # type: ignore
+                    examples=(route.openapi_extra.get("api_examples", []) or [])
+                    + (route.openapi_extra.get("python_examples", []) or []),
+                )
             else:
                 doc += "    /" if path else "    /"
                 doc += c.split("/")[-1] + "\n"
@@ -701,14 +703,16 @@ class MethodDefinition:
 
     @staticmethod
     def build_command_method_doc(
+        path: str,
         func: Callable,
         formatted_params: OrderedDict[str, Parameter],
         model_name: Optional[str] = None,
-        examples: Optional[List[str]] = None,
+        examples: Optional[List[Union[Example, str]]] = None,
     ):
         """Build the command method docstring."""
         doc = func.__doc__
         doc = DocstringGenerator.generate(
+            path=path,
             func=func,
             formatted_params=formatted_params,
             model_name=model_name,
@@ -794,7 +798,7 @@ class MethodDefinition:
         path: str,
         func: Callable,
         model_name: Optional[str] = None,
-        examples: Optional[List[str]] = None,
+        examples: Optional[List[Union[Example, str]]] = None,
     ) -> str:
         """Build the command method."""
         func_name = func.__name__
@@ -812,6 +816,7 @@ class MethodDefinition:
             model_name=model_name,
         )
         code += cls.build_command_method_doc(
+            path=path,
             func=func,
             formatted_params=formatted_params,
             model_name=model_name,
@@ -850,16 +855,53 @@ class DocstringGenerator:
 
         return obbject_description
 
+    @staticmethod
+    def append_examples(
+        func_name: str,
+        func_params: dict[str, Field],
+        examples: Optional[List[Union[Example, str]]],
+    ) -> str:
+        """Get the example section from the examples."""
+        if examples:
+            doc = "\n    Example\n    -------\n"
+            doc += "    >>> from openbb import obb\n"
+
+            for e in examples:
+                if isinstance(e, Example):
+                    if e.description:
+                        doc += f"    >>> # {e.description}\n"
+                    doc += f"    >>> obb{func_name}("
+
+                    for k, v in e.parameters.items():
+                        if k in func_params and (field := func_params.get(k)):
+                            field_type_str = str(field.type)
+                            # TODO: Handle types better, some edge cases
+                            # like Union[str, List[str]] will be stringified
+                            # even if the type is a list
+                            if any(
+                                t in field_type_str for t in ["int", "float", "bool"]
+                            ):
+                                doc += f"{k}={v}, "
+                            else:
+                                doc += f"{k}='{v}', "
+                        else:
+                            doc += f"{k}='{v}', "
+
+                    doc = doc.strip(", ") + ")\n"
+                else:
+                    doc += f"    >>> {e}\n"
+            return doc
+        return ""
+
     @classmethod
     def generate_model_docstring(
         cls,
         model_name: str,
         summary: str,
         explicit_params: dict,
-        params: dict,
+        kwarg_params: dict,
         returns: Dict[str, FieldInfo],
         results_type: str,
-        examples: Optional[List[str]] = None,
     ) -> str:
         """Create the docstring for model."""
 
@@ -878,15 +920,6 @@ class DocstringGenerator:
             description = description.replace("\n", "\n    ")
             return description
 
-        standard_dict = params["standard"].__dataclass_fields__
-        extra_dict = params["extra"].__dataclass_fields__
-
-        if examples:
-            example_docstring = "\n    Example\n    -------\n"
-            example_docstring += "    >>> from openbb import obb\n"
-            for example in examples:
-                example_docstring += f"    >>> {example}\n"
-
         docstring = summary.strip("\n")
         docstring += "\n\n"
         docstring += "    Parameters\n"
@@ -894,14 +927,7 @@ class DocstringGenerator:
 
         # Explicit parameters
         for param_name, param in explicit_params.items():
-            if param_name in standard_dict:
-                # pylint: disable=W0212
-                p_type = param._annotation.__args__[0]
-                type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
-                description = getattr(
-                    param._annotation.__metadata__[0], "description", ""
-                )
-            elif param_name == "provider":
+            if param_name == "provider":
                 # pylint: disable=W0212
                 type_ = param._annotation
                 default = param._annotation.__args__[0].__args__[0]
@@ -912,15 +938,19 @@ class DocstringGenerator:
                 type_ = "bool"
                 description = "Whether to create a chart or not, by default False."
             else:
-                type_ = ""
-                description = ""
+                # pylint: disable=W0212
+                p_type = param._annotation.__args__[0]
+                type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
+                description = getattr(
+                    param._annotation.__metadata__[0], "description", ""
+                )
 
             type_str = format_type(type_, char_limit=79)  # type: ignore
             docstring += f"    {param_name} : {type_str}\n"
             docstring += f"        {format_description(description)}\n"
 
         # Kwargs
-        for param_name, param in extra_dict.items():
+        for param_name, param in kwarg_params.items():
             p_type = param.type
             type_ = p_type.__name__ if inspect.isclass(p_type) else p_type
 
@@ -976,50 +1006,52 @@ class DocstringGenerator:
 
             docstring += f"    {field.alias or name} : {field_type}\n"
             docstring += f"        {format_description(description)}\n"
-
-        if examples:
-            docstring += example_docstring
-
         return docstring
 
     @classmethod
     def generate(
         cls,
+        path: str,
         func: Callable,
         formatted_params: OrderedDict[str, Parameter],
         model_name: Optional[str] = None,
-        examples: Optional[List[str]] = None,
+        examples: Optional[List[Union[Example, str]]] = None,
     ) -> Optional[str]:
         """Generate the docstring for the function."""
         doc = func.__doc__
+        func_params = {}
         if model_name:
-            params = cls.provider_interface.params.get(model_name, None)
+            params = cls.provider_interface.params.get(model_name, {})
             return_schema = cls.provider_interface.return_schema.get(model_name, None)
             if params and return_schema:
                 explicit_dict = dict(formatted_params)
                 explicit_dict.pop("extra_params", None)
-
+                kwarg_params = params["extra"].__dataclass_fields__
+                func_params = {
+                    **params["standard"].__dataclass_fields__,
+                    **params["extra"].__dataclass_fields__,
+                }
                 returns = return_schema.model_fields
                 results_type = func.__annotations__.get("return", model_name)
                 if hasattr(results_type, "results_type_repr"):
                     results_type = results_type.results_type_repr()
 
-                return cls.generate_model_docstring(
+                doc = cls.generate_model_docstring(
                     model_name=model_name,
                     summary=func.__doc__ or "",
                     explicit_params=explicit_dict,
-                    params=params,
+                    kwarg_params=kwarg_params,
                     returns=returns,
                     results_type=results_type,
-                    examples=examples,
                 )
-            return doc
-        if examples and examples != [""] and doc:
-            doc += "\n    Examples\n    --------\n"
-            doc += "    >>> from openbb import obb\n"
-            for example in examples:
-                if example != "":
-                    doc += f"    >>> {example}\n"
+
+        if doc and examples:
+            doc += cls.append_examples(
+                path.replace("/", "."),
+                func_params,
+                examples,
+            )
+
         return doc
 
     @staticmethod

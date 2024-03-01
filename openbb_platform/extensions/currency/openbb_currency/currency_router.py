@@ -1,6 +1,7 @@
 """The Currency router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -19,13 +20,20 @@ router.include_router(price_router)
 # pylint: disable=unused-argument
 @router.command(
     model="CurrencyPairs",
-    examples=[
-        "# Search for 'EURUSD' currency pair using 'polygon' as provider.",
-        "obb.currency.search(provider='polygon', symbol='EURUSD')",
-        "# Search for terms  using 'polygon' as provider.",
-        "obb.currency.search(provider='polygon', search='Euro zone')",
-        "# Search for actively traded currency pairs on the queried date using 'polygon' as provider.",
-        "obb.currency.search(provider='polygon', date='2024-01-02', active=True)",
+    api_examples=[
+        Example(parameters={}),
+        Example(
+            description="Search for 'EURUSD' currency pair using 'polygon' as provider.",
+            parameters={"provider": "polygon", "symbol": "EURUSD"},
+        ),
+        Example(
+            description="Search for terms  using 'polygon' as provider.",
+            parameters={"provider": "polygon", "search": "Euro zone"},
+        ),
+        Example(
+            description="Search for actively traded currency pairs on the queried date using 'polygon' as provider.",
+            parameters={"provider": "polygon", "date": "2024-01-02", "active": True},
+        ),
     ],
 )
 async def search(
@@ -48,7 +56,10 @@ async def search(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="CurrencyReferenceRates")
+@router.command(
+    model="CurrencyReferenceRates",
+    api_examples=[Example(parameters={"symbol": "EURUSD"})],
+)
 async def reference_rates(
     cc: CommandContext,
     provider_choices: ProviderChoices,

@@ -1,6 +1,7 @@
 """Fixed Income Government Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -17,10 +18,7 @@ router = Router(prefix="/government")
 
 @router.command(
     model="USYieldCurve",
-    exclude_auto_examples=True,
-    examples=[
-        "obb.fixedincome.government.us_yield_curve(inflation_adjusted=True)",
-    ],
+    api_examples=[Example(parameters={"inflation_adjusted": True})],
 )
 async def us_yield_curve(
     cc: CommandContext,
@@ -34,10 +32,7 @@ async def us_yield_curve(
 
 @router.command(
     model="EUYieldCurve",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.fixedincome.government.eu_yield_curve(yield_curve_type="spot_rate")',
-    ],
+    api_examples=[Example(parameters={"yield_curve_type": "spot_rate"})],
 )
 async def eu_yield_curve(
     cc: CommandContext,
@@ -70,10 +65,7 @@ async def eu_yield_curve(
 
 @router.command(
     model="TreasuryRates",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.fixedincome.government.treasury_rates(provider="federal_reserve")',
-    ],
+    api_examples=[Example(parameters={"provider": "federal_reserve"})],
 )
 async def treasury_rates(
     cc: CommandContext,
@@ -87,10 +79,14 @@ async def treasury_rates(
 
 @router.command(
     model="TreasuryAuctions",
-    exclude_auto_examples=True,
-    examples=[
-        "obb.fixedincome.government.treasury_auctions("
-        + 'security_type="Bill", start_date="2022-01-01", end_date="2023-01-01',
+    api_examples=[
+        Example(
+            parameters={
+                "security_type": "Bill",
+                "start_date": "2022-01-01",
+                "end_date": "2023-01-01",
+            }
+        )
     ],
 )
 async def treasury_auctions(
@@ -105,10 +101,7 @@ async def treasury_auctions(
 
 @router.command(
     model="TreasuryPrices",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.fixedincome.government.treasury_prices(date="2019-02-05")',
-    ],
+    api_examples=[Example(parameters={"date": "2019-02-05"})],
 )
 async def treasury_prices(
     cc: CommandContext,

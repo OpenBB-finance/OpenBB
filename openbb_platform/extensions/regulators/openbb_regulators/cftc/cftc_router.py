@@ -2,6 +2,7 @@
 """Commodity Futures Trading Commission (CFTC) Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -16,10 +17,7 @@ router = Router(prefix="/cftc")
 
 @router.command(
     model="COTSearch",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.regulators.cftc.cot_search(query="gold")',
-    ],
+    api_examples=[Example(parameters={"query": "gold"})],
 )
 async def cot_search(
     cc: CommandContext,
@@ -36,13 +34,19 @@ async def cot_search(
 
 @router.command(
     model="COT",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.regulators.cftc.cot(series_id="GC=F").to_df()',
-        "#### Enter the report ID by the Nasdaq Data Link Code. ####",
-        'obb.regulators.cftc.cot(series_id="088691").to_df()',
-        "### Get the report for futures only. ####",
-        'obb.regulators.cftc.cot(series_id="088691", data_type="F").to_df()',
+    api_examples=[
+        Example(
+            description="Get the Commitment of Traders Report for Gold.",
+            parameters={"series_id": "GC=F"},
+        ),
+        Example(
+            description="Enter the report ID by the Nasdaq Data Link Code.",
+            parameters={"series_id": "088691"},
+        ),
+        Example(
+            description="Get the report for futures only.",
+            parameters={"series_id": "088691", "data_type": "F"},
+        ),
     ],
 )
 async def cot(

@@ -10,6 +10,7 @@ from openbb_core.app.provider_interface import (
 )
 from openbb_core.app.query import Query
 from openbb_core.app.router import Router
+from openbb_core.app.model.example import Example
 
 router = Router(prefix="/price")
 
@@ -17,11 +18,20 @@ router = Router(prefix="/price")
 # pylint: disable=unused-argument
 @router.command(
     model="CurrencyHistorical",
-    examples=[
-        "# Filter historical data with specific start and end date.",
-        "obb.currency.price.historical(symbol='EURUSD', start_date='2023-01-01', end_date='20213-12-31')",
-        "# Get data with different granularity.",
-        "obb.currency.price.historical(symbol='EURUSD', interval='15m', provider='polygon')",
+    api_examples=[
+        Example(parameters={"symbol": "EURUSD"}),
+        Example(
+            description="Filter historical data with specific start and end date.",
+            parameters={
+                "symbol": "EURUSD",
+                "start_date": "2023-01-01",
+                "end_date": "2023-12-31",
+            },
+        ),
+        Example(
+            description="Get data with different granularity.",
+            parameters={"symbol": "EURUSD", "interval": "15m", "provider": "polygon"},
+        ),
     ],
 )
 async def historical(

@@ -124,9 +124,9 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.calendar(provider="fmp", start_date="2020-03-01", end_date="2020-03-31")
-        >>> #### By default, the calendar will be forward-looking. ####
-        >>> obb.economy.calendar(provider="nasdaq")
+        >>> obb.economy.calendar(provider='fmp', start_date='2020-03-01', end_date='2020-03-31')
+        >>> # By default, the calendar will be forward-looking.
+        >>> obb.economy.calendar(provider='nasdaq')
         """  # noqa: E501
 
         return self._run(
@@ -210,7 +210,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.composite_leading_indicator(country="all").to_df()
+        >>> obb.economy.composite_leading_indicator(country='all')
         """  # noqa: E501
 
         return self._run(
@@ -324,9 +324,9 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.cpi(countries=["japan", "china", "turkey"]).to_df()
-        >>> #### Use the `units` parameter to define the reference period for the change in values. ####
-        >>> obb.economy.cpi(countries=["united_states", "united_kingdom"], units="growth_previous").to_df()
+        >>> obb.economy.cpi(country='japan,china,turkey')
+        >>> # Use the `units` parameter to define the reference period for the change in values.
+        >>> obb.economy.cpi(country='united_states,united_kingdom', units='growth_previous')
         """  # noqa: E501
 
         return self._run(
@@ -480,10 +480,10 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> #### With no date, the most recent report is returned. ####
-        >>> obb.economy.fred_regional("NYICLAIMS")
-        >>> #### With a date, time series data is returned. ####
-        >>> obb.economy.fred_regional("NYICLAIMS", start_date="2021-01-01")
+        >>> # With no date, the most recent report is returned.
+        >>> obb.economy.fred_regional(series_id='NYICLAIMS')
+        >>> # With a date, time series data is returned.
+        >>> obb.economy.fred_regional(series_id='NYICLAIMS', start_date='2021-01-01')
         """  # noqa: E501
 
         return self._run(
@@ -743,11 +743,11 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.fred_series("NFCI").to_df()
-        >>> #### Multiple series can be passed in as a list. ####
-        >>> obb.economy.fred_series(["NFCI","STLFSI4"]).to_df()
-        >>> #### Use the `transform` parameter to transform the data as change, log, or percent change. ####
-        >>> obb.economy.fred_series("CBBTCUSD", transform="pc1").to_df()
+        >>> obb.economy.fred_series(series_id='NFCI')
+        >>> # Multiple series can be passed in as a list.
+        >>> obb.economy.fred_series(series_id='NFCI,STLFSI4')
+        >>> # Use the `transform` parameter to transform the data as change, log, or percent change.
+        >>> obb.economy.fred_series(series_id='CBBTCUSD', transform='pc1')
         """  # noqa: E501
 
         return self._run(
@@ -848,7 +848,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.long_term_interest_rate(country="all", frequency="quarterly").to_df()
+        >>> obb.economy.long_term_interest_rate(country='all', frequency='quarterly')
         """  # noqa: E501
 
         return self._run(
@@ -945,7 +945,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.money_measures(adjusted=False).to_df()
+        >>> obb.economy.money_measures(adjusted=False)
         """  # noqa: E501
 
         return self._run(
@@ -1009,7 +1009,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.risk_premium().to_df()
+        >>> obb.economy.risk_premium()
         """  # noqa: E501
 
         return self._run(
@@ -1094,7 +1094,7 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.short_term_interest_rate(country="all", frequency="quarterly").to_df()
+        >>> obb.economy.short_term_interest_rate(country='all', frequency='quarterly')
         """  # noqa: E501
 
         return self._run(
@@ -1183,11 +1183,9 @@ class ROUTER_economy(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.economy.unemployment(country="all", frequency="quarterly")
-        >>> #### Demographics for the statistics are selected with the `age` and `sex` parameters. ####
-        >>> obb.economy.unemployment(
-        >>> country="all", frequency="quarterly", age="25-54"
-        >>> ).to_df().pivot(columns="country", values="value")
+        >>> obb.economy.unemployment(country='all', frequency='quarterly')
+        >>> # Demographics for the statistics are selected with the `age` and `sex` parameters.
+        >>> obb.economy.unemployment(country='all', frequency='quarterly', age='25-54')
         """  # noqa: E501
 
         return self._run(

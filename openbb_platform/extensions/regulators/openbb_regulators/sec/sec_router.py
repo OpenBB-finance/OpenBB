@@ -2,6 +2,7 @@
 """SEC Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -16,11 +17,7 @@ router = Router(prefix="/sec")
 
 @router.command(
     model="CikMap",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.regulators.sec.cik_map(symbol="MSFT").results.cik',
-        "    0000789019",
-    ],
+    api_examples=[Example(parameters={"symbol": "MSFT"})],
 )
 async def cik_map(
     cc: CommandContext,
@@ -34,10 +31,7 @@ async def cik_map(
 
 @router.command(
     model="InstitutionsSearch",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.regulators.sec.institutions_search(query="blackstone real estate").to_df()'
-    ],
+    api_examples=[Example(parameters={"query": "blackstone real estate"})],
 )
 async def institutions_search(
     cc: CommandContext,
@@ -51,8 +45,7 @@ async def institutions_search(
 
 @router.command(
     model="SchemaFiles",
-    exclude_auto_examples=True,
-    examples=[
+    python_examples=[
         "data = obb.regulators.sec.schema_files()",
         "data.files[0]",
         "    https://xbrl.fasb.org/us-gaap/",
@@ -84,8 +77,7 @@ async def schema_files(
 
 @router.command(
     model="SymbolMap",
-    exclude_auto_examples=True,
-    examples=['obb.regulators.sec.symbol_map("0000789019").results.symbol', "    MSFT"],
+    api_examples=[Example(parameters={"cik": "0000789019"})],
 )
 async def symbol_map(
     cc: CommandContext,
@@ -99,8 +91,7 @@ async def symbol_map(
 
 @router.command(
     model="RssLitigation",
-    exclude_auto_examples=True,
-    examples=['obb.regulators.sec.rss_litigation().to_dict("records")[0]'],
+    api_examples=[Example(parameters={})],
 )
 async def rss_litigation(
     cc: CommandContext,
@@ -114,10 +105,7 @@ async def rss_litigation(
 
 @router.command(
     model="SicSearch",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.regulators.sec.sic_search("real estate investment trusts").results',
-    ],
+    api_examples=[Example(parameters={"query": "real estate investment trusts"})],
 )
 async def sic_search(
     cc: CommandContext,

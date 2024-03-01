@@ -2,6 +2,7 @@
 """Crypto Price Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -17,11 +18,40 @@ router = Router(prefix="/price")
 # pylint: disable=unused-argument,line-too-long
 @router.command(
     model="CryptoHistorical",
-    examples=[
-        'obb.crypto.price.historical("BTCUSD", start_date="2024-01-01", end_date="2024-01-31")',
-        'obb.crypto.price.historical("ETH-USD", provider="yfinance", interval="1mo", start_date="2024-01-01", end_date="2024-12-31")',  # noqa: E501
-        'obb.crypto.price.historical("BTCUSD,ETH-USD", provider="yfinance", interval="1d", start_date="2024-01-01", end_date="2024-01-31")',  # noqa: E501
-        'obb.crypto.price.historical(["BTCUSD", "ETH-USD"], start_date="2024-01-01", end_date="2024-01-31")',
+    api_examples=[
+        Example(parameters={"symbol": "BTCUSD"}),
+        Example(
+            parameters={
+                "symbol": "BTCUSD",
+                "start_date": "2024-01-01",
+                "end_date": "2024-01-31",
+            }
+        ),
+        Example(
+            parameters={
+                "symbol": "ETH-USD",
+                "provider": "yfinance",
+                "interval": "1mo",
+                "start_date": "2024-01-01",
+                "end_date": "2024-12-31",
+            }
+        ),  # noqa: E501
+        Example(
+            parameters={
+                "symbol": "BTCUSD,ETH-USD",
+                "provider": "yfinance",
+                "interval": "1d",
+                "start_date": "2024-01-01",
+                "end_date": "2024-01-31",
+            }
+        ),  # noqa: E501
+        Example(
+            parameters={
+                "symbol": "BTCUSD,ETH-USD",
+                "start_date": "2024-01-01",
+                "end_date": "2024-01-31",
+            }
+        ),
     ],
 )
 async def historical(

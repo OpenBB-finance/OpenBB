@@ -21,7 +21,7 @@ router = Router(prefix="/performance")
 
 @router.command(
     methods=["POST"],
-    examples=[
+    api_examples=[
         'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
         'returns = stock_data["close"].pct_change().dropna()',
         'obb.quantitative.omega_ratio(data=returns, target="close")',
@@ -80,7 +80,7 @@ def omega_ratio(
 
 @router.command(
     methods=["POST"],
-    examples=[
+    api_examples=[
         'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
         'returns = stock_data["close"].pct_change().dropna()',
         'obb.quantitative.sharpe_ratio(data=returns, target="close")',
@@ -134,7 +134,7 @@ def sharpe_ratio(
 
 @router.command(
     methods=["POST"],
-    examples=[
+    api_examples=[
         'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
         'returns = stock_data["close"].pct_change().dropna()',
         'obb.quantitative.sortino_ratio(data=stock_data, target="close")',

@@ -1,6 +1,7 @@
 """Crypto Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -19,7 +20,11 @@ router.include_router(price_router)
 # pylint: disable=unused-argument
 @router.command(
     model="CryptoSearch",
-    examples=['obb.crypto.search("BTCUSD")', 'obb.crypto.search("ETH-USD")'],
+    api_examples=[
+        Example(parameters={}),
+        Example(parameters={"symbol": "BTCUSD"}),
+        Example(parameters={"symbol": "ETH-USD"}),
+    ],
 )
 async def search(
     cc: CommandContext,

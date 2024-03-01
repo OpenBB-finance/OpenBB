@@ -100,7 +100,7 @@ class ROUTER_fixedincome_government(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.government.treasury_rates(provider="federal_reserve")
+        >>> obb.fixedincome.government.treasury_rates(provider='federal_reserve')
         """  # noqa: E501
 
         return self._run(

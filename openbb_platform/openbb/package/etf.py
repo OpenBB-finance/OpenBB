@@ -74,7 +74,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.countries("VT", provider="fmp")
+        >>> obb.etf.countries(symbol='VT', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -149,9 +149,9 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.equity_exposure("MSFT", provider="fmp")
-        >>> #### This function accepts multiple tickers. ####
-        >>> obb.etf.equity_exposure("MSFT,AAPL", provider="fmp")
+        >>> obb.etf.equity_exposure(symbol='MSFT', provider='fmp')
+        >>> # This function accepts multiple tickers.
+        >>> obb.etf.equity_exposure(symbol='MSFT,AAPL', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -243,10 +243,10 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.historical(symbol="SPY")
-        >>> obb.etf.historical("SPY", provider="yfinance")
-        >>> #### This function accepts multiple tickers. ####
-        >>> obb.etf.historical("SPY,IWM,QQQ,DJIA", provider="yfinance")
+        >>> obb.etf.historical(symbol='SPY')
+        >>> obb.etf.historical(symbol='SPY', provider='yfinance')
+        >>> # This function accepts multiple tickers.
+        >>> obb.etf.historical(symbol='SPY,IWM,QQQ,DJIA', provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -290,7 +290,7 @@ class ROUTER_etf(Container):
             no default.
         date : Optional[Union[str, datetime.date]]
             A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
-            A specific date to get data for.  The date represents the period ending.  The date entered will return the closest filing. (provider: sec)
+            A specific date to get data for.  The date represents the period ending. The date entered will return the closest filing. (provider: sec)
         cik : Optional[str]
             The CIK of the filing entity. Overrides symbol. (provider: fmp)
         use_cache : bool
@@ -382,7 +382,7 @@ class ROUTER_etf(Container):
         in_arrears : Optional[str]
             If the debt security is in arrears. (provider: sec)
         is_paid_kind : Optional[str]
-            If the debt security payments are are paid in kind. (provider: sec)
+            If the debt security payments are paid in kind. (provider: sec)
         derivative_category : Optional[str]
             The derivative category of the holding. (provider: sec)
         counterparty : Optional[str]
@@ -477,11 +477,11 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.holdings("XLK", provider="fmp").to_df()
-        >>> #### Including a date (FMP, SEC) will return the holdings as per NPORT-P filings. ####
-        >>> obb.etf.holdings("XLK", date="2022-03-31",provider="fmp").to_df()
-        >>> #### The same data can be returned from the SEC directly. ####
-        >>> obb.etf.holdings("XLK", date="2022-03-31",provider="sec").to_df()
+        >>> obb.etf.holdings(symbol='XLK', provider='fmp')
+        >>> # Including a date (FMP, SEC) will return the holdings as per NPORT-P filings.
+        >>> obb.etf.holdings(symbol='XLK', date='2022-03-31', provider='fmp')
+        >>> # The same data can be returned from the SEC directly.
+        >>> obb.etf.holdings(symbol='XLK', date='2022-03-31', provider='sec')
         """  # noqa: E501
 
         return self._run(
@@ -546,7 +546,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.holdings_date("XLK", provider="fmp").results
+        >>> obb.etf.holdings_date(symbol='XLK', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -640,7 +640,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.holdings_performance("XLK", provider="fmp")
+        >>> obb.etf.holdings_performance(symbol='XLK', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -799,9 +799,9 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.info("SPY", provider="fmp")
-        >>> #### This function accepts multiple tickers. ####
-        >>> obb.etf.info("SPY,IWM,QQQ,DJIA", provider="fmp")
+        >>> obb.etf.info(symbol='SPY', provider='fmp')
+        >>> # This function accepts multiple tickers.
+        >>> obb.etf.info(symbol='SPY,IWM,QQQ,DJIA', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -896,7 +896,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.price_performance("SPY,QQQ,IWM,DJIA", provider="fmp")
+        >>> obb.etf.price_performance(symbol='SPY,QQQ,IWM,DJIA', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -991,9 +991,10 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> ### An empty query returns the full list of ETFs from the provider. ###
-        >>> obb.etf.search("", provider="fmp")
-        >>> #### The query will return results from text-based fields containing the term. ####obb.etf.search("commercial real estate", provider="fmp")
+        >>> # An empty query returns the full list of ETFs from the provider.
+        >>> obb.etf.search(provider='fmp')
+        >>> # The query will return results from text-based fields containing the term.
+        >>> obb.etf.search(query='commercial real estate', provider='fmp')
         """  # noqa: E501
 
         return self._run(
@@ -1058,7 +1059,7 @@ class ROUTER_etf(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.etf.sectors("SPY", provider="fmp")
+        >>> obb.etf.sectors(symbol='SPY', provider='fmp')
         """  # noqa: E501
 
         return self._run(

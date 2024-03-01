@@ -1,6 +1,7 @@
 """Economy Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -20,11 +21,18 @@ router.include_router(gdp_router)
 
 @router.command(
     model="EconomicCalendar",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.economy.calendar(provider="fmp", start_date="2020-03-01", end_date="2020-03-31")',
-        "#### By default, the calendar will be forward-looking. ####",
-        'obb.economy.calendar(provider="nasdaq")',
+    api_examples=[
+        Example(
+            parameters={
+                "provider": "fmp",
+                "start_date": "2020-03-01",
+                "end_date": "2020-03-31",
+            }
+        ),
+        Example(
+            description="By default, the calendar will be forward-looking.",
+            parameters={"provider": "nasdaq"},
+        ),
     ],
 )
 async def calendar(
@@ -39,11 +47,15 @@ async def calendar(
 
 @router.command(
     model="ConsumerPriceIndex",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.economy.cpi(countries=["japan", "china", "turkey"]).to_df()',
-        "#### Use the `units` parameter to define the reference period for the change in values. ####",
-        'obb.economy.cpi(countries=["united_states", "united_kingdom"], units="growth_previous").to_df()',
+    api_examples=[
+        Example(parameters={"country": "japan,china,turkey"}),
+        Example(
+            description="Use the `units` parameter to define the reference period for the change in values.",
+            parameters={
+                "country": "united_states,united_kingdom",
+                "units": "growth_previous",
+            },
+        ),
     ],
 )
 async def cpi(
@@ -58,8 +70,7 @@ async def cpi(
 
 @router.command(
     model="RiskPremium",
-    exclude_auto_examples=True,
-    examples=["obb.economy.risk_premium().to_df()"],
+    api_examples=[Example(parameters={})],
 )
 async def risk_premium(
     cc: CommandContext,
@@ -73,11 +84,12 @@ async def risk_premium(
 
 @router.command(
     model="BalanceOfPayments",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.economy.balance_of_payments(report_type="summary").to_df().set_index("period").T',
-        "#### The `country` parameter will override the `report_type`. ####",
-        'obb.economy.balance_of_payments(country="united_states", provider="ecb").to_df().set_index("period").T',
+    api_examples=[
+        Example(parameters={"report_type": "summary"}),
+        Example(
+            description="The `country` parameter will override the `report_type`.",
+            parameters={"country": "united_states", "provider": "ecb"},
+        ),
     ],
 )
 async def balance_of_payments(
@@ -90,7 +102,7 @@ async def balance_of_payments(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="FredSearch")
+@router.command(model="FredSearch", api_examples=[Example(parameters={})])
 async def fred_search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -107,13 +119,16 @@ async def fred_search(
 
 @router.command(
     model="FredSeries",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.economy.fred_series("NFCI").to_df()',
-        "#### Multiple series can be passed in as a list. ####",
-        'obb.economy.fred_series(["NFCI","STLFSI4"]).to_df()',
-        "#### Use the `transform` parameter to transform the data as change, log, or percent change. ####",
-        'obb.economy.fred_series("CBBTCUSD", transform="pc1").to_df()',
+    api_examples=[
+        Example(parameters={"series_id": "NFCI"}),
+        Example(
+            description="Multiple series can be passed in as a list.",
+            parameters={"series_id": "NFCI,STLFSI4"},
+        ),
+        Example(
+            description="Use the `transform` parameter to transform the data as change, log, or percent change.",
+            parameters={"series_id": "CBBTCUSD", "transform": "pc1"},
+        ),
     ],
 )
 async def fred_series(
@@ -128,10 +143,7 @@ async def fred_series(
 
 @router.command(
     model="MoneyMeasures",
-    exclude_auto_examples=True,
-    examples=[
-        "obb.economy.money_measures(adjusted=False).to_df()",
-    ],
+    api_examples=[Example(parameters={"adjusted": False})],
 )
 async def money_measures(
     cc: CommandContext,
@@ -145,13 +157,12 @@ async def money_measures(
 
 @router.command(
     model="Unemployment",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.economy.unemployment(country="all", frequency="quarterly")',
-        "#### Demographics for the statistics are selected with the `age` and `sex` parameters. ####",
-        "obb.economy.unemployment(",
-        'country="all", frequency="quarterly", age="25-54"',
-        ').to_df().pivot(columns="country", values="value")',
+    api_examples=[
+        Example(parameters={"country": "all", "frequency": "quarterly"}),
+        Example(
+            description="Demographics for the statistics are selected with the `age` and `sex` parameters.",
+            parameters={"country": "all", "frequency": "quarterly", "age": "25-54"},
+        ),
     ],
 )
 async def unemployment(
@@ -166,10 +177,7 @@ async def unemployment(
 
 @router.command(
     model="CLI",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.economy.composite_leading_indicator(country="all").to_df()',
-    ],
+    api_examples=[Example(parameters={"country": "all"})],
 )
 async def composite_leading_indicator(
     cc: CommandContext,
@@ -186,10 +194,7 @@ async def composite_leading_indicator(
 
 @router.command(
     model="STIR",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.economy.short_term_interest_rate(country="all", frequency="quarterly").to_df()',
-    ],
+    api_examples=[Example(parameters={"country": "all", "frequency": "quarterly"})],
 )
 async def short_term_interest_rate(
     cc: CommandContext,
@@ -209,10 +214,7 @@ async def short_term_interest_rate(
 
 @router.command(
     model="LTIR",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.economy.long_term_interest_rate(country="all", frequency="quarterly").to_df()',
-    ],
+    api_examples=[Example(parameters={"country": "all", "frequency": "quarterly"})],
 )
 async def long_term_interest_rate(
     cc: CommandContext,
@@ -235,12 +237,15 @@ async def long_term_interest_rate(
 
 @router.command(
     model="FredRegional",
-    exclude_auto_examples=True,
-    examples=[
-        "#### With no date, the most recent report is returned. ####",
-        'obb.economy.fred_regional("NYICLAIMS")',
-        "#### With a date, time series data is returned. ####",
-        'obb.economy.fred_regional("NYICLAIMS", start_date="2021-01-01")',
+    api_examples=[
+        Example(
+            description="With no date, the most recent report is returned.",
+            parameters={"series_id": "NYICLAIMS"},
+        ),
+        Example(
+            description="With a date, time series data is returned.",
+            parameters={"series_id": "NYICLAIMS", "start_date": "2021-01-01"},
+        ),
     ],
 )
 async def fred_regional(

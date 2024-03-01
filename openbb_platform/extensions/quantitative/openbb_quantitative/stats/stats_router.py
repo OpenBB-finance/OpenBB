@@ -25,7 +25,7 @@ router = Router(prefix="/stats")
 
 @router.command(
     methods=["POST"],
-    examples=[
+    api_examples=[
         'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
         'returns = stock_data["close"].pct_change().dropna()',
         'obb.quantitative.stats.skew(data=returns, target="close")',
@@ -66,7 +66,7 @@ def skew(
 
 @router.command(
     methods=["POST"],
-    examples=[
+    api_examples=[
         'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
         'returns = stock_data["close"].pct_change().dropna()',
         'obb.quantitative.stats.variance(data=returns, target="close")',
@@ -101,7 +101,7 @@ def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
 
 @router.command(
     methods=["POST"],
-    examples=[
+    api_examples=[
         'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
         'returns = stock_data["close"].pct_change().dropna()',
         'obb.quantitative.stats.stdev(data=returns, target="close")',
@@ -138,7 +138,7 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
 
 @router.command(
     methods=["POST"],
-    examples=[
+    api_examples=[
         'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
         'returns = stock_data["close"].pct_change().dropna()',
         'obb.quantitative.stats.kurtosis(data=returns, target="close")',
@@ -175,7 +175,7 @@ def kurtosis(data: List[Data], target) -> OBBject[List[Data]]:
 
 @router.command(
     methods=["POST"],
-    examples=[
+    api_examples=[
         'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
         'returns = stock_data["close"].pct_change().dropna()',
         'obb.quantitative.stats.quantile(data=returns, target="close", quantile_pct=0.75)',
@@ -220,7 +220,7 @@ def quantile(
 
 @router.command(
     methods=["POST"],
-    examples=[
+    api_examples=[
         'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
         'returns = stock_data["close"].pct_change().dropna()',
         'obb.quantitative.stats.mean(data=returns, target="close")',

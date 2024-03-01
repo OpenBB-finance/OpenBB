@@ -1,6 +1,7 @@
 """Ownership Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -15,7 +16,10 @@ router = Router(prefix="/ownership")
 # pylint: disable=unused-argument
 
 
-@router.command(model="EquityOwnership")
+@router.command(
+    model="EquityOwnership",
+    api_examples=[Example(parameters={"symbol": "AAPL", "page": 0})],
+)
 async def major_holders(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -26,7 +30,10 @@ async def major_holders(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="InstitutionalOwnership")
+@router.command(
+    model="InstitutionalOwnership",
+    api_examples=[Example(parameters={"symbol": "AAPL"})],
+)
 async def institutional(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -37,7 +44,10 @@ async def institutional(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="InsiderTrading")
+@router.command(
+    model="InsiderTrading",
+    api_examples=[Example(parameters={"symbol": "AAPL", "limit": 500})],
+)
 async def insider_trading(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -48,7 +58,9 @@ async def insider_trading(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="ShareStatistics")
+@router.command(
+    model="ShareStatistics", api_examples=[Example(parameters={"symbol": "AAPL"})]
+)
 async def share_statistics(
     cc: CommandContext,
     provider_choices: ProviderChoices,

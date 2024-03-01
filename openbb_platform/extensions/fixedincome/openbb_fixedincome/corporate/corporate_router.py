@@ -1,6 +1,7 @@
 """Fixed Income Corporate Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -17,10 +18,7 @@ router = Router(prefix="/corporate")
 
 @router.command(
     model="ICEBofA",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.fixedincome.corporate.ice_bofa(index_type="yield_to_worst")',
-    ],
+    api_examples=[Example(parameters={"index_type": "yield_to_worst"})],
 )
 async def ice_bofa(
     cc: CommandContext,
@@ -41,10 +39,7 @@ async def ice_bofa(
 
 @router.command(
     model="MoodyCorporateBondIndex",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.fixedincome.corporate.moody(index_type="baa")',
-    ],
+    api_examples=[Example(parameters={"index_type": "baa"})],
 )
 async def moody(
     cc: CommandContext,
@@ -64,8 +59,7 @@ async def moody(
 
 @router.command(
     model="HighQualityMarketCorporateBond",
-    exclude_auto_examples=True,
-    examples=['obb.fixedincome.corporate.hqm(yield_curve="par")'],
+    api_examples=[Example(parameters={"yield_curve": "par"})],
 )
 async def hqm(
     cc: CommandContext,
@@ -85,10 +79,7 @@ async def hqm(
 
 @router.command(
     model="SpotRate",
-    exclude_auto_examples=True,
-    examples=[
-        "obb.fixedincome.corporate.spot_rates(maturity=[10,20,30,50])",
-    ],
+    api_examples=[Example(parameters={"maturity": [10, 20, 30, 50]})],
 )
 async def spot_rates(
     cc: CommandContext,
@@ -108,10 +99,7 @@ async def spot_rates(
 
 @router.command(
     model="CommercialPaper",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.fixedincome.corporate.commercial_paper(maturity="15d")',
-    ],
+    api_examples=[Example(parameters={"maturity": "15d"})],
 )
 async def commercial_paper(
     cc: CommandContext,

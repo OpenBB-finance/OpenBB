@@ -1,6 +1,7 @@
 """Disc router for ETFs."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -18,9 +19,8 @@ router = Router(prefix="/discovery")
 @router.command(
     model="ETFGainers",
     operation_id="etf_gainers",
-    examples=[
-        "### Get the top ETF gainers. ###",
-        'obb.etf.discovery.gainers(provider="wsj")',
+    api_examples=[
+        Example(description="Get the top ETF gainers.", parameters={"provider": "wsj"}),
     ],
 )
 async def gainers(
@@ -36,9 +36,8 @@ async def gainers(
 @router.command(
     model="ETFLosers",
     operation_id="etf_losers",
-    examples=[
-        "### Get the top ETF losers. ###",
-        'obb.etf.discovery.losers(provider="wsj")',
+    api_examples=[
+        Example(description="Get the top ETF losers.", parameters={"provider": "wsj"})
     ],
 )
 async def losers(
@@ -54,9 +53,8 @@ async def losers(
 @router.command(
     model="ETFActive",
     operation_id="etf_active",
-    examples=[
-        "### Get the most active ETFs. ###",
-        'obb.etf.discovery.active(provider="wsj")',
+    api_examples=[
+        Example(description="Get the most active ETFs.", parameters={"provider": "wsj"})
     ],
 )
 async def active(

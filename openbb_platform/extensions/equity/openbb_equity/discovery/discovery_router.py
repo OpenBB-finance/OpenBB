@@ -2,6 +2,7 @@
 
 # pylint: disable=unused-argument
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -14,7 +15,9 @@ from openbb_core.app.router import Router
 router = Router(prefix="/discovery")
 
 
-@router.command(model="EquityGainers")
+@router.command(
+    model="EquityGainers", api_examples=[Example(parameters={"sort": "desc"})]
+)
 async def gainers(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -25,7 +28,9 @@ async def gainers(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EquityLosers")
+@router.command(
+    model="EquityLosers", api_examples=[Example(parameters={"sort": "desc"})]
+)
 async def losers(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -36,7 +41,9 @@ async def losers(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EquityActive")
+@router.command(
+    model="EquityActive", api_examples=[Example(parameters={"sort": "desc"})]
+)
 async def active(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -47,7 +54,10 @@ async def active(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EquityUndervaluedLargeCaps")
+@router.command(
+    model="EquityUndervaluedLargeCaps",
+    api_examples=[Example(parameters={"sort": "desc"})],
+)
 async def undervalued_large_caps(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -58,7 +68,9 @@ async def undervalued_large_caps(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EquityUndervaluedGrowth")
+@router.command(
+    model="EquityUndervaluedGrowth", api_examples=[Example(parameters={"sort": "desc"})]
+)
 async def undervalued_growth(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -69,7 +81,10 @@ async def undervalued_growth(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EquityAggressiveSmallCaps")
+@router.command(
+    model="EquityAggressiveSmallCaps",
+    api_examples=[Example(parameters={"sort": "desc"})],
+)
 async def aggressive_small_caps(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -80,7 +95,9 @@ async def aggressive_small_caps(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="GrowthTechEquities")
+@router.command(
+    model="GrowthTechEquities", api_examples=[Example(parameters={"sort": "desc"})]
+)
 async def growth_tech(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -91,7 +108,7 @@ async def growth_tech(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="TopRetail")
+@router.command(model="TopRetail", api_examples=[Example(parameters={"sort": "desc"})])
 async def top_retail(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -105,7 +122,9 @@ async def top_retail(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="UpcomingReleaseDays")
+@router.command(
+    model="UpcomingReleaseDays", api_examples=[Example(parameters={"sort": "desc"})]
+)
 async def upcoming_release_days(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -118,9 +137,16 @@ async def upcoming_release_days(
 
 @router.command(
     model="DiscoveryFilings",
-    examples=[
-        "# Get filings for the year 2023, limited to 100 results",
-        "obb.equity.discovery.filings(start_date='2023-01-01', end_date='2023-12-31')",
+    api_examples=[
+        Example(parameters={"limit": 100}),
+        Example(
+            description="Get filings for the year 2023, limited to 100 results",
+            parameters={
+                "start_date": "2023-01-01",
+                "end_date": "2023-12-31",
+                "limit": 100,
+            },
+        ),
     ],
 )
 async def filings(

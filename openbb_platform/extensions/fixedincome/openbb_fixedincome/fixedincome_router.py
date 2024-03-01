@@ -3,6 +3,7 @@
 # pylint: disable=W0613:unused-argument
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -26,10 +27,7 @@ router.include_router(corporate_router)
 
 @router.command(
     model="SOFR",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.fixedincome.fixedincome.sofr(period="overnight")',
-    ],
+    api_examples=[Example(parameters={"period": "overnight"})],
 )
 async def sofr(
     cc: CommandContext,

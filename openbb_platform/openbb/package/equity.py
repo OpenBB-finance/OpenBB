@@ -387,7 +387,7 @@ class ROUTER_equity(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.profile(symbol="AAPL")
+        >>> obb.equity.profile(symbol='AAPL')
         """  # noqa: E501
 
         return self._run(
@@ -593,7 +593,7 @@ class ROUTER_equity(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.search(query="AAPL", is_symbol=False, use_cache=True)
+        >>> obb.equity.search(query='AAPL', is_symbol=False, use_cache=True)
         """  # noqa: E501
 
         return self._run(

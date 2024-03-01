@@ -25,10 +25,10 @@ from pydantic.v1.validators import find_validators
 from typing_extensions import Annotated, ParamSpec, _AnnotatedAlias
 
 from openbb_core.app.deprecation import DeprecationSummary, OpenBBDeprecationWarning
-from openbb_core.app.example_generator import ExampleGenerator
 from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -233,23 +233,16 @@ class Router:
         api_router = self._api_router
 
         model = kwargs.pop("model", "")
-        examples = kwargs.pop("examples", [])
-        exclude_auto_examples = kwargs.pop("exclude_auto_examples", False)
+        api_examples: List[Example] = kwargs.pop("api_examples", [])
+        python_examples = kwargs.pop("python_examples", None)
 
         if func := SignatureInspector.complete(func, model):
-            if not exclude_auto_examples:
-                examples.insert(
-                    0,
-                    ExampleGenerator.generate(
-                        route=SignatureInspector.get_operation_id(func, sep="."),
-                        model=model,
-                    ),
-                )
 
             kwargs["response_model_exclude_unset"] = True
             kwargs["openapi_extra"] = kwargs.get("openapi_extra", {})
             kwargs["openapi_extra"]["model"] = model
-            kwargs["openapi_extra"]["examples"] = examples
+            kwargs["openapi_extra"]["api_examples"] = api_examples
+            kwargs["openapi_extra"]["python_examples"] = python_examples
             kwargs["operation_id"] = kwargs.get(
                 "operation_id", SignatureInspector.get_operation_id(func)
             )

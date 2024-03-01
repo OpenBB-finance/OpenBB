@@ -1,6 +1,7 @@
 """Calendar Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -17,11 +18,13 @@ router = Router(prefix="/calendar")
 
 @router.command(
     model="CalendarIpo",
-    examples=[
-        "# Get all IPOs available.",
-        "obb.equity.calendar.ipo()",
-        "# Get IPOs for specific dates.",
-        "obb.equity.calendar.ipo(start_date='2024-02-01', end_date='2024-02-07')",
+    api_examples=[
+        Example(parameters={"limit": 100}),
+        Example(description="Get all IPOs available.", parameters={}),
+        Example(
+            description="Get IPOs for specific dates.",
+            parameters={"start_date": "2024-02-01", "end_date": "2024-02-07"},
+        ),
     ],
 )
 async def ipo(
@@ -36,9 +39,15 @@ async def ipo(
 
 @router.command(
     model="CalendarDividend",
-    examples=[
-        "# Get dividend calendar for specific dates.",
-        "obb.equity.calendar.dividend(start_date='2024-02-01', end_date='2024-02-07')",
+    api_examples=[
+        Example(parameters={}),
+        Example(
+            description="Get dividend calendar for specific dates.",
+            parameters={
+                "start_date": "2024-02-01",
+                "end_date": "2024-02-07",
+            },
+        ),
     ],
 )
 async def dividend(
@@ -53,9 +62,15 @@ async def dividend(
 
 @router.command(
     model="CalendarSplits",
-    examples=[
-        "# Get stock splits calendar for specific dates.",
-        "obb.equity.calendar.splits(start_date='2024-02-01', end_date='2024-02-07')",
+    api_examples=[
+        Example(parameters={}),
+        Example(
+            description="Get stock splits calendar for specific dates.",
+            parameters={
+                "start_date": "2024-02-01",
+                "end_date": "2024-02-07",
+            },
+        ),
     ],
 )
 async def splits(
@@ -70,9 +85,12 @@ async def splits(
 
 @router.command(
     model="CalendarEarnings",
-    examples=[
-        "# Get earnings calendar for specific dates.",
-        "obb.equity.calendar.earnings(start_date='2024-02-01', end_date='2024-02-07')",
+    api_examples=[
+        Example(parameters={}),
+        Example(
+            description="Get earnings calendar for specific dates.",
+            parameters={"start_date": "2024-02-01", "end_date": "2024-02-07"},
+        ),
     ],
 )
 async def earnings(

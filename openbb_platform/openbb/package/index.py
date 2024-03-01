@@ -70,7 +70,7 @@ class ROUTER_index(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.index.available(provider="yfinance").to_df()
+        >>> obb.index.available(provider='yfinance')
         """  # noqa: E501
 
         return self._run(
@@ -145,9 +145,9 @@ class ROUTER_index(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.index.constituents("dowjones", provider="fmp").to_df()
-        >>> #### Providers other than FMP will use the ticker symbol. ####
-        >>> obb.index.constituents("BEP50P", provider="cboe").to_df()
+        >>> obb.index.constituents(symbol='dowjones', provider='fmp')
+        >>> # Providers other than FMP will use the ticker symbol.
+        >>> obb.index.constituents(symbol='BEP50P', provider='cboe')
         """  # noqa: E501
 
         return self._run(
@@ -283,7 +283,7 @@ class ROUTER_index(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.index.market(symbol="SPX")
+        >>> obb.index.market(symbol='SPX')
         """  # noqa: E501
 
         simplefilter("always", DeprecationWarning)

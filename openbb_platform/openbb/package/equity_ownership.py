@@ -137,7 +137,7 @@ class ROUTER_equity_ownership(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.ownership.insider_trading(symbol="AAPL", limit=500)
+        >>> obb.equity.ownership.insider_trading(symbol='AAPL', limit=500)
         """  # noqa: E501
 
         return self._run(
@@ -275,7 +275,7 @@ class ROUTER_equity_ownership(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.ownership.institutional(symbol="AAPL")
+        >>> obb.equity.ownership.institutional(symbol='AAPL')
         """  # noqa: E501
 
         return self._run(
@@ -426,7 +426,7 @@ class ROUTER_equity_ownership(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.ownership.major_holders(symbol="AAPL", page=0)
+        >>> obb.equity.ownership.major_holders(symbol='AAPL', page=0)
         """  # noqa: E501
 
         return self._run(
@@ -528,7 +528,7 @@ class ROUTER_equity_ownership(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.ownership.share_statistics(symbol="AAPL")
+        >>> obb.equity.ownership.share_statistics(symbol='AAPL')
         """  # noqa: E501
 
         return self._run(

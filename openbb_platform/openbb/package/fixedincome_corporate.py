@@ -102,7 +102,7 @@ class ROUTER_fixedincome_corporate(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.corporate.commercial_paper(maturity="15d")
+        >>> obb.fixedincome.corporate.commercial_paper(maturity='15d')
         """  # noqa: E501
 
         return self._run(
@@ -190,7 +190,7 @@ class ROUTER_fixedincome_corporate(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.corporate.hqm(yield_curve="par")
+        >>> obb.fixedincome.corporate.hqm(yield_curve='par')
         """  # noqa: E501
 
         return self._run(
@@ -288,7 +288,7 @@ class ROUTER_fixedincome_corporate(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.corporate.ice_bofa(index_type="yield_to_worst")
+        >>> obb.fixedincome.corporate.ice_bofa(index_type='yield_to_worst')
         """  # noqa: E501
 
         return self._run(
@@ -380,7 +380,7 @@ class ROUTER_fixedincome_corporate(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.corporate.moody(index_type="baa")
+        >>> obb.fixedincome.corporate.moody(index_type='baa')
         """  # noqa: E501
 
         return self._run(
@@ -475,7 +475,7 @@ class ROUTER_fixedincome_corporate(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.corporate.spot_rates(maturity=[10,20,30,50])
+        >>> obb.fixedincome.corporate.spot_rates(maturity=[10, 20, 30, 50])
         """  # noqa: E501
 
         return self._run(

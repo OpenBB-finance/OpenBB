@@ -170,7 +170,7 @@ class ROUTER_equity_price(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.price.historical(symbol="AAPL", interval="1d")
+        >>> obb.equity.price.historical(symbol='AAPL', interval='1d')
         """  # noqa: E501
 
         return self._run(
@@ -313,7 +313,7 @@ class ROUTER_equity_price(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.price.nbbo(symbol="AAPL")
+        >>> obb.equity.price.nbbo(symbol='AAPL')
         """  # noqa: E501
 
         return self._run(
@@ -407,7 +407,7 @@ class ROUTER_equity_price(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.price.performance(symbol="AAPL")
+        >>> obb.equity.price.performance(symbol='AAPL')
         """  # noqa: E501
 
         return self._run(
@@ -574,7 +574,7 @@ class ROUTER_equity_price(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.equity.price.quote(symbol="AAPL")
+        >>> obb.equity.price.quote(symbol='AAPL')
         """  # noqa: E501
 
         return self._run(

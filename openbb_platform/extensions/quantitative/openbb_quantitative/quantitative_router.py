@@ -37,7 +37,7 @@ router.include_router(performance_router)
 
 @router.command(
     methods=["POST"],
-    examples=[
+    python_examples=[
         "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
         "obb.quantitative.normality(data=stock_data, target='close')",
     ],
@@ -87,7 +87,7 @@ def normality(data: List[Data], target: str) -> OBBject[NormalityModel]:
 
 @router.command(
     methods=["POST"],
-    examples=[
+    python_examples=[
         "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
         "obb.quantitative.capm(data=stock_data, target='close')",
     ],

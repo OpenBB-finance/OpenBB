@@ -1,6 +1,7 @@
 """Fixed Income Corporate Router."""
 
 from openbb_core.app.model.command_context import CommandContext
+from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -17,10 +18,7 @@ router = Router(prefix="/spreads")
 
 @router.command(
     model="TreasuryConstantMaturity",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.fixedincome.fixedincome.spreads.tcm(maturity="2y")',
-    ],
+    api_examples=[Example(parameters={"maturity": "2y"})],
 )
 async def tcm(
     cc: CommandContext,
@@ -40,10 +38,7 @@ async def tcm(
 
 @router.command(
     model="SelectedTreasuryConstantMaturity",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.fixedincome.fixedincome.spreads.tcm_effr(maturity="10y")',
-    ],
+    api_examples=[Example(parameters={"maturity": "10y"})],
 )
 async def tcm_effr(
     cc: CommandContext,
@@ -63,10 +58,7 @@ async def tcm_effr(
 
 @router.command(
     model="SelectedTreasuryBill",
-    exclude_auto_examples=True,
-    examples=[
-        'obb.fixedincome.fixedincome.spreads.treasury_effr(maturity="6m")',
-    ],
+    api_examples=[Example(parameters={"maturity": "6m"})],
 )
 async def treasury_effr(
     cc: CommandContext,

@@ -89,7 +89,7 @@ class ROUTER_fixedincome_rate(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.ameribor(parameter="30_day_ma").to_df()
+        >>> obb.fixedincome.rate.ameribor(parameter='30_day_ma')
         """  # noqa: E501
 
         return self._run(
@@ -174,7 +174,7 @@ class ROUTER_fixedincome_rate(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.dpcredit(start_date="2023-02-01", end_date="2023-05-01").to_df()
+        >>> obb.fixedincome.rate.dpcredit(start_date='2023-02-01', end_date='2023-05-01')
         """  # noqa: E501
 
         return self._run(
@@ -265,7 +265,7 @@ class ROUTER_fixedincome_rate(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.ecb(interest_rate_type="refinancing")
+        >>> obb.fixedincome.rate.ecb(interest_rate_type='refinancing')
         """  # noqa: E501
 
         return self._run(
@@ -350,7 +350,7 @@ class ROUTER_fixedincome_rate(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.effr(parameter="daily", provider="fred").to_df()
+        >>> obb.fixedincome.rate.effr(parameter='daily', provider='fred')
         """  # noqa: E501
 
         return self._run(
@@ -511,7 +511,7 @@ class ROUTER_fixedincome_rate(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.estr(parameter="number_of_active_banks")
+        >>> obb.fixedincome.rate.estr(parameter='number_of_active_banks')
         """  # noqa: E501
 
         return self._run(
@@ -677,7 +677,7 @@ class ROUTER_fixedincome_rate(Container):
         Example
         -------
         >>> from openbb import obb
-        >>> obb.fixedincome.rate.sonia(parameter="total_nominal_value")
+        >>> obb.fixedincome.rate.sonia(parameter='total_nominal_value')
         """  # noqa: E501
 
         return self._run(
