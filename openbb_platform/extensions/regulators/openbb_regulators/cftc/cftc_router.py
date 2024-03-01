@@ -1,9 +1,7 @@
 # pylint: disable=W0613:unused-argument
 """Commodity Futures Trading Commission (CFTC) Router."""
 
-from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import Example
-from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model import CommandContext, Example, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
