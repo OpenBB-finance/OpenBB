@@ -169,8 +169,8 @@ COUNTRY_TO_CODE_GDP_FORECAST = {
 CODE_TO_COUNTRY_GDP_FORECAST = {v: k for k, v in COUNTRY_TO_CODE_GDP_FORECAST.items()}
 
 COUNTRY_TO_CODE_CPI = {
-    "G20": "G-20",
-    "G7": "G-7",
+    "G20": "G20",
+    "G7": "G7",
     "argentina": "ARG",
     "australia": "AUS",
     "austria": "AUT",
@@ -184,7 +184,7 @@ COUNTRY_TO_CODE_CPI = {
     "czech_republic": "CZE",
     "denmark": "DNK",
     "estonia": "EST",
-    "euro_area_19": "EA19",
+    "euro_area_20": "EA20",
     "europe": "OECDE",
     "european_union_27": "EU27_2020",
     "finland": "FIN",
@@ -222,6 +222,7 @@ COUNTRY_TO_CODE_CPI = {
     "united_kingdom": "GBR",
     "united_states": "USA",
 }
+CODE_TO_COUNTRY_CPI = {v: k for k, v in COUNTRY_TO_CODE_CPI.items()}
 
 COUNTRY_TO_CODE_BALANCE = {
     "australia": "AUS",

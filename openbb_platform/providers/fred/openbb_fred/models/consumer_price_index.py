@@ -3,7 +3,7 @@
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.cpi import (
+from openbb_core.provider.standard_models.consumer_price_index import (
     ConsumerPriceIndexData,
     ConsumerPriceIndexQueryParams,
 )
@@ -41,9 +41,11 @@ class FREDConsumerPriceIndexFetcher(
         api_key = credentials.get("fred_api_key") if credentials else ""
 
         all_options = all_cpi_options(query.harmonized)
-
+        units = {"mom": "growth_previous", "yoy": "growth_same", "index": "index_2015"}[
+            query.units
+        ]
         step_1 = [x for x in all_options if x["country"] in query.country]
-        step_2 = [x for x in step_1 if x["units"] == query.units]
+        step_2 = [x for x in step_1 if x["units"] == units]
         step_3 = [x for x in step_2 if x["frequency"] == query.frequency]
 
         series_dict = {}

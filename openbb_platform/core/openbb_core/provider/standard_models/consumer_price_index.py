@@ -66,7 +66,6 @@ CPI_COUNTRIES = [
     "united_states",
 ]
 
-CPI_UNITS = Literal["growth_previous", "growth_same", "index_2015"]
 
 CPI_FREQUENCY = Literal["monthly", "quarter", "annual"]
 
@@ -74,17 +73,12 @@ CPI_FREQUENCY = Literal["monthly", "quarter", "annual"]
 class ConsumerPriceIndexQueryParams(QueryParams):
     """CPI Query."""
 
-    country: str = Field(description=QUERY_DESCRIPTIONS.get("country"))
-    units: CPI_UNITS = Field(
-        default="growth_same",
-        description=QUERY_DESCRIPTIONS.get("units", "")
-        + """
-    Options:
-    - `growth_previous`: Percent growth from the previous period.
-      If monthly data, this is month-over-month, etc
-    - `growth_same`: Percent growth from the same period in the previous year.
-      If looking at monthly data, this would be year-over-year, etc.
-    - `index_2015`: Rescaled index value, such that the value in 2015 is 100.""",
+    country: str = Field(
+        description=QUERY_DESCRIPTIONS.get("country"), default="united_states"
+    )
+    units: Literal["index", "yoy", "mom"] = Field(
+        description="Units to get CPI for. Either index, month over month or year over year. Defaults to year over year.",
+        default="yoy",
     )
     frequency: CPI_FREQUENCY = Field(
         default="monthly",
