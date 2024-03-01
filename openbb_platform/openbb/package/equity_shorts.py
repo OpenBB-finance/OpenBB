@@ -22,9 +22,7 @@ class ROUTER_equity_shorts(Container):
     @validate
     def fails_to_deliver(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
@@ -40,13 +38,13 @@ class ROUTER_equity_shorts(Container):
             no default.
         limit : Optional[int]
 
-                Limit the number of reports to parse, from most recent.
-                Approximately 24 reports per year, going back to 2009.
-                 (provider: sec)
+                    Limit the number of reports to parse, from most recent.
+                    Approximately 24 reports per year, going back to 2009.
+                     (provider: sec)
         skip_reports : Optional[int]
 
-                Skip N number of reports from current. A value of 1 will skip the most recent report.
-                 (provider: sec)
+                    Skip N number of reports from current. A value of 1 will skip the most recent report.
+                     (provider: sec)
 
         Returns
         -------
@@ -77,8 +75,8 @@ class ROUTER_equity_shorts(Container):
         description : Optional[str]
             The description of the Security.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.shorts.fails_to_deliver(symbol='AAPL')
         """  # noqa: E501

@@ -34,18 +34,8 @@ class ROUTER_economy(Container):
     @validate
     def calendar(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["fmp", "tradingeconomics"]] = None,
         **kwargs
     ) -> OBBject:
@@ -121,8 +111,8 @@ class ROUTER_economy(Container):
         created_at : Optional[datetime]
             Created at timestamp. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.economy.calendar(provider='fmp', start_date='2020-03-01', end_date='2020-03-31')
         >>> # By default, the calendar will be forward-looking.
@@ -151,24 +141,14 @@ class ROUTER_economy(Container):
     @validate
     def composite_leading_indicator(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["oecd"]] = None,
         **kwargs
     ) -> OBBject:
         """The composite leading indicator (CLI) is designed to provide early signals of turning points
-        in business cycles showing fluctuation of the economic activity around its long term potential level.
-        CLIs show short-term economic movements in qualitative rather than quantitative terms.
+    in business cycles showing fluctuation of the economic activity around its long term potential level.
+    CLIs show short-term economic movements in qualitative rather than quantitative terms.
 
 
         Parameters
@@ -207,8 +187,8 @@ class ROUTER_economy(Container):
         country : Optional[str]
             Country for which CLI is given
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.economy.composite_leading_indicator(country='all')
         """  # noqa: E501
@@ -235,42 +215,12 @@ class ROUTER_economy(Container):
     @validate
     def cpi(
         self,
-        country: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="The country to get data. Multiple items allowed for provider(s): fred."
-            ),
-        ],
-        units: Annotated[
-            Literal["growth_previous", "growth_same", "index_2015"],
-            OpenBBCustomParameter(
-                description="The unit of measurement for the data.\n    Options:\n    - `growth_previous`: Percent growth from the previous period.\n      If monthly data, this is month-over-month, etc\n    - `growth_same`: Percent growth from the same period in the previous year.\n      If looking at monthly data, this would be year-over-year, etc.\n    - `index_2015`: Rescaled index value, such that the value in 2015 is 100."
-            ),
-        ] = "growth_same",
-        frequency: Annotated[
-            Literal["monthly", "quarter", "annual"],
-            OpenBBCustomParameter(
-                description="The frequency of the data.\n    Options: `monthly`, `quarter`, and `annual`."
-            ),
-        ] = "monthly",
-        harmonized: Annotated[
-            bool,
-            OpenBBCustomParameter(
-                description="Whether you wish to obtain harmonized data."
-            ),
-        ] = False,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        country: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="The country to get data. Multiple items allowed for provider(s): fred.")],
+        units: Annotated[Literal["growth_previous", "growth_same", "index_2015"], OpenBBCustomParameter(description="The unit of measurement for the data.\n    Options:\n    - `growth_previous`: Percent growth from the previous period.\n      If monthly data, this is month-over-month, etc\n    - `growth_same`: Percent growth from the same period in the previous year.\n      If looking at monthly data, this would be year-over-year, etc.\n    - `index_2015`: Rescaled index value, such that the value in 2015 is 100.")] = "growth_same",
+        frequency: Annotated[Literal["monthly", "quarter", "annual"], OpenBBCustomParameter(description="The frequency of the data.\n    Options: `monthly`, `quarter`, and `annual`.")] = "monthly",
+        harmonized: Annotated[bool, OpenBBCustomParameter(description="Whether you wish to obtain harmonized data.")] = False,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject:
@@ -282,15 +232,15 @@ class ROUTER_economy(Container):
             The country to get data. Multiple items allowed for provider(s): fred.
         units : Literal['growth_previous', 'growth_same', 'index_2015']
             The unit of measurement for the data.
-            Options:
-            - `growth_previous`: Percent growth from the previous period.
-              If monthly data, this is month-over-month, etc
-            - `growth_same`: Percent growth from the same period in the previous year.
-              If looking at monthly data, this would be year-over-year, etc.
-            - `index_2015`: Rescaled index value, such that the value in 2015 is 100.
+                Options:
+                - `growth_previous`: Percent growth from the previous period.
+                  If monthly data, this is month-over-month, etc
+                - `growth_same`: Percent growth from the same period in the previous year.
+                  If looking at monthly data, this would be year-over-year, etc.
+                - `index_2015`: Rescaled index value, such that the value in 2015 is 100.
         frequency : Literal['monthly', 'quarter', 'annual']
             The frequency of the data.
-            Options: `monthly`, `quarter`, and `annual`.
+                Options: `monthly`, `quarter`, and `annual`.
         harmonized : bool
             Whether you wish to obtain harmonized data.
         start_date : Union[datetime.date, None, str]
@@ -321,8 +271,8 @@ class ROUTER_economy(Container):
         date : date
             The date of the data.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.economy.cpi(country='japan,china,turkey')
         >>> # Use the `units` parameter to define the reference period for the change in values.
@@ -356,33 +306,15 @@ class ROUTER_economy(Container):
     @validate
     def fred_regional(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fred."
-            ),
-        ],
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        limit: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 100000,
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for. Multiple items allowed for provider(s): fred.")],
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        limit: Annotated[Optional[int], OpenBBCustomParameter(description="The number of data entries to return.")] = 100000,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject:
-        """Query the Geo Fred API for regional economic data by series group.
-        The series group ID is found by using `fred_search` and the `series_id` parameter.
+        """    Query the Geo Fred API for regional economic data by series group.
+    The series group ID is found by using `fred_search` and the `series_id` parameter.
 
 
         Parameters
@@ -409,46 +341,46 @@ class ROUTER_economy(Container):
             The units of the data. This should match the units returned from searching by series ID. An incorrect field will not necessarily return an error. Parameter is only valid when `is_series_group` is True. (provider: fred)
         frequency : Optional[Literal['d', 'w', 'bw', 'm', 'q', 'sa', 'a', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']]
 
-                Frequency aggregation to convert high frequency data to lower frequency.
-                Parameter is only valid when `is_series_group` is True.
-                    a = Annual
-                    sa= Semiannual
-                    q = Quarterly
-                    m = Monthly
-                    w = Weekly
-                    d = Daily
-                    wef = Weekly, Ending Friday
-                    weth = Weekly, Ending Thursday
-                    wew = Weekly, Ending Wednesday
-                    wetu = Weekly, Ending Tuesday
-                    wem = Weekly, Ending Monday
-                    wesu = Weekly, Ending Sunday
-                    wesa = Weekly, Ending Saturday
-                    bwew = Biweekly, Ending Wednesday
-                    bwem = Biweekly, Ending Monday
-                 (provider: fred)
+                    Frequency aggregation to convert high frequency data to lower frequency.
+                    Parameter is only valid when `is_series_group` is True.
+                        a = Annual
+                        sa= Semiannual
+                        q = Quarterly
+                        m = Monthly
+                        w = Weekly
+                        d = Daily
+                        wef = Weekly, Ending Friday
+                        weth = Weekly, Ending Thursday
+                        wew = Weekly, Ending Wednesday
+                        wetu = Weekly, Ending Tuesday
+                        wem = Weekly, Ending Monday
+                        wesu = Weekly, Ending Sunday
+                        wesa = Weekly, Ending Saturday
+                        bwew = Biweekly, Ending Wednesday
+                        bwem = Biweekly, Ending Monday
+                     (provider: fred)
         aggregation_method : Literal['avg', 'sum', 'eop']
 
-                A key that indicates the aggregation method used for frequency aggregation.
-                This parameter has no affect if the frequency parameter is not set.
-                Only valid when `is_series_group` is True.
-                    avg = Average
-                    sum = Sum
-                    eop = End of Period
-                 (provider: fred)
+                    A key that indicates the aggregation method used for frequency aggregation.
+                    This parameter has no affect if the frequency parameter is not set.
+                    Only valid when `is_series_group` is True.
+                        avg = Average
+                        sum = Sum
+                        eop = End of Period
+                     (provider: fred)
         transform : Literal['lin', 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']
 
-                Transformation type. Only valid when `is_series_group` is True.
-                    lin = Levels (No transformation)
-                    chg = Change
-                    ch1 = Change from Year Ago
-                    pch = Percent Change
-                    pc1 = Percent Change from Year Ago
-                    pca = Compounded Annual Rate of Change
-                    cch = Continuously Compounded Rate of Change
-                    cca = Continuously Compounded Annual Rate of Change
-                    log = Natural Log
-                 (provider: fred)
+                    Transformation type. Only valid when `is_series_group` is True.
+                        lin = Levels (No transformation)
+                        chg = Change
+                        ch1 = Change from Year Ago
+                        pch = Percent Change
+                        pc1 = Percent Change from Year Ago
+                        pca = Compounded Annual Rate of Change
+                        cch = Continuously Compounded Rate of Change
+                        cca = Continuously Compounded Annual Rate of Change
+                        log = Natural Log
+                     (provider: fred)
 
         Returns
         -------
@@ -477,8 +409,8 @@ class ROUTER_economy(Container):
         series_id : Optional[str]
             The individual series ID for the region. (provider: fred)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> # With no date, the most recent report is returned.
         >>> obb.economy.fred_regional(series_id='NYICLAIMS')
@@ -511,15 +443,13 @@ class ROUTER_economy(Container):
     @validate
     def fred_search(
         self,
-        query: Annotated[
-            Optional[str], OpenBBCustomParameter(description="The search word(s).")
-        ] = None,
+        query: Annotated[Optional[str], OpenBBCustomParameter(description="The search word(s).")] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject:
-        """Search for FRED series or economic releases by ID or string.
-        This does not return the observation values, only the metadata.
-        Use this function to find series IDs for `fred_series()`.
+        """    Search for FRED series or economic releases by ID or string.
+    This does not return the observation values, only the metadata.
+    Use this function to find series IDs for `fred_series()`.
 
 
         Parameters
@@ -606,8 +536,8 @@ class ROUTER_economy(Container):
         series_group : Optional[Union[int, str]]
             The series group ID of the series. This value is used to query for regional data. (provider: fred)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.economy.fred_search()
         """  # noqa: E501
@@ -633,28 +563,10 @@ class ROUTER_economy(Container):
     @validate
     def fred_series(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fred."
-            ),
-        ],
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        limit: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 100000,
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for. Multiple items allowed for provider(s): fred.")],
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        limit: Annotated[Optional[int], OpenBBCustomParameter(description="The number of data entries to return.")] = 100000,
         provider: Optional[Literal["fred", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
@@ -676,44 +588,44 @@ class ROUTER_economy(Container):
             no default.
         frequency : Literal[None, 'a', 'q', 'm', 'w', 'd', 'wef', 'weth', 'wew', 'wetu', 'wem', 'wesu', 'wesa', 'bwew', 'bwem']
 
-                Frequency aggregation to convert high frequency data to lower frequency.
-                    None = No change
-                    a = Annual
-                    q = Quarterly
-                    m = Monthly
-                    w = Weekly
-                    d = Daily
-                    wef = Weekly, Ending Friday
-                    weth = Weekly, Ending Thursday
-                    wew = Weekly, Ending Wednesday
-                    wetu = Weekly, Ending Tuesday
-                    wem = Weekly, Ending Monday
-                    wesu = Weekly, Ending Sunday
-                    wesa = Weekly, Ending Saturday
-                    bwew = Biweekly, Ending Wednesday
-                    bwem = Biweekly, Ending Monday
-                 (provider: fred)
+                    Frequency aggregation to convert high frequency data to lower frequency.
+                        None = No change
+                        a = Annual
+                        q = Quarterly
+                        m = Monthly
+                        w = Weekly
+                        d = Daily
+                        wef = Weekly, Ending Friday
+                        weth = Weekly, Ending Thursday
+                        wew = Weekly, Ending Wednesday
+                        wetu = Weekly, Ending Tuesday
+                        wem = Weekly, Ending Monday
+                        wesu = Weekly, Ending Sunday
+                        wesa = Weekly, Ending Saturday
+                        bwew = Biweekly, Ending Wednesday
+                        bwem = Biweekly, Ending Monday
+                     (provider: fred)
         aggregation_method : Literal[None, 'avg', 'sum', 'eop']
 
-                A key that indicates the aggregation method used for frequency aggregation.
-                This parameter has no affect if the frequency parameter is not set.
-                    avg = Average
-                    sum = Sum
-                    eop = End of Period
-                 (provider: fred)
+                    A key that indicates the aggregation method used for frequency aggregation.
+                    This parameter has no affect if the frequency parameter is not set.
+                        avg = Average
+                        sum = Sum
+                        eop = End of Period
+                     (provider: fred)
         transform : Literal[None, 'chg', 'ch1', 'pch', 'pc1', 'pca', 'cch', 'cca', 'log']
 
-                Transformation type
-                    None = No transformation
-                    chg = Change
-                    ch1 = Change from Year Ago
-                    pch = Percent Change
-                    pc1 = Percent Change from Year Ago
-                    pca = Compounded Annual Rate of Change
-                    cch = Continuously Compounded Rate of Change
-                    cca = Continuously Compounded Annual Rate of Change
-                    log = Natural Log
-                 (provider: fred)
+                    Transformation type
+                        None = No transformation
+                        chg = Change
+                        ch1 = Change from Year Ago
+                        pch = Percent Change
+                        pc1 = Percent Change from Year Ago
+                        pca = Compounded Annual Rate of Change
+                        cch = Continuously Compounded Rate of Change
+                        cca = Continuously Compounded Annual Rate of Change
+                        log = Natural Log
+                     (provider: fred)
         all_pages : Optional[bool]
             Returns all pages of data from the API call at once. (provider: intrinio)
         sleep : Optional[float]
@@ -740,8 +652,8 @@ class ROUTER_economy(Container):
         value : Optional[float]
             Value of the index. (provider: intrinio)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.economy.fred_series(series_id='NFCI')
         >>> # Multiple series can be passed in as a list.
@@ -782,30 +694,20 @@ class ROUTER_economy(Container):
     @validate
     def long_term_interest_rate(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["oecd"]] = None,
         **kwargs
     ) -> OBBject:
-        """Long-term interest rates refer to government bonds maturing in ten years.
-        Rates are mainly determined by the price charged by the lender, the risk from the borrower and the
-        fall in the capital value. Long-term interest rates are generally averages of daily rates,
-        measured as a percentage. These interest rates are implied by the prices at which the government bonds are
-        traded on financial markets, not the interest rates at which the loans were issued.
-        In all cases, they refer to bonds whose capital repayment is guaranteed by governments.
-        Long-term interest rates are one of the determinants of business investment.
-        Low long-term interest rates encourage investment in new equipment and high interest rates discourage it.
-        Investment is, in turn, a major source of economic growth.
+        """    Long-term interest rates refer to government bonds maturing in ten years.
+    Rates are mainly determined by the price charged by the lender, the risk from the borrower and the
+    fall in the capital value. Long-term interest rates are generally averages of daily rates,
+    measured as a percentage. These interest rates are implied by the prices at which the government bonds are
+    traded on financial markets, not the interest rates at which the loans were issued.
+    In all cases, they refer to bonds whose capital repayment is guaranteed by governments.
+    Long-term interest rates are one of the determinants of business investment.
+    Low long-term interest rates encourage investment in new equipment and high interest rates discourage it.
+    Investment is, in turn, a major source of economic growth.
 
         Parameters
         ----------
@@ -845,8 +747,8 @@ class ROUTER_economy(Container):
         country : Optional[str]
             Country for which interest rate is given
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.economy.long_term_interest_rate(country='all', frequency='quarterly')
         """  # noqa: E501
@@ -873,24 +775,9 @@ class ROUTER_economy(Container):
     @validate
     def money_measures(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        adjusted: Annotated[
-            Optional[bool],
-            OpenBBCustomParameter(
-                description="Whether to return seasonally adjusted data."
-            ),
-        ] = True,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        adjusted: Annotated[Optional[bool], OpenBBCustomParameter(description="Whether to return seasonally adjusted data.")] = True,
         provider: Optional[Literal["federal_reserve"]] = None,
         **kwargs
     ) -> OBBject:
@@ -942,8 +829,8 @@ class ROUTER_economy(Container):
         small_denomination_time_deposits : Optional[float]
             Value of small denomination time deposits in billions.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.economy.money_measures(adjusted=False)
         """  # noqa: E501
@@ -970,7 +857,9 @@ class ROUTER_economy(Container):
     @exception_handler
     @validate
     def risk_premium(
-        self, provider: Optional[Literal["fmp"]] = None, **kwargs
+        self,
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
     ) -> OBBject:
         """Market Risk Premium by country.
 
@@ -1006,8 +895,8 @@ class ROUTER_economy(Container):
         country_risk_premium : Optional[Annotated[float, Ge(ge=0)]]
             Country-specific risk premium.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.economy.risk_premium()
         """  # noqa: E501
@@ -1022,7 +911,8 @@ class ROUTER_economy(Container):
                         ("fmp",),
                     )
                 },
-                standard_params={},
+                standard_params={
+                },
                 extra_params=kwargs,
             )
         )
@@ -1031,26 +921,16 @@ class ROUTER_economy(Container):
     @validate
     def short_term_interest_rate(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["oecd"]] = None,
         **kwargs
     ) -> OBBject:
-        """Short-term interest rates are the rates at which short-term borrowings are effected between
-        financial institutions or the rate at which short-term government paper is issued or traded in the market.
-        Short-term interest rates are generally averages of daily rates, measured as a percentage.
-        Short-term interest rates are based on three-month money market rates where available.
-        Typical standardised names are "money market rate" and "treasury bill rate".
+        """    Short-term interest rates are the rates at which short-term borrowings are effected between
+    financial institutions or the rate at which short-term government paper is issued or traded in the market.
+    Short-term interest rates are generally averages of daily rates, measured as a percentage.
+    Short-term interest rates are based on three-month money market rates where available.
+    Typical standardised names are "money market rate" and "treasury bill rate".
 
 
         Parameters
@@ -1091,8 +971,8 @@ class ROUTER_economy(Container):
         country : Optional[str]
             Country for which interest rate is given
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.economy.short_term_interest_rate(country='all', frequency='quarterly')
         """  # noqa: E501
@@ -1119,18 +999,8 @@ class ROUTER_economy(Container):
     @validate
     def unemployment(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["oecd"]] = None,
         **kwargs
     ) -> OBBject:
@@ -1180,8 +1050,8 @@ class ROUTER_economy(Container):
         country : Optional[str]
             Country for which unemployment rate is given
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.economy.unemployment(country='all', frequency='quarterly')
         >>> # Demographics for the statistics are selected with the `age` and `sex` parameters.

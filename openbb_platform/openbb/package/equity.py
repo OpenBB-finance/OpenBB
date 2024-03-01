@@ -34,9 +34,7 @@ class ROUTER_equity(Container):
         # pylint: disable=import-outside-toplevel
         from . import equity_calendar
 
-        return equity_calendar.ROUTER_equity_calendar(
-            command_runner=self._command_runner
-        )
+        return equity_calendar.ROUTER_equity_calendar(command_runner=self._command_runner)
 
     @property
     def compare(self):
@@ -50,32 +48,28 @@ class ROUTER_equity(Container):
         # pylint: disable=import-outside-toplevel
         from . import equity_discovery
 
-        return equity_discovery.ROUTER_equity_discovery(
-            command_runner=self._command_runner
-        )
+        return equity_discovery.ROUTER_equity_discovery(command_runner=self._command_runner)
 
     @property
     def estimates(self):
         # pylint: disable=import-outside-toplevel
         from . import equity_estimates
 
-        return equity_estimates.ROUTER_equity_estimates(
-            command_runner=self._command_runner
-        )
+        return equity_estimates.ROUTER_equity_estimates(command_runner=self._command_runner)
 
     @property
     def fundamental(self):
         # pylint: disable=import-outside-toplevel
         from . import equity_fundamental
 
-        return equity_fundamental.ROUTER_equity_fundamental(
-            command_runner=self._command_runner
-        )
+        return equity_fundamental.ROUTER_equity_fundamental(command_runner=self._command_runner)
 
     @exception_handler
     @validate
     def market_snapshots(
-        self, provider: Optional[Literal["fmp", "polygon"]] = None, **kwargs
+        self,
+        provider: Optional[Literal["fmp", "polygon"]] = None,
+        **kwargs
     ) -> OBBject:
         """Get an updated equity market snapshot. This includes price data for thousands of stocks.
 
@@ -185,8 +179,8 @@ class ROUTER_equity(Container):
         last_trade_timestamp : Optional[datetime]
             The last trade timestamp. (provider: polygon)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.market_snapshots()
         """  # noqa: E501
@@ -201,7 +195,8 @@ class ROUTER_equity(Container):
                         ("fmp", "polygon"),
                     )
                 },
-                standard_params={},
+                standard_params={
+                },
                 extra_params=kwargs,
             )
         )
@@ -211,9 +206,7 @@ class ROUTER_equity(Container):
         # pylint: disable=import-outside-toplevel
         from . import equity_ownership
 
-        return equity_ownership.ROUTER_equity_ownership(
-            command_runner=self._command_runner
-        )
+        return equity_ownership.ROUTER_equity_ownership(command_runner=self._command_runner)
 
     @property
     def price(self):
@@ -226,12 +219,7 @@ class ROUTER_equity(Container):
     @validate
     def profile(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance."
-            ),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance.")],
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
@@ -352,7 +340,7 @@ class ROUTER_equity(Container):
             Currency in which the stock is traded. (provider: fmp, yfinance)
         market_cap : Optional[int]
             Market capitalization of the company. (provider: fmp);
-            The market capitalization of the asset. (provider: yfinance)
+                The market capitalization of the asset. (provider: yfinance)
         last_price : Optional[float]
             The last traded price. (provider: fmp)
         year_high : Optional[float]
@@ -384,8 +372,8 @@ class ROUTER_equity(Container):
         dividend_yield : Optional[float]
             The dividend yield of the asset, as a normalized percent. (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.profile(symbol='AAPL')
         """  # noqa: E501
@@ -404,19 +392,19 @@ class ROUTER_equity(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={
-                    "symbol": {
-                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
-                    }
-                },
+                extra_info={"symbol": {"multiple_items_allowed": ["fmp", "intrinio", "yfinance"]}},
             )
         )
 
     @exception_handler
     @validate
-    def screener(self, provider: Optional[Literal["fmp"]] = None, **kwargs) -> OBBject:
+    def screener(
+        self,
+        provider: Optional[Literal["fmp"]] = None,
+        **kwargs
+    ) -> OBBject:
         """Screen for companies meeting various criteria. These criteria include
-        market cap, price, beta, volume, and dividend yield.
+    market cap, price, beta, volume, and dividend yield.
 
         Parameters
         ----------
@@ -504,8 +492,8 @@ class ROUTER_equity(Container):
         actively_trading : Optional[Literal[True, False]]
             Whether the ETF is actively trading. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.screener()
         """  # noqa: E501
@@ -520,7 +508,8 @@ class ROUTER_equity(Container):
                         ("fmp",),
                     )
                 },
-                standard_params={},
+                standard_params={
+                },
                 extra_params=kwargs,
             )
         )
@@ -530,14 +519,8 @@ class ROUTER_equity(Container):
     def search(
         self,
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
-        is_symbol: Annotated[
-            bool,
-            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
-        ] = False,
-        use_cache: Annotated[
-            Optional[bool],
-            OpenBBCustomParameter(description="Whether to use the cache or not."),
-        ] = True,
+        is_symbol: Annotated[bool, OpenBBCustomParameter(description="Whether to search by ticker symbol.")] = False,
+        use_cache: Annotated[Optional[bool], OpenBBCustomParameter(description="Whether to use the cache or not.")] = True,
         provider: Optional[Literal["intrinio", "sec"]] = None,
         **kwargs
     ) -> OBBject:
@@ -584,14 +567,14 @@ class ROUTER_equity(Container):
             Name of the company.
         cik : Optional[str]
             ;
-            Central Index Key (provider: sec)
+                Central Index Key (provider: sec)
         lei : Optional[str]
             The Legal Entity Identifier (LEI) of the company. (provider: intrinio)
         intrinio_id : Optional[str]
             The Intrinio ID of the company. (provider: intrinio)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.search(query='AAPL', is_symbol=False, use_cache=True)
         """  # noqa: E501

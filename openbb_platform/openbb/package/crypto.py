@@ -30,9 +30,7 @@ class ROUTER_crypto(Container):
     @validate
     def search(
         self,
-        query: Annotated[
-            Optional[str], OpenBBCustomParameter(description="Search query.")
-        ] = None,
+        query: Annotated[Optional[str], OpenBBCustomParameter(description="Search query.")] = None,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -74,8 +72,8 @@ class ROUTER_crypto(Container):
         exchange_name : Optional[str]
             The short name of the exchange the crypto trades on. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.crypto.search()
         >>> obb.crypto.search(symbol='BTCUSD')

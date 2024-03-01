@@ -30,12 +30,7 @@ class ROUTER_equity_discovery(Container):
     @validate
     def active(
         self,
-        sort: Annotated[
-            str,
-            OpenBBCustomParameter(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
-            ),
-        ] = "desc",
+        sort: Annotated[str, OpenBBCustomParameter(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
@@ -85,8 +80,8 @@ class ROUTER_equity_discovery(Container):
         pe_ratio_ttm : Optional[float]
             PE Ratio (TTM). (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.discovery.active(sort='desc')
         """  # noqa: E501
@@ -112,12 +107,7 @@ class ROUTER_equity_discovery(Container):
     @validate
     def aggressive_small_caps(
         self,
-        sort: Annotated[
-            str,
-            OpenBBCustomParameter(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
-            ),
-        ] = "desc",
+        sort: Annotated[str, OpenBBCustomParameter(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
@@ -167,8 +157,8 @@ class ROUTER_equity_discovery(Container):
         pe_ratio_ttm : Optional[float]
             PE Ratio (TTM). (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.discovery.aggressive_small_caps(sort='desc')
         """  # noqa: E501
@@ -194,36 +184,18 @@ class ROUTER_equity_discovery(Container):
     @validate
     def filings(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        form_type: Annotated[
-            Optional[str],
-            OpenBBCustomParameter(
-                description="Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types."
-            ),
-        ] = None,
-        limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 100,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        form_type: Annotated[Optional[str], OpenBBCustomParameter(description="Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types.")] = None,
+        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return.")] = 100,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """Get the URLs to SEC filings reported to EDGAR database, such as 10-K, 10-Q, 8-K, and more. SEC
-        filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,
-        Foreign Investment Disclosures and others. The annual 10-K report is required to be
-        filed annually and includes the company's financial statements, management discussion and analysis,
-        and audited financial statements.
+    filings include Form 10-K, Form 10-Q, Form 8-K, the proxy statement, Forms 3, 4, and 5, Schedule 13, Form 114,
+    Foreign Investment Disclosures and others. The annual 10-K report is required to be
+    filed annually and includes the company's financial statements, management discussion and analysis,
+    and audited financial statements.
 
 
         Parameters
@@ -272,8 +244,8 @@ class ROUTER_equity_discovery(Container):
         link : str
             URL to the filing page on the SEC site.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.discovery.filings(limit=100)
         >>> # Get filings for the year 2023, limited to 100 results
@@ -304,12 +276,7 @@ class ROUTER_equity_discovery(Container):
     @validate
     def gainers(
         self,
-        sort: Annotated[
-            str,
-            OpenBBCustomParameter(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
-            ),
-        ] = "desc",
+        sort: Annotated[str, OpenBBCustomParameter(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
@@ -359,8 +326,8 @@ class ROUTER_equity_discovery(Container):
         pe_ratio_ttm : Optional[float]
             PE Ratio (TTM). (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.discovery.gainers(sort='desc')
         """  # noqa: E501
@@ -386,12 +353,7 @@ class ROUTER_equity_discovery(Container):
     @validate
     def growth_tech(
         self,
-        sort: Annotated[
-            str,
-            OpenBBCustomParameter(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
-            ),
-        ] = "desc",
+        sort: Annotated[str, OpenBBCustomParameter(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
@@ -441,8 +403,8 @@ class ROUTER_equity_discovery(Container):
         pe_ratio_ttm : Optional[float]
             PE Ratio (TTM). (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.discovery.growth_tech(sort='desc')
         """  # noqa: E501
@@ -468,12 +430,7 @@ class ROUTER_equity_discovery(Container):
     @validate
     def losers(
         self,
-        sort: Annotated[
-            str,
-            OpenBBCustomParameter(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
-            ),
-        ] = "desc",
+        sort: Annotated[str, OpenBBCustomParameter(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
@@ -523,8 +480,8 @@ class ROUTER_equity_discovery(Container):
         pe_ratio_ttm : Optional[float]
             PE Ratio (TTM). (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.discovery.losers(sort='desc')
         """  # noqa: E501
@@ -550,12 +507,7 @@ class ROUTER_equity_discovery(Container):
     @validate
     def undervalued_growth(
         self,
-        sort: Annotated[
-            str,
-            OpenBBCustomParameter(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
-            ),
-        ] = "desc",
+        sort: Annotated[str, OpenBBCustomParameter(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
@@ -605,8 +557,8 @@ class ROUTER_equity_discovery(Container):
         pe_ratio_ttm : Optional[float]
             PE Ratio (TTM). (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.discovery.undervalued_growth(sort='desc')
         """  # noqa: E501
@@ -632,12 +584,7 @@ class ROUTER_equity_discovery(Container):
     @validate
     def undervalued_large_caps(
         self,
-        sort: Annotated[
-            str,
-            OpenBBCustomParameter(
-                description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'."
-            ),
-        ] = "desc",
+        sort: Annotated[str, OpenBBCustomParameter(description="Sort order. Possible values: 'asc', 'desc'. Default: 'desc'.")] = "desc",
         provider: Optional[Literal["yfinance"]] = None,
         **kwargs
     ) -> OBBject:
@@ -687,8 +634,8 @@ class ROUTER_equity_discovery(Container):
         pe_ratio_ttm : Optional[float]
             PE Ratio (TTM). (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.discovery.undervalued_large_caps(sort='desc')
         """  # noqa: E501

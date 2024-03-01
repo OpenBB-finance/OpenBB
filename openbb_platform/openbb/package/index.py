@@ -27,7 +27,9 @@ class ROUTER_index(Container):
     @exception_handler
     @validate
     def available(
-        self, provider: Optional[Literal["fmp", "yfinance"]] = None, **kwargs
+        self,
+        provider: Optional[Literal["fmp", "yfinance"]] = None,
+        **kwargs
     ) -> OBBject:
         """All indices available from a given provider.
 
@@ -67,8 +69,8 @@ class ROUTER_index(Container):
         symbol : Optional[str]
             Symbol for the index. (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.index.available(provider='yfinance')
         """  # noqa: E501
@@ -83,7 +85,8 @@ class ROUTER_index(Container):
                         ("fmp", "yfinance"),
                     )
                 },
-                standard_params={},
+                standard_params={
+                },
                 extra_params=kwargs,
             )
         )
@@ -92,9 +95,7 @@ class ROUTER_index(Container):
     @validate
     def constituents(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -142,8 +143,8 @@ class ROUTER_index(Container):
         founded : Optional[Union[str, date]]
             Founding year of the constituent company in the index. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.index.constituents(symbol='dowjones', provider='fmp')
         >>> # Providers other than FMP will use the ticker symbol.
@@ -175,24 +176,9 @@ class ROUTER_index(Container):
     )
     def market(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): yfinance."
-            ),
-        ],
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for. Multiple items allowed for provider(s): yfinance.")],
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
@@ -216,8 +202,8 @@ class ROUTER_index(Container):
             Data granularity. (provider: fmp, yfinance)
         sort : Literal['asc', 'desc']
             Sort the data in ascending or descending order. (provider: fmp);
-            Sort order. (provider: intrinio);
-            Sort order of the data. (provider: polygon)
+                Sort order. (provider: intrinio);
+                Sort order of the data. (provider: polygon)
         tag : Optional[str]
             Index tag. (provider: intrinio)
         type : Optional[str]
@@ -280,18 +266,14 @@ class ROUTER_index(Container):
         transactions : Optional[Annotated[int, Gt(gt=0)]]
             Number of transactions for the symbol in the time period. (provider: polygon)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.index.market(symbol='SPX')
         """  # noqa: E501
 
         simplefilter("always", DeprecationWarning)
-        warn(
-            "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
-            category=DeprecationWarning,
-            stacklevel=2,
-        )
+        warn("This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.", category=DeprecationWarning, stacklevel=2)
 
         return self._run(
             "/index/market",

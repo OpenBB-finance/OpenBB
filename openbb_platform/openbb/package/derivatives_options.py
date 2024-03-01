@@ -23,9 +23,7 @@ class ROUTER_derivatives_options(Container):
     @validate
     def chains(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
     ) -> OBBject:
@@ -147,8 +145,8 @@ class ROUTER_derivatives_options(Container):
         exercise_style : Optional[str]
             The exercise style of the option, American or European. (provider: intrinio)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.derivatives.options.chains(symbol='AAPL', provider='intrinio')
         >>> # Use the "date" parameter to get the end-of-day-data for a specific date, where supported.
@@ -176,12 +174,7 @@ class ROUTER_derivatives_options(Container):
     @validate
     def unusual(
         self,
-        symbol: Annotated[
-            Optional[str],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. (the underlying symbol)"
-            ),
-        ] = None,
+        symbol: Annotated[Optional[str], OpenBBCustomParameter(description="Symbol to get data for. (the underlying symbol)")] = None,
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
     ) -> OBBject:
@@ -237,8 +230,8 @@ class ROUTER_derivatives_options(Container):
         timestamp : Optional[datetime]
             The UTC timestamp of order placement. (provider: intrinio)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.derivatives.options.unusual()
         >>> # Use the 'symbol' parameter to get the most recent activity for a specific symbol.

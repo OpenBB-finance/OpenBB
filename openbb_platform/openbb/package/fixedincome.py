@@ -28,51 +28,35 @@ class ROUTER_fixedincome(Container):
         # pylint: disable=import-outside-toplevel
         from . import fixedincome_corporate
 
-        return fixedincome_corporate.ROUTER_fixedincome_corporate(
-            command_runner=self._command_runner
-        )
+        return fixedincome_corporate.ROUTER_fixedincome_corporate(command_runner=self._command_runner)
 
     @property
     def government(self):
         # pylint: disable=import-outside-toplevel
         from . import fixedincome_government
 
-        return fixedincome_government.ROUTER_fixedincome_government(
-            command_runner=self._command_runner
-        )
+        return fixedincome_government.ROUTER_fixedincome_government(command_runner=self._command_runner)
 
     @property
     def rate(self):
         # pylint: disable=import-outside-toplevel
         from . import fixedincome_rate
 
-        return fixedincome_rate.ROUTER_fixedincome_rate(
-            command_runner=self._command_runner
-        )
+        return fixedincome_rate.ROUTER_fixedincome_rate(command_runner=self._command_runner)
 
     @exception_handler
     @validate
     def sofr(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject:
         """Secured Overnight Financing Rate.
 
-        The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
-        borrowing cash overnight collateralizing by Treasury securities.
+    The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
+    borrowing cash overnight collateralizing by Treasury securities.
 
 
         Parameters
@@ -109,8 +93,8 @@ class ROUTER_fixedincome(Container):
         rate : Optional[float]
             SOFR rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.fixedincome.sofr(period='overnight')
         """  # noqa: E501
@@ -138,6 +122,4 @@ class ROUTER_fixedincome(Container):
         # pylint: disable=import-outside-toplevel
         from . import fixedincome_spreads
 
-        return fixedincome_spreads.ROUTER_fixedincome_spreads(
-            command_runner=self._command_runner
-        )
+        return fixedincome_spreads.ROUTER_fixedincome_spreads(command_runner=self._command_runner)

@@ -25,31 +25,11 @@ class ROUTER_news(Container):
     @validate
     def company(
         self,
-        symbol: Annotated[
-            Union[str, None, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance."
-            ),
-        ] = None,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        limit: Annotated[
-            Optional[Annotated[int, Ge(ge=0)]],
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 2500,
-        provider: Optional[
-            Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"]
-        ] = None,
+        symbol: Annotated[Union[str, None, List[str]], OpenBBCustomParameter(description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance.")] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        limit: Annotated[Optional[Annotated[int, Ge(ge=0)]], OpenBBCustomParameter(description="The number of data entries to return.")] = 2500,
+        provider: Optional[Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
         """Company News. Get news for one or more companies.
@@ -80,7 +60,7 @@ class ROUTER_news(Container):
             Key to sort the news by. (provider: benzinga)
         order : Optional[Literal['asc', 'desc']]
             Order to sort the news by. (provider: benzinga);
-            Sort order of the articles. (provider: polygon)
+                Sort order of the articles. (provider: polygon)
         isin : Optional[str]
             The company's ISIN. (provider: benzinga)
         cusip : Optional[str]
@@ -144,9 +124,9 @@ class ROUTER_news(Container):
             Updated date of the news. (provider: benzinga)
         source : Optional[str]
             Name of the news source. (provider: fmp);
-            Source of the article. (provider: polygon);
-            News source. (provider: tiingo);
-            Source of the news article (provider: yfinance)
+                Source of the article. (provider: polygon);
+                News source. (provider: tiingo);
+                Source of the news article (provider: yfinance)
         amp_url : Optional[str]
             AMP URL. (provider: polygon)
         publisher : Optional[openbb_polygon.models.company_news.PolygonPublisher]
@@ -156,8 +136,8 @@ class ROUTER_news(Container):
         crawl_date : Optional[datetime]
             Date the news article was crawled. (provider: tiingo)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.news.company(limit=2500)
         >>> # Get news on the specified dates.
@@ -177,14 +157,7 @@ class ROUTER_news(Container):
                     "provider": self._get_provider(
                         provider,
                         "/news/company",
-                        (
-                            "benzinga",
-                            "fmp",
-                            "intrinio",
-                            "polygon",
-                            "tiingo",
-                            "yfinance",
-                        ),
+                        ("benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"),
                     )
                 },
                 standard_params={
@@ -194,18 +167,7 @@ class ROUTER_news(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                extra_info={
-                    "symbol": {
-                        "multiple_items_allowed": [
-                            "benzinga",
-                            "fmp",
-                            "intrinio",
-                            "polygon",
-                            "tiingo",
-                            "yfinance",
-                        ]
-                    }
-                },
+                extra_info={"symbol": {"multiple_items_allowed": ["benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"]}},
             )
         )
 
@@ -213,24 +175,9 @@ class ROUTER_news(Container):
     @validate
     def world(
         self,
-        limit: Annotated[
-            int,
-            OpenBBCustomParameter(
-                description="The number of data entries to return. The number of articles to return."
-            ),
-        ] = 2500,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return. The number of articles to return.")] = 2500,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["benzinga", "fmp", "intrinio", "tiingo"]] = None,
         **kwargs
     ) -> OBBject:
@@ -328,8 +275,8 @@ class ROUTER_news(Container):
         crawl_date : Optional[datetime]
             Date the news article was crawled. (provider: tiingo)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.news.world(limit=2500)
         >>> # Get news on the specified dates.

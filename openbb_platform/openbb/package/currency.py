@@ -27,17 +27,19 @@ class ROUTER_currency(Container):
     @exception_handler
     @validate
     def search(
-        self, provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None, **kwargs
+        self,
+        provider: Optional[Literal["fmp", "intrinio", "polygon"]] = None,
+        **kwargs
     ) -> OBBject:
-        """Currency Search.
+        """    Currency Search.
 
-        Search available currency pairs.
-        Currency pairs are the national currencies from two countries coupled for trading on
-        the foreign exchange (FX) marketplace.
-        Both currencies will have exchange rates on which the trade will have its position basis.
-        All trading within the forex market, whether selling, buying, or trading, will take place through currency pairs.
-        (ref: Investopedia)
-        Major currency pairs include pairs such as EUR/USD, USD/JPY, GBP/USD, etc.
+    Search available currency pairs.
+    Currency pairs are the national currencies from two countries coupled for trading on
+    the foreign exchange (FX) marketplace.
+    Both currencies will have exchange rates on which the trade will have its position basis.
+    All trading within the forex market, whether selling, buying, or trading, will take place through currency pairs.
+    (ref: Investopedia)
+    Major currency pairs include pairs such as EUR/USD, USD/JPY, GBP/USD, etc.
 
 
         Parameters
@@ -110,8 +112,8 @@ class ROUTER_currency(Container):
         delisted_utc : Optional[datetime]
             The delisted timestamp in UTC. (provider: polygon)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.currency.search()
         >>> # Search for 'EURUSD' currency pair using 'polygon' as provider.
@@ -132,7 +134,8 @@ class ROUTER_currency(Container):
                         ("fmp", "intrinio", "polygon"),
                     )
                 },
-                standard_params={},
+                standard_params={
+                },
                 extra_params=kwargs,
             )
         )

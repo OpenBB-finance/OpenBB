@@ -199,7 +199,7 @@ class PackageBuilder:
         self.console.log("\nRunning linters...")
         linters = Linters(self.directory / "package", self.verbose)
         linters.ruff()
-        linters.black()
+        # linters.black()
 
     def _write(
         self, code: str, name: str, extension: str = "py", folder: str = "package"
@@ -710,14 +710,19 @@ class MethodDefinition:
     ):
         """Build the command method docstring."""
         doc = func.__doc__
+        indent = 2
+        tab = "    "
+        indentation = tab * indent
         doc = DocstringGenerator.generate(
             path=path,
             func=func,
             formatted_params=formatted_params,
             model_name=model_name,
             examples=examples,
+            indentation=indentation,
+            tab=tab,
         )
-        code = f'        """{doc}        """  # noqa: E501\n\n' if doc else ""
+        code = f'{indentation}"""{doc}{indentation}"""  # noqa: E501\n\n' if doc else ""
 
         return code
 
@@ -755,9 +760,9 @@ class MethodDefinition:
                 available = field.type.__args__
                 code += "                provider_choices={\n"
                 code += '                    "provider": self._get_provider(\n'
-                code += "                       provider,\n"
-                code += f'                       "{path}",\n'
-                code += f"                       {available},\n"
+                code += "                        provider,\n"
+                code += f'                        "{path}",\n'
+                code += f"                        {available},\n"
                 code += "                    )\n"
                 code += "                },\n"
             elif MethodDefinition.is_annotated_dc(param.annotation):
@@ -833,22 +838,24 @@ class DocstringGenerator:
     provider_interface = ProviderInterface()
 
     @staticmethod
-    def get_OBBject_description(results_type: str, providers: Optional[str]) -> str:
+    def get_OBBject_description(
+        results_type: str, providers: Optional[str], indentation: str = "", tab: str = "    "
+    ) -> str:
         """Get the command output description."""
         available_providers = providers or "Optional[str]"
 
         obbject_description = (
-            "    OBBject\n"
-            f"        results : {results_type}\n"
-            "            Serializable results.\n"
-            f"        provider : {available_providers}\n"
-            "            Provider name.\n"
-            "        warnings : Optional[List[Warning_]]\n"
-            "            List of warnings.\n"
-            "        chart : Optional[Chart]\n"
-            "            Chart object.\n"
-            "        extra : Dict[str, Any]\n"
-            "            Extra info.\n"
+            f"{indentation}OBBject\n"
+            f"{indentation+tab}results : {results_type}\n"
+            f"{indentation+2*tab}Serializable results.\n"
+            f"{indentation+tab}provider : {available_providers}\n"
+            f"{indentation+2*tab}Provider name.\n"
+            f"{indentation+tab}warnings : Optional[List[Warning_]]\n"
+            f"{indentation+2*tab}List of warnings.\n"
+            f"{indentation+tab}chart : Optional[Chart]\n"
+            f"{indentation+2*tab}Chart object.\n"
+            f"{indentation+tab}extra : Dict[str, Any]\n"
+            f"{indentation+2*tab}Extra info.\n"
         )
         obbject_description = obbject_description.replace("NoneType", "None")
 
@@ -857,39 +864,18 @@ class DocstringGenerator:
     @staticmethod
     def append_examples(
         func_name: str,
-        func_params: dict[str, Field],
+        func_params: Dict[str, Field],
         examples: Optional[List[Example]],
+        indentation: str = "",
     ) -> str:
         """Get the example section from the examples."""
         if examples:
-            doc = "\n    Examples\n    --------\n"
-            doc += "    >>> from openbb import obb\n"
+            doc = f"\n{indentation}Examples\n"
+            doc += f"{indentation}--------\n"
+            doc += f"{indentation}>>> from openbb import obb\n"
 
             for e in examples:
-                if e.scope == "api" and e.parameters is not None:
-                    # MOVE THIS TO example.py
-                    if e.description:
-                        doc += f"    >>> # {e.description}\n"
-                    doc += f"    >>> obb{func_name}("
-
-                    for k, v in e.parameters.items():
-                        if k in func_params and (field := func_params.get(k)):
-                            field_type_str = str(field.type)
-                            # TODO: Handle types better, some edge cases
-                            # like Union[str, List[str]] will be stringified
-                            # even if the type is a list
-                            if any(
-                                t in field_type_str for t in ["int", "float", "bool"]
-                            ):
-                                doc += f"{k}={v}, "
-                            else:
-                                doc += f"{k}='{v}', "
-                        else:
-                            doc += f"{k}='{v}', "
-
-                    doc = doc.strip(", ") + ")\n"
-                elif e.scope == "python" and e.code is not None:
-                    doc += ">>> \n".join(e.code) + "\n"
+                doc += e.to_python(func_name, func_params, indentation)
             return doc
         return ""
 
@@ -902,6 +888,8 @@ class DocstringGenerator:
         kwarg_params: dict,
         returns: Dict[str, FieldInfo],
         results_type: str,
+        indentation: str = "",
+        tab: str = "    ",
     ) -> str:
         """Create the docstring for model."""
 
@@ -917,13 +905,13 @@ class DocstringGenerator:
 
         def format_description(description: str) -> str:
             """Format description in docstrings."""
-            description = description.replace("\n", "\n    ")
+            description = description.replace("\n", f"\n{indentation+tab}")
             return description
 
         docstring = summary.strip("\n")
         docstring += "\n\n"
-        docstring += "    Parameters\n"
-        docstring += "    ----------\n"
+        docstring += f"{indentation}Parameters\n"
+        docstring += f"{indentation}----------\n"
 
         # Explicit parameters
         for param_name, param in explicit_params.items():
@@ -932,8 +920,8 @@ class DocstringGenerator:
                 type_ = param._annotation
                 default = param._annotation.__args__[0].__args__[0]
                 description = f"""The provider to use for the query, by default None.
-    If None, the provider specified in defaults is selected or '{default}' if there is
-    no default."""
+If None, the provider specified in defaults is selected or '{default}' if there is
+no default."""
             elif param_name == "chart":
                 type_ = "bool"
                 description = "Whether to create a chart or not, by default False."
@@ -946,8 +934,8 @@ class DocstringGenerator:
                 )
 
             type_str = format_type(type_, char_limit=79)  # type: ignore
-            docstring += f"    {param_name} : {type_str}\n"
-            docstring += f"        {format_description(description)}\n"
+            docstring += f"{indentation}{param_name} : {type_str}\n"
+            docstring += f"{indentation+tab}{format_description(description)}\n"
 
         # Kwargs
         for param_name, param in kwarg_params.items():
@@ -959,21 +947,24 @@ class DocstringGenerator:
 
             description = getattr(param.default, "description", "")
 
-            docstring += f"    {param_name} : {type_}\n"
-            docstring += f"        {format_description(description)}\n"
+            docstring += f"{indentation}{param_name} : {type_}\n"
+            docstring += f"{indentation+tab}{format_description(description)}\n"
 
         # Returns
         docstring += "\n"
-        docstring += "    Returns\n"
-        docstring += "    -------\n"
+        docstring += f"{indentation}Returns\n"
+        docstring += f"{indentation}-------\n"
         provider_param = explicit_params.get("provider", None)
         available_providers = getattr(provider_param, "_annotation", None)
 
-        docstring += cls.get_OBBject_description(results_type, available_providers)
+        docstring += cls.get_OBBject_description(
+            results_type, available_providers, indentation, tab
+        )
 
         # Schema
         underline = "-" * len(model_name)
-        docstring += f"\n    {model_name}\n    {underline}\n"
+        docstring += f"\n{indentation}{model_name}\n"
+        docstring += f"{indentation}{underline}\n"
 
         for name, field in returns.items():
             try:
@@ -1004,8 +995,8 @@ class DocstringGenerator:
 
             description = getattr(field, "description", "")
 
-            docstring += f"    {field.alias or name} : {field_type}\n"
-            docstring += f"        {format_description(description)}\n"
+            docstring += f"{indentation}{field.alias or name} : {field_type}\n"
+            docstring += f"{indentation+tab}{format_description(description)}\n"
         return docstring
 
     @classmethod
@@ -1016,6 +1007,8 @@ class DocstringGenerator:
         formatted_params: OrderedDict[str, Parameter],
         model_name: Optional[str] = None,
         examples: Optional[List[Example]] = None,
+        indentation: str = "",
+        tab: str = "    ",
     ) -> Optional[str]:
         """Generate the docstring for the function."""
         doc = func.__doc__
@@ -1043,6 +1036,8 @@ class DocstringGenerator:
                     kwarg_params=kwarg_params,
                     returns=returns,
                     results_type=results_type,
+                    indentation=indentation,
+                    tab=tab,
                 )
 
         if doc and examples:
@@ -1050,117 +1045,10 @@ class DocstringGenerator:
                 path.replace("/", "."),
                 func_params,
                 examples,
+                indentation,
             )
 
         return doc
-
-    @staticmethod
-    def get_model_standard_params(param_fields: Dict[str, FieldInfo]) -> Dict[str, Any]:
-        """Get the test params for the fetcher based on the required standard params."""
-        test_params: Dict[str, Any] = {}
-        for field_name, field in param_fields.items():
-            if field.default and field.default is not PydanticUndefined:
-                test_params[field_name] = field.default
-            elif field.default and field.default is PydanticUndefined:
-                example_dict = {
-                    "symbol": "AAPL",
-                    "symbols": "AAPL,MSFT",
-                    "start_date": "2023-01-01",
-                    "end_date": "2023-06-06",
-                    "country": "Portugal",
-                    "date": "2023-01-01",
-                    "countries": ["portugal", "spain"],
-                }
-                if field_name in example_dict:
-                    test_params[field_name] = example_dict[field_name]
-                elif field.annotation == str:
-                    test_params[field_name] = "TEST_STRING"
-                elif field.annotation == int:
-                    test_params[field_name] = 1
-                elif field.annotation == float:
-                    test_params[field_name] = 1.0
-                elif field.annotation == bool:
-                    test_params[field_name] = True
-                elif get_origin(field.annotation) is Literal:  # type: ignore
-                    option = field.annotation.__args__[0]  # type: ignore
-                    if isinstance(option, str):
-                        test_params[field_name] = f'"{option}"'
-                    else:
-                        test_params[field_name] = option
-
-        return test_params
-
-    @staticmethod
-    def get_full_command_name(route: str) -> str:
-        """Get the full command name."""
-        cmd_parts = route.split("/")
-        del cmd_parts[0]
-
-        menu = cmd_parts[0]
-        command = cmd_parts[-1]
-        sub_menus = cmd_parts[1:-1]
-
-        sub_menu_str_cmd = f".{'.'.join(sub_menus)}" if sub_menus else ""
-
-        full_command = f"{menu}{sub_menu_str_cmd}.{command}"
-
-        return full_command
-
-    @classmethod
-    def generate_example(
-        cls,
-        model_name: str,
-        standard_params: Dict[str, FieldInfo],
-    ) -> str:
-        """Generate the example for the command."""
-        # find the model router here
-        cm = CommandMap()
-        commands_model = cm.commands_model
-        route = [k for k, v in commands_model.items() if v == model_name]
-
-        if not route:
-            return ""
-
-        full_command_name = cls.get_full_command_name(route=route[0])
-        example_params = cls.get_model_standard_params(param_fields=standard_params)
-
-        # Edge cases (might find more)
-        if "crypto" in route[0] and "symbol" in example_params:
-            example_params["symbol"] = "BTCUSD"
-        elif "currency" in route[0] and "symbol" in example_params:
-            example_params["symbol"] = "EURUSD"
-        elif (
-            "index" in route[0]
-            and "european" not in route[0]
-            and "symbol" in example_params
-        ):
-            example_params["symbol"] = "SPX"
-        elif (
-            "index" in route[0]
-            and "european" in route[0]
-            and "symbol" in example_params
-        ):
-            example_params["symbol"] = "BUKBUS"
-        elif (
-            "futures" in route[0] and "curve" in route[0] and "symbol" in example_params
-        ):
-            example_params["symbol"] = "VX"
-        elif "futures" in route[0] and "symbol" in example_params:
-            example_params["symbol"] = "ES"
-
-        example = "\n        Example\n        -------\n"
-        example += "        >>> from openbb import obb\n"
-        example += f"        >>> obb.{full_command_name}("
-        for param_name, param_value in example_params.items():
-            if isinstance(param_value, str):
-                param_value = f'"{param_value}"'  # noqa: PLW2901
-            example += f"{param_name}={param_value}, "
-        if example_params:
-            example = example[:-2] + ")\n"
-        else:
-            example += ")\n"
-
-        return example
 
 
 class PathHandler:

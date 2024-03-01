@@ -26,13 +26,8 @@ class ROUTER_equity_ownership(Container):
     @validate
     def insider_trading(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
-        limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 500,
+        symbol: Annotated[str, OpenBBCustomParameter(description="Symbol to get data for.")],
+        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return.")] = 500,
         provider: Optional[Literal["fmp", "intrinio"]] = None,
         **kwargs
     ) -> OBBject:
@@ -134,8 +129,8 @@ class ROUTER_equity_ownership(Container):
         report_line_number : Optional[int]
             Report line number of the insider trading. (provider: intrinio)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.ownership.insider_trading(symbol='AAPL', limit=500)
         """  # noqa: E501
@@ -162,9 +157,7 @@ class ROUTER_equity_ownership(Container):
     @validate
     def institutional(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -272,8 +265,8 @@ class ROUTER_equity_ownership(Container):
         put_call_ratio_change : Optional[float]
             Change in the put-call ratio between the current and previous reporting dates. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.ownership.institutional(symbol='AAPL')
         """  # noqa: E501
@@ -299,17 +292,9 @@ class ROUTER_equity_ownership(Container):
     @validate
     def major_holders(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
-        date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(description="A specific date to get data for."),
-        ] = None,
-        page: Annotated[
-            Optional[int],
-            OpenBBCustomParameter(description="Page number of the data to fetch."),
-        ] = 0,
+        symbol: Annotated[str, OpenBBCustomParameter(description="Symbol to get data for.")],
+        date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="A specific date to get data for.")] = None,
+        page: Annotated[Optional[int], OpenBBCustomParameter(description="Page number of the data to fetch.")] = 0,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -423,8 +408,8 @@ class ROUTER_equity_ownership(Container):
         is_counted_for_performance : bool
             Is the stock ownership counted for performance.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.ownership.major_holders(symbol='AAPL', page=0)
         """  # noqa: E501
@@ -452,12 +437,7 @@ class ROUTER_equity_ownership(Container):
     @validate
     def share_statistics(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): yfinance."
-            ),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for. Multiple items allowed for provider(s): yfinance.")],
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
@@ -525,8 +505,8 @@ class ROUTER_equity_ownership(Container):
         institutions_count : Optional[int]
             Number of institutions holding shares. (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.ownership.share_statistics(symbol='AAPL')
         """  # noqa: E501

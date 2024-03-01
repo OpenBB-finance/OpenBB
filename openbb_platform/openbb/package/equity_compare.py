@@ -22,16 +22,14 @@ class ROUTER_equity_compare(Container):
     @validate
     def peers(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
+        symbol: Annotated[str, OpenBBCustomParameter(description="Symbol to get data for.")],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
         """Get the closest peers for a given company.
 
-        Peers consist of companies trading on the same exchange, operating within the same sector
-        and with comparable market capitalizations.
+    Peers consist of companies trading on the same exchange, operating within the same sector
+    and with comparable market capitalizations.
 
         Parameters
         ----------
@@ -61,8 +59,8 @@ class ROUTER_equity_compare(Container):
         peers_list : List[str]
             A list of equity peers based on sector, exchange and market cap.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.compare.peers(symbol='AAPL')
         """  # noqa: E501

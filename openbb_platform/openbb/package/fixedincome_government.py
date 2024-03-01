@@ -24,18 +24,8 @@ class ROUTER_fixedincome_government(Container):
     @validate
     def treasury_rates(
         self,
-        start_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="Start date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
-        end_date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="End date of the data, in YYYY-MM-DD format."
-            ),
-        ] = None,
+        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
+        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
         provider: Optional[Literal["federal_reserve", "fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -97,8 +87,8 @@ class ROUTER_fixedincome_government(Container):
         year_30 : Optional[float]
             30 year Treasury rate.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.fixedincome.government.treasury_rates(provider='federal_reserve')
         """  # noqa: E501
@@ -125,16 +115,8 @@ class ROUTER_fixedincome_government(Container):
     @validate
     def us_yield_curve(
         self,
-        date: Annotated[
-            Union[datetime.date, None, str],
-            OpenBBCustomParameter(
-                description="A specific date to get data for. Defaults to the most recent FRED entry."
-            ),
-        ] = None,
-        inflation_adjusted: Annotated[
-            Optional[bool],
-            OpenBBCustomParameter(description="Get inflation adjusted rates."),
-        ] = False,
+        date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="A specific date to get data for. Defaults to the most recent FRED entry.")] = None,
+        inflation_adjusted: Annotated[Optional[bool], OpenBBCustomParameter(description="Get inflation adjusted rates.")] = False,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject:
@@ -172,8 +154,8 @@ class ROUTER_fixedincome_government(Container):
         rate : float
             Associated rate given in decimal form (0.05 is 5%)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.fixedincome.government.us_yield_curve(inflation_adjusted=True)
         """  # noqa: E501

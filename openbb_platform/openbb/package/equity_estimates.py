@@ -25,18 +25,8 @@ class ROUTER_equity_estimates(Container):
     @validate
     def analyst_search(
         self,
-        analyst_name: Annotated[
-            Optional[str],
-            OpenBBCustomParameter(
-                description="A comma separated list of analyst names to bring back. Omitting will bring back all available analysts."
-            ),
-        ] = None,
-        firm_name: Annotated[
-            Optional[str],
-            OpenBBCustomParameter(
-                description="A comma separated list of firm names to bring back. Omitting will bring back all available firms."
-            ),
-        ] = None,
+        analyst_name: Annotated[Optional[str], OpenBBCustomParameter(description="A comma separated list of analyst names to bring back. Omitting will bring back all available analysts.")] = None,
+        firm_name: Annotated[Optional[str], OpenBBCustomParameter(description="A comma separated list of firm names to bring back. Omitting will bring back all available firms.")] = None,
         provider: Optional[Literal["benzinga"]] = None,
         **kwargs
     ) -> OBBject:
@@ -168,8 +158,8 @@ class ROUTER_equity_estimates(Container):
         std_dev_3y : Optional[float]
             The standard deviation in percent (normalized) price difference in the analyst's ratings over the last 3 years (provider: benzinga)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.estimates.analyst_search(firm_name='Wedbush', provider='benzinga')
         """  # noqa: E501
@@ -196,12 +186,7 @@ class ROUTER_equity_estimates(Container):
     @validate
     def consensus(
         self,
-        symbol: Annotated[
-            Union[str, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): yfinance."
-            ),
-        ],
+        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for. Multiple items allowed for provider(s): yfinance.")],
         provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
@@ -253,8 +238,8 @@ class ROUTER_equity_estimates(Container):
         currency : Optional[str]
             Currency the stock is priced in. (provider: yfinance)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.estimates.consensus(symbol='AAPL,MSFT', provider='yfinance')
         """  # noqa: E501
@@ -281,17 +266,9 @@ class ROUTER_equity_estimates(Container):
     @validate
     def historical(
         self,
-        symbol: Annotated[
-            str, OpenBBCustomParameter(description="Symbol to get data for.")
-        ],
-        period: Annotated[
-            Literal["quarter", "annual"],
-            OpenBBCustomParameter(description="Time period of the data to return."),
-        ] = "annual",
-        limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 30,
+        symbol: Annotated[str, OpenBBCustomParameter(description="Symbol to get data for.")],
+        period: Annotated[Literal["quarter", "annual"], OpenBBCustomParameter(description="Time period of the data to return.")] = "annual",
+        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return.")] = 30,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -371,8 +348,8 @@ class ROUTER_equity_estimates(Container):
         number_analysts_estimated_eps : int
             Number of analysts who estimated EPS.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.estimates.historical(symbol='AAPL', provider='fmp')
         """  # noqa: E501
@@ -400,16 +377,8 @@ class ROUTER_equity_estimates(Container):
     @validate
     def price_target(
         self,
-        symbol: Annotated[
-            Union[str, None, List[str]],
-            OpenBBCustomParameter(
-                description="Symbol to get data for. Multiple items allowed for provider(s): benzinga."
-            ),
-        ] = None,
-        limit: Annotated[
-            int,
-            OpenBBCustomParameter(description="The number of data entries to return."),
-        ] = 200,
+        symbol: Annotated[Union[str, None, List[str]], OpenBBCustomParameter(description="Symbol to get data for. Multiple items allowed for provider(s): benzinga.")] = None,
+        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return.")] = 200,
         provider: Optional[Literal["benzinga", "fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -521,8 +490,8 @@ class ROUTER_equity_estimates(Container):
         news_base_url : Optional[str]
             News base URL of the price target. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.equity.estimates.price_target(start_date='2020-01-01', end_date='2024-02-16', limit=10, symbol='msft', provider='benzinga', action=downgrades)
         """  # noqa: E501
