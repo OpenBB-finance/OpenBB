@@ -226,58 +226,58 @@ class ROUTER_equity_discovery(Container):
         and audited financial statements.
 
 
-            Parameters
-            ----------
-            start_date : Union[datetime.date, None, str]
-                Start date of the data, in YYYY-MM-DD format.
-            end_date : Union[datetime.date, None, str]
-                End date of the data, in YYYY-MM-DD format.
-            form_type : Optional[str]
-                Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types.
-            limit : int
-                The number of data entries to return.
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        form_type : Optional[str]
+            Filter by form type. Visit https://www.sec.gov/forms for a list of supported form types.
+        limit : int
+            The number of data entries to return.
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+        is_done : Optional[bool]
+            Flag for whether or not the filing is done. (provider: fmp)
+
+        Returns
+        -------
+        OBBject
+            results : List[DiscoveryFilings]
+                Serializable results.
             provider : Optional[Literal['fmp']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fmp' if there is
-                no default.
-            is_done : Optional[bool]
-                Flag for whether or not the filing is done. (provider: fmp)
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[DiscoveryFilings]
-                    Serializable results.
-                provider : Optional[Literal['fmp']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra : Dict[str, Any]
-                    Extra info.
+        DiscoveryFilings
+        ----------------
+        symbol : str
+            Symbol representing the entity requested in the data.
+        cik : str
+            Central Index Key (CIK) for the requested entity.
+        title : str
+            Title of the filing.
+        date : datetime
+            The date of the data.
+        form_type : str
+            The form type of the filing
+        link : str
+            URL to the filing page on the SEC site.
 
-            DiscoveryFilings
-            ----------------
-            symbol : str
-                Symbol representing the entity requested in the data.
-            cik : str
-                Central Index Key (CIK) for the requested entity.
-            title : str
-                Title of the filing.
-            date : datetime
-                The date of the data.
-            form_type : str
-                The form type of the filing
-            link : str
-                URL to the filing page on the SEC site.
-
-            Examples
-            --------
-            >>> from openbb import obb
-            >>> obb.equity.discovery.filings(limit=100)
-            >>> # Get filings for the year 2023, limited to 100 results
-            >>> obb.equity.discovery.filings(start_date='2023-01-01', end_date='2023-12-31', limit=100)
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.equity.discovery.filings(limit=100)
+        >>> # Get filings for the year 2023, limited to 100 results
+        >>> obb.equity.discovery.filings(start_date='2023-01-01', end_date='2023-12-31', limit=100)
         """  # noqa: E501
 
         return self._run(

@@ -839,7 +839,10 @@ class DocstringGenerator:
 
     @staticmethod
     def get_OBBject_description(
-        results_type: str, providers: Optional[str], indentation: str = "", tab: str = "    "
+        results_type: str,
+        providers: Optional[str],
+        indentation: str = "",
+        tab: str = "    ",
     ) -> str:
         """Get the command output description."""
         available_providers = providers or "Optional[str]"
@@ -908,7 +911,7 @@ class DocstringGenerator:
             description = description.replace("\n", f"\n{indentation+tab}")
             return description
 
-        docstring = summary.strip("\n")
+        docstring = summary.replace("\n    ",f"\n{indentation}").strip("\n")
         docstring += "\n\n"
         docstring += f"{indentation}Parameters\n"
         docstring += f"{indentation}----------\n"

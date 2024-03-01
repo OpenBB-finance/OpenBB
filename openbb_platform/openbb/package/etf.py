@@ -932,69 +932,69 @@ class ROUTER_etf(Container):
         An empty query returns the full list of ETFs from the provider.
 
 
-            Parameters
-            ----------
-            query : Optional[str]
-                Search query.
+        Parameters
+        ----------
+        query : Optional[str]
+            Search query.
+        provider : Optional[Literal['fmp']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fmp' if there is
+            no default.
+        exchange : Optional[Literal['AMEX', 'NYSE', 'NASDAQ', 'ETF', 'TSX', 'EURONEXT']]
+            The exchange code the ETF trades on. (provider: fmp)
+        is_active : Optional[Literal[True, False]]
+            Whether the ETF is actively trading. (provider: fmp)
+
+        Returns
+        -------
+        OBBject
+            results : List[EtfSearch]
+                Serializable results.
             provider : Optional[Literal['fmp']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fmp' if there is
-                no default.
-            exchange : Optional[Literal['AMEX', 'NYSE', 'NASDAQ', 'ETF', 'TSX', 'EURONEXT']]
-                The exchange code the ETF trades on. (provider: fmp)
-            is_active : Optional[Literal[True, False]]
-                Whether the ETF is actively trading. (provider: fmp)
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[EtfSearch]
-                    Serializable results.
-                provider : Optional[Literal['fmp']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra : Dict[str, Any]
-                    Extra info.
+        EtfSearch
+        ---------
+        symbol : str
+            Symbol representing the entity requested in the data.(ETF)
+        name : Optional[str]
+            Name of the ETF.
+        market_cap : Optional[float]
+            The market cap of the ETF. (provider: fmp)
+        sector : Optional[str]
+            The sector of the ETF. (provider: fmp)
+        industry : Optional[str]
+            The industry of the ETF. (provider: fmp)
+        beta : Optional[float]
+            The beta of the ETF. (provider: fmp)
+        price : Optional[float]
+            The current price of the ETF. (provider: fmp)
+        last_annual_dividend : Optional[float]
+            The last annual dividend paid. (provider: fmp)
+        volume : Optional[float]
+            The current trading volume of the ETF. (provider: fmp)
+        exchange : Optional[str]
+            The exchange code the ETF trades on. (provider: fmp)
+        exchange_name : Optional[str]
+            The full name of the exchange the ETF trades on. (provider: fmp)
+        country : Optional[str]
+            The country the ETF is registered in. (provider: fmp)
+        actively_trading : Optional[Literal[True, False]]
+            Whether the ETF is actively trading. (provider: fmp)
 
-            EtfSearch
-            ---------
-            symbol : str
-                Symbol representing the entity requested in the data.(ETF)
-            name : Optional[str]
-                Name of the ETF.
-            market_cap : Optional[float]
-                The market cap of the ETF. (provider: fmp)
-            sector : Optional[str]
-                The sector of the ETF. (provider: fmp)
-            industry : Optional[str]
-                The industry of the ETF. (provider: fmp)
-            beta : Optional[float]
-                The beta of the ETF. (provider: fmp)
-            price : Optional[float]
-                The current price of the ETF. (provider: fmp)
-            last_annual_dividend : Optional[float]
-                The last annual dividend paid. (provider: fmp)
-            volume : Optional[float]
-                The current trading volume of the ETF. (provider: fmp)
-            exchange : Optional[str]
-                The exchange code the ETF trades on. (provider: fmp)
-            exchange_name : Optional[str]
-                The full name of the exchange the ETF trades on. (provider: fmp)
-            country : Optional[str]
-                The country the ETF is registered in. (provider: fmp)
-            actively_trading : Optional[Literal[True, False]]
-                Whether the ETF is actively trading. (provider: fmp)
-
-            Examples
-            --------
-            >>> from openbb import obb
-            >>> # An empty query returns the full list of ETFs from the provider.
-            >>> obb.etf.search()
-            >>> # The query will return results from text-based fields containing the term.
-            >>> obb.etf.search(query='commercial real estate', provider='fmp')
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> # An empty query returns the full list of ETFs from the provider.
+        >>> obb.etf.search()
+        >>> # The query will return results from text-based fields containing the term.
+        >>> obb.etf.search(query='commercial real estate', provider='fmp')
         """  # noqa: E501
 
         return self._run(

@@ -40,8 +40,7 @@ async def search(
     standard_params: StandardParams,
     extra_params: ExtraParams,
 ) -> OBBject:
-    """
-    Currency Search.
+    """Currency Search.
 
     Search available currency pairs.
     Currency pairs are the national currencies from two countries coupled for trading on

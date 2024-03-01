@@ -1,7 +1,7 @@
+from dataclasses import Field
 from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict
-from dataclasses import Field
 
 
 class Example(BaseModel):
@@ -14,7 +14,9 @@ class Example(BaseModel):
 
     model_config = ConfigDict(validate_assignment=True)
 
-    def to_python(self, func_name: str, func_params: Dict[str, Field], indentation: str = "") -> str:
+    def to_python(
+        self, func_name: str, func_params: Dict[str, Field], indentation: str = ""
+    ) -> str:
         """Return a Python code representation of the examplself."""
         eg = ""
         if self.scope == "api" and self.parameters is not None:

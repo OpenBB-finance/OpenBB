@@ -61,48 +61,48 @@ class ROUTER_fixedincome_corporate(Container):
         and many find it to be a lower-cost alternative to bank loans.
 
 
-            Parameters
-            ----------
-            start_date : Union[datetime.date, None, str]
-                Start date of the data, in YYYY-MM-DD format.
-            end_date : Union[datetime.date, None, str]
-                End date of the data, in YYYY-MM-DD format.
-            maturity : Literal['overnight', '7d', '15d', '30d', '60d', '90d']
-                The maturity.
-            category : Literal['asset_backed', 'financial', 'nonfinancial']
-                The category.
-            grade : Literal['aa', 'a2_p2']
-                The grade.
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        maturity : Literal['overnight', '7d', '15d', '30d', '60d', '90d']
+            The maturity.
+        category : Literal['asset_backed', 'financial', 'nonfinancial']
+            The category.
+        grade : Literal['aa', 'a2_p2']
+            The grade.
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[CommercialPaper]
+                Serializable results.
             provider : Optional[Literal['fred']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fred' if there is
-                no default.
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[CommercialPaper]
-                    Serializable results.
-                provider : Optional[Literal['fred']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra : Dict[str, Any]
-                    Extra info.
+        CommercialPaper
+        ---------------
+        date : date
+            The date of the data.
+        rate : Optional[float]
+            Commercial Paper Rate.
 
-            CommercialPaper
-            ---------------
-            date : date
-                The date of the data.
-            rate : Optional[float]
-                Commercial Paper Rate.
-
-            Examples
-            --------
-            >>> from openbb import obb
-            >>> obb.fixedincome.corporate.commercial_paper(maturity='15d')
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.fixedincome.corporate.commercial_paper(maturity='15d')
         """  # noqa: E501
 
         return self._run(
@@ -149,48 +149,48 @@ class ROUTER_fixedincome_corporate(Container):
         that is the market-weighted average (MWA) quality of high quality bonds.
 
 
-            Parameters
-            ----------
-            date : Union[datetime.date, None, str]
-                A specific date to get data for.
-            yield_curve : Literal['spot', 'par']
-                The yield curve type.
+        Parameters
+        ----------
+        date : Union[datetime.date, None, str]
+            A specific date to get data for.
+        yield_curve : Literal['spot', 'par']
+            The yield curve type.
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[HighQualityMarketCorporateBond]
+                Serializable results.
             provider : Optional[Literal['fred']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fred' if there is
-                no default.
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[HighQualityMarketCorporateBond]
-                    Serializable results.
-                provider : Optional[Literal['fred']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra : Dict[str, Any]
-                    Extra info.
+        HighQualityMarketCorporateBond
+        ------------------------------
+        date : date
+            The date of the data.
+        rate : Optional[float]
+            HighQualityMarketCorporateBond Rate.
+        maturity : str
+            Maturity.
+        yield_curve : Literal['spot', 'par']
+            The yield curve type.
+        series_id : Optional[str]
+            FRED series id. (provider: fred)
 
-            HighQualityMarketCorporateBond
-            ------------------------------
-            date : date
-                The date of the data.
-            rate : Optional[float]
-                HighQualityMarketCorporateBond Rate.
-            maturity : str
-                Maturity.
-            yield_curve : Literal['spot', 'par']
-                The yield curve type.
-            series_id : Optional[str]
-                FRED series id. (provider: fred)
-
-            Examples
-            --------
-            >>> from openbb import obb
-            >>> obb.fixedincome.corporate.hqm(yield_curve='par')
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.fixedincome.corporate.hqm(yield_curve='par')
         """  # noqa: E501
 
         return self._run(
@@ -243,52 +243,52 @@ class ROUTER_fixedincome_corporate(Container):
         outstanding of $250 million. The ICE BofA US Corporate Index is a component of the US Corporate Master Index.
 
 
-            Parameters
-            ----------
-            start_date : Union[datetime.date, None, str]
-                Start date of the data, in YYYY-MM-DD format.
-            end_date : Union[datetime.date, None, str]
-                End date of the data, in YYYY-MM-DD format.
-            index_type : Literal['yield', 'yield_to_worst', 'total_return', 'spread']
-                The type of series.
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        index_type : Literal['yield', 'yield_to_worst', 'total_return', 'spread']
+            The type of series.
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+        category : Literal['all', 'duration', 'eur', 'usd']
+            The type of category. (provider: fred)
+        area : Literal['asia', 'emea', 'eu', 'ex_g10', 'latin_america', 'us']
+            The type of area. (provider: fred)
+        grade : Literal['a', 'aa', 'aaa', 'b', 'bb', 'bbb', 'ccc', 'crossover', 'high_grade', 'high_yield', 'non_financial', 'non_sovereign', 'private_sector', 'public_sector']
+            The type of grade. (provider: fred)
+        options : bool
+            Whether to include options in the results. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[ICEBofA]
+                Serializable results.
             provider : Optional[Literal['fred']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fred' if there is
-                no default.
-            category : Literal['all', 'duration', 'eur', 'usd']
-                The type of category. (provider: fred)
-            area : Literal['asia', 'emea', 'eu', 'ex_g10', 'latin_america', 'us']
-                The type of area. (provider: fred)
-            grade : Literal['a', 'aa', 'aaa', 'b', 'bb', 'bbb', 'ccc', 'crossover', 'high_grade', 'high_yield', 'non_financial', 'non_sovereign', 'private_sector', 'public_sector']
-                The type of grade. (provider: fred)
-            options : bool
-                Whether to include options in the results. (provider: fred)
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[ICEBofA]
-                    Serializable results.
-                provider : Optional[Literal['fred']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra : Dict[str, Any]
-                    Extra info.
+        ICEBofA
+        -------
+        date : date
+            The date of the data.
+        rate : Optional[float]
+            ICE BofA US Corporate Bond Indices Rate.
 
-            ICEBofA
-            -------
-            date : date
-                The date of the data.
-            rate : Optional[float]
-                ICE BofA US Corporate Bond Indices Rate.
-
-            Examples
-            --------
-            >>> from openbb import obb
-            >>> obb.fixedincome.corporate.ice_bofa(index_type='yield_to_worst')
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.fixedincome.corporate.ice_bofa(index_type='yield_to_worst')
         """  # noqa: E501
 
         return self._run(
@@ -341,46 +341,46 @@ class ROUTER_fixedincome_corporate(Container):
         Treasury Bill as an indicator of the interest rate.
 
 
-            Parameters
-            ----------
-            start_date : Union[datetime.date, None, str]
-                Start date of the data, in YYYY-MM-DD format.
-            end_date : Union[datetime.date, None, str]
-                End date of the data, in YYYY-MM-DD format.
-            index_type : Literal['aaa', 'baa']
-                The type of series.
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        index_type : Literal['aaa', 'baa']
+            The type of series.
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+        spread : Optional[Literal['treasury', 'fed_funds']]
+            The type of spread. (provider: fred)
+
+        Returns
+        -------
+        OBBject
+            results : List[MoodyCorporateBondIndex]
+                Serializable results.
             provider : Optional[Literal['fred']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fred' if there is
-                no default.
-            spread : Optional[Literal['treasury', 'fed_funds']]
-                The type of spread. (provider: fred)
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[MoodyCorporateBondIndex]
-                    Serializable results.
-                provider : Optional[Literal['fred']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra : Dict[str, Any]
-                    Extra info.
+        MoodyCorporateBondIndex
+        -----------------------
+        date : date
+            The date of the data.
+        rate : Optional[float]
+            Moody Corporate Bond Index Rate.
 
-            MoodyCorporateBondIndex
-            -----------------------
-            date : date
-                The date of the data.
-            rate : Optional[float]
-                Moody Corporate Bond Index Rate.
-
-            Examples
-            --------
-            >>> from openbb import obb
-            >>> obb.fixedincome.corporate.moody(index_type='baa')
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.fixedincome.corporate.moody(index_type='baa')
         """  # noqa: E501
 
         return self._run(
@@ -436,46 +436,46 @@ class ROUTER_fixedincome_corporate(Container):
         concept for discounting a pension liability at the same maturity.
 
 
-            Parameters
-            ----------
-            start_date : Union[datetime.date, None, str]
-                Start date of the data, in YYYY-MM-DD format.
-            end_date : Union[datetime.date, None, str]
-                End date of the data, in YYYY-MM-DD format.
-            maturity : List[float]
-                The maturities in years.
-            category : List[Literal['par_yield', 'spot_rate']]
-                The category.
+        Parameters
+        ----------
+        start_date : Union[datetime.date, None, str]
+            Start date of the data, in YYYY-MM-DD format.
+        end_date : Union[datetime.date, None, str]
+            End date of the data, in YYYY-MM-DD format.
+        maturity : List[float]
+            The maturities in years.
+        category : List[Literal['par_yield', 'spot_rate']]
+            The category.
+        provider : Optional[Literal['fred']]
+            The provider to use for the query, by default None.
+            If None, the provider specified in defaults is selected or 'fred' if there is
+            no default.
+
+        Returns
+        -------
+        OBBject
+            results : List[SpotRate]
+                Serializable results.
             provider : Optional[Literal['fred']]
-                The provider to use for the query, by default None.
-                If None, the provider specified in defaults is selected or 'fred' if there is
-                no default.
+                Provider name.
+            warnings : Optional[List[Warning_]]
+                List of warnings.
+            chart : Optional[Chart]
+                Chart object.
+            extra : Dict[str, Any]
+                Extra info.
 
-            Returns
-            -------
-            OBBject
-                results : List[SpotRate]
-                    Serializable results.
-                provider : Optional[Literal['fred']]
-                    Provider name.
-                warnings : Optional[List[Warning_]]
-                    List of warnings.
-                chart : Optional[Chart]
-                    Chart object.
-                extra : Dict[str, Any]
-                    Extra info.
+        SpotRate
+        --------
+        date : date
+            The date of the data.
+        rate : Optional[float]
+            Spot Rate.
 
-            SpotRate
-            --------
-            date : date
-                The date of the data.
-            rate : Optional[float]
-                Spot Rate.
-
-            Examples
-            --------
-            >>> from openbb import obb
-            >>> obb.fixedincome.corporate.spot_rates(maturity=[10, 20, 30, 50])
+        Examples
+        --------
+        >>> from openbb import obb
+        >>> obb.fixedincome.corporate.spot_rates(maturity=[10, 20, 30, 50])
         """  # noqa: E501
 
         return self._run(
