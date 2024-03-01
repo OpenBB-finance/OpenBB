@@ -39,6 +39,7 @@ class Example(BaseModel):
 
             eg = indentation + eg.strip(", ") + ")\n"
         elif self.scope == "python" and self.code is not None:
-            eg += f"{indentation}>>> \n".join(self.code) + "\n"
+            for line in self.code:
+                eg += f"{indentation}>>> {line}\n"
 
         return eg

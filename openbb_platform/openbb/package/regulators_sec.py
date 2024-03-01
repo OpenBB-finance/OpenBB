@@ -272,6 +272,23 @@ class ROUTER_regulators_sec(Container):
         --------
         >>> from openbb import obb
         >>> obb.regulators.sec.schema_files()
+        >>> data = obb.regulators.sec.schema_files()
+        >>> data.files[0]
+        >>>     https://xbrl.fasb.org/us-gaap/
+        >>> #### The directory structure can be navigated by constructing a URL from the 'results' list. ####
+        >>> url = data.files[0]+data.files[-1]
+        >>> #### The URL base will always be the 0 position in the list, feed  the URL back in as a parameter. ####
+        >>> obb.regulators.sec.schema_files(url=url).results.files
+        >>>     ['https://xbrl.fasb.org/us-gaap/2024/'
+        >>>     'USGAAP2024FileList.xml'
+        >>>     'dis/'
+        >>>     'dqcrules/'
+        >>>     'ebp/'
+        >>>     'elts/'
+        >>>     'entire/'
+        >>>     'meta/'
+        >>>     'stm/'
+        >>>     'us-gaap-2024.zip']
         """  # noqa: E501
 
         return self._run(
