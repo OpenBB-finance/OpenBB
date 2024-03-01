@@ -149,9 +149,6 @@ class OECDCPIFetcher(Fetcher[OECDCPIQueryParams, List[OECDCPIData]]):
             "mom": "PC",
         }[query.units]
         expendature = expendature_dict[query.expendature]
-        # transform = {"mom": "G1", "yoy": "GY", "na": "_Z", "none": ""}[
-        #     query.transformation
-        # ]
         seasonal_adjustment = "Y" if query.seasonal_adjustment else "N"
         country = "" if query.country == "all" else COUNTRY_TO_CODE_CPI[query.country]
         # For caching, include this in the key
