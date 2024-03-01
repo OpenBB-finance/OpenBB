@@ -3,7 +3,6 @@
 # pylint: disable =unused-argument
 
 import asyncio
-import warnings
 from typing import Any, Dict, List, Optional
 
 from openbb_core.provider.abstract.fetcher import Fetcher
@@ -13,8 +12,6 @@ from openbb_core.provider.standard_models.form_13FHR import (
 )
 from openbb_sec.utils import parse_13f
 from pydantic import Field
-
-_warn = warnings.warn
 
 
 class SecForm13FHRQueryParams(Form13FHRQueryParams):
@@ -73,9 +70,6 @@ class SecForm13FHRFetcher(Fetcher[SecForm13FHRQueryParams, List[SecForm13FHRData
 
         async def get_filing(url):
             """Get a single 13F-HR filing and parse it."""
-
-            # Broadcast the source URL for each filing.
-            _warn(f"Source: {url}")
 
             data = await parse_13f.parse_13f_hr(url)
 
