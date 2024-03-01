@@ -4,4 +4,4 @@ In this folder you can find the extensions that were created or are supported by
 
 ## Available Extensions
 
-See the full list of available providers in the [EXTENSIONS file](../EXTENSIONS.md)
+See the full list of available providers on the [documentation pages](https://docs.openbb.co/platform/extensions/)
