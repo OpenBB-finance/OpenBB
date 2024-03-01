@@ -82,15 +82,24 @@ class OECDCLIFetcher(Fetcher[OECDCLIQueryParams, List[OECDCLIData]]):
         query: OECDCLIQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
-        url = "https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_KEI@DF_KEI,4.0/..LI...."
+        country = "" if query.country == "all" else COUNTRY_TO_CODE_CLI[query.country]
+
+        # Note this is only available monthly from OECD
+        url = f"https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_KEI@DF_KEI,4.0/{country}.M.LI...."
+
+        query_dict = {
+            k: v
+            for k, v in query.__dict__.items()
+            if k not in ["start_date", "end_date"]
+        }
         data = helpers.get_possibly_cached_data(
-            url, function="economy_composite_leading_indicator"
+            url, function="economy_composite_leading_indicator", query_dict=query_dict
         )
 
         if query.country != "all":
-            data = data.query(f"REF_AREA == '{COUNTRY_TO_CODE_CLI[query.country]}'")
+            data = data.query(f"REF_AREA == '{country}'")
 
         # Filter down
         data = data.reset_index(drop=True)[["REF_AREA", "TIME_PERIOD", "VALUE"]].rename(
@@ -109,7 +118,7 @@ class OECDCLIFetcher(Fetcher[OECDCLIQueryParams, List[OECDCLIData]]):
     @staticmethod
     def transform_data(
         query: OECDCLIQueryParams,
-        data: Dict,
+        data: List[Dict],
         **kwargs: Any,
     ) -> List[OECDCLIData]:
         """Transform the data from the OECD endpoint."""
