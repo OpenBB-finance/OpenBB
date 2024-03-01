@@ -1,7 +1,7 @@
 from dataclasses import Field
 from typing import Any, Dict, List, Literal, Optional
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, model_validator
 
 
 class Example(BaseModel):
@@ -13,6 +13,21 @@ class Example(BaseModel):
     code: Optional[List[str]] = None
 
     model_config = ConfigDict(validate_assignment=True)
+
+    @model_validator(mode="before")
+    @classmethod
+    def validate_fields(cls, values) -> dict:
+        """Validate parameters and code based on scope."""
+        scope = values.get("scope", "")
+        parameters = values.get("parameters")
+        code = values.get("code")
+
+        if scope == "api" and not parameters:
+            raise ValueError("Parameters are required for API examples.")
+        if scope == "python" and not code:
+            raise ValueError("Code is required for Python examples.")
+
+        return values
 
     def to_python(
         self, func_name: str, func_params: Dict[str, Field], indentation: str = ""

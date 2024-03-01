@@ -908,7 +908,7 @@ class DocstringGenerator:
             description = description.replace("\n", f"\n{indentation+tab}")
             return description
 
-        docstring = summary.strip("\n").replace("\n    ",f"\n{indentation}")
+        docstring = summary.strip("\n").replace("\n    ", f"\n{indentation}")
         docstring += "\n\n"
         docstring += f"{indentation}Parameters\n"
         docstring += f"{indentation}----------\n"
@@ -1040,7 +1040,7 @@ no default."""
                     tab=tab,
                 )
         else:
-            doc = doc.replace("\n    ",f"\n{indentation}")
+            doc = doc.replace("\n    ", f"\n{indentation}")
 
         if doc and examples:
             doc += cls.append_examples(
