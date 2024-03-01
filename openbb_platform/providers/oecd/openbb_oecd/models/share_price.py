@@ -7,32 +7,37 @@ from datetime import date, timedelta
 from typing import Any, Dict, List, Literal, Optional, Union
 
 from openbb_core.provider.abstract.fetcher import Fetcher
-from openbb_core.provider.standard_models.short_term_interest_rate import (
-    STIRData,
-    STIRQueryParams,
+from openbb_core.provider.standard_models.share_price import (
+    SharePriceData,
+    SharePriceQueryParams,
 )
 from openbb_oecd.utils import helpers
-from openbb_oecd.utils.constants import CODE_TO_COUNTRY_IR, COUNTRY_TO_CODE_IR
+from openbb_oecd.utils.constants import CODE_TO_COUNTRY_SHARES, COUNTRY_TO_CODE_SHARES
 from pydantic import Field, field_validator
 
-countries = tuple(CODE_TO_COUNTRY_IR.values()) + ("all",)
+countries = tuple(CODE_TO_COUNTRY_SHARES.values()) + ("all",)
 CountriesLiteral = Literal[countries]  # type: ignore
 
 
-class OECDSTIRQueryParams(STIRQueryParams):
-    """OECD Short Term Interest Rate Query."""
+class OECDSharePriceQueryParams(SharePriceQueryParams):
+    """OECD Share Price Rate Query."""
 
     country: CountriesLiteral = Field(
-        description="Country to get interest rate for.", default="united_states"
+        description="Country to get share price for.", default="united_states"
     )
 
     frequency: Literal["monthly", "quarterly", "annual"] = Field(
-        description="Frequency to get interest rate for for.", default="monthly"
+        description="Frequency to get share price for for.", default="monthly"
+    )
+
+    units: Literal["yoy", "pop"] = Field(
+        description="Units to get share price for.  Either change over period (pop) or change over year (yoy)",
+        default="yoy",
     )
 
 
-class OECDSTIRData(STIRData):
-    """OECD Short Term Interest Rate Data."""
+class OECDSharePriceData(SharePriceData):
+    """OECD Share Price Rate Data."""
 
     @field_validator("date", mode="before")
     @classmethod
@@ -68,11 +73,13 @@ class OECDSTIRData(STIRData):
         return in_date
 
 
-class OECDSTIRFetcher(Fetcher[OECDSTIRQueryParams, List[OECDSTIRData]]):
+class OECDSharePriceFetcher(
+    Fetcher[OECDSharePriceQueryParams, List[OECDSharePriceData]]
+):
     """Transform the query, extract and transform the data from the OECD endpoints."""
 
     @staticmethod
-    def transform_query(params: Dict[str, Any]) -> OECDSTIRQueryParams:
+    def transform_query(params: Dict[str, Any]) -> OECDSharePriceQueryParams:
         """Transform the query."""
         transformed_params = params.copy()
         if transformed_params["start_date"] is None:
@@ -80,28 +87,31 @@ class OECDSTIRFetcher(Fetcher[OECDSTIRQueryParams, List[OECDSTIRData]]):
         if transformed_params["end_date"] is None:
             transformed_params["end_date"] = date(date.today().year, 12, 31)
 
-        return OECDSTIRQueryParams(**transformed_params)
+        return OECDSharePriceQueryParams(**transformed_params)
 
     @staticmethod
     def extract_data(
-        query: OECDSTIRQueryParams,  # pylint: disable=W0613
+        query: OECDSharePriceQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
     ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
         frequency = query.frequency[0].upper()
-        country = "" if query.country == "all" else COUNTRY_TO_CODE_IR[query.country]
+        country = (
+            "" if query.country == "all" else COUNTRY_TO_CODE_SHARES[query.country]
+        )
+        transform = {"pop": "G1", "yoy": "GY"}[query.units]
         query_dict = {
             k: v
             for k, v in query.__dict__.items()
             if k not in ["start_date", "end_date"]
         }
 
-        url = f"https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_KEI@DF_KEI,4.0/{country}.{frequency}.IR3TIB...."
+        url = f"https://sdmx.oecd.org/public/rest/data/OECD.SDD.STES,DSD_KEI@DF_KEI,4.0/{country}.{frequency}.SHARE....{transform}"
         data = helpers.get_possibly_cached_data(
-            url, function="economy_short_term_interest_rate", query_dict=query_dict
+            url, function="economy_share_price", query_dict=query_dict
         )
-        url_query = f"FREQ=='{frequency}'"
+        url_query = f"FREQ=='{frequency}' & TRANSFORMATION=='{transform}'"
         url_query = url_query + f" & REF_AREA=='{country}'" if country else url_query
         # Filter down
         data = (
@@ -111,7 +121,7 @@ class OECDSTIRFetcher(Fetcher[OECDSTIRQueryParams, List[OECDSTIRData]]):
                 columns={"REF_AREA": "country", "TIME_PERIOD": "date", "VALUE": "value"}
             )
         )
-        data["country"] = data["country"].map(CODE_TO_COUNTRY_IR)
+        data["country"] = data["country"].map(CODE_TO_COUNTRY_SHARES)
         data = data.fillna("N/A").replace("N/A", None)
         data["date"] = data["date"].apply(helpers.oecd_date_to_python_date)
         data = data[
@@ -122,7 +132,7 @@ class OECDSTIRFetcher(Fetcher[OECDSTIRQueryParams, List[OECDSTIRData]]):
 
     @staticmethod
     def transform_data(
-        query: OECDSTIRQueryParams, data: List[Dict], **kwargs: Any
-    ) -> List[OECDSTIRData]:
+        query: OECDSharePriceQueryParams, data: List[Dict], **kwargs: Any
+    ) -> List[OECDSharePriceData]:
         """Transform the data from the OECD endpoint."""
-        return [OECDSTIRData.model_validate(d) for d in data]
+        return [OECDSharePriceData.model_validate(d) for d in data]

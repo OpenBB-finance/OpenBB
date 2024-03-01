@@ -1,4 +1,4 @@
-"""OECD Long Term Interest Rate Rate Data."""
+"""OECD Long Term Interest Rate Data."""
 
 # pylint: disable=unused-argument
 
@@ -23,7 +23,7 @@ class OECDLTIRQueryParams(LTIRQueryParams):
     """OECD Short Term Interest Rate Query."""
 
     country: CountriesLiteral = Field(
-        description="Country to get GDP for.", default="united_states"
+        description="Country to get interest rate for.", default="united_states"
     )
 
     frequency: Literal["monthly", "quarterly", "annual"] = Field(

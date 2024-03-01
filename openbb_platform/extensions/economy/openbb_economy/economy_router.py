@@ -185,6 +185,30 @@ async def composite_leading_indicator(
 
 
 @router.command(
+    model="SharePrice",
+    exclude_auto_examples=True,
+    examples=[
+        'obb.economy.share_price(country="all").to_df()',
+    ],
+)
+async def share_price(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Share price indices are calculated from the prices of common shares of companies
+    traded on national or foreign stock exchanges. They are usually determined by the
+    stock exchange, using the closing daily values for the monthly data, and normally
+    expressed as simple arithmetic averages of the daily data. A share price index
+    measures how the value of the stocks in the index is changing, a share return index
+    tells the investor what their “return” is, meaning how much money they would make as
+    a result of investing in that basket of shares.
+    """
+    return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
     model="STIR",
     exclude_auto_examples=True,
     examples=[
