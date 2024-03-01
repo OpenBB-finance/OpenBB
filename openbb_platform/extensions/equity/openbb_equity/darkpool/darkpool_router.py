@@ -16,7 +16,7 @@ router = Router(prefix="/darkpool")
 
 @router.command(
     model="OTCAggregate",
-    api_examples=[
+    examples=[
         Example(
             description="Get OTC data for a symbol",
             parameters={"symbol": "AAPL"},

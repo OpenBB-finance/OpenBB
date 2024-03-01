@@ -16,7 +16,7 @@ router = Router(prefix="/corporate")
 
 @router.command(
     model="ICEBofA",
-    api_examples=[Example(parameters={"index_type": "yield_to_worst"})],
+    examples=[Example(parameters={"index_type": "yield_to_worst"})],
 )
 async def ice_bofa(
     cc: CommandContext,
@@ -37,7 +37,7 @@ async def ice_bofa(
 
 @router.command(
     model="MoodyCorporateBondIndex",
-    api_examples=[Example(parameters={"index_type": "baa"})],
+    examples=[Example(parameters={"index_type": "baa"})],
 )
 async def moody(
     cc: CommandContext,
@@ -57,7 +57,7 @@ async def moody(
 
 @router.command(
     model="HighQualityMarketCorporateBond",
-    api_examples=[Example(parameters={"yield_curve": "par"})],
+    examples=[Example(parameters={"yield_curve": "par"})],
 )
 async def hqm(
     cc: CommandContext,
@@ -77,7 +77,7 @@ async def hqm(
 
 @router.command(
     model="SpotRate",
-    api_examples=[Example(parameters={"maturity": [10, 20, 30, 50]})],
+    examples=[Example(parameters={"maturity": [10, 20, 30, 50]})],
 )
 async def spot_rates(
     cc: CommandContext,
@@ -97,7 +97,7 @@ async def spot_rates(
 
 @router.command(
     model="CommercialPaper",
-    api_examples=[Example(parameters={"maturity": "15d"})],
+    examples=[Example(parameters={"maturity": "15d"})],
 )
 async def commercial_paper(
     cc: CommandContext,
@@ -115,7 +115,7 @@ async def commercial_paper(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="BondPrices", api_examples=[Example(parameters={})])
+@router.command(model="BondPrices", examples=[Example(parameters={})])
 async def bond_prices(
     cc: CommandContext,
     provider_choices: ProviderChoices,

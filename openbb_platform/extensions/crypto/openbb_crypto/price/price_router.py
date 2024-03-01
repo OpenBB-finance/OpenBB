@@ -16,14 +16,14 @@ router = Router(prefix="/price")
 # pylint: disable=unused-argument,line-too-long
 @router.command(
     model="CryptoHistorical",
-    api_examples=[
+    examples=[
         Example(parameters={"symbol": "BTCUSD"}),
         Example(
             parameters={
                 "symbol": "BTCUSD",
                 "start_date": "2024-01-01",
                 "end_date": "2024-01-31",
-            }
+            },
         ),
         Example(
             parameters={
@@ -32,8 +32,8 @@ router = Router(prefix="/price")
                 "interval": "1mo",
                 "start_date": "2024-01-01",
                 "end_date": "2024-12-31",
-            }
-        ),  # noqa: E501
+            },
+        ),
         Example(
             parameters={
                 "symbol": "BTCUSD,ETH-USD",
@@ -41,14 +41,14 @@ router = Router(prefix="/price")
                 "interval": "1d",
                 "start_date": "2024-01-01",
                 "end_date": "2024-01-31",
-            }
-        ),  # noqa: E501
+            },
+        ),
         Example(
             parameters={
                 "symbol": "BTCUSD,ETH-USD",
                 "start_date": "2024-01-01",
                 "end_date": "2024-01-31",
-            }
+            },
         ),
     ],
 )

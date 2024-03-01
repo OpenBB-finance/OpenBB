@@ -15,7 +15,7 @@ router = Router(prefix="")
 
 @router.command(
     model="WorldNews",
-    api_examples=[
+    examples=[
         Example(parameters={"limit": 2500}),
         Example(
             description="Get news on the specified dates.",
@@ -51,7 +51,7 @@ async def world(
 
 @router.command(
     model="CompanyNews",
-    api_examples=[
+    examples=[
         Example(parameters={"limit": 2500}),
         Example(
             description="Get news on the specified dates.",

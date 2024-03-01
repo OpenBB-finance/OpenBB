@@ -19,7 +19,7 @@ router.include_router(gdp_router)
 
 @router.command(
     model="EconomicCalendar",
-    api_examples=[
+    examples=[
         Example(
             parameters={
                 "provider": "fmp",
@@ -45,7 +45,7 @@ async def calendar(
 
 @router.command(
     model="ConsumerPriceIndex",
-    api_examples=[
+    examples=[
         Example(parameters={"country": "japan,china,turkey"}),
         Example(
             description="Use the `units` parameter to define the reference period for the change in values.",
@@ -68,7 +68,7 @@ async def cpi(
 
 @router.command(
     model="RiskPremium",
-    api_examples=[Example(parameters={})],
+    examples=[Example(parameters={})],
 )
 async def risk_premium(
     cc: CommandContext,
@@ -82,7 +82,7 @@ async def risk_premium(
 
 @router.command(
     model="BalanceOfPayments",
-    api_examples=[
+    examples=[
         Example(parameters={"report_type": "summary"}),
         Example(
             description="The `country` parameter will override the `report_type`.",
@@ -100,7 +100,7 @@ async def balance_of_payments(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="FredSearch", api_examples=[Example(parameters={})])
+@router.command(model="FredSearch", examples=[Example(parameters={})])
 async def fred_search(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -117,7 +117,7 @@ async def fred_search(
 
 @router.command(
     model="FredSeries",
-    api_examples=[
+    examples=[
         Example(parameters={"series_id": "NFCI"}),
         Example(
             description="Multiple series can be passed in as a list.",
@@ -141,7 +141,7 @@ async def fred_series(
 
 @router.command(
     model="MoneyMeasures",
-    api_examples=[Example(parameters={"adjusted": False})],
+    examples=[Example(parameters={"adjusted": False})],
 )
 async def money_measures(
     cc: CommandContext,
@@ -155,7 +155,7 @@ async def money_measures(
 
 @router.command(
     model="Unemployment",
-    api_examples=[
+    examples=[
         Example(parameters={"country": "all", "frequency": "quarterly"}),
         Example(
             description="Demographics for the statistics are selected with the `age` and `sex` parameters.",
@@ -175,7 +175,7 @@ async def unemployment(
 
 @router.command(
     model="CLI",
-    api_examples=[Example(parameters={"country": "all"})],
+    examples=[Example(parameters={"country": "all"})],
 )
 async def composite_leading_indicator(
     cc: CommandContext,
@@ -192,7 +192,7 @@ async def composite_leading_indicator(
 
 @router.command(
     model="STIR",
-    api_examples=[Example(parameters={"country": "all", "frequency": "quarterly"})],
+    examples=[Example(parameters={"country": "all", "frequency": "quarterly"})],
 )
 async def short_term_interest_rate(
     cc: CommandContext,
@@ -212,7 +212,7 @@ async def short_term_interest_rate(
 
 @router.command(
     model="LTIR",
-    api_examples=[Example(parameters={"country": "all", "frequency": "quarterly"})],
+    examples=[Example(parameters={"country": "all", "frequency": "quarterly"})],
 )
 async def long_term_interest_rate(
     cc: CommandContext,
@@ -235,7 +235,7 @@ async def long_term_interest_rate(
 
 @router.command(
     model="FredRegional",
-    api_examples=[
+    examples=[
         Example(
             description="With no date, the most recent report is returned.",
             parameters={"series_id": "NYICLAIMS"},

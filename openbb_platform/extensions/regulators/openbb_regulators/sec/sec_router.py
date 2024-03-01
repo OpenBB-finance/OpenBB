@@ -15,7 +15,7 @@ router = Router(prefix="/sec")
 
 @router.command(
     model="CikMap",
-    api_examples=[Example(parameters={"symbol": "MSFT"})],
+    examples=[Example(parameters={"symbol": "MSFT"})],
 )
 async def cik_map(
     cc: CommandContext,
@@ -29,7 +29,7 @@ async def cik_map(
 
 @router.command(
     model="InstitutionsSearch",
-    api_examples=[Example(parameters={"query": "blackstone real estate"})],
+    examples=[Example(parameters={"query": "blackstone real estate"})],
 )
 async def institutions_search(
     cc: CommandContext,
@@ -43,25 +43,30 @@ async def institutions_search(
 
 @router.command(
     model="SchemaFiles",
-    api_examples=[Example(parameters={})],
-    python_examples=[
-        "data = obb.regulators.sec.schema_files()",
-        "data.files[0]",
-        "    https://xbrl.fasb.org/us-gaap/",
-        "#### The directory structure can be navigated by constructing a URL from the 'results' list. ####",
-        "url = data.files[0]+data.files[-1]",
-        "#### The URL base will always be the 0 position in the list, feed  the URL back in as a parameter. ####",
-        "obb.regulators.sec.schema_files(url=url).results.files",
-        "    ['https://xbrl.fasb.org/us-gaap/2024/'",
-        "    'USGAAP2024FileList.xml'",
-        "    'dis/'",
-        "    'dqcrules/'",
-        "    'ebp/'",
-        "    'elts/'",
-        "    'entire/'",
-        "    'meta/'",
-        "    'stm/'",
-        "    'us-gaap-2024.zip']",
+    examples=[
+        Example(parameters={}),
+        # Example(
+        #     scope="python",
+        #     code=[
+        #         "data = obb.regulators.sec.schema_files()",
+        #         "data.files[0]",
+        #         "    https://xbrl.fasb.org/us-gaap/",
+        #         "#### The directory structure can be navigated by constructing a URL from the 'results' list. ####",
+        #         "url = data.files[0]+data.files[-1]",
+        #         "#### The URL base will always be the 0 position in the list, feed  the URL back in as a parameter. ####",
+        #         "obb.regulators.sec.schema_files(url=url).results.files",
+        #         "    ['https://xbrl.fasb.org/us-gaap/2024/'",
+        #         "    'USGAAP2024FileList.xml'",
+        #         "    'dis/'",
+        #         "    'dqcrules/'",
+        #         "    'ebp/'",
+        #         "    'elts/'",
+        #         "    'entire/'",
+        #         "    'meta/'",
+        #         "    'stm/'",
+        #         "    'us-gaap-2024.zip']",
+        #     ],
+        # ),
     ],
 )
 async def schema_files(
@@ -76,7 +81,7 @@ async def schema_files(
 
 @router.command(
     model="SymbolMap",
-    api_examples=[Example(parameters={"cik": "0000789019"})],
+    examples=[Example(parameters={"cik": "0000789019"})],
 )
 async def symbol_map(
     cc: CommandContext,
@@ -90,7 +95,7 @@ async def symbol_map(
 
 @router.command(
     model="RssLitigation",
-    api_examples=[Example(parameters={})],
+    examples=[Example(parameters={})],
 )
 async def rss_litigation(
     cc: CommandContext,
@@ -104,7 +109,7 @@ async def rss_litigation(
 
 @router.command(
     model="SicSearch",
-    api_examples=[Example(parameters={"query": "real estate investment trusts"})],
+    examples=[Example(parameters={"query": "real estate investment trusts"})],
 )
 async def sic_search(
     cc: CommandContext,

@@ -63,8 +63,8 @@ class ROUTER_regulators_sec(Container):
         cik : Optional[Union[int, str]]
             Central Index Key (CIK) for the requested entity.
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.regulators.sec.cik_map(symbol='MSFT')
         """  # noqa: E501
@@ -134,8 +134,8 @@ class ROUTER_regulators_sec(Container):
         cik : Optional[Union[int, str]]
             Central Index Key (CIK) (provider: sec)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.regulators.sec.institutions_search(query='blackstone real estate')
         """  # noqa: E501
@@ -199,8 +199,8 @@ class ROUTER_regulators_sec(Container):
         link : Optional[str]
             URL to the release. (provider: sec)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.regulators.sec.rss_litigation()
         """  # noqa: E501
@@ -268,27 +268,10 @@ class ROUTER_regulators_sec(Container):
         files : Optional[List[str]]
             Dictionary of URLs to SEC Schema Files (provider: sec)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.regulators.sec.schema_files()
-        >>> data = obb.regulators.sec.schema_files()
-        >>> data.files[0]
-        >>>     https://xbrl.fasb.org/us-gaap/
-        >>> #### The directory structure can be navigated by constructing a URL from the 'results' list. ####
-        >>> url = data.files[0]+data.files[-1]
-        >>> #### The URL base will always be the 0 position in the list, feed  the URL back in as a parameter. ####
-        >>> obb.regulators.sec.schema_files(url=url).results.files
-        >>>     ['https://xbrl.fasb.org/us-gaap/2024/'
-        >>>     'USGAAP2024FileList.xml'
-        >>>     'dis/'
-        >>>     'dqcrules/'
-        >>>     'ebp/'
-        >>>     'elts/'
-        >>>     'entire/'
-        >>>     'meta/'
-        >>>     'stm/'
-        >>>     'us-gaap-2024.zip']
         """  # noqa: E501
 
         return self._run(
@@ -359,8 +342,8 @@ class ROUTER_regulators_sec(Container):
         office : Optional[str]
             Reporting office within the Corporate Finance Office (provider: sec)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.regulators.sec.sic_search(query='real estate investment trusts')
         """  # noqa: E501
@@ -429,8 +412,8 @@ class ROUTER_regulators_sec(Container):
         symbol : Optional[str]
             Symbol representing the entity requested in the data. (provider: sec)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
         >>> obb.regulators.sec.symbol_map(cik='0000789019')
         """  # noqa: E501

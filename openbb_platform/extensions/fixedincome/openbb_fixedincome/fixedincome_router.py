@@ -25,7 +25,7 @@ router.include_router(corporate_router)
 
 @router.command(
     model="SOFR",
-    api_examples=[Example(parameters={"period": "overnight"})],
+    examples=[Example(parameters={"period": "overnight"})],
 )
 async def sofr(
     cc: CommandContext,

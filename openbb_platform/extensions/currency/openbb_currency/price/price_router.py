@@ -16,7 +16,7 @@ router = Router(prefix="/price")
 # pylint: disable=unused-argument
 @router.command(
     model="CurrencyHistorical",
-    api_examples=[
+    examples=[
         Example(parameters={"symbol": "EURUSD"}),
         Example(
             description="Filter historical data with specific start and end date.",

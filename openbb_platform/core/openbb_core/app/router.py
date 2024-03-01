@@ -238,10 +238,7 @@ class Router:
             kwargs["response_model_exclude_unset"] = True
             kwargs["openapi_extra"] = kwargs.get("openapi_extra", {})
             kwargs["openapi_extra"]["model"] = model
-            kwargs["openapi_extra"]["api_examples"] = kwargs.pop("api_examples", None)
-            kwargs["openapi_extra"]["python_examples"] = kwargs.pop(
-                "python_examples", None
-            )
+            kwargs["openapi_extra"]["examples"] = kwargs.pop("examples", None)
             kwargs["operation_id"] = kwargs.get(
                 "operation_id", SignatureInspector.get_operation_id(func)
             )
@@ -478,7 +475,7 @@ class SignatureInspector:
         if doc:
             description = doc.split("    Parameters\n    ----------")[0]
             description = description.split("    Returns\n    -------")[0]
-            description = description.split("    Example\n    -------")[0]
+            description = description.split("    Examples\n    -------")[0]
             description = "\n".join([line.strip() for line in description.split("\n")])
 
             return description

@@ -16,7 +16,7 @@ router = Router(prefix="/price")
 
 @router.command(
     model="IndexHistorical",
-    api_examples=[
+    examples=[
         Example(parameters={"symbol": "^GSPC", "provider": "fmp"}),
         Example(
             description="Not all providers have the same symbols.",

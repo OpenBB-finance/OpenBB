@@ -18,7 +18,7 @@ router.include_router(price_router)
 # pylint: disable=unused-argument
 @router.command(
     model="CryptoSearch",
-    api_examples=[
+    examples=[
         Example(parameters={}),
         Example(parameters={"symbol": "BTCUSD"}),
         Example(parameters={"symbol": "ETH-USD"}),

@@ -35,7 +35,7 @@ router.include_router(shorts_router)
 
 @router.command(
     model="EquitySearch",
-    api_examples=[
+    examples=[
         Example(parameters={"query": "AAPL", "is_symbol": False, "use_cache": True})
     ],
 )
@@ -49,7 +49,7 @@ async def search(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EquityScreener", api_examples=[Example(parameters={})])
+@router.command(model="EquityScreener", examples=[Example(parameters={})])
 async def screener(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -61,9 +61,7 @@ async def screener(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(
-    model="EquityInfo", api_examples=[Example(parameters={"symbol": "AAPL"})]
-)
+@router.command(model="EquityInfo", examples=[Example(parameters={"symbol": "AAPL"})])
 async def profile(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -74,7 +72,7 @@ async def profile(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="MarketSnapshots", api_examples=[Example(parameters={})])
+@router.command(model="MarketSnapshots", examples=[Example(parameters={})])
 async def market_snapshots(
     cc: CommandContext,
     provider_choices: ProviderChoices,

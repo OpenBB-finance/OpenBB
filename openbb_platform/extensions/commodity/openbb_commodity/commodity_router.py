@@ -16,7 +16,7 @@ router = Router(prefix="")
 # pylint: disable=unused-argument
 @router.command(
     model="LbmaFixing",
-    api_examples=[Example(parameters={"asset": "gold"})],
+    examples=[Example(parameters={"asset": "gold"})],
 )
 async def lbma_fixing(
     cc: CommandContext,

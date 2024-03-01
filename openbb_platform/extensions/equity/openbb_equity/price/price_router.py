@@ -14,9 +14,7 @@ router = Router(prefix="/price")
 # pylint: disable=unused-argument
 
 
-@router.command(
-    model="EquityQuote", api_examples=[Example(parameters={"symbol": "AAPL"})]
-)
+@router.command(model="EquityQuote", examples=[Example(parameters={"symbol": "AAPL"})])
 async def quote(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -27,9 +25,7 @@ async def quote(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(
-    model="EquityNBBO", api_examples=[Example(parameters={"symbol": "AAPL"})]
-)
+@router.command(model="EquityNBBO", examples=[Example(parameters={"symbol": "AAPL"})])
 async def nbbo(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -42,7 +38,7 @@ async def nbbo(
 
 @router.command(
     model="EquityHistorical",
-    api_examples=[Example(parameters={"symbol": "AAPL", "interval": "1d"})],
+    examples=[Example(parameters={"symbol": "AAPL", "interval": "1d"})],
 )
 async def historical(
     cc: CommandContext,
@@ -55,7 +51,7 @@ async def historical(
 
 
 @router.command(
-    model="PricePerformance", api_examples=[Example(parameters={"symbol": "AAPL"})]
+    model="PricePerformance", examples=[Example(parameters={"symbol": "AAPL"})]
 )
 async def performance(
     cc: CommandContext,

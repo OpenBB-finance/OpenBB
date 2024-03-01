@@ -19,7 +19,7 @@ router.include_router(discovery_router)
 
 @router.command(
     model="EtfSearch",
-    api_examples=[
+    examples=[
         Example(
             description="An empty query returns the full list of ETFs from the provider.",
             parameters={},
@@ -46,7 +46,7 @@ async def search(
 @router.command(
     model="EtfHistorical",
     operation_id="etf_historical",
-    api_examples=[
+    examples=[
         Example(parameters={"symbol": "SPY"}),
         Example(parameters={"symbol": "SPY", "provider": "yfinance"}),
         Example(
@@ -67,7 +67,7 @@ async def historical(
 
 @router.command(
     model="EtfInfo",
-    api_examples=[
+    examples=[
         Example(parameters={"symbol": "SPY", "provider": "fmp"}),
         Example(
             description="This function accepts multiple tickers.",
@@ -87,7 +87,7 @@ async def info(
 
 @router.command(
     model="EtfSectors",
-    api_examples=[Example(parameters={"symbol": "SPY", "provider": "fmp"})],
+    examples=[Example(parameters={"symbol": "SPY", "provider": "fmp"})],
 )
 async def sectors(
     cc: CommandContext,
@@ -101,7 +101,7 @@ async def sectors(
 
 @router.command(
     model="EtfCountries",
-    api_examples=[Example(parameters={"symbol": "VT", "provider": "fmp"})],
+    examples=[Example(parameters={"symbol": "VT", "provider": "fmp"})],
 )
 async def countries(
     cc: CommandContext,
@@ -115,9 +115,7 @@ async def countries(
 
 @router.command(
     model="PricePerformance",
-    api_examples=[
-        Example(parameters={"symbol": "SPY,QQQ,IWM,DJIA", "provider": "fmp"})
-    ],
+    examples=[Example(parameters={"symbol": "SPY,QQQ,IWM,DJIA", "provider": "fmp"})],
 )
 async def price_performance(
     cc: CommandContext,
@@ -131,7 +129,7 @@ async def price_performance(
 
 @router.command(
     model="EtfHoldings",
-    api_examples=[
+    examples=[
         Example(parameters={"symbol": "XLK", "provider": "fmp"}),
         Example(
             description="Including a date (FMP, SEC) will return the holdings as per NPORT-P filings.",
@@ -155,7 +153,7 @@ async def holdings(
 
 @router.command(
     model="EtfHoldingsDate",
-    api_examples=[Example(parameters={"symbol": "XLK", "provider": "fmp"})],
+    examples=[Example(parameters={"symbol": "XLK", "provider": "fmp"})],
 )
 async def holdings_date(
     cc: CommandContext,
@@ -169,7 +167,7 @@ async def holdings_date(
 
 @router.command(
     model="EtfHoldingsPerformance",
-    api_examples=[Example(parameters={"symbol": "XLK", "provider": "fmp"})],
+    examples=[Example(parameters={"symbol": "XLK", "provider": "fmp"})],
 )
 async def holdings_performance(
     cc: CommandContext,
@@ -183,7 +181,7 @@ async def holdings_performance(
 
 @router.command(
     model="EtfEquityExposure",
-    api_examples=[
+    examples=[
         Example(parameters={"symbol": "MSFT", "provider": "fmp"}),
         Example(
             description="This function accepts multiple tickers.",

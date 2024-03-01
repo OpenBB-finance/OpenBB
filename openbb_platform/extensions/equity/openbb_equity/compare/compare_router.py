@@ -15,7 +15,7 @@ router = Router(prefix="/compare")
 
 @router.command(
     model="EquityPeers",
-    api_examples=[Example(parameters={"symbol": "AAPL"})],
+    examples=[Example(parameters={"symbol": "AAPL"})],
 )
 async def peers(
     cc: CommandContext,
@@ -32,7 +32,7 @@ async def peers(
 
 @router.command(
     model="CompareGroups",
-    api_examples=[
+    examples=[
         Example(
             description="Group by sector and analyze valuation.",
             parameters={"group": "sector", "metric": "valuation"},

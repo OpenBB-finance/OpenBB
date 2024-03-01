@@ -16,7 +16,7 @@ router = Router(prefix="/fundamental")
 
 @router.command(
     model="EquityValuationMultiples",
-    api_examples=[Example(parameters={"symbol": "AAPL"})],
+    examples=[Example(parameters={"symbol": "AAPL"})],
 )
 async def multiples(
     cc: CommandContext,
@@ -30,9 +30,7 @@ async def multiples(
 
 @router.command(
     model="BalanceSheet",
-    api_examples=[
-        Example(parameters={"symbol": "AAPL", "period": "annual", "limit": 5})
-    ],
+    examples=[Example(parameters={"symbol": "AAPL", "period": "annual", "limit": 5})],
 )
 async def balance(
     cc: CommandContext,
@@ -46,7 +44,7 @@ async def balance(
 
 @router.command(
     model="BalanceSheetGrowth",
-    api_examples=[Example(parameters={"symbol": "AAPL", "limit": 10})],
+    examples=[Example(parameters={"symbol": "AAPL", "limit": 10})],
 )
 async def balance_growth(
     cc: CommandContext,
@@ -60,9 +58,7 @@ async def balance_growth(
 
 @router.command(
     model="CashFlowStatement",
-    api_examples=[
-        Example(parameters={"symbol": "AAPL", "period": "annual", "limit": 5})
-    ],
+    examples=[Example(parameters={"symbol": "AAPL", "period": "annual", "limit": 5})],
 )
 async def cash(
     cc: CommandContext,
@@ -76,7 +72,7 @@ async def cash(
 
 @router.command(
     model="ReportedFinancials",
-    api_examples=[
+    examples=[
         Example(
             parameters={
                 "symbol": "AAPL",
@@ -107,7 +103,7 @@ async def reported_financials(
 
 @router.command(
     model="CashFlowStatementGrowth",
-    api_examples=[Example(parameters={"symbol": "AAPL", "limit": 10})],
+    examples=[Example(parameters={"symbol": "AAPL", "limit": 10})],
 )
 async def cash_growth(
     cc: CommandContext,
@@ -120,7 +116,7 @@ async def cash_growth(
 
 
 @router.command(
-    model="HistoricalDividends", api_examples=[Example(parameters={"symbol": "AAPL"})]
+    model="HistoricalDividends", examples=[Example(parameters={"symbol": "AAPL"})]
 )
 async def dividends(
     cc: CommandContext,
@@ -133,7 +129,7 @@ async def dividends(
 
 
 @router.command(
-    model="HistoricalEps", api_examples=[Example(parameters={"symbol": "AAPL"})]
+    model="HistoricalEps", examples=[Example(parameters={"symbol": "AAPL"})]
 )
 async def historical_eps(
     cc: CommandContext,
@@ -146,7 +142,7 @@ async def historical_eps(
 
 
 @router.command(
-    model="HistoricalEmployees", api_examples=[Example(parameters={"symbol": "AAPL"})]
+    model="HistoricalEmployees", examples=[Example(parameters={"symbol": "AAPL"})]
 )
 async def employee_count(
     cc: CommandContext,
@@ -160,7 +156,7 @@ async def employee_count(
 
 @router.command(
     model="SearchAttributes",
-    api_examples=[Example(parameters={"query": "ebitda"})],
+    examples=[Example(parameters={"query": "ebitda"})],
 )
 async def search_attributes(
     cc: CommandContext,
@@ -174,7 +170,7 @@ async def search_attributes(
 
 @router.command(
     model="LatestAttributes",
-    api_examples=[Example(parameters={"tag": "ceo"})],
+    examples=[Example(parameters={"tag": "ceo"})],
 )
 async def latest_attributes(
     cc: CommandContext,
@@ -188,7 +184,7 @@ async def latest_attributes(
 
 @router.command(
     model="HistoricalAttributes",
-    api_examples=[Example(parameters={"tag": "ebitda"})],
+    examples=[Example(parameters={"tag": "ebitda"})],
 )
 async def historical_attributes(
     cc: CommandContext,
@@ -202,9 +198,7 @@ async def historical_attributes(
 
 @router.command(
     model="IncomeStatement",
-    api_examples=[
-        Example(parameters={"symbol": "AAPL", "period": "annual", "limit": 5})
-    ],
+    examples=[Example(parameters={"symbol": "AAPL", "period": "annual", "limit": 5})],
 )
 async def income(
     cc: CommandContext,
@@ -218,9 +212,7 @@ async def income(
 
 @router.command(
     model="IncomeStatementGrowth",
-    api_examples=[
-        Example(parameters={"symbol": "AAPL", "limit": 10, "period": "annual"})
-    ],
+    examples=[Example(parameters={"symbol": "AAPL", "limit": 10, "period": "annual"})],
 )
 async def income_growth(
     cc: CommandContext,
@@ -234,9 +226,7 @@ async def income_growth(
 
 @router.command(
     model="KeyMetrics",
-    api_examples=[
-        Example(parameters={"symbol": "AAPL", "period": "annual", "limit": 100})
-    ],
+    examples=[Example(parameters={"symbol": "AAPL", "period": "annual", "limit": 100})],
 )
 async def metrics(
     cc: CommandContext,
@@ -249,7 +239,7 @@ async def metrics(
 
 
 @router.command(
-    model="KeyExecutives", api_examples=[Example(parameters={"symbol": "AAPL"})]
+    model="KeyExecutives", examples=[Example(parameters={"symbol": "AAPL"})]
 )
 async def management(
     cc: CommandContext,
@@ -262,7 +252,7 @@ async def management(
 
 
 @router.command(
-    model="ExecutiveCompensation", api_examples=[Example(parameters={"symbol": "AAPL"})]
+    model="ExecutiveCompensation", examples=[Example(parameters={"symbol": "AAPL"})]
 )
 async def management_compensation(
     cc: CommandContext,
@@ -282,7 +272,7 @@ async def management_compensation(
         since=(4, 1),
         expected_removal=(4, 3),
     ),
-    api_examples=[Example(parameters={"symbol": "AAPL"})],
+    examples=[Example(parameters={"symbol": "AAPL"})],
 )
 async def overview(
     cc: CommandContext,
@@ -296,9 +286,7 @@ async def overview(
 
 @router.command(
     model="FinancialRatios",
-    api_examples=[
-        Example(parameters={"symbol": "AAPL", "period": "annual", "limit": 12})
-    ],
+    examples=[Example(parameters={"symbol": "AAPL", "period": "annual", "limit": 12})],
 )
 async def ratios(
     cc: CommandContext,
@@ -312,7 +300,7 @@ async def ratios(
 
 @router.command(
     model="RevenueGeographic",
-    api_examples=[
+    examples=[
         Example(parameters={"symbol": "AAPL", "period": "annual", "structure": "flat"})
     ],
 )
@@ -328,7 +316,7 @@ async def revenue_per_geography(
 
 @router.command(
     model="RevenueBusinessLine",
-    api_examples=[
+    examples=[
         Example(parameters={"symbol": "AAPL", "period": "annual", "structure": "flat"})
     ],
 )
@@ -342,9 +330,7 @@ async def revenue_per_segment(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(
-    model="CompanyFilings", api_examples=[Example(parameters={"limit": 100})]
-)
+@router.command(model="CompanyFilings", examples=[Example(parameters={"limit": 100})])
 async def filings(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -361,7 +347,7 @@ async def filings(
 
 
 @router.command(
-    model="HistoricalSplits", api_examples=[Example(parameters={"symbol": "AAPL"})]
+    model="HistoricalSplits", examples=[Example(parameters={"symbol": "AAPL"})]
 )
 async def historical_splits(
     cc: CommandContext,
@@ -375,7 +361,7 @@ async def historical_splits(
 
 @router.command(
     model="EarningsCallTranscript",
-    api_examples=[Example(parameters={"symbol": "AAPL", "year": 2020})],
+    examples=[Example(parameters={"symbol": "AAPL", "year": 2020})],
 )
 async def transcript(
     cc: CommandContext,
@@ -389,7 +375,7 @@ async def transcript(
 
 @router.command(
     model="TrailingDividendYield",
-    api_examples=[Example(parameters={"symbol": "AAPL", "limit": 252})],
+    examples=[Example(parameters={"symbol": "AAPL", "limit": 252})],
 )
 async def trailing_dividend_yield(
     cc: CommandContext,

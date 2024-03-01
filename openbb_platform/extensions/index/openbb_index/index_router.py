@@ -26,7 +26,7 @@ router.include_router(price_router)
         since=(4, 1),
         expected_removal=(4, 3),
     ),
-    api_examples=[Example(parameters={"symbol": "SPX"})],
+    examples=[Example(parameters={"symbol": "SPX"})],
 )
 async def market(
     cc: CommandContext,
@@ -40,7 +40,7 @@ async def market(
 
 @router.command(
     model="IndexConstituents",
-    api_examples=[
+    examples=[
         Example(parameters={"symbol": "dowjones", "provider": "fmp"}),
         Example(
             description="Providers other than FMP will use the ticker symbol.",
@@ -60,7 +60,7 @@ async def constituents(
 
 @router.command(
     model="IndexSnapshots",
-    api_examples=[Example(parameters={"region": "us", "provider": "cboe"})],
+    examples=[Example(parameters={"region": "us", "provider": "cboe"})],
 )
 async def snapshots(
     cc: CommandContext,
@@ -74,7 +74,7 @@ async def snapshots(
 
 @router.command(
     model="AvailableIndices",
-    api_examples=[Example(parameters={"provider": "yfinance"})],
+    examples=[Example(parameters={"provider": "yfinance"})],
 )
 async def available(
     cc: CommandContext,
@@ -88,7 +88,7 @@ async def available(
 
 @router.command(
     model="IndexSearch",
-    api_examples=[Example(parameters={"query": "SPX", "provider": "cboe"})],
+    examples=[Example(parameters={"query": "SPX", "provider": "cboe"})],
 )
 async def search(
     cc: CommandContext,
@@ -102,7 +102,7 @@ async def search(
 
 @router.command(
     model="SP500Multiples",
-    api_examples=[
+    examples=[
         Example(parameters={"series_name": "shiller_pe_year", "provider": "nasdaq"})
     ],
 )
@@ -118,7 +118,7 @@ async def sp500_multiples(
 
 @router.command(
     model="IndexSectors",
-    api_examples=[Example(parameters={"symbol": "^TX60", "provider": "tmx"})],
+    examples=[Example(parameters={"symbol": "^TX60", "provider": "tmx"})],
 )
 async def sectors(
     cc: CommandContext,

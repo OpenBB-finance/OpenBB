@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional, Literal
+from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict
 
@@ -6,11 +6,9 @@ from pydantic import BaseModel, ConfigDict
 class Example(BaseModel):
     """Example model."""
 
-    # TODO: Evaluate making scope mandatory
-    scope: Literal[
-        "required", "standard", "other"
-    ] = "other" # Required parameters, standard parameters, or other
+    scope: Literal["api", "python"] = "api"
     description: Optional[str] = None
-    parameters: Dict[str, Any]
+    parameters: Optional[Dict[str, Any]] = None
+    code: Optional[List[str]] = None
 
     model_config = ConfigDict(validate_assignment=True)

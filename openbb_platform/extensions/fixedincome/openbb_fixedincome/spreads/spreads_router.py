@@ -16,7 +16,7 @@ router = Router(prefix="/spreads")
 
 @router.command(
     model="TreasuryConstantMaturity",
-    api_examples=[Example(parameters={"maturity": "2y"})],
+    examples=[Example(parameters={"maturity": "2y"})],
 )
 async def tcm(
     cc: CommandContext,
@@ -36,7 +36,7 @@ async def tcm(
 
 @router.command(
     model="SelectedTreasuryConstantMaturity",
-    api_examples=[Example(parameters={"maturity": "10y"})],
+    examples=[Example(parameters={"maturity": "10y"})],
 )
 async def tcm_effr(
     cc: CommandContext,
@@ -56,7 +56,7 @@ async def tcm_effr(
 
 @router.command(
     model="SelectedTreasuryBill",
-    api_examples=[Example(parameters={"maturity": "6m"})],
+    examples=[Example(parameters={"maturity": "6m"})],
 )
 async def treasury_effr(
     cc: CommandContext,

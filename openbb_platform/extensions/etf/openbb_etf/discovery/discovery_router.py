@@ -17,7 +17,7 @@ router = Router(prefix="/discovery")
 @router.command(
     model="ETFGainers",
     operation_id="etf_gainers",
-    api_examples=[
+    examples=[
         Example(description="Get the top ETF gainers.", parameters={"provider": "wsj"}),
     ],
 )
@@ -34,7 +34,7 @@ async def gainers(
 @router.command(
     model="ETFLosers",
     operation_id="etf_losers",
-    api_examples=[
+    examples=[
         Example(description="Get the top ETF losers.", parameters={"provider": "wsj"})
     ],
 )
@@ -51,7 +51,7 @@ async def losers(
 @router.command(
     model="ETFActive",
     operation_id="etf_active",
-    api_examples=[
+    examples=[
         Example(description="Get the most active ETFs.", parameters={"provider": "wsj"})
     ],
 )

@@ -16,7 +16,7 @@ router = Router(prefix="/options")
 
 @router.command(
     model="OptionsChains",
-    api_examples=[
+    examples=[
         Example(parameters={"symbol": "AAPL", "provider": "intrinio"}),
         Example(
             description='Use the "date" parameter to get the end-of-day-data for a specific date, where supported.',
@@ -36,7 +36,7 @@ async def chains(
 
 @router.command(
     model="OptionsUnusual",
-    api_examples=[
+    examples=[
         Example(parameters={}),
         Example(
             description="Use the 'symbol' parameter to get the most recent activity for a specific symbol.",

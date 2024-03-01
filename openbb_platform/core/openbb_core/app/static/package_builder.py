@@ -405,8 +405,7 @@ class ClassDefinition:
                         if route.openapi_extra
                         else None
                     ),
-                    examples=(route.openapi_extra.get("api_examples", []) or [])
-                    + (route.openapi_extra.get("python_examples", []) or []),
+                    examples=(route.openapi_extra.get("examples", []) or []),
                 )
             else:
                 doc += "    /" if path else "    /"
@@ -707,7 +706,7 @@ class MethodDefinition:
         func: Callable,
         formatted_params: OrderedDict[str, Parameter],
         model_name: Optional[str] = None,
-        examples: Optional[List[Union[Example, str]]] = None,
+        examples: Optional[List[Example]] = None,
     ):
         """Build the command method docstring."""
         doc = func.__doc__
@@ -798,7 +797,7 @@ class MethodDefinition:
         path: str,
         func: Callable,
         model_name: Optional[str] = None,
-        examples: Optional[List[Union[Example, str]]] = None,
+        examples: Optional[List[Example]] = None,
     ) -> str:
         """Build the command method."""
         func_name = func.__name__
@@ -859,15 +858,16 @@ class DocstringGenerator:
     def append_examples(
         func_name: str,
         func_params: dict[str, Field],
-        examples: Optional[List[Union[Example, str]]],
+        examples: Optional[List[Example]],
     ) -> str:
         """Get the example section from the examples."""
         if examples:
-            doc = "\n    Example\n    -------\n"
+            doc = "\n    Examples\n    --------\n"
             doc += "    >>> from openbb import obb\n"
 
             for e in examples:
-                if isinstance(e, Example):
+                if e.scope == "api" and e.parameters is not None:
+                    # MOVE THIS TO example.py
                     if e.description:
                         doc += f"    >>> # {e.description}\n"
                     doc += f"    >>> obb{func_name}("
@@ -888,8 +888,8 @@ class DocstringGenerator:
                             doc += f"{k}='{v}', "
 
                     doc = doc.strip(", ") + ")\n"
-                else:
-                    doc += f"    >>> {e}\n"
+                elif e.scope == "python" and e.code is not None:
+                    doc += ">>> \n".join(e.code) + "\n"
             return doc
         return ""
 
@@ -1015,7 +1015,7 @@ class DocstringGenerator:
         func: Callable,
         formatted_params: OrderedDict[str, Parameter],
         model_name: Optional[str] = None,
-        examples: Optional[List[Union[Example, str]]] = None,
+        examples: Optional[List[Example]] = None,
     ) -> Optional[str]:
         """Generate the docstring for the function."""
         doc = func.__doc__

@@ -18,7 +18,7 @@ router.include_router(price_router)
 # pylint: disable=unused-argument
 @router.command(
     model="CurrencyPairs",
-    api_examples=[
+    examples=[
         Example(parameters={}),
         Example(
             description="Search for 'EURUSD' currency pair using 'polygon' as provider.",
@@ -56,7 +56,7 @@ async def search(
 
 @router.command(
     model="CurrencyReferenceRates",
-    api_examples=[Example(parameters={"symbol": "EURUSD"})],
+    examples=[Example(parameters={"symbol": "EURUSD"})],
 )
 async def reference_rates(
     cc: CommandContext,

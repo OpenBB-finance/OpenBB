@@ -3,7 +3,7 @@
 from typing import List
 
 import pandas as pd
-from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model import Example, OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
     basemodel_to_df,
@@ -26,10 +26,15 @@ router = Router(prefix="/rolling")
 
 @router.command(
     methods=["POST"],
-    api_examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.rolling.skew(data=returns, target="close")',
+    examples=[
+        Example(
+            scope="python",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.rolling.skew(data=returns, target="close")',
+            ],
+        )
     ],
 )
 def skew(
@@ -75,10 +80,15 @@ def skew(
 
 @router.command(
     methods=["POST"],
-    api_examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.rolling.variance(data=returns, target="close", window=252)',
+    examples=[
+        Example(
+            scope="python",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.rolling.variance(data=returns, target="close", window=252)',
+            ],
+        )
     ],
 )
 def variance(
@@ -117,10 +127,15 @@ def variance(
 
 @router.command(
     methods=["POST"],
-    api_examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.rolling.stdev(data=returns, target="close", window=252)',
+    examples=[
+        Example(
+            scope="python",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.rolling.stdev(data=returns, target="close", window=252)',
+            ],
+        )
     ],
 )
 def stdev(
@@ -163,10 +178,15 @@ def stdev(
 
 @router.command(
     methods=["POST"],
-    api_examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.rolling.kurtosis(data=returns, target="close", window=252)',
+    examples=[
+        Example(
+            scope="python",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.rolling.kurtosis(data=returns, target="close", window=252)',
+            ],
+        )
     ],
 )
 def kurtosis(
@@ -211,11 +231,16 @@ def kurtosis(
 
 @router.command(
     methods=["POST"],
-    api_examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.rolling.quantile(data=returns, target="close", window=252, quantile_pct=0.25)',
-        'obb.quantitative.rolling.quantile(data=returns, target="close", window=252, quantile_pct=0.75)',
+    examples=[
+        Example(
+            scope="python",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.rolling.quantile(data=returns, target="close", window=252, quantile_pct=0.25)',
+                'obb.quantitative.rolling.quantile(data=returns, target="close", window=252, quantile_pct=0.75)',
+            ],
+        )
     ],
 )
 def quantile(
@@ -276,10 +301,15 @@ def quantile(
 
 @router.command(
     methods=["POST"],
-    api_examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.rolling.mean(data=returns, target="close", window=252)',
+    examples=[
+        Example(
+            scope="python",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.rolling.mean(data=returns, target="close", window=252)',
+            ],
+        )
     ],
 )
 def mean(

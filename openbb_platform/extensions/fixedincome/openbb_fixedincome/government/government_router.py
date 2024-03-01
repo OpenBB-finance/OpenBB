@@ -16,7 +16,7 @@ router = Router(prefix="/government")
 
 @router.command(
     model="USYieldCurve",
-    api_examples=[Example(parameters={"inflation_adjusted": True})],
+    examples=[Example(parameters={"inflation_adjusted": True})],
 )
 async def us_yield_curve(
     cc: CommandContext,
@@ -30,7 +30,7 @@ async def us_yield_curve(
 
 @router.command(
     model="EUYieldCurve",
-    api_examples=[Example(parameters={"yield_curve_type": "spot_rate"})],
+    examples=[Example(parameters={"yield_curve_type": "spot_rate"})],
 )
 async def eu_yield_curve(
     cc: CommandContext,
@@ -63,7 +63,7 @@ async def eu_yield_curve(
 
 @router.command(
     model="TreasuryRates",
-    api_examples=[Example(parameters={"provider": "federal_reserve"})],
+    examples=[Example(parameters={"provider": "federal_reserve"})],
 )
 async def treasury_rates(
     cc: CommandContext,
@@ -77,7 +77,7 @@ async def treasury_rates(
 
 @router.command(
     model="TreasuryAuctions",
-    api_examples=[
+    examples=[
         Example(
             parameters={
                 "security_type": "Bill",
@@ -99,7 +99,7 @@ async def treasury_auctions(
 
 @router.command(
     model="TreasuryPrices",
-    api_examples=[Example(parameters={"date": "2019-02-05"})],
+    examples=[Example(parameters={"date": "2019-02-05"})],
 )
 async def treasury_prices(
     cc: CommandContext,

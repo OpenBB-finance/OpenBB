@@ -16,7 +16,7 @@ router = Router(prefix="/estimates")
 
 @router.command(
     model="PriceTarget",
-    api_examples=[
+    examples=[
         Example(
             parameters={
                 "start_date": "2020-01-01",
@@ -41,7 +41,7 @@ async def price_target(
 
 @router.command(
     model="AnalystEstimates",
-    api_examples=[Example(parameters={"symbol": "AAPL", "provider": "fmp"})],
+    examples=[Example(parameters={"symbol": "AAPL", "provider": "fmp"})],
 )
 async def historical(
     cc: CommandContext,
@@ -55,7 +55,7 @@ async def historical(
 
 @router.command(
     model="PriceTargetConsensus",
-    api_examples=[Example(parameters={"symbol": "AAPL,MSFT", "provider": "yfinance"})],
+    examples=[Example(parameters={"symbol": "AAPL,MSFT", "provider": "yfinance"})],
 )
 async def consensus(
     cc: CommandContext,
@@ -69,7 +69,7 @@ async def consensus(
 
 @router.command(
     model="AnalystSearch",
-    api_examples=[Example(parameters={"firm_name": "Wedbush", "provider": "benzinga"})],
+    examples=[Example(parameters={"firm_name": "Wedbush", "provider": "benzinga"})],
 )
 async def analyst_search(
     cc: CommandContext,

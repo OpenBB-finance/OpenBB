@@ -15,7 +15,7 @@ router = Router(prefix="/futures")
 # pylint: disable=unused-argument
 @router.command(
     model="FuturesHistorical",
-    api_examples=[
+    examples=[
         Example(parameters={"symbol": "ES", "provider": "yfinance"}),
         Example(
             description='Enter expiration dates as "YYYY-MM".',
@@ -43,7 +43,7 @@ async def historical(
 
 @router.command(
     model="FuturesCurve",
-    api_examples=[
+    examples=[
         Example(parameters={"symbol": "NG", "provider": "yfinance"}),
         Example(
             description="Enter a date to get the term structure from a historical date.",

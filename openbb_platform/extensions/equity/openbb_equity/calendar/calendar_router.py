@@ -16,7 +16,7 @@ router = Router(prefix="/calendar")
 
 @router.command(
     model="CalendarIpo",
-    api_examples=[
+    examples=[
         Example(parameters={"limit": 100}),
         Example(description="Get all IPOs available.", parameters={}),
         Example(
@@ -37,7 +37,7 @@ async def ipo(
 
 @router.command(
     model="CalendarDividend",
-    api_examples=[
+    examples=[
         Example(parameters={}),
         Example(
             description="Get dividend calendar for specific dates.",
@@ -60,7 +60,7 @@ async def dividend(
 
 @router.command(
     model="CalendarSplits",
-    api_examples=[
+    examples=[
         Example(parameters={}),
         Example(
             description="Get stock splits calendar for specific dates.",
@@ -83,7 +83,7 @@ async def splits(
 
 @router.command(
     model="CalendarEarnings",
-    api_examples=[
+    examples=[
         Example(parameters={}),
         Example(
             description="Get earnings calendar for specific dates.",

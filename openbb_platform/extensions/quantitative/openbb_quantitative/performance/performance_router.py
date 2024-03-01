@@ -2,7 +2,7 @@ from typing import List
 
 import numpy as np
 import pandas as pd
-from openbb_core.app.model.obbject import OBBject
+from openbb_core.app.model import Example, OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
     basemodel_to_df,
@@ -21,10 +21,15 @@ router = Router(prefix="/performance")
 
 @router.command(
     methods=["POST"],
-    api_examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.omega_ratio(data=returns, target="close")',
+    examples=[
+        Example(
+            scope="python",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.omega_ratio(data=returns, target="close")',
+            ],
+        )
     ],
 )
 def omega_ratio(
@@ -80,10 +85,15 @@ def omega_ratio(
 
 @router.command(
     methods=["POST"],
-    api_examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.sharpe_ratio(data=returns, target="close")',
+    examples=[
+        Example(
+            scope="python",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.sharpe_ratio(data=returns, target="close")',
+            ],
+        )
     ],
 )
 def sharpe_ratio(
@@ -134,11 +144,16 @@ def sharpe_ratio(
 
 @router.command(
     methods=["POST"],
-    api_examples=[
-        'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
-        'returns = stock_data["close"].pct_change().dropna()',
-        'obb.quantitative.sortino_ratio(data=stock_data, target="close")',
-        'obb.quantitative.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)',
+    examples=[
+        Example(
+            scope="python",
+            code=[
+                'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
+                'returns = stock_data["close"].pct_change().dropna()',
+                'obb.quantitative.sortino_ratio(data=stock_data, target="close")',
+                'obb.quantitative.sortino_ratio(data=stock_data, target="close", target_return=0.01, window=126, adjusted=True)',
+            ],
+        )
     ],
 )
 def sortino_ratio(
