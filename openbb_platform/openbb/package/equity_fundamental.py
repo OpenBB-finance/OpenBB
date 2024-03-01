@@ -1468,6 +1468,11 @@ class ROUTER_equity_fundamental(Container):
             The date when the data was last updated. (provider: fmp)
         period_ending : Optional[date]
             The fiscal period end date. (provider: fmp)
+
+        Example
+        -------
+        >>> from openbb import obb
+        >>> obb.equity.fundamental.historical_eps(symbol='AAPL')
         """  # noqa: E501
 
         return self._run(

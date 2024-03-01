@@ -405,8 +405,8 @@ class ClassDefinition:
                         if route.openapi_extra
                         else None
                     ),
-                    examples=route.openapi_extra.get("api_examples", [])
-                    + route.openapi_extra.get("python_examples", []),
+                    examples=(route.openapi_extra.get("api_examples", []) or [])
+                    + (route.openapi_extra.get("python_examples", []) or []),
                 )
             else:
                 doc += "    /" if path else "    /"

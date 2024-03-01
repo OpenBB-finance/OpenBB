@@ -28,7 +28,6 @@ from openbb_core.app.deprecation import DeprecationSummary, OpenBBDeprecationWar
 from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import Example
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -233,16 +232,14 @@ class Router:
         api_router = self._api_router
 
         model = kwargs.pop("model", "")
-        api_examples: List[Example] = kwargs.pop("api_examples", [])
-        python_examples = kwargs.pop("python_examples", [])
 
         if func := SignatureInspector.complete(func, model):
 
             kwargs["response_model_exclude_unset"] = True
             kwargs["openapi_extra"] = kwargs.get("openapi_extra", {})
             kwargs["openapi_extra"]["model"] = model
-            kwargs["openapi_extra"]["api_examples"] = api_examples
-            kwargs["openapi_extra"]["python_examples"] = python_examples
+            kwargs["openapi_extra"]["api_examples"] = kwargs.pop("api_examples", None)
+            kwargs["openapi_extra"]["python_examples"] = kwargs.pop("python_examples", None)
             kwargs["operation_id"] = kwargs.get(
                 "operation_id", SignatureInspector.get_operation_id(func)
             )
