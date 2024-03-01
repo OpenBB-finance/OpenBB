@@ -908,7 +908,7 @@ class DocstringGenerator:
             description = description.replace("\n", f"\n{indentation+tab}")
             return description
 
-        docstring = summary.replace("\n    ",f"\n{indentation}").strip("\n")
+        docstring = summary.strip("\n").replace("\n    ",f"\n{indentation}")
         docstring += "\n\n"
         docstring += f"{indentation}Parameters\n"
         docstring += f"{indentation}----------\n"
@@ -1011,7 +1011,7 @@ no default."""
         tab: str = "    ",
     ) -> Optional[str]:
         """Generate the docstring for the function."""
-        doc = func.__doc__
+        doc = func.__doc__ or ""
         func_params = {}
         if model_name:
             params = cls.provider_interface.params.get(model_name, {})
@@ -1039,6 +1039,8 @@ no default."""
                     indentation=indentation,
                     tab=tab,
                 )
+        else:
+            doc = doc.replace("\n    ",f"\n{indentation}")
 
         if doc and examples:
             doc += cls.append_examples(
