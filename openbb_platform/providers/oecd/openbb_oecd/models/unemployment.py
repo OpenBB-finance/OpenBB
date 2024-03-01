@@ -104,7 +104,7 @@ class OECDUnemploymentFetcher(
         query: OECDUnemploymentQueryParams,
         credentials: Optional[Dict[str, str]],
         **kwargs: Any,
-    ) -> Dict:
+    ) -> List[Dict]:
         """Return the raw data from the OECD endpoint."""
         sex = {"total": "_T", "male": "M", "female": "F"}[query.sex]
         frequency = query.frequency[0].upper()
@@ -121,8 +121,20 @@ class OECDUnemploymentFetcher(
             if query.country == "all"
             else COUNTRY_TO_CODE_UNEMPLOYMENT[query.country]
         )
-        url = "https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_INDIC,1.0/.UNE_LF........"
-        data = helpers.get_possibly_cached_data(url, function="economy_unemployment")
+        # For caching, include this in the key
+        query_dict = {
+            k: v
+            for k, v in query.__dict__.items()
+            if k not in ["start_date", "end_date"]
+        }
+
+        url = (
+            f"https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_LFS@DF_IALFS_INDIC,"
+            f"1.0/{country}.UNE_LF...{seasonal_adjustment}.{sex}.{age}..."
+        )
+        data = helpers.get_possibly_cached_data(
+            url, function="economy_unemployment", query_dict=query_dict
+        )
         url_query = f"AGE=='{age}' & SEX=='{sex}' & FREQ=='{frequency}' & ADJUSTMENT=='{seasonal_adjustment}'"
         url_query = url_query + f" & REF_AREA=='{country}'" if country else url_query
         # Filter down
@@ -135,17 +147,17 @@ class OECDUnemploymentFetcher(
         )
         data["country"] = data["country"].map(CODE_TO_COUNTRY_UNEMPLOYMENT)
 
-        data = data.to_dict(orient="records")
-        start_date = query.start_date.strftime("%Y-%m-%d")  # type: ignore
-        end_date = query.end_date.strftime("%Y-%m-%d")  # type: ignore
-        data = list(filter(lambda x: start_date <= x["date"] <= end_date, data))
+        data["date"] = data["date"].apply(helpers.oecd_date_to_python_date)
+        data = data[
+            (data["date"] <= query.end_date) & (data["date"] >= query.start_date)
+        ]
 
-        return data
+        return data.to_dict(orient="records")
 
     # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
-        query: OECDUnemploymentQueryParams, data: Dict, **kwargs: Any
+        query: OECDUnemploymentQueryParams, data: List[Dict], **kwargs: Any
     ) -> List[OECDUnemploymentData]:
         """Transform the data from the OECD endpoint."""
         return [OECDUnemploymentData.model_validate(d) for d in data]
