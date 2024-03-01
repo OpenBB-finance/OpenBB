@@ -992,7 +992,7 @@ class ROUTER_etf(Container):
         -------
         >>> from openbb import obb
         >>> # An empty query returns the full list of ETFs from the provider.
-        >>> obb.etf.search(provider='fmp')
+        >>> obb.etf.search()
         >>> # The query will return results from text-based fields containing the term.
         >>> obb.etf.search(query='commercial real estate', provider='fmp')
         """  # noqa: E501

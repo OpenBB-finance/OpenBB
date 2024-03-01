@@ -21,12 +21,10 @@ router.include_router(discovery_router)
     model="EtfSearch",
     api_examples=[
         Example(
-            scope="required",
             description="An empty query returns the full list of ETFs from the provider.",
             parameters={},
         ),
         Example(
-            scope="standard",
             description="The query will return results from text-based fields containing the term.",
             parameters={"query": "commercial real estate", "provider": "fmp"},
         ),
@@ -49,10 +47,9 @@ async def search(
     model="EtfHistorical",
     operation_id="etf_historical",
     api_examples=[
-        Example(scope="required", parameters={"symbol": "SPY"}),
-        Example(scope="other", parameters={"symbol": "SPY", "provider": "yfinance"}),
+        Example(parameters={"symbol": "SPY"}),
+        Example(parameters={"symbol": "SPY", "provider": "yfinance"}),
         Example(
-            scope="other",
             description="This function accepts multiple tickers.",
             parameters={"symbol": "SPY,IWM,QQQ,DJIA", "provider": "yfinance"},
         ),
