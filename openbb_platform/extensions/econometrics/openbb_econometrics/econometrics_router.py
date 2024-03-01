@@ -47,11 +47,6 @@ def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
     -------
     OBBject[List[Data]]:
         Correlation matrix.
-
-    Examples
-    --------
-                    "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
-                "obb.econometrics.correlation_matrix(data=stock_data)",
     """
     df = basemodel_to_df(data)
     # remove non float columns from the dataframe to perform the correlation
