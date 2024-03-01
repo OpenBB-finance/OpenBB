@@ -28,75 +28,91 @@ class ROUTER_fixedincome(Container):
         # pylint: disable=import-outside-toplevel
         from . import fixedincome_corporate
 
-        return fixedincome_corporate.ROUTER_fixedincome_corporate(command_runner=self._command_runner)
+        return fixedincome_corporate.ROUTER_fixedincome_corporate(
+            command_runner=self._command_runner
+        )
 
     @property
     def government(self):
         # pylint: disable=import-outside-toplevel
         from . import fixedincome_government
 
-        return fixedincome_government.ROUTER_fixedincome_government(command_runner=self._command_runner)
+        return fixedincome_government.ROUTER_fixedincome_government(
+            command_runner=self._command_runner
+        )
 
     @property
     def rate(self):
         # pylint: disable=import-outside-toplevel
         from . import fixedincome_rate
 
-        return fixedincome_rate.ROUTER_fixedincome_rate(command_runner=self._command_runner)
+        return fixedincome_rate.ROUTER_fixedincome_rate(
+            command_runner=self._command_runner
+        )
 
     @exception_handler
     @validate
     def sofr(
         self,
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         provider: Optional[Literal["fred"]] = None,
         **kwargs
     ) -> OBBject:
         """Secured Overnight Financing Rate.
 
-    The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
-    borrowing cash overnight collateralizing by Treasury securities.
+        The Secured Overnight Financing Rate (SOFR) is a broad measure of the cost of
+        borrowing cash overnight collateralizing by Treasury securities.
 
 
-        Parameters
-        ----------
-        start_date : Union[datetime.date, None, str]
-            Start date of the data, in YYYY-MM-DD format.
-        end_date : Union[datetime.date, None, str]
-            End date of the data, in YYYY-MM-DD format.
-        provider : Optional[Literal['fred']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fred' if there is
-            no default.
-        period : Literal['overnight', '30_day', '90_day', '180_day', 'index']
-            Period of SOFR rate. (provider: fred)
-
-        Returns
-        -------
-        OBBject
-            results : List[SOFR]
-                Serializable results.
+            Parameters
+            ----------
+            start_date : Union[datetime.date, None, str]
+                Start date of the data, in YYYY-MM-DD format.
+            end_date : Union[datetime.date, None, str]
+                End date of the data, in YYYY-MM-DD format.
             provider : Optional[Literal['fred']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra : Dict[str, Any]
-                Extra info.
+                The provider to use for the query, by default None.
+                If None, the provider specified in defaults is selected or 'fred' if there is
+                no default.
+            period : Literal['overnight', '30_day', '90_day', '180_day', 'index']
+                Period of SOFR rate. (provider: fred)
 
-        SOFR
-        ----
-        date : date
-            The date of the data.
-        rate : Optional[float]
-            SOFR rate.
+            Returns
+            -------
+            OBBject
+                results : List[SOFR]
+                    Serializable results.
+                provider : Optional[Literal['fred']]
+                    Provider name.
+                warnings : Optional[List[Warning_]]
+                    List of warnings.
+                chart : Optional[Chart]
+                    Chart object.
+                extra : Dict[str, Any]
+                    Extra info.
 
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> obb.fixedincome.sofr(period='overnight')
+            SOFR
+            ----
+            date : date
+                The date of the data.
+            rate : Optional[float]
+                SOFR rate.
+
+            Examples
+            --------
+            >>> from openbb import obb
+            >>> obb.fixedincome.sofr(period='overnight')
         """  # noqa: E501
 
         return self._run(
@@ -122,4 +138,6 @@ class ROUTER_fixedincome(Container):
         # pylint: disable=import-outside-toplevel
         from . import fixedincome_spreads
 
-        return fixedincome_spreads.ROUTER_fixedincome_spreads(command_runner=self._command_runner)
+        return fixedincome_spreads.ROUTER_fixedincome_spreads(
+            command_runner=self._command_runner
+        )

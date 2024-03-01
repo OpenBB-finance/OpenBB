@@ -25,11 +25,31 @@ class ROUTER_news(Container):
     @validate
     def company(
         self,
-        symbol: Annotated[Union[str, None, List[str]], OpenBBCustomParameter(description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance.")] = None,
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
-        limit: Annotated[Optional[Annotated[int, Ge(ge=0)]], OpenBBCustomParameter(description="The number of data entries to return.")] = 2500,
-        provider: Optional[Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"]] = None,
+        symbol: Annotated[
+            Union[str, None, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance."
+            ),
+        ] = None,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        limit: Annotated[
+            Optional[Annotated[int, Ge(ge=0)]],
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 2500,
+        provider: Optional[
+            Literal["benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"]
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Company News. Get news for one or more companies.
@@ -157,7 +177,14 @@ class ROUTER_news(Container):
                     "provider": self._get_provider(
                         provider,
                         "/news/company",
-                        ("benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"),
+                        (
+                            "benzinga",
+                            "fmp",
+                            "intrinio",
+                            "polygon",
+                            "tiingo",
+                            "yfinance",
+                        ),
                     )
                 },
                 standard_params={
@@ -167,7 +194,18 @@ class ROUTER_news(Container):
                     "limit": limit,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["benzinga", "fmp", "intrinio", "polygon", "tiingo", "yfinance"]}},
+                extra_info={
+                    "symbol": {
+                        "multiple_items_allowed": [
+                            "benzinga",
+                            "fmp",
+                            "intrinio",
+                            "polygon",
+                            "tiingo",
+                            "yfinance",
+                        ]
+                    }
+                },
             )
         )
 
@@ -175,9 +213,24 @@ class ROUTER_news(Container):
     @validate
     def world(
         self,
-        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return. The number of articles to return.")] = 2500,
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        limit: Annotated[
+            int,
+            OpenBBCustomParameter(
+                description="The number of data entries to return. The number of articles to return."
+            ),
+        ] = 2500,
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         provider: Optional[Literal["benzinga", "fmp", "intrinio", "tiingo"]] = None,
         **kwargs
     ) -> OBBject:

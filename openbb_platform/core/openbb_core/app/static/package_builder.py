@@ -199,7 +199,7 @@ class PackageBuilder:
         self.console.log("\nRunning linters...")
         linters = Linters(self.directory / "package", self.verbose)
         linters.ruff()
-        # linters.black()
+        linters.black()
 
     def _write(
         self, code: str, name: str, extension: str = "py", folder: str = "package"

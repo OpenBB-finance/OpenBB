@@ -23,7 +23,9 @@ class ROUTER_derivatives_options(Container):
     @validate
     def chains(
         self,
-        symbol: Annotated[str, OpenBBCustomParameter(description="Symbol to get data for.")],
+        symbol: Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
     ) -> OBBject:
@@ -174,7 +176,12 @@ class ROUTER_derivatives_options(Container):
     @validate
     def unusual(
         self,
-        symbol: Annotated[Optional[str], OpenBBCustomParameter(description="Symbol to get data for. (the underlying symbol)")] = None,
+        symbol: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. (the underlying symbol)"
+            ),
+        ] = None,
         provider: Optional[Literal["intrinio"]] = None,
         **kwargs
     ) -> OBBject:

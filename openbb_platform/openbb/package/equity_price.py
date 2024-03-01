@@ -26,11 +26,31 @@ class ROUTER_equity_price(Container):
     @validate
     def historical(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance.")],
-        interval: Annotated[Optional[str], OpenBBCustomParameter(description="Time interval of the data to return.")] = "1d",
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
-        provider: Optional[Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]] = None,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, polygon, tiingo, yfinance."
+            ),
+        ],
+        interval: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(description="Time interval of the data to return."),
+        ] = "1d",
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        provider: Optional[
+            Literal["fmp", "intrinio", "polygon", "tiingo", "yfinance"]
+        ] = None,
         **kwargs
     ) -> OBBject:
         """Get historical price data for a given stock. This includes open, high, low, close, and volume.
@@ -170,7 +190,16 @@ class ROUTER_equity_price(Container):
                     "end_date": end_date,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp", "polygon", "tiingo", "yfinance"]}},
+                extra_info={
+                    "symbol": {
+                        "multiple_items_allowed": [
+                            "fmp",
+                            "polygon",
+                            "tiingo",
+                            "yfinance",
+                        ]
+                    }
+                },
             )
         )
 
@@ -178,7 +207,9 @@ class ROUTER_equity_price(Container):
     @validate
     def nbbo(
         self,
-        symbol: Annotated[str, OpenBBCustomParameter(description="Symbol to get data for.")],
+        symbol: Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
         provider: Optional[Literal["polygon"]] = None,
         **kwargs
     ) -> OBBject:
@@ -306,7 +337,12 @@ class ROUTER_equity_price(Container):
     @validate
     def performance(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for. Multiple items allowed for provider(s): fmp.")],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp."
+            ),
+        ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -396,7 +432,12 @@ class ROUTER_equity_price(Container):
     @validate
     def quote(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): fmp, intrinio, yfinance.")],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): fmp, intrinio, yfinance."
+            ),
+        ],
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
@@ -550,6 +591,10 @@ class ROUTER_equity_price(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp", "intrinio", "yfinance"]}},
+                extra_info={
+                    "symbol": {
+                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
+                    }
+                },
             )
         )

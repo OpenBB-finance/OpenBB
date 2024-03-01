@@ -27,9 +27,7 @@ class ROUTER_index(Container):
     @exception_handler
     @validate
     def available(
-        self,
-        provider: Optional[Literal["fmp", "yfinance"]] = None,
-        **kwargs
+        self, provider: Optional[Literal["fmp", "yfinance"]] = None, **kwargs
     ) -> OBBject:
         """All indices available from a given provider.
 
@@ -85,8 +83,7 @@ class ROUTER_index(Container):
                         ("fmp", "yfinance"),
                     )
                 },
-                standard_params={
-                },
+                standard_params={},
                 extra_params=kwargs,
             )
         )
@@ -95,7 +92,9 @@ class ROUTER_index(Container):
     @validate
     def constituents(
         self,
-        symbol: Annotated[str, OpenBBCustomParameter(description="Symbol to get data for.")],
+        symbol: Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -176,9 +175,24 @@ class ROUTER_index(Container):
     )
     def market(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for. Multiple items allowed for provider(s): yfinance.")],
-        start_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="Start date of the data, in YYYY-MM-DD format.")] = None,
-        end_date: Annotated[Union[datetime.date, None, str], OpenBBCustomParameter(description="End date of the data, in YYYY-MM-DD format.")] = None,
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed for provider(s): yfinance."
+            ),
+        ],
+        start_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="Start date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
+        end_date: Annotated[
+            Union[datetime.date, None, str],
+            OpenBBCustomParameter(
+                description="End date of the data, in YYYY-MM-DD format."
+            ),
+        ] = None,
         provider: Optional[Literal["fmp", "intrinio", "polygon", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
@@ -273,7 +287,11 @@ class ROUTER_index(Container):
         """  # noqa: E501
 
         simplefilter("always", DeprecationWarning)
-        warn("This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.", category=DeprecationWarning, stacklevel=2)
+        warn(
+            "This endpoint is deprecated; use `/index/price/historical` instead. Deprecated in OpenBB Platform V4.1 to be removed in V4.3.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
 
         return self._run(
             "/index/market",

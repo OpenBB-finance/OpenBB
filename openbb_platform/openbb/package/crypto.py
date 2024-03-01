@@ -30,7 +30,9 @@ class ROUTER_crypto(Container):
     @validate
     def search(
         self,
-        query: Annotated[Optional[str], OpenBBCustomParameter(description="Search query.")] = None,
+        query: Annotated[
+            Optional[str], OpenBBCustomParameter(description="Search query.")
+        ] = None,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:

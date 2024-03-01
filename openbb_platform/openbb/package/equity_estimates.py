@@ -25,8 +25,18 @@ class ROUTER_equity_estimates(Container):
     @validate
     def analyst_search(
         self,
-        analyst_name: Annotated[Optional[str], OpenBBCustomParameter(description="A comma separated list of analyst names to bring back. Omitting will bring back all available analysts.")] = None,
-        firm_name: Annotated[Optional[str], OpenBBCustomParameter(description="A comma separated list of firm names to bring back. Omitting will bring back all available firms.")] = None,
+        analyst_name: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(
+                description="A comma separated list of analyst names to bring back. Omitting will bring back all available analysts."
+            ),
+        ] = None,
+        firm_name: Annotated[
+            Optional[str],
+            OpenBBCustomParameter(
+                description="A comma separated list of firm names to bring back. Omitting will bring back all available firms."
+            ),
+        ] = None,
         provider: Optional[Literal["benzinga"]] = None,
         **kwargs
     ) -> OBBject:
@@ -186,7 +196,12 @@ class ROUTER_equity_estimates(Container):
     @validate
     def consensus(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for. Multiple items allowed for provider(s): yfinance.")],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed for provider(s): yfinance."
+            ),
+        ],
         provider: Optional[Literal["fmp", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
@@ -266,9 +281,17 @@ class ROUTER_equity_estimates(Container):
     @validate
     def historical(
         self,
-        symbol: Annotated[str, OpenBBCustomParameter(description="Symbol to get data for.")],
-        period: Annotated[Literal["quarter", "annual"], OpenBBCustomParameter(description="Time period of the data to return.")] = "annual",
-        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return.")] = 30,
+        symbol: Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
+        period: Annotated[
+            Literal["quarter", "annual"],
+            OpenBBCustomParameter(description="Time period of the data to return."),
+        ] = "annual",
+        limit: Annotated[
+            int,
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 30,
         provider: Optional[Literal["fmp"]] = None,
         **kwargs
     ) -> OBBject:
@@ -377,8 +400,16 @@ class ROUTER_equity_estimates(Container):
     @validate
     def price_target(
         self,
-        symbol: Annotated[Union[str, None, List[str]], OpenBBCustomParameter(description="Symbol to get data for. Multiple items allowed for provider(s): benzinga.")] = None,
-        limit: Annotated[int, OpenBBCustomParameter(description="The number of data entries to return.")] = 200,
+        symbol: Annotated[
+            Union[str, None, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed for provider(s): benzinga."
+            ),
+        ] = None,
+        limit: Annotated[
+            int,
+            OpenBBCustomParameter(description="The number of data entries to return."),
+        ] = 200,
         provider: Optional[Literal["benzinga", "fmp"]] = None,
         **kwargs
     ) -> OBBject:

@@ -34,7 +34,9 @@ class ROUTER_equity(Container):
         # pylint: disable=import-outside-toplevel
         from . import equity_calendar
 
-        return equity_calendar.ROUTER_equity_calendar(command_runner=self._command_runner)
+        return equity_calendar.ROUTER_equity_calendar(
+            command_runner=self._command_runner
+        )
 
     @property
     def compare(self):
@@ -48,28 +50,32 @@ class ROUTER_equity(Container):
         # pylint: disable=import-outside-toplevel
         from . import equity_discovery
 
-        return equity_discovery.ROUTER_equity_discovery(command_runner=self._command_runner)
+        return equity_discovery.ROUTER_equity_discovery(
+            command_runner=self._command_runner
+        )
 
     @property
     def estimates(self):
         # pylint: disable=import-outside-toplevel
         from . import equity_estimates
 
-        return equity_estimates.ROUTER_equity_estimates(command_runner=self._command_runner)
+        return equity_estimates.ROUTER_equity_estimates(
+            command_runner=self._command_runner
+        )
 
     @property
     def fundamental(self):
         # pylint: disable=import-outside-toplevel
         from . import equity_fundamental
 
-        return equity_fundamental.ROUTER_equity_fundamental(command_runner=self._command_runner)
+        return equity_fundamental.ROUTER_equity_fundamental(
+            command_runner=self._command_runner
+        )
 
     @exception_handler
     @validate
     def market_snapshots(
-        self,
-        provider: Optional[Literal["fmp", "polygon"]] = None,
-        **kwargs
+        self, provider: Optional[Literal["fmp", "polygon"]] = None, **kwargs
     ) -> OBBject:
         """Get an updated equity market snapshot. This includes price data for thousands of stocks.
 
@@ -195,8 +201,7 @@ class ROUTER_equity(Container):
                         ("fmp", "polygon"),
                     )
                 },
-                standard_params={
-                },
+                standard_params={},
                 extra_params=kwargs,
             )
         )
@@ -206,7 +211,9 @@ class ROUTER_equity(Container):
         # pylint: disable=import-outside-toplevel
         from . import equity_ownership
 
-        return equity_ownership.ROUTER_equity_ownership(command_runner=self._command_runner)
+        return equity_ownership.ROUTER_equity_ownership(
+            command_runner=self._command_runner
+        )
 
     @property
     def price(self):
@@ -219,7 +226,12 @@ class ROUTER_equity(Container):
     @validate
     def profile(
         self,
-        symbol: Annotated[Union[str, List[str]], OpenBBCustomParameter(description="Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance.")],
+        symbol: Annotated[
+            Union[str, List[str]],
+            OpenBBCustomParameter(
+                description="Symbol to get data for. Multiple items allowed for provider(s): fmp, intrinio, yfinance."
+            ),
+        ],
         provider: Optional[Literal["fmp", "intrinio", "yfinance"]] = None,
         **kwargs
     ) -> OBBject:
@@ -392,110 +404,110 @@ class ROUTER_equity(Container):
                     "symbol": symbol,
                 },
                 extra_params=kwargs,
-                extra_info={"symbol": {"multiple_items_allowed": ["fmp", "intrinio", "yfinance"]}},
+                extra_info={
+                    "symbol": {
+                        "multiple_items_allowed": ["fmp", "intrinio", "yfinance"]
+                    }
+                },
             )
         )
 
     @exception_handler
     @validate
-    def screener(
-        self,
-        provider: Optional[Literal["fmp"]] = None,
-        **kwargs
-    ) -> OBBject:
+    def screener(self, provider: Optional[Literal["fmp"]] = None, **kwargs) -> OBBject:
         """Screen for companies meeting various criteria. These criteria include
-    market cap, price, beta, volume, and dividend yield.
+        market cap, price, beta, volume, and dividend yield.
 
-        Parameters
-        ----------
-        provider : Optional[Literal['fmp']]
-            The provider to use for the query, by default None.
-            If None, the provider specified in defaults is selected or 'fmp' if there is
-            no default.
-        mktcap_min : Optional[int]
-            Filter by market cap greater than this value. (provider: fmp)
-        mktcap_max : Optional[int]
-            Filter by market cap less than this value. (provider: fmp)
-        price_min : Optional[float]
-            Filter by price greater than this value. (provider: fmp)
-        price_max : Optional[float]
-            Filter by price less than this value. (provider: fmp)
-        beta_min : Optional[float]
-            Filter by a beta greater than this value. (provider: fmp)
-        beta_max : Optional[float]
-            Filter by a beta less than this value. (provider: fmp)
-        volume_min : Optional[int]
-            Filter by volume greater than this value. (provider: fmp)
-        volume_max : Optional[int]
-            Filter by volume less than this value. (provider: fmp)
-        dividend_min : Optional[float]
-            Filter by dividend amount greater than this value. (provider: fmp)
-        dividend_max : Optional[float]
-            Filter by dividend amount less than this value. (provider: fmp)
-        is_etf : Optional[bool]
-            If true, returns only ETFs. (provider: fmp)
-        is_active : Optional[bool]
-            If false, returns only inactive tickers. (provider: fmp)
-        sector : Optional[Literal['Consumer Cyclical', 'Energy', 'Technology', 'Industrials', 'Financial Services', 'Basic Materials', 'Communication Services', 'Consumer Defensive', 'Healthcare', 'Real Estate', 'Utilities', 'Industrial Goods', 'Financial', 'Services', 'Conglomerates']]
-            Filter by sector. (provider: fmp)
-        industry : Optional[str]
-            Filter by industry. (provider: fmp)
-        country : Optional[str]
-            Filter by country, as a two-letter country code. (provider: fmp)
-        exchange : Optional[Literal['amex', 'ase', 'asx', 'ath', 'bme', 'bru', 'bud', 'bue', 'cai', 'cnq', 'cph', 'dfm', 'doh', 'etf', 'euronext', 'hel', 'hkse', 'ice', 'iob', 'ist', 'jkt', 'jnb', 'jpx', 'kls', 'koe', 'ksc', 'kuw', 'lse', 'mex', 'nasdaq', 'neo', 'nse', 'nyse', 'nze', 'osl', 'otc', 'pnk', 'pra', 'ris', 'sao', 'sau', 'set', 'sgo', 'shh', 'shz', 'six', 'sto', 'tai', 'tlv', 'tsx', 'two', 'vie', 'wse', 'xetra']]
-            Filter by exchange. (provider: fmp)
-        limit : Optional[int]
-            Limit the number of results to return. (provider: fmp)
-
-        Returns
-        -------
-        OBBject
-            results : List[EquityScreener]
-                Serializable results.
+            Parameters
+            ----------
             provider : Optional[Literal['fmp']]
-                Provider name.
-            warnings : Optional[List[Warning_]]
-                List of warnings.
-            chart : Optional[Chart]
-                Chart object.
-            extra : Dict[str, Any]
-                Extra info.
+                The provider to use for the query, by default None.
+                If None, the provider specified in defaults is selected or 'fmp' if there is
+                no default.
+            mktcap_min : Optional[int]
+                Filter by market cap greater than this value. (provider: fmp)
+            mktcap_max : Optional[int]
+                Filter by market cap less than this value. (provider: fmp)
+            price_min : Optional[float]
+                Filter by price greater than this value. (provider: fmp)
+            price_max : Optional[float]
+                Filter by price less than this value. (provider: fmp)
+            beta_min : Optional[float]
+                Filter by a beta greater than this value. (provider: fmp)
+            beta_max : Optional[float]
+                Filter by a beta less than this value. (provider: fmp)
+            volume_min : Optional[int]
+                Filter by volume greater than this value. (provider: fmp)
+            volume_max : Optional[int]
+                Filter by volume less than this value. (provider: fmp)
+            dividend_min : Optional[float]
+                Filter by dividend amount greater than this value. (provider: fmp)
+            dividend_max : Optional[float]
+                Filter by dividend amount less than this value. (provider: fmp)
+            is_etf : Optional[bool]
+                If true, returns only ETFs. (provider: fmp)
+            is_active : Optional[bool]
+                If false, returns only inactive tickers. (provider: fmp)
+            sector : Optional[Literal['Consumer Cyclical', 'Energy', 'Technology', 'Industrials', 'Financial Services', 'Basic Materials', 'Communication Services', 'Consumer Defensive', 'Healthcare', 'Real Estate', 'Utilities', 'Industrial Goods', 'Financial', 'Services', 'Conglomerates']]
+                Filter by sector. (provider: fmp)
+            industry : Optional[str]
+                Filter by industry. (provider: fmp)
+            country : Optional[str]
+                Filter by country, as a two-letter country code. (provider: fmp)
+            exchange : Optional[Literal['amex', 'ase', 'asx', 'ath', 'bme', 'bru', 'bud', 'bue', 'cai', 'cnq', 'cph', 'dfm', 'doh', 'etf', 'euronext', 'hel', 'hkse', 'ice', 'iob', 'ist', 'jkt', 'jnb', 'jpx', 'kls', 'koe', 'ksc', 'kuw', 'lse', 'mex', 'nasdaq', 'neo', 'nse', 'nyse', 'nze', 'osl', 'otc', 'pnk', 'pra', 'ris', 'sao', 'sau', 'set', 'sgo', 'shh', 'shz', 'six', 'sto', 'tai', 'tlv', 'tsx', 'two', 'vie', 'wse', 'xetra']]
+                Filter by exchange. (provider: fmp)
+            limit : Optional[int]
+                Limit the number of results to return. (provider: fmp)
 
-        EquityScreener
-        --------------
-        symbol : str
-            Symbol representing the entity requested in the data.
-        name : str
-            Name of the company.
-        market_cap : Optional[int]
-            The market cap of ticker. (provider: fmp)
-        sector : Optional[str]
-            The sector the ticker belongs to. (provider: fmp)
-        industry : Optional[str]
-            The industry ticker belongs to. (provider: fmp)
-        beta : Optional[float]
-            The beta of the ETF. (provider: fmp)
-        price : Optional[float]
-            The current price. (provider: fmp)
-        last_annual_dividend : Optional[float]
-            The last annual amount dividend paid. (provider: fmp)
-        volume : Optional[int]
-            The current trading volume. (provider: fmp)
-        exchange : Optional[str]
-            The exchange code the asset trades on. (provider: fmp)
-        exchange_name : Optional[str]
-            The full name of the primary exchange. (provider: fmp)
-        country : Optional[str]
-            The two-letter country abbreviation where the head office is located. (provider: fmp)
-        is_etf : Optional[Literal[True, False]]
-            Whether the ticker is an ETF. (provider: fmp)
-        actively_trading : Optional[Literal[True, False]]
-            Whether the ETF is actively trading. (provider: fmp)
+            Returns
+            -------
+            OBBject
+                results : List[EquityScreener]
+                    Serializable results.
+                provider : Optional[Literal['fmp']]
+                    Provider name.
+                warnings : Optional[List[Warning_]]
+                    List of warnings.
+                chart : Optional[Chart]
+                    Chart object.
+                extra : Dict[str, Any]
+                    Extra info.
 
-        Examples
-        --------
-        >>> from openbb import obb
-        >>> obb.equity.screener()
+            EquityScreener
+            --------------
+            symbol : str
+                Symbol representing the entity requested in the data.
+            name : str
+                Name of the company.
+            market_cap : Optional[int]
+                The market cap of ticker. (provider: fmp)
+            sector : Optional[str]
+                The sector the ticker belongs to. (provider: fmp)
+            industry : Optional[str]
+                The industry ticker belongs to. (provider: fmp)
+            beta : Optional[float]
+                The beta of the ETF. (provider: fmp)
+            price : Optional[float]
+                The current price. (provider: fmp)
+            last_annual_dividend : Optional[float]
+                The last annual amount dividend paid. (provider: fmp)
+            volume : Optional[int]
+                The current trading volume. (provider: fmp)
+            exchange : Optional[str]
+                The exchange code the asset trades on. (provider: fmp)
+            exchange_name : Optional[str]
+                The full name of the primary exchange. (provider: fmp)
+            country : Optional[str]
+                The two-letter country abbreviation where the head office is located. (provider: fmp)
+            is_etf : Optional[Literal[True, False]]
+                Whether the ticker is an ETF. (provider: fmp)
+            actively_trading : Optional[Literal[True, False]]
+                Whether the ETF is actively trading. (provider: fmp)
+
+            Examples
+            --------
+            >>> from openbb import obb
+            >>> obb.equity.screener()
         """  # noqa: E501
 
         return self._run(
@@ -508,8 +520,7 @@ class ROUTER_equity(Container):
                         ("fmp",),
                     )
                 },
-                standard_params={
-                },
+                standard_params={},
                 extra_params=kwargs,
             )
         )
@@ -519,8 +530,14 @@ class ROUTER_equity(Container):
     def search(
         self,
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
-        is_symbol: Annotated[bool, OpenBBCustomParameter(description="Whether to search by ticker symbol.")] = False,
-        use_cache: Annotated[Optional[bool], OpenBBCustomParameter(description="Whether to use the cache or not.")] = True,
+        is_symbol: Annotated[
+            bool,
+            OpenBBCustomParameter(description="Whether to search by ticker symbol."),
+        ] = False,
+        use_cache: Annotated[
+            Optional[bool],
+            OpenBBCustomParameter(description="Whether to use the cache or not."),
+        ] = True,
         provider: Optional[Literal["intrinio", "sec"]] = None,
         **kwargs
     ) -> OBBject:

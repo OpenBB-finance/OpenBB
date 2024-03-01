@@ -22,7 +22,9 @@ class ROUTER_equity_shorts(Container):
     @validate
     def fails_to_deliver(
         self,
-        symbol: Annotated[str, OpenBBCustomParameter(description="Symbol to get data for.")],
+        symbol: Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:

@@ -27,7 +27,9 @@ class ROUTER_regulators_sec(Container):
     @validate
     def cik_map(
         self,
-        symbol: Annotated[str, OpenBBCustomParameter(description="Symbol to get data for.")],
+        symbol: Annotated[
+            str, OpenBBCustomParameter(description="Symbol to get data for.")
+        ],
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
@@ -89,7 +91,12 @@ class ROUTER_regulators_sec(Container):
     def institutions_search(
         self,
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
-        use_cache: Annotated[Optional[bool], OpenBBCustomParameter(description="Whether or not to use cache. If True, cache will store for seven days.")] = True,
+        use_cache: Annotated[
+            Optional[bool],
+            OpenBBCustomParameter(
+                description="Whether or not to use cache. If True, cache will store for seven days."
+            ),
+        ] = True,
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
@@ -154,9 +161,7 @@ class ROUTER_regulators_sec(Container):
     @exception_handler
     @validate
     def rss_litigation(
-        self,
-        provider: Optional[Literal["sec"]] = None,
-        **kwargs
+        self, provider: Optional[Literal["sec"]] = None, **kwargs
     ) -> OBBject:
         """The RSS feed provides links to litigation releases concerning civil lawsuits brought by the Commission in federal court.
 
@@ -210,8 +215,7 @@ class ROUTER_regulators_sec(Container):
                         ("sec",),
                     )
                 },
-                standard_params={
-                },
+                standard_params={},
                 extra_params=kwargs,
             )
         )
@@ -221,7 +225,12 @@ class ROUTER_regulators_sec(Container):
     def schema_files(
         self,
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
-        use_cache: Annotated[Optional[bool], OpenBBCustomParameter(description="Whether or not to use cache. If True, cache will store for seven days.")] = True,
+        use_cache: Annotated[
+            Optional[bool],
+            OpenBBCustomParameter(
+                description="Whether or not to use cache. If True, cache will store for seven days."
+            ),
+        ] = True,
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
@@ -288,7 +297,12 @@ class ROUTER_regulators_sec(Container):
     def sic_search(
         self,
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
-        use_cache: Annotated[Optional[bool], OpenBBCustomParameter(description="Whether or not to use cache. If True, cache will store for seven days.")] = True,
+        use_cache: Annotated[
+            Optional[bool],
+            OpenBBCustomParameter(
+                description="Whether or not to use cache. If True, cache will store for seven days."
+            ),
+        ] = True,
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
@@ -357,7 +371,12 @@ class ROUTER_regulators_sec(Container):
     def symbol_map(
         self,
         query: Annotated[str, OpenBBCustomParameter(description="Search query.")] = "",
-        use_cache: Annotated[Optional[bool], OpenBBCustomParameter(description="Whether or not to use cache. If True, cache will store for seven days.")] = True,
+        use_cache: Annotated[
+            Optional[bool],
+            OpenBBCustomParameter(
+                description="Whether or not to use cache. If True, cache will store for seven days."
+            ),
+        ] = True,
         provider: Optional[Literal["sec"]] = None,
         **kwargs
     ) -> OBBject:
