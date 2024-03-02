@@ -93,14 +93,14 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
     @field_validator("last_price_timestamp", mode="before", check_fields=False)
     def validate_timestamp(cls, v):
         """Validate the timestamp."""
-        if isinstance(v, (int, float)):
+        if isinstance(v, (int, float)) and v != 0:
             try:
                 v = datetime.fromtimestamp(v)
                 if v.hour == 0 and v.minute == 0 and v.second == 0:
                     v = v.date()
                 return v
             except ValueError:
-                return v
+                return None
         return None
 
     @field_validator("earnings_date", mode="before", check_fields=False)
