@@ -1674,7 +1674,7 @@ def test_equity_darkpool_otc(params, headers):
 @parametrize(
     "params",
     [
-        ({"provider": "fmp", "market": "EURONEXT"}),
+        ({"provider": "fmp", "market": "euronext"}),
         ({"provider": "polygon"}),  # premium endpoint
     ],
 )
