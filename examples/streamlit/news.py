@@ -48,7 +48,8 @@ button_pressed = False
 SUPPORTED_SOURCES = ["benzinga", "biztoc", "intrinio", "fmp", "tiingo"]
 
 providers = [
-    d for d in list(obb.user.credentials.__dict__.keys())  # type: ignore
+    d
+    for d in list(obb.user.credentials.__dict__.keys())  # type: ignore
     if obb.user.credentials.__dict__[d] is not None  # type: ignore
 ]
 providers = [d.split("_")[0] for d in providers if d.split("_")[0] in SUPPORTED_SOURCES]
