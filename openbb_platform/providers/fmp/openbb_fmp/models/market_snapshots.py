@@ -28,11 +28,6 @@ class FMPMarketSnapshotsQueryParams(MarketSnapshotsQueryParams):
         description="The market to fetch data for.", default="nasdaq"
     )
 
-    @field_validator("market", mode="after", check_fields=False)
-    def validate_market(cls, v):
-        """Allow lower case to be entered."""
-        return v.upper()
-
 
 class FMPMarketSnapshotsData(MarketSnapshotsData):
     """FMP Market Snapshots Data."""
@@ -91,6 +86,7 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
     )
 
     @field_validator("last_price_timestamp", mode="before", check_fields=False)
+    @classmethod
     def validate_timestamp(cls, v):
         """Validate the timestamp."""
         if isinstance(v, (int, float)) and v != 0:
@@ -104,6 +100,7 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
         return None
 
     @field_validator("earnings_date", mode="before", check_fields=False)
+    @classmethod
     def date_validate(cls, v):  # pylint: disable=E0213
         """Validate the ISO date string."""
         if v and ":" in str(v):
