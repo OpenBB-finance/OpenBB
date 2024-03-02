@@ -110,6 +110,7 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
             v = parser.isoparse(str(v))
             if v.hour == 0 and v.minute == 0 and v.second == 0:
                 return v.date()
+            return v
         return parser.parse(str(v)).date() if v else None
 
     @field_validator("change_percent", mode="before", check_fields=False)
