@@ -51,7 +51,7 @@ class FMPMarketSnapshotsData(MarketSnapshotsData):
     last_price: Optional[float] = Field(
         description="The last price of the stock.", default=None
     )
-    last_price_timestamp: Optional[Union[datetime, dateType, int, float]] = Field(
+    last_price_timestamp: Optional[Union[datetime, dateType]] = Field(
         description="The timestamp of the last price.", default=None
     )
     ma50: Optional[float] = Field(
