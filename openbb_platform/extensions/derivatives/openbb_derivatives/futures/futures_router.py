@@ -16,7 +16,11 @@ router = Router(prefix="/futures")
 @router.command(
     model="FuturesHistorical",
     examples=[
-        Example(parameters={"symbol": "ES", "provider": "yfinance"}),
+        Example(parameters={"symbol": "ES"}),
+        Example(
+            description="Enter multiple symbols.",
+            parameters={"symbol": "ES,NQ", "provider": "yfinance"},
+        ),
         Example(
             description='Enter expiration dates as "YYYY-MM".',
             parameters={
@@ -24,10 +28,6 @@ router = Router(prefix="/futures")
                 "provider": "yfinance",
                 "expiration": "2025-12",
             },
-        ),
-        Example(
-            description="Enter multiple symbols as a list.",
-            parameters={"symbol": "ES,NQ,ESZ24.CME,NQZ24.CME", "provider": "yfinance"},
         ),
     ],
 )

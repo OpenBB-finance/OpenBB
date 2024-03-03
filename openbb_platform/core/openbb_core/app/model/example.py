@@ -29,6 +29,11 @@ class Example(BaseModel):
 
         return values
 
+    @property
+    def provider(self) -> Optional[str]:
+        """Return the provider from the parameters."""
+        return self.parameters.get("provider") if self.parameters else None
+
     def to_python(
         self, func_name: str, func_params: Dict[str, Field], indentation: str = ""
     ) -> str:
@@ -58,3 +63,22 @@ class Example(BaseModel):
                 eg += f"{indentation}>>> {line}\n"
 
         return eg
+
+    @staticmethod
+    def filter_list(
+        examples: List["Example"],
+        scopes: List[str],
+        providers: Optional[List[str]] = None,
+    ) -> List["Example"]:
+        """Filter list of examples."""
+        providers = providers or []
+        filtered = []
+        if examples:
+            for e in examples:
+                if e.scope in scopes:
+                    if e.scope == "api":
+                        if e.provider and e.provider in providers:
+                            filtered.append(e)
+                    else:
+                        filtered.append(e)
+        return filtered

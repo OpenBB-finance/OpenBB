@@ -25,7 +25,8 @@ router = Router(prefix="")
                 "end_date": "2023-12-31",
                 "transform": "rdiff",
                 "collapse": "monthly",
-            }),
+            }
+        ),
     ],
 )
 async def lbma_fixing(
