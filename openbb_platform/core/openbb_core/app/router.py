@@ -239,7 +239,7 @@ class Router:
             kwargs["response_model_exclude_unset"] = True
             kwargs["openapi_extra"] = kwargs.get("openapi_extra", {})
             kwargs["openapi_extra"]["model"] = model
-            kwargs["openapi_extra"]["examples"] = None or filter_list(
+            kwargs["openapi_extra"]["examples"] = filter_list(
                 examples=kwargs.pop("examples", []),
                 providers=ProviderInterface().available_providers,
             )
