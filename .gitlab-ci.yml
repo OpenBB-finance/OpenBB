@@ -1,0 +1,30 @@
+image: docker:20.10  # To run all jobs in this pipeline, use a latest docker image
+
+services:
+  - docker:dind 
+
+stages:
+  - build
+  - test
+  - release
+  - preprod
+  - integration
+  - prod
+
+snyk-scan:
+  stage: build
+  image: node:alpine3.10
+  before_script:
+    - wget -O snyk https://github.com/snyk/cli/releases/download/v1.1156.0/snyk-alpine
+    - chmod +x snyk
+    - mv snyk /usr/local/bin/
+  script:
+    - npm install
+    - snyk auth $SNYK_TOKEN
+    - snyk test --json > snyk-results.json
+    - cat snyk-results.json
+  artifacts:
+    paths:
+      - snyk-results.json
+    when: always
+    expire_in: one week
