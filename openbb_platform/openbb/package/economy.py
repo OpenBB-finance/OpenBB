@@ -125,8 +125,6 @@ class ROUTER_economy(Container):
         --------
         >>> from openbb import obb
         >>> obb.economy.calendar(provider='fmp', start_date='2020-03-01', end_date='2020-03-31')
-        >>> # By default, the calendar will be forward-looking.
-        >>> obb.economy.calendar(provider='nasdaq')
         """  # noqa: E501
 
         return self._run(

@@ -73,5 +73,6 @@ class Example(BaseModel):
         return [
             e
             for e in examples
-            if (e.scope == "api" and e.provider in providers) or e.scope != "api"
+            if (e.scope == "api" and (not e.provider or e.provider in providers))
+            or e.scope != "api"
         ]

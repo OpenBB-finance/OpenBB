@@ -126,7 +126,7 @@ class ROUTER_currency_price(Container):
         >>> # Filter historical data with specific start and end date.
         >>> obb.currency.price.historical(symbol='EURUSD', start_date='2023-01-01', end_date='2023-12-31')
         >>> # Get data with different granularity.
-        >>> obb.currency.price.historical(symbol='EURUSD', interval='15m', provider='polygon')
+        >>> obb.currency.price.historical(symbol='EURUSD', provider='polygon', interval='15m')
         """  # noqa: E501
 
         return self._run(

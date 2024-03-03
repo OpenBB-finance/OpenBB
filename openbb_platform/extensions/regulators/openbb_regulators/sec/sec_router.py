@@ -48,6 +48,7 @@ async def institutions_search(
         Example(
             scope="python",
             code=[
+                "#### Get a list of schema files. ####",
                 "data = obb.regulators.sec.schema_files()",
                 "data.files[0]",
                 "    https://xbrl.fasb.org/us-gaap/",

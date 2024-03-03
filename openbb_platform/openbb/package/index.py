@@ -146,8 +146,6 @@ class ROUTER_index(Container):
         --------
         >>> from openbb import obb
         >>> obb.index.constituents(symbol='dowjones', provider='fmp')
-        >>> # Providers other than FMP will use the ticker symbol.
-        >>> obb.index.constituents(symbol='BEP50P', provider='cboe')
         """  # noqa: E501
 
         return self._run(

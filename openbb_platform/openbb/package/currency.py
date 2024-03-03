@@ -116,10 +116,10 @@ class ROUTER_currency(Container):
         >>> obb.currency.search()
         >>> # Search for 'EURUSD' currency pair using 'polygon' as provider.
         >>> obb.currency.search(provider='polygon', symbol='EURUSD')
-        >>> # Search for terms  using 'polygon' as provider.
-        >>> obb.currency.search(provider='polygon', search='Euro zone')
         >>> # Search for actively traded currency pairs on the queried date using 'polygon' as provider.
         >>> obb.currency.search(provider='polygon', date='2024-01-02', active=True)
+        >>> # Search for terms  using 'polygon' as provider.
+        >>> obb.currency.search(provider='polygon', search='Euro zone')
         """  # noqa: E501
 
         return self._run(

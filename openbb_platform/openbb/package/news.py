@@ -340,8 +340,6 @@ class ROUTER_news(Container):
         >>> obb.news.world(topics='finance', provider='benzinga')
         >>> # Get news by source using 'tingo' as provider.
         >>> obb.news.world(provider='tiingo', source='bloomberg')
-        >>> # Filter aticles by term using 'biztoc' as provider.
-        >>> obb.news.world(provider='biztoc', term='apple')
         """  # noqa: E501
 
         return self._run(
