@@ -29,7 +29,17 @@ from openbb_econometrics.utils import get_engle_granger_two_step_cointegration_t
 router = Router(prefix="")
 
 
-@router.command(methods=["POST"])
+@router.command(
+    methods=["POST"],
+    examples=[
+        PythonEx(
+            code=[
+                "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp').to_df()",
+                "obb.econometrics.correlation_matrix(data=stock_data)",
+            ]
+        )
+    ]
+)
 def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
     """Get the correlation matrix of an input dataset.
 
