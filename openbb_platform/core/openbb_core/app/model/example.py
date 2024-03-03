@@ -18,6 +18,8 @@ class Example(BaseModel):
     @classmethod
     def validate_fields(cls, values) -> dict:
         """Validate parameters and code based on scope."""
+        # We could have used pydantic discriminators instead, but makes the code more
+        # complex. We can revisit this in the future.
         scope = values.get("scope", "")
         parameters = values.get("parameters")
         code = values.get("code")
