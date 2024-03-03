@@ -1,4 +1,5 @@
 from abc import abstractmethod
+from dataclasses import Field
 from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, ConfigDict
@@ -32,7 +33,7 @@ class APIEx(Example):
         """Return a Python code representation of the example."""
         indentation = kwargs.get("indentation", "")
         func_name = kwargs.get("func_name", "")
-        func_params = kwargs.get("func_params", {})
+        func_params: Dict[str, Field] = kwargs.get("func_params", {})
         eg = ""
         if self.parameters is not None:
             if self.description:
