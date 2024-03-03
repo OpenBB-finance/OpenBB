@@ -1,7 +1,7 @@
 """Disc router for Equities."""
 
 # pylint: disable=unused-argument
-from openbb_core.app.model import CommandContext, APIEx, OBBject
+from openbb_core.app.model import APIEx, CommandContext, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,

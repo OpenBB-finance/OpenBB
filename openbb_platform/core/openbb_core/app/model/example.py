@@ -9,7 +9,9 @@ class Example(BaseModel):
     """Example model."""
 
     scope: str
-    description: Optional[str] = None  # Should this be required? Would help to create example titles
+    description: Optional[str] = (
+        None  # Should this be required? Would help to create example titles
+    )
 
     model_config = ConfigDict(validate_assignment=True)
 

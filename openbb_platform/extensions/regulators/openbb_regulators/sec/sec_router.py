@@ -1,7 +1,7 @@
 # pylint: disable=W0613:unused-argument
 """SEC Router."""
 
-from openbb_core.app.model import CommandContext, APIEx, PythonEx, OBBject
+from openbb_core.app.model import APIEx, CommandContext, OBBject, PythonEx
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
