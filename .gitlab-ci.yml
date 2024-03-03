@@ -5,11 +5,6 @@ services:
 
 stages:
   - build
-  - test
-  - release
-  - preprod
-  - integration
-  - prod
 
 snyk-scan:
   stage: build
