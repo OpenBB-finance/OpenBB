@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-
+      
 jobs:
   security_scan:
     runs-on: ubuntu-20.04
