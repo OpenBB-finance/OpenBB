@@ -67,18 +67,11 @@ class Example(BaseModel):
     @staticmethod
     def filter_list(
         examples: List["Example"],
-        scopes: List[str],
-        providers: Optional[List[str]] = None,
+        providers: List[str],
     ) -> List["Example"]:
         """Filter list of examples."""
-        providers = providers or []
-        filtered = []
-        if examples:
-            for e in examples:
-                if e.scope in scopes:
-                    if e.scope == "api":
-                        if e.provider and e.provider in providers:
-                            filtered.append(e)
-                    else:
-                        filtered.append(e)
-        return filtered
+        return [
+            e
+            for e in examples
+            if (e.scope == "api" and e.provider in providers) or e.scope != "api"
+        ]

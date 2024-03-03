@@ -241,7 +241,6 @@ class Router:
             kwargs["openapi_extra"]["model"] = model
             kwargs["openapi_extra"]["examples"] = None or Example.filter_list(
                 examples=kwargs.pop("examples", []),
-                scopes=["api"],
                 providers=ProviderInterface().available_providers,
             )
             kwargs["operation_id"] = kwargs.get(
