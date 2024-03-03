@@ -875,7 +875,11 @@ class DocstringGenerator:
             doc += f"{indentation}>>> from openbb import obb\n"
 
             for e in examples:
-                doc += e.to_python(func_name, func_params, indentation)
+                doc += e.to_python(
+                    func_name=func_name,
+                    func_params=func_params,
+                    indentation=indentation,
+                )
             return doc
         return ""
 

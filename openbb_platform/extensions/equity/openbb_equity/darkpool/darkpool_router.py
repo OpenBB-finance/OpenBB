@@ -1,6 +1,6 @@
 """Dark Pool Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -17,7 +17,7 @@ router = Router(prefix="/darkpool")
 @router.command(
     model="OTCAggregate",
     examples=[
-        Example(
+        APIEx(
             description="Get OTC data for a symbol",
             parameters={"symbol": "AAPL"},
         ),

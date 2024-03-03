@@ -1,6 +1,6 @@
 """The Currency router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -19,16 +19,16 @@ router.include_router(price_router)
 @router.command(
     model="CurrencyPairs",
     examples=[
-        Example(parameters={}),
-        Example(
+        APIEx(parameters={}),
+        APIEx(
             description="Search for 'EURUSD' currency pair using 'polygon' as provider.",
             parameters={"provider": "polygon", "symbol": "EURUSD"},
         ),
-        Example(
+        APIEx(
             description="Search for actively traded currency pairs on the queried date using 'polygon' as provider.",
             parameters={"provider": "polygon", "date": "2024-01-02", "active": True},
         ),
-        Example(
+        APIEx(
             description="Search for terms  using 'polygon' as provider.",
             parameters={"provider": "polygon", "search": "Euro zone"},
         ),
@@ -55,7 +55,7 @@ async def search(
 
 @router.command(
     model="CurrencyReferenceRates",
-    examples=[Example(parameters={})],
+    examples=[APIEx(parameters={})],
 )
 async def reference_rates(
     cc: CommandContext,

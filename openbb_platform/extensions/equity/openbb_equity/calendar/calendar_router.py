@@ -1,6 +1,6 @@
 """Calendar Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -17,9 +17,9 @@ router = Router(prefix="/calendar")
 @router.command(
     model="CalendarIpo",
     examples=[
-        Example(parameters={"limit": 100}),
-        Example(description="Get all IPOs available.", parameters={}),
-        Example(
+        APIEx(parameters={"limit": 100}),
+        APIEx(description="Get all IPOs available.", parameters={}),
+        APIEx(
             description="Get IPOs for specific dates.",
             parameters={"start_date": "2024-02-01", "end_date": "2024-02-07"},
         ),
@@ -38,8 +38,8 @@ async def ipo(
 @router.command(
     model="CalendarDividend",
     examples=[
-        Example(parameters={}),
-        Example(
+        APIEx(parameters={}),
+        APIEx(
             description="Get dividend calendar for specific dates.",
             parameters={
                 "start_date": "2024-02-01",
@@ -61,8 +61,8 @@ async def dividend(
 @router.command(
     model="CalendarSplits",
     examples=[
-        Example(parameters={}),
-        Example(
+        APIEx(parameters={}),
+        APIEx(
             description="Get stock splits calendar for specific dates.",
             parameters={
                 "start_date": "2024-02-01",
@@ -84,8 +84,8 @@ async def splits(
 @router.command(
     model="CalendarEarnings",
     examples=[
-        Example(parameters={}),
-        Example(
+        APIEx(parameters={}),
+        APIEx(
             description="Get earnings calendar for specific dates.",
             parameters={"start_date": "2024-02-01", "end_date": "2024-02-07"},
         ),

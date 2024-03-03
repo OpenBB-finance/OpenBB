@@ -1,6 +1,6 @@
 """Equity Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -36,7 +36,7 @@ router.include_router(shorts_router)
 @router.command(
     model="EquitySearch",
     examples=[
-        Example(parameters={"query": "AAPL", "is_symbol": False, "use_cache": True})
+        APIEx(parameters={"query": "AAPL", "is_symbol": False, "use_cache": True})
     ],
 )
 async def search(
@@ -49,7 +49,7 @@ async def search(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EquityScreener", examples=[Example(parameters={})])
+@router.command(model="EquityScreener", examples=[APIEx(parameters={})])
 async def screener(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -61,7 +61,7 @@ async def screener(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EquityInfo", examples=[Example(parameters={"symbol": "AAPL"})])
+@router.command(model="EquityInfo", examples=[APIEx(parameters={"symbol": "AAPL"})])
 async def profile(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -72,7 +72,7 @@ async def profile(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="MarketSnapshots", examples=[Example(parameters={})])
+@router.command(model="MarketSnapshots", examples=[APIEx(parameters={})])
 async def market_snapshots(
     cc: CommandContext,
     provider_choices: ProviderChoices,

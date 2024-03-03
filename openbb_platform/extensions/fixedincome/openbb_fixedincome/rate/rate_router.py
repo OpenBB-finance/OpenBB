@@ -1,6 +1,6 @@
 """Fixed Income Rate Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -16,7 +16,7 @@ router = Router(prefix="/rate")
 
 @router.command(
     model="AMERIBOR",
-    examples=[Example(parameters={"parameter": "30_day_ma"})],
+    examples=[APIEx(parameters={"parameter": "30_day_ma"})],
 )
 async def ameribor(
     cc: CommandContext,
@@ -35,7 +35,7 @@ async def ameribor(
 
 @router.command(
     model="SONIA",
-    examples=[Example(parameters={"parameter": "total_nominal_value"})],
+    examples=[APIEx(parameters={"parameter": "total_nominal_value"})],
 )
 async def sonia(
     cc: CommandContext,
@@ -54,7 +54,7 @@ async def sonia(
 
 @router.command(
     model="IORB",
-    examples=[Example(parameters={})],
+    examples=[APIEx(parameters={})],
 )
 async def iorb(
     cc: CommandContext,
@@ -73,7 +73,7 @@ async def iorb(
 
 @router.command(
     model="FEDFUNDS",
-    examples=[Example(parameters={"parameter": "daily", "provider": "fred"})],
+    examples=[APIEx(parameters={"parameter": "daily", "provider": "fred"})],
 )
 async def effr(
     cc: CommandContext,
@@ -92,7 +92,7 @@ async def effr(
 
 @router.command(
     model="PROJECTIONS",
-    examples=[Example(parameters={"long_run": True})],
+    examples=[APIEx(parameters={"long_run": True})],
 )
 async def effr_forecast(
     cc: CommandContext,
@@ -112,7 +112,7 @@ async def effr_forecast(
 
 @router.command(
     model="ESTR",
-    examples=[Example(parameters={"parameter": "number_of_active_banks"})],
+    examples=[APIEx(parameters={"parameter": "number_of_active_banks"})],
 )
 async def estr(
     cc: CommandContext,
@@ -132,7 +132,7 @@ async def estr(
 
 @router.command(
     model="EuropeanCentralBankInterestRates",
-    examples=[Example(parameters={"interest_rate_type": "refinancing"})],
+    examples=[APIEx(parameters={"interest_rate_type": "refinancing"})],
 )
 async def ecb(
     cc: CommandContext,
@@ -154,9 +154,7 @@ async def ecb(
 
 @router.command(
     model="DiscountWindowPrimaryCreditRate",
-    examples=[
-        Example(parameters={"start_date": "2023-02-01", "end_date": "2023-05-01"})
-    ],
+    examples=[APIEx(parameters={"start_date": "2023-02-01", "end_date": "2023-05-01"})],
 )
 async def dpcredit(
     cc: CommandContext,

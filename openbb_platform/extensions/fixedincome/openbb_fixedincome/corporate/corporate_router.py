@@ -1,6 +1,6 @@
 """Fixed Income Corporate Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -16,7 +16,7 @@ router = Router(prefix="/corporate")
 
 @router.command(
     model="ICEBofA",
-    examples=[Example(parameters={"index_type": "yield_to_worst"})],
+    examples=[APIEx(parameters={"index_type": "yield_to_worst"})],
 )
 async def ice_bofa(
     cc: CommandContext,
@@ -37,7 +37,7 @@ async def ice_bofa(
 
 @router.command(
     model="MoodyCorporateBondIndex",
-    examples=[Example(parameters={"index_type": "baa"})],
+    examples=[APIEx(parameters={"index_type": "baa"})],
 )
 async def moody(
     cc: CommandContext,
@@ -57,7 +57,7 @@ async def moody(
 
 @router.command(
     model="HighQualityMarketCorporateBond",
-    examples=[Example(parameters={"yield_curve": "par"})],
+    examples=[APIEx(parameters={"yield_curve": "par"})],
 )
 async def hqm(
     cc: CommandContext,
@@ -77,7 +77,7 @@ async def hqm(
 
 @router.command(
     model="SpotRate",
-    examples=[Example(parameters={"maturity": [10, 20, 30, 50]})],
+    examples=[APIEx(parameters={"maturity": [10, 20, 30, 50]})],
 )
 async def spot_rates(
     cc: CommandContext,
@@ -97,7 +97,7 @@ async def spot_rates(
 
 @router.command(
     model="CommercialPaper",
-    examples=[Example(parameters={"maturity": "15d"})],
+    examples=[APIEx(parameters={"maturity": "15d"})],
 )
 async def commercial_paper(
     cc: CommandContext,
@@ -115,7 +115,7 @@ async def commercial_paper(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="BondPrices", examples=[Example(parameters={})])
+@router.command(model="BondPrices", examples=[APIEx(parameters={})])
 async def bond_prices(
     cc: CommandContext,
     provider_choices: ProviderChoices,

@@ -1,7 +1,7 @@
 # pylint: disable=W0613:unused-argument
 """Comparison Analysis Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -15,7 +15,7 @@ router = Router(prefix="/compare")
 
 @router.command(
     model="EquityPeers",
-    examples=[Example(parameters={"symbol": "AAPL"})],
+    examples=[APIEx(parameters={"symbol": "AAPL"})],
 )
 async def peers(
     cc: CommandContext,
@@ -33,15 +33,15 @@ async def peers(
 @router.command(
     model="CompareGroups",
     examples=[
-        Example(
+        APIEx(
             description="Group by sector and analyze valuation.",
             parameters={"group": "sector", "metric": "valuation"},
         ),
-        Example(
+        APIEx(
             description="Group by industry and analyze performance.",
             parameters={"group": "industry", "metric": "performance"},
         ),
-        Example(
+        APIEx(
             description="Group by country and analyze valuation.",
             parameters={"group": "country", "metric": "valuation"},
         ),

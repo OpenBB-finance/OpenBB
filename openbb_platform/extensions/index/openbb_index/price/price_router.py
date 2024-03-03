@@ -1,6 +1,6 @@
 """Price Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -17,8 +17,8 @@ router = Router(prefix="/price")
 @router.command(
     model="IndexHistorical",
     examples=[
-        Example(parameters={"symbol": "^GSPC", "provider": "fmp"}),
-        Example(
+        APIEx(parameters={"symbol": "^GSPC", "provider": "fmp"}),
+        APIEx(
             description="Not all providers have the same symbols.",
             parameters={"symbol": "SPX", "provider": "intrinio"},
         ),

@@ -1,6 +1,6 @@
 """Futures Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -16,12 +16,12 @@ router = Router(prefix="/futures")
 @router.command(
     model="FuturesHistorical",
     examples=[
-        Example(parameters={"symbol": "ES"}),
-        Example(
+        APIEx(parameters={"symbol": "ES"}),
+        APIEx(
             description="Enter multiple symbols.",
             parameters={"symbol": "ES,NQ", "provider": "yfinance"},
         ),
-        Example(
+        APIEx(
             description='Enter expiration dates as "YYYY-MM".',
             parameters={
                 "symbol": "ES",
@@ -44,8 +44,8 @@ async def historical(
 @router.command(
     model="FuturesCurve",
     examples=[
-        Example(parameters={"symbol": "NG", "provider": "yfinance"}),
-        Example(
+        APIEx(parameters={"symbol": "NG", "provider": "yfinance"}),
+        APIEx(
             description="Enter a date to get the term structure from a historical date.",
             parameters={"symbol": "NG", "provider": "yfinance", "date": "2023-01-01"},
         ),

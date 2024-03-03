@@ -1,6 +1,6 @@
 """The Commodity router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -17,8 +17,8 @@ router = Router(prefix="")
 @router.command(
     model="LbmaFixing",
     examples=[
-        Example(parameters={"asset": "gold"}),
-        Example(
+        APIEx(parameters={"asset": "gold"}),
+        APIEx(
             parameters={
                 "asset": "silver",
                 "start_date": "2023-01-01",

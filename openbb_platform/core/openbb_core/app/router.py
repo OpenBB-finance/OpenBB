@@ -28,7 +28,7 @@ from openbb_core.app.deprecation import DeprecationSummary, OpenBBDeprecationWar
 from openbb_core.app.extension_loader import ExtensionLoader
 from openbb_core.app.model.abstract.warning import OpenBBWarning
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import Example
+from openbb_core.app.model.example import filter_list
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -239,7 +239,7 @@ class Router:
             kwargs["response_model_exclude_unset"] = True
             kwargs["openapi_extra"] = kwargs.get("openapi_extra", {})
             kwargs["openapi_extra"]["model"] = model
-            kwargs["openapi_extra"]["examples"] = None or Example.filter_list(
+            kwargs["openapi_extra"]["examples"] = None or filter_list(
                 examples=kwargs.pop("examples", []),
                 providers=ProviderInterface().available_providers,
             )

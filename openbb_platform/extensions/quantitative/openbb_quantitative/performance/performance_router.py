@@ -2,7 +2,7 @@ from typing import List
 
 import numpy as np
 import pandas as pd
-from openbb_core.app.model import Example, OBBject
+from openbb_core.app.model import PythonEx, OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
     basemodel_to_df,
@@ -22,8 +22,7 @@ router = Router(prefix="/performance")
 @router.command(
     methods=["POST"],
     examples=[
-        Example(
-            scope="python",
+        PythonEx(
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -86,8 +85,7 @@ def omega_ratio(
 @router.command(
     methods=["POST"],
     examples=[
-        Example(
-            scope="python",
+        PythonEx(
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -145,8 +143,7 @@ def sharpe_ratio(
 @router.command(
     methods=["POST"],
     examples=[
-        Example(
-            scope="python",
+        PythonEx(
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',

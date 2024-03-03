@@ -1,6 +1,6 @@
 """Price Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -14,7 +14,7 @@ router = Router(prefix="/price")
 # pylint: disable=unused-argument
 
 
-@router.command(model="EquityQuote", examples=[Example(parameters={"symbol": "AAPL"})])
+@router.command(model="EquityQuote", examples=[APIEx(parameters={"symbol": "AAPL"})])
 async def quote(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -25,7 +25,7 @@ async def quote(
     return await OBBject.from_query(Query(**locals()))
 
 
-@router.command(model="EquityNBBO", examples=[Example(parameters={"symbol": "AAPL"})])
+@router.command(model="EquityNBBO", examples=[APIEx(parameters={"symbol": "AAPL"})])
 async def nbbo(
     cc: CommandContext,
     provider_choices: ProviderChoices,
@@ -38,7 +38,7 @@ async def nbbo(
 
 @router.command(
     model="EquityHistorical",
-    examples=[Example(parameters={"symbol": "AAPL", "interval": "1d"})],
+    examples=[APIEx(parameters={"symbol": "AAPL", "interval": "1d"})],
 )
 async def historical(
     cc: CommandContext,
@@ -51,7 +51,7 @@ async def historical(
 
 
 @router.command(
-    model="PricePerformance", examples=[Example(parameters={"symbol": "AAPL"})]
+    model="PricePerformance", examples=[APIEx(parameters={"symbol": "AAPL"})]
 )
 async def performance(
     cc: CommandContext,

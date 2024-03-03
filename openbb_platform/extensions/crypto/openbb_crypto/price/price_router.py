@@ -1,7 +1,7 @@
 # pylint: disable=W0613:unused-argument
 """Crypto Price Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -17,22 +17,22 @@ router = Router(prefix="/price")
 @router.command(
     model="CryptoHistorical",
     examples=[
-        Example(parameters={"symbol": "BTCUSD"}),
-        Example(
+        APIEx(parameters={"symbol": "BTCUSD"}),
+        APIEx(
             parameters={
                 "symbol": "BTCUSD",
                 "start_date": "2024-01-01",
                 "end_date": "2024-01-31",
             },
         ),
-        Example(
+        APIEx(
             parameters={
                 "symbol": "BTCUSD,ETHUSD",
                 "start_date": "2024-01-01",
                 "end_date": "2024-01-31",
             },
         ),
-        Example(
+        APIEx(
             parameters={
                 "symbol": "ETH-USD",
                 "provider": "yfinance",

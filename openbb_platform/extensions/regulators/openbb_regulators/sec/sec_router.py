@@ -1,7 +1,7 @@
 # pylint: disable=W0613:unused-argument
 """SEC Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, PythonEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -15,7 +15,7 @@ router = Router(prefix="/sec")
 
 @router.command(
     model="CikMap",
-    examples=[Example(parameters={"symbol": "MSFT"})],
+    examples=[APIEx(parameters={"symbol": "MSFT"})],
 )
 async def cik_map(
     cc: CommandContext,
@@ -29,7 +29,7 @@ async def cik_map(
 
 @router.command(
     model="InstitutionsSearch",
-    examples=[Example(parameters={"query": "blackstone real estate"})],
+    examples=[APIEx(parameters={"query": "blackstone real estate"})],
 )
 async def institutions_search(
     cc: CommandContext,
@@ -44,9 +44,8 @@ async def institutions_search(
 @router.command(
     model="SchemaFiles",
     examples=[
-        Example(parameters={}),
-        Example(
-            scope="python",
+        APIEx(parameters={}),
+        PythonEx(
             code=[
                 "#### Get a list of schema files. ####",
                 "data = obb.regulators.sec.schema_files()",
@@ -82,7 +81,7 @@ async def schema_files(
 
 @router.command(
     model="SymbolMap",
-    examples=[Example(parameters={"cik": "0000789019"})],
+    examples=[APIEx(parameters={"cik": "0000789019"})],
 )
 async def symbol_map(
     cc: CommandContext,
@@ -96,7 +95,7 @@ async def symbol_map(
 
 @router.command(
     model="RssLitigation",
-    examples=[Example(parameters={})],
+    examples=[APIEx(parameters={})],
 )
 async def rss_litigation(
     cc: CommandContext,
@@ -110,7 +109,7 @@ async def rss_litigation(
 
 @router.command(
     model="SicSearch",
-    examples=[Example(parameters={"query": "real estate investment trusts"})],
+    examples=[APIEx(parameters={"query": "real estate investment trusts"})],
 )
 async def sic_search(
     cc: CommandContext,

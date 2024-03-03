@@ -1,6 +1,6 @@
 """Options Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -17,8 +17,8 @@ router = Router(prefix="/options")
 @router.command(
     model="OptionsChains",
     examples=[
-        Example(parameters={"symbol": "AAPL", "provider": "intrinio"}),
-        Example(
+        APIEx(parameters={"symbol": "AAPL", "provider": "intrinio"}),
+        APIEx(
             description='Use the "date" parameter to get the end-of-day-data for a specific date, where supported.',
             parameters={"symbol": "AAPL", "date": "2023-01-25", "provider": "intrinio"},
         ),
@@ -37,8 +37,8 @@ async def chains(
 @router.command(
     model="OptionsUnusual",
     examples=[
-        Example(parameters={}),
-        Example(
+        APIEx(parameters={}),
+        APIEx(
             description="Use the 'symbol' parameter to get the most recent activity for a specific symbol.",
             parameters={"symbol": "TSLA"},
         ),

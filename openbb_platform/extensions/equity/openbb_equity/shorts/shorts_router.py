@@ -1,6 +1,6 @@
 """Shorts Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -16,7 +16,7 @@ router = Router(prefix="/shorts")
 
 @router.command(
     model="EquityFTD",
-    examples=[Example(parameters={"symbol": "AAPL"})],
+    examples=[APIEx(parameters={"symbol": "AAPL"})],
 )
 async def fails_to_deliver(
     cc: CommandContext,
@@ -30,7 +30,7 @@ async def fails_to_deliver(
 
 @router.command(
     model="ShortVolume",
-    examples=[Example(parameters={"symbol": "AAPL"})],
+    examples=[APIEx(parameters={"symbol": "AAPL"})],
 )
 async def short_volume(
     cc: CommandContext,
@@ -44,7 +44,7 @@ async def short_volume(
 
 @router.command(
     model="EquityShortInterest",
-    examples=[Example(parameters={"symbol": "AAPL"})],
+    examples=[APIEx(parameters={"symbol": "AAPL"})],
 )
 async def short_interest(
     cc: CommandContext,

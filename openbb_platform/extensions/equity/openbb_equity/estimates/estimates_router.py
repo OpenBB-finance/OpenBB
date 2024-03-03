@@ -1,6 +1,6 @@
 """Estimates Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -17,7 +17,7 @@ router = Router(prefix="/estimates")
 @router.command(
     model="PriceTarget",
     examples=[
-        Example(
+        APIEx(
             parameters={
                 "start_date": "2020-01-01",
                 "end_date": "2024-02-16",
@@ -41,7 +41,7 @@ async def price_target(
 
 @router.command(
     model="AnalystEstimates",
-    examples=[Example(parameters={"symbol": "AAPL", "provider": "fmp"})],
+    examples=[APIEx(parameters={"symbol": "AAPL", "provider": "fmp"})],
 )
 async def historical(
     cc: CommandContext,
@@ -55,7 +55,7 @@ async def historical(
 
 @router.command(
     model="PriceTargetConsensus",
-    examples=[Example(parameters={"symbol": "AAPL,MSFT", "provider": "yfinance"})],
+    examples=[APIEx(parameters={"symbol": "AAPL,MSFT", "provider": "yfinance"})],
 )
 async def consensus(
     cc: CommandContext,
@@ -69,7 +69,7 @@ async def consensus(
 
 @router.command(
     model="AnalystSearch",
-    examples=[Example(parameters={"firm_name": "Wedbush", "provider": "benzinga"})],
+    examples=[APIEx(parameters={"firm_name": "Wedbush", "provider": "benzinga"})],
 )
 async def analyst_search(
     cc: CommandContext,

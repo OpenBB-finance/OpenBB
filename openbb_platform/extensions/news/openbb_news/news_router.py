@@ -1,7 +1,7 @@
 # pylint: disable=import-outside-toplevel, W0613:unused-argument
 """News Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -16,24 +16,24 @@ router = Router(prefix="")
 @router.command(
     model="WorldNews",
     examples=[
-        Example(parameters={"limit": 2500}),
-        Example(
+        APIEx(parameters={"limit": 2500}),
+        APIEx(
             description="Get news on the specified dates.",
             parameters={"start_date": "2024-02-01", "end_date": "2024-02-07"},
         ),
-        Example(
+        APIEx(
             description="Display the headlines of the news.",
             parameters={"display": "headline", "provider": "benzinga"},
         ),
-        Example(
+        APIEx(
             description="Get news by topics.",
             parameters={"topics": "finance", "provider": "benzinga"},
         ),
-        Example(
+        APIEx(
             description="Get news by source using 'tingo' as provider.",
             parameters={"provider": "tiingo", "source": "bloomberg"},
         ),
-        Example(
+        APIEx(
             description="Filter aticles by term using 'biztoc' as provider.",
             parameters={"provider": "biztoc", "term": "apple"},
         ),
@@ -52,8 +52,8 @@ async def world(
 @router.command(
     model="CompanyNews",
     examples=[
-        Example(parameters={"limit": 2500}),
-        Example(
+        APIEx(parameters={"limit": 2500}),
+        APIEx(
             description="Get news on the specified dates.",
             parameters={
                 "symbol": "AAPL",
@@ -61,7 +61,7 @@ async def world(
                 "end_date": "2024-02-07",
             },
         ),
-        Example(
+        APIEx(
             description="Display the headlines of the news.",
             parameters={
                 "symbol": "AAPL",
@@ -69,11 +69,11 @@ async def world(
                 "provider": "benzinga",
             },
         ),
-        Example(
+        APIEx(
             description="Get news for multiple symbols.",
             parameters={"symbol": "aapl,tsla"},
         ),
-        Example(
+        APIEx(
             description="Get news company's ISIN.",
             parameters={"symbol": "NVDA", "isin": "US0378331005"},
         ),

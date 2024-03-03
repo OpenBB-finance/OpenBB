@@ -1,6 +1,6 @@
 """Ownership Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -16,7 +16,7 @@ router = Router(prefix="/ownership")
 
 @router.command(
     model="EquityOwnership",
-    examples=[Example(parameters={"symbol": "AAPL", "page": 0})],
+    examples=[APIEx(parameters={"symbol": "AAPL", "page": 0})],
 )
 async def major_holders(
     cc: CommandContext,
@@ -30,7 +30,7 @@ async def major_holders(
 
 @router.command(
     model="InstitutionalOwnership",
-    examples=[Example(parameters={"symbol": "AAPL"})],
+    examples=[APIEx(parameters={"symbol": "AAPL"})],
 )
 async def institutional(
     cc: CommandContext,
@@ -44,7 +44,7 @@ async def institutional(
 
 @router.command(
     model="InsiderTrading",
-    examples=[Example(parameters={"symbol": "AAPL", "limit": 500})],
+    examples=[APIEx(parameters={"symbol": "AAPL", "limit": 500})],
 )
 async def insider_trading(
     cc: CommandContext,
@@ -57,7 +57,7 @@ async def insider_trading(
 
 
 @router.command(
-    model="ShareStatistics", examples=[Example(parameters={"symbol": "AAPL"})]
+    model="ShareStatistics", examples=[APIEx(parameters={"symbol": "AAPL"})]
 )
 async def share_statistics(
     cc: CommandContext,

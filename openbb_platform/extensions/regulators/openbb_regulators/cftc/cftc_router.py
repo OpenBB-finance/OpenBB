@@ -1,7 +1,7 @@
 # pylint: disable=W0613:unused-argument
 """Commodity Futures Trading Commission (CFTC) Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -15,7 +15,7 @@ router = Router(prefix="/cftc")
 
 @router.command(
     model="COTSearch",
-    examples=[Example(parameters={"query": "gold"})],
+    examples=[APIEx(parameters={"query": "gold"})],
 )
 async def cot_search(
     cc: CommandContext,
@@ -33,15 +33,15 @@ async def cot_search(
 @router.command(
     model="COT",
     examples=[
-        Example(
+        APIEx(
             description="Get the Commitment of Traders Report for Gold.",
             parameters={"series_id": "GC=F"},
         ),
-        Example(
+        APIEx(
             description="Enter the report ID by the Nasdaq Data Link Code.",
             parameters={"series_id": "088691"},
         ),
-        Example(
+        APIEx(
             description="Get the report for futures only.",
             parameters={"series_id": "088691", "data_type": "F"},
         ),

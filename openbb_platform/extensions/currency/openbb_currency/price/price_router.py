@@ -1,7 +1,7 @@
 """Price router for Currency."""
 
 # pylint: disable=unused-argument
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -17,8 +17,8 @@ router = Router(prefix="/price")
 @router.command(
     model="CurrencyHistorical",
     examples=[
-        Example(parameters={"symbol": "EURUSD"}),
-        Example(
+        APIEx(parameters={"symbol": "EURUSD"}),
+        APIEx(
             description="Filter historical data with specific start and end date.",
             parameters={
                 "symbol": "EURUSD",
@@ -26,7 +26,7 @@ router = Router(prefix="/price")
                 "end_date": "2023-12-31",
             },
         ),
-        Example(
+        APIEx(
             description="Get data with different granularity.",
             parameters={"symbol": "EURUSD", "provider": "polygon", "interval": "15m"},
         ),

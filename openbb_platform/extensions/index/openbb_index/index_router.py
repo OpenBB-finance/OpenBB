@@ -1,7 +1,7 @@
 """Index Router."""
 
 from openbb_core.app.deprecation import OpenBBDeprecationWarning
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -26,7 +26,7 @@ router.include_router(price_router)
         since=(4, 1),
         expected_removal=(4, 3),
     ),
-    examples=[Example(parameters={"symbol": "SPX"})],
+    examples=[APIEx(parameters={"symbol": "SPX"})],
 )
 async def market(
     cc: CommandContext,
@@ -41,8 +41,8 @@ async def market(
 @router.command(
     model="IndexConstituents",
     examples=[
-        Example(parameters={"symbol": "dowjones", "provider": "fmp"}),
-        Example(
+        APIEx(parameters={"symbol": "dowjones", "provider": "fmp"}),
+        APIEx(
             description="Providers other than FMP will use the ticker symbol.",
             parameters={"symbol": "BEP50P", "provider": "cboe"},
         ),
@@ -60,7 +60,7 @@ async def constituents(
 
 @router.command(
     model="IndexSnapshots",
-    examples=[Example(parameters={"region": "us", "provider": "cboe"})],
+    examples=[APIEx(parameters={"region": "us", "provider": "cboe"})],
 )
 async def snapshots(
     cc: CommandContext,
@@ -74,7 +74,7 @@ async def snapshots(
 
 @router.command(
     model="AvailableIndices",
-    examples=[Example(parameters={"provider": "yfinance"})],
+    examples=[APIEx(parameters={"provider": "yfinance"})],
 )
 async def available(
     cc: CommandContext,
@@ -88,7 +88,7 @@ async def available(
 
 @router.command(
     model="IndexSearch",
-    examples=[Example(parameters={"query": "SPX", "provider": "cboe"})],
+    examples=[APIEx(parameters={"query": "SPX", "provider": "cboe"})],
 )
 async def search(
     cc: CommandContext,
@@ -103,7 +103,7 @@ async def search(
 @router.command(
     model="SP500Multiples",
     examples=[
-        Example(parameters={"series_name": "shiller_pe_year", "provider": "nasdaq"})
+        APIEx(parameters={"series_name": "shiller_pe_year", "provider": "nasdaq"})
     ],
 )
 async def sp500_multiples(
@@ -118,7 +118,7 @@ async def sp500_multiples(
 
 @router.command(
     model="IndexSectors",
-    examples=[Example(parameters={"symbol": "^TX60", "provider": "tmx"})],
+    examples=[APIEx(parameters={"symbol": "^TX60", "provider": "tmx"})],
 )
 async def sectors(
     cc: CommandContext,

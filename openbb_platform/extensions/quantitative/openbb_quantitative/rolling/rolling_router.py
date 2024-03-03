@@ -3,7 +3,7 @@
 from typing import List
 
 import pandas as pd
-from openbb_core.app.model import Example, OBBject
+from openbb_core.app.model import PythonEx, OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
     basemodel_to_df,
@@ -27,8 +27,7 @@ router = Router(prefix="/rolling")
 @router.command(
     methods=["POST"],
     examples=[
-        Example(
-            scope="python",
+        PythonEx(
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -81,8 +80,7 @@ def skew(
 @router.command(
     methods=["POST"],
     examples=[
-        Example(
-            scope="python",
+        PythonEx(
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -128,8 +126,7 @@ def variance(
 @router.command(
     methods=["POST"],
     examples=[
-        Example(
-            scope="python",
+        PythonEx(
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -179,8 +176,7 @@ def stdev(
 @router.command(
     methods=["POST"],
     examples=[
-        Example(
-            scope="python",
+        PythonEx(
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -232,8 +228,7 @@ def kurtosis(
 @router.command(
     methods=["POST"],
     examples=[
-        Example(
-            scope="python",
+        PythonEx(
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -302,8 +297,7 @@ def quantile(
 @router.command(
     methods=["POST"],
     examples=[
-        Example(
-            scope="python",
+        PythonEx(
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',

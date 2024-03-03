@@ -1,6 +1,6 @@
 """Fixed Income Government Router."""
 
-from openbb_core.app.model import CommandContext, Example, OBBject
+from openbb_core.app.model import CommandContext, APIEx, OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
     ProviderChoices,
@@ -16,7 +16,7 @@ router = Router(prefix="/government")
 
 @router.command(
     model="USYieldCurve",
-    examples=[Example(parameters={"inflation_adjusted": True})],
+    examples=[APIEx(parameters={"inflation_adjusted": True})],
 )
 async def us_yield_curve(
     cc: CommandContext,
@@ -30,7 +30,7 @@ async def us_yield_curve(
 
 @router.command(
     model="EUYieldCurve",
-    examples=[Example(parameters={"yield_curve_type": "spot_rate"})],
+    examples=[APIEx(parameters={"yield_curve_type": "spot_rate"})],
 )
 async def eu_yield_curve(
     cc: CommandContext,
@@ -63,7 +63,7 @@ async def eu_yield_curve(
 
 @router.command(
     model="TreasuryRates",
-    examples=[Example(parameters={"provider": "federal_reserve"})],
+    examples=[APIEx(parameters={"provider": "federal_reserve"})],
 )
 async def treasury_rates(
     cc: CommandContext,
@@ -78,7 +78,7 @@ async def treasury_rates(
 @router.command(
     model="TreasuryAuctions",
     examples=[
-        Example(
+        APIEx(
             parameters={
                 "security_type": "Bill",
                 "start_date": "2022-01-01",
@@ -99,7 +99,7 @@ async def treasury_auctions(
 
 @router.command(
     model="TreasuryPrices",
-    examples=[Example(parameters={"date": "2019-02-05"})],
+    examples=[APIEx(parameters={"date": "2019-02-05"})],
 )
 async def treasury_prices(
     cc: CommandContext,
