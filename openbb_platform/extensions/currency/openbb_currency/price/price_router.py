@@ -28,7 +28,7 @@ router = Router(prefix="/price")
         ),
         Example(
             description="Get data with different granularity.",
-            parameters={"symbol": "EURUSD", "interval": "15m", "provider": "polygon"},
+            parameters={"symbol": "EURUSD", "provider": "polygon", "interval": "15m"},
         ),
     ],
 )

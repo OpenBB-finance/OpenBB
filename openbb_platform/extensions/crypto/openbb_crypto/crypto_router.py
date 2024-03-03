@@ -20,8 +20,7 @@ router.include_router(price_router)
     model="CryptoSearch",
     examples=[
         Example(parameters={}),
-        Example(parameters={"symbol": "BTCUSD"}),
-        Example(parameters={"symbol": "ETH-USD"}),
+        Example(parameters={"query": "BTCUSD"}),
     ],
 )
 async def search(

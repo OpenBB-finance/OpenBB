@@ -25,12 +25,12 @@ router.include_router(price_router)
             parameters={"provider": "polygon", "symbol": "EURUSD"},
         ),
         Example(
-            description="Search for terms  using 'polygon' as provider.",
-            parameters={"provider": "polygon", "search": "Euro zone"},
-        ),
-        Example(
             description="Search for actively traded currency pairs on the queried date using 'polygon' as provider.",
             parameters={"provider": "polygon", "date": "2024-01-02", "active": True},
+        ),
+        Example(
+            description="Search for terms  using 'polygon' as provider.",
+            parameters={"provider": "polygon", "search": "Euro zone"},
         ),
     ],
 )
@@ -55,7 +55,7 @@ async def search(
 
 @router.command(
     model="CurrencyReferenceRates",
-    examples=[Example(parameters={"symbol": "EURUSD"})],
+    examples=[Example(parameters={})],
 )
 async def reference_rates(
     cc: CommandContext,

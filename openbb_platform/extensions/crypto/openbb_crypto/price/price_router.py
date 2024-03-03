@@ -27,27 +27,18 @@ router = Router(prefix="/price")
         ),
         Example(
             parameters={
+                "symbol": "BTCUSD,ETHUSD",
+                "start_date": "2024-01-01",
+                "end_date": "2024-01-31",
+            },
+        ),
+        Example(
+            parameters={
                 "symbol": "ETH-USD",
                 "provider": "yfinance",
                 "interval": "1mo",
                 "start_date": "2024-01-01",
                 "end_date": "2024-12-31",
-            },
-        ),
-        Example(
-            parameters={
-                "symbol": "BTCUSD,ETH-USD",
-                "provider": "yfinance",
-                "interval": "1d",
-                "start_date": "2024-01-01",
-                "end_date": "2024-01-31",
-            },
-        ),
-        Example(
-            parameters={
-                "symbol": "BTCUSD,ETH-USD",
-                "start_date": "2024-01-01",
-                "end_date": "2024-01-31",
             },
         ),
     ],
