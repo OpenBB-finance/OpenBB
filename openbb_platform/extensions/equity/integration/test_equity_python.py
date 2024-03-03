@@ -1587,6 +1587,14 @@ def test_equity_market_snapshots(params, obb):
     "params",
     [
         ({"symbol": "AAPL", "limit": 5, "provider": "fmp"}),
+        (
+            {
+                "symbol": "AAPL",
+                "period": "quarter",
+                "limit": 5,
+                "provider": "alpha_vantage",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
