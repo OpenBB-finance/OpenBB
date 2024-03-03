@@ -1,20 +1,27 @@
-name: Django                                  # workflow name
+name: Django Security Check
 
 on:
   push:
-    branches:                                 # similar to "only" in GitLab
+    branches:
       - main
-  snyk:
+
+jobs:
+  security_scan:
     runs-on: ubuntu-20.04
-    needs: test
     steps:
-      - uses: actions/checkout@master
-      - uses: snyk/actions/setup@master
-      - uses: actions/setup-go@v1
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Snyk
+        uses: snyk/actions/setup@master
+
+      - name: Setup Go
+        uses: actions/setup-go@v1
         with:
           go-version: "1.13"
 
-      - uses: actions/setup-node@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
           node-version: '10.x'
 
@@ -25,10 +32,10 @@ on:
         run: snyk test --json > snyk-results.json
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        continue-on-error: true             # allow the build to fail, similar to allow_failure: true
+        continue-on-error: true
 
-      - uses: actions/upload-artifact@v2
+      - name: Upload Snyk Results
+        uses: actions/upload-artifact@v2
         with:
           name: Snyk
           path: snyk-results.json
-        if: always()        # what is this for?
