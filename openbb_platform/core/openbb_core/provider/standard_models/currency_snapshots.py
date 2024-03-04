@@ -20,7 +20,7 @@ class CurrencySnapshotsQueryParams(QueryParams):
         + " of the foreign currency."
         + " Selecting 'indirect' (default) will return the exchange rate"
         + " as the amount of foreign currency required to buy one unit"
-        + " of the domestic curency.",
+        + " of the domestic currency.",
         default="indirect",
     )
     counter_currencies: Optional[Union[str, List[str]]] = Field(

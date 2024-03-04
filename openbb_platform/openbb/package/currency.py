@@ -153,7 +153,7 @@ class ROUTER_currency(Container):
         quote_type: Annotated[
             Literal["direct", "indirect"],
             OpenBBCustomParameter(
-                description="Whether the quote is direct or indirect. Selecting 'direct' will return the exchange rate as the amount of domestic currency required to buy one unit of the foreign currency. Selecting 'indirect' (default) will return the exchange rate as the amount of foreign currency required to buy one unit of the domestic curency."
+                description="Whether the quote is direct or indirect. Selecting 'direct' will return the exchange rate as the amount of domestic currency required to buy one unit of the foreign currency. Selecting 'indirect' (default) will return the exchange rate as the amount of foreign currency required to buy one unit of the domestic currency."
             ),
         ] = "indirect",
         counter_currencies: Annotated[
@@ -172,7 +172,7 @@ class ROUTER_currency(Container):
         base : Union[str, List[str]]
             The base currency symbol. Multiple items allowed for provider(s): fmp.
         quote_type : Literal['direct', 'indirect']
-            Whether the quote is direct or indirect. Selecting 'direct' will return the exchange rate as the amount of domestic currency required to buy one unit of the foreign currency. Selecting 'indirect' (default) will return the exchange rate as the amount of foreign currency required to buy one unit of the domestic curency.
+            Whether the quote is direct or indirect. Selecting 'direct' will return the exchange rate as the amount of domestic currency required to buy one unit of the foreign currency. Selecting 'indirect' (default) will return the exchange rate as the amount of foreign currency required to buy one unit of the domestic currency.
         counter_currencies : Union[str, List[str], None]
             An optional list of counter currency symbols to filter for. None returns all.
         provider : Optional[Literal['fmp']]
@@ -233,7 +233,7 @@ class ROUTER_currency(Container):
         -------
         >>> from openbb import obb
         >>> obb.currency.snapshots(
-        >>>     provider="fmp", base="USD,XAU", counter_currencies="EUR,JPY,GBP", quote_type="indirect"
+        >>> provider="fmp", base="USD,XAU", counter_currencies="EUR,JPY,GBP", quote_type="indirect"
         >>> )
         """  # noqa: E501
 
