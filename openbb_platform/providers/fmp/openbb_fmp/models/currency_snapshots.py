@@ -135,6 +135,7 @@ class FMPCurrencySnapshotsFetcher(
                 temp = (
                     temp.query("`counter_currency`.isin(@counter_currencies)")
                     .set_index("counter_currency")
+                    # Sets the counter currencies in the order they were requested.
                     .filter(items=counter_currencies, axis=0)
                     .reset_index()
                 )
@@ -149,7 +150,8 @@ class FMPCurrencySnapshotsFetcher(
                 raise EmptyDataError(
                     "No data was found using the applied filters. Check the parameters."
                 )
-
+            # Fill and replace any NaN values with NoneType.
+            new_df = new_df.fillna("N/A").replace("N/A", None)
         return [
             FMPCurrencySnapshotsData.model_validate(d)
             for d in new_df.reset_index(drop=True).to_dict(orient="records")
