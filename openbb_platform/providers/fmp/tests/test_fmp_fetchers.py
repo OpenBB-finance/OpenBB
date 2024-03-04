@@ -522,7 +522,7 @@ def test_fmp_economic_calendar_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_market_snapshots_fetcher(credentials=test_credentials):
-    params = {"market": "LSE"}
+    params = {"market": "lse"}
 
     fetcher = FMPMarketSnapshotsFetcher()
     result = fetcher.test(params, credentials)
