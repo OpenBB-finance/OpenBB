@@ -22,6 +22,39 @@ jobs:
       with:
         security_control: registry.jit.io/control-enrichment-slim:latest
         
+  iac-misconfig-detection-cloudformation:
+    if: fromJSON(github.event.inputs.client_payload).payload.workflow_job_name == 'iac-misconfig-detection-cloudformation' && fromJSON(github.event.inputs.client_payload).payload.workflow_slug == 'workflow-iac-misconfiguration-detection'
+    runs-on: ubuntu-20.04
+    timeout-minutes: 60
+    steps:
+    - name: kics
+      uses: jitsecurity-controls/jit-github-action@v4.2.0
+      with:
+        security_control: registry.jit.io/control-kics-alpine:latest
+        security_control_output_file: /code/jit-report/results.json
+        
+  iac-misconfig-detection-pulumi:
+    if: fromJSON(github.event.inputs.client_payload).payload.workflow_job_name == 'iac-misconfig-detection-pulumi' && fromJSON(github.event.inputs.client_payload).payload.workflow_slug == 'workflow-iac-misconfiguration-detection'
+    runs-on: ubuntu-20.04
+    timeout-minutes: 60
+    steps:
+    - name: kics
+      uses: jitsecurity-controls/jit-github-action@v4.2.0
+      with:
+        security_control: registry.jit.io/control-kics-alpine:latest
+        security_control_output_file: /code/jit-report/results.json
+        
+  iac-misconfig-detection-terraform:
+    if: fromJSON(github.event.inputs.client_payload).payload.workflow_job_name == 'iac-misconfig-detection-terraform' && fromJSON(github.event.inputs.client_payload).payload.workflow_slug == 'workflow-iac-misconfiguration-detection'
+    runs-on: ubuntu-20.04
+    timeout-minutes: 60
+    steps:
+    - name: kics
+      uses: jitsecurity-controls/jit-github-action@v4.2.0
+      with:
+        security_control: registry.jit.io/control-kics-alpine:latest
+        security_control_output_file: /code/jit-report/results.json
+        
   remediation-pr:
     if: fromJSON(github.event.inputs.client_payload).payload.workflow_job_name == 'remediation-pr' && fromJSON(github.event.inputs.client_payload).payload.workflow_slug == 'workflow-remediation-pr'
     runs-on: ubuntu-20.04
