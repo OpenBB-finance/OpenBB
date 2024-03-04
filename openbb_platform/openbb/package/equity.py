@@ -352,7 +352,7 @@ class ROUTER_equity(Container):
             Currency in which the stock is traded. (provider: fmp, yfinance)
         market_cap : Optional[int]
             Market capitalization of the company. (provider: fmp);
-                The market capitalization of the asset. (provider: yfinance)
+            The market capitalization of the asset. (provider: yfinance)
         last_price : Optional[float]
             The last traded price. (provider: fmp)
         year_high : Optional[float]
@@ -584,7 +584,7 @@ class ROUTER_equity(Container):
             Name of the company.
         cik : Optional[str]
             ;
-                Central Index Key (provider: sec)
+            Central Index Key (provider: sec)
         lei : Optional[str]
             The Legal Entity Identifier (LEI) of the company. (provider: intrinio)
         intrinio_id : Optional[str]

@@ -909,7 +909,7 @@ class DocstringGenerator:
 
         def format_description(description: str) -> str:
             """Format description in docstrings."""
-            description = description.replace("\n", f"\n{indentation+tab}")
+            description = description.replace("\n", f"\n{indentation}")
             return description
 
         docstring = summary.strip("\n").replace("\n    ", f"\n{indentation}")
@@ -924,8 +924,8 @@ class DocstringGenerator:
                 type_ = param._annotation
                 default = param._annotation.__args__[0].__args__[0]
                 description = f"""The provider to use for the query, by default None.
-If None, the provider specified in defaults is selected or '{default}' if there is
-no default."""
+    If None, the provider specified in defaults is selected or '{default}' if there is
+    no default."""
             elif param_name == "chart":
                 type_ = "bool"
                 description = "Whether to create a chart or not, by default False."
