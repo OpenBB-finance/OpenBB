@@ -19,7 +19,7 @@ If you face specific issues while using the add-in and the solutions provided he
 <summary>Custom functions 'OBB.' are not available after installing the add-in</summary>
 
 * Make sure OpenBB Add-in for Excel shows in the ribbon
-* Go to **Insert** > **Get Add-ins** > **My Add-ins** > Click on '...' > remove the add-in and install it again
+* Go to **Insert** > **Get Add-ins** > **My Add-ins** > Click '...' when hovering OpenBB add-in > remove the add-in and install it again
 * Restart your computer or manually [clear the Office cache](https://learn.microsoft.com/en-us/office/dev/add-ins/testing/clear-cache)
 
 </details>
