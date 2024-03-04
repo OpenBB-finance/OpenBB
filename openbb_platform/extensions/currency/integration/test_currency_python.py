@@ -154,3 +154,24 @@ def test_currency_reference_rates(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.model_dump()["results"].items()) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fmp",
+                "base": "USD,XAU",
+                "counter_currencies": "EUR,JPY,GBP",
+                "quote_type": "indirect",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_currency_snapshots(params, obb):
+    result = obb.currency.snapshots(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
