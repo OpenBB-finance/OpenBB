@@ -68,7 +68,11 @@ class PythonEx(Example):
     def to_python(self, **kwargs) -> str:
         """Return a Python code representation of the example."""
         indentation = kwargs.get("indentation", "")
+
         eg = ""
+        if self.description:
+            eg += f"{indentation}>>> # {self.description}\n"
+
         for line in self.code:
             eg += f"{indentation}>>> {line}\n"
         return eg
