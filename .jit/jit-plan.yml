@@ -14,4 +14,6 @@ items:
   - name: Generate a Software Bill of Materials (SBOM)
     uses: >-
       jitsecurity-controls/jit-plans/items/code/item-software-bill-of-materials.yml@latest
+  - name: Scan code for hard-coded secrets
+    uses: jitsecurity-controls/jit-plans/items/code/item-secret-detection.yml@latest
 
