@@ -38,7 +38,7 @@ router = Router(prefix="")
                 "obb.econometrics.correlation_matrix(data=stock_data)",
             ]
         )
-    ]
+    ],
 )
 def correlation_matrix(data: List[Data]) -> OBBject[List[Data]]:
     """Get the correlation matrix of an input dataset.
