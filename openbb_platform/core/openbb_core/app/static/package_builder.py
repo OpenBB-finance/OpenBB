@@ -863,7 +863,7 @@ class DocstringGenerator:
 
     @staticmethod
     def append_examples(
-        func_name: str,
+        func_path: str,
         func_params: Dict[str, Field],
         examples: Optional[List[Example]],
         indentation: str = "",
@@ -876,7 +876,7 @@ class DocstringGenerator:
 
             for e in examples:
                 doc += e.to_python(
-                    func_name=func_name,
+                    func_path=func_path,
                     func_params=func_params,
                     indentation=indentation,
                 )

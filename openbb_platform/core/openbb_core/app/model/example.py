@@ -34,13 +34,13 @@ class APIEx(Example):
     def to_python(self, **kwargs) -> str:
         """Return a Python code representation of the example."""
         indentation = kwargs.get("indentation", "")
-        func_name = kwargs.get("func_name", "")
+        func_path = kwargs.get("func_path", ".func_router.func_name")
         func_params: Dict[str, Field] = kwargs.get("func_params", {})
         eg = ""
         if self.parameters is not None:
             if self.description:
                 eg += f"{indentation}>>> # {self.description}\n"
-            eg += f"{indentation}>>> obb{func_name}("
+            eg += f"{indentation}>>> obb{func_path}("
 
             for k, v in self.parameters.items():
                 if k in func_params and (field := func_params.get(k)):
