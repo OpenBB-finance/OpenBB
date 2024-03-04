@@ -1,21 +1,12 @@
 import inspect
-import json
 import re
-from pathlib import Path
 from typing import Any, Callable, Dict, List
 
 from pydantic_core import PydanticUndefined
 
 from openbb_core.app.provider_interface import ProviderInterface
-from openbb_core.app.router import RouterLoader
 from openbb_core.app.static.package_builder import MethodDefinition
-
-# Paths to use for generating and storing the markdown files
-WEBSITE_PATH = Path(__file__).parent.absolute()
-SEO_METADATA_PATH = Path(WEBSITE_PATH / "metadata/platform_v4_seo_metadata.json")
-PLATFORM_CONTENT_PATH = Path(WEBSITE_PATH / "content/platform")
-PLATFORM_REFERENCE_PATH = Path(WEBSITE_PATH / "content/platform/reference")
-PLATFORM_DATA_MODELS_PATH = Path(WEBSITE_PATH / "content/platform/data_models")
+from openbb_core.app.static.path_handler import PathHandler
 
 
 def get_field_data_type(field_type: Any) -> str:
@@ -262,14 +253,8 @@ def get_post_method_returns_info(endpoint: Callable) -> List[Dict[str, str]]:
     return return_info
 
 
-# mypy: disable-error-code="attr-defined,arg-type"
-def generate_reference_file() -> None:
-    """Generate reference.json file using the ProviderInterface map."""
-
-    # ProviderInterface Map contains the model and its
-    # corresponding QueryParams and Data fields
-    pi_map = ProviderInterface().map
-    reference: Dict[str, Dict] = {}
+class ReferenceGenerator:
+    """ReferenceGenerator class to generate the reference data."""
 
     # Fields for the reference dictionary to be used in the JSON file
     REFERENCE_FIELDS = [
@@ -281,134 +266,147 @@ def generate_reference_file() -> None:
         "data",
     ]
 
-    # Router object is used to get the endpoints and their
-    # corresponding APIRouter object
-    router = RouterLoader.from_extensions()
-    route_map = {route.path: route for route in router.api_router.routes}
+    # mypy: disable-error-code="attr-defined,arg-type"
+    @classmethod
+    def generate_reference_file(cls) -> None:
+        """Generate reference.json file using the ProviderInterface map."""
 
-    for path, route in route_map.items():
-        # Initialize the reference fields as empty dictionaries
-        reference[path] = {field: {} for field in REFERENCE_FIELDS}
+        # ProviderInterface Map contains the model and its
+        # corresponding QueryParams and Data fields
+        pi_map = ProviderInterface().map
+        reference: Dict[str, Dict] = {}
 
-        # Route method is used to distinguish between GET and POST methods
-        route_method = route.methods
+        # Router object is used to get the endpoints and their
+        # corresponding APIRouter object
+        route_map = PathHandler.build_route_map()
 
-        # Route endpoint is the callable function
-        route_func = route.endpoint
+        for path, route in route_map.items():
+            # Initialize the reference fields as empty dictionaries
+            reference[path] = {field: {} for field in cls.REFERENCE_FIELDS}
 
-        # Standard model is used as the key for the ProviderInterface Map dictionary
-        standard_model = route.openapi_extra["model"] if route_method == {"GET"} else ""
+            # Route method is used to distinguish between GET and POST methods
+            route_method = route.get("methods", None)
 
-        # Model Map contains the QueryParams and Data fields for each provider for a standard model
-        model_map = pi_map[standard_model] if standard_model else ""
+            # Route endpoint is the callable function
+            route_func = route.get("endpoint", None)
 
-        # Add endpoint model for GET methods
-        reference[path]["model"] = standard_model
-
-        # Add endpoint deprecation details
-        deprecated_value = getattr(route, "deprecated", None)
-        reference[path]["deprecated"] = {
-            "flag": bool(deprecated_value),
-            "message": route.summary if deprecated_value else None,
-        }
-
-        # Add endpoint description
-        if route_method == {"GET"}:
-            reference[path]["description"] = route.description
-        elif route_method == {"POST"}:
-            # POST method router `description` attribute is unreliable as it may or
-            # may not contain the "Parameters" and "Returns" sections. Hence, the
-            # endpoint function docstring is used instead.
-            description = route.endpoint.__doc__.split("Parameters")[0].strip()
-            # Remove extra spaces in between the string
-            reference[path]["description"] = re.sub(" +", " ", description)
-
-        # Add endpoint examples
-        reference[path]["examples"] = route.openapi_extra.get("examples", [])
-
-        # Add endpoint parameters fields for standard provider
-        if route_method == {"GET"}:
-            # openbb provider is always present hence its the standard field
-            reference[path]["parameters"]["standard"] = get_provider_field_params(
-                model_map, "QueryParams"
+            # Standard model is used as the key for the ProviderInterface Map dictionary
+            standard_model = (
+                route.openapi_extra["model"] if route_method == {"GET"} else ""
             )
 
-            # Add `provider` parameter fields to the openbb provider
-            provider_parameter_fields = get_provider_parameter_info(route_func)
-            reference[path]["parameters"]["standard"].append(provider_parameter_fields)
+            # Model Map contains the QueryParams and Data fields for each provider for a standard model
+            model_map = pi_map[standard_model] if standard_model else ""
 
-            # Add endpoint data fields for standard provider
-            reference[path]["data"]["standard"] = get_provider_field_params(
-                model_map, "Data"
-            )
+            # Add endpoint model for GET methods
+            reference[path]["model"] = standard_model
 
-            for provider in model_map:
-                if provider == "openbb":
-                    continue
+            # Add endpoint deprecation details
+            deprecated_value = getattr(route, "deprecated", None)
+            reference[path]["deprecated"] = {
+                "flag": bool(deprecated_value),
+                "message": route.summary if deprecated_value else None,
+            }
 
-                # Adds standard parameters to the provider parameters since they are
-                # inherited by the model.
-                # A copy is used to prevent the standard parameters fields from being
-                # modified.
-                reference[path]["parameters"][provider] = reference[path]["parameters"][
-                    "standard"
-                ].copy()
-                provider_query_params = get_provider_field_params(
-                    model_map, "QueryParams", provider
+            # Add endpoint description
+            if route_method == {"GET"}:
+                reference[path]["description"] = route.description
+            elif route_method == {"POST"}:
+                # POST method router `description` attribute is unreliable as it may or
+                # may not contain the "Parameters" and "Returns" sections. Hence, the
+                # endpoint function docstring is used instead.
+                description = route.endpoint.__doc__.split("Parameters")[0].strip()
+                # Remove extra spaces in between the string
+                reference[path]["description"] = re.sub(" +", " ", description)
+
+            # Add endpoint examples
+            reference[path]["examples"] = route.openapi_extra.get("examples", [])
+
+            # Add endpoint parameters fields for standard provider
+            if route_method == {"GET"}:
+                # openbb provider is always present hence its the standard field
+                reference[path]["parameters"]["standard"] = get_provider_field_params(
+                    model_map, "QueryParams"
                 )
-                reference[path]["parameters"][provider].extend(provider_query_params)
 
-                # Adds standard data fields to the provider data fields since they are
-                # inherited by the model.
-                # A copy is used to prevent the standard data fields from being modified.
-                reference[path]["data"][provider] = reference[path]["data"][
-                    "standard"
-                ].copy()
-                provider_data = get_provider_field_params(model_map, "Data", provider)
-                reference[path]["data"][provider].extend(provider_data)
+                # Add `provider` parameter fields to the openbb provider
+                provider_parameter_fields = get_provider_parameter_info(route_func)
+                reference[path]["parameters"]["standard"].append(
+                    provider_parameter_fields
+                )
 
-        elif route_method == {"POST"}:
-            # Add endpoint parameters fields for POST methods
-            reference[path]["parameters"]["standard"] = get_post_method_parameters_info(
-                route_func
-            )
+                # Add endpoint data fields for standard provider
+                reference[path]["data"]["standard"] = get_provider_field_params(
+                    model_map, "Data"
+                )
 
-        # Add endpoint returns data
-        # Currently only OBBject object is returned
-        if route_method == {"GET"}:
-            reference[path]["returns"]["OBBject"] = [
-                {
-                    "name": "results",
-                    "type": f"List[{standard_model}]",
-                    "description": "Serializable results.",
-                },
-                {
-                    "name": "provider",
-                    "type": f"Optional[{provider_parameter_fields['type']}]",
-                    "description": "Provider name.",
-                },
-                {
-                    "name": "warnings",
-                    "type": "Optional[List[Warning_]]",
-                    "description": "List of warnings.",
-                },
-                {
-                    "name": "chart",
-                    "type": "Optional[Chart]",
-                    "description": "Chart object.",
-                },
-                {
-                    "name": "extra",
-                    "type": "Dict[str, Any]",
-                    "description": "Extra info.",
-                },
-            ]
+                for provider in model_map:
+                    if provider == "openbb":
+                        continue
 
-        elif route_method == {"POST"}:
-            reference[path]["returns"]["OBBject"] = get_post_method_returns_info(
-                route_func
-            )
+                    # Adds standard parameters to the provider parameters since they are
+                    # inherited by the model.
+                    # A copy is used to prevent the standard parameters fields from being
+                    # modified.
+                    reference[path]["parameters"][provider] = reference[path][
+                        "parameters"
+                    ]["standard"].copy()
+                    provider_query_params = get_provider_field_params(
+                        model_map, "QueryParams", provider
+                    )
+                    reference[path]["parameters"][provider].extend(
+                        provider_query_params
+                    )
 
-    # Dumping the reference dictionary as a JSON file
-    with open(PLATFORM_CONTENT_PATH / "reference.json", "w", encoding="utf-8") as f:
-        json.dump(reference, f, indent=4)
+                    # Adds standard data fields to the provider data fields since they are
+                    # inherited by the model.
+                    # A copy is used to prevent the standard data fields from being modified.
+                    reference[path]["data"][provider] = reference[path]["data"][
+                        "standard"
+                    ].copy()
+                    provider_data = get_provider_field_params(
+                        model_map, "Data", provider
+                    )
+                    reference[path]["data"][provider].extend(provider_data)
+
+            elif route_method == {"POST"}:
+                # Add endpoint parameters fields for POST methods
+                reference[path]["parameters"]["standard"] = (
+                    get_post_method_parameters_info(route_func)
+                )
+
+            # Add endpoint returns data
+            # Currently only OBBject object is returned
+            if route_method == {"GET"}:
+                reference[path]["returns"]["OBBject"] = [
+                    {
+                        "name": "results",
+                        "type": f"List[{standard_model}]",
+                        "description": "Serializable results.",
+                    },
+                    {
+                        "name": "provider",
+                        "type": f"Optional[{provider_parameter_fields['type']}]",
+                        "description": "Provider name.",
+                    },
+                    {
+                        "name": "warnings",
+                        "type": "Optional[List[Warning_]]",
+                        "description": "List of warnings.",
+                    },
+                    {
+                        "name": "chart",
+                        "type": "Optional[Chart]",
+                        "description": "Chart object.",
+                    },
+                    {
+                        "name": "extra",
+                        "type": "Dict[str, Any]",
+                        "description": "Extra info.",
+                    },
+                ]
+
+            elif route_method == {"POST"}:
+                reference[path]["returns"]["OBBject"] = get_post_method_returns_info(
+                    route_func
+                )
