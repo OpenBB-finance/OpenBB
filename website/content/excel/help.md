@@ -1,7 +1,7 @@
 ---
 title: Help
 sidebar_position: 5
-description: Help with OpenBB Add-in for Excel.
+description: Help for OpenBB Add-in for Excel.
 keywords:
 - Microsoft Excel
 - Add-in
