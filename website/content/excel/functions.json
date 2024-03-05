@@ -7,22 +7,22 @@
       "name": "GET",
       "parameters": [
         {
-          "description": "Data to slice.",
+          "description": "Array to slice.",
           "dimensionality": "matrix",
-          "name": "data",
+          "name": "array",
           "type": "any"
         },
         {
           "description": "Range of row labels or indices.",
           "dimensionality": "matrix",
-          "name": "row",
+          "name": "rows",
           "optional": true,
           "type": "any"
         },
         {
           "description": "Range of column labels or indices.",
           "dimensionality": "matrix",
-          "name": "column",
+          "name": "columns",
           "optional": true,
           "type": "any"
         }

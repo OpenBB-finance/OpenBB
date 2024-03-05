@@ -37,9 +37,9 @@ class CommandLib:
     # These examples will be generated in the core, but we keep them here meanwhile
     EXAMPLE_PARAMS: Dict[str, Dict] = {
         "/get": {
-            "data": '{"a","b","c";"d","e","f"}',
-            "row": '"d"',
-            "column": '"c"',
+            "array": '{"a","b","c";"d","e","f"}',
+            "rows": '"d"',
+            "columns": '"c"',
         },
         "/byod": {
             "widget": '"widget_name"',
@@ -268,9 +268,6 @@ class CommandLib:
         """Get the examples of the command."""
         sig = signature_.split("(")[0] + "("
         category = signature_.split(".")[1].lower()
-
-        if cmd == "/economy/fred_regional":
-            print(cmd)
 
         def get_p_value(cmd, p_name) -> str:
             if cmd in self.EXAMPLE_PARAMS:
@@ -574,7 +571,7 @@ class Editor:
                     recursive(p)
                     position += 1
 
-        write_mdx_and_category(self.target_dir, self.main_folder, 5)
+        write_mdx_and_category(self.target_dir, self.main_folder, 6)
         recursive(self.target_dir)
 
     def dump(self, reference_map: Dict) -> None:
