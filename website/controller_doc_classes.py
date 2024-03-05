@@ -30,7 +30,6 @@ from openbb_terminal.helper_funcs import (
 )
 from openbb_terminal.parent_classes import BaseController
 from openbb_terminal.sdk import openbb
-from openbb_terminal.stocks.comparison_analysis import finviz_compare_model
 
 set_system_variable("TEST_MODE", True)
 set_system_variable("LOG_COLLECT", False)
