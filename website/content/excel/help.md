@@ -13,7 +13,7 @@ import HeadTitle from '@site/src/components/General/HeadTitle.tsx';
 
 <HeadTitle title="Help | Get help" />
 
-If you face specific issues while using the add-in and the solutions provided here don't resolve them, don't hesitate to reach out to us for further assistance. You can contact us through support@openbb.finance.
+If you face specific issues while using the add-in and the solutions provided here don't resolve them, don't hesitate to reach out to us for further assistance. You can contact us through <support@openbb.finance>.
 
 <details>
 <summary>Running an OBB. function returns '#VALUE!'</summary>
