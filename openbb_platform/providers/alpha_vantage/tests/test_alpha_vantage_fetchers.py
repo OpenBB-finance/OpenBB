@@ -2,6 +2,7 @@ from datetime import date
 
 import pytest
 from openbb_alpha_vantage.models.equity_historical import AVEquityHistoricalFetcher
+from openbb_alpha_vantage.models.historical_eps import AVHistoricalEpsFetcher
 from openbb_core.app.service.user_service import UserService
 
 test_credentials = UserService().default_user_settings.credentials.model_dump(
@@ -30,5 +31,14 @@ def test_av_equity_historical_fetcher(credentials=test_credentials):
     }
 
     fetcher = AVEquityHistoricalFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_av_historical_eps_fetcher(credentials=test_credentials):
+    params = {"symbol": "AAPL,MSFT", "period": "quarter", "limit": 4}
+
+    fetcher = AVHistoricalEpsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None
