@@ -15,6 +15,7 @@ from linearmodels.panel import (
     PooledOLS,
     RandomEffects,
 )
+from openbb_core.app.model.example import PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import basemodel_to_df, get_target_column, get_target_columns
