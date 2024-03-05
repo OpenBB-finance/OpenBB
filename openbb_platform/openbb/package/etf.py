@@ -290,7 +290,7 @@ class ROUTER_etf(Container):
             no default.
         date : Optional[Union[str, datetime.date]]
             A specific date to get data for. Entering a date will attempt to return the NPORT-P filing for the entered date. This needs to be _exactly_ the date of the filing. Use the holdings_date command/endpoint to find available filing dates for the ETF. (provider: fmp);
-            A specific date to get data for.  The date represents the period ending.  The date entered will return the closest filing. (provider: sec)
+            A specific date to get data for.  The date represents the period ending. The date entered will return the closest filing. (provider: sec)
         cik : Optional[str]
             The CIK of the filing entity. Overrides symbol. (provider: fmp)
         use_cache : bool
@@ -382,7 +382,7 @@ class ROUTER_etf(Container):
         in_arrears : Optional[str]
             If the debt security is in arrears. (provider: sec)
         is_paid_kind : Optional[str]
-            If the debt security payments are are paid in kind. (provider: sec)
+            If the debt security payments are paid in kind. (provider: sec)
         derivative_category : Optional[str]
             The derivative category of the holding. (provider: sec)
         counterparty : Optional[str]
