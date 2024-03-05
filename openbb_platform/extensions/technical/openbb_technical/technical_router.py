@@ -5,7 +5,7 @@ from typing import List, Literal, Optional
 
 import pandas as pd
 import pandas_ta as ta
-from openbb_core.app.model import OBBject, PythonEx
+from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.router import Router
 from openbb_core.app.utils import (
     basemodel_to_df,
