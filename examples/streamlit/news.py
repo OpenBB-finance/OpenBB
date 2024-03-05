@@ -2,10 +2,10 @@
 
 from datetime import datetime, timedelta
 
+import streamlit as st
+
 from openbb import obb
 from openbb_biztoc.utils.helpers import get_all_tags, get_sources
-
-import streamlit as st
 
 st.set_page_config(
     layout="wide",
