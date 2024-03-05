@@ -8,6 +8,7 @@
     "currency_price": "/currency/price",
     "currency_price_historical": "/currency/price/historical",
     "currency_search": "/currency/search",
+    "currency_snapshots": "/currency/snapshots",
     "derivatives": "/derivatives",
     "derivatives_futures": "/derivatives/futures",
     "derivatives_futures_curve": "/derivatives/futures/curve",
