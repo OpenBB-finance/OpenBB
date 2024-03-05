@@ -43,7 +43,7 @@ If you face specific issues while using the add-in and the solutions provided he
 <details>
 <summary>Editing a workbook in the browser and then on desktop app duplicates the 'OpenBB' tab in the ribbon</summary>
 
-This is a known Microsoft Excel issue. Currently, there is no definitive fix for the problem, but there are workarounds you can apply to fix the file depending on your operating system:
+This is a known Excel issue. Currently, there is no definitive fix for the problem, but there are workarounds you can apply to fix the file depending on your operating system:
 
 * **Windows**: File > Info > Inspect Workbook > Check ‘Task Pane Add-ins’ > Click ‘OK’. This will scan your workbook and remove the stale add-in reference created by Excel in the browser
 * **Mac**: rename your file from .xlsx to .zip > unzip it using WinZip for Mac (don’t use the default unzip tool, otherwise it won’t work) > look for webextensions folder and delete webextension1.xml > rename the file back to .xlsx
