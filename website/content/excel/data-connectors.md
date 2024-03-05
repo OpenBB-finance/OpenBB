@@ -1,6 +1,6 @@
 ---
 title: Data connectors
-sidebar_position: 4
+sidebar_position: 3
 description: Access your data connectors from OpenBB Terminal Pro inside OpenBB Add-in for Excel.
 keywords:
 - Microsoft Excel
