@@ -24,7 +24,7 @@ If you face specific issues while using the add-in and the solutions provided he
 </details>
 
 <details>
-<summary>'OBB.' functions are not available after installing the add-in</summary>
+<summary>OBB. functions are not available after installing the add-in</summary>
 
 * Make sure OpenBB Add-in for Excel shows in the ribbon
 * Go to **Insert** > **Get Add-ins** > **My Add-ins** > Click '...' when hovering OpenBB add-in > remove the add-in and install it again
