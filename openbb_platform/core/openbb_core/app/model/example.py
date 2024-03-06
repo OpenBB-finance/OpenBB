@@ -42,12 +42,14 @@ class APIEx(Example):
         """Check if there are more than 3 parameters and a description is not added."""
         if len(values.get("parameters", {})) > 3 and not values.get("description"):
             raise ValueError(
-                "API example has more than 3 parameters but doesn't have a description."
+                "API example with more than 3 parameters must have a description."
             )
         return values
 
     def to_python(self, **kwargs) -> str:
         """Return a Python code representation of the example."""
+        BASIC_TYPES = {int, float, bool}
+
         indentation = kwargs.get("indentation", "")
         func_path = kwargs.get("func_path", ".func_router.func_name")
         func_params: Dict[str, Field] = kwargs.get("func_params", {})
@@ -62,8 +64,7 @@ class APIEx(Example):
         eg += f"{indentation}{prompt}obb{func_path}("
         for k, v in self.parameters.items():
             if k in func_params and (field := func_params.get(k)):
-                field_type_str = str(field.type)
-                if any(t in field_type_str for t in ["int", "float", "bool"]):
+                if BASIC_TYPES.intersection(unpack_types(field.type)):
                     eg += f"{k}={v}, "
                 else:
                     eg += f"{k}='{v}', "
@@ -110,3 +111,10 @@ def filter_list(
         if (isinstance(e, APIEx) and (not e.provider or e.provider in providers))
         or e.scope != "api"
     ]
+
+
+def unpack_types(type_: type):
+    """Unpack types."""
+    if hasattr(type_, "__args__"):
+        return set().union(*map(unpack_types, type_.__args__))
+    return {type_}
