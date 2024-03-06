@@ -124,6 +124,7 @@ class ROUTER_crypto_price(Container):
         >>> obb.crypto.price.historical(symbol='BTCUSD')
         >>> obb.crypto.price.historical(symbol='BTCUSD', start_date='2024-01-01', end_date='2024-01-31')
         >>> obb.crypto.price.historical(symbol='BTCUSD,ETHUSD', start_date='2024-01-01', end_date='2024-01-31')
+        >>> # Get monthly historical prices from Yahoo Finance for Ethereum.
         >>> obb.crypto.price.historical(symbol='ETH-USD', provider='yfinance', interval='1mo', start_date='2024-01-01', end_date='2024-12-31')
         """  # noqa: E501
 

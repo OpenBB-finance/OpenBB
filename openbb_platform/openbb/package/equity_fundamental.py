@@ -3184,7 +3184,8 @@ class ROUTER_equity_fundamental(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.equity.fundamental.reported_financials(symbol='AAPL', period='annual', statement_type='balance', limit=100)
+        >>> # Get AAPL balance sheet with a limit of 10 items.
+        >>> obb.equity.fundamental.reported_financials(symbol='AAPL', period='annual', statement_type='balance', limit=10)
         >>> # Get reported income statement
         >>> obb.equity.fundamental.reported_financials(symbol='AAPL', statement_type='income')
         >>> # Get reported cash flow statement

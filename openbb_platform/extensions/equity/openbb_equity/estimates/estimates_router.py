@@ -20,6 +20,7 @@ router = Router(prefix="/estimates")
     model="PriceTarget",
     examples=[
         APIEx(
+            description="Get price targets for Microsoft using 'benzinga' as provider.",
             parameters={
                 "start_date": "2020-01-01",
                 "end_date": "2024-02-16",
@@ -27,7 +28,7 @@ router = Router(prefix="/estimates")
                 "symbol": "msft",
                 "provider": "benzinga",
                 "action": "downgrades",
-            }
+            },
         ),
     ],
 )

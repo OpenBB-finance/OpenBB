@@ -82,12 +82,13 @@ async def reference_rates(
     model="CurrencySnapshots",
     examples=[
         APIEx(
+            description="Get exchange rates from USD and XAU to EUR, JPY, and GBP using 'fmp' as provider.",
             parameters={
                 "provider": "fmp",
                 "base": "USD,XAU",
                 "counter_currencies": "EUR,JPY,GBP",
                 "quote_type": "indirect",
-            }
+            },
         ),
     ],
 )

@@ -21,13 +21,14 @@ router = Router(prefix="")
     examples=[
         APIEx(parameters={"asset": "gold"}),
         APIEx(
+            description="Get the daily LBMA fixing prices for silver in 2023.",
             parameters={
                 "asset": "silver",
                 "start_date": "2023-01-01",
                 "end_date": "2023-12-31",
                 "transform": "rdiff",
                 "collapse": "monthly",
-            }
+            },
         ),
     ],
 )

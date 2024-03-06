@@ -524,7 +524,8 @@ class ROUTER_equity_estimates(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.equity.estimates.price_target(start_date='2020-01-01', end_date='2024-02-16', limit=10, symbol='msft', provider='benzinga', action=downgrades)
+        >>> # Get price targets for Microsoft using 'benzinga' as provider.
+        >>> obb.equity.estimates.price_target(start_date='2020-01-01', end_date='2024-02-16', limit=10, symbol='msft', provider='benzinga', action='downgrades')
         """  # noqa: E501
 
         return self._run(

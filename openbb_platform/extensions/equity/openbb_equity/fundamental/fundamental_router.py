@@ -76,12 +76,13 @@ async def cash(
     model="ReportedFinancials",
     examples=[
         APIEx(
+            description="Get AAPL balance sheet with a limit of 10 items.",
             parameters={
                 "symbol": "AAPL",
                 "period": "annual",
                 "statement_type": "balance",
-                "limit": 100,
-            }
+                "limit": 10,
+            },
         ),
         APIEx(
             description="Get reported income statement",

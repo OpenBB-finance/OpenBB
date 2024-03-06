@@ -35,6 +35,7 @@ router = Router(prefix="/price")
             },
         ),
         APIEx(
+            description="Get monthly historical prices from Yahoo Finance for Ethereum.",
             parameters={
                 "symbol": "ETH-USD",
                 "provider": "yfinance",
