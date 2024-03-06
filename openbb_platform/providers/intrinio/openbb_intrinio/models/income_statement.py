@@ -227,11 +227,11 @@ class IntrinioIncomeStatementData(IncomeStatementData):
     deposits_interest_expense: Optional[float] = Field(
         default=None, description="Deposits interest expense"
     )
-    federal_funds_purchased_and_securities_sold_interest_expense: Optional[
-        float
-    ] = Field(
-        default=None,
-        description="Federal funds purchased and securities sold interest expense",
+    federal_funds_purchased_and_securities_sold_interest_expense: Optional[float] = (
+        Field(
+            default=None,
+            description="Federal funds purchased and securities sold interest expense",
+        )
     )
     other_interest_expense: Optional[float] = Field(
         default=None, description="Other interest expense"
