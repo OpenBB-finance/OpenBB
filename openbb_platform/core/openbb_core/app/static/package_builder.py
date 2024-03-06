@@ -62,12 +62,11 @@ DataProcessingSupportedTypes = TypeVar(
 )
 
 TAB = "    "
-BASE_INDENTATION = TAB * 2
 
 
 def indent(n: int) -> str:
-    """Create n indentation space on top of the base indentation."""
-    return BASE_INDENTATION + TAB * n
+    """Create n indentation space."""
+    return TAB * n
 
 
 class PackageBuilder:
@@ -722,7 +721,7 @@ class MethodDefinition:
             model_name=model_name,
             examples=examples,
         )
-        code = f'{indent(0)}"""{doc}{indent(0)}"""  # noqa: E501\n\n' if doc else ""
+        code = f'{indent(2)}"""{doc}{indent(2)}"""  # noqa: E501\n\n' if doc else ""
 
         return code
 
@@ -846,17 +845,17 @@ class DocstringGenerator:
         available_providers = providers or "Optional[str]"
 
         obbject_description = (
-            f"{indent(0)}OBBject\n"
-            f"{indent(1)}results : {results_type}\n"
-            f"{indent(2)}Serializable results.\n"
-            f"{indent(1)}provider : {available_providers}\n"
-            f"{indent(2)}Provider name.\n"
-            f"{indent(1)}warnings : Optional[List[Warning_]]\n"
-            f"{indent(2)}List of warnings.\n"
-            f"{indent(1)}chart : Optional[Chart]\n"
-            f"{indent(2)}Chart object.\n"
-            f"{indent(1)}extra : Dict[str, Any]\n"
-            f"{indent(2)}Extra info.\n"
+            f"{indent(2)}OBBject\n"
+            f"{indent(3)}results : {results_type}\n"
+            f"{indent(4)}Serializable results.\n"
+            f"{indent(3)}provider : {available_providers}\n"
+            f"{indent(4)}Provider name.\n"
+            f"{indent(3)}warnings : Optional[List[Warning_]]\n"
+            f"{indent(4)}List of warnings.\n"
+            f"{indent(3)}chart : Optional[Chart]\n"
+            f"{indent(4)}Chart object.\n"
+            f"{indent(3)}extra : Dict[str, Any]\n"
+            f"{indent(4)}Extra info.\n"
         )
         obbject_description = obbject_description.replace("NoneType", "None")
 
@@ -870,15 +869,15 @@ class DocstringGenerator:
     ) -> str:
         """Get the example section from the examples."""
         if examples:
-            doc = f"\n{indent(0)}Examples\n"
-            doc += f"{indent(0)}--------\n"
-            doc += f"{indent(0)}>>> from openbb import obb\n"
+            doc = f"\n{indent(2)}Examples\n"
+            doc += f"{indent(2)}--------\n"
+            doc += f"{indent(2)}>>> from openbb import obb\n"
 
             for e in examples:
                 doc += e.to_python(
                     func_path=func_path,
                     func_params=func_params,
-                    indentation=indent(0),
+                    indentation=indent(2),
                 )
             return doc
         return ""
@@ -907,13 +906,13 @@ class DocstringGenerator:
 
         def format_description(description: str) -> str:
             """Format description in docstrings."""
-            description = description.replace("\n", f"\n{indent(0)}")
+            description = description.replace("\n", f"\n{indent(2)}")
             return description
 
-        docstring = summary.strip("\n").replace("\n    ", f"\n{indent(0)}")
+        docstring = summary.strip("\n").replace("\n    ", f"\n{indent(2)}")
         docstring += "\n\n"
-        docstring += f"{indent(0)}Parameters\n"
-        docstring += f"{indent(0)}----------\n"
+        docstring += f"{indent(2)}Parameters\n"
+        docstring += f"{indent(2)}----------\n"
 
         # Explicit parameters
         for param_name, param in explicit_params.items():
@@ -936,8 +935,8 @@ class DocstringGenerator:
                 )
 
             type_str = format_type(type_, char_limit=79)  # type: ignore
-            docstring += f"{indent(0)}{param_name} : {type_str}\n"
-            docstring += f"{indent(1)}{format_description(description)}\n"
+            docstring += f"{indent(2)}{param_name} : {type_str}\n"
+            docstring += f"{indent(3)}{format_description(description)}\n"
 
         # Kwargs
         for param_name, param in kwarg_params.items():
@@ -949,13 +948,13 @@ class DocstringGenerator:
 
             description = getattr(param.default, "description", "")
 
-            docstring += f"{indent(0)}{param_name} : {type_}\n"
-            docstring += f"{indent(1)}{format_description(description)}\n"
+            docstring += f"{indent(2)}{param_name} : {type_}\n"
+            docstring += f"{indent(3)}{format_description(description)}\n"
 
         # Returns
         docstring += "\n"
-        docstring += f"{indent(0)}Returns\n"
-        docstring += f"{indent(0)}-------\n"
+        docstring += f"{indent(2)}Returns\n"
+        docstring += f"{indent(2)}-------\n"
         provider_param = explicit_params.get("provider", None)
         available_providers = getattr(provider_param, "_annotation", None)
 
@@ -963,8 +962,8 @@ class DocstringGenerator:
 
         # Schema
         underline = "-" * len(model_name)
-        docstring += f"\n{indent(0)}{model_name}\n"
-        docstring += f"{indent(0)}{underline}\n"
+        docstring += f"\n{indent(2)}{model_name}\n"
+        docstring += f"{indent(2)}{underline}\n"
 
         for name, field in returns.items():
             try:
@@ -995,8 +994,8 @@ class DocstringGenerator:
 
             description = getattr(field, "description", "")
 
-            docstring += f"{indent(0)}{field.alias or name} : {field_type}\n"
-            docstring += f"{indent(1)}{format_description(description)}\n"
+            docstring += f"{indent(2)}{field.alias or name} : {field_type}\n"
+            docstring += f"{indent(3)}{format_description(description)}\n"
         return docstring
 
     @classmethod
@@ -1036,7 +1035,7 @@ class DocstringGenerator:
                     results_type=results_type,
                 )
         else:
-            doc = doc.replace("\n    ", f"\n{indent(0)}")
+            doc = doc.replace("\n    ", f"\n{indent(2)}")
 
         if doc and examples:
             doc += cls.append_examples(
