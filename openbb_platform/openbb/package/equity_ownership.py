@@ -117,11 +117,9 @@ class ROUTER_equity_ownership(Container):
         >>> obb.equity.ownership.form_13f(symbol='NVDA')
         >>> # Enter a date (calendar quarter ending) for a specific report.
         >>> obb.equity.ownership.form_13f(symbol='BRK-A', date='2016-09-30')
-        >>> # Use the `limit` parameter to return N number of reports from the most recent.
-        >>> obb.equity.ownership.form_13f(symbol='AAPL', limit=2)
         >>> # Example finding Michael Burry's filings.
         >>> cik = obb.regulators.sec.institutions_search("Scion Asset Management").results[0].cik
-        >>> obb.equity.ownership.form_13f(cik, limit=2).to_df()
+        >>> # Use the `limit` parameter to return N number of reports from the most recent.obb.equity.ownership.form_13f(cik, limit=2).to_df()
         """  # noqa: E501
 
         return self._run(

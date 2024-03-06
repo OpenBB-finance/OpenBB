@@ -1,8 +1,8 @@
 from abc import abstractmethod
 from dataclasses import Field
-from typing import Any, Dict, List, Literal, Optional
+from typing import Dict, List, Literal, Optional, Union
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, computed_field
 
 
 class Example(BaseModel):
@@ -24,12 +24,17 @@ class APIEx(Example):
     """API Example model."""
 
     scope: Literal["api"] = "api"
-    parameters: Dict[str, Any]
+    parameters: Dict[str, Union[str, int, float, bool, None]]
 
+    @computed_field  # type: ignore[misc]
     @property
     def provider(self) -> Optional[str]:
         """Return the provider from the parameters."""
-        return self.parameters.get("provider")
+        if provider := self.parameters.get("provider"):
+            if isinstance(provider, str):
+                return provider
+            raise ValueError(f"Provider must be a string, not {type(provider)}")
+        return None
 
     def to_python(self, **kwargs) -> str:
         """Return a Python code representation of the example."""

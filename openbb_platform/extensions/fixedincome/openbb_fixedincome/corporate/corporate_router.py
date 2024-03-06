@@ -79,7 +79,7 @@ async def hqm(
 
 @router.command(
     model="SpotRate",
-    examples=[APIEx(parameters={"maturity": [10, 20, 30, 50]})],
+    examples=[APIEx(parameters={"maturity": "10,20,30,50"})],
 )
 async def spot_rates(
     cc: CommandContext,

@@ -475,7 +475,7 @@ class ROUTER_fixedincome_corporate(Container):
         Examples
         --------
         >>> from openbb import obb
-        >>> obb.fixedincome.corporate.spot_rates(maturity=[10, 20, 30, 50])
+        >>> obb.fixedincome.corporate.spot_rates(maturity=10,20,30,50)
         """  # noqa: E501
 
         return self._run(
