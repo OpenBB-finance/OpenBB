@@ -63,7 +63,7 @@ class FREDSpotRateFetcher(
             if isinstance(query.maturity, str)
             else [query.maturity]
         )
-        if any([m < 1 or m >= 100 for m in maturity]):
+        if any([m < 1 or m > 100 for m in maturity]):
             raise ValueError("Maturity must be between 1 and 100")
 
         series = get_spot_series_id(
