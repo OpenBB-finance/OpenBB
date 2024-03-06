@@ -61,18 +61,14 @@ if "biztoc_tags" not in st.session_state:
     st.session_state.biztoc_tags = []
 try:
     _all_tags = []
-    _biztoc_tags = get_all_tags(
-        api_key=obb.user.credentials.biztoc_api_key.get_secret_value()
-    )  # type: ignore
+    _biztoc_tags = get_all_tags(api_key=obb.user.credentials.biztoc_api_key.get_secret_value())  # type: ignore
     for key, value in _biztoc_tags.items():
         _all_tags.extend(_biztoc_tags[key])
     st.session_state.biztoc_tags = _all_tags
 except Exception:
     st.session_state.biztoc_tags = []
 try:
-    _sources = get_sources(
-        api_key=obb.user.credentials.biztoc_api_key.get_secret_value()
-    )  # type: ignore
+    _sources = get_sources(api_key=obb.user.credentials.biztoc_api_key.get_secret_value())  # type: ignore
     st.session_state.biztoc_sources = [d["id"] for d in _sources]
 except Exception:
     st.session_state.biztoc_sources = []
