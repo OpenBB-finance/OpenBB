@@ -45,6 +45,12 @@ class SpotRateQueryParams(QueryParams):
                 raise ValueError("`maturity` must be between 1 and 100")
         return v
 
+    @field_validator("category", mode="before", check_fields=False)
+    @classmethod
+    def to_lower(cls, v: Optional[str]) -> Optional[str]:
+        """Convert field to lowercase."""
+        return v.lower() if v else v
+
 
 class SpotRateData(Data):
     """Spot Rate Data."""

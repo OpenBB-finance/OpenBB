@@ -15,8 +15,6 @@ from openbb_core.provider.utils.descriptions import (
 class Form13FHRQueryParams(QueryParams):
     """Form 13F-HR Query."""
 
-    __validator_dict__ = {"check_single": ("symbol")}
-
     symbol: str = Field(
         description=QUERY_DESCRIPTIONS.get("symbol", "")
         + " A CIK or Symbol can be used."

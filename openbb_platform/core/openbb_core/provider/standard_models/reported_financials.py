@@ -39,6 +39,12 @@ class ReportedFinancialsQueryParams(QueryParams):
         """Convert symbol to uppercase."""
         return v.upper()
 
+    @field_validator("period", "statement_type", mode="before", check_fields=False)
+    @classmethod
+    def to_lower(cls, v: Optional[str]) -> Optional[str]:
+        """Convert field to lowercase."""
+        return v.lower() if v else v
+
 
 class ReportedFinancialsData(Data):
     """Reported Financials Data."""
