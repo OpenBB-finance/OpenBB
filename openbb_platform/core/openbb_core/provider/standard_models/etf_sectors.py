@@ -17,7 +17,7 @@ class EtfSectorsQueryParams(QueryParams):
     @field_validator("symbol")
     @classmethod
     def to_upper(cls, v: str) -> str:
-        """Convert symbol to uppercase."""
+        """Convert field to uppercase."""
         return v.upper()
 
 

@@ -36,7 +36,7 @@ class ReportedFinancialsQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: str):
-        """Convert symbol to uppercase."""
+        """Convert field to uppercase."""
         return v.upper()
 
     @field_validator("period", "statement_type", mode="before", check_fields=False)

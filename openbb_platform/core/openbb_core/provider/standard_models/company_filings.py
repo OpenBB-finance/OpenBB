@@ -36,7 +36,7 @@ class CompanyFilingsQueryParams(QueryParams):
     @field_validator("symbol", mode="before", check_fields=False)
     @classmethod
     def to_upper(cls, v: Union[str, List[str], Set[str]]):
-        """Convert symbol to uppercase."""
+        """Convert field to uppercase."""
         if isinstance(v, str):
             return v.upper()
         return ",".join([symbol.upper() for symbol in list(v)]) if v else None
