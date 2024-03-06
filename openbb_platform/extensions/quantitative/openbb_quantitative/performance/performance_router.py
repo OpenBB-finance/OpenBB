@@ -24,6 +24,7 @@ router = Router(prefix="/performance")
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get Omega Ratio.",
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -87,6 +88,7 @@ def omega_ratio(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get Rolling Sharpe Ratio.",
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -145,6 +147,7 @@ def sharpe_ratio(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get Rolling Sortino Ratio.",
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',

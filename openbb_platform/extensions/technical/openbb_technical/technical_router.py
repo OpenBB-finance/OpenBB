@@ -27,6 +27,7 @@ router = Router(prefix="")
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Average True Range.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "atr_data = obb.technical.atr(data=stock_data.results)",
@@ -88,6 +89,7 @@ def atr(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Bollinger Band Width.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "fib_data = obb.technical.fib(data=stock_data.results, period=120)",
@@ -157,6 +159,7 @@ def fib(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the On Balance Volume (OBV).",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "obv_data = obb.technical.obv(data=stock_data.results, offset=0)",
@@ -208,6 +211,7 @@ def obv(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Perform the Fisher Transform.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "fisher_data = obb.technical.fisher(data=stock_data.results, length=14, signal=1)",
@@ -259,6 +263,7 @@ def fisher(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Accumulation/Distribution Oscillator.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "adosc_data = obb.technical.adosc(data=stock_data.results, fast=3, slow=10, offset=0)",
@@ -313,6 +318,7 @@ def adosc(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Chande Momentum Oscillator.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "bbands_data = obb.technical.bbands(data=stock_data.results, target='close', length=50, std=2, mamode='sma')",
@@ -389,6 +395,7 @@ def bbands(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Chande Momentum Oscillator.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "zlma_data = obb.technical.zlma(data=stock_data.results, target='close', length=50, offset=0)",
@@ -451,6 +458,7 @@ def zlma(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Chande Momentum Oscillator.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "aaron_data = obb.technical.aroon(data=stock_data.results, length=25, scalar=100)",
@@ -508,6 +516,7 @@ def aroon(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Chande Momentum Oscillator.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "sma_data = obb.technical.sma(data=stock_data.results, target='close', length=50, offset=0)",
@@ -571,6 +580,7 @@ def sma(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Demark Sequential Indicator.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "demark_data = obb.technical.demark(data=stock_data.results, offset=0)",
@@ -629,6 +639,7 @@ def demark(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Volume Weighted Average Price (VWAP).",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "vwap_data = obb.technical.vwap(data=stock_data.results, anchor='D', offset=0)",
@@ -681,6 +692,7 @@ def vwap(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Moving Average Convergence Divergence (MACD).",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "macd_data = obb.technical.macd(data=stock_data.results, target='close', fast=12, slow=26, signal=9)",
@@ -748,6 +760,7 @@ def macd(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Relative Strength Index (RSI).",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "hma_data = obb.technical.hma(data=stock_data.results, target='close', length=50, offset=0)",
@@ -808,6 +821,7 @@ def hma(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Donchian Channels.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "donchian_data = obb.technical.donchian(data=stock_data.results, lower_length=20, upper_length=20, offset=0)",
@@ -866,6 +880,7 @@ def donchian(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Ichimoku Cloud.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "ichimoku_data = obb.technical.ichimoku(data=stock_data.results, conversion=9, base=26, lookahead=False)",
@@ -934,6 +949,7 @@ def ichimoku(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Clenow Volatility Adjusted Momentum.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "clenow_data = obb.technical.clenow(data=stock_data.results, period=90)",
@@ -993,6 +1009,7 @@ def clenow(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Accumulation/Distribution Line.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "ad_data = obb.technical.ad(data=stock_data.results, offset=0)",
@@ -1043,6 +1060,7 @@ def ad(data: List[Data], index: str = "date", offset: int = 0) -> OBBject[List[D
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Average Directional Index (ADX).",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "adx_data = obb.technical.adx(data=stock_data.results, length=50, scalar=100.0, drift=1)",
@@ -1097,6 +1115,7 @@ def adx(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Average True Range (ATR).",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "wma_data = obb.technical.wma(data=stock_data.results, target='close', length=50, offset=0)",
@@ -1157,6 +1176,7 @@ def wma(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Commodity Channel Index (CCI).",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "cci_data = obb.technical.cci(data=stock_data.results, length=14, scalar=0.015)",
@@ -1208,6 +1228,7 @@ def cci(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Relative Strength Index (RSI).",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "rsi_data = obb.technical.rsi(data=stock_data.results, target='close', length=14, scalar=100.0, drift=1)",
@@ -1273,6 +1294,7 @@ def rsi(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Stochastic Oscillator.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "stoch_data = obb.technical.stoch(data=stock_data.results, fast_k_period=14, slow_d_period=3, slow_k_period=3)",
@@ -1334,6 +1356,7 @@ def stoch(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Keltner Channels.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "kc_data = obb.technical.kc(data=stock_data.results, length=20, scalar=20, mamode='ema', offset=0)",
@@ -1397,6 +1420,7 @@ def kc(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Center of Gravity (CG).",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "cg_data = obb.technical.cg(data=stock_data.results, length=14)",
@@ -1443,6 +1467,7 @@ def cg(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the cones indicator.",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "cones_data = obb.technical.cones(data=stock_data.results, lower_q=0.25, upper_q=0.75, model='STD')",
@@ -1546,6 +1571,7 @@ def cones(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get the Exponential Moving Average (EMA).",
             code=[
                 "stock_data = obb.equity.price.historical(symbol='TSLA', start_date='2023-01-01', provider='fmp')",
                 "ema_data = obb.technical.ema(data=stock_data.results, target='close', length=50, offset=0)",

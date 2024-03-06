@@ -28,6 +28,7 @@ router = Router(prefix="/stats")
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get Skewness.",
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -73,6 +74,7 @@ def skew(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get Variance.",
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -112,6 +114,7 @@ def variance(data: List[Data], target: str) -> OBBject[List[Data]]:
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get Standard Deviation.",
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -153,6 +156,7 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get Kurtosis.",
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -194,6 +198,7 @@ def kurtosis(data: List[Data], target) -> OBBject[List[Data]]:
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get Quantile.",
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -243,6 +248,7 @@ def quantile(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get Mean.",
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',

@@ -9,9 +9,6 @@ class Example(BaseModel):
     """Example model."""
 
     scope: str
-    description: Optional[str] = (
-        None  # Should this be required? Would help to create example titles
-    )
 
     model_config = ConfigDict(validate_assignment=True)
 
@@ -24,6 +21,7 @@ class APIEx(Example):
     """API Example model."""
 
     scope: Literal["api"] = "api"
+    description: Optional[str] = None
     parameters: Dict[str, Union[str, int, float, bool, None]]
 
     @computed_field  # type: ignore[misc]
@@ -65,6 +63,7 @@ class PythonEx(Example):
     """Python Example model."""
 
     scope: Literal["python"] = "python"
+    description: str
     code: List[str]
 
     def to_python(self, **kwargs) -> str:

@@ -48,8 +48,8 @@ async def institutions_search(
     examples=[
         APIEx(parameters={}),
         PythonEx(
+            description="Get a list of schema files.",
             code=[
-                "#### Get a list of schema files. ####",
                 "data = obb.regulators.sec.schema_files()",
                 "data.files[0]",
                 "    https://xbrl.fasb.org/us-gaap/",

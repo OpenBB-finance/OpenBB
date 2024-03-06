@@ -29,6 +29,7 @@ router = Router(prefix="/rolling")
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get Rolling Mean.",
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -82,6 +83,7 @@ def skew(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get Rolling Variance.",
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -128,6 +130,7 @@ def variance(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get Rolling Standard Deviation.",
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -178,6 +181,7 @@ def stdev(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get Rolling Kurtosis.",
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -230,6 +234,7 @@ def kurtosis(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get Rolling Quantile.",
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',
@@ -299,6 +304,7 @@ def quantile(
     methods=["POST"],
     examples=[
         PythonEx(
+            description="Get Rolling Mean.",
             code=[
                 'stock_data = obb.equity.price.historical(symbol="TSLA", start_date="2023-01-01", provider="fmp").to_df()',
                 'returns = stock_data["close"].pct_change().dropna()',

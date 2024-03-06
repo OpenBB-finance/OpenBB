@@ -272,7 +272,7 @@ class ROUTER_regulators_sec(Container):
         --------
         >>> from openbb import obb
         >>> obb.regulators.sec.schema_files()
-        >>> #### Get a list of schema files. ####
+        >>> # Get a list of schema files.
         >>> data = obb.regulators.sec.schema_files()
         >>> data.files[0]
         >>>     https://xbrl.fasb.org/us-gaap/
