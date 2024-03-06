@@ -419,8 +419,11 @@ class ROUTER_fixedincome_corporate(Container):
             ),
         ] = None,
         maturity: Annotated[
-            List[float], OpenBBCustomParameter(description="The maturities in years.")
-        ] = [10.0],
+            Union[float, str, List[Union[float, str]]],
+            OpenBBCustomParameter(
+                description="The maturities in years. Multiple items allowed for provider(s): fred."
+            ),
+        ] = "10.0",
         category: Annotated[
             List[Literal["par_yield", "spot_rate"]],
             OpenBBCustomParameter(description="The category."),
@@ -442,8 +445,8 @@ class ROUTER_fixedincome_corporate(Container):
             Start date of the data, in YYYY-MM-DD format.
         end_date : Union[datetime.date, None, str]
             End date of the data, in YYYY-MM-DD format.
-        maturity : List[float]
-            The maturities in years.
+        maturity : Union[float, str, List[Union[float, str]]]
+            The maturities in years. Multiple items allowed for provider(s): fred.
         category : List[Literal['par_yield', 'spot_rate']]
             The category.
         provider : Optional[Literal['fred']]
@@ -495,5 +498,6 @@ class ROUTER_fixedincome_corporate(Container):
                     "category": category,
                 },
                 extra_params=kwargs,
+                extra_info={"maturity": {"multiple_items_allowed": ["fred"]}},
             )
         )

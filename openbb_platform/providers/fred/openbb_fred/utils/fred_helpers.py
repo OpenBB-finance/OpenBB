@@ -51,6 +51,16 @@ YIELD_CURVE_SERIES_CORPORATE_PAR = {
 }
 
 
+def comma_to_float_list(v: str) -> List[float]:
+    """Convert comma-separated string to list of floats."""
+    try:
+        return [float(m) for m in v.split(",")]
+    except ValueError as e:
+        raise ValueError(
+            "'maturity' must be a float or a comma-separated string of floats"
+        ) from e
+
+
 def all_cpi_options(harmonized: bool = False) -> List[dict]:
     """Get all CPI options."""
     data = []
