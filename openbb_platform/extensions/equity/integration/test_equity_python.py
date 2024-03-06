@@ -1664,3 +1664,26 @@ def test_equity_fundamental_reported_financials(params, obb):
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "NVDA",
+                "date": None,
+                "limit": 1,
+                "provider": "sec",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_ownership_form_13f(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.equity.ownership.form_13f(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0

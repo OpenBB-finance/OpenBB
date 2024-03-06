@@ -570,7 +570,7 @@ class Editor:
                     recursive(p)
                     position += 1
 
-        write_mdx_and_category(self.target_dir, self.main_folder, 5)
+        write_mdx_and_category(self.target_dir, self.main_folder, 6)
         recursive(self.target_dir)
 
     def dump(self, reference_map: Dict) -> None:

@@ -76,3 +76,22 @@ async def reference_rates(
     impacting global trade, loans, and investments.
     """
     return await OBBject.from_query(Query(**locals()))
+
+
+@router.command(
+    model="CurrencySnapshots",
+    exclude_auto_examples=True,
+    examples=[
+        "obb.currency.snapshots(",
+        'provider="fmp", base="USD,XAU", counter_currencies="EUR,JPY,GBP", quote_type="indirect"',
+        ")",
+    ],
+)
+async def snapshots(
+    cc: CommandContext,
+    provider_choices: ProviderChoices,
+    standard_params: StandardParams,
+    extra_params: ExtraParams,
+) -> OBBject:
+    """Snapshots of currency exchange rates from an indirect or direct perspective of a base currency."""
+    return await OBBject.from_query(Query(**locals()))
