@@ -707,19 +707,16 @@ class MethodDefinition:
     ):
         """Build the command method docstring."""
         doc = func.__doc__
-        indent = 2
         tab = "    "
-        indentation = tab * indent
-        doc = DocstringGenerator.generate(
+        indent = 2
+        doc = DocstringGenerator(tab, indent).generate(
             path=path,
             func=func,
             formatted_params=formatted_params,
             model_name=model_name,
             examples=examples,
-            indentation=indentation,
-            tab=tab,
         )
-        code = f'{indentation}"""{doc}{indentation}"""  # noqa: E501\n\n' if doc else ""
+        code = f'{tab*indent}"""{doc}{tab*indent}"""  # noqa: E501\n\n' if doc else ""
 
         return code
 
@@ -834,66 +831,69 @@ class DocstringGenerator:
 
     provider_interface = ProviderInterface()
 
-    @staticmethod
+    def __init__(self, tab: str = "", indent: int = 0):
+        """Initialize the docstring generator."""
+        self.tab = tab
+        self.base_indentation = tab * indent
+
+    def indent(self, n: int) -> str:
+        """Indent the string."""
+        return self.base_indentation + self.tab * n
+
     def get_OBBject_description(
+        self,
         results_type: str,
         providers: Optional[str],
-        indentation: str = "",
-        tab: str = "    ",
     ) -> str:
         """Get the command output description."""
         available_providers = providers or "Optional[str]"
 
         obbject_description = (
-            f"{indentation}OBBject\n"
-            f"{indentation+tab}results : {results_type}\n"
-            f"{indentation+2*tab}Serializable results.\n"
-            f"{indentation+tab}provider : {available_providers}\n"
-            f"{indentation+2*tab}Provider name.\n"
-            f"{indentation+tab}warnings : Optional[List[Warning_]]\n"
-            f"{indentation+2*tab}List of warnings.\n"
-            f"{indentation+tab}chart : Optional[Chart]\n"
-            f"{indentation+2*tab}Chart object.\n"
-            f"{indentation+tab}extra : Dict[str, Any]\n"
-            f"{indentation+2*tab}Extra info.\n"
+            f"{self.indent(0)}OBBject\n"
+            f"{self.indent(1)}results : {results_type}\n"
+            f"{self.indent(2)}Serializable results.\n"
+            f"{self.indent(1)}provider : {available_providers}\n"
+            f"{self.indent(2)}Provider name.\n"
+            f"{self.indent(1)}warnings : Optional[List[Warning_]]\n"
+            f"{self.indent(2)}List of warnings.\n"
+            f"{self.indent(1)}chart : Optional[Chart]\n"
+            f"{self.indent(2)}Chart object.\n"
+            f"{self.indent(1)}extra : Dict[str, Any]\n"
+            f"{self.indent(2)}Extra info.\n"
         )
         obbject_description = obbject_description.replace("NoneType", "None")
 
         return obbject_description
 
-    @staticmethod
     def append_examples(
+        self,
         func_path: str,
         func_params: Dict[str, Field],
         examples: Optional[List[Example]],
-        indentation: str = "",
     ) -> str:
         """Get the example section from the examples."""
         if examples:
-            doc = f"\n{indentation}Examples\n"
-            doc += f"{indentation}--------\n"
-            doc += f"{indentation}>>> from openbb import obb\n"
+            doc = f"\n{self.indent(0)}Examples\n"
+            doc += f"{self.indent(0)}--------\n"
+            doc += f"{self.indent(0)}>>> from openbb import obb\n"
 
             for e in examples:
                 doc += e.to_python(
                     func_path=func_path,
                     func_params=func_params,
-                    indentation=indentation,
+                    indentation=self.indent(0),
                 )
             return doc
         return ""
 
-    @classmethod
     def generate_model_docstring(
-        cls,
+        self,
         model_name: str,
         summary: str,
         explicit_params: dict,
         kwarg_params: dict,
         returns: Dict[str, FieldInfo],
         results_type: str,
-        indentation: str = "",
-        tab: str = "    ",
     ) -> str:
         """Create the docstring for model."""
 
@@ -909,13 +909,13 @@ class DocstringGenerator:
 
         def format_description(description: str) -> str:
             """Format description in docstrings."""
-            description = description.replace("\n", f"\n{indentation}")
+            description = description.replace("\n", f"\n{self.indent(0)}")
             return description
 
-        docstring = summary.strip("\n").replace("\n    ", f"\n{indentation}")
+        docstring = summary.strip("\n").replace("\n    ", f"\n{self.indent(0)}")
         docstring += "\n\n"
-        docstring += f"{indentation}Parameters\n"
-        docstring += f"{indentation}----------\n"
+        docstring += f"{self.indent(0)}Parameters\n"
+        docstring += f"{self.indent(0)}----------\n"
 
         # Explicit parameters
         for param_name, param in explicit_params.items():
@@ -938,8 +938,8 @@ class DocstringGenerator:
                 )
 
             type_str = format_type(type_, char_limit=79)  # type: ignore
-            docstring += f"{indentation}{param_name} : {type_str}\n"
-            docstring += f"{indentation+tab}{format_description(description)}\n"
+            docstring += f"{self.indent(0)}{param_name} : {type_str}\n"
+            docstring += f"{self.indent(1)}{format_description(description)}\n"
 
         # Kwargs
         for param_name, param in kwarg_params.items():
@@ -951,24 +951,22 @@ class DocstringGenerator:
 
             description = getattr(param.default, "description", "")
 
-            docstring += f"{indentation}{param_name} : {type_}\n"
-            docstring += f"{indentation+tab}{format_description(description)}\n"
+            docstring += f"{self.indent(0)}{param_name} : {type_}\n"
+            docstring += f"{self.indent(1)}{format_description(description)}\n"
 
         # Returns
         docstring += "\n"
-        docstring += f"{indentation}Returns\n"
-        docstring += f"{indentation}-------\n"
+        docstring += f"{self.indent(0)}Returns\n"
+        docstring += f"{self.indent(0)}-------\n"
         provider_param = explicit_params.get("provider", None)
         available_providers = getattr(provider_param, "_annotation", None)
 
-        docstring += cls.get_OBBject_description(
-            results_type, available_providers, indentation, tab
-        )
+        docstring += self.get_OBBject_description(results_type, available_providers)
 
         # Schema
         underline = "-" * len(model_name)
-        docstring += f"\n{indentation}{model_name}\n"
-        docstring += f"{indentation}{underline}\n"
+        docstring += f"\n{self.indent(0)}{model_name}\n"
+        docstring += f"{self.indent(0)}{underline}\n"
 
         for name, field in returns.items():
             try:
@@ -999,27 +997,24 @@ class DocstringGenerator:
 
             description = getattr(field, "description", "")
 
-            docstring += f"{indentation}{field.alias or name} : {field_type}\n"
-            docstring += f"{indentation+tab}{format_description(description)}\n"
+            docstring += f"{self.indent(0)}{field.alias or name} : {field_type}\n"
+            docstring += f"{self.indent(1)}{format_description(description)}\n"
         return docstring
 
-    @classmethod
     def generate(
-        cls,
+        self,
         path: str,
         func: Callable,
         formatted_params: OrderedDict[str, Parameter],
         model_name: Optional[str] = None,
         examples: Optional[List[Example]] = None,
-        indentation: str = "",
-        tab: str = "    ",
     ) -> Optional[str]:
         """Generate the docstring for the function."""
         doc = func.__doc__ or ""
         func_params = {}
         if model_name:
-            params = cls.provider_interface.params.get(model_name, {})
-            return_schema = cls.provider_interface.return_schema.get(model_name, None)
+            params = self.provider_interface.params.get(model_name, {})
+            return_schema = self.provider_interface.return_schema.get(model_name, None)
             if params and return_schema:
                 explicit_dict = dict(formatted_params)
                 explicit_dict.pop("extra_params", None)
@@ -1033,25 +1028,22 @@ class DocstringGenerator:
                 if hasattr(results_type, "results_type_repr"):
                     results_type = results_type.results_type_repr()
 
-                doc = cls.generate_model_docstring(
+                doc = self.generate_model_docstring(
                     model_name=model_name,
                     summary=func.__doc__ or "",
                     explicit_params=explicit_dict,
                     kwarg_params=kwarg_params,
                     returns=returns,
                     results_type=results_type,
-                    indentation=indentation,
-                    tab=tab,
                 )
         else:
-            doc = doc.replace("\n    ", f"\n{indentation}")
+            doc = doc.replace("\n    ", f"\n{self.indent(0)}")
 
         if doc and examples:
-            doc += cls.append_examples(
+            doc += self.append_examples(
                 path.replace("/", "."),
                 func_params,
                 examples,
-                indentation,
             )
 
         return doc
