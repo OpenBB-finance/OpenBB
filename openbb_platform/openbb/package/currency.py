@@ -229,12 +229,10 @@ class ROUTER_currency(Container):
         last_rate_timestamp : Optional[datetime]
             The timestamp of the last rate. (provider: fmp)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> obb.currency.snapshots(
-        >>> provider="fmp", base="USD,XAU", counter_currencies="EUR,JPY,GBP", quote_type="indirect"
-        >>> )
+        >>> obb.currency.snapshots(provider='fmp', base='USD,XAU', counter_currencies='EUR,JPY,GBP', quote_type='indirect')
         """  # noqa: E501
 
         return self._run(

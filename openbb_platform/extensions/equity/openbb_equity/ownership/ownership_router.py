@@ -1,7 +1,7 @@
 """Ownership Router."""
 
 from openbb_core.app.model.command_context import CommandContext
-from openbb_core.app.model.example import APIEx
+from openbb_core.app.model.example import APIEx, PythonEx
 from openbb_core.app.model.obbject import OBBject
 from openbb_core.app.provider_interface import (
     ExtraParams,
@@ -73,16 +73,26 @@ async def share_statistics(
 
 @router.command(
     model="Form13FHR",
-    exclude_auto_examples=True,
     examples=[
-        "### Enter the symbol as either the stock ticker or the CIK number as a string. ###",
-        'obb.equity.ownership.form_13f(symbol="NVDA").to_df()',
-        "### Enter a date (calendar quarter ending) for a specific report. ###",
-        'obb.equity.ownership.form_13f(symbol="BRK-A", date="2016-09-30")',
-        "### Use the `limit` parameter to return N number of reports from the most recent. ###",
-        "### Example finding Michael Burry's filings. ###",
-        'cik = obb.regulators.sec.institutions_search("Scion Asset Management").results[0].cik',
-        "obb.equity.ownership.form_13f(cik, limit=2).to_df()",
+        APIEx(
+            description="Enter the symbol as either the stock ticker or the CIK number as a string.",
+            parameters={"symbol": "NVDA"},
+        ),
+        APIEx(
+            description="Enter a date (calendar quarter ending) for a specific report.",
+            parameters={"symbol": "BRK-A", "date": "2016-09-30"},
+        ),
+        APIEx(
+            description="Use the `limit` parameter to return N number of reports from the most recent.",
+            parameters={"symbol": "AAPL", "limit": 2},
+        ),
+        PythonEx(
+            description="Example finding Michael Burry's filings.",
+            code=[
+                'cik = obb.regulators.sec.institutions_search("Scion Asset Management").results[0].cik',
+                "obb.equity.ownership.form_13f(cik, limit=2).to_df()",
+            ],
+        ),
     ],
 )
 async def form_13f(

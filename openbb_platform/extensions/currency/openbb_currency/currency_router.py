@@ -80,11 +80,15 @@ async def reference_rates(
 
 @router.command(
     model="CurrencySnapshots",
-    exclude_auto_examples=True,
     examples=[
-        "obb.currency.snapshots(",
-        'provider="fmp", base="USD,XAU", counter_currencies="EUR,JPY,GBP", quote_type="indirect"',
-        ")",
+        APIEx(
+            parameters={
+                "provider": "fmp",
+                "base": "USD,XAU",
+                "counter_currencies": "EUR,JPY,GBP",
+                "quote_type": "indirect",
+            }
+        ),
     ],
 )
 async def snapshots(

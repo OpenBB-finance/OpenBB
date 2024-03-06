@@ -110,15 +110,16 @@ class ROUTER_equity_ownership(Container):
         weight : Optional[float]
             The weight of the security relative to the market value of all securities in the filing , as a normalized percent. (provider: sec)
 
-        Example
-        -------
+        Examples
+        --------
         >>> from openbb import obb
-        >>> ### Enter the symbol as either the stock ticker or the CIK number as a string. ###
-        >>> obb.equity.ownership.form_13f(symbol="NVDA").to_df()
-        >>> ### Enter a date (calendar quarter ending) for a specific report. ###
-        >>> obb.equity.ownership.form_13f(symbol="BRK-A", date="2016-09-30")
-        >>> ### Use the `limit` parameter to return N number of reports from the most recent. ###
-        >>> ### Example finding Michael Burry's filings. ###
+        >>> # Enter the symbol as either the stock ticker or the CIK number as a string.
+        >>> obb.equity.ownership.form_13f(symbol='NVDA')
+        >>> # Enter a date (calendar quarter ending) for a specific report.
+        >>> obb.equity.ownership.form_13f(symbol='BRK-A', date='2016-09-30')
+        >>> # Use the `limit` parameter to return N number of reports from the most recent.
+        >>> obb.equity.ownership.form_13f(symbol='AAPL', limit=2)
+        >>> # Example finding Michael Burry's filings.
         >>> cik = obb.regulators.sec.institutions_search("Scion Asset Management").results[0].cik
         >>> obb.equity.ownership.form_13f(cik, limit=2).to_df()
         """  # noqa: E501
