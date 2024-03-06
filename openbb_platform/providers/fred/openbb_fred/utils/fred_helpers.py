@@ -146,6 +146,7 @@ def get_ice_bofa_series_id(
     units = "index" if type_ == "total_return" else "percent"
 
     for s in series:
+        # pylint: disable=too-many-boolean-expressions
         if (
             s["Type"] == type_
             and s["Units"] == units
