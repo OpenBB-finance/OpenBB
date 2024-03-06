@@ -423,7 +423,7 @@ class ROUTER_fixedincome_corporate(Container):
             OpenBBCustomParameter(
                 description="The maturities in years. Multiple items allowed for provider(s): fred."
             ),
-        ] = "10.0",
+        ] = 10.0,
         category: Annotated[
             List[Literal["par_yield", "spot_rate"]],
             OpenBBCustomParameter(description="The category."),

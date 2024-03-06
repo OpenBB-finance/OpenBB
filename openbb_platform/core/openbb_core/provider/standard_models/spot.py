@@ -5,7 +5,7 @@ from datetime import (
 )
 from typing import List, Literal, Optional, Union
 
-from pydantic import Field, field_validator
+from pydantic import Field
 
 from openbb_core.provider.abstract.data import Data
 from openbb_core.provider.abstract.query_params import QueryParams
@@ -27,7 +27,7 @@ class SpotRateQueryParams(QueryParams):
         description=QUERY_DESCRIPTIONS.get("end_date", ""),
     )
     maturity: Union[float, str] = Field(
-        default="10.0", description="The maturities in years."
+        default=10.0, description="The maturities in years."
     )
     category: List[Literal["par_yield", "spot_rate"]] = Field(
         default=["spot_rate"],
