@@ -1,5 +1,7 @@
 """Intrinio Equity Historical Price Model."""
 
+# pylint: disable = unused-argument
+
 from datetime import datetime, time
 from typing import Any, Dict, List, Literal, Optional
 
@@ -226,7 +228,6 @@ class IntrinioEquityHistoricalFetcher(
 
         return await amake_requests([url], callback, **kwargs)
 
-    # pylint: disable=unused-argument
     @staticmethod
     def transform_data(
         query: IntrinioEquityHistoricalQueryParams,

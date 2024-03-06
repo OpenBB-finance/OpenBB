@@ -21,6 +21,7 @@ from openbb_fmp.models.crypto_historical import FMPCryptoHistoricalFetcher
 from openbb_fmp.models.crypto_search import FMPCryptoSearchFetcher
 from openbb_fmp.models.currency_historical import FMPCurrencyHistoricalFetcher
 from openbb_fmp.models.currency_pairs import FMPCurrencyPairsFetcher
+from openbb_fmp.models.currency_snapshots import FMPCurrencySnapshotsFetcher
 from openbb_fmp.models.discovery_filings import FMPDiscoveryFilingsFetcher
 from openbb_fmp.models.earnings_call_transcript import FMPEarningsCallTranscriptFetcher
 from openbb_fmp.models.economic_calendar import FMPEconomicCalendarFetcher
@@ -522,7 +523,7 @@ def test_fmp_economic_calendar_fetcher(credentials=test_credentials):
 
 @pytest.mark.record_http
 def test_fmp_market_snapshots_fetcher(credentials=test_credentials):
-    params = {"market": "LSE"}
+    params = {"market": "lse"}
 
     fetcher = FMPMarketSnapshotsFetcher()
     result = fetcher.test(params, credentials)
@@ -652,5 +653,18 @@ def test_fmp_etf_equity_exposure_fetcher(credentials=test_credentials):
     params = {"symbol": "AAPL,MSFT"}
 
     fetcher = FMPEtfEquityExposureFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_fmp_currency_snapshots_fetcher(credentials=test_credentials):
+    params = {
+        "base": "XAU",
+        "quote_type": "indirect",
+        "counter_currencies": "USD,EUR,GBP,JPY,HKD,AUD,CAD,CHF,SEK,NZD,SGD",
+    }
+
+    fetcher = FMPCurrencySnapshotsFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

@@ -154,3 +154,27 @@ def test_currency_reference_rates(params, headers):
     result = requests.get(url, headers=headers, timeout=10)
     assert isinstance(result, requests.Response)
     assert result.status_code == 200
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "provider": "fmp",
+                "base": "USD,XAU",
+                "counter_currencies": "EUR,JPY,GBP",
+                "quote_type": "indirect",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_currency_snapshots(params, headers):
+    params = {p: v for p, v in params.items() if v}
+
+    query_str = get_querystring(params, [])
+    url = f"http://0.0.0.0:8000/api/v1/currency/snapshots?{query_str}"
+    result = requests.get(url, headers=headers, timeout=10)
+    assert isinstance(result, requests.Response)
+    assert result.status_code == 200

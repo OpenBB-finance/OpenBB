@@ -5,6 +5,7 @@ from openbb_sec.models.company_filings import SecCompanyFilingsFetcher
 from openbb_sec.models.equity_ftd import SecEquityFtdFetcher
 from openbb_sec.models.equity_search import SecEquitySearchFetcher
 from openbb_sec.models.etf_holdings import SecEtfHoldingsFetcher
+from openbb_sec.models.form_13FHR import SecForm13FHRFetcher
 from openbb_sec.models.institutions_search import SecInstitutionsSearchFetcher
 from openbb_sec.models.rss_litigation import SecRssLitigationFetcher
 from openbb_sec.models.schema_files import SecSchemaFilesFetcher
@@ -110,5 +111,14 @@ def test_sec_cik_map_fetcher(credentials=test_credentials):
     params = {"symbol": "OXY"}
 
     fetcher = SecCikMapFetcher()
+    result = fetcher.test(params, credentials)
+    assert result is None
+
+
+@pytest.mark.record_http
+def test_sec_form_13FHR_fetcher(credentials=test_credentials):
+    params = {"symbol": "NVDA"}
+
+    fetcher = SecForm13FHRFetcher()
     result = fetcher.test(params, credentials)
     assert result is None

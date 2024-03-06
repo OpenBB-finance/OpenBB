@@ -72,7 +72,7 @@ def check_docstring_examples() -> List[str]:
     return errors
 
 
-def list_openbb_extensions() -> Tuple[Set[str], Set[str]]:
+def list_openbb_extensions() -> Tuple[Set[str], Set[str], Set[str]]:
     """
     Lists installed openbb extensions and providers.
 
@@ -81,10 +81,12 @@ def list_openbb_extensions() -> Tuple[Set[str], Set[str]]:
     Tuple[Set[str], Set[str]]
         First element: set of installed core extensions.
         Second element: set of installed provider extensions.
+        Third element: set of installed obbject extensions.
     """
 
     core_extensions = set()
     provider_extensions = set()
+    obbject_extensions = set()
     entry_points_dict = entry_points()
 
     for entry_point in entry_points_dict["openbb_core_extension"]:
@@ -93,4 +95,7 @@ def list_openbb_extensions() -> Tuple[Set[str], Set[str]]:
     for entry_point in entry_points_dict["openbb_provider_extension"]:
         provider_extensions.add(f"{entry_point.name}")
 
-    return core_extensions, provider_extensions
+    for entry_point in entry_points_dict["openbb_obbject_extension"]:
+        obbject_extensions.add(f"{entry_point.name}")
+
+    return core_extensions, provider_extensions, obbject_extensions
