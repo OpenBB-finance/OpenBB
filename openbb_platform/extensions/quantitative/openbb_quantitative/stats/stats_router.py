@@ -144,7 +144,7 @@ def stdev(data: List[Data], target: str) -> OBBject[List[Data]]:
         'obb.quantitative.stats.kurtosis(data=returns, target="close")',
     ],
 )
-def kurtosis(data: List[Data], target) -> OBBject[List[Data]]:
+def kurtosis(data: List[Data], target: str) -> OBBject[List[Data]]:
     """
     Calculate the rolling kurtosis of a target column.
 
@@ -154,10 +154,11 @@ def kurtosis(data: List[Data], target) -> OBBject[List[Data]]:
     This function helps in assessing the risk of outliers in financial returns or other time series data.
 
     Parameters
-        data: List[Data]
-            The time series data as a list of data points.
-        target: str
-            The name of the column for which to calculate kurtosis.
+    ----------
+    data: List[Data]
+        The time series data as a list of data points.
+    target: str
+        The name of the column for which to calculate kurtosis.
 
     Returns
     ------
