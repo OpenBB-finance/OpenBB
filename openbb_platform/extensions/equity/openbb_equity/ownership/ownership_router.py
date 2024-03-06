@@ -82,14 +82,11 @@ async def share_statistics(
             description="Enter a date (calendar quarter ending) for a specific report.",
             parameters={"symbol": "BRK-A", "date": "2016-09-30"},
         ),
-        APIEx(
-            description="Use the `limit` parameter to return N number of reports from the most recent.",
-            parameters={"symbol": "AAPL", "limit": 2},
-        ),
         PythonEx(
             description="Example finding Michael Burry's filings.",
             code=[
                 'cik = obb.regulators.sec.institutions_search("Scion Asset Management").results[0].cik',
+                '# Use the `limit` parameter to return N number of reports from the most recent.'
                 "obb.equity.ownership.form_13f(cik, limit=2).to_df()",
             ],
         ),
