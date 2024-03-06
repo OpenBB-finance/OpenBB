@@ -1,6 +1,7 @@
 """Intrinio Income Statement Model."""
 
 # pylint: disable=unused-argument
+
 import warnings
 from typing import Any, Dict, List, Literal, Optional
 
@@ -472,7 +473,7 @@ class IntrinioIncomeStatementFetcher(
 
             for sub_item in item["financials"]:
                 unit = sub_item["data_tag"].get("unit", "")
-                if unit and "share" not in unit:
+                if unit and len(unit) == 3:
                     units.append(unit)
                 field_name = sub_item["data_tag"]["tag"]
                 sub_dict[field_name] = (
