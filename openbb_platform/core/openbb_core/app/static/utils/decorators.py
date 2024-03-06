@@ -80,9 +80,9 @@ def exception_handler(func: Callable[P, R]) -> Callable[P, R]:
                 ).with_traceback(tb) from None
 
             # If the error is not a ValidationError, then it is a generic exception
-            type_ = getattr(e, "original", e).__class__.__name__
+            error_type = getattr(e, "original", e).__class__.__name__
             raise OpenBBError(
-                f"\nType -> {type_}\n\nDetail -> {str(e)}"
+                f"\nType -> {error_type}\n\nDetail -> {str(e)}"
             ).with_traceback(tb) from None
 
     return wrapper
