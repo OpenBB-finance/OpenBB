@@ -501,7 +501,15 @@ class MethodDefinition:
         """Get json schema extra."""
         field_default = getattr(field, "default", None)
         if field_default:
-            return getattr(field_default, "json_schema_extra", {})
+            keys_to_remove = ["choices"]
+
+            json_schema_extra = {
+                k: v
+                for k, v in getattr(field_default, "json_schema_extra", {}).items()
+                if k not in keys_to_remove
+            }
+
+            return json_schema_extra
         return {}
 
     @staticmethod
