@@ -315,7 +315,17 @@ def test_fixedincome_corporate_commercial_paper(params, obb):
                 "category": ["spot_rate"],
                 "provider": "fred",
             }
-        )
+        ),
+        (
+            {
+                "maturity": 5.5,
+            }
+        ),
+        (
+            {
+                "maturity": "1,5.5,10",
+            }
+        ),
     ],
 )
 @pytest.mark.integration
