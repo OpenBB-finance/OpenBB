@@ -1,6 +1,7 @@
 """Intrinio Balance Sheet Model."""
 
 # pylint: disable=unused-argument
+
 import warnings
 from typing import Any, Dict, List, Literal, Optional
 
@@ -482,7 +483,7 @@ class IntrinioBalanceSheetFetcher(
             for sub_item in item["financials"]:
                 field_name = sub_item["data_tag"]["tag"]
                 unit = sub_item["data_tag"].get("unit", "")
-                if unit and "share" not in unit and len(unit) == 3:
+                if unit and len(unit) == 3:
                     units.append(unit)
                 sub_dict[field_name] = (
                     float(sub_item["value"])

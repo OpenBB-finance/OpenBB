@@ -26,9 +26,11 @@ def get_headers():
     return data["headers"]
 
 
-def request_data(menu: str, symbol: str, provider: str):
+def request_data(
+    menu: str, symbol: str, provider: str, start_date: str = "", end_date: str = ""
+):
     """Randomly pick a symbol and a provider and get data from the selected menu."""
-    url = f"http://0.0.0.0:8000/api/v1/{menu}/price/historical?symbol={symbol}&provider={provider}"
+    url = f"http://0.0.0.0:8000/api/v1/{menu}/price/historical?symbol={symbol}&provider={provider}&start_date={start_date}&end_date={end_date}"
     result = requests.get(url, headers=get_headers(), timeout=10)
     return result.json()["results"]
 
@@ -40,7 +42,13 @@ def get_stocks_data():
     symbol = random.choice(["AAPL", "NVDA", "MSFT", "TSLA", "AMZN", "V"])  # noqa: S311
     provider = random.choice(["fmp", "polygon", "yfinance"])  # noqa: S311
 
-    data["stocks_data"] = request_data("equity", symbol=symbol, provider=provider)
+    data["stocks_data"] = request_data(
+        menu="equity",
+        symbol=symbol,
+        provider=provider,
+        start_date="2023-01-01",
+        end_date="2023-12-31",
+    )
     return data["stocks_data"]
 
 
@@ -56,6 +64,8 @@ def get_crypto_data():
         menu="crypto",
         symbol=symbol,
         provider=provider,
+        start_date="2023-01-01",
+        end_date="2023-12-31",
     )
     return data["crypto_data"]
 
@@ -244,7 +254,7 @@ def test_quantitative_performance_sharpe_ratio(params, data_type):
                 "data": "",
                 "target": "close",
                 "target_return": "0.5",
-                "window": "275",
+                "window": "150",
                 "adjusted": "true",
                 "index": "date",
             },

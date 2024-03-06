@@ -26,7 +26,7 @@ class ROUTER_news(Container):
     def company(
         self,
         symbol: Annotated[
-            Union[str, None, List[str]],
+            Union[str, None, List[Optional[str]]],
             OpenBBCustomParameter(
                 description="Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance."
             ),
@@ -56,7 +56,7 @@ class ROUTER_news(Container):
 
         Parameters
         ----------
-        symbol : Union[str, None, List[str]]
+        symbol : Union[str, None, List[Optional[str]]]
             Symbol to get data for. This endpoint will accept multiple symbols separated by commas. Multiple items allowed for provider(s): benzinga, fmp, intrinio, polygon, tiingo, yfinance.
         start_date : Union[datetime.date, None, str]
             Start date of the data, in YYYY-MM-DD format.

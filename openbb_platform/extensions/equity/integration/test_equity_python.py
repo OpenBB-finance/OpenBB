@@ -1,6 +1,6 @@
 """Python interface integration tests for the equity extension."""
 
-from datetime import time
+from datetime import date, time, timedelta
 
 import pytest
 from extensions.tests.conftest import parametrize
@@ -775,8 +775,6 @@ def test_equity_fundamental_revenue_per_segment(params, obb):
                 "symbol": "IBM:US",
                 "start_date": "2023-09-30",
                 "end_date": "2023-12-31",
-                "limit": None,
-                "form_type": None,
             }
         ),
     ],
@@ -886,8 +884,8 @@ def test_equity_compare_groups(params, obb):
             {
                 "provider": "cboe",
                 "symbol": "AAPL",
-                "start_date": "2024-02-19",
-                "end_date": "2024-02-20",
+                "start_date": (date.today() - timedelta(days=1)).strftime("%Y-%m-%d"),
+                "end_date": date.today().strftime("%Y-%m-%d"),
                 "interval": "1m",
                 "use_cache": False,
             }
@@ -1580,7 +1578,7 @@ def test_equity_darkpool_otc(params, obb):
     "params",
     [
         ({"provider": "fmp", "market": "euronext"}),
-        ({"provider": "polygon"}),  # premium endpoint
+        # ({"provider": "polygon"}),  # premium endpoint
     ],
 )
 @pytest.mark.integration
@@ -1669,6 +1667,29 @@ def test_equity_fundamental_reported_financials(params, obb):
     params = {p: v for p, v in params.items() if v}
 
     result = obb.equity.fundamental.reported_financials(**params)
+    assert result
+    assert isinstance(result, OBBject)
+    assert len(result.results) > 0
+
+
+@parametrize(
+    "params",
+    [
+        (
+            {
+                "symbol": "NVDA",
+                "date": None,
+                "limit": 1,
+                "provider": "sec",
+            }
+        ),
+    ],
+)
+@pytest.mark.integration
+def test_equity_ownership_form_13f(params, obb):
+    params = {p: v for p, v in params.items() if v}
+
+    result = obb.equity.ownership.form_13f(**params)
     assert result
     assert isinstance(result, OBBject)
     assert len(result.results) > 0
