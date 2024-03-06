@@ -715,16 +715,14 @@ class MethodDefinition:
     ):
         """Build the command method docstring."""
         doc = func.__doc__
-        tab = "    "
-        indent = 2
-        doc = DocstringGenerator(tab, indent).generate(
+        doc = DocstringGenerator.generate(
             path=path,
             func=func,
             formatted_params=formatted_params,
             model_name=model_name,
             examples=examples,
         )
-        code = f'{tab*indent}"""{doc}{tab*indent}"""  # noqa: E501\n\n' if doc else ""
+        code = f'{indent(0)}"""{doc}{indent(0)}"""  # noqa: E501\n\n' if doc else ""
 
         return code
 
