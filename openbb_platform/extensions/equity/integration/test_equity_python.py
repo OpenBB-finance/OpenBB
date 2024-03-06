@@ -423,6 +423,7 @@ def test_equity_fundamental_income_growth(params, obb):
             {
                 "symbol": "RY",
                 "provider": "tmx",
+                "limit": None,
             }
         ),
         (
