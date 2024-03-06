@@ -116,34 +116,6 @@ def check_general_example_violations(
     return general_violation
 
 
-def check_python_example_violations(
-    examples: str, router_name: str, function: Any
-) -> List[str]:
-    """Check for Python violations in the router command examples.
-
-    Criteria
-    --------
-    - Description is mandatory for PythonEx examples.
-    """
-    python_example_violation: List[str] = []
-
-    parsed_examples = parse_example_string(examples)
-
-    # Check if there are PythonEx examples
-    if "PythonEx" in parsed_examples:
-        for python_example in parsed_examples["PythonEx"]:
-            # Check if the Python example has a description
-            if (
-                "description" not in python_example
-                or not python_example["description"].strip()
-            ):
-                python_example_violation.append(
-                    f"{function.__name__} in {router_name} Python example doesn't have a description."
-                )
-
-    return python_example_violation
-
-
 def check_api_example_violations(
     examples: str, router_name: str, model: Optional[str], function: Any
 ) -> List[str]:
@@ -154,22 +126,11 @@ def check_api_example_violations(
     - When using models, at least one example using all required standard parameters.
       It cannot use any provider specific parameters here.
       It should not specify the provider field.
-    - If there’s more than 3 parameters we ask to have a description in the example.
     """
     api_example_violation: List[str] = []
 
     parsed_examples = parse_example_string(examples)
 
-    # Check if description is added
-    if "APIEx" in parsed_examples:
-        for api_example in parsed_examples["APIEx"]:
-            if len(api_example.get("params", {})) > 3 and not api_example.get(
-                "description"
-            ):
-                api_example_violation.append(
-                    f"{function.__name__} in {router_name} API example has more than 3 parameters "
-                    "but doesn't have a description."
-                )
     # Check model endpoint example criteria
     if model and "APIEx" in parsed_examples:
         required_fields = get_required_fields(model.strip("'"))
@@ -201,10 +162,6 @@ def check_router_command_examples() -> List[str]:
     - At least one example using all required parameters.
       It cannot use any provider specific parameters here.
       It should not specify the provider field.
-    - If there’s more than 3 parameters we ask to have a description in the example.
-
-    Python examples:
-    - Description is mandatory
     """
     general_violation: List[str] = []
     api_example_violation: List[str] = []
@@ -239,10 +196,6 @@ def check_router_command_examples() -> List[str]:
                         model = keywords.get("model", None)
                         api_example_violation += check_api_example_violations(
                             examples, router_name, model, function
-                        )
-                        ### Python example checks ###
-                        python_example_violation += check_python_example_violations(
-                            examples, router_name, function
                         )
 
     return general_violation + api_example_violation + python_example_violation
